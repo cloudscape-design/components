@@ -9,7 +9,7 @@ import { Box, Button, Input, Link, Popover, SpaceBetween, TextContent, Toggle } 
 import tokenMapping from './tokens-mapping.json';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import tokenDict from './token-descriptions.json';
+import tokenDict from './tokens-descriptions.json';
 import { cloneDeep, groupBy, uniqBy, startCase, sortBy } from 'lodash';
 import { applyTheme } from '~components/theming';
 import { componentsMap } from './component-tokens-mapping';
@@ -17,15 +17,12 @@ import { componentsMap } from './component-tokens-mapping';
 interface Token {
   section: string;
   name: string;
+  cssName: string;
   description: string;
-  value: string;
 }
 
-function getTokenValue(tokenName: string): string {
-  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
-  const valueEntry = tokenDict[tokenName]?.value ?? 'magenta';
-  const value = typeof valueEntry === 'string' ? valueEntry : valueEntry[isDarkMode ? 'dark' : 'light'];
-  return value;
+function readTokenValue(element: Element, cssTokenName: string): string {
+  return window.getComputedStyle(element).getPropertyValue(cssTokenName) ?? '';
 }
 
 function getTokenDescription(tokenName: string): string {
@@ -37,11 +34,11 @@ const stylesMapping = Object.entries(tokenMapping)
   .map(([selector, tokenByState]: any) => ({
     selector,
     tokens: Object.entries(tokenByState).flatMap(([key, tokens]: any) =>
-      tokens.map((token: string) => ({
+      tokens.map((token: { name: string; cssName: string }) => ({
         section: key,
-        name: token,
-        value: getTokenValue(token),
-        description: getTokenDescription(token),
+        name: token.name,
+        cssName: token.cssName,
+        description: getTokenDescription(token.name),
       }))
     ),
   }))
@@ -162,14 +159,14 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
     contexts: { 'compact-table': { tokens: {} }, 'top-navigation': { tokens: {} }, flashbar: { tokens: {} } },
   });
 
-  const setTokenValue = (tokenName: string, value: string, context: null | string = null, scope?: 'light' | 'dark') => {
+  const setTokenValue = (tokenName: string, value: string, context: null | string = null, scope: 'light' | 'dark') => {
     setTheme(prev => {
       const next = cloneDeep(prev);
       const tokens =
         context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
           ? next.contexts[context].tokens
           : next.tokens;
-      const currValue = tokens[tokenName] ?? getTokenValue(tokenName);
+      const currValue = tokens[tokenName];
       const currValueObj =
         typeof currValue === 'object' ? { ...currValue } : { light: currValue ?? value, dark: currValue ?? value };
       tokens[tokenName] = scope ? { ...currValueObj, [scope]: value } : value;
@@ -356,6 +353,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
               theme={theme}
               setTokenValue={setTokenValue}
               context={selectedNode.tree[selectedIndex].context}
+              element={selectedNode.tree[selectedIndex].node}
             />
           )}
 
@@ -404,11 +402,13 @@ function Tokens({
   theme,
   setTokenValue,
   context,
+  element,
 }: {
   tokens: Token[];
   theme: Theme;
-  setTokenValue: (tokenName: string, value: string, context: null | string, scope?: 'light' | 'dark') => void;
+  setTokenValue: (tokenName: string, value: string, context: null | string, scope: 'light' | 'dark') => void;
   context: null | string;
+  element: Element;
 }) {
   const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
   const sections = groupBy(tokens, 'section');
@@ -431,7 +431,7 @@ function Tokens({
                   : theme.tokens[token.name];
               const themeValueStr =
                 typeof themeValue === 'object' ? themeValue[isDarkMode ? 'dark' : 'light'] : themeValue;
-              const value = themeValueStr ?? token.value;
+              const value = themeValueStr ?? readTokenValue(element, token.cssName);
               return (
                 <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
                   {token.name.startsWith('color') ? (

@@ -1,1565 +1,5494 @@
 {
   "[class*=awsui_root_1xupv]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul": {
     "default": [
-      "colorBackgroundContainerContent",
-      "borderRadiusContainer",
-      "borderRadiusContainer",
-      "borderRadiusContainer"
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
     ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li > hr": {
-    "default": ["colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "body [class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li > a": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li[class*=awsui_active_1xupv] > a > [class*=awsui_circle_1xupv]": {
-    "default": ["colorBackgroundControlChecked", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li[class*=awsui_active_1xupv] > a > [class*=awsui_title_1xupv]": {
-    "default": ["colorBackgroundControlChecked"]
+    "default": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      }
+    ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li[class*=awsui_disabled_1xupv] > a > [class*=awsui_circle_1xupv]": {
-    "default": ["colorBackgroundContainerContent", "colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li[class*=awsui_disabled_1xupv] > a > [class*=awsui_title_1xupv]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li[class*=awsui_enabled_1xupv] > a > [class*=awsui_circle_1xupv]": {
-    "default": ["colorTextInteractiveDefault", "colorTextInteractiveDefault"],
-    "hover": ["colorBackgroundControlChecked", "colorBackgroundControlChecked"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      },
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      },
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      }
+    ]
   },
   "[class*=awsui_navigation_1xupv][class*=awsui_refresh_1xupv] > ul > li[class*=awsui_enabled_1xupv] > a > [class*=awsui_title_1xupv]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorBackgroundControlChecked"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      }
+    ]
   },
   "[class*=awsui_form_1xupv][class*=awsui_refresh_1xupv] > [class*=awsui_background_1xupv]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_form_1xupv][class*=awsui_refresh_1xupv] > [class*=awsui_form-header_1xupv]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_collapsed-steps_1xupv]": {
-    "default": ["colorTextHeadingSecondary"]
+    "default": [
+      {
+        "name": "colorTextHeadingSecondary",
+        "cssName": "--color-text-heading-secondary-mvxtuw"
+      }
+    ]
   },
   "body [class*=awsui_form-header-component-wrapper_1xupv]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_navigation-link-active_1xupv]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_navigation-link-disabled_1xupv]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_tutorial-panel_1oin5]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_tutorial-list_ig8mp]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_tutorial-box_ig8mp]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "borderRadiusTutorialPanelItem"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "borderRadiusTutorialPanelItem",
+        "cssName": "--border-radius-tutorial-panel-item-nnx1b4"
+      }
+    ]
   },
   "[class*=awsui_download-link_ig8mp]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "body [class*=awsui_download-link_ig8mp]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_tutorial-list_1u70p]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_successful-task_1u70p]": {
-    "default": ["colorTextStatusSuccess"]
+    "default": [
+      {
+        "name": "colorTextStatusSuccess",
+        "cssName": "--color-text-status-success-hb5hdl"
+      }
+    ]
   },
   "[class*=awsui_congratulation-message_1u70p]": {
-    "default": ["colorTextStatusSuccess"]
+    "default": [
+      {
+        "name": "colorTextStatusSuccess",
+        "cssName": "--color-text-status-success-hb5hdl"
+      }
+    ]
   },
   "[class*=awsui_top-navigation_k5dlb]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_identity_k5dlb] > [class*=awsui_identity-link_k5dlb]": {
-    "default": ["colorTextTopNavigationTitle"],
-    "hover": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextTopNavigationTitle",
+        "cssName": "--color-text-top-navigation-title-2nrlq4"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "body [class*=awsui_identity_k5dlb] > [class*=awsui_identity-link_k5dlb]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_utility-wrapper_k5dlb]": {
-    "default": ["colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "[class*=awsui_utility-type-button-primary-button_k5dlb]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_overflow-menu_k5dlb]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_overflow-menu-header-text_k5dlb]": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_overflow-menu-control_k5dlb]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"],
-    "hover": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "[class*=awsui_overflow-menu-control-expandable-menu-trigger_k5dlb]": {
-    "hover": ["colorTextAccent"]
+    "hover": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "body [class*=awsui_overflow-menu-control_k5dlb]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_overflow-menu-list-item-expandable_k5dlb]": {
-    "default": ["colorBorderDividerDefault", "colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      },
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "[class*=awsui_top-navigation_1ca1i]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_identity_1ca1i] > [class*=awsui_identity-link_1ca1i]": {
-    "default": ["colorTextTopNavigationTitle"],
-    "hover": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextTopNavigationTitle",
+        "cssName": "--color-text-top-navigation-title-2nrlq4"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "body [class*=awsui_identity_1ca1i] > [class*=awsui_identity-link_1ca1i]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_utility-wrapper_1ca1i]": {
-    "default": ["colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "[class*=awsui_utility-type-button-primary-button_1ca1i]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_root_dm8gx]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_dismiss-button_dm8gx]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_token-box_dm8gx]": {
-    "default": ["colorBackgroundItemSelected", "borderRadiusToken", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundItemSelected",
+        "cssName": "--color-background-item-selected-fva7ca"
+      },
+      {
+        "name": "borderRadiusToken",
+        "cssName": "--border-radius-token-3ax3p2"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_token-box-error_dm8gx]": {
-    "default": ["colorBorderStatusError"]
+    "default": [
+      {
+        "name": "colorBorderStatusError",
+        "cssName": "--color-border-status-error-fybu9w"
+      }
+    ]
   },
   "[class*=awsui_token-box-error_dm8gx] > [class*=awsui_dismiss-button_dm8gx]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_token-box-disabled_dm8gx][class*=awsui_token-box-disabled_dm8gx]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_root_4yi2u]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_outline_4yi2u]": {
-    "default": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_toggle-control-checked_4yi2u]": {
-    "default": ["colorBackgroundControlChecked"]
+    "default": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      }
+    ]
   },
   "[class*=awsui_toggle-control-disabled_4yi2u]": {
-    "default": ["colorBackgroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      }
+    ]
   },
   "[class*=awsui_toggle-control-disabled_4yi2u][class*=awsui_toggle-control-checked_4yi2u]": {
-    "default": ["colorBackgroundToggleCheckedDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundToggleCheckedDisabled",
+        "cssName": "--color-background-toggle-checked-disabled-8l29jd"
+      }
+    ]
   },
   "[class*=awsui_toggle-handle_4yi2u]": {
-    "default": ["colorForegroundControlDefault"]
+    "default": [
+      {
+        "name": "colorForegroundControlDefault",
+        "cssName": "--color-foreground-control-default-i2wjwi"
+      }
+    ]
   },
   "[class*=awsui_toggle-handle-disabled_4yi2u]": {
-    "default": ["colorForegroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorForegroundControlDisabled",
+        "cssName": "--color-foreground-control-disabled-84rf4t"
+      }
+    ]
   },
   "div[class*=awsui_column-layout_vj6p7]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_vj6p7]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_tile-container_vj6p7]": {
-    "default": ["borderRadiusTiles", "colorBackgroundInputDefault"]
+    "default": [
+      {
+        "name": "borderRadiusTiles",
+        "cssName": "--border-radius-tiles-3ylknk"
+      },
+      {
+        "name": "colorBackgroundInputDefault",
+        "cssName": "--color-background-input-default-ewlytp"
+      }
+    ]
   },
   "[class*=awsui_tile-container_vj6p7][class*=awsui_selected_vj6p7]": {
-    "default": ["colorBackgroundItemSelected"]
+    "default": [
+      {
+        "name": "colorBackgroundItemSelected",
+        "cssName": "--color-background-item-selected-fva7ca"
+      }
+    ]
   },
   "[class*=awsui_textarea_qk1j1]": {
     "default": [
-      "colorTextBodyDefault",
-      "fontFamilyBase",
-      "colorTextBodyDefault",
-      "colorBackgroundInputDefault",
-      "borderRadiusInput",
-      "colorTextInputPlaceholder"
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "colorBackgroundInputDefault",
+        "cssName": "--color-background-input-default-ewlytp"
+      },
+      {
+        "name": "borderRadiusInput",
+        "cssName": "--border-radius-input-fterib"
+      },
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      }
     ],
-    "placeholder": ["colorTextInputPlaceholder"],
-    "focus": ["borderRadiusInput"],
-    "disabled": ["colorBackgroundInputDisabled", "colorTextInputDisabled"]
+    "placeholder": [
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      }
+    ],
+    "focus": [
+      {
+        "name": "borderRadiusInput",
+        "cssName": "--border-radius-input-fterib"
+      }
+    ],
+    "disabled": [
+      {
+        "name": "colorBackgroundInputDisabled",
+        "cssName": "--color-background-input-disabled-5vlksk"
+      },
+      {
+        "name": "colorTextInputDisabled",
+        "cssName": "--color-text-input-disabled-zfb02z"
+      }
+    ]
   },
   "[class*=awsui_textarea_qk1j1][class*=awsui_textarea-readonly_qk1j1]": {
-    "default": ["colorBackgroundInputDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundInputDefault",
+        "cssName": "--color-background-input-default-ewlytp"
+      }
+    ]
   },
   "[class*=awsui_textarea_qk1j1][class*=awsui_textarea-invalid_qk1j1]": {
-    "default": ["colorTextStatusError", "colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      },
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_root_1sdq3]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_text-content_6absk]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_text-content_6absk] h1,[class*=awsui_text-content_6absk] h2,[class*=awsui_text-content_6absk] h3,[class*=awsui_text-content_6absk] h4,[class*=awsui_text-content_6absk] h5": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_text-content_6absk] small a": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_text-content_6absk] code,[class*=awsui_text-content_6absk] pre,[class*=awsui_text-content_6absk] samp": {
-    "default": ["fontFamilyMonospace"]
+    "default": [
+      {
+        "name": "fontFamilyMonospace",
+        "cssName": "--font-family-monospace-iz223z"
+      }
+    ]
   },
   "[class*=awsui_text-content_6absk] a": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"],
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_undo-button_brdst]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "body [class*=awsui_undo-button_brdst]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_tabs-tab-link_14rmt]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "body [class*=awsui_tabs-tab-link_14rmt]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_tabs-tab-disabled_14rmt],[class*=awsui_tabs-tab-disabled_14rmt]": {
-    "hover": ["colorTextInteractiveDisabled"]
+    "hover": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_tabs-tab-link_14rmt]:not([class*=awsui_tabs-tab-disabled_14rmt])": {
-    "default": ["borderRadiusTabsFocusRing"]
+    "default": [
+      {
+        "name": "borderRadiusTabsFocusRing",
+        "cssName": "--border-radius-tabs-focus-ring-774qv9"
+      }
+    ]
   },
   "[class*=awsui_tabs-tab-active_14rmt]:not([class*=awsui_tabs-tab-disabled_14rmt])": {
-    "default": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "[class*=awsui_tabs_14rmt]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_tabs-content-active_14rmt]": {
-    "focus": ["borderRadiusContainer", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_root_wih1l]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_wrapper_wih1l]:not([class*=awsui_has-header_wih1l])": {
-    "default": ["borderRadiusContainer", "borderRadiusContainer"]
+    "default": [
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "body [class*=awsui_wrapper_wih1l]": {
-    "focus": ["borderRadiusContainer", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_empty_wih1l]": {
-    "default": ["colorTextEmpty"]
+    "default": [
+      {
+        "name": "colorTextEmpty",
+        "cssName": "--color-text-empty-izapdt"
+      }
+    ]
   },
   "[class*=awsui_dark-header_wih1l]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "body [class*=awsui_resizer_x7peu][class*=awsui_has-focus_x7peu]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_header-cell-content_1spae]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_header-cell-content_1spae][class*=awsui_header-cell-fake-focus_1spae]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_header-cell-disabled_1spae][class*=awsui_header-cell-sorted_1spae] > [class*=awsui_header-cell-content_1spae] > [class*=awsui_sorting-icon_1spae]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_header-cell-sortable_1spae]:not([class*=awsui_header-cell-disabled_1spae]) > [class*=awsui_header-cell-content_1spae],[class*=awsui_header-cell-sortable_1spae]:not([class*=awsui_header-cell-disabled_1spae])[class*=awsui_header-cell-sorted_1spae] > [class*=awsui_header-cell-content_1spae]": {
-    "hover": ["colorTextInteractiveActive"]
+    "hover": [
+      {
+        "name": "colorTextInteractiveActive",
+        "cssName": "--color-text-interactive-active-i5elzx"
+      }
+    ]
   },
   "[class*=awsui_header-cell-sortable_1spae]:not([class*=awsui_header-cell-disabled_1spae]) > [class*=awsui_header-cell-content_1spae] > [class*=awsui_sorting-icon_1spae],[class*=awsui_header-cell-sortable_1spae]:not([class*=awsui_header-cell-disabled_1spae])[class*=awsui_header-cell-sorted_1spae] > [class*=awsui_header-cell-content_1spae] > [class*=awsui_sorting-icon_1spae]": {
-    "hover": ["colorTextInteractiveActive"]
+    "hover": [
+      {
+        "name": "colorTextInteractiveActive",
+        "cssName": "--color-text-interactive-active-i5elzx"
+      }
+    ]
   },
   "[class*=awsui_body-cell-shaded_c6tup]": {
-    "default": ["colorBackgroundCellShaded"]
+    "default": [
+      {
+        "name": "colorBackgroundCellShaded",
+        "cssName": "--color-background-cell-shaded-y6pwcp"
+      }
+    ]
   },
   "[class*=awsui_body-cell-selected_c6tup]": {
-    "default": ["colorBackgroundItemSelected", "borderRadiusItem", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "colorBackgroundItemSelected",
+        "cssName": "--color-background-item-selected-fva7ca"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
+  },
+  "[class*=awsui_body-cell_c6tup][class*=awsui_sticky-cell_c6tup]": {
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
+  },
+  "[class*=awsui_body-cell_c6tup][class*=awsui_sticky-cell_c6tup][class*=awsui_body-cell-shaded_c6tup]": {
+    "default": [
+      {
+        "name": "colorBackgroundCellShaded",
+        "cssName": "--color-background-cell-shaded-y6pwcp"
+      }
+    ]
+  },
+  "[class*=awsui_body-cell_c6tup][class*=awsui_sticky-cell_c6tup][class*=awsui_body-cell-selected_c6tup]": {
+    "default": [
+      {
+        "name": "colorBackgroundItemSelected",
+        "cssName": "--color-background-item-selected-fva7ca"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_body-cell-success_c6tup],[class*=awsui_body-cell-editor_c6tup]": {
-    "default": ["colorTextButtonNormalDefault"],
-    "hover": ["colorTextButtonNormalHover"],
-    "active": ["colorTextButtonNormalActive"]
+    "default": [
+      {
+        "name": "colorTextButtonNormalDefault",
+        "cssName": "--color-text-button-normal-default-kwrutp"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextButtonNormalHover",
+        "cssName": "--color-text-button-normal-hover-de4793"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextButtonNormalActive",
+        "cssName": "--color-text-button-normal-active-hvhe2o"
+      }
+    ]
   },
   "[class*=awsui_body-cell_c6tup][class*=awsui_body-cell-editable_c6tup]:not([class*=awsui_body-cell-edit-active_c6tup])": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"],
-    "hover": ["colorBackgroundDropdownItemHover"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorBackgroundDropdownItemHover",
+        "cssName": "--color-background-dropdown-item-hover-hgdj8r"
+      }
+    ]
   },
   "[class*=awsui_body-cell-editable_c6tup][class*=awsui_is-visual-refresh_c6tup]:not([class*=awsui_body-cell-edit-active_c6tup])": {
-    "hover": ["borderRadiusItem", "borderRadiusItem", "borderRadiusItem", "borderRadiusItem"]
+    "hover": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-error_1cbgc]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-warning_1cbgc]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-success_1cbgc]": {
-    "default": ["colorTextStatusSuccess"]
+    "default": [
+      {
+        "name": "colorTextStatusSuccess",
+        "cssName": "--color-text-status-success-hb5hdl"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-info_1cbgc]": {
-    "default": ["colorTextStatusInfo"]
+    "default": [
+      {
+        "name": "colorTextStatusInfo",
+        "cssName": "--color-text-status-info-09r23g"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-stopped_1cbgc]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-pending_1cbgc]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-in-progress_1cbgc]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_status-loading_1cbgc]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_color-override-red_1cbgc]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_color-override-grey_1cbgc]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_color-override-blue_1cbgc]": {
-    "default": ["colorTextStatusInfo"]
+    "default": [
+      {
+        "name": "colorTextStatusInfo",
+        "cssName": "--color-text-status-info-09r23g"
+      }
+    ]
   },
   "[class*=awsui_root_1cbgc][class*=awsui_color-override-green_1cbgc]": {
-    "default": ["colorTextStatusSuccess"]
+    "default": [
+      {
+        "name": "colorTextStatusSuccess",
+        "cssName": "--color-text-status-success-hb5hdl"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--layout-border_1r9lg]": {
-    "default": ["colorBackgroundHomeHeader", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundHomeHeader",
+        "cssName": "--color-background-home-header-o5mjh6"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--layout-background_1r9lg]": {
-    "default": ["colorBackgroundLayoutMain"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--layout-header_1r9lg]": {
-    "default": ["colorBackgroundHomeHeader"]
+    "default": [
+      {
+        "name": "colorBackgroundHomeHeader",
+        "cssName": "--color-background-home-header-o5mjh6"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--border_1r9lg]": {
-    "default": ["colorTextGroupLabel", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorTextGroupLabel",
+        "cssName": "--color-text-group-label-5rxtyp"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--primary-button_1r9lg]": {
-    "default": ["colorBackgroundButtonPrimaryDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundButtonPrimaryDefault",
+        "cssName": "--color-background-button-primary-default-w02sje"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--secondary_1r9lg]": {
-    "default": ["colorTextGroupLabel"]
+    "default": [
+      {
+        "name": "colorTextGroupLabel",
+        "cssName": "--color-text-group-label-5rxtyp"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--disabled-element_1r9lg]": {
-    "default": ["colorBackgroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--separator_1r9lg]": {
-    "default": ["colorBackgroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      }
+    ]
   },
   "[class*=awsui_preference-icon--focus-text_1r9lg]": {
-    "default": ["colorTextInteractiveDefault"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--layout-top_1r9lg]": {
-    "default": ["colorBackgroundButtonPrimaryDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundButtonPrimaryDisabled",
+        "cssName": "--color-background-button-primary-disabled-2xivjm"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--layout-main_1r9lg]": {
-    "default": ["colorBackgroundLayoutMain"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--primary_1r9lg]": {
-    "default": ["colorBackgroundButtonPrimaryDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundButtonPrimaryDefault",
+        "cssName": "--color-background-button-primary-default-w02sje"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--disabled_1r9lg]": {
-    "default": ["colorBackgroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--column-header_1r9lg]": {
-    "default": ["colorTextInputDisabled"]
+    "default": [
+      {
+        "name": "colorTextInputDisabled",
+        "cssName": "--color-text-input-disabled-zfb02z"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--window_1r9lg]": {
-    "default": ["colorBackgroundHomeHeader", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundHomeHeader",
+        "cssName": "--color-background-home-header-o5mjh6"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--secondary_1r9lg]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--default_1r9lg]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--separator_1r9lg]": {
-    "default": ["colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--input-default_1r9lg]": {
-    "default": ["colorBorderInputDefault"]
+    "default": [
+      {
+        "name": "colorBorderInputDefault",
+        "cssName": "--color-border-input-default-t7b5of"
+      }
+    ]
   },
   "[class*=awsui_preference-icon-refresh--heading_1r9lg]": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_root_1r9lg]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_slider_1r9lg]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_slider-icon_1r9lg]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_root_1612d][class*=awsui_variant-disabled_1612d]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_root_l0dv0]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_header-link_l0dv0]": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_link_l0dv0]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_link-active_l0dv0]": {
-    "default": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "[class*=awsui_header-link_l0dv0],[class*=awsui_link_l0dv0]": {
-    "hover": ["colorTextAccent"]
+    "hover": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "body [class*=awsui_header-link_l0dv0],\nbody [class*=awsui_link_l0dv0]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_root_r2vco]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_placeholder_dwuol]": {
-    "default": ["colorTextInputPlaceholder"]
+    "default": [
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      }
+    ]
   },
   "[class*=awsui_selected-icon_dwuol]": {
-    "default": ["colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_segment_8cbea]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_segment_8cbea]": {
-    "default": ["borderRadiusButton", "borderRadiusButton"]
+    "default": [
+      {
+        "name": "borderRadiusButton",
+        "cssName": "--border-radius-button-qh52qv"
+      },
+      {
+        "name": "borderRadiusButton",
+        "cssName": "--border-radius-button-qh52qv"
+      }
+    ]
   },
   "[class*=awsui_segment_8cbea][class*=awsui_disabled_8cbea]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_root_8cbea]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_1mabk]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_outline_1mabk]": {
-    "default": ["borderRadiusControlCircularFocusRing", "colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "borderRadiusControlCircularFocusRing",
+        "cssName": "--border-radius-control-circular-focus-ring-l88ib6"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_styled-circle-border_1mabk]": {
-    "default": ["colorBorderControlDefault", "colorBackgroundControlDefault"]
+    "default": [
+      {
+        "name": "colorBorderControlDefault",
+        "cssName": "--color-border-control-default-bwkbmv"
+      },
+      {
+        "name": "colorBackgroundControlDefault",
+        "cssName": "--color-background-control-default-8xmy94"
+      }
+    ]
   },
   "[class*=awsui_styled-circle-border_1mabk][class*=awsui_styled-circle-disabled_1mabk]": {
-    "default": ["colorBackgroundControlDisabled", "colorBackgroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      },
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      }
+    ]
   },
   "[class*=awsui_styled-circle-fill_1mabk]": {
-    "default": ["colorBackgroundControlChecked", "colorForegroundControlDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      },
+      {
+        "name": "colorForegroundControlDefault",
+        "cssName": "--color-foreground-control-default-i2wjwi"
+      }
+    ]
   },
   "[class*=awsui_styled-circle-fill_1mabk][class*=awsui_styled-circle-disabled_1mabk]": {
-    "default": ["colorForegroundControlDisabled", "colorBackgroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorForegroundControlDisabled",
+        "cssName": "--color-foreground-control-disabled-84rf4t"
+      },
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      }
+    ]
   },
   "[class*=awsui_root_1wzqe]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_add-token_1wzqe]": {
-    "default": ["colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "[class*=awsui_root_11huc]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_label-key-value_11huc]": {
-    "default": ["colorTextLabel"]
+    "default": [
+      {
+        "name": "colorTextLabel",
+        "cssName": "--color-text-label-kjjshz"
+      }
+    ]
   },
   "[class*=awsui_body_xjuzf]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_content_xjuzf]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_container-body_xjuzf]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "borderRadiusPopover"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "borderRadiusPopover",
+        "cssName": "--border-radius-popover-5z2f35"
+      }
+    ]
   },
   "[class*=awsui_container-body-variant-annotation_xjuzf]": {
-    "default": ["colorBackgroundStatusInfo", "colorBorderStatusInfo"]
+    "default": [
+      {
+        "name": "colorBackgroundStatusInfo",
+        "cssName": "--color-background-status-info-yq3r41"
+      },
+      {
+        "name": "colorBorderStatusInfo",
+        "cssName": "--color-border-status-info-0iedcr"
+      }
+    ]
   },
   "[class*=awsui_root_xjuzf]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_trigger-type-text_xjuzf]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_root_1edmh]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_segment_1edmh]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_label_1edmh]": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_label_1edmh] > line": {
-    "default": ["colorBorderControlDefault"]
+    "default": [
+      {
+        "name": "colorBorderControlDefault",
+        "cssName": "--color-border-control-default-bwkbmv"
+      }
+    ]
   },
   "[class*=awsui_label-text_1edmh] > text": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "text[class*=awsui_label__description_1edmh]": {
-    "default": ["colorTextGroupLabel", "colorTextGroupLabel"]
+    "default": [
+      {
+        "name": "colorTextGroupLabel",
+        "cssName": "--color-text-group-label-5rxtyp"
+      },
+      {
+        "name": "colorTextGroupLabel",
+        "cssName": "--color-text-group-label-5rxtyp"
+      }
+    ]
   },
   "[class*=awsui_root_fvjdu]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_button_fvjdu]": {
-    "focus": ["borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_button-disabled_fvjdu]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_arrow_fvjdu]": {
-    "default": ["colorTextInteractiveDefault"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ]
   },
   "[class*=awsui_arrow_fvjdu]:not([class*=awsui_button-disabled_fvjdu])": {
-    "hover": ["colorTextInteractiveHover"]
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_arrow_fvjdu][class*=awsui_button-disabled_fvjdu]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_page-number_fvjdu]:not([class*=awsui_button-disabled_fvjdu])": {
-    "hover": ["colorTextInteractiveHover"]
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_page-number_fvjdu][class*=awsui_button-current_fvjdu]": {
-    "default": ["colorTextInteractiveActive"]
+    "default": [
+      {
+        "name": "colorTextInteractiveActive",
+        "cssName": "--color-text-interactive-active-i5elzx"
+      }
+    ]
   },
   "[class*=awsui_page-number_fvjdu][class*=awsui_button-disabled_fvjdu]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_dots_fvjdu]": {
-    "default": ["colorTextInteractiveDefault"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ]
   },
   "[class*=awsui_root-disabled_fvjdu] > [class*=awsui_dots_fvjdu]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_root_f8g6q]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_1d2i7]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_container_1d2i7]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundContainerContent", "borderRadiusContainer"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "[class*=awsui_header_1d2i7]": {
-    "default": ["colorBackgroundContainerHeader", "borderRadiusContainer"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerHeader",
+        "cssName": "--color-background-container-header-g9rg0j"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "[class*=awsui_footer_1d2i7]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_footer--stuck_1d2i7]": {
-    "default": ["borderRadiusContainer"]
+    "default": [
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "[class*=awsui_root_1yz9c]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_series--bar_1yz9c] > [class*=awsui_series__rect_1yz9c]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z][class*=awsui_variant-secondary_4c84z]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z][class*=awsui_variant-primary_4c84z]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z][class*=awsui_variant-info_4c84z]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z][class*=awsui_variant-value-large_4c84z]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z][class*=awsui_variant-top-navigation_4c84z]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"],
-    "active": ["colorTextInteractiveActive"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextInteractiveActive",
+        "cssName": "--color-text-interactive-active-i5elzx"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z][class*=awsui_variant-recovery_4c84z]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_link_4c84z][class*=awsui_color-inverted_4c84z]": {
-    "default": ["colorTextNotificationDefault"]
+    "default": [
+      {
+        "name": "colorTextNotificationDefault",
+        "cssName": "--color-text-notification-default-l83xtb"
+      }
+    ]
   },
   "body [class*=awsui_link_4c84z]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_handle_cc1pu]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "body [class*=awsui_handle_cc1pu]:not([class*=awsui_hide-focus_cc1pu])": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_toggle_gfwv3]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "body [class*=awsui_toggle_gfwv3]": {
-    "focus": ["borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_separator_gfwv3]": {
-    "default": ["colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "[class*=awsui_selectable-item_15o6u]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundDropdownItemDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundDropdownItemDefault",
+        "cssName": "--color-background-dropdown-item-default-9xpo3g"
+      }
+    ]
   },
   "[class*=awsui_selectable-item_15o6u][class*=awsui_has-background_15o6u]": {
-    "default": ["colorBackgroundDropdownItemHover"]
+    "default": [
+      {
+        "name": "colorBackgroundDropdownItemHover",
+        "cssName": "--color-background-dropdown-item-hover-hgdj8r"
+      }
+    ]
   },
   "[class*=awsui_selectable-item_15o6u][class*=awsui_highlighted_15o6u],[class*=awsui_selectable-item_15o6u][class*=awsui_selected_15o6u]": {
-    "default": ["colorTextDropdownItemHighlighted", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "colorTextDropdownItemHighlighted",
+        "cssName": "--color-text-dropdown-item-highlighted-90ve2t"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_selectable-item_15o6u][class*=awsui_highlighted_15o6u]": {
-    "default": ["colorBackgroundDropdownItemHover", "colorBorderDropdownItemHover"]
+    "default": [
+      {
+        "name": "colorBackgroundDropdownItemHover",
+        "cssName": "--color-background-dropdown-item-hover-hgdj8r"
+      },
+      {
+        "name": "colorBorderDropdownItemHover",
+        "cssName": "--color-border-dropdown-item-hover-d32f3f"
+      }
+    ]
   },
   "[class*=awsui_selectable-item_15o6u][class*=awsui_highlighted_15o6u][class*=awsui_is-keyboard_15o6u]": {
-    "default": ["colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_options-list_19gcf]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "borderRadiusDropdown"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "borderRadiusDropdown",
+        "cssName": "--border-radius-dropdown-0c284d"
+      }
+    ]
   },
   "[class*=awsui_option_1p2cx]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_filtering-match-highlight_1p2cx]": {
-    "default": ["colorBackgroundDropdownItemFilterMatch", "colorTextDropdownItemFilterMatch"]
+    "default": [
+      {
+        "name": "colorBackgroundDropdownItemFilterMatch",
+        "cssName": "--color-background-dropdown-item-filter-match-yd6eaz"
+      },
+      {
+        "name": "colorTextDropdownItemFilterMatch",
+        "cssName": "--color-text-dropdown-item-filter-match-4ejjcu"
+      }
+    ]
   },
   "[class*=awsui_button_m5h9f]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_button_m5h9f],[class*=awsui_button_m5h9f][class*=awsui_expanded_m5h9f]": {
-    "active": ["colorTextInteractiveActive"]
+    "active": [
+      {
+        "name": "colorTextInteractiveActive",
+        "cssName": "--color-text-interactive-active-i5elzx"
+      }
+    ]
   },
   "[class*=awsui_button_m5h9f][class*=awsui_expanded_m5h9f]": {
-    "default": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "body [class*=awsui_button_m5h9f]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_token_10m3l]": {
-    "default": ["colorBackgroundItemSelected", "borderRadiusToken", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundItemSelected",
+        "cssName": "--color-background-item-selected-fva7ca"
+      },
+      {
+        "name": "borderRadiusToken",
+        "cssName": "--border-radius-token-3ax3p2"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_dismiss-button_10m3l]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "body [class*=awsui_dismiss-button_10m3l]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_token-disabled_10m3l]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_token-disabled_10m3l] > [class*=awsui_dismiss-button_10m3l]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_root_vrgzu]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_1afi9]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_qwoo0]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_dropdown-content-wrapper_qwoo0]": {
-    "default": ["colorBackgroundDropdownItemDefault", "borderRadiusDropdown", "borderRadiusDropdown"]
+    "default": [
+      {
+        "name": "colorBackgroundDropdownItemDefault",
+        "cssName": "--color-background-dropdown-item-default-9xpo3g"
+      },
+      {
+        "name": "borderRadiusDropdown",
+        "cssName": "--border-radius-dropdown-0c284d"
+      },
+      {
+        "name": "borderRadiusDropdown",
+        "cssName": "--border-radius-dropdown-0c284d"
+      }
+    ]
   },
   "[class*=awsui_background-fill_1fi2u]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_root_1fn7j] > [class*=awsui_styled-box_1fn7j]": {
-    "default": ["colorBackgroundControlDefault", "colorBorderControlDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDefault",
+        "cssName": "--color-background-control-default-8xmy94"
+      },
+      {
+        "name": "colorBorderControlDefault",
+        "cssName": "--color-border-control-default-bwkbmv"
+      }
+    ]
   },
   "[class*=awsui_root_1fn7j] > [class*=awsui_styled-box-checked_1fn7j],[class*=awsui_root_1fn7j] > [class*=awsui_styled-box-indeterminate_1fn7j]": {
-    "default": ["colorBackgroundControlChecked"]
+    "default": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      }
+    ]
   },
   "[class*=awsui_root_1fn7j] > [class*=awsui_styled-box-disabled_1fn7j]": {
-    "default": ["colorBackgroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDisabled",
+        "cssName": "--color-background-control-disabled-0y91m8"
+      }
+    ]
   },
   "[class*=awsui_root_1fn7j] > [class*=awsui_styled-line_1fn7j]": {
-    "default": ["colorForegroundControlDefault"]
+    "default": [
+      {
+        "name": "colorForegroundControlDefault",
+        "cssName": "--color-foreground-control-default-i2wjwi"
+      }
+    ]
   },
   "[class*=awsui_root_1fn7j] > [class*=awsui_styled-line-disabled_1fn7j]": {
-    "default": ["colorForegroundControlDisabled"]
+    "default": [
+      {
+        "name": "colorForegroundControlDisabled",
+        "cssName": "--color-foreground-control-disabled-84rf4t"
+      }
+    ]
   },
   "[class*=awsui_empty_11n0s]": {
-    "default": ["colorTextEmpty"]
+    "default": [
+      {
+        "name": "colorTextEmpty",
+        "cssName": "--color-text-empty-izapdt"
+      }
+    ]
   },
   "[class*=awsui_marker_1isd1]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_marker--hollow-rectangle_1isd1]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_dimmed_10ipo]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_10ipo]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_key_10ipo]": {
-    "default": ["colorTextGroupLabel"]
+    "default": [
+      {
+        "name": "colorTextGroupLabel",
+        "cssName": "--color-text-group-label-5rxtyp"
+      }
+    ]
   },
   "[class*=awsui_root_1t44z]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_focus-outline_1fcus]": {
-    "default": ["colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_root_1kjc7]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_marker_1kjc7]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_root_1px7g]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_axis-label_f0fot]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_ticks__text_f0fot]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_vertical-marker-circle_f0fot]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_focus-outline_f0fot]": {
-    "default": ["colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button-trigger_18eso]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundInputDefault", "borderRadiusInput"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundInputDefault",
+        "cssName": "--color-background-input-default-ewlytp"
+      },
+      {
+        "name": "borderRadiusInput",
+        "cssName": "--border-radius-input-fterib"
+      }
+    ]
   },
   "[class*=awsui_button-trigger_18eso] > [class*=awsui_placeholder_18eso]": {
-    "default": ["colorTextInputPlaceholder"]
+    "default": [
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      }
+    ]
   },
   "[class*=awsui_button-trigger_18eso][class*=awsui_disabled_18eso]": {
-    "default": ["colorBackgroundInputDisabled", "colorTextInputDisabled"]
+    "default": [
+      {
+        "name": "colorBackgroundInputDisabled",
+        "cssName": "--color-background-input-disabled-5vlksk"
+      },
+      {
+        "name": "colorTextInputDisabled",
+        "cssName": "--color-text-input-disabled-zfb02z"
+      }
+    ]
   },
   "[class*=awsui_button-trigger_18eso][class*=awsui_read-only_18eso]": {
-    "default": ["colorBackgroundInputDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundInputDefault",
+        "cssName": "--color-background-input-default-ewlytp"
+      }
+    ]
   },
   "body [class*=awsui_button-trigger_18eso]:not([class*=awsui_in-filtering-token_18eso])": {
-    "focus": ["borderRadiusInput"]
+    "focus": [
+      {
+        "name": "borderRadiusInput",
+        "cssName": "--border-radius-input-fterib"
+      }
+    ]
   },
   "[class*=awsui_button-trigger_18eso]:not([class*=awsui_in-filtering-token_18eso])[class*=awsui_invalid_18eso],[class*=awsui_button-trigger_18eso]:not([class*=awsui_in-filtering-token_18eso])[class*=awsui_invalid_18eso]": {
-    "focus": ["colorTextStatusError", "colorTextStatusError"]
+    "focus": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      },
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_button-trigger_18eso][class*=awsui_in-filtering-token_18eso]": {
-    "default": ["colorBorderItemSelected"]
+    "default": [
+      {
+        "name": "colorBorderItemSelected",
+        "cssName": "--color-border-item-selected-592lau"
+      }
+    ]
   },
   "body [class*=awsui_button-trigger_18eso][class*=awsui_in-filtering-token_18eso]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_description_1wepg]": {
-    "default": ["colorTextFormSecondary"]
+    "default": [
+      {
+        "name": "colorTextFormSecondary",
+        "cssName": "--color-text-form-secondary-1c3szk"
+      }
+    ]
   },
   "[class*=awsui_input_2rhyz]": {
     "default": [
-      "colorTextBodyDefault",
-      "fontFamilyBase",
-      "colorTextBodyDefault",
-      "colorBackgroundInputDefault",
-      "borderRadiusInput",
-      "colorTextInputPlaceholder",
-      "colorTextInputPlaceholder",
-      "colorTextInputPlaceholder",
-      "colorTextInputPlaceholder",
-      "colorTextInputPlaceholder"
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "colorBackgroundInputDefault",
+        "cssName": "--color-background-input-default-ewlytp"
+      },
+      {
+        "name": "borderRadiusInput",
+        "cssName": "--border-radius-input-fterib"
+      },
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      },
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      },
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      },
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      },
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      }
     ],
-    "focus": ["borderRadiusInput"],
-    "disabled": ["colorBackgroundInputDisabled", "colorTextInputDisabled"]
+    "focus": [
+      {
+        "name": "borderRadiusInput",
+        "cssName": "--border-radius-input-fterib"
+      }
+    ],
+    "disabled": [
+      {
+        "name": "colorBackgroundInputDisabled",
+        "cssName": "--color-background-input-disabled-5vlksk"
+      },
+      {
+        "name": "colorTextInputDisabled",
+        "cssName": "--color-text-input-disabled-zfb02z"
+      }
+    ]
   },
   "[class*=awsui_input_2rhyz][class*=awsui_input-readonly_2rhyz]": {
-    "default": ["colorBackgroundInputDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundInputDefault",
+        "cssName": "--color-background-input-default-ewlytp"
+      }
+    ]
   },
   "[class*=awsui_input_2rhyz][class*=awsui_input-invalid_2rhyz]": {
-    "default": ["colorTextStatusError", "colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      },
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_input_2rhyz][class*=awsui_input-has-no-border-radius_2rhyz]": {
-    "default": ["borderRadiusDropdown"]
+    "default": [
+      {
+        "name": "borderRadiusDropdown",
+        "cssName": "--border-radius-dropdown-0c284d"
+      }
+    ]
   },
   "[class*=awsui_icon_h11ix][class*=awsui_variant-disabled_h11ix]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_icon_h11ix][class*=awsui_variant-warning_h11ix]": {
-    "default": ["colorTextStatusWarning"]
+    "default": [
+      {
+        "name": "colorTextStatusWarning",
+        "cssName": "--color-text-status-warning-94ezyx"
+      }
+    ]
   },
   "[class*=awsui_icon_h11ix][class*=awsui_variant-error_h11ix]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_icon_h11ix][class*=awsui_variant-success_h11ix]": {
-    "default": ["colorTextStatusSuccess"]
+    "default": [
+      {
+        "name": "colorTextStatusSuccess",
+        "cssName": "--color-text-status-success-hb5hdl"
+      }
+    ]
   },
   "[class*=awsui_icon_h11ix][class*=awsui_variant-link_h11ix]": {
-    "default": ["colorTextLinkDefault"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ]
   },
   "[class*=awsui_badge_h11ix]": {
-    "default": ["colorTextStatusInfo"]
+    "default": [
+      {
+        "name": "colorTextStatusInfo",
+        "cssName": "--color-text-status-info-09r23g"
+      }
+    ]
   },
   "[class*=awsui_help-panel_1d237]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_help-panel_1d237] code": {
-    "default": ["fontFamilyMonospace", "colorBackgroundLayoutMain"]
+    "default": [
+      {
+        "name": "fontFamilyMonospace",
+        "cssName": "--font-family-monospace-iz223z"
+      },
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      }
+    ]
   },
   "[class*=awsui_help-panel_1d237] pre": {
-    "default": ["fontFamilyMonospace", "colorBackgroundLayoutMain"]
+    "default": [
+      {
+        "name": "fontFamilyMonospace",
+        "cssName": "--font-family-monospace-iz223z"
+      },
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      }
+    ]
   },
   "[class*=awsui_help-panel_1d237] h2,[class*=awsui_help-panel_1d237] h3,[class*=awsui_help-panel_1d237] h4,[class*=awsui_help-panel_1d237] h5,[class*=awsui_help-panel_1d237] h6": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_help-panel_1d237] a": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"],
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_help-panel_1d237] [class*=awsui_header_1d237]": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_content_1d237]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_footer_1d237]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_root_2qdw9]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_title_2qdw9]": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_description_2qdw9]": {
-    "default": ["colorTextHeadingSecondary"]
+    "default": [
+      {
+        "name": "colorTextHeadingSecondary",
+        "cssName": "--color-text-heading-secondary-mvxtuw"
+      }
+    ]
   },
   "[class*=awsui_counter_2qdw9]": {
-    "default": ["colorTextCounter"]
+    "default": [
+      {
+        "name": "colorTextCounter",
+        "cssName": "--color-text-counter-wyou6g"
+      }
+    ]
   },
   "[class*=awsui_grid_14yj0]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_14mhv]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_description_14mhv],[class*=awsui_constraint_14mhv]": {
-    "default": ["colorTextFormSecondary"]
+    "default": [
+      {
+        "name": "colorTextFormSecondary",
+        "cssName": "--color-text-form-secondary-1c3szk"
+      }
+    ]
   },
   "[class*=awsui_error_14mhv]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_root_1i0s3]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_stack_1q84n] > [class*=awsui_notification-bar_1q84n]": {
-    "default": ["colorBackgroundLayoutToggleDefault", "colorBackgroundLayoutToggleDefault", "borderRadiusButton"],
-    "hover": ["colorBackgroundLayoutToggleHover", "colorBackgroundLayoutToggleHover"],
-    "active": ["colorBackgroundLayoutToggleActive"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutToggleDefault",
+        "cssName": "--color-background-layout-toggle-default-o9dqpo"
+      },
+      {
+        "name": "colorBackgroundLayoutToggleDefault",
+        "cssName": "--color-background-layout-toggle-default-o9dqpo"
+      },
+      {
+        "name": "borderRadiusButton",
+        "cssName": "--border-radius-button-qh52qv"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorBackgroundLayoutToggleHover",
+        "cssName": "--color-background-layout-toggle-hover-5rvtea"
+      },
+      {
+        "name": "colorBackgroundLayoutToggleHover",
+        "cssName": "--color-background-layout-toggle-hover-5rvtea"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorBackgroundLayoutToggleActive",
+        "cssName": "--color-background-layout-toggle-active-d3zrnd"
+      }
+    ]
   },
   "[class*=awsui_stack_1q84n] > [class*=awsui_notification-bar_1q84n] > [class*=awsui_status_1q84n] > [class*=awsui_header_1q84n],[class*=awsui_stack_1q84n] > [class*=awsui_notification-bar_1q84n] > [class*=awsui_status_1q84n] > [class*=awsui_item-count_1q84n],[class*=awsui_stack_1q84n] > [class*=awsui_notification-bar_1q84n] > [class*=awsui_button_1q84n]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_stack_1q84n] > [class*=awsui_notification-bar_1q84n] > [class*=awsui_button_1q84n]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_flashbar_1q84n],[class*=awsui_flash_1q84n]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_flash_1q84n]": {
-    "default": ["borderRadiusFlashbar", "colorTextNotificationDefault", "borderRadiusFlashbar"]
+    "default": [
+      {
+        "name": "borderRadiusFlashbar",
+        "cssName": "--border-radius-flashbar-hhymq3"
+      },
+      {
+        "name": "colorTextNotificationDefault",
+        "cssName": "--color-text-notification-default-l83xtb"
+      },
+      {
+        "name": "borderRadiusFlashbar",
+        "cssName": "--border-radius-flashbar-hhymq3"
+      }
+    ]
   },
   "body [class*=awsui_flash-focus-container_1q84n]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_flash-type-success_1q84n]": {
-    "default": ["colorBackgroundNotificationGreen"]
+    "default": [
+      {
+        "name": "colorBackgroundNotificationGreen",
+        "cssName": "--color-background-notification-green-uofkna"
+      }
+    ]
   },
   "[class*=awsui_flash-type-error_1q84n]": {
-    "default": ["colorBackgroundNotificationRed"]
+    "default": [
+      {
+        "name": "colorBackgroundNotificationRed",
+        "cssName": "--color-background-notification-red-e2annb"
+      }
+    ]
   },
   "[class*=awsui_flash-type-warning_1q84n]": {
-    "default": ["colorBackgroundNotificationBlue"]
+    "default": [
+      {
+        "name": "colorBackgroundNotificationBlue",
+        "cssName": "--color-background-notification-blue-rjpmdy"
+      }
+    ]
   },
   "[class*=awsui_flash-type-info_1q84n]": {
-    "default": ["colorBackgroundNotificationBlue"]
+    "default": [
+      {
+        "name": "colorBackgroundNotificationBlue",
+        "cssName": "--color-background-notification-blue-rjpmdy"
+      }
+    ]
   },
   "body [class*=awsui_upload-button_4xu1k][class*=awsui_force-focus-outline_4xu1k]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_root_gwq0h]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_trigger-default_gwq0h][class*=awsui_trigger-expanded_gwq0h]": {
-    "default": ["colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "body [class*=awsui_header-button_gwq0h]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_header-container_gwq0h]": {
-    "focus": ["borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "body [class*=awsui_header-navigation_gwq0h] > [class*=awsui_icon-container_gwq0h]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_focusable_gwq0h]": {
-    "focus": ["borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_root_mgja0]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_calendar-header-month_mgja0]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_icon-wrapper_mgja0]": {
-    "default": ["colorTextInteractiveDefault"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ]
   },
   "[class*=awsui_label_mgja0][class*=awsui_label-enabled_mgja0] > [class*=awsui_trigger-flexbox_mgja0] > [class*=awsui_icon-wrapper_mgja0]": {
-    "hover": ["colorTextInteractiveHover"]
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_label-text_mgja0]": {
-    "default": ["colorTextInputPlaceholder"]
+    "default": [
+      {
+        "name": "colorTextInputPlaceholder",
+        "cssName": "--color-text-input-placeholder-rtvjp5"
+      }
+    ]
   },
   "[class*=awsui_dropdown_mgja0]": {
-    "default": ["colorBorderContainerTop", "colorBorderContainerTop", "borderRadiusDropdown"]
+    "default": [
+      {
+        "name": "colorBorderContainerTop",
+        "cssName": "--color-border-container-top-1itxac"
+      },
+      {
+        "name": "colorBorderContainerTop",
+        "cssName": "--color-border-container-top-1itxac"
+      },
+      {
+        "name": "borderRadiusDropdown",
+        "cssName": "--border-radius-dropdown-0c284d"
+      }
+    ]
   },
   "body [class*=awsui_dropdown_mgja0]": {
-    "focus": ["borderRadiusDropdown", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusDropdown",
+        "cssName": "--border-radius-dropdown-0c284d"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_dropdown-content_mgja0]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "body [class*=awsui_day_1mfbn]": {
-    "focus": ["borderRadiusCalendarDayFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusCalendarDayFocusRing",
+        "cssName": "--border-radius-calendar-day-focus-ring-16ha5s"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_enabled_1mfbn][class*=awsui_in-current-month_1mfbn]:not([class*=awsui_in-range_1mfbn]),[class*=awsui_enabled_1mfbn][class*=awsui_in-current-month_1mfbn]:not([class*=awsui_in-range_1mfbn]),[class*=awsui_enabled_1mfbn][class*=awsui_in-current-month_1mfbn][class*=awsui_end-date_1mfbn][class*=awsui_start-date_1mfbn],[class*=awsui_enabled_1mfbn][class*=awsui_in-current-month_1mfbn][class*=awsui_end-date_1mfbn][class*=awsui_start-date_1mfbn],[class*=awsui_enabled_1mfbn][class*=awsui_in-current-month_1mfbn][class*=awsui_no-range_1mfbn],[class*=awsui_enabled_1mfbn][class*=awsui_in-current-month_1mfbn][class*=awsui_no-range_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_enabled_1mfbn][class*=awsui_in-current-month_1mfbn]": {
-    "hover": ["colorBackgroundDropdownItemHover"]
+    "hover": [
+      {
+        "name": "colorBackgroundDropdownItemHover",
+        "cssName": "--color-background-dropdown-item-hover-hgdj8r"
+      }
+    ]
   },
   "[class*=awsui_today_1mfbn]:not([class*=awsui_in-range_1mfbn])": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "body [class*=awsui_selected_1mfbn]": {
-    "focus": ["borderRadiusCalendarDayFocusRing"]
+    "focus": [
+      {
+        "name": "borderRadiusCalendarDayFocusRing",
+        "cssName": "--border-radius-calendar-day-focus-ring-16ha5s"
+      }
+    ]
   },
   "[class*=awsui_selected_1mfbn]": {
-    "default": ["colorBackgroundControlChecked"]
+    "default": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      }
+    ]
   },
   "[class*=awsui_selected_1mfbn][class*=awsui_start-date_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_start-date_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-start-date_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-start-date_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_selected_1mfbn][class*=awsui_start-date_1mfbn][class*=awsui_in-range-border-bottom_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_start-date_1mfbn][class*=awsui_in-range-border-bottom_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-start-date_1mfbn][class*=awsui_in-range-border-bottom_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-start-date_1mfbn][class*=awsui_in-range-border-bottom_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_selected_1mfbn][class*=awsui_end-date_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_end-date_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-end-date_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-end-date_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_selected_1mfbn][class*=awsui_end-date_1mfbn][class*=awsui_in-range-border-top_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_end-date_1mfbn][class*=awsui_in-range-border-top_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-end-date_1mfbn][class*=awsui_in-range-border-top_1mfbn],[class*=awsui_selected_1mfbn][class*=awsui_range-end-date_1mfbn][class*=awsui_in-range-border-top_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_selected_1mfbn] > [class*=awsui_day-inner_1mfbn]": {
-    "default": ["colorBackgroundControlDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDefault",
+        "cssName": "--color-background-control-default-8xmy94"
+      }
+    ]
   },
   "[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-top_1mfbn][class*=awsui_in-range-border-right_1mfbn],[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-top_1mfbn][class*=awsui_in-range-border-right_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-bottom_1mfbn][class*=awsui_in-range-border-right_1mfbn],[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-bottom_1mfbn][class*=awsui_in-range-border-right_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-bottom_1mfbn][class*=awsui_in-range-border-left_1mfbn],[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-bottom_1mfbn][class*=awsui_in-range-border-left_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-top_1mfbn][class*=awsui_in-range-border-left_1mfbn],[class*=awsui_in-range_1mfbn][class*=awsui_in-range-border-top_1mfbn][class*=awsui_in-range-border-left_1mfbn]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_root_145pa]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_calendar_145pa]": {
-    "focus": ["borderRadiusDropdown", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusDropdown",
+        "cssName": "--border-radius-dropdown-0c284d"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_layout_5gtk3][class*=awsui_is-visual-refresh_5gtk3] > [class*=awsui_background_5gtk3]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_root_14iqq]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_14iqq][class*=awsui_variant-default_14iqq],[class*=awsui_root_14iqq][class*=awsui_variant-stacked_14iqq]": {
     "default": [
-      "borderRadiusContainer",
-      "colorBackgroundContainerContent",
-      "borderRadiusContainer",
-      "borderRadiusContainer"
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
     ]
   },
   "[class*=awsui_header_14iqq]": {
-    "default": ["colorBackgroundContainerHeader", "borderRadiusContainer", "borderRadiusContainer"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerHeader",
+        "cssName": "--color-background-container-header-g9rg0j"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "[class*=awsui_header_14iqq][class*=awsui_with-hidden-content_14iqq]": {
-    "default": ["borderRadiusContainer", "borderRadiusContainer"]
+    "default": [
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "[class*=awsui_header-variant-cards_14iqq]": {
-    "default": ["borderRadiusContainer", "borderRadiusContainer", "borderRadiusContainer"]
+    "default": [
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "[class*=awsui_dark-header_14iqq]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "div[class*=awsui_column-layout_vvxn7]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_visible-content-group-label_tc96w]": {
-    "default": ["colorTextGroupLabel"]
+    "default": [
+      {
+        "name": "colorTextGroupLabel",
+        "cssName": "--color-text-group-label-5rxtyp"
+      }
+    ]
   },
   "[class*=awsui_content-display-option-content_tc96w]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundContainerContent", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_content-display-option_tc96w][class*=awsui_placeholder_tc96w] > [class*=awsui_content-display-option-content_tc96w]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_drag-overlay_tc96w]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "body [class*=awsui_drag-overlay_tc96w]": {
-    "focus": ["borderRadiusItem", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_content-display-description_tc96w]": {
-    "default": ["colorTextFormSecondary"]
+    "default": [
+      {
+        "name": "colorTextFormSecondary",
+        "cssName": "--color-text-form-secondary-1c3szk"
+      }
+    ]
   },
   "[class*=awsui_content-display-option-content_1f3h0]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorBackgroundContainerContent", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_content-display-option_1f3h0][class*=awsui_placeholder_1f3h0] > [class*=awsui_content-display-option-content_1f3h0]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_drag-overlay_1f3h0]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "body [class*=awsui_drag-overlay_1f3h0]": {
-    "focus": ["borderRadiusItem", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_content-display-description_1f3h0]": {
-    "default": ["colorTextFormSecondary"]
+    "default": [
+      {
+        "name": "colorTextFormSecondary",
+        "cssName": "--color-text-form-secondary-1c3szk"
+      }
+    ]
   },
   "[class*=awsui_code-editor_1gl9c] [class*=ace_editor] [class*=ace_gutter-cell][class*=ace_error]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_pane_1gl9c]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_pane__item_1gl9c] > [class*=awsui_pane__cell_1gl9c]": {
-    "default": ["borderRadiusItem", "borderRadiusItem", "borderRadiusItem", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_pane__item--highlighted_1gl9c] > [class*=awsui_pane__cell_1gl9c],[class*=awsui_pane__item_1gl9c] > [class*=awsui_pane__cell_1gl9c],[class*=awsui_pane__item_1gl9c] > [class*=awsui_pane__cell_1gl9c]": {
-    "focus,hover": ["borderRadiusItem", "borderRadiusItem", "borderRadiusItem", "borderRadiusItem"]
+    "focus,hover": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_code-editor_1gl9c]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_editor_1gl9c]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_status-bar__language-mode_1gl9c],[class*=awsui_status-bar__cursor-position_1gl9c]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_tab-button_1gl9c]": {
-    "default": ["colorTextStatusError", "borderRadiusTabsFocusRing", "colorTextStatusError"],
-    "hover": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      },
+      {
+        "name": "borderRadiusTabsFocusRing",
+        "cssName": "--border-radius-tabs-focus-ring-774qv9"
+      },
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "body [class*=awsui_tab-button_1gl9c]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_loading-screen_1gl9c],[class*=awsui_error-screen_1gl9c]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_error-screen_1gl9c]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_root_k2y2q][class*=awsui_root_k2y2q]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_outline_k2y2q]": {
-    "default": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_root_p8a6i]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_header-variant-full-page_p8a6i][class*=awsui_header-refresh_p8a6i]": {
-    "default": ["borderRadiusContainer", "borderRadiusContainer", "borderRadiusContainer"]
+    "default": [
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
+    ]
   },
   "[class*=awsui_loading_p8a6i],[class*=awsui_empty_p8a6i]": {
-    "default": ["colorTextEmpty"]
+    "default": [
+      {
+        "name": "colorTextEmpty",
+        "cssName": "--color-text-empty-izapdt"
+      }
+    ]
   },
   "[class*=awsui_card-inner_p8a6i]": {
     "default": [
-      "colorBackgroundContainerContent",
-      "borderRadiusContainer",
-      "borderRadiusContainer",
-      "borderRadiusContainer"
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      },
+      {
+        "name": "borderRadiusContainer",
+        "cssName": "--border-radius-container-1aveko"
+      }
     ]
   },
   "[class*=awsui_card-selected_p8a6i] > [class*=awsui_card-inner_p8a6i]": {
-    "default": ["colorBackgroundItemSelected"]
+    "default": [
+      {
+        "name": "colorBackgroundItemSelected",
+        "cssName": "--color-background-item-selected-fva7ca"
+      }
+    ]
   },
   "[class*=awsui_section-header_p8a6i]": {
-    "default": ["colorTextLabel"]
+    "default": [
+      {
+        "name": "colorTextLabel",
+        "cssName": "--color-text-label-kjjshz"
+      }
+    ]
   },
   "[class*=awsui_calendar_1ykar]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_calendar-day-enabled_1ykar]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_calendar-day-enabled_1ykar][class*=awsui_calendar-day-current-month_1ykar]": {
-    "hover": ["colorBackgroundDropdownItemHover"]
+    "hover": [
+      {
+        "name": "colorBackgroundDropdownItemHover",
+        "cssName": "--color-background-dropdown-item-hover-hgdj8r"
+      }
+    ]
   },
   "[class*=awsui_calendar-day-today_1ykar]": {
-    "default": ["borderRadiusItem"]
+    "default": [
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "body [class*=awsui_calendar-day_1ykar]": {
-    "focus": ["borderRadiusCalendarDayFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusCalendarDayFocusRing",
+        "cssName": "--border-radius-calendar-day-focus-ring-16ha5s"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_calendar-day-selected_1ykar]": {
-    "focus": ["borderRadiusCalendarDayFocusRing"]
+    "focus": [
+      {
+        "name": "borderRadiusCalendarDayFocusRing",
+        "cssName": "--border-radius-calendar-day-focus-ring-16ha5s"
+      }
+    ]
   },
   "[class*=awsui_calendar-day-selected_1ykar]": {
-    "default": ["colorBackgroundControlChecked", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "colorBackgroundControlChecked",
+        "cssName": "--color-background-control-checked-dyuc53"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_calendar-day-selected_1ykar] > [class*=awsui_day-inner_1ykar]": {
-    "default": ["colorBackgroundControlDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundControlDefault",
+        "cssName": "--color-background-control-default-8xmy94"
+      }
+    ]
   },
   "[class*=awsui_root_14cnr]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_14cnr] > [class*=awsui_dropdown_14cnr]": {
-    "default": ["colorBackgroundDropdownItemDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundDropdownItemDefault",
+        "cssName": "--color-background-dropdown-item-default-9xpo3g"
+      }
+    ]
   },
   "[class*=awsui_item-element_93a1u][class*=awsui_highlighted_93a1u]": {
-    "default": ["colorTextDropdownItemHighlighted"]
+    "default": [
+      {
+        "name": "colorTextDropdownItemHighlighted",
+        "cssName": "--color-text-dropdown-item-highlighted-90ve2t"
+      }
+    ]
   },
   "[class*=awsui_item-element_93a1u][class*=awsui_highlighted_93a1u][class*=awsui_variant-icon_93a1u],[class*=awsui_item-element_93a1u][class*=awsui_highlighted_93a1u][class*=awsui_variant-normal_93a1u],[class*=awsui_item-element_93a1u][class*=awsui_highlighted_93a1u][class*=awsui_variant-primary_93a1u]": {
-    "default": ["colorBackgroundDropdownItemHover", "colorBorderDropdownItemHover", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "colorBackgroundDropdownItemHover",
+        "cssName": "--color-background-dropdown-item-hover-hgdj8r"
+      },
+      {
+        "name": "colorBorderDropdownItemHover",
+        "cssName": "--color-border-dropdown-item-hover-d32f3f"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_item-element_93a1u][class*=awsui_highlighted_93a1u][class*=awsui_variant-icon_93a1u][class*=awsui_is-focused_93a1u],[class*=awsui_item-element_93a1u][class*=awsui_highlighted_93a1u][class*=awsui_variant-normal_93a1u][class*=awsui_is-focused_93a1u],[class*=awsui_item-element_93a1u][class*=awsui_highlighted_93a1u][class*=awsui_variant-primary_93a1u][class*=awsui_is-focused_93a1u]": {
-    "default": ["colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_item-element_93a1u][class*=awsui_variant-navigation_93a1u][class*=awsui_highlighted_93a1u]": {
-    "default": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "[class*=awsui_header_16mm3][class*=awsui_expandable-header_16mm3][class*=awsui_highlighted_16mm3]": {
-    "default": ["colorBackgroundDropdownItemHover", "colorTextDropdownItemHighlighted", "borderRadiusItem"]
+    "default": [
+      {
+        "name": "colorBackgroundDropdownItemHover",
+        "cssName": "--color-background-dropdown-item-hover-hgdj8r"
+      },
+      {
+        "name": "colorTextDropdownItemHighlighted",
+        "cssName": "--color-text-dropdown-item-highlighted-90ve2t"
+      },
+      {
+        "name": "borderRadiusItem",
+        "cssName": "--border-radius-item-wjpc1f"
+      }
+    ]
   },
   "[class*=awsui_header_16mm3][class*=awsui_expandable-header_16mm3][class*=awsui_highlighted_16mm3][class*=awsui_is-focused_16mm3]": {
-    "default": ["colorBorderItemFocused"]
+    "default": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_header_16mm3][class*=awsui_expandable-header_16mm3][class*=awsui_variant-navigation_16mm3][class*=awsui_highlighted_16mm3]": {
-    "default": ["colorTextAccent"]
+    "default": [
+      {
+        "name": "colorTextAccent",
+        "cssName": "--color-text-accent-s0earc"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "borderRadiusButton"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "borderRadiusButton",
+        "cssName": "--border-radius-button-qh52qv"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe]": {
-    "default": ["colorTextButtonNormalDefault", "colorBorderButtonNormalDefault"],
-    "hover": ["colorTextButtonNormalHover", "colorBorderButtonNormalHover"]
+    "default": [
+      {
+        "name": "colorTextButtonNormalDefault",
+        "cssName": "--color-text-button-normal-default-kwrutp"
+      },
+      {
+        "name": "colorBorderButtonNormalDefault",
+        "cssName": "--color-border-button-normal-default-d57sob"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextButtonNormalHover",
+        "cssName": "--color-text-button-normal-hover-de4793"
+      },
+      {
+        "name": "colorBorderButtonNormalHover",
+        "cssName": "--color-border-button-normal-hover-993ry7"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe][class*=awsui_is-activated_vjswe]": {
-    "active": ["colorTextButtonNormalActive"]
+    "active": [
+      {
+        "name": "colorTextButtonNormalActive",
+        "cssName": "--color-text-button-normal-active-hvhe2o"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-normal_vjswe][class*=awsui_disabled_vjswe]": {
-    "default": ["colorBorderButtonNormalDisabled", "colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorBorderButtonNormalDisabled",
+        "cssName": "--color-border-button-normal-disabled-7btdw0"
+      },
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe]": {
     "default": [
-      "colorBackgroundButtonPrimaryDefault",
-      "colorTextButtonPrimaryDefault",
-      "colorBackgroundButtonPrimaryDefault"
+      {
+        "name": "colorBackgroundButtonPrimaryDefault",
+        "cssName": "--color-background-button-primary-default-w02sje"
+      },
+      {
+        "name": "colorTextButtonPrimaryDefault",
+        "cssName": "--color-text-button-primary-default-iy7hsx"
+      },
+      {
+        "name": "colorBackgroundButtonPrimaryDefault",
+        "cssName": "--color-background-button-primary-default-w02sje"
+      }
     ],
-    "hover": ["colorBackgroundButtonPrimaryHover", "colorTextButtonPrimaryHover", "colorBackgroundButtonPrimaryHover"]
+    "hover": [
+      {
+        "name": "colorBackgroundButtonPrimaryHover",
+        "cssName": "--color-background-button-primary-hover-qli9yh"
+      },
+      {
+        "name": "colorTextButtonPrimaryHover",
+        "cssName": "--color-text-button-primary-hover-vtm3ow"
+      },
+      {
+        "name": "colorBackgroundButtonPrimaryHover",
+        "cssName": "--color-background-button-primary-hover-qli9yh"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe][class*=awsui_is-activated_vjswe]": {
     "active": [
-      "colorBackgroundButtonPrimaryActive",
-      "colorTextButtonPrimaryActive",
-      "colorBackgroundButtonPrimaryActive"
+      {
+        "name": "colorBackgroundButtonPrimaryActive",
+        "cssName": "--color-background-button-primary-active-gi3en9"
+      },
+      {
+        "name": "colorTextButtonPrimaryActive",
+        "cssName": "--color-text-button-primary-active-zvqo2f"
+      },
+      {
+        "name": "colorBackgroundButtonPrimaryActive",
+        "cssName": "--color-background-button-primary-active-gi3en9"
+      }
     ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-primary_vjswe][class*=awsui_disabled_vjswe]": {
     "default": [
-      "colorBackgroundButtonPrimaryDisabled",
-      "colorBorderButtonPrimaryDisabled",
-      "colorTextInteractiveDisabled"
+      {
+        "name": "colorBackgroundButtonPrimaryDisabled",
+        "cssName": "--color-background-button-primary-disabled-2xivjm"
+      },
+      {
+        "name": "colorBorderButtonPrimaryDisabled",
+        "cssName": "--color-border-button-primary-disabled-exj7lz"
+      },
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
     ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe]": {
-    "default": ["colorTextButtonNormalDefault"],
-    "hover": ["colorTextButtonNormalHover"]
+    "default": [
+      {
+        "name": "colorTextButtonNormalDefault",
+        "cssName": "--color-text-button-normal-default-kwrutp"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextButtonNormalHover",
+        "cssName": "--color-text-button-normal-hover-de4793"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe][class*=awsui_is-activated_vjswe]": {
-    "active": ["colorTextButtonNormalActive"]
+    "active": [
+      {
+        "name": "colorTextButtonNormalActive",
+        "cssName": "--color-text-button-normal-active-hvhe2o"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-link_vjswe][class*=awsui_disabled_vjswe]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe][class*=awsui_is-activated_vjswe]": {
-    "active": ["colorTextInteractiveDefault"]
+    "active": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-icon_vjswe][class*=awsui_disabled_vjswe]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-inline-icon_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-inline-icon_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-inline-icon_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-inline-icon_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe]": {
-    "default": ["colorTextInteractiveDefault"],
-    "hover": ["colorTextInteractiveHover"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveHover",
+        "cssName": "--color-text-interactive-hover-79wpl9"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe][class*=awsui_is-activated_vjswe]": {
-    "active": ["colorTextInteractiveDefault"]
+    "active": [
+      {
+        "name": "colorTextInteractiveDefault",
+        "cssName": "--color-text-interactive-default-9me1cm"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-modal-dismiss_vjswe][class*=awsui_disabled_vjswe]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "default": ["colorTextInteractiveInvertedDefault"],
-    "hover": ["colorTextInteractiveInvertedHover"]
+    "default": [
+      {
+        "name": "colorTextInteractiveInvertedDefault",
+        "cssName": "--color-text-interactive-inverted-default-toht84"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextInteractiveInvertedHover",
+        "cssName": "--color-text-interactive-inverted-hover-nr6ig9"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe][class*=awsui_is-activated_vjswe]": {
-    "active": ["colorTextInteractiveInvertedDefault"]
+    "active": [
+      {
+        "name": "colorTextInteractiveInvertedDefault",
+        "cssName": "--color-text-interactive-inverted-default-toht84"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-flashbar-icon_vjswe][class*=awsui_disabled_vjswe]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe][class*=awsui_is-activated_vjswe]": {
-    "active": ["colorTextLinkDefault"]
+    "active": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-breadcrumb-group_vjswe][class*=awsui_disabled_vjswe]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe]": {
-    "default": ["colorTextButtonNormalDefault"],
-    "hover": ["colorTextButtonNormalHover"]
+    "default": [
+      {
+        "name": "colorTextButtonNormalDefault",
+        "cssName": "--color-text-button-normal-default-kwrutp"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextButtonNormalHover",
+        "cssName": "--color-text-button-normal-hover-de4793"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe],[class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe][class*=awsui_is-activated_vjswe]": {
-    "active": ["colorTextButtonNormalActive"]
+    "active": [
+      {
+        "name": "colorTextButtonNormalActive",
+        "cssName": "--color-text-button-normal-active-hvhe2o"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe][class*=awsui_variant-icon_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe][class*=awsui_variant-modal-dismiss_vjswe], body [class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe][class*=awsui_variant-flashbar-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "body [class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe][class*=awsui_variant-inline-icon_vjswe]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_button_vjswe][class*=awsui_variant-menu-trigger_vjswe][class*=awsui_disabled_vjswe]": {
-    "default": ["colorTextInteractiveDisabled"]
+    "default": [
+      {
+        "name": "colorTextInteractiveDisabled",
+        "cssName": "--color-text-interactive-disabled-jcikk2"
+      }
+    ]
   },
   "[class*=awsui_breadcrumb-group_d19fg]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_breadcrumb-group_d19fg] > [class*=awsui_item_d19fg]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_breadcrumb_1kosq] > [class*=awsui_anchor_1kosq]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "body [class*=awsui_breadcrumb_1kosq] > [class*=awsui_anchor_1kosq]": {
-    "focus": ["colorBorderItemFocused", "borderRadiusControlDefaultFocusRing"]
+    "focus": [
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      },
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      }
+    ]
   },
   "[class*=awsui_root_18wu0]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_p-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_b-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_strong-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_code-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_pre-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_samp-variant_18wu0][class*=awsui_color-default_18wu0]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_h1-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_h2-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_h3-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_h4-variant_18wu0][class*=awsui_color-default_18wu0],[class*=awsui_box_18wu0][class*=awsui_h5-variant_18wu0][class*=awsui_color-default_18wu0]": {
-    "default": ["colorTextHeadingDefault"]
+    "default": [
+      {
+        "name": "colorTextHeadingDefault",
+        "cssName": "--color-text-heading-default-bjds33"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_a-variant_18wu0][class*=awsui_color-default_18wu0]": {
-    "default": ["colorTextLinkDefault"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_code-variant_18wu0],[class*=awsui_box_18wu0][class*=awsui_pre-variant_18wu0],[class*=awsui_box_18wu0][class*=awsui_samp-variant_18wu0]": {
-    "default": ["fontFamilyMonospace"]
+    "default": [
+      {
+        "name": "fontFamilyMonospace",
+        "cssName": "--font-family-monospace-iz223z"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_key-label-variant_18wu0]": {
-    "default": ["colorTextLabel"]
+    "default": [
+      {
+        "name": "colorTextLabel",
+        "cssName": "--color-text-label-kjjshz"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_color-inverted_18wu0]": {
-    "default": ["colorTextNotificationDefault"]
+    "default": [
+      {
+        "name": "colorTextNotificationDefault",
+        "cssName": "--color-text-notification-default-l83xtb"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_color-text-label_18wu0]": {
-    "default": ["colorTextLabel"]
+    "default": [
+      {
+        "name": "colorTextLabel",
+        "cssName": "--color-text-label-kjjshz"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_color-text-body-secondary_18wu0]": {
-    "default": ["colorTextBodySecondary"]
+    "default": [
+      {
+        "name": "colorTextBodySecondary",
+        "cssName": "--color-text-body-secondary-u912t7"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_color-text-status-error_18wu0]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_color-text-status-success_18wu0]": {
-    "default": ["colorTextStatusSuccess"]
+    "default": [
+      {
+        "name": "colorTextStatusSuccess",
+        "cssName": "--color-text-status-success-hb5hdl"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_color-text-status-info_18wu0]": {
-    "default": ["colorTextStatusInfo"]
+    "default": [
+      {
+        "name": "colorTextStatusInfo",
+        "cssName": "--color-text-status-info-09r23g"
+      }
+    ]
   },
   "[class*=awsui_box_18wu0][class*=awsui_color-text-status-inactive_18wu0]": {
-    "default": ["colorTextStatusInactive"]
+    "default": [
+      {
+        "name": "colorTextStatusInactive",
+        "cssName": "--color-text-status-inactive-2o9czw"
+      }
+    ]
   },
   "[class*=awsui_badge_1yjyg]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "borderRadiusBadge", "colorTextNotificationDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "borderRadiusBadge",
+        "cssName": "--border-radius-badge-la3wqa"
+      },
+      {
+        "name": "colorTextNotificationDefault",
+        "cssName": "--color-text-notification-default-l83xtb"
+      }
+    ]
   },
   "[class*=awsui_badge_1yjyg][class*=awsui_badge-color-green_1yjyg]": {
-    "default": ["colorBackgroundNotificationGreen"]
+    "default": [
+      {
+        "name": "colorBackgroundNotificationGreen",
+        "cssName": "--color-background-notification-green-uofkna"
+      }
+    ]
   },
   "[class*=awsui_badge_1yjyg][class*=awsui_badge-color-blue_1yjyg]": {
-    "default": ["colorBackgroundNotificationBlue"]
+    "default": [
+      {
+        "name": "colorBackgroundNotificationBlue",
+        "cssName": "--color-background-notification-blue-rjpmdy"
+      }
+    ]
   },
   "[class*=awsui_badge_1yjyg][class*=awsui_badge-color-red_1yjyg]": {
-    "default": ["colorBackgroundNotificationRed"]
+    "default": [
+      {
+        "name": "colorBackgroundNotificationRed",
+        "cssName": "--color-background-notification-red-e2annb"
+      }
+    ]
   },
   "[class*=awsui_root_n4qlp]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_empty_n4qlp]": {
-    "default": ["colorTextEmpty"]
+    "default": [
+      {
+        "name": "colorTextEmpty",
+        "cssName": "--color-text-empty-izapdt"
+      }
+    ]
   },
   "[class*=awsui_additional-info_n4qlp]": {
-    "default": ["colorTextFormSecondary"]
+    "default": [
+      {
+        "name": "colorTextFormSecondary",
+        "cssName": "--color-text-form-secondary-1c3szk"
+      }
+    ]
   },
   "[class*=awsui_additional-info_n4qlp] > a": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkHover"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ]
   },
   "[class*=awsui_root_y1yrh]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_root_lm6vo],[class*=awsui_layout-wrapper_lm6vo]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_layout_lm6vo]": {
-    "default": ["colorBackgroundLayoutMain"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      }
+    ]
   },
   "[class*=awsui_layout-main_lm6vo]": {
-    "default": ["colorBackgroundLayoutMain"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      }
+    ]
   },
   "section[class*=awsui_appbar_hyvsj] > [class*=awsui_breadcrumbs_hyvsj]": {
-    "default": ["colorBackgroundLayoutMain"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      }
+    ]
   },
   "section[class*=awsui_appbar_hyvsj]": {
-    "default": ["colorBackgroundHomeHeader", "colorBorderDividerDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundHomeHeader",
+        "cssName": "--color-background-home-header-o5mjh6"
+      },
+      {
+        "name": "colorBorderDividerDefault",
+        "cssName": "--color-border-divider-default-k96bks"
+      }
+    ]
   },
   "div[class*=awsui_background_hyvsj] > [class*=awsui_notifications-appbar-header_hyvsj]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "div[class*=awsui_background_hyvsj] > [class*=awsui_overlap_hyvsj]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_drawers-container_hyvsj][class*=awsui_has-open-drawer_hyvsj]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_drawers-desktop-triggers-container_hyvsj]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_drawers-desktop-triggers-container_hyvsj][class*=awsui_has-multiple-triggers_hyvsj][class*=awsui_has-open-drawer_hyvsj]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_drawer_hyvsj]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_layout_hyvsj]": {
-    "default": ["colorBackgroundLayoutMain", "colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutMain",
+        "cssName": "--color-background-layout-main-q0tbxx"
+      },
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "nav[class*=awsui_navigation_hyvsj]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_notifications_hyvsj]": {
-    "default": ["colorTextBodyDefault"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      }
+    ]
   },
   "[class*=awsui_tools_hyvsj]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_show-tools_hyvsj]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_show-tools_hyvsj][class*=awsui_has-tools-form-persistence_hyvsj]": {
-    "default": ["colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_trigger_hyvsj]": {
-    "default": ["colorBackgroundLayoutToggleDefault"],
-    "hover": ["colorBackgroundLayoutToggleHover"],
-    "active": ["colorBackgroundLayoutToggleActive"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutToggleDefault",
+        "cssName": "--color-background-layout-toggle-default-o9dqpo"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorBackgroundLayoutToggleHover",
+        "cssName": "--color-background-layout-toggle-hover-5rvtea"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorBackgroundLayoutToggleActive",
+        "cssName": "--color-background-layout-toggle-active-d3zrnd"
+      }
+    ]
   },
   "body [class*=awsui_trigger_hyvsj]": {
-    "focus": ["borderRadiusControlDefaultFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlDefaultFocusRing",
+        "cssName": "--border-radius-control-default-focus-ring-hekmgc"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_trigger_hyvsj][class*=awsui_selected_hyvsj]": {
-    "default": ["colorBackgroundLayoutToggleSelectedDefault"],
-    "hover": ["colorBackgroundLayoutToggleSelectedHover"],
-    "active": ["colorBackgroundLayoutToggleSelectedActive"]
+    "default": [
+      {
+        "name": "colorBackgroundLayoutToggleSelectedDefault",
+        "cssName": "--color-background-layout-toggle-selected-default-eduv1i"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorBackgroundLayoutToggleSelectedHover",
+        "cssName": "--color-background-layout-toggle-selected-hover-vtsm2f"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorBackgroundLayoutToggleSelectedActive",
+        "cssName": "--color-background-layout-toggle-selected-active-3ftljk"
+      }
+    ]
   },
   "[class*=awsui_arrow-outer_1hpp3]": {
-    "default": ["colorBorderStatusInfo"]
+    "default": [
+      {
+        "name": "colorBorderStatusInfo",
+        "cssName": "--color-border-status-info-0iedcr"
+      }
+    ]
   },
   "[class*=awsui_arrow-inner_1hpp3]": {
-    "default": ["colorBackgroundStatusInfo"]
+    "default": [
+      {
+        "name": "colorBackgroundStatusInfo",
+        "cssName": "--color-background-status-info-yq3r41"
+      }
+    ]
   },
   "[class*=awsui_hotspot_1hpp3]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "body [class*=awsui_hotspot_1hpp3]": {
-    "focus": ["borderRadiusControlCircularFocusRing", "colorBorderItemFocused"]
+    "focus": [
+      {
+        "name": "borderRadiusControlCircularFocusRing",
+        "cssName": "--border-radius-control-circular-focus-ring-l88ib6"
+      },
+      {
+        "name": "colorBorderItemFocused",
+        "cssName": "--color-border-item-focused-n5kd8g"
+      }
+    ]
   },
   "[class*=awsui_hotspot_1hpp3] > [class*=awsui_icon_1hpp3]": {
-    "default": ["colorTextLinkDefault"],
-    "hover": ["colorTextLinkHover"],
-    "active": ["colorTextLinkDefault"]
+    "default": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ],
+    "hover": [
+      {
+        "name": "colorTextLinkHover",
+        "cssName": "--color-text-link-hover-ok01xk"
+      }
+    ],
+    "active": [
+      {
+        "name": "colorTextLinkDefault",
+        "cssName": "--color-text-link-default-753y4e"
+      }
+    ]
   },
   "[class*=awsui_root_mx3cw]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      }
+    ]
   },
   "[class*=awsui_alert_mx3cw]": {
-    "default": ["colorTextBodyDefault", "fontFamilyBase", "borderRadiusAlert", "colorBackgroundContainerContent"]
+    "default": [
+      {
+        "name": "colorTextBodyDefault",
+        "cssName": "--color-text-body-default-7m2b3r"
+      },
+      {
+        "name": "fontFamilyBase",
+        "cssName": "--font-family-base-mylvzb"
+      },
+      {
+        "name": "borderRadiusAlert",
+        "cssName": "--border-radius-alert-rd1nuz"
+      },
+      {
+        "name": "colorBackgroundContainerContent",
+        "cssName": "--color-background-container-content-o88wxm"
+      }
+    ]
   },
   "[class*=awsui_type-error_mx3cw]": {
-    "default": ["colorBorderStatusError", "colorBackgroundStatusError"]
+    "default": [
+      {
+        "name": "colorBorderStatusError",
+        "cssName": "--color-border-status-error-fybu9w"
+      },
+      {
+        "name": "colorBackgroundStatusError",
+        "cssName": "--color-background-status-error-h1a0iq"
+      }
+    ]
   },
   "[class*=awsui_type-error_mx3cw] > [class*=awsui_icon_mx3cw]": {
-    "default": ["colorTextStatusError"]
+    "default": [
+      {
+        "name": "colorTextStatusError",
+        "cssName": "--color-text-status-error-jer77f"
+      }
+    ]
   },
   "[class*=awsui_type-warning_mx3cw]": {
-    "default": ["colorBorderStatusWarning", "colorBackgroundStatusWarning"]
+    "default": [
+      {
+        "name": "colorBorderStatusWarning",
+        "cssName": "--color-border-status-warning-2otrg9"
+      },
+      {
+        "name": "colorBackgroundStatusWarning",
+        "cssName": "--color-background-status-warning-1213z1"
+      }
+    ]
   },
   "[class*=awsui_type-warning_mx3cw] > [class*=awsui_icon_mx3cw]": {
-    "default": ["colorTextStatusWarning"]
+    "default": [
+      {
+        "name": "colorTextStatusWarning",
+        "cssName": "--color-text-status-warning-94ezyx"
+      }
+    ]
   },
   "[class*=awsui_type-success_mx3cw]": {
-    "default": ["colorBorderStatusSuccess", "colorBackgroundStatusSuccess"]
+    "default": [
+      {
+        "name": "colorBorderStatusSuccess",
+        "cssName": "--color-border-status-success-lb896w"
+      },
+      {
+        "name": "colorBackgroundStatusSuccess",
+        "cssName": "--color-background-status-success-cvmksn"
+      }
+    ]
   },
   "[class*=awsui_type-success_mx3cw] > [class*=awsui_icon_mx3cw]": {
-    "default": ["colorTextStatusSuccess"]
+    "default": [
+      {
+        "name": "colorTextStatusSuccess",
+        "cssName": "--color-text-status-success-hb5hdl"
+      }
+    ]
   },
   "[class*=awsui_type-info_mx3cw]": {
-    "default": ["colorBorderStatusInfo", "colorBackgroundStatusInfo"]
+    "default": [
+      {
+        "name": "colorBorderStatusInfo",
+        "cssName": "--color-border-status-info-0iedcr"
+      },
+      {
+        "name": "colorBackgroundStatusInfo",
+        "cssName": "--color-background-status-info-yq3r41"
+      }
+    ]
   },
   "[class*=awsui_type-info_mx3cw] > [class*=awsui_icon_mx3cw]": {
-    "default": ["colorTextStatusInfo"]
+    "default": [
+      {
+        "name": "colorTextStatusInfo",
+        "cssName": "--color-text-status-info-09r23g"
+      }
+    ]
   }
 }
