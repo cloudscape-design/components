@@ -12,8 +12,9 @@ import { useAnnouncement } from '../select/utils/use-announcement';
 export interface AutosuggestOptionsListProps
   extends Pick<
     AutosuggestProps,
-    'enteredTextLabel' | 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive' | 'statusType'
+    'enteredTextLabel' | 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'
   > {
+  statusType: AutosuggestProps.StatusType;
   autosuggestItemsState: AutosuggestItemsState;
   autosuggestItemsHandlers: AutosuggestItemsHandlers;
   highlightedOptionId?: string;
@@ -78,7 +79,7 @@ export default function AutosuggestOptionsList({
         onMouseUp: handleMouseUp,
         onMouseMove: handleMouseMove,
         ariaDescribedby,
-        statusType: statusType || 'pending',
+        statusType,
       }}
       screenReaderContent={announcement}
     />
