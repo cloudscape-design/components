@@ -122,6 +122,7 @@ const InternalSelect = React.forwardRef(
       externalRef,
       fireLoadItems,
       setFilteringValue,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
