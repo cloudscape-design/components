@@ -120,7 +120,10 @@ const testCases: TestCase[] = [
       {
         command: 'type-in-filtering-input',
         param: 'label=',
-        result: [{ filteringProperty, filteringOperator: '=', filteringText: '', firstPage: true, samePage: false }],
+        result: [
+          { filteringText: 'l', firstPage: false, samePage: false },
+          { filteringProperty, filteringOperator: '=', filteringText: '', firstPage: true, samePage: false },
+        ],
       },
     ],
   ],
