@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState, ReactNode } from 'react';
-import { Box, Button, Input, Link, Popover, SpaceBetween, TextContent, Toggle } from '~components';
+import { Box, Button, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -18,7 +18,7 @@ interface Token {
   section: string;
   name: string;
   cssName: string;
-  description: string;
+  description?: string;
 }
 
 function readTokenValue(element: Element, cssTokenName: string): string {
@@ -26,7 +26,7 @@ function readTokenValue(element: Element, cssTokenName: string): string {
 }
 
 function getTokenDescription(tokenName: string): string {
-  const description = tokenDict[tokenName]?.description ?? '???';
+  const description = tokenDict[tokenName]?.description;
   return description;
 }
 
@@ -411,11 +411,20 @@ function Tokens({
   element: Element;
 }) {
   const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
-  const sections = groupBy(tokens, 'section');
+
+  const publicTokens = groupBy(
+    tokens.filter(t => t.description),
+    'section'
+  );
+
+  const privateTokens = groupBy(
+    tokens.filter(t => !t.description),
+    'section'
+  );
 
   return (
     <SpaceBetween size="s">
-      {Object.keys(sections).map(section => (
+      {Object.keys(publicTokens).map(section => (
         <div key={section}>
           <Box variant="h4">{startCase(section.toLowerCase())}</Box>
           <ul
@@ -424,7 +433,7 @@ function Tokens({
               background: 'transparent',
             }}
           >
-            {sortBy(sections[section], token => token.name).map(token => {
+            {sortBy(publicTokens[section], token => token.name).map(token => {
               const themeValue =
                 context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
                   ? theme.contexts[context].tokens[token.name]
@@ -498,11 +507,33 @@ function Tokens({
             </Link>{' '}
             detailing your use case if you need one added.
           </Box>
-          <TextContent>
-            <ul>
-              <li>Token</li>
-            </ul>
-          </TextContent>
+          {Object.keys(privateTokens).map(section => (
+            <div key={section}>
+              <Box variant="h4">{startCase(section.toLowerCase())}</Box>
+              <ul
+                style={{
+                  ...sharedPanelStyles,
+                  background: 'transparent',
+                }}
+              >
+                {sortBy(privateTokens[section], token => token.name).map(token => {
+                  const themeValue =
+                    context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
+                      ? theme.contexts[context].tokens[token.name]
+                      : theme.tokens[token.name];
+                  const themeValueStr =
+                    typeof themeValue === 'object' ? themeValue[isDarkMode ? 'dark' : 'light'] : themeValue;
+                  const value = themeValueStr ?? readTokenValue(element, token.cssName);
+                  return (
+                    <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
+                      <Box color="text-body-secondary">{value}</Box>
+                      <Box margin={{ left: 'xs' }}>{token.name}</Box>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </>
       </details>
     </SpaceBetween>
