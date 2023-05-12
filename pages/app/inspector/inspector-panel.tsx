@@ -460,7 +460,7 @@ function Dash() {
         fontSize: '12px',
       }}
     >
-      —
+      <Box>—</Box>
     </div>
   );
 }
