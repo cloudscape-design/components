@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
+import React, { useEffect, useRef, useState, ReactNode } from 'react';
+import { Box, Button, Input, Link, Popover, SpaceBetween, TextContent, Toggle } from '~components';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -10,8 +10,9 @@ import tokenMapping from './tokens-mapping.json';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tokenDict from './token-descriptions.json';
-import { cloneDeep, groupBy, uniqBy } from 'lodash';
+import { cloneDeep, groupBy, uniqBy, startCase, sortBy } from 'lodash';
 import { applyTheme } from '~components/theming';
+import { componentsMap } from './component-tokens-mapping';
 
 interface Token {
   section: string;
@@ -46,7 +47,7 @@ const stylesMapping = Object.entries(tokenMapping)
   }))
   .filter(({ selector }) => selector.trim()) as { selector: string; tokens: Token[] }[];
 
-const TREE_SIZE = 5;
+const TREE_SIZE = 4;
 
 interface TreeElement {
   name: string;
@@ -324,18 +325,19 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
       style={{
         width: '100%',
         height: '100%',
-        padding: '16px 8px',
+        padding: '8px',
         boxSizing: 'border-box',
         position: 'relative',
-        borderLeft: '1px solid #bda55d',
+        borderLeft: '1px solid #000000',
         overflowY: 'auto',
       }}
     >
-      <div style={{ position: 'absolute', top: '4px', right: '4px' }}>
+      <div style={{ position: 'absolute', top: '6px', right: '4px' }}>
         <Button onClick={onClose} variant="icon" iconName="close" />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '8px' }}>
+        <Box variant="h3">Theme configurator</Box>
         <Toggle onChange={({ detail }) => setInspectorEnabled(detail.checked)} checked={inspectorEnabled}>
           Elements inspector
         </Toggle>
@@ -386,11 +388,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
 }
 
 function TokensPanel({ children }: { children: React.ReactNode }) {
-  return (
-    <div style={{ position: 'relative', flexGrow: 1, background: '#eee', borderRadius: '8px', marginTop: '8px' }}>
-      {children}
-    </div>
-  );
+  return <div style={{ position: 'relative', flexGrow: 1, background: 'transparent' }}>{children}</div>;
 }
 
 function TokensPanelMessage({ children }: { children: React.ReactNode }) {
@@ -419,18 +417,14 @@ function Tokens({
     <SpaceBetween size="s">
       {Object.keys(sections).map(section => (
         <div key={section}>
-          <Box fontWeight="bold">{section}</Box>
+          <Box variant="h4">{startCase(section.toLowerCase())}</Box>
           <ul
             style={{
-              listStyle: 'none',
-              padding: '0',
-              margin: '0',
-              background: '#eee',
-              borderRadius: '8px',
-              marginTop: '8px',
+              ...sharedPanelStyles,
+              background: 'transparent',
             }}
           >
-            {sections[section].map(token => {
+            {sortBy(sections[section], token => token.name).map(token => {
               const themeValue =
                 context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
                   ? theme.contexts[context].tokens[token.name]
@@ -439,24 +433,23 @@ function Tokens({
                 typeof themeValue === 'object' ? themeValue[isDarkMode ? 'dark' : 'light'] : themeValue;
               const value = themeValueStr ?? token.value;
               return (
-                <li key={token.name} style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}>
+                <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
                   {token.name.startsWith('color') ? (
-                    <Popover
-                      header="Edit token value"
-                      content={
+                    <EditorPopover
+                      tokenName={token.name}
+                      control={
                         <ColorPicker
                           color={value}
                           onSetColor={value => setTokenValue(token.name, value, context, isDarkMode ? 'dark' : 'light')}
                         />
                       }
-                      triggerType="custom"
                     >
                       <ColorIndicator color={value} />
-                    </Popover>
+                    </EditorPopover>
                   ) : (
-                    <Popover
-                      header="Edit token value"
-                      content={
+                    <EditorPopover
+                      tokenName={token.name}
+                      control={
                         <Input
                           value={value}
                           onChange={e =>
@@ -464,10 +457,15 @@ function Tokens({
                           }
                         />
                       }
-                      triggerType="custom"
                     >
-                      <ValuePlaceholder />
-                    </Popover>
+                      {token.name.includes('borderRadius') ? (
+                        <RadiusPreview radius={value || '4px'} />
+                      ) : token.name.includes('fontFamily') ? (
+                        <FontPreview family={value} />
+                      ) : (
+                        '??'
+                      )}
+                    </EditorPopover>
                   )}
                   <Box margin={{ left: 'xs' }}>
                     <SpaceBetween size="xxs">
@@ -483,9 +481,80 @@ function Tokens({
           </ul>
         </div>
       ))}
+      <details style={{ paddingTop: '8px' }}>
+        <summary>
+          <Box variant="h4" display="inline">
+            Non-themeable tokens
+          </Box>
+        </summary>
+        <>
+          <Box variant="small" padding={{ top: 'xxs' }}>
+            The following tokens are present, but are not currently themeable.{' '}
+            <Link
+              fontSize="inherit"
+              href="https://issues.amazon.com/issues/create?template=430f4503-b29d-4a2f-b8a7-656afbb35c39"
+            >
+              Open a feature request
+            </Link>{' '}
+            detailing your use case if you need one added.
+          </Box>
+          <TextContent>
+            <ul>
+              <li>Token</li>
+            </ul>
+          </TextContent>
+        </>
+      </details>
     </SpaceBetween>
   );
 }
+
+const EditorPopover = ({
+  children,
+  tokenName,
+  control,
+}: {
+  children: ReactNode;
+  tokenName: string;
+  control: ReactNode;
+}) => {
+  function getTokenComponents(token: string) {
+    const components: string[] = [];
+    for (const [key, value] of Object.entries(componentsMap)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      value.length > 0 && value.includes(token) && components.push(key);
+    }
+    return components;
+  }
+
+  return (
+    <Popover
+      header="Edit token value"
+      content={
+        <SpaceBetween size="s">
+          {getTokenComponents(tokenName).length > 0 && (
+            <>
+              <Box>
+                Updating this value will update the value in <b>{getTokenComponents(tokenName).length}</b> components.
+              </Box>
+              <details>
+                <summary>
+                  <Box display="inline">Components that use this token</Box>
+                </summary>
+                <Box color="text-body-secondary">{getTokenComponents(tokenName).join(', ')}</Box>
+              </details>
+            </>
+          )}
+          {control}
+        </SpaceBetween>
+      }
+      triggerType="custom"
+    >
+      {children}
+    </Popover>
+  );
+};
 
 function ColorPicker({ color, onSetColor }: { color: string; onSetColor: (value: string) => void }) {
   return (
@@ -494,40 +563,67 @@ function ColorPicker({ color, onSetColor }: { color: string; onSetColor: (value:
     </SpaceBetween>
   );
 }
+const sharedPanelStyles = {
+  listStyle: 'none',
+  padding: '0px 8px',
+  margin: '0',
+  borderRadius: '6px',
+  border: '1px solid #d1d5db',
+};
+
+const previewBaseStyles = {
+  width: 20,
+  height: 20,
+  marginTop: '2px',
+  padding: 0,
+  borderRadius: 4,
+  borderWidth: 1,
+  borderColor: '#879596',
+  borderStyle: 'solid',
+  background: 'transparent',
+};
 
 function ColorIndicator({ color }: { color: string }) {
   return (
     <button
       style={{
         appearance: 'none',
-        border: 0,
-        width: 16,
-        height: 16,
-        borderRadius: 4,
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#879596',
+        ...previewBaseStyles,
         background: color,
       }}
     />
   );
 }
 
-function ValuePlaceholder() {
+function RadiusPreview({ radius }: { radius: string }) {
   return (
     <button
       style={{
         appearance: 'none',
-        border: 0,
-        width: 16,
-        height: 16,
-        background: 'transparent',
-        borderRadius: 4,
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#879596',
+        ...previewBaseStyles,
+        borderRadius: radius,
+        borderWidth: 2,
+        borderLeftColor: 'transparent',
+        borderBottomColor: 'transparent',
       }}
     />
+  );
+}
+
+function FontPreview({ family }: { family: string }) {
+  return (
+    <button
+      style={{
+        appearance: 'none',
+        ...previewBaseStyles,
+        marginTop: 0,
+        border: 0,
+        fontFamily: family,
+        fontSize: '16px',
+      }}
+    >
+      Aa
+    </button>
   );
 }
 
@@ -550,18 +646,15 @@ function ElementsTree({
   return (
     <ul
       style={{
-        listStyle: 'none',
-        padding: '0',
-        margin: '0',
-        background: '#eee',
-        borderRadius: '8px',
-        marginTop: '8px',
+        ...sharedPanelStyles,
+        background: '#f4f4f4',
+        padding: '4px 8px',
       }}
     >
       {tree.map((node, index) => (
         <li
           key={index}
-          style={{ display: 'flex', alignItems: 'center', paddingLeft: index * 4 + 'px' }}
+          style={{ display: 'grid', gridTemplateColumns: 'min-content 1fr', paddingLeft: index * 4 + 'px' }}
           onMouseEnter={() => {
             onHoverToken(node.node);
           }}
@@ -576,7 +669,10 @@ function ElementsTree({
             ) : (
               <div style={{ cursor: 'pointer' }} onClick={() => onSelect(TREE_SIZE - 1 - index)}>
                 <Box fontWeight={TREE_SIZE - 1 - index === tokenIndex ? 'bold' : 'normal'}>
-                  {node.name} ({node.tokens.length}) {node.context ? `context = ${node.context}` : ''}
+                  <span>
+                    {node.name} ({node.tokens.length})
+                  </span>
+                  {node.context ? <i style={{ float: 'right', fontSize: '12px' }}>context: {node.context}</i> : ''}
                 </Box>
               </div>
             )}
@@ -592,9 +688,10 @@ function Dash() {
     <div
       style={{
         margin: '4px',
+        fontSize: '12px',
       }}
     >
-      -
+      —
     </div>
   );
 }
