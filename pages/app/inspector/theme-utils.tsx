@@ -8,7 +8,7 @@ export interface Theme {
   tokens: Record<string, string | { light: string; dark: string }>;
   contexts: {
     'compact-table': { tokens: Record<string, string | { light: string; dark: string }> };
-    'content-header': { tokens: Record<string, string | { light: string; dark: string }> };
+    header: { tokens: Record<string, string | { light: string; dark: string }> };
     'top-navigation': { tokens: Record<string, string | { light: string; dark: string }> };
     flashbar: { tokens: Record<string, string | { light: string; dark: string }> };
   };
@@ -19,48 +19,46 @@ export function createDefaultTheme(): Theme {
     tokens: {},
     contexts: {
       'compact-table': { tokens: {} },
-      'content-header': { tokens: {} },
+      header: { tokens: {} },
       'top-navigation': { tokens: {} },
       flashbar: { tokens: {} },
     },
   };
 }
 
-export function createThemeReader(theme: Theme, context: null | string) {
+export function createThemeReader(theme: Theme, _context: null | string) {
   const isDarkMode =
     !!document.querySelector('.awsui-dark-mode') || !!document.querySelector('.awsui-polaris-dark-mode');
   const scope = isDarkMode ? 'dark' : 'light';
+  const context = mapContext(_context);
   return (token: string) => {
-    const themeValue =
-      context === 'compact-table' ||
-      context === 'content-header' ||
-      context === 'top-navigation' ||
-      context === 'flashbar'
-        ? theme.contexts[context].tokens[token]
-        : theme.tokens[token];
+    const themeValue = context ? theme.contexts[context].tokens[token] : theme.tokens[token];
     return typeof themeValue === 'object' ? themeValue[scope] : themeValue;
   };
 }
 
-export function setThemeToken(theme: Theme, token: string, value: null | string, context: null | string = null): Theme {
+export function setThemeToken(
+  theme: Theme,
+  token: string,
+  value: null | string,
+  _context: null | string = null
+): Theme {
+  const context = mapContext(_context);
+
   const isDarkMode =
     !!document.querySelector('.awsui-dark-mode') || !!document.querySelector('.awsui-polaris-dark-mode');
   const scope = isDarkMode ? 'dark' : 'light';
 
   const next = cloneDeep(theme);
-  const tokens =
-    (context === 'compact-table' ||
-      context === 'content-header' ||
-      context === 'top-navigation' ||
-      context === 'flashbar') &&
-    token.startsWith('color')
-      ? next.contexts[context].tokens
-      : next.tokens;
+  const tokens = context && token.startsWith('color') ? next.contexts[context].tokens : next.tokens;
   const currValue = tokens[token];
   const currValueObj =
     typeof currValue === 'object' ? { ...currValue } : { light: currValue ?? value, dark: currValue ?? value };
 
-  if (!value) {
+  if (!value && typeof currValue === 'object') {
+    const oppositeScope = isDarkMode ? 'light' : 'dark';
+    tokens[token] = { light: currValue[oppositeScope], dark: currValue[oppositeScope] };
+  } else if (!value) {
     delete tokens[token];
   } else {
     tokens[token] = token.startsWith('color') && scope ? { ...currValueObj, [scope]: value } : value;
@@ -94,4 +92,14 @@ export function importTheme(file: File, onImport: (theme: Theme) => void) {
   };
 
   reader.readAsText(file);
+}
+
+function mapContext(context: null | string): null | 'compact-table' | 'header' | 'top-navigation' | 'flashbar' {
+  if (context === 'compact-table' || context === 'header' || context === 'top-navigation' || context === 'flashbar') {
+    return context;
+  }
+  if (context === 'content-header') {
+    return 'header';
+  }
+  return null;
 }
