@@ -3,6 +3,8 @@
 import React from 'react';
 
 import '@cloudscape-design/global-styles/index.css';
+import { I18nProvider } from '../../lib/components/internal/i18n';
+import messages from '../../lib/components/internal/i18n/messages/all.en';
 
 export default function FrameComponent({ theme, children }: { theme: string; children: React.ReactNode }) {
   if (theme === 'visual-refresh') {
@@ -25,5 +27,9 @@ export default function FrameComponent({ theme, children }: { theme: string; chi
     document.body.classList.remove('awsui-dark-mode');
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return (
+    <I18nProvider locale="en" messages={[messages]}>
+      <React.Fragment>{children}</React.Fragment>
+    </I18nProvider>
+  );
 }

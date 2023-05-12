@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2015", "DOM"],
+    "target": "ES2015",
+    "declaration": false,
+    "declarationMap": false,
+    "rootDir": ".",
+    "incremental": true,
+    "jsx": "react",
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "strict": true,
+    "types": ["node"],
+    "paths": {
+      "~components": ["../lib/components"],
+      "~components/*": ["../lib/components/*"],
+      "~design-tokens": ["../lib/design-tokens"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}

@@ -62,7 +62,7 @@ export default function IndexPage() {
       <h1>Welcome!</h1>
       <p>Build info: {PACKAGE_VERSION}</p>
       <p>
-        <a href="./playroom/index.html">Open Playroom</a>
+        <AwsUiLink href="./playroom/index.html">Open Playroom</AwsUiLink>
       </p>
       <p>Select a page:</p>
 
