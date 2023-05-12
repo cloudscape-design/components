@@ -8,7 +8,7 @@ export interface Theme {
   tokens: Record<string, string | { light: string; dark: string }>;
   contexts: {
     'compact-table': { tokens: Record<string, string | { light: string; dark: string }> };
-    header: { tokens: Record<string, string | { light: string; dark: string }> };
+    'content-header': { tokens: Record<string, string | { light: string; dark: string }> };
     'top-navigation': { tokens: Record<string, string | { light: string; dark: string }> };
     flashbar: { tokens: Record<string, string | { light: string; dark: string }> };
   };
@@ -19,7 +19,7 @@ export function createDefaultTheme(): Theme {
     tokens: {},
     contexts: {
       'compact-table': { tokens: {} },
-      header: { tokens: {} },
+      'content-header': { tokens: {} },
       'top-navigation': { tokens: {} },
       flashbar: { tokens: {} },
     },
@@ -31,7 +31,10 @@ export function createThemeReader(theme: Theme, context: null | string) {
   const scope = isDarkMode ? 'dark' : 'light';
   return (token: string) => {
     const themeValue =
-      context === 'compact-table' || context === 'header' || context === 'top-navigation' || context === 'flashbar'
+      context === 'compact-table' ||
+      context === 'content-header' ||
+      context === 'top-navigation' ||
+      context === 'flashbar'
         ? theme.contexts[context].tokens[token]
         : theme.tokens[token];
     return typeof themeValue === 'object' ? themeValue[scope] : themeValue;
@@ -44,7 +47,10 @@ export function setThemeToken(theme: Theme, token: string, value: string, contex
 
   const next = cloneDeep(theme);
   const tokens =
-    (context === 'compact-table' || context === 'header' || context === 'top-navigation' || context === 'flashbar') &&
+    (context === 'compact-table' ||
+      context === 'content-header' ||
+      context === 'top-navigation' ||
+      context === 'flashbar') &&
     token.startsWith('color')
       ? next.contexts[context].tokens
       : next.tokens;
