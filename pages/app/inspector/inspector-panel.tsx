@@ -16,9 +16,9 @@ import {
   importTheme,
   setThemeToken,
 } from './theme-utils';
-import styles from './styles.scss';
 import clsx from 'clsx';
 import { ColorIndicator, ValueEditor } from './value-editor';
+import styles from './styles.scss';
 
 const TREE_SIZE = 4;
 
@@ -48,7 +48,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [theme, setTheme] = useState(createDefaultTheme());
 
-  const setTokenValue = (token: string, value: string, context: null | string = null) => {
+  const setTokenValue = (token: string, value: null | string, context: null | string = null) => {
     setTheme(theme => setThemeToken(theme, token, value, context));
   };
 
@@ -303,7 +303,7 @@ function Tokens({
 }: {
   tokens: Token[];
   theme: Theme;
-  setTokenValue: (tokenName: string, value: string, context: null | string) => void;
+  setTokenValue: (tokenName: string, value: null | string, context: null | string) => void;
   context: null | string;
   element: Element;
 }) {

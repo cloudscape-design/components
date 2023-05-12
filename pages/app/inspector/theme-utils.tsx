@@ -27,7 +27,8 @@ export function createDefaultTheme(): Theme {
 }
 
 export function createThemeReader(theme: Theme, context: null | string) {
-  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
+  const isDarkMode =
+    !!document.querySelector('.awsui-dark-mode') || !!document.querySelector('.awsui-polaris-dark-mode');
   const scope = isDarkMode ? 'dark' : 'light';
   return (token: string) => {
     const themeValue =
@@ -41,8 +42,9 @@ export function createThemeReader(theme: Theme, context: null | string) {
   };
 }
 
-export function setThemeToken(theme: Theme, token: string, value: string, context: null | string = null): Theme {
-  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
+export function setThemeToken(theme: Theme, token: string, value: null | string, context: null | string = null): Theme {
+  const isDarkMode =
+    !!document.querySelector('.awsui-dark-mode') || !!document.querySelector('.awsui-polaris-dark-mode');
   const scope = isDarkMode ? 'dark' : 'light';
 
   const next = cloneDeep(theme);
@@ -57,7 +59,12 @@ export function setThemeToken(theme: Theme, token: string, value: string, contex
   const currValue = tokens[token];
   const currValueObj =
     typeof currValue === 'object' ? { ...currValue } : { light: currValue ?? value, dark: currValue ?? value };
-  tokens[token] = token.startsWith('color') && scope ? { ...currValueObj, [scope]: value } : value;
+
+  if (!value) {
+    delete tokens[token];
+  } else {
+    tokens[token] = token.startsWith('color') && scope ? { ...currValueObj, [scope]: value } : value;
+  }
 
   return next;
 }

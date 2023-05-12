@@ -64,6 +64,7 @@ function getComponentSegmentName(element: Element): string {
     'footer',
     'group',
     'header',
+    'header',
     'list',
     'panel',
     'section',

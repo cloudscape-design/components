@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ReactNode } from 'react';
-import { Box, Input, Popover, SpaceBetween } from '~components';
+import React, { ReactNode, useState } from 'react';
+import { Box, Button, Form, Input, Popover, SpaceBetween } from '~components';
 
 import { componentsMap } from './component-tokens-mapping';
 import styles from './styles.scss';
@@ -14,14 +14,24 @@ export function ValueEditor({
 }: {
   token: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: null | string) => void;
 }) {
   return token.startsWith('color') ? (
-    <EditorPopover tokenName={token} control={<ColorPicker color={value} onSetColor={onChange} />}>
+    <EditorPopover
+      tokenName={token}
+      control={(value, onChange) => <ColorPicker color={value} onSetColor={onChange} />}
+      value={value}
+      onChange={onChange}
+    >
       <ColorIndicator color={value} />
     </EditorPopover>
   ) : (
-    <EditorPopover tokenName={token} control={<Input value={value} onChange={e => onChange(e.detail.value)} />}>
+    <EditorPopover
+      tokenName={token}
+      control={(value, onChange) => <Input value={value} onChange={e => onChange(e.detail.value)} />}
+      value={value}
+      onChange={onChange}
+    >
       {token.includes('borderRadius') ? (
         <RadiusPreview radius={value || '4px'} />
       ) : token.includes('fontFamily') ? (
@@ -49,10 +59,14 @@ function EditorPopover({
   children,
   tokenName,
   control,
+  value: initialValue,
+  onChange,
 }: {
   children: ReactNode;
   tokenName: string;
-  control: ReactNode;
+  control: (value: string, onChange: (value: string) => void) => ReactNode;
+  value: string;
+  onChange: (value: null | string) => void;
 }) {
   function getTokenComponents(token: string) {
     const components: string[] = [];
@@ -63,6 +77,8 @@ function EditorPopover({
     }
     return components;
   }
+
+  const [value, setValue] = useState(initialValue);
 
   return (
     <Popover
@@ -82,7 +98,18 @@ function EditorPopover({
               </details>
             </>
           )}
-          {control}
+
+          <Form
+            actions={
+              <SpaceBetween size="s" direction="horizontal">
+                <Button onClick={() => onChange(value ?? null)} variant="primary">
+                  Apply
+                </Button>
+              </SpaceBetween>
+            }
+          >
+            {control(value, setValue)}
+          </Form>
         </SpaceBetween>
       }
       triggerType="custom"
