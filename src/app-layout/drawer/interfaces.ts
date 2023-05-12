@@ -35,6 +35,7 @@ export interface DesktopDrawerProps {
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
   };
   resizeHandle?: React.ReactNode;
+  count?: number;
 }
 
 export interface ResizableDrawerProps extends DesktopDrawerProps {
@@ -72,6 +73,7 @@ export interface DrawerItem {
   trigger: {
     iconName?: IconProps.Name;
     iconSvg?: React.ReactNode;
+    count?: number;
   };
   ariaLabels: DrawerItemAriaLabels;
   resizable?: boolean;

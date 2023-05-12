@@ -10,4 +10,5 @@ export interface AppLayoutButtonProps {
   iconSvg?: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
+  count?: number;
 }

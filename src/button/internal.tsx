@@ -17,6 +17,7 @@ type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __nativeAttributes?: Record<string, any>;
   __iconClass?: string;
   __activated?: boolean;
+  counter?: number;
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -47,6 +48,7 @@ export const InternalButton = React.forwardRef(
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
+      counter,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -108,6 +110,7 @@ export const InternalButton = React.forwardRef(
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />
+        {!!counter && <CountBadge count={counter} />}
         {shouldHaveContent && <span className={styles.content}>{children}</span>}
         <RightIcon {...iconProps} />
       </>
@@ -149,5 +152,13 @@ export const InternalButton = React.forwardRef(
     );
   }
 );
+
+interface CountBadgeProps {
+  count: number;
+}
+
+function CountBadge({ count }: CountBadgeProps) {
+  return <span className={styles['count-badge']}>{count}</span>;
+}
 
 export default InternalButton;

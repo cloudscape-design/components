@@ -44,6 +44,7 @@ function App() {
           size: widths.notifications,
           trigger: {
             iconName: 'notification',
+            count: messages.length,
           },
         },
       ],

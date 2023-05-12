@@ -14,10 +14,11 @@ export interface TriggerButtonProps {
   iconSvg?: React.ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
+  counter?: number;
 }
 
 function TriggerButton(
-  { ariaLabel, className, iconName, iconSvg, onClick, selected = false }: TriggerButtonProps,
+  { ariaLabel, className, iconName, iconSvg, onClick, selected = false, counter }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
@@ -37,9 +38,18 @@ function TriggerButton(
       type="button"
     >
       {iconName && !iconSvg && <Icon name={iconName} />}
+      {!!counter && <CountBadge count={counter} />}
       {iconSvg}
     </button>
   );
+}
+
+interface CountBadgeProps {
+  count: number;
+}
+
+function CountBadge({ count }: CountBadgeProps) {
+  return <span className={styles['count-badge']}>{count}</span>;
 }
 
 export default React.forwardRef(TriggerButton);

@@ -11,6 +11,8 @@ import SpaceBetween from '../../../space-between/internal';
 import InternalBox from '../../../box/internal';
 import Icon from '../../../icon/internal';
 import styles from './styles.css.js';
+// eslint-disable-next-line @cloudscape-design/ban-files
+import CollectionPreferences from '../../../collection-preferences';
 
 const ICON_TYPES = {
   success: 'status-positive',
@@ -69,11 +71,58 @@ export const Center = ({ messages }: NotificationsProps) => {
   const errorMessages = messages.filter(message => message.message.type === 'error');
   const warningMessages = messages.filter(message => message.message.type === 'warning');
   const infoMessages = messages.filter(message => message.message.type === 'info');
+
+  const preferencesComponent = (
+    <CollectionPreferences
+      cancelLabel="Cancel"
+      confirmLabel="Confirm"
+      title="Notification preferences"
+      pageSizePreference={{
+        title: 'Toast fade out time',
+        options: [
+          { value: 3, label: 'After 3 sec' },
+          { value: 5, label: 'After 5 sec' },
+          { value: 10, label: 'After 10 sec' },
+          { value: 0, label: 'Auto-closing disabled' },
+        ],
+      }}
+      contentDisplayPreference={{
+        title: 'Select visible tabs',
+        description: 'Customize notification types visibility',
+        options: [
+          {
+            label: 'All',
+            id: 'first',
+            alwaysVisible: true,
+          },
+          {
+            label: 'Success',
+            id: 'success',
+          },
+          {
+            label: 'Error',
+            id: 'error',
+          },
+          {
+            label: 'Warning',
+            id: 'warning',
+          },
+          {
+            label: 'Info',
+            id: 'info',
+          },
+        ],
+      }}
+    />
+  );
+
   return (
     <div>
       <InternalBox padding={'l'}>
         <InternalBox padding={'xs'}>
-          <InternalHeader variant="h2">Notifications</InternalHeader>
+          <InternalHeader variant="h2" actions={preferencesComponent}>
+            Notifications
+          </InternalHeader>
         </InternalBox>
         <Tabs
           tabs={[

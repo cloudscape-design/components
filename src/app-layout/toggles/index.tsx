@@ -30,7 +30,7 @@ export const togglesConfig = {
 
 export const AppLayoutButton = React.forwardRef(
   (
-    { className, ariaLabel, ariaExpanded, iconName, iconSvg, disabled, onClick }: AppLayoutButtonProps,
+    { className, ariaLabel, ariaExpanded, iconName, iconSvg, disabled, onClick, count }: AppLayoutButtonProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     return (
@@ -45,6 +45,7 @@ export const AppLayoutButton = React.forwardRef(
         iconSvg={iconSvg}
         disabled={disabled}
         ariaExpanded={ariaExpanded ? undefined : false}
+        counter={count}
         __nativeAttributes={{ 'aria-haspopup': ariaExpanded ? undefined : true }}
       />
     );
