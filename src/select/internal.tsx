@@ -187,6 +187,7 @@ const InternalSelect = React.forwardRef(
       onLoadMore: handleLoadMore,
       ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
       ariaDescribedby: dropdownStatus.content ? footerId : undefined,
+      statusType: statusType,
     };
 
     const announcement = useAnnouncement({

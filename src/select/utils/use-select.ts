@@ -18,7 +18,7 @@ import { usePrevious } from '../../internal/hooks/use-previous';
 import { BaseKeyDetail, NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
-export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
+export type MenuProps = Omit<OptionsListProps, 'children' | 'statusType'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
 
 interface UseSelectProps {
