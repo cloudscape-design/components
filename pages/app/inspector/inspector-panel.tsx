@@ -95,6 +95,7 @@ function getComponentSegmentName(element: Element): string {
   ];
 
   const classNames = Array.from(element.classList).filter(className => className.startsWith('awsui_'));
+
   for (const className of classNames) {
     const [, qualifier] = className.split('_');
     for (const segmentName of segmentNames) {
@@ -196,7 +197,6 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   };
 
   useEffect(() => {
-    console.log(theme);
     const isVR = !!document.querySelector('.awsui-visual-refresh');
     applyTheme({ theme, baseThemeId: isVR ? 'visual-refresh' : undefined });
   }, [theme]);
@@ -280,9 +280,15 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
 
       function onMouseDown(event: MouseEvent) {
         if (targetRef.current && event.target instanceof Element && !panelRef.current?.contains(event.target)) {
-          event.stopPropagation();
-          event.preventDefault();
-          setInspectorEnabled(false);
+          if (inspectorEnabled) {
+            event.stopPropagation();
+            event.preventDefault();
+          }
+
+          // Delay so that onClick fires before it.
+          setTimeout(() => {
+            setInspectorEnabled(false);
+          }, 100);
         }
         if (cursor) {
           cursor.style.background = '';
@@ -292,8 +298,10 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
 
       function onClick(event: MouseEvent) {
         if (targetRef.current && event.target instanceof Element && !panelRef.current?.contains(event.target)) {
-          event.stopPropagation();
-          event.preventDefault();
+          if (inspectorEnabled) {
+            event.stopPropagation();
+            event.preventDefault();
+          }
         }
       }
 
