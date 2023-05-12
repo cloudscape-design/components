@@ -4,45 +4,11 @@
 import React, { useEffect, useRef, useState, ReactNode } from 'react';
 import { Box, Button, FileUpload, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import tokenMapping from './tokens-mapping.json';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import tokenDict from './tokens-descriptions.json';
-import { cloneDeep, groupBy, uniqBy, startCase, sortBy } from 'lodash';
-import { applyTheme } from '~components/theming';
+import { groupBy, startCase, sortBy } from 'lodash';
 import { componentsMap } from './component-tokens-mapping';
-
-interface Token {
-  section: string;
-  name: string;
-  cssName: string;
-  description?: string;
-}
-
-function readTokenValue(element: Element, cssTokenName: string): string {
-  return window.getComputedStyle(element).getPropertyValue(cssTokenName) ?? '';
-}
-
-function getTokenDescription(tokenName: string): string {
-  const description = tokenDict[tokenName]?.description;
-  return description;
-}
-
-const stylesMapping = Object.entries(tokenMapping)
-  .map(([selector, tokenByState]: any) => ({
-    selector,
-    tokens: Object.entries(tokenByState).flatMap(([key, tokens]: any) =>
-      tokens.map((token: { name: string; cssName: string }) => ({
-        section: key,
-        name: token.name,
-        cssName: token.cssName,
-        description: getTokenDescription(token.name),
-      }))
-    ),
-  }))
-  .filter(({ selector }) => selector.trim()) as { selector: string; tokens: Token[] }[];
+import { Token } from './styles-mapping';
+import { getElementContext, getElementName, getElementTokens, readTokenValue } from './element-utils';
+import { Theme, applyTheme, createDefaultTheme, exportTheme, importTheme, setThemeToken } from './theme-utils';
 
 const TREE_SIZE = 4;
 
@@ -62,91 +28,6 @@ interface InspectorPanelProps {
   onClose: () => void;
 }
 
-function getElementTokens(element: Element): Token[] {
-  const tokens: Token[] = [];
-  for (const style of stylesMapping) {
-    try {
-      if (element.matches(style.selector)) {
-        tokens.push(...style.tokens);
-      }
-    } catch (error) {
-      console.warn(`Invalid selector: "${style.selector}".`);
-    }
-  }
-  return uniqBy(tokens, token => token.section + ':' + token.name);
-}
-
-function getComponentSegmentName(element: Element): string {
-  const segmentNames = [
-    'action',
-    'area',
-    'bar',
-    'body',
-    'button',
-    'container',
-    'content',
-    'footer',
-    'group',
-    'header',
-    'list',
-    'panel',
-    'section',
-    'tools',
-  ];
-
-  const classNames = Array.from(element.classList).filter(className => className.startsWith('awsui_'));
-
-  for (const className of classNames) {
-    const [, qualifier] = className.split('_');
-    for (const segmentName of segmentNames) {
-      if (qualifier.includes(segmentName)) {
-        return qualifier;
-      }
-    }
-  }
-
-  return 'part';
-}
-
-function getElementName(element: Element): string {
-  const componentName = (element as any).__awsuiMetadata__?.name;
-  if (componentName) {
-    return componentName;
-  }
-
-  let componentAncestor: null | Element = element;
-  while (componentAncestor) {
-    const componentName = (componentAncestor as any).__awsuiMetadata__?.name;
-    if (componentName) {
-      return `${componentName} - ${getComponentSegmentName(element)}`;
-    }
-    componentAncestor = componentAncestor.parentElement;
-  }
-
-  return element.tagName;
-}
-
-function getElementContext(element: Element): null | string {
-  let current: null | Element = element;
-  while (current) {
-    const contextClassName = Array.from(current.classList).find(className => className.startsWith('awsui-context-'));
-    if (contextClassName) {
-      return contextClassName.slice('awsui-context-'.length);
-    }
-    current = current.parentElement;
-  }
-  return null;
-}
-
-interface Theme {
-  tokens: Record<string, string | { light: string; dark: string }>;
-  contexts: {
-    'compact-table': { tokens: Record<string, string | { light: string; dark: string }> };
-    'top-navigation': { tokens: Record<string, string | { light: string; dark: string }> };
-    flashbar: { tokens: Record<string, string | { light: string; dark: string }> };
-  };
-}
-
 export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -155,24 +36,10 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const [inspectorEnabled, setInspectorEnabled] = useState(false);
   const [selectedNode, setSelectedNode] = useState<null | InspectedElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [theme, setTheme] = useState<Theme>({
-    tokens: {},
-    contexts: { 'compact-table': { tokens: {} }, 'top-navigation': { tokens: {} }, flashbar: { tokens: {} } },
-  });
+  const [theme, setTheme] = useState(createDefaultTheme());
 
-  const setTokenValue = (tokenName: string, value: string, context: null | string = null, scope: 'light' | 'dark') => {
-    setTheme(prev => {
-      const next = cloneDeep(prev);
-      const tokens =
-        context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
-          ? next.contexts[context].tokens
-          : next.tokens;
-      const currValue = tokens[tokenName];
-      const currValueObj =
-        typeof currValue === 'object' ? { ...currValue } : { light: currValue ?? value, dark: currValue ?? value };
-      tokens[tokenName] = scope ? { ...currValueObj, [scope]: value } : value;
-      return next;
-    });
+  const setTokenValue = (token: string, value: string, scope: 'light' | 'dark', context: null | string = null) => {
+    setTheme(theme => setThemeToken(theme, token, value, scope, context));
   };
 
   const onHoverToken = (node: null | Element) => {
@@ -197,8 +64,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   };
 
   useEffect(() => {
-    const isVR = !!document.querySelector('.awsui-visual-refresh');
-    applyTheme({ theme, baseThemeId: isVR ? 'visual-refresh' : undefined });
+    applyTheme(theme);
   }, [theme]);
 
   useEffect(
@@ -402,15 +268,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
             value={[]}
             onChange={({ detail }) => {
               if (detail.value[0]) {
-                const reader = new FileReader();
-
-                reader.onload = event => {
-                  const result = event.target?.result;
-                  const theme = JSON.parse(typeof result === 'string' ? result : '{}');
-                  setTheme(theme);
-                };
-
-                reader.readAsText(detail.value[0]);
+                importTheme(detail.value[0], setTheme);
               }
             }}
             i18nStrings={{
@@ -422,18 +280,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
               errorIconAriaLabel: 'Error',
             }}
           />
-          <Button
-            iconName="download"
-            onClick={() => {
-              const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(theme));
-              const downloadAnchorNode = document.createElement('a');
-              downloadAnchorNode.setAttribute('href', dataStr);
-              downloadAnchorNode.setAttribute('download', 'theme.json');
-              document.body.appendChild(downloadAnchorNode);
-              downloadAnchorNode.click();
-              downloadAnchorNode.remove();
-            }}
-          >
+          <Button iconName="download" onClick={() => exportTheme(theme)}>
             Export theme
           </Button>
         </div>
@@ -475,7 +322,7 @@ function Tokens({
 }: {
   tokens: Token[];
   theme: Theme;
-  setTokenValue: (tokenName: string, value: string, context: null | string, scope: 'light' | 'dark') => void;
+  setTokenValue: (tokenName: string, value: string, scope: 'light' | 'dark', context: null | string) => void;
   context: null | string;
   element: Element;
 }) {
@@ -518,7 +365,7 @@ function Tokens({
                       control={
                         <ColorPicker
                           color={value}
-                          onSetColor={value => setTokenValue(token.name, value, context, isDarkMode ? 'dark' : 'light')}
+                          onSetColor={value => setTokenValue(token.name, value, isDarkMode ? 'dark' : 'light', context)}
                         />
                       }
                     >
@@ -531,7 +378,7 @@ function Tokens({
                         <Input
                           value={value}
                           onChange={e =>
-                            setTokenValue(token.name, e.detail.value, context, isDarkMode ? 'dark' : 'light')
+                            setTokenValue(token.name, e.detail.value, isDarkMode ? 'dark' : 'light', context)
                           }
                         />
                       }
