@@ -52,11 +52,19 @@ export function NotificationProvider(children: React.ReactNode) {
     );
   }, []);
 
+  const removeFromQueue = useCallback(function hideFromScreen(key: ToastProps['id']) {
+    setQueue(messages =>
+      messages.filter(message => {
+        return message.id !== key;
+      })
+    );
+  }, []);
+
   return (
     <NotificationContext.Provider value={{ toast, viewAll, markViewed, messages }}>
       {children}
       <Portal>
-        <ToastList toasts={queue} />
+        <ToastList toasts={queue} onAutoClose={removeFromQueue} />
       </Portal>
     </NotificationContext.Provider>
   );

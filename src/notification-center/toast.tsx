@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
-import { NotificationCenterProps } from './interface';
+import { NotificationCenterProps, ToastProps } from './interface';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
 import LiveRegion from '../internal/components/live-region';
@@ -34,14 +34,16 @@ function dismissButton(
   );
 }
 
-export interface ToastProps extends Omit<NotificationCenterProps.ToastMessage, 'duration'> {
+export interface ToastItemProps extends ToastProps {
   transitionState?: string;
+  onAutoClose: (id: NotificationCenterProps.ID) => void;
 }
 
 export const Toast = React.forwardRef(
-  (
-    {
+  ({ message, id, onAutoClose, visible }: ToastItemProps, ref: React.Ref<HTMLDivElement>) => {
+    const {
       type,
+      duration,
       title,
       content,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -51,28 +53,40 @@ export const Toast = React.forwardRef(
       dismissLabel,
       onDismiss,
       statusIconAriaLabel,
-      transitionState,
-    }: ToastProps,
-    ref: React.Ref<HTMLDivElement>
-  ) => {
+    } = message;
     const iconType = ICON_TYPES[type];
+    const timerAutoHide = useRef<ReturnType<typeof setTimeout>>();
+
+    const setAutoHideTimer = useCallback(
+      function setTimer(duration: number) {
+        if (timerAutoHide.current) {
+          clearTimeout(timerAutoHide.current);
+        }
+        timerAutoHide.current = setTimeout(() => {
+          onAutoClose(id);
+        }, duration);
+      },
+      [id, onAutoClose]
+    );
+
+    useEffect(() => {
+      if (visible) {
+        setAutoHideTimer(duration);
+      }
+
+      return () => {
+        if (timerAutoHide.current) {
+          clearTimeout(timerAutoHide.current);
+        }
+      };
+    }, [duration, visible, setAutoHideTimer]);
+
     return (
       <div
         ref={ref}
         role={ariaRole}
         aria-live={ariaRole ? 'off' : undefined}
-        className={clsx(
-          styles.toast,
-          styles[`toast-type-${type}`],
-          transitionState && {
-            [styles.enter]: transitionState === 'enter',
-            [styles.entering]: transitionState === 'entering',
-            [styles.entered]: transitionState === 'entered',
-            [styles.exit]: transitionState === 'exit',
-            [styles.exiting]: transitionState === 'exiting',
-            [styles.exited]: transitionState === 'exited',
-          }
-        )}
+        className={clsx(styles.toast, styles[`toast-type-${type}`])}
       >
         <div className={styles['toast-body']}>
           <div className={styles['toast-focus-container']} tabIndex={-1}>
