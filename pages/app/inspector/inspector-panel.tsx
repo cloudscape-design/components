@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState, ReactNode } from 'react';
-import { Box, Button, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
+import { Box, Button, FileUpload, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -334,14 +334,22 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
         boxSizing: 'border-box',
         position: 'relative',
         borderLeft: '1px solid #000000',
-        overflowY: 'auto',
       }}
     >
       <div style={{ position: 'absolute', top: '6px', right: '4px' }}>
         <Button onClick={onClose} variant="icon" iconName="close" />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          height: '100%',
+          boxSizing: 'border-box',
+          overflowY: 'auto',
+        }}
+      >
         <Box variant="h3">Theme configurator</Box>
         <Toggle onChange={({ detail }) => setInspectorEnabled(detail.checked)} checked={inspectorEnabled}>
           Elements inspector
@@ -376,6 +384,59 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
             <TokensPanelMessage>No tokens matched.</TokensPanelMessage>
           )}
         </TokensPanel>
+
+        <div
+          style={{
+            backgroundColor: '#eee',
+            width: '100%',
+            padding: '8px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            gap: '8px',
+            justifyContent: 'center',
+          }}
+        >
+          <FileUpload
+            multiple={false}
+            accept="application/json"
+            value={[]}
+            onChange={({ detail }) => {
+              if (detail.value[0]) {
+                const reader = new FileReader();
+
+                reader.onload = event => {
+                  const result = event.target?.result;
+                  const theme = JSON.parse(typeof result === 'string' ? result : '{}');
+                  setTheme(theme);
+                };
+
+                reader.readAsText(detail.value[0]);
+              }
+            }}
+            i18nStrings={{
+              uploadButtonText: () => 'Import theme',
+              dropzoneText: () => 'Drop file to upload',
+              removeFileAriaLabel: () => 'Remove file',
+              limitShowFewer: 'Show fewer files',
+              limitShowMore: 'Show more files',
+              errorIconAriaLabel: 'Error',
+            }}
+          />
+          <Button
+            iconName="download"
+            onClick={() => {
+              const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(theme));
+              const downloadAnchorNode = document.createElement('a');
+              downloadAnchorNode.setAttribute('href', dataStr);
+              downloadAnchorNode.setAttribute('download', 'theme.json');
+              document.body.appendChild(downloadAnchorNode);
+              downloadAnchorNode.click();
+              downloadAnchorNode.remove();
+            }}
+          >
+            Export theme
+          </Button>
+        </div>
       </div>
 
       {/* Inspector cursor */}
@@ -399,7 +460,7 @@ function TokensPanel({ children }: { children: React.ReactNode }) {
 
 function TokensPanelMessage({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ position: 'absolute', top: '50%', width: '100%', textAlign: 'center' }}>
+    <div style={{ margin: '24px 0', width: '100%', textAlign: 'center' }}>
       <Box>{children}</Box>
     </div>
   );
