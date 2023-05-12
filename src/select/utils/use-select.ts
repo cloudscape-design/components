@@ -17,8 +17,9 @@ import { ItemProps } from '../parts/item';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { BaseKeyDetail, NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { DropdownStatusProps } from '../../internal/components/dropdown-status';
 
-export type MenuProps = Omit<OptionsListProps, 'children' | 'statusType'> & { ref: React.RefObject<HTMLUListElement> };
+export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
 
 interface UseSelectProps {
@@ -33,6 +34,7 @@ interface UseSelectProps {
   fireLoadItems: (filteringText: string) => void;
   setFilteringValue: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
+  statusType: DropdownStatusProps.StatusType;
 }
 
 export interface SelectTriggerProps {
@@ -55,6 +57,7 @@ export function useSelect({
   fireLoadItems,
   setFilteringValue,
   useInteractiveGroups = false,
+  statusType,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
@@ -193,6 +196,7 @@ export function useSelect({
           setHighlightedIndexWithMouse(itemIndex);
         }
       },
+      statusType,
     };
     if (!hasFilter) {
       menuProps.onKeyDown = activeKeyDownHandler;

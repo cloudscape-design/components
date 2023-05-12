@@ -163,6 +163,7 @@ const InternalMultiselect = React.forwardRef(
       fireLoadItems,
       setFilteringValue,
       useInteractiveGroups,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
