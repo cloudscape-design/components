@@ -595,7 +595,11 @@ function Tokens({
                   const value = themeValueStr ?? readTokenValue(element, token.cssName);
                   return (
                     <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
-                      <Box color="text-body-secondary">{value}</Box>
+                      {token.name.startsWith('color') ? (
+                        <ColorIndicator color={value} />
+                      ) : (
+                        <Box color="text-body-secondary">{value}</Box>
+                      )}
                       <Box margin={{ left: 'xs' }}>{token.name}</Box>
                     </li>
                   );
