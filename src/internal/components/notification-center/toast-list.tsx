@@ -3,6 +3,7 @@
 import React from 'react';
 import { Toast } from './toast';
 import { NotificationCenterProps, ToastProps } from './interface';
+import SpaceBetween from '../../../space-between/internal';
 import styles from './styles.css.js';
 
 interface ToastListProps {
@@ -12,9 +13,11 @@ interface ToastListProps {
 export const ToastList = ({ toasts, onAutoClose }: ToastListProps) => {
   return (
     <div className={styles['toasts-list']}>
-      {toasts.map(toast => (
-        <Toast key={toast.id} onAutoClose={onAutoClose} {...toast} />
-      ))}
+      <SpaceBetween size={'xs'}>
+        {toasts.map(toast => (
+          <Toast key={toast.id} onAutoClose={onAutoClose} {...toast} />
+        ))}
+      </SpaceBetween>
     </div>
   );
 };

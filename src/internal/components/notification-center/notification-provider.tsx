@@ -5,20 +5,21 @@ import React, { useState, useCallback } from 'react';
 import { ToastList } from './toast-list';
 import NotificationContext from './notification-context';
 import Portal from '../portal';
-import { useUniqueId } from '../../hooks/use-unique-id';
 import { ToastProps } from './interface';
 
 export interface NotificationProviderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export function NotificationProvider(props: NotificationProviderProps) {
   const [messages, setMessages] = useState<Array<ToastProps>>([]);
   const [queue, setQueue] = useState<Array<ToastProps>>([]);
+  const getUniqueId = (prefix: string) => {
+    return `${prefix ? prefix : ''}` + `${Date.now()}-${Math.round(Math.random() * 10000)}`;
+  };
 
   const toast = useCallback(function registerNewToast(message: ToastProps['message']) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const id = useUniqueId('toast');
+    const id = getUniqueId('toast');
     const toast: ToastProps = {
       message,
       id,

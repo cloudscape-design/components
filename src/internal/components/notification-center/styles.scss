@@ -81,6 +81,12 @@
   /* Only used as a selector for test-utils */
 }
 
+.toast-time {
+  margin-top: awsui.$space-scaled-xxs;
+  //color: awsui.$color-text-label;
+  font-size: 12px;
+}
+
 .dismiss-button-wrapper {
   flex: 0 0 auto;
   margin-left: awsui.$space-s;
@@ -115,5 +121,8 @@
 .toasts-list {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  position: absolute;
+  top: 60px;
+  left: 40%;
+  z-index: 9999;
 }
