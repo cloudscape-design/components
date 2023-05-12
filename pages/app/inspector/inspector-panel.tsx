@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState, ReactNode } from 'react';
-import { Box, Button, FileUpload, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
+import React, { useEffect, useRef, useState } from 'react';
+import { Box, Button, FileUpload, Link, SpaceBetween, Toggle } from '~components';
 
 import { groupBy, startCase, sortBy } from 'lodash';
-import { componentsMap } from './component-tokens-mapping';
 import { Token } from './styles-mapping';
 import { getElementContext, getElementName, getElementTokens, readTokenValue } from './element-utils';
 import {
@@ -19,6 +18,7 @@ import {
 } from './theme-utils';
 import styles from './styles.scss';
 import clsx from 'clsx';
+import { ColorIndicator, ValueEditor } from './value-editor';
 
 const TREE_SIZE = 4;
 
@@ -334,31 +334,12 @@ function Tokens({
               const value = themeReader(token.name) ?? readTokenValue(element, token.cssName);
               return (
                 <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
-                  {token.name.startsWith('color') ? (
-                    <EditorPopover
-                      tokenName={token.name}
-                      control={
-                        <ColorPicker color={value} onSetColor={value => setTokenValue(token.name, value, context)} />
-                      }
-                    >
-                      <ColorIndicator color={value} />
-                    </EditorPopover>
-                  ) : (
-                    <EditorPopover
-                      tokenName={token.name}
-                      control={
-                        <Input value={value} onChange={e => setTokenValue(token.name, e.detail.value, context)} />
-                      }
-                    >
-                      {token.name.includes('borderRadius') ? (
-                        <RadiusPreview radius={value || '4px'} />
-                      ) : token.name.includes('fontFamily') ? (
-                        <FontPreview family={value} />
-                      ) : (
-                        '??'
-                      )}
-                    </EditorPopover>
-                  )}
+                  <ValueEditor
+                    token={token.name}
+                    value={value}
+                    onChange={value => setTokenValue(token.name, value, context)}
+                  />
+
                   <Box margin={{ left: 'xs' }}>
                     <SpaceBetween size="xxs">
                       <Box>{token.name}</Box>
@@ -418,117 +399,6 @@ function Tokens({
         </>
       </details>
     </SpaceBetween>
-  );
-}
-
-const EditorPopover = ({
-  children,
-  tokenName,
-  control,
-}: {
-  children: ReactNode;
-  tokenName: string;
-  control: ReactNode;
-}) => {
-  function getTokenComponents(token: string) {
-    const components: string[] = [];
-    for (const [key, value] of Object.entries(componentsMap)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      value.length > 0 && value.includes(token) && components.push(key);
-    }
-    return components;
-  }
-
-  return (
-    <Popover
-      header="Edit token value"
-      content={
-        <SpaceBetween size="s">
-          {getTokenComponents(tokenName).length > 0 && (
-            <>
-              <Box>
-                Updating this value will update the value in <b>{getTokenComponents(tokenName).length}</b> components.
-              </Box>
-              <details>
-                <summary>
-                  <Box display="inline">Components that use this token</Box>
-                </summary>
-                <Box color="text-body-secondary">{getTokenComponents(tokenName).join(', ')}</Box>
-              </details>
-            </>
-          )}
-          {control}
-        </SpaceBetween>
-      }
-      triggerType="custom"
-    >
-      {children}
-    </Popover>
-  );
-};
-
-function ColorPicker({ color, onSetColor }: { color: string; onSetColor: (value: string) => void }) {
-  return (
-    <SpaceBetween size="xs" direction="vertical">
-      <input type="color" value={color} onChange={e => onSetColor(e.target.value)} />
-    </SpaceBetween>
-  );
-}
-
-const previewBaseStyles = {
-  width: 20,
-  height: 20,
-  marginTop: '2px',
-  padding: 0,
-  borderRadius: 4,
-  borderWidth: 1,
-  borderColor: '#879596',
-  borderStyle: 'solid',
-  background: 'transparent',
-};
-
-function ColorIndicator({ color }: { color: string }) {
-  return (
-    <button
-      style={{
-        appearance: 'none',
-        ...previewBaseStyles,
-        background: color,
-      }}
-    />
-  );
-}
-
-function RadiusPreview({ radius }: { radius: string }) {
-  return (
-    <button
-      style={{
-        appearance: 'none',
-        ...previewBaseStyles,
-        borderRadius: radius,
-        borderWidth: 2,
-        borderLeftColor: 'transparent',
-        borderBottomColor: 'transparent',
-      }}
-    />
-  );
-}
-
-function FontPreview({ family }: { family: string }) {
-  return (
-    <button
-      style={{
-        appearance: 'none',
-        ...previewBaseStyles,
-        marginTop: 0,
-        border: 0,
-        fontFamily: family,
-        fontSize: '16px',
-      }}
-    >
-      Aa
-    </button>
   );
 }
 

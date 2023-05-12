@@ -54,3 +54,13 @@
   padding: tokens.$space-static-xxs tokens.$space-static-xs;
   background-color: tokens.$color-background-container-header;
 }
+
+.value-preview {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  padding: 0px;
+  border-radius: 4px;
+  border: 1px solid tokens.$color-border-input-default;
+  background: transparent;
+}
