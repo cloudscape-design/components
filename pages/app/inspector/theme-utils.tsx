@@ -8,6 +8,7 @@ export interface Theme {
   tokens: Record<string, string | { light: string; dark: string }>;
   contexts: {
     'compact-table': { tokens: Record<string, string | { light: string; dark: string }> };
+    header: { tokens: Record<string, string | { light: string; dark: string }> };
     'top-navigation': { tokens: Record<string, string | { light: string; dark: string }> };
     flashbar: { tokens: Record<string, string | { light: string; dark: string }> };
   };
@@ -16,26 +17,42 @@ export interface Theme {
 export function createDefaultTheme(): Theme {
   return {
     tokens: {},
-    contexts: { 'compact-table': { tokens: {} }, 'top-navigation': { tokens: {} }, flashbar: { tokens: {} } },
+    contexts: {
+      'compact-table': { tokens: {} },
+      header: { tokens: {} },
+      'top-navigation': { tokens: {} },
+      flashbar: { tokens: {} },
+    },
   };
 }
 
-export function setThemeToken(
-  theme: Theme,
-  token: string,
-  value: string,
-  scope: 'light' | 'dark',
-  context: null | string = null
-): Theme {
+export function createThemeReader(theme: Theme, context: null | string) {
+  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
+  const scope = isDarkMode ? 'dark' : 'light';
+  return (token: string) => {
+    const themeValue =
+      context === 'compact-table' || context === 'header' || context === 'top-navigation' || context === 'flashbar'
+        ? theme.contexts[context].tokens[token]
+        : theme.tokens[token];
+    return typeof themeValue === 'object' ? themeValue[scope] : themeValue;
+  };
+}
+
+export function setThemeToken(theme: Theme, token: string, value: string, context: null | string = null): Theme {
+  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
+  const scope = isDarkMode ? 'dark' : 'light';
+
   const next = cloneDeep(theme);
   const tokens =
-    context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
+    (context === 'compact-table' || context === 'header' || context === 'top-navigation' || context === 'flashbar') &&
+    token.startsWith('color')
       ? next.contexts[context].tokens
       : next.tokens;
   const currValue = tokens[token];
   const currValueObj =
     typeof currValue === 'object' ? { ...currValue } : { light: currValue ?? value, dark: currValue ?? value };
-  tokens[token] = scope ? { ...currValueObj, [scope]: value } : value;
+  tokens[token] = token.startsWith('color') && scope ? { ...currValueObj, [scope]: value } : value;
+
   return next;
 }
 

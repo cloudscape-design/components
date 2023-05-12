@@ -8,7 +8,15 @@ import { groupBy, startCase, sortBy } from 'lodash';
 import { componentsMap } from './component-tokens-mapping';
 import { Token } from './styles-mapping';
 import { getElementContext, getElementName, getElementTokens, readTokenValue } from './element-utils';
-import { Theme, applyTheme, createDefaultTheme, exportTheme, importTheme, setThemeToken } from './theme-utils';
+import {
+  Theme,
+  applyTheme,
+  createDefaultTheme,
+  createThemeReader,
+  exportTheme,
+  importTheme,
+  setThemeToken,
+} from './theme-utils';
 
 const TREE_SIZE = 4;
 
@@ -38,8 +46,8 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [theme, setTheme] = useState(createDefaultTheme());
 
-  const setTokenValue = (token: string, value: string, scope: 'light' | 'dark', context: null | string = null) => {
-    setTheme(theme => setThemeToken(theme, token, value, scope, context));
+  const setTokenValue = (token: string, value: string, context: null | string = null) => {
+    setTheme(theme => setThemeToken(theme, token, value, context));
   };
 
   const onHoverToken = (node: null | Element) => {
@@ -322,11 +330,11 @@ function Tokens({
 }: {
   tokens: Token[];
   theme: Theme;
-  setTokenValue: (tokenName: string, value: string, scope: 'light' | 'dark', context: null | string) => void;
+  setTokenValue: (tokenName: string, value: string, context: null | string) => void;
   context: null | string;
   element: Element;
 }) {
-  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
+  const themeReader = createThemeReader(theme, context);
 
   const publicTokens = groupBy(
     tokens.filter(t => t.description),
@@ -350,23 +358,14 @@ function Tokens({
             }}
           >
             {sortBy(publicTokens[section], token => token.name).map(token => {
-              const themeValue =
-                context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
-                  ? theme.contexts[context].tokens[token.name]
-                  : theme.tokens[token.name];
-              const themeValueStr =
-                typeof themeValue === 'object' ? themeValue[isDarkMode ? 'dark' : 'light'] : themeValue;
-              const value = themeValueStr ?? readTokenValue(element, token.cssName);
+              const value = themeReader(token.name) ?? readTokenValue(element, token.cssName);
               return (
                 <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
                   {token.name.startsWith('color') ? (
                     <EditorPopover
                       tokenName={token.name}
                       control={
-                        <ColorPicker
-                          color={value}
-                          onSetColor={value => setTokenValue(token.name, value, isDarkMode ? 'dark' : 'light', context)}
-                        />
+                        <ColorPicker color={value} onSetColor={value => setTokenValue(token.name, value, context)} />
                       }
                     >
                       <ColorIndicator color={value} />
@@ -375,12 +374,7 @@ function Tokens({
                     <EditorPopover
                       tokenName={token.name}
                       control={
-                        <Input
-                          value={value}
-                          onChange={e =>
-                            setTokenValue(token.name, e.detail.value, isDarkMode ? 'dark' : 'light', context)
-                          }
-                        />
+                        <Input value={value} onChange={e => setTokenValue(token.name, e.detail.value, context)} />
                       }
                     >
                       {token.name.includes('borderRadius') ? (
@@ -433,13 +427,7 @@ function Tokens({
                 }}
               >
                 {sortBy(privateTokens[section], token => token.name).map(token => {
-                  const themeValue =
-                    context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
-                      ? theme.contexts[context].tokens[token.name]
-                      : theme.tokens[token.name];
-                  const themeValueStr =
-                    typeof themeValue === 'object' ? themeValue[isDarkMode ? 'dark' : 'light'] : themeValue;
-                  const value = themeValueStr ?? readTokenValue(element, token.cssName);
+                  const value = themeReader(token.name) ?? readTokenValue(element, token.cssName);
                   return (
                     <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
                       {token.name.startsWith('color') ? (
