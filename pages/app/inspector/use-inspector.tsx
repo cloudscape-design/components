@@ -4,6 +4,7 @@
 import React, { useEffect } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { InspectorPanel } from './inspector-panel';
+import styles from './styles.scss';
 
 let originalBodyPadding = '';
 let panel: null | HTMLElement = null;
@@ -13,14 +14,8 @@ function createTokensPanel(onClose: () => void) {
   document.body.style.paddingRight = '400px';
 
   panel = document.createElement('div');
-  panel.style.position = 'fixed';
-  panel.style.boxSizing = 'border-box';
-  panel.style.zIndex = '10000';
-  panel.style.top = '0px';
-  panel.style.bottom = '0px';
-  panel.style.right = '0px';
   panel.style.width = '400px';
-  panel.style.background = 'white';
+  panel.classList.add(styles.panel);
   document.body.append(panel);
 
   render(<InspectorPanel onClose={onClose} />, panel);

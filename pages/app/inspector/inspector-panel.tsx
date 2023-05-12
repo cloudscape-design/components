@@ -17,6 +17,8 @@ import {
   importTheme,
   setThemeToken,
 } from './theme-utils';
+import styles from './styles.scss';
+import clsx from 'clsx';
 
 const TREE_SIZE = 4;
 
@@ -199,31 +201,12 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   );
 
   return (
-    <div
-      ref={panelRef}
-      style={{
-        width: '100%',
-        height: '100%',
-        padding: '8px',
-        boxSizing: 'border-box',
-        position: 'relative',
-        borderLeft: '1px solid #000000',
-      }}
-    >
+    <div ref={panelRef} className={styles['panel-body']}>
       <div style={{ position: 'absolute', top: '6px', right: '4px' }}>
         <Button onClick={onClose} variant="icon" iconName="close" />
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '8px',
-          height: '100%',
-          boxSizing: 'border-box',
-          overflowY: 'auto',
-        }}
-      >
+      <div className={styles['panel-content']}>
         <Box variant="h3">Theme configurator</Box>
         <Toggle onChange={({ detail }) => setInspectorEnabled(detail.checked)} checked={inspectorEnabled}>
           Elements inspector
@@ -259,17 +242,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
           )}
         </TokensPanel>
 
-        <div
-          style={{
-            backgroundColor: '#eee',
-            width: '100%',
-            padding: '8px',
-            boxSizing: 'border-box',
-            display: 'flex',
-            gap: '8px',
-            justifyContent: 'center',
-          }}
-        >
+        <div className={styles['panel-footer']}>
           <FileUpload
             multiple={false}
             accept="application/json"
@@ -353,9 +326,9 @@ function Tokens({
           <Box variant="h4">{startCase(section.toLowerCase())}</Box>
           <ul
             style={{
-              ...sharedPanelStyles,
               background: 'transparent',
             }}
+            className={styles['elements-list']}
           >
             {sortBy(publicTokens[section], token => token.name).map(token => {
               const value = themeReader(token.name) ?? readTokenValue(element, token.cssName);
@@ -422,9 +395,9 @@ function Tokens({
               <Box variant="h4">{startCase(section.toLowerCase())}</Box>
               <ul
                 style={{
-                  ...sharedPanelStyles,
                   background: 'transparent',
                 }}
+                className={styles['elements-list']}
               >
                 {sortBy(privateTokens[section], token => token.name).map(token => {
                   const value = themeReader(token.name) ?? readTokenValue(element, token.cssName);
@@ -502,13 +475,6 @@ function ColorPicker({ color, onSetColor }: { color: string; onSetColor: (value:
     </SpaceBetween>
   );
 }
-const sharedPanelStyles = {
-  listStyle: 'none',
-  padding: '0px 8px',
-  margin: '0',
-  borderRadius: '6px',
-  border: '1px solid #d1d5db',
-};
 
 const previewBaseStyles = {
   width: 20,
@@ -583,13 +549,7 @@ function ElementsTree({
   }
 
   return (
-    <ul
-      style={{
-        ...sharedPanelStyles,
-        background: '#f4f4f4',
-        padding: '4px 8px',
-      }}
-    >
+    <ul className={clsx(styles['elements-list'], styles['elements-tree'])}>
       {tree.map((node, index) => (
         <li
           key={index}
