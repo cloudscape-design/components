@@ -197,6 +197,17 @@ export interface TableProps<T = any> extends BaseComponentProps {
   sortingDisabled?: boolean;
 
   /**
+   * Specifies the number of first and/or last columns that should be sticky.
+   *
+   * If the available scrollable space is less than a certain threshold, the feature is deactivated.
+   *
+   * Use it in conjunction with the sticky columns preference of the
+   * [collection preferences](/components/collection-preferences/) component.
+   *
+   */
+  stickyColumns?: TableProps.StickyColumns;
+
+  /**
    * Specifies an array that represents the table columns in the order in which they will be displayed, together with their visibility.
    *
    * If not set, all columns are displayed and the order is dictated by the `columnDefinitions` property.
@@ -356,6 +367,11 @@ export namespace TableProps {
     isRowHeader?: boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
+
+  export interface StickyColumns {
+    first?: number;
+    last?: number;
+  }
 
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';

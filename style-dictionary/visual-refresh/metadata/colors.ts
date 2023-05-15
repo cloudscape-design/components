@@ -112,6 +112,36 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
   },
+  colorBackgroundLayoutToggleActive: {
+    description: "The background color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleDefault: {
+    description: 'The default background color of the app layout toggle button.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleHover: {
+    description: 'The background color of the app layout toggle button on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedActive: {
+    description: "The background color of the app layout toggle button when it's selected and active.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedDefault: {
+    description: "The default background color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedHover: {
+    description: "The background color of the app layout toggle button on hover when it's selected.",
+    public: true,
+    themeable: true,
+  },
   colorBackgroundNotificationBlue: {
     description: 'Background color for blue notifications. For example: blue badges and info flash messages.',
     public: true,
@@ -407,6 +437,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextInteractiveActive: {
+    description: 'The color of clickable elements in their active state. For example: tabs and icons.',
+    public: true,
+    themeable: true,
+  },
   colorTextInteractiveDefault: {
     description: 'The color of clickable elements in their default state. For example: tabs, and icons.',
     public: true,
@@ -479,7 +514,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextStatusWarning: { description: 'The color of warning icons.', themeable: true, public: true },
+  colorTextStatusWarning: {
+    description: 'The color of warning icons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextTopNavigationTitle: {
+    description: 'The color of the title in the top navigation.',
+    public: true,
+    themeable: true,
+  },
   colorBoardPlaceholderActive: {
     description: 'The color of board placeholder in active state.',
     themeable: false,

@@ -197,6 +197,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null}
       dropdownContent={
         <AutosuggestOptionsList
+          statusType={statusType}
           autosuggestItemsState={autosuggestItemsState}
           autosuggestItemsHandlers={autosuggestItemsHandlers}
           highlightedOptionId={highlightedOptionId}

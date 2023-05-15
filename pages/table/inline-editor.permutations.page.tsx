@@ -8,6 +8,7 @@ import Multiselect from '~components/multiselect';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+import { useStickyColumns } from '~components/table/use-sticky-columns';
 
 const baseColumnDefinition = { cell: () => 'Cell content', header: 'Column header' };
 
@@ -35,6 +36,7 @@ const editPermutations = createPermutations<TableProps.EditConfig<unknown>>([
 ]);
 
 export default function InlineEditorPermutations() {
+  const stickyState = useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 });
   return (
     <>
       <h1>Table inline editor permutations</h1>
@@ -63,6 +65,8 @@ export default function InlineEditorPermutations() {
                     onEditStart={() => {}}
                     onEditEnd={() => {}}
                     wrapLines={false}
+                    columnId="id"
+                    stickyState={stickyState}
                     {...permutation}
                   />
                 </tr>

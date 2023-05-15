@@ -14,9 +14,11 @@ import {
 import { findUpUntil } from '../../utils/dom';
 import styles from './styles.css.js';
 import { useStableEventHandler } from '../../hooks/use-stable-event-handler';
+import { DropdownStatusProps } from '../dropdown-status';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;
+  statusType: DropdownStatusProps.StatusType;
   /**
    * Options list
    */
@@ -52,6 +54,7 @@ const getItemIndex = (containerRef: React.RefObject<HTMLElement>, event: React.M
 const OptionsList = (
   {
     open,
+    statusType,
     children,
     nativeAttributes = {},
     onKeyDown,
@@ -84,11 +87,10 @@ const OptionsList = (
   });
 
   useEffect(() => {
-    if (!open) {
-      return;
+    if (open && statusType === 'pending') {
+      handleScroll();
     }
-    handleScroll();
-  }, [open, handleScroll]);
+  }, [open, statusType, handleScroll]);
 
   const className = clsx(styles['options-list'], {
     [styles['decrease-top-margin']]: decreaseTopMargin,

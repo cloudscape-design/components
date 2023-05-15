@@ -2591,6 +2591,12 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
   "name": "Button",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the button.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": " Adds aria-expanded to the button element. Use when the button controls an expandable element.",
       "name": "ariaExpanded",
       "optional": true,
@@ -3590,6 +3596,13 @@ Object {
   "name": "Checkbox",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -4111,6 +4124,11 @@ The values for all configured preferences are present even if the user didn't ch
             "type": "number",
           },
           Object {
+            "name": "stickyColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumns",
+          },
+          Object {
             "name": "stripedRows",
             "optional": true,
             "type": "false | true",
@@ -4364,6 +4382,11 @@ It contains the following:
             "type": "number",
           },
           Object {
+            "name": "stickyColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumns",
+          },
+          Object {
             "name": "stripedRows",
             "optional": true,
             "type": "false | true",
@@ -4384,6 +4407,36 @@ It contains the following:
       "name": "preferences",
       "optional": true,
       "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+    },
+    Object {
+      "description": "Configures the sticky columns preference.
+You can set it for both left and right columns.
+
+It contains the following:
+- \`label\` (string) - Specifies the label for each radio group.
+- \`description\` (string) - Specifies the text displayed below each radio group label.
+
+You must set the current value in the \`preferences.stickyColumns\` property.
+",
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.StickyColumnsPreference",
+        "properties": Array [
+          Object {
+            "name": "firstColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumnPreference",
+          },
+          Object {
+            "name": "lastColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumnPreference",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyColumnsPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.StickyColumnsPreference",
     },
     Object {
       "description": "Configures the built-in \\"striped rows\\" preference.
@@ -12062,6 +12115,34 @@ to prevent the user from sorting before items are fully loaded.",
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the number of first and/or last columns that should be sticky.
+If the available scrollable space is less than a certain threshold, the feature is deactivated.
+
+Use it in conjunction with the sticky columns preference of the
+[collection preferences](/components/collection-preferences/) component.
+
+",
+      "inlineType": Object {
+        "name": "TableProps.StickyColumns",
+        "properties": Array [
+          Object {
+            "name": "first",
+            "optional": true,
+            "type": "number",
+          },
+          Object {
+            "name": "last",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyColumns",
+      "optional": true,
+      "type": "TableProps.StickyColumns",
+    },
+    Object {
       "description": "If set to \`true\`, the table header remains visible when the user scrolls down.",
       "name": "stickyHeader",
       "optional": true,
@@ -12341,6 +12422,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "variant",
       "optional": true,
       "type": "string",
+      "visualRefreshTag": "\`stacked\` variant",
     },
   ],
   "regions": Array [],
@@ -13132,6 +13214,13 @@ Object {
   "name": "Tiles",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -13483,6 +13572,13 @@ Object {
   ],
   "name": "Toggle",
   "properties": Array [
+    Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.

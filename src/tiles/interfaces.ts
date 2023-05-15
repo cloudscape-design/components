@@ -48,6 +48,12 @@ export interface TilesProps extends BaseComponentProps, FormFieldControlProps {
    * Called when the user selects a different tile.
    */
   onChange?: NonCancelableEventHandler<TilesProps.ChangeDetail>;
+
+  /**
+   * Adds `aria-controls` attribute to the component.
+   * If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.
+   */
+  ariaControls?: string;
 }
 
 export namespace TilesProps {

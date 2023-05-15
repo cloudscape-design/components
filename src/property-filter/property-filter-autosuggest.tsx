@@ -163,6 +163,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     } else if (autosuggestItemsState.items.length > 0) {
       content = (
         <AutosuggestOptionsList
+          statusType={statusType}
           autosuggestItemsState={autosuggestItemsState}
           autosuggestItemsHandlers={autosuggestItemsHandlers}
           highlightedOptionId={highlightedOptionId}

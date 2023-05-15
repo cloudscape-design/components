@@ -36,6 +36,60 @@ export const contentDensityPreference: CollectionPreferencesProps.ContentDensity
   description: 'Content density description',
 };
 
+export const visibleContentPreference: CollectionPreferencesProps.VisibleContentPreference = {
+  title: 'Content Selection',
+  options: [
+    {
+      label: 'Main distribution properties',
+      options: [
+        { id: 'id', label: 'Distribution ID', editable: false },
+        {
+          id: 'domainName',
+          label:
+            'Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name',
+        },
+      ],
+    },
+    {
+      label: 'Secondary distribution properties',
+      options: [
+        {
+          id: 'deliveryMethod',
+          label: 'Deliverymethod',
+          editable: true,
+        },
+        { id: 'priceClass', label: 'Price class', editable: false },
+        { id: 'sslCertificate', label: 'SSL certificate' },
+        {
+          id: 'origin',
+          label:
+            'OriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOrigin',
+        },
+      ],
+    },
+  ],
+};
+
+export const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
+  firstColumns: {
+    title: 'Stick first column(s)',
+    description: 'Keep the first column(s) visible while horizontally scrolling the table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'First column', value: 1 },
+      { label: 'First two columns', value: 2 },
+    ],
+  },
+  lastColumns: {
+    title: 'Stick last column',
+    description: 'Keep the last column visible while horizontally scrolling the table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'Last column', value: 1 },
+    ],
+  },
+};
+
 export const customPreference = (customState: boolean) => (
   <Checkbox checked={customState} onChange={() => {}}>
     View as
