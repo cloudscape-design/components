@@ -104,7 +104,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBackgroundLayoutMain: {
-    description: 'The background color of the main content area on a page. For example:  content area in app layout.',
+    description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
     themeable: true,
   },
@@ -154,6 +154,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundNotificationRed: {
     description: 'Background color for red notifications. For example: red badges and error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundPopover: {
+    description: 'Background color for the popover container component.',
     public: true,
     themeable: true,
   },
