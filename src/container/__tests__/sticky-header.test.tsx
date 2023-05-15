@@ -133,7 +133,9 @@ describe('computeOffset', () => {
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe(`calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}) - 10px)`);
+    expect(result).toBe(
+      `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}, 0px) - 10px)`
+    );
   });
 
   it('should calculate offset for mobile without visual refresh', () => {
