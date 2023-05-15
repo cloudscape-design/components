@@ -158,7 +158,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBackgroundPopover: {
-    description: 'Background color for the popover container component.',
+    description: 'Background color for the popover container.',
     public: true,
     themeable: true,
   },
