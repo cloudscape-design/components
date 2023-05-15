@@ -2057,7 +2057,8 @@ When controlling this directly, make sure to update the value based on filtering
     },
     Object {
       "defaultValue": "\\"linear\\"",
-      "description": "Determines the type of scale for values on the x axis.",
+      "description": "Determines the type of scale for values on the x axis.
+Use \`categorical\` for bar charts.",
       "inlineType": Object {
         "name": "ScaleType",
         "type": "union",
@@ -8050,7 +8051,8 @@ When controlling this directly, make sure to update the value based on filtering
     },
     Object {
       "defaultValue": "\\"linear\\"",
-      "description": "Determines the type of scale for values on the x axis.",
+      "description": "Determines the type of scale for values on the x axis.
+Use \`categorical\` for charts with bars.",
       "inlineType": Object {
         "name": "ScaleType",
         "type": "union",
