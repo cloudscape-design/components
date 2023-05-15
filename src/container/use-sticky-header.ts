@@ -41,12 +41,17 @@ export function computeOffset({
   let computedOffset = `${effectiveStickyOffset}px`;
 
   if (isMobile) {
-    // VR uses CSS custom properties for the offset value and classic uses AppLayoutContext
-    computedOffset = isVisualRefresh
-      ? `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}, 0px) - ${Math.abs(
-          __stickyOffset ?? 0
-        )}px)`
-      : `${stickyOffsetTop + mobileBarHeight - (__stickyOffset ?? 0)}px`;
+    // The mobile offset is the sum of of stickyOffsetTop (AppLayout header height)
+    // and mobileBarHeight (AppLayout mobile bar height),
+    // from which we subtract __stickyOffset (Tools header height).
+
+    // Classic offset is calculated using the AppLayout context
+    const classicOffset = `${stickyOffsetTop + mobileBarHeight - (__stickyOffset ?? 0)}px`;
+
+    // VR offset is calculated using CSS custom properties
+    const visualRefreshOffset = `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}, 0px) - ${__stickyOffset}px)`;
+
+    computedOffset = isVisualRefresh ? visualRefreshOffset : classicOffset;
   } else if (isVisualRefresh && !hasInnerOverflowParents) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
@@ -54,7 +59,9 @@ export function computeOffset({
   return computedOffset;
 }
 
-export const StickyHeaderContext = createContext<StickyHeaderContextProps>({ isStuck: false });
+export const StickyHeaderContext = createContext<StickyHeaderContextProps>({
+  isStuck: false,
+});
 
 export const useStickyHeader = (
   rootRef: RefObject<HTMLDivElement>,
