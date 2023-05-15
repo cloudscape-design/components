@@ -6,6 +6,7 @@ import {
   StickyColumnsModel,
   useStickyCellStyles,
 } from '../../../lib/components/table/use-sticky-columns';
+import { getStickyClassNames } from '../utils';
 import { renderHook } from '../../__tests__/render-hook';
 
 function createElementWithWidth(tag: string, width = 0) {
@@ -240,4 +241,55 @@ test('performs styles cleanup', () => {
   rerender({ visibleColumns, stickyColumnsFirst: 0, stickyColumnsLast: 0 });
 
   expect(elements.cells[0]).not.toHaveClass('sticky-cell');
+});
+
+describe('getStickyClassNames helper', () => {
+  const styles = {
+    'sticky-cell': 'sticky-cell',
+    'sticky-cell-pad-left': 'sticky-cell-pad-left',
+    'sticky-cell-last-left': 'sticky-cell-last-left',
+    'sticky-cell-last-right': 'sticky-cell-last-right',
+  };
+
+  it('returns correct styles when props is null', () => {
+    const result = getStickyClassNames(styles, null);
+    expect(result).toEqual({
+      'sticky-cell': false,
+      'sticky-cell-pad-left': false,
+      'sticky-cell-last-left': false,
+      'sticky-cell-last-right': false,
+    });
+  });
+
+  it('returns correct styles when props has padLeft and lastLeft property', () => {
+    const props = {
+      padLeft: true,
+      lastLeft: true,
+      lastRight: false,
+      offset: {},
+    };
+    const result = getStickyClassNames(styles, props);
+    expect(result).toEqual({
+      'sticky-cell': true,
+      'sticky-cell-pad-left': true,
+      'sticky-cell-last-left': true,
+      'sticky-cell-last-right': false,
+    });
+  });
+
+  it('returns correct styles when props has lastRight property', () => {
+    const props = {
+      padLeft: false,
+      lastLeft: false,
+      lastRight: true,
+      offset: {},
+    };
+    const result = getStickyClassNames(styles, props);
+    expect(result).toEqual({
+      'sticky-cell': true,
+      'sticky-cell-pad-left': false,
+      'sticky-cell-last-left': false,
+      'sticky-cell-last-right': true,
+    });
+  });
 });

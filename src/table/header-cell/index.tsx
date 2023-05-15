@@ -10,6 +10,8 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
+import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
+import { getStickyClassNames } from '../utils';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -29,6 +31,8 @@ interface TableHeaderCellProps<ItemType> {
   onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
+  columnId: string;
+  stickyState: StickyColumnsModel;
 
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
@@ -52,6 +56,8 @@ export function TableHeaderCell<ItemType>({
   resizableColumns,
   onResizeFinish,
   isEditable,
+  columnId,
+  stickyState,
 }: TableHeaderCellProps<ItemType>) {
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -75,20 +81,31 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
+  const stickyStyles = useStickyCellStyles({
+    stickyColumns: stickyState,
+    columnId,
+    getClassName: props => getStickyClassNames(styles, props),
+  });
+
   return (
     <th
-      className={clsx(className, {
-        [styles['header-cell-resizable']]: !!resizableColumns,
-        [styles['header-cell-sortable']]: sortingStatus,
-        [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-        [styles['header-cell-disabled']]: sortingDisabled,
-        [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-        [styles['header-cell-descending']]: sortingStatus === 'descending',
-        [styles['header-cell-hidden']]: hidden,
-      })}
+      className={clsx(
+        className,
+        {
+          [styles['header-cell-resizable']]: !!resizableColumns,
+          [styles['header-cell-sortable']]: sortingStatus,
+          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
+          [styles['header-cell-disabled']]: sortingDisabled,
+          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
+          [styles['header-cell-descending']]: sortingStatus === 'descending',
+          [styles['header-cell-hidden']]: hidden,
+        },
+        stickyStyles.className
+      )}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
-      style={style}
+      style={{ ...style, ...stickyStyles.style }}
       scope="col"
+      ref={stickyStyles.ref}
     >
       <div
         className={clsx(styles['header-cell-content'], {
