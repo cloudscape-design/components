@@ -282,7 +282,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *               table).
    * * `full-page` – Use this variant when the table is the entire content of a page. Full page variants
    *                 implement the high contrast header and content behavior automatically.
-   * @visualrefresh `embedded`, `stacked`, and `full-page` variants
+   * @visualrefresh `stacked` and `full-page` variants
    */
   variant?: TableProps.Variant;
 

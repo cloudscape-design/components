@@ -12271,7 +12271,7 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
       "name": "variant",
       "optional": true,
       "type": "string",
-      "visualRefreshTag": "\`embedded\`, \`stacked\`, and \`full-page\` variants",
+      "visualRefreshTag": "\`stacked\` and \`full-page\` variants",
     },
     Object {
       "description": "Specifies an array containing the \`id\`s of visible columns. If not set, all columns are displayed.
