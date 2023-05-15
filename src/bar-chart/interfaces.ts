@@ -38,7 +38,7 @@ export interface BarChartProps<T extends ChartDataTypes>
 
   /**
    * Determines the type of scale for values on the x axis.
-   * @deprecated Only `categorical` is a valid value for bar charts.
+   * Use `categorical` for bar charts.
    */
   xScaleType?: ScaleType;
 }

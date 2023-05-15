@@ -2057,8 +2057,8 @@ When controlling this directly, make sure to update the value based on filtering
     },
     Object {
       "defaultValue": "\\"categorical\\"",
-      "deprecatedTag": "Only \`categorical\` is a valid value for bar charts.",
-      "description": "Determines the type of scale for values on the x axis.",
+      "description": "Determines the type of scale for values on the x axis.
+Use \`categorical\` for bar charts.",
       "inlineType": Object {
         "name": "ScaleType",
         "type": "union",
@@ -8051,8 +8051,8 @@ When controlling this directly, make sure to update the value based on filtering
     },
     Object {
       "defaultValue": "\\"categorical\\"",
-      "deprecatedTag": "Only \`categorical\` is a valid value for charts with bars.",
-      "description": "Determines the type of scale for values on the x axis.",
+      "description": "Determines the type of scale for values on the x axis.
+Use \`categorical\` for charts with bars.",
       "inlineType": Object {
         "name": "ScaleType",
         "type": "union",

@@ -48,7 +48,7 @@ export interface MixedLineBarChartProps<T extends ChartDataTypes>
 
   /**
    * Determines the type of scale for values on the x axis.
-   * @deprecated Only `categorical` is a valid value for charts with bars.
+   * Use `categorical` for charts with bars.
    */
   xScaleType?: ScaleType;
 }
