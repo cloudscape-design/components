@@ -33,7 +33,6 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useMobile } from '../internal/hooks/use-mobile';
 import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
@@ -86,7 +85,6 @@ const InternalTable = React.forwardRef(
     ref: React.Ref<TableProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
-    const isMobile = useMobile();
     stickyHeader = stickyHeader && supportsStickyPosition();
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
@@ -282,7 +280,8 @@ const InternalTable = React.forwardRef(
             )
           }
           __stickyHeader={stickyHeader}
-          __stickyOffset={isMobile ? (stickyHeaderVerticalOffset ?? 0) + toolsHeaderHeight : stickyHeaderVerticalOffset}
+          __mobileStickyOffset={toolsHeaderHeight}
+          __stickyOffset={stickyHeaderVerticalOffset}
           {...focusMarkers.root}
         >
           <div

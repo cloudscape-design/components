@@ -66,7 +66,7 @@ test('should set isStuck to true when rootTop is less than headerTop', () => {
   };
   headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 200 });
 
-  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, false));
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
   act(() => {
     window.dispatchEvent(new Event('scroll'));
   });
@@ -87,7 +87,7 @@ test('should set isStuck to false when rootTop is larger than than headerTop', (
   };
   headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
 
-  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, false));
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
   act(() => {
     window.dispatchEvent(new Event('scroll'));
   });
@@ -107,7 +107,7 @@ test('should set isStuck to false when headerRef is null', () => {
     current: null,
   };
 
-  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, false));
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
   act(() => {
     window.dispatchEvent(new Event('scroll'));
   });
@@ -127,14 +127,15 @@ describe('computeOffset', () => {
       isMobile: true,
       isVisualRefresh: true,
       customCssProps,
-      __stickyOffset: 10,
+      __stickyOffset: 0,
+      __mobileStickyOffset: 10,
       mobileBarHeight: 5,
       stickyOffsetTop: 20,
       hasInnerOverflowParents: false,
     });
 
     expect(result).toBe(
-      `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}, 0px) - 10px)`
+      `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}, 0px) + -10px)`
     );
   });
 
@@ -143,7 +144,7 @@ describe('computeOffset', () => {
       isMobile: true,
       isVisualRefresh: false,
       customCssProps,
-      __stickyOffset: 100,
+      __mobileStickyOffset: 100,
       mobileBarHeight: 40,
       stickyOffsetTop: 20,
       hasInnerOverflowParents: false,
@@ -157,12 +158,12 @@ describe('computeOffset', () => {
       isMobile: false,
       isVisualRefresh: true,
       customCssProps,
-      __stickyOffset: 10,
+      __mobileStickyOffset: 10,
       stickyOffsetTop: 20,
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe(`var(${customCssProps.offsetTopWithNotifications}, 10px)`);
+    expect(result).toBe(`var(${customCssProps.offsetTopWithNotifications}, 20px)`);
   });
 
   it('should calculate offset for non-mobile without __stickyOffset and no inner overflow parents', () => {
@@ -171,6 +172,7 @@ describe('computeOffset', () => {
       isVisualRefresh: true,
       customCssProps,
       stickyOffsetTop: 20,
+      __mobileStickyOffset: 40,
       hasInnerOverflowParents: false,
     });
 
@@ -182,14 +184,15 @@ describe('computeOffset', () => {
       isMobile: false,
       isVisualRefresh: true,
       customCssProps,
-      stickyOffsetTop: 20,
+      stickyOffsetTop: 0,
+      __mobileStickyOffset: 20,
       hasInnerOverflowParents: true,
     });
 
     expect(result).toBe('0px');
   });
 
-  it('should return effectiveStickyOffset for non-mobile without visual refresh or with inner overflow parents', () => {
+  it('should return effectiveStickyOffset for non-mobile with __stickyOffset and with inner overflow parents', () => {
     const result = computeOffset({
       isMobile: false,
       isVisualRefresh: false,
@@ -200,5 +203,20 @@ describe('computeOffset', () => {
     });
 
     expect(result).toBe('10px');
+  });
+
+  it('should calculate offset for with __stickyOffset, stickyOffsetTop and __mobileStickyOffset', () => {
+    const result = computeOffset({
+      isMobile: true,
+      isVisualRefresh: false,
+      customCssProps,
+      __stickyOffset: 100,
+      __mobileStickyOffset: 40,
+      mobileBarHeight: 40,
+      stickyOffsetTop: 20,
+      hasInnerOverflowParents: false,
+    });
+
+    expect(result).toBe('120px');
   });
 });

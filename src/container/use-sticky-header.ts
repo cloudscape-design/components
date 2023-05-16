@@ -16,6 +16,7 @@ interface ComputeOffsetProps {
   isVisualRefresh: boolean;
   customCssProps: Record<string, string>;
   __stickyOffset?: number;
+  __mobileStickyOffset?: number;
   mobileBarHeight?: number;
   stickyOffsetTop: number;
   hasInnerOverflowParents: boolean;
@@ -26,6 +27,7 @@ export function computeOffset({
   isVisualRefresh,
   customCssProps,
   __stickyOffset,
+  __mobileStickyOffset,
   mobileBarHeight = 0,
   stickyOffsetTop,
   hasInnerOverflowParents,
@@ -39,23 +41,27 @@ export function computeOffset({
    * to the default offset calculated in AppLayoutDomContext.
    */
   let computedOffset = `${effectiveStickyOffset}px`;
-
+  console.log({ effectiveStickyOffset, __stickyOffset, hasInnerOverflowParents });
   if (isMobile) {
     // This mobile offset is only relevant for full page tables in the mobile viewport.
-    // It is obtained by the sum of stickyOffsetTop (AppLayout header height) and mobileBarHeight (AppLayout mobile bar height),
-    // from which we subtract __stickyOffset (which is the sum of stickyHeaderVerticalOffset and the table tools header height).
+    // It is obtained by the sum of stickyOffsetTop (AppLayout header height), mobileBarHeight (AppLayout mobile bar height) and
+    // __stickyOffset (value of the stickyHeaderVerticalOffset, set by users), from which we subtract __mobileStickyOffset (which is the table tools header height).
 
     // Classic offset is calculated using the AppLayout context
-    const classicOffset = `${stickyOffsetTop + mobileBarHeight - (__stickyOffset ?? 0)}px`;
+    const classicOffset = `${
+      stickyOffsetTop + mobileBarHeight + (__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0)
+    }px`;
 
     // VR offset is calculated using CSS custom properties
-    const visualRefreshOffset = `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}, 0px) - ${__stickyOffset}px)`;
+    const visualRefreshOffset = `calc(var(${customCssProps.offsetTop}, 0px) + var(${
+      customCssProps.mobileBarHeight
+    }, 0px) + ${(__stickyOffset ?? 0) - (__mobileStickyOffset ?? 0)}px)`;
 
     computedOffset = isVisualRefresh ? visualRefreshOffset : classicOffset;
   } else if (isVisualRefresh && !hasInnerOverflowParents) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
-
+  console.log('computedOffset!!!', computedOffset);
   return computedOffset;
 }
 
@@ -68,6 +74,7 @@ export const useStickyHeader = (
   headerRef: RefObject<HTMLDivElement>,
   __stickyHeader?: boolean,
   __stickyOffset?: number,
+  __mobileStickyOffset?: number,
   __disableMobile = true
 ) => {
   const isMobile = useMobile();
@@ -98,6 +105,7 @@ export const useStickyHeader = (
     isVisualRefresh,
     customCssProps,
     __stickyOffset,
+    __mobileStickyOffset,
     mobileBarHeight,
     stickyOffsetTop,
     hasInnerOverflowParents,

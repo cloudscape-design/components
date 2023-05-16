@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
   __stickyOffset?: number;
+  __mobileStickyOffset?: number;
   __disableFooterDivider?: boolean;
   __disableFooterPaddings?: boolean;
   __hiddenContent?: boolean;
@@ -41,6 +42,7 @@ export default function InternalContainer({
   disableContentPaddings = false,
   fitHeight,
   __stickyOffset,
+  __mobileStickyOffset,
   __stickyHeader = false,
   __internalRootRef = null,
   __disableFooterDivider = false,
@@ -61,6 +63,7 @@ export default function InternalContainer({
     headerRef,
     __stickyHeader,
     __stickyOffset,
+    __mobileStickyOffset,
     __disableStickyMobile
   );
   const { setHasStickyBackground } = useAppLayoutContext();
