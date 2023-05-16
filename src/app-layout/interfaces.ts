@@ -158,8 +158,11 @@ export interface AppLayoutProps extends BaseComponentProps {
    * Fired when the tools drawer is toggled.
    */
   onToolsChange?: NonCancelableEventHandler<AppLayoutProps.ChangeDetail>;
+
   /**
    * Use this slot to add the [split panel component](/components/split-panel/) to the app layout.
+   *
+   * Note: This property must be set to `null` if a split panel should not be rendered.
    */
   splitPanel?: React.ReactNode;
 

@@ -627,7 +627,9 @@ Conceived to contain notifications (flash messages).
       "name": "notifications",
     },
     Object {
-      "description": "Use this slot to add the [split panel component](/components/split-panel/) to the app layout.",
+      "description": "Use this slot to add the [split panel component](/components/split-panel/) to the app layout.
+Note: This property must be set to \`null\` if a split panel should not be rendered.
+",
       "isDefault": false,
       "name": "splitPanel",
     },
