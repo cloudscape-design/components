@@ -41,9 +41,9 @@ export function computeOffset({
   let computedOffset = `${effectiveStickyOffset}px`;
 
   if (isMobile) {
-    // The mobile offset is the sum of of stickyOffsetTop (AppLayout header height)
-    // and mobileBarHeight (AppLayout mobile bar height),
-    // from which we subtract __stickyOffset (Tools header height).
+    // This mobile offset is only relevant for full page tables in the mobile viewport.
+    // It is obtained by the sum of stickyOffsetTop (AppLayout header height) and mobileBarHeight (AppLayout mobile bar height),
+    // from which we subtract __stickyOffset (which is the sum of stickyHeaderVerticalOffset and the table tools header height).
 
     // Classic offset is calculated using the AppLayout context
     const classicOffset = `${stickyOffsetTop + mobileBarHeight - (__stickyOffset ?? 0)}px`;
