@@ -41,7 +41,6 @@ export function computeOffset({
    * to the default offset calculated in AppLayoutDomContext.
    */
   let computedOffset = `${effectiveStickyOffset}px`;
-  console.log({ effectiveStickyOffset, __stickyOffset, hasInnerOverflowParents });
   if (isMobile) {
     // This mobile offset is only relevant for full page tables in the mobile viewport.
     // It is obtained by the sum of stickyOffsetTop (AppLayout header height), mobileBarHeight (AppLayout mobile bar height) and
