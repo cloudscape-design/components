@@ -57,7 +57,11 @@ export function setupEditor(
 
   editor.commands.removeCommand('showSettingsMenu', false);
 
-  // Prevent default behavior on error/warning icon click
+  // Prevent default behavior on error/warning icon hover/click
+  editor.on('guttermousemove' as any, (e: any) => {
+    e.stop();
+  });
+
   editor.on('guttermousedown' as any, (e: any) => {
     e.stop();
   });

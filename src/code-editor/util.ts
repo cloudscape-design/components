@@ -15,6 +15,7 @@ export const DEFAULT_DARK_THEME: typeof DarkThemes[number]['value'] = 'tomorrow_
 export function getDefaultConfig(): Partial<Ace.EditorOptions> {
   return {
     behavioursEnabled: true,
+    enableKeyboardAccessibility: true,
   };
 }
 

@@ -3,8 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use './background-inline-svg.scss' as utils;
+@use '../internal/hooks/focus-visible' as focus-visible;
 
 /* stylelint-disable selector-combinator-disallowed-list, @cloudscape-design/no-implicit-descendant */
 
@@ -52,7 +54,20 @@
     margin-right: -$gutter-padding-right + 1px; // leave 1px margin on each side
     background-color: transparent;
     border: none;
+  }
+
+  .ace_gutter_annotation {
+    // To align our custom icon with the annotation clickable/focus area.
+    // Based on -19px in ace's default stylesheet.
+    margin-left: -21px;
+  }
+
+  .ace_fold-widget,
+  .ace_gutter_annotation {
     box-shadow: none;
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(-2px);
+    }
   }
 
   $active-line-border-color-light: awsui.$color-border-code-editor-ace-active-line-light-theme;
@@ -73,6 +88,13 @@
   .ace_gutter {
     background-color: awsui.$color-background-code-editor-gutter-default;
     color: awsui.$color-text-code-editor-gutter-default;
+  }
+
+  .ace_gutter,
+  .ace_scroller {
+    @include focus-visible.when-visible {
+      box-shadow: inset 0 0 0 2px awsui.$color-border-item-focused;
+    }
   }
 
   .ace_fold-widget.ace_open {
@@ -110,6 +132,17 @@
   .ace_gutter-active-line {
     background-color: awsui.$color-background-code-editor-gutter-active-line-default;
     color: awsui.$color-text-code-editor-gutter-active-line;
+
+    .ace_fold-widget,
+    .ace_gutter_annotation {
+      @include focus-visible.when-visible {
+        @include styles.focus-highlight(
+          -2px,
+          awsui.$border-radius-control-default-focus-ring,
+          0 0 0 2px awsui.$color-text-code-editor-gutter-active-line
+        );
+      }
+    }
 
     & > .ace_fold-widget.ace_open {
       @include utils.background-inline-svg(
