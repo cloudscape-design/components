@@ -111,7 +111,7 @@ div.column-layout {
 
     &.grid-variant-text-grid {
       @include make-vertical-borders('left');
-      margin: calc(-1 * #{$grid-gutter-width} / 2);
+      margin: calc(-1 * #{$grid-gutter-width});
     }
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters) > * {
