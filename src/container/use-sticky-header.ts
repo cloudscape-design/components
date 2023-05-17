@@ -60,7 +60,6 @@ export function computeOffset({
   } else if (isVisualRefresh && !hasInnerOverflowParents) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
-  console.log('computedOffset!!!', computedOffset);
   return computedOffset;
 }
 
