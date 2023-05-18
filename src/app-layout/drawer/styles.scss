@@ -65,8 +65,8 @@ $drawer-z-index-mobile: 1001;
 
 .trigger {
   .drawer-content > .drawer-triggers > & {
-    padding: constants.$drawers-padding;
-    margin: 1px constants.$drawers-padding-horizontal;
+    padding: constants.$drawers-padding-vertical awsui.$space-s;
+    margin-top: 1px;
     border-radius: 0;
     border: 0;
 
@@ -84,17 +84,12 @@ $drawer-z-index-mobile: 1001;
 
     &.selected,
     &.selected:hover {
-      padding: constants.$drawers-padding-vertical awsui.$space-s;
       margin: 0;
       border-top: 1px solid awsui.$color-background-layout-panel-trigger-active;
-      border-bottom: 1px solid awsui.$color-background-layout-panel-trigger-active;
 
       background-color: awsui.$color-background-layout-panel-trigger-active;
       color: awsui.$color-text-layout-panel-trigger-active;
       box-shadow: none;
-      &:hover {
-        cursor: default;
-      }
     }
   }
 }
