@@ -38,6 +38,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutToggleSelectedDefault: { light: '{colorBlue600}', dark: '{colorBlue400}' },
   colorBackgroundModalOverlay: { light: '{colorGreyOpaque90}', dark: '{colorGreyOpaque80}' },
   colorBackgroundNotificationStackBar: '{colorGrey700}',
+  colorBackgroundNotificationStackBarActive: '{colorGrey700}',
+  colorBackgroundNotificationStackBarHover: '{colorGrey600}',
   colorBackgroundProgressBarContentInFlash: { light: '{colorGreyOpaque70}', dark: '{colorGrey100}' },
   colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
   colorBackgroundStatusWarning: { dark: '{colorGrey700}' },
