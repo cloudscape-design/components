@@ -54,12 +54,12 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   /**
    * Renders the cards in a loading state. We recommend that you also set a `loadingText`.
    */
-  loading?: boolean;
+  loading?: boolean | undefined;
 
   /**
    * Specifies the text to display when in loading state.
    */
-  loadingText?: string;
+  loadingText?: string | undefined;
 
   /**
    *  Defines what to display in each card. It has the following properties:
@@ -125,7 +125,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * }]
    * ```
    */
-  cardsPerRow?: ReadonlyArray<CardsProps.CardsLayout>;
+  cardsPerRow?: ReadonlyArray<CardsProps.CardsLayout> | undefined;
   /**
    * Specifies the property inside items that uniquely identifies them.
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -133,19 +133,19 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    *
    * It's also used for connecting `items` and `selectedItems` values when they don't reference the same object.
    */
-  trackBy?: CardsProps.TrackBy<T>;
+  trackBy?: CardsProps.TrackBy<T> | undefined;
   /**
    * Specifies the selection mode. It can be either `single` or `multi`.
    */
-  selectionType?: CardsProps.SelectionType;
+  selectionType?: CardsProps.SelectionType | undefined;
   /**
    * Specifies the list of selected items.
    */
-  selectedItems?: ReadonlyArray<T>;
+  selectedItems?: ReadonlyArray<T> | undefined;
   /**
    * Determines which items are disabled. If an item is disabled, users can't select it.
    */
-  isItemDisabled?: CardsProps.IsItemDisabled<T>;
+  isItemDisabled?: CardsProps.IsItemDisabled<T> | undefined;
   /**
    * Adds labels to the selection components (checkboxes and radio buttons) as follows:
    * * `itemSelectionLabel` ((SelectionState, Item) => string) - Determines the label for an item.
@@ -158,7 +158,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * items also receives the corresponding  `Item` object. You can use the group label to
    * add a meaningful description to the whole selection.
    */
-  ariaLabels?: CardsProps.AriaLabels<T>;
+  ariaLabels?: CardsProps.AriaLabels<T> | undefined;
   /**
    * Specifies an array containing the `id` of each visible section. If not set, all sections are displayed.
    *
@@ -166,21 +166,21 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    *
    * The order of `id`s doesn't influence the order of display of sections, which is controlled by the `cardDefinition` property.
    */
-  visibleSections?: ReadonlyArray<string>;
+  visibleSections?: ReadonlyArray<string> | undefined;
   /**
    * Called when a user interaction causes a change in the list of selected items.
    * The event `detail` contains the current list of `selectedItems`.
    */
-  onSelectionChange?: NonCancelableEventHandler<CardsProps.SelectionChangeDetail<T>>;
+  onSelectionChange?: NonCancelableEventHandler<CardsProps.SelectionChangeDetail<T>> | undefined;
   /**
    * If set to true, the cards header remains visible when the user scrolls down.
    */
-  stickyHeader?: boolean;
+  stickyHeader?: boolean | undefined;
   /**
    * Optionally provide a vertical offset (in pixels) for the sticky header, for example if you
    * need to position the sticky header below other fixed position elements on the page.
    */
-  stickyHeaderVerticalOffset?: number;
+  stickyHeaderVerticalOffset?: number | undefined;
 
   /**
    * Specify a cards variant with one of the following:
@@ -189,25 +189,25 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    *                 implement the high contrast header and content behavior automatically.
    * @visualrefresh `full-page` variant
    */
-  variant?: 'container' | 'full-page';
+  variant?: 'container' | 'full-page' | undefined;
 }
 
 export namespace CardsProps {
   export interface CardDefinition<T> {
     header?(item: T): React.ReactNode;
-    sections?: ReadonlyArray<SectionDefinition<T>>;
+    sections?: ReadonlyArray<SectionDefinition<T>> | undefined;
   }
 
   export interface SectionDefinition<T> {
-    id?: string;
+    id?: string | undefined;
     header?: React.ReactNode;
     content?(item: T): React.ReactNode;
-    width?: number;
+    width?: number | undefined;
   }
 
   export interface CardsLayout {
     cards: number;
-    minWidth?: number;
+    minWidth?: number | undefined;
   }
 
   export type TrackBy<T> = string | ((item: T) => string);
@@ -227,8 +227,9 @@ export namespace CardsProps {
   export interface AriaLabels<T> {
     itemSelectionLabel: (data: CardsProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel: string;
-    cardsLabel?: string;
+    cardsLabel?: string | undefined;
   }
+
   export interface Ref {
     /**
      * When the sticky header is enabled, calling this function scrolls cards's
