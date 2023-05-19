@@ -14,6 +14,7 @@ import {
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
+import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
@@ -21,19 +22,12 @@ export default function WithDrawers() {
   const [hasTools, setHasTools] = useState(false);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
 
-  const [widths, setWidths] = useState<{ [id: string]: number }>({
-    security: 500,
-  });
-
   const drawers = !hasDrawers
     ? null
     : {
         drawers: {
           ariaLabel: 'Drawers',
           activeDrawerId: activeDrawerId,
-          onResize: (event: NonCancelableCustomEvent<{ size: number; id: string }>) => {
-            setWidths({ ...widths, [event.detail.id]: event.detail.size });
-          },
           items: [
             {
               ariaLabels: {
@@ -45,7 +39,13 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
-              size: widths.security,
+              defaultSize: 500,
+              onResize: ({ detail: { size } }) => {
+                // A drawer implementer may choose to listen to THEIR drawer's
+                // resize event,should they want to persist, or otherwise respond
+                // to their drawer being resized.
+                console.log('Security Drawer is now: ', size);
+              },
               trigger: {
                 iconName: 'security',
               },
@@ -63,7 +63,7 @@ export default function WithDrawers() {
                 iconName: 'contact',
               },
             },
-          ],
+          ] as DrawerItem[],
           onChange: (event: NonCancelableCustomEvent<string>) => {
             setActiveDrawerId(event.detail);
           },

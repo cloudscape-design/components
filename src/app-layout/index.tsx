@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -269,31 +269,29 @@ const OldAppLayout = React.forwardRef(
       }
     );
 
-    const sizes = (() => {
+    const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
+
+    const getDrawerItemSizes = useCallback(() => {
       const sizes: { [id: string]: number } = {};
-      if (!drawers) {
+      if (!drawerItems) {
         return {};
       }
 
-      for (const item of drawers.items) {
-        if (item.size) {
-          sizes[item.id] = item.size;
+      for (const item of drawerItems) {
+        if (item.defaultSize) {
+          sizes[item.id] = item.defaultSize || toolsWidth;
         }
       }
-
       return sizes;
-    })();
+    }, [drawerItems, toolsWidth]);
 
-    const [drawerSizes = {}, setDrawerSizes] = useControllable(
-      Object.keys(sizes).length > 0 ? sizes : undefined,
-      drawers?.onResize,
-      {},
-      {
-        componentName: 'AppLayout',
-        controlledProp: 'drawers.items[].size',
-        changeHandler: 'drawers.onResize',
-      }
-    );
+    const [drawerSizes, setDrawerSizes] = useState(() => getDrawerItemSizes());
+
+    useEffect(() => {
+      // Ensure we only set new drawer items by performing a shallow merge
+      // of the latest drawer item sizes, and previous drawer item sizes.
+      setDrawerSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
+    }, [getDrawerItemSizes]);
 
     const drawerSize =
       selectedDrawer?.id && drawerSizes[selectedDrawer?.id] ? drawerSizes[selectedDrawer?.id] : toolsWidth;
@@ -378,6 +376,7 @@ const OldAppLayout = React.forwardRef(
       // so we subtract space-scaled-2x-xxxl * 2 for left and right padding
       const contentPadding = disableContentPaddings ? 80 : 0;
       const spaceAvailable = width - defaults.minContentWidth - contentPadding;
+
       const spaceTaken = finalSplitPanePosition === 'side' ? splitPanelSize : 0;
       return Math.max(0, spaceTaken + spaceAvailable);
     });
@@ -387,7 +386,9 @@ const OldAppLayout = React.forwardRef(
         return NaN;
       }
 
-      const width = parseInt(getComputedStyle(mainContentRef.current).width);
+      // Either use the computed width of the drawer or the drawerSize as defined.
+      const width = parseInt(getComputedStyle(mainContentRef.current).width || `${drawerSize}`);
+
       // when disableContentPaddings is true there is less available space,
       // so we subtract space-scaled-2x-xxxl * 2 for left and right padding
       const contentPadding = disableContentPaddings ? 80 : 0;
@@ -733,6 +734,10 @@ const OldAppLayout = React.forwardRef(
                   size={!isResizeInvalid ? drawerSize : toolsWidth}
                   onResize={changeDetail => {
                     fireNonCancelableEvent(drawers.onResize, changeDetail);
+                    const drawerItem = drawerItems.find(({ id }) => id === changeDetail.id);
+                    if (drawerItem?.onResize) {
+                      fireNonCancelableEvent(drawerItem.onResize, changeDetail);
+                    }
                     setDrawerSizes({ ...drawerSizes, [changeDetail.id]: changeDetail.size });
                   }}
                   refs={drawerRefs}
