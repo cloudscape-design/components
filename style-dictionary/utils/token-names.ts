@@ -616,7 +616,6 @@ export type SpacingTokenName =
   | 'spaceTableHeaderHorizontal'
   | 'spaceTableHorizontal'
   | 'spaceTabsFocusOutlineGutter'
-  | 'spaceTextGridVertical'
   | 'spaceL'
   | 'spaceM'
   | 'spaceNone'
