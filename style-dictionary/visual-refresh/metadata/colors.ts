@@ -476,7 +476,17 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
   },
   colorTextLayoutToggle: {
-    description: "This is the default color of the app layout toggle button when it's active.",
+    description: 'This is the default color of the app layout toggle.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleActive: {
+    description: "This is the color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleHover: {
+    description: 'This is the color of the app layout toggle button on hover.',
     public: true,
     themeable: true,
   },
