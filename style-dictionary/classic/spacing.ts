@@ -42,9 +42,6 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTabsContentTop: '{spaceScaledM}',
   spaceTableHorizontal: '0px',
   spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
-  spaceTableContentBottom: '0px',
-  spaceTableContentTop: '0px',
-  spaceTableEmbeddedContentBottom: '{spaceTableContentBottom}',
   spaceTableEmbeddedHeaderTop: '{spaceContainerHeaderVertical}',
   spaceTabsFocusOutlineGutter: '0px',
 };

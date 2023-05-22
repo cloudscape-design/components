@@ -17,7 +17,7 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  padding: awsui.$space-scaled-xs 0 awsui.$space-scaled-xxs;
+  padding: awsui.$space-scaled-2x-xxs 0;
 
   &-filtering {
     @supports (flex-basis: fit-content) {
@@ -63,8 +63,6 @@
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  padding-top: awsui.$space-table-content-top;
-  padding-bottom: awsui.$space-table-content-bottom;
   overflow-x: auto;
   &.variant-stacked,
   &.variant-container {
@@ -72,15 +70,6 @@
       padding-left: awsui.$space-table-horizontal;
       padding-right: awsui.$space-table-horizontal;
     }
-  }
-  &.variant-embedded {
-    padding-bottom: awsui.$space-table-embedded-content-bottom;
-  }
-  &.has-header {
-    padding-top: 0px;
-  }
-  &.has-footer {
-    padding-bottom: 0px;
   }
   &:not(.has-header) {
     border-top-right-radius: awsui.$border-radius-container;
