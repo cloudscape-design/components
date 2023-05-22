@@ -4,7 +4,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import { RefObject, useEffect, useState } from 'react';
 import styles from './styles.css.js';
 
-import { getOverflowParentDimensions, getOverflowParents } from '../internal/utils/scrollable-containers';
+import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../internal/utils/browser-scrollbar-size';
 import { supportsStickyPosition, getContainingBlock } from '../internal/utils/dom';
 
@@ -20,29 +20,14 @@ const updatePosition = (
     return;
   }
 
-  // parent is either some container or document itself
-  const parent = getOverflowParentDimensions(wrapperEl)[0];
-  const parentBottom = parent.top + parent.height;
-
-  // table bottom is visible when
-  // 1. table bottom reached end of the window
-  // 2. table bottom is not overlapped by footer
-  const { top: tableTop, bottom: tableBottom, width: tableWidth } = tableEl.getBoundingClientRect();
+  const { width: tableWidth } = tableEl.getBoundingClientRect();
   const { width: wrapperWidth } = wrapperEl.getBoundingClientRect();
 
-  //scrollbar correction is needed for
-  // #1 when scrollbars are constantly visible,
-  // we want no visible break when switching between fake and real scrollbars
-  // #2 when scrollbars are visible only on scrolling and half transparent (on mac)
-  // we want to avoid any overlap between fake and real scrollbar
   // using 15 px as a height of transparent scrollbar on mac
   const scrollbarHeight = browserScrollbarSize().height;
-  const scrollBarCorrection = scrollbarHeight > 0 ? scrollbarHeight : -15 / 2;
-  const tableBottomIsVisible = parentBottom - consideredFooterHeight >= tableBottom + scrollBarCorrection;
-  const tableTopIsHidden = tableTop >= parentBottom - consideredFooterHeight - scrollBarCorrection;
   const areaIsScrollable = tableWidth > wrapperWidth;
 
-  if (tableBottomIsVisible || tableTopIsHidden || !areaIsScrollable) {
+  if (!areaIsScrollable) {
     scrollbarEl.classList.remove(styles['sticky-scrollbar-visible']);
   } else {
     // when scrollbar is not displayed scrollLeft property cannot be set by useScrollSync
@@ -62,8 +47,6 @@ const updatePosition = (
   }
 
   if (tableEl && wrapperEl && scrollbarContentEl && scrollbarEl) {
-    const parent = getOverflowParentDimensions(wrapperEl)[0];
-
     const wrapperElRect = wrapperEl.getBoundingClientRect();
     const tableElRect = tableEl.getBoundingClientRect();
     scrollbarEl.style.width = `${wrapperElRect.width}px`;
@@ -71,10 +54,7 @@ const updatePosition = (
 
     // when using sticky scrollbars in containers
     // we agreed to ignore dynamic bottom calculations for footer overlap
-    scrollbarEl.style.left = hasContainingBlock ? '0px' : `${wrapperElRect.left}px`;
-    scrollbarEl.style.top = hasContainingBlock
-      ? '0px'
-      : `${Math.min(parent.top + parent.height, window.innerHeight - consideredFooterHeight)}px`;
+    scrollbarEl.style.bottom = hasContainingBlock ? '0px' : `${consideredFooterHeight}px`;
   }
 };
 
@@ -94,27 +74,6 @@ export function useStickyScrollbar(
   // Because in this case, we think the footer is outside the overflow parent.
   const [hasOverflowParent, setHasOverflowParent] = useState(false);
   const consideredFooterHeight = hasContainingBlock || hasOverflowParent ? 0 : footerHeight;
-
-  // Update scrollbar position on window scroll.
-  useEffect(() => {
-    if (supportsStickyPosition()) {
-      const scrollHandler = () => {
-        updatePosition(
-          tableRef.current,
-          wrapperRef.current,
-          scrollbarRef.current,
-          scrollbarContentRef.current,
-          hasContainingBlock,
-          consideredFooterHeight
-        );
-      };
-      scrollHandler();
-      window.addEventListener('scroll', scrollHandler, true);
-      return () => {
-        window.removeEventListener('scroll', scrollHandler, true);
-      };
-    }
-  }, [scrollbarRef, tableRef, wrapperRef, consideredFooterHeight, scrollbarContentRef, hasContainingBlock]);
 
   const wrapperEl = wrapperRef.current;
   useEffect(() => {
@@ -162,6 +121,7 @@ export function useStickyScrollbar(
           consideredFooterHeight
         );
       };
+      resizeHandler();
       window.addEventListener('resize', resizeHandler);
       return () => {
         window.removeEventListener('resize', resizeHandler);
