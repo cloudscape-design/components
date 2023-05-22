@@ -163,7 +163,9 @@ export function DrawerTriggersBar({
                 iconName={item.trigger.iconName}
                 iconSvg={item.trigger.iconSvg}
                 ariaLabel={item.ariaLabels?.triggerButton}
-                onClick={() => drawers.onChange({ activeDrawerId: item.id })}
+                onClick={() =>
+                  drawers.onChange({ activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined })
+                }
                 ariaExpanded={drawers.activeDrawerId !== undefined}
               />
             ))}
