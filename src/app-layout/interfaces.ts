@@ -162,7 +162,7 @@ export interface AppLayoutProps extends BaseComponentProps {
   /**
    * Use this slot to add the [split panel component](/components/split-panel/) to the app layout.
    *
-   * Note: This property must be set to `null` if a split panel should not be rendered.
+   * Note: If provided, this property should be set to `null` or `undefined` if a split panel should not be rendered.
    */
   splitPanel?: React.ReactNode;
 
