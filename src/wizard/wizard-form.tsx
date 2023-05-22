@@ -10,6 +10,7 @@ import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -77,32 +78,37 @@ export default function WizardForm({
           </span>
         </InternalHeader>
       </WizardFormHeader>
-      <InternalForm
-        className={clsx(styles['form-component'])}
-        actions={
-          <WizardActions
-            cancelButtonText={i18nStrings.cancelButton}
-            primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
-            primaryButtonLoadingText={
-              isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
-            }
-            previousButtonText={i18nStrings.previousButton}
-            onCancelClick={onCancelClick}
-            onPreviousClick={onPreviousClick}
-            onPrimaryClick={onPrimaryClick}
-            onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
-            showPrevious={activeStepIndex !== 0}
-            isPrimaryLoading={isPrimaryLoading}
-            showSkipTo={showSkipTo}
-            skipToButtonText={skipToButtonText}
-          />
-        }
-        secondaryActions={secondaryActions}
-        errorText={errorText}
-        errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+      <AnalyticsFunnelStep
+        stepNameSelector={`.${styles['form-header-component-wrapper']}`}
+        stepNumber={activeStepIndex + 1}
       >
-        {content}
-      </InternalForm>
+        <InternalForm
+          className={clsx(styles['form-component'])}
+          actions={
+            <WizardActions
+              cancelButtonText={i18nStrings.cancelButton}
+              primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
+              primaryButtonLoadingText={
+                isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
+              }
+              previousButtonText={i18nStrings.previousButton}
+              onCancelClick={onCancelClick}
+              onPreviousClick={onPreviousClick}
+              onPrimaryClick={onPrimaryClick}
+              onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
+              showPrevious={activeStepIndex !== 0}
+              isPrimaryLoading={isPrimaryLoading}
+              showSkipTo={showSkipTo}
+              skipToButtonText={skipToButtonText}
+            />
+          }
+          secondaryActions={secondaryActions}
+          errorText={errorText}
+          errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+        >
+          {content}
+        </InternalForm>
+      </AnalyticsFunnelStep>
     </>
   );
 }

@@ -124,6 +124,7 @@ export const Flash = React.forwardRef(
         ref={ref}
         role={ariaRole}
         aria-live={ariaRole ? 'off' : undefined}
+        data-analytics-flashbar={effectiveType}
         data-itemid={id}
         className={clsx(
           styles.flash,
