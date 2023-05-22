@@ -8,6 +8,7 @@ import { KeyCode } from '../../../lib/components/internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { renderComponent, splitPanelI18nStrings } from './utils';
 import splitPanelStyles from '../../../lib/components/split-panel/styles.selectors.js';
+import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 
 const defaultSplitPanel = (
   <SplitPanel i18nStrings={splitPanelI18nStrings} header="test header">
@@ -214,6 +215,25 @@ describe('Visual refresh only features', () => {
     const { wrapper } = renderComponent(<AppLayout />);
     expect(wrapper.find(`.${splitPanelStyles['open-button']}`)).toBeFalsy();
   });
+
+  test('should not show background color of split panel drawer when there is no splitPanel', () => {
+    isMocked = true;
+    const { wrapper } = renderComponent(
+      <AppLayout
+        splitPanel={null}
+        splitPanelOpen={true}
+        splitPanelSize={400}
+        splitPanelPreferences={{ position: 'side' }}
+        onSplitPanelPreferencesChange={noop}
+        onSplitPanelToggle={noop}
+        onSplitPanelResize={noop}
+      />
+    );
+    expect(wrapper.find('[data-testid="side-split-panel-drawer"]')?.getElement()).not.toHaveClass(
+      applayoutTools['has-tools-form-persistence']
+    );
+    isMocked = false;
+  });
 });
 
 test('should fire split panel toggle event', () => {
@@ -264,4 +284,17 @@ test('should fire split panel resize event', () => {
   );
   wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
   expect(onSplitPanelResize).toHaveBeenCalledWith({ size: 460 });
+});
+
+test('should not set width on split panel drawer when there is no splitPanel', () => {
+  const { wrapper } = renderComponent(
+    <AppLayout
+      splitPanel={null}
+      splitPanelOpen={true}
+      splitPanelSize={400}
+      onSplitPanelToggle={noop}
+      splitPanelPreferences={{ position: 'side' }}
+    />
+  );
+  expect(wrapper.find('[data-testid="side-split-panel-drawer"]')?.getElement().style.width).toBeFalsy();
 });
