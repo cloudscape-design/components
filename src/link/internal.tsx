@@ -13,6 +13,11 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+
+import { FunnelMetrics } from '../internal/analytics';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { getElementSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
 
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
@@ -46,8 +51,40 @@ const InternalLink = React.forwardRef(
     const baseProps = getBaseProps(props);
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
+    const uniqueId = useUniqueId('link');
+
+    const { funnelInteractionId } = useFunnel();
+    const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
+
+    const fireFunnelEvent = (funnelInteractionId: string) => {
+      if (variant === 'info') {
+        FunnelMetrics.helpPanelInteracted({
+          funnelInteractionId,
+          stepNumber,
+          stepNameSelector,
+          subStepSelector,
+          subStepNameSelector,
+          elementSelector: getElementSelector(uniqueId),
+          subStepAllSelector: getSubStepAllSelector(),
+        });
+      } else if (external) {
+        FunnelMetrics.externalLinkInteracted({
+          funnelInteractionId,
+          stepNumber,
+          stepNameSelector,
+          subStepSelector,
+          subStepNameSelector,
+          elementSelector: getElementSelector(uniqueId),
+          subStepAllSelector: getSubStepAllSelector(),
+        });
+      }
+    };
 
     const fireFollowEvent = (event: React.SyntheticEvent) => {
+      if (funnelInteractionId) {
+        fireFunnelEvent(funnelInteractionId);
+      }
+
       fireCancelableEvent(onFollow, { href, external, target: anchorTarget }, event);
     };
 
@@ -89,6 +126,7 @@ const InternalLink = React.forwardRef(
         styles[getColorStyle(variant, color)]
       ),
       'aria-label': ariaLabel,
+      'data-analytics-id': uniqueId,
     };
 
     const content = (

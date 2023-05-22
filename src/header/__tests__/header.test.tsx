@@ -69,3 +69,15 @@ test('supports title tag name override with non-default variant', () => {
   expect(wrapper.find('h3')).toBeNull();
   expect(wrapper.find('h2')!.getElement()).toHaveTextContent('title');
 });
+
+describe('Analytics', () => {
+  test('adds data-analytics attribute for the heading text', () => {
+    const { container } = render(
+      <Header headingTagOverride="h2" variant="h3">
+        title
+      </Header>
+    );
+
+    expect(container.querySelector('[data-analytics="heading-text"]')).toBeInTheDocument();
+  });
+});

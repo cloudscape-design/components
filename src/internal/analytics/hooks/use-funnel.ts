@@ -52,11 +52,13 @@ export const useFunnelSubStep = () => {
     }
   };
 
-  const funnelSubStepProps: Record<string, any> = {
-    'data-analytics-funnel-substep': subStepId,
-    onFocus,
-    onBlur,
-  };
+  const funnelSubStepProps: Record<string, any> = funnelInteractionId
+    ? {
+        'data-analytics-funnel-substep': subStepId,
+        onFocus,
+        onBlur,
+      }
+    : {};
 
   return { funnelSubStepProps, subStepRef, ...context };
 };
@@ -71,9 +73,11 @@ export const useFunnelSubStep = () => {
  */
 export const useFunnelStep = () => {
   const context = useContext(FunnelStepContext);
-  const funnelStepProps: Record<string, string | number | boolean | undefined> = {
-    'data-analytics-funnel-step-index': context.stepNumber,
-  };
+  const funnelStepProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
+    ? {
+        'data-analytics-funnel-step-index': context.stepNumber,
+      }
+    : {};
 
   return { funnelStepProps, ...context };
 };
@@ -87,9 +91,11 @@ export const useFunnelStep = () => {
  */
 export const useFunnel = () => {
   const context = useContext(FunnelContext);
-  const funnelProps: Record<string, string | number | boolean | undefined> = {
-    'data-analytics-funnel-interaction-id': context.funnelInteractionId,
-  };
+  const funnelProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
+    ? {
+        'data-analytics-funnel-interaction-id': context.funnelInteractionId,
+      }
+    : {};
 
   return { funnelProps, ...context };
 };
