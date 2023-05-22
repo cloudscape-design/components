@@ -114,7 +114,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderItemPlaceholder: '{colorBorderItemSelected}',
   colorBorderItemSelected: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderLayout: { light: '{colorGrey300}', dark: '{colorGrey650}' },
-  colorBorderNotificationStackBar: '{colorGrey750}',
+  colorBorderNotificationStackBar: '{colorGrey700}',
   colorBorderPopover: { light: '{colorGrey400}', dark: '{colorGrey550}' },
   colorBorderSegmentActive: '{colorBorderSegmentDefault}',
   colorBorderSegmentDefault: { light: '{colorGrey600}', dark: '{colorGrey300}' },
