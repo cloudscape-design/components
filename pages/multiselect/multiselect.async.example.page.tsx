@@ -67,11 +67,11 @@ class SecurityGroupMultiselect extends React.Component {
 
   showFilteredText = (matchesCount: number, totalCount: number) => {
     if (this.state.status === 'pending') {
-      return `${matchesCount}+ results displayed`;
+      return `${matchesCount}+ results`;
     }
 
     if (this.state.status === 'finished') {
-      return `${matchesCount} out of ${totalCount} matching results showing`;
+      return `${matchesCount} out of ${totalCount} results`;
     }
     return '';
   };

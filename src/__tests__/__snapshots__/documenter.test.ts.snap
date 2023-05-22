@@ -1498,6 +1498,12 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "(matchesCount: number, totalCount: number) => string",
+    },
+    Object {
       "defaultValue": "'auto'",
       "description": "Determines how filtering is applied to the list of \`options\`:
 * \`auto\` - The component will automatically filter options based on user input.
@@ -8465,6 +8471,12 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "string",
     },
     Object {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "(matchesCount: number, totalCount: number) => string",
+    },
+    Object {
       "defaultValue": "'none'",
       "description": "Determines how filtering is applied to the list of \`options\`:
 * \`auto\` - The component will automatically filter options based on user input.
@@ -10920,6 +10932,12 @@ in a slight, visible lag when scrolling complex pages.",
       "name": "filteringPlaceholder",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "(matchesCount: number, totalCount: number) => string",
     },
     Object {
       "defaultValue": "'none'",

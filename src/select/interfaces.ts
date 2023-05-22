@@ -77,7 +77,7 @@ export interface BaseSelectProps
   filteringPlaceholder?: string;
 
   /**
-   * Displaying number of matched items while filtering
+   * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
    */
   filteringResultsText?: (matchesCount: number, totalCount: number) => string;
   /**
