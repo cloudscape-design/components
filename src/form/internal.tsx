@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import InternalAlert from '../alert/internal';
@@ -11,6 +11,9 @@ import { FormLayoutProps, FormProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../internal/components/live-region';
 import { useInternalI18n } from '../internal/i18n/context';
+
+import { FunnelMetrics } from '../internal/analytics';
+import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
 
 type InternalFormProps = FormProps & InternalBaseComponentProps;
 
@@ -28,9 +31,23 @@ export default function InternalForm({
   const baseProps = getBaseProps(props);
   const i18n = useInternalI18n('form');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
+  const { funnelInteractionId, funnelProps } = useFunnel();
+  const { funnelStepProps } = useFunnelStep();
+
+  useEffect(() => {
+    if (funnelInteractionId && errorText) {
+      FunnelMetrics.funnelError({ funnelInteractionId });
+    }
+  }, [funnelInteractionId, errorText]);
 
   return (
-    <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
+    <div
+      {...baseProps}
+      {...funnelProps}
+      {...funnelStepProps}
+      ref={__internalRootRef}
+      className={clsx(styles.root, baseProps.className)}
+    >
       <FormLayout
         header={
           header && <div className={clsx(styles.header, variant === 'full-page' && styles['full-page'])}>{header}</div>
