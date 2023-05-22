@@ -142,3 +142,16 @@
     left: 0;
   }
 }
+
+.count-badge {
+  background-color: #fa3e3e;
+  border-radius: 20px;
+  color: white;
+
+  padding: 1px 5px;
+  font-size: 10px;
+
+  position: absolute; /* Position the badge within the relatively positioned button */
+  top: 0;
+  right: 0;
+}

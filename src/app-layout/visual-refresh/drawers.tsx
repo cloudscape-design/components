@@ -42,6 +42,7 @@ namespace DrawersProps {
     iconName?: IconProps.Name;
     iconSvg?: React.ReactNode;
     iconUrl?: string;
+    count?: number;
   }
 }
 
@@ -227,6 +228,7 @@ function DesktopTriggers() {
             className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
+            counter={item.trigger.count}
             key={item.id}
             onClick={() => {
               isToolsOpen && handleToolsClick(!isToolsOpen, true);

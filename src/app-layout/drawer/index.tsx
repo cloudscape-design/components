@@ -45,6 +45,7 @@ export const Drawer = React.forwardRef(
       onLoseFocus,
       drawers,
       resizeHandle,
+      count,
     }: DesktopDrawerProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -65,6 +66,7 @@ export const Drawer = React.forwardRef(
       <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
         <AppLayoutButton
           ref={toggleRefs.toggle}
+          count={count}
           className={toggleClassName}
           iconName={iconName}
           ariaLabel={openLabel}
@@ -161,6 +163,7 @@ export function DrawerTriggersBar({
                 )}
                 key={`drawer-trigger-${index}`}
                 iconName={item.trigger.iconName}
+                count={item.trigger.count}
                 iconSvg={item.trigger.iconSvg}
                 ariaLabel={item.ariaLabels?.triggerButton}
                 onClick={() => drawers.onChange({ activeDrawerId: item.id })}

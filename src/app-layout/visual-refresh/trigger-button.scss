@@ -22,6 +22,7 @@ handleSplitPanelMaxWidth function in the context.
   height: awsui.$space-layout-toggle-diameter;
   padding: 0 awsui.$space-s;
   width: awsui.$space-layout-toggle-diameter;
+  position: relative;
 
   pointer-events: auto;
 
@@ -52,4 +53,17 @@ handleSplitPanelMaxWidth function in the context.
       background: awsui.$color-background-layout-toggle-selected-active;
     }
   }
+}
+
+.count-badge {
+  background-color: #fa3e3e;
+  border-radius: 20px;
+  color: white;
+
+  padding: 1px 5px;
+  font-size: 10px;
+
+  position: absolute; /* Position the badge within the relatively positioned button */
+  top: 0;
+  right: 0;
 }
