@@ -628,6 +628,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
             hasBreadcrumbs: !!props.breadcrumbs,
             setHasStickyBackground,
+            hasNotificationsContent,
           }}
         >
           <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>

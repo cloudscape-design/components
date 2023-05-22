@@ -39,12 +39,11 @@
 
   /*
   In mobile viewports the notifications should never be sticky even
-  if the property is set. Padding is added to give adequate
-  vertical space from the sticky AppBar the subsequent adjacent sibling.
+  if the property is set.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     grid-row: 2;
-    margin: awsui.$space-scaled-s 0;
+    margin: awsui.$space-xs 0;
 
     &.sticky-notifications {
       position: static;

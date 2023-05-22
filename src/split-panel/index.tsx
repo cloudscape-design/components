@@ -127,6 +127,7 @@ export default function SplitPanel({
         stickyOffsetTop: topOffset,
         stickyOffsetBottom: bottomOffset,
         hasBreadcrumbs: false,
+        hasNotificationsContent: false,
       }}
     >
       {children}

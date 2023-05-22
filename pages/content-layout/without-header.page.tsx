@@ -7,6 +7,7 @@ import Container from '~components/container';
 import Toggle from '~components/toggle';
 import Flashbar from '~components/flashbar';
 import Header from '~components/header';
+import Box from '~components/box';
 import { Breadcrumbs } from '../app-layout/utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 import appLayoutLabels from '../app-layout/utils/labels';
@@ -43,36 +44,38 @@ export default function () {
         breadcrumbs={urlParams.hasBreadcrumbs && <Breadcrumbs />}
         content={
           <ContentLayout disableOverlap={urlParams.disableOverlap}>
-            <Container
-              header={
-                <Header variant="h2" headingTagOverride="h1">
-                  Container header
-                </Header>
-              }
-            >
-              <Toggle
-                checked={urlParams.hasBreadcrumbs}
-                onChange={() => setUrlParams({ hasBreadcrumbs: !urlParams.hasBreadcrumbs })}
+            <Box padding={urlParams.disableOverlap ? { top: 's' } : undefined}>
+              <Container
+                header={
+                  <Header variant="h2" headingTagOverride="h1">
+                    Container header
+                  </Header>
+                }
               >
-                Has breadcrumbs
-              </Toggle>
-              <Toggle
-                checked={urlParams.hasNotifications}
-                onChange={() => setUrlParams({ hasNotifications: !urlParams.hasNotifications })}
-              >
-                Has notifications
-              </Toggle>
-              <Toggle checked={stickyNotifications} onChange={() => setStickyNotifications(!stickyNotifications)}>
-                Sticky notifications
-              </Toggle>
-              <Toggle
-                checked={urlParams.disableOverlap}
-                onChange={() => setUrlParams({ disableOverlap: !urlParams.disableOverlap })}
-              >
-                Disable overlap
-              </Toggle>
-              <div style={{ height: 400 }}></div>
-            </Container>
+                <Toggle
+                  checked={urlParams.hasBreadcrumbs}
+                  onChange={() => setUrlParams({ hasBreadcrumbs: !urlParams.hasBreadcrumbs })}
+                >
+                  Has breadcrumbs
+                </Toggle>
+                <Toggle
+                  checked={urlParams.hasNotifications}
+                  onChange={() => setUrlParams({ hasNotifications: !urlParams.hasNotifications })}
+                >
+                  Has notifications
+                </Toggle>
+                <Toggle checked={stickyNotifications} onChange={() => setStickyNotifications(!stickyNotifications)}>
+                  Sticky notifications
+                </Toggle>
+                <Toggle
+                  checked={urlParams.disableOverlap}
+                  onChange={() => setUrlParams({ disableOverlap: !urlParams.disableOverlap })}
+                >
+                  Disable overlap
+                </Toggle>
+                <div style={{ height: 400 }}></div>
+              </Container>
+            </Box>
           </ContentLayout>
         }
       />

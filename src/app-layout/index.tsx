@@ -675,6 +675,7 @@ const OldAppLayout = React.forwardRef(
                       stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
                       mobileBarHeight: mobileBarHeight ?? 0,
                       hasBreadcrumbs: !!breadcrumbs,
+                      hasNotificationsContent: hasRenderedNotifications,
                     }}
                   >
                     {content}

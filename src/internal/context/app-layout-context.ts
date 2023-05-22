@@ -7,6 +7,7 @@ export interface AppLayoutContextProps {
   stickyOffsetTop: number;
   hasBreadcrumbs: boolean;
   mobileBarHeight?: number;
+  hasNotificationsContent?: boolean;
   setHasStickyBackground?: (hasBackground: boolean) => void;
 }
 
@@ -15,6 +16,7 @@ export const AppLayoutContext = createContext<AppLayoutContextProps>({
   stickyOffsetBottom: 0,
   mobileBarHeight: 0,
   hasBreadcrumbs: false,
+  hasNotificationsContent: false,
 });
 
 export function useAppLayoutContext() {

@@ -23,6 +23,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceContainerHorizontal: '{spaceL}',
   spaceContentHeaderPaddingBottom: '{spaceScaledM}',
   spaceDarkHeaderOverlapDistance: '0px',
+  spaceDarkHeaderOverlapDistanceExtended: '0px',
   spaceExpandableSectionIconOffsetTop: '{spaceScaledXs}',
   spaceFieldHorizontal: '{spaceXs}',
   spaceFieldIconOffset: '32px',
