@@ -25,7 +25,7 @@ export default function MobileToolbar() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (navigationHide && !breadcrumbs && toolsHide && !drawers) {
+  if (!isMobile || (navigationHide && !breadcrumbs && toolsHide && !drawers)) {
     return null;
   }
 

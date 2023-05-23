@@ -4,7 +4,6 @@
 /*
  * This file is only needed to generate the proper js ans scss files at build step generateCustomCssPropertiesMap
  */
-
 const customCssPropertiesList = [
   // AppLayout Custom Properties
   'activeDrawerWidth',
