@@ -23,7 +23,7 @@ export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [hasDrawers, setHasDrawers] = useState(true);
-  const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [hideTools, setHideTools] = useState(!urlParams.hasTools);
 
   const drawers = !hasDrawers
     ? null
@@ -88,9 +88,11 @@ export default function WithDrawers() {
 
                 <SpaceBetween size="xs">
                   <Toggle
-                    checked={urlParams.hasTools}
-                    onChange={() => setUrlParams({ hasTools: !urlParams.hasTools })}
-                    data-id="toggle-tools"
+                    checked={!hideTools}
+                    onChange={e => {
+                      setHideTools(!e.detail.checked);
+                      setUrlParams({ hasTools: e.detail.checked });
+                    }}
                   >
                     Has Tools
                   </Toggle>
@@ -128,12 +130,8 @@ export default function WithDrawers() {
             This is the Split Panel!
           </SplitPanel>
         }
-        onToolsChange={event => {
-          setIsToolsOpen(event.detail.open);
-        }}
         tools={<Info />}
-        toolsOpen={isToolsOpen}
-        toolsHide={!urlParams.hasTools}
+        toolsHide={hideTools}
         {...drawers}
       />
     </ScreenshotArea>
