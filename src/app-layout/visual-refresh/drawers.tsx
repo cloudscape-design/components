@@ -194,8 +194,8 @@ function ActiveDrawer() {
       })}
       style={{
         ...(!isMobile && activeDrawerWidth && { [customCssProps.activeDrawerWidth]: `${activeDrawerWidth}px` }),
-        width: drawersSize,
       }}
+      ref={drawerRefObject}
     >
       {!isMobile && activeDrawer?.resizable && (
         <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>

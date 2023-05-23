@@ -602,15 +602,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             activeDrawerOffsetWidth
         );
 
-        setDrawersMaxWidth(
-          layoutWidth -
-            mainOffsetLeft -
-            minContentWidth -
-            contentGapRight -
-            toolsOffsetWidth -
-            toolsFormOffsetWidth -
-            activeDrawerOffsetWidth
-        );
+        setDrawersMaxWidth(layoutWidth - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth);
       },
       [
         activeDrawerId,
