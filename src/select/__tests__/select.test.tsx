@@ -305,6 +305,28 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     });
   });
 
+  test('shows filtering result text after typing', () => {
+    const options = [
+      { label: 'First', value: '1' },
+      { label: 'Second', value: '2' },
+    ];
+    const { wrapper } = renderSelect({
+      options,
+      expandToViewport: true,
+      statusType: 'pending',
+      filteringType: 'auto',
+      noMatch: 'No match',
+      filteringResultsText: (matchesCount, totalCount) => `${matchesCount}/${totalCount}`,
+    });
+    wrapper.openDropdown();
+    const statusIndicator = wrapper.findStatusIndicator({ expandToViewport })!;
+    expect(statusIndicator).toBeNull();
+    wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('First');
+    expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('1/2');
+    wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('Hey');
+    expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('No match');
+  });
+
   describe('Disabled state', () => {
     test('enabled by default', () => {
       const { wrapper } = renderSelect();
