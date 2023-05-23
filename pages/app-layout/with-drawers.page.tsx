@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   AppLayout,
   ContentLayout,
@@ -24,12 +24,6 @@ export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [hasDrawers, setHasDrawers] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
-
-  useEffect(() => {
-    setUrlParams({ hasTools: false });
-    // We need this to only run once, on first render. So we are passing in an empty array.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const drawers = !hasDrawers
     ? null
