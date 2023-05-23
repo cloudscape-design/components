@@ -4,6 +4,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper } from '../../../lib/components/test-utils/dom';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 interface Item {
   id: number;
@@ -219,6 +220,29 @@ describe('Cards', () => {
       ).wrapper;
       expect(wrapper.findItems()).toHaveLength(0);
       expect(wrapper?.findLoadingText()?.getElement()).toHaveTextContent('Resources loading');
+    });
+  });
+  describe('live region', () => {
+    test('Should render a live region with table total count and indices when renderAriaLive and firstIndex are available', () => {
+      const firstIndex = 1;
+      const totalItemsCount = defaultItems.length;
+      const lastIndex = firstIndex + defaultItems.length - 1;
+
+      const wrapper = renderCards(
+        <Cards<Item>
+          cardDefinition={cardDefinition}
+          items={defaultItems}
+          firstIndex={firstIndex}
+          totalItemsCount={totalItemsCount}
+          renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }) =>
+            `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
+          }
+        />
+      ).wrapper;
+
+      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
+        `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
+      );
     });
   });
 });
