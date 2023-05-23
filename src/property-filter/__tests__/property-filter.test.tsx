@@ -187,6 +187,16 @@ describe('property filter parts', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('disabled');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-label', 'your choice');
     });
+    test('recieves `ariaLabelledby`, `ariaDescribedby` and `controlId` properties passed to the component', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        ariaLabelledby: 'label-by-id',
+        ariaDescribedby: 'described-by-id',
+        controlId: 'control-id',
+      });
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', 'label-by-id');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-describedby', 'described-by-id');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('id', 'control-id');
+    });
     describe('typing experience: ', () => {
       test('provides relevant suggestions depending on the currently entered string', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent();
@@ -799,6 +809,45 @@ describe('property filter parts', () => {
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
   });
 
+  describe('status indicators', () => {
+    test('displays error status', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'error',
+        filteringErrorText: 'Error text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Error text');
+    });
+    test('links error status to dropdown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'error',
+        filteringErrorText: 'Error text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error text`);
+    });
+    test('displays finished status', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'finished',
+        filteringFinishedText: 'Finished text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Finished text');
+    });
+    test('links finished status to dropdown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'finished',
+        filteringFinishedText: 'Finished text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished text`);
+    });
+  });
+
   describe('extended operators', () => {
     const indexProperty: FilteringProperty = {
       key: 'index',
@@ -939,11 +988,11 @@ describe('property filter parts', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Use: "free-text"');
     });
-    it('when free text filtering is not allowed and no property is matched dropdown is hidden but aria-expanded is false', () => {
+    it('when free text filtering is not allowed and no property is matched dropdown is not shown and aria-expanded is false', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: true });
       wrapper.setInputValue('free-text');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
-      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('');
+      expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
     });
   });
 

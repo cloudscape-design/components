@@ -26,17 +26,16 @@ interface ToolsProps {
 export default function Tools({ children }: ToolsProps) {
   const {
     ariaLabels,
+    disableBodyScroll,
     drawers,
     handleSplitPanelClick,
     handleToolsClick,
     hasDefaultToolsWidth,
     hasDrawerViewportOverlay,
     isMobile,
-    isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
     loseToolsFocus,
-    navigationHide,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
@@ -50,7 +49,7 @@ export default function Tools({ children }: ToolsProps) {
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
-  const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
+  const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
   /**
    * If the drawers property is defined the Tools and SplitPanel will be mounted and rendered
@@ -65,8 +64,9 @@ export default function Tools({ children }: ToolsProps) {
       {(state, transitionEventsRef) => (
         <div
           className={clsx(styles['tools-container'], {
-            [testutilStyles['drawer-closed']]: !isToolsOpen,
+            [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
+            [testutilStyles['drawer-closed']]: !isToolsOpen,
           })}
           style={{
             [customCssProps.toolsAnimationStartingOpacity]: `${hasSplitPanel && isSplitPanelOpen ? 1 : 0}`,

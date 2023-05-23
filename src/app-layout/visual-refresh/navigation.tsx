@@ -21,6 +21,7 @@ import customCssProps from '../../internal/generated/custom-css-properties';
 export default function Navigation() {
   const {
     ariaLabels,
+    disableBodyScroll,
     handleNavigationClick,
     hasDrawerViewportOverlay,
     isMobile,
@@ -48,15 +49,16 @@ export default function Navigation() {
     }
   };
 
-  const isUnfocusable = hasDrawerViewportOverlay && isToolsOpen && !toolsHide;
+  const isUnfocusable = hasDrawerViewportOverlay && (!isNavigationOpen || (isToolsOpen && !toolsHide));
 
   return (
     <Transition in={isNavigationOpen}>
       {(state, transitionEventsRef) => (
         <div
           className={clsx(styles['navigation-container'], {
-            [testutilStyles['drawer-closed']]: !isNavigationOpen,
+            [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
+            [testutilStyles['drawer-closed']]: !isNavigationOpen,
           })}
           // Overwrite the default nav width (depends on breakpoints) only when the `navigationWidth` property is set.
           style={{ ...(navigationWidth && { [customCssProps.navigationWidth]: `${navigationWidth}px` }) }}

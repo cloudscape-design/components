@@ -1094,12 +1094,17 @@ A maximum of four fields are supported.
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "removeButtonAriaLabel",
+            "optional": true,
+            "type": "(item: T) => string",
+          },
         ],
         "type": "object",
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "AttributeEditorProps.I18nStrings",
+      "type": "AttributeEditorProps.I18nStrings<T>",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -2544,7 +2549,28 @@ Object {
       "cancelable": true,
       "description": "Called when the user clicks on the button with the left mouse button without pressing
 modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` set.",
-      "detailType": "null",
+      "detailInlineType": Object {
+        "name": "ButtonProps.FollowDetail",
+        "properties": Array [
+          Object {
+            "name": "external",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ButtonProps.FollowDetail",
       "name": "onFollow",
     },
   ],
@@ -2563,6 +2589,12 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
   ],
   "name": "Button",
   "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the button.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": " Adds aria-expanded to the button element. Use when the button controls an expandable element.",
       "name": "ariaExpanded",
@@ -3234,6 +3266,8 @@ scroll parent up to reveal the first card or row of cards.",
       "description": "Adds labels to the selection components (checkboxes and radio buttons) as follows:
 * \`itemSelectionLabel\` ((SelectionState, Item) => string) - Determines the label for an item.
 * \`selectionGroupLabel\` (string) - Specifies the label for the group selection control.
+* \`cardsLabel\` (string) - Provides alternative text for the cards list.
+                           By default the contents of the \`header\` are used.
 You can use the first arguments of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The label function for individual
 items also receives the corresponding  \`Item\` object. You can use the group label to
@@ -3242,6 +3276,11 @@ add a meaningful description to the whole selection.
       "inlineType": Object {
         "name": "CardsProps.AriaLabels",
         "properties": Array [
+          Object {
+            "name": "cardsLabel",
+            "optional": true,
+            "type": "string",
+          },
           Object {
             "name": "itemSelectionLabel",
             "optional": false,
@@ -3556,6 +3595,13 @@ Object {
   "name": "Checkbox",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -3587,6 +3633,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "name": "ariaLabelledby",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies whether to add \`aria-required\` to the native control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Specifies if the component is selected.",
@@ -3908,6 +3960,21 @@ The object should contain, among others:
             "type": "string",
           },
           Object {
+            "name": "preferencesModalThemeFilteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "preferencesModalThemeFilteringClearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "preferencesModalThemeFilteringPlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "preferencesModalWrapLines",
             "optional": false,
             "type": "string",
@@ -4041,6 +4108,11 @@ The values for all configured preferences are present even if the user didn't ch
             "type": "\\"comfortable\\" | \\"compact\\"",
           },
           Object {
+            "name": "contentDisplay",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+          },
+          Object {
             "name": "custom",
             "optional": true,
             "type": "CollectionPreferencesProps.Preferences.CustomPreferenceType",
@@ -4049,6 +4121,11 @@ The values for all configured preferences are present even if the user didn't ch
             "name": "pageSize",
             "optional": true,
             "type": "number",
+          },
+          Object {
+            "name": "stickyColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumns",
           },
           Object {
             "name": "stripedRows",
@@ -4125,6 +4202,83 @@ You must set the current value in the \`preferences.contentDensity\` property.
       "type": "CollectionPreferencesProps.ContentDensityPreference",
     },
     Object {
+      "description": "Configures the built-in content display preference for order and visibility of columns in a table.
+Once set, the component displays this preference in the modal.
+
+It contains the following:
+- \`title\` (string) - Specifies the text displayed at the top of the preference.
+- \`description\` (string) - Specifies the description displayed below the title.
+- \`liveAnnouncementDndStarted\` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
+- \`liveAnnouncementDndDiscarded\` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
+- \`liveAnnouncementDndItemReordered\` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
+- \`liveAnnouncementDndItemCommitted\` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
+- \`dragHandleAriaDescription\` (string) - (Optional) Adds an ARIA description for the drag handle.
+- \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.
+- \`options\` - Specifies an array of options for reordering and visible content selection.
+
+Each option contains the following:
+- \`id\` (string) - Corresponds to a table column \`id\`.
+- \`label\` (string) - Specifies a short description of the content.
+- \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.
+
+You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.
+",
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.ContentDisplayPreference",
+        "properties": Array [
+          Object {
+            "name": "description",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "dragHandleAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "dragHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "liveAnnouncementDndDiscarded",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "liveAnnouncementDndItemCommitted",
+            "optional": true,
+            "type": "(initialPosition: number, finalPosition: number, total: number) => string",
+          },
+          Object {
+            "name": "liveAnnouncementDndItemReordered",
+            "optional": true,
+            "type": "(initialPosition: number, currentPosition: number, total: number) => string",
+          },
+          Object {
+            "name": "liveAnnouncementDndStarted",
+            "optional": true,
+            "type": "(position: number, total: number) => string",
+          },
+          Object {
+            "name": "options",
+            "optional": false,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
+          },
+          Object {
+            "name": "title",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "contentDisplayPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.ContentDisplayPreference",
+    },
+    Object {
       "description": "Configures custom preferences. The function receives two parameters:
 - \`customValue\` (CustomPreferenceType) - Current value for your custom preference. It is initialized using the value you provide in \`preferences.custom\`.
 - \`setCustomValue\` - A function that is called to notify a state update.
@@ -4199,7 +4353,8 @@ You must set the current value in the \`preferences.pageSize\` property.
 It contains the following:
 - \`pageSize\` (number) - (Optional)
 - \`wrapLines\` (boolean) - (Optional)
-- \`visibleContent\` (ReadonlyArray<string>) - Specifies the list of visible content \`id\`s. The order of the \`id\`s does not influence the display.
+- \`contentDisplay\` (ReadonlyArray<ContentDisplayItem>) - (Optional) Specifies the list of content and their visibility. The order of the elements influences the display.
+- \`visibleContent\` (ReadonlyArray<string>) - Specifies the list of visible content \`id\`s. The order of the \`id\`s does not influence the display. If the \`contentDisplay\` property is set, this property is ignored.
 - \`custom\` (CustomPreferenceType) - Specifies the value for your custom preference.
 ",
       "inlineType": Object {
@@ -4211,6 +4366,11 @@ It contains the following:
             "type": "\\"comfortable\\" | \\"compact\\"",
           },
           Object {
+            "name": "contentDisplay",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+          },
+          Object {
             "name": "custom",
             "optional": true,
             "type": "CollectionPreferencesProps.Preferences.CustomPreferenceType",
@@ -4219,6 +4379,11 @@ It contains the following:
             "name": "pageSize",
             "optional": true,
             "type": "number",
+          },
+          Object {
+            "name": "stickyColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumns",
           },
           Object {
             "name": "stripedRows",
@@ -4241,6 +4406,36 @@ It contains the following:
       "name": "preferences",
       "optional": true,
       "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+    },
+    Object {
+      "description": "Configures the sticky columns preference.
+You can set it for both left and right columns.
+
+It contains the following:
+- \`label\` (string) - Specifies the label for each radio group.
+- \`description\` (string) - Specifies the text displayed below each radio group label.
+
+You must set the current value in the \`preferences.stickyColumns\` property.
+",
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.StickyColumnsPreference",
+        "properties": Array [
+          Object {
+            "name": "firstColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumnPreference",
+          },
+          Object {
+            "name": "lastColumns",
+            "optional": true,
+            "type": "CollectionPreferencesProps.StickyColumnPreference",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyColumnsPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.StickyColumnsPreference",
     },
     Object {
       "description": "Configures the built-in \\"striped rows\\" preference.
@@ -5599,6 +5794,229 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
       "description": "Heading displayed above the content text. When using the container variant, use it with additional header props. Otherwise, use plain text.",
       "isDefault": false,
       "name": "headerText",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for file-upload matches the snapshot: file-upload 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when the user selects new file(s), or removes a file.
+The event \`detail\` contains the current value of the component.",
+      "detailInlineType": Object {
+        "name": "FileUploadProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "Array<File>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "FileUploadProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": Array [
+    Object {
+      "description": "Sets focus on the file upload button.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
+  "name": "FileUpload",
+  "properties": Array [
+    Object {
+      "description": "Specifies the native file input \`accept\` attribute to describe the allow-list of file types.",
+      "name": "accept",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies whether to add aria-required to the file upload control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An array of file errors corresponding to the files in the \`value\`.",
+      "name": "fileErrors",
+      "optional": true,
+      "type": "ReadonlyArray<null | string>",
+    },
+    Object {
+      "description": "An object containing all the localized strings required by the component:
+* \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
+* \`dropzoneText\` (function): A function to render the text shown in the dropzone. It takes \`multiple\` attribute to define plurality.
+* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
+* \`limitShowFewer\` (string): The text of the show more tokens button.
+* \`limitShowMore\` (string): The text of the show fewer tokens button.
+* \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
+* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
+* \`formatFileLastModified\` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.",
+      "inlineType": Object {
+        "name": "FileUploadProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "dropzoneText",
+            "optional": false,
+            "type": "(multiple: boolean) => string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "formatFileLastModified",
+            "optional": true,
+            "type": "(date: Date) => string",
+          },
+          Object {
+            "name": "formatFileSize",
+            "optional": true,
+            "type": "(sizeInBytes: number) => string",
+          },
+          Object {
+            "name": "limitShowFewer",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "limitShowMore",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "removeFileAriaLabel",
+            "optional": false,
+            "type": "(fileIndex: number) => string",
+          },
+          Object {
+            "name": "uploadButtonText",
+            "optional": false,
+            "type": "(multiple: boolean) => string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": false,
+      "type": "FileUploadProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.",
+      "name": "multiple",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Show file last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.",
+      "name": "showFileLastModified",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Show file size in the token. Use \`i18nStrings.formatFileSize\` to customize it.",
+      "name": "showFileSize",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Show file thumbnail in the token. Only supported for images.",
+      "name": "showFileThumbnail",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.",
+      "name": "tokenLimit",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Specifies the currently selected file(s).
+If you want to clear the selection, use empty array.",
+      "name": "value",
+      "optional": false,
+      "type": "ReadonlyArray<File>",
+    },
+  ],
+  "regions": Array [
+    Object {
+      "description": "Constraint text that is displayed below the control. Use this to provide additional information about file size limit, etc.",
+      "isDefault": false,
+      "name": "constraintText",
+    },
+    Object {
+      "description": "Text that displays as a validation message.",
+      "isDefault": false,
+      "name": "errorText",
     },
   ],
   "releaseStatus": "stable",
@@ -7156,9 +7574,10 @@ Object {
   "events": Array [
     Object {
       "cancelable": true,
-      "description": "Called when a link is clicked without any modifier keys.
-If you want to implement client-side routing yourself,
-use this event and prevent default browser navigation (by calling \`preventDefault\`).
+      "description": "Called when a link is clicked without any modifier keys. If the link has no \`href\` provided, it will be called on
+all clicks.
+If you want to implement client-side routing yourself, use this event and prevent default browser navigation
+(by calling \`preventDefault\`).
 ",
       "detailInlineType": Object {
         "name": "LinkProps.FollowDetail",
@@ -7741,7 +8160,6 @@ The event detail contains the \`reason\`, which can be any of the following:
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"\\"",
       "description": "Adds an \`aria-label\` to the close button, for accessibility.",
       "name": "closeAriaLabel",
       "optional": true,
@@ -9146,6 +9564,31 @@ Object {
   "name": "PropertyFilter",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronousely. This would cause extra \`onLoadMore\`
 events to fire calling for more properties.",
       "name": "asyncProperties",
@@ -9156,6 +9599,16 @@ events to fire calling for more properties.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
       "optional": true,
       "type": "string",
     },
@@ -10864,6 +11317,8 @@ Object that represents a group of links.
 - \`type\`: \`'link-group'\`.
 - \`text\` (string) - Specifies the text of the group link.
 - \`href\` (string) - Specifies the \`href\` of the group link.
+- \`info\` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
+    our UX guidelines allow only to add a Badge and/or a \\"New\\" label.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
@@ -11078,42 +11533,42 @@ Object {
           },
           Object {
             "name": "openButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesCancel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesConfirm",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionBottom",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionDescription",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionSide",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -11391,12 +11846,16 @@ You can use the first argument of type \`SelectionState\` to access the current 
 state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
 items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
-* \`activateEditLabel\` (EditableColumnDefinition) => string -
+* \`activateEditLabel\` (EditableColumnDefinition, Item) => string -
                      Specifies an alternative text for the edit button in editable cells.
 * \`cancelEditLabel\` (EditableColumnDefinition) => string -
                      Specifies an alternative text for the cancel button in editable cells.
 * \`submitEditLabel\` (EditableColumnDefinition) => string -
                      Specifies an alternative text for the submit button in editable cells.
+* \`successfulEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
+* \`submittingEditText\` (EditableColumnDefinition) => string -
+                     Specifies a text that is announced to screen readers when a cell edit operation is submitted.
 ",
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
@@ -11404,7 +11863,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "activateEditLabel",
             "optional": true,
-            "type": "(column: TableProps.ColumnDefinition<any>) => string",
+            "type": "(column: TableProps.ColumnDefinition<any>, item: T) => string",
           },
           Object {
             "name": "allItemsSelectionLabel",
@@ -11432,6 +11891,16 @@ add a meaningful description to the whole selection.
             "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },
           Object {
+            "name": "submittingEditText",
+            "optional": true,
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
+          },
+          Object {
+            "name": "successfulEditLabel",
+            "optional": true,
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
+          },
+          Object {
             "name": "tableLabel",
             "optional": true,
             "type": "string",
@@ -11453,7 +11922,7 @@ add a meaningful description to the whole selection.
     Object {
       "description": "The columns configuration object
 * \`id\` (string) - Specifies a unique column identifier. The property is used 1) as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering,
-  and 2) to match entries in the \`visibleColumns\` property, if defined.
+  and 2) to match entries in the \`columnDisplay\` property, if defined.
 * \`header\` (ReactNode) - Determines the display of the column header.
 * \`cell\` ((item) => ReactNode) - Determines the display of a cell's content. You receive the current table row
   item as an argument.
@@ -11490,10 +11959,21 @@ add a meaningful description to the whole selection.
        You receive the current table row \`item\` and a \`cellContext\` object as arguments.
        The \`cellContext\` object contains the following properties:
  *  * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
- *  * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.",
+ *  * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
+ * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
+    },
+    Object {
+      "description": "Specifies an array that represents the table columns in the order in which they will be displayed, together with their visibility.
+If not set, all columns are displayed and the order is dictated by the \`columnDefinitions\` property.
+
+Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+",
+      "name": "columnDisplay",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
     },
     Object {
       "defaultValue": "'comfortable'",
@@ -11633,6 +12113,34 @@ to prevent the user from sorting before items are fully loaded.",
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the number of first and/or last columns that should be sticky.
+If the available scrollable space is less than a certain threshold, the feature is deactivated.
+
+Use it in conjunction with the sticky columns preference of the
+[collection preferences](/components/collection-preferences/) component.
+
+",
+      "inlineType": Object {
+        "name": "TableProps.StickyColumns",
+        "properties": Array [
+          Object {
+            "name": "first",
+            "optional": true,
+            "type": "number",
+          },
+          Object {
+            "name": "last",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyColumns",
+      "optional": true,
+      "type": "TableProps.StickyColumns",
+    },
+    Object {
       "description": "If set to \`true\`, the table header remains visible when the user scrolls down.",
       "name": "stickyHeader",
       "optional": true,
@@ -11732,7 +12240,7 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
       "description": "Specifies an array containing the \`id\`s of visible columns. If not set, all columns are displayed.
 Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
 
-The order of ids doesn't influence the order in which columns are displayed - this is dictated by the \`columnDefinitions\` property
+The order of ids doesn't influence the order in which columns are displayed - this is dictated by the \`columnDefinitions\` property.
 ",
       "name": "visibleColumns",
       "optional": true,
@@ -11898,18 +12406,21 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "defaultValue": "\\"default\\"",
       "description": "The possible visual variants of tabs are the following:
 * \`default\` - Use in any context.
-* \`container\` - A variant with borders, for use alongside other containers.",
+* \`container\` - Use this variant to have the tabs displayed within a container header.
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
       "inlineType": Object {
         "name": "TabsProps.Variant",
         "type": "union",
         "values": Array [
           "default",
           "container",
+          "stacked",
         ],
       },
       "name": "variant",
       "optional": true,
       "type": "string",
+      "visualRefreshTag": "\`stacked\` variant",
     },
   ],
   "regions": Array [],
@@ -12084,6 +12595,11 @@ character validation. You should use this property only when absolutely necessar
             "name": "removeButton",
             "optional": false,
             "type": "string",
+          },
+          Object {
+            "name": "removeButtonAriaLabel",
+            "optional": true,
+            "type": "(item: TagEditorProps.Tag) => string",
           },
           Object {
             "name": "tagLimit",
@@ -12696,6 +13212,13 @@ Object {
   "name": "Tiles",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -13048,6 +13571,13 @@ Object {
   "name": "Toggle",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -13310,7 +13840,7 @@ Object {
     Object {
       "description": "Properties describing the product identity. They are as follows:
 * \`title\` (string) - Specifies the title text.
-* \`logo\` ({ src: string, alt: string }) - Specifies the logo for the product.
+* \`logo\` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
 * \`href\` (string) - Specifies the \`href\` that the header links to.
 * \`onFollow\` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
 ",

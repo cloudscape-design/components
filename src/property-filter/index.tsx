@@ -11,16 +11,19 @@ import { KeyCode } from '../internal/keycode';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
-import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
-import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
-import { TokenButton } from './token';
 import {
-  getQueryActions,
-  parseText,
-  getAutosuggestOptions,
-  getAllowedOperators,
-  getExtendedOperator,
-} from './controller';
+  PropertyFilterProps,
+  ParsedText,
+  Ref,
+  ComparisonOperator,
+  Token,
+  InternalFilteringProperty,
+  InternalFilteringOption,
+  FilteringProperty,
+  ExtendedOperator,
+} from './interfaces';
+import { TokenButton } from './token';
+import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -28,6 +31,7 @@ import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './pro
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
+import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../internal/i18n/context';
 import TokenList from '../internal/components/token-list';
 import { SearchResults } from '../text-filter/search-results';
@@ -133,27 +137,57 @@ const PropertyFilter = React.forwardRef(
       inputRef
     );
     const [filteringText, setFilteringText] = useState<string>('');
-    const parsedText = parseText(filteringText, filteringProperties, disableFreeTextFiltering);
+
+    const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
+      const extendedOperators = (property.operators ?? []).reduce(
+        (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
+        new Map<PropertyFilterOperator, null | ExtendedOperator<any>>()
+      );
+      return {
+        propertyKey: property.key,
+        propertyLabel: property.propertyLabel ?? '',
+        groupValuesLabel: property.groupValuesLabel ?? '',
+        propertyGroup: property.group,
+        operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
+        defaultOperator: property.defaultOperator ?? '=',
+        getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
+        getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
+        externalProperty: property,
+      };
+    });
+
+    const propertyByKey = new Map(internalFilteringProperties.map(p => [p.propertyKey, p]));
+
+    const internalFilteringOptions: readonly InternalFilteringOption[] = filteringOptions.map(option => {
+      const formatter = propertyByKey.get(option.propertyKey)?.getValueFormatter();
+      return {
+        propertyKey: option.propertyKey,
+        value: option.value,
+        label: formatter ? formatter(option.value) : option.label ?? option.value ?? '',
+      };
+    });
+
+    const parsedText = parseText(filteringText, internalFilteringProperties, disableFreeTextFiltering);
     const autosuggestOptions = getAutosuggestOptions(
       parsedText,
-      filteringOptions,
-      filteringProperties,
+      internalFilteringOptions,
+      internalFilteringProperties,
       customGroupsText,
       i18nStrings
     );
 
     const createToken = (currentText: string) => {
-      const parsedText = parseText(currentText, filteringProperties, disableFreeTextFiltering);
+      const parsedText = parseText(currentText, internalFilteringProperties, disableFreeTextFiltering);
       let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
           newToken = matchTokenValue(
             {
-              propertyKey: parsedText.property.key,
+              propertyKey: parsedText.property.propertyKey,
               operator: parsedText.operator,
               value: parsedText.value,
             },
-            filteringOptions
+            internalFilteringOptions
           );
           break;
         }
@@ -195,7 +229,7 @@ const PropertyFilter = React.forwardRef(
         filteringOperator: undefined,
       };
       if (parsedText.step === 'property') {
-        loadMoreDetail.filteringProperty = parsedText.property;
+        loadMoreDetail.filteringProperty = parsedText.property.externalProperty;
         loadMoreDetail.filteringText = parsedText.value;
         loadMoreDetail.filteringOperator = parsedText.operator;
       }
@@ -242,14 +276,14 @@ const PropertyFilter = React.forwardRef(
       // stop dropdown from closing
       event.preventDefault();
 
-      const parsedText = parseText(value, filteringProperties, disableFreeTextFiltering);
+      const parsedText = parseText(value, internalFilteringProperties, disableFreeTextFiltering);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
 
       // Insert operator automatically if only one operator is defined for the given property.
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
         if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
-          loadMoreDetail.filteringProperty = parsedText.property;
+          loadMoreDetail.filteringProperty = parsedText.property.externalProperty;
           loadMoreDetail.filteringOperator = operators[0];
           loadMoreDetail.filteringText = '';
           setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
@@ -260,8 +294,7 @@ const PropertyFilter = React.forwardRef(
     };
 
     const operatorForm =
-      parsedText.step === 'property' &&
-      getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
+      parsedText.step === 'property' && parsedText.property.getValueFormRenderer(parsedText.operator);
 
     const searchResultsId = useUniqueId('property-filter-search-results');
 
@@ -275,6 +308,9 @@ const PropertyFilter = React.forwardRef(
             enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
             ariaLabel={i18nStrings.filteringAriaLabel}
             placeholder={i18nStrings.filteringPlaceholder}
+            ariaLabelledby={rest.ariaLabelledby}
+            ariaDescribedby={rest.ariaDescribedby}
+            controlId={rest.controlId}
             value={filteringText}
             disabled={disabled}
             onKeyDown={handleKeyDown}
@@ -330,8 +366,8 @@ const PropertyFilter = React.forwardRef(
                     }}
                     setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
                     setOperation={setOperation}
-                    filteringOptions={filteringOptions}
-                    filteringProperties={filteringProperties}
+                    filteringOptions={internalFilteringOptions}
+                    filteringProperties={internalFilteringProperties}
                     asyncProps={asyncProps}
                     onLoadItems={onLoadItems}
                     i18nStrings={i18nStrings}

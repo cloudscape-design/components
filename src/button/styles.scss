@@ -38,10 +38,8 @@
     text-decoration: none;
   }
 
-  &:not(.hide-focus-outline) {
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-    }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
   &.variant-icon,
   &.variant-modal-dismiss,
@@ -55,7 +53,7 @@
       );
     }
   }
-  &.variant-inline-icon:not(.hide-focus-outline) {
+  &.variant-inline-icon {
     @include focus-visible.when-visible {
       @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
     }

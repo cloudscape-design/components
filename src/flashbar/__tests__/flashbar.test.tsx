@@ -195,6 +195,26 @@ describe('Flashbar component', () => {
         }
       });
 
+      test('findItemsByType', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { content: 'Flash', type: 'success' },
+              { content: 'Flash', type: 'error' },
+              { content: 'Flash', type: 'error' },
+              { content: 'Flash', type: 'warning' },
+              { content: 'Flash', type: 'info' },
+              { content: 'Flash', type: 'warning', loading: true }, // assuming info
+              { content: 'Flash', loading: true }, // assuming info
+            ]}
+          />
+        );
+        expect(wrapper.findItemsByType('success')).toHaveLength(1);
+        expect(wrapper.findItemsByType('error')).toHaveLength(2);
+        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+        expect(wrapper.findItemsByType('info')).toHaveLength(3);
+      });
+
       test('correct aria-role', () => {
         const wrapper = createFlashbarWrapper(
           <Flashbar
@@ -370,6 +390,26 @@ describe('Flashbar component', () => {
           const list = findList(flashbar)!;
           expect(list).toBeTruthy();
           expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
+        });
+
+        test('renders the label, header, and content in an aria-live region for ariaRole="status"', () => {
+          const { rerender, container } = reactRender(<Flashbar items={[]} />);
+          rerender(
+            <Flashbar
+              items={[
+                {
+                  id: '1',
+                  ariaRole: 'status',
+                  type: 'error',
+                  statusIconAriaLabel: 'Error',
+                  header: 'The header',
+                  content: 'The content',
+                },
+              ]}
+            />
+          );
+          // Render area of the LiveRegion component.
+          expect(container.querySelector('span[aria-hidden]')).toHaveTextContent('Error The header The content');
         });
       });
     });

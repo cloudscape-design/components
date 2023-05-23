@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @import './visible-content';
+@import './content-display/styles';
 
 .root,
 .modal-root,
@@ -25,6 +26,11 @@
 .content-density,
 .page-size,
 .page-size-form-field,
-.page-size-radio-group {
+.page-size-radio-group,
+.sticky-columns,
+.sticky-columns-form-field,
+.sticky-columns-radio-group,
+.sticky-columns-first,
+.sticky-columns-last {
   /* used in test-utils */
 }

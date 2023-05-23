@@ -52,6 +52,7 @@ interface MobileToolbarProps {
   toolsHide: boolean | undefined;
   topOffset?: number;
   ariaLabels?: AppLayoutProps.Labels;
+  mobileBarRef: React.Ref<HTMLDivElement>;
   children: React.ReactNode;
   onNavigationOpen: () => void;
   onToolsOpen: () => void;
@@ -75,6 +76,7 @@ export function MobileToolbar({
   onNavigationOpen,
   onToolsOpen,
   drawers,
+  mobileBarRef,
 }: MobileToolbarProps) {
   useEffect(() => {
     if (anyPanelOpen) {
@@ -87,7 +89,11 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
   return (
-    <div className={clsx(styles['mobile-bar'], unfocusable && sharedStyles.unfocusable)} style={{ top: topOffset }}>
+    <div
+      ref={mobileBarRef}
+      className={clsx(styles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
+      style={{ top: topOffset }}
+    >
       {!navigationHide && (
         <MobileToggle
           ref={toggleRefs.navigation}
@@ -114,19 +120,19 @@ export function MobileToolbar({
       {drawers && (
         <aside
           aria-label={drawers.ariaLabel}
-          className={clsx(styles['mobile-toggle'], styles['mobile-toggle-with-drawers'])}
+          className={clsx(
+            styles['mobile-toggle'],
+            styles['mobile-toggle-with-drawers'],
+            testutilStyles['drawers-mobile-triggers-container']
+          )}
         >
           {drawers.items.map((item: DrawerItem, index: number) => (
             <AppLayoutButton
-              className={clsx(
-                styles.trigger,
-                styles['trigger-drawer'],
-                drawers.activeDrawerId === item.id && styles.selected
-              )}
+              className={clsx(styles['mobile-trigger-with-drawers'], testutilStyles['drawers-trigger'])}
               key={`drawer-trigger-${index}`}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
-              ariaLabel={item.ariaLabels.triggerButton}
+              ariaLabel={item.ariaLabels?.triggerButton}
               onClick={() => drawers.onChange({ activeDrawerId: item.id })}
               ariaExpanded={drawers.activeDrawerId !== undefined}
             />

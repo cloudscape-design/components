@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import Button from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
+import Icon from '../../icon/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
+import LiveRegion from '../../internal/components/live-region/index.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -18,8 +18,9 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
+  successfulEdit?: boolean;
   onEditStart: () => void;
-  onEditEnd: () => void;
+  onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
 }
@@ -34,9 +35,10 @@ function TableCellEditable<ItemType>({
   submitEdit,
   ariaLabels,
   isVisualRefresh,
+  successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
-  const editActivateRef = useRef<ButtonProps.Ref>(null);
+  const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
     'data-inline-editing-active': isEditing.toString(),
   };
@@ -47,6 +49,11 @@ function TableCellEditable<ItemType>({
     }
   }, [isEditing]);
 
+  // To improve the initial page render performance we only show the edit icon when necessary.
+  const [hasHover, setHasHover] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const showIcon = hasHover || hasFocus;
+
   return (
     <TableTdElement
       {...rest}
@@ -55,9 +62,12 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
+        successfulEdit && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
+      onMouseEnter={() => setHasHover(true)}
+      onMouseLeave={() => setHasHover(false)}
     >
       {isEditing ? (
         <InlineEditor
@@ -70,16 +80,27 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
-          <span className={styles['body-cell-editor']}>
-            <Button
-              __hideFocusOutline={true}
-              __internalRootRef={editActivateRef}
-              ariaLabel={ariaLabels?.activateEditLabel?.(column)}
-              formAction="none"
-              iconName="edit"
-              variant="inline-icon"
-            />
-          </span>
+          {successfulEdit && (
+            <>
+              <span
+                className={styles['body-cell-success']}
+                aria-label={ariaLabels?.successfulEditLabel?.(column)}
+                role="img"
+              >
+                <Icon name="status-positive" variant="success" />
+              </span>
+              <LiveRegion>{ariaLabels?.successfulEditLabel?.(column)}</LiveRegion>
+            </>
+          )}
+          <button
+            className={styles['body-cell-editor']}
+            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+            ref={editActivateRef}
+            onFocus={() => setHasFocus(true)}
+            onBlur={() => setHasFocus(false)}
+          >
+            {showIcon && <Icon name="edit" />}
+          </button>
         </>
       )}
     </TableTdElement>

@@ -255,6 +255,16 @@ const TagEditor = React.forwardRef(
       [i18nStrings, keysRequest, onKeyChange, onKeyBlur, valuesRequest, onValueChange, onUndoRemoval]
     );
 
+    const forwardedI18nStrings = useMemo<AttributeEditorProps.I18nStrings<InternalTag>>(
+      () => ({
+        errorIconAriaLabel: i18nStrings?.errorIconAriaLabel,
+        itemRemovedAriaLive: i18nStrings?.itemRemovedAriaLive,
+        removeButtonAriaLabel:
+          i18nStrings.removeButtonAriaLabel && (({ tag }) => i18nStrings.removeButtonAriaLabel!(tag)),
+      }),
+      [i18nStrings]
+    );
+
     if (loading) {
       return (
         <div className={styles.root} ref={baseComponentProps.__internalRootRef}>
@@ -292,7 +302,7 @@ const TagEditor = React.forwardRef(
           )
         }
         definition={definition}
-        i18nStrings={i18nStrings}
+        i18nStrings={forwardedI18nStrings}
       />
     );
   }

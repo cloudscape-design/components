@@ -6,6 +6,7 @@ import InternalCheckbox from '../checkbox/internal';
 import InternalColumnLayout from '../column-layout/internal';
 import InternalFormField from '../form-field/internal';
 import InternalRadioGroup from '../radio-group/internal';
+import InternalSpaceBetween from '../space-between/internal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
@@ -16,6 +17,8 @@ export const copyPreferences = ({
   stripedRows,
   contentDensity,
   visibleContent,
+  contentDisplay,
+  stickyColumns,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
   pageSize,
@@ -23,20 +26,35 @@ export const copyPreferences = ({
   stripedRows,
   contentDensity,
   visibleContent,
+  contentDisplay,
+  stickyColumns,
   custom,
 });
+
+type CopyPreferenceName = keyof CollectionPreferencesProps.Preferences;
 
 export const mergePreferences = (
   newPref: CollectionPreferencesProps.Preferences,
   oldPref: CollectionPreferencesProps.Preferences
-): CollectionPreferencesProps.Preferences => ({
-  pageSize: newPref.pageSize !== undefined ? newPref.pageSize : oldPref.pageSize,
-  wrapLines: newPref.wrapLines !== undefined ? newPref.wrapLines : oldPref.wrapLines,
-  stripedRows: newPref.stripedRows !== undefined ? newPref.stripedRows : oldPref.stripedRows,
-  contentDensity: newPref.contentDensity !== undefined ? newPref.contentDensity : oldPref.contentDensity,
-  visibleContent: newPref.visibleContent !== undefined ? newPref.visibleContent : oldPref.visibleContent,
-  custom: newPref.custom !== undefined ? newPref.custom : oldPref.custom,
-});
+): CollectionPreferencesProps.Preferences => {
+  const newObj = { ...oldPref };
+  const prefNames: CopyPreferenceName[] = [
+    'pageSize',
+    'wrapLines',
+    'stripedRows',
+    'contentDensity',
+    'visibleContent',
+    'custom',
+    'contentDisplay',
+    'stickyColumns',
+  ];
+  for (const prefName of prefNames) {
+    if (newPref[prefName] !== undefined) {
+      newObj[prefName] = newPref[prefName];
+    }
+  }
+  return newObj;
+};
 
 interface ModalContentLayoutProps {
   left: React.ReactNode;
@@ -132,6 +150,68 @@ export const ContentDensityPreference = ({ label, description, value, onChange }
     {label}
   </InternalCheckbox>
 );
+
+interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.StickyColumnsPreference {
+  onChange: (value?: { first?: number; last?: number }) => void;
+  value?: { first?: number; last?: number };
+}
+interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPreference {
+  onChange: (value: number) => void;
+  preference: {
+    title: string;
+    description: string;
+    options: ReadonlyArray<{
+      label: string;
+      value: number;
+    }>;
+  };
+  value?: number;
+  firstOrLast: 'first' | 'last';
+}
+
+const StickyPreference = ({ firstOrLast, preference, value, onChange }: StickyPreference) => {
+  const { title, description, options } = preference;
+  return (
+    <div className={styles[`sticky-columns-${firstOrLast}`]}>
+      <InternalFormField className={styles['sticky-columns-form-field']} label={title} description={description}>
+        <InternalRadioGroup
+          className={styles['sticky-columns-radio-group']}
+          value={typeof value !== 'undefined' ? `${value}` : null}
+          items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
+          onChange={({ detail }) => onChange(Number(detail.value))}
+        />
+      </InternalFormField>
+    </div>
+  );
+};
+
+export const StickyColumnsPreference = ({
+  firstColumns,
+  lastColumns,
+  onChange,
+  value,
+}: StickyColumnsPreferenceProps) => {
+  return (
+    <InternalSpaceBetween className={styles['sticky-columns']} size="l">
+      {firstColumns && (
+        <StickyPreference
+          firstOrLast="first"
+          preference={firstColumns}
+          value={value?.first}
+          onChange={newValue => onChange({ ...value, first: newValue })}
+        />
+      )}
+      {lastColumns && (
+        <StickyPreference
+          firstOrLast="last"
+          preference={lastColumns}
+          value={value?.last}
+          onChange={newValue => onChange({ ...value, last: newValue })}
+        />
+      )}
+    </InternalSpaceBetween>
+  );
+};
 
 interface CustomPreferenceProps<T = any> extends Pick<CollectionPreferencesProps<T>, 'customPreference'> {
   onChange: (value: T) => void;

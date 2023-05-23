@@ -122,6 +122,7 @@ const InternalSelect = React.forwardRef(
       externalRef,
       fireLoadItems,
       setFilteringValue,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
@@ -132,6 +133,7 @@ const InternalSelect = React.forwardRef(
     });
 
     const selectAriaLabelId = useUniqueId('select-arialabel-');
+    const footerId = useUniqueId('footer');
 
     useEffect(() => {
       scrollToIndex.current?.(highlightedIndex);
@@ -165,12 +167,6 @@ const InternalSelect = React.forwardRef(
       />
     );
 
-    const menuProps = {
-      ...getMenuProps(),
-      onLoadMore: handleLoadMore,
-      ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
-    };
-
     const isEmpty = !options || options.length === 0;
     const isNoMatch = filteredOptions && filteredOptions.length === 0;
     const dropdownStatus = useDropdownStatus({
@@ -186,6 +182,13 @@ const InternalSelect = React.forwardRef(
       errorIconAriaLabel,
       onRecoveryClick: handleRecoveryClick,
     });
+
+    const menuProps = {
+      ...getMenuProps(),
+      onLoadMore: handleLoadMore,
+      ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
+      ariaDescribedby: dropdownStatus.content ? footerId : undefined,
+    };
 
     const announcement = useAnnouncement({
       announceSelected,
@@ -222,12 +225,18 @@ const InternalSelect = React.forwardRef(
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}
-          footer={dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null}
+          footer={
+            dropdownStatus.isSticky ? (
+              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+            ) : null
+          }
           expandToViewport={expandToViewport}
         >
           <ListComponent
             listBottom={
-              !dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null
+              !dropdownStatus.isSticky ? (
+                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+              ) : null
             }
             menuProps={menuProps}
             getOptionProps={getOptionProps}

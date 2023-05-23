@@ -37,6 +37,7 @@ explicitly set in script.
   #{custom-props.$mainTemplateRows}: 1fr;
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
+  #{custom-props.$mobileBarHeight}: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
   #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});

@@ -18,7 +18,7 @@ const steps: WizardProps.Step[] = [
     description: 'Description of the step',
   },
   {
-    title: 'Step 2',
+    title: 'Step 2 - reallylongsteptitlewithoutspacestowraptonextline',
     content: (
       <>
         <p>{repeat('Really long text to wrap. ', 10)}</p>

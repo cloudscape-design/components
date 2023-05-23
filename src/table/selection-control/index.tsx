@@ -7,17 +7,11 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../radio-group/radio-button';
 
-import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
 import { InteractiveComponent } from '../thead';
+import { SelectionProps } from '../use-selection';
 
-export interface SelectionControlProps {
-  selectionType: TableProps['selectionType'];
-  checked: boolean;
-  disabled: boolean;
-  name: string;
-  indeterminate?: boolean;
-  onChange?: () => void;
+export interface SelectionControlProps extends SelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
@@ -106,6 +100,7 @@ export default function SelectionControl({
         htmlFor={controlId}
         className={clsx(styles.label, styles.root)}
         aria-label={ariaLabel}
+        title={ariaLabel}
       >
         {selector}
       </label>

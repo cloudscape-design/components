@@ -21,9 +21,11 @@ const DOMAIN_NAME = /^\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[
 
 export const ariaLabels: TableProps.AriaLabels<DistributionInfo> = {
   tableLabel: 'Distributions',
-  activateEditLabel: column => `Edit ${column.header}`,
+  activateEditLabel: (column, item) => `Edit ${item.Id} ${column.header}`,
   cancelEditLabel: column => `Cancel editing ${column.header}`,
   submitEditLabel: column => `Submit edit ${column.header}`,
+  submittingEditText: () => 'Loading edit response',
+  successfulEditLabel: () => 'Edit successful',
 };
 
 const withSideEffect =
@@ -272,6 +274,7 @@ export default function () {
 
   return (
     <ScreenshotArea disableAnimations={true}>
+      <input data-testid="focus" aria-label="focus input" />
       <Demo setModalVisible={setModalVisible} ref={tableRef} />
       <Modal
         visible={modalVisible}

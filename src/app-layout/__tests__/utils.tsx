@@ -109,3 +109,108 @@ export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   preferencesCancel: 'Cancel',
   resizeHandleAriaLabel: 'Resize panel',
 };
+
+export const drawersConfigurations = {
+  singleDrawer: {
+    drawers: {
+      ariaLabel: 'Drawers',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  singleDrawerOpen: {
+    drawers: {
+      ariaLabel: 'Drawers',
+      activeDrawerId: 'security',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  resizableDrawer: {
+    drawers: {
+      ariaLabel: 'Drawers',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          resizable: true,
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  drawersItems: [
+    {
+      ariaLabels: {
+        closeButton: 'Security close button',
+        content: 'Security drawer content',
+        triggerButton: 'Security trigger button',
+        resizeHandle: 'Security resize handle',
+      },
+      content: <span>Security</span>,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
+  drawersResizableItems: [
+    {
+      ariaLabels: {
+        closeButton: 'Security close button',
+        content: 'Security drawer content',
+        triggerButton: 'Security trigger button',
+        resizeHandle: 'Security resize handle',
+      },
+      content: <span>Security</span>,
+      resizable: true,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
+  drawersItemsWithoutLabels: [
+    {
+      content: <span>Security</span>,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
+};

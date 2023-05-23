@@ -227,25 +227,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     setHighlightedAnnotation(undefined);
   }, []);
 
-  /**
-   * Ignore focus lock if focused element is the pane tab button or within editor tree.
-   * This check is required:
-   * - When closing the pane with `ESC` key: The panel closes asynchronously and its focus lock
-   *   still exists when trying to focus the tab button in higher-order component.
-   * - When clicking or hittin `Enter` on an annotation: The panel remains open but focus lock
-   *   deactivates asynchronously.
-   */
-  const shouldHandleFocus = useCallback(
-    (activeElement: HTMLElement): boolean => {
-      return (
-        activeElement !== errorsTabRef.current &&
-        activeElement !== warningsTabRef.current &&
-        !editor?.container.contains(activeElement)
-      );
-    },
-    [editor]
-  );
-
   const [isPreferencesModalVisible, setPreferencesModalVisible] = useState(false);
   const onPreferencesOpen = () => setPreferencesModalVisible(true);
   const onPreferencesConfirm = (p: CodeEditorProps.Preferences) => {
@@ -321,7 +302,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               onAnnotationClick={onAnnotationClick}
               onAnnotationClear={onAnnotationClear}
               onClose={onPaneClose}
-              onAllowlist={shouldHandleFocus}
               cursorPositionLabel={i18nStrings.cursorPosition}
               closeButtonAriaLabel={i18nStrings.paneCloseButtonAriaLabel}
             />
@@ -341,6 +321,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
                 theme: i18nStrings.preferencesModalTheme,
                 lightThemes: i18nStrings.preferencesModalLightThemes,
                 darkThemes: i18nStrings.preferencesModalDarkThemes,
+                themeFilteringAriaLabel: i18nStrings.preferencesModalThemeFilteringAriaLabel,
+                themeFilteringClearAriaLabel: i18nStrings.preferencesModalThemeFilteringClearAriaLabel,
+                themeFilteringPlaceholder: i18nStrings.preferencesModalThemeFilteringPlaceholder,
               }}
             />
           )}

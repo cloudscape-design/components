@@ -5,6 +5,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../internal/styles' as styles;
+@use '../constants.scss' as constants;
 
 .drawers-container {
   background-color: transparent;
@@ -38,8 +39,18 @@
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     position: fixed;
     right: 0;
-    top: var(#{custom-props.$offsetTop});
     z-index: 1001;
+
+    /*
+    When disableBodyScroll is true the offsetTop will be relative to the 
+    app layout and not the body. However, the drawer position changes 
+    to fixed in mobile viewports. The top value needs to include the 
+    header because fixed position switches the top value so it is now 
+    relative to the body.
+    */
+    &.disable-body-scroll {
+      top: var(#{custom-props.$headerHeight});
+    }
   }
 }
 
@@ -95,6 +106,13 @@
   }
 }
 
+.drawers-trigger {
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    width: constants.$sidebar-size-closed;
+    text-align: right;
+  }
+}
+
 .drawer {
   #{custom-props.$activeDrawerWidth}: 290px;
   background-color: awsui.$color-background-container-content;
@@ -113,6 +131,7 @@
   > .drawer-close-button {
     grid-column: 2;
     grid-row: 2;
+    z-index: 1;
   }
 
   > .drawer-content {

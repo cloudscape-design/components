@@ -29,6 +29,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { filterOptions } from './filter-options';
+import { joinStrings } from '../internal/utils/strings';
 
 const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
 const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
@@ -145,6 +146,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const selfControlId = useUniqueId('input');
     const controlId = rest.controlId ?? selfControlId;
     const listId = useUniqueId('list');
+    const footerId = useUniqueId('footer');
     const highlightedOptionIdSource = useUniqueId();
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
@@ -161,6 +163,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     } else if (autosuggestItemsState.items.length > 0) {
       content = (
         <AutosuggestOptionsList
+          statusType={statusType}
           autosuggestItemsState={autosuggestItemsState}
           autosuggestItemsHandlers={autosuggestItemsHandlers}
           highlightedOptionId={highlightedOptionId}
@@ -171,7 +174,10 @@ const PropertyFilterAutosuggest = React.forwardRef(
           handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
           hasDropdownStatus={dropdownStatus.content !== null}
           virtualScroll={virtualScroll}
-          listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          listBottom={
+            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerId} /> : null
+          }
+          ariaDescribedby={dropdownStatus.content ? footerId : undefined}
         />
       );
     }
@@ -193,13 +199,17 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
-        ariaDescribedby={searchResultsId}
+        ariaDescribedby={joinStrings(searchResultsId, rest.ariaDescribedby)}
         dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null || !!customForm}
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}
         dropdownFooter={
           dropdownStatus.isSticky ? (
-            <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
+            <DropdownFooter
+              content={dropdownStatus.content}
+              hasItems={autosuggestItemsState.items.length >= 1}
+              id={footerId}
+            />
           ) : null
         }
         dropdownWidth={customForm ? DROPDOWN_WIDTH_CUSTOM_FORM : DROPDOWN_WIDTH_OPTIONS_LIST}

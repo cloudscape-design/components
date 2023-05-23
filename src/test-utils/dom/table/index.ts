@@ -10,6 +10,7 @@ import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';
 import PaginationWrapper from '../pagination';
 import TextFilterWrapper from '../text-filter';
+import PropertyFilterWrapper from '../property-filter';
 
 export default class TableWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
@@ -60,7 +61,9 @@ export default class TableWrapper extends ComponentWrapper {
    * @param columnIndex 1-based index of the column of the cell to select.
    */
   findBodyCell(rowIndex: number, columnIndex: number): ElementWrapper | null {
-    return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) td:nth-child(${columnIndex})`);
+    return this.findNativeTable().find(
+      `tbody tr:nth-child(${rowIndex}) .${bodyCellStyles['body-cell']}:nth-child(${columnIndex})`
+    );
   }
 
   findRows(): Array<ElementWrapper> {
@@ -121,17 +124,31 @@ export default class TableWrapper extends ComponentWrapper {
   findTextFilter(): TextFilterWrapper | null {
     return this.findComponent(`.${styles['tools-filtering']}`, TextFilterWrapper);
   }
-  //
-  // findPropertyFiltering(): TablePropertyFilteringWrapper {
-  //   return new TablePropertyFilteringWrapper(this.find('awsui-table-property-filtering').getElement());
-  // }
-  //
+
+  findPropertyFilter(): PropertyFilterWrapper | null {
+    return this.findComponent(`.${styles['tools-filtering']}`, PropertyFilterWrapper);
+  }
+
+  findFilterSlot(): ElementWrapper | null {
+    return this.findComponent(`.${styles['tools-filtering']}`, ElementWrapper);
+  }
+
   findCollectionPreferences(): CollectionPreferencesWrapper | null {
     return this.findComponent(`.${styles['tools-preferences']}`, CollectionPreferencesWrapper);
   }
 
   findPagination(): PaginationWrapper | null {
     return this.findComponent(`.${styles['tools-pagination']}`, PaginationWrapper);
+  }
+
+  /**
+   * Returns the button that activates inline editing for a table cell based on given row and column indices.
+   *
+   * @param rowIndex 1-based index of the row of the cell to select.
+   * @param columnIndex 1-based index of the column of the cell to select.
+   */
+  findEditCellButton(rowIndex: number, columnIndex: number): ElementWrapper | null {
+    return this.findBodyCell(rowIndex, columnIndex)?.findByClassName(bodyCellStyles['body-cell-editor']) ?? null;
   }
 
   findEditingCell(): ElementWrapper | null {

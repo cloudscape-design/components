@@ -23,6 +23,7 @@ const customCssPropertiesList = [
   'mainTemplateRows',
   'maxContentWidth',
   'minContentWidth',
+  'mobileBarHeight',
   'notificationsGap',
   'notificationsHeight',
   'offsetTop',

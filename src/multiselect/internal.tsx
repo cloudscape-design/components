@@ -136,6 +136,8 @@ const InternalMultiselect = React.forwardRef(
 
     const multiSelectAriaLabelId = useUniqueId('multiselect-arialabel-');
 
+    const footerId = useUniqueId('footer');
+
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const {
       isOpen,
@@ -161,6 +163,7 @@ const InternalMultiselect = React.forwardRef(
       fireLoadItems,
       setFilteringValue,
       useInteractiveGroups,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
@@ -216,6 +219,7 @@ const InternalMultiselect = React.forwardRef(
       ...getMenuProps(),
       onLoadMore: handleLoadMore,
       ariaLabelledby: joinStrings(multiSelectAriaLabelId, controlId),
+      ariaDescribedby: dropdownStatus.content ? footerId : undefined,
     };
 
     const announcement = useAnnouncement({
@@ -284,12 +288,18 @@ const InternalMultiselect = React.forwardRef(
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}
-          footer={dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null}
+          footer={
+            dropdownStatus.isSticky ? (
+              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+            ) : null
+          }
           expandToViewport={expandToViewport}
         >
           <ListComponent
             listBottom={
-              !dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null
+              !dropdownStatus.isSticky ? (
+                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+              ) : null
             }
             menuProps={menuProps}
             getOptionProps={getOptionProps}

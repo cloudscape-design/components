@@ -11,14 +11,14 @@ interface TestIndexes {
 const testIndexMap = new WeakMap<ListItem, TestIndexes>();
 //retrieves the test indexes of the option for the findOption and findOptionInGroup test-utils
 export const getTestOptionIndexes = <T extends ListItem>(item: T) => testIndexMap.get(item);
-export const generateTestIndexes = <T extends ListItem>(
+export const generateTestIndexes = <T extends ListItem, Group extends object>(
   filteredItems: ReadonlyArray<T>,
-  getParentGroup: (item: T) => T | undefined
+  getParentGroup: (item: T) => Group | undefined
 ) => {
   let throughIndex = 1;
   let groupIndex = 0;
   let inGroupIndex = 1;
-  let currentGroup: T | null = null;
+  let currentGroup: Group | null = null;
   filteredItems.forEach(item => {
     if (!('type' in item)) {
       testIndexMap.set(item, { throughIndex: throughIndex++ });

@@ -3,8 +3,9 @@
 import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces';
 import { transformUtility } from '../../../lib/components/top-navigation/1.0-beta/parts/overflow-menu';
 import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item';
+import SubmenuView from '../../../lib/components/top-navigation/parts/overflow-menu/views/submenu';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import React from 'react';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 
@@ -79,10 +80,98 @@ describe('TopNavigation Overflow menu', () => {
   });
 });
 
+describe('Submenu', () => {
+  test('onFollow event is fired when an href is set', () => {
+    const onFollow = jest.fn();
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            onItemFollow: onFollow,
+            items: [{ id: 'one', text: 'One', href: 'https://example.com' }],
+          }}
+        />
+      ).container
+    ).find('a')!;
+
+    act(() => wrapper.click());
+    expect(onFollow).toBeCalledTimes(1);
+
+    act(() => wrapper.click({ ctrlKey: true }));
+    expect(onFollow).toBeCalledTimes(1);
+  });
+
+  test('onFollow event is not fired when an href is not set', () => {
+    const onFollow = jest.fn();
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            onItemFollow: onFollow,
+            items: [{ id: 'one', text: 'One' }],
+          }}
+        />
+      ).container
+    ).find('a')!;
+
+    act(() => wrapper.click());
+    expect(onFollow).toBeCalledTimes(0);
+
+    act(() => wrapper.click({ ctrlKey: true }));
+    expect(onFollow).toBeCalledTimes(0);
+  });
+
+  test('onClick is fired on every click when an href is set', () => {
+    const onClick = jest.fn();
+
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            onItemClick: onClick,
+            items: [{ id: 'one', text: 'One', href: 'https://example.com' }],
+          }}
+        />
+      ).container
+    ).find('a')!;
+
+    act(() => wrapper.click());
+    expect(onClick).toBeCalledTimes(1);
+
+    act(() => wrapper.click({ ctrlKey: true }));
+    expect(onClick).toBeCalledTimes(2);
+  });
+
+  test('onClick is fired on every click when an href is not set', () => {
+    const onClick = jest.fn();
+
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            onItemClick: onClick,
+            items: [{ id: 'one', text: 'One' }],
+          }}
+        />
+      ).container
+    ).find('a')!;
+
+    act(() => wrapper.click());
+    expect(onClick).toBeCalledTimes(1);
+
+    act(() => wrapper.click({ ctrlKey: true }));
+    expect(onClick).toBeCalledTimes(2);
+  });
+});
+
 describe('UtilityMenuItem', () => {
   test.each(linkTargetExpectations)('"target" property %s', (props, expectation) => {
     const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
-    const linkWrapper = createWrapper(container).find('a')!;
+    const linkWrapper = createWrapper(container).find(`a, button`)!;
 
     expectation
       ? expect(linkWrapper.getElement()).toHaveAttribute('target', expectation)
@@ -91,19 +180,24 @@ describe('UtilityMenuItem', () => {
 
   test.each(linkRelExpectations)('"rel" property %s', (props, expectation) => {
     const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
-    const linkWrapper = createWrapper(container).find('a')!;
+    const linkWrapper = createWrapper(container).find('a, button')!;
 
     expectation
       ? expect(linkWrapper.getElement()).toHaveAttribute('rel', expectation)
       : expect(linkWrapper.getElement()).not.toHaveAttribute('rel');
   });
 
-  it('fires onClick with empty detail', () => {
-    const onClick = jest.fn();
-    const { container } = render(<UtilityMenuItem type="button" index={0} href="#" onClick={onClick} />);
-    const linkWrapper = createWrapper(container).find('a')!;
-    linkWrapper.click();
+  test.each([undefined, 'link', 'primary-button'] as const)(
+    'fires onClick with empty detail for variant %s',
+    variant => {
+      const onClick = jest.fn();
+      const { container } = render(
+        <UtilityMenuItem type="button" index={0} href="#" variant={variant} onClick={onClick} />
+      );
+      const linkWrapper = createWrapper(container).find('a')!;
+      linkWrapper.click();
 
-    expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
-  });
+      expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
+    }
+  );
 });

@@ -71,6 +71,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveAttribute('disabled');
       // In this case, aria-disabled would be redundant, so we don't set it
       expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('does not add the disabled attribute on link buttons', () => {
@@ -79,6 +80,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveClass(styles.disabled);
       expect(wrapper.getElement()).not.toHaveAttribute('disabled');
       expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('adds a tab index -1 when button with link is disabled', () => {
@@ -103,6 +105,18 @@ describe('Button Component', () => {
     test('adds aria-expanded property to button', () => {
       const wrapper = renderButton({ ariaExpanded: true });
       expect(wrapper.getElement()).toHaveAttribute('aria-expanded', 'true');
+    });
+  });
+
+  describe('ariaDescribedby property', () => {
+    test('adds aria-describedby property to button', () => {
+      const wrapper = renderButton({ ariaDescribedby: 'my-element' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'my-element');
+    });
+
+    test("doesn't add an aria-describedby property if not provided", () => {
+      const wrapper = renderButton();
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
     });
   });
 
@@ -298,6 +312,7 @@ describe('Button Component', () => {
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
       expect(wrapper.getElement()).not.toHaveAttribute('disabled');
       expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
       act(() => wrapper.click());
       expect(onClickSpy).not.toHaveBeenCalled();
     });
@@ -309,6 +324,7 @@ describe('Button Component', () => {
       // However, setting `disabled` does mean that the button can no longer be focused.
       expect(wrapper.getElement()).toHaveAttribute('disabled');
       expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('adds a tab index -1 to the link button', () => {
@@ -346,6 +362,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
     });
   });
+
   describe('form property', () => {
     test('should have form property when set', () => {
       const formId = 'form-id';

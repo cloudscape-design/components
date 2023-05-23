@@ -17,6 +17,7 @@ export interface DrawersProps {
   activeDrawerId?: string;
   items: ReadonlyArray<DrawersProps.Drawer>;
   onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
+  ariaLabel?: string;
 }
 
 namespace DrawersProps {
@@ -51,7 +52,7 @@ namespace DrawersProps {
  * do not exist then the Tools and SplitPanel will be handled by the Tools component.
  */
 export default function Drawers() {
-  const { drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
+  const { disableBodyScroll, drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
     useAppLayoutInternals();
 
   const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
@@ -63,6 +64,7 @@ export default function Drawers() {
   return (
     <div
       className={clsx(styles['drawers-container'], {
+        [styles['disable-body-scroll']]: disableBodyScroll,
         [styles['has-open-drawer']]: hasOpenDrawer,
         [styles.unfocusable]: isUnfocusable,
       })}
@@ -197,6 +199,7 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         }
       )}
+      aria-label={drawers.ariaLabel}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -291,6 +294,7 @@ export function MobileTriggers() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         }
       )}
+      aria-label={drawers.ariaLabel}
     >
       {!toolsHide && tools && (
         <InternalButton
@@ -311,7 +315,7 @@ export function MobileTriggers() {
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
-          className={testutilStyles['drawers-trigger']}
+          className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
           disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName={item.trigger.iconName}

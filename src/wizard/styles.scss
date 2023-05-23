@@ -176,6 +176,7 @@
     margin: 0;
 
     > li {
+      @include styles.text-wrapping;
       padding-bottom: awsui.$space-scaled-m;
       padding-top: 0;
     }

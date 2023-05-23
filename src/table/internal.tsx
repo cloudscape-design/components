@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -13,7 +13,7 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
-import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
+import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
@@ -33,6 +33,8 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
+import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
+
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
@@ -76,6 +78,8 @@ const InternalTable = React.forwardRef(
       totalItemsCount,
       firstIndex,
       renderAriaLive,
+      stickyColumns,
+      columnDisplay,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -85,17 +89,16 @@ const InternalTable = React.forwardRef(
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const wrapperRefObject = useRef(null);
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
-    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
+    const [lastSuccessfulEditCell, setLastSuccessfulEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
 
     useImperativeHandle(
@@ -107,17 +110,18 @@ const InternalTable = React.forwardRef(
       []
     );
 
-    const handleScroll = useScrollSync(
-      [wrapperRefObject, scrollbarRef, secondaryWrapperRef],
-      !supportsStickyPosition()
-    );
+    const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
-    const visibleColumnDefinitions = visibleColumns
-      ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
-      : columnDefinitions;
-    const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
+
+    const visibleColumnDefinitions = getVisibleColumnDefinitions({
+      columnDefinitions,
+      columnDisplay,
+      visibleColumns,
+    });
+
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
       selectedItems,
@@ -125,10 +129,8 @@ const InternalTable = React.forwardRef(
       isItemDisabled,
       onSelectionChange,
       ariaLabels,
+      loading,
     });
-    if (loading) {
-      selectAllProps.disabled = true;
-    }
 
     if (isDevelopment) {
       if (resizableColumns) {
@@ -149,10 +151,23 @@ const InternalTable = React.forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
+    const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
+
+    const visibleColumnsWithSelection = useMemo(() => {
+      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
+      return hasSelection ? [selectionColumnId.toString(), ...columnIds] : columnIds ?? [];
+    }, [visibleColumnDefinitions, hasSelection]);
+
+    const stickyState = useStickyColumns({
+      visibleColumns: visibleColumnsWithSelection,
+      stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
+      stickyColumnsLast: stickyColumns?.last || 0,
+    });
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
-      selectAllProps,
+      getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
       wrapLines,
@@ -173,7 +188,11 @@ const InternalTable = React.forwardRef(
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
+      stickyState,
     };
+
+    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
     const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
@@ -198,8 +217,12 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+
+    const toolsHeaderWrapper = useRef(null);
+    // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
+    const toolsHeaderHeight =
+      (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
     return (
       <ColumnWidthsProvider
@@ -219,7 +242,10 @@ const InternalTable = React.forwardRef(
                   ref={overlapElement}
                   className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
                 >
-                  <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
+                  <div
+                    ref={toolsHeaderWrapper}
+                    className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
+                  >
                     <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
                   </div>
                 </div>
@@ -245,6 +271,7 @@ const InternalTable = React.forwardRef(
           variant={toContainerVariant(computedVariant)}
           __disableFooterPaddings={true}
           __disableFooterDivider={true}
+          __disableStickyMobile={false}
           footer={
             footer && (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
@@ -253,6 +280,7 @@ const InternalTable = React.forwardRef(
             )
           }
           __stickyHeader={stickyHeader}
+          __mobileStickyOffset={toolsHeaderHeight}
           __stickyOffset={stickyHeaderVerticalOffset}
           {...focusMarkers.root}
         >
@@ -352,6 +380,8 @@ const InternalTable = React.forwardRef(
                             stripedRows={stripedRows}
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
+                            stickyState={stickyState}
+                            columnId={selectionColumnId.toString()}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -364,6 +394,10 @@ const InternalTable = React.forwardRef(
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
+                          const successfulEdit =
+                            !!lastSuccessfulEditCell &&
+                            lastSuccessfulEditCell[0] === rowIndex &&
+                            lastSuccessfulEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
                           return (
                             <TableBodyCell
@@ -383,22 +417,32 @@ const InternalTable = React.forwardRef(
                               wrapLines={wrapLines}
                               isEditable={isEditable}
                               isEditing={isEditing}
+                              isRowHeader={column.isRowHeader}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
-                              onEditEnd={() => {
-                                const wasCancelled = fireCancelableEvent(onEditCancel, {});
-                                if (!wasCancelled) {
+                              successfulEdit={successfulEdit}
+                              onEditStart={() => {
+                                setLastSuccessfulEditCell(null);
+                                setCurrentEditCell([rowIndex, colIndex]);
+                              }}
+                              onEditEnd={editCancelled => {
+                                const eventCancelled = fireCancelableEvent(onEditCancel, {});
+                                if (!eventCancelled) {
                                   setCurrentEditCell(null);
+                                  if (!editCancelled) {
+                                    setLastSuccessfulEditCell([rowIndex, colIndex]);
+                                  }
                                 }
                               }}
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
+                              columnId={column.id ?? colIndex.toString()}
+                              stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                             />
                           );

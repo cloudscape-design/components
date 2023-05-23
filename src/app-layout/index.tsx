@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -36,7 +36,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { Drawer, DrawerTriggersBar } from './drawer';
 import { ResizableDrawer } from './drawer/resizable-drawer';
-import { DrawerItem } from './drawer/interfaces';
+import { DrawerItem, InternalDrawerProps } from './drawer/interfaces';
 import { togglesConfig } from './toggles';
 import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
@@ -129,7 +129,8 @@ const OldAppLayout = React.forwardRef(
       }
     }
 
-    const drawers = (props as any).drawers;
+    const drawers = (props as InternalDrawerProps).drawers;
+    const hasDrawers = drawers && drawers.items.length > 0;
 
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
@@ -149,7 +150,7 @@ const OldAppLayout = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
 
-    const [activeDrawerId, setActiveDrawersId] = useControllable(
+    const [activeDrawerId, setActiveDrawerId] = useControllable(
       drawers?.activeDrawerId,
       drawers?.onChange,
       isMobile ? false : tools ? defaults.toolsOpen : '',
@@ -166,6 +167,7 @@ const OldAppLayout = React.forwardRef(
     const toolsItem = {
       id: 'tools',
       content: tools,
+      resizable: false,
       ariaLabels: {
         triggerButton: openLabel,
         closeButton: closeLabel,
@@ -177,30 +179,31 @@ const OldAppLayout = React.forwardRef(
     };
 
     const getAllDrawerItems = () => {
-      if (drawers) {
-        return tools ? [toolsItem, ...drawers.items] : drawers.items;
+      if (!hasDrawers) {
+        return;
       }
+      return tools ? [toolsItem, ...drawers.items] : drawers.items;
     };
 
     const selectedDrawer =
       tools && toolsOpen
         ? toolsItem
-        : drawers &&
-          drawers.items &&
-          getAllDrawerItems().filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
+        : hasDrawers
+        ? getAllDrawerItems()?.filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0]
+        : undefined;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
     const {
       refs: toolsRefs,
       setFocus: focusToolsButtons,
       loseFocus: loseToolsFocus,
-    } = useFocusControl(toolsOpen || activeDrawerId, true);
+    } = useFocusControl(toolsOpen || selectedDrawer !== undefined, true);
     const {
       refs: drawerRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([selectedDrawer?.resizable], toolsOpen || activeDrawerId, true);
+    } = useDrawerFocusControl([selectedDrawer?.resizable], toolsOpen || selectedDrawer !== undefined, true);
 
     const onNavigationToggle = useCallback(
       (open: boolean) => {
@@ -266,18 +269,32 @@ const OldAppLayout = React.forwardRef(
       }
     );
 
-    const defaultDrawerSize = selectedDrawer?.size || toolsWidth;
+    const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
 
-    const [drawerSize = defaultDrawerSize, setDrawerSize] = useControllable(
-      selectedDrawer?.size,
-      drawers?.onResize,
-      defaultDrawerSize,
-      {
-        componentName: 'AppLayout',
-        controlledProp: 'drawerSize',
-        changeHandler: 'onDrawerSize',
+    const getDrawerItemSizes = useCallback(() => {
+      const sizes: { [id: string]: number } = {};
+      if (!drawerItems) {
+        return {};
       }
-    );
+
+      for (const item of drawerItems) {
+        if (item.defaultSize) {
+          sizes[item.id] = item.defaultSize || toolsWidth;
+        }
+      }
+      return sizes;
+    }, [drawerItems, toolsWidth]);
+
+    const [drawerSizes, setDrawerSizes] = useState(() => getDrawerItemSizes());
+
+    useEffect(() => {
+      // Ensure we only set new drawer items by performing a shallow merge
+      // of the latest drawer item sizes, and previous drawer item sizes.
+      setDrawerSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
+    }, [getDrawerItemSizes]);
+
+    const drawerSize =
+      selectedDrawer?.id && drawerSizes[selectedDrawer?.id] ? drawerSizes[selectedDrawer?.id] : toolsWidth;
 
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
     const [splitPanelReportedToggle, setSplitPanelReportedToggle] = useState<SplitPanelSideToggleProps>({
@@ -343,11 +360,6 @@ const OldAppLayout = React.forwardRef(
       [setSplitPanelSize, onSplitPanelResize]
     );
 
-    const onDrawerSizeSet = (detail: { size: number; id: string }) => {
-      setDrawerSize(detail.size);
-      fireNonCancelableEvent(drawers.onResize, detail);
-    };
-
     const onSplitPanelToggleHandler = useCallback(() => {
       setSplitPanelOpen(!splitPanelOpen);
       setSplitPanelLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
@@ -364,6 +376,7 @@ const OldAppLayout = React.forwardRef(
       // so we subtract space-scaled-2x-xxxl * 2 for left and right padding
       const contentPadding = disableContentPaddings ? 80 : 0;
       const spaceAvailable = width - defaults.minContentWidth - contentPadding;
+
       const spaceTaken = finalSplitPanePosition === 'side' ? splitPanelSize : 0;
       return Math.max(0, spaceTaken + spaceAvailable);
     });
@@ -373,7 +386,9 @@ const OldAppLayout = React.forwardRef(
         return NaN;
       }
 
-      const width = parseInt(getComputedStyle(mainContentRef.current).width);
+      // Either use the computed width of the drawer or the drawerSize as defined.
+      const width = parseInt(getComputedStyle(mainContentRef.current).width || `${drawerSize}`);
+
       // when disableContentPaddings is true there is less available space,
       // so we subtract space-scaled-2x-xxxl * 2 for left and right padding
       const contentPadding = disableContentPaddings ? 80 : 0;
@@ -425,7 +440,7 @@ const OldAppLayout = React.forwardRef(
     }, [contentWidthWithSplitPanel, drawerSize, defaults.minContentWidth, isMobile]);
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
-    const toolsClosedWidth = toolsHide || isMobile || (!drawers && toolsHide) ? 0 : closedDrawerWidth;
+    const toolsClosedWidth = toolsHide || isMobile || (!hasDrawers && toolsHide) ? 0 : closedDrawerWidth;
 
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
@@ -437,9 +452,9 @@ const OldAppLayout = React.forwardRef(
         return 0;
       }
 
-      if (drawers) {
+      if (hasDrawers) {
         if (activeDrawerId) {
-          if (selectedDrawer.resizable && !isResizeInvalid) {
+          if (!isResizeInvalid && drawerSize) {
             return drawerSize + closedDrawerWidth;
           }
 
@@ -491,7 +506,7 @@ const OldAppLayout = React.forwardRef(
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)
         toolsHide ||
-        (drawers && !activeDrawerId && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
+        (hasDrawers && !activeDrawerId && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
         // 2. Tools panel is present and open
         toolsVisible ||
         // 3. Split panel is open in side position
@@ -520,6 +535,8 @@ const OldAppLayout = React.forwardRef(
         ? splitPanelReportedSize
         : splitPanelReportedHeaderHeight) ?? undefined;
 
+    const [mobileBarHeight, mobileBarRef] = useContainerQuery(rect => rect.height);
+
     return (
       <div
         className={clsx(styles.root, testutilStyles.root, disableBodyScroll && styles['root-no-scroll'])}
@@ -537,6 +554,7 @@ const OldAppLayout = React.forwardRef(
               onNavigationOpen={() => onNavigationToggle(true)}
               onToolsOpen={() => onToolsToggle(true)}
               unfocusable={anyPanelOpen}
+              mobileBarRef={mobileBarRef}
               drawers={
                 drawers
                   ? {
@@ -546,7 +564,7 @@ const OldAppLayout = React.forwardRef(
                         if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
                           onToolsToggle(changeDetail.activeDrawerId === 'tools');
                           focusDrawersButtons();
-                          setActiveDrawersId(changeDetail.activeDrawerId);
+                          setActiveDrawerId(changeDetail.activeDrawerId);
                           setDrawerLastInteraction({ type: 'open' });
                           fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
                         }
@@ -650,9 +668,12 @@ const OldAppLayout = React.forwardRef(
                   <AppLayoutContext.Provider
                     value={{
                       stickyOffsetTop:
-                        (disableBodyScroll ? 0 : headerHeight) +
-                        (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
+                        // We don't support the table header being sticky in case the deprecated disableBodyScroll is enabled,
+                        // therefore we ensure the table header scrolls out of view by offseting a large enough value (9999px)
+                        (disableBodyScroll ? (isMobile ? -9999 : 0) : headerHeight) +
+                        (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
                       stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
+                      mobileBarHeight: mobileBarHeight ?? 0,
                       hasBreadcrumbs: !!breadcrumbs,
                     }}
                   >
@@ -674,15 +695,21 @@ const OldAppLayout = React.forwardRef(
               </SideSplitPanelDrawer>
             )}
 
-            {((drawers && selectedDrawer?.id) || (!drawers && !toolsHide)) &&
-              (drawers ? (
+            {((hasDrawers && selectedDrawer?.id) || (!hasDrawers && !toolsHide)) &&
+              (hasDrawers ? (
                 <ResizableDrawer
-                  contentClassName={selectedDrawer?.id === 'tools' ? testutilStyles.tools : ''}
-                  toggleClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : ''}
-                  closeClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-close'] : ''}
+                  contentClassName={
+                    selectedDrawer?.id === 'tools' ? testutilStyles.tools : testutilStyles['active-drawer']
+                  }
+                  toggleClassName={testutilStyles['tools-toggle']}
+                  closeClassName={
+                    selectedDrawer?.id === 'tools'
+                      ? testutilStyles['tools-close']
+                      : testutilStyles['active-drawer-close-button']
+                  }
                   ariaLabels={ariaLabels}
                   drawersAriaLabels={selectedDrawer?.ariaLabels}
-                  width={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
+                  width={!isResizeInvalid ? drawerSize : toolsWidth}
                   bottomOffset={footerHeight}
                   topOffset={headerHeight}
                   isMobile={isMobile}
@@ -690,24 +717,31 @@ const OldAppLayout = React.forwardRef(
                   isOpen={toolsOpen || activeDrawerId !== undefined}
                   toggleRefs={toolsRefs}
                   type="tools"
-                  onLoseFocus={drawers ? loseDrawersFocus : loseToolsFocus}
+                  onLoseFocus={hasDrawers ? loseDrawersFocus : loseToolsFocus}
                   activeDrawer={selectedDrawer}
                   drawers={{
                     items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
-                    activeDrawerId: selectedDrawer.id,
+                    activeDrawerId: selectedDrawer?.id,
                     onChange: changeDetail => {
                       onToolsToggle(false);
                       setDrawerLastInteraction({ type: 'close' });
-                      setActiveDrawersId(changeDetail.activeDrawerId);
+                      setActiveDrawerId(changeDetail.activeDrawerId);
                       fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
                     },
                   }}
-                  size={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
-                  onResize={onDrawerSizeSet}
+                  size={!isResizeInvalid ? drawerSize : toolsWidth}
+                  onResize={changeDetail => {
+                    fireNonCancelableEvent(drawers.onResize, changeDetail);
+                    const drawerItem = drawerItems.find(({ id }) => id === changeDetail.id);
+                    if (drawerItem?.onResize) {
+                      fireNonCancelableEvent(drawerItem.onResize, changeDetail);
+                    }
+                    setDrawerSizes({ ...drawerSizes, [changeDetail.id]: changeDetail.size });
+                  }}
                   refs={drawerRefs}
                   getMaxWidth={getDrawerMaxWidth}
                 >
-                  {selectedDrawer.content}
+                  {selectedDrawer?.content}
                 </ResizableDrawer>
               ) : (
                 <Drawer
@@ -728,9 +762,10 @@ const OldAppLayout = React.forwardRef(
                   {tools}
                 </Drawer>
               ))}
-            {drawers && (
+            {hasDrawers && (
               <DrawerTriggersBar
-                contentClassName={testutilStyles.tools}
+                contentClassName={testutilStyles['drawers-desktop-triggers-container']}
+                toggleClassName={testutilStyles['drawers-trigger']}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}
@@ -741,7 +776,7 @@ const OldAppLayout = React.forwardRef(
                     if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
                       onToolsToggle(changeDetail.activeDrawerId === 'tools');
                       focusDrawersButtons();
-                      setActiveDrawersId(changeDetail.activeDrawerId);
+                      setActiveDrawerId(changeDetail.activeDrawerId);
                       setDrawerLastInteraction({ type: 'open' });
                       fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
                     }

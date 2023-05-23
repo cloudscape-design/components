@@ -104,13 +104,43 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBackgroundLayoutMain: {
-    description: 'The background color of the main content area on a page. For example:  content area in app layout.',
+    description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
     themeable: true,
   },
   colorBackgroundLayoutPanelContent: {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
+  },
+  colorBackgroundLayoutToggleActive: {
+    description: "The background color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleDefault: {
+    description: 'The default background color of the app layout toggle button.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleHover: {
+    description: 'The background color of the app layout toggle button on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedActive: {
+    description: "The background color of the app layout toggle button when it's selected and active.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedDefault: {
+    description: "The default background color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedHover: {
+    description: "The background color of the app layout toggle button on hover when it's selected.",
+    public: true,
+    themeable: true,
   },
   colorBackgroundNotificationBlue: {
     description: 'Background color for blue notifications. For example: blue badges and info flash messages.',
@@ -124,6 +154,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundNotificationRed: {
     description: 'Background color for red notifications. For example: red badges and error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundPopover: {
+    description: 'Background color for the popover container.',
     public: true,
     themeable: true,
   },
@@ -407,6 +442,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextInteractiveActive: {
+    description: 'The color of clickable elements in their active state. For example: tabs and icons.',
+    public: true,
+    themeable: true,
+  },
   colorTextInteractiveDefault: {
     description: 'The color of clickable elements in their default state. For example: tabs, and icons.',
     public: true,
@@ -434,6 +474,26 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.',
     themeable: true,
     public: true,
+  },
+  colorTextLayoutToggle: {
+    description: 'This is the default color of the app layout toggle.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleActive: {
+    description: "This is the color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleHover: {
+    description: 'This is the color of the app layout toggle button on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleSelected: {
+    description: "This is the color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
   },
   colorTextLabel: {
     description:
@@ -479,7 +539,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextStatusWarning: { description: 'The color of warning icons.', themeable: true, public: true },
+  colorTextStatusWarning: {
+    description: 'The color of warning icons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextTopNavigationTitle: {
+    description: 'The color of the title in the top navigation.',
+    public: true,
+    themeable: true,
+  },
   colorBoardPlaceholderActive: {
     description: 'The color of board placeholder in active state.',
     themeable: false,
@@ -499,6 +568,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The color of drag placeholder in hovered state.',
     themeable: false,
     public: true,
+  },
+  colorDropzoneBackgroundActive: {
+    description: 'The color of file upload dropzone background in active state.',
+    themeable: false,
+    public: false,
+  },
+  colorDropzoneBackgroundHover: {
+    description: 'The color of file upload dropzone background in hovered state.',
+    themeable: false,
+    public: false,
+  },
+  colorDropzoneTextActive: {
+    description: 'The color of file upload dropzone text in active state.',
+    themeable: false,
+    public: false,
+  },
+  colorDropzoneTextHover: {
+    description: 'The color of file upload dropzone text in hovered state.',
+    themeable: false,
+    public: false,
   },
 };
 

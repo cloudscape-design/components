@@ -6,6 +6,8 @@ import CheckboxWrapper from '../checkbox';
 import ModalWrapper from '../modal';
 import VisibleContentPreferenceWrapper from './visible-content-preference';
 import PageSizePreferenceWrapper from './page-size-preference';
+import StickyColumnsPreferenceWrapper from './sticky-columns-preference';
+import ContentDisplayPreferenceWrapper from './content-display-preference';
 import styles from '../../../collection-preferences/styles.selectors.js';
 
 class PreferencesModalWrapper extends ModalWrapper {
@@ -37,6 +39,15 @@ class PreferencesModalWrapper extends ModalWrapper {
 
   findVisibleContentPreference(): VisibleContentPreferenceWrapper | null {
     return this.findComponent(`.${VisibleContentPreferenceWrapper.rootSelector}`, VisibleContentPreferenceWrapper);
+  }
+
+  findStickyColumnsPreference(firstOrLast: 'first' | 'last' = 'first'): StickyColumnsPreferenceWrapper | null {
+    const rootSelector = firstOrLast === 'first' ? 'firstRootSelector' : 'lastRootSelector';
+    return this.findComponent(`.${StickyColumnsPreferenceWrapper[rootSelector]}`, StickyColumnsPreferenceWrapper);
+  }
+
+  findContentDisplayPreference(): ContentDisplayPreferenceWrapper | null {
+    return this.findComponent(`.${ContentDisplayPreferenceWrapper.rootSelector}`, ContentDisplayPreferenceWrapper);
   }
 
   findCustomPreference(): ElementWrapper | null {

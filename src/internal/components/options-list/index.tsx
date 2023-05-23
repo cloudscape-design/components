@@ -13,9 +13,12 @@ import {
 } from '../../events';
 import { findUpUntil } from '../../utils/dom';
 import styles from './styles.css.js';
+import { useStableEventHandler } from '../../hooks/use-stable-event-handler';
+import { DropdownStatusProps } from '../dropdown-status';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;
+  statusType: DropdownStatusProps.StatusType;
   /**
    * Options list
    */
@@ -33,6 +36,7 @@ export interface OptionsListProps extends BaseComponentProps {
   position?: React.CSSProperties['position'];
   role?: 'listbox' | 'list' | 'menu';
   ariaLabelledby?: string;
+  ariaDescribedby?: string;
   decreaseTopMargin?: boolean;
 }
 
@@ -50,6 +54,7 @@ const getItemIndex = (containerRef: React.RefObject<HTMLElement>, event: React.M
 const OptionsList = (
   {
     open,
+    statusType,
     children,
     nativeAttributes = {},
     onKeyDown,
@@ -62,6 +67,7 @@ const OptionsList = (
     role = 'listbox',
     decreaseTopMargin = false,
     ariaLabelledby,
+    ariaDescribedby,
     ...restProps
   }: OptionsListProps,
   ref: React.Ref<HTMLUListElement>
@@ -69,7 +75,7 @@ const OptionsList = (
   const baseProps = getBaseProps(restProps);
   const menuRef = useRef<HTMLUListElement>(null);
 
-  const handleScroll = () => {
+  const handleScroll = useStableEventHandler(() => {
     const scrollContainer = menuRef?.current;
     if (scrollContainer) {
       const bottomEdgePosition = scrollContainer.scrollTop + scrollContainer.clientHeight;
@@ -78,14 +84,13 @@ const OptionsList = (
         fireNonCancelableEvent(onLoadMore);
       }
     }
-  };
+  });
 
   useEffect(() => {
-    if (!open) {
-      return;
+    if (open && statusType === 'pending') {
+      handleScroll();
     }
-    handleScroll();
-  });
+  }, [open, statusType, handleScroll]);
 
   const className = clsx(styles['options-list'], {
     [styles['decrease-top-margin']]: decreaseTopMargin,
@@ -109,6 +114,7 @@ const OptionsList = (
       onFocus={() => fireNonCancelableEvent(onFocus)}
       tabIndex={-1}
       aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
     >
       {open && children}
     </ul>

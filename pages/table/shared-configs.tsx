@@ -9,6 +9,7 @@ import { CollectionPreferencesProps } from '~components/collection-preferences';
 import { Instance, InstanceState } from './generate-data';
 import Link from '~components/link';
 import StatusIndicator, { StatusIndicatorProps } from '~components/status-indicator';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 export function EmptyState({
   title,
@@ -109,31 +110,43 @@ export const pageSizeOptions: ReadonlyArray<CollectionPreferencesProps.PageSizeO
   { value: 100, label: '100 Instances' },
 ];
 
-export const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
-  {
-    label: 'Instance properties',
-    options: [
-      {
-        id: 'id',
-        label: 'ID',
-        editable: false,
-      },
-      { id: 'type', label: 'Type' },
-      {
-        id: 'dnsName',
-        label: 'DNS name',
-      },
-      {
-        id: 'imageId',
-        label: 'Image ID',
-      },
-      {
-        id: 'state',
-        label: 'State',
-      },
-    ],
-  },
-];
+export const contentDisplayPreference = {
+  title: 'Column preferences',
+  description: 'Customize the columns visibility and order.',
+  options: [
+    {
+      id: 'id',
+      label: 'ID',
+      alwaysVisible: true,
+    },
+    { id: 'type', label: 'Type' },
+    {
+      id: 'dnsName',
+      label: 'DNS name',
+    },
+    {
+      id: 'imageId',
+      label: 'Image ID',
+    },
+    {
+      id: 'state',
+      label: 'State',
+    },
+  ],
+  ...contentDisplayPreferenceI18nStrings,
+};
+
+export const defaultPreferences = {
+  pageSize: 20,
+  contentDisplay: [
+    { id: 'id', visible: true },
+    { id: 'type', visible: true },
+    { id: 'dnsName', visible: true },
+    { id: 'imageId', visible: false },
+    { id: 'state', visible: true },
+  ],
+  wrapLines: false,
+};
 
 export interface Item {
   number: number;

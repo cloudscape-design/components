@@ -157,14 +157,19 @@ describe('Sticky header', () => {
   );
 
   test(
-    'sticky feature is disabled on mobile',
+    'sticky header does not get stuck on mobile but table header row does',
     setupTest(async page => {
       await page.setWindowSize(mobileSize);
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
-      const { top: oldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      const { top: headerOldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
       await page.elementScrollTo(scrollContainerSelector, { top: 400 });
-      const { top: newOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
-      expect(oldOffset).not.toEqual(newOffset);
+      const { top: headerNewOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      expect(headerOldOffset).not.toEqual(headerNewOffset);
+
+      const { top: tableHeaderRowOldOffset } = await page.getBoundingBox(headerSecondary.toSelector());
+      await page.elementScrollTo(scrollContainerSelector, { top: 600 });
+      const { top: tableHeaderRowNewOffset } = await page.getBoundingBox(headerSecondary.toSelector());
+      expect(tableHeaderRowOldOffset).toEqual(tableHeaderRowNewOffset);
     })
   );
 

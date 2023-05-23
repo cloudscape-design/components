@@ -15,7 +15,6 @@
 .root {
   @include styles.styles-reset;
   color: inherit;
-  display: inline;
 }
 
 .trigger {
