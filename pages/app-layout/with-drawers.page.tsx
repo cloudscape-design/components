@@ -43,12 +43,7 @@ export default function WithDrawers() {
               id: 'security',
               resizable: true,
               defaultSize: 500,
-              onResize: ({ detail: { size } }) => {
-                // A drawer implementer may choose to listen to THEIR drawer's
-                // resize event,should they want to persist, or otherwise respond
-                // to their drawer being resized.
-                console.log('Security Drawer is now: ', size);
-              },
+
               trigger: {
                 iconName: 'security',
               },

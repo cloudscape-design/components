@@ -9,6 +9,7 @@ import React, {
   useRef,
   useState,
   useContext,
+  useMemo,
 } from 'react';
 import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
@@ -17,6 +18,7 @@ import { AppLayoutProps } from '../interfaces';
 import { DrawersProps } from './drawers';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
+import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-drawer-focus-control';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { isDevelopment } from '../../internal/is-development';
 import { getSplitPanelPosition } from './split-panel';
@@ -33,8 +35,11 @@ interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
   activeDrawerWidth: number;
   drawers: DrawersProps;
-  drawersRefs: FocusControlRefs;
+  drawersRefs: DrawerFocusControlRefs;
   drawersTriggerCount: number;
+  drawersResize: (resizeDetail: { size: number; id: string }) => void;
+  drawersSize: number;
+  drawersMaxWidth: number;
   dynamicOverlapHeight: number;
   handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
@@ -417,9 +422,57 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       changeHandler: 'onChange',
     });
 
-    const activeDrawerWidth = 290;
+    const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
 
-    const { refs: drawersRefs, setFocus: focusDrawersButtons } = useFocusControl(activeDrawerId);
+    const getDrawerItemSizes = useCallback(() => {
+      const sizes: { [id: string]: number } = {};
+      if (!drawerItems) {
+        return {};
+      }
+
+      for (const item of drawerItems) {
+        if (item.defaultSize) {
+          sizes[item.id] = item.defaultSize || toolsWidth;
+        }
+      }
+      return sizes;
+    }, [drawerItems, toolsWidth]);
+
+    const [drawerSizes, setDrawerSizes] = useState(() => getDrawerItemSizes());
+
+    useEffect(() => {
+      // Ensure we only set new drawer items by performing a shallow merge
+      // of the latest drawer item sizes, and previous drawer item sizes.
+      setDrawerSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
+    }, [getDrawerItemSizes]);
+
+    const drawerSize = activeDrawerId && drawerSizes[activeDrawerId] ? drawerSizes[activeDrawerId] : toolsWidth;
+
+    const drawersResize = (changeDetail: any) => {
+      fireNonCancelableEvent(drawers.onResize, changeDetail);
+      const drawerItem = drawers.items.find(({ id }: any) => id === changeDetail.id);
+      if (drawerItem?.onResize) {
+        fireNonCancelableEvent(drawerItem.onResize, changeDetail);
+      }
+      setDrawerSizes({ ...drawerSizes, [changeDetail.id]: changeDetail.size });
+    };
+
+    console.log(drawerSizes);
+
+    const drawersSize = drawerSize;
+
+    const [drawersMaxWidth, setDrawersMaxWidth] = useState(splitPanelMinWidth);
+
+    const activeDrawerWidth = drawerSize;
+
+    const activeDrawer = drawers.items.find((drawer: any) => drawer.id === activeDrawerId);
+
+    const {
+      refs: drawersRefs,
+      setFocus: focusDrawersButtons,
+      loseFocus: loseDrawersFocus,
+      setLastInteraction: setDrawerLastInteraction,
+    } = useDrawerFocusControl([activeDrawer?.resizable], isToolsOpen || activeDrawerId !== undefined, true);
 
     const handleDrawersClick = useCallback(
       function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
@@ -428,6 +481,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setActiveDrawerId(newActiveDrawerId);
         !skipFocusControl && focusDrawersButtons();
         fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
+        setDrawerLastInteraction({ type: 'open' });
       },
       [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId]
     );
@@ -547,6 +601,16 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             toolsFormOffsetWidth -
             activeDrawerOffsetWidth
         );
+
+        setDrawersMaxWidth(
+          layoutWidth -
+            mainOffsetLeft -
+            minContentWidth -
+            contentGapRight -
+            toolsOffsetWidth -
+            toolsFormOffsetWidth -
+            activeDrawerOffsetWidth
+        );
       },
       [
         activeDrawerId,
@@ -570,6 +634,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawers,
           drawersRefs,
           drawersTriggerCount,
+          drawersResize,
+          drawersSize,
+          drawersMaxWidth,
           dynamicOverlapHeight,
           headerHeight,
           footerHeight,
