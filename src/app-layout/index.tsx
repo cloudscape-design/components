@@ -689,7 +689,7 @@ const OldAppLayout = React.forwardRef(
                 topOffset={headerHeight}
                 bottomOffset={footerHeight}
                 displayed={splitPanelDisplayed}
-                width={splitPanelDisplayed ? splitPanelSize : undefined}
+                width={splitPanelOpen && splitPanel ? splitPanelSize : undefined}
               >
                 {splitPanelWrapped}
               </SideSplitPanelDrawer>
