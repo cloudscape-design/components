@@ -48,6 +48,9 @@ const Cards = React.forwardRef(function <T = any>(
     stickyHeader,
     stickyHeaderVerticalOffset,
     variant = 'container',
+    renderAriaLive,
+    firstIndex,
+    totalItemsCount,
     ...rest
   }: CardsProps<T>,
   ref: React.Ref<CardsProps.Ref>
@@ -141,6 +144,11 @@ const Cards = React.forwardRef(function <T = any>(
         __darkHeader={computedVariant === 'full-page'}
       >
         <div className={clsx(hasToolsHeader && styles['has-header'])}>
+          {!!renderAriaLive && !!firstIndex && (
+            <LiveRegion>
+              <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}</span>
+            </LiveRegion>
+          )}
           {status ?? (
             <CardsList
               items={items}
