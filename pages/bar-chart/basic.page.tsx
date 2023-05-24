@@ -6,6 +6,7 @@ import Container from '~components/container';
 import Header from '~components/header';
 import Grid from '~components/grid';
 import Box from '~components/box';
+import Button from '~components/button';
 import BarChart from '~components/bar-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -57,6 +58,11 @@ export default function () {
               xScaleType="categorical"
               ariaLabel="Bar chart"
               ariaDescription={barChartInstructions}
+              detailPopoverFooter={x => (
+                <Box margin={{ top: 'm' }}>
+                  <Button variant="normal">Filter by {x}</Button>
+                </Box>
+              )}
             />
           </Container>
           <Container header={<Header variant="h2">Bar Chart with gaps</Header>}>
@@ -90,6 +96,11 @@ export default function () {
               stackedBars={true}
               ariaLabel="Stacked Bar Chart with negative values"
               ariaDescription={barChartInstructions}
+              detailPopoverFooter={x => (
+                <Box margin={{ top: 'm' }}>
+                  <Button variant="normal">Filter by {x}</Button>
+                </Box>
+              )}
             />
           </Container>
           <Container header={<Header variant="h2">Horizontal Bar Chart with negative values</Header>}>

@@ -65,6 +65,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   legendTitle,
   statusType,
   detailPopoverSize,
+  detailPopoverFooter,
   emphasizeBaselineAxis,
   empty,
   noMatch,
@@ -258,6 +259,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             highlightedGroupIndex={highlightedGroupIndex}
             setHighlightedGroupIndex={setHighlightedGroupIndex}
             detailPopoverSize={detailPopoverSize}
+            detailPopoverFooter={detailPopoverFooter}
             xTitle={xTitle}
             yTitle={yTitle}
             ariaLabel={ariaLabel}

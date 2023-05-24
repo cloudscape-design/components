@@ -19,6 +19,7 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   highlightDetails: null | HighlightDetails;
   onDismiss(): void;
   size: MixedLineBarChartProps<T>['detailPopoverSize'];
+  footer?: React.ReactNode;
   dismissAriaLabel?: string;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
@@ -33,6 +34,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
     isOpen,
     isPinned,
     highlightDetails,
+    footer,
     onDismiss,
     size = 'medium',
     dismissAriaLabel,
@@ -60,6 +62,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseLeave={onMouseLeave}
             >
               <ChartSeriesDetails details={highlightDetails.details} />
+              {footer}
             </ChartPopover>
           )}
         </div>
