@@ -33,7 +33,6 @@ import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
-  activeDrawerWidth: number;
   drawers: DrawersProps;
   drawersRefs: DrawerFocusControlRefs;
   drawersTriggerCount: number;
@@ -446,7 +445,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setDrawerSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
     }, [getDrawerItemSizes]);
 
-    const drawerSize = activeDrawerId && drawerSizes[activeDrawerId] ? drawerSizes[activeDrawerId] : toolsWidth;
+    const drawersSize = activeDrawerId && drawerSizes[activeDrawerId] ? drawerSizes[activeDrawerId] : toolsWidth;
 
     const drawersResize = (changeDetail: any) => {
       fireNonCancelableEvent(drawers.onResize, changeDetail);
@@ -459,11 +458,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     console.log(drawerSizes);
 
-    const drawersSize = drawerSize;
-
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(splitPanelMinWidth);
-
-    const activeDrawerWidth = drawerSize;
 
     const activeDrawer = drawers.items.find((drawer: any) => drawer.id === activeDrawerId);
 
@@ -590,7 +585,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         const contentGapRight = 80; // Approximately 40px when rendered but doubled for safety
         const toolsFormOffsetWidth = 160; // Approximately 80px when rendered but doubled for safety
         const toolsOffsetWidth = isToolsOpen ? toolsWidth : 0;
-        const activeDrawerOffsetWidth = activeDrawerId ? activeDrawerWidth : 0;
+        const activeDrawerOffsetWidth = activeDrawerId ? drawersSize : 0;
 
         setSplitPanelMaxWidth(
           layoutWidth -
@@ -606,7 +601,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       },
       [
         activeDrawerId,
-        activeDrawerWidth,
+        drawersSize,
         isNavigationOpen,
         isToolsOpen,
         layoutWidth,
@@ -621,7 +616,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         value={{
           ...props,
           activeDrawerId,
-          activeDrawerWidth,
           contentType,
           drawers,
           drawersRefs,

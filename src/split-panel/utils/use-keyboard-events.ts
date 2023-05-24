@@ -58,6 +58,7 @@ export const useKeyboardEvents = ({
       case primaryGrowKey:
       case altGrowKey:
         setSizeFunction(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
+
         break;
       case primaryShrinkKey:
       case altShrinkKey:

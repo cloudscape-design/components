@@ -99,7 +99,6 @@ export default function Drawers() {
 function ActiveDrawer() {
   const {
     activeDrawerId,
-    activeDrawerWidth,
     ariaLabels,
     drawers,
     drawersRefs,
@@ -193,7 +192,8 @@ function ActiveDrawer() {
         [testutilStyles.tools]: isToolsOpen,
       })}
       style={{
-        ...(!isMobile && activeDrawerWidth && { [customCssProps.activeDrawerWidth]: `${activeDrawerWidth}px` }),
+        ...(!isMobile && drawersSize && { [customCssProps.drawersSize]: `${drawersSize}px` }),
+        width: drawersSize,
       }}
       ref={drawerRefObject}
     >
