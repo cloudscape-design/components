@@ -4640,6 +4640,11 @@ Valid values are any integer between 1 and 4.",
       "type": "string",
     },
     Object {
+      "name": "minColumnWidth",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
       "defaultValue": "\\"default\\"",
       "description": "Specifies the content type. This determines the spacing of the grid.",
       "inlineType": Object {

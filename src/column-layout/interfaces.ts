@@ -27,6 +27,8 @@ export interface ColumnLayoutProps extends BaseComponentProps {
    */
   disableGutters?: boolean;
 
+  minColumnWidth?: number;
+
   /**
    * The columns to render.
    */
