@@ -577,7 +577,6 @@ describe('Axes', () => {
           xDomain={[0, 12]}
           yDomain={[0, 100]}
           i18nStrings={{ xTickFormatter: (value: number) => value.toFixed(2) }}
-          xScaleType={'linear'}
         />
       );
 
