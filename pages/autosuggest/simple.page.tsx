@@ -28,6 +28,7 @@ export default function AutosuggestPage() {
         ariaLabel={'simple autosuggest'}
         selectedAriaLabel="Selected"
         empty={empty}
+        filteringResultsText={matchesCount => `${matchesCount} items`}
       />
       <button id="remove-options" onClick={() => setHasOptions(false)}>
         set empty options
