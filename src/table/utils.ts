@@ -32,7 +32,7 @@ export const getColumnKey = <T>(column: TableProps.ColumnDefinition<T>, index: n
 
 export const toContainerVariant = (variant: TableProps.Variant | undefined): InternalContainerProps['variant'] => {
   const isDefaultVariant = !variant || variant === 'container';
-  return isDefaultVariant ? 'default' : variant;
+  return isDefaultVariant ? 'default' : variant === 'borderless' ? 'embedded' : variant;
 };
 
 export function checkSortingState<T>(
