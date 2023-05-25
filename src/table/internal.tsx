@@ -142,7 +142,11 @@ const InternalTable = React.forwardRef(
     }
 
     const isVisualRefresh = useVisualRefresh();
-    const computedVariant = !isVisualRefresh && variant === 'full-page' ? 'container' : variant;
+    const computedVariant = isVisualRefresh
+      ? variant
+      : ['embedded', 'full-page'].indexOf(variant) > -1
+      ? 'container'
+      : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
