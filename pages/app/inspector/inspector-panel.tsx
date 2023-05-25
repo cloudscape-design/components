@@ -310,12 +310,12 @@ function Tokens({
   const themeReader = createThemeReader(theme, context);
 
   const publicTokens = groupBy(
-    tokens.filter(t => t.description),
+    tokens.filter(t => t.themeable),
     'section'
   );
 
   const privateTokens = groupBy(
-    tokens.filter(t => !t.description),
+    tokens.filter(t => !t.themeable),
     'section'
   );
 
@@ -389,7 +389,18 @@ function Tokens({
                       ) : (
                         <Box color="text-body-secondary">{value}</Box>
                       )}
-                      <Box margin={{ left: 'xs' }}>{token.name}</Box>
+                      <Box margin={{ left: 'xs' }}>
+                        {token.description ? (
+                          <SpaceBetween size="xxs">
+                            <Box>{token.name}</Box>
+                            <Box fontSize="body-s" color="text-body-secondary">
+                              {token.description}
+                            </Box>
+                          </SpaceBetween>
+                        ) : (
+                          token.name
+                        )}
+                      </Box>
                     </li>
                   );
                 })}

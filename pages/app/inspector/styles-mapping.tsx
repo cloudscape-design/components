@@ -3,16 +3,26 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import tokenMapping from './tokens-mapping.json';
+import tokenMapping from '../../../lib/tokens-toolkit/tokens-mapping.json';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import tokenDict from './tokens-descriptions.json';
+import tokenDict from '../../../lib/tokens-toolkit/tokens-descriptions-visual-refresh.json';
+
+// TODO: merge classic/vr descriptions
+// TODO: prepare mappings as TS files
+// TODO: move utils to lib/tokens-toolkit
 
 export interface Token {
   section: string;
   name: string;
   cssName: string;
+  themeable: boolean;
   description?: string;
+}
+
+function getTokenThemeable(tokenName: string): boolean {
+  const themeable = tokenDict[tokenName]?.themeable;
+  return !!themeable;
 }
 
 function getTokenDescription(tokenName: string): string {
@@ -28,6 +38,7 @@ export const stylesMapping = Object.entries(tokenMapping)
         section: key,
         name: token.name,
         cssName: token.cssName,
+        themeable: getTokenThemeable(token.name),
         description: getTokenDescription(token.name),
       }))
     ),

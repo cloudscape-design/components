@@ -38,7 +38,6 @@ function createTokenDescriptions(source, targetPath) {
         key,
         {
           description: metadata.description,
-          public: !!metadata.public,
           themeable: !!metadata.themeable,
         },
       ])
