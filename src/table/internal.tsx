@@ -151,8 +151,6 @@ const InternalTable = React.forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
-    const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
-
     const visibleColumnsWithSelection = useMemo(() => {
       const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
       return hasSelection ? [selectionColumnId.toString(), ...columnIds] : columnIds ?? [];
@@ -160,7 +158,7 @@ const InternalTable = React.forwardRef(
 
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnsWithSelection,
-      stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
+      stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
     });
 
