@@ -61,6 +61,39 @@
   }
 }
 
+.vertical-media {
+  display: flex;
+  flex-direction: row;
+}
+
+.content-wrapper {
+  flex: 1;
+}
+
+.media {
+  overflow: hidden;
+
+  img,
+  video,
+  picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &-horizontal {
+    border-top-left-radius: awsui.$border-radius-container;
+    border-top-right-radius: awsui.$border-radius-container;
+  }
+
+  &-vertical {
+    max-width: 66%;
+    border-top-left-radius: awsui.$border-radius-container;
+    border-bottom-left-radius: awsui.$border-radius-container;
+  }
+}
+
 .header {
   background-color: awsui.$color-background-container-header;
   border-top-left-radius: awsui.$border-radius-container;
