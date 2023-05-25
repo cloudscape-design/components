@@ -19,4 +19,5 @@ module.exports = {
   compiledStyleDictionary: 'lib/style-dictionary',
   apiDocsPath: 'lib/components-definitions',
   targetPath,
+  tokensToolkitPath: 'lib/tokens-toolkit',
 };

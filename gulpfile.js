@@ -21,6 +21,7 @@ const {
   licenses,
   themeableSource,
   bundleVendorFiles,
+  buildTokensToolkit,
 } = require('./build-tools/tasks');
 
 const quickBuild = series(
@@ -54,3 +55,5 @@ exports.watch = () => {
   watch(['src/test-utils/dom/**/*.ts', '!src/test-utils/dom/index.ts'], testUtils);
   watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], styles);
 };
+
+exports['build-tokens-toolkit'] = buildTokensToolkit;
