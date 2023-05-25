@@ -9,6 +9,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { HeaderProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
+import { useMobile } from '../internal/hooks/use-mobile';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
@@ -26,11 +27,13 @@ export default function InternalHeader({
   __disableActionsWrapping,
   ...restProps
 }: InternalHeaderProps) {
+  const isMobile = useMobile();
   const HeadingTag = headingTagOverride ?? (variant === 'awsui-h1-sticky' ? 'h1' : variant);
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
-  const dynamicVariant = isStuck ? 'h2' : 'h1';
+  // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
+  const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
   return (
     <div

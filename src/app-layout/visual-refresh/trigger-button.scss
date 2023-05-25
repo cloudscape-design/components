@@ -21,9 +21,8 @@ handleSplitPanelMaxWidth function in the context.
   cursor: pointer;
   height: awsui.$space-layout-toggle-diameter;
   padding: 0 awsui.$space-s;
-  width: awsui.$space-layout-toggle-diameter;
-
   pointer-events: auto;
+  width: awsui.$space-layout-toggle-diameter;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);

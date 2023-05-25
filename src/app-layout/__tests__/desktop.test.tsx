@@ -162,4 +162,12 @@ describeEachThemeAppLayout(false, () => {
     expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
     expect(wrapper.findDrawersDesktopTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
+
+  test(`should toggle drawer on click`, () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    act(() => wrapper.findDrawersTriggers()![0].click());
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+    act(() => wrapper.findDrawersTriggers()![0].click());
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
 });

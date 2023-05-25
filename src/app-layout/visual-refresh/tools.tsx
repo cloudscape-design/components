@@ -36,6 +36,7 @@ export default function Tools({ children }: ToolsProps) {
     isSplitPanelOpen,
     isToolsOpen,
     loseToolsFocus,
+    splitPanel,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
@@ -46,7 +47,7 @@ export default function Tools({ children }: ToolsProps) {
     toolsWidth,
   } = useAppLayoutInternals();
 
-  const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
+  const hasSplitPanel = !!splitPanel && getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
@@ -124,6 +125,7 @@ export default function Tools({ children }: ToolsProps) {
                 [styles['has-tools-form-persistence']]: hasToolsFormPersistence,
               })}
               ref={state === 'exiting' ? transitionEventsRef : undefined}
+              data-testid="side-split-panel-drawer"
             >
               {!toolsHide && (
                 <TriggerButton

@@ -627,7 +627,9 @@ Conceived to contain notifications (flash messages).
       "name": "notifications",
     },
     Object {
-      "description": "Use this slot to add the [split panel component](/components/split-panel/) to the app layout.",
+      "description": "Use this slot to add the [split panel component](/components/split-panel/) to the app layout.
+Note: If provided, this property should be set to \`null\` or \`undefined\` if a split panel should not be rendered.
+",
       "isDefault": false,
       "name": "splitPanel",
     },
@@ -3393,6 +3395,14 @@ Default value:
       "type": "string",
     },
     Object {
+      "description": " Use this property to inform screen readers which range of cards is currently displayed.
+ It specifies the index (1-based) of the first card.
+ If the cards list has no pagination, leave this property undefined.",
+      "name": "firstIndex",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -3438,6 +3448,13 @@ The \`cardDefinition\` property handles the display of this data.
       "type": "string",
     },
     Object {
+      "description": "Use this function to announce page changes to screen reader users.
+Requires the properties firstIndex and totalItemsCount to be set correctly.",
+      "name": "renderAriaLive",
+      "optional": true,
+      "type": "(data: CardsProps.LiveAnnouncement) => string",
+    },
+    Object {
       "description": "Specifies the list of selected items.",
       "name": "selectedItems",
       "optional": true,
@@ -3467,6 +3484,14 @@ The \`cardDefinition\` property handles the display of this data.
       "description": "Optionally provide a vertical offset (in pixels) for the sticky header, for example if you
 need to position the sticky header below other fixed position elements on the page.",
       "name": "stickyHeaderVerticalOffset",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Use this property to inform screen readers how many cards there are.
+It specifies the total number of cards.
+If there is an unknown total number of cards, leave this property undefined.",
+      "name": "totalItemsCount",
       "optional": true,
       "type": "number",
     },

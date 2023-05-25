@@ -104,7 +104,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBackgroundLayoutMain: {
-    description: 'The background color of the main content area on a page. For example:  content area in app layout.',
+    description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
     themeable: true,
   },
@@ -154,6 +154,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundNotificationRed: {
     description: 'Background color for red notifications. For example: red badges and error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundPopover: {
+    description: 'Background color for the popover container.',
     public: true,
     themeable: true,
   },
@@ -469,6 +474,26 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.',
     themeable: true,
     public: true,
+  },
+  colorTextLayoutToggle: {
+    description: 'This is the default color of the app layout toggle.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleActive: {
+    description: "This is the color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleHover: {
+    description: 'This is the color of the app layout toggle button on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleSelected: {
+    description: "This is the color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
   },
   colorTextLabel: {
     description:
