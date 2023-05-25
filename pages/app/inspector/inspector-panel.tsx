@@ -338,6 +338,7 @@ function Tokens({
                     token={token.name}
                     value={value}
                     onChange={value => setTokenValue(token.name, value, context)}
+                    components={token.components}
                   />
 
                   <Box margin={{ left: 'xs' }}>

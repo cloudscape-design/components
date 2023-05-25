@@ -4,33 +4,34 @@
 import React, { ReactNode, useState } from 'react';
 import { Box, Button, Form, Input, Popover, SpaceBetween } from '~components';
 
-import { componentsMap } from './component-tokens-mapping';
 import styles from './styles.scss';
 
 export function ValueEditor({
   token,
   value,
   onChange,
+  components,
 }: {
   token: string;
   value: string;
   onChange: (value: null | string) => void;
+  components: string[];
 }) {
   return token.startsWith('color') ? (
     <EditorPopover
-      tokenName={token}
       control={(value, onChange) => <ColorPicker color={value} onSetColor={onChange} />}
       value={value}
       onChange={onChange}
+      components={components}
     >
       <ColorIndicator color={value} />
     </EditorPopover>
   ) : (
     <EditorPopover
-      tokenName={token}
       control={(value, onChange) => <Input value={value} onChange={e => onChange(e.detail.value)} />}
       value={value}
       onChange={onChange}
+      components={components}
     >
       {token.includes('borderRadius') ? (
         <RadiusPreview radius={value || '4px'} />
@@ -57,27 +58,17 @@ export function ColorIndicator({ color }: { color: string }) {
 
 function EditorPopover({
   children,
-  tokenName,
   control,
   value: initialValue,
   onChange,
+  components,
 }: {
   children: ReactNode;
-  tokenName: string;
   control: (value: string, onChange: (value: string) => void) => ReactNode;
   value: string;
   onChange: (value: null | string) => void;
+  components: string[];
 }) {
-  function getTokenComponents(token: string) {
-    const components: string[] = [];
-    for (const [key, value] of Object.entries(componentsMap)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      value.length > 0 && value.includes(token) && components.push(key);
-    }
-    return components;
-  }
-
   const [value, setValue] = useState(initialValue);
 
   return (
@@ -85,16 +76,16 @@ function EditorPopover({
       header="Edit token value"
       content={
         <SpaceBetween size="s">
-          {getTokenComponents(tokenName).length > 0 && (
+          {components.length > 0 && (
             <>
               <Box>
-                Updating this value will update the value in <b>{getTokenComponents(tokenName).length}</b> components.
+                Updating this value will update the value in <b>{components.length}</b> components.
               </Box>
               <details>
                 <summary>
                   <Box display="inline">Components that use this token</Box>
                 </summary>
-                <Box color="text-body-secondary">{getTokenComponents(tokenName).join(', ')}</Box>
+                <Box color="text-body-secondary">{components.join(', ')}</Box>
               </details>
             </>
           )}

@@ -9,6 +9,8 @@ const selectorParser = require('postcss-selector-parser');
 const lodash = require('lodash');
 const { task } = require('../utils/gulp-utils');
 const { writeFile } = require('../utils/files');
+const babel = require('@babel/core');
+const SCSS = require('postcss-scss');
 const workspace = require('../utils/workspace');
 const themeClassic = require('../../lib/style-dictionary/classic/metadata.js');
 const themeVR = require('../../lib/style-dictionary/visual-refresh/metadata/index.js');
@@ -16,20 +18,32 @@ const themeVR = require('../../lib/style-dictionary/visual-refresh/metadata/inde
 module.exports = task('build-tokens-toolkit', () => build());
 
 async function build() {
-  buildTokenDescriptionsClassic();
-  buildTokenDescriptionsVR();
-  await extractMappings();
+  const tokenDescriptionsClassic = createTokenDescriptions(themeClassic);
+  writeFile(
+    path.join(workspace.tokensToolkitPath, 'tokens-descriptions-classic.json'),
+    JSON.stringify(tokenDescriptionsClassic, null, 2)
+  );
+
+  const tokenDescriptionsVR = createTokenDescriptions(themeVR);
+  writeFile(
+    path.join(workspace.tokensToolkitPath, 'tokens-descriptions-visual-refresh.json'),
+    JSON.stringify(tokenDescriptionsVR, null, 2)
+  );
+
+  const selectorsMapping = await createSelectorsMapping();
+  writeFile(
+    path.join(workspace.tokensToolkitPath, 'selectors-mapping.json'),
+    JSON.stringify(selectorsMapping, null, 2)
+  );
+
+  const componentsMapping = createComponentsMapping(selectorsMapping);
+  writeFile(
+    path.join(workspace.tokensToolkitPath, 'components-mapping.json'),
+    JSON.stringify(componentsMapping, null, 2)
+  );
 }
 
-function buildTokenDescriptionsClassic() {
-  createTokenDescriptions(themeClassic, path.join(workspace.tokensToolkitPath, 'tokens-descriptions-classic.json'));
-}
-
-function buildTokenDescriptionsVR() {
-  createTokenDescriptions(themeVR, path.join(workspace.tokensToolkitPath, 'tokens-descriptions-visual-refresh.json'));
-}
-
-function createTokenDescriptions(source, targetPath) {
+function createTokenDescriptions(source) {
   const entries = Object.values(source).flatMap(tokens => Object.entries(tokens));
   const publicTokens = Object.fromEntries(
     entries
@@ -42,22 +56,44 @@ function createTokenDescriptions(source, targetPath) {
         },
       ])
   );
-  writeFile(targetPath, JSON.stringify(publicTokens, null, 2));
+  return publicTokens;
 }
 
-async function extractMappings() {
+async function createSelectorsMapping() {
   const dict = {};
-  const files = glob.sync('lib/**/*.css');
+  const files = glob.sync('lib/components/**/*.css');
   for (const file of files) {
     await extract(file, dict);
   }
-  writeFile(path.join(workspace.tokensToolkitPath, 'tokens-mapping.json'), JSON.stringify(dict, null, 2));
+  return dict;
+}
+
+function createComponentsMapping(selectorsMapping) {
+  const stylesToComponents = getStylesToComponentsMapping();
+
+  const result = Object.values(selectorsMapping)
+    .flatMap(groups => Object.values(groups))
+    .flatMap(tokens => tokens)
+    .reduce((acc, { file, name }) => {
+      if (!acc[name]) {
+        acc[name] = new Set();
+      }
+      if (stylesToComponents[file]) {
+        for (const component of stylesToComponents[file]) {
+          acc[name].add(component);
+        }
+      }
+
+      return acc;
+    }, {});
+
+  return lodash.mapValues(result, values => [...values]);
 }
 
 async function extract(file, dict) {
   const content = fs.readFileSync(file, 'utf-8');
   await postcss([
-    tokenExtractor((selector, tokens) => {
+    tokenExtractor(file, (selector, tokens) => {
       if (!dict[selector]) {
         dict[selector] = { ...tokens };
       } else {
@@ -67,7 +103,7 @@ async function extract(file, dict) {
   ]).process(content, { from: file }).css; // trigger the getter
 }
 
-function tokenExtractor(onTokenFound) {
+function tokenExtractor(file, onTokenFound) {
   return {
     postcssPlugin: 'tokens-collector',
     Rule(node) {
@@ -81,6 +117,7 @@ function tokenExtractor(onTokenFound) {
         .filter(match => !!match)
         .map(match => match[1])
         .map(token => ({
+          file,
           name: lodash.camelCase(token.replace(/^--/, '').replace(/-[\w\d]+$/, '')),
           cssName: token,
         }));
@@ -182,4 +219,136 @@ function mergeTokens(entry, tokens) {
       entry[key] = value;
     }
   }
+}
+
+function getStylesToComponentsMapping() {
+  const files = glob.sync('lib/components/*/index.js');
+  const result = {};
+
+  for (const file of files) {
+    const component = file.match(/lib\/components\/(.*?)\//)?.[1];
+    if (component === 'internal' || component === 'theming') {
+      continue;
+    }
+
+    const visited = new Set();
+    walkJS(file, visited);
+
+    const imports = [...visited.values()]
+      .filter(dep => dep.endsWith('.css.js') || dep.endsWith('.scoped.css'))
+      .map(dep => path.relative('.', dep).replace('styles.css.js', 'styles.scoped.css'));
+
+    for (const styleImport of imports) {
+      if (!result[styleImport]) {
+        result[styleImport] = new Set();
+      }
+      result[styleImport].add(component);
+    }
+  }
+
+  return lodash.mapValues(result, value => [...value]);
+}
+
+function jsVisitor() {
+  return {
+    visitor: {
+      ImportDeclaration(node, state) {
+        const { onImportFound } = state.opts;
+        const value = node.get('source').node.value;
+
+        if (!value.startsWith('.')) {
+          return;
+        }
+        let resolved = path.resolve(path.dirname(state.file.opts.filename), value);
+        if (path.extname(resolved) !== '.js') {
+          resolved += '.js';
+        }
+        if (resolved.endsWith('.css.js')) {
+          resolved = resolved.replace(/\.css\.js$/, '.scoped.css');
+        }
+        onImportFound(resolved);
+      },
+    },
+  };
+}
+
+function walkJS(filePath, visited) {
+  const deps = [];
+  const onImportFound = filePath => {
+    if (path.extname(filePath) === '.js') {
+      const suffixes = ['.js', '/index.js'];
+      const resolved = suffixes
+        .map(suffix => filePath.replace(/\.js$/, suffix))
+        .find(fileName => fs.existsSync(fileName));
+      if (!resolved) {
+        return;
+      }
+      filePath = resolved;
+    }
+    if (!visited.has(filePath)) {
+      visited.add(filePath);
+      deps.push(filePath);
+    }
+  };
+
+  babel.transformFileSync(filePath, {
+    babelrc: false,
+    configFile: false,
+    plugins: [[jsVisitor, { onImportFound }]],
+  });
+  const subDeps = [];
+  for (const dep of deps) {
+    const ext = path.extname(dep);
+    if (ext === '.css') {
+      subDeps.push(...walkSass(dep, visited));
+    } else {
+      subDeps.push(...walkJS(dep, visited));
+    }
+  }
+  return [...deps, ...subDeps];
+}
+
+function sassVisitor(onImportFound) {
+  return {
+    postcssPlugin: 'imports-collector',
+    AtRule(node) {
+      if (node.name === 'import' || node.name === 'use') {
+        const importPath = node.params
+          .replace(/as [\w-]+$/, '')
+          .trim()
+          .replace(/^(['"])/, '')
+          .replace(/(['"])$/, '');
+        if (importPath.startsWith('awsui:') || importPath.startsWith('sass:')) {
+          return;
+        }
+        onImportFound(importPath);
+      }
+    },
+  };
+}
+
+function walkSass(filePath, visited) {
+  const deps = [];
+  const onImportFound = importPath => {
+    const resolved = path.resolve(path.dirname(filePath), importPath);
+    const suffixes = [s => s + '.css', s => path.join(s, 'index.css'), s => s + ''];
+    const fileName = suffixes.map(convert => convert(resolved)).find(fileName => fs.existsSync(fileName));
+    if (!fileName) {
+      throw new Error('what:' + resolved + ', ' + importPath);
+    }
+    if (!visited.has(fileName)) {
+      visited.add(fileName);
+      deps.push(fileName);
+    }
+  };
+  const content = fs.readFileSync(filePath);
+  postcss([sassVisitor(onImportFound)]).process(content, {
+    from: filePath,
+    syntax: SCSS,
+  }).css; // trigger getter
+  const result = [...deps];
+  for (const dep of deps) {
+    result.push(...walkSass(dep, visited));
+  }
+  return result;
 }
