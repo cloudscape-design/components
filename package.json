@@ -111,6 +111,8 @@
     "mississippi": "^4.0.0",
     "mockdate": "^3.0.5",
     "please-upgrade-node": "^3.2.0",
+    "postcss": "^8.4.23",
+    "postcss-selector-parser": "^6.0.13",
     "prettier": "^2.4.1",
     "qs": "^6.10.1",
     "react": "^16.14.0",
