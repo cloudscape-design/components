@@ -276,8 +276,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specify a table variant with one of the following:
    * * `container` - Use this variant to have the table displayed within a container.
-   * * `borderless` - Use this variant when the table should have no outer borders or shadows
-   *                  (for example in a dashboard item container).
+   * * `borderless` - Use this variant when the table should have no outer borders or shadow
+   *                  (such as in a dashboard item container).
    * * `embedded` - Use this variant within a parent container (such as a modal, expandable
    *                section, container or split panel).
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
