@@ -89,6 +89,7 @@
 
   @include focus-visible.when-visible {
     @include styles.container-focus();
+    border-radius: 0;
   }
 }
 
