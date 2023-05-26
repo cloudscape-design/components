@@ -127,6 +127,7 @@ export namespace TagEditorProps {
     tagLimitExceeded: (tagLimit: number) => string;
     enteredKeyLabel: (enteredText: string) => string;
     enteredValueLabel: (enteredText: string) => string;
+    removeButtonAriaLabel?: (item: TagEditorProps.Tag) => string;
   }
 
   export interface ChangeDetail {

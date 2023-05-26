@@ -116,6 +116,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 
 .footer-button-wrapper {
   padding-top: awsui.$space-s;
+
+  &:last-child {
+    margin-left: auto;
+  }
 }
 
 .icon-wrapper {

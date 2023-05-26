@@ -75,7 +75,8 @@ export interface DrawerItem {
   };
   ariaLabels: DrawerItemAriaLabels;
   resizable?: boolean;
-  size?: number;
+  defaultSize?: number;
+  onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
 }
 
 export interface SizeControlProps {

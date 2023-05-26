@@ -15,13 +15,14 @@ import InternalContainer from '../container/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import stickyScrolling from '../table/sticky-scrolling';
-import { useSupportsStickyHeader } from '../container/use-sticky-header';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { supportsStickyPosition } from '../internal/utils/dom';
 
 export { CardsProps };
 
@@ -47,6 +48,9 @@ const Cards = React.forwardRef(function <T = any>(
     stickyHeader,
     stickyHeaderVerticalOffset,
     variant = 'container',
+    renderAriaLive,
+    firstIndex,
+    totalItemsCount,
     ...rest
   }: CardsProps<T>,
   ref: React.Ref<CardsProps.Ref>
@@ -79,8 +83,9 @@ const Cards = React.forwardRef(function <T = any>(
   });
   const hasToolsHeader = header || filter || pagination || preferences;
   const headerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useMobile();
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
-  stickyHeader = useSupportsStickyHeader() && stickyHeader;
+  stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
     // When an element inside card receives focus we want to adjust the scroll.
     // However, that behavior is unwanted when the focus is received as result of a click
@@ -139,6 +144,11 @@ const Cards = React.forwardRef(function <T = any>(
         __darkHeader={computedVariant === 'full-page'}
       >
         <div className={clsx(hasToolsHeader && styles['has-header'])}>
+          {!!renderAriaLive && !!firstIndex && (
+            <LiveRegion>
+              <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}</span>
+            </LiveRegion>
+          )}
           {status ?? (
             <CardsList
               items={items}

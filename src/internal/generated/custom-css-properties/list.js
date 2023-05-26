@@ -20,6 +20,7 @@ const customCssPropertiesList = [
   'mainOffsetLeft',
   'maxContentWidth',
   'minContentWidth',
+  'mobileBarHeight',
   'notificationsHeight',
   'overlapHeight',
   'navigationWidth',

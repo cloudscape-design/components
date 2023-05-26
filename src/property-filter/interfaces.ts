@@ -137,7 +137,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    */
   customControl?: React.ReactNode;
   /**
-   * Set `asyncProperties` if you need to load `filteringProperties` asynchronousely. This would cause extra `onLoadMore`
+   * Set `asyncProperties` if you need to load `filteringProperties` asynchronously. This would cause extra `onLoadMore`
    * events to fire calling for more properties.
    */
   asyncProperties?: boolean;
@@ -305,12 +305,17 @@ export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
 
-export interface InternalFilteringProperty {
-  key: string;
+export interface InternalFilteringProperty<TokenValue = any> {
+  propertyKey: string;
+  propertyLabel: string;
+  groupValuesLabel: string;
+  propertyGroup?: string;
   operators: readonly PropertyFilterOperator[];
-  defaultOperator?: PropertyFilterOperator;
-  definition: PropertyDefinition;
-  property: PropertyFilterProperty;
+  defaultOperator: PropertyFilterOperator;
+  getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
+  getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
+  // Original property to be used in callbacks.
+  externalProperty: PropertyFilterProperty;
 }
 
 export interface InternalFilteringOption {

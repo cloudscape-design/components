@@ -33,6 +33,7 @@
   #{custom-props.$mainOffsetLeft}: 0px;
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
+  #{custom-props.$mobileBarHeight}: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: 0px;
   #{custom-props.$offsetTopWithNotifications}: 0px;

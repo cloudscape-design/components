@@ -99,6 +99,7 @@ export const Row = React.memo(
                   ref={ref => {
                     removeButtonRefs[index] = ref ?? undefined;
                   }}
+                  ariaLabel={i18nStrings.removeButtonAriaLabel?.(item)}
                   onClick={handleRemoveClick}
                 >
                   {removeButtonText}

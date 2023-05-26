@@ -63,7 +63,6 @@ export function matchOperatorPrefix(
 }
 
 export function matchTokenValue(token: Token, filteringOptions: readonly InternalFilteringOption[]): Token {
-  const value = token.value.toLowerCase();
   const propertyOptions = filteringOptions.filter(option => option.propertyKey === token.propertyKey);
   const bestMatch = { ...token };
   for (const option of propertyOptions) {
@@ -82,33 +81,17 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
 }
 
 export function getPropertyByKey(filteringProperties: readonly InternalFilteringProperty[], key: string) {
-  const propertyMap = filteringProperties.reduce<{ [K: string]: InternalFilteringProperty }>((acc, property) => {
-    acc[property.key] = property;
-    return acc;
-  }, {});
-  return propertyMap[key] as InternalFilteringProperty | undefined;
+  const propertyMap = new Map(filteringProperties.map(prop => [prop.propertyKey, prop]));
+  return propertyMap.get(key) as InternalFilteringProperty | undefined;
 }
 
-export function getOperatorForm(
-  filteringProperties: readonly InternalFilteringProperty[],
-  property: string,
-  operator: ComparisonOperator
-) {
-  const matchedProperty = getPropertyByKey(filteringProperties, property);
-  return (
-    matchedProperty?.definition.operators?.[operator]?.renderForm ?? matchedProperty?.definition.renderForm ?? null
-  );
-}
-
-export function getOperatorValueFormatter(
-  filteringProperties: readonly InternalFilteringProperty[],
-  property: string,
-  operator: ComparisonOperator
-) {
-  const matchedProperty = getPropertyByKey(filteringProperties, property);
-  return (
-    matchedProperty?.definition.operators?.[operator]?.formatValue ?? matchedProperty?.definition.formatValue ?? null
-  );
+export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
+  const property = token.propertyKey ? getPropertyByKey(filteringProperties, token.propertyKey) : undefined;
+  const valueFormatter = property?.getValueFormatter(token.operator);
+  const propertyLabel = property && property.propertyLabel;
+  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
+  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
 }
 
 export function trimStart(source: string): string {

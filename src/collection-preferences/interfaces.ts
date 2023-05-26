@@ -71,6 +71,18 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
+   * Configures the sticky columns preference.
+   *
+   * You can set it for both left and right columns.
+   *
+   * It contains the following:
+   * - `label` (string) - Specifies the label for each radio group.
+   * - `description` (string) - Specifies the text displayed below each radio group label.
+   *
+   * You must set the current value in the `preferences.stickyColumns` property.
+   */
+  stickyColumnsPreference?: CollectionPreferencesProps.StickyColumnsPreference;
+  /**
    * Configures the built-in content display preference for order and visibility of columns in a table.
    *
    * Once set, the component displays this preference in the modal.
@@ -157,10 +169,14 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Called when the user confirms a preference change using the confirm button in the modal footer.
    *
    * The event `detail` contains the following:
-   * - `pageSize` (number) - (Optional) The selected page size value. Available only if you specify the `pageSizePreference` property.
-   * - `wrapLines` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the `wrapLinesPreference` property.
-   * - `visibleContent` (ReadonlyArray<string>) - (Optional) The list of selected content `id`s. Available only if you specify the `visibleContentPreference` property.
+   * - `contentDensity` (boolean) - (Optional) The current content density preference value. Available only if you specify the `contentDensityPreference` property.
+   * - `contentDisplay` (ReadonlyArray<ContentDisplayItem>) - (Optional) The ordered list of table columns and their visibility. Available only if you specify the `contentDisplayPreference` property.
    * - `custom` (CustomPreferenceType) - (Optional) The selected value for your custom preference.
+   * - `pageSize` (number) - (Optional) The selected page size value. Available only if you specify the `pageSizePreference` property.
+   * - `stickyColumns` (CollectionPreferencesProps.StickyColumns) - (Optional) The current sticky columns preference value. Available only if you specify the `stickyColumnsPreference` property.
+   * - `stripedRows` (boolean) - (Optional) The current striped rows preference value. Available only if you specify the `stripedRowsPreference` property.
+   * - `visibleContent` (ReadonlyArray<string>) - (Optional) The list of selected content `id`s. Available only if you specify the `visibleContentPreference` property.
+   * - `wrapLines` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the `wrapLinesPreference` property.
    *
    * The values for all configured preferences are present even if the user didn't change their values.
    */
@@ -174,6 +190,7 @@ export namespace CollectionPreferencesProps {
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
+    stickyColumns?: StickyColumns;
     contentDisplay?: ReadonlyArray<ContentDisplayItem>;
     custom?: CustomPreferenceType;
   }
@@ -240,5 +257,23 @@ export namespace CollectionPreferencesProps {
   export interface ContentDensityPreference {
     label: string;
     description: string;
+  }
+
+  interface StickyColumns {
+    first?: number;
+    last?: number;
+  }
+
+  interface StickyColumnPreference {
+    title: string;
+    description: string;
+    options: ReadonlyArray<{
+      label: string;
+      value: number;
+    }>;
+  }
+  export interface StickyColumnsPreference {
+    firstColumns?: StickyColumnPreference;
+    lastColumns?: StickyColumnPreference;
   }
 }

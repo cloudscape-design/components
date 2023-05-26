@@ -102,6 +102,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *        The `cellContext` object contains the following properties:
    *  *  * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *  *  * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
+   *  * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
@@ -196,6 +197,17 @@ export interface TableProps<T = any> extends BaseComponentProps {
   sortingDisabled?: boolean;
 
   /**
+   * Specifies the number of first and/or last columns that should be sticky.
+   *
+   * If the available scrollable space is less than a certain threshold, the feature is deactivated.
+   *
+   * Use it in conjunction with the sticky columns preference of the
+   * [collection preferences](/components/collection-preferences/) component.
+   *
+   */
+  stickyColumns?: TableProps.StickyColumns;
+
+  /**
    * Specifies an array that represents the table columns in the order in which they will be displayed, together with their visibility.
    *
    * If not set, all columns are displayed and the order is dictated by the `columnDefinitions` property.
@@ -264,6 +276,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specify a table variant with one of the following:
    * * `container` - Use this variant to have the table displayed within a container.
+   * * `borderless` - Use this variant when the table should have no outer borders or shadow
+   *                  (such as in a dashboard item container).
    * * `embedded` - Use this variant within a parent container (such as a modal, expandable
    *                section, container or split panel).
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
@@ -352,11 +366,17 @@ export namespace TableProps {
     minWidth?: number | string;
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
+    isRowHeader?: boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
+  export interface StickyColumns {
+    first?: number;
+    last?: number;
+  }
+
   export type SelectionType = 'single' | 'multi';
-  export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
+  export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;
   }

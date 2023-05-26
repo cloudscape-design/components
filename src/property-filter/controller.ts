@@ -16,7 +16,6 @@ import {
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import {
-  getOperatorValueFormatter,
   getPropertyByKey,
   matchFilteringProperty,
   matchOperator,
@@ -70,7 +69,7 @@ export const getQueryActions = (
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
-  const operatorSet = new Set([defaultOperator ?? '=', ...operators]);
+  const operatorSet = new Set([defaultOperator, ...operators]);
   return operatorOrder.filter(op => operatorSet.has(op));
 };
 
@@ -104,7 +103,7 @@ export const parseText = (
 
   const allowedOps = getAllowedOperators(property);
 
-  const textWithoutProperty = filteringText.substring(property.definition.propertyLabel.length);
+  const textWithoutProperty = filteringText.substring(property.propertyLabel.length);
   const operator = matchOperator(allowedOps, trimStart(textWithoutProperty));
   if (operator) {
     const operatorLastIndex = textWithoutProperty.indexOf(operator) + operator.length;
@@ -132,7 +131,7 @@ export const getPropertyOptions = (
   filteringProperty: InternalFilteringProperty,
   filteringOptions: readonly InternalFilteringOption[]
 ) => {
-  return filteringOptions.filter(option => option.propertyKey === filteringProperty.key);
+  return filteringOptions.filter(option => option.propertyKey === filteringProperty.propertyKey);
 };
 
 interface OptionGroup<T> {
@@ -162,21 +161,21 @@ export const getAllValueSuggestions = (
     if (getAllowedOperators(property).indexOf(operator) === -1) {
       return;
     }
-    if (property.definition.group && !customGroups[property.definition.group]) {
+    if (property.propertyGroup && !customGroups[property.propertyGroup]) {
       const label = customGroupsText.reduce<string>(
-        (acc, customGroup) => (customGroup.group === property.definition.group ? customGroup.values : acc),
+        (acc, customGroup) => (customGroup.group === property.propertyGroup ? customGroup.values : acc),
         ''
       );
-      customGroups[property.definition.group] = {
+      customGroups[property.propertyGroup] = {
         label,
         options: [],
       };
     }
-    const propertyGroup = property.definition.group ? customGroups[property.definition.group] : defaultGroup;
+    const propertyGroup = property.propertyGroup ? customGroups[property.propertyGroup] : defaultGroup;
     propertyGroup.options.push({
-      value: property.definition.propertyLabel + ' ' + (operator || '=') + ' ' + filteringOption.value,
+      value: property.propertyLabel + ' ' + (operator || '=') + ' ' + filteringOption.value,
       label: filteringOption.label,
-      __labelPrefix: property.definition.propertyLabel + ' ' + (operator || '='),
+      __labelPrefix: property.propertyLabel + ' ' + (operator || '='),
     });
   });
   return [defaultGroup, ...Object.keys(customGroups).map(group => customGroups[group])];
@@ -186,12 +185,12 @@ export function createPropertiesCompatibilityMap(
   filteringProperties: readonly InternalFilteringProperty[]
 ): (propertyA: string, propertyB: string) => boolean {
   const lookup: {
-    [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | undefined }[];
+    [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | null }[];
   } = {};
 
   for (const property of filteringProperties) {
-    lookup[property.key] = (property.operators || [])
-      .map(operator => ({ operator, form: property.definition.operators?.[operator]?.renderForm }))
+    lookup[property.propertyKey] = (property.operators || [])
+      .map(operator => ({ operator, form: property.getValueFormRenderer(operator) }))
       .sort((a, b) => a.operator.localeCompare(b.operator));
   }
 
@@ -212,8 +211,8 @@ export function createPropertiesCompatibilityMap(
 }
 
 const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteringProperty) => ({
-  value: filteringProperty.definition.propertyLabel,
-  label: filteringProperty.definition.propertyLabel,
+  value: filteringProperty.propertyLabel,
+  label: filteringProperty.propertyLabel,
   keepOpenOnSelect: true,
 });
 
@@ -230,19 +229,17 @@ export function getPropertySuggestions<T>(
   const customGroups: { [K in string]: OptionGroup<T> } = {};
 
   filteringProperties.forEach(filteringProperty => {
-    const {
-      definition: { group },
-    } = filteringProperty;
+    const { propertyGroup } = filteringProperty;
     let optionsGroup = defaultGroup;
-    if (group) {
-      if (!customGroups[group]) {
+    if (propertyGroup) {
+      if (!customGroups[propertyGroup]) {
         const label = customGroupsText.reduce<string>(
-          (acc, customGroup) => (customGroup.group === group ? customGroup.properties : acc),
+          (acc, customGroup) => (customGroup.group === propertyGroup ? customGroup.properties : acc),
           ''
         );
-        customGroups[group] = { options: [], label };
+        customGroups[propertyGroup] = { options: [], label };
       }
-      optionsGroup = customGroups[group];
+      optionsGroup = customGroups[propertyGroup];
     }
     optionsGroup.options.push(filteringPropertyToOption(filteringProperty));
   });
@@ -342,13 +339,3 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
   };
   return mapping[operator];
 };
-
-export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
-  const valueFormatter =
-    token.propertyKey && getOperatorValueFormatter(filteringProperties, token.propertyKey, token.operator);
-  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
-  const propertyLabel = property && property.definition.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
-  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
-  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
-}

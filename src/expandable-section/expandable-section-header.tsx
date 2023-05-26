@@ -29,7 +29,7 @@ interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderPr
   ariaLabelledBy?: string;
 }
 
-interface ExpandableContainerHeaderProps extends ExpandableDefaultHeaderProps {
+interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps {
   headerDescription?: ReactNode;
   headerCounter?: string;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
@@ -105,7 +105,7 @@ const ExpandableNavigationHeader = ({
   );
 };
 
-const ExpandableContainerHeader = ({
+const ExpandableHeaderTextWrapper = ({
   id,
   className,
   onClick,
@@ -120,45 +120,42 @@ const ExpandableContainerHeader = ({
   headingTagOverride,
   onKeyUp,
   onKeyDown,
-}: ExpandableContainerHeaderProps) => {
+}: ExpandableHeaderTextWrapperProps) => {
   const screenreaderContentId = useUniqueId('expandable-section-header-content-');
   const isContainer = variant === 'container';
+  const HeadingTag = headingTagOverride || 'div';
+  const headerButton = (
+    <span
+      className={isContainer ? styles['header-container-button'] : styles['header-button']}
+      role="button"
+      tabIndex={0}
+      onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
+      aria-label={ariaLabel}
+      // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
+      aria-labelledby={ariaLabel || !isContainer ? undefined : screenreaderContentId}
+      aria-controls={ariaControls}
+      aria-expanded={expanded}
+    >
+      <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
+      <span>{children}</span>
+    </span>
+  );
 
-  const Wrapper = isContainer
-    ? ({ children }: { children: ReactNode }) => (
+  return (
+    <div id={id} className={className} onClick={onClick}>
+      {isContainer ? (
         <InternalHeader
           variant="h2"
           description={headerDescription}
           counter={headerCounter}
           headingTagOverride={headingTagOverride}
         >
-          {children}
+          {headerButton}
         </InternalHeader>
-      )
-    : ({ children }: { children: ReactNode }) => {
-        const Tag = headingTagOverride || 'div';
-        return <Tag className={styles['header-wrapper']}>{children}</Tag>;
-      };
-
-  return (
-    <div id={id} className={className} onClick={onClick}>
-      <Wrapper>
-        <span
-          className={styles['header-container-button']}
-          role="button"
-          tabIndex={0}
-          onKeyUp={onKeyUp}
-          onKeyDown={onKeyDown}
-          aria-label={ariaLabel}
-          // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
-          aria-labelledby={ariaLabel || !isContainer ? undefined : screenreaderContentId}
-          aria-controls={ariaControls}
-          aria-expanded={expanded}
-        >
-          <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-          <span>{children}</span>
-        </span>
-      </Wrapper>
+      ) : (
+        <HeadingTag className={styles['header-wrapper']}>{headerButton}</HeadingTag>
+      )}
       {isContainer && (
         <ScreenreaderOnly id={screenreaderContentId}>
           {children} {headerCounter} {headerDescription}
@@ -217,7 +214,7 @@ export const ExpandableSectionHeader = ({
 
   if (headerText) {
     return (
-      <ExpandableContainerHeader
+      <ExpandableHeaderTextWrapper
         className={clsx(className, triggerClassName, expanded && styles.expanded)}
         headerDescription={headerDescription}
         headerCounter={headerCounter}
@@ -227,7 +224,7 @@ export const ExpandableSectionHeader = ({
         {...defaultHeaderProps}
       >
         {headerText}
-      </ExpandableContainerHeader>
+      </ExpandableHeaderTextWrapper>
     );
   }
 
@@ -245,7 +242,7 @@ export const ExpandableSectionHeader = ({
       onKeyDown={onKeyDown}
       {...defaultHeaderProps}
     >
-      {headerText ?? header}
+      {header}
     </ExpandableDefaultHeader>
   );
 };

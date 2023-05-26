@@ -4,13 +4,14 @@ import { CancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../internal/base-component';
 import { IconProps } from '../icon/interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { ButtonProps } from '../button/interfaces';
 
 export interface TopNavigationProps extends BaseComponentProps {
   /**
    * Properties describing the product identity. They are as follows:
    *
    * * `title` (string) - Specifies the title text.
-   * * `logo` ({ src: string, alt: string }) - Specifies the logo for the product.
+   * * `logo` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
    * * `href` (string) - Specifies the `href` that the header links to.
    * * `onFollow` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
    */
@@ -95,12 +96,14 @@ export namespace TopNavigationProps {
     description?: string;
     items: ButtonDropdownProps.Items;
     onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+    onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   }
 
   export interface ButtonUtility extends BaseUtility {
     type: 'button';
     variant?: 'primary-button' | 'link';
     onClick?: CancelableEventHandler;
+    onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
     href?: string;
     target?: string;
     rel?: string;

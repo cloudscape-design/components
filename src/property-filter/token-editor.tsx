@@ -28,7 +28,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { getOperatorForm, getPropertyByKey, matchTokenValue } from './utils';
+import { getPropertyByKey, matchTokenValue } from './utils';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
@@ -60,9 +60,9 @@ function PropertyInput({
     filteringProperties,
     customGroupsText,
     i18nStrings,
-    ({ definition, key }) => ({
-      value: key,
-      label: definition.propertyLabel,
+    ({ propertyKey, propertyLabel }) => ({
+      value: propertyKey,
+      label: propertyLabel,
       dontCloseOnSelect: true,
     })
   );
@@ -170,13 +170,13 @@ function ValueInput({
   const valueOptions = property
     ? getPropertyOptions(property, filteringOptions).map(({ label, value }) => ({ label, value }))
     : [];
-  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
+  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty);
   const asyncValueAutosuggestProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
   const [matchedOption] = valueOptions.filter(option => option.value === value);
 
-  const OperatorForm = propertyKey && operator && getOperatorForm(filteringProperties, propertyKey, operator);
+  const OperatorForm = propertyKey && operator && property?.getValueFormRenderer(operator);
 
   return OperatorForm ? (
     <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
@@ -233,7 +233,7 @@ export function TokenEditor({
   const propertyKey = temporaryToken.propertyKey;
   const onChangePropertyKey = (newPropertyKey: undefined | string) => {
     const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
-      (acc, property) => (property.key === newPropertyKey ? property : acc),
+      (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
       undefined
     );
     const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextOperators;

@@ -36,7 +36,7 @@ function Counter({ id }: { id: number | string }) {
 }
 
 const defaultColumns: TableProps.ColumnDefinition<Item>[] = [
-  { header: 'id', cell: item => item.id },
+  { header: 'id', cell: item => item.id, isRowHeader: true },
   { header: 'name', cell: item => item.name },
 ];
 const defaultColumnsWithIds: TableProps.ColumnDefinition<Item>[] = [
@@ -167,6 +167,15 @@ test('should render table with accessible headers', () => {
   const columnHeaders = wrapper.findColumnHeaders();
   columnHeaders.forEach(header => {
     expect(header.getElement()).toHaveAttribute('scope', 'col');
+  });
+});
+
+test('should render row headers if defined', () => {
+  const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={defaultItems} />);
+  defaultItems.forEach((item, index) => {
+    const cellElement = wrapper.findBodyCell(index + 1, 1)?.getElement();
+    expect(cellElement?.tagName).toBe('TH');
+    expect(cellElement).toHaveAttribute('scope', 'row');
   });
 });
 

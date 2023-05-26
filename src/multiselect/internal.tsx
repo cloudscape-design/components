@@ -46,6 +46,7 @@ const InternalMultiselect = React.forwardRef(
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
+      filteringResultsText,
       ariaRequired,
       placeholder,
       disabled,
@@ -89,7 +90,11 @@ const InternalMultiselect = React.forwardRef(
     });
     const useInteractiveGroups = true;
     const [filteringValue, setFilteringValue] = useState('');
-    const { filteredOptions, parentMap } = prepareOptions(options, filteringType, filteringValue);
+    const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+      options,
+      filteringType,
+      filteringValue
+    );
 
     const updateSelectedOption = useCallback(
       (option: OptionDefinition | OptionGroup) => {
@@ -163,6 +168,7 @@ const InternalMultiselect = React.forwardRef(
       fireLoadItems,
       setFilteringValue,
       useInteractiveGroups,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
@@ -175,6 +181,9 @@ const InternalMultiselect = React.forwardRef(
 
     const isEmpty = !options || options.length === 0;
     const isNoMatch = filteredOptions && filteredOptions.length === 0;
+    const isFiltered =
+      filteringType !== 'none' && filteringValue.length > 0 && filteredOptions && filteredOptions.length > 0;
+    const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
     const dropdownStatus = useDropdownStatus({
       statusType,
       empty,
@@ -185,6 +194,8 @@ const InternalMultiselect = React.forwardRef(
       isEmpty,
       isNoMatch,
       noMatch,
+      isFiltered,
+      filteringResultsText: filteredText,
       onRecoveryClick: handleRecoveryClick,
       errorIconAriaLabel: restProps.errorIconAriaLabel,
     });

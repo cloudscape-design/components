@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   AppLayout,
   ContentLayout,
@@ -14,16 +14,16 @@ import {
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
+import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type DemoContext = React.Context<AppContextType<{ hasTools: boolean }>>;
 
 export default function WithDrawers() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [hasDrawers, setHasDrawers] = useState(true);
-  const [hasTools, setHasTools] = useState(false);
-  const [isToolsOpen, setIsToolsOpen] = useState(false);
-
-  const [widths, setWidths] = useState<{ [id: string]: number }>({
-    security: 500,
-  });
+  const [hideTools, setHideTools] = useState(!urlParams.hasTools);
 
   const drawers = !hasDrawers
     ? null
@@ -31,9 +31,6 @@ export default function WithDrawers() {
         drawers: {
           ariaLabel: 'Drawers',
           activeDrawerId: activeDrawerId,
-          onResize: (event: NonCancelableCustomEvent<{ size: number; id: string }>) => {
-            setWidths({ ...widths, [event.detail.id]: event.detail.size });
-          },
           items: [
             {
               ariaLabels: {
@@ -45,7 +42,13 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
-              size: widths.security,
+              defaultSize: 500,
+              onResize: ({ detail: { size } }) => {
+                // A drawer implementer may choose to listen to THEIR drawer's
+                // resize event,should they want to persist, or otherwise respond
+                // to their drawer being resized.
+                console.log('Security Drawer is now: ', size);
+              },
               trigger: {
                 iconName: 'security',
               },
@@ -63,7 +66,7 @@ export default function WithDrawers() {
                 iconName: 'contact',
               },
             },
-          ],
+          ] as DrawerItem[],
           onChange: (event: NonCancelableCustomEvent<string>) => {
             setActiveDrawerId(event.detail);
           },
@@ -85,9 +88,11 @@ export default function WithDrawers() {
 
                 <SpaceBetween size="xs">
                   <Toggle
-                    checked={hasTools}
-                    onChange={({ detail }) => setHasTools(detail.checked)}
-                    data-id="toggle-tools"
+                    checked={!hideTools}
+                    onChange={e => {
+                      setHideTools(!e.detail.checked);
+                      setUrlParams({ hasTools: e.detail.checked });
+                    }}
                   >
                     Has Tools
                   </Toggle>
@@ -125,12 +130,8 @@ export default function WithDrawers() {
             This is the Split Panel!
           </SplitPanel>
         }
-        onToolsChange={event => {
-          setIsToolsOpen(event.detail.open);
-        }}
         tools={<Info />}
-        toolsOpen={isToolsOpen}
-        toolsHide={!hasTools}
+        toolsHide={hideTools}
         {...drawers}
       />
     </ScreenshotArea>

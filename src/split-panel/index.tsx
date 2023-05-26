@@ -75,11 +75,11 @@ export default function SplitPanel({
     // wait one frame to allow app-layout to complete its calculations
     const handle = requestAnimationFrame(() => {
       const maxSize = position === 'bottom' ? getMaxHeight() : getMaxWidth();
-      setRelativeSize((size / maxSize) * 100);
+      setRelativeSize(((size - minSize) / (maxSize - minSize)) * 100);
       setMaxSize(maxSize);
     });
     return () => cancelAnimationFrame(handle);
-  }, [size, position, getMaxHeight, getMaxWidth]);
+  }, [size, minSize, position, getMaxHeight, getMaxWidth]);
 
   useEffect(() => {
     reportSize(cappedSize);
@@ -191,7 +191,10 @@ export default function SplitPanel({
       aria-label={i18nStrings.resizeHandleAriaLabel}
       aria-valuemax={100}
       aria-valuemin={0}
-      aria-valuenow={relativeSize}
+      // Allows us to use the logical left/right keys to move the slider left/right,
+      // but match aria keyboard behavior of using left/right to decrease/increase
+      // the slider value.
+      aria-valuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
       className={clsx(styles.slider, styles[`slider-${position}`])}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}

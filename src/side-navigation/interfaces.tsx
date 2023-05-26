@@ -72,6 +72,8 @@ export interface SideNavigationProps extends BaseComponentProps {
    * - `type`: `'link-group'`.
    * - `text` (string) - Specifies the text of the group link.
    * - `href` (string) - Specifies the `href` of the group link.
+   * - `info` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
+   *     our UX guidelines allow only to add a Badge and/or a "New" label.
    * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
@@ -158,6 +160,7 @@ export namespace SideNavigationProps {
     type: 'link-group';
     text: string;
     href: string;
+    info?: React.ReactNode;
     items: ReadonlyArray<Item>;
   }
 

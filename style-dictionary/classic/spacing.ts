@@ -47,7 +47,6 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableEmbeddedContentBottom: '{spaceTableContentBottom}',
   spaceTableEmbeddedHeaderTop: '{spaceContainerHeaderVertical}',
   spaceTabsFocusOutlineGutter: '0px',
-  spaceTextGridVertical: '{spaceGridGutter}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(

@@ -4,6 +4,10 @@ import React, { useRef } from 'react';
 import { render, act } from '@testing-library/react';
 import { useScrollSync } from '../index';
 
+jest.mock('../../../utils/dom', () => ({
+  supportsStickyPosition: jest.fn().mockImplementation(() => true),
+}));
+
 function Demo() {
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
