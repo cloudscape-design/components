@@ -675,4 +675,13 @@ describe('Analytics', () => {
       })
     );
   });
+
+  test('adds the correct data-analytics tag', () => {
+    const { container, rerender } = reactRender(<Flashbar items={[{ id: '0', type: 'success' }]} />);
+    expect(container.querySelector('[data-analytics-flashbar="success"]')).toBeInTheDocument();
+
+    // Effective type when loading is info
+    rerender(<Flashbar items={[{ id: '0', type: 'success', loading: true }]} />);
+    expect(container.querySelector('[data-analytics-flashbar="info"]')).toBeInTheDocument();
+  });
 });
