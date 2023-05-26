@@ -39,6 +39,10 @@ const updatePosition = (
     }
 
     scrollbarEl.classList.add(styles['sticky-scrollbar-visible']);
+    if (!scrollbarHeight) {
+      /* istanbul ignore next: covered by screenshot tests */
+      scrollbarEl.classList.add(styles['sticky-scrollbar-native-invisible']);
+    }
   }
 
   if (scrollbarHeight && scrollbarEl && scrollbarContentEl) {
