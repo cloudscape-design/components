@@ -50,8 +50,8 @@ export const i18nStrings = {
 export function toInternalProperties(properties: FilteringProperty[]): InternalFilteringProperty[] {
   return properties.map(property => ({
     propertyKey: property.key,
-    propertyLabel: property.propertyLabel,
-    groupValuesLabel: property.groupValuesLabel,
+    propertyLabel: property.propertyLabel ?? '',
+    groupValuesLabel: property.groupValuesLabel ?? '',
     propertyGroup: property.group,
     operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
     defaultOperator: property.defaultOperator ?? '=',

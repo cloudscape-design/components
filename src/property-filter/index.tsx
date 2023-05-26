@@ -145,10 +145,10 @@ const PropertyFilter = React.forwardRef(
       const definition = propertyDefinitions[property.key] as undefined | PropertyDefinition;
 
       if (!definition?.propertyLabel && !property.propertyLabel) {
-        warnOnce('PropertyFilter', `Property ${property.key} does not have a label.`);
+        warnOnce('PropertyFilter', `Property "${property.key}" does not have a label.`);
       }
       if (!definition?.groupValuesLabel && !property.groupValuesLabel) {
-        warnOnce('PropertyFilter', `Property ${property.key} does not have a group values label.`);
+        warnOnce('PropertyFilter', `Property "${property.key}" does not have a group values label.`);
       }
 
       const extendedOperators = (property.operators ?? []).reduce((acc, operator) => {
