@@ -15,35 +15,7 @@ export interface ContainerProps extends BaseComponentProps {
    */
   disableHeaderPaddings?: boolean;
 
-  media?: {
-    /**
-     * Use this slot to render your media element.
-     */
-    content?: React.ReactNode;
-
-    /**
-     * Defines the media slot's orientation within the container.
-     */
-    orientation?:
-      | MediaDefinition.Orientation
-      | ReadonlyArray<MediaDefinition.BreakpointMapping<MediaDefinition.Orientation>>;
-
-    /**
-     * Defines the width of the media slot when vertically oriented. Corresponds to the `width` CSS-property.
-     * When this value is set, the media element may be cropped, with `object-fit: cover` centering it.
-     * Note: This value is considered only when `orientation` is set to `vertical`.
-     * If no width is provided, the media slot will take a maximum of 66% of the container's width.
-     */
-    width?: MediaDefinition.Dimension | ReadonlyArray<MediaDefinition.BreakpointMapping<MediaDefinition.Dimension>>;
-
-    /**
-     * Defines the height of the vertically oriented media slot. Corresponds to the `height` CSS-property.
-     * When this value is set, the media element may be cropped, with `object-fit: cover` centering it.
-     * Note: This value is only considered if `orientation` is set to `vertical`.
-     * If no height is provided, the media slot will be displayed at its full height.
-     */
-    height?: MediaDefinition.Dimension | ReadonlyArray<MediaDefinition.BreakpointMapping<MediaDefinition.Dimension>>;
-  };
+  media?: ContainerProps.Media;
 
   /**
    * Main content of the container.
@@ -77,6 +49,36 @@ export interface ContainerProps extends BaseComponentProps {
    * @visualrefresh `stacked` variant
    */
   variant?: 'default' | 'stacked';
+}
+
+export namespace ContainerProps {
+  export interface Media {
+    /**
+     * Use this slot to render your media element.
+     */
+    content?: React.ReactNode;
+
+    /**
+     * Defines the media slot's orientation within the container.
+     */
+    orientation: MediaDefinition.Orientation | MediaDefinition.BreakpointMapping<MediaDefinition.Orientation>;
+
+    /**
+     * Defines the width of the media slot when vertically oriented. Corresponds to the `width` CSS-property.
+     * When this value is set, the media element may be cropped, with `object-fit: cover` centering it.
+     * Note: This value is considered only when `orientation` is set to `vertical`.
+     * If no width is provided, the media slot will take a maximum of 66% of the container's width.
+     */
+    width?: MediaDefinition.Dimension | MediaDefinition.BreakpointMapping<MediaDefinition.Dimension>;
+
+    /**
+     * Defines the height of the vertically oriented media slot. Corresponds to the `height` CSS-property.
+     * When this value is set, the media element may be cropped, with `object-fit: cover` centering it.
+     * Note: This value is only considered if `orientation` is set to `vertical`.
+     * If no height is provided, the media slot will be displayed at its full height.
+     */
+    height?: MediaDefinition.Dimension | MediaDefinition.BreakpointMapping<MediaDefinition.Dimension>;
+  }
 }
 
 export namespace MediaDefinition {

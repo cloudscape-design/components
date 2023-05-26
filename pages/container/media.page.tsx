@@ -36,7 +36,9 @@ export default function SimpleContainers() {
               content: (
                 <img src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
               ),
-              orientation: 'vertical',
+              height: 200,
+              width: { default: '100px', l: '200px' },
+              orientation: { default: 'horizontal', xxs: 'vertical', s: 'vertical', m: 'horizontal' },
             }}
           >
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui

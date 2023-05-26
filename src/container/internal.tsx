@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
-import { ContainerProps } from './interfaces';
+import { ContainerProps, MediaDefinition } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -12,7 +12,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useContainerBreakpoints, useResizeObserver } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -73,14 +74,27 @@ export default function InternalContainer({
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
-  //const smallContainer = defaultBreakpoint === 'default';
 
-  const mergedRef = useMergeRefs(rootRef, __internalRootRef);
+  const getBreakpointsFromMedia = (media: any) => {
+    const breakpointKeys = new Set<Breakpoint>();
+
+    ['orientation', 'width', 'height'].forEach(key => {
+      if (media && typeof media[key] === 'object' && media[key] !== null) {
+        const breakpointMapping = media[key] as MediaDefinition.BreakpointMapping<any>;
+        Object.keys(breakpointMapping).forEach(breakpoint => {
+          breakpointKeys.add(breakpoint as Breakpoint);
+        });
+      }
+    });
+    console.log(breakpointKeys);
+    return Array.from(breakpointKeys);
+  };
+
+  const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsFromMedia(media));
+  const mergedRef = useMergeRefs(rootRef, __internalRootRef, breakpointRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
   const headerIdProp = __headerId ? { id: __headerId } : {};
 
-  const [orientation, setOrientation] = useState(media?.orientation);
-  useResizeObserver(rootRef, e => console.log('resize', e));
   /**
    * The visual refresh AppLayout component needs to know if a child component
    * has a high contrast sticky header. This is to make sure the background element
@@ -99,16 +113,52 @@ export default function InternalContainer({
     };
   }, [isSticky, setHasStickyBackground, variant]);
 
-  const [mediaHeight, setMediaHeight] = useState(null);
-  const [mediaWidth, setMediaWidth] = useState(null);
-  const [mediaOrientation, setMediaOrientation] = useState('horizontal');
-
   // The container is only sticky on mobile if it is the header for the table.
   // In this case we don't want the container to have sticky styles, as only the table header row will show as stuck on scroll.
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
+  const [mediaHeight, setMediaHeight] = useState('' as MediaDefinition.Dimension);
+  const [mediaWidth, setMediaWidth] = useState('' as MediaDefinition.Dimension);
+  const [mediaOrientation, setMediaOrientation] = useState('horizontal' as MediaDefinition.Orientation);
+
+  useEffect(() => {
+    if (!media || !breakpoint) {
+      return;
+    }
+    if (typeof media.orientation === 'string') {
+      setMediaOrientation(media.orientation);
+    } else {
+      const orientation = matchBreakpointMapping(media.orientation, breakpoint);
+      setMediaOrientation(orientation || media.orientation.default || 'horizontal');
+    }
+  }, [media, breakpoint]);
+
+  useEffect(() => {
+    if (!media || !media.width || !breakpoint) {
+      return;
+    }
+    if (typeof media.width === 'string' || typeof media.width === 'number') {
+      setMediaWidth(media.width);
+    } else {
+      const width = matchBreakpointMapping(media.width, breakpoint);
+      setMediaWidth(width || media.width.default || '');
+    }
+  }, [media, breakpoint]);
+
+  useEffect(() => {
+    if (!media || !media.height || !breakpoint) {
+      return;
+    }
+    if (typeof media.height === 'string' || typeof media.height === 'number') {
+      setMediaHeight(media.height);
+    } else {
+      const height = matchBreakpointMapping(media.height, breakpoint);
+      setMediaHeight(height || media.height.default || '');
+    }
+  }, [media, breakpoint]);
+
   function getMediaStyles() {
-    return orientation === 'vertical' ? mediaWidth : mediaHeight;
+    return mediaOrientation === 'horizontal' ? { height: mediaHeight } : { width: mediaWidth };
   }
 
   return (
@@ -119,17 +169,14 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        media?.orientation === 'vertical' && styles['vertical-media'],
+        media?.content && mediaOrientation === 'vertical' && styles['vertical-media'],
         shouldHaveStickyStyles && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >
       {media?.content && (
-        <div
-          className={clsx(styles[`media-${media?.orientation}`], styles.media)}
-          // style={{ height: '200px', backgroundColor: 'red' }}
-        >
-          {media?.content}
+        <div className={clsx(styles[`media-${mediaOrientation}`], styles.media)} style={getMediaStyles()}>
+          {media.content}
         </div>
       )}
       <div className={styles['content-wrapper']}>
