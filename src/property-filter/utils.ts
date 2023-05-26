@@ -13,12 +13,11 @@ export function matchFilteringProperty(
 
   for (const property of filteringProperties) {
     if (
-      (property.definition.propertyLabel.length >= maxLength &&
-        startsWith(filteringText, property.definition.propertyLabel)) ||
-      (property.definition.propertyLabel.length > maxLength &&
-        startsWith(filteringText.toLowerCase(), property.definition.propertyLabel.toLowerCase()))
+      (property.propertyLabel.length >= maxLength && startsWith(filteringText, property.propertyLabel)) ||
+      (property.propertyLabel.length > maxLength &&
+        startsWith(filteringText.toLowerCase(), property.propertyLabel.toLowerCase()))
     ) {
-      maxLength = property.definition.propertyLabel.length;
+      maxLength = property.propertyLabel.length;
       matchedProperty = property;
     }
   }
@@ -66,12 +65,11 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
   const propertyOptions = filteringOptions.filter(option => option.propertyKey === token.propertyKey);
   const bestMatch = { ...token };
   for (const option of propertyOptions) {
-    const optionText = option.label ? option.label.toLowerCase() : '';
-    if (optionText === token.value || (!option.label && option.value === token.value)) {
+    if ((option.label && option.label === token.value) || (!option.label && option.value === token.value)) {
       // exact match found: return it
       return { ...token, value: option.value };
     }
-    if (value === (option.label ?? option.value ?? '').toLowerCase()) {
+    if (token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()) {
       // non-exact match: save and keep running in case exact match found later
       bestMatch.value = option.value;
     }

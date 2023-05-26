@@ -20,7 +20,8 @@ import {
   InternalFilteringProperty,
   InternalFilteringOption,
   FilteringProperty,
-  ExtendedOperator,
+  PropertyDefinition,
+  PropertyOperatorDefinition,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -35,6 +36,7 @@ import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../internal/i18n/context';
 import TokenList from '../internal/components/token-list';
 import { SearchResults } from '../text-filter/search-results';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export { PropertyFilterProps };
 
@@ -60,7 +62,7 @@ const PropertyFilter = React.forwardRef(
       filteringProperties,
       filteringOptions = [],
       customGroupsText = [],
-      // propertyDefinitions = {},
+      propertyDefinitions = {},
       disableFreeTextFiltering = false,
       onLoadItems,
       virtualScroll,
@@ -140,19 +142,42 @@ const PropertyFilter = React.forwardRef(
     const [filteringText, setFilteringText] = useState<string>('');
 
     const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
-      const extendedOperators = (property.operators ?? []).reduce(
-        (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
-        new Map<PropertyFilterOperator, null | ExtendedOperator<any>>()
-      );
+      const definition = propertyDefinitions[property.key] as undefined | PropertyDefinition;
+
+      if (!definition?.propertyLabel && !property.propertyLabel) {
+        warnOnce('PropertyFilter', `Property ${property.key} does not have a label.`);
+      }
+      if (!definition?.groupValuesLabel && !property.groupValuesLabel) {
+        warnOnce('PropertyFilter', `Property ${property.key} does not have a group values label.`);
+      }
+
+      const extendedOperators = (property.operators ?? []).reduce((acc, operator) => {
+        const operatorKey = typeof operator === 'string' ? operator : operator.operator;
+        const renderForm =
+          definition?.operators?.[operatorKey]?.renderForm ??
+          (typeof operator === 'object' ? operator.form : undefined);
+        const formatValue =
+          definition?.operators?.[operatorKey]?.formatValue ??
+          (typeof operator === 'object' ? operator.format : undefined);
+
+        return acc.set(operatorKey, { renderForm, formatValue });
+      }, new Map<PropertyFilterOperator, null | PropertyOperatorDefinition>());
+
       return {
         propertyKey: property.key,
-        propertyLabel: property.propertyLabel ?? '',
-        groupValuesLabel: property.groupValuesLabel ?? '',
-        propertyGroup: property.group,
+        propertyLabel: definition?.propertyLabel ?? property.propertyLabel ?? '',
+        groupValuesLabel: definition?.groupValuesLabel ?? property.groupValuesLabel ?? '',
+        propertyGroup: definition?.group ?? property.group,
         operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
         defaultOperator: property.defaultOperator ?? '=',
-        getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
-        getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
+        getValueFormatter: operator =>
+          operator
+            ? extendedOperators.get(operator)?.formatValue ?? definition?.formatValue ?? null
+            : definition?.formatValue ?? null,
+        getValueFormRenderer: operator =>
+          operator
+            ? extendedOperators.get(operator)?.renderForm ?? definition?.renderForm ?? null
+            : definition?.renderForm ?? null,
         externalProperty: property,
       };
     });
@@ -287,7 +312,7 @@ const PropertyFilter = React.forwardRef(
           loadMoreDetail.filteringProperty = parsedText.property.externalProperty;
           loadMoreDetail.filteringOperator = operators[0];
           loadMoreDetail.filteringText = '';
-          setFilteringText(parsedText.property.definition.propertyLabel + ' ' + operators[0] + ' ');
+          setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
         }
       }
 

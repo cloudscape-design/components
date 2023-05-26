@@ -93,7 +93,7 @@ function PropertyInput({
         property
           ? {
               value: propertyKey ?? undefined,
-              label: property.definition.propertyLabel,
+              label: property.propertyLabel,
             }
           : allPropertiesOption
       }

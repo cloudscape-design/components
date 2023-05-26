@@ -257,9 +257,7 @@ export const getAutosuggestOptions = (
 ) => {
   switch (parsedText.step) {
     case 'property': {
-      const {
-        definition: { propertyLabel, groupValuesLabel },
-      } = parsedText.property;
+      const { propertyLabel, groupValuesLabel } = parsedText.property;
       const options = getPropertyOptions(parsedText.property, filteringOptions);
       return {
         filterText: parsedText.value,
@@ -277,7 +275,7 @@ export const getAutosuggestOptions = (
     }
     case 'operator': {
       return {
-        filterText: parsedText.property.definition.propertyLabel + ' ' + parsedText.operatorPrefix,
+        filterText: parsedText.property.propertyLabel + ' ' + parsedText.operatorPrefix,
         options: [
           ...getPropertySuggestions(
             filteringProperties,
@@ -287,8 +285,8 @@ export const getAutosuggestOptions = (
           ),
           {
             options: getAllowedOperators(parsedText.property).map(value => ({
-              value: parsedText.property.definition.propertyLabel + ' ' + value + ' ',
-              label: parsedText.property.definition.propertyLabel + ' ' + value,
+              value: parsedText.property.propertyLabel + ' ' + value + ' ',
+              label: parsedText.property.propertyLabel + ' ' + value,
               description: operatorToDescription(value, i18nStrings),
               keepOpenOnSelect: true,
             })),

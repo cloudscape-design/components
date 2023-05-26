@@ -31,7 +31,7 @@ export function PropertyEditor<TokenValue = any>({
   return (
     <div className={styles['property-editor']}>
       <div className={styles['property-editor-form']}>
-        <InternalFormField label={property.definition.groupValuesLabel}>
+        <InternalFormField label={property.groupValuesLabel}>
           {operatorForm({ value, onChange, operator, filter })}
         </InternalFormField>
       </div>
