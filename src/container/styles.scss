@@ -73,6 +73,7 @@
 .media {
   overflow: hidden;
 
+  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
   img,
   video,
   picture {
