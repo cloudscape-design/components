@@ -4,7 +4,6 @@ import React, { useContext } from 'react';
 import AppContext, { AppContextType } from '../app/app-context';
 import Container from '~components/container';
 import Header from '~components/header';
-import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Input from '~components/input';
 import Box from '~components/box';
@@ -17,7 +16,6 @@ import { BREAKPOINT_MAPPING } from '~components/internal/breakpoints';
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './media.scss';
 import image169 from './images/16-9.png';
-import image43 from './images/4-3.png';
 type DemoContext = React.Context<AppContextType<{ [key: string]: string }>>;
 
 function ContainerPlayground(props: ContainerProps & { mediaContent: React.ReactNode }) {
@@ -59,13 +57,13 @@ function ContainerPlayground(props: ContainerProps & { mediaContent: React.React
   );
 }
 
-const BREAKPOINTS = BREAKPOINT_MAPPING.reverse();
+const BREAKPOINTS = [...BREAKPOINT_MAPPING].reverse();
 
 function ConfigurationForm() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   return (
     <ExpandableSection
-      // variant="container"
+      variant="container"
       headerText="Responsive behaviour configuration"
       headerDescription="Verify or edit the settings below. They are defined on a per breakpoint basis."
     >
@@ -125,43 +123,32 @@ export default function SimpleContainers() {
       <ScreenshotArea>
         <SpaceBetween size="l">
           <ConfigurationForm />
-          <ContainerPlayground
-            header={
-              <Header
-                variant="h2"
-                headingTagOverride="h1"
-                description={
-                  <>
-                    Some additional text{' '}
-                    <Link fontSize="inherit" variant="primary">
-                      with a link
-                    </Link>
-                    .
-                  </>
-                }
-                info={<Link variant="info">Info</Link>}
-              >
-                <Link fontSize="heading-m" href="" variant="primary">
-                  Secondary link
-                </Link>
-              </Header>
-            }
-            footer={<Link>Learn more</Link>}
-            mediaContent={<img src={image169} alt="Landscape image" />}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
-            tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
-            tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
-          </ContainerPlayground>
-          <ContainerPlayground
-            mediaContent={<img src={image43} alt="4:3 image" />}
-            header="ContainerPlayground plain text in header"
-          >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
-            tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
-            tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius. mediaContent=
-          </ContainerPlayground>
+          Grid with min height
           <div className={styles.grid}>
+            <ContainerPlayground
+              fitHeight={true}
+              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
+              footer="Footer"
+              mediaContent={<img src={image169} alt="4:3 image" />}
+            >
+              Content area takes the available vertical space
+            </ContainerPlayground>
+            <ContainerPlayground
+              fitHeight={true}
+              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
+              footer="Footer"
+              mediaContent={<img src={image169} alt="4:3 image" />}
+            >
+              Content area takes the available vertical space
+            </ContainerPlayground>
+            <ContainerPlayground
+              fitHeight={true}
+              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
+              footer="Footer"
+              mediaContent={<img src={image169} alt="4:3 image" />}
+            >
+              Content area takes the available vertical space
+            </ContainerPlayground>
             <ContainerPlayground
               fitHeight={true}
               header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
