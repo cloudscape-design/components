@@ -86,7 +86,6 @@ export default function InternalContainer({
         });
       }
     });
-    console.log(breakpointKeys);
     return Array.from(breakpointKeys);
   };
 
@@ -179,7 +178,7 @@ export default function InternalContainer({
           {media.content}
         </div>
       )}
-      <div className={styles['content-wrapper']}>
+      <div className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}>
         {header && (
           <StickyHeaderContext.Provider value={{ isStuck }}>
             <div
@@ -190,6 +189,7 @@ export default function InternalContainer({
                 [styles['header-stuck']]: isStuck,
                 [styles['with-paddings']]: !disableHeaderPaddings,
                 [styles['with-hidden-content']]: !children || __hiddenContent,
+                [styles['with-media']]: !!media?.content,
               })}
               {...headerIdProp}
               {...stickyStyles}

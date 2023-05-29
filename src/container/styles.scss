@@ -16,6 +16,9 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    &.vertical-media {
+      flex-direction: row;
+    }
   }
 
   &.variant {
@@ -68,6 +71,9 @@
 
 .content-wrapper {
   flex: 1;
+  &-fit-height {
+    overflow: auto;
+  }
 }
 
 .media {
@@ -84,6 +90,7 @@
   }
 
   &-horizontal {
+    max-height: 80%;
     border-top-left-radius: awsui.$border-radius-container;
     border-top-right-radius: awsui.$border-radius-container;
   }
@@ -92,6 +99,14 @@
     max-width: 66%;
     border-top-left-radius: awsui.$border-radius-container;
     border-bottom-left-radius: awsui.$border-radius-container;
+  }
+}
+
+&.with-media {
+  border-bottom: none;
+  background: none;
+  &.content {
+    overflow: auto;
   }
 }
 
