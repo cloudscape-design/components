@@ -78,11 +78,14 @@ export default function InternalContainer({
   const getBreakpointsForMedia = (media: any) => {
     const breakpointKeys = new Set<Breakpoint>();
 
-    ['content', 'orientation', 'width', 'height'].forEach(key => {
+    ['orientation', 'width', 'height'].forEach(key => {
       if (media && typeof media[key] === 'object' && media[key] !== null) {
         const breakpointMapping = media[key] as MediaDefinition.BreakpointMapping<any>;
-        Object.keys(breakpointMapping).forEach(breakpoint => {
-          breakpointKeys.add(breakpoint as Breakpoint);
+        Object.keys(breakpointMapping).forEach(key => {
+          const breakpoint = key as Breakpoint;
+          if (breakpoint !== 'default' && breakpointMapping[breakpoint]) {
+            breakpointKeys.add(breakpoint);
+          }
         });
       }
     });
@@ -122,7 +125,7 @@ export default function InternalContainer({
   const [mediaOrientation, setMediaOrientation] = useState('horizontal' as MediaDefinition.Orientation);
 
   useEffect(() => {
-    if (!media || !breakpoint) {
+    if (!media || !media.orientation || !breakpoint) {
       return;
     }
     if (typeof media.orientation === 'string') {
