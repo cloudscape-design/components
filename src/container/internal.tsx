@@ -75,10 +75,10 @@ export default function InternalContainer({
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
-  const getBreakpointsFromMedia = (media: any) => {
+  const getBreakpointsForMedia = (media: any) => {
     const breakpointKeys = new Set<Breakpoint>();
 
-    ['orientation', 'width', 'height'].forEach(key => {
+    ['content', 'orientation', 'width', 'height'].forEach(key => {
       if (media && typeof media[key] === 'object' && media[key] !== null) {
         const breakpointMapping = media[key] as MediaDefinition.BreakpointMapping<any>;
         Object.keys(breakpointMapping).forEach(breakpoint => {
@@ -89,7 +89,7 @@ export default function InternalContainer({
     return Array.from(breakpointKeys);
   };
 
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsFromMedia(media));
+  const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
   const mergedRef = useMergeRefs(rootRef, __internalRootRef, breakpointRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
   const headerIdProp = __headerId ? { id: __headerId } : {};
@@ -116,6 +116,7 @@ export default function InternalContainer({
   // In this case we don't want the container to have sticky styles, as only the table header row will show as stuck on scroll.
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
+  const [mediaContent, setMediaContent] = useState(null as React.ReactNode);
   const [mediaHeight, setMediaHeight] = useState('' as MediaDefinition.Dimension);
   const [mediaWidth, setMediaWidth] = useState('' as MediaDefinition.Dimension);
   const [mediaOrientation, setMediaOrientation] = useState('horizontal' as MediaDefinition.Orientation);
@@ -156,6 +157,18 @@ export default function InternalContainer({
     }
   }, [media, breakpoint]);
 
+  useEffect(() => {
+    if (!media || !media.content || !breakpoint) {
+      return;
+    }
+    if (typeof media.content === 'object' && 'default' in media.content) {
+      const content = matchBreakpointMapping(media.content, breakpoint);
+      setMediaContent(content);
+    } else {
+      setMediaContent(media.content);
+    }
+  }, [media, breakpoint]);
+
   function getMediaStyles() {
     return mediaOrientation === 'horizontal' ? { height: mediaHeight } : { width: mediaWidth };
   }
@@ -175,7 +188,7 @@ export default function InternalContainer({
     >
       {media?.content && (
         <div className={clsx(styles[`media-${mediaOrientation}`], styles.media)} style={getMediaStyles()}>
-          {media.content}
+          {mediaContent}
         </div>
       )}
       <div className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}>

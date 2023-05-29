@@ -52,11 +52,16 @@ export interface ContainerProps extends BaseComponentProps {
 }
 
 export namespace ContainerProps {
+  /**
+   * The value for each property can either be a single value (which applies for all breakpoints) or an object where the key
+   * is one of the supported breakpoints (`xxs`, `xs`, `s`, `m`, `l`, `xl`) or `default`.
+   * The value of this key is applied for that breakpoint and those above it. You must provide a `default` value for `content`.
+   */
   export interface Media {
     /**
      * Use this slot to render your media element.
      */
-    content?: React.ReactNode;
+    content?: React.ReactNode | MediaDefinition.ContentBreakpointMapping;
 
     /**
      * Defines the media slot's orientation within the container.
@@ -82,6 +87,9 @@ export namespace ContainerProps {
 }
 
 export namespace MediaDefinition {
+  export type ContentBreakpointMapping = MediaDefinition.BreakpointMapping<React.ReactNode> & {
+    default: React.ReactNode;
+  };
   export type Orientation = 'horizontal' | 'vertical';
   export type Dimension = string | number;
   export type BreakpointMapping<T> = Partial<Record<Breakpoint, T>>;
