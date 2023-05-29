@@ -1,19 +1,104 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
+import AppContext, { AppContextType } from '../app/app-context';
 import Container from '~components/container';
 import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
+import Input from '~components/input';
+import FormField from '~components/form-field';
+import RadioGroup from '~components/radio-group';
+import { ContainerProps } from '~components/container';
 import ScreenshotArea from '../utils/screenshot-area';
+import image169 from './images/16-9.png';
+import image43 from './images/4-3.png';
 
-export default function SimpleContainers() {
+import styles from './media.scss';
+
+type DemoContext = React.Context<
+  AppContextType<{ width: string; height: string; orientation: 'horizontal' | 'vertical'; content: '16-9' | '4-3' }>
+>;
+
+function ContainerPlayground(props: ContainerProps) {
+  const { urlParams } = useContext(AppContext as DemoContext);
+
+  return (
+    <Container
+      {...props}
+      media={{
+        content: <img src={urlParams.content === '4-3' ? image43 : image169} alt="A fun, accessible image" />,
+        width: urlParams.width,
+        height: urlParams.height,
+        orientation: urlParams.orientation,
+      }}
+    />
+  );
+}
+
+function SettingsForm() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  return (
+    <SpaceBetween direction="horizontal" size="m">
+      <FormField description="Only valid for 'vertical' orientation." label="Media width">
+        <Input
+          placeholder={'example: 30%'}
+          value={urlParams.width}
+          onChange={event => setUrlParams({ width: event.detail.value })}
+        />
+      </FormField>
+      <FormField description="Only valid for 'horizontal' orientation." label="Media height">
+        <Input
+          placeholder={'example: 200px'}
+          value={urlParams.height}
+          onChange={event => setUrlParams({ height: event.detail.value })}
+        />
+      </FormField>
+      <FormField label="Media orientation">
+        <RadioGroup
+          items={[
+            {
+              value: 'horizontal',
+              label: 'Horizontal',
+            },
+            {
+              value: 'vertical',
+              label: 'Vertical',
+            },
+          ]}
+          onChange={({ detail }) => setUrlParams({ orientation: detail.value as 'horizontal' | 'vertical' })}
+          value={urlParams.orientation}
+        />
+      </FormField>
+      <FormField label="Content">
+        <RadioGroup
+          items={[
+            {
+              value: '16-9',
+              label: '16:9 image',
+            },
+            {
+              value: '4-3',
+              label: '4:3 image',
+            },
+          ]}
+          onChange={({ detail }) => setUrlParams({ content: detail.value as '16-9' | '4-3' })}
+          value={urlParams.content}
+        />
+      </FormField>
+    </SpaceBetween>
+  );
+}
+
+export default function MediaContainers() {
   return (
     <article>
-      <h1>Simple containers</h1>
+      <h1>Media containers</h1>
+
       <ScreenshotArea>
         <SpaceBetween size="l">
-          <Container
+          <SettingsForm />
+          <ContainerPlayground
             header={
               <Header
                 variant="h2"
@@ -29,49 +114,30 @@ export default function SimpleContainers() {
                 }
                 info={<Link variant="info">Info</Link>}
               >
-                Container with tag override
+                <Link fontSize="heading-m" href="" variant="primary">
+                  Secondary link
+                </Link>
               </Header>
             }
-            media={{
-              content: (
-                <img src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-              ),
-              height: 200,
-              width: { default: '100px', l: '200px' },
-              orientation: { default: 'horizontal', xxs: 'vertical', s: 'vertical', m: 'horizontal' },
-            }}
+            footer={<Link>Learn more</Link>}
           >
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
             tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
             tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
-          </Container>
-          <Container
-            media={{
-              content: (
-                <img src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-              ),
-              orientation: 'horizontal',
-            }}
-            header="Container plain text in header"
-          >
+          </ContainerPlayground>
+          <ContainerPlayground header="ContainerPlayground plain text in header">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
             tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
             tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
-          </Container>
-          <div style={{ display: 'grid', minHeight: 300 }}>
-            <Container
-              media={{
-                content: (
-                  <img src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-                ),
-                orientation: 'horizontal',
-              }}
+          </ContainerPlayground>
+          <div className={styles.grid}>
+            <ContainerPlayground
               fitHeight={true}
-              header={<Header variant="h2">Fixed Height Container</Header>}
+              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
               footer="Footer"
             >
               Content area takes the available vertical space
-            </Container>
+            </ContainerPlayground>
           </div>
         </SpaceBetween>
       </ScreenshotArea>
