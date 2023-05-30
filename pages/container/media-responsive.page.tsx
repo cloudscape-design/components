@@ -8,6 +8,7 @@ import SpaceBetween from '~components/space-between';
 import Input from '~components/input';
 import ColumnLayout from '~components/column-layout';
 import Box from '~components/box';
+import Link from '~components/link';
 import Badge from '~components/badge';
 import Button from '~components/button';
 import FormField from '~components/form-field';
@@ -133,7 +134,13 @@ export default function SimpleContainers() {
           <SpaceBetween size="s">
             <Box variant="h3">Single container</Box>
             <ContainerPlayground
-              header={<Header variant="h2">Simple singular container</Header>}
+              header={
+                <Header variant="h2">
+                  <Link fontSize="inherit" variant="primary">
+                    Simple container
+                  </Link>
+                </Header>
+              }
               mediaContent={<img src={image169} alt="16:9 image" />}
             >
               Content area takes the available vertical space
@@ -163,7 +170,13 @@ export default function SimpleContainers() {
               {getArray(3).map(i => (
                 <ContainerPlayground
                   key={i}
-                  header={<Header variant="h2">Container title</Header>}
+                  header={
+                    <Header variant="h2">
+                      <Link fontSize="inherit" variant="primary">
+                        Container title
+                      </Link>
+                    </Header>
+                  }
                   footer="Footer"
                   mediaContent={<img src={image169} alt="16:9 image" />}
                 >
@@ -179,7 +192,13 @@ export default function SimpleContainers() {
               {getArray(2).map(i => (
                 <ContainerPlayground
                   key={i}
-                  header={<Header variant="h2">Container title</Header>}
+                  header={
+                    <Header variant="h2">
+                      <Link fontSize="inherit" variant="primary">
+                        Container title
+                      </Link>
+                    </Header>
+                  }
                   footer="Footer"
                   mediaContent={<img src={image169} alt="16:9 image" />}
                 >

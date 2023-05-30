@@ -35,7 +35,7 @@ function ContainerPlayground(props: ContainerProps) {
       media={{
         content: (
           <img
-            src={urlParams.content === '4-3' ? image43 : urlParams.content === '16-9' ? image169 : image916}
+            src={urlParams.content === '4-3' ? image43 : urlParams.content === '9-16' ? image916 : image169}
             alt="A fun, accessible image"
           />
         ),
