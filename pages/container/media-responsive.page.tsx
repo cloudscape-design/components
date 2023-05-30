@@ -21,7 +21,7 @@ import styles from './media.scss';
 import image169 from './images/16-9.png';
 import image43 from './images/4-3.png';
 import image916 from './images/9-16.png';
-
+import imageVideo from './images/video.png';
 import clsx from 'clsx';
 type DemoContext = React.Context<AppContextType<{ [key: string]: string }>>;
 
@@ -179,6 +179,27 @@ export default function SimpleContainers() {
                   }
                   footer="Footer"
                   mediaContent={<img src={image169} alt="16:9 image" />}
+                >
+                  Content area takes the available vertical space
+                </ContainerPlayground>
+              ))}
+            </ColumnLayout>
+          </SpaceBetween>
+          <SpaceBetween size="s">
+            <Box variant="h3">Column layout (3 columns)</Box>
+            <ColumnLayout columns={3}>
+              {getArray(3).map(i => (
+                <ContainerPlayground
+                  key={i}
+                  header={
+                    <Header variant="h2">
+                      <Link fontSize="inherit" variant="primary">
+                        Container title
+                      </Link>
+                    </Header>
+                  }
+                  footer="Footer"
+                  mediaContent={<img src={imageVideo} alt="Video thumbnail" />}
                 >
                   Content area takes the available vertical space
                 </ContainerPlayground>
