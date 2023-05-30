@@ -139,7 +139,7 @@ describe('items', () => {
 });
 
 describe('name', () => {
-  test('propages its name onto the child tiles', () => {
+  test('propagates its name onto the child tiles', () => {
     const { wrapper } = renderTiles(<Tiles name="test" value="val1" items={defaultItems} />);
     expect(wrapper.findInputByValue('val1')!.getElement().name).toMatch('test');
     expect(wrapper.findInputByValue('val2')!.getElement().name).toMatch('test');

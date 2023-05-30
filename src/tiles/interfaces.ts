@@ -8,7 +8,7 @@ import { Breakpoint as _Breakpoint } from '../internal/breakpoints';
 
 export interface TilesProps extends BaseComponentProps, FormFieldControlProps {
   /**
-   * Specify a custom name for the native radio buttons. If not provided, the tiles generates a random name.
+   * Specify a custom name for the native radio buttons. If not provided, the tiles component generates a random name.
    */
   name?: string;
 
