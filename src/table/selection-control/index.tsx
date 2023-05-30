@@ -100,6 +100,7 @@ export default function SelectionControl({
         htmlFor={controlId}
         className={clsx(styles.label, styles.root)}
         aria-label={ariaLabel}
+        title={ariaLabel}
       >
         {selector}
       </label>

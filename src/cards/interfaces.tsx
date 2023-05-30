@@ -183,6 +183,22 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   stickyHeaderVerticalOffset?: number;
 
   /**
+   * Use this property to inform screen readers how many cards there are.
+   * It specifies the total number of cards.
+   * If there is an unknown total number of cards, leave this property undefined.   */
+  totalItemsCount?: number;
+  /**
+   *  Use this property to inform screen readers which range of cards is currently displayed.
+   *  It specifies the index (1-based) of the first card.
+   *  If the cards list has no pagination, leave this property undefined.   */
+  firstIndex?: number;
+  /**
+   * Use this function to announce page changes to screen reader users.
+   * Requires the properties firstIndex and totalItemsCount to be set correctly.
+   */
+  renderAriaLive?: (data: CardsProps.LiveAnnouncement) => string;
+
+  /**
    * Specify a cards variant with one of the following:
    * * `container` - Use this variant to have the cards displayed as a container.
    * * `full-page` – Use this variant when cards are the entire content of a page. Full page variants
@@ -229,6 +245,13 @@ export namespace CardsProps {
     selectionGroupLabel: string;
     cardsLabel?: string;
   }
+
+  export interface LiveAnnouncement {
+    totalItemsCount?: number;
+    firstIndex: number;
+    lastIndex: number;
+  }
+
   export interface Ref {
     /**
      * When the sticky header is enabled, calling this function scrolls cards's

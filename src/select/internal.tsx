@@ -44,6 +44,7 @@ const InternalSelect = React.forwardRef(
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
+      filteringResultsText,
       ariaRequired,
       placeholder,
       disabled,
@@ -90,7 +91,11 @@ const InternalSelect = React.forwardRef(
 
     const [filteringValue, setFilteringValue] = useState('');
 
-    const { filteredOptions, parentMap } = prepareOptions(options, filteringType, filteringValue);
+    const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+      options,
+      filteringType,
+      filteringValue
+    );
 
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -122,6 +127,7 @@ const InternalSelect = React.forwardRef(
       externalRef,
       fireLoadItems,
       setFilteringValue,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
@@ -168,6 +174,10 @@ const InternalSelect = React.forwardRef(
 
     const isEmpty = !options || options.length === 0;
     const isNoMatch = filteredOptions && filteredOptions.length === 0;
+    const isFiltered =
+      filteringType !== 'none' && filteringValue.length > 0 && filteredOptions && filteredOptions.length > 0;
+    const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
+
     const dropdownStatus = useDropdownStatus({
       statusType,
       empty,
@@ -178,6 +188,8 @@ const InternalSelect = React.forwardRef(
       isEmpty,
       isNoMatch,
       noMatch,
+      isFiltered,
+      filteringResultsText: filteredText,
       errorIconAriaLabel,
       onRecoveryClick: handleRecoveryClick,
     });

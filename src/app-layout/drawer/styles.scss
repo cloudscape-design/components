@@ -64,36 +64,33 @@ $drawer-z-index-mobile: 1001;
 }
 
 .trigger {
-  .drawer-triggers > & {
-    padding: constants.$drawers-padding;
-    margin: 1px constants.$drawers-padding-horizontal;
-    border-radius: 0;
+  .drawer-content > .drawer-triggers > & {
+    background: awsui.$color-background-layout-toggle-default;
     border: 0;
+    border-radius: 0;
+    color: awsui.$color-text-layout-toggle;
+    padding: constants.$drawers-padding-vertical awsui.$space-s;
+    margin-top: 1px;
 
     &:not(:last-child) {
-      box-shadow: 0px 1px awsui.$color-shadow-layout-panel-trigger;
+      box-shadow: 0px 1px awsui.$color-shadow-layout-toggle;
     }
     &-drawer {
       &:hover:not(.selected) {
-        color: awsui.$color-text-layout-panel-trigger-hover;
+        color: awsui.$color-text-layout-toggle-hover;
         &:not(:last-child) {
-          box-shadow: 0px 1px awsui.$color-shadow-layout-panel-trigger;
+          box-shadow: 0px 1px awsui.$color-shadow-layout-toggle;
         }
       }
     }
 
-    &.selected {
-      padding: constants.$drawers-padding-vertical awsui.$space-s;
-      margin: 0;
-      border-top: 1px solid awsui.$color-background-layout-panel-trigger-active;
-      border-bottom: 1px solid awsui.$color-background-layout-panel-trigger-active;
-
-      background-color: awsui.$color-background-layout-panel-trigger-active;
-      color: awsui.$color-text-layout-panel-trigger-active;
+    &.selected,
+    &.selected:hover {
+      background-color: awsui.$color-background-layout-toggle-selected-default;
+      border-top: 1px solid awsui.$color-background-layout-toggle-selected-default;
       box-shadow: none;
-      &:hover {
-        cursor: default;
-      }
+      color: awsui.$color-text-layout-toggle-active;
+      margin: 0;
     }
   }
 }

@@ -29,9 +29,11 @@ const Button = React.forwardRef(
       download,
       formAction = 'submit',
       ariaLabel,
+      ariaDescribedby,
       onClick,
       onFollow,
       ariaExpanded,
+      fullWidth,
       form,
       ...props
     }: ButtonProps,
@@ -60,9 +62,11 @@ const Button = React.forwardRef(
         download={download}
         formAction={formAction}
         ariaLabel={ariaLabel}
+        ariaDescribedby={ariaDescribedby}
         onClick={onClick}
         onFollow={onFollow}
         ariaExpanded={ariaExpanded}
+        fullWidth={fullWidth}
         form={form}
       >
         {children}

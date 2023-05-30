@@ -98,7 +98,7 @@ describe('Dismiss button', () => {
       const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
       wrapper.findTrigger().click();
       act(() => {
-        document.dispatchEvent(new MouseEvent('mousedown'));
+        document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
       });
       expect(wrapper.findBody({ renderWithPortal })).toBeNull();
     });
@@ -107,7 +107,10 @@ describe('Dismiss button', () => {
       const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
       wrapper.findTrigger().click();
       act(() => {
-        wrapper.findBody({ renderWithPortal })!.getElement().dispatchEvent(new MouseEvent('mousedown'));
+        wrapper
+          .findBody({ renderWithPortal })!
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
       });
       expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
     });
@@ -116,7 +119,10 @@ describe('Dismiss button', () => {
       const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
       wrapper.findTrigger().click();
       act(() => {
-        wrapper.findTrigger().getElement().dispatchEvent(new MouseEvent('mousedown'));
+        wrapper
+          .findTrigger()
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
       });
       expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
     });

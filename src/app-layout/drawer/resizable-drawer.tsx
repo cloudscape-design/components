@@ -23,7 +23,7 @@ export const ResizableDrawer = ({
 }: ResizableDrawerProps) => {
   const { isOpen, children, isMobile } = props;
 
-  const MIN_WIDTH = activeDrawer?.size && activeDrawer.size < 280 ? activeDrawer?.size : 280;
+  const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 280 ? activeDrawer?.defaultSize : 280;
   const [relativeSize, setRelativeSize] = useState(0);
 
   useEffect(() => {

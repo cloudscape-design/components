@@ -3,6 +3,7 @@
 import { InternalContainerProps } from '../container/internal';
 import { TableProps } from './interfaces';
 import { warnOnce } from '../internal/logging';
+import { StickyColumnsCellState } from './use-sticky-columns';
 
 export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {
   if (typeof trackBy === 'function') {
@@ -31,7 +32,7 @@ export const getColumnKey = <T>(column: TableProps.ColumnDefinition<T>, index: n
 
 export const toContainerVariant = (variant: TableProps.Variant | undefined): InternalContainerProps['variant'] => {
   const isDefaultVariant = !variant || variant === 'container';
-  return isDefaultVariant ? 'default' : variant;
+  return isDefaultVariant ? 'default' : variant === 'borderless' ? 'embedded' : variant;
 };
 
 export function checkSortingState<T>(
@@ -92,4 +93,13 @@ function getVisibleColumnDefinitionsFromVisibleColumns<T>({
 }) {
   const ids = new Set(visibleColumns);
   return columnDefinitions.filter(({ id }) => id !== undefined && ids.has(id));
+}
+
+export function getStickyClassNames(styles: Record<string, string>, props: StickyColumnsCellState | null) {
+  return {
+    [styles['sticky-cell']]: !!props,
+    [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+    [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+    [styles['sticky-cell-last-right']]: !!props?.lastRight,
+  };
 }

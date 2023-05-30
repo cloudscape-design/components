@@ -108,6 +108,18 @@ describe('Button Component', () => {
     });
   });
 
+  describe('ariaDescribedby property', () => {
+    test('adds aria-describedby property to button', () => {
+      const wrapper = renderButton({ ariaDescribedby: 'my-element' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'my-element');
+    });
+
+    test("doesn't add an aria-describedby property if not provided", () => {
+      const wrapper = renderButton();
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+    });
+  });
+
   describe('iconUrl property', () => {
     const iconUrl = 'data:image/png;base64,aaaa';
     const iconAlt = 'Custom icon';
@@ -305,7 +317,7 @@ describe('Button Component', () => {
       expect(onClickSpy).not.toHaveBeenCalled();
     });
 
-    test('gives loading precendence over disabled', () => {
+    test('gives loading precedence over disabled', () => {
       const wrapper = renderButton({ loading: true, disabled: true });
       // Loading indicator is shown even when the button is also disabled.
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
@@ -350,6 +362,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
     });
   });
+
   describe('form property', () => {
     test('should have form property when set', () => {
       const formId = 'form-id';
@@ -509,4 +522,28 @@ describe('Button Component', () => {
       );
     });
   });
+
+  test.each(['normal', 'primary', 'link'] as const)(
+    'Assigns full-width class for buttons with content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, children: 'Content' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: true });
+    }
+  );
+
+  test.each(['normal', 'primary', 'link'] as const)(
+    'Does not assign full-width class buttons without content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, iconName: 'settings', iconAlign: 'left' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: false });
+    }
+  );
+
+  test.each(['icon', 'inline-icon'] as const)(
+    'Does not assign full-width class buttons without content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, iconName: 'settings', iconAlign: 'left' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: false });
+    }
+  );
 });

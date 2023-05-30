@@ -57,3 +57,30 @@ test(
     expect(scrollLeft).toEqual(50);
   })
 );
+
+test(
+  'sets role=region and aria-label on scrollable wrapper when overflowing',
+  useBrowser(async browser => {
+    const tableWrapper = createWrapper().findTable();
+    const tableLabel = 'Full-page table';
+    await browser.url('#/light/table/full-page-variant?visualRefresh=true');
+    const page = new BasePageObject(browser);
+
+    // Find the scrollable wrapper element
+    const scrollableWrapperSelector = tableWrapper.findByClassName(styles.wrapper).toSelector();
+
+    let role, ariaLabel;
+    // Get the 'role' and 'aria-label' attributes of the scrollable wrapper
+    role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
+    ariaLabel = await page.getElementAttribute(scrollableWrapperSelector, 'aria-label');
+
+    // Verify that the 'role' and 'aria-label' attributes are set correctly
+    await expect(role).toBeNull();
+    await expect(ariaLabel).toBeNull();
+    await page.setWindowSize({ width: 400, height: 800 });
+    role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
+    ariaLabel = await page.getElementAttribute(scrollableWrapperSelector, 'aria-label');
+    await expect(role).toEqual('region');
+    await expect(ariaLabel).toEqual(tableLabel);
+  })
+);

@@ -2,48 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
-import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
+import CollectionPreferences from '~components/collection-preferences';
 import {
   baseProperties,
   contentDensityPreference,
   customPreference,
   pageSizePreference,
   wrapLinesPreference,
+  visibleContentPreference,
+  stickyColumnsPreference,
 } from './shared-configs';
-
-const visibleContentPreference: CollectionPreferencesProps.VisibleContentPreference = {
-  title: 'Content Selection',
-  options: [
-    {
-      label: 'Main distribution properties',
-      options: [
-        { id: 'id', label: 'Distribution ID', editable: false },
-        {
-          id: 'domainName',
-          label:
-            'Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name',
-        },
-      ],
-    },
-    {
-      label: 'Secondary distribution properties',
-      options: [
-        {
-          id: 'deliveryMethod',
-          label: 'Deliverymethod',
-          editable: true,
-        },
-        { id: 'priceClass', label: 'Price class', editable: false },
-        { id: 'sslCertificate', label: 'SSL certificate' },
-        {
-          id: 'origin',
-          label:
-            'OriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOrigin',
-        },
-      ],
-    },
-  ],
-};
 
 export default function CollectionPreferencesPermutations() {
   return (
@@ -57,6 +25,7 @@ export default function CollectionPreferencesPermutations() {
           wrapLinesPreference={wrapLinesPreference}
           contentDensityPreference={contentDensityPreference}
           visibleContentPreference={visibleContentPreference}
+          stickyColumnsPreference={stickyColumnsPreference}
           customPreference={customPreference}
         />
         <CollectionPreferences className={`cp-2`} {...baseProperties} customPreference={customPreference} />

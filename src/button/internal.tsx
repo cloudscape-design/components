@@ -42,7 +42,9 @@ export const InternalButton = React.forwardRef(
       download,
       formAction = 'submit',
       ariaLabel,
+      ariaDescribedby,
       ariaExpanded,
+      fullWidth,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -66,13 +68,13 @@ export const InternalButton = React.forwardRef(
         }
 
         if (isAnchor && isPlainLeftClick(event)) {
-          fireCancelableEvent(onFollow, null, event);
+          fireCancelableEvent(onFollow, { href, target }, event);
         }
 
         const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
         fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
       },
-      [isAnchor, isNotInteractive, onClick, onFollow]
+      [isAnchor, isNotInteractive, onClick, onFollow, href, target]
     );
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
@@ -80,6 +82,7 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['is-activated']]: __activated,
+      [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
     const buttonProps = {
@@ -88,6 +91,7 @@ export const InternalButton = React.forwardRef(
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef as any, __internalRootRef),
       'aria-label': ariaLabel,
+      'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
       className: buttonClass,
       onClick: handleClick,

@@ -106,7 +106,7 @@ const InternalAttributeEditor = React.forwardRef(
           onClick={onAddButtonClick}
           formAction="none"
           ref={addButtonRef}
-          __nativeAttributes={{ 'aria-describedby': infoAriaDescribedBy }}
+          ariaDescribedby={infoAriaDescribedBy}
         >
           {addButtonText}
         </InternalButton>

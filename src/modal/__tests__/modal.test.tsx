@@ -255,7 +255,7 @@ describe('Modal component', () => {
     describe('Close label property', () => {
       it('does not pass the label to the close button if not defined', () => {
         const wrapper = renderModal({ visible: true });
-        expect(wrapper.findDismissButton().getElement().getAttribute('aria-label')).toBe('');
+        expect(wrapper.findDismissButton().getElement().getAttribute('aria-label')).toBe(null);
       });
 
       it('passes the label to the close button if defined', () => {

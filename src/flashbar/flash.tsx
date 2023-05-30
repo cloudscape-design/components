@@ -112,8 +112,6 @@ export const Flash = React.forwardRef(
 
     const effectiveType = loading ? 'info' : type;
 
-    const announcement = [statusIconAriaLabel, header, content].filter(Boolean).join(' ');
-
     const handleDismiss: ButtonProps['onClick'] = event => {
       sendDismissMetric(effectiveType);
       onDismiss && onDismiss(event);
@@ -126,6 +124,7 @@ export const Flash = React.forwardRef(
         ref={ref}
         role={ariaRole}
         aria-live={ariaRole ? 'off' : undefined}
+        data-analytics-flashbar={effectiveType}
         data-itemid={id}
         className={clsx(
           styles.flash,
@@ -158,7 +157,11 @@ export const Flash = React.forwardRef(
           {button && <div className={styles['action-button-wrapper']}>{button}</div>}
         </div>
         {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        {ariaRole === 'status' && <LiveRegion>{announcement}</LiveRegion>}
+        {ariaRole === 'status' && (
+          <LiveRegion>
+            {statusIconAriaLabel} {header} {content}
+          </LiveRegion>
+        )}
       </div>
     );
   }

@@ -196,6 +196,7 @@ const InternalButtonDropdown = React.forwardRef(
             role="menu"
             decreaseTopMargin={true}
             ariaLabelledby={hasHeader ? headerId : undefined}
+            statusType="finished"
           >
             <ItemsList
               items={dropdownItems}

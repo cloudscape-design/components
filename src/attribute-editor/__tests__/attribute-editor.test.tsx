@@ -190,6 +190,22 @@ describe('Attribute Editor', () => {
       });
     });
 
+    test('renders `ariaLabel` on remove button using `removeButtonAriaLabel` on all rows', () => {
+      const removeButtonAriaLabel = (item: Item) => `Remove ${item.key}`;
+      const wrapper = renderAttributeEditor({
+        ...defaultProps,
+        i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel },
+      });
+      defaultProps.items!.forEach((item, index) => {
+        expect(
+          wrapper
+            .findRow(index + 1)!
+            .findRemoveButton()!
+            .getElement()
+        ).toHaveAccessibleName(`Remove ${item.key}`);
+      });
+    });
+
     test('conditionally renders `remove` button depending on isItemRemovable return value', () => {
       const isItemRemovable = (item: Item) => item.key !== 'k1';
       const wrapper = renderAttributeEditor({ ...defaultProps, isItemRemovable });
