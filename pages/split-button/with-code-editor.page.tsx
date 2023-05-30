@@ -3,11 +3,23 @@
 import * as React from 'react';
 import SplitButton, { SplitButtonProps } from '~components/split-button';
 import ScreenshotArea from '../utils/screenshot-area';
-import { ColumnLayout, FormField, Header, Textarea } from '~components';
+import { CodeEditor, CodeEditorProps, ColumnLayout, FormField, Header } from '~components';
 import { useEffect, useState } from 'react';
 import { orderBy } from 'lodash';
+import { i18nStrings as codeEditorI18nStrings } from '../code-editor/base-props';
 
 export default function SplitButtonPage() {
+  const [ace, setAce] = useState<CodeEditorProps['ace']>();
+  const [aceLoading, setAceLoading] = useState(true);
+  useEffect(() => {
+    import('ace-builds').then(ace => {
+      ace.config.set('basePath', './ace/');
+      ace.config.set('useStrictCSP', true);
+      setAce(ace);
+      setAceLoading(false);
+    });
+  }, []);
+
   const [parsedData, setParsedData] = useState<SplitButtonProps>({
     variant: 'normal',
     segments: [
@@ -69,10 +81,14 @@ export default function SplitButtonPage() {
             errorText={dataError}
             stretch={true}
           >
-            <Textarea
+            <CodeEditor
+              ace={ace}
               value={dataStr}
-              onChange={({ detail }) => setDataStr(detail.value)}
-              rows={Math.max(10, dataStr.split('\n').length)}
+              language="json"
+              onDelayedChange={event => setDataStr(event.detail.value)}
+              onPreferencesChange={() => {}}
+              loading={aceLoading}
+              i18nStrings={codeEditorI18nStrings}
             />
           </FormField>
 
