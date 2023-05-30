@@ -79,6 +79,10 @@
   &-fit-height {
     overflow: auto;
   }
+  &-with-media {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .media {
@@ -215,6 +219,9 @@ the default white background of the container component.
     .header + & {
       padding-top: awsui.$space-container-content-top;
     }
+  }
+  &-with-media {
+    flex: 1;
   }
 }
 

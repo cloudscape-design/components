@@ -194,7 +194,13 @@ export default function InternalContainer({
           {mediaContent}
         </div>
       )}
-      <div className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}>
+      <div
+        className={clsx(
+          styles['content-wrapper'],
+          media?.content && styles['content-wrapper-with-media'],
+          fitHeight && styles['content-wrapper-fit-height']
+        )}
+      >
         {header && (
           <StickyHeaderContext.Provider value={{ isStuck }}>
             <div
@@ -220,7 +226,7 @@ export default function InternalContainer({
           </StickyHeaderContext.Provider>
         )}
         <div
-          className={clsx(styles.content, {
+          className={clsx(styles.content, media?.content && styles['content-with-media'], {
             [styles['with-paddings']]: !disableContentPaddings,
           })}
         >
