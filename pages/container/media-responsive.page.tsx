@@ -9,6 +9,7 @@ import Input from '~components/input';
 import ColumnLayout from '~components/column-layout';
 import Box from '~components/box';
 import Badge from '~components/badge';
+import Button from '~components/button';
 import FormField from '~components/form-field';
 import RadioGroup from '~components/radio-group';
 import ExpandableSection from '~components/expandable-section';
@@ -17,6 +18,9 @@ import { BREAKPOINT_MAPPING } from '~components/internal/breakpoints';
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './media.scss';
 import image169 from './images/16-9.png';
+import image43 from './images/4-3.png';
+import image916 from './images/9-16.png';
+
 import clsx from 'clsx';
 type DemoContext = React.Context<AppContextType<{ [key: string]: string }>>;
 
@@ -127,6 +131,15 @@ export default function SimpleContainers() {
         <SpaceBetween size="xl">
           <ConfigurationForm />
           <SpaceBetween size="s">
+            <Box variant="h3">Single container</Box>
+            <ContainerPlayground
+              header={<Header variant="h2">Simple singular container</Header>}
+              mediaContent={<img src={image169} alt="16:9 image" />}
+            >
+              Content area takes the available vertical space
+            </ContainerPlayground>
+          </SpaceBetween>
+          <SpaceBetween size="s">
             <Box variant="h3">Column layout (4 columns)</Box>
             <ColumnLayout columns={4}>
               {getArray(4).map(i => (
@@ -136,7 +149,10 @@ export default function SimpleContainers() {
                   footer="Footer"
                   mediaContent={<img src={image169} alt="16:9 image" />}
                 >
-                  Content area takes the available vertical space
+                  <SpaceBetween size="s">
+                    Content area takes the available vertical space
+                    <Button>Action</Button>
+                  </SpaceBetween>
                 </ContainerPlayground>
               ))}
             </ColumnLayout>
@@ -156,6 +172,7 @@ export default function SimpleContainers() {
               ))}
             </ColumnLayout>
           </SpaceBetween>
+
           <SpaceBetween size="s">
             <Box variant="h3">Column layout (2 columns)</Box>
             <ColumnLayout columns={2}>
@@ -170,6 +187,35 @@ export default function SimpleContainers() {
                 </ContainerPlayground>
               ))}
             </ColumnLayout>
+          </SpaceBetween>
+          <SpaceBetween size="s">
+            <Box variant="h3">Grid with different images with different aspect ratios</Box>
+            <div className={clsx(styles.grid)}>
+              <ContainerPlayground
+                fitHeight={true}
+                header={<Header variant="h2">16:9 Image Container</Header>}
+                mediaContent={<img src={image169} alt="16:9 image" />}
+                footer="Footer"
+              >
+                Content area takes the available vertical space
+              </ContainerPlayground>
+              <ContainerPlayground
+                fitHeight={true}
+                header={<Header variant="h2">4:3 Image Container</Header>}
+                mediaContent={<img src={image43} alt="4:3 image" />}
+                footer="Footer"
+              >
+                Content area takes the available vertical space Content area takes the available vertical space Content
+              </ContainerPlayground>
+              <ContainerPlayground
+                fitHeight={true}
+                header={<Header variant="h2">9:16 Image Container</Header>}
+                mediaContent={<img src={image916} alt="9:16 image" />}
+                footer="Footer"
+              >
+                Content area takes the available vertical space
+              </ContainerPlayground>
+            </div>
           </SpaceBetween>
           <SpaceBetween size="s">
             <Box variant="h3">Custom CSS grid</Box>
@@ -194,14 +240,6 @@ export default function SimpleContainers() {
                 area takes the available vertical space Content area takes the available vertical space Content area
                 takes the available vertical space Content area takes the available vertical space Content area takes
                 the available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
                 available vertical space Content area takes the available vertical space Content area takes the
                 available vertical space Content area takes the available vertical space Content area takes the
                 available vertical space Content area takes the available vertical space Content area takes the

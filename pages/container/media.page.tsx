@@ -13,11 +13,17 @@ import { ContainerProps } from '~components/container';
 import ScreenshotArea from '../utils/screenshot-area';
 import image169 from './images/16-9.png';
 import image43 from './images/4-3.png';
+import image916 from './images/9-16.png';
 
 import styles from './media.scss';
 
 type DemoContext = React.Context<
-  AppContextType<{ width: string; height: string; orientation: 'horizontal' | 'vertical'; content: '16-9' | '4-3' }>
+  AppContextType<{
+    width: string;
+    height: string;
+    orientation: 'horizontal' | 'vertical';
+    content: '16-9' | '4-3' | '9-16';
+  }>
 >;
 
 function ContainerPlayground(props: ContainerProps) {
@@ -27,7 +33,12 @@ function ContainerPlayground(props: ContainerProps) {
     <Container
       {...props}
       media={{
-        content: <img src={urlParams.content === '4-3' ? image43 : image169} alt="A fun, accessible image" />,
+        content: (
+          <img
+            src={urlParams.content === '4-3' ? image43 : urlParams.content === '16-9' ? image169 : image916}
+            alt="A fun, accessible image"
+          />
+        ),
         width: urlParams.width,
         height: urlParams.height,
         orientation: urlParams.orientation,
@@ -75,14 +86,18 @@ function SettingsForm() {
           items={[
             {
               value: '16-9',
-              label: '16:9 image',
+              label: '16:9 (landscape) image',
             },
             {
               value: '4-3',
-              label: '4:3 image',
+              label: '4:3 (squareish) image',
+            },
+            {
+              value: '9-16',
+              label: '9:16 (portrait) image',
             },
           ]}
-          onChange={({ detail }) => setUrlParams({ content: detail.value as '16-9' | '4-3' })}
+          onChange={({ detail }) => setUrlParams({ content: detail.value as '16-9' | '4-3' | '9-16' })}
           value={urlParams.content}
         />
       </FormField>
