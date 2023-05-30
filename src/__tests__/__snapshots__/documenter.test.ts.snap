@@ -13361,6 +13361,12 @@ is provided by its parent form field component.
       "type": "ReadonlyArray<TilesProps.TilesDefinition>",
     },
     Object {
+      "description": "Specify a custom name for the native radio buttons. If not provided, the tiles component generates a random name.",
+      "name": "name",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the value of the selected tile.
 If you want to clear the selection, use \`null\`.",
       "name": "value",
