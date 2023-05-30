@@ -36,7 +36,13 @@ const UtilitiesView = ({ headerText, dismissIconAriaLabel, onClose, items = [], 
       </Header>
       <ul className={styles['overflow-menu-list']} aria-labelledby={headerId}>
         {items.map((utility, index) => (
-          <UtilityMenuItem key={index} index={index} ref={index === focusIndex ? ref : undefined} {...utility} />
+          <UtilityMenuItem
+            key={index}
+            index={index}
+            ref={index === focusIndex ? ref : undefined}
+            onClose={onClose}
+            {...utility}
+          />
         ))}
       </ul>
     </FocusLock>
