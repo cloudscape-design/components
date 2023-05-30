@@ -211,7 +211,7 @@ export default function InternalContainer({
                 [styles['header-stuck']]: isStuck,
                 [styles['with-paddings']]: !disableHeaderPaddings,
                 [styles['with-hidden-content']]: !children || __hiddenContent,
-                [styles['with-media']]: !!media?.content,
+                [styles['header-with-media']]: !!media?.content,
               })}
               {...headerIdProp}
               {...stickyStyles}

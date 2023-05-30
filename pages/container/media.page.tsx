@@ -148,10 +148,10 @@ export default function MediaContainers() {
           <div className={styles.grid}>
             <ContainerPlayground
               fitHeight={true}
-              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
+              header={<Header variant="h2">Fixed Height Container</Header>}
               footer="Footer"
             >
-              Content area takes the available vertical space
+              Content area takes the available vertical space, fixed height of 400px
             </ContainerPlayground>
           </div>
         </SpaceBetween>

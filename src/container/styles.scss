@@ -124,6 +124,14 @@
   border-top-left-radius: awsui.$border-radius-container;
   border-top-right-radius: awsui.$border-radius-container;
 
+  &-with-media {
+    border-bottom: none !important;
+    background: none;
+    &.content {
+      overflow: auto;
+    }
+  }
+
   // sticky positioning may be disabled (on mobile or if browser does not support it),
   // but some markup still requires a new stacking context
   &-sticky-disabled {
