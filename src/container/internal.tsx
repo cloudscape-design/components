@@ -184,7 +184,7 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        media?.content && mediaOrientation === 'vertical' && styles['vertical-media'],
+        media?.content && (mediaOrientation === 'vertical' ? styles['vertical-media'] : styles['horizontal-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']]
       )}
       ref={mergedRef}

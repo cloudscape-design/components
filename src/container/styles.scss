@@ -69,6 +69,11 @@
   flex-direction: row;
 }
 
+.horizontal-media {
+  display: flex;
+  flex-direction: column;
+}
+
 .content-wrapper {
   flex: 1;
   &-fit-height {

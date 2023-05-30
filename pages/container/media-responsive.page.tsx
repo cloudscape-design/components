@@ -6,6 +6,7 @@ import Container from '~components/container';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Input from '~components/input';
+import ColumnLayout from '~components/column-layout';
 import Box from '~components/box';
 import Badge from '~components/badge';
 import FormField from '~components/form-field';
@@ -16,6 +17,7 @@ import { BREAKPOINT_MAPPING } from '~components/internal/breakpoints';
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './media.scss';
 import image169 from './images/16-9.png';
+import clsx from 'clsx';
 type DemoContext = React.Context<AppContextType<{ [key: string]: string }>>;
 
 function ContainerPlayground(props: ContainerProps & { mediaContent: React.ReactNode }) {
@@ -116,64 +118,152 @@ function ConfigurationForm() {
 }
 
 export default function SimpleContainers() {
+  const getArray = (length: number) => Array.from({ length }, (v, i) => i);
   return (
     <article>
       <h1>Simple containers</h1>
 
       <ScreenshotArea>
-        <SpaceBetween size="l">
+        <SpaceBetween size="xl">
           <ConfigurationForm />
-          Grid with min height
-          <div className={styles.grid}>
-            <ContainerPlayground
-              fitHeight={true}
-              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
-              footer="Footer"
-              mediaContent={<img src={image169} alt="4:3 image" />}
-            >
-              Content area takes the available vertical space
-            </ContainerPlayground>
-            <ContainerPlayground
-              fitHeight={true}
-              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
-              footer="Footer"
-              mediaContent={<img src={image169} alt="4:3 image" />}
-            >
-              Content area takes the available vertical space
-            </ContainerPlayground>
-            <ContainerPlayground
-              fitHeight={true}
-              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
-              footer="Footer"
-              mediaContent={<img src={image169} alt="4:3 image" />}
-            >
-              Content area takes the available vertical space
-            </ContainerPlayground>
-            <ContainerPlayground
-              fitHeight={true}
-              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
-              footer="Footer"
-              mediaContent={<img src={image169} alt="4:3 image" />}
-            >
-              Content area takes the available vertical space
-            </ContainerPlayground>
-            <ContainerPlayground
-              fitHeight={true}
-              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
-              footer="Footer"
-              mediaContent={<img src={image169} alt="4:3 image" />}
-            >
-              Content area takes the available vertical space
-            </ContainerPlayground>
-            <ContainerPlayground
-              fitHeight={true}
-              header={<Header variant="h2">Fixed Height ContainerPlayground</Header>}
-              footer="Footer"
-              mediaContent={<img src={image169} alt="4:3 image" />}
-            >
-              Content area takes the available vertical space
-            </ContainerPlayground>
-          </div>
+          <SpaceBetween size="s">
+            <Box variant="h3">Column layout (4 columns)</Box>
+            <ColumnLayout columns={4}>
+              {getArray(4).map(i => (
+                <ContainerPlayground
+                  key={i}
+                  header={<Header variant="h2">Container title</Header>}
+                  footer="Footer"
+                  mediaContent={<img src={image169} alt="16:9 image" />}
+                >
+                  Content area takes the available vertical space
+                </ContainerPlayground>
+              ))}
+            </ColumnLayout>
+          </SpaceBetween>
+          <SpaceBetween size="s">
+            <Box variant="h3">Column layout (3 columns)</Box>
+            <ColumnLayout columns={3}>
+              {getArray(3).map(i => (
+                <ContainerPlayground
+                  key={i}
+                  header={<Header variant="h2">Container title</Header>}
+                  footer="Footer"
+                  mediaContent={<img src={image169} alt="16:9 image" />}
+                >
+                  Content area takes the available vertical space
+                </ContainerPlayground>
+              ))}
+            </ColumnLayout>
+          </SpaceBetween>
+          <SpaceBetween size="s">
+            <Box variant="h3">Column layout (2 columns)</Box>
+            <ColumnLayout columns={2}>
+              {getArray(2).map(i => (
+                <ContainerPlayground
+                  key={i}
+                  header={<Header variant="h2">Container title</Header>}
+                  footer="Footer"
+                  mediaContent={<img src={image169} alt="16:9 image" />}
+                >
+                  Content area takes the available vertical space
+                </ContainerPlayground>
+              ))}
+            </ColumnLayout>
+          </SpaceBetween>
+          <SpaceBetween size="s">
+            <Box variant="h3">Custom CSS grid</Box>
+            <div className={styles.grid}>
+              {getArray(2).map(i => (
+                <ContainerPlayground
+                  key={i}
+                  header={<Header variant="h2">Container title</Header>}
+                  footer="Footer"
+                  mediaContent={<img src={image169} alt="16:9 image" />}
+                >
+                  Content area takes the available vertical space
+                </ContainerPlayground>
+              ))}
+              <ContainerPlayground
+                fitHeight={true}
+                header={<Header variant="h2">Container title</Header>}
+                footer="Footer"
+                mediaContent={<img src={image169} alt="16:9 image" />}
+              >
+                Content area takes the available vertical space Content area takes the available vertical space Content
+                area takes the available vertical space Content area takes the available vertical space Content area
+                takes the available vertical space Content area takes the available vertical space Content area takes
+                the available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space
+              </ContainerPlayground>
+            </div>
+          </SpaceBetween>
+
+          <SpaceBetween size="s">
+            <Box variant="h3">Custom CSS grid with fixed 400px height</Box>
+            <div className={clsx(styles.grid, styles['grid-fixed-height'])}>
+              {getArray(2).map(i => (
+                <ContainerPlayground
+                  key={i}
+                  header={<Header variant="h2">Container title</Header>}
+                  footer="Footer"
+                  mediaContent={<img src={image169} alt="16:9 image" />}
+                >
+                  Content area takes the available vertical space
+                </ContainerPlayground>
+              ))}
+              <ContainerPlayground
+                fitHeight={true}
+                header={<Header variant="h2">Container title</Header>}
+                footer="Footer"
+                mediaContent={<img src={image169} alt="16:9 image" />}
+              >
+                Content area takes the available vertical space Content area takes the available vertical space Content
+                area takes the available vertical space Content area takes the available vertical space Content area
+                takes the available vertical space Content area takes the available vertical space Content area takes
+                the available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space Content area takes the
+                available vertical space Content area takes the available vertical space
+              </ContainerPlayground>
+            </div>
+          </SpaceBetween>
         </SpaceBetween>
       </ScreenshotArea>
     </article>
