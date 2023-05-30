@@ -131,4 +131,13 @@ describe('Alert Component', () => {
     });
     await expect(container).toValidateA11y();
   });
+
+  test('analytics', () => {
+    const { container } = renderAlert({
+      type: 'success',
+      children: 'Message body',
+    });
+
+    expect(container.querySelector('[data-analytics-alert="success"]')).toBeInTheDocument();
+  });
 });

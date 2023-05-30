@@ -10,7 +10,6 @@ import { KeyCode } from '../../keycode';
 import LiveRegion from '../live-region/index';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
-import focusSvgElement from '../../utils/focus-svg-element';
 import { Offset } from '../interfaces';
 
 const DEFAULT_PLOT_FOCUS_OFFSET = 3;
@@ -104,7 +103,7 @@ function ChartPlot(
 
   useImperativeHandle(ref, () => ({
     svg: svgRef.current!,
-    focusPlot: () => focusSvgElement(svgRef.current!),
+    focusPlot: () => svgRef.current!.focus(),
     focusApplication: () => applicationRef.current!.focus(),
   }));
 

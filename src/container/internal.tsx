@@ -12,6 +12,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -68,11 +69,12 @@ export default function InternalContainer({
   );
   const { setHasStickyBackground } = useAppLayoutContext();
   const isRefresh = useVisualRefresh();
+  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
-  const mergedRef = useMergeRefs(rootRef, __internalRootRef);
+  const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
   const headerIdProp = __headerId ? { id: __headerId } : {};
 
@@ -101,6 +103,7 @@ export default function InternalContainer({
   return (
     <div
       {...baseProps}
+      {...funnelSubStepProps}
       className={clsx(
         baseProps.className,
         styles.root,

@@ -6,6 +6,7 @@ import { ContainerProps } from './interfaces';
 import { getExternalProps } from '../internal/utils/external-props';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 
 export { ContainerProps };
 
@@ -18,13 +19,15 @@ export default function Container({
   const baseComponentProps = useBaseComponent('Container');
   const externalProps = getExternalProps(props);
   return (
-    <InternalContainer
-      variant={variant}
-      disableHeaderPaddings={disableHeaderPaddings}
-      disableContentPaddings={disableContentPaddings}
-      {...externalProps}
-      {...baseComponentProps}
-    />
+    <AnalyticsFunnelSubStep>
+      <InternalContainer
+        variant={variant}
+        disableHeaderPaddings={disableHeaderPaddings}
+        disableContentPaddings={disableContentPaddings}
+        {...externalProps}
+        {...baseComponentProps}
+      />
+    </AnalyticsFunnelSubStep>
   );
 }
 

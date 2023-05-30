@@ -7,6 +7,11 @@ import styles from '../../../lib/components/link/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 
+import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+
+import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+
 function renderLink(props: LinkProps = {}) {
   const renderResult = render(<Link {...props} />);
   return createWrapper(renderResult.container).findLink()!;
@@ -155,6 +160,56 @@ describe('Link component', () => {
       expect(console.warn).toHaveBeenCalledTimes(1);
       expect(console.warn).toHaveBeenCalledWith(
         `[AwsUi] [Link] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello!')".`
+      );
+    });
+  });
+
+  describe('Analytics', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockFunnelMetrics();
+    });
+
+    test('does not send any metrics when not in a funnel context', () => {
+      const wrapper = renderLink({ href: '#', external: true });
+      wrapper.click();
+
+      expect(FunnelMetrics.externalLinkInteracted).not.toHaveBeenCalled();
+    });
+
+    test('sends a externalLinkInteracted metric when an external link is clicked within a Funnel Context', () => {
+      const { container } = render(
+        <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+          <Link href="#" external={true} />
+        </AnalyticsFunnel>
+      );
+      const wrapper = createWrapper(container).findLink()!;
+      wrapper.click();
+
+      expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalled();
+      expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          funnelInteractionId: mockedFunnelInteractionId,
+          elementSelector: expect.any(String),
+        })
+      );
+    });
+
+    test('sends a helpPanelInteracted metric when a help panel link is clicked within a Funnel Context', () => {
+      const { container } = render(
+        <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+          <Link variant="info" />
+        </AnalyticsFunnel>
+      );
+      const wrapper = createWrapper(container).findLink()!;
+      wrapper.click();
+
+      expect(FunnelMetrics.helpPanelInteracted).toHaveBeenCalledTimes(1);
+      expect(FunnelMetrics.helpPanelInteracted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          funnelInteractionId: mockedFunnelInteractionId,
+          elementSelector: expect.any(String),
+        })
       );
     });
   });
