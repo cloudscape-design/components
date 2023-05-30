@@ -16,7 +16,6 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { SplitTrigger } from './split-trigger/index.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -102,25 +101,9 @@ const InternalButtonDropdown = React.forwardRef(
             __iconClass: canBeOpened && isOpen ? styles['rotate-up'] : styles['rotate-down'],
           };
 
-    const dropdownItems = triggerVariant === 'split' || triggerVariant === 'split-primary' ? items.slice(1) : items;
-
     let trigger: React.ReactNode = null;
     if (customTriggerBuilder) {
       trigger = customTriggerBuilder(clickHandler, dropdownRef, disabled, isOpen, ariaLabel);
-    } else if (triggerVariant === 'split' || triggerVariant === 'split-primary') {
-      trigger = (
-        <SplitTrigger
-          loading={loading}
-          variant={triggerVariant === 'split' ? 'normal' : 'primary'}
-          isOpen={canBeOpened && isOpen}
-          onClick={event => {
-            event.preventDefault();
-            clickHandler();
-          }}
-        >
-          {items[0].text}
-        </SplitTrigger>
-      );
     } else {
       trigger = (
         <InternalButton
@@ -199,7 +182,7 @@ const InternalButtonDropdown = React.forwardRef(
             statusType="finished"
           >
             <ItemsList
-              items={dropdownItems}
+              items={items}
               onItemActivate={onItemActivate}
               onGroupToggle={onGroupToggle}
               hasExpandableGroups={expandableGroups}

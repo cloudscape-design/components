@@ -8,30 +8,26 @@ import clsx from 'clsx';
 import { ButtonIconProps, LeftIcon } from '../../button/icon-helper';
 
 interface TriggerLeftProps {
-  loading: boolean;
+  disabled: boolean;
   variant: 'primary' | 'normal';
   onClick: () => void;
   children: React.ReactNode;
 }
 
-export function TriggerLeft({ loading, variant, onClick, children }: TriggerLeftProps) {
-  const loadingIconProps: ButtonIconProps = {
-    loading: true,
-  };
+export function TriggerLeft({ disabled, variant, onClick, children }: TriggerLeftProps) {
   return (
     <button
       type="button"
       className={clsx(
         buttonStyles.button,
         buttonStyles[`variant-${variant}`],
-        styles['main-action'],
+        styles.segment,
         styles[`variant-${variant}`],
-        loading && buttonStyles.disabled
+        disabled && buttonStyles.disabled
       )}
       onClick={onClick}
-      disabled={loading}
+      disabled={disabled}
     >
-      {loading && <LeftIcon {...loadingIconProps} />}
       {children}
     </button>
   );
@@ -46,6 +42,9 @@ interface TriggerRightProps {
 }
 
 export function TriggerRight({ loading, variant, isOpen, onClick, dropdownRef }: TriggerRightProps) {
+  const loadingIconProps: ButtonIconProps = {
+    loading: true,
+  };
   const dropdownIconProps: ButtonIconProps = {
     loading: false,
     iconName: 'caret-down-filled',
@@ -61,7 +60,7 @@ export function TriggerRight({ loading, variant, isOpen, onClick, dropdownRef }:
       className={clsx(
         buttonStyles.button,
         buttonStyles[`variant-${variant}`],
-        styles['more-actions'],
+        styles['dropdown-trigger'],
         styles[`variant-${variant}`],
         loading && buttonStyles.disabled
       )}
@@ -71,7 +70,7 @@ export function TriggerRight({ loading, variant, isOpen, onClick, dropdownRef }:
       aria-label="All actions"
       disabled={loading}
     >
-      <LeftIcon {...dropdownIconProps} />
+      {loading ? <LeftIcon {...loadingIconProps} /> : <LeftIcon {...dropdownIconProps} />}
     </button>
   );
 }

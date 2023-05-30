@@ -100,7 +100,7 @@ export interface ButtonDropdownProps extends BaseComponentProps {
 }
 
 export namespace ButtonDropdownProps {
-  export type Variant = 'normal' | 'primary' | 'icon' | 'split' | 'split-primary';
+  export type Variant = 'normal' | 'primary' | 'icon';
 
   export interface Item {
     id: string;

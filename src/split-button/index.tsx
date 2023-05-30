@@ -12,15 +12,14 @@ export { SplitButtonProps };
 const SplitButton = React.forwardRef(
   (
     {
+      segments,
       items,
       variant = 'normal',
       loading = false,
       loadingText,
-      disabled = false,
       expandableGroups = false,
       expandToViewport = false,
       ariaLabel,
-      children,
       onItemClick,
       onItemFollow,
       ...props
@@ -34,19 +33,17 @@ const SplitButton = React.forwardRef(
         {...baseProps}
         {...baseComponentProps}
         ref={ref}
+        segments={segments}
         items={items}
         variant={variant}
         loading={loading}
         loadingText={loadingText}
-        disabled={disabled}
         expandableGroups={expandableGroups}
         expandToViewport={expandToViewport}
         ariaLabel={ariaLabel}
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
-      >
-        {children}
-      </InternalSplitButton>
+      />
     );
   }
 );
