@@ -146,27 +146,30 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     onClick: isLast ? preventDefault : onClickHandler,
   };
 
+  const dataAttibutes: Record<string, string> = {};
+  if (isLast) {
+    dataAttibutes['data-analytics-context'] = 'breadcrumb';
+  }
+
   return (
-    <>
-      <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
-        {isDisplayed && isCompressed ? (
-          <BreadcrumbItemWithPopover
-            item={item}
-            isLast={isLast}
-            anchorAttributes={anchorAttributes}
-            {...itemAttributes}
-          />
-        ) : (
-          <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
-            <span className={styles.text}>{item.text}</span>
-          </Item>
-        )}
-        {!isLast ? (
-          <span className={styles.icon}>
-            <InternalIcon name="angle-right" />
-          </span>
-        ) : null}
-      </div>
-    </>
+    <div className={clsx(styles.breadcrumb, isLast && styles.last)} {...dataAttibutes}>
+      {isDisplayed && isCompressed ? (
+        <BreadcrumbItemWithPopover
+          item={item}
+          isLast={isLast}
+          anchorAttributes={anchorAttributes}
+          {...itemAttributes}
+        />
+      ) : (
+        <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
+          <span className={styles.text}>{item.text}</span>
+        </Item>
+      )}
+      {!isLast ? (
+        <span className={styles.icon}>
+          <InternalIcon name="angle-right" />
+        </span>
+      ) : null}
+    </div>
   );
 }

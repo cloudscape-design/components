@@ -305,6 +305,68 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     });
   });
 
+  describe('Filtering results', () => {
+    const options = [
+      { label: 'First', value: '1' },
+      { label: 'Second', value: '2' },
+      { label: 'Another', value: '3' },
+    ];
+    test('shows filtering result text after typing', () => {
+      const { wrapper } = renderSelect({
+        options,
+        expandToViewport: true,
+        statusType: 'pending',
+        filteringType: 'auto',
+        noMatch: 'No match',
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount}/${totalCount}`,
+      });
+      wrapper.openDropdown();
+      const statusIndicator = wrapper.findStatusIndicator({ expandToViewport })!;
+      expect(statusIndicator).toBeNull();
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('First');
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('1/3');
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('Hey');
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('No match');
+    });
+
+    test('Error and loading states have advantage over filtering text', () => {
+      const defaultParams: Partial<SelectProps> = {
+        options,
+        expandToViewport: true,
+        errorText: 'Error',
+        filteringType: 'auto',
+        finishedText: 'End of results',
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount}/${totalCount}`,
+        loadingText: 'Loading',
+        noMatch: 'No match',
+      };
+      const { wrapper, rerender } = renderSelect({
+        ...defaultParams,
+        statusType: 'pending',
+      });
+      wrapper.openDropdown();
+
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('First');
+      rerender({
+        ...defaultParams,
+        statusType: 'loading',
+      });
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('Loading');
+      rerender({
+        ...defaultParams,
+        statusType: 'pending',
+      });
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('1/3');
+
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('Another');
+      rerender({
+        ...defaultParams,
+        statusType: 'error',
+      });
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('Error');
+    });
+  });
+
   describe('Disabled state', () => {
     test('enabled by default', () => {
       const { wrapper } = renderSelect();

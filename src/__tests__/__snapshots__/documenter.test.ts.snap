@@ -627,7 +627,9 @@ Conceived to contain notifications (flash messages).
       "name": "notifications",
     },
     Object {
-      "description": "Use this slot to add the [split panel component](/components/split-panel/) to the app layout.",
+      "description": "Use this slot to add the [split panel component](/components/split-panel/) to the app layout.
+Note: If provided, this property should be set to \`null\` or \`undefined\` if a split panel should not be rendered.
+",
       "isDefault": false,
       "name": "splitPanel",
     },
@@ -1496,6 +1498,12 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "(matchesCount: number, totalCount: number) => string",
+    },
+    Object {
       "defaultValue": "'auto'",
       "description": "Determines how filtering is applied to the list of \`options\`:
 * \`auto\` - The component will automatically filter options based on user input.
@@ -2056,8 +2064,9 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "conditional",
     },
     Object {
-      "defaultValue": "\\"linear\\"",
-      "description": "Determines the type of scale for values on the x axis.",
+      "defaultValue": "\\"categorical\\"",
+      "description": "Determines the type of scale for values on the x axis.
+Use \`categorical\` for bar charts.",
       "inlineType": Object {
         "name": "ScaleType",
         "type": "union",
@@ -2596,7 +2605,7 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
       "type": "string",
     },
     Object {
-      "description": " Adds aria-expanded to the button element. Use when the button controls an expandable element.",
+      "description": "Adds aria-expanded to the button element. Use when the button controls an expandable element.",
       "name": "ariaExpanded",
       "optional": true,
       "type": "boolean",
@@ -2651,6 +2660,12 @@ This property only applies when an \`href\` is provided.",
       "name": "formAction",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Sets the button width to be 100% of the parent container width. Button content is centered.",
+      "name": "fullWidth",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Applies button styling to a link. Use this property if you need a link styled as a button (\`variant=link\`).
@@ -3392,6 +3407,14 @@ Default value:
       "type": "string",
     },
     Object {
+      "description": " Use this property to inform screen readers which range of cards is currently displayed.
+ It specifies the index (1-based) of the first card.
+ If the cards list has no pagination, leave this property undefined.",
+      "name": "firstIndex",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -3437,6 +3460,13 @@ The \`cardDefinition\` property handles the display of this data.
       "type": "string",
     },
     Object {
+      "description": "Use this function to announce page changes to screen reader users.
+Requires the properties firstIndex and totalItemsCount to be set correctly.",
+      "name": "renderAriaLive",
+      "optional": true,
+      "type": "(data: CardsProps.LiveAnnouncement) => string",
+    },
+    Object {
       "description": "Specifies the list of selected items.",
       "name": "selectedItems",
       "optional": true,
@@ -3466,6 +3496,14 @@ The \`cardDefinition\` property handles the display of this data.
       "description": "Optionally provide a vertical offset (in pixels) for the sticky header, for example if you
 need to position the sticky header below other fixed position elements on the page.",
       "name": "stickyHeaderVerticalOffset",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Use this property to inform screen readers how many cards there are.
+It specifies the total number of cards.
+If there is an unknown total number of cards, leave this property undefined.",
+      "name": "totalItemsCount",
       "optional": true,
       "type": "number",
     },
@@ -4092,10 +4130,14 @@ Object {
       "cancelable": false,
       "description": "Called when the user confirms a preference change using the confirm button in the modal footer.
 The event \`detail\` contains the following:
-- \`pageSize\` (number) - (Optional) The selected page size value. Available only if you specify the \`pageSizePreference\` property.
-- \`wrapLines\` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the \`wrapLinesPreference\` property.
-- \`visibleContent\` (ReadonlyArray<string>) - (Optional) The list of selected content \`id\`s. Available only if you specify the \`visibleContentPreference\` property.
+- \`contentDensity\` (boolean) - (Optional) The current content density preference value. Available only if you specify the \`contentDensityPreference\` property.
+- \`contentDisplay\` (ReadonlyArray<ContentDisplayItem>) - (Optional) The ordered list of table columns and their visibility. Available only if you specify the \`contentDisplayPreference\` property.
 - \`custom\` (CustomPreferenceType) - (Optional) The selected value for your custom preference.
+- \`pageSize\` (number) - (Optional) The selected page size value. Available only if you specify the \`pageSizePreference\` property.
+- \`stickyColumns\` (CollectionPreferencesProps.StickyColumns) - (Optional) The current sticky columns preference value. Available only if you specify the \`stickyColumnsPreference\` property.
+- \`stripedRows\` (boolean) - (Optional) The current striped rows preference value. Available only if you specify the \`stripedRowsPreference\` property.
+- \`visibleContent\` (ReadonlyArray<string>) - (Optional) The list of selected content \`id\`s. Available only if you specify the \`visibleContentPreference\` property.
+- \`wrapLines\` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the \`wrapLinesPreference\` property.
 
 The values for all configured preferences are present even if the user didn't change their values.
 ",
@@ -8050,7 +8092,8 @@ When controlling this directly, make sure to update the value based on filtering
     },
     Object {
       "defaultValue": "\\"linear\\"",
-      "description": "Determines the type of scale for values on the x axis.",
+      "description": "Determines the type of scale for values on the x axis.
+Use \`categorical\` for charts with bars.",
       "inlineType": Object {
         "name": "ScaleType",
         "type": "union",
@@ -8432,6 +8475,12 @@ in a slight, visible lag when scrolling complex pages.",
       "name": "filteringPlaceholder",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "(matchesCount: number, totalCount: number) => string",
     },
     Object {
       "defaultValue": "'none'",
@@ -10891,6 +10940,12 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "string",
     },
     Object {
+      "description": "Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.",
+      "name": "filteringResultsText",
+      "optional": true,
+      "type": "(matchesCount: number, totalCount: number) => string",
+    },
+    Object {
       "defaultValue": "'none'",
       "description": "Determines how filtering is applied to the list of \`options\`:
 * \`auto\` - The component will automatically filter options based on user input.
@@ -12215,6 +12270,8 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
       "defaultValue": "'container'",
       "description": "Specify a table variant with one of the following:
 * \`container\` - Use this variant to have the table displayed within a container.
+* \`borderless\` - Use this variant when the table should have no outer borders or shadow
+                 (such as in a dashboard item container).
 * \`embedded\` - Use this variant within a parent container (such as a modal, expandable
                section, container or split panel).
 * \`stacked\` - Use this variant adjacent to other stacked containers (such as a container,
@@ -12227,6 +12284,7 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
         "values": Array [
           "container",
           "embedded",
+          "borderless",
           "stacked",
           "full-page",
         ],
@@ -13301,6 +13359,12 @@ is provided by its parent form field component.
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<TilesProps.TilesDefinition>",
+    },
+    Object {
+      "description": "Specify a custom name for the native radio buttons. If not provided, the tiles component generates a random name.",
+      "name": "name",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Specifies the value of the selected tile.

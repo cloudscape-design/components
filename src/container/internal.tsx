@@ -14,6 +14,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -71,6 +72,7 @@ export default function InternalContainer({
   );
   const { setHasStickyBackground } = useAppLayoutContext();
   const isRefresh = useVisualRefresh();
+  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
@@ -93,7 +95,7 @@ export default function InternalContainer({
   };
 
   const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
-  const mergedRef = useMergeRefs(rootRef, __internalRootRef, breakpointRef);
+  const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef, breakpointRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
   const headerIdProp = __headerId ? { id: __headerId } : {};
 
@@ -179,6 +181,7 @@ export default function InternalContainer({
   return (
     <div
       {...baseProps}
+      {...funnelSubStepProps}
       className={clsx(
         baseProps.className,
         styles.root,

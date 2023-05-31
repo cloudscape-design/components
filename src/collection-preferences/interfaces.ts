@@ -169,10 +169,14 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Called when the user confirms a preference change using the confirm button in the modal footer.
    *
    * The event `detail` contains the following:
-   * - `pageSize` (number) - (Optional) The selected page size value. Available only if you specify the `pageSizePreference` property.
-   * - `wrapLines` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the `wrapLinesPreference` property.
-   * - `visibleContent` (ReadonlyArray<string>) - (Optional) The list of selected content `id`s. Available only if you specify the `visibleContentPreference` property.
+   * - `contentDensity` (boolean) - (Optional) The current content density preference value. Available only if you specify the `contentDensityPreference` property.
+   * - `contentDisplay` (ReadonlyArray<ContentDisplayItem>) - (Optional) The ordered list of table columns and their visibility. Available only if you specify the `contentDisplayPreference` property.
    * - `custom` (CustomPreferenceType) - (Optional) The selected value for your custom preference.
+   * - `pageSize` (number) - (Optional) The selected page size value. Available only if you specify the `pageSizePreference` property.
+   * - `stickyColumns` (CollectionPreferencesProps.StickyColumns) - (Optional) The current sticky columns preference value. Available only if you specify the `stickyColumnsPreference` property.
+   * - `stripedRows` (boolean) - (Optional) The current striped rows preference value. Available only if you specify the `stripedRowsPreference` property.
+   * - `visibleContent` (ReadonlyArray<string>) - (Optional) The list of selected content `id`s. Available only if you specify the `visibleContentPreference` property.
+   * - `wrapLines` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the `wrapLinesPreference` property.
    *
    * The values for all configured preferences are present even if the user didn't change their values.
    */

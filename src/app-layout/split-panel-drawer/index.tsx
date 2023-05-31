@@ -14,7 +14,11 @@ interface SideSplitPanelDrawer {
 
 export function SideSplitPanelDrawer({ topOffset, bottomOffset, width, displayed, children }: SideSplitPanelDrawer) {
   return (
-    <div className={clsx(displayed && styles['drawer-displayed'])} style={{ width }}>
+    <div
+      className={clsx(displayed && styles['drawer-displayed'])}
+      style={{ width }}
+      data-testid="side-split-panel-drawer"
+    >
       <div className={styles['drawer-content']} style={{ width: width, top: topOffset, bottom: bottomOffset }}>
         {children}
       </div>

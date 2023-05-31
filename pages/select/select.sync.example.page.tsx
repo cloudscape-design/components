@@ -65,6 +65,7 @@ export default function SelectPage() {
             filteringType="auto"
             filteringPlaceholder="Find equipment"
             filteringAriaLabel="Filtering aria label"
+            filteringResultsText={(matchesCount, totalCount) => `${matchesCount} out of ${totalCount} items`}
             options={options}
             name="choose_equipment"
             placeholder={'Choose equipment'}

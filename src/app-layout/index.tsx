@@ -689,7 +689,7 @@ const OldAppLayout = React.forwardRef(
                 topOffset={headerHeight}
                 bottomOffset={footerHeight}
                 displayed={splitPanelDisplayed}
-                width={splitPanelOpen ? splitPanelSize : undefined}
+                width={splitPanelOpen && splitPanel ? splitPanelSize : undefined}
               >
                 {splitPanelWrapped}
               </SideSplitPanelDrawer>
@@ -701,9 +701,7 @@ const OldAppLayout = React.forwardRef(
                   contentClassName={
                     selectedDrawer?.id === 'tools' ? testutilStyles.tools : testutilStyles['active-drawer']
                   }
-                  toggleClassName={
-                    selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : testutilStyles['drawers-trigger']
-                  }
+                  toggleClassName={testutilStyles['tools-toggle']}
                   closeClassName={
                     selectedDrawer?.id === 'tools'
                       ? testutilStyles['tools-close']

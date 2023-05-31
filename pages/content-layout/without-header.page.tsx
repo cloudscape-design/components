@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AppLayout from '~components/app-layout';
 import ContentLayout from '~components/content-layout';
 import Container from '~components/container';
@@ -10,12 +10,15 @@ import Header from '~components/header';
 import { Breadcrumbs } from '../app-layout/utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 import appLayoutLabels from '../app-layout/utils/labels';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type DemoContext = React.Context<
+  AppContextType<{ hasBreadcrumbs: boolean; hasNotifications: boolean; disableOverlap: boolean }>
+>;
 
 export default function () {
-  const [hasBreadcrumbs, setHasBreadcrumbs] = useState(false);
-  const [hasNotifications, setHasNotifications] = useState(false);
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [stickyNotifications, setStickyNotifications] = useState(true);
-  const [disableOverlap, setDisableOverlap] = useState(false);
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -23,21 +26,23 @@ export default function () {
         ariaLabels={appLayoutLabels}
         stickyNotifications={stickyNotifications}
         notifications={
-          hasNotifications && (
-            <Flashbar
-              items={[
-                {
-                  type: 'success',
-                  header: 'Success message',
-                  statusIconAriaLabel: 'success',
-                },
-              ]}
-            />
-          )
+          <Flashbar
+            items={
+              urlParams.hasNotifications
+                ? [
+                    {
+                      type: 'success',
+                      header: 'Success message',
+                      statusIconAriaLabel: 'success',
+                    },
+                  ]
+                : []
+            }
+          />
         }
-        breadcrumbs={hasBreadcrumbs && <Breadcrumbs />}
+        breadcrumbs={urlParams.hasBreadcrumbs && <Breadcrumbs />}
         content={
-          <ContentLayout disableOverlap={disableOverlap}>
+          <ContentLayout disableOverlap={urlParams.disableOverlap}>
             <Container
               header={
                 <Header variant="h2" headingTagOverride="h1">
@@ -46,16 +51,14 @@ export default function () {
               }
             >
               <Toggle
-                checked={hasBreadcrumbs}
-                onChange={() => setHasBreadcrumbs(!hasBreadcrumbs)}
-                data-id="toggle-breadcrumbs"
+                checked={urlParams.hasBreadcrumbs}
+                onChange={() => setUrlParams({ hasBreadcrumbs: !urlParams.hasBreadcrumbs })}
               >
                 Has breadcrumbs
               </Toggle>
               <Toggle
-                checked={hasNotifications}
-                onChange={() => setHasNotifications(!hasNotifications)}
-                data-id="toggle-notifications"
+                checked={urlParams.hasNotifications}
+                onChange={() => setUrlParams({ hasNotifications: !urlParams.hasNotifications })}
               >
                 Has notifications
               </Toggle>
@@ -63,13 +66,12 @@ export default function () {
                 Sticky notifications
               </Toggle>
               <Toggle
-                checked={disableOverlap}
-                onChange={() => setDisableOverlap(!disableOverlap)}
-                data-id="toggle-overlap"
+                checked={urlParams.disableOverlap}
+                onChange={() => setUrlParams({ disableOverlap: !urlParams.disableOverlap })}
               >
                 Disable overlap
               </Toggle>
-              <div style={{ height: 2000 }}></div>
+              <div style={{ height: 400 }}></div>
             </Container>
           </ContentLayout>
         }
