@@ -6,6 +6,7 @@ import Link, { LinkProps } from '../../../lib/components/link';
 import styles from '../../../lib/components/link/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 import { AnalyticsFunnel } from '../../../lib/components/internal/analytics/components/analytics-funnel';
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
@@ -31,6 +32,20 @@ describe('Link component', () => {
   test('externalIconAriaLabel is applied', () => {
     const wrapper = renderLink({ externalIconAriaLabel: 'External link', external: true });
     expect(createWrapper(wrapper.getElement()).find('[aria-label="External link"]')).toBeTruthy();
+  });
+
+  describe('i18n', () => {
+    test('supports providing externalIconAriaLabel through i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ link: { externalIconAriaLabel: 'Custom aria label' } }}>
+          <Link href="#" external={true}>
+            Link
+          </Link>
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findLink()!;
+      expect(createWrapper(wrapper.getElement()).find('[aria-label="Custom aria label"]')).toBeTruthy();
+    });
   });
 
   describe('"info" variant', () => {
