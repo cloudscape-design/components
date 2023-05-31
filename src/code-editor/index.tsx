@@ -39,6 +39,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { CodeEditorProps };
 
@@ -62,6 +63,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     controlledProp: 'editorContentHeight',
   });
   const baseProps = getBaseProps(rest);
+  const i18n = useInternalI18n('code-editor');
 
   const [editor, setEditor] = useState<Ace.Editor>();
   const mode = useCurrentMode(__internalRootRef);
@@ -245,13 +247,16 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     >
       {props.loading && (
         <LoadingScreen>
-          <LiveRegion visible={true}>{i18nStrings.loadingState}</LiveRegion>
+          <LiveRegion visible={true}>{i18n('i18nStrings.loadingState', i18nStrings?.loadingState)}</LiveRegion>
         </LoadingScreen>
       )}
 
       {!ace && !props.loading && (
-        <ErrorScreen recoveryText={i18nStrings.errorStateRecovery} onRecoveryClick={props.onRecoveryClick}>
-          {i18nStrings.errorState}
+        <ErrorScreen
+          recoveryText={i18n('i18nStrings.errorStateRecovery', i18nStrings?.errorStateRecovery)}
+          onRecoveryClick={props.onRecoveryClick}
+        >
+          {i18n('i18nStrings.errorState', i18nStrings?.errorState)}
         </ErrorScreen>
       )}
 
@@ -272,13 +277,20 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               onKeyDown={onEditorKeydown}
               tabIndex={0}
               role="group"
-              aria-label={i18nStrings.editorGroupAriaLabel}
+              aria-label={i18n('i18nStrings.editorGroupAriaLabel', i18nStrings?.editorGroupAriaLabel)}
             />
           </ResizableBox>
-          <div role="group" aria-label={i18nStrings.statusBarGroupAriaLabel}>
+          <div
+            role="group"
+            aria-label={i18n('i18nStrings.statusBarGroupAriaLabel', i18nStrings?.statusBarGroupAriaLabel)}
+          >
             <StatusBar
               languageLabel={languageLabel}
-              cursorPosition={i18nStrings.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1)}
+              cursorPosition={i18n(
+                'i18nStrings.cursorPosition',
+                i18nStrings?.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1),
+                format => format({ row: cursorPosition.row + 1, column: cursorPosition.column + 1 })
+              )}
               errorCount={errorCount}
               warningCount={warningCount}
               paneStatus={paneStatus}
@@ -302,8 +314,12 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               onAnnotationClick={onAnnotationClick}
               onAnnotationClear={onAnnotationClear}
               onClose={onPaneClose}
-              cursorPositionLabel={i18nStrings.cursorPosition}
-              closeButtonAriaLabel={i18nStrings.paneCloseButtonAriaLabel}
+              cursorPositionLabel={i18n(
+                'i18nStrings.cursorPosition',
+                i18nStrings?.cursorPosition,
+                format => (row, column) => format({ row, column })
+              )}
+              closeButtonAriaLabel={i18n('i18nStrings.paneCloseButtonAriaLabel', i18nStrings?.paneCloseButtonAriaLabel)}
             />
           </div>
           {isPreferencesModalVisible && (
@@ -314,16 +330,16 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               preferences={props.preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{
-                header: i18nStrings.preferencesModalHeader,
-                cancel: i18nStrings.preferencesModalCancel,
-                confirm: i18nStrings.preferencesModalConfirm,
-                wrapLines: i18nStrings.preferencesModalWrapLines,
-                theme: i18nStrings.preferencesModalTheme,
-                lightThemes: i18nStrings.preferencesModalLightThemes,
-                darkThemes: i18nStrings.preferencesModalDarkThemes,
-                themeFilteringAriaLabel: i18nStrings.preferencesModalThemeFilteringAriaLabel,
-                themeFilteringClearAriaLabel: i18nStrings.preferencesModalThemeFilteringClearAriaLabel,
-                themeFilteringPlaceholder: i18nStrings.preferencesModalThemeFilteringPlaceholder,
+                header: i18n('i18nStrings.preferencesModalHeader', i18nStrings?.preferencesModalHeader),
+                cancel: i18n('i18nStrings.preferencesModalCancel', i18nStrings?.preferencesModalCancel),
+                confirm: i18n('i18nStrings.preferencesModalConfirm', i18nStrings?.preferencesModalConfirm),
+                wrapLines: i18n('i18nStrings.preferencesModalWrapLines', i18nStrings?.preferencesModalWrapLines),
+                theme: i18n('i18nStrings.preferencesModalTheme', i18nStrings?.preferencesModalTheme),
+                lightThemes: i18n('i18nStrings.preferencesModalLightThemes', i18nStrings?.preferencesModalLightThemes),
+                darkThemes: i18n('i18nStrings.preferencesModalDarkThemes', i18nStrings?.preferencesModalDarkThemes),
+                themeFilteringAriaLabel: i18nStrings?.preferencesModalThemeFilteringAriaLabel,
+                themeFilteringClearAriaLabel: i18nStrings?.preferencesModalThemeFilteringClearAriaLabel,
+                themeFilteringPlaceholder: i18nStrings?.preferencesModalThemeFilteringPlaceholder,
               }}
             />
           )}

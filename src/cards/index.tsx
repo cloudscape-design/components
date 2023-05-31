@@ -23,6 +23,7 @@ import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { supportsStickyPosition } from '../internal/utils/dom';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { CardsProps };
 
@@ -72,6 +73,7 @@ const Cards = React.forwardRef(function <T = any>(
   const mergedRef = useMergeRefs(measureRef, refObject, __internalRootRef);
   const getMouseDownTarget = useMouseDownTarget();
 
+  const i18n = useInternalI18n('cards');
   const { isItemSelected, getItemSelectionProps, updateShiftToggle } = useSelection({
     items,
     trackBy,
@@ -79,7 +81,10 @@ const Cards = React.forwardRef(function <T = any>(
     selectionType,
     isItemDisabled,
     onSelectionChange,
-    ariaLabels,
+    ariaLabels: {
+      itemSelectionLabel: ariaLabels?.itemSelectionLabel,
+      selectionGroupLabel: i18n('ariaLabels.selectionGroupLabel', ariaLabels?.selectionGroupLabel),
+    },
   });
   const hasToolsHeader = header || filter || pagination || preferences;
   const headerRef = useRef<HTMLDivElement>(null);
