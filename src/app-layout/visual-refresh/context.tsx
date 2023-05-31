@@ -59,6 +59,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   layoutElement: React.Ref<HTMLElement>;
   layoutWidth: number;
   loseToolsFocus: () => void;
+  loseDrawersFocus: () => void;
   mainElement: React.Ref<HTMLDivElement>;
   mainOffsetLeft: number;
   navigationRefs: FocusControlRefs;
@@ -445,7 +446,12 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setDrawerSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
     }, [getDrawerItemSizes]);
 
-    const drawersSize = activeDrawerId && drawerSizes[activeDrawerId] ? drawerSizes[activeDrawerId] : toolsWidth;
+    const drawersSize =
+      !activeDrawerId && !isToolsOpen
+        ? 0
+        : activeDrawerId && drawerSizes[activeDrawerId]
+        ? drawerSizes[activeDrawerId]
+        : toolsWidth;
 
     const drawersResize = (changeDetail: any) => {
       fireNonCancelableEvent(drawers.onResize, changeDetail);
@@ -456,9 +462,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setDrawerSizes({ ...drawerSizes, [changeDetail.id]: changeDetail.size });
     };
 
-    console.log(drawerSizes);
-
-    const [drawersMaxWidth, setDrawersMaxWidth] = useState(splitPanelMinWidth);
+    const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
     const activeDrawer = drawers.items.find((drawer: any) => drawer.id === activeDrawerId);
 
@@ -467,7 +471,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawer?.resizable], isToolsOpen || activeDrawerId !== undefined, true);
+    } = useDrawerFocusControl([activeDrawer?.resizable], activeDrawerId, true);
 
     const handleDrawersClick = useCallback(
       function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
@@ -476,9 +480,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setActiveDrawerId(newActiveDrawerId);
         !skipFocusControl && focusDrawersButtons();
         fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
-        setDrawerLastInteraction({ type: 'open' });
+        setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
       },
-      [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId]
+      [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId, setDrawerLastInteraction]
     );
 
     const drawersTriggerCount =
@@ -645,6 +649,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           layoutElement,
           layoutWidth,
           loseToolsFocus,
+          loseDrawersFocus,
           mainElement,
           mainOffsetLeft,
           maxContentWidth,

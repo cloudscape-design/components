@@ -114,6 +114,7 @@ function ActiveDrawer() {
     drawersResize,
     drawersSize,
     drawersMaxWidth,
+    loseDrawersFocus,
   } = useAppLayoutInternals();
 
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
@@ -126,7 +127,7 @@ function ActiveDrawer() {
   const isHidden = !activeDrawerId && !isToolsOpen;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
 
-  const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 280 ? activeDrawer?.defaultSize : 280;
+  const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 290 ? activeDrawer?.defaultSize : 290;
   const [relativeSize, setRelativeSize] = useState(0);
 
   useEffect(() => {
@@ -134,10 +135,10 @@ function ActiveDrawer() {
     // wait one frame to allow app-layout to complete its calculations
     const handle = requestAnimationFrame(() => {
       const maxSize = drawersMaxWidth;
-      setRelativeSize((drawersSize / maxSize) * 100);
+      setRelativeSize(((drawersSize - MIN_WIDTH) / (maxSize - MIN_WIDTH)) * 100);
     });
     return () => cancelAnimationFrame(handle);
-  }, [drawersSize, drawersMaxWidth]);
+  }, [drawersSize, drawersMaxWidth, MIN_WIDTH]);
 
   const setSidePanelWidth = (width: number) => {
     const maxWidth = drawersMaxWidth;
@@ -196,10 +197,13 @@ function ActiveDrawer() {
         width: drawersSize,
       }}
       ref={drawerRefObject}
+      onBlur={e => {
+        if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+          loseDrawersFocus();
+        }
+      }}
     >
-      {!isMobile && activeDrawer?.resizable && (
-        <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
-      )}
+      {!isMobile && activeDrawer?.resizable && <div className={styles['drawer-slider']}>{resizeHandle}</div>}
       <div className={clsx(styles['drawer-close-button'])}>
         <InternalButton
           ariaLabel={computedAriaLabels.closeButton}
