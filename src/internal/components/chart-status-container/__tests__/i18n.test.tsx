@@ -37,6 +37,5 @@ it('does not use recoveryText from i18n provider if onRecoveryClick is not provi
       <ChartStatusContainer statusType="error" />
     </TestI18nProvider>
   );
-  expect(wrapper.getElement()).toHaveTextContent('Custom error Custom recovery');
-  expect(wrapper.find('a')!.getElement()).toHaveTextContent('Custom recovery');
+  expect(wrapper.getElement()).toHaveTextContent('Custom error');
 });

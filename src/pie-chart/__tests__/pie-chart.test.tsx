@@ -333,7 +333,9 @@ describe('States', () => {
   });
 
   test('error state is shown when error occurred', () => {
-    const { wrapper } = renderPieChart(<PieChart {...stateProps} data={[]} statusType="error" />);
+    const { wrapper } = renderPieChart(
+      <PieChart {...stateProps} data={[]} statusType="error" onRecoveryClick={() => {}} />
+    );
     expect(wrapper.findStatusContainer()?.getElement()).toHaveTextContent('Error');
     expect(wrapper.findStatusContainer()?.getElement()).toHaveTextContent('Recover');
   });

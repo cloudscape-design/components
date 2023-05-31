@@ -77,6 +77,7 @@ test('error and recovery texts are assigned', () => {
       loadingText="Loading..."
       errorText="Ooops!"
       recoveryText="Try again"
+      onRecoveryClick={() => {}}
     />
   );
   expect(wrapper.findStatusContainer()!.getElement()).toHaveTextContent('Ooops! Try again');
