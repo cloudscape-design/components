@@ -68,7 +68,6 @@ export interface LinkProps extends BaseComponentProps {
 
   /**
    * Adds an aria-label to the external icon.
-   * @i18n
    */
   externalIconAriaLabel?: string;
 

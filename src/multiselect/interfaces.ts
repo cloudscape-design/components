@@ -26,7 +26,6 @@ export interface MultiselectProps extends BaseSelectProps {
   hideTokens?: boolean;
   /**
    * Specifies an `aria-label` for the token deselection button.
-   * @i18n
    */
   deselectAriaLabel?: MultiselectProps.DeselectAriaLabelFunction;
   /**
