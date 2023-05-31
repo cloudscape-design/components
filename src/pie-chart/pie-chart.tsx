@@ -21,6 +21,7 @@ import Segments from './segments';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -128,7 +129,8 @@ export default <T extends PieChartProps.Datum>({
     return null;
   }, [pieData, highlightedSegment]);
 
-  const detailFunction = detailPopoverContent || defaultDetails(i18nStrings);
+  const i18n = useInternalI18n('pie-chart');
+  const detailFunction = detailPopoverContent || defaultDetails(i18n, i18nStrings);
   const details = tooltipData ? detailFunction(tooltipData.datum, dataSum) : [];
   const tooltipContent = tooltipData && <SeriesDetails details={details} />;
 
