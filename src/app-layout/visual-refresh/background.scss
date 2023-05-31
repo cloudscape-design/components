@@ -25,7 +25,7 @@ div.background {
     z-index: 799;
 
     &:not(.has-sticky-notifications) {
-      height: calc(#{awsui.$space-s} + var(#{custom-props.$overlapHeight}));
+      height: calc(#{awsui.$space-scaled-s} + var(#{custom-props.$overlapHeight}));
     }
 
     &.has-sticky-notifications {
