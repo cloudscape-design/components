@@ -126,3 +126,14 @@ describe('Chart legend', () => {
     expect(legend.wrapper.find('[role="button"]')!.getElement().getAttribute('aria-pressed')).toBe('false');
   });
 });
+
+describe('i18n', () => {
+  test('ariaRole', () => {
+    const legend = renderChartLegend();
+
+    expect(legend.findAllLabels()).toEqual(series.map(s => s.label));
+    expect(legend.findHighlightedLabels()).toEqual([series[1].label]);
+    expect(legend.findDimmedLabels()).toEqual([series[0].label, series[2].label]);
+    expect(legend.findFocusedLabel()).toEqual(undefined);
+  });
+});

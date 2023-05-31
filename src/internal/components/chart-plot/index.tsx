@@ -11,6 +11,7 @@ import LiveRegion from '../live-region/index';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
 import { Offset } from '../interfaces';
+import { useInternalI18n } from '../../i18n/context.js';
 
 const DEFAULT_PLOT_FOCUS_OFFSET = 3;
 const DEFAULT_ELEMENT_FOCUS_OFFSET = 3;
@@ -92,6 +93,7 @@ function ChartPlot(
   }: ChartPlotProps,
   ref: React.Ref<ChartPlotRef>
 ) {
+  const i18n = useInternalI18n('[charts]');
   const svgRef = useRef<SVGSVGElement>(null);
   const applicationRef = useRef<ApplicationRef>(null);
   const plotClickedRef = useRef(false);
@@ -156,7 +158,7 @@ function ChartPlot(
         'aria-label': ariaLabel,
         'aria-labelledby': ariaLabelledby,
         'aria-describedby': ariaDescriptionId,
-        'aria-roledescription': ariaRoleDescription,
+        'aria-roledescription': i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription),
       }
     : {};
 
