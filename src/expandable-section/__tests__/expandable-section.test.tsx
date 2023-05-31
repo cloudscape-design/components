@@ -4,7 +4,19 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
 import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
+import Button from '../../../lib/components/button';
+import Header from '../../../lib/components/header';
+import Link from '../../../lib/components/link';
+import { warnOnce } from '../../../lib/components/internal/logging';
 import '../../__a11y__/to-validate-a11y';
+
+jest.mock('../../../lib/components/internal/logging', () => ({
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 function renderExpandableSection(props: ExpandableSectionProps = {}): ExpandableSectionWrapper {
   const { container } = render(<ExpandableSection {...props} />);
@@ -29,6 +41,7 @@ describe('Expandable Section', () => {
       expect(wrapper.findAll('button').length).toBe(0);
     });
   });
+
   describe('slots', () => {
     test('populates header slot correctly', () => {
       const wrapper = renderExpandableSection({
@@ -36,6 +49,26 @@ describe('Expandable Section', () => {
       });
       const header = wrapper.findHeader().getElement();
       expect(header).toHaveTextContent('Test Header');
+    });
+    test('populates info links slot correctly for "container" variant', () => {
+      const wrapper = renderExpandableSection({
+        headerText: 'Test Header',
+        variant: 'container',
+        headerInfo: <Link>Info</Link>,
+      });
+      const infoLink = wrapper.findHeader().findLink();
+      expect(infoLink).toBeTruthy();
+      expect(infoLink!.getElement()).toHaveTextContent('Info');
+    });
+    test('populates action buttons slot correctly for "container" variant', () => {
+      const wrapper = renderExpandableSection({
+        headerText: 'Test Header',
+        variant: 'container',
+        headerActions: <Button>Action</Button>,
+      });
+      const button = wrapper.findHeader().findButton();
+      expect(button).toBeTruthy();
+      expect(button!.getElement()).toHaveTextContent('Action');
     });
     test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation'])(
       'populates content slot correctly for "%s" variant',
@@ -58,6 +91,7 @@ describe('Expandable Section', () => {
       expect(expandedContent).toHaveTextContent('Example content');
     });
   });
+
   describe('expanded property', () => {
     test('shows content region when true', () => {
       const wrapper = renderExpandableSection({
@@ -88,6 +122,7 @@ describe('Expandable Section', () => {
       expect(icon.tagName).toBe('BUTTON');
     });
   });
+
   describe('defaultExpanded', () => {
     test('shows content region when true', () => {
       const wrapper = renderExpandableSection({
@@ -99,6 +134,7 @@ describe('Expandable Section', () => {
       expect(expandedContent).toHaveTextContent('Example content');
     });
   });
+
   describe('a11y', () => {
     test('content region is labelled by header', () => {
       const wrapper = renderExpandableSection();
@@ -130,7 +166,73 @@ describe('Expandable Section', () => {
       expect(content).toHaveAttribute('aria-label', 'ARIA Label');
     });
   });
+
+  describe('dev warnings', () => {
+    const componentName = 'ExpandableSection';
+    const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
+
+    test('logs warning for deprecated header prop', () => {
+      render(<ExpandableSection variant="container" header={<Header />} />);
+      expect(warnOnce).toHaveBeenCalledTimes(1);
+      expect(warnOnce).toHaveBeenCalledWith(
+        componentName,
+        'Use `headerText` instead of `header` to provide the button within the heading for a11y.'
+      );
+    });
+
+    describe('logs warning for non supported configurations', () => {
+      const testWarnings = (props: ExpandableSectionProps) => {
+        render(<ExpandableSection {...props} />);
+        expect(warnOnce).toHaveBeenCalledTimes(1);
+        expect(warnOnce).toHaveBeenCalledWith(
+          componentName,
+          'The `headerCounter`, `headerDescription`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+        );
+      };
+
+      for (const variant of nonContainerVariants) {
+        describe(`${variant} variant`, () => {
+          test('headerCounter', () => {
+            testWarnings({ variant, headerCounter: '(2)' });
+          });
+          test('headerCounter', () => {
+            testWarnings({ variant, headerDescription: 'Description' });
+          });
+          test('headerInfo', () => {
+            testWarnings({ variant, headerInfo: <Link>Info</Link> });
+          });
+          test('headerActions', () => {
+            testWarnings({ variant, headerActions: <Button>Action</Button> });
+          });
+        });
+      }
+    });
+
+    describe('does not log warning for supported configurations', () => {
+      const testWarnings = (props: ExpandableSectionProps) => {
+        render(<ExpandableSection {...props} />);
+        expect(warnOnce).not.toHaveBeenCalled();
+      };
+
+      for (const variant of nonContainerVariants) {
+        test(`${variant} variant`, () => {
+          testWarnings({ variant });
+        });
+      }
+
+      test('container variant', () => {
+        testWarnings({
+          variant: 'container',
+          headerCounter: '(2)',
+          headerDescription: 'Description',
+          headerInfo: <Link>Info</Link>,
+          headerActions: <Button>Action</Button>,
+        });
+      });
+    });
+  });
 });
+
 describe('headingTagOverride', () => {
   test('container variant tag defaults to h2', () => {
     const wrapper = renderExpandableSection({
@@ -168,6 +270,7 @@ describe('headingTagOverride', () => {
     });
   }
 });
+
 describe('Variant container with headerText', () => {
   test('validate a11y for container with headerText', async () => {
     const { container } = render(

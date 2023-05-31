@@ -84,4 +84,14 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    * The event `detail` contains the current value of the `expanded` property.
    */
   onChange?: NonCancelableEventHandler<ExpandableSectionProps.ChangeDetail>;
+
+  /**
+   * Area next to the heading to display an Info link. Use with container variant.
+   */
+  headerInfo?: React.ReactNode;
+
+  /**
+   * Actions for the header. Use with container variant.
+   */
+  headerActions?: React.ReactNode;
 }
