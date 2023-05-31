@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CartesianChartProps } from '../../internal/components/cartesian-chart/interfaces';
 import { ChartSeriesDetailItem } from '../../internal/components/chart-series-details';
+import { useInternalI18n } from '../../internal/i18n/context';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
 import { useSelector } from '../model/async-store';
@@ -31,6 +32,7 @@ export default function useHighlightDetails<T extends AreaChartProps.DataTypes>(
   detailTotalFormatter?: CartesianChartProps.TickFormatter<number>;
   detailTotalLabel?: string;
 }): null | HighlightDetails {
+  const i18n = useInternalI18n('area-chart');
   const hX = useSelector(model.interactions, state => state.highlightedX);
   const hPoint = useSelector(model.interactions, state => state.highlightedPoint);
   const isPopoverPinned = useSelector(model.interactions, state => state.isPopoverPinned);
@@ -53,7 +55,7 @@ export default function useHighlightDetails<T extends AreaChartProps.DataTypes>(
   });
   const totalDetails = [
     {
-      key: detailTotalLabel || '',
+      key: i18n('i18nStrings.detailTotalLabel', detailTotalLabel) || '',
       value: detailTotalFormatter
         ? detailTotalFormatter(detailsTotal)
         : yTickFormatter

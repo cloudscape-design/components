@@ -8,6 +8,7 @@ import '../../__a11y__/to-validate-a11y';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 class PopoverInternalWrapper extends PopoverWrapper {
   findBody({ renderWithPortal } = { renderWithPortal: false }): ElementWrapper | null {
@@ -188,6 +189,19 @@ describe('Keyboard interaction', () => {
     wrapper.findTrigger().click();
     wrapper.findTrigger().keydown(KeyCode.escape);
     expect(wrapper.findBody()).toBeNull();
+  });
+});
+
+describe('i18n', () => {
+  it('uses dismissAriaLabel from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider messages={{ popover: { dismissAriaLabel: 'Custom dismiss' } }}>
+        <Popover content="Content">Trigger</Popover>
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findPopover()!;
+    wrapper.findTrigger().click();
+    expect(wrapper.findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'Custom dismiss');
   });
 });
 
