@@ -8,7 +8,7 @@ import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../internal/utils/browser-scrollbar-size';
 import { supportsStickyPosition, getContainingBlock } from '../internal/utils/dom';
 
-const updatePosition = (
+export const updatePosition = (
   tableEl: HTMLElement | null,
   wrapperEl: HTMLElement | null,
   scrollbarEl: HTMLElement | null,
