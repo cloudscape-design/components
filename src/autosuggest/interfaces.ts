@@ -75,7 +75,7 @@ export interface AutosuggestProps
   /**
    * Specifies a function that generates the custom value indicator (for example, `Use "${value}"`).
    */
-  enteredTextLabel: AutosuggestProps.EnteredTextLabel;
+  enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
 
   /**
    * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.

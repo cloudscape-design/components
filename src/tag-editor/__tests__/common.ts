@@ -5,7 +5,7 @@ import { TagEditorProps } from '../../../lib/components/tag-editor';
 export const MAX_KEY_LENGTH = 128;
 export const MAX_VALUE_LENGTH = 256;
 
-export const i18nStrings: TagEditorProps.I18nStrings = {
+export const i18nStrings: Required<TagEditorProps.I18nStrings> = {
   keyPlaceholder: 'Enter key',
   valuePlaceholder: 'Enter value',
   addButton: 'Add new tag',
@@ -41,4 +41,6 @@ export const i18nStrings: TagEditorProps.I18nStrings = {
   tagLimitExceeded: tagLimit => `You have exceeded the limit of ${tagLimit} tag(s).`,
   enteredKeyLabel: (text: string) => `Use ${text}`,
   enteredValueLabel: (text: string) => `Use ${text}`,
+  itemRemovedAriaLive: 'An item was removed.',
+  removeButtonAriaLabel: tag => `Remove ${tag.key}`,
 };
