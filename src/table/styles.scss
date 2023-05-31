@@ -66,6 +66,8 @@
   padding-top: awsui.$space-table-content-top;
   padding-bottom: awsui.$space-table-content-bottom;
   overflow-x: auto;
+
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
   &.variant-stacked,
   &.variant-container {
     & > .table {
@@ -86,6 +88,9 @@
   &:not(.has-header) {
     border-top-right-radius: awsui.$border-radius-container;
     border-top-left-radius: awsui.$border-radius-container;
+  }
+  &::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Safari and Chrome */
   }
 
   @include focus-visible.when-visible {
@@ -146,11 +151,10 @@ filter search icon.
 
 .sticky-scrollbar {
   height: 15px;
-  position: fixed;
+  position: sticky;
   display: none;
   overflow-x: auto;
   overflow-y: hidden;
-  margin-top: -15px;
   bottom: 0;
   width: 100%;
 
@@ -159,6 +163,11 @@ filter search icon.
   }
   &-visible {
     display: block;
+  }
+  &-native-invisible {
+    // Native scrollbar does not take space when it is not always invisible
+    // For example it is set as "show when scrolling"
+    margin-top: -15px;
   }
 }
 
