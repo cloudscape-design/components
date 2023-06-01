@@ -2479,7 +2479,6 @@ without pressing modifier keys (that is, CTRL, ALT, SHIFT, META).",
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"Show path\\"",
       "description": "Provides an \`aria-label\` to the ellipsis button that screen readers can read (for accessibility).",
       "name": "expandAriaLabel",
       "optional": true,
@@ -12422,12 +12421,12 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
         "properties": Array [
           Object {
             "name": "scrollLeftAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "scrollRightAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],

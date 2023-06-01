@@ -109,10 +109,10 @@ export namespace TabsProps {
     /**
      * ARIA label for the scroll left button that appears when the tab header is wider than the container.
      */
-    scrollLeftAriaLabel: string;
+    scrollLeftAriaLabel?: string;
     /**
      * ARIA label for the scroll right button that appears when the tab header is wider than the container.
      */
-    scrollRightAriaLabel: string;
+    scrollRightAriaLabel?: string;
   }
 }
