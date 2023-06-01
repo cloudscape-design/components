@@ -10,6 +10,7 @@ import { HeaderProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
@@ -35,6 +36,7 @@ export default function InternalHeader({
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
   const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
+
   return (
     <div
       {...baseProps}
@@ -65,7 +67,7 @@ export default function InternalHeader({
         >
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
             <span
-              data-analytics="heading-text"
+              {...{ [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME }}
               className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}
             >
               {children}

@@ -19,7 +19,12 @@ import { useInternalI18n } from '../internal/i18n/context';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_FIELD_ERROR_SELECTOR,
+  DATA_ATTR_FIELD_LABEL_SELECTOR,
+  getFieldSlotSeletor,
+  getSubStepAllSelector,
+} from '../internal/analytics/selectors';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -106,15 +111,10 @@ export default function InternalFormField({
     invalid: !!errorText || !!parentInvalid,
   };
 
-  const analyticsAttributes: Record<string, string> = {};
-
-  if (slotIds.label) {
-    analyticsAttributes['data-analytics-field-label-selector'] = `[id="${slotIds.label}"]`;
-  }
-
-  if (slotIds.error) {
-    analyticsAttributes['data-analytics-field-error-selector'] = `[id="${slotIds.error}"]`;
-  }
+  const analyticsAttributes = {
+    [DATA_ATTR_FIELD_LABEL_SELECTOR]: slotIds.label ?? getFieldSlotSeletor(slotIds.label),
+    [DATA_ATTR_FIELD_ERROR_SELECTOR]: slotIds.error ?? getFieldSlotSeletor(slotIds.error),
+  };
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
@@ -124,8 +124,8 @@ export default function InternalFormField({
         subStepNameSelector,
         stepNumber,
         stepNameSelector,
-        fieldErrorSelector: `[id="${slotIds.error}"]`,
-        fieldLabelSelector: `[id="${slotIds.label}"]`,
+        fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
+        fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
         subStepAllSelector: getSubStepAllSelector(),
       });
     }
