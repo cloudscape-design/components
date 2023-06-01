@@ -50,7 +50,7 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
   });
   builder.addContext({
     id: 'alert-header',
-    selector: '.awsui-context-alert-header',
+    selector: '.awsui-context-content-header .awsui-context-alert',
     tokens: alertHeaderContextTokens,
   });
 

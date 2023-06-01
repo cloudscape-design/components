@@ -6,7 +6,7 @@ import { InternalButton } from '../button/internal';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import VisualContext, { useVisualContext } from '../internal/components/visual-context';
+import VisualContext from '../internal/components/visual-context';
 import styles from './styles.css.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -23,8 +23,6 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   success: 'status-positive',
   info: 'status-info',
 };
-
-const HEADER_CONTEXT_NAME = 'content-header';
 
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps;
 
@@ -53,9 +51,6 @@ export default function InternalAlert({
   const isRefresh = useVisualRefresh();
   const size = isRefresh ? 'normal' : header && children ? 'big' : 'normal';
 
-  const context = useVisualContext(contextRef);
-  const hasHeaderContext = isRefresh && context === HEADER_CONTEXT_NAME;
-
   const actionButton = action || (
     <InternalButton
       className={styles['action-button']}
@@ -81,7 +76,7 @@ export default function InternalAlert({
       )}
       ref={mergedRef}
     >
-      <VisualContext contextName={hasHeaderContext ? 'alert-header' : 'alert'}>
+      <VisualContext contextName={'alert'}>
         <div className={clsx(styles.alert, styles[`type-${type}`])}>
           <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
             <InternalIcon name={typeToIcon[type]} size={size} />
