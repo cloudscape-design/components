@@ -40,7 +40,7 @@ export interface GridProps {
 
   locale: string;
   startOfWeek: DayIndex;
-  todayAriaLabel: string;
+  todayAriaLabel?: string;
   headingIdPrefix: string;
 }
 

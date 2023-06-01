@@ -12,6 +12,7 @@ import { isValidRange } from './is-valid-range';
 import { changeMode } from './change-mode';
 import { warnOnce } from '../../../lib/components/internal/logging';
 import styles from '../../../lib/components/date-range-picker/styles.css.js';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -310,6 +311,35 @@ describe('Date range picker', () => {
         'DateRangePicker',
         'The provided value does not correspond to the current range selector mode. Reverting back to default.'
       );
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using mode selector and modal footer props from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'date-range-picker': {
+              'i18nStrings.relativeModeTitle': 'Custom relative',
+              'i18nStrings.absoluteModeTitle': 'Custom absolute',
+              'i18nStrings.clearButtonLabel': 'Custom clear',
+              'i18nStrings.cancelButtonLabel': 'Custom cancel',
+              'i18nStrings.applyButtonLabel': 'Custom apply',
+            },
+          }}
+        >
+          <DateRangePicker {...defaultProps} i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      wrapper.openDropdown();
+      const modeSwitch = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSelect()!;
+      modeSwitch.openDropdown();
+      expect(modeSwitch.findDropdown().findOption(1)!.getElement()).toHaveTextContent('Custom relative');
+      expect(modeSwitch.findDropdown().findOption(2)!.getElement()).toHaveTextContent('Custom absolute');
+      expect(wrapper.findDropdown()!.findClearButton()!.getElement()).toHaveTextContent('Custom clear');
+      expect(wrapper.findDropdown()!.findCancelButton()!.getElement()).toHaveTextContent('Custom cancel');
+      expect(wrapper.findDropdown()!.findApplyButton()!.getElement()).toHaveTextContent('Custom apply');
     });
   });
 });

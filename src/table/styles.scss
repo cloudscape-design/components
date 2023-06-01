@@ -206,6 +206,10 @@ the default white background of the container component.
 .header-controls {
   padding-top: awsui.$space-container-header-vertical;
   padding-bottom: awsui.$space-container-header-vertical;
+
+  &.variant-full-page {
+    padding-top: 0;
+  }
   &.variant-stacked,
   &.variant-container {
     padding-left: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
