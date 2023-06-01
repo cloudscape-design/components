@@ -1,0 +1,247 @@
+{
+  "alert": {
+    "dismissAriaLabel": "Descartar alerta"
+  },
+  "[charts]": {
+    "loadingText": "Cargando gráfico",
+    "errorText": "No se pudieron recuperar los datos. Inténtelo de nuevo más tarde.",
+    "recoveryText": "Reintentar",
+    "i18nStrings.filterLabel": "Filtrar los datos mostrados",
+    "i18nStrings.filterPlaceholder": "Filtrar datos",
+    "i18nStrings.legendAriaLabel": "Leyenda",
+    "i18nStrings.detailPopoverDismissAriaLabel": "Descartar",
+    "i18nStrings.xAxisAriaRoleDescription": "eje x",
+    "i18nStrings.yAxisAriaRoleDescription": "eje y"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "Siguiente",
+    "i18nStrings.previousButtonText": "Anterior",
+    "i18nStrings.finishButtonText": "Finalizar",
+    "i18nStrings.labelDismissAnnotation": "Descartar anotación",
+    "i18nStrings.stepCounterText": "Paso {stepNumber} de {totalStepCount}",
+    "i18nStrings.taskTitle": "Tarea {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {Cerrar anotación para el paso {stepNumber} de {totalStepCount}} false {Abrir anotación para el paso {stepNumber} de {totalStepCount}} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.navigation": "Navegación lateral",
+    "ariaLabels.navigationClose": "Cerrar navegación lateral",
+    "ariaLabels.navigationToggle": "Abrir navegación lateral",
+    "ariaLabels.notifications": "Notificaciones",
+    "ariaLabels.tools": "Panel de ayuda",
+    "ariaLabels.toolsClose": "Abrir panel de ayuda",
+    "ariaLabels.toolsToggle": "Cerrar panel de ayuda"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "Total"
+  },
+  "attribute-editor": {
+    "removeButtonText": "Eliminar",
+    "i18nStrings.errorIconAriaLabel": "Error"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "Error",
+    "selectedAriaLabel": "Seleccionado",
+    "enteredTextLabel": "Utilizar: {value}",
+    "recoveryText": "Reintentar"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "Mostrar ruta"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "Próximo mes",
+    "previousMonthAriaLabel": "Mes anterior",
+    "todayAriaLabel": "Hoy"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "Selección de elementos"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "Cargando editor de código",
+    "i18nStrings.errorState": "Se ha producido un error al cargar el editor de código.",
+    "i18nStrings.errorStateRecovery": "Reintentar",
+    "i18nStrings.editorGroupAriaLabel": "Editor de código",
+    "i18nStrings.statusBarGroupAriaLabel": "Barra de estado",
+    "i18nStrings.cursorPosition": "Ln {row}, Col {column}",
+    "i18nStrings.errorsTab": "Errores",
+    "i18nStrings.warningsTab": "Advertencias",
+    "i18nStrings.preferencesButtonAriaLabel": "Preferencias",
+    "i18nStrings.paneCloseButtonAriaLabel": "Cerrar",
+    "i18nStrings.preferencesModalHeader": "Preferencias",
+    "i18nStrings.preferencesModalCancel": "Cancelar",
+    "i18nStrings.preferencesModalConfirm": "Confirmar",
+    "i18nStrings.preferencesModalWrapLines": "Ajustar líneas",
+    "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalLightThemes": "Temas claros",
+    "i18nStrings.preferencesModalDarkThemes": "Temas oscuros"
+  },
+  "collection-preferences": {
+    "title": "Preferencias",
+    "confirmLabel": "Confirmar",
+    "cancelLabel": "Cancelar",
+    "pageSizePreference.title": "Tamaño de página",
+    "wrapLinesPreference.label": "Ajustar líneas",
+    "wrapLinesPreference.description": "Seleccione para ver todo el texto y ajustar las líneas",
+    "stripedRowsPreference.label": "Filas rayadas",
+    "stripedRowsPreference.description": "Seleccione para agregar filas sombreadas alternativas",
+    "contentDensityPreference.label": "Modo compacto",
+    "contentDensityPreference.description": "Seleccione para mostrar contenido en un modo más denso y compacto",
+    "contentDisplayPreference.title": "Preferencias de columnas",
+    "contentDisplayPreference.description": "Personalice la visibilidad y el orden de las columnas.",
+    "contentDisplayPreference.dragHandleAriaLabel": "Arrastrar controlador",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape.",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "Recogida del elemento en la posición {position} de {total}",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenación cancelada"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "Modo relativo",
+    "i18nStrings.absoluteModeTitle": "Modo absoluto",
+    "i18nStrings.relativeRangeSelectionHeading": "Elegir un rango",
+    "i18nStrings.cancelButtonLabel": "Cancelar",
+    "i18nStrings.clearButtonLabel": "Borrar y descartar",
+    "i18nStrings.applyButtonLabel": "Aplicar",
+    "i18nStrings.customRelativeRangeOptionLabel": "Rango personalizado",
+    "i18nStrings.customRelativeRangeOptionDescription": "Establecer un rango personalizado en el pasado",
+    "i18nStrings.customRelativeRangeUnitLabel": "Unidad de tiempo",
+    "i18nStrings.customRelativeRangeDurationLabel": "Duración",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "Introduzca una duración",
+    "i18nStrings.startDateLabel": "Fecha de inicio",
+    "i18nStrings.startTimeLabel": "Hora de inicio",
+    "i18nStrings.endDateLabel": "Fecha de finalización",
+    "i18nStrings.endTimeLabel": "Hora de finalización",
+    "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rango seleccionado de {startDate} a {endDate}",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {Último {amount} {unit}} other {Últimos {amount} {unit}}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "Notificaciones",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.inProgressIconAriaLabel": "En curso",
+    "i18nStrings.infoIconAriaLabel": "Información",
+    "i18nStrings.notificationBarAriaLabel": "Todas las notificaciones",
+    "i18nStrings.notificationBarText": "Notificaciones",
+    "i18nStrings.successIconAriaLabel": "Éxito",
+    "i18nStrings.warningIconAriaLabel": "Advertencia"
+  },
+  "form": {
+    "errorIconAriaLabel": "Error"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "Error"
+  },
+  "help-panel": {
+    "loadingText": "Cargando contenido"
+  },
+  "input": {
+    "clearAriaLabel": "Borrar"
+  },
+  "link": {
+    "externalIconAriaLabel": "Abrir en una pestaña nueva"
+  },
+  "modal": {
+    "closeAriaLabel": "Cerrar modal"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "Página siguiente",
+    "ariaLabels.pageLabel": "Página {pageNumber} de todas las páginas",
+    "ariaLabels.previousPageLabel": "Página anterior"
+  },
+  "pie-chart": {
+    "loadingText": "Cargando gráfico",
+    "errorText": "No se pudieron recuperar los datos. Inténtelo de nuevo más tarde.",
+    "recoveryText": "Reintentar"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "Eliminar {option__label}"
+  },
+  "popover": {
+    "dismissAriaLabel": "Cerrar ventana emergente"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "Todas las propiedades",
+    "i18nStrings.applyActionText": "Aplicar",
+    "i18nStrings.cancelActionText": "Cancelar",
+    "i18nStrings.clearFiltersText": "Borrar filtros",
+    "i18nStrings.editTokenHeader": "Editar filtro",
+    "i18nStrings.groupPropertiesText": "Propiedades",
+    "i18nStrings.groupValuesText": "Valores",
+    "i18nStrings.operationAndText": "y",
+    "i18nStrings.operationOrText": "o",
+    "i18nStrings.operatorContainsText": "Contiene",
+    "i18nStrings.operatorDoesNotContainText": "No contiene",
+    "i18nStrings.operatorDoesNotEqualText": "No es igual a",
+    "i18nStrings.operatorEqualsText": "Igual a",
+    "i18nStrings.operatorGreaterOrEqualText": "Mayor o igual que",
+    "i18nStrings.operatorGreaterText": "Mayor que",
+    "i18nStrings.operatorLessOrEqualText": "Menor o igual que",
+    "i18nStrings.operatorLessText": "Menor que",
+    "i18nStrings.operatorText": "Operador",
+    "i18nStrings.operatorsText": "Operadores",
+    "i18nStrings.propertyText": "Propiedad",
+    "i18nStrings.tokenLimitShowFewer": "Mostrar menos",
+    "i18nStrings.tokenLimitShowMore": "Mostrar más",
+    "i18nStrings.valueText": "Valor",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Eliminar filtro, {token__propertyKey} igual a {token__value}} not_equals {Eliminar filtro, {token__propertyKey} no es igual a {token__value}} greater_than {Eliminar filtro, {token__propertyKey} es mayor que {token__value}} greater_than_equal {Eliminar filtro, {token__propertyKey} es mayor o igual que {token__value}} less_than {Eliminar filtro, {token__propertyKey} es menor que {token__value}} less_than_equal {Eliminar filtro, {token__propertyKey} es menor o igual que {token__value}} contains {Eliminar filtro, {token__propertyKey} contiene {token__value}} not_contains {Eliminar filtro, {token__propertyKey} no contiene {token__value}} other {}}"
+  },
+  "s3-resource-selector": {},
+  "select": {
+    "errorIconAriaLabel": "Error",
+    "selectedAriaLabel": "Seleccionado"
+  },
+  "split-panel": {},
+  "table": {
+    "ariaLabels.submittingEditText": "Envío de edición",
+    "ariaLabels.successfulEditLabel": "Se ha editado correctamente",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
+    "columnDefinitions.editConfig.editIconAriaLabel": "dditable"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "Desplácese hacia la izquierda",
+    "i18nStrings.scrollRightAriaLabel": "Desplácese hacia la derecha"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "Mostrar menos",
+    "i18nStrings.limitShowMore": "Mostrar más"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "Buscar",
+    "i18nStrings.searchDismissIconAriaLabel": "Cerrar búsqueda",
+    "i18nStrings.overflowMenuTriggerText": "Más",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "Cerrar menú",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "Volver",
+    "i18nStrings.overflowMenuTitleText": "Todos"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "Cargando",
+    "i18nStrings.tutorialListTitle": "Elija un tutorial",
+    "i18nStrings.tutorialListDownloadLinkText": "Descargar versión en PDF",
+    "i18nStrings.labelTutorialListDownloadLink": "Descargue la versión en PDF de este tutorial",
+    "i18nStrings.tutorialCompletedText": "Tutorial completado",
+    "i18nStrings.learnMoreLinkText": "Más información",
+    "i18nStrings.startTutorialButtonText": "Tutorial de inicio",
+    "i18nStrings.restartTutorialButtonText": "Tutorial de reinicio",
+    "i18nStrings.completionScreenTitle": "¡Enhorabuena! Ha completado el tutorial.",
+    "i18nStrings.feedbackLinkText": "Comentarios",
+    "i18nStrings.dismissTutorialButtonText": "Descartar tutorial",
+    "i18nStrings.taskTitle": "Tarea {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "Paso{stepNumber}:{stepTitle}",
+    "i18nStrings.labelExitTutorial": "Descartar tutorial",
+    "i18nStrings.labelTotalSteps": "Total de pasos: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "Pendiente",
+    "i18nStrings.labelsTaskStatus.in-progress": "En curso",
+    "i18nStrings.labelsTaskStatus.success": "Acción realizada correctamente"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "Paso {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "Paso {stepNumber} de {stepsCount}",
+    "i18nStrings.skipToButtonLabel": "Vaya a {task__title}",
+    "i18nStrings.navigationAriaLabel": "Pasos",
+    "i18nStrings.cancelButton": "Cancelar",
+    "i18nStrings.previousButton": "Anterior",
+    "i18nStrings.nextButton": "Siguiente",
+    "i18nStrings.optional": "opcional",
+    "i18nStrings.nextButtonLoadingAnnouncement": "Cargando paso siguiente",
+    "i18nStrings.submitButtonLoadingAnnouncement": "Formulario de envío"
+  }
+}

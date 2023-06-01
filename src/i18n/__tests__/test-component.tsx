@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { I18nProviderProps } from '../../../../lib/components/internal/i18n';
-import { useInternalI18n } from '../../../../lib/components/internal/i18n/context';
+import { I18nProviderProps } from '../../../lib/components/i18n';
+import { useInternalI18n } from '../../../lib/components/i18n/context';
 
 interface TestComponentProps {
   topLevelString?: string;
