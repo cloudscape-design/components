@@ -131,6 +131,7 @@ export interface InputKeyEvents {
 export interface InputClearLabel {
   /**
    * Adds an `aria-label` to the clear button inside the search input.
+   * @i18n
    */
   clearAriaLabel?: string;
 }
