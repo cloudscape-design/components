@@ -63,7 +63,7 @@ export interface TopNavigationProps extends BaseComponentProps {
   /**
    * An object containing all the localized strings required by the component.
    */
-  i18nStrings: TopNavigationProps.I18nStrings;
+  i18nStrings?: TopNavigationProps.I18nStrings;
 }
 
 export namespace TopNavigationProps {
@@ -120,7 +120,7 @@ export namespace TopNavigationProps {
     searchDismissIconAriaLabel?: string;
     overflowMenuDismissIconAriaLabel?: string;
     overflowMenuBackIconAriaLabel?: string;
-    overflowMenuTriggerText: string;
-    overflowMenuTitleText: string;
+    overflowMenuTriggerText?: string;
+    overflowMenuTitleText?: string;
   }
 }

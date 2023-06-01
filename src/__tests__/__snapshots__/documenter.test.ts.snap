@@ -5391,12 +5391,12 @@ Default: the user's current time offset as provided by the browser.
         "properties": Array [
           Object {
             "name": "absoluteModeTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "applyButtonLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -5416,37 +5416,37 @@ Default: the user's current time offset as provided by the browser.
           },
           Object {
             "name": "cancelButtonLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "clearButtonLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "customRelativeRangeDurationLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "customRelativeRangeDurationPlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "customRelativeRangeOptionDescription",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "customRelativeRangeOptionLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "customRelativeRangeUnitLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -5456,12 +5456,12 @@ Default: the user's current time offset as provided by the browser.
           },
           Object {
             "name": "endDateLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "endTimeLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -5471,32 +5471,32 @@ Default: the user's current time offset as provided by the browser.
           },
           Object {
             "name": "formatRelativeRange",
-            "optional": false,
+            "optional": true,
             "type": "(value: DateRangePickerProps.RelativeValue) => string",
           },
           Object {
             "name": "formatUnit",
-            "optional": false,
+            "optional": true,
             "type": "(unit: DateRangePickerProps.TimeUnit, value: number) => string",
           },
           Object {
             "name": "nextMonthAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "previousMonthAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "relativeModeTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "relativeRangeSelectionHeading",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -5506,24 +5506,24 @@ Default: the user's current time offset as provided by the browser.
           },
           Object {
             "name": "startDateLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "startTimeLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "todayAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "DateRangePickerProps.I18nStrings",
     },
     Object {
@@ -10291,7 +10291,7 @@ The return type of the function should be a promise that resolves to a list of v
         "properties": Array [
           Object {
             "name": "clearFilterButtonText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10301,7 +10301,7 @@ The return type of the function should be a promise that resolves to a list of v
           },
           Object {
             "name": "columnBucketName",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10311,7 +10311,7 @@ The return type of the function should be a promise that resolves to a list of v
           },
           Object {
             "name": "columnObjectKey",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10326,12 +10326,12 @@ The return type of the function should be a promise that resolves to a list of v
           },
           Object {
             "name": "columnVersionID",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "columnVersionLastModified",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10341,22 +10341,22 @@ The return type of the function should be a promise that resolves to a list of v
           },
           Object {
             "name": "filteringCantFindMatch",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "filteringCounterText",
-            "optional": false,
+            "optional": true,
             "type": "(count: number) => string",
           },
           Object {
             "name": "filteringNoMatches",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "inContextBrowseButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10366,32 +10366,32 @@ The return type of the function should be a promise that resolves to a list of v
           },
           Object {
             "name": "inContextInputPlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "inContextLoadingText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "inContextSelectPlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "inContextUriLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "inContextVersionSelectLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "inContextViewButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10401,162 +10401,162 @@ The return type of the function should be a promise that resolves to a list of v
           },
           Object {
             "name": "labelBreadcrumbs",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "labelFiltering",
-            "optional": false,
+            "optional": true,
             "type": "(itemsType: string) => string",
           },
           Object {
             "name": "labelModalDismiss",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "labelNotSorted",
-            "optional": false,
+            "optional": true,
             "type": "SortingColumnContainingString",
           },
           Object {
             "name": "labelRefresh",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "labelSortedAscending",
-            "optional": false,
+            "optional": true,
             "type": "SortingColumnContainingString",
           },
           Object {
             "name": "labelSortedDescending",
-            "optional": false,
+            "optional": true,
             "type": "SortingColumnContainingString",
           },
           Object {
             "name": "labelsBucketsSelection",
-            "optional": false,
+            "optional": true,
             "type": "SelectionLabels<S3ResourceSelectorProps.Bucket>",
           },
           Object {
             "name": "labelsObjectsSelection",
-            "optional": false,
+            "optional": true,
             "type": "SelectionLabels<S3ResourceSelectorProps.Object>",
           },
           Object {
             "name": "labelsPagination",
-            "optional": false,
+            "optional": true,
             "type": "PaginationProps.Labels",
           },
           Object {
             "name": "labelsVersionsSelection",
-            "optional": false,
+            "optional": true,
             "type": "SelectionLabels<S3ResourceSelectorProps.Version>",
           },
           Object {
             "name": "modalBreadcrumbRootItem",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "modalCancelButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "modalSubmitButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "modalTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionBuckets",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionBucketsLoading",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionBucketsNoItems",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionBucketsSearchPlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionObjects",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionObjectsLoading",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionObjectsNoItems",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionObjectsSearchPlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionVersions",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionVersionsLoading",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionVersionsNoItems",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "selectionVersionsSearchPlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "validationBucketLength",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "validationBucketLowerCase",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "validationBucketMustComplyDns",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "validationBucketMustNotContain",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "validationPathMustBegin",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -13869,12 +13869,12 @@ Object {
           },
           Object {
             "name": "overflowMenuTitleText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "overflowMenuTriggerText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -13891,7 +13891,7 @@ Object {
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "TopNavigationProps.I18nStrings",
     },
     Object {

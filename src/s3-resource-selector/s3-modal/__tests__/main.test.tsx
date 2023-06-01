@@ -19,7 +19,7 @@ async function renderModal(jsx: React.ReactElement) {
 test('renders correct strings and aria labels', async () => {
   const wrapper = await renderModal(<S3Modal {...modalDefaultProps} />);
   const modal = wrapper.findModal()!;
-  expect(modal.findHeader().getElement()).toHaveTextContent(i18nStrings.modalTitle);
+  expect(modal.findHeader().getElement()).toHaveTextContent(i18nStrings.modalTitle!);
   expect(screen.getByRole('button', { name: i18nStrings.modalSubmitButton })).toBeTruthy();
   expect(screen.getByRole('button', { name: i18nStrings.modalCancelButton })).toBeTruthy();
   expect(modal.findContent().findBreadcrumbGroup()!.getElement()).toHaveAttribute(
