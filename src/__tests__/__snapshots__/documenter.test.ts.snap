@@ -389,8 +389,7 @@ Example:
   toolsClose: \\"Close help panel\\",
   toolsToggle: \\"Open help panel\\"
 }
-\`\`\`
-",
+\`\`\`",
       "inlineType": Object {
         "name": "AppLayoutProps.Labels",
         "properties": Array [
@@ -3285,8 +3284,7 @@ scroll parent up to reveal the first card or row of cards.",
 You can use the first arguments of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The label function for individual
 items also receives the corresponding  \`Item\` object. You can use the group label to
-add a meaningful description to the whole selection.
-",
+add a meaningful description to the whole selection.",
       "inlineType": Object {
         "name": "CardsProps.AriaLabels",
         "properties": Array [
@@ -3921,8 +3919,7 @@ The object should contain, among others:
 * \`loadingState\` - Specifies the text to display while the component is loading.
 * \`errorState\` - Specifies the text to display if there is an error loading Ace.
 * \`errorStateRecovery\`: Specifies the text for the recovery button that's displayed next to the error text.
-   Use the \`recoveryClick\` event to do a recovery action (for example, retrying the request).
-",
+   Use the \`recoveryClick\` event to do a recovery action (for example, retrying the request).",
       "inlineType": Object {
         "name": "CodeEditorProps.I18nStrings",
         "properties": Array [
@@ -4220,8 +4217,7 @@ It contains the following:
 - \`label\` (string) - Specifies the label for the option checkbox.
 - \`description\` (string) - Specifies the text displayed below the checkbox label.
 
-You must set the current value in the \`preferences.contentDensity\` property.
-",
+You must set the current value in the \`preferences.contentDensity\` property.",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.ContentDensityPreference",
         "properties": Array [
@@ -4262,8 +4258,7 @@ Each option contains the following:
 - \`label\` (string) - Specifies a short description of the content.
 - \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.
 
-You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.
-",
+You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.ContentDisplayPreference",
         "properties": Array [
@@ -4367,8 +4362,7 @@ It contains the following:
   - \`value\` (number) - The value for the radio button (that is, the number of items per page).
   - \`label\` (string) - A label for the radio button (for example, \\"10 resources\\").
 
-You must set the current value in the \`preferences.pageSize\` property.
-",
+You must set the current value in the \`preferences.pageSize\` property.",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.PageSizePreference",
         "properties": Array [
@@ -4456,8 +4450,7 @@ It contains the following:
 - \`label\` (string) - Specifies the label for each radio group.
 - \`description\` (string) - Specifies the text displayed below each radio group label.
 
-You must set the current value in the \`preferences.stickyColumns\` property.
-",
+You must set the current value in the \`preferences.stickyColumns\` property.",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.StickyColumnsPreference",
         "properties": Array [
@@ -4486,8 +4479,7 @@ It contains the following:
 - \`label\` (string) - Specifies the label for the option checkbox.
 - \`description\` (string) - Specifies the text displayed below the checkbox label.
 
-You must set the current value in the \`preferences.stripedRows\` property.
-",
+You must set the current value in the \`preferences.stripedRows\` property.",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.StripedRowsPreference",
         "properties": Array [
@@ -4559,8 +4551,7 @@ It contains the following:
 - \`label\` (string) - Specifies the label for the option checkbox.
 - \`description\` (string) - Specifies the text displayed below the checkbox label.
 
-You must set the current value in the \`preferences.wrapLines\` property.
-",
+You must set the current value in the \`preferences.wrapLines\` property.",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.WrapLinesPreference",
         "properties": Array [
@@ -6089,8 +6080,7 @@ If \`stackItems\` is set to \`true\`, it should also contain:
 * \`warningIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`warning\`.
 * \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
 * \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
-* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).
-",
+* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).",
       "inlineType": Object {
         "name": "FlashbarProps.I18nStrings",
         "properties": Array [
@@ -8830,8 +8820,7 @@ Example:
   previousPageLabel: 'Previous page',
   pageLabel: pageNumber => \`Page \${pageNumber}\`
 }
-\`\`\`
-",
+\`\`\`",
       "inlineType": Object {
         "name": "PaginationProps.Labels",
         "properties": Array [
@@ -11909,8 +11898,7 @@ add a meaningful description to the whole selection.
 * \`successfulEditLabel\` (EditableColumnDefinition) => string -
                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
 * \`submittingEditText\` (EditableColumnDefinition) => string -
-                     Specifies a text that is announced to screen readers when a cell edit operation is submitted.
-",
+                     Specifies a text that is announced to screen readers when a cell edit operation is submitted.",
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
         "properties": Array [
@@ -14298,8 +14286,7 @@ Defaults to \`false\`.
 - \`submitButton\` (string) - The text of the button that enables the user to submit the form.
 - \`optional\` (string) - The text displayed next to the step title and form header title when a step is declared optional.
 - \`nextButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *next* button is in a loading state.
-- \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.
-",
+- \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.",
       "inlineType": Object {
         "name": "WizardProps.I18nStrings",
         "properties": Array [
