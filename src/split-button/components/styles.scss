@@ -6,16 +6,12 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
-.segment {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  padding-right: awsui.$space-xs;
-
-  &.variant-primary {
+.button-segment {
+  &:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: awsui.$space-xs;
     margin-right: awsui.$space-xxxs;
-  }
-  &.variant-normal {
-    margin-right: calc(-1 * #{styles.$control-border-width});
   }
 
   &:not(:first-child) {
@@ -24,7 +20,7 @@
     padding-left: awsui.$space-xs;
   }
 }
-.dropdown-trigger {
+.button-dropdown-segment {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   padding-left: awsui.$space-xs;

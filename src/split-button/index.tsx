@@ -11,19 +11,7 @@ export { SplitButtonProps };
 
 const SplitButton = React.forwardRef(
   (
-    {
-      segments,
-      items,
-      variant = 'normal',
-      loading = false,
-      loadingText,
-      expandableGroups = false,
-      expandToViewport = false,
-      ariaLabel,
-      onItemClick,
-      onItemFollow,
-      ...props
-    }: SplitButtonProps,
+    { items, variant = 'normal', expandToViewport = false, ...props }: SplitButtonProps,
     ref: React.Ref<SplitButtonProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('SplitButton');
@@ -33,16 +21,9 @@ const SplitButton = React.forwardRef(
         {...baseProps}
         {...baseComponentProps}
         ref={ref}
-        segments={segments}
         items={items}
         variant={variant}
-        loading={loading}
-        loadingText={loadingText}
-        expandableGroups={expandableGroups}
         expandToViewport={expandToViewport}
-        ariaLabel={ariaLabel}
-        onItemClick={onItemClick}
-        onItemFollow={onItemFollow}
       />
     );
   }

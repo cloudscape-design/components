@@ -1,58 +1,60 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { BaseComponentProps } from '../internal/base-component';
-import { TriggerLeft, TriggerRight } from './trigger';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { ButtonSegment, LinkSegment, ButtonDropdownSegment } from './components/segment';
 import { SplitButtonProps } from './interfaces';
-import InternalButtonDropdown from '../button-dropdown/internal';
-import { fireCancelableEvent } from '../internal/events';
 import styles from './styles.css.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { warnOnce } from '../internal/logging';
+import { getBaseProps } from '../internal/base-component';
+import clsx from 'clsx';
 
-interface InternalSplitButtonProps extends SplitButtonProps, BaseComponentProps {}
+interface InternalSplitButtonProps extends SplitButtonProps, InternalBaseComponentProps {}
 
-const InternalSplitButton = React.forwardRef(
-  ({ segments, loading, variant = 'normal', ...props }: InternalSplitButtonProps) =>
-    // TODO: support ref
-    // ref: React.Ref<SplitButtonProps.Ref>
-    {
-      const trigger = (clickHandler: () => void, ref: React.Ref<any>, isDisabled: boolean, isExpanded: boolean) => {
-        return (
-          <TriggerRight
-            dropdownRef={ref}
-            loading={!!loading}
-            variant={variant}
-            isOpen={isExpanded}
-            onClick={event => {
-              event.preventDefault();
-              clickHandler();
-            }}
-          />
-        );
-      };
+const InternalSplitButton = forwardRef(
+  (
+    { items, variant = 'normal', expandToViewport, __internalRootRef, ...props }: InternalSplitButtonProps,
+    ref: React.Ref<SplitButtonProps.Ref>
+  ) => {
+    if (items.slice(0, -1).find(it => it.type === 'button-dropdown')) {
+      warnOnce('SplitButton', 'Only the last item can be of type "button-dropdown".');
 
-      return (
-        <div className={styles.root} role="group" aria-label="Instance actions">
-          {segments.map(segment => (
-            <TriggerLeft
-              key={segment.id}
-              disabled={!!(segment.disabled || loading)}
-              variant={variant}
-              onClick={() => fireCancelableEvent(props.onItemClick, { id: segment.id } as any)}
-            >
-              {segment.text}
-            </TriggerLeft>
-          ))}
-          <InternalButtonDropdown
-            // ref={ref}
-            {...props}
-            loading={loading}
-            variant={variant}
-            customTriggerBuilder={trigger}
-            preferCenter={true}
-          />
-        </div>
-      );
+      items = items.filter((it, index) => it.type !== 'button-dropdown' || index === items.length - 1);
     }
+
+    if (items.length < 2) {
+      warnOnce('SplitButton', 'The component must have at least two items.');
+    }
+
+    const triggerRefs = useRef<{ [id: string]: null | HTMLButtonElement }>({});
+
+    useImperativeHandle(ref, () => ({
+      focus(id: string) {
+        triggerRefs.current[id]?.focus();
+      },
+    }));
+
+    const baseProps = getBaseProps(props);
+
+    return (
+      <div ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, styles.root)}>
+        {items.map(item => {
+          switch (item.type) {
+            case 'button':
+              return <ButtonSegment key={item.id} variant={variant} {...item} />;
+            case 'link':
+              return <LinkSegment key={item.id} variant={variant} {...item} />;
+            case 'button-dropdown':
+              return (
+                <ButtonDropdownSegment key={item.id} variant={variant} expandToViewport={expandToViewport} {...item} />
+              );
+            default:
+              throw new Error('Invariant violation: unsupported item type');
+          }
+        })}
+      </div>
+    );
+  }
 );
 
 export default InternalSplitButton;
