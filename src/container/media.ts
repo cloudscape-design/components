@@ -15,7 +15,7 @@ export function useMedia(media?: ContainerProps.Media) {
     content: media?.content,
     height: media?.height,
     width: media?.width,
-    orientation: media?.orientation,
+    orientation: media?.orientation || 'horizontal',
   };
   const [mediaState, setMediaState] = useState(initialState);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
@@ -43,10 +43,10 @@ export function useMedia(media?: ContainerProps.Media) {
 
   return {
     breakpointRef,
-    mediaContent: media?.content,
-    mediaHeight: media?.height,
-    mediaWidth: media?.width,
-    mediaOrientation: media?.orientation,
+    mediaContent: mediaState?.content,
+    mediaHeight: mediaState?.height,
+    mediaWidth: mediaState?.width,
+    mediaOrientation: mediaState?.orientation,
   };
 }
 
