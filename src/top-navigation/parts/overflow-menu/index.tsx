@@ -10,6 +10,7 @@ import { HeaderProps } from './header';
 
 import styles from '../../styles.css.js';
 import { TopNavigationProps } from '../../interfaces';
+import { useInternalI18n } from '../../../internal/i18n/context';
 interface OverflowMenuProps {
   headerText?: string;
   items?: TopNavigationProps['utilities'];
@@ -29,6 +30,10 @@ const OverflowMenu = ({
   items = [],
   onClose,
 }: OverflowMenuProps) => {
+  const i18n = useInternalI18n('top-navigation');
+  const renderedDismissIconAriaLabel = i18n('i18nStrings.overflowMenuDismissIconAriaLabel', dismissIconAriaLabel);
+  const renderedBackIconAriaLabel = i18n('i18nStrings.overflowMenuBackIconAriaLabel', backIconAriaLabel);
+
   return (
     <div
       className={styles['overflow-menu']}
@@ -43,11 +48,11 @@ const OverflowMenu = ({
           view="utilities"
           element={data => (
             <UtilitiesView
-              headerText={headerText}
+              headerText={i18n('i18nStrings.overflowMenuTitleText', headerText)}
               items={items}
               focusIndex={data?.utilityIndex}
-              dismissIconAriaLabel={dismissIconAriaLabel}
-              backIconAriaLabel={backIconAriaLabel}
+              dismissIconAriaLabel={renderedDismissIconAriaLabel}
+              backIconAriaLabel={renderedBackIconAriaLabel}
               onClose={onClose}
             />
           )}
@@ -58,8 +63,8 @@ const OverflowMenu = ({
             <SubmenuView
               headerText={data?.headerText}
               headerSecondaryText={data?.headerSecondaryText}
-              dismissIconAriaLabel={dismissIconAriaLabel}
-              backIconAriaLabel={backIconAriaLabel}
+              dismissIconAriaLabel={renderedDismissIconAriaLabel}
+              backIconAriaLabel={renderedBackIconAriaLabel}
               definition={data?.definition}
               utilityIndex={data?.utilityIndex}
               onClose={onClose}
