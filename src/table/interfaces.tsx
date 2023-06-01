@@ -280,6 +280,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                  (such as in a dashboard item container).
    * * `embedded` - Use this variant within a parent container (such as a modal, expandable
    *                section, container or split panel).
+   *                **Deprecated**, replaced by `borderless` and `container`.
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
    *               table).
    * * `full-page` – Use this variant when the table is the entire content of a page. Full page variants

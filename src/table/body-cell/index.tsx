@@ -9,6 +9,7 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
+import { useInternalI18n } from '../../internal/i18n/context';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -38,6 +39,7 @@ function TableCellEditable<ItemType>({
   successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
+  const i18n = useInternalI18n('table');
   const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
     'data-inline-editing-active': isEditing.toString(),
@@ -89,7 +91,9 @@ function TableCellEditable<ItemType>({
               >
                 <Icon name="status-positive" variant="success" />
               </span>
-              <LiveRegion>{ariaLabels?.successfulEditLabel?.(column)}</LiveRegion>
+              <LiveRegion>
+                {i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
+              </LiveRegion>
             </>
           )}
           <button

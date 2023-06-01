@@ -1146,7 +1146,7 @@ The display of a row is handled by the \`definition\` property.",
     Object {
       "description": "Specifies the text that's displayed in the remove button.",
       "name": "removeButtonText",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
   ],
@@ -1471,7 +1471,7 @@ receive focus.",
         "type": "function",
       },
       "name": "enteredTextLabel",
-      "optional": false,
+      "optional": true,
       "type": "AutosuggestProps.EnteredTextLabel",
     },
     Object {
@@ -2479,7 +2479,6 @@ without pressing modifier keys (that is, CTRL, ALT, SHIFT, META).",
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"Show path\\"",
       "description": "Provides an \`aria-label\` to the ellipsis button that screen readers can read (for accessibility).",
       "name": "expandAriaLabel",
       "optional": true,
@@ -4031,7 +4030,7 @@ The object should contain, among others:
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "CodeEditorProps.I18nStrings",
     },
     Object {
@@ -4197,7 +4196,7 @@ The values for all configured preferences are present even if the user didn't ch
     Object {
       "description": "Label of the cancel button in the modal footer.",
       "name": "cancelLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4210,7 +4209,7 @@ The values for all configured preferences are present even if the user didn't ch
     Object {
       "description": "Label of the confirm button in the modal footer.",
       "name": "confirmLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4228,12 +4227,12 @@ You must set the current value in the \`preferences.contentDensity\` property.
         "properties": Array [
           Object {
             "name": "description",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "label",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4310,7 +4309,7 @@ You must provide an ordered list of the items to display in the \`preferences.co
           },
           Object {
             "name": "title",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4380,7 +4379,7 @@ You must set the current value in the \`preferences.pageSize\` property.
           },
           Object {
             "name": "title",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4494,12 +4493,12 @@ You must set the current value in the \`preferences.stripedRows\` property.
         "properties": Array [
           Object {
             "name": "description",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "label",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4512,7 +4511,7 @@ You must set the current value in the \`preferences.stripedRows\` property.
     Object {
       "description": "Specifies the title of the preferences modal dialog. It is also used as an \`aria-label\` for the trigger button.",
       "name": "title",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4567,12 +4566,12 @@ You must set the current value in the \`preferences.wrapLines\` property.
         "properties": Array [
           Object {
             "name": "description",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "label",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -5833,7 +5832,7 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
       "name": "header",
     },
     Object {
-      "description": "Heading displayed above the content text. When using the container variant, use it with additional header props. Otherwise, use plain text.",
+      "description": "The heading text. Use plain text. When using the container variant, you can use additional header props like \`headerDescription\` and \`headerCounter\` to display other elements in the header.",
       "isDefault": false,
       "name": "headerText",
     },
@@ -11583,7 +11582,7 @@ Object {
         "properties": Array [
           Object {
             "name": "closeButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -11628,14 +11627,14 @@ Object {
           },
           Object {
             "name": "resizeHandleAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "SplitPanelProps.I18nStrings",
     },
     Object {
@@ -12274,6 +12273,7 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
                  (such as in a dashboard item container).
 * \`embedded\` - Use this variant within a parent container (such as a modal, expandable
                section, container or split panel).
+               **Deprecated**, replaced by \`borderless\` and \`container\`.
 * \`stacked\` - Use this variant adjacent to other stacked containers (such as a container,
               table).
 * \`full-page\` – Use this variant when the table is the entire content of a page. Full page variants
@@ -12422,12 +12422,12 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
         "properties": Array [
           Object {
             "name": "scrollLeftAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "scrollRightAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -12546,12 +12546,12 @@ character validation. You should use this property only when absolutely necessar
         "properties": Array [
           Object {
             "name": "addButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "awsPrefixError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -12561,27 +12561,27 @@ character validation. You should use this property only when absolutely necessar
           },
           Object {
             "name": "duplicateKeyError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "emptyKeyError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "emptyTags",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "enteredKeyLabel",
-            "optional": false,
+            "optional": true,
             "type": "(enteredText: string) => string",
           },
           Object {
             "name": "enteredValueLabel",
-            "optional": false,
+            "optional": true,
             "type": "(enteredText: string) => string",
           },
           Object {
@@ -12591,12 +12591,12 @@ character validation. You should use this property only when absolutely necessar
           },
           Object {
             "name": "invalidKeyError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "invalidValueError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -12606,52 +12606,52 @@ character validation. You should use this property only when absolutely necessar
           },
           Object {
             "name": "keyHeader",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "keyPlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "keySuggestion",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "keysSuggestionError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "keysSuggestionLoading",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "loading",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "maxKeyCharLengthError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "maxValueCharLengthError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "optional",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "removeButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -12661,69 +12661,69 @@ character validation. You should use this property only when absolutely necessar
           },
           Object {
             "name": "tagLimit",
-            "optional": false,
+            "optional": true,
             "type": "(availableTags: number, tagLimit: number) => string",
           },
           Object {
             "name": "tagLimitExceeded",
-            "optional": false,
+            "optional": true,
             "type": "(tagLimit: number) => string",
           },
           Object {
             "name": "tagLimitReached",
-            "optional": false,
+            "optional": true,
             "type": "(tagLimit: number) => string",
           },
           Object {
             "name": "tooManyKeysSuggestion",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "tooManyValuesSuggestion",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "undoButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "undoPrompt",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "valueHeader",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "valuePlaceholder",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "valueSuggestion",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "valuesSuggestionError",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "valuesSuggestionLoading",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "TagEditorProps.I18nStrings",
     },
     Object {
