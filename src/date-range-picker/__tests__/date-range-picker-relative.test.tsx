@@ -261,7 +261,7 @@ describe('Date range picker', () => {
           createWrapper(wrapper.findDropdown()!.getElement()).findFormField()!.findLabel()!.getElement()
         ).toHaveTextContent('Custom choose range');
         expect(
-          wrapper.findDropdown()?.findRelativeRangeRadioGroup()!.findButtons()[0].findLabel()!.getElement()
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[0].findLabel()!.getElement()
         ).toHaveTextContent('Custom last 5 minute');
         expect(
           wrapper.findDropdown()?.findRelativeRangeRadioGroup()!.findButtons()[4]!.findLabel()!.getElement()
