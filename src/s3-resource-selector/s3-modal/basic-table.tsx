@@ -124,7 +124,7 @@ export function BasicS3Table<T>({
 
   return (
     <InternalTable<T>
-      variant="embedded"
+      variant={isVisualRefresh ? 'borderless' : 'container'}
       {...collectionProps}
       header={
         <InternalHeader
