@@ -244,7 +244,10 @@ export default function () {
     <>
       <h1>Line chart permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <LineChart<any> {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => <LineChart<any> onRecoveryClick={() => {}} {...permutation} />}
+        />
       </ScreenshotArea>
     </>
   );
