@@ -150,6 +150,7 @@ export const ButtonDropdownSegment = forwardRef(
     }: SplitButtonProps.ButtonDropdownItem & {
       variant: SplitButtonProps.Variant;
       expandToViewport?: boolean;
+      expandableGroups?: boolean;
     },
     ref: React.Ref<HTMLButtonElement>
   ) => {

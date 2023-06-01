@@ -13,12 +13,20 @@ interface InternalSplitButtonProps extends SplitButtonProps, InternalBaseCompone
 
 const InternalSplitButton = forwardRef(
   (
-    { items, variant = 'normal', expandToViewport, __internalRootRef, ...props }: InternalSplitButtonProps,
+    {
+      items,
+      variant = 'normal',
+      expandToViewport,
+      expandableGroups,
+      __internalRootRef,
+      ...props
+    }: InternalSplitButtonProps,
     ref: React.Ref<SplitButtonProps.Ref>
   ) => {
     if (items.slice(0, -1).find(it => it.type === 'button-dropdown')) {
       warnOnce('SplitButton', 'Only the last item can be of type "button-dropdown".');
 
+      // Removing all button-dropdown items that are not in the last position.
       items = items.filter((it, index) => it.type !== 'button-dropdown' || index === items.length - 1);
     }
 
@@ -46,7 +54,13 @@ const InternalSplitButton = forwardRef(
               return <LinkSegment key={item.id} variant={variant} {...item} />;
             case 'button-dropdown':
               return (
-                <ButtonDropdownSegment key={item.id} variant={variant} expandToViewport={expandToViewport} {...item} />
+                <ButtonDropdownSegment
+                  key={item.id}
+                  variant={variant}
+                  expandToViewport={expandToViewport}
+                  expandableGroups={expandableGroups}
+                  {...item}
+                />
               );
             default:
               throw new Error('Invariant violation: unsupported item type');

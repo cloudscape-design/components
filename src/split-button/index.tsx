@@ -11,7 +11,7 @@ export { SplitButtonProps };
 
 const SplitButton = React.forwardRef(
   (
-    { items, variant = 'normal', expandToViewport = false, ...props }: SplitButtonProps,
+    { items, variant = 'normal', expandToViewport = false, expandableGroups = false, ...props }: SplitButtonProps,
     ref: React.Ref<SplitButtonProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('SplitButton');
@@ -24,6 +24,7 @@ const SplitButton = React.forwardRef(
         items={items}
         variant={variant}
         expandToViewport={expandToViewport}
+        expandableGroups={expandableGroups}
       />
     );
   }

@@ -14,6 +14,8 @@ export interface SplitButtonProps extends BaseComponentProps {
   variant?: SplitButtonProps.Variant;
 
   expandToViewport?: boolean;
+
+  expandableGroups?: boolean;
 }
 
 export namespace SplitButtonProps {
@@ -57,7 +59,6 @@ export namespace SplitButtonProps {
     type: 'button-dropdown';
     ariaLabel: string;
     items: ButtonDropdownProps.Items;
-    expandableGroups?: boolean;
     onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
     onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   }
