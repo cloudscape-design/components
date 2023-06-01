@@ -81,7 +81,7 @@ const permutations = createPermutations<TableProps>([
     header: [null, <Box>header</Box>],
     footer: [null, <Box>footer</Box>],
     items: [createSimpleItems(3)],
-    variant: ['embedded', 'stacked', 'full-page'],
+    variant: ['embedded', 'stacked', 'full-page', 'borderless'],
   },
   {
     columnDefinitions: [SIMPLE_COLUMNS],

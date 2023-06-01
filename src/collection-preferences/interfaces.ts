@@ -7,15 +7,15 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
   /**
    * Specifies the title of the preferences modal dialog. It is also used as an `aria-label` for the trigger button.
    */
-  title: string;
+  title?: string;
   /**
    * Label of the confirm button in the modal footer.
    */
-  confirmLabel: string;
+  confirmLabel?: string;
   /**
    * Label of the cancel button in the modal footer.
    */
-  cancelLabel: string;
+  cancelLabel?: string;
   /**
    * Determines whether the preferences trigger button is disabled.
    */
@@ -196,7 +196,7 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface ContentDisplayPreference {
-    title: string;
+    title?: string;
     description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
     liveAnnouncementDndStarted?: (position: number, total: number) => string;
@@ -235,28 +235,28 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface PageSizePreference {
-    title: string;
+    title?: string;
     options: ReadonlyArray<PageSizeOption>;
   }
 
   export interface PageSizeOption {
     value: number;
-    label: string;
+    label?: string;
   }
 
   export interface WrapLinesPreference {
-    label: string;
-    description: string;
+    label?: string;
+    description?: string;
   }
 
   export interface StripedRowsPreference {
-    label: string;
-    description: string;
+    label?: string;
+    description?: string;
   }
 
   export interface ContentDensityPreference {
-    label: string;
-    description: string;
+    label?: string;
+    description?: string;
   }
 
   interface StickyColumns {
