@@ -423,6 +423,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     });
 
     const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
+    const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
     const getDrawerItemSizes = useCallback(() => {
       const sizes: { [id: string]: number } = {};
@@ -432,19 +433,24 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
       for (const item of drawerItems) {
         if (item.defaultSize) {
-          sizes[item.id] = item.defaultSize || toolsWidth;
+          if (item.defaultSize > drawersMaxWidth) {
+            sizes[item.id] = toolsWidth;
+          } else {
+            sizes[item.id] = item.defaultSize || toolsWidth;
+          }
         }
       }
       return sizes;
-    }, [drawerItems, toolsWidth]);
+    }, [drawerItems, toolsWidth, drawersMaxWidth]);
 
     const [drawerSizes, setDrawerSizes] = useState(() => getDrawerItemSizes());
+    console.log(drawersMaxWidth, drawerSizes);
 
     useEffect(() => {
       // Ensure we only set new drawer items by performing a shallow merge
       // of the latest drawer item sizes, and previous drawer item sizes.
-      setDrawerSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
-    }, [getDrawerItemSizes]);
+      setDrawerSizes(() => getDrawerItemSizes());
+    }, [drawersMaxWidth, activeDrawerId, getDrawerItemSizes]);
 
     const drawersSize =
       !activeDrawerId && !isToolsOpen
@@ -462,9 +468,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setDrawerSizes({ ...drawerSizes, [changeDetail.id]: changeDetail.size });
     };
 
-    const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
-
-    const activeDrawer = drawers.items.find((drawer: any) => drawer.id === activeDrawerId);
+    const activeDrawer = drawers?.items.find((drawer: any) => drawer.id === activeDrawerId);
 
     const {
       refs: drawersRefs,

@@ -81,7 +81,7 @@ export interface DrawerItem {
 
 export interface SizeControlProps {
   position: 'side';
-  splitPanelRef?: React.RefObject<HTMLDivElement>;
+  panelRef?: React.RefObject<HTMLDivElement>;
   handleRef?: React.RefObject<HTMLDivElement>;
   setSidePanelWidth: (width: number) => void;
   setBottomPanelHeight: (height: number) => void;

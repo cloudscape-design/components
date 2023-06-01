@@ -7,6 +7,23 @@
 @use '../internal/styles/tokens' as awsui;
 @use './constants' as constants;
 
+/* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+.resize {
+  &-active * {
+    user-select: none;
+  }
+  &-active iframe {
+    // Prevents iframes from eating the mouseup event if the cursor is on top of it.
+    pointer-events: none;
+  }
+  &-side * {
+    cursor: ew-resize;
+  }
+  &-bottom * {
+    cursor: ns-resize;
+  }
+}
+
 // double flex container to work around flexbox issue in IE
 // https://github.com/philipwalton/flexbugs#flexbug-3
 .root,
@@ -43,7 +60,6 @@
   }
 }
 
-/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
 .unfocusable * {
   // Prevent content that is visually hidden behind drawers in mobile view from receiving focus
   visibility: hidden;

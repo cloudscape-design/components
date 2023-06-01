@@ -11,8 +11,8 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SplitPanelProps, SizeControlProps } from './interfaces';
 import ResizeHandler from './icons/resize-handler';
 import PreferencesModal from './preferences-modal';
-import { usePointerEvents } from './utils/use-pointer-events';
-import { useKeyboardEvents } from './utils/use-keyboard-events';
+import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
+import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -116,7 +116,7 @@ export default function SplitPanel({
 
   const sizeControlProps: SizeControlProps = {
     position,
-    splitPanelRef: splitPanelRefObject,
+    panelRef: splitPanelRefObject,
     handleRef: refs.slider,
     setSidePanelWidth,
     setBottomPanelHeight,

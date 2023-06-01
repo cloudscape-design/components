@@ -2,13 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { KeyCode } from '../../internal/keycode';
-import { SizeControlProps } from '../interfaces';
 
 const KEYBOARD_SINGLE_STEP_SIZE = 10;
 const KEYBOARD_MULTIPLE_STEPS_SIZE = 60;
 
-const getCurrentSize = (splitPanelRef?: React.RefObject<HTMLDivElement>) => {
-  if (!splitPanelRef || !splitPanelRef.current) {
+export interface SizeControlProps {
+  position: 'side' | 'bottom';
+  panelRef?: React.RefObject<HTMLDivElement>;
+  handleRef?: React.RefObject<HTMLDivElement>;
+  setSidePanelWidth: (width: number) => void;
+  setBottomPanelHeight: (height: number) => void;
+}
+
+const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
+  if (!panelRef || !panelRef.current) {
     return {
       splitPanelHeight: 0,
       splitPanelWidth: 0,
@@ -18,8 +25,8 @@ const getCurrentSize = (splitPanelRef?: React.RefObject<HTMLDivElement>) => {
   const safeParseFloat = (size = '') => parseFloat(size) || 0;
 
   return {
-    splitPanelHeight: safeParseFloat(splitPanelRef.current.style.height),
-    splitPanelWidth: safeParseFloat(splitPanelRef.current.style.width),
+    splitPanelHeight: safeParseFloat(panelRef.current.style.height),
+    splitPanelWidth: safeParseFloat(panelRef.current.style.width),
   };
 };
 
@@ -27,14 +34,14 @@ export const useKeyboardEvents = ({
   position,
   setSidePanelWidth,
   setBottomPanelHeight,
-  splitPanelRef,
+  panelRef,
 }: SizeControlProps) => {
   return (event: React.KeyboardEvent) => {
     let setSizeFunction;
     let currentSize;
     let maxSize;
 
-    const { splitPanelHeight, splitPanelWidth } = getCurrentSize(splitPanelRef);
+    const { splitPanelHeight, splitPanelWidth } = getCurrentSize(panelRef);
 
     if (position === 'side') {
       setSizeFunction = setSidePanelWidth;

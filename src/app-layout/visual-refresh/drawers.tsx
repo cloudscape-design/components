@@ -14,8 +14,8 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
-import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
+import { usePointerEvents } from '../utils/use-pointer-events';
+import { useKeyboardEvents } from '../utils/use-keyboard-events';
 
 export interface DrawersProps {
   activeDrawerId?: string;
@@ -26,7 +26,7 @@ export interface DrawersProps {
 
 export interface SizeControlProps {
   position: 'side';
-  splitPanelRef?: React.RefObject<HTMLDivElement>;
+  panelRef?: React.RefObject<HTMLDivElement>;
   handleRef?: React.RefObject<HTMLDivElement>;
   setSidePanelWidth: (width: number) => void;
   setBottomPanelHeight: (height: number) => void;
@@ -150,16 +150,14 @@ function ActiveDrawer() {
     }
   };
 
-  const position = 'side';
-  const setBottomPanelHeight = () => {};
   const drawerRefObject = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
-    position,
-    splitPanelRef: drawerRefObject,
+    position: 'side',
+    panelRef: drawerRefObject,
     handleRef: drawersRefs.slider,
     setSidePanelWidth,
-    setBottomPanelHeight,
+    setBottomPanelHeight: () => {},
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
@@ -194,7 +192,7 @@ function ActiveDrawer() {
       })}
       style={{
         ...(!isMobile && drawersSize && { [customCssProps.drawersSize]: `${drawersSize}px` }),
-        width: drawersSize,
+        width: isMobile ? '100vw' : drawersSize,
       }}
       ref={drawerRefObject}
       onBlur={e => {

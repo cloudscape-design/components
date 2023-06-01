@@ -172,6 +172,7 @@
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     &.is-drawer-open {
       #{custom-props.$activeDrawerWidth}: 100vw;
+      width: 100vw;
     }
   }
 }

@@ -1,19 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback } from 'react';
-import { SizeControlProps } from '../interfaces';
 import styles from '../styles.css.js';
+
+export interface SizeControlProps {
+  position: 'side' | 'bottom';
+  panelRef?: React.RefObject<HTMLDivElement>;
+  handleRef?: React.RefObject<HTMLDivElement>;
+  setSidePanelWidth: (width: number) => void;
+  setBottomPanelHeight: (height: number) => void;
+}
 
 export const usePointerEvents = ({
   position,
-  splitPanelRef,
+  panelRef,
   handleRef,
   setSidePanelWidth,
   setBottomPanelHeight,
 }: SizeControlProps) => {
   const onDocumentPointerMove = useCallback(
     (event: PointerEvent) => {
-      if (!splitPanelRef || !splitPanelRef.current || !handleRef || !handleRef.current) {
+      if (!panelRef || !panelRef.current || !handleRef || !handleRef.current) {
         return;
       }
 
@@ -22,7 +29,7 @@ export const usePointerEvents = ({
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = handleRef.current.getBoundingClientRect().width / 2;
-        const width = splitPanelRef.current.getBoundingClientRect().right - mouseClientX + handleOffset;
+        const width = panelRef.current.getBoundingClientRect().right - mouseClientX + handleOffset;
 
         setSidePanelWidth(width);
       } else {
@@ -30,12 +37,12 @@ export const usePointerEvents = ({
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = handleRef.current.getBoundingClientRect().height / 2;
-        const height = splitPanelRef.current.getBoundingClientRect().bottom - mouseClientY + handleOffset;
+        const height = panelRef.current.getBoundingClientRect().bottom - mouseClientY + handleOffset;
 
         setBottomPanelHeight(height);
       }
     },
-    [position, splitPanelRef, handleRef, setSidePanelWidth, setBottomPanelHeight]
+    [position, panelRef, handleRef, setSidePanelWidth, setBottomPanelHeight]
   );
 
   const onDocumentPointerUp = useCallback(() => {

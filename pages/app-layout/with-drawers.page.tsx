@@ -60,6 +60,8 @@ export default function WithDrawers() {
                 triggerButton: 'ProHelp trigger button',
                 resizeHandle: 'ProHelp resize handle',
               },
+              resizable: true,
+              defaultSize: 10000,
               content: <ProHelp />,
               id: 'pro-help',
               trigger: {

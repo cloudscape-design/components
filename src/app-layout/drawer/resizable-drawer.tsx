@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import React, { useEffect, useState, useRef } from 'react';
 
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
-import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
+import { usePointerEvents } from '../utils/use-pointer-events';
+import { useKeyboardEvents } from '../utils/use-keyboard-events';
 import { Drawer } from './index';
 import testutilStyles from '../test-classes/styles.css.js';
 
@@ -46,16 +46,14 @@ export const ResizableDrawer = ({
     }
   };
 
-  const position = 'side';
-  const setBottomPanelHeight = () => {};
   const drawerRefObject = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
-    position,
-    splitPanelRef: drawerRefObject,
+    position: 'side',
+    panelRef: drawerRefObject,
     handleRef: refs.slider,
     setSidePanelWidth,
-    setBottomPanelHeight,
+    setBottomPanelHeight: () => {},
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
