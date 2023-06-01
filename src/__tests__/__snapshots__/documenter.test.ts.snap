@@ -4030,7 +4030,7 @@ The object should contain, among others:
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "CodeEditorProps.I18nStrings",
     },
     Object {

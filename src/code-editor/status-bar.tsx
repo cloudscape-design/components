@@ -8,14 +8,15 @@ import { TabButton } from './tab-button';
 import { InternalButton } from '../button/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
 import { CodeEditorProps } from './interfaces';
+import { useInternalI18n } from '../internal/i18n/context.js';
 
 interface StatusBarProps {
   languageLabel: string;
-  cursorPosition: string;
+  cursorPosition?: string;
   paneStatus: string;
   isTabFocused: boolean;
   paneId?: string;
-  i18nStrings: CodeEditorProps.I18nStrings;
+  i18nStrings?: CodeEditorProps.I18nStrings;
   errorCount: number;
   warningCount: number;
   isRefresh: boolean;
@@ -58,8 +59,9 @@ function InternalStatusBar({
   minifyCounters,
   isRefresh,
 }: InternalStatusBarProps) {
-  const errorText = `${i18nStrings.errorsTab}: ${errorCount}`;
-  const warningText = `${i18nStrings.warningsTab}: ${warningCount}`;
+  const i18n = useInternalI18n('code-editor');
+  const errorText = `${i18n('i18nStrings.errorsTab', i18nStrings?.errorsTab)}: ${errorCount}`;
+  const warningText = `${i18n('i18nStrings.warningsTab', i18nStrings?.warningsTab)}: ${warningCount}`;
 
   // Virtual status bar is inaccessible for screen readers and keyboard interactions.
 
@@ -127,7 +129,7 @@ function InternalStatusBar({
             variant="icon"
             iconName="settings"
             iconAlt="Settings"
-            ariaLabel={i18nStrings.preferencesButtonAriaLabel}
+            ariaLabel={i18n('i18nStrings.preferencesButtonAriaLabel', i18nStrings?.preferencesButtonAriaLabel)}
             onClick={onPreferencesOpen}
             __nativeAttributes={{
               tabIndex: paneStatus !== 'hidden' && isTabFocused ? -1 : undefined,
