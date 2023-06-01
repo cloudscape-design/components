@@ -5832,7 +5832,7 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
       "name": "header",
     },
     Object {
-      "description": "Heading displayed above the content text. When using the container variant, use it with additional header props. Otherwise, use plain text.",
+      "description": "The heading text. Use plain text. When using the container variant, you can use additional header props like \`headerDescription\` and \`headerCounter\` to display other elements in the header.",
       "isDefault": false,
       "name": "headerText",
     },
