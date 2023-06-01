@@ -3,7 +3,6 @@
 import * as React from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
 import ColumnLayout from '~components/column-layout';
-import { Box, Link } from '~components';
 
 export default function ColumnLayoutPage() {
   return (
@@ -15,61 +14,6 @@ export default function ColumnLayoutPage() {
           padding: '2rem',
         }}
       >
-        <h2>Dashboard widget (new)</h2>
-        <ColumnLayout minColumnWidth={170} variant="text-grid">
-          <div>
-            <Box variant="awsui-key-label">Running instances</Box>
-            <Link variant="awsui-value-large" href="#">
-              14
-            </Link>
-          </div>
-          <div>
-            <Box variant="awsui-key-label">Volumes</Box>
-            <Link variant="awsui-value-large" href="#">
-              126
-            </Link>
-          </div>
-          <div>
-            <Box variant="awsui-key-label">Security groups</Box>
-            <Link variant="awsui-value-large" href="#">
-              116
-            </Link>
-          </div>
-          <div>
-            <Box variant="awsui-key-label">Load balancers</Box>
-            <Link variant="awsui-value-large" href="#">
-              28
-            </Link>
-          </div>
-        </ColumnLayout>
-        <h2>Dashboard widget (current)</h2>
-        <ColumnLayout columns={4} variant="text-grid">
-          <div>
-            <Box variant="awsui-key-label">Running instances</Box>
-            <Link variant="awsui-value-large" href="#">
-              14
-            </Link>
-          </div>
-          <div>
-            <Box variant="awsui-key-label">Volumes</Box>
-            <Link variant="awsui-value-large" href="#">
-              126
-            </Link>
-          </div>
-          <div>
-            <Box variant="awsui-key-label">Security groups</Box>
-            <Link variant="awsui-value-large" href="#">
-              116
-            </Link>
-          </div>
-          <div>
-            <Box variant="awsui-key-label">Load balancers</Box>
-            <Link variant="awsui-value-large" href="#">
-              28
-            </Link>
-          </div>
-        </ColumnLayout>
-
         <h2>With borders</h2>
         {[1, 2].map(i => (
           <ColumnLayout key={i} columns={4} borders="all">

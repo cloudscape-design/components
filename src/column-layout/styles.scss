@@ -134,63 +134,46 @@ div.column-layout {
     // Alternative implementation based on minimum column widths and CSS Grid
     &.css-grid {
       display: grid;
+      /* stylelint-disable-next-line custom-property-pattern */
+      grid-template-columns: repeat(var(--column-count, 1), 1fr);
+
+      pointer-events: none;
 
       /* stylelint-disable-next-line selector-max-universal */
-      &.grid-variant-text-grid > *,
-      &.grid-vertical-borders > * {
-        border-right: 0;
+      &.grid-variant-text-grid > * {
         border-left: $column-layout-border;
+        border-right: 0;
+
+        /* stylelint-disable-next-line selector-max-universal */
+        &.first-column {
+          border-left: 0;
+        }
+      }
+
+      /* stylelint-disable-next-line selector-max-universal */
+      &.grid-vertical-borders > * {
+        border-left: 0;
+        border-right: $column-layout-border;
+
+        /* stylelint-disable-next-line selector-max-universal */
+        &.last-column {
+          border-right: 0;
+        }
       }
 
       /* stylelint-disable-next-line selector-max-universal */
       &.grid-horizontal-borders > * {
         border-bottom: $column-layout-border;
-      }
-
-      &.css-grid-columns-1 {
-        grid-template-columns: 1fr;
 
         /* stylelint-disable-next-line selector-max-universal */
-        > * {
-          border-left: 0;
-        }
-      }
-      &.css-grid-columns-2,
-      &.css-grid-columns-3 {
-        // The grid should be balanced, so we treat three columns the same as two columns
-        grid-template-columns: repeat(2, 1fr);
-
-        // Remove outer vertical borders
-        > :nth-child(2n + 1) {
-          border-left: 0;
-          border-right: 0;
-        }
-
-        // Remove outer horizontal borders
-        > :nth-last-child(1),
-        > :nth-last-child(2):not(:nth-child(2), :nth-child(even)) {
-          border-bottom: 0;
-          border-top: 0;
-        }
-      }
-      &.css-grid-columns-4 {
-        grid-template-columns: repeat(4, 1fr);
-
-        // Remove outer vertical borders
-        > :nth-child(4n + 1) {
-          border-left: 0;
-          border-right: 0;
-        }
-
-        // Remove outer horizontal borders
-        > :nth-last-child(1),
-        > :nth-last-child(2):not(:nth-child(4)),
-        > :nth-last-child(3):not(:nth-child(3), :nth-child(4)),
-        > :nth-last-child(4):not(:nth-child(2), :nth-child(3), :nth-child(4)) {
-          border-bottom: 0;
-          border-top: 0;
+        &.last-row {
+          border-bottom-width: 0;
         }
       }
     }
   }
+}
+
+.restore-pointer-events {
+  pointer-events: auto;
 }

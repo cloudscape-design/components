@@ -4640,6 +4640,10 @@ Valid values are any integer between 1 and 4.",
       "type": "string",
     },
     Object {
+      "description": "Use together with \`columns\` to specify the desired minimum width for each column in pixels.
+The number of columns is determined based on the value of this property, the available space,
+and the maximum number of columns as defined by the \`columns\` property.
+",
       "name": "minColumnWidth",
       "optional": true,
       "type": "number",
