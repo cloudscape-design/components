@@ -667,35 +667,40 @@ describe('Tag Editor component', () => {
           messages={{
             'tag-editor': {
               'i18nStrings.addButton': 'Custom add',
+              'i18nStrings.removeButtonAriaLabel': 'Custom remove {tag__key}',
               'i18nStrings.emptyTags': 'Custom empty tags',
               'i18nStrings.keyHeader': 'Custom key',
               'i18nStrings.valueHeader': 'Custom value',
               'i18nStrings.optional': 'Custom optional',
               'i18nStrings.keySuggestion': 'Custom key suggestion',
               'i18nStrings.valuePlaceholder': 'Custom value placeholder',
+              'i18nStrings.tagLimit': 'Custom limit {availableTags}',
+              'i18nStrings.tagLimitReached': 'Custom limit reached {tagLimit}',
             },
           }}
         >
-          <StatefulTestComponent i18nStrings={undefined} />
+          <StatefulTestComponent i18nStrings={undefined} tagLimit={1} />
         </TestI18nProvider>
       );
       const wrapper = createWrapper(container).findTagEditor()!;
       expect(wrapper.findEmptySlot()!.getElement()).toHaveTextContent('Custom empty tags');
       expect(wrapper.findAddButton().getElement()).toHaveTextContent('Custom add');
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit 1');
 
       wrapper.findAddButton().click();
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit reached 1');
       expect(wrapper.findRow(1)!.findField(1)!.findLabel()!.getElement()).toHaveTextContent('Custom key');
       expect(wrapper.findRow(1)!.findField(2)!.findLabel()!.getElement()).toHaveTextContent(
         'Custom value - Custom optional'
       );
-
       expect(
         wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.findDropdown().getElement()
       ).toHaveTextContent('Custom key suggestion');
-
       expect(
         wrapper.findRow(1)!.findField(2)!.findControl()!.findAutosuggest()!.findNativeInput()!.getElement()
       ).toHaveAttribute('placeholder', 'Custom value placeholder');
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.setInputValue('Key 1');
+      expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Custom remove Key 1');
     });
   });
 });
