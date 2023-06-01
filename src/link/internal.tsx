@@ -18,7 +18,7 @@ import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-fun
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { getElementSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_VALUE, getFunnelValueSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
 
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
@@ -66,7 +66,7 @@ const InternalLink = React.forwardRef(
           stepNameSelector,
           subStepSelector,
           subStepNameSelector,
-          elementSelector: getElementSelector(uniqueId),
+          elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),
         });
       } else if (external) {
@@ -76,7 +76,7 @@ const InternalLink = React.forwardRef(
           stepNameSelector,
           subStepSelector,
           subStepNameSelector,
-          elementSelector: getElementSelector(uniqueId),
+          elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),
         });
       }
@@ -128,7 +128,7 @@ const InternalLink = React.forwardRef(
         styles[getColorStyle(variant, color)]
       ),
       'aria-label': ariaLabel,
-      'data-analytics-id': uniqueId,
+      [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     };
 
     const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', externalIconAriaLabel);
