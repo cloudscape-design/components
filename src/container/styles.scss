@@ -111,22 +111,16 @@
   }
 }
 
-.with-media {
-  border-bottom: none;
-  background: none;
-  &.content {
-    overflow: auto;
-  }
-}
-
 .header {
   background-color: awsui.$color-background-container-header;
   border-top-left-radius: awsui.$border-radius-container;
   border-top-right-radius: awsui.$border-radius-container;
 
-  &-with-media {
-    border-bottom: none !important;
+  &.header-with-media {
     background: none;
+    &:not(:empty) {
+      border-bottom: none;
+    }
     &.content {
       overflow: auto;
     }
