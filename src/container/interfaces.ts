@@ -61,7 +61,7 @@ export namespace ContainerProps {
     /**
      * Use this slot to render your media element.
      */
-    content?: React.ReactNode | MediaDefinition.ContentBreakpointMapping;
+    content?: MediaDefinition.Content | MediaDefinition.ContentBreakpointMapping;
 
     /**
      * Defines the media slot's orientation within the container.
@@ -90,6 +90,7 @@ export namespace MediaDefinition {
   export type ContentBreakpointMapping = MediaDefinition.BreakpointMapping<React.ReactNode> & {
     default: React.ReactNode;
   };
+  export type Content = React.ReactNode;
   export type Orientation = 'horizontal' | 'vertical';
   export type Dimension = string | number;
   export type BreakpointMapping<T> = Partial<Record<Breakpoint, T>>;
