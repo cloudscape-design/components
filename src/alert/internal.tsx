@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../button/internal';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import VisualContext from '../internal/components/visual-context';
+import VisualContext, { useVisualContext } from '../internal/components/visual-context';
 import styles from './styles.css.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -23,6 +23,8 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   success: 'status-positive',
   info: 'status-info',
 };
+
+const HEADER_CONTEXT_NAME = 'content-header';
 
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps;
 
@@ -45,10 +47,14 @@ export default function InternalAlert({
   const i18n = useInternalI18n('alert');
 
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
+  const contextRef = useRef<HTMLElement>(null);
+  const mergedRef = useMergeRefs(contextRef, breakpointRef, __internalRootRef);
 
   const isRefresh = useVisualRefresh();
   const size = isRefresh ? 'normal' : header && children ? 'big' : 'normal';
+
+  const context = useVisualContext(contextRef);
+  const hasHeaderContext = isRefresh && context === HEADER_CONTEXT_NAME;
 
   const actionButton = action || (
     <InternalButton
@@ -75,7 +81,7 @@ export default function InternalAlert({
       )}
       ref={mergedRef}
     >
-      <VisualContext contextName="alert">
+      <VisualContext contextName={hasHeaderContext ? 'alert-header' : 'alert'}>
         <div className={clsx(styles.alert, styles[`type-${type}`])}>
           <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
             <InternalIcon name={typeToIcon[type]} size={size} />
