@@ -25,21 +25,23 @@ export function useMedia(media?: ContainerProps.Media) {
       return;
     }
 
-    const newMediaState = { ...mediaState };
+    setMediaState(prevMediaState => {
+      const newMediaState = { ...prevMediaState };
 
-    MEDIA_PROPS.forEach(attribute => {
-      if (!media[attribute]) {
-        return;
-      }
+      MEDIA_PROPS.forEach(attribute => {
+        if (!media[attribute]) {
+          return;
+        }
 
-      const value = matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint);
+        const value = matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint);
 
-      // If no value is returned, it means there is no responsive attribute for this (or all) breakpoint(s).
-      newMediaState[attribute] = value || media[attribute];
+        // If no value is returned, it means there is no responsive attribute for this (or all) breakpoint(s).
+        newMediaState[attribute] = value || media[attribute];
+      });
+
+      return newMediaState;
     });
-
-    setMediaState(newMediaState);
-  }, [media, mediaState, breakpoint]);
+  }, [media, breakpoint]);
 
   return {
     breakpointRef,
