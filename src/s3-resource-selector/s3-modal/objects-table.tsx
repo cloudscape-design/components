@@ -53,7 +53,11 @@ export function ObjectsTable({
         ...getSharedI18Strings(i18n, i18nStrings),
         header: i18n('i18nStrings.selectionObjects', i18nStrings?.selectionObjects),
         loadingText: i18n('i18nStrings.selectionObjectsLoading', i18nStrings?.selectionObjectsLoading),
-        filteringAriaLabel: i18nStrings?.labelFiltering?.(i18nStrings?.selectionObjects ?? ''),
+        filteringAriaLabel: i18n(
+          'i18nStrings.labelFiltering',
+          i18nStrings?.labelFiltering,
+          format => itemsType => format({ itemsType })
+        )?.(i18n('i18nStrings.selectionObjects', i18nStrings?.selectionObjects) ?? ''),
         filteringPlaceholder: i18n(
           'i18nStrings.selectionObjectsSearchPlaceholder',
           i18nStrings?.selectionObjectsSearchPlaceholder

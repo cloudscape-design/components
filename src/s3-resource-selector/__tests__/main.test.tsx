@@ -213,6 +213,7 @@ describe('i18n', () => {
             'i18nStrings.selectionBucketsSearchPlaceholder': 'Custom find buckets',
             'i18nStrings.columnBucketName': 'Custom name',
             'i18nStrings.columnBucketCreationDate': 'Custom creation date',
+            'i18nStrings.labelFiltering': 'Custom find {itemsType}',
             'i18nStrings.labelNotSorted': 'Custom {columnName} not sorted',
             'i18nStrings.labelSortedAscending': 'Custom {columnName} sorted ascending',
             'i18nStrings.labelSortedDescending': 'Custom {columnName} sorted descending',
@@ -241,6 +242,10 @@ describe('i18n', () => {
     expect(table.findHeaderSlot()!.findTextFilter()!.findInput()!.findNativeInput()!.getElement()).toHaveAttribute(
       'placeholder',
       'Custom find buckets'
+    );
+    expect(table.findHeaderSlot()!.findTextFilter()!.findInput()!.findNativeInput()!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom find Custom buckets'
     );
     expect(table.findColumnHeaders()[1].getElement()).toHaveTextContent('Custom name');
     expect(table.findColumnSortingArea(2)!.getElement()).toHaveAttribute('aria-label', 'Custom Custom name not sorted');

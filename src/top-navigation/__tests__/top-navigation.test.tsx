@@ -367,6 +367,7 @@ describe('URL sanitization', () => {
       );
       const wrapper = new OverflowMenuWrapper(container);
       expect(wrapper.findTitle()!.getElement()).toHaveTextContent('Custom all');
+      expect(wrapper.findDismissButton()!.getElement()).toHaveAccessibleName('Custom dismiss');
     });
   });
 });

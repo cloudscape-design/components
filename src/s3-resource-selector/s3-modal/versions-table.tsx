@@ -45,7 +45,11 @@ export function VersionsTable({
         ...getSharedI18Strings(i18n, i18nStrings),
         header: i18n('i18nStrings.selectionVersions', i18nStrings?.selectionVersions),
         loadingText: i18n('i18nStrings.selectionVersionsLoading', i18nStrings?.selectionVersionsLoading),
-        filteringAriaLabel: i18nStrings?.labelFiltering?.(i18nStrings?.selectionVersions ?? ''),
+        filteringAriaLabel: i18n(
+          'i18nStrings.labelFiltering',
+          i18nStrings?.labelFiltering,
+          format => itemsType => format({ itemsType })
+        )?.(i18n('i18nStrings.selectionVersions', i18nStrings?.selectionVersions) ?? ''),
         filteringPlaceholder: i18n(
           'i18nStrings.selectionVersionsSearchPlaceholder',
           i18nStrings?.selectionVersionsSearchPlaceholder
