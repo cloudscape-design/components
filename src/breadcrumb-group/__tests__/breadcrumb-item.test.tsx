@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
-import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../../lib/components/internal/analytics/selectors';
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const renderResult = render(<BreadcrumbGroup {...props} />);
@@ -119,6 +121,10 @@ describe('BreadcrumbGroup Item', () => {
     test('should not trigger follow event', () => {
       lastLink.click();
       expect(onFollowSpy).not.toHaveBeenCalled();
+    });
+
+    test('should add a data-analytics attribute for the funnel name', () => {
+      expect(lastLink.getElement()).toHaveAttribute(DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME);
     });
   });
 });

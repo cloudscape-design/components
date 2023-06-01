@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import { FunnelSubStepContext } from '../../../../../lib/components/internal/analytics/context/analytics-context';
 import { useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
 import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
+import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../../../lib/components/internal/analytics/selectors';
 
 import { mockFunnelMetrics } from '../mocks';
 
@@ -44,7 +45,7 @@ describe('useFunnelSubStep hook', () => {
     );
 
     const container = getByTestId('container');
-    expect(container).toHaveAttribute('data-analytics-funnel-substep');
+    expect(container).toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP);
   });
 
   test('calls funnelSubStepStart when the substep is focused', () => {
