@@ -59,3 +59,35 @@ describe('set context values for footer and header', () => {
     });
   });
 });
+
+describe('set context values for hasBreadcrumbs', () => {
+  test('to true', async () => {
+    function Content() {
+      const contextValues = useAppLayoutContext();
+      return <div id="has-breadcrumbs">{`${contextValues.hasBreadcrumbs}`}</div>;
+    }
+    function App() {
+      return <AppLayout breadcrumbs={<div style={{ height: 50 }} />} content={<Content />} />;
+    }
+
+    const { wrapper } = renderComponent(<App />);
+    await waitFor(() => {
+      expect(wrapper.find('#has-breadcrumbs')!.getElement()).toHaveTextContent('true');
+    });
+  });
+
+  test('to false', async () => {
+    function Content() {
+      const contextValues = useAppLayoutContext();
+      return <div id="has-breadcrumbs">{`${contextValues.hasBreadcrumbs}`}</div>;
+    }
+    function App() {
+      return <AppLayout content={<Content />} />;
+    }
+
+    const { wrapper } = renderComponent(<App />);
+    await waitFor(() => {
+      expect(wrapper.find('#has-breadcrumbs')!.getElement()).toHaveTextContent('false');
+    });
+  });
+});
