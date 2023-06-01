@@ -13,6 +13,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useInternalI18n } from '../internal/i18n/context';
 import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 import { FunnelMetrics } from '../internal/analytics';
@@ -48,6 +49,7 @@ const InternalLink = React.forwardRef(
     const specialStyles = ['top-navigation', 'link', 'recovery'];
     const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
+    const i18n = useInternalI18n('link');
     const baseProps = getBaseProps(props);
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
@@ -129,6 +131,7 @@ const InternalLink = React.forwardRef(
       'data-analytics-id': uniqueId,
     };
 
+    const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', externalIconAriaLabel);
     const content = (
       <>
         {children}
@@ -137,8 +140,8 @@ const InternalLink = React.forwardRef(
             &nbsp;
             <span
               className={styles.icon}
-              aria-label={externalIconAriaLabel}
-              role={externalIconAriaLabel ? 'img' : undefined}
+              aria-label={renderedExternalIconAriaLabel}
+              role={renderedExternalIconAriaLabel ? 'img' : undefined}
             >
               <InternalIcon name="external" size="inherit" />
             </span>

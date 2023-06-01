@@ -8,6 +8,7 @@ import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js'
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },
@@ -461,4 +462,15 @@ test('Trigger should have refer to the element using aria-label value and placeh
 test('Trigger receives focus when autofocus is true', () => {
   const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={groupOptions} autoFocus={true} />);
   expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+});
+
+describe('i18n', () => {
+  test('supports providing deselectAriaLabel from i18n provider', () => {
+    const { wrapper } = renderMultiselect(
+      <TestI18nProvider messages={{ multiselect: { deselectAriaLabel: 'Custom deselect {option__label}' } }}>
+        <Multiselect selectedOptions={[{ label: 'First', value: '1' }]} options={defaultOptions} />
+      </TestI18nProvider>
+    );
+    expect(wrapper.findToken(1)!.findDismiss().getElement()).toHaveAttribute('aria-label', 'Custom deselect First');
+  });
 });
