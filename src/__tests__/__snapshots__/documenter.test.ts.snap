@@ -4196,7 +4196,7 @@ The values for all configured preferences are present even if the user didn't ch
     Object {
       "description": "Label of the cancel button in the modal footer.",
       "name": "cancelLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4209,7 +4209,7 @@ The values for all configured preferences are present even if the user didn't ch
     Object {
       "description": "Label of the confirm button in the modal footer.",
       "name": "confirmLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4227,12 +4227,12 @@ You must set the current value in the \`preferences.contentDensity\` property.
         "properties": Array [
           Object {
             "name": "description",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "label",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4309,7 +4309,7 @@ You must provide an ordered list of the items to display in the \`preferences.co
           },
           Object {
             "name": "title",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4379,7 +4379,7 @@ You must set the current value in the \`preferences.pageSize\` property.
           },
           Object {
             "name": "title",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4493,12 +4493,12 @@ You must set the current value in the \`preferences.stripedRows\` property.
         "properties": Array [
           Object {
             "name": "description",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "label",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -4511,7 +4511,7 @@ You must set the current value in the \`preferences.stripedRows\` property.
     Object {
       "description": "Specifies the title of the preferences modal dialog. It is also used as an \`aria-label\` for the trigger button.",
       "name": "title",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4566,12 +4566,12 @@ You must set the current value in the \`preferences.wrapLines\` property.
         "properties": Array [
           Object {
             "name": "description",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "label",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -11582,7 +11582,7 @@ Object {
         "properties": Array [
           Object {
             "name": "closeButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -11627,14 +11627,14 @@ Object {
           },
           Object {
             "name": "resizeHandleAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "SplitPanelProps.I18nStrings",
     },
     Object {
