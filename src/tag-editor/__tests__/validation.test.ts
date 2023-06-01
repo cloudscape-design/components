@@ -12,50 +12,76 @@ import {
 
 import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common';
 
+let mockFormatFn = jest.fn();
+
 describe('validation', () => {
+  beforeEach(() => {
+    mockFormatFn = jest.fn((_key, fallback) => fallback);
+  });
+
+  afterEach(() => {
+    mockFormatFn.mockReset();
+  });
+
   test('should return undefined if no errors for a tag', () => {
-    expect(validate([{ key: 'key-1', value: 'value-1', existing: false }], [true], i18nStrings)).toEqual([undefined]);
+    expect(validate([{ key: 'key-1', value: 'value-1', existing: false }], [true], mockFormatFn, i18nStrings)).toEqual([
+      undefined,
+    ]);
   });
 
   test('should return an empty key error', () => {
-    expect(validate([{ key: '', value: '', existing: false }], [true], i18nStrings)).toEqual([
+    mockFormatFn.mockImplementationOnce(() => i18nStrings.emptyKeyError);
+    expect(validate([{ key: '', value: '', existing: false }], [true], mockFormatFn, undefined)).toEqual([
       {
         key: i18nStrings.emptyKeyError,
         value: undefined,
       },
     ]);
+    expect(mockFormatFn).toHaveBeenCalledWith('i18nStrings.emptyKeyError', undefined);
   });
 
   test('should return an aws prefix error', () => {
-    expect(validate([{ key: 'aws:', value: '', existing: false }], [true], i18nStrings)).toEqual([
+    mockFormatFn.mockImplementationOnce(() => i18nStrings.awsPrefixError);
+    expect(validate([{ key: 'aws:', value: '', existing: false }], [true], mockFormatFn, undefined)).toEqual([
       {
         key: i18nStrings.awsPrefixError,
         value: undefined,
       },
     ]);
+    expect(mockFormatFn).toHaveBeenCalledWith('i18nStrings.awsPrefixError', undefined);
   });
 
   test('should return an invalid key error', () => {
-    expect(validate([{ key: '!', value: '', existing: false }], [true], i18nStrings)).toEqual([
+    mockFormatFn.mockImplementationOnce(() => i18nStrings.invalidKeyError);
+    expect(validate([{ key: '!', value: '', existing: false }], [true], mockFormatFn, undefined)).toEqual([
       {
         key: i18nStrings.invalidKeyError,
         value: undefined,
       },
     ]);
+    expect(mockFormatFn).toHaveBeenCalledWith('i18nStrings.invalidKeyError', undefined);
   });
 
   test('should return a max key length error', () => {
+    mockFormatFn.mockImplementationOnce(() => i18nStrings.maxKeyCharLengthError);
     expect(
-      validate([{ key: generateString(MAX_KEY_LENGTH + 1), value: '', existing: false }], [true], i18nStrings)
+      validate(
+        [{ key: generateString(MAX_KEY_LENGTH + 1), value: '', existing: false }],
+        [true],
+        mockFormatFn,
+        undefined
+      )
     ).toEqual([
       {
         key: i18nStrings.maxKeyCharLengthError,
         value: undefined,
       },
     ]);
+    expect(mockFormatFn).toHaveBeenCalledWith('i18nStrings.maxKeyCharLengthError', undefined);
   });
 
   test('should return a duplicate key error', () => {
+    mockFormatFn.mockImplementation(() => i18nStrings.duplicateKeyError);
     expect(
       validate(
         [
@@ -63,7 +89,8 @@ describe('validation', () => {
           { key: 'key-1', value: '', existing: false },
         ],
         [true, true],
-        i18nStrings
+        mockFormatFn,
+        undefined
       )
     ).toEqual([
       {
@@ -75,10 +102,11 @@ describe('validation', () => {
         value: undefined,
       },
     ]);
+    expect(mockFormatFn).toHaveBeenCalledWith('i18nStrings.duplicateKeyError', undefined);
   });
 
   test('should return an invalid value error when not marked for removal', () => {
-    expect(validate([{ key: 'key-1', value: '!', existing: false }], [true], i18nStrings)).toEqual([
+    expect(validate([{ key: 'key-1', value: '!', existing: false }], [true], mockFormatFn, i18nStrings)).toEqual([
       {
         key: undefined,
         value: i18nStrings.invalidValueError,
@@ -88,7 +116,12 @@ describe('validation', () => {
 
   test('should return an a max value length error when not marked for removal', () => {
     expect(
-      validate([{ key: 'key-1', value: generateString(MAX_VALUE_LENGTH + 1), existing: false }], [true], i18nStrings)
+      validate(
+        [{ key: 'key-1', value: generateString(MAX_VALUE_LENGTH + 1), existing: false }],
+        [true],
+        mockFormatFn,
+        i18nStrings
+      )
     ).toEqual([
       {
         key: undefined,
@@ -99,19 +132,25 @@ describe('validation', () => {
 
   test('should not return any value errors if tag is marked for removal', () => {
     expect(
-      validate([{ key: 'key-1', value: '!', existing: true, markedForRemoval: true }], [true], i18nStrings)
+      validate(
+        [{ key: 'key-1', value: '!', existing: true, markedForRemoval: true }],
+        [true],
+        mockFormatFn,
+        i18nStrings
+      )
     ).toEqual([undefined]);
     expect(
       validate(
         [{ key: 'key-1', value: generateString(MAX_VALUE_LENGTH + 1), existing: true, markedForRemoval: true }],
         [true],
+        mockFormatFn,
         i18nStrings
       )
     ).toEqual([undefined]);
   });
 
   test('should return errors for both keys and values', () => {
-    expect(validate([{ key: '', value: '!', existing: false }], [true], i18nStrings)).toEqual([
+    expect(validate([{ key: '', value: '!', existing: false }], [true], mockFormatFn, i18nStrings)).toEqual([
       {
         key: i18nStrings.emptyKeyError,
         value: i18nStrings.invalidValueError,
