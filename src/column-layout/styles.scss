@@ -8,6 +8,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $grid-columns: 12;
 $grid-gutter-width: awsui.$space-grid-gutter;
@@ -134,8 +135,7 @@ div.column-layout {
     // Alternative implementation based on minimum column widths and CSS Grid
     &.css-grid {
       display: grid;
-      /* stylelint-disable-next-line custom-property-pattern */
-      grid-template-columns: repeat(var(--column-count, 1), 1fr);
+      grid-template-columns: repeat(var(#{custom-props.$columnLayoutColumnCount}, 1), 1fr);
 
       pointer-events: none;
 

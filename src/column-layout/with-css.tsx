@@ -6,6 +6,7 @@ import flattenChildren from 'react-keyed-flatten-children';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { getCommonClasses } from './util';
 import { InternalColumnLayoutProps } from './interfaces';
+import customCssProps from '../internal/generated/custom-css-properties';
 import styles from './styles.css.js';
 
 interface ColumnLayoutWithCSSProps
@@ -53,7 +54,7 @@ export default function ColumnLayoutWithCSS({
         styles['css-grid'],
         isOdd(columnCount) && styles['odd-columns']
       )}
-      style={{ '--column-count': columnCount }}
+      style={{ [customCssProps.columnLayoutColumnCount]: columnCount }}
     >
       {flattenedChildren.map((child, i) => {
         // If this react child is a primitive value, the key will be undefined
