@@ -264,10 +264,10 @@ describe('Date range picker', () => {
           wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[0].findLabel()!.getElement()
         ).toHaveTextContent('Custom last 5 minute');
         expect(
-          wrapper.findDropdown()?.findRelativeRangeRadioGroup()!.findButtons()[4]!.findLabel()!.getElement()
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4]!.findLabel()!.getElement()
         ).toHaveTextContent('Custom custom range');
         expect(
-          wrapper.findDropdown()?.findRelativeRangeRadioGroup()!.findButtons()[4]!.findDescription()!.getElement()
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4]!.findDescription()!.getElement()
         ).toHaveTextContent('Custom custom range description');
       });
     });

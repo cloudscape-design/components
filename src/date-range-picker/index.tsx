@@ -214,11 +214,13 @@ const DateRangePicker = React.forwardRef(
           format({ amount, unit })
     );
 
-    if (!formatRelativeRange) {
-      warnOnce(
-        'DateRangePicker',
-        'A function for i18nStrings.formatRelativeRange was not provided. Relative ranges will not be correctly rendered.'
-      );
+    if (isDevelopment) {
+      if (!formatRelativeRange) {
+        warnOnce(
+          'DateRangePicker',
+          'A function for i18nStrings.formatRelativeRange was not provided. Relative ranges will not be correctly rendered.'
+        );
+      }
     }
 
     const trigger = (

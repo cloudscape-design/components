@@ -558,19 +558,19 @@ describe('Date range picker', () => {
         const wrapper = createWrapper(container).findDateRangePicker()!;
         wrapper.openDropdown();
 
-        expect(wrapper.findDropdown()?.findStartDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
           'Custom start date'
         );
-        expect(wrapper.findDropdown()?.findStartTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
           'Custom start time'
         );
-        expect(wrapper.findDropdown()?.findEndDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
           'Custom end date'
         );
-        expect(wrapper.findDropdown()?.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
           'Custom end time'
         );
-        expect(wrapper.findDropdown()?.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleDescription(
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleDescription(
           'Custom constraint text'
         );
       });
