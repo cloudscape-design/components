@@ -55,7 +55,7 @@ export namespace ContainerProps {
   export interface Media {
     /**
      *
-     * Use this slot to render your media element.
+     * Use this slot to render your media element. We support `img`, `video` and `picture` elements.
      *
      * The value for each media property can either be a single value (which applies for all breakpoints) or an object where the key
      * is one of the supported breakpoints (`xxs`, `xs`, `s`, `m`, `l`, `xl`) or `default`.
