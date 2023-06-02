@@ -12,6 +12,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 import { getStickyClassNames } from '../utils';
+import { useInternalI18n } from '../../internal/i18n/context';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -59,6 +60,7 @@ export function TableHeaderCell<ItemType>({
   columnId,
   stickyState,
 }: TableHeaderCellProps<ItemType>) {
+  const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
   const sortingStatus = getSortingStatus(sortable, sorted, !!sortingDescending, !!sortingDisabled);
@@ -134,7 +136,11 @@ export function TableHeaderCell<ItemType>({
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
           {isEditable ? (
-            <span className={styles['edit-icon']} role="img" aria-label={column.editConfig?.editIconAriaLabel}>
+            <span
+              className={styles['edit-icon']}
+              role="img"
+              aria-label={i18n('columnDefinitions.editConfig.editIconAriaLabel', column.editConfig?.editIconAriaLabel)}
+            >
               <InternalIcon name="edit" />
             </span>
           ) : null}

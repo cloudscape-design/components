@@ -37,11 +37,21 @@ function getComponentsExports() {
     result[`./${component}`] = `./${component}/index.js`;
   }
 
-  // For i18n beta: include internal i18n import and all messages.
+  // Internationalization and messages
+  result['./i18n'] = './i18n/index.js';
+  result[`./i18n/messages/all.all`] = `./i18n/messages/all.all.js`;
+  result[`./i18n/messages/all.all.json`] = `./i18n/messages/all.all.json`;
+  for (const translationFile of fs.readdirSync('src/i18n/messages')) {
+    const [subset, locale] = translationFile.split('.');
+    result[`./i18n/messages/${subset}.${locale}`] = `./i18n/messages/${subset}.${locale}.js`;
+    result[`./i18n/messages/${subset}.${locale}.json`] = `./i18n/messages/${subset}.${locale}.json`;
+  }
+
+  // i18n beta specific imports (delete after people switch over)
   result['./internal/i18n'] = './internal/i18n/index.js';
   result[`./internal/i18n/messages/all.all`] = `./internal/i18n/messages/all.all.js`;
   result[`./internal/i18n/messages/all.all.json`] = `./internal/i18n/messages/all.all.json`;
-  for (const translationFile of fs.readdirSync('src/internal/i18n/messages')) {
+  for (const translationFile of fs.readdirSync('src/i18n/messages')) {
     const [subset, locale] = translationFile.split('.');
     result[`./internal/i18n/messages/${subset}.${locale}`] = `./internal/i18n/messages/${subset}.${locale}.js`;
     result[`./internal/i18n/messages/${subset}.${locale}.json`] = `./internal/i18n/messages/${subset}.${locale}.json`;

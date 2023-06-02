@@ -105,6 +105,7 @@ export interface AppLayoutProps extends BaseComponentProps {
    *   toolsToggle: "Open help panel"
    * }
    * ```
+   * @i18n
    */
   ariaLabels?: AppLayoutProps.Labels;
 

@@ -11,7 +11,7 @@ const items = generateItems(20);
 
 export default function () {
   const [variant, setVariant] = useState<TableProps.Variant>('container');
-  const variants: TableProps.Variant[] = ['container', 'embedded', 'full-page', 'stacked'];
+  const variants: TableProps.Variant[] = ['container', 'embedded', 'full-page', 'stacked', 'borderless'];
 
   const variantButtons = (
     <div style={{ paddingBottom: '10px', display: 'inline-flex', gap: '10px' }}>

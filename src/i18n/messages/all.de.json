@@ -1,0 +1,247 @@
+{
+  "alert": {
+    "dismissAriaLabel": "Warnung verwerfen"
+  },
+  "[charts]": {
+    "loadingText": "Diagramm wird geladen",
+    "errorText": "Die Daten konnten nicht abgerufen werden. Versuchen Sie es später erneut.",
+    "recoveryText": "Wiederholen",
+    "i18nStrings.filterLabel": "Angezeigte Daten filtern",
+    "i18nStrings.filterPlaceholder": "Daten filtern",
+    "i18nStrings.legendAriaLabel": "Legende",
+    "i18nStrings.detailPopoverDismissAriaLabel": "Verwerfen",
+    "i18nStrings.xAxisAriaRoleDescription": "x-Achse",
+    "i18nStrings.yAxisAriaRoleDescription": "y-Achse"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "Weiter",
+    "i18nStrings.previousButtonText": "Zurück",
+    "i18nStrings.finishButtonText": "Beenden",
+    "i18nStrings.labelDismissAnnotation": "Anmerkung ablehnen",
+    "i18nStrings.stepCounterText": "Schritt {stepNumber} von {totalStepCount}",
+    "i18nStrings.taskTitle": "Aufgabe {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {Anmerkung schließen für Schritt {stepNumber} von {totalStepCount}} false {Anmerkung öffnen für Schritt {stepNumber} von {totalStepCount}} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.navigation": "Seitennavigation",
+    "ariaLabels.navigationClose": "Seitennavigation schließen",
+    "ariaLabels.navigationToggle": "Seitennavigation öffnen",
+    "ariaLabels.notifications": "Benachrichtigungen",
+    "ariaLabels.tools": "Hilfebereich",
+    "ariaLabels.toolsClose": "Hilfebereich öffnen",
+    "ariaLabels.toolsToggle": "Hilfebereich schließen"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "Gesamtsumme"
+  },
+  "attribute-editor": {
+    "removeButtonText": "Entfernen",
+    "i18nStrings.errorIconAriaLabel": "Fehler"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "Fehler",
+    "selectedAriaLabel": "Ausgewählt",
+    "enteredTextLabel": "Verwenden Sie: {value}",
+    "recoveryText": "Wiederholen"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "Pfad anzeigen"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "Nächster Monat",
+    "previousMonthAriaLabel": "Vorheriger Monat",
+    "todayAriaLabel": "Heute"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "Elementauswahl"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "Code-Editor wird geladen",
+    "i18nStrings.errorState": "Beim Laden des Code-Editors ist ein Fehler aufgetreten.",
+    "i18nStrings.errorStateRecovery": "Wiederholen",
+    "i18nStrings.editorGroupAriaLabel": "Code-Editor",
+    "i18nStrings.statusBarGroupAriaLabel": "Statusleiste",
+    "i18nStrings.cursorPosition": "Ln {row}, Col {column}",
+    "i18nStrings.errorsTab": "Fehler",
+    "i18nStrings.warningsTab": "Warnungen",
+    "i18nStrings.preferencesButtonAriaLabel": "Einstellungen",
+    "i18nStrings.paneCloseButtonAriaLabel": "Schließen",
+    "i18nStrings.preferencesModalHeader": "Einstellungen",
+    "i18nStrings.preferencesModalCancel": "Abbrechen",
+    "i18nStrings.preferencesModalConfirm": "Bestätigen",
+    "i18nStrings.preferencesModalWrapLines": "Zeilenumbruch",
+    "i18nStrings.preferencesModalTheme": "Themen",
+    "i18nStrings.preferencesModalLightThemes": "Hellere Themen",
+    "i18nStrings.preferencesModalDarkThemes": "Dunkles Design"
+  },
+  "collection-preferences": {
+    "title": "Einstellungen",
+    "confirmLabel": "Bestätigen",
+    "cancelLabel": "Abbrechen",
+    "pageSizePreference.title": "Seitengröße",
+    "wrapLinesPreference.label": "Zeilenumbruch",
+    "wrapLinesPreference.description": "Auswählen, um den gesamten Text anzuzeigen und die Zeilen umzubrechen",
+    "stripedRowsPreference.label": "Gestreifte Zeilen",
+    "stripedRowsPreference.description": "Auswählen, um alternative schattierte Zeilen hinzuzufügen",
+    "contentDensityPreference.label": "Kompakter Modus",
+    "contentDensityPreference.description": "Auswählen, um Inhalte in einem dichteren, kompakteren Modus anzuzeigen",
+    "contentDisplayPreference.title": "Spalteneinstellungen",
+    "contentDisplayPreference.description": "Passen Sie die Sichtbarkeit und Reihenfolge der Spalten an.",
+    "contentDisplayPreference.dragHandleAriaLabel": "Ziehpunkt",
+    "contentDisplayPreference.dragHandleAriaDescription": "Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste), um das Ziehen für ein Element zu aktivieren. Verwenden Sie dann die Pfeiltasten, um die Position abzuschließen. Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste) oder, um den Zug zu verwerfen, verwenden Sie Escape (Escape).",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "Aufgeholtes Element an Position {position} von {total}",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Neuanordnung storniert"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "Relativer Modus",
+    "i18nStrings.absoluteModeTitle": "Absoluter Modus",
+    "i18nStrings.relativeRangeSelectionHeading": "Bereich auswählen",
+    "i18nStrings.cancelButtonLabel": "Abbrechen",
+    "i18nStrings.clearButtonLabel": "Löschen und Verwerfen",
+    "i18nStrings.applyButtonLabel": "Anwenden",
+    "i18nStrings.customRelativeRangeOptionLabel": "Benutzerdefinierter Bereich",
+    "i18nStrings.customRelativeRangeOptionDescription": "Benutzerdefinierten Bereich in der Vergangenheit festlegen",
+    "i18nStrings.customRelativeRangeUnitLabel": "Zeiteinheit",
+    "i18nStrings.customRelativeRangeDurationLabel": "Dauer",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "Dauer eingeben",
+    "i18nStrings.startDateLabel": "Startdatum",
+    "i18nStrings.startTimeLabel": "Startzeit",
+    "i18nStrings.endDateLabel": "Enddatum",
+    "i18nStrings.endTimeLabel": "Endzeit",
+    "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
+    "i18nStrings.errorIconAriaLabel": "Fehler",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Bereich ausgewählt von {startDate} bis {endDate}",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {Letzte {amount} {unit}} other {Letzte {amount} {unit}s}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}s}}"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "Benachrichtigungen",
+    "i18nStrings.errorIconAriaLabel": "Fehler",
+    "i18nStrings.inProgressIconAriaLabel": "In Bearbeitung",
+    "i18nStrings.infoIconAriaLabel": "Info",
+    "i18nStrings.notificationBarAriaLabel": "Alle Benachrichtigungen",
+    "i18nStrings.notificationBarText": "Benachrichtigungen",
+    "i18nStrings.successIconAriaLabel": "Erfolg",
+    "i18nStrings.warningIconAriaLabel": "Warnung"
+  },
+  "form": {
+    "errorIconAriaLabel": "Fehler"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "Fehler"
+  },
+  "help-panel": {
+    "loadingText": "Inhalte werden geladen"
+  },
+  "input": {
+    "clearAriaLabel": "Löschen"
+  },
+  "link": {
+    "externalIconAriaLabel": "Wird in einem neuen Fenster geöffnet"
+  },
+  "modal": {
+    "closeAriaLabel": "Modal schließen"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "Nächste Seite",
+    "ariaLabels.pageLabel": "Seite {pageNumber} aller Seiten",
+    "ariaLabels.previousPageLabel": "Vorherige Seite"
+  },
+  "pie-chart": {
+    "loadingText": "Diagramm wird geladen",
+    "errorText": "Die Daten konnten nicht abgerufen werden. Versuchen Sie es später erneut.",
+    "recoveryText": "Wiederholen"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "Entfernen {option__label}"
+  },
+  "popover": {
+    "dismissAriaLabel": "Popover schließen"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "Alle Eigenschaften",
+    "i18nStrings.applyActionText": "Anwenden",
+    "i18nStrings.cancelActionText": "Abbrechen",
+    "i18nStrings.clearFiltersText": "Filter löschen",
+    "i18nStrings.editTokenHeader": "Filter bearbeiten",
+    "i18nStrings.groupPropertiesText": "Eigenschaften",
+    "i18nStrings.groupValuesText": "Werte",
+    "i18nStrings.operationAndText": "und",
+    "i18nStrings.operationOrText": "oder",
+    "i18nStrings.operatorContainsText": "Enthält",
+    "i18nStrings.operatorDoesNotContainText": "Enthält nicht",
+    "i18nStrings.operatorDoesNotEqualText": "Ist nicht gleich",
+    "i18nStrings.operatorEqualsText": "Ist gleich",
+    "i18nStrings.operatorGreaterOrEqualText": "Ist größer als oder gleich",
+    "i18nStrings.operatorGreaterText": "Ist größer als",
+    "i18nStrings.operatorLessOrEqualText": "Ist kleiner als oder gleich",
+    "i18nStrings.operatorLessText": "Ist kleiner als",
+    "i18nStrings.operatorText": "Operator",
+    "i18nStrings.operatorsText": "Operatoren",
+    "i18nStrings.propertyText": "Eigenschaft",
+    "i18nStrings.tokenLimitShowFewer": "Weniger anzeigen",
+    "i18nStrings.tokenLimitShowMore": "Mehr anzeigen",
+    "i18nStrings.valueText": "Wert",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Filter entfernen, {token__propertyKey} ist gleich {token__value}} not_equals {Filter entfernen, {token__propertyKey} ist nicht gleich {token__value}} greater_than {Filter entfernen, {token__propertyKey} ist größer als {token__value}} greater_than_equal {Filter entfernen, {token__propertyKey} ist größer oder gleich {token__value}} less_than {Filter entfernen, {token__propertyKey} ist kleiner als {token__value}} less_than_equal {Filter entfernen, {token__propertyKey} ist kleiner als oder gleich {token__value}} contains {Filter entfernen, {token__propertyKey} enthält {token__value}} not_contains {Filter entfernen, {token__propertyKey} enthält nicht {token__value}} other {}}"
+  },
+  "s3-resource-selector": {},
+  "select": {
+    "errorIconAriaLabel": "Fehler",
+    "selectedAriaLabel": "Ausgewählt"
+  },
+  "split-panel": {},
+  "table": {
+    "ariaLabels.submittingEditText": "Bearbeitung wird gesendet",
+    "ariaLabels.successfulEditLabel": "Bearbeitung erfolgreich",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "Fehler",
+    "columnDefinitions.editConfig.editIconAriaLabel": "Editierbar"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "Nach links scrollen",
+    "i18nStrings.scrollRightAriaLabel": "Nach rechts scrollen"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "Weniger anzeigen",
+    "i18nStrings.limitShowMore": "Mehr anzeigen"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "Suche",
+    "i18nStrings.searchDismissIconAriaLabel": "Suche schließen",
+    "i18nStrings.overflowMenuTriggerText": "Mehr",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "Menü schließen",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "Zurück",
+    "i18nStrings.overflowMenuTitleText": "Alle"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "Wird geladen",
+    "i18nStrings.tutorialListTitle": "Tutorial auswählen",
+    "i18nStrings.tutorialListDownloadLinkText": "PDF-Version herunterladen",
+    "i18nStrings.labelTutorialListDownloadLink": "PDF-Version dieses Tutorials herunterladen",
+    "i18nStrings.tutorialCompletedText": "Tutorial abgeschlossen",
+    "i18nStrings.learnMoreLinkText": "Weitere Informationen",
+    "i18nStrings.startTutorialButtonText": "Tutorial starten",
+    "i18nStrings.restartTutorialButtonText": "Tutorial neustarten",
+    "i18nStrings.completionScreenTitle": "Herzlichen Glückwunsch! Sie haben das Tutorial abgeschlossen.",
+    "i18nStrings.feedbackLinkText": "Feedback",
+    "i18nStrings.dismissTutorialButtonText": "Tutorial verwerfen",
+    "i18nStrings.taskTitle": "Aufgabe {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "Schritt {stepNumber}: {stepTitle}",
+    "i18nStrings.labelExitTutorial": "Tutorial verwerfen",
+    "i18nStrings.labelTotalSteps": "Gesamte Schritte: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "Ausstehend",
+    "i18nStrings.labelsTaskStatus.in-progress": "In Bearbeitung",
+    "i18nStrings.labelsTaskStatus.success": "Erfolg"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "Schritt {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "Schritt {stepNumber} von {stepsCount}",
+    "i18nStrings.skipToButtonLabel": "Fahren Sie mit {task__title}",
+    "i18nStrings.navigationAriaLabel": "Schritte",
+    "i18nStrings.cancelButton": "Abbrechen",
+    "i18nStrings.previousButton": "Zurück",
+    "i18nStrings.nextButton": "Weiter",
+    "i18nStrings.optional": "optional",
+    "i18nStrings.nextButtonLoadingAnnouncement": "Nächster Schritt wird geladen",
+    "i18nStrings.submitButtonLoadingAnnouncement": "Absenden des Formulars"
+  }
+}

@@ -97,8 +97,9 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
    * * `errorState` - Specifies the text to display if there is an error loading Ace.
    * * `errorStateRecovery`: Specifies the text for the recovery button that's displayed next to the error text.
    *    Use the `recoveryClick` event to do a recovery action (for example, retrying the request).
+   * @i18n
    */
-  i18nStrings: CodeEditorProps.I18nStrings;
+  i18nStrings?: CodeEditorProps.I18nStrings;
 
   /**
    * Specifies the height of the code editor document.

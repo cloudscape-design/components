@@ -35,6 +35,7 @@ import { MultiselectProps } from './interfaces';
 import styles from './styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { joinStrings } from '../internal/utils/strings';
+import { useInternalI18n } from '../internal/i18n/context';
 
 type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps;
 
@@ -82,6 +83,7 @@ const InternalMultiselect = React.forwardRef(
 
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+    const i18n = useInternalI18n('multiselect');
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
@@ -250,7 +252,9 @@ const InternalMultiselect = React.forwardRef(
       iconUrl: option.iconUrl,
       iconSvg: option.iconSvg,
       tags: option.tags,
-      dismissLabel: deselectAriaLabel ? deselectAriaLabel(option) : undefined,
+      dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
+        format({ option__label: option.label ?? '' })
+      ),
     }));
 
     useEffect(() => {

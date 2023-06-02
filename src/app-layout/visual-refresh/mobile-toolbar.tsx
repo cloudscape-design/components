@@ -8,53 +8,44 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
-/**
- * The CSS class 'awsui-context-content-header' needs to be added to the root element so
- * that the design tokens used are overridden with the appropriate values.
- */
-export default function AppBar() {
+export default function MobileToolbar() {
   const {
     ariaLabels,
     breadcrumbs,
-    contentHeader,
-    contentType,
     drawers,
-    dynamicOverlapHeight,
     handleNavigationClick,
     handleToolsClick,
     hasDrawerViewportOverlay,
-    hasNotificationsContent,
-    hasStickyBackground,
     isMobile,
-    navigationHide,
     isNavigationOpen,
     isToolsOpen,
-    toolsHide,
+    navigationHide,
     navigationRefs,
+    toolsHide,
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (navigationHide && !breadcrumbs && toolsHide && !drawers) {
+  if (!isMobile || (navigationHide && !breadcrumbs && toolsHide && !drawers)) {
     return null;
   }
 
   return (
     <section
-      aria-hidden={!isMobile && !breadcrumbs ? true : undefined}
       className={clsx(
-        styles.appbar,
+        styles['mobile-toolbar'],
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
           [styles.unfocusable]: hasDrawerViewportOverlay,
           [testutilStyles['mobile-bar']]: isMobile,
         },
+        testutilStyles['mobile-bar'],
         'awsui-context-content-header'
       )}
     >
-      {!navigationHide && isMobile && (
+      {!navigationHide && (
         <nav
-          className={clsx(styles['appbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
           aria-hidden={isNavigationOpen}
+          className={clsx(styles['mobile-toolbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
         >
           <InternalButton
             ariaLabel={ariaLabels?.navigationToggle ?? undefined}
@@ -72,23 +63,14 @@ export default function AppBar() {
       )}
 
       {breadcrumbs && (
-        <div
-          className={clsx(styles.breadcrumbs, styles[`content-type-${contentType}`], testutilStyles.breadcrumbs, {
-            [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
-            [styles['has-header']]: contentHeader,
-            [styles['has-notifications-content']]: hasNotificationsContent,
-            [styles['has-sticky-background']]: hasStickyBackground,
-          })}
-        >
-          {breadcrumbs}
-        </div>
+        <div className={clsx(styles['mobile-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
       )}
 
       {isMobile && !toolsHide && !drawers && (
         <aside
-          className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
           aria-hidden={isToolsOpen}
           aria-label={ariaLabels?.tools ?? undefined}
+          className={clsx(styles['mobile-toolbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
         >
           <InternalButton
             className={testutilStyles['tools-toggle']}
