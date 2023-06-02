@@ -626,7 +626,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           value={{
             stickyOffsetBottom: offsetBottom,
             stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
-            hasBreadcrumbs: !!props.breadcrumbs,
             setHasStickyBackground,
           }}
         >
