@@ -149,10 +149,11 @@ export default () => {
     resizableColumns: false,
     stickyHeader: false,
     sortingDisabled: false,
-    selectionType: undefined as undefined | 'single' | 'multi',
+    selectionType: 'none' as 'none' | 'single' | 'multi',
     stickyColumnsFirst: 0,
     stickyColumnsLast: 0,
   });
+  const selectionType = settings.selectionType === 'none' ? undefined : settings.selectionType;
 
   const [selectedItems, setSelectedItems] = useState<any>([]);
   const { items, collectionProps } = useCollection(tableItems, { pagination: {}, sorting: {} });
@@ -225,10 +226,11 @@ export default () => {
         </SpaceBetween>
 
         <Table
+          {...settings}
           {...collectionProps}
           data-test-id="small-table"
           stickyColumns={{ first: settings.stickyColumnsFirst, last: settings.stickyColumnsLast }}
-          {...settings}
+          selectionType={selectionType}
           columnDefinitions={columnsConfig}
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
@@ -237,10 +239,11 @@ export default () => {
           header={<Header>Simple table</Header>}
         />
         <Table
+          {...settings}
           {...collectionProps}
           data-test-id="large-table"
           stickyColumns={{ first: settings.stickyColumnsFirst, last: settings.stickyColumnsLast }}
-          {...settings}
+          selectionType={selectionType}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Large table' }}
           columnDefinitions={COLUMN_DEFINITIONS}
           selectedItems={selectedItems}
@@ -249,10 +252,11 @@ export default () => {
           header={<Header>Large table</Header>}
         />
         <Table
+          {...settings}
           {...collectionProps}
           data-test-id="inline-editing-table"
           stickyColumns={{ first: settings.stickyColumnsFirst, last: settings.stickyColumnsLast }}
-          {...settings}
+          selectionType={selectionType}
           columnDefinitions={[
             {
               id: 'inline-edit-start',
