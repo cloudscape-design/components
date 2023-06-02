@@ -61,7 +61,11 @@ export default function IndexPage() {
     <div style={{ maxWidth: 800, margin: '0 auto' }}>
       <h1>Welcome!</h1>
       <p>Build info: {PACKAGE_VERSION}</p>
+      <p>
+        <AwsUiLink href="./playroom/index.html">Open Playroom</AwsUiLink>
+      </p>
       <p>Select a page:</p>
+
       <ul>
         {tree.items.map(item => (
           <TreeItemView key={item.name} item={item} />
