@@ -88,8 +88,6 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   });
   const [defaultSettings, setDefaultSettings] = useState<any>(undefined);
 
-  console.log('APPCONTEXT', settings);
-
   function setUrlParams(newParams: Partial<AppUrlParams>) {
     const pathname = [mode, pageId].filter(segment => !!segment).join('/') + '/';
     history.replace(`/${pathname}${formatQuery({ ...urlParams, ...newParams })}`);
