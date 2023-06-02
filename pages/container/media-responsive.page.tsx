@@ -51,14 +51,14 @@ function ContainerPlayground(props: ContainerProps & { mediaContent: React.React
           l: urlParams.lHeight,
           xl: urlParams.xlHeight,
         },
-        orientation: {
-          default: urlParams.defaultOrientation as 'horizontal' | 'vertical',
-          xxs: urlParams.xxsOrientation as 'horizontal' | 'vertical',
-          xs: urlParams.xsOrientation as 'horizontal' | 'vertical',
-          s: urlParams.sOrientation as 'horizontal' | 'vertical',
-          m: urlParams.mOrientation as 'horizontal' | 'vertical',
-          l: urlParams.lOrientation as 'horizontal' | 'vertical',
-          xl: urlParams.xlOrientation as 'horizontal' | 'vertical',
+        Position: {
+          default: urlParams.defaultPosition as 'top' | 'side',
+          xxs: urlParams.xxsPosition as 'top' | 'side',
+          xs: urlParams.xsPosition as 'top' | 'side',
+          s: urlParams.sPosition as 'top' | 'side',
+          m: urlParams.mPosition as 'top' | 'side',
+          l: urlParams.lPosition as 'top' | 'side',
+          xl: urlParams.xlPosition as 'top' | 'side',
         },
       }}
     />
@@ -84,32 +84,32 @@ function ConfigurationForm() {
               </Badge>
               <Box variant="code">{}</Box>
             </SpaceBetween>
-            <FormField label="Orientation">
+            <FormField label="Position">
               <RadioGroup
                 items={[
                   {
-                    value: 'horizontal',
-                    label: 'Horizontal',
+                    value: 'top',
+                    label: 'Top',
                   },
                   {
-                    value: 'vertical',
-                    label: 'Vertical',
+                    value: 'side',
+                    label: 'Side',
                   },
                 ]}
                 onChange={({ detail }) =>
-                  setUrlParams({ [breakpointName + 'Orientation']: detail.value as 'horizontal' | 'vertical' })
+                  setUrlParams({ [breakpointName + 'Position']: detail.value as 'top' | 'side' })
                 }
-                value={urlParams[breakpointName + 'Orientation']}
+                value={urlParams[breakpointName + 'Position']}
               />
             </FormField>
-            <FormField description="Only valid for 'vertical' orientation." label="Width">
+            <FormField description="Only valid for 'side' position." label="Width">
               <Input
                 placeholder={'example: 30% or 200px'}
                 value={urlParams[breakpointName + 'Width']}
                 onChange={event => setUrlParams({ [breakpointName + 'Width']: event.detail.value })}
               />
             </FormField>
-            <FormField description="Only valid for 'horizontal' orientation." label="Height">
+            <FormField description="Only valid for 'top' position." label="Height">
               <Input
                 placeholder={'example: 30% or 200px'}
                 value={urlParams[breakpointName + 'Height']}

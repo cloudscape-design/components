@@ -8,7 +8,7 @@ import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 
 type MediaProps = keyof ContainerProps.Media;
 
-const MEDIA_PROPS: MediaProps[] = ['orientation', 'width', 'height', 'content'];
+const MEDIA_PROPS: MediaProps[] = ['position', 'width', 'height', 'content'];
 
 const hasDefinedBreakpoint = (obj: any) => {
   return BREAKPOINTS_DESCENDING.some(key => obj[key] !== undefined);
@@ -19,7 +19,7 @@ export function useMedia(media?: ContainerProps.Media) {
     content: media?.content,
     height: '',
     width: '',
-    orientation: media?.orientation || 'horizontal',
+    position: media?.position || 'top',
   };
   const [mediaState, setMediaState] = useState(initialState);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
@@ -61,7 +61,7 @@ export function useMedia(media?: ContainerProps.Media) {
     mediaContent: mediaState?.content,
     mediaHeight: mediaState?.height,
     mediaWidth: mediaState?.width,
-    mediaOrientation: mediaState?.orientation ?? 'horizontal',
+    mediaPosition: mediaState?.position ?? 'top',
   };
 }
 

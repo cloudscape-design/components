@@ -64,9 +64,9 @@ export namespace ContainerProps {
     content?: MediaDefinition.Content | MediaDefinition.ContentBreakpointMapping;
 
     /**
-     * Defines the media slot's orientation within the container.
+     * Defines the media slot's position within the container. Defaults to `top`.
      */
-    orientation: MediaDefinition.Orientation | MediaDefinition.BreakpointMapping<MediaDefinition.Orientation>;
+    position: MediaDefinition.Position | MediaDefinition.BreakpointMapping<MediaDefinition.Position>;
 
     /**
      * Defines the width of the media slot when vertically oriented. Corresponds to the `width` CSS-property.
@@ -91,7 +91,7 @@ export namespace MediaDefinition {
     default: React.ReactNode;
   };
   export type Content = React.ReactNode;
-  export type Orientation = 'horizontal' | 'vertical';
+  export type Position = 'top' | 'side';
   export type Dimension = string | number;
   export type BreakpointMapping<T> = Partial<Record<Breakpoint, T>>;
 }
