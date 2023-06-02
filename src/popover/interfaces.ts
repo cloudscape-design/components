@@ -51,7 +51,6 @@ export interface PopoverProps extends BaseComponentProps {
 
   /**
    * Adds an `aria-label` to the dismiss button for accessibility.
-   * @i18n
    */
   dismissAriaLabel?: string;
 

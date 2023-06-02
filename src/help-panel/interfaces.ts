@@ -31,7 +31,6 @@ export interface HelpPanelProps extends BaseComponentProps {
 
   /**
    * Specifies the text that's displayed when the panel is in a loading state.
-   * @i18n
    */
   loadingText?: string;
 }
