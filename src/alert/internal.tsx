@@ -75,7 +75,7 @@ export default function InternalAlert({
       )}
       ref={mergedRef}
     >
-      <VisualContext contextName={'alert'}>
+      <VisualContext contextName="alert">
         <div className={clsx(styles.alert, styles[`type-${type}`])}>
           <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
             <InternalIcon name={typeToIcon[type]} size={size} />
