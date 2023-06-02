@@ -18,13 +18,13 @@ const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
 };
 
 interface ColumnLayoutWithGridProps
-  extends Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>> {
+  extends Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'> {
   children: React.ReactNode;
   __breakpoint?: ColumnLayoutBreakpoint;
 }
 
 export default React.forwardRef(function ColumnLayoutWithGrid(
-  { columns, variant, borders, disableGutters, __breakpoint, children }: ColumnLayoutWithGridProps,
+  { columns = 1, variant, borders, disableGutters, __breakpoint, children }: ColumnLayoutWithGridProps,
   ref?: React.Ref<any>
 ) {
   /*

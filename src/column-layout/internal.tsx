@@ -16,7 +16,7 @@ export type ColumnLayoutBreakpoint = typeof COLUMN_TRIGGERS[number] | null;
  */
 export default React.forwardRef(function ColumnLayout(
   {
-    columns = 1,
+    columns,
     variant = 'default',
     borders = 'none',
     disableGutters = false,

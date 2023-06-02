@@ -31,15 +31,13 @@ export function calculcateCssColumnCount(
 }
 
 interface ColumnLayoutWithCSSProps
-  extends Required<
-    Pick<InternalColumnLayoutProps, 'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters'>
-  > {
+  extends Pick<InternalColumnLayoutProps, 'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters'> {
   children: React.ReactNode;
 }
 
 export default function ColumnLayoutWithCSS({
-  columns,
-  minColumnWidth,
+  columns = 1,
+  minColumnWidth = 0,
   variant,
   borders,
   disableGutters,
