@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Breakpoint, BREAKPOINTS_DESCENDING, matchBreakpointMapping } from '../internal/breakpoints';
+import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
 import { ContainerProps, MediaDefinition } from './interfaces';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 
@@ -9,17 +9,13 @@ type MediaProps = keyof ContainerProps.Media;
 
 const MEDIA_PROPS: MediaProps[] = ['position', 'width', 'height', 'content'];
 
-const hasDefinedBreakpoint = (obj: any) => {
-  return BREAKPOINTS_DESCENDING.some(key => obj[key] !== undefined);
-};
-
 export function useMedia(media?: ContainerProps.Media) {
   const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
 
-  const mediaState = {
+  const mediaState: ContainerProps.Media = {
     content: media?.content,
-    height: '',
-    width: '',
+    height: media?.height,
+    width: media?.width,
     position: media?.position || 'top',
   };
 
@@ -32,18 +28,33 @@ export function useMedia(media?: ContainerProps.Media) {
       let value;
 
       if (attribute === 'content') {
-        value = hasDefinedBreakpoint(media[attribute])
-          ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
-          : media[attribute];
+        // If the `content` property has a defined breakpoint, we match the current breakpoint value,
+        // otherwise we use the content value (ReactNode) directly.
+
+        const contentValue = media[attribute];
+
+        // If it's an object and contains a 'default' key, it's a BreakpointMapping.
+        if (typeof contentValue === 'object' && contentValue !== null && 'default' in contentValue) {
+          value = matchBreakpointMapping(contentValue, breakpoint);
+        } else {
+          // Otherwise, it's a ReactNode.
+          value = contentValue;
+        }
       } else {
-        value = hasDefinedBreakpoint(media[attribute])
-          ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
-          : typeof media[attribute] === 'string' || typeof media[attribute] === 'number'
-          ? media[attribute]
-          : null;
+        // For other properties ("height", "width", "position"), if the attribute property has a defined breakpoint,
+        // we match the current breakpoint value. Otherwise, if the attribute value is a string or number, we use it directly.
+
+        const attributeValue = media[attribute];
+        // If it's an object, it's a BreakpointMapping
+        if (typeof attributeValue === 'object' && attributeValue !== null) {
+          value = matchBreakpointMapping(attributeValue, breakpoint);
+        } else {
+          // Otherwise, it's a string or number, use it directly
+          value = attributeValue;
+        }
       }
 
-      mediaState[attribute] = value;
+      mediaState[attribute] = value ?? '';
     });
   }
 

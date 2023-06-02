@@ -61,7 +61,7 @@ export namespace ContainerProps {
      * is one of the supported breakpoints (`xxs`, `xs`, `s`, `m`, `l`, `xl`) or `default`.
      * The value of this key is applied for that breakpoint and those above it. You must provide a `default` value for `content`.
      */
-    content?: MediaDefinition.Content | MediaDefinition.ContentBreakpointMapping;
+    content: MediaDefinition.Content | MediaDefinition.ContentBreakpointMapping;
 
     /**
      * Defines the media slot's position within the container. Defaults to `top`.

@@ -14,7 +14,7 @@ export const BREAKPOINT_MAPPING: [Breakpoint, number][] = [
 
 export const mobileBreakpoint = BREAKPOINT_MAPPING.filter(b => b[0] === 'xs')[0][1];
 
-export const BREAKPOINTS_DESCENDING = BREAKPOINT_MAPPING.map(([bp]) => bp);
+const BREAKPOINTS_DESCENDING = BREAKPOINT_MAPPING.map(([bp]) => bp);
 
 /**
  * Take a breakpoint mapping and return the breakpoint value that most closely matches the actual breakpoint.
