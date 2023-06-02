@@ -221,4 +221,6 @@ export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, '
    * instead of dropping left or right.
    */
   preferCenter?: boolean;
+
+  stretchTriggerHeight?: boolean;
 }

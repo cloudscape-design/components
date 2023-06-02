@@ -164,9 +164,9 @@ export const ButtonDropdownSegment = forwardRef(
         ref={ref}
         items={items}
         loading={loading}
-        variant="navigation"
         expandToViewport={expandToViewport}
         expandableGroups={expandableGroups}
+        stretchTriggerHeight={true}
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
         customTriggerBuilder={(clickHandler, ref, _isDisabled, isExpanded) => {
