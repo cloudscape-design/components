@@ -64,6 +64,15 @@ export default function ThemeSwitcher() {
         />
         Disable motion
       </label>
+      <label>
+        <input
+          id="settings-editor-toggle"
+          type="checkbox"
+          checked={urlParams.showSettingsEditor}
+          onChange={event => setUrlParams({ showSettingsEditor: event.target.checked })}
+        />
+        Context settings
+      </label>
     </SpaceBetween>
   );
 }

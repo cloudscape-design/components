@@ -11,6 +11,9 @@ interface AppUrlParams {
   density: Density;
   visualRefresh: boolean;
   motionDisabled: boolean;
+  showSettingsEditor: boolean;
+  readonlySettings: boolean;
+  settings: Record<string, unknown>;
 }
 
 export interface AppContextType<T = unknown> {
@@ -28,6 +31,9 @@ const appContextDefaults: AppContextType = {
     density: Density.Comfortable,
     visualRefresh: THEME === 'default',
     motionDisabled: false,
+    showSettingsEditor: false,
+    readonlySettings: true,
+    settings: {},
   },
   setMode: () => {},
   setUrlParams: () => {},

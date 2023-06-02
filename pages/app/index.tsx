@@ -17,6 +17,7 @@ import IndexPage from './components/index-page';
 import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
+import { SettingsPanel } from './context-settings/settings-panel';
 
 function App() {
   const {
@@ -77,6 +78,7 @@ render(
   <HashRouter>
     <AppContextProvider>
       <App />
+      <SettingsPanel />
     </AppContextProvider>
   </HashRouter>,
   document.getElementById('app')
