@@ -157,6 +157,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * state of the component (for example, the `selectedItems` list). The label function for individual
    * items also receives the corresponding  `Item` object. You can use the group label to
    * add a meaningful description to the whole selection.
+   * @i18n
    */
   ariaLabels?: CardsProps.AriaLabels<T>;
   /**
