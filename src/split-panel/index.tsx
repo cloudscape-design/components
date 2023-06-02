@@ -129,7 +129,6 @@ export default function SplitPanel({
       value={{
         stickyOffsetTop: topOffset,
         stickyOffsetBottom: bottomOffset,
-        hasBreadcrumbs: false,
       }}
     >
       {children}
