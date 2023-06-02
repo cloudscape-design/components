@@ -4702,6 +4702,37 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
       "type": "string",
     },
     Object {
+      "inlineType": Object {
+        "name": "ContainerProps.Media",
+        "properties": Array [
+          Object {
+            "name": "content",
+            "optional": true,
+            "type": "MediaDefinition.Content | MediaDefinition.ContentBreakpointMapping",
+          },
+          Object {
+            "name": "height",
+            "optional": true,
+            "type": "MediaDefinition.BreakpointMapping<MediaDefinition.Dimension> | MediaDefinition.Dimension",
+          },
+          Object {
+            "name": "position",
+            "optional": false,
+            "type": "MediaDefinition.BreakpointMapping<MediaDefinition.Position> | MediaDefinition.Position",
+          },
+          Object {
+            "name": "width",
+            "optional": true,
+            "type": "MediaDefinition.BreakpointMapping<MediaDefinition.Dimension> | MediaDefinition.Dimension",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "media",
+      "optional": true,
+      "type": "ContainerProps.Media",
+    },
+    Object {
       "defaultValue": "\\"default\\"",
       "description": "Specify a container variant with one of the following:
 * \`default\` - Use this variant in standalone context.
