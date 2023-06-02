@@ -31,7 +31,6 @@ export interface AlertProps extends BaseComponentProps {
   dismissible?: boolean;
   /**
    * Adds an aria-label to the dismiss button.
-   * @i18n
    */
   dismissAriaLabel?: string;
   /**

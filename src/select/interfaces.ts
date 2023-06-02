@@ -86,7 +86,6 @@ export interface BaseSelectProps
   filteringAriaLabel?: string;
   /**
    * Adds an `aria-label` to the clear button inside the search input.
-   * @i18n
    */
   filteringClearAriaLabel?: string;
   /**
@@ -113,7 +112,6 @@ export interface BaseSelectProps
    * Specifies the localized string that describes an option as being selected.
    * This is required to provide a good screen reader experience. For more information, see the
    * [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
-   * @i18n
    */
   selectedAriaLabel?: string;
   /**

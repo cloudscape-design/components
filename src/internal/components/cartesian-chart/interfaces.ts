@@ -69,7 +69,6 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
 
   /**
    * An object containing all the necessary localized strings required by the component.
-   * @i18n
    */
   i18nStrings?: CartesianChartProps.I18nStrings<T>;
 
@@ -138,19 +137,16 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
 
   /**
    * Text that is displayed when the chart is loading, i.e. when `statusType` is set to `"loading"`.
-   * @i18n
    */
   loadingText?: string;
 
   /**
    * Text that is displayed when the chart is in error state, i.e. when `statusType` is set to `"error"`.
-   * @i18n
    */
   errorText?: string;
 
   /**
    * Text for the recovery button that is displayed next to the error text.
-   * @i18n
    **/
   recoveryText?: string;
 

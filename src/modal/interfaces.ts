@@ -18,7 +18,6 @@ export interface ModalProps extends BaseComponentProps {
   visible: boolean;
   /**
    * Adds an `aria-label` to the close button, for accessibility.
-   * @i18n
    */
   closeAriaLabel?: string;
   /**

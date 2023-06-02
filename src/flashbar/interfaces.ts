@@ -85,7 +85,6 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `infoIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `info`.
    * * `successIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `success`.
    * * `inProgressIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where `loading` is set to `true`).
-   * @i18n
    */
   i18nStrings?: FlashbarProps.I18nStrings;
 }
