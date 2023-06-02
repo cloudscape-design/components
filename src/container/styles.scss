@@ -75,18 +75,16 @@
 }
 
 .content-wrapper {
-  &-with-media {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    .fit-height > & {
-      overflow: auto;
-    }
+  display: flex;
+  flex-direction: column;
+  &-fit-height {
+    height: 100%;
   }
 }
 
 .media {
   overflow: hidden;
+  flex-shrink: 0;
 
   // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
   img,
@@ -99,7 +97,7 @@
   }
 
   &-top {
-    max-height: 80%;
+    max-height: 66%;
     border-top-left-radius: awsui.$border-radius-container;
     border-top-right-radius: awsui.$border-radius-container;
   }
@@ -208,7 +206,7 @@ the default white background of the container component.
 }
 
 .content {
-  .fit-height > & {
+  &-fit-height {
     flex: 1;
     overflow: auto;
   }
