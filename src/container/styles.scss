@@ -76,9 +76,7 @@
 
 .content-wrapper {
   flex: 1;
-  &-fit-height {
-    overflow: auto;
-  }
+  overflow: auto;
   &-with-media {
     display: flex;
     flex-direction: column;
@@ -120,9 +118,6 @@
     background: none;
     &:not(:empty) {
       border-bottom: none;
-    }
-    &.content {
-      overflow: auto;
     }
   }
 
