@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useState } from 'react';
-import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
+import { Breakpoint, BREAKPOINTS_DESCENDING, matchBreakpointMapping } from '../internal/breakpoints';
 import { ContainerProps, MediaDefinition } from './interfaces';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 
@@ -10,16 +10,19 @@ type MediaProps = keyof ContainerProps.Media;
 
 const MEDIA_PROPS: MediaProps[] = ['orientation', 'width', 'height', 'content'];
 
+const hasDefinedBreakpoint = (obj: any) => {
+  return BREAKPOINTS_DESCENDING.some(key => obj[key] !== undefined);
+};
+
 export function useMedia(media?: ContainerProps.Media) {
   const initialState = {
     content: media?.content,
-    height: media?.height,
-    width: media?.width,
+    height: '',
+    width: '',
     orientation: media?.orientation || 'horizontal',
   };
   const [mediaState, setMediaState] = useState(initialState);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
-
   useEffect(() => {
     if (!media || !breakpoint) {
       return;
@@ -33,22 +36,32 @@ export function useMedia(media?: ContainerProps.Media) {
           return;
         }
 
-        const value = matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint);
+        let value;
 
-        // If no value is returned, it means there is no responsive attribute for this (or all) breakpoint(s).
-        newMediaState[attribute] = value || media[attribute];
+        if (attribute === 'content') {
+          value = hasDefinedBreakpoint(media[attribute])
+            ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
+            : media[attribute];
+        } else {
+          value = hasDefinedBreakpoint(media[attribute])
+            ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
+            : typeof media[attribute] === 'string' || typeof media[attribute] === 'number'
+            ? media[attribute]
+            : null;
+        }
+
+        newMediaState[attribute] = value;
       });
 
       return newMediaState;
     });
   }, [media, breakpoint]);
-
   return {
     breakpointRef,
     mediaContent: mediaState?.content,
     mediaHeight: mediaState?.height,
     mediaWidth: mediaState?.width,
-    mediaOrientation: mediaState?.orientation,
+    mediaOrientation: mediaState?.orientation ?? 'horizontal',
   };
 }
 
