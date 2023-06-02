@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useEffect, useState } from 'react';
 import { Breakpoint, BREAKPOINTS_DESCENDING, matchBreakpointMapping } from '../internal/breakpoints';
 import { ContainerProps, MediaDefinition } from './interfaces';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -15,47 +14,39 @@ const hasDefinedBreakpoint = (obj: any) => {
 };
 
 export function useMedia(media?: ContainerProps.Media) {
-  const initialState = {
+  const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
+
+  const mediaState = {
     content: media?.content,
     height: '',
     width: '',
     position: media?.position || 'top',
   };
-  const [mediaState, setMediaState] = useState(initialState);
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(getBreakpointsForMedia(media));
-  useEffect(() => {
-    if (!media || !breakpoint) {
-      return;
-    }
 
-    setMediaState(prevMediaState => {
-      const newMediaState = { ...prevMediaState };
+  if (media && breakpoint) {
+    MEDIA_PROPS.forEach(attribute => {
+      if (!media[attribute]) {
+        return;
+      }
 
-      MEDIA_PROPS.forEach(attribute => {
-        if (!media[attribute]) {
-          return;
-        }
+      let value;
 
-        let value;
+      if (attribute === 'content') {
+        value = hasDefinedBreakpoint(media[attribute])
+          ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
+          : media[attribute];
+      } else {
+        value = hasDefinedBreakpoint(media[attribute])
+          ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
+          : typeof media[attribute] === 'string' || typeof media[attribute] === 'number'
+          ? media[attribute]
+          : null;
+      }
 
-        if (attribute === 'content') {
-          value = hasDefinedBreakpoint(media[attribute])
-            ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
-            : media[attribute];
-        } else {
-          value = hasDefinedBreakpoint(media[attribute])
-            ? matchBreakpointMapping(media[attribute] as MediaDefinition.BreakpointMapping<any>, breakpoint)
-            : typeof media[attribute] === 'string' || typeof media[attribute] === 'number'
-            ? media[attribute]
-            : null;
-        }
-
-        newMediaState[attribute] = value;
-      });
-
-      return newMediaState;
+      mediaState[attribute] = value;
     });
-  }, [media, breakpoint]);
+  }
+
   return {
     breakpointRef,
     mediaContent: mediaState?.content,
