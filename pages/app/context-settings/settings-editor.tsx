@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { CodeEditor, CodeEditorProps, SpaceBetween, StatusIndicator, Textarea } from '~components';
 import { i18nStrings as codeEditorI18nStrings } from '../../code-editor/base-props';
+import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 
 export function SettingsEditor<S extends object>({
   settings,
@@ -27,11 +28,7 @@ export function SettingsEditor<S extends object>({
   }, []);
 
   const [isUpdating, setIsUpdating] = useState(false);
-  useEffect(() => {
-    if (readonly) {
-      return;
-    }
-
+  useEffectOnUpdate(() => {
     setIsUpdating(true);
 
     const timeoutId = setTimeout(() => {
@@ -45,7 +42,7 @@ export function SettingsEditor<S extends object>({
 
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [propsStr, readonly]);
+  }, [propsStr]);
 
   useEffect(() => {
     setPropsStr(JSON.stringify(settings, null, 2));
