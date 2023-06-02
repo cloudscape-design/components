@@ -18,14 +18,32 @@ interface IState {
 }
 
 export default class App extends React.PureComponent<null, IState> {
-  initialValue = 'const pi = 3.14;';
+  initialValue = JSON.stringify(
+    {
+      children: 'Instance actions',
+      expandableGroups: true,
+      items: [
+        {
+          id: 'connect',
+          text: 'Connect',
+        },
+        {
+          id: 'states',
+          text: 'Instance State',
+          items: [],
+        },
+      ],
+    },
+    null,
+    2
+  );
 
   constructor(props: null) {
     super(props);
     this.state = {
       ace: undefined,
       value: this.initialValue,
-      language: 'javascript',
+      language: 'json',
       preferences: undefined,
       loading: true,
     };
