@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { DropdownPageObject } from './dropdown-page-object';
-import qs from 'qs';
 
 interface PageSettings {
   expandToViewport: boolean;
@@ -13,7 +12,8 @@ interface PageSettings {
 
 function setupTest(settings: PageSettings, testFn: (page: DropdownPageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url(`#/light/dropdown/focus-trap?${qs.stringify(settings)}`);
+    await browser.url(`#/light/dropdown/focus-trap?settings=${JSON.stringify({ ...settings, loopFocus: true })}`);
+
     const page = new DropdownPageObject('test-target', browser);
     await page.waitForVisible(page.getDropdown());
     await page.click(page.getTrigger());

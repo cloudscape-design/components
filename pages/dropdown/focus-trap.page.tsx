@@ -1,32 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+
+import React from 'react';
 import Dropdown from '~components/internal/components/dropdown';
 import { useState } from 'react';
-import AppContext, { AppContextType } from '../app/app-context';
+import { useAppSettings } from '../app/app-context';
 import { Box, SpaceBetween, Button } from '~components';
 
-type PageContext = React.Context<
-  AppContextType<{
-    expandToViewport: boolean;
-    loopFocus: boolean;
-    disableHeader: boolean;
-    disableContent: boolean;
-    disableFooter: boolean;
-  }>
->;
-
 export default function DropdownScenario() {
-  const {
-    urlParams: {
-      expandToViewport = true,
-      loopFocus = true,
-      disableHeader = false,
-      disableContent = false,
-      disableFooter = false,
-    },
-    setUrlParams,
-  } = useContext(AppContext as PageContext);
+  const [settings, setSettings] = useAppSettings({
+    expandToViewport: true,
+    loopFocus: true,
+    disableHeader: false,
+    disableContent: false,
+    disableFooter: false,
+  });
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,8 +27,8 @@ export default function DropdownScenario() {
           <label>
             <input
               type="checkbox"
-              checked={expandToViewport}
-              onChange={event => setUrlParams({ expandToViewport: event.target.checked })}
+              checked={settings.expandToViewport}
+              onChange={event => setSettings({ expandToViewport: event.target.checked })}
             />
             expandToViewport
           </label>
@@ -48,8 +36,8 @@ export default function DropdownScenario() {
           <label>
             <input
               type="checkbox"
-              checked={loopFocus}
-              onChange={event => setUrlParams({ loopFocus: event.target.checked })}
+              checked={settings.loopFocus}
+              onChange={event => setSettings({ loopFocus: event.target.checked })}
             />
             loopFocus
           </label>
@@ -57,8 +45,8 @@ export default function DropdownScenario() {
           <label>
             <input
               type="checkbox"
-              checked={disableHeader}
-              onChange={event => setUrlParams({ disableHeader: event.target.checked })}
+              checked={settings.disableHeader}
+              onChange={event => setSettings({ disableHeader: event.target.checked })}
             />
             disableHeader
           </label>
@@ -66,8 +54,8 @@ export default function DropdownScenario() {
           <label>
             <input
               type="checkbox"
-              checked={disableFooter}
-              onChange={event => setUrlParams({ disableFooter: event.target.checked })}
+              checked={settings.disableFooter}
+              onChange={event => setSettings({ disableFooter: event.target.checked })}
             />
             disableFooter
           </label>
@@ -75,8 +63,8 @@ export default function DropdownScenario() {
           <label>
             <input
               type="checkbox"
-              checked={disableContent}
-              onChange={event => setUrlParams({ disableContent: event.target.checked })}
+              checked={settings.disableContent}
+              onChange={event => setSettings({ disableContent: event.target.checked })}
             />
             disableContent
           </label>
@@ -92,22 +80,22 @@ export default function DropdownScenario() {
               onDropdownClose={() => setIsOpen(false)}
               header={
                 <div style={{ padding: 8 }}>
-                  <Button disabled={disableHeader}>header-1</Button>
-                  <Button disabled={disableHeader}>header-2</Button>
+                  <Button disabled={settings.disableHeader}>header-1</Button>
+                  <Button disabled={settings.disableHeader}>header-2</Button>
                 </div>
               }
               footer={
                 <div style={{ padding: 8 }}>
-                  <Button disabled={disableFooter}>footer-1</Button>
-                  <Button disabled={disableFooter}>footer-2</Button>
+                  <Button disabled={settings.disableFooter}>footer-1</Button>
+                  <Button disabled={settings.disableFooter}>footer-2</Button>
                 </div>
               }
-              expandToViewport={expandToViewport}
-              loopFocus={loopFocus}
+              expandToViewport={settings.expandToViewport}
+              loopFocus={settings.loopFocus}
             >
               <div style={{ padding: 8 }}>
-                <Button disabled={disableContent}>content-1</Button>
-                <Button disabled={disableContent}>content-2</Button>
+                <Button disabled={settings.disableContent}>content-1</Button>
+                <Button disabled={settings.disableContent}>content-2</Button>
               </div>
             </Dropdown>
           </div>
