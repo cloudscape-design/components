@@ -131,13 +131,7 @@ export default function InternalContainer({
           {mediaContent}
         </div>
       )}
-      <div
-        className={clsx(
-          styles['content-wrapper'],
-          hasMedia && styles['content-wrapper-with-media'],
-          fitHeight && styles['content-wrapper-fit-height']
-        )}
-      >
+      <div className={clsx(styles['content-wrapper'], hasMedia && styles['content-wrapper-with-media'])}>
         {header && (
           <StickyHeaderContext.Provider value={{ isStuck }}>
             <div

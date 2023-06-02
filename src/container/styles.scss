@@ -75,14 +75,13 @@
 }
 
 .content-wrapper {
-  .fit-height > & {
-    flex: 1;
-    overflow: auto;
-  }
   &-with-media {
     display: flex;
     flex: 1;
     flex-direction: column;
+    .fit-height > & {
+      overflow: auto;
+    }
   }
 }
 
@@ -218,6 +217,9 @@ the default white background of the container component.
 
     .header + & {
       padding-top: awsui.$space-container-content-top;
+      &.content-with-media {
+        padding-top: 0;
+      }
     }
   }
   &-with-media {
