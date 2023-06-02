@@ -243,10 +243,6 @@ explicitly set in script.
   components for mobile viewports.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    &.content-first-child-notifications {
-      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
-    }
-
     &.content-first-child-header {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
@@ -255,7 +251,6 @@ explicitly set in script.
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
 
-    &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header),
     &.content-first-child-main:not(.is-overlap-disabled) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
     }
