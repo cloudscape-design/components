@@ -10,8 +10,10 @@ import { SettingsEditor } from './settings-editor';
 
 export function SettingsPanel() {
   const {
-    urlParams: { showSettingsEditor, readonlySettings, settings },
+    urlParams: { showSettingsEditor, readonlySettings },
     setUrlParams,
+    settings,
+    setSettings,
     defaultSettings = {},
   } = useContext(AppContext);
 
@@ -40,7 +42,6 @@ export function SettingsPanel() {
 
   const onClose = () => setUrlParams({ showSettingsEditor: false });
   const setReadonly = (value: boolean) => setUrlParams({ readonlySettings: value });
-  const setSettings = (value: Record<string, unknown>) => setUrlParams({ settings: value });
 
   return (
     <div ref={panelRef} className={styles.panel}>

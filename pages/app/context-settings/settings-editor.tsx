@@ -27,6 +27,10 @@ export function SettingsEditor<S extends object>({
   }, []);
 
   useEffect(() => {
+    if (readonly) {
+      return;
+    }
+
     const timeoutId = setTimeout(() => {
       try {
         onChange(JSON.parse(propsStr));
@@ -37,7 +41,11 @@ export function SettingsEditor<S extends object>({
 
     return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [propsStr]);
+  }, [propsStr, readonly]);
+
+  useEffect(() => {
+    setPropsStr(JSON.stringify(settings, null, 2));
+  }, [settings]);
 
   if (readonly) {
     return <Textarea value={propsStr} readOnly={true} rows={propsStr.split('\n').length} />;

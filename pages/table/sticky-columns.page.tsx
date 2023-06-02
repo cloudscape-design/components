@@ -145,7 +145,7 @@ const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: '
 const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
 
 export default () => {
-  const { settings, setSettings } = useAppSettings({
+  const [settings, setSettings] = useAppSettings({
     resizableColumns: false,
     stickyHeader: false,
     sortingDisabled: false,
