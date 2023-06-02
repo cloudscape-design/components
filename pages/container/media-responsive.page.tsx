@@ -51,7 +51,7 @@ function ContainerPlayground(props: ContainerProps & { mediaContent: React.React
           l: urlParams.lHeight,
           xl: urlParams.xlHeight,
         },
-        Position: {
+        position: {
           default: urlParams.defaultPosition as 'top' | 'side',
           xxs: urlParams.xxsPosition as 'top' | 'side',
           xs: urlParams.xsPosition as 'top' | 'side',

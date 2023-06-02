@@ -76,7 +76,7 @@ export default function InternalContainer({
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
-  const { breakpointRef, mediaOrientation, mediaHeight, mediaWidth, mediaContent } = useMedia(media);
+  const { breakpointRef, mediaPosition, mediaHeight, mediaWidth, mediaContent } = useMedia(media);
   const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef, breakpointRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
   const headerIdProp = __headerId ? { id: __headerId } : {};
@@ -104,7 +104,7 @@ export default function InternalContainer({
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
   function getMediaStyles() {
-    return mediaOrientation === 'horizontal' ? { height: mediaHeight } : { width: mediaWidth };
+    return mediaPosition === 'top' ? { height: mediaHeight } : { width: mediaWidth };
   }
 
   return (
@@ -116,13 +116,13 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        media?.content && (mediaOrientation === 'vertical' ? styles['vertical-media'] : styles['horizontal-media']),
+        media?.content && (mediaPosition === 'top' ? styles['with-top-media'] : styles['with-side-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >
       {media?.content && (
-        <div className={clsx(styles[`media-${mediaOrientation}`], styles.media)} style={getMediaStyles()}>
+        <div className={clsx(styles[`media-${mediaPosition}`], styles.media)} style={getMediaStyles()}>
           {mediaContent}
         </div>
       )}

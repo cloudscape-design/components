@@ -64,12 +64,12 @@
   }
 }
 
-.vertical-media {
+.with-side-media {
   display: flex;
   flex-direction: row;
 }
 
-.horizontal-media {
+.with-top-media {
   display: flex;
   flex-direction: column;
 }
@@ -98,13 +98,13 @@
     object-position: center;
   }
 
-  &-horizontal {
+  &-top {
     max-height: 80%;
     border-top-left-radius: awsui.$border-radius-container;
     border-top-right-radius: awsui.$border-radius-container;
   }
 
-  &-vertical {
+  &-side {
     max-width: 66%;
     border-top-left-radius: awsui.$border-radius-container;
     border-bottom-left-radius: awsui.$border-radius-container;
