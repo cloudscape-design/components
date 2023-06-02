@@ -4717,7 +4717,7 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
           },
           Object {
             "name": "position",
-            "optional": false,
+            "optional": true,
             "type": "MediaDefinition.BreakpointMapping<MediaDefinition.Position> | MediaDefinition.Position",
           },
           Object {

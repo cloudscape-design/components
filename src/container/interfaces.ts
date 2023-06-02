@@ -66,7 +66,7 @@ export namespace ContainerProps {
     /**
      * Defines the media slot's position within the container. Defaults to `top`.
      */
-    position: MediaDefinition.Position | MediaDefinition.BreakpointMapping<MediaDefinition.Position>;
+    position?: MediaDefinition.Position | MediaDefinition.BreakpointMapping<MediaDefinition.Position>;
 
     /**
      * Defines the width of the media slot when positioned on the side. Corresponds to the `width` CSS-property.
