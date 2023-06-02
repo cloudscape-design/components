@@ -103,9 +103,7 @@ export default function InternalContainer({
   // In this case we don't want the container to have sticky styles, as only the table header row will show as stuck on scroll.
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
-  function getMediaStyles() {
-    return mediaPosition === 'top' ? { height: mediaHeight } : { width: mediaWidth };
-  }
+  const hasMedia = !!media?.content;
 
   return (
     <div
@@ -116,20 +114,23 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        media?.content && (mediaPosition === 'top' ? styles['with-top-media'] : styles['with-side-media']),
+        hasMedia && (mediaPosition === 'top' ? styles['with-top-media'] : styles['with-side-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >
-      {media?.content && (
-        <div className={clsx(styles[`media-${mediaPosition}`], styles.media)} style={getMediaStyles()}>
+      {hasMedia && (
+        <div
+          className={clsx(styles[`media-${mediaPosition}`], styles.media)}
+          style={mediaPosition === 'top' ? { height: mediaHeight } : { width: mediaWidth }}
+        >
           {mediaContent}
         </div>
       )}
       <div
         className={clsx(
           styles['content-wrapper'],
-          media?.content && styles['content-wrapper-with-media'],
+          hasMedia && styles['content-wrapper-with-media'],
           fitHeight && styles['content-wrapper-fit-height']
         )}
       >
@@ -143,7 +144,7 @@ export default function InternalContainer({
                 [styles['header-stuck']]: isStuck,
                 [styles['with-paddings']]: !disableHeaderPaddings,
                 [styles['with-hidden-content']]: !children || __hiddenContent,
-                [styles['header-with-media']]: !!media?.content,
+                [styles['header-with-media']]: hasMedia,
               })}
               {...headerIdProp}
               {...stickyStyles}
@@ -158,7 +159,7 @@ export default function InternalContainer({
           </StickyHeaderContext.Provider>
         )}
         <div
-          className={clsx(styles.content, media?.content && styles['content-with-media'], {
+          className={clsx(styles.content, hasMedia && styles['content-with-media'], {
             [styles['with-paddings']]: !disableContentPaddings,
           })}
         >
