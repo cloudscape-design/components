@@ -75,10 +75,13 @@
 }
 
 .content-wrapper {
-  flex: 1;
-  overflow: auto;
+  .fit-height > & {
+    flex: 1;
+    overflow: auto;
+  }
   &-with-media {
     display: flex;
+    flex: 1;
     flex-direction: column;
   }
 }
