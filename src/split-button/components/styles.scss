@@ -6,24 +6,37 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
-.button-segment {
-  &:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    padding-right: awsui.$space-xs;
-    margin-right: awsui.$space-xxxs;
-  }
+.segment-wrapper {
+  display: contents;
+  /* Needed for test-utils */
+}
 
-  &:not(:first-child) {
+.button-dropdown-segment {
+  > .button {
+    height: 100%;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     padding-left: awsui.$space-xs;
   }
 }
-.button-dropdown-segment {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  padding-left: awsui.$space-xs;
+
+.button-segment {
+  &:not(:last-child) {
+    > .button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-right: awsui.$space-xs;
+      margin-right: awsui.$space-xxxs;
+    }
+  }
+
+  &:not(:first-child) {
+    > .button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-left: awsui.$space-xs;
+    }
+  }
 }
 
 .rotate-up {

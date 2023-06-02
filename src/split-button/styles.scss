@@ -7,5 +7,6 @@
 @use '../internal/styles/tokens' as awsui;
 
 .root {
-  /* used in test utils */
+  display: flex;
+  align-items: stretch;
 }

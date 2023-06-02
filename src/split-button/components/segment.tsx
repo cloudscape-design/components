@@ -14,6 +14,7 @@ import InternalButtonDropdown from '../../button-dropdown/internal';
 export const ButtonSegment = forwardRef(
   (
     {
+      id,
       text,
       ariaLabel,
       disabled,
@@ -39,6 +40,7 @@ export const ButtonSegment = forwardRef(
 
     return (
       <BaseButton
+        id={id}
         ref={ref}
         variant={variant}
         disabled={!!disabled}
@@ -69,6 +71,7 @@ export const ButtonSegment = forwardRef(
 export const LinkSegment = forwardRef(
   (
     {
+      id,
       text,
       ariaLabel,
       disabled,
@@ -100,6 +103,7 @@ export const LinkSegment = forwardRef(
 
     return (
       <BaseLink
+        id={id}
         ref={ref}
         variant={variant}
         disabled={!!disabled}
@@ -137,6 +141,7 @@ export const LinkSegment = forwardRef(
 export const ButtonDropdownSegment = forwardRef(
   (
     {
+      id,
       ariaLabel,
       disabled,
       loading,
@@ -159,7 +164,7 @@ export const ButtonDropdownSegment = forwardRef(
         ref={ref}
         items={items}
         loading={loading}
-        variant={variant}
+        variant="navigation"
         expandToViewport={expandToViewport}
         expandableGroups={expandableGroups}
         onItemClick={onItemClick}
@@ -180,6 +185,7 @@ export const ButtonDropdownSegment = forwardRef(
 
           return (
             <BaseButton
+              id={id}
               ref={ref}
               variant={variant}
               disabled={!!disabled}
@@ -205,6 +211,7 @@ export const ButtonDropdownSegment = forwardRef(
 const BaseButton = forwardRef(
   (
     {
+      id,
       className,
       disabled,
       loading,
@@ -214,6 +221,7 @@ const BaseButton = forwardRef(
       onClick,
       nativeAttributes,
     }: {
+      id: string;
       className: string;
       disabled: boolean;
       loading: boolean;
@@ -227,7 +235,7 @@ const BaseButton = forwardRef(
   ) => {
     const inactive = disabled || loading;
     return (
-      <>
+      <div className={clsx(styles['segment-wrapper'], className)} data-testid={id}>
         <button
           ref={ref}
           type="button"
@@ -235,8 +243,7 @@ const BaseButton = forwardRef(
             buttonStyles.button,
             buttonStyles[`variant-${variant}`],
             inactive && buttonStyles.disabled,
-            styles[`variant-${variant}`],
-            className
+            styles.button
           )}
           onClick={onClick}
           disabled={inactive}
@@ -245,7 +252,7 @@ const BaseButton = forwardRef(
           {children}
         </button>
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
-      </>
+      </div>
     );
   }
 );
@@ -253,6 +260,7 @@ const BaseButton = forwardRef(
 const BaseLink = forwardRef(
   (
     {
+      id,
       className,
       disabled,
       loading,
@@ -262,6 +270,7 @@ const BaseLink = forwardRef(
       onClick,
       nativeAttributes,
     }: {
+      id: string;
       className: string;
       disabled: boolean;
       loading: boolean;
@@ -275,15 +284,14 @@ const BaseLink = forwardRef(
   ) => {
     const inactive = disabled || loading;
     return (
-      <>
+      <div className={clsx(styles['segment-wrapper'], className)} data-testid={id}>
         <a
           ref={ref}
           className={clsx(
             buttonStyles.button,
             buttonStyles[`variant-${variant}`],
             inactive && buttonStyles.disabled,
-            styles[`variant-${variant}`],
-            className
+            styles.button
           )}
           onClick={onClick}
           aria-disabled={inactive}
@@ -293,7 +301,7 @@ const BaseLink = forwardRef(
           {children}
         </a>
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
-      </>
+      </div>
     );
   }
 );
