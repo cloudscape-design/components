@@ -87,8 +87,6 @@ $modal-z-index: 5000;
 
 .content {
   padding: awsui.$space-container-content-top awsui.$space-modal-horizontal awsui.$space-modal-content-bottom;
-  z-index: 0;
-  position: relative;
   &.no-paddings {
     padding: 0;
   }

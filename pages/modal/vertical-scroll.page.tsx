@@ -11,7 +11,7 @@ export default function () {
 
   for (let i = 0; i < 10; i++) {
     content.push(
-      <p key={i} style={{ position: 'relative', zIndex: 999 }}>
+      <p key={i}>
         Bacon ipsum dolor amet jowl short ribs shankle prosciutto flank tenderloin tri-tip tongue. Meatloaf salami
         turducken bresaola ribeye flank shankle boudin sirloin. Picanha meatloaf short ribs chicken jowl andouille filet
         mignon spare ribs kevin rump corned beef. Cow pastrami beef ribs turkey kielbasa alcatra.
@@ -22,9 +22,7 @@ export default function () {
   return (
     <article>
       <h1>Vertical scroll modal</h1>
-      <Button data-testid="modal-trigger" onClick={() => setVisible(true)}>
-        Show modal
-      </Button>
+      <Button onClick={() => setVisible(true)}>Show modal</Button>
       <ScreenshotArea>
         <Modal
           header="Modal title"
