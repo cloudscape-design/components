@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
@@ -11,18 +11,7 @@ import { columnsConfig } from './shared-configs';
 import { generateItems, Instance } from './generate-data';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { Checkbox, FormField, Select } from '~components';
-import AppContext, { AppContextType } from '../app/app-context';
-
-type DemoContext = React.Context<
-  AppContextType<{
-    resizableColumns: boolean;
-    stickyHeader: boolean;
-    sortingDisabled: boolean;
-    selectionType: undefined | 'single' | 'multi';
-    stickyColumnsFirst: string;
-    stickyColumnsLast: string;
-  }>
->;
+import { useAppSettings } from '../app/app-context';
 
 interface ExtendedInstance extends Instance {
   name: string;
@@ -156,7 +145,15 @@ const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: '
 const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
 
 export default () => {
-  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const { settings, setSettings } = useAppSettings({
+    resizableColumns: false,
+    stickyHeader: false,
+    sortingDisabled: false,
+    selectionType: undefined as undefined | 'single' | 'multi',
+    stickyColumnsFirst: 0,
+    stickyColumnsLast: 0,
+  });
+
   const [selectedItems, setSelectedItems] = useState<any>([]);
   const { items, collectionProps } = useCollection(tableItems, { pagination: {}, sorting: {} });
   return (
@@ -166,22 +163,22 @@ export default () => {
         <SpaceBetween direction="horizontal" size="m">
           <FormField label="Table flags">
             <Checkbox
-              checked={urlParams.resizableColumns}
-              onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
+              checked={settings.resizableColumns}
+              onChange={event => setSettings({ resizableColumns: event.detail.checked })}
             >
               Resizable columns
             </Checkbox>
 
             <Checkbox
-              checked={urlParams.stickyHeader}
-              onChange={event => setUrlParams({ stickyHeader: event.detail.checked })}
+              checked={settings.stickyHeader}
+              onChange={event => setSettings({ stickyHeader: event.detail.checked })}
             >
               Sticky header
             </Checkbox>
 
             <Checkbox
-              checked={urlParams.sortingDisabled}
-              onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
+              checked={settings.sortingDisabled}
+              onChange={event => setSettings({ sortingDisabled: event.detail.checked })}
             >
               Sorting disabled
             </Checkbox>
@@ -190,11 +187,11 @@ export default () => {
           <FormField label="Selection type">
             <Select
               selectedOption={
-                selectionTypeOptions.find(option => option.value === urlParams.selectionType) ?? selectionTypeOptions[0]
+                selectionTypeOptions.find(option => option.value === settings.selectionType) ?? selectionTypeOptions[0]
               }
               options={selectionTypeOptions}
               onChange={event =>
-                setUrlParams({
+                setSettings({
                   selectionType:
                     event.detail.selectedOption.value === 'single' || event.detail.selectedOption.value === 'multi'
                       ? event.detail.selectedOption.value
@@ -207,22 +204,22 @@ export default () => {
           <FormField label="Sticky columns first">
             <Select
               selectedOption={
-                stickyColumnsOptions.find(option => option.value === urlParams.stickyColumnsFirst) ??
+                stickyColumnsOptions.find(option => option.value === settings.stickyColumnsFirst.toString()) ??
                 stickyColumnsOptions[0]
               }
               options={stickyColumnsOptions}
-              onChange={event => setUrlParams({ stickyColumnsFirst: event.detail.selectedOption.value })}
+              onChange={event => setSettings({ stickyColumnsFirst: parseInt(event.detail.selectedOption.value ?? '') })}
             />
           </FormField>
 
           <FormField label="Sticky columns last">
             <Select
               selectedOption={
-                stickyColumnsOptions.find(option => option.value === urlParams.stickyColumnsLast) ??
+                stickyColumnsOptions.find(option => option.value === settings.stickyColumnsLast.toString()) ??
                 stickyColumnsOptions[0]
               }
               options={stickyColumnsOptions}
-              onChange={event => setUrlParams({ stickyColumnsLast: event.detail.selectedOption.value })}
+              onChange={event => setSettings({ stickyColumnsLast: parseInt(event.detail.selectedOption.value ?? '') })}
             />
           </FormField>
         </SpaceBetween>
@@ -230,8 +227,8 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="small-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
-          {...urlParams}
+          stickyColumns={{ first: settings.stickyColumnsFirst, last: settings.stickyColumnsLast }}
+          {...settings}
           columnDefinitions={columnsConfig}
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
@@ -242,8 +239,8 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="large-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
-          {...urlParams}
+          stickyColumns={{ first: settings.stickyColumnsFirst, last: settings.stickyColumnsLast }}
+          {...settings}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Large table' }}
           columnDefinitions={COLUMN_DEFINITIONS}
           selectedItems={selectedItems}
@@ -254,8 +251,8 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="inline-editing-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
-          {...urlParams}
+          stickyColumns={{ first: settings.stickyColumnsFirst, last: settings.stickyColumnsLast }}
+          {...settings}
           columnDefinitions={[
             {
               id: 'inline-edit-start',

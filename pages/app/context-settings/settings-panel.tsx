@@ -12,6 +12,7 @@ export function SettingsPanel() {
   const {
     urlParams: { showSettingsEditor, readonlySettings, settings },
     setUrlParams,
+    defaultSettings = {},
   } = useContext(AppContext);
 
   const panelRef = useRef<HTMLDivElement>(null);
@@ -55,7 +56,7 @@ export function SettingsPanel() {
             Readonly
           </Toggle>
 
-          <SettingsEditor readonly={readonlySettings} settings={settings} onChange={setSettings} />
+          <SettingsEditor readonly={readonlySettings} settings={settings ?? defaultSettings} onChange={setSettings} />
         </div>
       </div>
     </div>

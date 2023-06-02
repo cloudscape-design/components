@@ -1,26 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import qs from 'qs';
-import React, { createContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import mapValues from 'lodash/mapValues';
 import { THEME } from '~components/internal/environment';
 import { Density, Mode } from '@cloudscape-design/global-styles';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
-interface AppUrlParams {
+interface AppUrlParams<S = Record<string, unknown>> {
   density: Density;
   visualRefresh: boolean;
   motionDisabled: boolean;
   showSettingsEditor: boolean;
   readonlySettings: boolean;
-  settings: Record<string, unknown>;
+  settings?: S;
 }
 
-export interface AppContextType<T = unknown> {
+export interface AppContextType<T = unknown, S = Record<string, unknown>> {
   mode: Mode;
   pageId?: string;
-  urlParams: AppUrlParams & T;
-  setUrlParams: (newParams: Partial<AppUrlParams & T>) => void;
+  urlParams: AppUrlParams<S> & T;
+  defaultSettings?: S;
+  setDefaultSettings(settings: S): void;
+  setUrlParams: (newParams: Partial<AppUrlParams<S> & T>) => void;
   setMode: (newMode: Mode) => void;
 }
 
@@ -33,8 +35,10 @@ const appContextDefaults: AppContextType = {
     motionDisabled: false,
     showSettingsEditor: false,
     readonlySettings: true,
-    settings: {},
+    settings: undefined,
   },
+  defaultSettings: undefined,
+  setDefaultSettings: () => {},
   setMode: () => {},
   setUrlParams: () => {},
 };
@@ -67,6 +71,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   const match = useRouteMatch<{ theme: string; mode: Mode; pageId: string }>('/:mode(light|dark)/:pageId*');
   const { mode, pageId } = match ? match.params : { mode: undefined, pageId: undefined };
   const urlParams = parseQuery(location.search) as AppUrlParams;
+  const [defaultSettings, setDefaultSettings] = useState<any>(undefined);
 
   function setUrlParams(newParams: Partial<AppUrlParams>) {
     const pathname = [mode, pageId].filter(segment => !!segment).join('/') + '/';
@@ -79,8 +84,38 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <AppContext.Provider value={{ mode: mode!, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode }}>
+    <AppContext.Provider
+      value={{
+        mode: mode!,
+        pageId,
+        urlParams,
+        defaultSettings,
+        setDefaultSettings,
+        setUrlParams: setUrlParams,
+        setMode: updateMode,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
+}
+
+export function useAppSettings<S extends Record<string, unknown>>(defaultSettings: S) {
+  const { urlParams, setUrlParams, setDefaultSettings } = useContext(
+    AppContext as React.Context<AppContextType<unknown, S>>
+  );
+
+  useEffect(
+    () => {
+      setDefaultSettings(defaultSettings);
+    },
+    // Consider default settings stable
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  const setSettings = (settings: Partial<S>) =>
+    setUrlParams({ settings: { ...defaultSettings, ...urlParams.settings, ...settings } });
+
+  return { settings: urlParams.settings ?? { ...defaultSettings }, setSettings };
 }
