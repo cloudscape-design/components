@@ -9,14 +9,33 @@ import { InternalColumnLayoutProps } from './interfaces';
 import customCssProps from '../internal/generated/custom-css-properties';
 import styles from './styles.css.js';
 
+const isOdd = (value: number): boolean => value % 2 !== 0;
+
+export function calculcateCssColumnCount(
+  columns: number,
+  minColumnWidth: number,
+  containerWidth: number | null
+): number {
+  if (!containerWidth) {
+    return columns;
+  }
+
+  // First, calculate how many columns we can have based on the current container width and minColumnWidth.
+  const targetColumnCount = Math.min(columns, Math.floor(containerWidth / minColumnWidth));
+
+  // When we start wrapping into fewer columns than desired, we want to keep the number of columns even.
+  return Math.max(
+    1,
+    targetColumnCount < columns && isOdd(targetColumnCount) ? targetColumnCount - 1 : targetColumnCount
+  );
+}
+
 interface ColumnLayoutWithCSSProps
   extends Required<
     Pick<InternalColumnLayoutProps, 'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters'>
   > {
   children: React.ReactNode;
 }
-
-const isOdd = (value: number) => value % 2 !== 0;
 
 export default function ColumnLayoutWithCSS({
   columns,
@@ -26,23 +45,12 @@ export default function ColumnLayoutWithCSS({
   disableGutters,
   children,
 }: ColumnLayoutWithCSSProps) {
-  // Flattening the children allows us to "see through" React Fragments and nested arrays.
-  const flattenedChildren = flattenChildren(children);
-
   const [containerWidth, containerRef] = useContainerQuery(rect => rect.width);
 
-  // First, calculate how many columns we can have based on the current container width and minColumnWidth.
-  const targetColumnCount = Math.min(columns, containerWidth ? Math.floor(containerWidth / minColumnWidth) : 1);
+  const columnCount = calculcateCssColumnCount(columns, minColumnWidth, containerWidth);
 
-  // Then we try to keep a balanced layout by adjusting the amount of columns based on the target columns.
-  // If the target number of columns is even, we keep it even, and vice versa.
-  const columnCount = Math.max(
-    1,
-    (isOdd(columns) && !isOdd(targetColumnCount)) || (!isOdd(columns) && isOdd(targetColumnCount))
-      ? targetColumnCount - 1
-      : targetColumnCount
-  );
-
+  // Flattening the children allows us to "see through" React Fragments and nested arrays.
+  const flattenedChildren = flattenChildren(children);
   const childrenCount = flattenedChildren.length;
   const rowCount = Math.ceil(childrenCount / columnCount);
 

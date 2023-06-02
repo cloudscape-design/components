@@ -12,6 +12,9 @@ export function repeat<T>(value: T, times: number): T[] {
   return array;
 }
 
+/**
+ * Returns a list clsx-compatible class names that both ColumnLayout implementations share.
+ */
 export function getCommonClasses({
   variant,
   borders,
