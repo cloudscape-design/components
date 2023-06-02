@@ -3,7 +3,7 @@
 import React, { ButtonHTMLAttributes } from 'react';
 
 import Handle from '../handle';
-import InternalIcon from '../../icon/internal';
+import InternalIcon from '../../../icon/internal';
 import styles from './styles.css.js';
 import handleStyles from '../handle/styles.css.js';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
