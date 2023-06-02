@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useState } from 'react';
-import { CodeEditor, CodeEditorProps, Textarea } from '~components';
+import { CodeEditor, CodeEditorProps, SpaceBetween, StatusIndicator, Textarea } from '~components';
 import { i18nStrings as codeEditorI18nStrings } from '../../code-editor/base-props';
 
 export function SettingsEditor<S extends object>({
@@ -26,10 +26,13 @@ export function SettingsEditor<S extends object>({
     });
   }, []);
 
+  const [isUpdating, setIsUpdating] = useState(false);
   useEffect(() => {
     if (readonly) {
       return;
     }
+
+    setIsUpdating(true);
 
     const timeoutId = setTimeout(() => {
       try {
@@ -37,6 +40,7 @@ export function SettingsEditor<S extends object>({
       } catch {
         // ignore
       }
+      setIsUpdating(false);
     }, 2000);
 
     return () => clearTimeout(timeoutId);
@@ -52,14 +56,18 @@ export function SettingsEditor<S extends object>({
   }
 
   return (
-    <CodeEditor
-      ace={ace}
-      value={propsStr}
-      language="json"
-      onDelayedChange={event => setPropsStr(event.detail.value)}
-      onPreferencesChange={() => {}}
-      loading={aceLoading}
-      i18nStrings={codeEditorI18nStrings}
-    />
+    <SpaceBetween size="s">
+      <CodeEditor
+        ace={ace}
+        value={propsStr}
+        language="json"
+        onDelayedChange={event => setPropsStr(event.detail.value)}
+        onPreferencesChange={() => {}}
+        loading={aceLoading}
+        i18nStrings={codeEditorI18nStrings}
+      />
+
+      {isUpdating && <StatusIndicator type="loading">Updating...</StatusIndicator>}
+    </SpaceBetween>
   );
 }
