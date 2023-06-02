@@ -29,6 +29,7 @@ export interface SplitPanelProps extends BaseComponentProps {
    * - `preferencesConfirm` - The text of the preference modal confirm button.
    * - `preferencesCancel` - The text of the preference modal cancel button.
    * - `resizeHandleAriaLabel` - The label of the resize handle aria label.
+   * @i18n
    */
   i18nStrings?: SplitPanelProps.I18nStrings;
 }

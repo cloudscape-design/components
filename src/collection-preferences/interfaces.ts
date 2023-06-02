@@ -6,14 +6,17 @@ import { NonCancelableEventHandler } from '../internal/events';
 export interface CollectionPreferencesProps<CustomPreferenceType = any> extends BaseComponentProps {
   /**
    * Specifies the title of the preferences modal dialog. It is also used as an `aria-label` for the trigger button.
+   * @i18n
    */
   title?: string;
   /**
    * Label of the confirm button in the modal footer.
+   * @i18n
    */
   confirmLabel?: string;
   /**
    * Label of the cancel button in the modal footer.
+   * @i18n
    */
   cancelLabel?: string;
   /**
@@ -32,6 +35,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    *   - `label` (string) - A label for the radio button (for example, "10 resources").
    *
    * You must set the current value in the `preferences.pageSize` property.
+   * @i18n
    */
   pageSizePreference?: CollectionPreferencesProps.PageSizePreference;
   /**
@@ -44,6 +48,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below the checkbox label.
    *
    * You must set the current value in the `preferences.wrapLines` property.
+   * @i18n
    */
   wrapLinesPreference?: CollectionPreferencesProps.WrapLinesPreference;
   /**
@@ -56,6 +61,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below the checkbox label.
    *
    * You must set the current value in the `preferences.stripedRows` property.
+   * @i18n
    */
   stripedRowsPreference?: CollectionPreferencesProps.StripedRowsPreference;
   /**
@@ -68,6 +74,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below the checkbox label.
    *
    * You must set the current value in the `preferences.contentDensity` property.
+   * @i18n
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
@@ -80,6 +87,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below each radio group label.
    *
    * You must set the current value in the `preferences.stickyColumns` property.
+   * @i18n
    */
   stickyColumnsPreference?: CollectionPreferencesProps.StickyColumnsPreference;
   /**
@@ -104,6 +112,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `alwaysVisible` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to `false` by default.
    *
    * You must provide an ordered list of the items to display in the `preferences.contentDisplay` property.
+   * @i18n
    */
   contentDisplayPreference?: CollectionPreferencesProps.ContentDisplayPreference;
   /**

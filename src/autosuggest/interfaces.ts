@@ -74,6 +74,7 @@ export interface AutosuggestProps
 
   /**
    * Specifies a function that generates the custom value indicator (for example, `Use "${value}"`).
+   * @i18n
    */
   enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
 
@@ -98,6 +99,7 @@ export interface AutosuggestProps
    * Specifies the localized string that describes an option as being selected.
    * This is required to provide a good screen reader experience. For more information, see the
    * [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).
+   * @i18n
    */
   selectedAriaLabel?: string;
   /**
