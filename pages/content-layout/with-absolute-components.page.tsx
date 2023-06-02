@@ -65,7 +65,7 @@ export default function () {
         }
         breadcrumbs={<Breadcrumbs />}
         content={
-          <ContentLayout>
+          <ContentLayout disableOverlap={true}>
             <SpaceBetween size="s">
               <h1>With absolutely positioned elements</h1>
               <ButtonDropdown items={dropdownItems} expandableGroups={true}>
