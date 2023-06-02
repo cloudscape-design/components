@@ -29,6 +29,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   disabled?: boolean;
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings: PropertyFilterProps.I18nStrings;
   /**

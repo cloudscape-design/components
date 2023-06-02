@@ -24,8 +24,8 @@ export interface PaneProps {
   annotations: Ace.Annotation[];
   highlighted?: Ace.Annotation;
 
-  cursorPositionLabel: (row: number, column: number) => string;
-  closeButtonAriaLabel: string;
+  cursorPositionLabel?: (row: number, column: number) => string;
+  closeButtonAriaLabel?: string;
 
   onClose: () => void;
   onAnnotationClick: (annotation: Ace.Annotation) => void;
@@ -123,7 +123,7 @@ export const Pane = ({
                     role="link"
                   >
                     <td className={clsx(styles.pane__location, styles.pane__cell)} tabIndex={-1}>
-                      {cursorPositionLabel((annotation.row || 0) + 1, (annotation.column || 0) + 1)}
+                      {cursorPositionLabel?.((annotation.row || 0) + 1, (annotation.column || 0) + 1) ?? ''}
                     </td>
                     <td className={clsx(styles.pane__description, styles.pane__cell)} tabIndex={-1}>
                       {annotation.text}

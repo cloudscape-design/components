@@ -8,50 +8,15 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .notifications {
-  grid-column: 3;
-  grid-row: 1;
-  z-index: 850;
   color: awsui.$color-text-body-default;
+  grid-area: notifications;
+  z-index: 850;
 
-  /*
-  In desktop viewports the notifications will always be the first
-  slot rendered in the center column. The padding should create
-  a centered vertical alignment with the circular buttons for the
-  navigation and tools drawers.
-  */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    margin: awsui.$space-xs 0;
-
-    /*
-    #{awsui.$space-xs} token needs to align with the $offsetTopWithNotifications
-    calculation in the layout CSS.
-    */
     &.sticky-notifications {
+      #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
       position: sticky;
       top: calc(var(#{custom-props.$offsetTop}) + #{awsui.$space-xs});
-      #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
-    }
-
-    &:not(.has-notifications-content) {
-      margin: 0;
-    }
-  }
-
-  /*
-  In mobile viewports the notifications should never be sticky even
-  if the property is set. Padding is added to give adequate
-  vertical space from the sticky AppBar the subsequent adjacent sibling.
-  */
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    grid-row: 2;
-    margin: awsui.$space-scaled-s 0;
-
-    &.sticky-notifications {
-      position: static;
-    }
-
-    &:not(.has-notifications-content) {
-      margin: 0;
     }
   }
 }

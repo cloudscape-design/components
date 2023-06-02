@@ -220,8 +220,8 @@
   }
 
   > .form-header > .form-header-content {
-    padding-top: awsui.$space-scaled-xl;
-    padding-bottom: awsui.$space-scaled-xl;
+    padding-top: awsui.$space-scaled-m;
+    padding-bottom: awsui.$space-scaled-m;
   }
 
   > .form-component {
@@ -252,9 +252,6 @@
   color: awsui.$color-text-heading-secondary;
   font-weight: styles.$font-weight-bold;
   padding-top: awsui.$space-scaled-xxs;
-  &-extra-padding {
-    padding-top: awsui.$space-scaled-l;
-  }
   &-hidden {
     display: none;
   }

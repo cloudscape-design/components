@@ -21,7 +21,7 @@ afterEach(() => Mockdate.reset());
 
 describe('Date range picker calendar', () => {
   const outsideId = 'outside';
-  const defaultProps: DateRangePickerProps = {
+  const defaultProps: DateRangePickerProps & Pick<Required<DateRangePickerProps>, 'i18nStrings'> = {
     i18nStrings,
     relativeOptions: [
       { key: 'previous-5-minutes', amount: 5, unit: 'minute', type: 'relative' },
@@ -461,22 +461,22 @@ describe('Date range picker calendar', () => {
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
       });
-      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel!));
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
       });
-      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel!));
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(
         new RegExp(i18nStrings!.renderSelectedAbsoluteRangeAriaLive!('', ''))
       );
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 3, 2).click();
       });
-      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel!));
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 3, 1).click();
       });
-      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel!));
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(
         new RegExp(i18nStrings.renderSelectedAbsoluteRangeAriaLive!('', ''))
       );
@@ -497,7 +497,7 @@ describe('Date range picker calendar', () => {
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
       });
-      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel!));
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent('Sunday, September 6, 2020 – Monday, September 7, 2020');
     });
 
