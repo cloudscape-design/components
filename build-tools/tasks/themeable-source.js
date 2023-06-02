@@ -58,7 +58,7 @@ const copyTemplateTask = task(`themeable-source:copy-template:${themeable.name}`
 module.exports = parallel(
   compileTypescript({
     name: themeable.name,
-    tsConfigPath: 'src-themeable/tsconfig.json',
+    tsConfigPath: 'tsconfig.src-themeable.json',
     outputPath: themeable.targetDir,
   }),
   generatePackageJson(join(themeable.targetDir, componentsTemplateDir), themeable.packageJson, {
