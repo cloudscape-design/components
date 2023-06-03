@@ -25,6 +25,18 @@ jest.mock('../../../lib/components/table/use-sticky-columns', () => ({
   selectionColumnId: 'id',
 }));
 
+jest.mock('../../../lib/components/container/media', () => ({
+  useMedia: jest.fn().mockImplementation(() => {
+    return {
+      breakpointRef: { current: null },
+      mediaContent: '',
+      mediaHeight: '',
+      mediaWidth: '',
+      mediaPosition: '',
+    };
+  }),
+}));
+
 const mockStickyStateModel = {
   isEnabled: false,
   store: jest.fn(),
