@@ -4707,7 +4707,7 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
         "properties": Array [
           Object {
             "name": "content",
-            "optional": true,
+            "optional": false,
             "type": "MediaDefinition.Content | MediaDefinition.ContentBreakpointMapping",
           },
           Object {
