@@ -77,7 +77,7 @@ function ConfigurationForm() {
     >
       <SpaceBetween direction="vertical" size="xxl">
         {BREAKPOINTS.map(([breakpointName, breakpointValue]) => (
-          <SpaceBetween key={breakpointValue} direction="horizontal" size="m">
+          <SpaceBetween key={breakpointName} direction="horizontal" size="m">
             <SpaceBetween direction="vertical" size="s">
               <Badge>
                 {`${breakpointName.toUpperCase()}`} {`(${breakpointValue}px)`}
@@ -157,10 +157,8 @@ export default function SimpleContainers() {
                   footer="Footer"
                   mediaContent={<img src={image169} alt="16:9 image" />}
                 >
-                  <SpaceBetween size="s">
-                    Content area takes the available vertical space
-                    <Button>Action</Button>
-                  </SpaceBetween>
+                  <div style={{ paddingBottom: '16px' }}>Content area takes the available vertical space</div>
+                  <Button>Action</Button>
                 </ContainerPlayground>
               ))}
             </ColumnLayout>
@@ -277,22 +275,14 @@ export default function SimpleContainers() {
                 footer="Footer"
                 mediaContent={<img src={image169} alt="16:9 image" />}
               >
-                Content area takes the available vertical space Content area takes the available vertical space Content
-                area takes the available vertical space Content area takes the available vertical space Content area
-                takes the available vertical space Content area takes the available vertical space Content area takes
-                the available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space
+                Content area takes the available vertical space. <Link href="#">Learn more</Link>. Content area takes
+                the available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space.
               </ContainerPlayground>
             </div>
           </SpaceBetween>
@@ -305,6 +295,7 @@ export default function SimpleContainers() {
                   key={i}
                   header={<Header variant="h2">Container title</Header>}
                   footer="Footer"
+                  fitHeight={true}
                   mediaContent={<img src={image169} alt="16:9 image" />}
                 >
                   Content area takes the available vertical space
@@ -316,30 +307,14 @@ export default function SimpleContainers() {
                 footer="Footer"
                 mediaContent={<img src={image169} alt="16:9 image" />}
               >
-                Content area takes the available vertical space Content area takes the available vertical space Content
-                area takes the available vertical space Content area takes the available vertical space Content area
-                takes the available vertical space Content area takes the available vertical space Content area takes
-                the available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space Content area takes the
-                available vertical space Content area takes the available vertical space
+                Content area takes the available vertical space. <Link href="#">Learn more</Link>. Content area takes
+                the available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space. Content area takes the available vertical space. Content area takes the
+                available vertical space.
               </ContainerPlayground>
             </div>
           </SpaceBetween>
