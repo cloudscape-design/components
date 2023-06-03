@@ -11,10 +11,6 @@ function renderExpandableSection(props: ExpandableSectionProps = {}): Expandable
   return createWrapper(container).findExpandableSection()!;
 }
 
-jest.mock('../../internal/hooks/container-queries/use-container-breakpoints', () => ({
-  useContainerBreakpoints: () => ['default', {}],
-}));
-
 describe('Expandable Section', () => {
   describe('variant property', () => {
     test('has one trigger button and no div=[role=button] for variant navigation', () => {
@@ -33,7 +29,7 @@ describe('Expandable Section', () => {
       expect(wrapper.findAll('button').length).toBe(0);
     });
   });
-  describe.only('slots', () => {
+  describe('slots', () => {
     test('populates header slot correctly', () => {
       const wrapper = renderExpandableSection({
         headerText: 'Test Header',
