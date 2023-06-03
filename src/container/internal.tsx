@@ -121,7 +121,7 @@ export default function InternalContainer({
     >
       {hasMedia && (
         <div
-          className={clsx(styles[`media-${mediaPosition}`], styles.media)}
+          className={clsx(styles[`media-${mediaPosition === 'side' ? 'side' : 'top'}`], styles.media)}
           style={
             mediaPosition === 'top'
               ? { height: typeof mediaHeight === 'string' || typeof mediaHeight === 'number' ? mediaHeight : '' }
