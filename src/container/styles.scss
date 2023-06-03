@@ -77,8 +77,9 @@
 .content-wrapper {
   display: flex;
   flex-direction: column;
+  height: 100%;
   &-fit-height {
-    height: 100%;
+    overflow: hidden;
   }
 }
 
@@ -206,8 +207,8 @@ the default white background of the container component.
 }
 
 .content {
+  flex: 1;
   &-fit-height {
-    flex: 1;
     overflow: auto;
   }
   &.with-paddings {
@@ -219,9 +220,6 @@ the default white background of the container component.
         padding-top: 0;
       }
     }
-  }
-  &-with-media {
-    flex: 1;
   }
 }
 

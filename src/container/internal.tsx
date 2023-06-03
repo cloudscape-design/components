@@ -157,14 +157,9 @@ export default function InternalContainer({
           </StickyHeaderContext.Provider>
         )}
         <div
-          className={clsx(
-            styles.content,
-            fitHeight && styles['content-fit-height'],
-            hasMedia && styles['content-with-media'],
-            {
-              [styles['with-paddings']]: !disableContentPaddings,
-            }
-          )}
+          className={clsx(styles.content, fitHeight && styles['content-fit-height'], {
+            [styles['with-paddings']]: !disableContentPaddings,
+          })}
         >
           {children}
         </div>
