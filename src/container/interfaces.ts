@@ -15,6 +15,30 @@ export interface ContainerProps extends BaseComponentProps {
    */
   disableHeaderPaddings?: boolean;
 
+  /**
+   *
+   * Use this to display a media element. We support `img`, `video` and `picture` elements.
+   * You can define different positions and sizes for the media element within the container.
+   *
+   * The value for each media property can either be a single value (which applies for all breakpoints) or an object where the key
+   * is one of the supported breakpoints (`xxs`, `xs`, `s`, `m`, `l`, `xl`) or `default`.
+   * The value of each key is applied for that breakpoint and those above it. You must provide a `default` value for `content`.
+   *
+   * * `content` - Use this slot to render your media element. We support `img`, `video` and `picture` elements.
+   *
+   * * `position` - Defines the media slot's position within the container. Defaults to `top`.
+   *
+   * * `width` - Defines the width of the media slot when positioned on the side. Corresponds to the `width` CSS-property.
+   * When this value is set, the media element  may be cropped, with `object-fit: cover` centering it.
+   * Note: This value is considered only when `position` is set to `side`.
+   * If no width is provided, the media slot will take a maximum of 66% of the container's width.
+   *
+   * * `height` - Defines the height of the media slot when position on the top. Corresponds to the `height` CSS-property.
+   * When this value is set, the media element may be cropped, with `object-fit: cover` centering it.
+   * Note: This value is only considered if `position` is set to `top`.
+   * If no height is provided, the media slot will be displayed at its full height.
+   *
+   */
   media?: ContainerProps.Media;
 
   /**
@@ -61,12 +85,12 @@ export namespace ContainerProps {
      * is one of the supported breakpoints (`xxs`, `xs`, `s`, `m`, `l`, `xl`) or `default`.
      * The value of this key is applied for that breakpoint and those above it. You must provide a `default` value for `content`.
      */
-    content: MediaDefinition.Content | MediaDefinition.ContentBreakpointMapping;
+    content: React.ReactNode | MediaDefinition.ContentBreakpointMapping;
 
     /**
      * Defines the media slot's position within the container. Defaults to `top`.
      */
-    position?: MediaDefinition.Position | MediaDefinition.BreakpointMapping<MediaDefinition.Position>;
+    position?: 'top' | 'side' | MediaDefinition.BreakpointMapping<'top' | 'side'>;
 
     /**
      * Defines the width of the media slot when positioned on the side. Corresponds to the `width` CSS-property.
@@ -75,7 +99,7 @@ export namespace ContainerProps {
      * Note: This value is considered only when `position` is set to `side`.
      * If no width is provided, the media slot will take a maximum of 66% of the container's width.
      */
-    width?: MediaDefinition.Dimension | MediaDefinition.BreakpointMapping<MediaDefinition.Dimension>;
+    width?: string | number | MediaDefinition.BreakpointMapping<string | number>;
 
     /**
      * Defines the height of the media slot when position on the top. Corresponds to the `height` CSS-property.
@@ -84,7 +108,7 @@ export namespace ContainerProps {
      * Note: This value is only considered if `position` is set to `top`.
      * If no height is provided, the media slot will be displayed at its full height.
      */
-    height?: MediaDefinition.Dimension | MediaDefinition.BreakpointMapping<MediaDefinition.Dimension>;
+    height?: string | number | MediaDefinition.BreakpointMapping<string | number>;
   }
 }
 
@@ -92,8 +116,5 @@ export namespace MediaDefinition {
   export type ContentBreakpointMapping = MediaDefinition.BreakpointMapping<React.ReactNode> & {
     default: React.ReactNode;
   };
-  export type Content = React.ReactNode;
-  export type Position = 'top' | 'side';
-  export type Dimension = string | number;
   export type BreakpointMapping<T> = Partial<Record<Breakpoint, T>>;
 }
