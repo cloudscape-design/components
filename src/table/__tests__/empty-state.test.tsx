@@ -11,6 +11,9 @@ import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/t
 
 jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
   useContainerQuery: jest.fn(() => [600, () => {}]),
+  useContainerBreakpoint: jest.fn().mockImplementation(() => {
+    return [{}, {}];
+  }),
 }));
 
 jest.mock('../../../lib/components/internal/utils/dom', () => ({
@@ -34,11 +37,14 @@ jest.mock('../../../lib/components/container/media', () => ({
       mediaPosition: '',
     };
   }),
+  getBreakpointsForMedia: jest.fn().mockImplementation(() => {
+    return [];
+  }),
 }));
 
 jest.mock('../../../lib/components/container/media', () => ({
-  getBreakpointsForMedia: jest.fn().mockImplementation(() => {
-    return [];
+  useContainerBreakpoints: jest.fn().mockImplementation(() => {
+    return [{}, {}];
   }),
 }));
 
