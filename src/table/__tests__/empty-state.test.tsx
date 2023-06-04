@@ -37,6 +37,9 @@ jest.mock('../../../lib/components/container/media', () => ({
       mediaPosition: '',
     };
   }),
+}));
+
+jest.mock('../../../lib/components/container/media', () => ({
   getBreakpointsForMedia: jest.fn().mockImplementation(() => {
     return [];
   }),
