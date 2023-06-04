@@ -157,7 +157,7 @@ describe('Container with media', () => {
         },
       };
       const breakpoints = getBreakpointsForMedia(media);
-      expect(breakpoints).toStrictEqual(['xxs, xs, s, m, l, xl']);
+      expect(breakpoints).toStrictEqual(['xxs', 'xs', 's', 'm', 'l', 'xl']);
     });
   });
 });
