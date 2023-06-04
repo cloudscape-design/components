@@ -28,12 +28,17 @@ jest.mock('../../../lib/components/table/use-sticky-columns', () => ({
 jest.mock('../../../lib/components/container/media', () => ({
   useMedia: jest.fn().mockImplementation(() => {
     return {
-      breakpointRef: { current: null },
       mediaContent: '',
       mediaHeight: '',
       mediaWidth: '',
       mediaPosition: '',
     };
+  }),
+}));
+
+jest.mock('../../../lib/components/container/media', () => ({
+  getBreakpointsForMedia: jest.fn().mockImplementation(() => {
+    return [];
   }),
 }));
 
