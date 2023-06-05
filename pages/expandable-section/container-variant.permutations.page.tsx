@@ -24,7 +24,6 @@ const permutations = createPermutations<ExpandableSectionProps>([
         <Button>Another action</Button>
       </SpaceBetween>,
     ],
-    variant: ['default', 'container'],
   },
 ]);
 export default function ExpandableSectionContainerVariantPermutations() {
@@ -38,7 +37,12 @@ export default function ExpandableSectionContainerVariantPermutations() {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <ExpandableSection {...permutation} headerText={'Expandable section heading'} defaultExpanded={true}>
+            <ExpandableSection
+              {...permutation}
+              headerText={'Expandable section heading'}
+              defaultExpanded={true}
+              variant="container"
+            >
               Expandable section content
             </ExpandableSection>
           )}
