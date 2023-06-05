@@ -8,6 +8,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { warnOnce } from '../internal/logging';
 import { getBaseProps } from '../internal/base-component';
 import clsx from 'clsx';
+import { ButtonProps } from '../button/interfaces';
 
 interface InternalSplitButtonProps extends SplitButtonProps, InternalBaseComponentProps {}
 
@@ -34,7 +35,7 @@ const InternalSplitButton = forwardRef(
       warnOnce('SplitButton', 'The component must have at least two items.');
     }
 
-    const triggerRefs = useRef<{ [id: string]: null | HTMLButtonElement }>({});
+    const triggerRefs = useRef<{ [id: string]: null | ButtonProps.Ref }>({});
 
     useImperativeHandle(ref, () => ({
       focus(id: string) {
@@ -49,12 +50,33 @@ const InternalSplitButton = forwardRef(
         {items.map(item => {
           switch (item.type) {
             case 'button':
-              return <ButtonSegment key={item.id} variant={variant} {...item} />;
+              return (
+                <ButtonSegment
+                  ref={node => {
+                    triggerRefs.current[item.id] = node;
+                  }}
+                  key={item.id}
+                  variant={variant}
+                  {...item}
+                />
+              );
             case 'link':
-              return <LinkSegment key={item.id} variant={variant} {...item} />;
+              return (
+                <LinkSegment
+                  ref={node => {
+                    triggerRefs.current[item.id] = node;
+                  }}
+                  key={item.id}
+                  variant={variant}
+                  {...item}
+                />
+              );
             case 'button-dropdown':
               return (
                 <ButtonDropdownSegment
+                  ref={node => {
+                    triggerRefs.current[item.id] = node;
+                  }}
                   key={item.id}
                   variant={variant}
                   expandToViewport={expandToViewport}

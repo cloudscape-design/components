@@ -2,14 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { forwardRef } from 'react';
-import buttonStyles from '../../button/styles.css.js';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import { ButtonIconProps, LeftIcon, RightIcon } from '../../button/icon-helper';
 import { SplitButtonProps } from '../interfaces';
-import LiveRegion from '../../internal/components/live-region';
-import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import InternalButtonDropdown from '../../button-dropdown/internal';
+import InternalButton from '../../button/internal';
 
 export const ButtonSegment = forwardRef(
   (
@@ -30,40 +27,26 @@ export const ButtonSegment = forwardRef(
     }: SplitButtonProps.ButtonItem & { variant: SplitButtonProps.Variant },
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const handleClick = (event: React.MouseEvent) => {
-      if (disabled || loading) {
-        return event.preventDefault();
-      }
-      const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
-      fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
-    };
-
     return (
-      <BaseButton
-        id={id}
-        ref={ref}
-        variant={variant}
-        disabled={!!disabled}
-        loading={!!loading}
-        loadingText={loadingText}
-        onClick={handleClick}
-        className={styles['button-segment']}
-        nativeAttributes={{
-          'aria-label': ariaLabel,
-        }}
-      >
-        <LeftIcon
+      <div className={clsx(styles['segment-wrapper'], styles['button-segment'])} data-testid={id}>
+        <InternalButton
+          ref={ref}
+          variant={variant}
+          disabled={disabled}
           loading={loading}
+          loadingText={loadingText}
+          onClick={onClick}
+          ariaLabel={ariaLabel}
+          iconAlign="left"
           iconAlt={iconAlt}
           iconName={iconName}
           iconSvg={iconSvg}
           iconUrl={iconUrl}
-          variant="icon"
-          iconSize="normal"
-          iconAlign="left"
-        />
-        {text !== undefined && <span className={buttonStyles.content}>{text}</span>}
-      </BaseButton>
+          className={styles.button}
+        >
+          {text}
+        </InternalButton>
+      </div>
     );
   }
 );
@@ -86,54 +69,37 @@ export const LinkSegment = forwardRef(
       rel,
       download,
       external,
+      onClick,
       onFollow,
       variant,
     }: SplitButtonProps.LinkItem & { variant: SplitButtonProps.Variant },
     ref: React.Ref<HTMLAnchorElement>
   ) => {
-    const handleClick = (event: React.MouseEvent) => {
-      if (disabled || loading) {
-        return event.preventDefault();
-      }
-
-      if (isPlainLeftClick(event)) {
-        fireCancelableEvent(onFollow, { href, target }, event);
-      }
-    };
-
     return (
-      <BaseLink
-        id={id}
-        ref={ref}
-        variant={variant}
-        disabled={!!disabled}
-        loading={!!loading}
-        loadingText={loadingText}
-        onClick={handleClick}
-        className={styles['button-segment']}
-        nativeAttributes={{
-          'aria-label': ariaLabel,
-          href,
-          target,
-          rel,
-          download,
-        }}
-      >
-        <LeftIcon
+      <div className={clsx(styles['segment-wrapper'], styles['button-segment'])} data-testid={id}>
+        <InternalButton
+          ref={ref}
+          variant={variant}
+          disabled={disabled}
           loading={loading}
+          loadingText={loadingText}
+          onClick={onClick}
+          onFollow={onFollow}
+          ariaLabel={ariaLabel}
+          href={href}
+          target={target}
+          rel={rel}
+          download={download}
+          iconAlign={external ? 'right' : 'left'}
           iconAlt={iconAlt}
-          iconName={iconName}
-          iconSvg={iconSvg}
-          iconUrl={iconUrl}
-          variant="icon"
-          iconSize="normal"
-          iconAlign="left"
-        />
-
-        {text !== undefined && <span className={buttonStyles.content}>{text}</span>}
-
-        {external && <RightIcon loading={loading} iconName="external" iconSize="normal" iconAlign="right" />}
-      </BaseLink>
+          iconName={external ? 'external' : iconName}
+          iconSvg={external ? undefined : iconSvg}
+          iconUrl={external ? undefined : iconUrl}
+          className={styles.button}
+        >
+          {text}
+        </InternalButton>
+      </div>
     );
   }
 );
@@ -160,147 +126,35 @@ export const ButtonDropdownSegment = forwardRef(
     ref: React.Ref<HTMLButtonElement>
   ) => {
     return (
-      <InternalButtonDropdown
-        ref={ref}
-        items={items}
-        loading={loading}
-        expandToViewport={expandToViewport}
-        expandableGroups={expandableGroups}
-        stretchTriggerHeight={true}
-        onItemClick={onItemClick}
-        onItemFollow={onItemFollow}
-        customTriggerBuilder={(clickHandler, ref, _isDisabled, isExpanded) => {
-          const loadingIconProps: ButtonIconProps = {
-            loading: true,
-          };
-
-          const dropdownIconProps: ButtonIconProps = {
-            loading: false,
-            iconName: 'caret-down-filled',
-            variant: 'icon',
-            iconClass: isExpanded ? styles['rotate-up'] : styles['rotate-down'],
-            iconSize: 'normal',
-            iconAlign: 'left',
-          };
-
-          return (
-            <BaseButton
-              id={id}
-              ref={ref}
-              variant={variant}
-              disabled={!!disabled}
-              loading={!!loading}
-              loadingText={loadingText}
-              onClick={clickHandler}
-              className={styles['button-dropdown-segment']}
-              nativeAttributes={{
-                'aria-label': ariaLabel,
-                'aria-haspopup': true,
-                'aria-expanded': isExpanded,
-              }}
-            >
-              {loading ? <LeftIcon {...loadingIconProps} /> : <LeftIcon {...dropdownIconProps} />}
-            </BaseButton>
-          );
-        }}
-      />
-    );
-  }
-);
-
-const BaseButton = forwardRef(
-  (
-    {
-      id,
-      className,
-      disabled,
-      loading,
-      loadingText,
-      variant,
-      children,
-      onClick,
-      nativeAttributes,
-    }: {
-      id: string;
-      className: string;
-      disabled: boolean;
-      loading: boolean;
-      loadingText?: string;
-      variant: 'primary' | 'normal';
-      children: React.ReactNode;
-      onClick: (event: React.MouseEvent) => void;
-      nativeAttributes: Record<string, any>;
-    },
-    ref: React.Ref<HTMLButtonElement>
-  ) => {
-    const inactive = disabled || loading;
-    return (
-      <div className={clsx(styles['segment-wrapper'], className)} data-testid={id}>
-        <button
+      <div className={styles['segment-wrapper']} data-testid={id}>
+        <InternalButtonDropdown
           ref={ref}
-          type="button"
-          className={clsx(
-            buttonStyles.button,
-            buttonStyles[`variant-${variant}`],
-            inactive && buttonStyles.disabled,
-            styles.button
+          items={items}
+          loading={loading}
+          expandToViewport={expandToViewport}
+          expandableGroups={expandableGroups}
+          stretchTriggerHeight={true}
+          onItemClick={onItemClick}
+          onItemFollow={onItemFollow}
+          customTriggerBuilder={(clickHandler, ref, _isDisabled, isExpanded) => (
+            <div className={styles['button-dropdown-segment']}>
+              <InternalButton
+                ref={ref}
+                variant={variant}
+                disabled={!!disabled}
+                loading={!!loading}
+                loadingText={loadingText}
+                onClick={clickHandler}
+                ariaLabel={ariaLabel}
+                ariaExpanded={isExpanded}
+                __nativeAttributes={{ 'aria-haspopup': true }}
+                iconName="caret-down-filled"
+                __iconClass={isExpanded ? styles['rotate-up'] : styles['rotate-down']}
+                className={styles.button}
+              />
+            </div>
           )}
-          onClick={onClick}
-          disabled={inactive}
-          {...nativeAttributes}
-        >
-          {children}
-        </button>
-        {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
-      </div>
-    );
-  }
-);
-
-const BaseLink = forwardRef(
-  (
-    {
-      id,
-      className,
-      disabled,
-      loading,
-      loadingText,
-      variant,
-      children,
-      onClick,
-      nativeAttributes,
-    }: {
-      id: string;
-      className: string;
-      disabled: boolean;
-      loading: boolean;
-      loadingText?: string;
-      variant: 'primary' | 'normal';
-      children: React.ReactNode;
-      onClick: (event: React.MouseEvent) => void;
-      nativeAttributes: Record<string, any>;
-    },
-    ref: React.Ref<HTMLAnchorElement>
-  ) => {
-    const inactive = disabled || loading;
-    return (
-      <div className={clsx(styles['segment-wrapper'], className)} data-testid={id}>
-        <a
-          ref={ref}
-          className={clsx(
-            buttonStyles.button,
-            buttonStyles[`variant-${variant}`],
-            inactive && buttonStyles.disabled,
-            styles.button
-          )}
-          onClick={onClick}
-          aria-disabled={inactive}
-          tabIndex={inactive ? -1 : undefined}
-          {...nativeAttributes}
-        >
-          {children}
-        </a>
-        {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+        />
       </div>
     );
   }

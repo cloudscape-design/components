@@ -7,11 +7,14 @@
 @use '../../internal/styles/tokens' as awsui;
 
 .segment-wrapper {
-  display: contents;
   /* Needed for test-utils */
+
+  display: contents;
 }
 
 .button-dropdown-segment {
+  display: contents;
+
   > .button {
     height: 100%;
     border-top-left-radius: 0;
@@ -21,6 +24,8 @@
 }
 
 .button-segment {
+  display: contents;
+
   &:not(:last-child) {
     > .button {
       border-top-right-radius: 0;

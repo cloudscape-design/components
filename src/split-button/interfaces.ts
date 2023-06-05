@@ -52,6 +52,7 @@ export namespace SplitButtonProps {
     rel?: string;
     download?: boolean | string;
     external?: boolean;
+    onClick?: CancelableEventHandler;
     onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
   }
 

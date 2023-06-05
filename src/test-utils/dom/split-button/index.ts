@@ -25,10 +25,10 @@ export default class SplitButtonDropdownWrapper extends ComponentWrapper {
 
 export class SplitButtonItemWrapper extends ComponentWrapper {
   findButtonType(): null | ButtonWrapper {
-    return this.findComponent(`.${splitButtonPartsStyles['button-segment']}`, ButtonWrapper);
+    return this.findComponent(`.${ButtonWrapper.rootSelector}`, ButtonWrapper);
   }
 
   findButtonDropdownType(): null | ButtonDropdownWrapper {
-    return this.findComponent(`.${splitButtonPartsStyles['button-dropdown-segment']}`, ButtonDropdownWrapper);
+    return this.findComponent(`.${ButtonDropdownWrapper.rootSelector}`, ButtonDropdownWrapper);
   }
 }
