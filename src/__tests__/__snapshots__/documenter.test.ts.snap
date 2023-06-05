@@ -4620,7 +4620,8 @@ Object {
     Object {
       "defaultValue": "1",
       "description": "Specifies the number of columns in each grid row.
-Valid values are any integer between 1 and 4.",
+Valid values are any integer between 1 and 4.
+Note that there is no upper limit when used in combination with \`minColumnWidth\`.",
       "name": "columns",
       "optional": true,
       "type": "number",
