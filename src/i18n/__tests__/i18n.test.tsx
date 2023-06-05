@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
-import { I18nProvider, I18nProviderProps } from '../../../../lib/components/internal/i18n';
+import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n';
 import { MESSAGES, TestComponent } from './test-component';
 
 describe('with custom "lang" on <html>', () => {

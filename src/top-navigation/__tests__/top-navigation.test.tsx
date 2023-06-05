@@ -5,7 +5,12 @@ import { act, render } from '@testing-library/react';
 import Input from '../../../lib/components/input';
 
 import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation';
-import TopNavigationWrapper from '../../../lib/components/test-utils/dom/top-navigation';
+import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import TopNavigationWrapper, {
+  OverflowMenu as OverflowMenuWrapper,
+} from '../../../lib/components/test-utils/dom/top-navigation';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 export const I18N_STRINGS: TopNavigationProps.I18nStrings = {
   searchIconAriaLabel: 'Search',
@@ -20,7 +25,7 @@ type PickPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 const renderTopNavigation = (props: PickPartial<TopNavigationProps, 'i18nStrings'>) => {
   const { container } = render(<TopNavigation i18nStrings={I18N_STRINGS} {...props} />);
-  return new TopNavigationWrapper(container.querySelector<HTMLElement>(`.${TopNavigationWrapper.rootSelector}`)!);
+  return createWrapper(container).findTopNavigation()!;
 };
 
 describe('TopNavigation Component', () => {
@@ -343,6 +348,26 @@ describe('URL sanitization', () => {
       expect(console.warn).toHaveBeenCalledWith(
         `[AwsUi] [TopNavigation] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from a nested utility menu item!')".`
       );
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using overflow menu strings from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'top-navigation': {
+              'i18nStrings.overflowMenuDismissIconAriaLabel': 'Custom dismiss',
+              'i18nStrings.overflowMenuTitleText': 'Custom all',
+            },
+          }}
+        >
+          <OverflowMenu />
+        </TestI18nProvider>
+      );
+      const wrapper = new OverflowMenuWrapper(container);
+      expect(wrapper.findTitle()!.getElement()).toHaveTextContent('Custom all');
+      expect(wrapper.findDismissButton()!.getElement()).toHaveAccessibleName('Custom dismiss');
     });
   });
 });

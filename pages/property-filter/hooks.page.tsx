@@ -12,7 +12,7 @@ import { columnDefinitions, i18nStrings, filteringProperties } from './common-pr
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 import { I18nProvider } from '~components/internal/i18n';
-import messages from '~components/internal/i18n/messages/all.all';
+import messages from '~components/i18n/messages/all.all';
 
 export default function () {
   const [locale, setLocale] = useState('en');

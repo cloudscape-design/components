@@ -160,7 +160,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * the controlled or uncontrolled state of the Navigation drawer. The logic
      * for determining the default state is colocated with the Navigation component.
      *
-     * The callback that will be passed to the Navigation and AppBar
+     * The callback that will be passed to the Navigation and MobileToolbar
      * components to handle the click events that will change the state
      * of the Navigation drawer. It will set the Navigation state with the
      * useControllable hook and also fire the onNavigationChange function to
@@ -189,7 +189,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * the controlled or uncontrolled state of the Tools drawer. The logic
      * for determining the default state is colocated with the Tools component.
      *
-     * The callback that will be passed to the Navigation and AppBar
+     * The callback that will be passed to the Navigation and MobileToolbar
      * components to handle the click events that will change the state
      * of the Tools drawer. It will set the Tools state with the
      * useControllable hook and also fire the onToolsChange function to
@@ -478,7 +478,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * be if there are sticky notifications. This could be any number including
      * zero based on how the child content renders. The hasNotificationsContent boolean
      * is simply centralizing the logic of the notifications height being > 0 such
-     * that it is not repeated in various components (such as AppBar) that need to
+     * that it is not repeated in various components (such as MobileToolbar) that need to
      * know if the notifications slot is empty.
      */
     const [notificationsContainerQuery, notificationsElement] = useContainerQuery(rect => rect.height);
@@ -626,7 +626,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           value={{
             stickyOffsetBottom: offsetBottom,
             stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
-            hasBreadcrumbs: !!props.breadcrumbs,
             setHasStickyBackground,
           }}
         >

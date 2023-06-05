@@ -1,0 +1,40 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+section.mobile-toolbar {
+  align-items: center;
+  background-color: awsui.$color-background-home-header;
+  border-bottom: 1px solid awsui.$color-border-divider-default;
+  box-shadow: awsui.$shadow-panel-toggle;
+  box-sizing: border-box;
+  height: var(#{custom-props.$mobileBarHeight});
+  display: grid;
+  grid-area: mobileToolbar;
+  grid-column: 1 / span 5;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 0 awsui.$space-m;
+  position: sticky;
+  top: var(#{custom-props.$offsetTop});
+  z-index: 1000;
+
+  > .mobile-toolbar-nav {
+    grid-column: 1;
+    margin-right: awsui.$space-m;
+  }
+
+  > .mobile-toolbar-breadcrumbs {
+    grid-column: 2;
+    background-color: awsui.$color-background-layout-main;
+  }
+
+  > .mobile-toolbar-tools {
+    grid-column: 3;
+    margin-left: awsui.$space-m;
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "alert": {
+    "dismissAriaLabel": "アラートを閉じる"
+  },
+  "[charts]": {
+    "loadingText": "グラフのロード中",
+    "errorText": "データを取得できませんでした。後でもう一度お試しください。",
+    "recoveryText": "再試行",
+    "i18nStrings.filterLabel": "表示されたデータをフィルタリング",
+    "i18nStrings.filterPlaceholder": "データをフィルタリング",
+    "i18nStrings.legendAriaLabel": "凡例",
+    "i18nStrings.detailPopoverDismissAriaLabel": "閉じる",
+    "i18nStrings.xAxisAriaRoleDescription": "x 軸",
+    "i18nStrings.yAxisAriaRoleDescription": "y 軸"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "次へ",
+    "i18nStrings.previousButtonText": "戻る",
+    "i18nStrings.finishButtonText": "終了",
+    "i18nStrings.labelDismissAnnotation": "注釈を閉じる",
+    "i18nStrings.stepCounterText": "ステップ {stepNumber}/{totalStepCount}",
+    "i18nStrings.taskTitle": "タスク {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {ステップ {stepNumber}/{totalStepCount} の注釈を閉じる} false {ステップ {stepNumber}/{totalStepCount} の注釈を開く} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.navigation": "サイドナビゲーション",
+    "ariaLabels.navigationClose": "サイドナビゲーションを閉じる",
+    "ariaLabels.navigationToggle": "サイドナビゲーションを開く",
+    "ariaLabels.notifications": "通知",
+    "ariaLabels.tools": "ヘルプパネル",
+    "ariaLabels.toolsClose": "ヘルプパネルを開く",
+    "ariaLabels.toolsToggle": "ヘルプパネルを閉じる"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "合計"
+  },
+  "attribute-editor": {
+    "removeButtonText": "削除",
+    "i18nStrings.errorIconAriaLabel": "エラー"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "エラー",
+    "selectedAriaLabel": "選択済み",
+    "enteredTextLabel": "使用: {value}",
+    "recoveryText": "再試行"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "パスの表示"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "来月",
+    "previousMonthAriaLabel": "前月",
+    "todayAriaLabel": "今日"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "項目の選択"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "コードエディタをロードしています",
+    "i18nStrings.errorState": "コードエディタのロード中にエラーが発生しました。",
+    "i18nStrings.errorStateRecovery": "再試行",
+    "i18nStrings.editorGroupAriaLabel": "コードエディタ",
+    "i18nStrings.statusBarGroupAriaLabel": "ステータスバー",
+    "i18nStrings.cursorPosition": "行 {row}、列 {column}",
+    "i18nStrings.errorsTab": "エラー",
+    "i18nStrings.warningsTab": "警告",
+    "i18nStrings.preferencesButtonAriaLabel": "詳細設定",
+    "i18nStrings.paneCloseButtonAriaLabel": "閉じる",
+    "i18nStrings.preferencesModalHeader": "詳細設定",
+    "i18nStrings.preferencesModalCancel": "キャンセル",
+    "i18nStrings.preferencesModalConfirm": "確認",
+    "i18nStrings.preferencesModalWrapLines": "折り返す",
+    "i18nStrings.preferencesModalTheme": "テーマ",
+    "i18nStrings.preferencesModalLightThemes": "明るいテーマ",
+    "i18nStrings.preferencesModalDarkThemes": "暗いテーマ"
+  },
+  "collection-preferences": {
+    "title": "詳細設定",
+    "confirmLabel": "確認",
+    "cancelLabel": "キャンセル",
+    "pageSizePreference.title": "ページサイズ",
+    "wrapLinesPreference.label": "折り返す",
+    "wrapLinesPreference.description": "選択すると、すべてのテキストが表示され、折り返されます",
+    "stripedRowsPreference.label": "縞模様の行",
+    "stripedRowsPreference.description": "選択すると、交互に影が付いた行が追加されます",
+    "contentDensityPreference.label": "コンパクトモード",
+    "contentDensityPreference.description": "選択すると、より高密度でコンパクトなモードでコンテンツが表示されます",
+    "contentDisplayPreference.title": "列の詳細設定",
+    "contentDisplayPreference.description": "列の可視性と順序をカスタマイズします。",
+    "contentDisplayPreference.dragHandleAriaLabel": "ドラッグハンドル",
+    "contentDisplayPreference.dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "順序変更をキャンセルしました"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "相対モード",
+    "i18nStrings.absoluteModeTitle": "絶対モード",
+    "i18nStrings.relativeRangeSelectionHeading": "範囲を選択",
+    "i18nStrings.cancelButtonLabel": "キャンセル",
+    "i18nStrings.clearButtonLabel": "クリアして閉じる",
+    "i18nStrings.applyButtonLabel": "適用",
+    "i18nStrings.customRelativeRangeOptionLabel": "カスタム範囲",
+    "i18nStrings.customRelativeRangeOptionDescription": "過去のカスタム範囲を設定",
+    "i18nStrings.customRelativeRangeUnitLabel": "時間の単位",
+    "i18nStrings.customRelativeRangeDurationLabel": "期間",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "期間の入力",
+    "i18nStrings.startDateLabel": "開始日",
+    "i18nStrings.startTimeLabel": "開始時刻",
+    "i18nStrings.endDateLabel": "終了日",
+    "i18nStrings.endTimeLabel": "終了時刻",
+    "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate} から {endDate} で選択された範囲",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {最後の {amount} {unit}} other {最後の {amount} {unit}}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "通知",
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.inProgressIconAriaLabel": "進行中",
+    "i18nStrings.infoIconAriaLabel": "情報",
+    "i18nStrings.notificationBarAriaLabel": "すべての通知",
+    "i18nStrings.notificationBarText": "通知",
+    "i18nStrings.successIconAriaLabel": "成功",
+    "i18nStrings.warningIconAriaLabel": "警告"
+  },
+  "form": {
+    "errorIconAriaLabel": "エラー"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "エラー"
+  },
+  "help-panel": {
+    "loadingText": "コンテンツのロード中"
+  },
+  "input": {
+    "clearAriaLabel": "クリア"
+  },
+  "link": {
+    "externalIconAriaLabel": "新しいタブで開く"
+  },
+  "modal": {
+    "closeAriaLabel": "モーダルを閉じる"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "次のページ",
+    "ariaLabels.pageLabel": "全ページ中 {pageNumber} ページ",
+    "ariaLabels.previousPageLabel": "前のページ"
+  },
+  "pie-chart": {
+    "loadingText": "グラフのロード中",
+    "errorText": "データを取得できませんでした。後でもう一度お試しください。",
+    "recoveryText": "再試行"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "{option__label} を削除"
+  },
+  "popover": {
+    "dismissAriaLabel": "ポップオーバーを閉じる"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "すべてのプロパティ",
+    "i18nStrings.applyActionText": "適用",
+    "i18nStrings.cancelActionText": "キャンセル",
+    "i18nStrings.clearFiltersText": "フィルターをクリア",
+    "i18nStrings.editTokenHeader": "フィルターを編集",
+    "i18nStrings.groupPropertiesText": "プロパティ",
+    "i18nStrings.groupValuesText": "値",
+    "i18nStrings.operationAndText": "および",
+    "i18nStrings.operationOrText": "または",
+    "i18nStrings.operatorContainsText": "次を含む:",
+    "i18nStrings.operatorDoesNotContainText": "次を含まない:",
+    "i18nStrings.operatorDoesNotEqualText": "次と等しくない:",
+    "i18nStrings.operatorEqualsText": "次と等しい:",
+    "i18nStrings.operatorGreaterOrEqualText": "次以上:",
+    "i18nStrings.operatorGreaterText": "次より大きい:",
+    "i18nStrings.operatorLessOrEqualText": "次以下:",
+    "i18nStrings.operatorLessText": "次未満:",
+    "i18nStrings.operatorText": "演算子",
+    "i18nStrings.operatorsText": "演算子",
+    "i18nStrings.propertyText": "プロパティ",
+    "i18nStrings.tokenLimitShowFewer": "少なく表示",
+    "i18nStrings.tokenLimitShowMore": "さらに表示",
+    "i18nStrings.valueText": "値",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyKey} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyKey} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyKey} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以上} less_than {フィルターを削除、{token__propertyKey} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以下} contains {フィルターを削除、{token__propertyKey} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyKey} は {token__value} を含まない} other {}}"
+  },
+  "s3-resource-selector": {},
+  "select": {
+    "errorIconAriaLabel": "エラー",
+    "selectedAriaLabel": "選択済み"
+  },
+  "split-panel": {},
+  "table": {
+    "ariaLabels.submittingEditText": "編集を送信中",
+    "ariaLabels.successfulEditLabel": "編集に成功しました",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",
+    "columnDefinitions.editConfig.editIconAriaLabel": "dditable"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "左にスクロール",
+    "i18nStrings.scrollRightAriaLabel": "右にスクロール"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "少なく表示",
+    "i18nStrings.limitShowMore": "さらに表示"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "検索",
+    "i18nStrings.searchDismissIconAriaLabel": "検索を閉じる",
+    "i18nStrings.overflowMenuTriggerText": "さらに詳しく",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "メニューを閉じる",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "戻る",
+    "i18nStrings.overflowMenuTitleText": "すべて"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "ロード中",
+    "i18nStrings.tutorialListTitle": "チュートリアルを選択する",
+    "i18nStrings.tutorialListDownloadLinkText": "PDF バージョンのダウンロード",
+    "i18nStrings.labelTutorialListDownloadLink": "このチュートリアルの PDF バージョンをダウンロードする",
+    "i18nStrings.tutorialCompletedText": "チュートリアルが完了しました",
+    "i18nStrings.learnMoreLinkText": "詳細はこちら",
+    "i18nStrings.startTutorialButtonText": "チュートリアルを開始する",
+    "i18nStrings.restartTutorialButtonText": "チュートリアルの再起動",
+    "i18nStrings.completionScreenTitle": "これでチュートリアルは完了です。",
+    "i18nStrings.feedbackLinkText": "フィードバック",
+    "i18nStrings.dismissTutorialButtonText": "チュートリアルを終了する",
+    "i18nStrings.taskTitle": "タスク {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "ステップ {stepNumber}: {stepTitle}",
+    "i18nStrings.labelExitTutorial": "チュートリアルを終了する",
+    "i18nStrings.labelTotalSteps": "合計ステップ: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "保留中",
+    "i18nStrings.labelsTaskStatus.in-progress": "進行中",
+    "i18nStrings.labelsTaskStatus.success": "成功"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "ステップ {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "ステップ {stepNumber}/{stepsCount}",
+    "i18nStrings.skipToButtonLabel": "{task__title} にスキップ",
+    "i18nStrings.navigationAriaLabel": "ステップ",
+    "i18nStrings.cancelButton": "キャンセル",
+    "i18nStrings.previousButton": "戻る",
+    "i18nStrings.nextButton": "次へ",
+    "i18nStrings.optional": "オプション",
+    "i18nStrings.nextButtonLoadingAnnouncement": "次のステップをロード中",
+    "i18nStrings.submitButtonLoadingAnnouncement": "フォーム送信"
+  }
+}

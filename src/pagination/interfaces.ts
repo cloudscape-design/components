@@ -45,6 +45,7 @@ export interface PaginationProps {
    *   pageLabel: pageNumber => `Page ${pageNumber}`
    * }
    * ```
+   * @i18n
    */
   ariaLabels?: PaginationProps.Labels;
 

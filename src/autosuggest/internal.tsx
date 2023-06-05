@@ -29,6 +29,7 @@ import { useFormFieldContext } from '../contexts/form-field';
 import { useInternalI18n } from '../internal/i18n/context';
 
 import styles from './styles.css.js';
+import { warnOnce } from '../internal/logging';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
@@ -80,6 +81,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const i18n = useInternalI18n('autosuggest');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+
+  if (!enteredTextLabel) {
+    warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
+  }
 
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],

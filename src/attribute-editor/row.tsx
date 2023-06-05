@@ -12,6 +12,7 @@ import InternalGrid from '../grid/internal';
 import { InternalButton } from '../button/internal';
 import clsx from 'clsx';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useInternalI18n } from '../internal/i18n/context';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 
@@ -22,7 +23,7 @@ export interface RowProps<T> {
   i18nStrings: AttributeEditorProps.I18nStrings | undefined;
   index: number;
   removable: boolean;
-  removeButtonText: string;
+  removeButtonText?: string;
   removeButtonRefs: Array<ButtonProps.Ref | undefined>;
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
 }
@@ -49,6 +50,7 @@ export const Row = React.memo(
     removeButtonRefs,
     onRemoveButtonClick,
   }: RowProps<T>) => {
+    const i18n = useInternalI18n('attribute-editor');
     const isNarrowViewport = breakpoint === 'default' || breakpoint === 'xxs';
     const isWideViewport = !isNarrowViewport;
 
@@ -102,7 +104,7 @@ export const Row = React.memo(
                   ariaLabel={i18nStrings.removeButtonAriaLabel?.(item)}
                   onClick={handleRemoveClick}
                 >
-                  {removeButtonText}
+                  {i18n('removeButtonText', removeButtonText)}
                 </InternalButton>
               </ButtonContainer>
             )}
