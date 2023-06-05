@@ -48,7 +48,12 @@ const Option = ({
     });
   }
 
-  const className = clsx(styles.option, disabled && styles.disabled, isGroupOption && styles.parent);
+  const className = clsx(
+    styles.option,
+    disabled && styles.disabled,
+    isGroupOption && styles.parent,
+    highlightedOption && styles.highlighted
+  );
 
   const icon = option.__customIcon || (
     <OptionIcon
