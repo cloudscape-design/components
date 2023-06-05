@@ -1,52 +1,47 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { useDynamicOverlap } from '../../../../../lib/components/internal/hooks/use-dynamic-overlap';
-import { DynamicOverlapContext } from '../../../../../lib/components/internal/context/dynamic-overlap-context';
+import { AppContext } from '../../../../../lib/components/contexts/app-context';
+import customCssProps from '../../../generated/custom-css-properties';
 
 jest.mock('../../../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [800, () => {}],
 }));
 
-function renderApp(children: React.ReactNode) {
-  const testId = 'resolver';
+const testId = 'resolver';
+const getDynamicOverlap = () => screen.getByTestId(testId).style.getPropertyValue(customCssProps.overlapHeight);
 
+function renderApp(children: React.ReactNode) {
   function App(props: { children: React.ReactNode }) {
-    const [dynamicOverlapHeight, setDynamicOverlapHeight] = useState<number | undefined>(0);
+    const ref = createRef<HTMLElement>();
     return (
-      <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>
-        <div data-testid={testId}>{dynamicOverlapHeight}</div>
-        {props.children}
-      </DynamicOverlapContext.Provider>
+      <>
+        <div data-testid={testId} ref={ref as React.Ref<HTMLDivElement>} />
+        <AppContext.Provider value={{ rootElement: ref }}>{props.children}</AppContext.Provider>
+      </>
     );
   }
 
-  const { rerender } = render(<App>{children}</App>);
-  return {
-    getDynamicOverlap: () => Number.parseInt(screen.getByTestId(testId).textContent ?? ''),
-    rerender: (children: React.ReactNode) => rerender(<App>{children}</App>),
-  };
+  render(<App>{children}</App>);
 }
 
-test('is zero when disabled', () => {
+test('is not defined when disabled', () => {
   function Component() {
     const ref = useDynamicOverlap({ disabled: true });
     return <div ref={ref}></div>;
   }
-  const { getDynamicOverlap } = renderApp(<Component />);
-  expect(getDynamicOverlap()).toBe(0);
+  renderApp(<Component />);
+  expect(getDynamicOverlap()).toBe('');
 });
 
-test('sets and resets dynamic overlap', () => {
+test('sets dynamic overlap', () => {
   function Component() {
     const ref = useDynamicOverlap();
     return <div ref={ref}></div>;
   }
-  const { getDynamicOverlap, rerender } = renderApp(<Component />);
-  expect(getDynamicOverlap()).toBe(800);
-
-  rerender(<div />);
-  expect(getDynamicOverlap()).toBe(0);
+  renderApp(<Component />);
+  expect(getDynamicOverlap()).toBe('800px');
 });

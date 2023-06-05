@@ -193,6 +193,8 @@ export interface AppLayoutProps extends BaseComponentProps {
    * Fired when the split panel preferences change.
    */
   onSplitPanelPreferencesChange?: NonCancelableEventHandler<AppLayoutProps.SplitPanelPreferences>;
+
+  rootElementSelector?: string;
 }
 
 export namespace AppLayoutProps {

@@ -2,4 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createContext } from 'react';
 
-export const DynamicOverlapContext = createContext<(overlapHeight: number) => void>(() => {});
+export interface AppContextProps {
+  rootElement?: React.Ref<HTMLElement> | string;
+}
+
+export const AppContext = createContext<AppContextProps>({});

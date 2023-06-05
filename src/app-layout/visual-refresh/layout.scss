@@ -44,7 +44,7 @@ explicitly set in script.
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
   #{custom-props.$offsetTopWithNotifications}: 0px;
-  #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
+  #{custom-props.$appLayoutOwnOverlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
   color: awsui.$color-text-body-default;
   display: grid;
@@ -74,7 +74,9 @@ explicitly set in script.
     var(#{custom-props.$headerGap})
     auto // contentHeader template area
     var(#{custom-props.$mainGap})
-    var(#{custom-props.$overlapHeight}) // main template area with overlap
+    calc(
+      var(#{custom-props.$overlapHeight}, 0px) + var(#{custom-props.$appLayoutOwnOverlapHeight})
+    ) // main template area with overlap
     var(#{custom-props.$mainTemplateRows}); // main template area
   min-height: var(#{custom-props.$contentHeight});
   position: relative;
@@ -111,7 +113,7 @@ explicitly set in script.
 
   // Override the dark header overlap height property if disableContentHeaderOverlap is true.
   &.is-overlap-disabled {
-    #{custom-props.$overlapHeight}: 0;
+    #{custom-props.$appLayoutOwnOverlapHeight}: 0px;
   }
 
   /*

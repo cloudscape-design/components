@@ -6,10 +6,14 @@ const { writeFile } = require('../utils/files');
 const { getHashDigest } = require('loader-utils');
 
 const outputBasePath = path.join(__dirname, '../../src/internal/generated/custom-css-properties');
-const hash = getHashDigest(Buffer.from(JSON.stringify(customCssPropertiesList)), 'md5', 'base36', 6);
+const hash = getHashDigest(Buffer.from(JSON.stringify(customCssPropertiesList.scoped)), 'md5', 'base36', 6);
 
-const getHashedProperty = property => {
-  return `--awsui-${property.replace(/[A-Z]/g, m => '-' + m.toLowerCase())}-${hash}`;
+const getScopedProperty = property => {
+  return `${getGlobalProperty(property)}-${hash}`;
+};
+
+const getGlobalProperty = property => {
+  return `--awsui-${property.replace(/[A-Z]/g, m => '-' + m.toLowerCase())}`;
 };
 
 function writeJsFile() {
@@ -19,7 +23,10 @@ function writeJsFile() {
     filepath,
     `
       const customCSSPropertiesMap: Record<string,string> = {
-        ${customCssPropertiesList.map(property => `"${property}": "${getHashedProperty(property)}",`).join('\n')}
+        ${customCssPropertiesList.globals
+          .map(property => `"${property}": "${getGlobalProperty(property)}",`)
+          .join('\n')}
+        ${customCssPropertiesList.scoped.map(property => `"${property}": "${getScopedProperty(property)}",`).join('\n')}
       };
       export default customCSSPropertiesMap;
     `
@@ -32,7 +39,8 @@ function writeSassFile() {
   writeFile(
     filepath,
     `
-    ${customCssPropertiesList.map(property => `$${property}: ${getHashedProperty(property)};`).join('\n')}
+    ${customCssPropertiesList.globals.map(property => `$${property}: ${getGlobalProperty(property)};`).join('\n')}
+    ${customCssPropertiesList.scoped.map(property => `$${property}: ${getScopedProperty(property)};`).join('\n')}
     `
   );
 }

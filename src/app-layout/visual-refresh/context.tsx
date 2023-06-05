@@ -12,7 +12,7 @@ import React, {
 } from 'react';
 import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
-import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
+import { AppContext } from '../../contexts/app-context';
 import { AppLayoutProps } from '../interfaces';
 import { DrawersProps } from './drawers';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -35,7 +35,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawers: DrawersProps;
   drawersRefs: FocusControlRefs;
   drawersTriggerCount: number;
-  dynamicOverlapHeight: number;
   handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
@@ -109,6 +108,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       footerSelector = '#b #h',
       children,
       splitPanel,
+      rootElementSelector,
       ...props
     }: AppLayoutProviderInternalsProps,
     forwardRef: React.Ref<AppLayoutProps.Ref>
@@ -125,12 +125,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     }
 
     /**
-     * The overlap height has a default set in CSS but can also be dynamically overridden
-     * for content types (such as Table and Wizard) that have variable size content in the overlap.
      * If a child component utilizes a sticky header the hasStickyBackground property will determine
      * if the background remains in the same vertical position.
      */
-    const [dynamicOverlapHeight, setDynamicOverlapHeight] = useState(0);
     const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
@@ -570,7 +567,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawers,
           drawersRefs,
           drawersTriggerCount,
-          dynamicOverlapHeight,
           headerHeight,
           footerHeight,
           hasDefaultToolsWidth,
@@ -620,6 +616,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
+          rootElementSelector,
         }}
       >
         <AppLayoutContext.Provider
@@ -629,7 +626,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             setHasStickyBackground,
           }}
         >
-          <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>
+          <AppContext.Provider value={{ rootElement: rootElementSelector || layoutElement }}>
+            {children}
+          </AppContext.Provider>
         </AppLayoutContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );
