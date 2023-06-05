@@ -36,12 +36,14 @@ interface ColumnLayoutWithCSSProps
 export default function ColumnLayoutWithCSS({
   columns = 1,
   minColumnWidth = 0,
+  disableGutters,
   variant,
   children,
 }: ColumnLayoutWithCSSProps) {
   const [containerWidth, containerRef] = useContainerQuery(rect => rect.width);
 
   const columnCount = calculcateCssColumnCount(columns, minColumnWidth, containerWidth);
+  const shouldDisableGutters = variant !== 'text-grid' && disableGutters;
 
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
   const flattenedChildren = flattenChildren(children);
@@ -49,7 +51,11 @@ export default function ColumnLayoutWithCSS({
   return (
     <div
       ref={containerRef}
-      className={clsx(styles['css-grid'], styles[`grid-variant-${variant}`])}
+      className={clsx(
+        styles['css-grid'],
+        styles[`grid-variant-${variant}`],
+        shouldDisableGutters && [styles['grid-no-gutters']]
+      )}
       style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}
     >
       {flattenedChildren.map((child, i) => {
