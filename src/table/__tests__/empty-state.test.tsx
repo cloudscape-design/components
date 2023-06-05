@@ -11,9 +11,7 @@ import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/t
 
 jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
   useContainerQuery: jest.fn(() => [600, () => {}]),
-  useContainerBreakpoint: jest.fn().mockImplementation(() => {
-    return [{}, {}];
-  }),
+  useContainerBreakpoints: jest.fn(() => [null, React.createRef()]),
 }));
 
 jest.mock('../../../lib/components/internal/utils/dom', () => ({
@@ -26,29 +24,6 @@ jest.mock('../../../lib/components/table/use-sticky-columns', () => ({
   useStickyColumns: jest.fn(),
   useStickyCellStyles: jest.fn(),
   selectionColumnId: 'id',
-}));
-
-jest.mock('../../../lib/components/container/media', () => ({
-  useMedia: jest.fn().mockImplementation(() => {
-    return {
-      mediaContent: '',
-      mediaHeight: '',
-      mediaWidth: '',
-      mediaPosition: '',
-    };
-  }),
-}));
-
-jest.mock('../../../lib/components/container/media', () => ({
-  getBreakpointsForMedia: jest.fn().mockImplementation(() => {
-    return [];
-  }),
-}));
-
-jest.mock('../../../lib/components/container/media', () => ({
-  useContainerBreakpoints: jest.fn().mockImplementation(() => {
-    return [{}, {}];
-  }),
 }));
 
 const mockStickyStateModel = {
