@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import styles from '../styles.css.js';
-import DragHandle from '../../internal/drag-handle';
+import DragHandle from '../../internal/components/drag-handle';
 import InternalToggle from '../../toggle/internal';
 import React, { ForwardedRef, forwardRef } from 'react';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';

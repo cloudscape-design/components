@@ -92,6 +92,9 @@
     &.interactiveGroups {
       padding: styles.$group-option-padding-with-border-placeholder-vertical
         calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+      &.highlighted {
+        color: awsui.$color-text-dropdown-item-highlighted;
+      }
       &.highlighted,
       &.selected {
         padding: styles.$group-option-padding-vertical styles.$control-padding-horizontal;
