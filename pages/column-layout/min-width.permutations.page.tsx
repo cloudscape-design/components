@@ -10,6 +10,7 @@ import ColumnLayout, { ColumnLayoutProps } from '~components/column-layout';
 const permutations = createPermutations<ColumnLayoutProps>([
   {
     variant: ['default'],
+    disableGutters: [false, true],
     columns: [1, 2, 3, 4],
     minColumnWidth: [150],
   },
