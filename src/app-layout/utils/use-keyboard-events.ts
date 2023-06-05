@@ -17,16 +17,16 @@ export interface SizeControlProps {
 const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
   if (!panelRef || !panelRef.current) {
     return {
-      splitPanelHeight: 0,
-      splitPanelWidth: 0,
+      panelHeight: 0,
+      panelWidth: 0,
     };
   }
 
   const safeParseFloat = (size = '') => parseFloat(size) || 0;
 
   return {
-    splitPanelHeight: safeParseFloat(panelRef.current.style.height),
-    splitPanelWidth: safeParseFloat(panelRef.current.style.width),
+    panelHeight: safeParseFloat(panelRef.current.style.height),
+    panelWidth: safeParseFloat(panelRef.current.style.width),
   };
 };
 
@@ -41,16 +41,16 @@ export const useKeyboardEvents = ({
     let currentSize;
     let maxSize;
 
-    const { splitPanelHeight, splitPanelWidth } = getCurrentSize(panelRef);
+    const { panelHeight, panelWidth } = getCurrentSize(panelRef);
 
     if (position === 'side') {
       setSizeFunction = setSidePanelWidth;
-      currentSize = splitPanelWidth;
+      currentSize = panelWidth;
       // don't need the exact max size as it's constrained in the set size function
       maxSize = window.innerWidth;
     } else {
       setSizeFunction = setBottomPanelHeight;
-      currentSize = splitPanelHeight;
+      currentSize = panelHeight;
       // don't need the exact max size as it's constrained in the set size function
       maxSize = window.innerHeight;
     }

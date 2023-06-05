@@ -40,10 +40,15 @@ namespace DrawersProps {
     trigger: Trigger;
     resizable?: boolean;
     defaultSize?: number;
+    onResize?: NonCancelableEventHandler<DrawersProps.ResizeDetail>;
   }
 
   export interface ChangeDetail {
     activeDrawerId: string | null;
+  }
+
+  export interface ResizeDetail {
+    size: number;
   }
 
   interface Labels {

@@ -33,7 +33,6 @@ export function useDrawerFocusControl(
   const lastInteraction = useRef<DrawerLastInteraction | null>(null);
 
   useEffect(() => {
-    console.log(refs.slider.current);
     switch (lastInteraction.current?.type) {
       case 'open':
         refs.slider.current?.focus();

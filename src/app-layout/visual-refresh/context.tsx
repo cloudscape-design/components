@@ -444,7 +444,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     }, [drawerItems, toolsWidth, drawersMaxWidth]);
 
     const [drawerSizes, setDrawerSizes] = useState(() => getDrawerItemSizes());
-    console.log(drawersMaxWidth, drawerSizes);
 
     useEffect(() => {
       // Ensure we only set new drawer items by performing a shallow merge
@@ -475,7 +474,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawer?.resizable], activeDrawerId, true);
+    } = useDrawerFocusControl([activeDrawer?.resizable], activeDrawerId !== undefined, true);
 
     const handleDrawersClick = useCallback(
       function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
