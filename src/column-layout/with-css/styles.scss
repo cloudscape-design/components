@@ -3,9 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use '../../internal/styles/tokens' as awsui;
-@use '../../internal/styles' as styles;
-
-$column-layout-border: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
 .css-grid {
   display: grid;
@@ -17,7 +14,7 @@ $column-layout-border: awsui.$border-divider-section-width solid awsui.$color-bo
 
   &.grid-variant-text-grid {
     > .item {
-      border-left: $column-layout-border;
+      border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
       padding-left: awsui.$space-grid-gutter;
       padding-right: awsui.$space-grid-gutter;
 
