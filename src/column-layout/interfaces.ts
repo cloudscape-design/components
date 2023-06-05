@@ -9,6 +9,7 @@ export interface ColumnLayoutProps extends BaseComponentProps {
   /**
    * Specifies the number of columns in each grid row.
    * Valid values are any integer between 1 and 4.
+   *
    * Note that there is no upper limit when used in combination with `minColumnWidth`.
    */
   columns?: number;
@@ -20,6 +21,8 @@ export interface ColumnLayoutProps extends BaseComponentProps {
 
   /**
    * Controls whether dividers are placed between rows and columns.
+   *
+   * Note: This is not supported when used with `minColumnWidth`.
    */
   borders?: ColumnLayoutProps.Borders;
 

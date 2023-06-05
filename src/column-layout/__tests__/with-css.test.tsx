@@ -4,8 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/column-layout/styles.css.js';
-import customCssProps from '../../internal/generated/custom-css-properties';
+import styles from '../../../lib/components/column-layout/with-css/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [500, () => {}],
@@ -16,14 +15,13 @@ export function renderColumnLayout(props: ColumnLayoutProps = {}) {
   const wrapper = createWrapper(renderResult.container).find(`.${styles['css-grid']}`)!;
   return {
     wrapper,
-    getColumnCount: () =>
-      parseInt(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.columnLayoutColumnCount)),
+    getGridColumns: () => getComputedStyle(wrapper.getElement()).getPropertyValue('grid-template-columns'),
   };
 }
 
 describe('ColumnLayout (with CSS grid) component', () => {
   it('renders with children', () => {
-    const { wrapper, getColumnCount } = renderColumnLayout({
+    const { wrapper, getGridColumns } = renderColumnLayout({
       minColumnWidth: 100,
       columns: 2,
       children: (
@@ -37,13 +35,13 @@ describe('ColumnLayout (with CSS grid) component', () => {
     });
 
     expect(wrapper.getElement().childElementCount).toBe(4);
-    expect(getColumnCount()).toBe(2);
+    expect(getGridColumns()).toBe('repeat(2, 1fr)');
   });
 
   it('wraps columns if necessary', () => {
-    const { getColumnCount } = renderColumnLayout({
-      minColumnWidth: 200,
-      columns: 4,
+    const { getGridColumns } = renderColumnLayout({
+      minColumnWidth: 100,
+      columns: 8,
       children: (
         <>
           <div />
@@ -56,6 +54,6 @@ describe('ColumnLayout (with CSS grid) component', () => {
       ),
     });
 
-    expect(getColumnCount()).toBe(2);
+    expect(getGridColumns()).toBe('repeat(4, 1fr)');
   });
 });

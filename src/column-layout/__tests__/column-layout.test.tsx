@@ -9,13 +9,8 @@ import styles from '../../../lib/components/column-layout/styles.css.js';
 
 function renderColumnLayout(props: ColumnLayoutProps = {}) {
   const renderResult = render(<ColumnLayout {...props} />);
-  const wrapper = createWrapper(renderResult.container);
-
-  if (props.minColumnWidth) {
-    return wrapper.find(`.${styles['css-grid']}`)!;
-  }
   // The styling classes are defined on the inner grid.
-  return wrapper.findGrid()!;
+  return createWrapper(renderResult.container).findGrid()!;
 }
 
 describe('ColumnLayout component', () => {
@@ -33,48 +28,38 @@ describe('ColumnLayout component', () => {
     });
   });
 
-  [false, true].forEach(withMinColumnWidth => {
-    describe(withMinColumnWidth ? 'With minColumnWidth' : '', () => {
-      const moreProps = withMinColumnWidth ? { minColumnWidth: 50 } : {};
+  describe('borders property', () => {
+    it('is none by default', () => {
+      const wrapper = renderColumnLayout();
+      expect(wrapper.getElement()).not.toHaveClass(styles['grid-vertical-borders']);
+      expect(wrapper.getElement()).not.toHaveClass(styles['grid-horizontal-borders']);
+    });
 
-      describe('borders property', () => {
-        it('is none by default', () => {
-          const wrapper = renderColumnLayout(moreProps);
-          expect(wrapper.getElement()).not.toHaveClass(styles['grid-vertical-borders']);
-          expect(wrapper.getElement()).not.toHaveClass(styles['grid-horizontal-borders']);
-        });
+    it('applies vertical styling', () => {
+      const wrapper = renderColumnLayout({ borders: 'vertical' });
+      expect(wrapper.getElement()).toHaveClass(styles['grid-vertical-borders']);
+      expect(wrapper.getElement()).not.toHaveClass(styles['grid-horizontal-borders']);
+    });
 
-        it('applies vertical styling', () => {
-          const wrapper = renderColumnLayout({ ...moreProps, borders: 'vertical' });
-          expect(wrapper.getElement()).toHaveClass(styles['grid-vertical-borders']);
-          expect(wrapper.getElement()).not.toHaveClass(styles['grid-horizontal-borders']);
-        });
+    it('applies horizontal styling', () => {
+      const wrapper = renderColumnLayout({ borders: 'horizontal' });
+      expect(wrapper.getElement()).not.toHaveClass(styles['grid-vertical-borders']);
+      expect(wrapper.getElement()).toHaveClass(styles['grid-horizontal-borders']);
+    });
 
-        it('applies horizontal styling', () => {
-          const wrapper = renderColumnLayout({ ...moreProps, borders: 'horizontal' });
-          expect(wrapper.getElement()).not.toHaveClass(styles['grid-vertical-borders']);
-          expect(wrapper.getElement()).toHaveClass(styles['grid-horizontal-borders']);
-        });
+    it('applies both horizontal and vertical when "all" is provided', () => {
+      const wrapper = renderColumnLayout({ borders: 'all' });
+      expect(wrapper.getElement()).toHaveClass(styles['grid-vertical-borders']);
+      expect(wrapper.getElement()).toHaveClass(styles['grid-horizontal-borders']);
+    });
+  });
 
-        it('applies both horizontal and vertical when "all" is provided', () => {
-          const wrapper = renderColumnLayout({ ...moreProps, borders: 'all' });
-          expect(wrapper.getElement()).toHaveClass(styles['grid-vertical-borders']);
-          expect(wrapper.getElement()).toHaveClass(styles['grid-horizontal-borders']);
-        });
-      });
-
-      describe('text-grid variant', () => {
-        it('disables borders even when a value for borders is provided', () => {
-          ['none', 'vertical', 'horizontal', 'all'].forEach(borders => {
-            const wrapper = renderColumnLayout({
-              ...moreProps,
-              variant: 'text-grid',
-              borders: borders as ColumnLayoutProps['borders'],
-            });
-            expect(wrapper.getElement()).not.toHaveClass(styles['grid-vertical-borders']);
-            expect(wrapper.getElement()).not.toHaveClass(styles['grid-horizontal-borders']);
-          });
-        });
+  describe('text-grid variant', () => {
+    it('disables borders even when a value for borders is provided', () => {
+      ['none', 'vertical', 'horizontal', 'all'].forEach(borders => {
+        const wrapper = renderColumnLayout({ variant: 'text-grid', borders: borders as ColumnLayoutProps['borders'] });
+        expect(wrapper.getElement()).not.toHaveClass(styles['grid-vertical-borders']);
+        expect(wrapper.getElement()).not.toHaveClass(styles['grid-horizontal-borders']);
       });
     });
   });

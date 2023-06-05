@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
 import InternalGrid from '../grid/internal';
 import { GridProps } from '../grid/interfaces';
-import { getCommonClasses, repeat } from './util';
+import { repeat } from './util';
 import { InternalColumnLayoutProps } from './interfaces';
 import { ColumnLayoutBreakpoint } from './internal';
 import styles from './styles.css.js';
@@ -18,18 +18,21 @@ const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
 };
 
 interface ColumnLayoutWithGridProps
-  extends Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'> {
+  extends Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>> {
   children: React.ReactNode;
   __breakpoint?: ColumnLayoutBreakpoint;
 }
 
 export default React.forwardRef(function ColumnLayoutWithGrid(
-  { columns = 1, variant, borders, disableGutters, __breakpoint, children }: ColumnLayoutWithGridProps,
+  { columns, variant, borders, disableGutters, __breakpoint, children }: ColumnLayoutWithGridProps,
   ref?: React.Ref<any>
 ) {
-  /*
-   Flattening the children allows us to "see through" React Fragments and nested arrays.
-   */
+  const isTextGridVariant = variant === 'text-grid';
+  const shouldDisableGutters = !isTextGridVariant && disableGutters;
+  const shouldHaveHorizontalBorders = !isTextGridVariant && (borders === 'horizontal' || borders === 'all');
+  const shouldHaveVerticalBorders = !isTextGridVariant && (borders === 'vertical' || borders === 'all');
+
+  // Flattening the children allows us to "see through" React Fragments and nested arrays.
   const flattenedChildren = flattenChildren(children);
 
   return (
@@ -37,7 +40,11 @@ export default React.forwardRef(function ColumnLayoutWithGrid(
       ref={ref}
       disableGutters={true}
       gridDefinition={repeat(COLUMN_DEFS[columns] ?? {}, flattenedChildren.length)}
-      className={clsx(...getCommonClasses({ borders, disableGutters, variant }), styles[`grid-columns-${columns}`])}
+      className={clsx(styles.grid, styles[`grid-columns-${columns}`], styles[`grid-variant-${variant}`], {
+        [styles['grid-horizontal-borders']]: shouldHaveHorizontalBorders,
+        [styles['grid-vertical-borders']]: shouldHaveVerticalBorders,
+        [styles['grid-no-gutters']]: shouldDisableGutters,
+      })}
       __breakpoint={__breakpoint}
       __responsiveClassName={breakpoint => breakpoint && styles[`grid-breakpoint-${breakpoint}`]}
     >

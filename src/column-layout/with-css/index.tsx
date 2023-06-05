@@ -3,10 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
-import { useContainerQuery } from '../internal/hooks/container-queries';
-import { getCommonClasses } from './util';
-import { InternalColumnLayoutProps } from './interfaces';
-import customCssProps from '../internal/generated/custom-css-properties';
+import { useContainerQuery } from '../../internal/hooks/container-queries';
+import { InternalColumnLayoutProps } from '../interfaces';
 import styles from './styles.css.js';
 
 const isOdd = (value: number): boolean => value % 2 !== 0;
@@ -39,8 +37,6 @@ export default function ColumnLayoutWithCSS({
   columns = 1,
   minColumnWidth = 0,
   variant,
-  borders,
-  disableGutters,
   children,
 }: ColumnLayoutWithCSSProps) {
   const [containerWidth, containerRef] = useContainerQuery(rect => rect.width);
@@ -49,32 +45,23 @@ export default function ColumnLayoutWithCSS({
 
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
   const flattenedChildren = flattenChildren(children);
-  const childrenCount = flattenedChildren.length;
-  const rowCount = Math.ceil(childrenCount / columnCount);
 
   return (
     <div
       ref={containerRef}
-      className={clsx(
-        ...getCommonClasses({ borders, disableGutters, variant }),
-        styles['css-grid'],
-        isOdd(columnCount) && styles['odd-columns']
-      )}
-      style={{ [customCssProps.columnLayoutColumnCount]: columnCount }}
+      className={clsx(styles['css-grid'], styles[`grid-variant-${variant}`])}
+      style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}
     >
       {flattenedChildren.map((child, i) => {
         // If this react child is a primitive value, the key will be undefined
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const key = (child as any).key;
-        const rowIndex = Math.floor(i / columnCount);
 
         return (
           <div
             key={key}
-            className={clsx(styles['restore-pointer-events'], {
+            className={clsx(styles.item, {
               [styles['first-column']]: i % columnCount === 0,
-              [styles['last-column']]: i % columnCount === columnCount - 1,
-              [styles['last-row']]: rowIndex === rowCount - 1,
             })}
           >
             {child}
