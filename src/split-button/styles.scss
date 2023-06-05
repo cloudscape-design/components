@@ -10,3 +10,55 @@
   display: flex;
   align-items: stretch;
 }
+
+.segment-wrapper {
+  /* Needed for test-utils */
+
+  display: contents;
+}
+
+.button-dropdown-segment {
+  display: contents;
+
+  > .button {
+    height: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: awsui.$space-xs;
+  }
+}
+
+.button-segment {
+  display: contents;
+
+  &:not(:last-child) {
+    > .button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-right: awsui.$space-xs;
+      margin-right: awsui.$space-xxxs;
+    }
+  }
+
+  &:not(:first-child) {
+    > .button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-left: awsui.$space-xs;
+    }
+  }
+}
+
+.rotate-up {
+  transform: rotate(-180deg);
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+}
+
+.rotate-down {
+  transform: rotate(0deg);
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+}

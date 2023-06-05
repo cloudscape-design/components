@@ -12,12 +12,12 @@ const permutations = createPermutations<SplitButtonProps>([
     items: [
       [
         { id: '1', type: 'button', text: 'Button' },
-        { id: '2', type: 'link', text: 'Link' },
+        { id: '2', type: 'button', text: 'Link', external: true },
         { id: '3', type: 'button-dropdown', ariaLabel: 'Dropdown', items: [] },
       ],
       [
         { id: '1', type: 'button', text: 'Button' },
-        { id: '2', type: 'link', text: 'Link' },
+        { id: '2', type: 'button', text: 'Link', external: true },
       ],
     ],
   },
@@ -25,9 +25,12 @@ const permutations = createPermutations<SplitButtonProps>([
     variant: ['normal', 'primary'],
     items: [
       [
-        { id: '1', type: 'button', text: 'Button', iconName: 'add-plus' },
-        { id: '2', type: 'link', text: 'Link', external: true },
+        { id: '1', type: 'button', text: 'Button', iconName: 'add-plus', loading: false },
         { id: '3', type: 'button-dropdown', ariaLabel: 'Dropdown', items: [], loading: true, loadingText: 'Loading' },
+      ],
+      [
+        { id: '1', type: 'button', text: 'Button', iconName: 'add-plus', loading: true },
+        { id: '3', type: 'button-dropdown', ariaLabel: 'Dropdown', items: [], loading: false, loadingText: 'Loading' },
       ],
     ],
   },

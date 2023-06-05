@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { ButtonSegment, LinkSegment, ButtonDropdownSegment } from './components/segment';
+import { ButtonSegment, ButtonDropdownSegment } from './segment';
 import { SplitButtonProps } from './interfaces';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -52,17 +52,6 @@ const InternalSplitButton = forwardRef(
             case 'button':
               return (
                 <ButtonSegment
-                  ref={node => {
-                    triggerRefs.current[item.id] = node;
-                  }}
-                  key={item.id}
-                  variant={variant}
-                  {...item}
-                />
-              );
-            case 'link':
-              return (
-                <LinkSegment
                   ref={node => {
                     triggerRefs.current[item.id] = node;
                   }}

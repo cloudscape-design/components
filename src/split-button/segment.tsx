@@ -4,25 +4,30 @@
 import React, { forwardRef } from 'react';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import { SplitButtonProps } from '../interfaces';
-import InternalButtonDropdown from '../../button-dropdown/internal';
-import InternalButton from '../../button/internal';
+import { SplitButtonProps } from './interfaces';
+import InternalButtonDropdown from '../button-dropdown/internal';
+import InternalButton from '../button/internal';
 
 export const ButtonSegment = forwardRef(
   (
     {
+      external,
       id,
       text,
+      href,
+      target,
+      rel,
+      download,
+      onClick,
+      onFollow,
+      iconAlt,
+      iconName,
+      iconUrl,
+      iconSvg,
       ariaLabel,
       disabled,
       loading,
       loadingText,
-      iconAlt,
-      iconName,
-      iconSvg,
-      iconUrl,
-
-      onClick,
       variant,
     }: SplitButtonProps.ButtonItem & { variant: SplitButtonProps.Variant },
     ref: React.Ref<HTMLButtonElement>
@@ -31,70 +36,22 @@ export const ButtonSegment = forwardRef(
       <div className={clsx(styles['segment-wrapper'], styles['button-segment'])} data-testid={id}>
         <InternalButton
           ref={ref}
-          variant={variant}
-          disabled={disabled}
-          loading={loading}
-          loadingText={loadingText}
-          onClick={onClick}
-          ariaLabel={ariaLabel}
-          iconAlign="left"
-          iconAlt={iconAlt}
-          iconName={iconName}
-          iconSvg={iconSvg}
-          iconUrl={iconUrl}
-          className={styles.button}
-        >
-          {text}
-        </InternalButton>
-      </div>
-    );
-  }
-);
-
-export const LinkSegment = forwardRef(
-  (
-    {
-      id,
-      text,
-      ariaLabel,
-      disabled,
-      loading,
-      loadingText,
-      iconAlt,
-      iconName,
-      iconSvg,
-      iconUrl,
-      href,
-      target,
-      rel,
-      download,
-      external,
-      onClick,
-      onFollow,
-      variant,
-    }: SplitButtonProps.LinkItem & { variant: SplitButtonProps.Variant },
-    ref: React.Ref<HTMLAnchorElement>
-  ) => {
-    return (
-      <div className={clsx(styles['segment-wrapper'], styles['button-segment'])} data-testid={id}>
-        <InternalButton
-          ref={ref}
-          variant={variant}
-          disabled={disabled}
-          loading={loading}
-          loadingText={loadingText}
-          onClick={onClick}
-          onFollow={onFollow}
-          ariaLabel={ariaLabel}
           href={href}
           target={target}
           rel={rel}
           download={download}
+          onClick={onClick}
+          onFollow={onFollow}
           iconAlign={external ? 'right' : 'left'}
-          iconAlt={iconAlt}
           iconName={external ? 'external' : iconName}
-          iconSvg={external ? undefined : iconSvg}
-          iconUrl={external ? undefined : iconUrl}
+          iconAlt={iconAlt}
+          iconUrl={iconUrl}
+          iconSvg={iconSvg}
+          ariaLabel={ariaLabel}
+          disabled={disabled}
+          loading={loading}
+          loadingText={loadingText}
+          variant={variant}
           className={styles.button}
         >
           {text}
@@ -141,8 +98,8 @@ export const ButtonDropdownSegment = forwardRef(
               <InternalButton
                 ref={ref}
                 variant={variant}
-                disabled={!!disabled}
-                loading={!!loading}
+                disabled={disabled}
+                loading={loading}
                 loadingText={loadingText}
                 onClick={clickHandler}
                 ariaLabel={ariaLabel}

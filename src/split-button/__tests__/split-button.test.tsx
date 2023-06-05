@@ -79,12 +79,12 @@ test('segments can be casted to respective wrappers', () => {
 
 test('segments can be clicked', () => {
   const onClickButton = jest.fn();
-  const onClickLink = jest.fn();
+  const onFollowLink = jest.fn();
   const onClickDropdownItem = jest.fn();
   const wrapper = renderSplitButton({
     items: [
       { id: '1', type: 'button', onClick: onClickButton },
-      { id: '2', type: 'link', onClick: onClickLink },
+      { id: '2', type: 'button', href: '#', onFollow: onFollowLink },
       {
         id: '3',
         type: 'button-dropdown',
@@ -99,7 +99,7 @@ test('segments can be clicked', () => {
   expect(onClickButton).toHaveBeenCalledTimes(1);
 
   wrapper.findItemById('2')!.findButtonType()!.click();
-  expect(onClickLink).toHaveBeenCalledTimes(1);
+  expect(onFollowLink).toHaveBeenCalledTimes(1);
 
   wrapper.findItemById('3')!.findButtonDropdownType()!.openDropdown();
   wrapper.findItemById('3')!.findButtonDropdownType()!.findItemById('1')!.click();
@@ -112,9 +112,8 @@ test('segments can be focused by ID', () => {
     {
       items: [
         { id: '1', type: 'button' },
-        { id: '2', type: 'link' },
         {
-          id: '3',
+          id: '2',
           type: 'button-dropdown',
           ariaLabel: 'dropdown',
           items: [{ id: '1', text: '1' }],
@@ -125,15 +124,11 @@ test('segments can be focused by ID', () => {
   );
 
   const buttonWrapper = wrapper.findItemById('1')!.findButtonType()!;
-  const linkWrapper = wrapper.findItemById('2')!.findButtonType()!;
   const buttonDropdownWrapper = wrapper.findItemById('3')!.findButtonDropdownType()!;
 
   ref.current!.focus('1');
   expect(buttonWrapper.getElement()).toHaveFocus();
 
   ref.current!.focus('2');
-  expect(linkWrapper.getElement()).toHaveFocus();
-
-  ref.current!.focus('3');
   expect(buttonDropdownWrapper.findNativeButton().getElement()).toHaveFocus();
 });
