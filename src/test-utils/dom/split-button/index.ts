@@ -10,13 +10,11 @@ export default class SplitButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = splitButtonStyles.root;
 
   findItems(): Array<SplitButtonItemWrapper> {
-    return this.findAll(`.${splitButtonStyles['segment-wrapper']}`).map(
-      w => new SplitButtonItemWrapper(w.getElement())
-    );
+    return this.findAll(`.${splitButtonStyles['item-wrapper']}`).map(w => new SplitButtonItemWrapper(w.getElement()));
   }
 
   findItemById(id: string): null | SplitButtonItemWrapper {
-    const itemSelector = `.${splitButtonStyles['segment-wrapper']}[data-testid="${id}"]`;
+    const itemSelector = `.${splitButtonStyles['item-wrapper']}[data-testid="${id}"]`;
     const segment = this.find(itemSelector);
     return segment ? new SplitButtonItemWrapper(segment.getElement()) : null;
   }

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { ButtonSegment, ButtonDropdownSegment } from './segment';
+import { ButtonItem, ButtonDropdownItem } from './item';
 import { SplitButtonProps } from './interfaces';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -51,7 +51,7 @@ const InternalSplitButton = forwardRef(
           switch (item.type) {
             case 'button':
               return (
-                <ButtonSegment
+                <ButtonItem
                   ref={node => {
                     triggerRefs.current[item.id] = node;
                   }}
@@ -62,7 +62,7 @@ const InternalSplitButton = forwardRef(
               );
             case 'button-dropdown':
               return (
-                <ButtonDropdownSegment
+                <ButtonDropdownItem
                   ref={node => {
                     triggerRefs.current[item.id] = node;
                   }}

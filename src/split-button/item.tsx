@@ -4,11 +4,11 @@
 import React, { forwardRef } from 'react';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import { SplitButtonProps } from './interfaces';
-import InternalButtonDropdown from '../button-dropdown/internal';
-import InternalButton from '../button/internal';
+import { SplitButtonProps } from './interfaces.js';
+import InternalButtonDropdown from '../button-dropdown/internal.js';
+import InternalButton from '../button/internal.js';
 
-export const ButtonSegment = forwardRef(
+export const ButtonItem = forwardRef(
   (
     {
       external,
@@ -32,8 +32,9 @@ export const ButtonSegment = forwardRef(
     }: SplitButtonProps.ButtonItem & { variant: SplitButtonProps.Variant },
     ref: React.Ref<HTMLButtonElement>
   ) => {
+    const isExternalLink = href !== undefined && external;
     return (
-      <div className={clsx(styles['segment-wrapper'], styles['button-segment'])} data-testid={id}>
+      <div className={clsx(styles['item-wrapper'], styles['button-item'])} data-testid={id}>
         <InternalButton
           ref={ref}
           href={href}
@@ -42,8 +43,8 @@ export const ButtonSegment = forwardRef(
           download={download}
           onClick={onClick}
           onFollow={onFollow}
-          iconAlign={external ? 'right' : 'left'}
-          iconName={external ? 'external' : iconName}
+          iconAlign={isExternalLink ? 'right' : 'left'}
+          iconName={isExternalLink ? 'external' : iconName}
           iconAlt={iconAlt}
           iconUrl={iconUrl}
           iconSvg={iconSvg}
@@ -61,7 +62,7 @@ export const ButtonSegment = forwardRef(
   }
 );
 
-export const ButtonDropdownSegment = forwardRef(
+export const ButtonDropdownItem = forwardRef(
   (
     {
       id,
@@ -83,7 +84,7 @@ export const ButtonDropdownSegment = forwardRef(
     ref: React.Ref<HTMLButtonElement>
   ) => {
     return (
-      <div className={styles['segment-wrapper']} data-testid={id}>
+      <div className={styles['item-wrapper']} data-testid={id}>
         <InternalButtonDropdown
           ref={ref}
           items={items}
@@ -94,7 +95,7 @@ export const ButtonDropdownSegment = forwardRef(
           onItemClick={onItemClick}
           onItemFollow={onItemFollow}
           customTriggerBuilder={(clickHandler, ref, _isDisabled, isExpanded) => (
-            <div className={styles['button-dropdown-segment']}>
+            <div className={styles['button-dropdown-item']}>
               <InternalButton
                 ref={ref}
                 variant={variant}
