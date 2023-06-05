@@ -56,19 +56,19 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   headerText?: React.ReactNode;
 
   /**
-   * Supplementary text below the heading. Use with container variant.
+   * Supplementary text below the heading. Use with the container variant.
    */
   headerDescription?: string;
 
   /**
-   * Specifies secondary text that's displayed to the right of the heading title. Use with container variant.
+   * Specifies secondary text that's displayed to the right of the heading title. Use with the container variant.
    * Behaves similar to the Header component counter.
    */
   headerCounter?: string;
 
   /**
    * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
-   * Use with container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
+   * Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
    * works with the `headerText` slot (not with the deprecated `header`), and not with the navigation variant.
    */
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
@@ -86,12 +86,12 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   onChange?: NonCancelableEventHandler<ExpandableSectionProps.ChangeDetail>;
 
   /**
-   * Area next to the heading to display an Info link. Use with container variant.
+   * The area next to the heading, used to display an Info link. Use with the container variant.
    */
   headerInfo?: React.ReactNode;
 
   /**
-   * Actions for the header. Use with container variant.
+   * Actions for the header. Use with the container variant.
    */
   headerActions?: React.ReactNode;
 }
