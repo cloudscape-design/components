@@ -9,6 +9,7 @@ import {
   createFlashbarContext,
 } from '../utils/contexts';
 import alertContextTokens from './contexts/alert';
+import alertHeaderContextTokens from './contexts/header-alert';
 
 const modes = [
   createColorMode('.awsui-dark-mode'),
@@ -46,6 +47,11 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
     id: 'alert',
     selector: '.awsui-context-alert',
     tokens: alertContextTokens,
+  });
+  builder.addContext({
+    id: 'alert-header',
+    selector: '.awsui-context-content-header .awsui-context-alert',
+    tokens: alertHeaderContextTokens,
   });
 
   return builder.build();
