@@ -8,7 +8,6 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $grid-columns: 12;
 $grid-gutter-width: awsui.$space-grid-gutter;
@@ -131,49 +130,5 @@ div.column-layout {
     &.grid-horizontal-borders {
       @include make-horizontal-borders;
     }
-
-    // Alternative implementation based on minimum column widths and CSS Grid
-    &.css-grid {
-      display: grid;
-      grid-template-columns: repeat(var(#{custom-props.$columnLayoutColumnCount}, 1), 1fr);
-
-      pointer-events: none;
-
-      /* stylelint-disable-next-line selector-max-universal */
-      &.grid-variant-text-grid > * {
-        border-left: $column-layout-border;
-        border-right: 0;
-
-        /* stylelint-disable-next-line selector-max-universal */
-        &.first-column {
-          border-left: 0;
-        }
-      }
-
-      /* stylelint-disable-next-line selector-max-universal */
-      &.grid-vertical-borders > * {
-        border-left: 0;
-        border-right: $column-layout-border;
-
-        /* stylelint-disable-next-line selector-max-universal */
-        &.last-column {
-          border-right: 0;
-        }
-      }
-
-      /* stylelint-disable-next-line selector-max-universal */
-      &.grid-horizontal-borders > * {
-        border-bottom: $column-layout-border;
-
-        /* stylelint-disable-next-line selector-max-universal */
-        &.last-row {
-          border-bottom-width: 0;
-        }
-      }
-    }
   }
-}
-
-.restore-pointer-events {
-  pointer-events: auto;
 }
