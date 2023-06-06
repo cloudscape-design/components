@@ -67,8 +67,10 @@ jobs:
         with:
           script: |
             const readFileSync = require('node:fs').readFileSync;
-            const before = readFileSync("../bundle-size/output-before.txt", "utf8");
-            const after = readFileSync("../bundle-size/output-after.txt", "utf8");
+            const base = Number(readFileSync("../bundle-size/output-base.txt", "utf8"));
+            const before = Number(readFileSync("../bundle-size/output-before.txt", "utf8")) - base;
+            const after = Number(readFileSync("../bundle-size/output-after.txt", "utf8")) - after;
+            console.log("Base:", base)
             console.log("Before:", before);
             console.log("After:", after);
 
