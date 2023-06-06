@@ -19,7 +19,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            await octokit.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner,
               repo,
               sha: pullRequest.head.sha,
@@ -69,7 +69,7 @@ jobs:
             const message = `${after > before ? "+" : ""}${increasePercent}% / ${increaseKb} KB (from ${before/1000} KB to ${after/1000} KB)`
 
             const name = "Bundle size";
-            await octokit.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner,
               repo,
               sha: pullRequest.head.sha,
