@@ -3,10 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
-import styles from './styles.css.js';
 import { InternalColumnLayoutProps } from './interfaces';
-import ColumnLayoutWithCSS from './with-css';
-import ColumnLayoutWithGrid from './with-grid';
+import FlexibleColumnLayout from './flexible-column-layout';
+import GridColumnLayout from './grid-column-layout';
+import styles from './styles.css.js';
 
 export const COLUMN_TRIGGERS = ['default', 'xxs', 'xs'] as const;
 export type ColumnLayoutBreakpoint = typeof COLUMN_TRIGGERS[number] | null;
@@ -30,7 +30,7 @@ export default function ColumnLayout({
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['column-layout'])} ref={__internalRootRef}>
       {minColumnWidth ? (
-        <ColumnLayoutWithCSS
+        <FlexibleColumnLayout
           columns={columns}
           borders={borders}
           variant={variant}
@@ -38,9 +38,9 @@ export default function ColumnLayout({
           disableGutters={disableGutters}
         >
           {children}
-        </ColumnLayoutWithCSS>
+        </FlexibleColumnLayout>
       ) : (
-        <ColumnLayoutWithGrid
+        <GridColumnLayout
           columns={columns}
           variant={variant}
           borders={borders}
@@ -48,7 +48,7 @@ export default function ColumnLayout({
           __breakpoint={__breakpoint}
         >
           {children}
-        </ColumnLayoutWithGrid>
+        </GridColumnLayout>
       )}
     </div>
   );

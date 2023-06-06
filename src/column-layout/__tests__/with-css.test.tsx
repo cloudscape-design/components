@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/column-layout/with-css/styles.css.js';
+import styles from '../../../lib/components/column-layout/flexible-column-layout/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [500, () => {}],

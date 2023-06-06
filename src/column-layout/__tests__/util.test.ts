@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { calculcateCssColumnCount } from '../../../lib/components/column-layout/with-css';
+import { calculcateCssColumnCount } from '../../../lib/components/column-layout/flexible-column-layout';
 
 describe('ColumnLayout calculcateCssColumnCount', () => {
   it('returns desired number of columns when container width is not defined', () => {

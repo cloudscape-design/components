@@ -18,20 +18,20 @@ const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
   4: { colspan: { default: 12, xxs: 6, xs: 3 } },
 };
 
-interface ColumnLayoutWithGridProps
+interface GridColumnLayoutProps
   extends Required<Pick<InternalColumnLayoutProps, 'columns' | 'variant' | 'borders' | 'disableGutters'>> {
   children: React.ReactNode;
   __breakpoint?: ColumnLayoutBreakpoint;
 }
 
-export default function ColumnLayoutWithGrid({
+export default function GridColumnLayout({
   columns,
   variant,
   borders,
   disableGutters,
   __breakpoint,
   children,
-}: ColumnLayoutWithGridProps) {
+}: GridColumnLayoutProps) {
   const isTextGridVariant = variant === 'text-grid';
   const shouldDisableGutters = !isTextGridVariant && disableGutters;
   const shouldHaveHorizontalBorders = !isTextGridVariant && (borders === 'horizontal' || borders === 'all');

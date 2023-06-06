@@ -28,18 +28,18 @@ export function calculcateCssColumnCount(
   );
 }
 
-interface ColumnLayoutWithCSSProps
+interface FlexibleColumnLayoutProps
   extends Pick<InternalColumnLayoutProps, 'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters'> {
   children: React.ReactNode;
 }
 
-export default function ColumnLayoutWithCSS({
+export default function FlexibleColumnLayout({
   columns = 1,
   minColumnWidth = 0,
   disableGutters,
   variant,
   children,
-}: ColumnLayoutWithCSSProps) {
+}: FlexibleColumnLayoutProps) {
   const [containerWidth, containerRef] = useContainerQuery(rect => rect.width);
 
   const columnCount = calculcateCssColumnCount(columns, minColumnWidth, containerWidth);
