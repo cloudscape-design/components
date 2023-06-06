@@ -26,12 +26,7 @@ export default function InternalContentLayout({
   const isVisualRefresh = useVisualRefresh();
   const overlapElement = useDynamicOverlap();
 
-  /**
-   * Disable the overlap if the component is missing either a header or child
-   * content. If the component is not using visual refresh then the overlap
-   * will not be displayed at all. This is handled in the CSS not the JavaScript.
-   */
-  const isOverlapDisabled = !children || !header || disableOverlap;
+  const isOverlapDisabled = !children || disableOverlap;
 
   return (
     <div
@@ -39,6 +34,7 @@ export default function InternalContentLayout({
       className={clsx(baseProps.className, styles.layout, {
         [styles['is-overlap-disabled']]: isOverlapDisabled,
         [styles['is-visual-refresh']]: isVisualRefresh,
+        [styles['has-header']]: !!header,
       })}
       ref={mergedRef}
     >
