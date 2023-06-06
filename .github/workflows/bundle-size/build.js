@@ -12,7 +12,6 @@ async function main() {
 
   const result = await build({
     plugins: [react()],
-    //configFile: 'vite.config.js',
     logLevel: 'silent',
   });
 
