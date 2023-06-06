@@ -1,0 +1,56 @@
+name: Measure bundle size
+
+on:
+  pull_request:
+    branches:
+      - main
+
+# permissions:
+#  id-token: write
+#  actions: read
+#  contents: read
+#  security-events: write
+#  deployments: write
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          cp -r .github/workflows/bundle-size ../bundle-size
+
+          npm i --force
+          npm run build
+          cp -r lib/components ../bundle-size/node_modules/@cloudscape-design/components
+          cd ../bundle-size
+          npm run build
+          mv output.txt output-before.txt
+
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - run: |
+          npm i --force
+          npm run build
+          rm -rf ../bundle-size/node_modules/@cloudscape-design/components
+          cp -r lib/components ../bundle-size/node_modules/@cloudscape-design/components
+          cd ../bundle-size
+          npm run build
+          mv output.txt output-after.txt
+
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const readFileSync = require('node:fs').readFileSync;
+            const before = readFileSync("../bundle-size/output-before.txt", "utf8");
+            const after = readFileSync("../bundle-size/output-after.txt", "utf8");
+            console.log("Before:", before);
+            console.log("After:", after)
+            /*github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })*/
