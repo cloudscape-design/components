@@ -34,7 +34,7 @@ export interface ColumnLayoutProps extends BaseComponentProps {
   /**
    * Use together with `columns` to specify the desired minimum width for each column in pixels.
    *
-   * The number of columns is determined based on the value of this property, the available space,
+   * The number of columns is determined by the value of this property, the available space,
    * and the maximum number of columns as defined by the `columns` property.
    */
   minColumnWidth?: number;
