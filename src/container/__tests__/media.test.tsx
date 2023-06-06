@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { getBreakpointsForMedia, useMedia } from '../media';
+import { useMedia } from '../media';
 import { renderHook } from '../../__tests__/render-hook';
 import { ContainerProps } from '../../../lib/components/container';
 import { MediaDefinition } from '../interfaces';
@@ -101,63 +101,6 @@ describe('Container with media', () => {
       expect(result.current.mediaPosition).toBe(
         (media.position as MediaDefinition.BreakpointMapping<'top' | 'side'>).xs
       );
-    });
-  });
-
-  describe('getBreakpointsForMedia', () => {
-    test('should return an empty array if no media is provided', () => {
-      const breakpoints = getBreakpointsForMedia(undefined);
-      expect(breakpoints).toStrictEqual([]);
-    });
-
-    test('should return an empty array if only "default" breakpoint is defined', () => {
-      const media: ContainerProps.Media = {
-        content: {
-          default: <div>Test Default</div>,
-        },
-        height: {
-          default: '100px',
-        },
-        width: {
-          default: '100px',
-        },
-        position: {
-          default: 'side',
-        },
-      };
-      const breakpoints = getBreakpointsForMedia(media);
-      expect(breakpoints).toStrictEqual([]);
-    });
-    test('should only return "xs" if no other breakpoint is defined', () => {
-      const media: ContainerProps.Media = {
-        content: <div>Test</div>,
-        height: {
-          xs: 100,
-        },
-      };
-      const breakpoints = getBreakpointsForMedia(media);
-      expect(breakpoints).toStrictEqual(['xs']);
-    });
-    test('should return all breakpoints if all breakpoints are defined', () => {
-      const media: ContainerProps.Media = {
-        content: {
-          default: <div>Test</div>,
-        },
-        height: {
-          xxs: 100,
-          xs: 150,
-        },
-        width: {
-          s: 100,
-          m: 150,
-        },
-        position: {
-          l: 'side',
-          xl: 'top',
-        },
-      };
-      const breakpoints = getBreakpointsForMedia(media);
-      expect(breakpoints).toStrictEqual(['xxs', 'xs', 's', 'm', 'l', 'xl']);
     });
   });
 });

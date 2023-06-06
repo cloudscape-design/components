@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
-import { ContainerProps, MediaDefinition } from './interfaces';
+import { ContainerProps } from './interfaces';
 
 export function useMedia(media: ContainerProps.Media | undefined, breakpoint: Breakpoint | null) {
   const {
@@ -56,41 +56,4 @@ export function useMedia(media: ContainerProps.Media | undefined, breakpoint: Br
     mediaWidth: width,
     mediaPosition: position || 'top',
   };
-}
-
-export function getBreakpointsForMedia(media?: ContainerProps.Media) {
-  if (!media) {
-    return [];
-  }
-
-  const breakpointKeys = new Set<Breakpoint>();
-
-  // Iterate through the media object and add all the breakpoints to the set.
-  Object.keys(media).forEach(key => {
-    // We cast the key as 'keyof ContainerProps.Media',
-    // because we know that the key can only be one of the `ContainerProps.Media`
-    const attribute = key as keyof ContainerProps.Media;
-    const attributeValue = media[attribute];
-
-    const isBreakpointMapping =
-      typeof attributeValue === 'object' &&
-      attributeValue !== null &&
-      ('default' in attributeValue || key !== 'content');
-
-    if (isBreakpointMapping) {
-      // We can safely cast attributeValue here because the isBreakpointMapping
-      // check ensures that attributeValue is a BreakpointMapping.
-      const attributeBreakpointMapping = attributeValue as MediaDefinition.BreakpointMapping<any>;
-
-      Object.keys(attributeBreakpointMapping).forEach(bp => {
-        // The keys of attributeBreakpointMapping are of type Breakpoint,
-        // so we can safely cast the bp variable to the Breakpoint type.
-        const breakpoint = bp as Breakpoint;
-        if (breakpoint !== 'default' && attributeBreakpointMapping[breakpoint]) {
-          breakpointKeys.add(breakpoint);
-        }
-      });
-    }
-  });
-  return Array.from(breakpointKeys);
 }
