@@ -23,7 +23,7 @@ jobs:
           npm i --force
           npm run build
           cd ../bundle-size
-          npm install
+          npm i --force
           rm -rf node_modules/@cloudscape-design/components
           cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
           npm run build
@@ -37,7 +37,7 @@ jobs:
           npm i --force
           npm run build
           cd ../bundle-size
-          npm install
+          npm i --force
           rm -rf node_modules/@cloudscape-design/components
           cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
           npm run build
