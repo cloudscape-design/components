@@ -7,17 +7,13 @@ on:
 
 permissions:
   statuses: write
-#  id-token: write
-#  actions: read
-#  contents: read
-#  security-events: write
-#  deployments: write
 
 jobs:
   measure:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
+        name: Create a pending status on the commit
         with:
           script: |
             await github.rest.repos.createCommitStatus({
@@ -28,46 +24,58 @@ jobs:
               state: 'pending',
               description: 'The app is being measured...',
             })
-      - uses: actions/checkout@v3
-      - run: |
+      - name: Checkout the PR branch
+        uses: actions/checkout@v3
+      - name: Measure the base size of the Vite project
+        run: |
           cp -r .github/workflows/bundle-size ../bundle-size
+          cd ../bundle-size
+          npm i --force
+          npm run build
+          mv output.txt output-base.txt
+      - name: Measure the bundle size of this PR
+        run: |
+          npm i --force
+          npm run build
+          cd ../bundle-size
+          npm i --force
+          rm -rf node_modules/@cloudscape-design/components
+          cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
 
-      #     npm i --force
-      #     npm run build
-      #     cd ../bundle-size
-      #     npm i --force
-      #     rm -rf node_modules/@cloudscape-design/components
-      #     cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
-      #     npm run build
-      #     mv output.txt output-before.txt
+          mv main-with-cloudscape.jsx main.jsx
+          npm run build
+          mv output.txt output-before.txt
 
-      # - uses: actions/checkout@v3
-      #   with:
-      #     ref: ${{ github.event.pull_request.head.sha }}
+      - name: Checkout the base branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      # - run: |
-      #     npm i --force
-      #     npm run build
-      #     cd ../bundle-size
-      #     npm i --force
-      #     rm -rf node_modules/@cloudscape-design/components
-      #     cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
-      #     npm run build
-      #     mv output.txt output-after.txt
+      - name: Measure the bundle size of the base branch
+        run: |
+          npm i --force
+          npm run build
+          cd ../bundle-size
+          npm i --force
+          rm -rf node_modules/@cloudscape-design/components
+          cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
+          npm run build
+          mv output.txt output-after.txt
 
-      - uses: actions/github-script@v6
+      - name: Update the commit status with calculated results
+        uses: actions/github-script@v6
         with:
           script: |
             const readFileSync = require('node:fs').readFileSync;
-            const before = 200000; //readFileSync("../bundle-size/output-before.txt", "utf8");
-            const after = 300000; //readFileSync("../bundle-size/output-after.txt", "utf8");
+            const before = readFileSync("../bundle-size/output-before.txt", "utf8");
+            const after = readFileSync("../bundle-size/output-after.txt", "utf8");
             console.log("Before:", before);
             console.log("After:", after);
 
             const increasePercent = (((after - before) / before) * 100).toFixed(2)
             const increaseKb = ((after - before) / 1000).toFixed(1);
 
-            const message = `${after > before ? "+" : ""}${increasePercent}% / ${increaseKb} KB (from ${before/1000} KB to ${after/1000} KB)`
+            const message = `${after > before ? "+" : ""}${increasePercent} % / ${after > before ? "+" : ""}${increaseKb} KB (from ${before/1000} KB to ${after/1000} KB)`
 
             const name = "Bundle size";
             await github.rest.repos.createCommitStatus({
