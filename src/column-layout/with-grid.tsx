@@ -5,9 +5,11 @@ import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
 import InternalGrid from '../grid/internal';
 import { GridProps } from '../grid/interfaces';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { repeat } from './util';
 import { InternalColumnLayoutProps } from './interfaces';
-import { ColumnLayoutBreakpoint } from './internal';
+import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal';
 import styles from './styles.css.js';
 
 const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
@@ -35,9 +37,12 @@ export default React.forwardRef(function ColumnLayoutWithGrid(
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
   const flattenedChildren = flattenChildren(children);
 
+  const [breakpoint, containerRef] = useContainerBreakpoints(COLUMN_TRIGGERS);
+  const mergedRef = useMergeRefs(containerRef, ref);
+
   return (
     <InternalGrid
-      ref={ref}
+      ref={mergedRef}
       disableGutters={true}
       gridDefinition={repeat(COLUMN_DEFS[columns] ?? {}, flattenedChildren.length)}
       className={clsx(styles.grid, styles[`grid-columns-${columns}`], styles[`grid-variant-${variant}`], {
@@ -45,7 +50,7 @@ export default React.forwardRef(function ColumnLayoutWithGrid(
         [styles['grid-vertical-borders']]: shouldHaveVerticalBorders,
         [styles['grid-no-gutters']]: shouldDisableGutters,
       })}
-      __breakpoint={__breakpoint}
+      __breakpoint={__breakpoint || breakpoint}
       __responsiveClassName={breakpoint => breakpoint && styles[`grid-breakpoint-${breakpoint}`]}
     >
       {children}
