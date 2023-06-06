@@ -14,20 +14,17 @@ export type ColumnLayoutBreakpoint = typeof COLUMN_TRIGGERS[number] | null;
 /**
  * A responsive grid layout.
  */
-export default React.forwardRef(function ColumnLayout(
-  {
-    columns = 1,
-    variant = 'default',
-    borders = 'none',
-    disableGutters = false,
-    minColumnWidth,
-    children,
-    __breakpoint,
-    __internalRootRef,
-    ...restProps
-  }: InternalColumnLayoutProps,
-  ref?: React.Ref<any>
-) {
+export default function ColumnLayout({
+  columns = 1,
+  variant = 'default',
+  borders = 'none',
+  disableGutters = false,
+  minColumnWidth,
+  children,
+  __breakpoint,
+  __internalRootRef,
+  ...restProps
+}: InternalColumnLayoutProps) {
   const baseProps = getBaseProps(restProps);
 
   return (
@@ -49,11 +46,10 @@ export default React.forwardRef(function ColumnLayout(
           borders={borders}
           disableGutters={disableGutters}
           __breakpoint={__breakpoint}
-          ref={ref}
         >
           {children}
         </ColumnLayoutWithGrid>
       )}
     </div>
   );
-});
+}

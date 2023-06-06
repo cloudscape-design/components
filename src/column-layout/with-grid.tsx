@@ -6,7 +6,6 @@ import flattenChildren from 'react-keyed-flatten-children';
 import InternalGrid from '../grid/internal';
 import { GridProps } from '../grid/interfaces';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { repeat } from './util';
 import { InternalColumnLayoutProps } from './interfaces';
 import { COLUMN_TRIGGERS, ColumnLayoutBreakpoint } from './internal';
@@ -25,10 +24,14 @@ interface ColumnLayoutWithGridProps
   __breakpoint?: ColumnLayoutBreakpoint;
 }
 
-export default React.forwardRef(function ColumnLayoutWithGrid(
-  { columns, variant, borders, disableGutters, __breakpoint, children }: ColumnLayoutWithGridProps,
-  ref?: React.Ref<any>
-) {
+export default function ColumnLayoutWithGrid({
+  columns,
+  variant,
+  borders,
+  disableGutters,
+  __breakpoint,
+  children,
+}: ColumnLayoutWithGridProps) {
   const isTextGridVariant = variant === 'text-grid';
   const shouldDisableGutters = !isTextGridVariant && disableGutters;
   const shouldHaveHorizontalBorders = !isTextGridVariant && (borders === 'horizontal' || borders === 'all');
@@ -37,12 +40,11 @@ export default React.forwardRef(function ColumnLayoutWithGrid(
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
   const flattenedChildren = flattenChildren(children);
 
-  const [breakpoint, containerRef] = useContainerBreakpoints(COLUMN_TRIGGERS);
-  const mergedRef = useMergeRefs(containerRef, ref);
+  const [breakpoint, ref] = useContainerBreakpoints(COLUMN_TRIGGERS);
 
   return (
     <InternalGrid
-      ref={mergedRef}
+      ref={ref}
       disableGutters={true}
       gridDefinition={repeat(COLUMN_DEFS[columns] ?? {}, flattenedChildren.length)}
       className={clsx(styles.grid, styles[`grid-columns-${columns}`], styles[`grid-variant-${variant}`], {
@@ -56,4 +58,4 @@ export default React.forwardRef(function ColumnLayoutWithGrid(
       {children}
     </InternalGrid>
   );
-});
+}
