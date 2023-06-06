@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { screen } from '@testing-library/react';
 
 import { describeEachThemeAppLayout, isDrawerClosed, drawersConfigurations, renderComponent } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
@@ -11,6 +10,10 @@ import notificationStyles from '../../../lib/components/app-layout/notifications
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../../lib/components/internal/keycode';
+
+jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
+  useContainerQuery: () => [1300, () => {}],
+}));
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
@@ -191,8 +194,6 @@ describeEachThemeAppLayout(false, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
     act(() => wrapper.findDrawersSlider()!.keydown(KeyCode.left));
     await new Promise(resolve => setTimeout(resolve, 300));
-
-    console.log(screen.debug(wrapper.findActiveDrawer()!.getElement()));
 
     await act(async () => {
       await requestAnimationFramePromise();

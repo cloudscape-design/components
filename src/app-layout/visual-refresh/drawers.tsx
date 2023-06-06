@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { IconProps } from '../../icon/interfaces';
 import { InternalButton } from '../../button/internal';
-import { NonCancelableEventHandler } from '../../internal/events';
+import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
@@ -20,7 +20,7 @@ import { useKeyboardEvents } from '../utils/use-keyboard-events';
 export interface DrawersProps {
   activeDrawerId?: string;
   items: ReadonlyArray<DrawersProps.Drawer>;
-  onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
+  onChange?: NonCancelableEventHandler<string | null>;
   ariaLabel?: string;
 }
 
@@ -44,11 +44,12 @@ namespace DrawersProps {
   }
 
   export interface ChangeDetail {
-    activeDrawerId: string | null;
+    activeDrawerId: string | null | undefined;
   }
 
   export interface ResizeDetail {
     size: number;
+    id: string;
   }
 
   interface Labels {
@@ -116,13 +117,54 @@ function ActiveDrawer() {
     navigationHide,
     tools,
     toolsRefs,
-    drawersResize,
-    drawersSize,
     drawersMaxWidth,
     loseDrawersFocus,
   } = useAppLayoutInternals();
 
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
+  const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
+  const toolsWidth = 290;
+
+  const getDrawerItemSizes = useCallback(() => {
+    const sizes: { [id: string]: number } = {};
+    if (!drawerItems) {
+      return {};
+    }
+
+    for (const item of drawerItems) {
+      if (item.defaultSize) {
+        if (item.defaultSize > drawersMaxWidth) {
+          sizes[item.id] = toolsWidth;
+        } else {
+          sizes[item.id] = item.defaultSize || toolsWidth;
+        }
+      }
+    }
+    return sizes;
+  }, [drawerItems, toolsWidth, drawersMaxWidth]);
+
+  const [drawerItemSizes, setDrawerItemSizes] = useState(() => getDrawerItemSizes());
+
+  useEffect(() => {
+    // Ensure we only set new drawer items by performing a shallow merge
+    // of the latest drawer item sizes, and previous drawer item sizes.
+    setDrawerItemSizes(() => getDrawerItemSizes());
+  }, [drawersMaxWidth, activeDrawerId, getDrawerItemSizes]);
+
+  const drawerSize =
+    !activeDrawerId && !isToolsOpen
+      ? 0
+      : activeDrawerId && drawerItemSizes[activeDrawerId]
+      ? drawerItemSizes[activeDrawerId]
+      : toolsWidth;
+
+  const drawerResize = (resizeDetail: { size: number; id: string }) => {
+    const drawerItem = drawers.items.find(({ id }: any) => id === resizeDetail.id);
+    if (drawerItem?.onResize) {
+      fireNonCancelableEvent(drawerItem.onResize, resizeDetail);
+    }
+    setDrawerItemSizes({ ...drawerItemSizes, [resizeDetail.id]: resizeDetail.size });
+  };
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -140,10 +182,10 @@ function ActiveDrawer() {
     // wait one frame to allow app-layout to complete its calculations
     const handle = requestAnimationFrame(() => {
       const maxSize = drawersMaxWidth;
-      setRelativeSize(((drawersSize - MIN_WIDTH) / (maxSize - MIN_WIDTH)) * 100);
+      setRelativeSize(((drawerSize - MIN_WIDTH) / (maxSize - MIN_WIDTH)) * 100);
     });
     return () => cancelAnimationFrame(handle);
-  }, [drawersSize, drawersMaxWidth, MIN_WIDTH]);
+  }, [drawerSize, drawersMaxWidth, MIN_WIDTH]);
 
   const setSidePanelWidth = (width: number) => {
     const maxWidth = drawersMaxWidth;
@@ -151,7 +193,7 @@ function ActiveDrawer() {
     const id = activeDrawer?.id;
 
     if (activeDrawer && id && maxWidth >= MIN_WIDTH) {
-      drawersResize({ size, id });
+      drawerResize({ size, id });
     }
   };
 
@@ -179,7 +221,12 @@ function ActiveDrawer() {
       aria-valuenow={relativeSize}
       className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`], testutilStyles['drawers-slider'])}
       onKeyDown={onKeyDown}
-      onPointerDown={onSliderPointerDown}
+      onPointerDown={() => {
+        onSliderPointerDown();
+        if (drawerRefObject && drawerRefObject.current) {
+          drawerRefObject.current.style.transition = 'none';
+        }
+      }}
     >
       <ResizeHandler className={clsx(splitPanelStyles['slider-icon'], splitPanelStyles[`slider-icon-side`])} />
     </div>
@@ -196,8 +243,7 @@ function ActiveDrawer() {
         [testutilStyles.tools]: isToolsOpen,
       })}
       style={{
-        ...(!isMobile && drawersSize && { [customCssProps.drawersSize]: `${drawersSize}px` }),
-        width: isMobile ? '100vw' : drawersSize,
+        ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${drawerSize}px` }),
       }}
       ref={drawerRefObject}
       onBlur={e => {

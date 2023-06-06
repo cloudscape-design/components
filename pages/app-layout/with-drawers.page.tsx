@@ -62,12 +62,7 @@ export default function WithDrawers() {
               },
               resizable: true,
               defaultSize: 400,
-              onResize: ({ detail }) => {
-                // A drawer implementer may choose to listen to THEIR drawer's
-                // resize event,should they want to persist, or otherwise respond
-                // to their drawer being resized.
-                console.log(detail);
-              },
+
               content: <ProHelp />,
               id: 'pro-help',
               trigger: {

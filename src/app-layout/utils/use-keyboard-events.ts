@@ -22,11 +22,9 @@ const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
     };
   }
 
-  const safeParseFloat = (size = '') => parseFloat(size) || 0;
-
   return {
-    panelHeight: safeParseFloat(panelRef.current.style.height),
-    panelWidth: safeParseFloat(panelRef.current.style.width),
+    panelHeight: panelRef.current.clientHeight,
+    panelWidth: panelRef.current.clientWidth,
   };
 };
 
