@@ -79,6 +79,7 @@
   flex-direction: column;
   width: 100%;
   &-fit-height {
+    height: 100%;
     overflow: hidden;
   }
 }
