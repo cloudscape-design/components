@@ -29,11 +29,13 @@ jobs:
 
       - name: Checkout the PR branch
         uses: actions/checkout@v3
+        with:
+          path: 'components'
 
       - name: Setup the bundle measurement project
         run: |
-          cp -r .github/workflows/bundle-size ../bundle-size
-          cd ../bundle-size
+          cp -r components/.github/workflows/bundle-size bundle-size
+          cd bundle-size
           npm i --force
 
       # ------- Baseline size measurement ---------------------------------
@@ -42,13 +44,13 @@ jobs:
         uses: actions/cache/restore@v3
         id: restore-cache-baseline
         with:
-          path: ../bundle-size/output-baseline.txt
-          key: ${{ hashFiles('.github/workflows/bundle-size/build.js','.github/workflows/bundle-size/index.html','.github/workflows/bundle-size/main.jsx','.github/workflows/bundle-size/package-lock.json','.github/workflows/bundle-size/package.json') }}
+          path: bundle-size/output-baseline.txt
+          key: ${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}
 
       - name: Measure the baseline size of the Vite project
         if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
         run: |
-          cd ../bundle-size
+          cd bundle-size
           npm run build
           mv output.txt output-baseline.txt
           cat output-baseline.txt
@@ -57,7 +59,7 @@ jobs:
         uses: actions/cache/save@v3
         if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
         with:
-          path: ../bundle-size/output-baseline.txt
+          path: bundle-size/output-baseline.txt
           key: ${{ steps.restore-cache-baseline.outputs.cache-primary-key }}
 
       # ------- Base branch size measurement ------------------------------
@@ -66,24 +68,28 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          path: 'components'
 
       - name: Restore the cache for the base branch size measurement
         uses: actions/cache/restore@v3
         id: restore-cache-basebranch
         with:
-          path: ../bundle-size/output-basebranch.txt
-          key: ${{ hashFiles('.github/workflows/bundle-size/build.js','.github/workflows/bundle-size/index.html','.github/workflows/bundle-size/main.jsx','.github/workflows/bundle-size/package-lock.json','.github/workflows/bundle-size/package.json') }}-${{ github.event.pull_request.head.sha }}
+          path: bundle-size/output-basebranch.txt
+          key: ${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}-${{ github.event.pull_request.head.sha }}
 
       - name: Measure the bundle size of the base branch
         if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
         run: |
+          cd components
           npm i --force
           npm run build
+
           cd ../bundle-size
           npm i --force
           rm -rf node_modules/@cloudscape-design/components
-          cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
+          cp -r $GITHUB_WORKSPACE/components/lib/components node_modules/@cloudscape-design/components
           npm run build
+
           mv output.txt output-basebranch.txt
           cat output-basebranch.txt
 
@@ -91,25 +97,29 @@ jobs:
         uses: actions/cache/save@v3
         if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
         with:
-          path: ../bundle-size/output-basebranch.txt
+          path: bundle-size/output-basebranch.txt
           key: ${{ steps.restore-cache-basebranch.outputs.cache-primary-key }}
 
       # ------- Pull request size measurement -----------------------------
 
       - name: Checkout the PR branch
         uses: actions/checkout@v3
+        with:
+          path: 'components'
 
       - name: Measure the bundle size of this PR
         run: |
+          cd components
           npm i --force
           npm run build
+
           cd ../bundle-size
           npm i --force
           rm -rf node_modules/@cloudscape-design/components
-          cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
-
+          cp -r $GITHUB_WORKSPACE/components/lib/components node_modules/@cloudscape-design/components
           mv main-with-cloudscape.jsx main.jsx
           npm run build
+
           mv output.txt output-pr.txt
           cat output-pr.txt
 
@@ -118,9 +128,9 @@ jobs:
         with:
           script: |
             const readFileSync = require('node:fs').readFileSync;
-            const baseline = Number(readFileSync("../bundle-size/output-baseline.txt", "utf8"));
-            const basebranch = Number(readFileSync("../bundle-size/output-basebranch.txt", "utf8")) - baseline;
-            const pr = Number(readFileSync("../bundle-size/output-pr.txt", "utf8")) - baseline;
+            const baseline = Number(readFileSync("./bundle-size/output-baseline.txt", "utf8"));
+            const basebranch = Number(readFileSync("./bundle-size/output-basebranch.txt", "utf8")) - baseline;
+            const pr = Number(readFileSync("./bundle-size/output-pr.txt", "utf8")) - baseline;
             console.log("Baseline:", baseline)
             console.log("Base branch:", basebranch);
             console.log("This PR:", pr);
