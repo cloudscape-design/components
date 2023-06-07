@@ -23,6 +23,7 @@ jobs:
               context: "Bundle size",
               state: 'pending',
               description: 'The app is being measured...',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             })
       - name: Checkout the PR branch
         uses: actions/checkout@v3
@@ -69,7 +70,7 @@ jobs:
             const readFileSync = require('node:fs').readFileSync;
             const base = Number(readFileSync("../bundle-size/output-base.txt", "utf8"));
             const before = Number(readFileSync("../bundle-size/output-before.txt", "utf8")) - base;
-            const after = Number(readFileSync("../bundle-size/output-after.txt", "utf8")) - after;
+            const after = Number(readFileSync("../bundle-size/output-after.txt", "utf8")) - base;
             console.log("Base:", base)
             console.log("Before:", before);
             console.log("After:", after);
@@ -87,4 +88,19 @@ jobs:
               context: name,
               state: 'success',
               description: message,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            })
+      - name: Report failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.pull_request.head.sha,
+              context: name,
+              state: 'error',
+              description: "The workflow encountered an error.",
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             })
