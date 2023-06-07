@@ -78,10 +78,11 @@ jobs:
 
       - name: Measure the bundle size of the base branch
         if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
+        # TODO: change `build` to `quick-build` before merging
         run: |
           cd components
           npm i --force
-          npm run quick-build
+          npm run build
 
           cd ../bundle-size
           npm i --force
