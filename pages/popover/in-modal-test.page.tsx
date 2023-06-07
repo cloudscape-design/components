@@ -44,6 +44,7 @@ export default function () {
             visible={isModalOpened}
             onDismiss={() => setModalOpened(false)}
             closeAriaLabel="Close modal"
+            footer="Modal footer"
           >
             <Popover
               id="popover"
