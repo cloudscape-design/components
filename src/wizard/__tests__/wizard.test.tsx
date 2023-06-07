@@ -7,6 +7,7 @@ import liveRegionStyles from '../../../lib/components/internal/components/live-r
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
@@ -498,5 +499,46 @@ describe('Custom actions', () => {
 
     wrapper.findSecondaryActions()!.findButton()!.click();
     expect(onClick).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('i18n', () => {
+  test('supports rendering static strings using i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          wizard: {
+            'i18nStrings.stepNumberLabel': 'Custom step {stepNumber}',
+            'i18nStrings.collapsedStepsLabel': 'Custom step {stepNumber} of {stepsCount}',
+            'i18nStrings.skipToButtonLabel': 'Custom skip to {task__title}',
+            'i18nStrings.navigationAriaLabel': 'Custom steps',
+            'i18nStrings.cancelButton': 'Custom cancel',
+            'i18nStrings.previousButton': 'Custom previous',
+            'i18nStrings.nextButton': 'Custom next',
+            'i18nStrings.optional': 'Custom optional',
+          },
+        }}
+      >
+        <Wizard
+          i18nStrings={{ submitButton: 'Create instance' }}
+          allowSkipTo={true}
+          steps={[
+            { title: 'Step 1', content: 'Content 1', isOptional: true },
+            { title: 'Step 2', content: 'Content 2', isOptional: true },
+            { title: 'Step 3', content: 'Content 3', isOptional: true },
+          ]}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findWizard()!;
+    expect(wrapper.find('li:nth-child(1)')!.getElement()).toHaveTextContent(
+      'Custom step 1 - Custom optional' + 'Step 1'
+    );
+    expect(wrapper.getElement()).toHaveTextContent('Custom step 1 of 3');
+    expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Custom cancel');
+    expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Custom next');
+    expect(wrapper.findSkipToButton()!.getElement()).toHaveTextContent('Custom skip to Step 3');
+    wrapper.findPrimaryButton().click();
+    expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent('Custom previous');
   });
 });
