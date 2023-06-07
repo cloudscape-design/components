@@ -44,7 +44,7 @@ jobs:
         id: restore-cache-baseline
         with:
           path: bundle-size/output-baseline.txt
-          key: ${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}
+          key: bundlesize-${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}
 
       - name: Measure the baseline size of the Vite project
         if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
@@ -74,7 +74,7 @@ jobs:
         id: restore-cache-basebranch
         with:
           path: bundle-size/output-basebranch.txt
-          key: ${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main-with-cloudscape.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}-${{ github.event.pull_request.base.sha }}
+          key: bundlesize-${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main-with-cloudscape.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}-${{ github.event.pull_request.base.sha }}
 
       - name: Measure the bundle size of the base branch
         if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
