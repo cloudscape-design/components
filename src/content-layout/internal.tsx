@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import { ContentLayoutProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -25,15 +24,9 @@ export default function InternalContentLayout({
   const mergedRef = useMergeRefs(rootElement, __internalRootRef);
 
   const isVisualRefresh = useVisualRefresh();
-  const { hasBreadcrumbs } = useAppLayoutContext();
   const overlapElement = useDynamicOverlap();
 
-  /**
-   * Disable the overlap if the component is missing either a header or child
-   * content. If the component is not using visual refresh then the overlap
-   * will not be displayed at all. This is handled in the CSS not the JavaScript.
-   */
-  const isOverlapDisabled = !children || !header || disableOverlap;
+  const isOverlapDisabled = !children || disableOverlap;
 
   return (
     <div
@@ -41,6 +34,7 @@ export default function InternalContentLayout({
       className={clsx(baseProps.className, styles.layout, {
         [styles['is-overlap-disabled']]: isOverlapDisabled,
         [styles['is-visual-refresh']]: isVisualRefresh,
+        [styles['has-header']]: !!header,
       })}
       ref={mergedRef}
     >
@@ -53,17 +47,7 @@ export default function InternalContentLayout({
         ref={overlapElement}
       />
 
-      {header && (
-        <div
-          className={clsx(
-            styles.header,
-            { [styles['has-breadcrumbs']]: isVisualRefresh && hasBreadcrumbs },
-            'awsui-context-content-header'
-          )}
-        >
-          {header}
-        </div>
-      )}
+      {header && <div className={clsx(styles.header, 'awsui-context-content-header')}>{header}</div>}
 
       <div className={styles.content}>{children}</div>
     </div>

@@ -1,0 +1,31 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../hooks/focus-visible' as focus-visible;
+@use '../../styles/tokens' as awsui;
+
+.handle {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0 awsui.$space-scaled-xxxs;
+  margin: 0 awsui.$space-scaled-xxs;
+
+  color: awsui.$color-text-interactive-default;
+
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+
+  @include focus-visible.when-visible {
+    &:not(.hide-focus) {
+      @include styles.focus-highlight(0px);
+    }
+    &.hide-focus {
+      outline: none;
+    }
+  }
+}

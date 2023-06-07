@@ -5,26 +5,9 @@ import { render } from '@testing-library/react';
 
 import { FunnelSubStepContext } from '../../../../../lib/components/internal/analytics/context/analytics-context';
 import { useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
-import { FunnelMetrics, setFunnelMetrics } from '../../../../../lib/components/internal/analytics';
+import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
 
-const mockedFunnelInteractionId = 'mocked-funnel-id';
-function mockFunnelMetrics() {
-  setFunnelMetrics({
-    funnelStart: jest.fn(() => mockedFunnelInteractionId),
-    funnelError: jest.fn(),
-    funnelComplete: jest.fn(),
-    funnelSuccessful: jest.fn(),
-    funnelCancelled: jest.fn(),
-    funnelStepStart: jest.fn(),
-    funnelStepComplete: jest.fn(),
-    funnelStepNavigation: jest.fn(),
-    funnelSubStepStart: jest.fn(),
-    funnelSubStepComplete: jest.fn(),
-    funnelSubStepError: jest.fn(),
-    helpPanelInteracted: jest.fn(),
-    externalLinkInteracted: jest.fn(),
-  });
-}
+import { mockFunnelMetrics } from '../mocks';
 
 describe('useFunnelSubStep hook', () => {
   beforeEach(() => {

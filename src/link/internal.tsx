@@ -13,6 +13,12 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useInternalI18n } from '../internal/i18n/context';
+import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+
+import { FunnelMetrics } from '../internal/analytics';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { getElementSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
 
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
@@ -43,11 +49,44 @@ const InternalLink = React.forwardRef(
     const specialStyles = ['top-navigation', 'link', 'recovery'];
     const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
+    const i18n = useInternalI18n('link');
     const baseProps = getBaseProps(props);
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
+    const uniqueId = useUniqueId('link');
+
+    const { funnelInteractionId } = useFunnel();
+    const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
+
+    const fireFunnelEvent = (funnelInteractionId: string) => {
+      if (variant === 'info') {
+        FunnelMetrics.helpPanelInteracted({
+          funnelInteractionId,
+          stepNumber,
+          stepNameSelector,
+          subStepSelector,
+          subStepNameSelector,
+          elementSelector: getElementSelector(uniqueId),
+          subStepAllSelector: getSubStepAllSelector(),
+        });
+      } else if (external) {
+        FunnelMetrics.externalLinkInteracted({
+          funnelInteractionId,
+          stepNumber,
+          stepNameSelector,
+          subStepSelector,
+          subStepNameSelector,
+          elementSelector: getElementSelector(uniqueId),
+          subStepAllSelector: getSubStepAllSelector(),
+        });
+      }
+    };
 
     const fireFollowEvent = (event: React.SyntheticEvent) => {
+      if (funnelInteractionId) {
+        fireFunnelEvent(funnelInteractionId);
+      }
+
       fireCancelableEvent(onFollow, { href, external, target: anchorTarget }, event);
     };
 
@@ -89,8 +128,10 @@ const InternalLink = React.forwardRef(
         styles[getColorStyle(variant, color)]
       ),
       'aria-label': ariaLabel,
+      'data-analytics-id': uniqueId,
     };
 
+    const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', externalIconAriaLabel);
     const content = (
       <>
         {children}
@@ -99,8 +140,8 @@ const InternalLink = React.forwardRef(
             &nbsp;
             <span
               className={styles.icon}
-              aria-label={externalIconAriaLabel}
-              role={externalIconAriaLabel ? 'img' : undefined}
+              aria-label={renderedExternalIconAriaLabel}
+              role={renderedExternalIconAriaLabel ? 'img' : undefined}
             >
               <InternalIcon name="external" size="inherit" />
             </span>

@@ -3,7 +3,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
-import { FunnelMetrics, setFunnelMetrics } from '../../../../../lib/components/internal/analytics';
+import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
@@ -11,24 +11,7 @@ import {
 } from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
 import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
 
-const mockedFunnelInteractionId = 'mocked-funnel-id';
-function mockFunnelMetrics() {
-  setFunnelMetrics({
-    funnelStart: jest.fn(() => mockedFunnelInteractionId),
-    funnelError: jest.fn(),
-    funnelComplete: jest.fn(),
-    funnelSuccessful: jest.fn(),
-    funnelCancelled: jest.fn(),
-    funnelStepStart: jest.fn(),
-    funnelStepComplete: jest.fn(),
-    funnelStepNavigation: jest.fn(),
-    funnelSubStepStart: jest.fn(),
-    funnelSubStepComplete: jest.fn(),
-    funnelSubStepError: jest.fn(),
-    helpPanelInteracted: jest.fn(),
-    externalLinkInteracted: jest.fn(),
-  });
-}
+import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
 
 describe('AnalyticsFunnel', () => {
   beforeEach(() => {

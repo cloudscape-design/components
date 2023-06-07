@@ -178,6 +178,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
    * * `submittingEditText` (EditableColumnDefinition) => string -
    *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+   * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
 
@@ -280,6 +281,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                  (such as in a dashboard item container).
    * * `embedded` - Use this variant within a parent container (such as a modal, expandable
    *                section, container or split panel).
+   *                **Deprecated**, replaced by `borderless` and `container`.
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
    *               table).
    * * `full-page` – Use this variant when the table is the entire content of a page. Full page variants

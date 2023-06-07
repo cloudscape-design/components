@@ -39,6 +39,7 @@ export default function () {
                     dismissible={true}
                     dismissAriaLabel="Close alert"
                     onDismiss={() => setVisible(false)}
+                    action={<Button>Do something</Button>}
                   >
                     Demo alert
                   </Alert>

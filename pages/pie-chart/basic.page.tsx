@@ -68,6 +68,8 @@ export default function () {
                 },
               ]}
               segmentDescription={segmentDescription1}
+              hideDescriptions={true}
+              hideTitles={true}
             />
           </Container>
           <Container header={<Header variant="h2">Donut Chart</Header>}>

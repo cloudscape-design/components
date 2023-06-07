@@ -4,6 +4,7 @@
 */
 @use '../internal/styles/' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 /*
 Pass through the header and child content if not rendering in 
@@ -29,10 +30,6 @@ nodes will directly touch with no gap between them.
   grid-template-rows: auto #{awsui.$space-dark-header-overlap-distance} 1fr;
   min-height: 100%;
 
-  &.is-overlap-disabled {
-    grid-template-rows: auto 0 1fr;
-  }
-
   > .background {
     background-color: awsui.$color-background-layout-main;
     grid-column: 1;
@@ -48,20 +45,26 @@ nodes will directly touch with no gap between them.
     grid-column: 1;
     grid-row: 1;
     padding-bottom: awsui.$space-content-header-padding-bottom;
-
-    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      &.has-breadcrumbs {
-        padding-top: awsui.$space-xxs;
-      }
-    }
-
-    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-      padding: awsui.$space-m 0 awsui.$space-content-header-padding-bottom;
-    }
   }
 
   > .content {
     grid-column: 1;
     grid-row: 2 / 4;
+  }
+
+  &:not(.has-header) {
+    grid-template-rows:
+      auto calc(
+        #{awsui.$space-dark-header-overlap-distance} + var(#{custom-props.$containerFirstOverlapExtension}, 0px) + var(#{custom-props.$containerFirstGap}, 0px)
+      )
+      1fr;
+
+    > .content {
+      padding-top: var(#{custom-props.$containerFirstGap}, 0px);
+    }
+  }
+
+  &.is-overlap-disabled {
+    grid-template-rows: auto 0 1fr;
   }
 }

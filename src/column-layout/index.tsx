@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import InternalColumnLayout, { COLUMN_TRIGGERS } from './internal';
+import InternalColumnLayout from './internal';
 import { getExternalProps } from '../internal/utils/external-props';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { ColumnLayoutProps } from './interfaces';
@@ -18,7 +17,6 @@ export default function ColumnLayout({
   ...props
 }: ColumnLayoutProps) {
   const baseComponentProps = useBaseComponent('ColumnLayout');
-  const [breakpoint, ref] = useContainerBreakpoints(COLUMN_TRIGGERS);
   const externalProps = getExternalProps(props);
   return (
     <InternalColumnLayout
@@ -28,8 +26,6 @@ export default function ColumnLayout({
       disableGutters={disableGutters}
       {...externalProps}
       {...baseComponentProps}
-      __breakpoint={breakpoint}
-      ref={ref}
     />
   );
 }

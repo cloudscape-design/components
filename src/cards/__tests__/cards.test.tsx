@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper } from '../../../lib/components/test-utils/dom';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 interface Item {
   id: number;
@@ -242,6 +243,20 @@ describe('Cards', () => {
 
       expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
         `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
+      );
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using selectionGroupLabel from i18n provider', () => {
+      ({ wrapper } = renderCards(
+        <TestI18nProvider messages={{ cards: { 'ariaLabels.selectionGroupLabel': 'Custom label' } }}>
+          <Cards<Item> cardDefinition={cardDefinition} selectionType="multi" items={defaultItems} />
+        </TestI18nProvider>
+      ));
+      expect(getCard(0).findSelectionArea()!.getElement()).toHaveAttribute(
+        'aria-label',
+        expect.stringContaining('Custom label')
       );
     });
   });

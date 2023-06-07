@@ -151,16 +151,19 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
 
   /**
    * Text that's displayed when the chart is loading (that is, when `statusType` is set to `loading`).
+   * @i18n
    */
   loadingText?: string;
 
   /**
    * Text that's displayed when the chart is in error state (that is, when `statusType` is set to `error`).
+   * @i18n
    */
   errorText?: string;
 
   /**
    * Text for the recovery button that's displayed next to the error text.
+   * @i18n
    **/
   recoveryText?: string;
 
@@ -203,6 +206,7 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
 
   /**
    * An object that contains all of the localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: PieChartProps.I18nStrings;
 }

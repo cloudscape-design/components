@@ -57,7 +57,7 @@ describe('Chart status container', () => {
 
   it('renders error state', () => {
     const { wrapper } = renderStatusContainer(
-      <ChartStatusContainer {...commonProps} isEmpty={true} statusType="error" />
+      <ChartStatusContainer {...commonProps} isEmpty={true} statusType="error" onRecoveryClick={() => {}} />
     );
     expect(wrapper.getElement()).toHaveTextContent('Error');
     expect(wrapper.getElement()).toHaveTextContent('Retry');

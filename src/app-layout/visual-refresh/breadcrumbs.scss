@@ -1,0 +1,23 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+.breadcrumbs {
+  background-color: awsui.$color-background-layout-main;
+  grid-area: breadcrumbs;
+
+  /*
+  If a child component tells the AppLayout to have a sticky 
+  background (typically because of a stickyHeader with a 
+  full-page variant) the z-index of the breadcrumbs needs to 
+  be lifted so it doesn't render behind the background element.
+  */
+  &.has-sticky-background {
+    z-index: 799;
+  }
+}

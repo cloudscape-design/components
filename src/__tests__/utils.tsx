@@ -20,6 +20,7 @@ export function getAllComponents(): string[] {
         name !== 'test-utils' &&
         name !== 'theming' &&
         name !== 'contexts' &&
+        name !== 'i18n' &&
         !name.includes('.') &&
         !name.includes('LICENSE')
     );

@@ -50,7 +50,7 @@ exports.watch = () => {
     ],
     typescript
   );
-  watch(['src/internal/i18n/messages/*.json'], generateI18nMessages);
+  watch(['src/i18n/messages/*.json'], generateI18nMessages);
   watch(['src/test-utils/dom/**/*.ts', '!src/test-utils/dom/index.ts'], testUtils);
   watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], styles);
 };

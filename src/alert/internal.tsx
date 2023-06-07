@@ -65,6 +65,7 @@ export default function InternalAlert({
   return (
     <div
       {...baseProps}
+      data-analytics-alert={type}
       aria-hidden={!visible}
       className={clsx(
         styles.root,

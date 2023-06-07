@@ -73,14 +73,14 @@ describe('ContentLayout component', () => {
       expect(isOverlapEnabled()).toBe(false);
     });
 
-    test('does not render the overlap if the header is empty', () => {
+    test('renders the overlap if the header is empty', () => {
       const { isOverlapEnabled } = renderContentLayout({
         children: <>Content text</>,
       });
-      expect(isOverlapEnabled()).toBe(false);
+      expect(isOverlapEnabled()).toBe(true);
     });
 
-    test('does not render the overlap if the header is toggled', () => {
+    test('does not render the overlap if the content is toggled', () => {
       const { isOverlapEnabled, rerender } = renderContentLayout({
         children: <>Content text</>,
         header: <>Header text</>,
@@ -88,7 +88,7 @@ describe('ContentLayout component', () => {
       expect(isOverlapEnabled()).toBe(true);
 
       rerender({
-        children: <>Content text</>,
+        header: <>Header text</>,
       });
       expect(isOverlapEnabled()).toBe(false);
 

@@ -35,6 +35,7 @@ function listPublicItems(baseDir) {
         elem !== 'index.ts' &&
         elem !== 'interfaces.ts' &&
         elem !== 'test-utils' &&
+        elem !== 'i18n' &&
         elem !== 'theming' &&
         elem !== 'contexts'
     );
