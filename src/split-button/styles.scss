@@ -11,52 +11,26 @@
   align-items: stretch;
 }
 
-.item-wrapper {
-  display: contents;
-}
-
-.button-dropdown-item {
-  display: contents;
-
-  > .button {
-    height: 100%;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    padding-left: awsui.$space-xs;
+/* stylelint-disable selector-max-type */
+/* stylelint-disable @cloudscape-design/no-implicit-descendant */
+.item {
+  &:not(:first-child) {
+    a,
+    button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-left: awsui.$space-xs;
+    }
   }
-}
-
-.button-item {
-  display: contents;
-
   &:not(:last-child) {
-    > .button {
+    a,
+    button {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       padding-right: awsui.$space-xs;
       margin-right: awsui.$space-xxxs;
     }
   }
-
-  &:not(:first-child) {
-    > .button {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      padding-left: awsui.$space-xs;
-    }
-  }
 }
-
-.rotate-up {
-  transform: rotate(-180deg);
-  @include styles.with-motion {
-    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
-  }
-}
-
-.rotate-down {
-  transform: rotate(0deg);
-  @include styles.with-motion {
-    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
-  }
-}
+/* stylelint-enable @cloudscape-design/no-implicit-descendant */
+/* stylelint-enable selector-max-type */

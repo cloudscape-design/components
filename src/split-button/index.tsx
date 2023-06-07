@@ -9,26 +9,15 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { SplitButtonProps };
 
-const SplitButton = React.forwardRef(
-  (
-    { items, variant = 'normal', expandToViewport = false, expandableGroups = false, ...props }: SplitButtonProps,
-    ref: React.Ref<SplitButtonProps.Ref>
-  ) => {
-    const baseComponentProps = useBaseComponent('SplitButton');
-    const baseProps = getBaseProps(props);
-    return (
-      <InternalSplitButton
-        {...baseProps}
-        {...baseComponentProps}
-        ref={ref}
-        items={items}
-        variant={variant}
-        expandToViewport={expandToViewport}
-        expandableGroups={expandableGroups}
-      />
-    );
-  }
-);
+const SplitButton = ({ children, ...props }: SplitButtonProps) => {
+  const baseComponentProps = useBaseComponent('SplitButton');
+  const baseProps = getBaseProps(props);
+  return (
+    <InternalSplitButton {...baseProps} {...baseComponentProps}>
+      {children}
+    </InternalSplitButton>
+  );
+};
 
 applyDisplayName(SplitButton, 'SplitButton');
 export default SplitButton;
