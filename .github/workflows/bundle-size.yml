@@ -137,8 +137,9 @@ jobs:
 
             const increasePercent = (((pr - basebranch) / basebranch) * 100).toFixed(2)
             const increaseKb = ((pr - basebranch) / 1000).toFixed(1);
+            const sign = pr > basebranch ? "+" : "";
 
-            const message = `${pr / 1000}.toFixed(1) KB (${after > before ? "+" : ""}${increasePercent} % / ${after > before ? "+" : ""}${increaseKb} KB in this pull request)`
+            const message = `${pr / 1000}.toFixed(1) KB (${sign}${increasePercent} % / ${sign}${increaseKb} KB in this pull request)`
 
             const name = "Bundle size";
             await github.rest.repos.createCommitStatus({
