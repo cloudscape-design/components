@@ -32,6 +32,7 @@ export interface ChartModel<T extends AreaChartProps.DataTypes> {
   interactions: ReadonlyAsyncStore<ChartModel.InteractionsState<T>>;
   refs: {
     plot: React.RefObject<ChartPlotRef>;
+    plotMeasure: React.Ref<SVGLineElement>;
     container: React.RefObject<HTMLDivElement>;
     verticalMarker: React.RefObject<SVGLineElement>;
     popoverRef: React.RefObject<HTMLElement>;
