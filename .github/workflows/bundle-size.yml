@@ -48,6 +48,7 @@ jobs:
       - name: Measure the baseline size of the Vite project
         if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
         run: |
+          cd ../bundle-size
           npm run build
           mv output.txt output-baseline.txt
           cat output-baseline.txt
