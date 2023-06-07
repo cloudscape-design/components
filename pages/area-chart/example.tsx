@@ -5,8 +5,6 @@ import React from 'react';
 import Box from '~components/box';
 import Button from '~components/button';
 import AreaChart, { AreaChartProps } from '~components/area-chart';
-import Container from '~components/container';
-import Header from '~components/header';
 
 function makeId(name: string, isPermutation?: boolean) {
   if (isPermutation) {
@@ -31,49 +29,47 @@ export default function Example<T extends AreaChartProps.DataTypes>({
   ...chartProps
 }: ExampleProps<T>) {
   return (
-    <Container header={<Header variant="h2">{name}</Header>}>
-      <AreaChart
-        id={makeId(name, isPermutation)}
-        height={250}
-        loadingText="Loading chart data..."
-        errorText="Error loading chart data."
-        recoveryText="Retry"
-        onRecoveryClick={() => {}}
-        empty={
-          <Box textAlign="center" color="inherit">
-            <b>No data</b>
-            <Box variant="p" color="inherit">
-              There is no data to display
-            </Box>
+    <AreaChart
+      id={makeId(name, isPermutation)}
+      height={250}
+      loadingText="Loading chart data..."
+      errorText="Error loading chart data."
+      recoveryText="Retry"
+      onRecoveryClick={() => {}}
+      empty={
+        <Box textAlign="center" color="inherit">
+          <b>No data</b>
+          <Box variant="p" color="inherit">
+            There is no data to display
           </Box>
-        }
-        noMatch={
-          <Box textAlign="center" color="inherit">
-            <b>No matching data</b>
-            <Box padding={{ bottom: 's' }} variant="p" color="inherit">
-              There is no data to display
-            </Box>
-            <Button onClick={() => alert('Not implemented in the example')}>Clear filter</Button>
+        </Box>
+      }
+      noMatch={
+        <Box textAlign="center" color="inherit">
+          <b>No matching data</b>
+          <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+            There is no data to display
           </Box>
-        }
-        ariaLabel={name}
-        ariaDescription="Use up/down arrow keys to navigate between series, and left/right arrow keys to navigate within a series."
-        i18nStrings={{
-          filterLabel: 'Filter displayed data',
-          filterPlaceholder: 'Filter data',
-          filterSelectedAriaLabel: '(selected)',
-          detailTotalLabel: 'Total',
-          detailPopoverDismissAriaLabel: 'Dismiss',
-          legendAriaLabel: 'Legend',
-          chartAriaRoleDescription: 'area chart',
-          xAxisAriaRoleDescription: 'x axis',
-          yAxisAriaRoleDescription: 'y axis',
-          yTickFormatter: yTickFormatter || numberFormatter,
-          xTickFormatter,
-        }}
-        {...chartProps}
-      />
-    </Container>
+          <Button onClick={() => alert('Not implemented in the example')}>Clear filter</Button>
+        </Box>
+      }
+      ariaLabel={name}
+      ariaDescription="Use up/down arrow keys to navigate between series, and left/right arrow keys to navigate within a series."
+      i18nStrings={{
+        filterLabel: 'Filter displayed data',
+        filterPlaceholder: 'Filter data',
+        filterSelectedAriaLabel: '(selected)',
+        detailTotalLabel: 'Total',
+        detailPopoverDismissAriaLabel: 'Dismiss',
+        legendAriaLabel: 'Legend',
+        chartAriaRoleDescription: 'area chart',
+        xAxisAriaRoleDescription: 'x axis',
+        yAxisAriaRoleDescription: 'y axis',
+        yTickFormatter: yTickFormatter || numberFormatter,
+        xTickFormatter,
+      }}
+      {...chartProps}
+    />
   );
 }
 

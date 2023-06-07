@@ -131,71 +131,79 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef} onBlur={onBlur}>
-      {showFilters && (
-        <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
-          <InternalSpaceBetween
-            size="l"
-            direction="horizontal"
-            className={clsx({ [styles['has-default-filter']]: !hideFilter })}
-          >
-            {!hideFilter && (
-              <AreaChartFilter
-                model={model}
-                filterLabel={i18nStrings.filterLabel}
-                filterPlaceholder={i18nStrings.filterPlaceholder}
-                filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
-              />
-            )}
-            {additionalFilters}
-          </InternalSpaceBetween>
-        </InternalBox>
-      )}
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root)}
+      ref={mergedRef}
+      onBlur={onBlur}
+      style={{ position: 'relative', height: '100%' }}
+    >
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column' }}>
+        {showFilters && (
+          <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
+            <InternalSpaceBetween
+              size="l"
+              direction="horizontal"
+              className={clsx({ [styles['has-default-filter']]: !hideFilter })}
+            >
+              {!hideFilter && (
+                <AreaChartFilter
+                  model={model}
+                  filterLabel={i18nStrings.filterLabel}
+                  filterPlaceholder={i18nStrings.filterPlaceholder}
+                  filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
+                />
+              )}
+              {additionalFilters}
+            </InternalSpaceBetween>
+          </InternalBox>
+        )}
 
-      <div
-        className={clsx(styles.content, {
-          [styles['content--reserve-filter']]: reserveFilterSpace,
-          [styles['content--reserve-legend']]: reserveLegendSpace,
-        })}
-        style={{ minHeight: height }}
-      >
-        <ChartStatusContainer
-          isEmpty={isEmpty}
-          isNoMatch={isNoMatch}
-          showChart={showChart}
-          statusType={statusType}
-          empty={empty}
-          noMatch={noMatch}
-          loadingText={loadingText}
-          errorText={errorText}
-          recoveryText={recoveryText}
-          onRecoveryClick={onRecoveryClick}
-        />
-        {showChart && (
-          <ChartContainer
-            model={model}
-            autoWidth={setWidth}
-            detailPopoverSize={detailPopoverSize}
-            xTitle={xTitle}
-            yTitle={yTitle}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            i18nStrings={i18nStrings}
+        <div
+          className={clsx(styles.content, {
+            [styles['content--reserve-filter']]: reserveFilterSpace,
+            [styles['content--reserve-legend']]: reserveLegendSpace,
+          })}
+          style={{ flex: 1 }}
+        >
+          <ChartStatusContainer
+            isEmpty={isEmpty}
+            isNoMatch={isNoMatch}
+            showChart={showChart}
+            statusType={statusType}
+            empty={empty}
+            noMatch={noMatch}
+            loadingText={loadingText}
+            errorText={errorText}
+            recoveryText={recoveryText}
+            onRecoveryClick={onRecoveryClick}
           />
+          {showChart && (
+            <ChartContainer
+              model={model}
+              autoWidth={setWidth}
+              detailPopoverSize={detailPopoverSize}
+              xTitle={xTitle}
+              yTitle={yTitle}
+              ariaLabel={ariaLabel}
+              ariaLabelledby={ariaLabelledby}
+              ariaDescription={ariaDescription}
+              i18nStrings={i18nStrings}
+            />
+          )}
+        </div>
+
+        {showLegend && (
+          <InternalBox margin={{ top: 'm' }}>
+            <AreaChartLegend
+              plotContainerRef={containerRef}
+              model={model}
+              legendTitle={legendTitle}
+              ariaLabel={i18nStrings.legendAriaLabel}
+            />
+          </InternalBox>
         )}
       </div>
-
-      {showLegend && (
-        <InternalBox margin={{ top: 'm' }}>
-          <AreaChartLegend
-            plotContainerRef={containerRef}
-            model={model}
-            legendTitle={legendTitle}
-            ariaLabel={i18nStrings.legendAriaLabel}
-          />
-        </InternalBox>
-      )}
     </div>
   );
 }
