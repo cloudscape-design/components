@@ -34,8 +34,7 @@
   }
 }
 
-.trigger {
-  cursor: pointer;
+.wrapper {
   box-sizing: border-box;
   display: flex;
   border: none;
@@ -83,7 +82,7 @@
     }
   }
 
-  &-default.trigger-expanded {
+  &-default.wrapper-expanded {
     border-bottom-color: awsui.$color-border-divider-default;
   }
 }
@@ -102,11 +101,17 @@
   &-button {
     box-sizing: border-box;
     display: flex;
+  }
 
-    // Header buttons for non-container variants show the focus ring directly
+  &-button,
+  &-container-button {
     @include focus-visible.when-visible {
       @include styles.focus-highlight(0px);
     }
+  }
+
+  &:not(.with-interactive-elements) {
+    cursor: pointer;
   }
 
   &-container {
@@ -117,20 +122,8 @@
     }
 
     // stylelint-disable-next-line selector-combinator-disallowed-list
-    body[data-awsui-focus-visible='true'] &:focus-within {
-      outline: none;
-      text-decoration: none;
-      padding: container.$header-focus-visible-padding;
-
-      @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
-    }
-
-    // Header buttons that sit in a container should not show focus because the parent container has a focus ring already
-    &-button {
-      @include focus-visible.when-visible {
-        outline: none;
-        text-decoration: none;
-      }
+    &.with-interactive-elements &-button {
+      cursor: pointer;
     }
   }
 

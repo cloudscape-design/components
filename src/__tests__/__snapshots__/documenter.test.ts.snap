@@ -4618,7 +4618,9 @@ Object {
   "properties": Array [
     Object {
       "defaultValue": "\\"none\\"",
-      "description": "Controls whether dividers are placed between rows and columns.",
+      "description": "Controls whether dividers are placed between rows and columns.
+Note: This is not supported when used with \`minColumnWidth\`.
+",
       "inlineType": Object {
         "name": "ColumnLayoutProps.Borders",
         "type": "union",
@@ -4643,7 +4645,9 @@ Object {
     Object {
       "defaultValue": "1",
       "description": "Specifies the number of columns in each grid row.
-Valid values are any integer between 1 and 4.",
+Valid values are any integer between 1 and 4.
+Note that there is no upper limit when used in combination with \`minColumnWidth\`.
+",
       "name": "columns",
       "optional": true,
       "type": "number",
@@ -4661,6 +4665,15 @@ Valid values are any integer between 1 and 4.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Use together with \`columns\` to specify the desired minimum width for each column in pixels.
+The number of columns is determined by the value of this property, the available space,
+and the maximum number of columns as defined by the \`columns\` property.
+",
+      "name": "minColumnWidth",
+      "optional": true,
+      "type": "number",
     },
     Object {
       "defaultValue": "\\"default\\"",
@@ -5785,21 +5798,21 @@ Use to assign unique labels when there are multiple expandable sections with the
       "type": "string",
     },
     Object {
-      "description": "Specifies secondary text that's displayed to the right of the heading title. Use with container variant.
+      "description": "Specifies secondary text that's displayed to the right of the heading title. Use with the container variant.
 Behaves similar to the Header component counter.",
       "name": "headerCounter",
       "optional": true,
       "type": "string",
     },
     Object {
-      "description": "Supplementary text below the heading. Use with container variant.",
+      "description": "Supplementary text below the heading. Use with the container variant.",
       "name": "headerDescription",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
-Use with container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
+Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
 works with the \`headerText\` slot (not with the deprecated \`header\`), and not with the navigation variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
@@ -5857,6 +5870,16 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
       "description": "",
       "isDefault": false,
       "name": "header",
+    },
+    Object {
+      "description": "Actions for the header. Use with the container variant.",
+      "isDefault": false,
+      "name": "headerActions",
+    },
+    Object {
+      "description": "The area next to the heading, used to display an Info link. Use with the container variant.",
+      "isDefault": false,
+      "name": "headerInfo",
     },
     Object {
       "description": "The heading text. Use plain text. When using the container variant, you can use additional header props like \`headerDescription\` and \`headerCounter\` to display other elements in the header.",

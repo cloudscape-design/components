@@ -674,7 +674,7 @@ describe('Tag Editor component', () => {
               'i18nStrings.optional': 'Custom optional',
               'i18nStrings.keySuggestion': 'Custom key suggestion',
               'i18nStrings.valuePlaceholder': 'Custom value placeholder',
-              'i18nStrings.tagLimit': 'Custom limit {availableTags}',
+              'i18nStrings.tagLimit': 'Custom limit {availableTags} out of {tagLimit}',
               'i18nStrings.tagLimitReached': 'Custom limit reached {tagLimit}',
             },
           }}
@@ -685,7 +685,7 @@ describe('Tag Editor component', () => {
       const wrapper = createWrapper(container).findTagEditor()!;
       expect(wrapper.findEmptySlot()!.getElement()).toHaveTextContent('Custom empty tags');
       expect(wrapper.findAddButton().getElement()).toHaveTextContent('Custom add');
-      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit 1');
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit 1 out of 1');
 
       wrapper.findAddButton().click();
       expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit reached 1');
