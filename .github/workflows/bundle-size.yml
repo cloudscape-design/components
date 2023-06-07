@@ -43,13 +43,7 @@ jobs:
         id: restore-cache-baseline
         with:
           path: ../bundle-size/output-baseline.txt
-          key: ${{ hashFiles(
-            '.github/workflows/bundle-size/build.js',
-            '.github/workflows/bundle-size/index.html',
-            '.github/workflows/bundle-size/main.jsx',
-            '.github/workflows/bundle-size/package-lock.json',
-            '.github/workflows/bundle-size/package.json',
-            ) }}
+          key: ${{ hashFiles('.github/workflows/bundle-size/build.js','.github/workflows/bundle-size/index.html','.github/workflows/bundle-size/main.jsx','.github/workflows/bundle-size/package-lock.json','.github/workflows/bundle-size/package.json') }}
 
       - name: Measure the baseline size of the Vite project
         if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
@@ -77,13 +71,7 @@ jobs:
         id: restore-cache-basebranch
         with:
           path: ../bundle-size/output-basebranch.txt
-          key: ${{ hashFiles(
-            '.github/workflows/bundle-size/build.js',
-            '.github/workflows/bundle-size/index.html',
-            '.github/workflows/bundle-size/main.jsx',
-            '.github/workflows/bundle-size/package-lock.json',
-            '.github/workflows/bundle-size/package.json',
-            ) }}-${{ github.event.pull_request.head.sha }}
+          key: ${{ hashFiles('.github/workflows/bundle-size/build.js','.github/workflows/bundle-size/index.html','.github/workflows/bundle-size/main.jsx','.github/workflows/bundle-size/package-lock.json','.github/workflows/bundle-size/package.json') }}-${{ github.event.pull_request.head.sha }}
 
       - name: Measure the bundle size of the base branch
         if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
