@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
@@ -14,6 +14,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useInternalI18n } from '../internal/i18n/context';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 import { FunnelMetrics } from '../internal/analytics';
@@ -54,6 +55,8 @@ const InternalLink = React.forwardRef(
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
     const uniqueId = useUniqueId('link');
+
+    const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
     const { funnelInteractionId } = useFunnel();
     const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
@@ -115,6 +118,7 @@ const InternalLink = React.forwardRef(
     const applyButtonStyles = isButton && isVisualRefresh && !hasSpecialStyle;
 
     const sharedProps = {
+      id: uniqueId,
       ...baseProps,
       // https://github.com/microsoft/TypeScript/issues/36659
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -128,8 +132,13 @@ const InternalLink = React.forwardRef(
         styles[getColorStyle(variant, color)]
       ),
       'aria-label': ariaLabel,
+      'aria-labelledby': '',
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     };
+
+    if (variant === 'info' && infoLinkLabelFromContext && !ariaLabel) {
+      sharedProps['aria-labelledby'] = `${sharedProps.id} ${infoLinkLabelFromContext}`;
+    }
 
     const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', externalIconAriaLabel);
     const content = (
