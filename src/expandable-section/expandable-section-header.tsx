@@ -51,7 +51,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   ariaLabelledBy?: string;
 }
 
-const ExpandableDefaultHeader = ({
+const ExpandableDeprecatedHeader = ({
   id,
   className,
   onClick,
@@ -214,6 +214,10 @@ export const ExpandableSectionHeader = ({
     variant,
   };
 
+  if (header && isDevelopment) {
+    warnOnce(componentName, 'Use `headerText` instead of `header` to provide the button within the heading for a11y.');
+  }
+
   if ((headerDescription || headerCounter || headerInfo || headerActions) && variant !== 'container' && isDevelopment) {
     warnOnce(
       componentName,
@@ -258,18 +262,14 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (variant === 'container' && header && isDevelopment) {
-    warnOnce(componentName, 'Use `headerText` instead of `header` to provide the button within the heading for a11y.');
-  }
-
   return (
-    <ExpandableDefaultHeader
+    <ExpandableDeprecatedHeader
       className={clsx(className, wrapperClassName, styles.focusable, expanded && styles.expanded)}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
       {...defaultHeaderProps}
     >
       {header}
-    </ExpandableDefaultHeader>
+    </ExpandableDeprecatedHeader>
   );
 };
