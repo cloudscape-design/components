@@ -24,46 +24,53 @@ export default function InternalSplitButton({ children, __internalRootRef, ...pr
   const ref = useMergeRefs(splitButtonRef, __internalRootRef);
   const baseProps = getBaseProps(props);
 
-  let flattenedChildren = flattenChildren(children);
-  if (flattenedChildren.length < 2) {
-    warnOnce('SplitButton', 'The component requires at least 2 children.');
-    flattenedChildren = [];
-  }
-
   useEffect(() => {
     if (splitButtonRef.current) {
       getTriggers(splitButtonRef.current).forEach(buttonEl => buttonEl.classList.add(styles.trigger));
     }
   });
 
-  const variants = new Set<string>();
   return (
     <div ref={ref} {...baseProps} className={clsx(baseProps.className, styles.root)}>
-      {flattenedChildren.map(child => {
-        if (!isValidElement(child) || (child.type !== Button && child.type !== ButtonDropdown)) {
-          warnOnce('SplitButton', 'Only Button and ButtonDropdown are allowed as component children.');
-          return null;
-        }
-
-        if (getVariant(child) !== 'normal' && getVariant(child) !== 'primary') {
-          warnOnce('SplitButton', 'Only "normal" and "primary" variants are allowed.');
-          return null;
-        }
-
-        variants.add(getVariant(child));
-        if (variants.size > 1) {
-          warnOnce('SplitButton', 'All children must be of the same variant.');
-          return null;
-        }
-
-        return (
-          <div key={child.key} className={styles.item}>
-            {child}
-          </div>
-        );
-      })}
+      {validateChildren(children).map(child => (
+        <div key={child.key} className={styles.item}>
+          {child}
+        </div>
+      ))}
     </div>
   );
+}
+
+function validateChildren(children: React.ReactNode): React.ReactElement[] {
+  const variants = new Set<string>();
+  const childrenElements: React.ReactElement[] = [];
+
+  for (const child of flattenChildren(children)) {
+    if (!isValidElement(child) || (child.type !== Button && child.type !== ButtonDropdown)) {
+      warnOnce('SplitButton', 'Only Button and ButtonDropdown are allowed as component children.');
+      continue;
+    }
+
+    if (getVariant(child) !== 'normal' && getVariant(child) !== 'primary') {
+      warnOnce('SplitButton', 'Only "normal" and "primary" variants are allowed.');
+      continue;
+    }
+
+    variants.add(getVariant(child));
+    if (variants.size > 1) {
+      warnOnce('SplitButton', 'All children must be of the same variant.');
+      break;
+    }
+
+    childrenElements.push(child);
+  }
+
+  if (childrenElements.length < 2) {
+    warnOnce('SplitButton', 'The component requires at least 2 children.');
+    return [];
+  }
+
+  return childrenElements;
 }
 
 function getTriggers(root: HTMLElement) {
