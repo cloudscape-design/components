@@ -46,7 +46,27 @@ const permutations = createPermutations<SplitButtonProps>([
         </Button>
       </>,
       <>
+        <ButtonDropdown items={dropdownItems} loading={true}>
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true}>
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right">
+          Link
+        </Button>
+      </>,
+      <>
         <Button variant="primary" iconName="add-plus">
+          Button
+        </Button>
+
+        <ButtonDropdown variant="primary" items={dropdownItems} />
+      </>,
+      <>
+        <Button variant="primary" iconName="add-plus" loading={true}>
           Button
         </Button>
 
