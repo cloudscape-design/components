@@ -4618,7 +4618,9 @@ Object {
   "properties": Array [
     Object {
       "defaultValue": "\\"none\\"",
-      "description": "Controls whether dividers are placed between rows and columns.",
+      "description": "Controls whether dividers are placed between rows and columns.
+Note: This is not supported when used with \`minColumnWidth\`.
+",
       "inlineType": Object {
         "name": "ColumnLayoutProps.Borders",
         "type": "union",
@@ -4643,7 +4645,9 @@ Object {
     Object {
       "defaultValue": "1",
       "description": "Specifies the number of columns in each grid row.
-Valid values are any integer between 1 and 4.",
+Valid values are any integer between 1 and 4.
+Note that there is no upper limit when used in combination with \`minColumnWidth\`.
+",
       "name": "columns",
       "optional": true,
       "type": "number",
@@ -4661,6 +4665,15 @@ Valid values are any integer between 1 and 4.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Use together with \`columns\` to specify the desired minimum width for each column in pixels.
+The number of columns is determined by the value of this property, the available space,
+and the maximum number of columns as defined by the \`columns\` property.
+",
+      "name": "minColumnWidth",
+      "optional": true,
+      "type": "number",
     },
     Object {
       "defaultValue": "\\"default\\"",
