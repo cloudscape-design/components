@@ -11,20 +11,17 @@
   align-items: stretch;
 }
 
-/* stylelint-disable selector-max-type */
 /* stylelint-disable @cloudscape-design/no-implicit-descendant */
 .item {
   &:not(:first-child) {
-    a,
-    button {
+    .trigger {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
       padding-left: awsui.$space-xs;
     }
   }
   &:not(:last-child) {
-    a,
-    button {
+    .trigger {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       padding-right: awsui.$space-xs;
@@ -33,4 +30,3 @@
   }
 }
 /* stylelint-enable @cloudscape-design/no-implicit-descendant */
-/* stylelint-enable selector-max-type */
