@@ -12,6 +12,7 @@ jobs:
   measure:
     runs-on: ubuntu-latest
     steps:
+      # ------- Setup -----------------------------------------------------
       - uses: actions/github-script@v6
         name: Create a pending status on the commit
         with:
@@ -25,15 +26,90 @@ jobs:
               description: 'The app is being measured...',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             })
+
       - name: Checkout the PR branch
-        uses: actions/checkout@v3
-      - name: Measure the base size of the Vite project
+        uses: actions/checkout@
+
+      - name: Setup the bundle measurement project
         run: |
           cp -r .github/workflows/bundle-size ../bundle-size
           cd ../bundle-size
           npm i --force
+
+      # ------- Baseline size measurement ---------------------------------
+
+      - name: Restore the cache for the baseline size measurement
+        uses: actions/cache/restore@v3
+        id: restore-cache-baseline
+        with:
+          path: ../bundle-size/output-baseline.txt
+          key: ${{ hashFiles(
+            '.github/workflows/bundle-size/build.js',
+            '.github/workflows/bundle-size/index.html',
+            '.github/workflows/bundle-size/main.jsx',
+            '.github/workflows/bundle-size/package-lock.json',
+            '.github/workflows/bundle-size/package.json',
+            ) }}
+
+      - name: Measure the baseline size of the Vite project
+        if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
+        run: |
           npm run build
-          mv output.txt output-base.txt
+          mv output.txt output-baseline.txt
+          cat output-baseline.txt
+
+      - name: Cache the baseline size
+        uses: actions/cache/save@v3
+        if: steps.restore-cache-baseline.outputs.cache-hit != 'true'
+        with:
+          path: ../bundle-size/output-baseline.txt
+          key: ${{ steps.restore-cache-baseline.outputs.cache-primary-key }}
+
+      # ------- Base branch size measurement ------------------------------
+
+      - name: Checkout the base branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Restore the cache for the base branch size measurement
+        uses: actions/cache/restore@v3
+        id: restore-cache-basebranch
+        with:
+          path: ../bundle-size/output-basebranch.txt
+          key: ${{ hashFiles(
+            '.github/workflows/bundle-size/build.js',
+            '.github/workflows/bundle-size/index.html',
+            '.github/workflows/bundle-size/main.jsx',
+            '.github/workflows/bundle-size/package-lock.json',
+            '.github/workflows/bundle-size/package.json',
+            ) }}-${{ github.event.pull_request.head.sha }}
+
+      - name: Measure the bundle size of the base branch
+        if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
+        run: |
+          npm i --force
+          npm run build
+          cd ../bundle-size
+          npm i --force
+          rm -rf node_modules/@cloudscape-design/components
+          cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
+          npm run build
+          mv output.txt output-basebranch.txt
+          cat output-basebranch.txt
+
+      - name: Cache the base branch size
+        uses: actions/cache/save@v3
+        if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
+        with:
+          path: ../bundle-size/output-basebranch.txt
+          key: ${{ steps.restore-cache-basebranch.outputs.cache-primary-key }}
+
+      # ------- Pull request size measurement -----------------------------
+
+      - name: Checkout the PR branch
+        uses: actions/checkout@v3
+
       - name: Measure the bundle size of this PR
         run: |
           npm i --force
@@ -45,40 +121,25 @@ jobs:
 
           mv main-with-cloudscape.jsx main.jsx
           npm run build
-          mv output.txt output-before.txt
-
-      - name: Checkout the base branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Measure the bundle size of the base branch
-        run: |
-          npm i --force
-          npm run build
-          cd ../bundle-size
-          npm i --force
-          rm -rf node_modules/@cloudscape-design/components
-          cp -r $GITHUB_WORKSPACE/lib/components node_modules/@cloudscape-design/components
-          npm run build
-          mv output.txt output-after.txt
+          mv output.txt output-pr.txt
+          cat output-pr.txt
 
       - name: Update the commit status with calculated results
         uses: actions/github-script@v6
         with:
           script: |
             const readFileSync = require('node:fs').readFileSync;
-            const base = Number(readFileSync("../bundle-size/output-base.txt", "utf8"));
-            const before = Number(readFileSync("../bundle-size/output-before.txt", "utf8")) - base;
-            const after = Number(readFileSync("../bundle-size/output-after.txt", "utf8")) - base;
-            console.log("Base:", base)
-            console.log("Before:", before);
-            console.log("After:", after);
+            const baseline = Number(readFileSync("../bundle-size/output-baseline.txt", "utf8"));
+            const basebranch = Number(readFileSync("../bundle-size/output-basebranch.txt", "utf8")) - baseline;
+            const pr = Number(readFileSync("../bundle-size/output-pr.txt", "utf8")) - baseline;
+            console.log("Baseline:", baseline)
+            console.log("Base branch:", basebranch);
+            console.log("This PR:", pr);
 
-            const increasePercent = (((after - before) / before) * 100).toFixed(2)
-            const increaseKb = ((after - before) / 1000).toFixed(1);
+            const increasePercent = (((pr - basebranch) / basebranch) * 100).toFixed(2)
+            const increaseKb = ((pr - basebranch) / 1000).toFixed(1);
 
-            const message = `${after > before ? "+" : ""}${increasePercent} % / ${after > before ? "+" : ""}${increaseKb} KB (from ${before/1000} KB to ${after/1000} KB)`
+            const message = `${pr / 1000}.toFixed(1) KB (${after > before ? "+" : ""}${increasePercent} % / ${after > before ? "+" : ""}${increaseKb} KB in this pull request)`
 
             const name = "Bundle size";
             await github.rest.repos.createCommitStatus({
@@ -90,6 +151,9 @@ jobs:
               description: message,
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             })
+
+      # ------- Error reporting -------------------------------------------
+
       - name: Report failure
         if: failure()
         uses: actions/github-script@v6
