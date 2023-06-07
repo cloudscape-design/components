@@ -316,7 +316,7 @@ const TagEditor = React.forwardRef(
             ) ?? ''
           ) : (
             i18n('i18nStrings.tagLimit', i18nStrings?.tagLimit?.(remainingTags, tagLimit), format =>
-              format({ tagLimitAvailable: `${remainingTags === tagLimit}`, availableTags: remainingTags })
+              format({ tagLimitAvailable: `${remainingTags === tagLimit}`, availableTags: remainingTags, tagLimit })
             )
           )
         }
