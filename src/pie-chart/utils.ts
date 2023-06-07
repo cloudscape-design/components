@@ -56,7 +56,7 @@ export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>,
 };
 
 export const defaultDetails =
-  (i18n: ComponentFormatFunction, i18nStrings: PieChartProps.I18nStrings) =>
+  (i18n: ComponentFormatFunction<'pie-chart'>, i18nStrings: PieChartProps.I18nStrings) =>
   (datum: PieChartProps.Datum, dataSum: number) =>
     [
       { key: i18n('i18nStrings.detailsValue', i18nStrings.detailsValue) || '', value: datum.value },
