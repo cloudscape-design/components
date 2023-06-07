@@ -23,7 +23,6 @@ jobs:
               sha: context.payload.pull_request.head.sha,
               context: "Bundle size",
               state: 'pending',
-              description: 'The app is being measured...',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             })
 
@@ -75,19 +74,20 @@ jobs:
         id: restore-cache-basebranch
         with:
           path: bundle-size/output-basebranch.txt
-          key: ${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}-${{ github.event.pull_request.base.sha }}
+          key: ${{ hashFiles('bundle-size/build.js','bundle-size/index.html','bundle-size/main-with-cloudscape.jsx','bundle-size/package-lock.json','bundle-size/package.json') }}-${{ github.event.pull_request.base.sha }}
 
       - name: Measure the bundle size of the base branch
         if: steps.restore-cache-basebranch.outputs.cache-hit != 'true'
         run: |
           cd components
           npm i --force
-          npm run build
+          npm run quick-build
 
           cd ../bundle-size
           npm i --force
           rm -rf node_modules/@cloudscape-design/components
           cp -r $GITHUB_WORKSPACE/components/lib/components node_modules/@cloudscape-design/components
+          cp main-with-cloudscape.jsx main.jsx
           npm run build
 
           mv output.txt output-basebranch.txt
@@ -111,13 +111,12 @@ jobs:
         run: |
           cd components
           npm i --force
-          npm run build
+          npm run quick-build
 
           cd ../bundle-size
           npm i --force
           rm -rf node_modules/@cloudscape-design/components
           cp -r $GITHUB_WORKSPACE/components/lib/components node_modules/@cloudscape-design/components
-          mv main-with-cloudscape.jsx main.jsx
           npm run build
 
           mv output.txt output-pr.txt
@@ -128,18 +127,20 @@ jobs:
         with:
           script: |
             const readFileSync = require('node:fs').readFileSync;
+
             const baseline = Number(readFileSync("./bundle-size/output-baseline.txt", "utf8"));
             const basebranch = Number(readFileSync("./bundle-size/output-basebranch.txt", "utf8")) - baseline;
             const pr = Number(readFileSync("./bundle-size/output-pr.txt", "utf8")) - baseline;
+
             console.log("Baseline:", baseline)
-            console.log("Base branch:", basebranch);
-            console.log("This PR:", pr);
+            console.log("Base branch (vs baseline):", basebranch);
+            console.log("This PR (vs baseline):", pr);
 
             const increasePercent = (((pr - basebranch) / basebranch) * 100).toFixed(2)
             const increaseKb = ((pr - basebranch) / 1000).toFixed(1);
             const sign = pr > basebranch ? "+" : "";
 
-            const message = `${pr / 1000}.toFixed(1) KB (${sign}${increasePercent} % / ${sign}${increaseKb} KB in this pull request)`
+            const message = `${(pr / 1000).toFixed(1)} KB (${sign}${increasePercent} % / ${sign}${increaseKb} KB in this pull request)`
 
             const name = "Bundle size";
             await github.rest.repos.createCommitStatus({
