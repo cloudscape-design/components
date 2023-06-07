@@ -12,7 +12,6 @@ jobs:
   measure:
     runs-on: ubuntu-latest
     steps:
-      # ------- Setup -----------------------------------------------------
       - uses: actions/github-script@v6
         name: Create a pending status on the commit
         with:
@@ -35,8 +34,6 @@ jobs:
           cp -r .github/workflows/bundle-size ../bundle-size
           cd ../bundle-size
           npm i --force
-
-      # ------- Baseline size measurement ---------------------------------
 
       - name: Restore the cache for the baseline size measurement
         uses: actions/cache/restore@v3
@@ -64,8 +61,6 @@ jobs:
         with:
           path: ../bundle-size/output-baseline.txt
           key: ${{ steps.restore-cache-baseline.outputs.cache-primary-key }}
-
-      # ------- Base branch size measurement ------------------------------
 
       - name: Checkout the base branch
         uses: actions/checkout@v3
@@ -104,8 +99,6 @@ jobs:
         with:
           path: ../bundle-size/output-basebranch.txt
           key: ${{ steps.restore-cache-basebranch.outputs.cache-primary-key }}
-
-      # ------- Pull request size measurement -----------------------------
 
       - name: Checkout the PR branch
         uses: actions/checkout@v3
@@ -151,8 +144,6 @@ jobs:
               description: message,
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             })
-
-      # ------- Error reporting -------------------------------------------
 
       - name: Report failure
         if: failure()
