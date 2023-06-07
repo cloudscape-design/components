@@ -746,6 +746,14 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Enabling this property will make the chart fit into the available height of the parent container.
+Use this property to align heights of multiple charts displayed in a single row of a grid.
+",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
 If not set explicitly, the component will use a default height that is defined internally.",
@@ -1889,6 +1897,14 @@ See the usage guidelines for more details.",
       "name": "errorText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Enabling this property will make the chart fit into the available height of the parent container.
+Use this property to align heights of multiple charts displayed in a single row of a grid.
+",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "defaultValue": "500",
@@ -7395,6 +7411,14 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enabling this property will make the chart fit into the available height of the parent container.
+Use this property to align heights of multiple charts displayed in a single row of a grid.
+",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
 If not set explicitly, the component will use a default height that is defined internally.",
@@ -7938,6 +7962,14 @@ See the usage guidelines for more details.",
       "name": "errorText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Enabling this property will make the chart fit into the available height of the parent container.
+Use this property to align heights of multiple charts displayed in a single row of a grid.
+",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "defaultValue": "500",

@@ -1,0 +1,22 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// When using the responsive wrapper, we wrap the chart to determine the available height based on the parent container.
+// Using an additional wrapper also makes sure that we don't run into infinite render loops
+// due to flexbox stretching indefinitely.
+.root {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.wrapper {
+  position: relative;
+  height: 100%;
+}

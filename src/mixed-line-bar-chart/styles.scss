@@ -28,6 +28,7 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  flex: 1;
 }
 
 .chart-container__vertical {
@@ -38,6 +39,7 @@
 
 .chart-container__horizontal {
   display: flex;
+  flex: 1;
 }
 
 .content {
@@ -45,6 +47,8 @@
   position: relative;
   justify-content: center;
   align-items: center;
+  flex: 1;
+  flex-direction: column;
 }
 
 .content--reserve-filter {

@@ -80,6 +80,13 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
   height?: number;
 
   /**
+   * Enabling this property will make the chart fit into the available height of the parent container.
+   *
+   * Use this property to align heights of multiple charts displayed in a single row of a grid.
+   */
+  fitHeight?: boolean;
+
+  /**
    * Determines the maximum width the detail popover will be limited to.
    */
   detailPopoverSize?: 'small' | 'medium' | 'large';

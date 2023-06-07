@@ -7,6 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import InternalBox from '../box/internal';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
+import ChartResponsiveWrapper, { useChartResponsiveWrapper } from '../internal/components/chart-responsive-wrapper';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '../internal/logging';
@@ -42,6 +43,7 @@ type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
 
 export default function InternalMixedLineBarChart<T extends number | string | Date>({
   height,
+  fitHeight = false,
   xScaleType,
   yScaleType,
   xDomain,
@@ -203,85 +205,97 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
+  const { availableHeight, wrapperProps, ref: fitHeightRef } = useChartResponsiveWrapper(fitHeight, height);
+
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef} onBlur={onBlur}>
-      {showFilters && (
-        <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
-          <InternalChartFilters
-            series={series}
-            visibleSeries={externalVisibleSeries || []}
-            onChange={filterChange}
-            i18nStrings={i18nStrings}
-            hideFilter={hideFilter}
-            additionalFilters={additionalFilters}
-          />
-        </InternalBox>
-      )}
-
-      <div
-        className={clsx(styles.content, {
-          [styles['content--reserve-filter']]: reserveFilterSpace,
-          [styles['content--reserve-legend']]: reserveLegendSpace,
-        })}
-        style={{ minHeight: height }}
-      >
-        <ChartStatusContainer
-          isEmpty={isEmpty}
-          isNoMatch={isNoMatch}
-          showChart={showChart}
-          statusType={statusType}
-          empty={empty}
-          noMatch={noMatch}
-          loadingText={loadingText}
-          errorText={errorText}
-          recoveryText={recoveryText}
-          onRecoveryClick={onRecoveryClick}
-        />
-        {showChart && (
-          <ChartContainer
-            height={height}
-            xScaleType={xScaleType}
-            yScaleType={yScaleType}
-            xDomain={xDomain}
-            yDomain={yDomain}
-            xTickFormatter={i18nStrings?.xTickFormatter}
-            yTickFormatter={i18nStrings?.yTickFormatter}
-            emphasizeBaselineAxis={emphasizeBaselineAxis}
-            stackedBars={stackedBars}
-            horizontalBars={horizontalBars}
-            series={series}
-            visibleSeries={visibleSeries}
-            highlightedSeries={highlightedSeries}
-            onHighlightChange={onHighlightChange}
-            highlightedPoint={highlightedPoint}
-            setHighlightedPoint={setHighlightedPoint}
-            highlightedGroupIndex={highlightedGroupIndex}
-            setHighlightedGroupIndex={setHighlightedGroupIndex}
-            detailPopoverSize={detailPopoverSize}
-            xTitle={xTitle}
-            yTitle={yTitle}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            i18nStrings={i18nStrings}
-            plotContainerRef={containerRef}
-          />
+    <div
+      {...baseProps}
+      {...wrapperProps}
+      className={clsx(baseProps.className, styles.root, wrapperProps?.className)}
+      ref={mergedRef}
+      onBlur={onBlur}
+    >
+      <ChartResponsiveWrapper fitHeight={fitHeight}>
+        {showFilters && (
+          <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
+            <InternalChartFilters
+              series={series}
+              visibleSeries={externalVisibleSeries || []}
+              onChange={filterChange}
+              i18nStrings={i18nStrings}
+              hideFilter={hideFilter}
+              additionalFilters={additionalFilters}
+            />
+          </InternalBox>
         )}
-      </div>
 
-      {showLegend && (
-        <InternalBox margin={{ top: 'm' }}>
-          <InternalChartLegend
-            series={series}
-            visibleSeries={externalVisibleSeries || []}
-            highlightedSeries={legendSeries}
-            onHighlightChange={onHighlightChange}
-            legendTitle={legendTitle}
-            ariaLabel={i18nStrings?.legendAriaLabel}
-            plotContainerRef={containerRef}
+        <div
+          className={clsx(styles.content, {
+            [styles['content--reserve-filter']]: reserveFilterSpace,
+            [styles['content--reserve-legend']]: reserveLegendSpace,
+          })}
+          style={{ minHeight: !fitHeight ? height : undefined }}
+        >
+          <ChartStatusContainer
+            isEmpty={isEmpty}
+            isNoMatch={isNoMatch}
+            showChart={showChart}
+            statusType={statusType}
+            empty={empty}
+            noMatch={noMatch}
+            loadingText={loadingText}
+            errorText={errorText}
+            recoveryText={recoveryText}
+            onRecoveryClick={onRecoveryClick}
           />
-        </InternalBox>
-      )}
+          {showChart && (
+            <ChartContainer
+              height={height}
+              availableHeight={availableHeight}
+              fitHeightRef={fitHeightRef}
+              xScaleType={xScaleType}
+              yScaleType={yScaleType}
+              xDomain={xDomain}
+              yDomain={yDomain}
+              xTickFormatter={i18nStrings?.xTickFormatter}
+              yTickFormatter={i18nStrings?.yTickFormatter}
+              emphasizeBaselineAxis={emphasizeBaselineAxis}
+              stackedBars={stackedBars}
+              horizontalBars={horizontalBars}
+              series={series}
+              visibleSeries={visibleSeries}
+              highlightedSeries={highlightedSeries}
+              onHighlightChange={onHighlightChange}
+              highlightedPoint={highlightedPoint}
+              setHighlightedPoint={setHighlightedPoint}
+              highlightedGroupIndex={highlightedGroupIndex}
+              setHighlightedGroupIndex={setHighlightedGroupIndex}
+              detailPopoverSize={detailPopoverSize}
+              xTitle={xTitle}
+              yTitle={yTitle}
+              ariaLabel={ariaLabel}
+              ariaLabelledby={ariaLabelledby}
+              ariaDescription={ariaDescription}
+              i18nStrings={i18nStrings}
+              plotContainerRef={containerRef}
+            />
+          )}
+        </div>
+
+        {showLegend && (
+          <InternalBox margin={{ top: 'm' }}>
+            <InternalChartLegend
+              series={series}
+              visibleSeries={externalVisibleSeries || []}
+              highlightedSeries={legendSeries}
+              onHighlightChange={onHighlightChange}
+              legendTitle={legendTitle}
+              ariaLabel={i18nStrings?.legendAriaLabel}
+              plotContainerRef={containerRef}
+            />
+          </InternalBox>
+        )}
+      </ChartResponsiveWrapper>
     </div>
   );
 }

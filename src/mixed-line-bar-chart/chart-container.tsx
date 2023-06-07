@@ -44,6 +44,8 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   visibleSeries: ReadonlyArray<InternalChartSeries<T>>;
 
   height: number;
+  availableHeight?: number | null;
+  fitHeightRef?: React.Ref<any>;
   detailPopoverSize: MixedLineBarChartProps<T>['detailPopoverSize'];
 
   xScaleType: ScaleType;
@@ -78,7 +80,9 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
 }
 
 export default function ChartContainer<T extends ChartDataTypes>({
-  height: plotHeight,
+  height: fixedHeight,
+  availableHeight,
+  fitHeightRef,
   series,
   visibleSeries,
   highlightedSeries,
@@ -115,6 +119,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
+
+  const plotHeight = Math.max(0, availableHeight ? availableHeight - bottomLabelsHeight : fixedHeight);
 
   const isRefresh = useVisualRefresh();
 
@@ -438,7 +444,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   return (
     <div className={styles['chart-container']} ref={containerRef}>
       <AxisLabel axis={y} position="left" title={xy.title[y]} />
-      <div className={styles['chart-container__horizontal']}>
+      <div className={styles['chart-container__horizontal']} ref={fitHeightRef}>
         <LabelsMeasure
           ticks={xy.ticks[y]}
           scale={xy.scale[y]}
@@ -551,8 +557,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
               autoHeight={setBottomLabelsHeight}
             />
           </ChartPlot>
-
-          <AxisLabel axis={x} position="bottom" title={xy.title[x]} />
         </div>
 
         <ChartPopover
@@ -568,6 +572,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onMouseLeave={onPopoverLeave}
         />
       </div>
+      <AxisLabel axis={x} position="bottom" title={xy.title[x]} />
     </div>
   );
 }
