@@ -59,12 +59,14 @@ describe('Link component', () => {
     test('can get additional label from form field', () => {
       const { container } = render(<FormField label="Testing label" info={<Link variant="info">Info</Link>} />);
       const wrapper = createWrapper(container);
-      expect(wrapper.findFormField()?.findInfo()?.findLink()?.getElement()).toHaveAccessibleName('Info Testing label');
+      expect(wrapper.findFormField()?.findInfo()?.findLink()?.getElement()).toHaveAccessibleName(
+        'Info : Testing label'
+      );
     });
     test('can get additional label from header', () => {
       const { container } = render(<Header info={<Link variant="info">Info</Link>}>Testing header</Header>);
       const wrapper = createWrapper(container);
-      expect(wrapper.findHeader()?.findInfo()?.findLink()?.getElement()).toHaveAccessibleName('Info Testing header');
+      expect(wrapper.findHeader()?.findInfo()?.findLink()?.getElement()).toHaveAccessibleName('Info : Testing header');
     });
     test('can override the automatic label', () => {
       const { container } = render(

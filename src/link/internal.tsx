@@ -15,6 +15,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useInternalI18n } from '../internal/i18n/context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 import { FunnelMetrics } from '../internal/analytics';
@@ -156,6 +157,7 @@ const InternalLink = React.forwardRef(
             </span>
           </span>
         )}
+        {variant === 'info' && <ScreenreaderOnly>:</ScreenreaderOnly>}
       </>
     );
 

@@ -41,11 +41,7 @@ const permutations = createPermutations<FormFieldProps>([
     errorText: [null, 'An application with that name already exists'],
     constraintText: [null, 'Only normal characters are allowed'],
     description: [null, 'Enter your name'],
-    info: [
-      <Link variant="info" ariaLabel="Info label">
-        info
-      </Link>,
-    ],
+    info: [<Link variant="info">info</Link>],
     children: [
       <div>Some plain text</div>,
       <Input value="" onChange={() => {}} placeholder="Main Instance" />,
