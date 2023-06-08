@@ -59,14 +59,24 @@ describe('Link component', () => {
     test('can get additional label from form field', () => {
       const { container } = render(<FormField label="Testing label" info={<Link variant="info">Info</Link>} />);
       const wrapper = createWrapper(container);
-      expect(wrapper.findFormField()?.findInfo()?.findLink()?.getElement()).toHaveAccessibleName(
-        'Info : Testing label'
-      );
+      const infoLinkElement = wrapper.findFormField()!.findInfo()!.findLink()?.getElement();
+
+      // @testing-library/dom doesn't respect aria-labelledby referencing hidden child elements, so the ":" is missing
+      // https://github.com/eps1lon/dom-accessibility-api/issues/939
+      // expect(infoLinkElement).toHaveAccessibleName('Info : Testing label');
+      expect(infoLinkElement).toHaveAccessibleName('Info Testing label');
+      // therefore, we also check the length to ensure 3 elements are references
+      expect(infoLinkElement?.getAttribute('aria-labelledby')?.split(' ').length).toBe(3);
     });
     test('can get additional label from header', () => {
       const { container } = render(<Header info={<Link variant="info">Info</Link>}>Testing header</Header>);
       const wrapper = createWrapper(container);
-      expect(wrapper.findHeader()?.findInfo()?.findLink()?.getElement()).toHaveAccessibleName('Info : Testing header');
+      const infoLinkElement = wrapper.findHeader()!.findInfo()!.findLink()?.getElement();
+
+      // (see above)
+      // expect(infoLinkElement).toHaveAccessibleName('Info : Testing header');
+      expect(infoLinkElement).toHaveAccessibleName('Info Testing header');
+      expect(infoLinkElement?.getAttribute('aria-labelledby')?.split(' ').length).toBe(3);
     });
     test('can override the automatic label', () => {
       const { container } = render(

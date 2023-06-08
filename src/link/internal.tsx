@@ -15,7 +15,6 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useInternalI18n } from '../internal/i18n/context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 import { FunnelMetrics } from '../internal/analytics';
@@ -56,6 +55,8 @@ const InternalLink = React.forwardRef(
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
     const uniqueId = useUniqueId('link');
+    const linkId = useUniqueId('link-self');
+    const infoId = useUniqueId('link-info');
 
     const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
@@ -119,7 +120,7 @@ const InternalLink = React.forwardRef(
     const applyButtonStyles = isButton && isVisualRefresh && !hasSpecialStyle;
 
     const sharedProps = {
-      id: uniqueId,
+      id: linkId,
       ...baseProps,
       // https://github.com/microsoft/TypeScript/issues/36659
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -138,7 +139,7 @@ const InternalLink = React.forwardRef(
     };
 
     if (variant === 'info' && infoLinkLabelFromContext && !ariaLabel) {
-      sharedProps['aria-labelledby'] = `${sharedProps.id} ${infoLinkLabelFromContext}`;
+      sharedProps['aria-labelledby'] = `${sharedProps.id} ${infoId} ${infoLinkLabelFromContext}`;
     }
 
     const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', externalIconAriaLabel);
@@ -157,7 +158,11 @@ const InternalLink = React.forwardRef(
             </span>
           </span>
         )}
-        {variant === 'info' && <ScreenreaderOnly>:</ScreenreaderOnly>}
+        {variant === 'info' && (
+          <span hidden={true} id={infoId}>
+            :
+          </span>
+        )}
       </>
     );
 
