@@ -97,12 +97,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         ref={node => {
-          if (node) {
-            stickyStyles.ref(node);
-            if (ref) {
-              (ref as React.MutableRefObject<HTMLTableCellElement>).current = node;
-            }
-          }
+          stickyStyles.ref(node);
+          (ref as React.MutableRefObject<HTMLTableCellElement | null>).current = node;
         }}
         {...nativeAttributes}
       >
