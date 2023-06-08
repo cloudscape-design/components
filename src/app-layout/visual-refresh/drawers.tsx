@@ -1,21 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { IconProps } from '../../icon/interfaces';
 import { InternalButton } from '../../button/internal';
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
+import { NonCancelableEventHandler } from '../../internal/events';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import ResizeHandler from '../../split-panel/icons/resize-handler';
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from '../utils/use-pointer-events';
-import { useKeyboardEvents } from '../utils/use-keyboard-events';
+
+import useResize from '../utils/use-resize';
 
 export interface DrawersProps {
   activeDrawerId?: string;
@@ -117,54 +115,14 @@ function ActiveDrawer() {
     navigationHide,
     tools,
     toolsRefs,
-    drawersMaxWidth,
     loseDrawersFocus,
   } = useAppLayoutInternals();
 
+  const ref = useRef<HTMLDivElement>(null);
+
+  const { resizeHandle, drawerSize } = useResize(ref);
+
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
-  const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
-  const toolsWidth = 290;
-
-  const getDrawerItemSizes = useCallback(() => {
-    const sizes: { [id: string]: number } = {};
-    if (!drawerItems) {
-      return {};
-    }
-
-    for (const item of drawerItems) {
-      if (item.defaultSize) {
-        if (item.defaultSize > drawersMaxWidth) {
-          sizes[item.id] = toolsWidth;
-        } else {
-          sizes[item.id] = item.defaultSize || toolsWidth;
-        }
-      }
-    }
-    return sizes;
-  }, [drawerItems, toolsWidth, drawersMaxWidth]);
-
-  const [drawerItemSizes, setDrawerItemSizes] = useState(() => getDrawerItemSizes());
-
-  useEffect(() => {
-    // Ensure we only set new drawer items by performing a shallow merge
-    // of the latest drawer item sizes, and previous drawer item sizes.
-    setDrawerItemSizes(() => getDrawerItemSizes());
-  }, [drawersMaxWidth, activeDrawerId, getDrawerItemSizes]);
-
-  const drawerSize =
-    !activeDrawerId && !isToolsOpen
-      ? 0
-      : activeDrawerId && drawerItemSizes[activeDrawerId]
-      ? drawerItemSizes[activeDrawerId]
-      : toolsWidth;
-
-  const drawerResize = (resizeDetail: { size: number; id: string }) => {
-    const drawerItem = drawers.items.find(({ id }: any) => id === resizeDetail.id);
-    if (drawerItem?.onResize) {
-      fireNonCancelableEvent(drawerItem.onResize, resizeDetail);
-    }
-    setDrawerItemSizes({ ...drawerItemSizes, [resizeDetail.id]: resizeDetail.size });
-  };
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -173,64 +131,6 @@ function ActiveDrawer() {
 
   const isHidden = !activeDrawerId && !isToolsOpen;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
-
-  const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 290 ? activeDrawer?.defaultSize : 290;
-  const [relativeSize, setRelativeSize] = useState(0);
-
-  useEffect(() => {
-    // effects are called inside out in the components tree
-    // wait one frame to allow app-layout to complete its calculations
-    const handle = requestAnimationFrame(() => {
-      const maxSize = drawersMaxWidth;
-      setRelativeSize(((drawerSize - MIN_WIDTH) / (maxSize - MIN_WIDTH)) * 100);
-    });
-    return () => cancelAnimationFrame(handle);
-  }, [drawerSize, drawersMaxWidth, MIN_WIDTH]);
-
-  const setSidePanelWidth = (width: number) => {
-    const maxWidth = drawersMaxWidth;
-    const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
-    const id = activeDrawer?.id;
-
-    if (activeDrawer && id && maxWidth >= MIN_WIDTH) {
-      drawerResize({ size, id });
-    }
-  };
-
-  const drawerRefObject = useRef<HTMLDivElement>(null);
-
-  const sizeControlProps: SizeControlProps = {
-    position: 'side',
-    panelRef: drawerRefObject,
-    handleRef: drawersRefs.slider,
-    setSidePanelWidth,
-    setBottomPanelHeight: () => {},
-  };
-
-  const onSliderPointerDown = usePointerEvents(sizeControlProps);
-  const onKeyDown = useKeyboardEvents(sizeControlProps);
-
-  const resizeHandle = (
-    <div
-      ref={drawersRefs.slider}
-      role="slider"
-      tabIndex={0}
-      aria-label={activeDrawer?.ariaLabels?.resizeHandle}
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={relativeSize}
-      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`], testutilStyles['drawers-slider'])}
-      onKeyDown={onKeyDown}
-      onPointerDown={() => {
-        onSliderPointerDown();
-        if (drawerRefObject && drawerRefObject.current) {
-          drawerRefObject.current.style.transition = 'none';
-        }
-      }}
-    >
-      <ResizeHandler className={clsx(splitPanelStyles['slider-icon'], splitPanelStyles[`slider-icon-side`])} />
-    </div>
-  );
 
   return (
     <aside
@@ -245,14 +145,14 @@ function ActiveDrawer() {
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${drawerSize}px` }),
       }}
-      ref={drawerRefObject}
+      ref={ref}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
           loseDrawersFocus();
         }
       }}
     >
-      {!isMobile && activeDrawer?.resizable && <div className={styles['drawer-slider']}>{resizeHandle}</div>}
+      {!isMobile && activeDrawer?.resizable && resizeHandle}
       <div className={clsx(styles['drawer-close-button'])}>
         <InternalButton
           ariaLabel={computedAriaLabels.closeButton}
