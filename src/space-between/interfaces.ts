@@ -17,10 +17,17 @@ export interface SpaceBetweenProps extends BaseComponentProps {
    * Content of this component.
    */
   children?: React.ReactNode;
+
+  /*
+   * Desired alignment of the children. Based on the [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items) property of CSS Flexbox.
+   */
+  alignItems?: SpaceBetweenProps.AlignItems;
 }
 
 export namespace SpaceBetweenProps {
   export type Direction = 'vertical' | 'horizontal';
 
   export type Size = 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
+
+  export type AlignItems = 'center';
 }
