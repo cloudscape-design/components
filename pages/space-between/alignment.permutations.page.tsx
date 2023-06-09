@@ -17,33 +17,30 @@ const ExampleChildren = (
   </>
 );
 
-const NestedExample = ({ direction, alignItems }: Pick<SpaceBetweenProps, 'direction' | 'alignItems'>) =>
-  Array(3).fill(
-    <Container
-      header={
-        <Header headingTagOverride="h3">
-          Direction: {direction}, alignment: {alignItems || 'default'}
-        </Header>
-      }
-    >
-      <SpaceBetween size={size} direction={direction} alignItems={alignItems}>
-        {ExampleChildren}
-      </SpaceBetween>
-    </Container>
-  );
+const NestedExample = createPermutations([
+  {
+    direction: ['vertical', 'horizontal'] as SpaceBetweenProps.Direction[],
+    alignItems: [undefined, 'center'] as SpaceBetweenProps.AlignItems[],
+  },
+]).map(({ direction, alignItems }) => (
+  <Container
+    key={`direction-${direction}-alignment-${alignItems || 'default'}`}
+    header={
+      <Header headingTagOverride="h3">
+        Direction: {direction}, alignment: {alignItems || 'default'}
+      </Header>
+    }
+  >
+    <SpaceBetween size={size} direction={direction} alignItems={alignItems}>
+      {ExampleChildren}
+    </SpaceBetween>
+  </Container>
+));
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<Pick<SpaceBetweenProps, 'direction' | 'alignItems' | 'children'>>([
   {
-    children: [
-      ExampleChildren,
-      ...createPermutations([
-        {
-          direction: ['vertical', 'horizontal'] as SpaceBetweenProps.Direction[],
-          alignItems: [undefined, 'center'] as SpaceBetweenProps.AlignItems[],
-        },
-      ]).map(props => NestedExample(props)),
-    ],
+    children: [ExampleChildren, NestedExample],
     direction: ['vertical', 'horizontal'],
     alignItems: [undefined, 'center'],
   },
