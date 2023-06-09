@@ -12,12 +12,13 @@ const { writeFile } = require('../utils/files');
 const babel = require('@babel/core');
 const SCSS = require('postcss-scss');
 const workspace = require('../utils/workspace');
-const themeClassic = require('../../lib/style-dictionary/classic/metadata.js');
-const themeVR = require('../../lib/style-dictionary/visual-refresh/metadata/index.js');
 
 module.exports = task('build-tokens-toolkit', () => build());
 
 async function build() {
+  const themeClassic = require('../../lib/style-dictionary/classic/metadata.js');
+  const themeVR = require('../../lib/style-dictionary/visual-refresh/metadata/index.js');
+
   const tokenDescriptionsClassic = createTokenDescriptions(themeClassic);
   writeFile(
     path.join(workspace.tokensToolkitPath, 'tokens-descriptions-classic.json'),
