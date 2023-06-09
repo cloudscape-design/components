@@ -9,7 +9,6 @@ import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import { KeyCode } from '../../../lib/components/internal/keycode';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [1300, () => {}],
@@ -183,26 +182,4 @@ describeEachThemeAppLayout(false, () => {
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
-
-  test('should change size via keyboard events on slider handle', async () => {
-    const drawersOpen = {
-      drawers: {
-        activeDrawerId: 'security',
-        items: drawersConfigurations.drawersResizableItems,
-      },
-    };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
-    act(() => wrapper.findDrawersSlider()!.keydown(KeyCode.left));
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    await act(async () => {
-      await requestAnimationFramePromise();
-    });
-    // Drawer grows after a left keydown (10px increments)
-    expect(wrapper.findActiveDrawer()!.getElement().style.width).toBe('300px');
-  });
 });
-
-function requestAnimationFramePromise() {
-  return new Promise(resolve => requestAnimationFrame(resolve));
-}

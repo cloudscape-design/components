@@ -428,7 +428,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawer?.resizable], activeDrawerId !== undefined, true);
+    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], activeDrawerId !== undefined, true);
 
     const handleDrawersClick = useCallback(
       function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {

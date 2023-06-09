@@ -35,7 +35,11 @@ export function useDrawerFocusControl(
   useEffect(() => {
     switch (lastInteraction.current?.type) {
       case 'open':
-        refs.slider.current?.focus();
+        if (refs.slider.current) {
+          refs.slider.current?.focus();
+        } else {
+          refs.close.current?.focus();
+        }
         break;
       case 'close':
         refs.toggle.current?.focus();
@@ -52,12 +56,7 @@ export function useDrawerFocusControl(
     if (isOpen) {
       previousFocusedElement.current =
         document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
-
-      if (refs.slider.current) {
-        refs.slider.current?.focus();
-      } else {
-        refs.close.current?.focus();
-      }
+      refs.close.current?.focus();
     } else {
       if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
         previousFocusedElement.current.focus();

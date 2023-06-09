@@ -9,11 +9,12 @@ import ResizeHandler from '../../split-panel/icons/resize-handler';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from './use-pointer-events';
 import { useKeyboardEvents } from './use-keyboard-events';
-import { useAppLayoutInternals } from '../visual-refresh/context';
+import { DrawersProps } from '../visual-refresh/drawers';
 
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from '../visual-refresh/styles.css.js';
+import { DrawerFocusControlRefs } from './use-drawer-focus-control';
 
 export interface SizeControlProps {
   position: 'side';
@@ -23,8 +24,16 @@ export interface SizeControlProps {
   setBottomPanelHeight: (height: number) => void;
 }
 
-function useResize(drawerRefObject: React.RefObject<HTMLDivElement>) {
-  const { activeDrawerId, drawers, drawersRefs, isToolsOpen, drawersMaxWidth } = useAppLayoutInternals();
+export interface DrawerResizeProps {
+  activeDrawerId: string | null;
+  drawers: DrawersProps;
+  drawersRefs: DrawerFocusControlRefs;
+  isToolsOpen: boolean;
+  drawersMaxWidth: number;
+}
+
+function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResizeProps: DrawerResizeProps) {
+  const { activeDrawerId, drawers, drawersRefs, isToolsOpen, drawersMaxWidth } = drawerResizeProps;
 
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
   const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
@@ -80,8 +89,6 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>) {
     }
     setDrawerItemSizes({ ...drawerItemSizes, [resizeDetail.id]: resizeDetail.size });
   };
-
-  console.log(drawerRefObject);
 
   const setSidePanelWidth = (width: number) => {
     const maxWidth = drawersMaxWidth;

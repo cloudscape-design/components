@@ -116,11 +116,18 @@ function ActiveDrawer() {
     tools,
     toolsRefs,
     loseDrawersFocus,
+    drawersMaxWidth,
   } = useAppLayoutInternals();
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { resizeHandle, drawerSize } = useResize(ref);
+  const { resizeHandle, drawerSize } = useResize(ref, {
+    activeDrawerId,
+    drawers,
+    drawersRefs,
+    isToolsOpen,
+    drawersMaxWidth,
+  });
 
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
 
