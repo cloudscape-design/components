@@ -22,15 +22,31 @@ async function build() {
   const themeVR = require('../../lib/style-dictionary/visual-refresh/metadata/index.js');
 
   const tokenDescriptionsClassic = createTokenDescriptions(themeClassic);
-  writeFile(
-    path.join(workspace.tokensToolkitPath, 'tokens-descriptions-classic.json'),
-    JSON.stringify(tokenDescriptionsClassic, null, 2)
-  );
-
   const tokenDescriptionsVR = createTokenDescriptions(themeVR);
+  const allTokens = [...Object.keys(tokenDescriptionsClassic), ...Object.keys(tokenDescriptionsVR)];
+  const allDescriptions = {};
+  for (const token of allTokens) {
+    const description = tokenDescriptionsClassic[token]?.description;
+    const themeable = tokenDescriptionsClassic[token]?.themeable;
+    const vrDescription = tokenDescriptionsVR[token]?.description;
+    const vrThemeable = tokenDescriptionsVR[token]?.themeable;
+    const entry = {
+      description,
+      themeable,
+      vr: {
+        description: description !== vrDescription ? vrDescription : undefined,
+        themeable: themeable !== vrThemeable ? vrThemeable : undefined,
+      },
+    };
+    if (entry.vr.description === undefined && entry.vr.themeable === undefined) {
+      delete entry.vr;
+    }
+    allDescriptions[token] = entry;
+  }
+
   writeFile(
-    path.join(workspace.tokensToolkitPath, 'tokens-descriptions-visual-refresh.json'),
-    JSON.stringify(tokenDescriptionsVR, null, 2)
+    path.join(workspace.tokensToolkitPath, 'tokens-descriptions.json'),
+    JSON.stringify(allDescriptions, null, 2)
   );
 
   const selectorsMapping = await createSelectorsMapping();

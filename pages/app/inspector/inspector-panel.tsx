@@ -39,6 +39,8 @@ interface InspectorPanelProps {
 }
 
 export function InspectorPanel({ onClose }: InspectorPanelProps) {
+  const isVR = !!document.querySelector('.awsui-visual-refresh');
+
   const panelRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<null | InspectedElement>(null);
@@ -120,7 +122,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
             tree.push({
               name: elementName,
               node: current,
-              tokens: getElementTokens(current),
+              tokens: getElementTokens(current, isVR),
               context: getElementContext(current),
             });
 
