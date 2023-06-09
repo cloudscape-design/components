@@ -13,7 +13,7 @@ const babel = require('@babel/core');
 const SCSS = require('postcss-scss');
 const workspace = require('../utils/workspace');
 
-module.exports = task('build-tokens-toolkit', () => build());
+module.exports = task('build-components-devtools', () => build());
 
 const tokenNameToFiles = {};
 
@@ -45,19 +45,19 @@ async function build() {
   }
 
   writeFile(
-    path.join(workspace.tokensToolkitPath, 'tokens-descriptions.json'),
+    path.join(workspace.componentsDevtoolsPath, 'tokens-descriptions.json'),
     JSON.stringify(allDescriptions, null, 2)
   );
 
   const selectorsMapping = await createSelectorsMapping();
   writeFile(
-    path.join(workspace.tokensToolkitPath, 'selectors-mapping.json'),
+    path.join(workspace.componentsDevtoolsPath, 'selectors-mapping.json'),
     JSON.stringify(selectorsMapping, null, 2)
   );
 
   const componentsMapping = createComponentsMapping();
   writeFile(
-    path.join(workspace.tokensToolkitPath, 'components-mapping.json'),
+    path.join(workspace.componentsDevtoolsPath, 'components-mapping.json'),
     JSON.stringify(componentsMapping, null, 2)
   );
 }

@@ -3,13 +3,13 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import tokenMapping from '../../../lib/tokens-toolkit/selectors-mapping.json';
+import tokenMapping from '../../../lib/components-devtools/selectors-mapping.json';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import tokenDict from '../../../lib/tokens-toolkit/tokens-descriptions.json';
+import tokenDict from '../../../lib/components-devtools/tokens-descriptions.json';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import tokensToComponents from '../../../lib/tokens-toolkit/components-mapping.json';
+import tokensToComponents from '../../../lib/components-devtools/components-mapping.json';
 
 // TODO: prepare mappings as TS files
 // TODO: move utils to lib/tokens-toolkit
