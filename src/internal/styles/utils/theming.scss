@@ -3,9 +3,11 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @mixin dark-mode-only($selector: '') {
-  /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
-  :global(#{$selector}.awsui-polaris-dark-mode) &,
-  :global(#{$selector}.awsui-dark-mode) & {
-    @content;
+  @media not print {
+    /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
+    :global(#{$selector}.awsui-polaris-dark-mode) &,
+    :global(#{$selector}.awsui-dark-mode) & {
+      @content;
+    }
   }
 }

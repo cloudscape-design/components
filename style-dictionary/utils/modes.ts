@@ -4,7 +4,7 @@ export const createColorMode = (darkSelector: string) => ({
   id: 'color',
   states: {
     light: { default: true },
-    dark: { selector: darkSelector },
+    dark: { selector: darkSelector, media: 'not print' },
   },
 });
 
