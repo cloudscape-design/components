@@ -3,12 +3,7 @@
 
 import { useContext, useRef } from 'react';
 import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
-import {
-  DATA_ATTR_FUNNEL_INTERACTION_ID,
-  DATA_ATTR_FUNNEL_STEP,
-  DATA_ATTR_FUNNEL_SUBSTEP,
-  getSubStepAllSelector,
-} from '../selectors';
+import { DATA_ATTR_FUNNEL_INTERACTION_ID, DATA_ATTR_FUNNEL_SUBSTEP, getSubStepAllSelector } from '../selectors';
 import { FunnelMetrics } from '../';
 
 /**
@@ -78,13 +73,7 @@ export const useFunnelSubStep = () => {
  */
 export const useFunnelStep = () => {
   const context = useContext(FunnelStepContext);
-  const funnelStepProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
-    ? {
-        [DATA_ATTR_FUNNEL_STEP]: context.stepNumber,
-      }
-    : {};
-
-  return { funnelStepProps, ...context };
+  return context;
 };
 
 /**

@@ -113,8 +113,8 @@ export default function InternalFormField({
   };
 
   const analyticsAttributes = {
-    [DATA_ATTR_FIELD_LABEL]: slotIds.label ?? getFieldSlotSeletor(slotIds.label),
-    [DATA_ATTR_FIELD_ERROR]: slotIds.error ?? getFieldSlotSeletor(slotIds.error),
+    [DATA_ATTR_FIELD_LABEL]: slotIds.label ? getFieldSlotSeletor(slotIds.label) : undefined,
+    [DATA_ATTR_FIELD_ERROR]: slotIds.error ? getFieldSlotSeletor(slotIds.error) : undefined,
   };
 
   useEffect(() => {
