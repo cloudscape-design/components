@@ -6,17 +6,10 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Background() {
-  const {
-    breadcrumbs,
-    contentHeader,
-    dynamicOverlapHeight,
-    hasNotificationsContent,
-    hasStickyBackground,
-    isMobile,
-    stickyNotifications,
-  } = useAppLayoutInternals();
+  const { breadcrumbs, contentHeader, hasNotificationsContent, hasStickyBackground, isMobile, stickyNotifications } =
+    useAppLayoutInternals();
 
-  if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !contentHeader && dynamicOverlapHeight <= 0) {
+  if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !contentHeader) {
     return null;
   }
 

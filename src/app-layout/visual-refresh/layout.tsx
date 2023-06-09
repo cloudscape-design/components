@@ -26,7 +26,6 @@ export default function Layout({ children }: LayoutProps) {
     disableContentHeaderOverlap,
     disableContentPaddings,
     drawersTriggerCount,
-    dynamicOverlapHeight,
     footerHeight,
     hasNotificationsContent,
     hasStickyBackground,
@@ -59,7 +58,7 @@ export default function Layout({ children }: LayoutProps) {
    * unless there is a dynamicOverlapHeight. The dynamicOverlapHeight property is set by a
    * component in the content slot that needs to manually control the overlap height.
    */
-  const isOverlapDisabled = disableContentHeaderOverlap || (!contentHeader && dynamicOverlapHeight <= 0);
+  const isOverlapDisabled = disableContentHeaderOverlap || !contentHeader;
 
   return (
     <main
@@ -93,8 +92,6 @@ export default function Layout({ children }: LayoutProps) {
         ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
         ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
-        ...(!isOverlapDisabled &&
-          dynamicOverlapHeight > 0 && { [customCssProps.overlapHeight]: `${dynamicOverlapHeight}px` }),
       }}
     >
       {children}
