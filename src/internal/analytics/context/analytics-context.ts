@@ -19,6 +19,7 @@ export interface FunnelContextValue extends BaseContextProps {
 export interface FunnelStepContextValue extends BaseContextProps {
   stepNameSelector: string;
   stepNumber: number;
+  funnelStepProps?: Record<string, string | number | boolean | undefined>;
 }
 
 export interface FunnelSubStepContextValue extends FunnelStepContextValue {
@@ -26,6 +27,7 @@ export interface FunnelSubStepContextValue extends FunnelStepContextValue {
   subStepSelector: string;
   subStepNameSelector: string;
   stepNumber: number;
+  funnelSubStepProps?: Record<string, string | number | boolean | undefined>;
 }
 
 export const FunnelContext = createContext<FunnelContextValue>({
@@ -42,6 +44,7 @@ export const FunnelStepContext = createContext<FunnelStepContextValue>({
   funnelInteractionId: undefined,
   stepNameSelector: '',
   stepNumber: 0,
+  funnelStepProps: {},
 });
 
 export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
@@ -51,4 +54,5 @@ export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
   stepNameSelector: '',
   subStepSelector: '',
   subStepNameSelector: '',
+  funnelStepProps: {},
 });
