@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import FormField from '../../../lib/components/form-field';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import { DATA_ATTR_FIELD_LABEL, DATA_ATTR_FIELD_ERROR } from '../../../lib/components/internal/analytics/selectors';
 
 import {
   AnalyticsFunnel,
@@ -144,7 +145,7 @@ describe('FormField Analytics', () => {
     const { getByTestId } = render(<FormField errorText="Error" label="Label" data-testid="form-field" />);
 
     const formField = getByTestId('form-field');
-    expect(formField).toHaveAttribute('data-analytics-field-label-selector', expect.any(String));
-    expect(formField).toHaveAttribute('data-analytics-field-error-selector', expect.any(String));
+    expect(formField).toHaveAttribute(DATA_ATTR_FIELD_LABEL, expect.any(String));
+    expect(formField).toHaveAttribute(DATA_ATTR_FIELD_ERROR, expect.any(String));
   });
 });

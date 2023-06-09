@@ -3,7 +3,12 @@
 
 import { useContext, useRef } from 'react';
 import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
-import { getSubStepAllSelector } from '../selectors';
+import {
+  DATA_ATTR_FUNNEL_INTERACTION_ID,
+  DATA_ATTR_FUNNEL_STEP,
+  DATA_ATTR_FUNNEL_SUBSTEP,
+  getSubStepAllSelector,
+} from '../selectors';
 import { FunnelMetrics } from '../';
 
 /**
@@ -54,7 +59,7 @@ export const useFunnelSubStep = () => {
 
   const funnelSubStepProps: Record<string, any> = funnelInteractionId
     ? {
-        'data-analytics-funnel-substep': subStepId,
+        [DATA_ATTR_FUNNEL_SUBSTEP]: subStepId,
         onFocus,
         onBlur,
       }
@@ -68,14 +73,14 @@ export const useFunnelSubStep = () => {
  * This hook will provide necessary properties required to track
  * and manage interactions with a FunnelStep component.
  *
- * The 'data-analytics-funnel-step-index' property of funnelStepProps is used to track the index of the current step in the funnel.
+ * The 'data-analytics-funnel-step' property of funnelStepProps is used to track the index of the current step in the funnel.
  * The context contains additional properties of the FunnelStep.
  */
 export const useFunnelStep = () => {
   const context = useContext(FunnelStepContext);
   const funnelStepProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
     ? {
-        'data-analytics-funnel-step-index': context.stepNumber,
+        [DATA_ATTR_FUNNEL_STEP]: context.stepNumber,
       }
     : {};
 
@@ -93,7 +98,7 @@ export const useFunnel = () => {
   const context = useContext(FunnelContext);
   const funnelProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
     ? {
-        'data-analytics-funnel-interaction-id': context.funnelInteractionId,
+        [DATA_ATTR_FUNNEL_INTERACTION_ID]: context.funnelInteractionId,
       }
     : {};
 

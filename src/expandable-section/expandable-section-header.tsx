@@ -68,7 +68,7 @@ const ExpandableDefaultHeader = ({
     <div
       id={id}
       role="button"
-      className={className}
+      className={clsx(className, styles['expand-button'])}
       tabIndex={0}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
@@ -97,7 +97,7 @@ const ExpandableNavigationHeader = ({
   return (
     <div id={id} className={className} onClick={onClick}>
       <button
-        className={styles['icon-container']}
+        className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
         aria-controls={ariaControls}
@@ -132,13 +132,16 @@ const ExpandableHeaderTextWrapper = ({
   const screenreaderContentId = useUniqueId('expandable-section-header-content-');
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const hasInteractiveElements = headerInfo || headerActions;
+  const hasInteractiveElements = isContainer && (headerInfo || headerActions);
   const listeners = { onClick, onKeyDown, onKeyUp };
   const wrapperListeners = hasInteractiveElements ? undefined : listeners;
   const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
   const headerButton = (
     <span
-      className={isContainer ? styles['header-container-button'] : styles['header-button']}
+      className={clsx(
+        styles['expand-button'],
+        isContainer ? styles['header-container-button'] : styles['header-button']
+      )}
       role="button"
       tabIndex={0}
       aria-label={ariaLabel}
@@ -154,7 +157,11 @@ const ExpandableHeaderTextWrapper = ({
   );
 
   return (
-    <div id={id} className={className} {...wrapperListeners}>
+    <div
+      id={id}
+      className={clsx(className, hasInteractiveElements && styles['with-interactive-elements'])}
+      {...wrapperListeners}
+    >
       {isContainer ? (
         <InternalHeader
           variant="h2"
@@ -235,15 +242,9 @@ export const ExpandableSectionHeader = ({
   }
 
   if (headerText) {
-    const hasInteractiveElements = headerInfo || headerActions;
     return (
       <ExpandableHeaderTextWrapper
-        className={clsx(
-          className,
-          wrapperClassName,
-          hasInteractiveElements && styles['with-interactive-elements'],
-          expanded && styles.expanded
-        )}
+        className={clsx(className, wrapperClassName, expanded && styles.expanded)}
         headerDescription={headerDescription}
         headerCounter={headerCounter}
         headerInfo={headerInfo}
