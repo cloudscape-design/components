@@ -15,6 +15,8 @@ const workspace = require('../utils/workspace');
 
 module.exports = task('build-tokens-toolkit', () => build());
 
+const tokenNameToFiles = {};
+
 async function build() {
   const themeClassic = require('../../lib/style-dictionary/classic/metadata.js');
   const themeVR = require('../../lib/style-dictionary/visual-refresh/metadata/index.js');
@@ -37,7 +39,7 @@ async function build() {
     JSON.stringify(selectorsMapping, null, 2)
   );
 
-  const componentsMapping = createComponentsMapping(selectorsMapping);
+  const componentsMapping = createComponentsMapping();
   writeFile(
     path.join(workspace.tokensToolkitPath, 'components-mapping.json'),
     JSON.stringify(componentsMapping, null, 2)
@@ -69,19 +71,18 @@ async function createSelectorsMapping() {
   return dict;
 }
 
-function createComponentsMapping(selectorsMapping) {
+function createComponentsMapping() {
   const stylesToComponents = getStylesToComponentsMapping();
 
-  const result = Object.values(selectorsMapping)
-    .flatMap(groups => Object.values(groups))
-    .flatMap(tokens => tokens)
-    .reduce((acc, { file, name }) => {
-      if (!acc[name]) {
-        acc[name] = new Set();
+  const result = Object.entries(tokenNameToFiles)
+    .flatMap(([token, files]) => [...files].map(file => ({ token, file })))
+    .reduce((acc, { token, file }) => {
+      if (!acc[token]) {
+        acc[token] = new Set();
       }
       if (stylesToComponents[file]) {
         for (const component of stylesToComponents[file]) {
-          acc[name].add(component);
+          acc[token].add(component);
         }
       }
 
@@ -117,11 +118,20 @@ function tokenExtractor(file, onTokenFound) {
         })
         .filter(match => !!match)
         .map(match => match[1])
-        .map(token => ({
-          file,
-          name: lodash.camelCase(token.replace(/^--/, '').replace(/-[\w\d]+$/, '')),
-          cssName: token,
-        }));
+        .map(token => {
+          const tokenName = lodash.camelCase(token.replace(/^--/, '').replace(/-[\w\d]+$/, ''));
+
+          if (!tokenNameToFiles[tokenName]) {
+            tokenNameToFiles[tokenName] = new Set();
+          }
+          tokenNameToFiles[tokenName].add(file);
+
+          return {
+            file,
+            name: tokenName,
+            cssName: token,
+          };
+        });
       if (tokens.length === 0) {
         return;
       }
