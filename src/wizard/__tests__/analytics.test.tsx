@@ -47,7 +47,7 @@ describe('Wizard Analytics', () => {
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
-        componentTheme: expect.any(String),
+        theme: expect.any(String),
       })
     );
   });
