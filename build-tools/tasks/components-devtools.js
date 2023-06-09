@@ -8,14 +8,14 @@ const glob = require('glob');
 const postcss = require('postcss');
 const selectorParser = require('postcss-selector-parser');
 const lodash = require('lodash');
-const { parallel } = require('gulp');
+const { series } = require('gulp');
 const { task } = require('../utils/gulp-utils');
 const { writeFile } = require('../utils/files');
 const babel = require('@babel/core');
 const SCSS = require('postcss-scss');
 const workspace = require('../utils/workspace');
 
-module.exports = parallel(
+module.exports = series(
   task('build-components-devtools:prepare-mappings', () => build()),
   task('build-components-devtools:compile-typescript', async () => {
     const config = path.resolve(path.resolve('devtools'), 'tsconfig.json');

@@ -5,8 +5,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, FileUpload, Link, SpaceBetween, Toggle } from '~components';
 
 import { groupBy, startCase, sortBy } from 'lodash';
-import { TokenMetadata } from '../../../lib/components-devtools';
-import { getElementContext, getElementName, getElementTokens, readTokenValue } from './element-utils';
+import {
+  getElementContext,
+  getElementName,
+  getElementTokens,
+  readTokenValue,
+  TokenMetadata,
+} from '../../../lib/components-devtools';
 import {
   Theme,
   applyTheme,
@@ -39,8 +44,6 @@ interface InspectorPanelProps {
 }
 
 export function InspectorPanel({ onClose }: InspectorPanelProps) {
-  const isVR = !!document.querySelector('.awsui-visual-refresh');
-
   const panelRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<null | InspectedElement>(null);
@@ -122,7 +125,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
             tree.push({
               name: elementName,
               node: current,
-              tokens: getElementTokens(current, isVR),
+              tokens: getElementTokens(current),
               context: getElementContext(current),
             });
 
@@ -333,7 +336,7 @@ function Tokens({
             className={styles['elements-list']}
           >
             {sortBy(publicTokens[section], token => token.name).map(token => {
-              const value = themeReader(token.name) ?? readTokenValue(element, token.cssName);
+              const value = themeReader(token.name) ?? readTokenValue(element, token);
               return (
                 <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
                   <ValueEditor
@@ -384,7 +387,7 @@ function Tokens({
                 className={styles['elements-list']}
               >
                 {sortBy(privateTokens[section], token => token.name).map(token => {
-                  const value = themeReader(token.name) ?? readTokenValue(element, token.cssName);
+                  const value = themeReader(token.name) ?? readTokenValue(element, token);
                   return (
                     <li key={token.name} style={{ display: 'flex', margin: 0, padding: '8px 0px' }}>
                       {token.name.startsWith('color') ? (

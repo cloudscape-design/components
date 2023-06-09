@@ -1,16 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { uniqBy } from 'lodash';
-import { getStylesMapping, TokenMetadata } from '../../../lib/components-devtools';
+import { TokenMetadata } from './interfaces';
+import { selectorsMapping } from './selectors-mapping';
 
-export function readTokenValue(element: Element, cssTokenName: string): string {
-  return window.getComputedStyle(element).getPropertyValue(cssTokenName) ?? '';
-}
-
-export function getElementTokens(element: Element, vr: boolean): TokenMetadata[] {
+export function getElementTokens(element: Element): TokenMetadata[] {
+  const isVR = !!document.querySelector('.awsui-visual-refresh');
   const tokens: TokenMetadata[] = [];
-  for (const style of getStylesMapping(vr)) {
+  for (const style of selectorsMapping) {
     try {
       if (element.matches(style.selector)) {
         tokens.push(...style.tokens);
@@ -19,7 +16,10 @@ export function getElementTokens(element: Element, vr: boolean): TokenMetadata[]
       console.warn(`Invalid selector: "${style.selector}".`);
     }
   }
-  return uniqBy(tokens, token => token.section + ':' + token.name);
+  return uniqBy(tokens, token => token.section + ':' + token.name).map(token => ({
+    ...token,
+    description: isVR ? token.descriptionVR : token.description,
+  }));
 }
 
 export function getElementName(element: Element): string {
@@ -50,6 +50,10 @@ export function getElementContext(element: Element): null | string {
     current = current.parentElement;
   }
   return null;
+}
+
+export function readTokenValue(element: Element, token: TokenMetadata): string {
+  return window.getComputedStyle(element).getPropertyValue(token.cssName) ?? '';
 }
 
 function getComponentSegmentName(element: Element): string {
@@ -83,4 +87,19 @@ function getComponentSegmentName(element: Element): string {
   }
 
   return 'part';
+}
+
+function uniqBy<I, P>(allItems: I[], getProperty: (item: I) => P): I[] {
+  const propertiesSet = new Set<P>();
+  const uniqueItems: I[] = [];
+
+  for (const item of allItems) {
+    const property = getProperty(item);
+    if (!propertiesSet.has(property)) {
+      propertiesSet.add(property);
+      uniqueItems.push(item);
+    }
+  }
+
+  return uniqueItems;
 }
