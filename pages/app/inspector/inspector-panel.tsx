@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, FileUpload, Link, SpaceBetween, Toggle } from '~components';
 
 import { groupBy, startCase, sortBy } from 'lodash';
-import { Token } from './styles-mapping';
+import { TokenMetadata } from '../../../lib/components-devtools';
 import { getElementContext, getElementName, getElementTokens, readTokenValue } from './element-utils';
 import {
   Theme,
@@ -25,7 +25,7 @@ const TREE_SIZE = 4;
 interface TreeElement {
   name: string;
   node: Element;
-  tokens: Token[];
+  tokens: TokenMetadata[];
   context: string | null;
 }
 
@@ -303,7 +303,7 @@ function Tokens({
   context,
   element,
 }: {
-  tokens: Token[];
+  tokens: TokenMetadata[];
   theme: Theme;
   setTokenValue: (tokenName: string, value: null | string, context: null | string) => void;
   context: null | string;

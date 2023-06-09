@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { uniqBy } from 'lodash';
-import { getStylesMapping, Token } from './styles-mapping';
+import { getStylesMapping, TokenMetadata } from '../../../lib/components-devtools';
 
 export function readTokenValue(element: Element, cssTokenName: string): string {
   return window.getComputedStyle(element).getPropertyValue(cssTokenName) ?? '';
 }
 
-export function getElementTokens(element: Element, vr: boolean): Token[] {
-  const tokens: Token[] = [];
+export function getElementTokens(element: Element, vr: boolean): TokenMetadata[] {
+  const tokens: TokenMetadata[] = [];
   for (const style of getStylesMapping(vr)) {
     try {
       if (element.matches(style.selector)) {
