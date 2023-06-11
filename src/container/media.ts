@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
+import { matchBreakpointMapping } from '../internal/breakpoints';
 import { ContainerProps } from './interfaces';
+import { BREAKPOINTS_DESCENDING } from '../internal/breakpoints';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 
-export function useMedia(media: ContainerProps.Media | undefined, breakpoint: Breakpoint | null) {
+export function useMedia(media?: ContainerProps.Media) {
+  const [breakpoint, breakpointRef] = useContainerBreakpoints(BREAKPOINTS_DESCENDING.filter(bp => bp !== 'default'));
   const {
     content = undefined,
     height = undefined,
@@ -51,6 +54,7 @@ export function useMedia(media: ContainerProps.Media | undefined, breakpoint: Br
     : {};
 
   return {
+    breakpointRef,
     mediaContent: content,
     mediaHeight: height,
     mediaWidth: width,

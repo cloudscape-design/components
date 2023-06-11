@@ -7,7 +7,6 @@ import { getBaseProps } from '../internal/base-component';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -15,7 +14,6 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useMedia } from './media';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { BREAKPOINTS_DESCENDING } from '../internal/breakpoints';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -78,8 +76,7 @@ export default function InternalContainer({
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(BREAKPOINTS_DESCENDING.filter(bp => bp !== 'default'));
-  const { mediaPosition, mediaHeight, mediaWidth, mediaContent } = useMedia(media, breakpoint);
+  const { breakpointRef, mediaPosition, mediaHeight, mediaWidth, mediaContent } = useMedia(media);
 
   const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef, breakpointRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
