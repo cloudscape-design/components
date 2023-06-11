@@ -48,15 +48,17 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
       funnelType: props.funnelType,
       totalFunnelSteps: props.totalFunnelSteps,
       componentVersion: PACKAGE_VERSION,
-      componentTheme: isVisualRefresh ? 'vr' : 'classic',
+      theme: isVisualRefresh ? 'vr' : 'classic',
       funnelVersion: FUNNEL_VERSION,
     });
 
     setFunnelInteractionId(funnelInteractionId);
 
     return () => {
+      FunnelMetrics.funnelComplete({ funnelInteractionId });
+
       if (funnelResultRef.current === true) {
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        FunnelMetrics.funnelSuccessful({ funnelInteractionId });
       } else {
         FunnelMetrics.funnelCancelled({ funnelInteractionId });
       }

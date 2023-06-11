@@ -21,7 +21,7 @@ export interface FunnelStartProps {
   funnelType: FunnelType;
   funnelVersion: string;
   componentVersion: string;
-  componentTheme: string;
+  theme: string;
 }
 
 // A function type for a generic funnel method
@@ -44,7 +44,7 @@ export interface FunnelStepNavigationProps extends FunnelStepProps {
 
 export interface FunnelSubStepProps extends FunnelStepProps {
   subStepSelector: string;
-  subStepNameSelector?: string;
+  subStepNameSelector: string;
 }
 
 export interface FunnelSubStepErrorProps extends FunnelSubStepProps {

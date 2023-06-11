@@ -191,7 +191,7 @@ function ChartPlot(
       >
         <FocusOutline elementRef={svgRef} elementKey={isPlotFocused} offset={focusOffset} />
 
-        <g transform={transform} role="group">
+        <g transform={transform}>
           <ApplicationController
             activeElementKey={activeElementKey || null}
             activeElementRef={activeElementRef}
