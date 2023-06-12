@@ -46,7 +46,38 @@ const permutations = createPermutations<SplitButtonProps>([
         </Button>
       </>,
       <>
-        <ButtonDropdown items={dropdownItems} loading={true}>
+        <ButtonDropdown items={dropdownItems} disabled={true}>
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus">Button</Button>
+
+        <Button href="#" iconName="external" iconAlign="right">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems}>Dropdown</ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true}>
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems}>Dropdown</ButtonDropdown>
+
+        <Button iconName="add-plus">Button</Button>
+
+        <Button href="#" iconName="external" iconAlign="right" disabled={true}>
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems} disabled={true}>
           Dropdown
         </ButtonDropdown>
 
@@ -59,18 +90,165 @@ const permutations = createPermutations<SplitButtonProps>([
         </Button>
       </>,
       <>
-        <Button variant="primary" iconName="add-plus">
+        <ButtonDropdown items={dropdownItems}>Dropdown</ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true}>
           Button
         </Button>
 
-        <ButtonDropdown variant="primary" items={dropdownItems} />
+        <Button href="#" iconName="external" iconAlign="right" disabled={true}>
+          Link
+        </Button>
       </>,
       <>
-        <Button variant="primary" iconName="add-plus" loading={true}>
+        <ButtonDropdown items={dropdownItems} disabled={true}>
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true}>
           Button
         </Button>
 
-        <ButtonDropdown variant="primary" items={dropdownItems} />
+        <Button href="#" iconName="external" iconAlign="right" disabled={true}>
+          Link
+        </Button>
+      </>,
+      <>
+        <Button variant="normal" iconName="add-plus">
+          Button
+        </Button>
+
+        <ButtonDropdown variant="normal" items={dropdownItems} />
+      </>,
+      <>
+        <Button variant="normal" iconName="add-plus" loading={true}>
+          Button
+        </Button>
+
+        <ButtonDropdown variant="normal" items={dropdownItems} />
+      </>,
+      <>
+        <Button variant="normal" iconName="add-plus">
+          Button
+        </Button>
+
+        <ButtonDropdown variant="normal" items={dropdownItems} loading={true} />
+      </>,
+    ],
+  },
+  {
+    children: [
+      <>
+        <ButtonDropdown items={dropdownItems} variant="primary">
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" variant="primary">
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right" variant="primary">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems} disabled={true} variant="primary">
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" variant="primary">
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right" variant="primary">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems} variant="primary">
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true} variant="primary">
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right" variant="primary">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems} variant="primary">
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" variant="primary">
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right" disabled={true} variant="primary">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems} disabled={true} variant="primary">
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true} variant="primary">
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right" variant="primary">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems} variant="primary">
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true} variant="primary">
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right" disabled={true} variant="primary">
+          Link
+        </Button>
+      </>,
+      <>
+        <ButtonDropdown items={dropdownItems} disabled={true} variant="primary">
+          Dropdown
+        </ButtonDropdown>
+
+        <Button iconName="add-plus" disabled={true} variant="primary">
+          Button
+        </Button>
+
+        <Button href="#" iconName="external" iconAlign="right" disabled={true} variant="primary">
+          Link
+        </Button>
+      </>,
+      <>
+        <Button iconName="add-plus" variant="primary">
+          Button
+        </Button>
+
+        <ButtonDropdown items={dropdownItems} variant="primary" />
+      </>,
+      <>
+        <Button iconName="add-plus" loading={true} variant="primary">
+          Button
+        </Button>
+
+        <ButtonDropdown items={dropdownItems} variant="primary" />
+      </>,
+      <>
+        <Button iconName="add-plus" variant="primary">
+          Button
+        </Button>
+
+        <ButtonDropdown items={dropdownItems} loading={true} variant="primary" />
       </>,
     ],
   },
