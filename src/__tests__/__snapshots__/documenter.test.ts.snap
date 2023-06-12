@@ -11485,6 +11485,7 @@ Object {
   "name": "SpaceBetween",
   "properties": Array [
     Object {
+      "description": "Defines the desired alignment of the children. Based on the [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items) property of CSS Flexbox.",
       "inlineType": Object {
         "name": "SpaceBetweenProps.AlignItems",
         "properties": Array [],
