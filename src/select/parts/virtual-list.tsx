@@ -35,6 +35,14 @@ const VirtualListOpen = forwardRef(
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
 
+    // The useVirtual from react-virtual@2 might produce an infinite update loop caused by setting
+    // measured item sizes in the render cycle (as part of the measureRef assignment).
+    // The sum of all measured item sizes is returned as totalSize which is then set on the list container.
+    // Enforcing new container height might result in an items size change e.g. when the content wraps.
+    // The infinite update cycle causes React "Maximum update depth exceeded" error and can be additionally confirmed
+    // by logging the totalSize which should then bounce between two values.
+    // Empirically it has been found out that increasing the container size slightly decreases the risk of items content
+    // wrapping in one size and not wrapping in the other that prevents the infinite loop.
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       size: filteredOptions.length,
       parentRef: menuRefObject,
@@ -67,9 +75,10 @@ const VirtualListOpen = forwardRef(
       screenReaderContent,
       ariaSetsize: filteredOptions.length,
     });
+
     return (
       <OptionsList {...menuProps} ref={menuRef}>
-        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
+        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize + 1 }} />
         {finalOptions}
         {listBottom ? (
           <li role="option" className={styles['list-bottom']}>
