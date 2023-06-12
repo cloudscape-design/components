@@ -112,4 +112,56 @@ describe('SplitButton', () => {
     );
     expect(createWrapper().findSplitButton()!.findAllByClassName(styles.trigger)).toHaveLength(2);
   });
+
+  test('warns if "primary" variant is used with more than 2 children', () => {
+    render(
+      <SplitButton>
+        <Button variant="primary">Button</Button>
+        <ButtonDropdown variant="primary" items={[]}>
+          Button dropdown
+        </ButtonDropdown>
+        <Button variant="primary">Button</Button>
+      </SplitButton>
+    );
+
+    expect(warnOnce).toHaveBeenCalledWith(
+      'SplitButton',
+      'The "primary" variant can only have one button followed by a button dropdown.'
+    );
+    expect(createWrapper().findSplitButton()!.findAllByClassName(buttonStyles['variant-normal'])).toHaveLength(3);
+  });
+
+  test('warns if "primary" variant is used with two button children', () => {
+    render(
+      <SplitButton>
+        <Button variant="primary">Button</Button>
+        <Button variant="primary">Button</Button>
+      </SplitButton>
+    );
+
+    expect(warnOnce).toHaveBeenCalledWith(
+      'SplitButton',
+      'The "primary" variant can only have one button followed by a button dropdown.'
+    );
+    expect(createWrapper().findSplitButton()!.findAllByClassName(buttonStyles['variant-normal'])).toHaveLength(2);
+  });
+
+  test('warns if "primary" variant is used with two button dropdown children', () => {
+    render(
+      <SplitButton>
+        <ButtonDropdown variant="primary" items={[]}>
+          Button dropdown
+        </ButtonDropdown>
+        <ButtonDropdown variant="primary" items={[]}>
+          Button dropdown
+        </ButtonDropdown>
+      </SplitButton>
+    );
+
+    expect(warnOnce).toHaveBeenCalledWith(
+      'SplitButton',
+      'The "primary" variant can only have one button followed by a button dropdown.'
+    );
+    expect(createWrapper().findSplitButton()!.findAllByClassName(buttonStyles['variant-normal'])).toHaveLength(2);
+  });
 });

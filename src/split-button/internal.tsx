@@ -93,6 +93,20 @@ function validateChildren(children: React.ReactNode): ChildWrapper[] {
     return [];
   }
 
+  if (
+    firstElementVariant === 'primary' &&
+    (childrenElements.length > 2 ||
+      childrenElements[0].element.type !== Button ||
+      childrenElements[1].element.type !== ButtonDropdown)
+  ) {
+    warnOnce('SplitButton', 'The "primary" variant can only have one button followed by a button dropdown.');
+    return validateChildren(
+      childrenElements.map(c =>
+        React.cloneElement({ ...c.element, type: c.element.type }, { ...c.element.props, variant: 'normal' })
+      )
+    );
+  }
+
   return childrenElements;
 }
 
