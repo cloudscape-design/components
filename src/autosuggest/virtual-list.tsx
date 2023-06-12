@@ -75,8 +75,7 @@ const VirtualList = ({
             key={index}
             ref={measureRef}
             highlightText={highlightText}
-            // option={item}
-            option={rowVirtualizer.totalSize < 110 ? { ...item, label: item.label + 'xxxxxxxxxxx' } : item}
+            option={item}
             highlighted={item === autosuggestItemsState.highlightedOption}
             current={item.value === highlightText}
             data-mouse-target={index}
