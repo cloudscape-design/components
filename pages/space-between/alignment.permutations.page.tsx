@@ -13,7 +13,9 @@ const size = 'm';
 
 const ExampleChildren = (
   <>
-    <h2>Heading</h2> <p>Paragraph</p> <Button>Button</Button>
+    <h2>Heading</h2>
+    <p>Paragraph</p>
+    <Button>Button</Button>
   </>
 );
 
