@@ -22,6 +22,7 @@ interface RowVirtualizer {
  * measured item sizes in the render cycle (as part of the measureRef assignment):
  *      The sum of all measured item sizes is returned as totalSize which is then set on the list container.
  *      Enforcing new container height might result in an items size change e.g. when the content wraps.
+ *
  * The infinite update cycle causes React "Maximum update depth exceeded" error and can be additionally confirmed
  * by logging the totalSize which should then bounce between two values.
  *
@@ -41,11 +42,11 @@ export function useVirtual<Item extends object>({
   // Cache virtual item mounts to limit the amount of mounts per item.
   const measuresCache = useRef(new WeakMap<Item, number>());
 
-  // Clear mounts cache every time indices or items change.
+  // Clear mounts cache every time indices, items, or size estimate change.
   const indicesKey = rowVirtualizer.virtualItems.map(item => `${item.index}`).join(':');
   useEffect(() => {
     measuresCache.current = new WeakMap();
-  }, [indicesKey, items]);
+  }, [indicesKey, items, estimateSize]);
 
   const virtualItems = rowVirtualizer.virtualItems.map(virtualRow => ({
     ...virtualRow,
