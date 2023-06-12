@@ -66,9 +66,11 @@ const PermutationContainer = ({ permutation }: { permutation: ContainerProps.Med
       media={{ ...permutation }}
     >
       <SpaceBetween direction="vertical" size="m">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
-        tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
-        tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
+        <span>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
+          tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
+          tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
+        </span>
         <Button>Button</Button>
       </SpaceBetween>
     </Container>
