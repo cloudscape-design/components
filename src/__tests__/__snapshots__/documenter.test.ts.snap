@@ -10360,6 +10360,7 @@ The return type of the function should be a promise that resolves to a list of v
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "S3ResourceSelectorProps.I18nStrings",
         "properties": Array [
@@ -12622,6 +12623,7 @@ character validation. You should use this property only when absolutely necessar
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "TagEditorProps.I18nStrings",
         "properties": Array [
