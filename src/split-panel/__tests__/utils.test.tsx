@@ -5,7 +5,7 @@ import { useKeyboardEvents } from '../../app-layout/utils/use-keyboard-events';
 
 const sizeControlProps: any = {
   position: 'bottom',
-  splitPanelRef: { current: { style: { height: '100', width: '100' } } },
+  panelRef: { current: { clientHeight: 100, clientWidth: 100 } },
   setBottomPanelHeight: jest.fn(),
   setSidePanelWidth: jest.fn(),
 };

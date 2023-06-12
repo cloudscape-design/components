@@ -18,7 +18,7 @@ import useResize from '../utils/use-resize';
 export interface DrawersProps {
   activeDrawerId?: string;
   items: ReadonlyArray<DrawersProps.Drawer>;
-  onChange?: NonCancelableEventHandler<string | null>;
+  onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
   ariaLabel?: string;
 }
 
@@ -42,7 +42,7 @@ namespace DrawersProps {
   }
 
   export interface ChangeDetail {
-    activeDrawerId: string | null | undefined;
+    activeDrawerId: string | null;
   }
 
   export interface ResizeDetail {
