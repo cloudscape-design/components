@@ -59,5 +59,9 @@ export function useVirtual<Item extends object>({
     },
   }));
 
-  return { virtualItems, totalSize: rowVirtualizer.totalSize + 3, scrollToIndex: rowVirtualizer.scrollToIndex };
+  return {
+    virtualItems,
+    totalSize: rowVirtualizer.totalSize + 3,
+    scrollToIndex: rowVirtualizer.scrollToIndex,
+  };
 }

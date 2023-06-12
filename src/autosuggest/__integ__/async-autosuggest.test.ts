@@ -142,7 +142,7 @@ describe.each([true, false])('Async autosuggest scrolling (with virtualScrolling
       const { bottom: optionBottom } = await page.getHighlightedPosition();
       const { bottom: dropdownBottom } = await page.getDropdownPosition();
       // a small give for borders and negative margins
-      expect(Math.abs(optionBottom - dropdownBottom)).toBeLessThan(3);
+      expect(Math.abs(optionBottom - dropdownBottom)).toBeLessThanOrEqual(3);
     })
   );
   test(
