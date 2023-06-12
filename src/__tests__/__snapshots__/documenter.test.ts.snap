@@ -10530,6 +10530,16 @@ The return type of the function should be a promise that resolves to a list of v
             "type": "string",
           },
           Object {
+            "name": "labelClearFilter",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "labelExpandBreadcrumbs",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "labelFiltering",
             "optional": true,
             "type": "(itemsType: string) => string",
