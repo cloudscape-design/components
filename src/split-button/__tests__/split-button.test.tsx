@@ -8,6 +8,7 @@ import ButtonDropdown from '../../../lib/components/button-dropdown';
 import SplitButton from '../../../lib/components/split-button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/split-button/styles.css.js';
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 import { warnOnce } from '../../../lib/components/internal/logging';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
@@ -23,7 +24,7 @@ describe('SplitButton', () => {
     render(
       <SplitButton>
         <Button>Button</Button>
-        <ButtonDropdown items={[]}>Button</ButtonDropdown>
+        <ButtonDropdown items={[]}>Button dropdown</ButtonDropdown>
       </SplitButton>
     );
 
@@ -47,7 +48,7 @@ describe('SplitButton', () => {
       <SplitButton>
         <Button>Button</Button>
         <Link>Link</Link>
-        <ButtonDropdown items={[]}>Button</ButtonDropdown>
+        <ButtonDropdown items={[]}>Button dropdown</ButtonDropdown>
       </SplitButton>
     );
 
@@ -58,7 +59,7 @@ describe('SplitButton', () => {
     expect(createWrapper().findSplitButton()!.findAllByClassName(styles.trigger)).toHaveLength(2);
   });
 
-  test('warns if children of improper variant are provided and excludes those from rendering', () => {
+  test('warns if children of improper variant are provided and sets variant to normal', () => {
     render(
       <SplitButton>
         <Button variant="link">Button</Button>
@@ -67,10 +68,10 @@ describe('SplitButton', () => {
     );
 
     expect(warnOnce).toHaveBeenCalledWith('SplitButton', 'Only "normal" and "primary" variants are allowed.');
-    expect(createWrapper().findSplitButton()!.findAllByClassName(styles.trigger)).toHaveLength(0);
+    expect(createWrapper().findSplitButton()!.findAllByClassName(buttonStyles['variant-normal'])).toHaveLength(2);
   });
 
-  test('warns if children variants are mixed and exclude extra variants from rendering', () => {
+  test('warns if children variants are mixed and uses the variant of the first child for those', () => {
     render(
       <SplitButton>
         <Button variant="normal">Button</Button>
@@ -81,6 +82,34 @@ describe('SplitButton', () => {
     );
 
     expect(warnOnce).toHaveBeenCalledWith('SplitButton', 'All children must be of the same variant.');
+    expect(createWrapper().findSplitButton()!.findAllByClassName(buttonStyles['variant-normal'])).toHaveLength(4);
+  });
+
+  test('renders correctly with label-less button dropdown used at the last position', () => {
+    render(
+      <SplitButton>
+        <Button>Button</Button>
+        <Button>Button</Button>
+        <ButtonDropdown items={[]} />
+      </SplitButton>
+    );
+
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test('warns if label-less dropdown is used not at the last position and excludes it from rendering', () => {
+    render(
+      <SplitButton>
+        <Button>Button</Button>
+        <ButtonDropdown items={[]} />
+        <Button>Button</Button>
+      </SplitButton>
+    );
+
+    expect(warnOnce).toHaveBeenCalledWith(
+      'SplitButton',
+      'ButtonDropdown without label is only allowed at the last position.'
+    );
     expect(createWrapper().findSplitButton()!.findAllByClassName(styles.trigger)).toHaveLength(2);
   });
 });

@@ -56,7 +56,7 @@ function validateChildren(children: React.ReactNode): ChildWrapper[] {
     const isLastChild = index === flattenedChildren.length - 1;
 
     if (!isValidElement(child)) {
-      warnOnce('SplitButton', 'Element children must be valid React elements.');
+      warnOnce('SplitButton', 'Component children must be valid React elements.');
       continue;
     }
 
@@ -76,17 +76,9 @@ function validateChildren(children: React.ReactNode): ChildWrapper[] {
     }
     elementClasses.push(styles[`item-${firstElementVariant}`]);
 
-    if (elementVariant !== 'normal' && elementVariant !== 'primary') {
-      warnOnce('SplitButton', 'Only "normal" and "primary" variants are allowed.');
-    }
-
-    if (getVariant(elementToAdd) !== firstElementVariant) {
-      warnOnce('SplitButton', 'All children must be of the same variant.');
-    }
-
     if (buttonDropdownElement && !buttonDropdownElement.props.children && !isLastChild) {
       warnOnce('SplitButton', 'ButtonDropdown without label is only allowed at the last position.');
-      break;
+      continue;
     }
 
     if (buttonDropdownElement && !buttonDropdownElement.props.children) {
@@ -133,11 +125,20 @@ function createButton(
     variant,
   } = element.props as ButtonProps;
 
+  if (variant && variant !== 'normal' && variant !== 'primary') {
+    warnOnce('SplitButton', 'Only "normal" and "primary" variants are allowed.');
+  }
+  if (variant && forcedVariant && variant !== forcedVariant) {
+    warnOnce('SplitButton', 'All children must be of the same variant.');
+  }
+
+  const allowedVariant = variant === 'normal' || variant === 'primary' ? variant : 'normal';
+
   return React.cloneElement(
     { ...element, type: element.type },
     {
       formAction: 'none',
-      variant: forcedVariant ?? variant,
+      variant: forcedVariant ?? allowedVariant,
       disabled,
       loading,
       loadingText,
@@ -181,10 +182,19 @@ function createButtonDropdown(
     variant,
   } = element.props as ButtonDropdownProps;
 
+  if (variant && variant !== 'normal' && variant !== 'primary') {
+    warnOnce('SplitButton', 'Only "normal" and "primary" variants are allowed.');
+  }
+  if (variant && forcedVariant && variant !== forcedVariant) {
+    warnOnce('SplitButton', 'All children must be of the same variant.');
+  }
+
+  const allowedVariant = variant === 'normal' || variant === 'primary' ? variant : 'normal';
+
   return React.cloneElement(
     { ...element, type: element.type },
     {
-      variant: forcedVariant ?? variant,
+      variant: forcedVariant ?? allowedVariant,
       items,
       disabled,
       loading,
