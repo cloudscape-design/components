@@ -19,7 +19,7 @@ export interface SpaceBetweenProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * Defines the desired alignment of the children. Based on the [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items) property of CSS Flexbox.
+   * Determines how the child elements will be aligned based on the [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items) property of the CSS Flexbox.
    */
   alignItems?: SpaceBetweenProps.AlignItems;
 }
