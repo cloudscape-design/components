@@ -28,14 +28,17 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
   drawers: DrawersProps;
   drawersRefs: DrawerFocusControlRefs;
+  drawerSize: number;
+  drawerRef: React.Ref<HTMLElement>;
+  resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
-  drawersMaxWidth: number;
   dynamicOverlapHeight: number;
   handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
@@ -430,6 +433,15 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setLastInteraction: setDrawerLastInteraction,
     } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], activeDrawerId !== undefined, true);
 
+    const drawerRef = useRef<HTMLDivElement>(null);
+    const { resizeHandle, drawerSize } = useResize(drawerRef, {
+      activeDrawerId,
+      drawers,
+      drawersRefs,
+      isToolsOpen,
+      drawersMaxWidth,
+    });
+
     const handleDrawersClick = useCallback(
       function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
         const newActiveDrawerId = id !== activeDrawerId ? id : null;
@@ -546,14 +558,30 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         const contentGapRight = 80; // Approximately 40px when rendered but doubled for safety
         const toolsFormOffsetWidth = 160; // Approximately 80px when rendered but doubled for safety
         const toolsOffsetWidth = isToolsOpen ? toolsWidth : 0;
+        const activeDrawerOffsetWidth = activeDrawerId ? drawerSize : 0;
 
         setSplitPanelMaxWidth(
-          layoutWidth - mainOffsetLeft - minContentWidth - contentGapRight - toolsOffsetWidth - toolsFormOffsetWidth
+          layoutWidth -
+            mainOffsetLeft -
+            minContentWidth -
+            contentGapRight -
+            toolsOffsetWidth -
+            toolsFormOffsetWidth -
+            activeDrawerOffsetWidth
         );
 
         setDrawersMaxWidth(layoutWidth - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth);
       },
-      [activeDrawerId, isNavigationOpen, isToolsOpen, layoutWidth, mainOffsetLeft, minContentWidth, toolsWidth]
+      [
+        activeDrawerId,
+        drawerSize,
+        isNavigationOpen,
+        isToolsOpen,
+        layoutWidth,
+        mainOffsetLeft,
+        minContentWidth,
+        toolsWidth,
+      ]
     );
 
     return (
@@ -564,8 +592,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           contentType,
           drawers,
           drawersRefs,
+          drawerSize,
+          drawerRef,
+          resizeHandle,
           drawersTriggerCount,
-          drawersMaxWidth,
           dynamicOverlapHeight,
           headerHeight,
           footerHeight,

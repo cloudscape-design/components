@@ -13,8 +13,6 @@ import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
-import useResize from '../utils/use-resize';
-
 export interface DrawersProps {
   activeDrawerId?: string;
   items: ReadonlyArray<DrawersProps.Drawer>;
@@ -116,18 +114,10 @@ function ActiveDrawer() {
     tools,
     toolsRefs,
     loseDrawersFocus,
-    drawersMaxWidth,
+    resizeHandle,
+    drawerSize,
+    drawerRef,
   } = useAppLayoutInternals();
-
-  const ref = useRef<HTMLDivElement>(null);
-
-  const { resizeHandle, drawerSize } = useResize(ref, {
-    activeDrawerId,
-    drawers,
-    drawersRefs,
-    isToolsOpen,
-    drawersMaxWidth,
-  });
 
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
 
@@ -152,7 +142,7 @@ function ActiveDrawer() {
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${drawerSize}px` }),
       }}
-      ref={ref}
+      ref={drawerRef}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
           loseDrawersFocus();

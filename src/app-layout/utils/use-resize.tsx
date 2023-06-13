@@ -122,12 +122,7 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
       aria-valuenow={relativeSize}
       className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`], testutilStyles['drawers-slider'])}
       onKeyDown={onKeyDown}
-      onPointerDown={() => {
-        onSliderPointerDown();
-        if (drawerRefObject && drawerRefObject.current) {
-          drawerRefObject.current.style.transition = 'none';
-        }
-      }}
+      onPointerDown={onSliderPointerDown}
     >
       <ResizeHandler className={clsx(splitPanelStyles['slider-icon'], splitPanelStyles[`slider-icon-side`])} />
     </div>

@@ -24,6 +24,8 @@ export const usePointerEvents = ({
         return;
       }
 
+      panelRef.current.style.transitionProperty = 'none';
+
       if (position === 'side') {
         const mouseClientX = event.clientX;
 
@@ -46,11 +48,15 @@ export const usePointerEvents = ({
   );
 
   const onDocumentPointerUp = useCallback(() => {
+    if (!panelRef || !panelRef.current) {
+      return;
+    }
     document.body.classList.remove(styles['resize-active']);
     document.body.classList.remove(styles[`resize-${position}`]);
     document.removeEventListener('pointerup', onDocumentPointerUp);
     document.removeEventListener('pointermove', onDocumentPointerMove);
-  }, [onDocumentPointerMove, position]);
+    panelRef.current.style.transitionProperty = 'border-color, opacity, width';
+  }, [panelRef, onDocumentPointerMove, position]);
 
   const onSliderPointerDown = useCallback(() => {
     document.body.classList.add(styles['resize-active']);
