@@ -229,6 +229,13 @@ the default white background of the container component.
     padding-left: awsui.$space-table-horizontal;
     padding-right: awsui.$space-table-horizontal;
   }
+  &-with-pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap-reverse;
+  }
 }
 
 .footer {

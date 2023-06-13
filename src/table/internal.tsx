@@ -7,6 +7,7 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
+import TableFooter from './table-footer';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -271,11 +272,9 @@ const InternalTable = React.forwardRef(
           __disableFooterDivider={true}
           __disableStickyMobile={false}
           footer={
-            footer && (
-              <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                <div className={styles.footer}>{footer}</div>
-              </div>
-            )
+            <TableFooter pagination={pagination} computedVariant={computedVariant}>
+              {footer}
+            </TableFooter>
           }
           __stickyHeader={stickyHeader}
           __mobileStickyOffset={toolsHeaderHeight}
