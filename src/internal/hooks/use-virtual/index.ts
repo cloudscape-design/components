@@ -26,9 +26,6 @@ interface RowVirtualizer {
  * The infinite update cycle causes React "Maximum update depth exceeded" error and can be additionally confirmed
  * by logging the totalSize which should then bounce between two values.
  *
- * Empirically it has been found out that increasing the container size slightly decreases the risk of items content
- * wrapping in one size and not wrapping in the other that prevents the infinite loop.
- *
  * The number of item refs assignments is limited to MAX_ITEM_MOUNTS unless items or indices change.
  * That is based on the assumption the item height stays constant after its first render.
  */
@@ -61,7 +58,7 @@ export function useVirtual<Item extends object>({
 
   return {
     virtualItems,
-    totalSize: rowVirtualizer.totalSize + 3,
+    totalSize: rowVirtualizer.totalSize,
     scrollToIndex: rowVirtualizer.scrollToIndex,
   };
 }

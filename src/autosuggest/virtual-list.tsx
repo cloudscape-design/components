@@ -56,7 +56,7 @@ const VirtualList = ({
         aria-hidden="true"
         key="total-size"
         className={styles['layout-strut']}
-        style={{ height: rowVirtualizer.totalSize }}
+        style={{ height: rowVirtualizer.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
       {rowVirtualizer.virtualItems.map(virtualRow => {
         const { index, start, measureRef } = virtualRow;
