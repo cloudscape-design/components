@@ -72,7 +72,7 @@
   }
   /* stylelint-disable no-descending-specificity */
   a {
-    @include styles.link-default;
+    @include styles.link-inline;
 
     &:focus {
       @include styles.link-focus;
