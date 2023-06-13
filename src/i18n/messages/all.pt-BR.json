@@ -1,7 +1,4 @@
 {
-  "alert": {
-    "dismissAriaLabel": "Descartar alerta"
-  },
   "[charts]": {
     "loadingText": "Carregando gráfico",
     "errorText": "Não foi possível obter dados. Tente novamente mais tarde.",
@@ -9,9 +6,11 @@
     "i18nStrings.filterLabel": "Filtrar dados exibidos",
     "i18nStrings.filterPlaceholder": "Filtrar dados",
     "i18nStrings.legendAriaLabel": "Legenda",
-    "i18nStrings.detailPopoverDismissAriaLabel": "Descartar",
     "i18nStrings.xAxisAriaRoleDescription": "Eixo x",
     "i18nStrings.yAxisAriaRoleDescription": "Eixo Y"
+  },
+  "alert": {
+    "dismissAriaLabel": "Descartar alerta"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Próxima",
@@ -28,20 +27,19 @@
     "ariaLabels.navigationToggle": "Abrir navegação lateral",
     "ariaLabels.notifications": "Notificações",
     "ariaLabels.tools": "Painel de ajuda",
-    "ariaLabels.toolsClose": "Abrir o painel de ajuda",
-    "ariaLabels.toolsToggle": "Fechar o painel de ajuda"
+    "ariaLabels.toolsClose": "Fechar o painel de ajuda",
+    "ariaLabels.toolsToggle": "Abrir o painel de ajuda"
   },
   "area-chart": {
     "i18nStrings.detailTotalLabel": "Total"
   },
   "attribute-editor": {
-    "removeButtonText": "Remover",
-    "i18nStrings.errorIconAriaLabel": "Erro"
+    "removeButtonText": "Remover"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Erro",
     "selectedAriaLabel": "Selecionado",
-    "enteredTextLabel": "Usar {value}",
+    "enteredTextLabel": "Usar: “{value}”",
     "recoveryText": "Tentar novamente"
   },
   "breadcrumb-group": {
@@ -80,7 +78,7 @@
     "cancelLabel": "Cancelar",
     "pageSizePreference.title": "Tamanho da página",
     "wrapLinesPreference.label": "Quebrar linhas",
-    "wrapLinesPreference.description": "Selecione para visualizar todo o texto e quebrar automaticamente as linhas.",
+    "wrapLinesPreference.description": "Selecione para visualizar todo o texto e quebrar as linhas.",
     "stripedRowsPreference.label": "Linhas distribuídas",
     "stripedRowsPreference.description": "Selecione para adicionar linhas esmaecidas alternadas.",
     "contentDensityPreference.label": "Modo compacto",
@@ -90,7 +88,9 @@
     "contentDisplayPreference.dragHandleAriaLabel": "Ícone de arrastar",
     "contentDisplayPreference.dragHandleAriaDescription": "Use Space ou Enter para ativar a função de arrastar para um item e, em seguida, use as teclas de setas para movimentar o posicionamento do item. Para completar o movimento de posicionamento, use Space ou Enter, ou para descartar o movimento, use Escape.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Item selecionado na posição {position} de {total}",
-    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenação cancelada"
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenação cancelada",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Movendo o item de volta para a posição {currentPosition} de {total}} false {Movendo o item para a posição {currentPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item movido de volta à sua posição original {initialPosition} de {total}} false {Item movido da posição {initialPosition} para a posição {finalPosition} de {total}} other {}}"
   },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Modo relativo",
@@ -121,14 +121,14 @@
     "i18nStrings.infoIconAriaLabel": "Informações",
     "i18nStrings.notificationBarAriaLabel": "Todas as notificações",
     "i18nStrings.notificationBarText": "Notificações",
-    "i18nStrings.successIconAriaLabel": "Com êxito",
+    "i18nStrings.successIconAriaLabel": "Êxito",
     "i18nStrings.warningIconAriaLabel": "Aviso"
-  },
-  "form": {
-    "errorIconAriaLabel": "Erro"
   },
   "form-field": {
     "i18nStrings.errorIconAriaLabel": "Erro"
+  },
+  "form": {
+    "errorIconAriaLabel": "Erro"
   },
   "help-panel": {
     "loadingText": "Carregando conteúdo"
@@ -142,18 +142,19 @@
   "modal": {
     "closeAriaLabel": "Fechar modal"
   },
+  "multiselect": {
+    "deselectAriaLabel": "Remover {option__label}"
+  },
   "pagination": {
     "ariaLabels.nextPageLabel": "Próxima página",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas as páginas",
     "ariaLabels.previousPageLabel": "Página anterior"
   },
   "pie-chart": {
-    "loadingText": "Carregando gráfico",
-    "errorText": "Não foi possível obter dados. Tente novamente mais tarde.",
-    "recoveryText": "Tentar novamente"
-  },
-  "multiselect": {
-    "deselectAriaLabel": "Remover {option__label}"
+    "i18nStrings.detailsValue": "Valor",
+    "i18nStrings.detailsPercentage": "Porcentagem",
+    "i18nStrings.chartAriaRoleDescription": "Gráfico de pizza",
+    "i18nStrings.segmentAriaRoleDescription": "Segmento"
   },
   "popover": {
     "dismissAriaLabel": "Fechar pop-over"
@@ -184,21 +185,120 @@
     "i18nStrings.valueText": "Valor",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remover filtro, {token__propertyKey} é igual a {token__value}} not_equals {Remover filtro, {token__propertyKey} diferente de {token__value}} greater_than {Remover filtro, {token__propertyKey} é maior que {token__value}} greater_than_equal {Remover filtro, {token__propertyKey} é maior que ou igual a {token__value}} less_than {Remover filtro, {token__propertyKey} é menor que {token__value}} less_than_equal {Remover filtro, {token__propertyKey} é menor que ou igual a {token__value}} contains {Remove filtro, {token__propertyKey} contém {token__value}} not_contains {Remover filtro, {token__propertyKey} não contém {token__value}} other {}}"
   },
-  "s3-resource-selector": {},
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "Escolher uma versão",
+    "i18nStrings.inContextBrowseButton": "Navegar pelo S3",
+    "i18nStrings.inContextViewButton": "Visualizar",
+    "i18nStrings.inContextViewButtonAriaLabel": "Visualizar (abre em uma nova guia)",
+    "i18nStrings.inContextLoadingText": "Carregando recurso",
+    "i18nStrings.inContextUriLabel": "URI do S3",
+    "i18nStrings.inContextVersionSelectLabel": "Versão do objeto",
+    "i18nStrings.modalTitle": "Escolher um arquivo no S3",
+    "i18nStrings.modalCancelButton": "Cancelar",
+    "i18nStrings.modalSubmitButton": "Escolher",
+    "i18nStrings.modalBreadcrumbRootItem": "Buckets do S3",
+    "i18nStrings.selectionBuckets": "Buckets",
+    "i18nStrings.selectionObjects": "Objetos",
+    "i18nStrings.selectionVersions": "Versões",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "Encontrar bucket",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "Encontrar objeto por prefixo",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "Encontrar versão",
+    "i18nStrings.selectionBucketsLoading": "Carregando buckets",
+    "i18nStrings.selectionBucketsNoItems": "Não há buckets",
+    "i18nStrings.selectionObjectsLoading": "Carregando objetos",
+    "i18nStrings.selectionObjectsNoItems": "Não há objetos",
+    "i18nStrings.selectionVersionsLoading": "Carregando versões",
+    "i18nStrings.selectionVersionsNoItems": "Não há versões",
+    "i18nStrings.filteringNoMatches": "Não há correspondências",
+    "i18nStrings.filteringCantFindMatch": "Não conseguimos encontrar uma correspondência.",
+    "i18nStrings.clearFilterButtonText": "Limpar filtro",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "Nome",
+    "i18nStrings.columnBucketCreationDate": "Data de criação",
+    "i18nStrings.columnBucketRegion": "Região",
+    "i18nStrings.columnObjectKey": "Chave",
+    "i18nStrings.columnObjectLastModified": "Última modificação",
+    "i18nStrings.columnObjectSize": "Tamanho",
+    "i18nStrings.columnVersionID": "ID da versão",
+    "i18nStrings.columnVersionLastModified": "Última modificação",
+    "i18nStrings.columnVersionSize": "Tamanho",
+    "i18nStrings.validationPathMustBegin": "O caminho precisa começar com s3://",
+    "i18nStrings.validationBucketLowerCase": "O nome do bucket deve começar com um caractere minúsculo ou com um número.",
+    "i18nStrings.validationBucketMustNotContain": "O nome do bucket não deve conter caracteres maiúsculos.",
+    "i18nStrings.validationBucketLength": "O nome do bucket deve ter de 3 a 63 caracteres.",
+    "i18nStrings.validationBucketMustComplyDns": "O nome do bucket deve estar em conformidade com as convenções de nomenclatura de DNS.",
+    "i18nStrings.labelSortedDescending": "{columnName}, classificada em ordem decrescente",
+    "i18nStrings.labelSortedAscending": "{columnName}, classificada em ordem crescente",
+    "i18nStrings.labelNotSorted": "{columnName}, não classificada",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "Buckets",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "Objetos",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "Versões",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "Encontrar {itemsType}",
+    "i18nStrings.labelRefresh": "Atualizar os dados",
+    "i18nStrings.labelBreadcrumbs": "Navegação no S3",
+    "i18nStrings.filteringCounterText": "{count, plural, one {Uma correspondência} other {{count} correspondências}}"
+  },
   "select": {
     "errorIconAriaLabel": "Erro",
-    "selectedAriaLabel": "Selecionado"
+    "selectedAriaLabel": "Selecionado",
+    "recoveryText": "Tentar novamente"
   },
-  "split-panel": {},
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "Fechar painel",
+    "i18nStrings.openButtonAriaLabel": "Abrir painel",
+    "i18nStrings.preferencesTitle": "Preferências de divisão de painel",
+    "i18nStrings.preferencesPositionLabel": "Posição de divisão de painel",
+    "i18nStrings.preferencesPositionDescription": "Escolha a posição padrão de divisão de painel para o serviço.",
+    "i18nStrings.preferencesPositionSide": "Lateral",
+    "i18nStrings.preferencesPositionBottom": "Inferior",
+    "i18nStrings.preferencesConfirm": "Confirmar",
+    "i18nStrings.preferencesCancel": "Cancelar",
+    "i18nStrings.resizeHandleAriaLabel": "Redimensionar painel dividido"
+  },
   "table": {
     "ariaLabels.submittingEditText": "Envio de edição",
-    "ariaLabels.successfulEditLabel": "Edição foi bem sucedida",
+    "ariaLabels.successfulEditLabel": "A edição foi bem sucedida",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erro",
-    "columnDefinitions.editConfig.editIconAriaLabel": "Editable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "editável"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Rolar para a esquerda",
     "i18nStrings.scrollRightAriaLabel": "Rolar para a direita"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "Inserir chave",
+    "i18nStrings.valuePlaceholder": "Inserir valor",
+    "i18nStrings.addButton": "Adicionar nova tag",
+    "i18nStrings.removeButton": "Remover",
+    "i18nStrings.removeButtonAriaLabel": "Remover {tag__key}",
+    "i18nStrings.undoButton": "Desfazer",
+    "i18nStrings.undoPrompt": "Essa tag será removida depois que as alterações forem salvas",
+    "i18nStrings.loading": "Carregando tags associadas a este recurso",
+    "i18nStrings.keyHeader": "Chave",
+    "i18nStrings.valueHeader": "Valor",
+    "i18nStrings.optional": "opcional",
+    "i18nStrings.keySuggestion": "Chave de tag personalizada",
+    "i18nStrings.valueSuggestion": "Valor de tag personalizado",
+    "i18nStrings.emptyTags": "Nenhuma tag associada ao recurso.",
+    "i18nStrings.tooManyKeysSuggestion": "Você tem mais chaves do que é possível exibir",
+    "i18nStrings.tooManyValuesSuggestion": "Você tem mais valores do que é possível exibir",
+    "i18nStrings.keysSuggestionLoading": "Carregando chaves de tag",
+    "i18nStrings.keysSuggestionError": "Não foi possível recuperar chaves de tag",
+    "i18nStrings.valuesSuggestionLoading": "Carregando valores de tag",
+    "i18nStrings.valuesSuggestionError": "Não foi possível recuperar valores de tag",
+    "i18nStrings.emptyKeyError": "Você deve especificar uma chave de tag",
+    "i18nStrings.maxKeyCharLengthError": "O número máximo de caracteres que você pode usar em uma chave de tag é 128.",
+    "i18nStrings.maxValueCharLengthError": "O número máximo de caracteres que você pode usar em um valor de tag é 256.",
+    "i18nStrings.duplicateKeyError": "Você deve especificar uma chave de tag exclusiva.",
+    "i18nStrings.invalidKeyError": "Chave inválida. As chaves só podem conter letras Unicode, dígitos, espaço em branco e os seguintes caracteres: _.:/=+@-",
+    "i18nStrings.invalidValueError": "Valor inválido. Os valores só podem conter letras Unicode, dígitos, espaço em branco e os seguintes caracteres: _.:/=+@-",
+    "i18nStrings.awsPrefixError": "Não foi possível começar com a AWS:",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {Você atingiu o limite de 1 tag.} other {Você atingiu o limite de {tagLimit} tags.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {Você excedeu o limite de 1 tag.} other {Você excedeu o limite de {tagLimit} tags.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {Você pode adicionar até {tagLimit} tags.}}} false {{availableTags, plural, one {Você pode adicionar mais 1 tag.} other {Você pode adicionar mais {availableTags} tags.}}} other {}}"
   },
   "token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
@@ -208,15 +308,15 @@
     "i18nStrings.searchIconAriaLabel": "Pesquisar",
     "i18nStrings.searchDismissIconAriaLabel": "Fechar pesquisa",
     "i18nStrings.overflowMenuTriggerText": "Mais",
-    "i18nStrings.overflowMenuDismissIconAriaLabel": "Fecha menu",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "Fechar menu",
     "i18nStrings.overflowMenuBackIconAriaLabel": "Voltar",
     "i18nStrings.overflowMenuTitleText": "Todos"
   },
   "tutorial-panel": {
     "i18nStrings.loadingText": "Carregando",
     "i18nStrings.tutorialListTitle": "Escolha um tutorial",
-    "i18nStrings.tutorialListDownloadLinkText": "Baixe a versão em PDF",
-    "i18nStrings.labelTutorialListDownloadLink": "Baixe a versão em PDF deste tutorial",
+    "i18nStrings.tutorialListDownloadLinkText": "Baixar a versão em PDF",
+    "i18nStrings.labelTutorialListDownloadLink": "Baixar a versão em PDF deste tutorial",
     "i18nStrings.tutorialCompletedText": "Tutorial concluído",
     "i18nStrings.learnMoreLinkText": "Saiba mais",
     "i18nStrings.startTutorialButtonText": "Iniciar o tutorial",

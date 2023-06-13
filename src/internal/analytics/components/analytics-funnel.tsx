@@ -7,6 +7,7 @@ import {
   FunnelSubStepContext,
   FunnelContext,
   FunnelContextValue,
+  FunnelStepContextValue,
 } from '../context/analytics-context';
 import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
@@ -17,7 +18,13 @@ import { PACKAGE_VERSION } from '../../environment';
 import { FunnelMetrics } from '../';
 import { FunnelProps, FunnelStepProps } from '../interfaces';
 
-import { getFunnelNameSelector, getSubStepAllSelector, getSubStepNameSelector, getSubStepSelector } from '../selectors';
+import {
+  DATA_ATTR_FUNNEL_STEP,
+  getFunnelNameSelector,
+  getSubStepAllSelector,
+  getSubStepNameSelector,
+  getSubStepSelector,
+} from '../selectors';
 
 export const FUNNEL_VERSION = '1.0';
 
@@ -27,7 +34,7 @@ type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
 >;
 
 export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
-  const [funnelInteractionId, setFunnelInteractionId] = useState<string>();
+  const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const funnelResultRef = useRef<boolean>(false);
   const isVisualRefresh = useVisualRefresh();
 
@@ -48,7 +55,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
       funnelType: props.funnelType,
       totalFunnelSteps: props.totalFunnelSteps,
       componentVersion: PACKAGE_VERSION,
-      componentTheme: isVisualRefresh ? 'vr' : 'classic',
+      theme: isVisualRefresh ? 'vr' : 'classic',
       funnelVersion: FUNNEL_VERSION,
     });
 
@@ -56,7 +63,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
 
     return () => {
       if (funnelResultRef.current === true) {
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        FunnelMetrics.funnelSuccessful({ funnelInteractionId });
       } else {
         FunnelMetrics.funnelCancelled({ funnelInteractionId });
       }
@@ -66,6 +73,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
   }, []);
 
   const funnelSubmit = () => {
+    FunnelMetrics.funnelComplete({ funnelInteractionId });
     funnelResultRef.current = true;
   };
 
@@ -86,13 +94,14 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
 };
 
-type AnalyticsFunnelStepProps = { children?: React.ReactNode } & Pick<
-  FunnelStepProps,
-  'stepNumber' | 'stepNameSelector'
->;
+type AnalyticsFunnelStepProps = {
+  children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
+} & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
 
 export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
   const { funnelInteractionId } = useFunnel();
+
+  const funnelStepProps = { [DATA_ATTR_FUNNEL_STEP]: stepNumber };
 
   // This useEffect hook is used to track the start and completion of interaction with the step.
   // On mount, if there is a valid funnel interaction id, it calls the 'funnelStepStart' method from FunnelMetrics
@@ -120,13 +129,13 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
     };
   }, [funnelInteractionId, stepNumber, stepNameSelector]);
 
+  const contextValue: FunnelStepContextValue = { funnelInteractionId, stepNumber, stepNameSelector, funnelStepProps };
   return (
-    <FunnelStepContext.Provider value={{ funnelInteractionId, stepNumber, stepNameSelector }}>
-      {children}
+    <FunnelStepContext.Provider value={contextValue}>
+      {typeof children === 'function' ? children(contextValue) : children}
     </FunnelStepContext.Provider>
   );
 };
-
 interface AnalyticsFunnelSubStepProps {
   children?: React.ReactNode;
 }

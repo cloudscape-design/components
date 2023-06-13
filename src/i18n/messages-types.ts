@@ -172,11 +172,11 @@ export interface CloudscapeI18nFormatArgTypes {
   "form-field": {
     "i18nStrings.errorIconAriaLabel": never;
   }
-  "help-panel": {
-    "loadingText": never;
-  }
   "input": {
     "clearAriaLabel": never;
+  }
+  "help-panel": {
+    "loadingText": never;
   }
   "link": {
     "externalIconAriaLabel": never;
@@ -202,41 +202,7 @@ export interface CloudscapeI18nFormatArgTypes {
     "i18nStrings.chartAriaRoleDescription": never;
     "i18nStrings.segmentAriaRoleDescription": never;
   }
-  "popover": {
-    "dismissAriaLabel": never;
-  }
-  "property-filter": {
-    "i18nStrings.allPropertiesLabel": never;
-    "i18nStrings.applyActionText": never;
-    "i18nStrings.cancelActionText": never;
-    "i18nStrings.clearFiltersText": never;
-    "i18nStrings.editTokenHeader": never;
-    "i18nStrings.groupPropertiesText": never;
-    "i18nStrings.groupValuesText": never;
-    "i18nStrings.operationAndText": never;
-    "i18nStrings.operationOrText": never;
-    "i18nStrings.operatorContainsText": never;
-    "i18nStrings.operatorDoesNotContainText": never;
-    "i18nStrings.operatorDoesNotEqualText": never;
-    "i18nStrings.operatorEqualsText": never;
-    "i18nStrings.operatorGreaterOrEqualText": never;
-    "i18nStrings.operatorGreaterText": never;
-    "i18nStrings.operatorLessOrEqualText": never;
-    "i18nStrings.operatorLessText": never;
-    "i18nStrings.operatorText": never;
-    "i18nStrings.operatorsText": never;
-    "i18nStrings.propertyText": never;
-    "i18nStrings.tokenLimitShowFewer": never;
-    "i18nStrings.tokenLimitShowMore": never;
-    "i18nStrings.valueText": never;
-    "i18nStrings.removeTokenButtonAriaLabel": {
-      "token__operator": string;
-      "token__propertyKey": string | number;
-      "token__value": string | number;
-    }
-  }
   "s3-resource-selector": {
-    "i18nStrings.inContextInputPlaceholder": never;
     "i18nStrings.inContextSelectPlaceholder": never;
     "i18nStrings.inContextBrowseButton": never;
     "i18nStrings.inContextViewButton": never;
@@ -308,10 +274,38 @@ export interface CloudscapeI18nFormatArgTypes {
       "count": number;
     }
   }
-  "select": {
-    "errorIconAriaLabel": never;
-    "selectedAriaLabel": never;
-    "recoveryText": never;
+  "popover": {
+    "dismissAriaLabel": never;
+  }
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": never;
+    "i18nStrings.applyActionText": never;
+    "i18nStrings.cancelActionText": never;
+    "i18nStrings.clearFiltersText": never;
+    "i18nStrings.editTokenHeader": never;
+    "i18nStrings.groupPropertiesText": never;
+    "i18nStrings.groupValuesText": never;
+    "i18nStrings.operationAndText": never;
+    "i18nStrings.operationOrText": never;
+    "i18nStrings.operatorContainsText": never;
+    "i18nStrings.operatorDoesNotContainText": never;
+    "i18nStrings.operatorDoesNotEqualText": never;
+    "i18nStrings.operatorEqualsText": never;
+    "i18nStrings.operatorGreaterOrEqualText": never;
+    "i18nStrings.operatorGreaterText": never;
+    "i18nStrings.operatorLessOrEqualText": never;
+    "i18nStrings.operatorLessText": never;
+    "i18nStrings.operatorText": never;
+    "i18nStrings.operatorsText": never;
+    "i18nStrings.propertyText": never;
+    "i18nStrings.tokenLimitShowFewer": never;
+    "i18nStrings.tokenLimitShowMore": never;
+    "i18nStrings.valueText": never;
+    "i18nStrings.removeTokenButtonAriaLabel": {
+      "token__operator": string;
+      "token__propertyKey": string | number;
+      "token__value": string | number;
+    }
   }
   "split-panel": {
     "i18nStrings.closeButtonAriaLabel": never;
@@ -324,6 +318,11 @@ export interface CloudscapeI18nFormatArgTypes {
     "i18nStrings.preferencesConfirm": never;
     "i18nStrings.preferencesCancel": never;
     "i18nStrings.resizeHandleAriaLabel": never;
+  }
+  "select": {
+    "errorIconAriaLabel": never;
+    "selectedAriaLabel": never;
+    "recoveryText": never;
   }
   "table": {
     "ariaLabels.submittingEditText": never;

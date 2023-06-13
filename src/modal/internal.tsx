@@ -135,7 +135,6 @@ function InnerModal({
               isRefresh && styles.refresh
             )}
             onKeyDown={escKeyHandler}
-            tabIndex={-1}
           >
             <div className={styles.container}>
               <div className={styles.header}>

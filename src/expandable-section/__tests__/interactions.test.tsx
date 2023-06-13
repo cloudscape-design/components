@@ -23,15 +23,15 @@ describe('Expandable Section - Interactions', () => {
       wrapper = renderExpandableSection({ onChange: onChangeSpy });
     });
     test('toggles from false to true when header is clicked, change event fires', () => {
-      wrapper.findHeader().click();
+      wrapper.findExpandButton().click();
       expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { expanded: true } }));
     });
     test('toggles from false to true when header receives "Enter" keyboard input, change event fires', () => {
-      wrapper.findHeader().keyup(KeyCode.enter);
+      wrapper.findExpandButton().keyup(KeyCode.enter);
       expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { expanded: true } }));
     });
     test('toggles from false to true when header receives "Space" keyboard input, change event fires', () => {
-      wrapper.findHeader().keyup(KeyCode.space);
+      wrapper.findExpandButton().keyup(KeyCode.space);
       expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { expanded: true } }));
     });
 
@@ -44,15 +44,15 @@ describe('Expandable Section - Interactions', () => {
         wrapper = renderExpandableSection({ expanded: true, onChange: onChangeSpy });
       });
       test('toggles from true to false when header is clicked, change event fires', () => {
-        wrapper.findHeader().click();
+        wrapper.findExpandButton().click();
         expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { expanded: false } }));
       });
       test('toggles from true to false when header receives "Enter" keyboard input, change event fires', () => {
-        wrapper.findHeader().keyup(KeyCode.enter);
+        wrapper.findExpandButton().keyup(KeyCode.enter);
         expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { expanded: false } }));
       });
       test('toggles from true to false when header receives "Space" keyboard input, change event fires', () => {
-        wrapper.findHeader().keyup(KeyCode.space);
+        wrapper.findExpandButton().keyup(KeyCode.space);
         expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { expanded: false } }));
       });
     });

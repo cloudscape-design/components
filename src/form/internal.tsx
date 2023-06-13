@@ -12,8 +12,8 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import LiveRegion from '../internal/components/live-region';
 import { useInternalI18n } from '../internal/i18n/context';
 
+import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
 
 type InternalFormProps = FormProps & InternalBaseComponentProps;
 
@@ -31,8 +31,8 @@ export default function InternalForm({
   const baseProps = getBaseProps(props);
   const i18n = useInternalI18n('form');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
-  const { funnelInteractionId, funnelProps } = useFunnel();
-  const { funnelStepProps } = useFunnelStep();
+
+  const { funnelInteractionId } = useFunnel();
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
@@ -41,13 +41,7 @@ export default function InternalForm({
   }, [funnelInteractionId, errorText]);
 
   return (
-    <div
-      {...baseProps}
-      {...funnelProps}
-      {...funnelStepProps}
-      ref={__internalRootRef}
-      className={clsx(styles.root, baseProps.className)}
-    >
+    <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
       <FormLayout
         header={
           header && <div className={clsx(styles.header, variant === 'full-page' && styles['full-page'])}>{header}</div>
