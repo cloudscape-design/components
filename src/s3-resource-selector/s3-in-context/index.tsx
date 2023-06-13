@@ -98,7 +98,7 @@ export const S3InContext = React.forwardRef(
               value={uri}
               ariaDescribedby={inputAriaDescribedby}
               clearAriaLabel={i18nStrings?.inContextInputClearAriaLabel}
-              placeholder={i18n('i18nStrings.inContextInputPlaceholder', i18nStrings?.inContextInputPlaceholder)}
+              placeholder={i18nStrings?.inContextInputPlaceholder}
               onChange={handleUriChange}
               invalid={invalid}
               onFocus={() => (isInputBlurredRef.current = false)}
