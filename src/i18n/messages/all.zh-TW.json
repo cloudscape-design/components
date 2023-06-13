@@ -186,7 +186,6 @@
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {移除篩選條件，{token__propertyKey} 等於 {token__value}} not_equals {移除篩選條件，{token__propertyKey} 不等於 {token__value}} greater_than {移除篩選條件，{token__propertyKey} 大於 {token__value}} greater_than_equal {移除篩選條件，{token__propertyKey} 大於或等於 {token__value}} less_than {移除篩選條件，{token__propertyKey} 小於 {token__value}} less_than_equal {移除篩選條件，{token__propertyKey} 小於或等於 {token__value}} contains {移除篩選條件，{token__propertyKey} 包含 {token__value}} not_contains {移除篩選條件，{token__propertyKey} 不包含 {token__value}} other {}}"
   },
   "s3-resource-selector": {
-    "i18nStrings.inContextInputPlaceholder": "s3://bucket/prefix/object",
     "i18nStrings.inContextSelectPlaceholder": "選擇一個版本",
     "i18nStrings.inContextBrowseButton": "瀏覽 S3",
     "i18nStrings.inContextViewButton": "檢視",

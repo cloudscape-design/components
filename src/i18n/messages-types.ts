@@ -203,7 +203,6 @@ export interface CloudscapeI18nFormatArgTypes {
     "i18nStrings.segmentAriaRoleDescription": never;
   }
   "s3-resource-selector": {
-    "i18nStrings.inContextInputPlaceholder": never;
     "i18nStrings.inContextSelectPlaceholder": never;
     "i18nStrings.inContextBrowseButton": never;
     "i18nStrings.inContextViewButton": never;

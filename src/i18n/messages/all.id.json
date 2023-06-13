@@ -186,7 +186,6 @@
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} other {}}"
   },
   "s3-resource-selector": {
-    "i18nStrings.inContextInputPlaceholder": "s3://bucket/prefix/object",
     "i18nStrings.inContextSelectPlaceholder": "Pilih versi",
     "i18nStrings.inContextBrowseButton": "Jelajahi S3",
     "i18nStrings.inContextViewButton": "Lihat",

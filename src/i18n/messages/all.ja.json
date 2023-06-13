@@ -186,7 +186,6 @@
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyKey} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyKey} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyKey} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以上} less_than {フィルターを削除、{token__propertyKey} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以下} contains {フィルターを削除、{token__propertyKey} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyKey} は {token__value} を含まない} other {}}"
   },
   "s3-resource-selector": {
-    "i18nStrings.inContextInputPlaceholder": "s3://bucket/prefix/object",
     "i18nStrings.inContextSelectPlaceholder": "バージョンを選択してください",
     "i18nStrings.inContextBrowseButton": "S3 を参照",
     "i18nStrings.inContextViewButton": "表示",

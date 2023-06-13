@@ -186,7 +186,6 @@
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Rimuovi filtro, {token__propertyKey} uguale a {token__value}} not_equals {Rimuovi filtro, {token__propertyKey} non è uguale a {token__value}} greater_than {Rimuovi filtro, {token__propertyKey} è maggiore di {token__value}} greater_than_equal {Rimuovi filtro, {token__propertyKey} è maggiore o uguale a {token__value}} less_than {Rimuovi filtro, {token__propertyKey} è inferiore a {token__value}} less_than_equal {Rimuovi filtro, {token__propertyKey} è minore o uguale a {token__value}} contains {Rimuovi filtro, {token__propertyKey} contiene {token__value}} not_contains {Rimuovi filtro, {token__propertyKey} non contiene {token__value}} other {}}"
   },
   "s3-resource-selector": {
-    "i18nStrings.inContextInputPlaceholder": "s3://bucket/prefix/object",
     "i18nStrings.inContextSelectPlaceholder": "Scegli una versione",
     "i18nStrings.inContextBrowseButton": "Sfoglia S3",
     "i18nStrings.inContextViewButton": "Visualizza",
