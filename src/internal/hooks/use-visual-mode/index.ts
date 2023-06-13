@@ -8,6 +8,9 @@ import { useMutationObserver } from '../use-mutation-observer';
 import { isDevelopment } from '../../is-development';
 import { warnOnce } from '../../logging';
 
+// Note that this hook doesn't take into consideration @media print (unlike the dark mode CSS),
+// due to challenges with cross-browser implementations of media/print state change listeners.
+// This means that components using this hook will render in dark mode even when printing.
 export function useCurrentMode(elementRef: React.RefObject<HTMLElement>) {
   const [value, setValue] = useState<'light' | 'dark'>('light');
   useMutationObserver(elementRef, node => {
