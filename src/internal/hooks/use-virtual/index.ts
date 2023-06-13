@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useVirtual as useVirtualDefault, VirtualItem } from 'react-virtual';
 
 const MAX_ITEM_MOUNTS = 100;
@@ -45,16 +45,20 @@ export function useVirtual<Item extends object>({
     measuresCache.current = new WeakMap();
   }, [indicesKey, items, estimateSize]);
 
-  const virtualItems = rowVirtualizer.virtualItems.map(virtualRow => ({
-    ...virtualRow,
-    measureRef: (node: null | HTMLElement) => {
-      const mountedCount = measuresCache.current.get(items[virtualRow.index]) ?? 0;
-      if (mountedCount < MAX_ITEM_MOUNTS) {
-        virtualRow.measureRef(node);
-        measuresCache.current.set(items[virtualRow.index], mountedCount + 1);
-      }
-    },
-  }));
+  const virtualItems = useMemo(
+    () =>
+      rowVirtualizer.virtualItems.map(virtualItem => ({
+        ...virtualItem,
+        measureRef: (node: null | HTMLElement) => {
+          const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
+          if (mountedCount < MAX_ITEM_MOUNTS) {
+            virtualItem.measureRef(node);
+            measuresCache.current.set(items[virtualItem.index], mountedCount + 1);
+          }
+        },
+      })),
+    [items, rowVirtualizer.virtualItems]
+  );
 
   return {
     virtualItems,
