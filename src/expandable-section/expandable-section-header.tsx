@@ -6,8 +6,6 @@ import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalHeader from '../header/internal';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
@@ -15,6 +13,7 @@ export const componentName = 'ExpandableSection';
 
 interface ExpandableDefaultHeaderProps {
   id: string;
+  descriptionId?: string;
   className?: string;
   children?: ReactNode;
   expanded: boolean;
@@ -113,6 +112,7 @@ const ExpandableNavigationHeader = ({
 
 const ExpandableHeaderTextWrapper = ({
   id,
+  descriptionId,
   className,
   onClick,
   ariaLabel,
@@ -129,7 +129,6 @@ const ExpandableHeaderTextWrapper = ({
   onKeyUp,
   onKeyDown,
 }: ExpandableHeaderTextWrapperProps) => {
-  const screenreaderContentId = useUniqueId('expandable-section-header-content-');
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
   const hasInteractiveElements = isContainer && (headerInfo || headerActions);
@@ -145,27 +144,26 @@ const ExpandableHeaderTextWrapper = ({
       role="button"
       tabIndex={0}
       aria-label={ariaLabel}
-      // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
-      aria-labelledby={ariaLabel || !isContainer ? undefined : screenreaderContentId}
+      aria-labelledby={!ariaLabel && isContainer ? id : undefined}
+      aria-describedby={isContainer && headerDescription ? descriptionId : undefined}
       aria-controls={ariaControls}
       aria-expanded={expanded}
       {...headerButtonListeners}
     >
       <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-      <span>{children}</span>
+      <span id={id}>{children}</span>
     </span>
   );
 
   return (
     <div
-      id={id}
       className={clsx(className, hasInteractiveElements && styles['with-interactive-elements'])}
       {...wrapperListeners}
     >
       {isContainer ? (
         <InternalHeader
           variant="h2"
-          description={headerDescription}
+          description={headerDescription && <span id={descriptionId}>{headerDescription}</span>}
           counter={headerCounter}
           info={headerInfo}
           actions={headerActions}
@@ -176,17 +174,13 @@ const ExpandableHeaderTextWrapper = ({
       ) : (
         <HeadingTag className={styles['header-wrapper']}>{headerButton}</HeadingTag>
       )}
-      {isContainer && (
-        <ScreenreaderOnly id={screenreaderContentId}>
-          {children} {headerCounter} {headerDescription}
-        </ScreenreaderOnly>
-      )}
     </div>
   );
 };
 
 export const ExpandableSectionHeader = ({
   id,
+  descriptionId,
   className,
   variant,
   header,
@@ -245,6 +239,7 @@ export const ExpandableSectionHeader = ({
     return (
       <ExpandableHeaderTextWrapper
         className={clsx(className, wrapperClassName, expanded && styles.expanded)}
+        descriptionId={descriptionId}
         headerDescription={headerDescription}
         headerCounter={headerCounter}
         headerInfo={headerInfo}
