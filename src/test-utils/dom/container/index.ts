@@ -14,10 +14,6 @@ export default class ContainerWrapper extends ComponentWrapper {
     return this.findByClassName(styles.content)!;
   }
 
-  findMedia(): ElementWrapper {
-    return this.findByClassName(styles.media)!;
-  }
-
   findFooter(): ElementWrapper | null {
     return this.findByClassName(styles.footer);
   }

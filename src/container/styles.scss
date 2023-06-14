@@ -16,9 +16,6 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    &.with-side-media {
-      flex-direction: row;
-    }
   }
 
   &.variant {
@@ -64,64 +61,10 @@
   }
 }
 
-.with-side-media {
-  display: flex;
-  flex-direction: row;
-}
-
-.with-top-media {
-  display: flex;
-  flex-direction: column;
-}
-
-.content-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  &-fit-height {
-    height: 100%;
-    overflow: hidden;
-  }
-}
-
-.media {
-  overflow: hidden;
-  flex-shrink: 0;
-
-  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
-  img,
-  video,
-  picture {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  &-top {
-    max-height: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-top-right-radius: awsui.$border-radius-container;
-  }
-
-  &-side {
-    max-width: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-bottom-left-radius: awsui.$border-radius-container;
-  }
-}
-
 .header {
   background-color: awsui.$color-background-container-header;
   border-top-left-radius: awsui.$border-radius-container;
   border-top-right-radius: awsui.$border-radius-container;
-
-  &.header-with-media {
-    background: none;
-    &:not(:empty) {
-      border-bottom: none;
-    }
-  }
 
   // sticky positioning may be disabled (on mobile or if browser does not support it),
   // but some markup still requires a new stacking context
@@ -208,8 +151,8 @@ the default white background of the container component.
 }
 
 .content {
-  flex: 1;
-  &-fit-height {
+  .fit-height > & {
+    flex: 1;
     overflow: auto;
   }
   &.with-paddings {
@@ -217,9 +160,6 @@ the default white background of the container component.
 
     .header + & {
       padding-top: awsui.$space-container-content-top;
-      &.content-with-media {
-        padding-top: 0;
-      }
     }
   }
 }
