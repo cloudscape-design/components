@@ -32,7 +32,7 @@ export interface ValidationError {
 export function validate(
   tags: ReadonlyArray<TagEditorProps.Tag>,
   keyDirtyState: ReadonlyArray<boolean>,
-  i18n: ComponentFormatFunction,
+  i18n: ComponentFormatFunction<'tag-editor'>,
   i18nStrings: TagEditorProps.I18nStrings | undefined,
   charRegex: RegExp = DEFAULT_CHAR_REGEX
 ): ReadonlyArray<ValidationError | undefined> {

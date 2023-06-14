@@ -93,10 +93,25 @@ export default function InternalWizard({
   };
 
   const i18n = useInternalI18n('wizard');
+  const skipToButtonLabel = i18n(
+    'i18nStrings.skipToButtonLabel',
+    rest.i18nStrings.skipToButtonLabel,
+    format => task => format({ task__title: task.title })
+  );
+
   const i18nStrings: WizardProps.I18nStrings = {
     ...rest.i18nStrings,
-    stepNumberLabel: i18n('i18nStrings.stepNumberLabel', rest.i18nStrings.stepNumberLabel),
-    collapsedStepsLabel: i18n('i18nStrings.collapsedStepsLabel', rest.i18nStrings.collapsedStepsLabel),
+    skipToButtonLabel,
+    stepNumberLabel: i18n(
+      'i18nStrings.stepNumberLabel',
+      rest.i18nStrings?.stepNumberLabel,
+      format => stepNumber => format({ stepNumber })
+    ),
+    collapsedStepsLabel: i18n(
+      'i18nStrings.collapsedStepsLabel',
+      rest.i18nStrings?.collapsedStepsLabel,
+      format => (stepNumber, stepsCount) => format({ stepNumber, stepsCount })
+    ),
     cancelButton: i18n('i18nStrings.cancelButton', rest.i18nStrings.cancelButton),
     previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings.previousButton),
     nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings.nextButton),
@@ -112,7 +127,7 @@ export default function InternalWizard({
     );
   }
 
-  if (allowSkipTo && !i18nStrings.skipToButtonLabel) {
+  if (allowSkipTo && !skipToButtonLabel) {
     warnOnce(
       'Wizard',
       `You have set \`allowSkipTo\` but you have not provided \`i18nStrings.skipToButtonLabel\`. The skip-to button will not be rendered.`

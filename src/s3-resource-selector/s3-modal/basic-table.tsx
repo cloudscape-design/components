@@ -47,7 +47,7 @@ interface BasicS3TableProps<T> {
 }
 
 export function getSharedI18Strings(
-  i18n: ComponentFormatFunction,
+  i18n: ComponentFormatFunction<'s3-resource-selector'>,
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined
 ) {
   return {
