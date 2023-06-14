@@ -4,6 +4,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Container from '../../../lib/components/container';
+import InternalContainer from '../../../lib/components/container/internal';
+import styles from '../../../lib/components/container/styles.css.js';
 
 function renderContainer(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -22,6 +24,17 @@ test('renders header if it is provided', () => {
   expect(wrapper.findFooter()).toBeNull();
   expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Bla bla');
   expect(wrapper.findContent().getElement()).toHaveTextContent('there is a header above');
+});
+
+test('applies dark header if __darkHeader is true', () => {
+  const wrapper = renderContainer(
+    <InternalContainer header="Test dark header" __darkHeader={true}>
+      test content
+    </InternalContainer>
+  );
+  expect(wrapper.findHeader()!.find(styles['dark-header'])).not.toBeUndefined();
+  expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Test dark header');
+  expect(wrapper.findContent().getElement()).toHaveTextContent('test content');
 });
 
 test('renders media if it is provided', () => {
