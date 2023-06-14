@@ -24,7 +24,7 @@ export default class ExpandableSectionWrapper extends ComponentWrapper {
 
   findExpandedContent(): ElementWrapper | null {
     return this.find(
-      `:scope > .${styles['content-expanded']}, :scope > .${containerStyles['content-wrapper']} > .${containerStyles.content} > .${styles['content-expanded']}`
+      `:scope > .${styles['content-expanded']}, :scope > .${containerStyles.content} > .${styles['content-expanded']}`
     );
   }
 
