@@ -24,6 +24,14 @@ test('renders header if it is provided', () => {
   expect(wrapper.findContent().getElement()).toHaveTextContent('there is a header above');
 });
 
+test('renders media if it is provided', () => {
+  const url = '/test.png';
+  const wrapper = renderContainer(<Container media={{ content: <img src={url} /> }}>test content</Container>);
+  expect(wrapper.findHeader()).toBeNull();
+  expect(wrapper.findContent().getElement()).toHaveTextContent('test content');
+  expect(wrapper.findMedia().find('img')!.getElement()).toHaveAttribute('src', url);
+});
+
 test('renders footer if it is provided', () => {
   const wrapper = renderContainer(<Container footer="Some footer">test content</Container>);
   expect(wrapper.findHeader()).toBeNull();
