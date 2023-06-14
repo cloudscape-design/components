@@ -28,7 +28,7 @@ export const MESSAGES: I18nProviderProps.Messages = {
 };
 
 declare module '../../../lib/components/i18n/messages-types' {
-  interface CloudscapeI18nFormatArgTypes {
+  interface I18nFormatArgTypes {
     'test-component': {
       topLevelString: never;
       topLevelFunction: { type: string };

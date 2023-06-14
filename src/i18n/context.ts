@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useContext } from 'react';
-import { CloudscapeI18nFormatArgTypes } from './messages-types';
+import { I18nFormatArgTypes } from './messages-types';
 
 export type CustomHandler<ReturnValue, FormatFnArgs> = (formatFn: (args: FormatFnArgs) => string) => ReturnValue;
 
@@ -32,34 +32,34 @@ export function useLocale(): string | null {
  */
 type StringKeyOf<T> = Extract<keyof T, string>;
 
-export interface ComponentFormatFunction<ComponentName extends StringKeyOf<CloudscapeI18nFormatArgTypes>> {
-  <MessageKey extends StringKeyOf<CloudscapeI18nFormatArgTypes[ComponentName]>>(
+export interface ComponentFormatFunction<ComponentName extends StringKeyOf<I18nFormatArgTypes>> {
+  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>>(
     key: MessageKey,
     provided: string,
-    handler?: CustomHandler<string, CloudscapeI18nFormatArgTypes[ComponentName][MessageKey]>
+    handler?: CustomHandler<string, I18nFormatArgTypes[ComponentName][MessageKey]>
   ): string;
-  <MessageKey extends StringKeyOf<CloudscapeI18nFormatArgTypes[ComponentName]>>(
+  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>>(
     key: MessageKey,
     provided: string | undefined,
-    handler?: CustomHandler<string, CloudscapeI18nFormatArgTypes[ComponentName][MessageKey]>
+    handler?: CustomHandler<string, I18nFormatArgTypes[ComponentName][MessageKey]>
   ): string | undefined;
-  <MessageKey extends StringKeyOf<CloudscapeI18nFormatArgTypes[ComponentName]>, ReturnValue>(
+  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>, ReturnValue>(
     key: MessageKey,
     provided: ReturnValue,
-    handler: CloudscapeI18nFormatArgTypes[ComponentName][MessageKey] extends never
+    handler: I18nFormatArgTypes[ComponentName][MessageKey] extends never
       ? never
-      : CustomHandler<ReturnValue, CloudscapeI18nFormatArgTypes[ComponentName][MessageKey]>
+      : CustomHandler<ReturnValue, I18nFormatArgTypes[ComponentName][MessageKey]>
   ): ReturnValue;
 }
 
-export function useInternalI18n<ComponentName extends StringKeyOf<CloudscapeI18nFormatArgTypes>>(
+export function useInternalI18n<ComponentName extends StringKeyOf<I18nFormatArgTypes>>(
   componentName: ComponentName
 ): ComponentFormatFunction<ComponentName> {
   const { format } = useContext(InternalI18nContext);
-  return <MessageKey extends StringKeyOf<CloudscapeI18nFormatArgTypes[ComponentName]>, ValueType>(
+  return <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>, ValueType>(
     key: MessageKey,
     provided: ValueType,
-    customHandler?: CustomHandler<ValueType, CloudscapeI18nFormatArgTypes[ComponentName][MessageKey]>
+    customHandler?: CustomHandler<ValueType, I18nFormatArgTypes[ComponentName][MessageKey]>
   ) => {
     return format('@cloudscape-design/components', componentName, key, provided, customHandler);
   };
