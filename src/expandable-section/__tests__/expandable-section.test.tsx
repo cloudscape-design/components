@@ -169,15 +169,20 @@ describe('Expandable Section', () => {
 
   describe('dev warnings', () => {
     const componentName = 'ExpandableSection';
+    const allVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'container', 'navigation'];
     const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
 
-    test('logs warning for deprecated header prop', () => {
-      render(<ExpandableSection variant="container" header={<Header />} />);
-      expect(warnOnce).toHaveBeenCalledTimes(1);
-      expect(warnOnce).toHaveBeenCalledWith(
-        componentName,
-        'Use `headerText` instead of `header` to provide the button within the heading for a11y.'
-      );
+    describe('logs warning for deprecated header prop', () => {
+      for (const variant of allVariants) {
+        test(`${variant} variant`, () => {
+          render(<ExpandableSection variant={variant} header={<Header />} />);
+          expect(warnOnce).toHaveBeenCalledTimes(1);
+          expect(warnOnce).toHaveBeenCalledWith(
+            componentName,
+            'Use `headerText` instead of `header` to provide the button within the heading for a11y.'
+          );
+        });
+      }
     });
 
     describe('logs warning for non supported configurations', () => {
