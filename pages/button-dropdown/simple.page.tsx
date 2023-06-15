@@ -190,14 +190,6 @@ export default function ButtonDropdownPage() {
             With expandable groups and disabled items
           </ButtonDropdown>
         </div>
-        <div className={styles.container}>
-          <ButtonDropdown
-            id="ButtonDropdown9"
-            variant="split-primary"
-            ariaLabel="Actions dropdown"
-            items={[{ id: 'split-action', text: 'With split action', iconName: 'add-plus' }, ...items]}
-          />
-        </div>
       </article>
     </ScreenshotArea>
   );

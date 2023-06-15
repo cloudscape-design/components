@@ -116,7 +116,7 @@ const InternalButtonDropdown = React.forwardRef(
       const splitButtonIconProps = { iconName, iconAlt, iconSvg, iconUrl };
 
       trigger = (
-        <div role="group" className={styles['split-trigger']} aria-label={ariaLabel}>
+        <div role="group" aria-label={ariaLabel} className={styles['split-trigger']}>
           <InternalButton
             {...splitButtonIconProps}
             ref={triggerRef}
