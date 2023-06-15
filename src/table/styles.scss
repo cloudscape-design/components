@@ -229,17 +229,18 @@ the default white background of the container component.
     padding-left: awsui.$space-table-horizontal;
     padding-right: awsui.$space-table-horizontal;
   }
+}
+
+.footer {
+  padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
   &-with-pagination {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    gap: awsui.$space-scaled-s;
   }
-}
-
-.footer {
-  padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
   &-pagination {
     // Align the footer pagination on the right
     margin-left: auto;

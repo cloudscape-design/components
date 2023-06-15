@@ -20,17 +20,11 @@ export default function TableFooter({ children, pagination, computedVariant }: T
   return (
     <>
       {hasFooter && (
-        <div
-          className={clsx(
-            styles['footer-wrapper'],
-            styles[`variant-${computedVariant}`],
-            isMobile && hasPagination && styles['footer-wrapper-with-pagination']
-          )}
-        >
-          {hasChildren && <div className={styles.footer}>{children}</div>}
-          {isMobile && hasPagination && (
-            <div className={clsx(styles.footer, styles['footer-pagination'])}>{pagination}</div>
-          )}
+        <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
+          <div className={clsx(styles.footer, isMobile && hasPagination && styles['footer-with-pagination'])}>
+            {hasChildren && <span>{children}</span>}
+            {isMobile && hasPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+          </div>
         </div>
       )}
     </>
