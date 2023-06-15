@@ -16,6 +16,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { fireCancelableEvent } from '../internal/events/index.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -47,6 +48,8 @@ const InternalButtonDropdown = React.forwardRef(
       checkSafeUrl('ButtonDropdown', item.href);
     }
 
+    const dropdownItems = items; // variant === 'split-primary' ? items.slice(1) : items;
+
     const {
       isOpen,
       targetItem,
@@ -59,12 +62,13 @@ const InternalButtonDropdown = React.forwardRef(
       onItemActivate,
       onGroupToggle,
       toggleDropdown,
+      closeDropdown,
       setIsUsingMouse,
     } = useButtonDropdown({
-      items,
+      items: dropdownItems,
       onItemClick,
       onItemFollow,
-      onReturnFocus: () => dropdownRef.current?.focus(),
+      onReturnFocus: () => triggerRef.current?.focus(),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
@@ -76,9 +80,9 @@ const InternalButtonDropdown = React.forwardRef(
 
     const baseProps = getBaseProps(props);
 
-    const dropdownRef = useRef<HTMLElement>(null);
+    const triggerRef = useRef<HTMLElement>(null);
 
-    useForwardFocus(ref, dropdownRef);
+    useForwardFocus(ref, triggerRef);
 
     const clickHandler = () => {
       if (!loading && !disabled) {
@@ -89,7 +93,8 @@ const InternalButtonDropdown = React.forwardRef(
 
     const canBeOpened = !loading && !disabled;
 
-    const triggerVariant = variant === 'navigation' ? undefined : variant;
+    let triggerVariant = variant === 'navigation' ? undefined : variant;
+    triggerVariant = triggerVariant === 'split-primary' ? 'primary' : triggerVariant;
 
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
       variant === 'icon'
@@ -104,11 +109,72 @@ const InternalButtonDropdown = React.forwardRef(
 
     let trigger: React.ReactNode = null;
     if (customTriggerBuilder) {
-      trigger = customTriggerBuilder(clickHandler, dropdownRef, disabled, isOpen, ariaLabel);
+      trigger = customTriggerBuilder(clickHandler, triggerRef, disabled, isOpen, ariaLabel);
+    } else if (variant === 'split-primary' && items.length > 0) {
+      const item = items[0];
+      const { iconName, iconAlt, iconSvg, iconUrl } = item;
+      const splitButtonIconProps = { iconName, iconAlt, iconSvg, iconUrl };
+
+      trigger = (
+        <div role="group" className={styles['split-trigger']} aria-label={ariaLabel}>
+          <InternalButton
+            {...splitButtonIconProps}
+            ref={triggerRef}
+            variant="primary"
+            loading={loading}
+            loadingText={loadingText}
+            disabled={disabled || item.disabled}
+            formAction="none"
+            className={styles.trigger}
+            onClick={event => {
+              fireCancelableEvent(
+                onItemClick,
+                {
+                  id: item.id || 'undefined',
+                  href: item.href,
+                  external: item.external,
+                  // target: getItemTarget(item),
+                },
+                event
+              );
+              closeDropdown();
+            }}
+            onFollow={event => {
+              fireCancelableEvent(
+                onItemFollow,
+                {
+                  id: item.id || 'undefined',
+                  href: item.href,
+                  external: item.external,
+                  // target: getItemTarget(item),
+                },
+                event
+              );
+              closeDropdown();
+            }}
+          >
+            {item.text}
+          </InternalButton>
+          <InternalButton
+            {...iconProps}
+            variant="primary"
+            disabled={loading || disabled}
+            onClick={(event: Event) => {
+              event.preventDefault();
+              clickHandler();
+            }}
+            ariaLabel={ariaLabel}
+            aria-haspopup={true}
+            ariaExpanded={canBeOpened && isOpen}
+            formAction="none"
+            className={styles.trigger}
+          />
+        </div>
+      );
     } else {
       trigger = (
         <InternalButton
-          ref={dropdownRef}
+          ref={triggerRef}
           {...iconProps}
           variant={triggerVariant}
           loading={loading}
@@ -131,6 +197,7 @@ const InternalButtonDropdown = React.forwardRef(
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
 
+    const stylesVariant = variant === 'split-primary' ? 'primary' : variant;
     return (
       <div
         {...baseProps}
@@ -138,7 +205,7 @@ const InternalButtonDropdown = React.forwardRef(
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
         onMouseMove={handleMouseEvent}
-        className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
+        className={clsx(styles['button-dropdown'], styles[`variant-${stylesVariant}`], baseProps.className)}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
         ref={__internalRootRef}
       >
@@ -183,7 +250,7 @@ const InternalButtonDropdown = React.forwardRef(
             statusType="finished"
           >
             <ItemsList
-              items={items}
+              items={dropdownItems}
               onItemActivate={onItemActivate}
               onGroupToggle={onGroupToggle}
               hasExpandableGroups={expandableGroups}
@@ -193,7 +260,7 @@ const InternalButtonDropdown = React.forwardRef(
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}
-              variant={variant}
+              variant={stylesVariant}
             />
           </OptionsList>
         </Dropdown>

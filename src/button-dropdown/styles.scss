@@ -47,3 +47,19 @@
 .description {
   color: awsui.$color-text-dropdown-header;
 }
+
+.split-trigger {
+  & > .trigger:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: awsui.$space-s;
+    margin-right: awsui.$space-xxxs;
+  }
+
+  & > .trigger:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: awsui.$space-xs;
+    padding-right: awsui.$space-xs;
+  }
+}
