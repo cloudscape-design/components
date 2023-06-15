@@ -35,6 +35,7 @@ import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
+import { useMobile } from '../internal/hooks/use-mobile';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -85,6 +86,7 @@ const InternalTable = React.forwardRef(
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
+    const isMobile = useMobile();
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
 
@@ -150,7 +152,7 @@ const InternalTable = React.forwardRef(
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
-    const hasFooter = !!footer;
+    const hasFooter = !!footer || (isMobile && !!pagination);
 
     const visibleColumnsWithSelection = useMemo(() => {
       const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());

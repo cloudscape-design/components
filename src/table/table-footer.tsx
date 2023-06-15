@@ -28,7 +28,9 @@ export default function TableFooter({ children, pagination, computedVariant }: T
           )}
         >
           {hasChildren && <div className={styles.footer}>{children}</div>}
-          {isMobile && hasPagination && <div>{pagination}</div>}
+          {isMobile && hasPagination && (
+            <div className={clsx(styles.footer, styles['footer-pagination'])}>{pagination}</div>
+          )}
         </div>
       )}
     </>
