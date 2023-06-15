@@ -103,7 +103,7 @@
     font-weight: styles.$font-weight-bold;
   }
   a {
-    @include styles.link-default;
+    @include styles.link-inline;
     &:focus {
       @include styles.link-focus;
     }
