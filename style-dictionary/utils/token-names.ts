@@ -333,6 +333,7 @@ export type ColorsTokenName =
   | 'colorShadowLayoutToggle'
   | 'colorShadowMedium'
   | 'colorShadowSide'
+  | 'colorStrokeChartLine'
   | 'colorStrokeCodeEditorResizeHandler'
   | 'colorStrokeCodeEditorGutterActiveLineDefault'
   | 'colorStrokeCodeEditorGutterActiveLineHover'

@@ -136,6 +136,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorShadowLayoutToggle: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorShadowMedium: '{colorGreyTransparent}',
   colorShadowSide: '{colorGreyTransparentLight}',
+  colorStrokeChartLine: '{colorGrey500}',
   colorStrokeCodeEditorResizeHandler: { light: '{colorGrey600}', dark: '{colorGrey300}' },
   colorStrokeCodeEditorGutterActiveLineDefault: { light: '{colorGrey300}', dark: '{colorGrey750}' },
   colorStrokeCodeEditorGutterActiveLineHover: { light: '{colorGrey100}', dark: '{colorGrey900}' },
