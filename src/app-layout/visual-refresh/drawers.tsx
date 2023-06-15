@@ -113,6 +113,7 @@ function ActiveDrawer() {
     loseDrawersFocus,
     resizeHandle,
     drawerSize,
+    drawersMaxWidth,
     drawerRef,
   } = useAppLayoutInternals();
 
@@ -126,6 +127,8 @@ function ActiveDrawer() {
   const isHidden = !activeDrawerId && !isToolsOpen;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
 
+  const size = Math.min(drawersMaxWidth, drawerSize);
+
   return (
     <aside
       aria-hidden={isHidden}
@@ -137,7 +140,7 @@ function ActiveDrawer() {
         [testutilStyles.tools]: isToolsOpen,
       })}
       style={{
-        ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${drawerSize}px` }),
+        ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
       }}
       ref={drawerRef}
       onBlur={e => {

@@ -32,10 +32,11 @@ import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawerId: string | null;
-  drawers: DrawersProps;
+  activeDrawerId?: string | null;
+  drawers?: DrawersProps;
   drawersRefs: DrawerFocusControlRefs;
   drawerSize: number;
+  drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
@@ -49,7 +50,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   hasDefaultToolsWidth: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
-  hasOpenDrawer: boolean;
+  hasOpenDrawer?: boolean;
   hasStickyBackground: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
@@ -459,7 +460,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) +
       (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
-      activeDrawerId || isToolsOpen || (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
+      activeDrawerId !== null ||
+      isToolsOpen ||
+      (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
       isMobile && (!!activeDrawerId || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
 
@@ -592,6 +595,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           contentType,
           drawers,
           drawersRefs,
+          drawersMaxWidth,
           drawerSize,
           drawerRef,
           resizeHandle,

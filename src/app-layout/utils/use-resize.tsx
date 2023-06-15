@@ -41,15 +41,11 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
 
     for (const item of drawerItems) {
       if (item.defaultSize) {
-        if (item.defaultSize > drawersMaxWidth) {
-          sizes[item.id] = toolsWidth;
-        } else {
-          sizes[item.id] = item.defaultSize || toolsWidth;
-        }
+        sizes[item.id] = item.defaultSize;
       }
     }
     return sizes;
-  }, [drawerItems, toolsWidth, drawersMaxWidth]);
+  }, [drawerItems]);
   const [drawerItemSizes, setDrawerItemSizes] = useState(() => getDrawerItemSizes());
 
   const drawerSize =
@@ -62,8 +58,8 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
   useEffect(() => {
     // Ensure we only set new drawer items by performing a shallow merge
     // of the latest drawer item sizes, and previous drawer item sizes.
-    setDrawerItemSizes(() => getDrawerItemSizes());
-  }, [drawersMaxWidth, activeDrawerId, getDrawerItemSizes]);
+    setDrawerItemSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
+  }, [getDrawerItemSizes]);
 
   useEffect(() => {
     // effects are called inside out in the components tree
