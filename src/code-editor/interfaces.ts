@@ -111,6 +111,11 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
    * The event `detail` contains the new height of the editor in pixels.
    */
   onEditorContentResize?: NonCancelableEventHandler<CodeEditorProps.ResizeDetail>;
+
+  /**
+   * Adds `aria-label` to the code editor's textarea element.
+   */
+  ariaLabel?: string;
 }
 
 // Prevents typescript from collapsing a string union type into a string type while still allowing any string.
