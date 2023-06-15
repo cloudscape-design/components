@@ -24,6 +24,13 @@
   }
 }
 
+.with-motion {
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-refresh-only-fast;
+    transition-property: border-color, opacity, width;
+  }
+}
+
 // double flex container to work around flexbox issue in IE
 // https://github.com/philipwalton/flexbugs#flexbug-3
 .root,

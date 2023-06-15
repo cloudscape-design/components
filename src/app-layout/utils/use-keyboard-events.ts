@@ -2,17 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { KeyCode } from '../../internal/keycode';
+import { SizeControlProps } from './interfaces';
 
 const KEYBOARD_SINGLE_STEP_SIZE = 10;
 const KEYBOARD_MULTIPLE_STEPS_SIZE = 60;
-
-export interface SizeControlProps {
-  position: 'side' | 'bottom';
-  panelRef?: React.RefObject<HTMLDivElement>;
-  handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
-}
 
 const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
   if (!panelRef || !panelRef.current) {

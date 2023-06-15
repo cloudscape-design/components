@@ -159,11 +159,6 @@
     width: var(#{custom-props.$drawerSize});
   }
 
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-fast;
-    transition-property: border-color, opacity, width;
-  }
-
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     &.is-drawer-open {
       #{custom-props.$drawerSize}: 320px;

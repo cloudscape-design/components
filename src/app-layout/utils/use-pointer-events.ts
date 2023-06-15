@@ -2,14 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback } from 'react';
 import styles from '../styles.css.js';
-
-export interface SizeControlProps {
-  position: 'side' | 'bottom';
-  panelRef?: React.RefObject<HTMLDivElement>;
-  handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
-}
+import { SizeControlProps } from './interfaces';
 
 export const usePointerEvents = ({
   position,
@@ -17,6 +10,7 @@ export const usePointerEvents = ({
   handleRef,
   setSidePanelWidth,
   setBottomPanelHeight,
+  hasTransitions = false,
 }: SizeControlProps) => {
   const onDocumentPointerMove = useCallback(
     (event: PointerEvent) => {
@@ -24,7 +18,9 @@ export const usePointerEvents = ({
         return;
       }
 
-      panelRef.current.style.transitionProperty = 'none';
+      if (hasTransitions) {
+        panelRef.current.classList.remove(styles['with-motion']);
+      }
 
       if (position === 'side') {
         const mouseClientX = event.clientX;
@@ -44,19 +40,22 @@ export const usePointerEvents = ({
         setBottomPanelHeight(height);
       }
     },
-    [position, panelRef, handleRef, setSidePanelWidth, setBottomPanelHeight]
+    [position, panelRef, handleRef, setSidePanelWidth, setBottomPanelHeight, hasTransitions]
   );
 
   const onDocumentPointerUp = useCallback(() => {
     if (!panelRef || !panelRef.current) {
       return;
     }
+
+    if (hasTransitions) {
+      panelRef.current.classList.add(styles['with-motion']);
+    }
     document.body.classList.remove(styles['resize-active']);
     document.body.classList.remove(styles[`resize-${position}`]);
     document.removeEventListener('pointerup', onDocumentPointerUp);
     document.removeEventListener('pointermove', onDocumentPointerMove);
-    panelRef.current.style.transitionProperty = 'border-color, opacity, width';
-  }, [panelRef, onDocumentPointerMove, position]);
+  }, [panelRef, onDocumentPointerMove, position, hasTransitions]);
 
   const onSliderPointerDown = useCallback(() => {
     document.body.classList.add(styles['resize-active']);

@@ -11,34 +11,31 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
+import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
+export interface InternalDrawersProps {
+  drawers?: DrawersProps;
+}
+
 export interface DrawersProps {
-  activeDrawerId?: string;
-  items: ReadonlyArray<DrawersProps.Drawer>;
-  onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
+  activeDrawerId: string | null;
+  items: ReadonlyArray<DrawerItemProps>;
+  onChange?: NonCancelableEventHandler<string | null>;
   ariaLabel?: string;
 }
 
-export interface SizeControlProps {
-  position: 'side';
-  panelRef?: React.RefObject<HTMLDivElement>;
-  handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
+export interface DrawerItemProps {
+  ariaLabels?: DrawersProps.Labels;
+  content: React.ReactNode;
+  id: string;
+  trigger: DrawersProps.Trigger;
+  resizable?: boolean;
+  defaultSize?: number;
+  onResize?: NonCancelableEventHandler<DrawersProps.ResizeDetail>;
 }
 
 namespace DrawersProps {
-  export interface Drawer {
-    ariaLabels?: Labels;
-    content: React.ReactNode;
-    id: string;
-    trigger: Trigger;
-    resizable?: boolean;
-    defaultSize?: number;
-    onResize?: NonCancelableEventHandler<DrawersProps.ResizeDetail>;
-  }
-
   export interface ChangeDetail {
     activeDrawerId: string | null;
   }
@@ -48,13 +45,13 @@ namespace DrawersProps {
     id: string;
   }
 
-  interface Labels {
+  export interface Labels {
     closeButton?: string;
     content?: string;
     triggerButton?: string;
     resizeHandle?: string;
   }
-  interface Trigger {
+  export interface Trigger {
     iconName?: IconProps.Name;
     iconSvg?: React.ReactNode;
     iconUrl?: string;
@@ -133,7 +130,7 @@ function ActiveDrawer() {
     <aside
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, {
+      className={clsx(styles.drawer, sharedStyles['with-motion'], {
         [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,

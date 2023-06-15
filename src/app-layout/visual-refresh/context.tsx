@@ -14,7 +14,7 @@ import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps } from '../interfaces';
-import { DrawersProps } from './drawers';
+import { DrawerItemProps, DrawersProps, InternalDrawersProps } from './drawers';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-drawer-focus-control';
@@ -414,7 +414,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * The hasDrawerViewportOverlay property is used to determine if any drawer is obscuring the entire
      * viewport. This currently applies to Navigation, Tools, and Drawers in mobile viewports.
      */
-    const drawers = (props as any).drawers;
+    const drawers = (props as InternalDrawersProps).drawers;
 
     const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
       componentName: 'AppLayout',
@@ -424,7 +424,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
-    const activeDrawer = drawers?.items.find((drawer: any) => drawer.id === activeDrawerId);
+    const activeDrawer = drawers?.items.find((drawer: DrawerItemProps) => drawer.id === activeDrawerId);
 
     const {
       refs: drawersRefs,

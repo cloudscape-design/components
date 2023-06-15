@@ -9,24 +9,17 @@ import ResizeHandler from '../../split-panel/icons/resize-handler';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from './use-pointer-events';
 import { useKeyboardEvents } from './use-keyboard-events';
-import { DrawersProps } from '../visual-refresh/drawers';
+import { DrawerItemProps, DrawersProps } from '../visual-refresh/drawers';
 
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from '../visual-refresh/styles.css.js';
 import { DrawerFocusControlRefs } from './use-drawer-focus-control';
-
-export interface SizeControlProps {
-  position: 'side';
-  panelRef?: React.RefObject<HTMLDivElement>;
-  handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
-}
+import { SizeControlProps } from './interfaces';
 
 export interface DrawerResizeProps {
-  activeDrawerId: string | null;
-  drawers: DrawersProps;
+  activeDrawerId?: string | null;
+  drawers?: DrawersProps;
   drawersRefs: DrawerFocusControlRefs;
   isToolsOpen: boolean;
   drawersMaxWidth: number;
@@ -35,7 +28,7 @@ export interface DrawerResizeProps {
 function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResizeProps: DrawerResizeProps) {
   const { activeDrawerId, drawers, drawersRefs, isToolsOpen, drawersMaxWidth } = drawerResizeProps;
 
-  const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
+  const activeDrawer = drawers?.items.find((item: DrawerItemProps) => item.id === activeDrawerId) ?? null;
   const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
   const toolsWidth = 290;
   const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 290 ? activeDrawer?.defaultSize : 290;
@@ -83,10 +76,8 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
   }, [drawerSize, drawersMaxWidth, MIN_WIDTH]);
 
   const drawerResize = (resizeDetail: { size: number; id: string }) => {
-    const drawerItem = drawers.items.find(({ id }: any) => id === resizeDetail.id);
-    if (drawerItem?.onResize) {
-      fireNonCancelableEvent(drawerItem.onResize, resizeDetail);
-    }
+    const drawerItem = drawers?.items.find((item: DrawerItemProps) => item.id === resizeDetail.id);
+    fireNonCancelableEvent(drawerItem?.onResize, resizeDetail);
     setDrawerItemSizes({ ...drawerItemSizes, [resizeDetail.id]: resizeDetail.size });
   };
 
@@ -95,7 +86,7 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
     const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
     const id = activeDrawer?.id;
 
-    if (activeDrawer && id && maxWidth >= MIN_WIDTH) {
+    if (id && maxWidth >= MIN_WIDTH) {
       drawerResize({ size, id });
     }
   };
@@ -106,6 +97,7 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
     handleRef: drawersRefs.slider,
     setSidePanelWidth,
     setBottomPanelHeight: () => {},
+    hasTransitions: true,
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
