@@ -6,6 +6,7 @@ import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
+import { useTelemetry } from '../internal/hooks/use-telemetry';
 import { warnOnce } from '../internal/logging';
 
 export interface I18nProviderProps {
@@ -34,6 +35,8 @@ export namespace I18nProviderProps {
 const I18nMessagesContext = React.createContext<I18nProviderProps.Messages>({});
 
 export function I18nProvider({ messages: messagesArray, locale: providedLocale, children }: I18nProviderProps) {
+  useTelemetry('I18nProvider');
+
   if (typeof document === 'undefined' && !providedLocale) {
     warnOnce(
       'I18nProvider',
