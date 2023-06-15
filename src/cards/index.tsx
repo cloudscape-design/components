@@ -171,6 +171,7 @@ const Cards = React.forwardRef(function <T = any>(
             />
           )}
         </div>
+        {isMobile && <div className={styles['footer-pagination']}>{pagination}</div>}
       </InternalContainer>
     </div>
   );
