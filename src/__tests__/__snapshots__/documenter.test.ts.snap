@@ -4745,6 +4745,53 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
       "type": "string",
     },
     Object {
+      "description": "Use this slot to render a media element. Supported element types are 'img', 'video', and 'picture'.
+You can define different positions and sizes for the media element within the container.
+* \`content\` - Use this slot to render your media element. We support \`img\`, \`video\` and \`picture\` elements.
+
+* \`position\` - Defines the media slot's position within the container. Defaults to \`top\`.
+
+* \`width\` - Defines the width of the media slot when positioned on the side. Corresponds to the \`width\` CSS-property.
+When this value is set, media elements larger than the defined width may be cropped, with 'object-fit: cover' centering it.
+Note: This value is considered only when \`position\` is set to \`side\`.
+If no width is provided, the media slot will take a maximum of 66% of the container's width.
+
+* \`height\` - Defines the height of the media slot when position on the top. Corresponds to the \`height\` CSS-property.
+When this value is set, media elements larger than the defined width may be cropped, with 'object-fit: cover' centering it.   * Note: This value is only considered if \`position\` is set to \`top\`.
+If no height is provided, the media slot will be displayed at its full height.
+
+",
+      "inlineType": Object {
+        "name": "ContainerProps.Media",
+        "properties": Array [
+          Object {
+            "name": "content",
+            "optional": false,
+            "type": "React.ReactNode",
+          },
+          Object {
+            "name": "height",
+            "optional": true,
+            "type": "number | string",
+          },
+          Object {
+            "name": "position",
+            "optional": true,
+            "type": "\\"side\\" | \\"top\\"",
+          },
+          Object {
+            "name": "width",
+            "optional": true,
+            "type": "number | string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "media",
+      "optional": true,
+      "type": "ContainerProps.Media",
+    },
+    Object {
       "defaultValue": "\\"default\\"",
       "description": "Specify a container variant with one of the following:
 * \`default\` - Use this variant in standalone context.
