@@ -69,6 +69,9 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
       // exact match found: return it
       return { ...token, value: option.value };
     }
+
+    // By default, the token value is a string, but when a custom property is used,
+    // the token value can be any, therefore we need to check for its type before calling toLowerCase()
     if (
       typeof token.value === 'string' &&
       token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()
