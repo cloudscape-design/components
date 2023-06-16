@@ -83,7 +83,7 @@ const InternalButtonDropdown = React.forwardRef(
     const splitActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
 
-    useForwardFocus(ref, variant === 'split-primary' ? splitActionRef : triggerRef);
+    useForwardFocus(ref, isValidSplitButton ? splitActionRef : triggerRef);
 
     const clickHandler = () => {
       if (!loading && !disabled) {

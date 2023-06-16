@@ -8,13 +8,19 @@ import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/componen
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 
-const renderButtonDropdown = (props: Parameters<typeof ButtonDropdown>[0]) => {
-  const renderResult = render(<ButtonDropdown {...props} />);
+const renderButtonDropdown = (
+  props: Parameters<typeof ButtonDropdown>[0],
+  ref?: React.Ref<ButtonDropdownProps.Ref>
+) => {
+  const renderResult = render(<ButtonDropdown ref={ref} {...props} />);
   return createWrapper(renderResult.container).findButtonDropdown()!;
 };
 
-const renderSplitButtonDropdown = (props: Parameters<typeof ButtonDropdown>[0]) => {
-  return renderButtonDropdown({ ariaLabel: 'Actions', ...props, variant: 'split-primary' });
+const renderSplitButtonDropdown = (
+  props: Parameters<typeof ButtonDropdown>[0],
+  ref?: React.Ref<ButtonDropdownProps.Ref>
+) => {
+  return renderButtonDropdown({ ariaLabel: 'Actions', ...props, variant: 'split-primary' }, ref);
 };
 
 const items: ButtonDropdownProps.Items = [
@@ -351,5 +357,22 @@ describe('"split-primary" variant', () => {
     expect(screen.getByRole('group')).toHaveAccessibleName('Test actions');
     expect(screen.getAllByRole('button')[0]).toHaveAccessibleName('First');
     expect(screen.getAllByRole('button')[1]).toHaveAccessibleName('Test actions');
+  });
+
+  test('ref.focus() focuses the split action', () => {
+    const ref = React.createRef<ButtonDropdownProps.Ref>();
+    const wrapper = renderSplitButtonDropdown(
+      {
+        items: [
+          { id: '1', text: 'First' },
+          { id: '2', text: 'Second' },
+        ],
+      },
+      ref
+    );
+
+    ref.current!.focus();
+
+    expect(wrapper.findSplitButton()!.getElement()).toHaveFocus();
   });
 });
