@@ -3109,7 +3109,8 @@ It prevents clicks.",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
 * \`normal\` for secondary buttons
-* \`icon\` for icon buttons",
+* \`icon\` for icon buttons
+* \`split-primary\` for primary buttons with the first item exposed as standalone",
       "inlineType": Object {
         "name": "ButtonDropdownProps.Variant",
         "type": "union",
@@ -3117,6 +3118,7 @@ It prevents clicks.",
           "normal",
           "primary",
           "icon",
+          "split-primary",
         ],
       },
       "name": "variant",
@@ -11601,37 +11603,6 @@ Object {
     },
   ],
   "regions": Array [],
-  "releaseStatus": "stable",
-}
-`;
-
-exports[`Documenter definition for split-button matches the snapshot: split-button 1`] = `
-Object {
-  "events": Array [],
-  "functions": Array [],
-  "name": "SplitButton",
-  "properties": Array [
-    Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified classes to the root element of the component.",
-      "name": "className",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified ID to the root element of the component.",
-      "name": "id",
-      "optional": true,
-      "type": "string",
-    },
-  ],
-  "regions": Array [
-    Object {
-      "isDefault": true,
-      "name": "children",
-    },
-  ],
   "releaseStatus": "stable",
 }
 `;

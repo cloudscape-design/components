@@ -12,7 +12,6 @@ const permutations = createPermutations<ButtonDropdownProps>([
     loading: [false, true],
     items: [[]],
     variant: ['normal', 'primary'],
-    children: ['Button Dropdown'],
   },
   {
     disabled: [false, true],
@@ -20,7 +19,6 @@ const permutations = createPermutations<ButtonDropdownProps>([
     items: [[]],
     variant: ['icon'],
     ariaLabel: ['Button dropdown'],
-    children: ['Button Dropdown'],
   },
 ]);
 
@@ -31,7 +29,7 @@ export default function () {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => <span>{<ButtonDropdown {...permutation} />}</span>}
+          render={permutation => <span>{<ButtonDropdown {...permutation}>Button Dropdown</ButtonDropdown>}</span>}
         />
       </ScreenshotArea>
     </>
