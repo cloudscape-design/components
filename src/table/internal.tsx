@@ -7,7 +7,6 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
-import TableFooter from './table-footer';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -152,7 +151,8 @@ const InternalTable = React.forwardRef(
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
-    const hasFooter = !!footer || (isMobile && !!pagination);
+    const hasMobilePagination = isMobile && !!pagination;
+    const hasFooter = !!footer || hasMobilePagination;
 
     const visibleColumnsWithSelection = useMemo(() => {
       const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
@@ -274,9 +274,14 @@ const InternalTable = React.forwardRef(
           __disableFooterDivider={true}
           __disableStickyMobile={false}
           footer={
-            <TableFooter pagination={pagination} computedVariant={computedVariant}>
-              {footer}
-            </TableFooter>
+            hasFooter ? (
+              <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
+                <div className={clsx(styles.footer, hasMobilePagination && styles['footer-with-pagination'])}>
+                  {footer && <span>{footer}</span>}
+                  {hasMobilePagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+                </div>
+              </div>
+            ) : null
           }
           __stickyHeader={stickyHeader}
           __mobileStickyOffset={toolsHeaderHeight}
