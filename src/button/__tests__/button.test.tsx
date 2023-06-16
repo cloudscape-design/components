@@ -353,13 +353,28 @@ describe('Button Component', () => {
   describe('aria-label attribute and children content', () => {
     test('renders from ariaLabel property', () => {
       const wrapper = renderButton({ ariaLabel: 'Benjamin', children: 'Button' });
-      expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Benjamin');
+      expect(wrapper.getElement()).toHaveAccessibleName('Benjamin');
       expect(wrapper.findTextRegion()!.getElement()).toHaveTextContent('Button');
     });
 
     test('does not render if there is no label property', () => {
       const wrapper = renderButton({ children: 'Button' });
-      expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
+      expect(wrapper.getElement()).toHaveAccessibleName('Button');
+    });
+
+    test('adds ariaLabel as title attribute - icon-only', () => {
+      const wrapper = renderButton({ ariaLabel: 'Benjamin', variant: 'icon', iconName: 'add-plus' });
+      expect(wrapper.getElement()).toHaveAttribute('title', 'Benjamin');
+    });
+
+    test('adds ariaLabel as title attribute - standard', () => {
+      const wrapper = renderButton({ ariaLabel: 'Remove item 1', children: 'Remove' });
+      expect(wrapper.getElement()).toHaveAttribute('title', 'Remove item 1');
+    });
+
+    test('does not add title to buttons without ariaLabel', () => {
+      const wrapper = renderButton({ variant: 'icon', iconName: 'add-plus' });
+      expect(wrapper.getElement()).not.toHaveAttribute('title');
     });
   });
 
