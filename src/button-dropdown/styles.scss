@@ -48,24 +48,36 @@
   color: awsui.$color-text-dropdown-header;
 }
 
-.split-trigger {
+.split-trigger-wrapper {
   display: flex;
 
-  & > .trigger:focus {
-    z-index: 1;
+  & > .trigger-item {
+    & > button:focus {
+      z-index: 1;
+    }
   }
 
-  & > .trigger:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    padding-right: awsui.$space-s;
-    margin-right: awsui.$space-xxxs;
+  & > .trigger-item:not(:last-child) {
+    & > .trigger-button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-right: awsui.$space-s;
+      margin-right: awsui.$space-xxxs;
+    }
   }
 
-  & > .trigger:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    padding-left: awsui.$space-xs;
-    padding-right: awsui.$space-xs;
+  & > .trigger-item:not(:first-child) {
+    & > .trigger-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-left: awsui.$space-xs;
+      padding-right: awsui.$space-xs;
+    }
   }
+}
+.split-trigger {
+  display: contents;
+}
+.dropdown-trigger {
+  display: contents;
 }

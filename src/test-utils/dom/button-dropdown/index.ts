@@ -14,7 +14,13 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   findNativeButton(): ElementWrapper<HTMLButtonElement> {
     // ButtonDropdown always has a button
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.find<HTMLButtonElement>(`button.${buttonStyles.button}`)!;
+    return this.findByClassName(styles['dropdown-trigger'])!.find<HTMLButtonElement>(`button.${buttonStyles.button}`)!;
+  }
+
+  findSplitButton(): null | ElementWrapper<HTMLButtonElement> {
+    return (
+      this.findByClassName(styles['split-trigger'])?.find<HTMLButtonElement>(`button.${buttonStyles.button}`) ?? null
+    );
   }
 
   findOpenDropdown(): ElementWrapper | null {
