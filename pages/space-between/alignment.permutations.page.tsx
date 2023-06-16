@@ -8,14 +8,21 @@ import ScreenshotArea from '../utils/screenshot-area';
 import Container from '~components/container';
 import Button from '~components/button';
 import Header from '~components/header';
+import styles from './styles.scss';
 
 const size = 'm';
 
 const ExampleChildren = (
   <>
-    <h2>Heading</h2>
-    <p>Paragraph</p>
-    <Button>Button</Button>
+    <div className={styles['border-box-inner']}>
+      <h2>Heading</h2>
+    </div>
+    <div className={styles['border-box-inner']}>
+      <p>Paragraph</p>
+    </div>
+    <div className={styles['border-box-inner']}>
+      <Button>Button</Button>
+    </div>
   </>
 );
 
@@ -25,18 +32,14 @@ const NestedExample = createPermutations([
     alignItems: [undefined, 'center'] as SpaceBetweenProps.AlignItems[],
   },
 ]).map(({ direction, alignItems }) => (
-  <Container
-    key={`direction-${direction}-alignment-${alignItems || 'default'}`}
-    header={
-      <Header headingTagOverride="h3">
-        Direction: {direction}, alignment: {alignItems || 'default'}
-      </Header>
-    }
-  >
+  <div className={styles['border-box-outer']} key={`direction-${direction}-alignment-${alignItems || 'default'}`}>
+    <h3>
+      Direction: {direction}, alignment: {alignItems || 'default'}
+    </h3>
     <SpaceBetween size={size} direction={direction} alignItems={alignItems}>
       {ExampleChildren}
     </SpaceBetween>
-  </Container>
+  </div>
 ));
 
 /* eslint-disable react/jsx-key */
@@ -44,7 +47,7 @@ const permutations = createPermutations<Pick<SpaceBetweenProps, 'direction' | 'a
   {
     children: [ExampleChildren, NestedExample],
     direction: ['vertical', 'horizontal'],
-    alignItems: [undefined, 'center'],
+    alignItems: [undefined, 'center', 'start', 'end'],
   },
 ]);
 /* eslint-enable react/jsx-key */
