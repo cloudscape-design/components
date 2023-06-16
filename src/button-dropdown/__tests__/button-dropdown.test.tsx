@@ -151,7 +151,7 @@ describe('"split-primary" variant', () => {
     expect(wrapper.findItems()).toHaveLength(0);
   });
 
-  test('does not render split trigger when 1 items', () => {
+  test('does not render split trigger when 1 item', () => {
     const wrapper = renderSplitButtonDropdown({ items: [{ id: '1', text: 'First' }] });
 
     expect(wrapper.findNativeButton()).not.toBe(null);
@@ -201,7 +201,7 @@ describe('"split-primary" variant', () => {
     expect(wrapper.findItems()).toHaveLength(1);
   });
 
-  test('split trigger click triggers onItemClick', () => {
+  test('split trigger click calls onItemClick', () => {
     const onItemClick = jest.fn();
     const onItemFollow = jest.fn();
     const wrapper = renderSplitButtonDropdown({
@@ -220,7 +220,7 @@ describe('"split-primary" variant', () => {
     expect(onItemFollow).not.toHaveBeenCalled();
   });
 
-  test('split trigger click on external link triggers onItemFollow', () => {
+  test('split trigger click on external link calls onItemFollow', () => {
     const onItemClick = jest.fn();
     const onItemFollow = jest.fn();
     const wrapper = renderSplitButtonDropdown({
