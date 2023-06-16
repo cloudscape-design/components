@@ -25,8 +25,8 @@ function renderExpandableSection(props: ExpandableSectionProps = {}): Expandable
 }
 
 describe('Expandable Section', () => {
-  const variantsWithDescription: ExpandableSectionProps.Variant[] = ['container', 'default'];
-  const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['footer', 'navigation'];
+  const variantsWithDescription: ExpandableSectionProps.Variant[] = ['container', 'default', 'footer'];
+  const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['navigation'];
   const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
 
   describe('variant property', () => {

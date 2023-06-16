@@ -191,7 +191,8 @@ $icon-margin-right-medium: awsui.$space-xs;
 }
 
 // Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
-.description-default {
+.description-default,
+.description-footer {
   padding-left: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
 }
 .description-container {

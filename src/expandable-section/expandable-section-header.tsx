@@ -131,7 +131,6 @@ const ExpandableHeaderTextWrapper = ({
   onKeyDown,
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
-  const isDefault = variant === 'default';
   const HeadingTag = headingTagOverride || 'div';
   const hasInteractiveElements = isContainer && (headerInfo || headerActions);
   const listeners = { onClick, onKeyDown, onKeyUp };
@@ -139,9 +138,9 @@ const ExpandableHeaderTextWrapper = ({
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
   const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
-  // For the default variant, include also the immediate wrapper around it to include the entire row
+  // For the default and footer variants, include also the immediate wrapper around it to include the entire row
   // for backwards compatibility, but exclude the description below.
-  const headingTagListeners = !headerButtonListeners && isDefault ? listeners : undefined;
+  const headingTagListeners = !headerButtonListeners && !isContainer ? listeners : undefined;
   // For all other cases, make the entire header clickable for backwards compatibility.
   const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
 
@@ -186,14 +185,16 @@ const ExpandableHeaderTextWrapper = ({
           {headerButton}
         </InternalHeader>
       ) : (
-        <HeadingTag
-          className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-          {...headingTagListeners}
-        >
-          {headerButton}
-        </HeadingTag>
+        <>
+          <HeadingTag
+            className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+            {...headingTagListeners}
+          >
+            {headerButton}
+          </HeadingTag>
+          {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
+        </>
       )}
-      {isDefault && description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
     </div>
   );
 };
