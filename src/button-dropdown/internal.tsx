@@ -48,7 +48,8 @@ const InternalButtonDropdown = React.forwardRef(
       checkSafeUrl('ButtonDropdown', item.href);
     }
 
-    const dropdownItems = variant === 'split-primary' ? items.slice(1) : items;
+    const isValidSplitButton = variant === 'split-primary' && items.length > 1 && !('items' in items[0]);
+    const dropdownItems = isValidSplitButton ? items.slice(1) : items;
 
     const {
       isOpen,
@@ -115,7 +116,7 @@ const InternalButtonDropdown = React.forwardRef(
           {customTriggerBuilder(clickHandler, triggerRef, disabled, isOpen, ariaLabel)}
         </div>
       );
-    } else if (variant === 'split-primary' && items.length > 1) {
+    } else if (isValidSplitButton) {
       const item = items[0];
       const { iconName, iconAlt, iconSvg, iconUrl } = item;
       const splitButtonIconProps = item.external
@@ -136,6 +137,7 @@ const InternalButtonDropdown = React.forwardRef(
               ref={splitActionRef}
               className={styles['trigger-button']}
               {...splitButtonIconProps}
+              href={item.href}
               variant="primary"
               ariaLabel={itemAriaLabel}
               loading={loading}
@@ -143,16 +145,12 @@ const InternalButtonDropdown = React.forwardRef(
               disabled={disabled || item.disabled}
               formAction="none"
               onClick={event => {
-                if (!loading && !disabled) {
-                  fireCancelableEvent(onItemClick, itemClickDetail, event);
-                  closeDropdown();
-                }
+                fireCancelableEvent(onItemClick, itemClickDetail, event);
+                closeDropdown();
               }}
               onFollow={event => {
-                if (!loading && !disabled) {
-                  fireCancelableEvent(onItemFollow, itemClickDetail, event);
-                  closeDropdown();
-                }
+                fireCancelableEvent(onItemFollow, itemClickDetail, event);
+                closeDropdown();
               }}
               // Prevent keyboard events from propagation to the button dropdown handler.
               __nativeAttributes={{

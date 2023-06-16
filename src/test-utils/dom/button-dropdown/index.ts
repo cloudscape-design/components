@@ -18,9 +18,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   findSplitButton(): null | ElementWrapper<HTMLButtonElement> {
-    return (
-      this.findByClassName(styles['split-trigger'])?.find<HTMLButtonElement>(`button.${buttonStyles.button}`) ?? null
-    );
+    return this.findByClassName(styles['split-trigger'])?.find<HTMLButtonElement>(`.${buttonStyles.button}`) ?? null;
   }
 
   findOpenDropdown(): ElementWrapper | null {

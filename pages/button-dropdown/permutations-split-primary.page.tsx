@@ -108,6 +108,7 @@ export default function () {
                       variant="split-primary"
                       ariaLabel="More instance actions"
                       loadingText="Loading"
+                      onItemClick={({ detail }) => alert(detail.id)}
                       {...permutation}
                     />
                   }
