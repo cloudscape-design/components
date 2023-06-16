@@ -36,7 +36,6 @@ const InternalButtonDropdown = React.forwardRef(
       title,
       description,
       preferCenter,
-      stretchTriggerHeight,
       __internalRootRef,
       ...props
     }: InternalButtonDropdownProps,
@@ -227,7 +226,7 @@ const InternalButtonDropdown = React.forwardRef(
         <Dropdown
           open={canBeOpened && isOpen}
           stretchWidth={false}
-          stretchTriggerHeight={variant === 'navigation' || stretchTriggerHeight}
+          stretchTriggerHeight={variant === 'navigation'}
           expandToViewport={expandToViewport}
           preferCenter={preferCenter}
           onDropdownClose={() => toggleDropdown()}
