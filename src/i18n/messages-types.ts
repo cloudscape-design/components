@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 
 /** Auto-generated argument types based on "en" i18n strings. Do not edit manually. */
-export interface CloudscapeI18nFormatArgTypes {
+export interface I18nFormatArgTypes {
   "[charts]": {
     "loadingText": never;
     "errorText": never;

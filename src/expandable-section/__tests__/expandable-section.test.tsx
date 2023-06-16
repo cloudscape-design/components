@@ -137,11 +137,17 @@ describe('Expandable Section', () => {
 
   describe('a11y', () => {
     test('content region is labelled by header', () => {
-      const wrapper = renderExpandableSection();
-      const header = wrapper.findHeader().getElement();
+      const wrapper = renderExpandableSection({
+        variant: 'container',
+        headerText: 'Container header',
+        headerDescription: 'Container description',
+      });
+      const header = wrapper.findExpandButton().getElement();
       const expandedContent = wrapper.findContent().getElement();
       const contentId = expandedContent?.getAttribute('id');
       expect(header).toHaveAttribute('aria-controls', contentId);
+      expect(expandedContent).toHaveAccessibleName('Container header');
+      expect(expandedContent).toHaveAccessibleDescription('Container description');
     });
     test('aria-expanded=false when collapsed', () => {
       const wrapper = renderExpandableSection();
@@ -323,16 +329,22 @@ describe('Variant container with headerText', () => {
     expect(content).toHaveAttribute('aria-label', 'ARIA Label');
     expect(headerButton).not.toHaveAttribute('aria-labelledby');
   });
-  test('set aria-labelledby when no headerAriaLabel is set', () => {
+  test('set aria labels when no headerAriaLabel is set', () => {
     const wrapper = renderExpandableSection({
       variant: 'container',
       headerText: 'Header component',
-      headerCounter: '(5)',
+    });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    expect(headerButton).toHaveAccessibleName('Header component');
+  });
+  test('set aria description if description present', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
       headerDescription: 'Expand to see more content',
     });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement()!.getAttribute('aria-labelledby');
-    const screenreaderElement = wrapper.findHeader().find(`#${headerButton}`)!.getElement();
-    expect(screenreaderElement.textContent).toBe('Header component (5) Expand to see more content');
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    expect(headerButton).toHaveAccessibleDescription('Expand to see more content');
   });
   test('does not set aria-labelledby for default variant', () => {
     const wrapper = renderExpandableSection({

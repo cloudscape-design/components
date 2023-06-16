@@ -42,7 +42,7 @@ export function validate(uri: string) {
 }
 
 export function getErrorText(
-  i18n: ComponentFormatFunction,
+  i18n: ComponentFormatFunction<'s3-resource-selector'>,
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined,
   errorCode: ReturnType<typeof validate>
 ) {

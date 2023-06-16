@@ -225,8 +225,8 @@ export default function DateRangePickerCalendar({
               baseDate={currentMonth}
               locale={normalizedLocale}
               onChangeMonth={onHeaderChangeMonthHandler}
-              previousMonthLabel={i18n('i18nStrings.previousMonthAriaLabel', i18nStrings?.previousMonthAriaLabel)}
-              nextMonthLabel={i18n('i18nStrings.nextMonthAriaLabel', i18nStrings?.nextMonthAriaLabel)}
+              previousMonthLabel={i18nStrings?.previousMonthAriaLabel}
+              nextMonthLabel={i18nStrings?.nextMonthAriaLabel}
               isSingleGrid={isSingleGrid}
               headingIdPrefix={headingIdPrefix}
             />

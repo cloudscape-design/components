@@ -51,14 +51,14 @@ function SettingsForm() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   return (
     <SpaceBetween direction="horizontal" size="m">
-      <FormField description="Only valid for 'vertical' position." label="Media width">
+      <FormField description="Only valid for 'side' position." label="Media width">
         <Input
           placeholder={'example: 30%'}
           value={urlParams.width}
           onChange={event => setUrlParams({ width: event.detail.value })}
         />
       </FormField>
-      <FormField description="Only valid for 'horizontal' position." label="Media height">
+      <FormField description="Only valid for 'top' position." label="Media height">
         <Input
           placeholder={'example: 200px'}
           value={urlParams.height}

@@ -66,17 +66,25 @@ describe('AnalyticsFunnel', () => {
     );
   });
 
-  test('calls funnelComplete when the component unmounts', () => {
-    const { unmount } = render(
-      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />
+  test('calls funnelComplete only when funnelSubmit is called', () => {
+    // ChildComponent is a sample component that renders a button to call funnelSubmit
+    const ChildComponent = () => {
+      const { funnelSubmit } = useFunnel();
+
+      return <button onClick={funnelSubmit}>Submit</button>;
+    };
+
+    const { getByText } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+      </AnalyticsFunnel>
     );
 
-    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
-    unmount();
+    fireEvent.click(getByText('Submit')); // Trigger the button click event
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
   });
 
-  test('calls funnelComplete and funnelSuccessful when the component unmounts after submitting', () => {
+  test('calls funnelSuccessful when the component unmounts after submitting', () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -92,13 +100,12 @@ describe('AnalyticsFunnel', () => {
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
-    unmount();
 
-    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    unmount();
     expect(FunnelMetrics.funnelSuccessful).toHaveBeenCalledTimes(1);
   });
 
-  test('calls funnelComplete and funnelCancelled when the component unmounts after cancelling', () => {
+  test('calls funnelCancelled when the component unmounts after cancelling', () => {
     // ChildComponent is a sample component that renders a button to call funnelCancel
     const ChildComponent = () => {
       const { funnelCancel } = useFunnel();
@@ -114,9 +121,9 @@ describe('AnalyticsFunnel', () => {
     expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
 
     fireEvent.click(getByText('Cancel')); // Trigger the button click event
-    unmount();
 
-    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    unmount();
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(0);
     expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
   });
 

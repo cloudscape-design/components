@@ -199,7 +199,6 @@ describe('Wizard Analytics', () => {
 
     // funnelComplete is called in the next tick after unmounting
     unmount();
-    jest.runOnlyPendingTimers();
 
     expect(FunnelMetrics.funnelComplete).toBeCalledTimes(1);
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledWith(
@@ -217,7 +216,6 @@ describe('Wizard Analytics', () => {
 
     // funnelCancel is called in the next tick after unmounting
     unmount();
-    jest.runOnlyPendingTimers();
 
     expect(FunnelMetrics.funnelCancelled).toBeCalledTimes(1);
     expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledWith(
@@ -227,8 +225,7 @@ describe('Wizard Analytics', () => {
     );
   });
 
-  // TODO: Enable once chore/analytics-single-page is merged
-  test.skip('sends a funnelError metric when an error is rendered', () => {
+  test('sends a funnelError metric when an error is rendered', () => {
     const steps: WizardProps['steps'] = [
       {
         ...DEFAULT_STEPS[0],

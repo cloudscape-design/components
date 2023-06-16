@@ -27,6 +27,17 @@ export const MESSAGES: I18nProviderProps.Messages = {
   },
 };
 
+declare module '../../../lib/components/i18n/messages-types' {
+  interface I18nFormatArgTypes {
+    'test-component': {
+      topLevelString: never;
+      topLevelFunction: { type: string };
+      'nested.nestedString': never;
+      'nested.nestedFunction': { type: string };
+    };
+  }
+}
+
 export function TestComponent(props: TestComponentProps) {
   const i18n = useInternalI18n('test-component');
 

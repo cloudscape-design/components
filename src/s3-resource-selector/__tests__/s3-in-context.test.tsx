@@ -353,7 +353,6 @@ describe('i18n', () => {
         messages={{
           's3-resource-selector': {
             'i18nStrings.inContextUriLabel': 'Custom URI label',
-            'i18nStrings.inContextInputPlaceholder': 'Custom placeholder',
             'i18nStrings.inContextSelectPlaceholder': 'Custom version select',
             'i18nStrings.inContextViewButton': 'Custom view',
             'i18nStrings.inContextViewButtonAriaLabel': 'Custom view aria label',
@@ -367,7 +366,6 @@ describe('i18n', () => {
     expect(createWrapper(wrapper.getElement()).findFormField()!.findLabel()!.getElement()).toHaveTextContent(
       'Custom URI label'
     );
-    expect(wrapper.findUriInput().findNativeInput().getElement()).toHaveAttribute('placeholder', 'Custom placeholder');
     expect(wrapper.findVersionsSelect()!.findTrigger().getElement()).toHaveTextContent('Custom version select');
     expect(wrapper.findViewButton()!.getElement()).toHaveTextContent('Custom view');
     expect(wrapper.findViewButton()!.getElement()).toHaveAttribute('aria-label', 'Custom view aria label');

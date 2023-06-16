@@ -40,6 +40,7 @@ export default function InternalExpandableSection({
   const ref = useRef<HTMLDivElement>(null);
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
+  const descriptionId = `${controlId}-description`;
 
   const baseProps = getBaseProps(props);
   const [expanded, setExpanded] = useControllable(controlledExpanded, onChange, defaultExpanded, {
@@ -97,6 +98,7 @@ export default function InternalExpandableSection({
       header={
         <ExpandableSectionHeader
           id={triggerControlId}
+          descriptionId={descriptionId}
           className={clsx(styles.header, styles[`header-${variant}`])}
           variant={variant}
           expanded={!!expanded}
@@ -120,6 +122,7 @@ export default function InternalExpandableSection({
           role="group"
           aria-label={triggerProps.ariaLabel}
           aria-labelledby={triggerProps.ariaLabelledBy}
+          aria-describedby={variant === 'container' && headerDescription ? descriptionId : undefined}
         >
           {children}
         </div>

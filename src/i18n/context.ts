@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useContext } from 'react';
+import { I18nFormatArgTypes } from './messages-types';
 
-export type CustomHandler<T> = (formatFn: (args: Record<string, string | number>) => string) => T;
+export type CustomHandler<ReturnValue, FormatFnArgs> = (formatFn: (args: FormatFnArgs) => string) => ReturnValue;
 
 export interface FormatFunction {
   (namespace: string, component: string, key: string, provided: string): string;
   (namespace: string, component: string, key: string, provided: string | undefined): string | undefined;
-  <T>(namespace: string, component: string, key: string, provided: T, handler?: CustomHandler<T>): T;
+  <T, A = unknown>(namespace: string, component: string, key: string, provided: T, handler?: CustomHandler<T, A>): T;
 }
 
 export interface InternalI18nContextProps {
@@ -25,15 +26,41 @@ export function useLocale(): string | null {
   return useContext(InternalI18nContext).locale;
 }
 
-export interface ComponentFormatFunction {
-  (key: string, provided: string): string;
-  (key: string, provided: string | undefined): string | undefined;
-  <T>(key: string, provided: T, handler?: CustomHandler<T>): T;
+/**
+ * Utility to get "keyof T" but exclude number or symbol types.
+ * TypeScript allows those types because JS implicitly casts them to string.
+ */
+type StringKeyOf<T> = Extract<keyof T, string>;
+
+export interface ComponentFormatFunction<ComponentName extends StringKeyOf<I18nFormatArgTypes>> {
+  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>>(
+    key: MessageKey,
+    provided: string,
+    handler?: CustomHandler<string, I18nFormatArgTypes[ComponentName][MessageKey]>
+  ): string;
+  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>>(
+    key: MessageKey,
+    provided: string | undefined,
+    handler?: CustomHandler<string, I18nFormatArgTypes[ComponentName][MessageKey]>
+  ): string | undefined;
+  <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>, ReturnValue>(
+    key: MessageKey,
+    provided: ReturnValue,
+    handler: I18nFormatArgTypes[ComponentName][MessageKey] extends never
+      ? never
+      : CustomHandler<ReturnValue, I18nFormatArgTypes[ComponentName][MessageKey]>
+  ): ReturnValue;
 }
 
-export function useInternalI18n(componentName: string): ComponentFormatFunction {
+export function useInternalI18n<ComponentName extends StringKeyOf<I18nFormatArgTypes>>(
+  componentName: ComponentName
+): ComponentFormatFunction<ComponentName> {
   const { format } = useContext(InternalI18nContext);
-  return <T>(key: string, provided: T, customHandler?: CustomHandler<T>) => {
-    return format<T>('@cloudscape-design/components', componentName, key, provided, customHandler);
+  return <MessageKey extends StringKeyOf<I18nFormatArgTypes[ComponentName]>, ValueType>(
+    key: MessageKey,
+    provided: ValueType,
+    customHandler?: CustomHandler<ValueType, I18nFormatArgTypes[ComponentName][MessageKey]>
+  ) => {
+    return format('@cloudscape-design/components', componentName, key, provided, customHandler);
   };
 }

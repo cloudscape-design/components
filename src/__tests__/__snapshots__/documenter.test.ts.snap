@@ -4747,10 +4747,6 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
     Object {
       "description": "Use this slot to render a media element. Supported element types are 'img', 'video', and 'picture'.
 You can define different positions and sizes for the media element within the container.
-The value for each media property can either be a single value (which applies for all breakpoints) or an object where the key
-is one of the supported breakpoints (\`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`) or \`default\`.
-The value of each key is applied for that breakpoint and those above it. You must provide a \`default\` value for \`content\`.
-
 * \`content\` - Use this slot to render your media element. We support \`img\`, \`video\` and \`picture\` elements.
 
 * \`position\` - Defines the media slot's position within the container. Defaults to \`top\`.
@@ -4771,22 +4767,22 @@ If no height is provided, the media slot will be displayed at its full height.
           Object {
             "name": "content",
             "optional": false,
-            "type": "MediaDefinition.ContentBreakpointMapping | React.ReactNode",
+            "type": "React.ReactNode",
           },
           Object {
             "name": "height",
             "optional": true,
-            "type": "MediaDefinition.BreakpointMapping<number | string> | number | string",
+            "type": "number | string",
           },
           Object {
             "name": "position",
             "optional": true,
-            "type": "\\"side\\" | \\"top\\" | MediaDefinition.BreakpointMapping<\\"side\\" | \\"top\\">",
+            "type": "\\"side\\" | \\"top\\"",
           },
           Object {
             "name": "width",
             "optional": true,
-            "type": "MediaDefinition.BreakpointMapping<number | string> | number | string",
+            "type": "number | string",
           },
         ],
         "type": "object",

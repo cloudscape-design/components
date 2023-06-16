@@ -11,7 +11,6 @@ import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/t
 
 jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
   useContainerQuery: jest.fn(() => [600, () => {}]),
-  useContainerBreakpoints: jest.fn(() => [null, React.createRef()]),
 }));
 
 jest.mock('../../../lib/components/internal/utils/dom', () => ({

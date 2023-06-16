@@ -12,7 +12,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useMedia } from './media';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
@@ -76,9 +75,7 @@ export default function InternalContainer({
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
-  const { breakpointRef, mediaPosition, mediaHeight, mediaWidth, mediaContent } = useMedia(media);
-
-  const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef, breakpointRef);
+  const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
   const headerIdProp = __headerId ? { id: __headerId } : {};
 
@@ -105,6 +102,7 @@ export default function InternalContainer({
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
   const hasMedia = !!media?.content;
+  const mediaPosition = media?.position ?? 'top';
 
   return (
     <div
@@ -123,13 +121,9 @@ export default function InternalContainer({
       {hasMedia && (
         <div
           className={clsx(styles[`media-${mediaPosition === 'side' ? 'side' : 'top'}`], styles.media)}
-          style={
-            mediaPosition === 'top'
-              ? { height: typeof mediaHeight === 'string' || typeof mediaHeight === 'number' ? mediaHeight : '' }
-              : { width: typeof mediaWidth === 'string' || typeof mediaWidth === 'number' ? mediaWidth : '' }
-          }
+          style={mediaPosition === 'top' ? { height: media?.height || '' } : { width: media?.width || '' }}
         >
-          {mediaContent}
+          {media.content}
         </div>
       )}
       <div className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}>
