@@ -7,6 +7,11 @@ import PropertyFilter from '../../../lib/components/property-filter';
 import Select from '../../../lib/components/select';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+
+jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
+  useMobile: jest.fn().mockReturnValue(false),
+}));
 
 interface Item {
   id: number;
@@ -77,6 +82,24 @@ test('should render table without extra slots', () => {
   expect(wrapper.findFooterSlot()).toBeNull();
   expect(wrapper.findTextFilter()).toBeNull();
   expect(wrapper.findPagination()).toBeNull();
+});
+
+test('should render table with no pagination in the footer for desktop viewports', () => {
+  const { wrapper } = renderTable(
+    <Table pagination="pagination" columnDefinitions={defaultColumns} items={defaultItems} />
+  );
+  expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+  expect(wrapper.findFooterPagination()).toBeNull();
+});
+
+test('should render table with pagination in the footer for mobile viewports', () => {
+  (useMobile as jest.Mock).mockReturnValue(true);
+
+  const { wrapper } = renderTable(
+    <Table pagination="pagination" columnDefinitions={defaultColumns} items={defaultItems} />
+  );
+  expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+  expect(wrapper.findFooterPagination()?.getElement()).toHaveTextContent('pagination');
 });
 
 test('should render table with header and footer', () => {

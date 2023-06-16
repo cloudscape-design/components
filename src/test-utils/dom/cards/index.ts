@@ -86,6 +86,10 @@ export default class CardsWrapper extends ComponentWrapper {
     return this.findComponent(`.${tableStyles['tools-pagination']}`, PaginationWrapper);
   }
 
+  findFooterPagination(): PaginationWrapper | null {
+    return this.findComponent(`.${styles['footer-pagination']}`, PaginationWrapper);
+  }
+
   findCollectionPreferences(): CollectionPreferencesWrapper | null {
     return this.findComponent(`.${tableStyles['tools-preferences']}`, CollectionPreferencesWrapper);
   }
