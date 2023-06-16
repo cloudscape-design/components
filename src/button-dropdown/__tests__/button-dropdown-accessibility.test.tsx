@@ -107,6 +107,6 @@ it('a11y: default, opened', async () => {
 });
 
 it('a11y: split-primary variant', async () => {
-  const { container } = render(<ButtonDropdown items={items} variant="split-primary" ariaLabel="More actions" />);
+  const { container } = render(<ButtonDropdown items={items} variant="split-primary" ariaLabel="Actions" />);
   await expect(container).toValidateA11y();
 });

@@ -131,7 +131,7 @@ const InternalButtonDropdown = React.forwardRef(
       };
 
       trigger = (
-        <div className={styles['split-trigger-wrapper']}>
+        <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
           <div className={clsx(styles['trigger-item'], styles['split-trigger'])}>
             <InternalButton
               ref={splitActionRef}

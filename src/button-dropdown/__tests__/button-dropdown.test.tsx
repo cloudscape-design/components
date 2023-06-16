@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
@@ -14,7 +14,7 @@ const renderButtonDropdown = (props: Parameters<typeof ButtonDropdown>[0]) => {
 };
 
 const renderSplitButtonDropdown = (props: Parameters<typeof ButtonDropdown>[0]) => {
-  return renderButtonDropdown({ ariaLabel: 'More actions', ...props, variant: 'split-primary' });
+  return renderButtonDropdown({ ariaLabel: 'Actions', ...props, variant: 'split-primary' });
 };
 
 const items: ButtonDropdownProps.Items = [
@@ -337,5 +337,19 @@ describe('"split-primary" variant', () => {
 
     wrapper.findSplitButton()!.keyup(KeyCode.space);
     expect(wrapper.findOpenDropdown()).not.toBeTruthy();
+  });
+
+  test('buttons are wrapped in a semantic group', () => {
+    renderSplitButtonDropdown({
+      items: [
+        { id: '1', text: 'First' },
+        { id: '2', text: 'Second' },
+      ],
+      ariaLabel: 'Test actions',
+    });
+
+    expect(screen.getByRole('group')).toHaveAccessibleName('Test actions');
+    expect(screen.getAllByRole('button')[0]).toHaveAccessibleName('First');
+    expect(screen.getAllByRole('button')[1]).toHaveAccessibleName('Test actions');
   });
 });

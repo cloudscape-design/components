@@ -106,7 +106,7 @@ export default function () {
                   {
                     <ButtonDropdown
                       variant="split-primary"
-                      ariaLabel="More instance actions"
+                      ariaLabel="Instance actions"
                       loadingText="Loading"
                       onItemClick={({ detail }) => alert(detail.id)}
                       {...permutation}
