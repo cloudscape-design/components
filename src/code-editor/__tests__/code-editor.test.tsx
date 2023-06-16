@@ -209,6 +209,11 @@ describe('Code editor component', () => {
     editorMock.on.mockRestore();
   });
 
+  it('provides ariaLabel to the underlying textarea', () => {
+    renderCodeEditor({ ariaLabel: 'test aria label' });
+    expect(editorMock.renderer.textarea).toHaveAttribute('aria-label', 'test aria label');
+  });
+
   describe('onDelayedChange', () => {
     beforeEach(() => jest.useFakeTimers());
     afterEach(() => jest.useRealTimers());
