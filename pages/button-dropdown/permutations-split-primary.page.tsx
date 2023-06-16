@@ -4,81 +4,75 @@ import * as React from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import { Box, SpaceBetween } from '~components';
-import { cloneDeep, toString } from 'lodash';
+import { toString } from 'lodash';
 import createPermutations from '../utils/permutations';
 import ScreenshotArea from '../utils/screenshot-area';
 import PermutationsView from '../utils/permutations-view';
 
-const defaultItems: ButtonDropdownProps['items'] = [
-  {
-    id: 'launch-instance',
-    text: 'Launch instance',
-    iconName: 'add-plus',
-  },
-  {
-    id: 'launch-instance-from-template-a',
-    text: 'Launch instance from template A',
-    iconName: 'file',
-  },
-  {
-    id: 'launch-instance-from-template-B',
-    text: 'Launch instance from template B',
-    iconName: 'file',
-  },
-  {
-    id: 'view-instances',
-    text: 'View instances',
-    href: 'https://instances.com',
-    external: true,
-    externalIconAriaLabel: '(opens in new tab)',
-  },
-];
-
-const itemsWithTemplatesDisabled = cloneDeep(defaultItems);
-itemsWithTemplatesDisabled[1].disabled = true;
-itemsWithTemplatesDisabled[1].disabledReason = 'Template A is unavailable';
-itemsWithTemplatesDisabled[2].disabled = true;
-itemsWithTemplatesDisabled[2].disabledReason = 'Template A is unavailable';
-
-const itemsWithLaunchActionsDisabled = cloneDeep(defaultItems) as ButtonDropdownProps.ItemOrGroup[];
-itemsWithLaunchActionsDisabled[0].disabled = true;
-itemsWithLaunchActionsDisabled[0].disabledReason = 'No permission';
-itemsWithLaunchActionsDisabled[1].disabled = true;
-itemsWithLaunchActionsDisabled[1].disabledReason = 'No permission';
-itemsWithLaunchActionsDisabled[2].disabled = true;
-itemsWithLaunchActionsDisabled[2].disabledReason = 'No permission';
-itemsWithLaunchActionsDisabled.unshift({ ...itemsWithLaunchActionsDisabled[0] });
-
-const itemsWithViewInstancesActionFirst = cloneDeep(defaultItems) as ButtonDropdownProps.ItemOrGroup[];
-itemsWithViewInstancesActionFirst.unshift(itemsWithViewInstancesActionFirst.pop() as ButtonDropdownProps.ItemOrGroup);
+const launchInstanceItem: ButtonDropdownProps.Item = {
+  id: 'launch-instance',
+  text: 'Launch instance',
+  iconName: 'add-plus',
+};
+const launchInstanceFromTemplateAItem: ButtonDropdownProps.Item = {
+  id: 'launch-instance-from-template-a',
+  text: 'Launch instance from template A',
+  iconName: 'file',
+};
+const launchInstanceFromTemplateBItem: ButtonDropdownProps.Item = {
+  id: 'launch-instance-from-template-b',
+  text: 'Launch instance from template B',
+  iconName: 'file',
+};
+const viewInstancesItem: ButtonDropdownProps.Item = {
+  id: 'view-instances',
+  text: 'View instances',
+  href: 'https://instances.com',
+  external: true,
+  externalIconAriaLabel: '(opens in new tab)',
+};
 
 const permutations = createPermutations<ButtonDropdownProps & { TITLE: string; PROPERTY?: string }>([
   {
     TITLE: ['With 4 actions'],
     PROPERTY: ['disabled'],
-    items: [defaultItems],
+    items: [[launchInstanceItem, launchInstanceFromTemplateAItem, launchInstanceFromTemplateBItem, viewInstancesItem]],
     disabled: [false, true],
   },
   {
     TITLE: ['With 4 actions'],
     PROPERTY: ['loading'],
-    items: [defaultItems],
+    items: [[launchInstanceItem, launchInstanceFromTemplateAItem, launchInstanceFromTemplateBItem, viewInstancesItem]],
     loading: [false, true],
   },
   {
     TITLE: ['With template actions disabled'],
-    items: [itemsWithTemplatesDisabled],
+    items: [
+      [
+        launchInstanceItem,
+        { ...launchInstanceFromTemplateAItem, disabled: true, disabledReason: 'Template A is unavailable' },
+        { ...launchInstanceFromTemplateBItem, disabled: true, disabledReason: 'Template B is unavailable' },
+        viewInstancesItem,
+      ],
+    ],
   },
   {
     TITLE: ['With launch actions disabled'],
     PROPERTY: ['loading'],
-    items: [itemsWithLaunchActionsDisabled],
+    items: [
+      [
+        { ...launchInstanceItem, disabled: true, disabledReason: 'No permission' },
+        { ...launchInstanceFromTemplateAItem, disabled: true, disabledReason: 'No permission' },
+        { ...launchInstanceFromTemplateBItem, disabled: true, disabledReason: 'No permission' },
+        viewInstancesItem,
+      ],
+    ],
     loading: [false, true],
   },
   {
     TITLE: ['With external icon split action'],
     PROPERTY: ['loading'],
-    items: [itemsWithViewInstancesActionFirst],
+    items: [[viewInstancesItem, launchInstanceItem, launchInstanceFromTemplateAItem, launchInstanceFromTemplateBItem]],
     loading: [false, true],
   },
 ]);
