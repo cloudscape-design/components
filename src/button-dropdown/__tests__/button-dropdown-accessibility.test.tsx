@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+import '../../__a11y__/to-validate-a11y';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -90,4 +91,22 @@ it('sets aria-owns attribute when dropdown is open and expandToViewport is activ
 it('can set ariaLabel', () => {
   const wrapper = renderButtonDropdown({ items, ariaLabel: 'Some dropdown' });
   expect(wrapper.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Some dropdown');
+});
+
+it('a11y: default', async () => {
+  const { container } = render(<ButtonDropdown items={items}>Open dropdown</ButtonDropdown>);
+  await expect(container).toValidateA11y();
+});
+
+it('a11y: default, opened', async () => {
+  const { container } = render(<ButtonDropdown items={items}>Open dropdown</ButtonDropdown>);
+  const wrapper = createWrapper(container).findButtonDropdown()!;
+  wrapper.openDropdown();
+
+  await expect(container).toValidateA11y();
+});
+
+it('a11y: split-primary variant', async () => {
+  const { container } = render(<ButtonDropdown items={items} variant="split-primary" ariaLabel="More actions" />);
+  await expect(container).toValidateA11y();
 });
