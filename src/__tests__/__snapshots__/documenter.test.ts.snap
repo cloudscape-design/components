@@ -2628,7 +2628,7 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
     },
     Object {
       "description": "Adds \`aria-label\` to the button element. It should be used in buttons that don't have text in order to make
-them accessible.",
+them accessible. The text will also be added to the \`title\` attribute of the button.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",

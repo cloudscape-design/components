@@ -94,6 +94,8 @@ export const InternalButton = React.forwardRef(
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
+      // add ariaLabel as `title` as visible hint text
+      title: ariaLabel,
       className: buttonClass,
       onClick: handleClick,
     } as const;
