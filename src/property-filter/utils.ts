@@ -69,7 +69,10 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
       // exact match found: return it
       return { ...token, value: option.value };
     }
-    if (token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()) {
+    if (
+      typeof token.value === 'string' &&
+      token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()
+    ) {
       // non-exact match: save and keep running in case exact match found later
       bestMatch.value = option.value;
     }

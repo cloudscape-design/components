@@ -146,4 +146,9 @@ describe('matchTokenValue', () => {
     );
     expect(result.value).toBe('one');
   });
+  test('should return token as-is for a token value of type string[]', () => {
+    const token: Token = { propertyKey: 'key', operator: '=', value: ['one', 'two', 'three'] };
+    const result = matchTokenValue(token, toInternalOptions([{ propertyKey: 'key', value: 'one,two,three' }]));
+    expect(result.value).toEqual(['one', 'two', 'three']);
+  });
 });
