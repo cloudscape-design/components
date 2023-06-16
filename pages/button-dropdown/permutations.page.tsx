@@ -22,19 +22,6 @@ const permutations = createPermutations<ButtonDropdownProps>([
     ariaLabel: ['Button dropdown'],
     children: ['Button Dropdown'],
   },
-  {
-    disabled: [false, true],
-    loading: [false, true],
-    items: [
-      [
-        { id: 'split-action', text: 'Split action' },
-        { id: 'dropdown-action-1', text: 'Dropdown action 1' },
-        { id: 'dropdown-action-2', text: 'Dropdown action 2' },
-      ],
-    ],
-    variant: ['split-primary'],
-    ariaLabel: ['Button dropdown'],
-  },
 ]);
 
 export default function () {

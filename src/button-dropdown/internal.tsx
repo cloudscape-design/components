@@ -48,7 +48,7 @@ const InternalButtonDropdown = React.forwardRef(
       checkSafeUrl('ButtonDropdown', item.href);
     }
 
-    const dropdownItems = items; // variant === 'split-primary' ? items.slice(1) : items;
+    const dropdownItems = variant === 'split-primary' ? items.slice(1) : items;
 
     const {
       isOpen,
@@ -80,9 +80,10 @@ const InternalButtonDropdown = React.forwardRef(
 
     const baseProps = getBaseProps(props);
 
+    const splitActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
 
-    useForwardFocus(ref, triggerRef);
+    useForwardFocus(ref, variant === 'split-primary' ? splitActionRef : triggerRef);
 
     const clickHandler = () => {
       if (!loading && !disabled) {
@@ -110,52 +111,57 @@ const InternalButtonDropdown = React.forwardRef(
     let trigger: React.ReactNode = null;
     if (customTriggerBuilder) {
       trigger = customTriggerBuilder(clickHandler, triggerRef, disabled, isOpen, ariaLabel);
-    } else if (variant === 'split-primary' && items.length > 0) {
+    } else if (variant === 'split-primary' && items.length > 1) {
       const item = items[0];
       const { iconName, iconAlt, iconSvg, iconUrl } = item;
-      const splitButtonIconProps = { iconName, iconAlt, iconSvg, iconUrl };
+      const splitButtonIconProps = item.external
+        ? ({ iconName: 'external', iconAlign: 'right' } as const)
+        : ({ iconName, iconAlt, iconSvg, iconUrl } as const);
+      const itemAriaLabel = item.externalIconAriaLabel ? `${item.text} ${item.externalIconAriaLabel}` : undefined;
+      const itemClickDetail = {
+        id: item.id || 'undefined',
+        href: item.href,
+        external: item.external,
+        target: item.external ? '_blank' : undefined,
+      };
 
       trigger = (
-        <div role="group" aria-label={ariaLabel} className={styles['split-trigger']}>
+        <div className={styles['split-trigger']}>
           <InternalButton
             {...splitButtonIconProps}
-            ref={triggerRef}
+            ref={splitActionRef}
             variant="primary"
+            ariaLabel={itemAriaLabel}
             loading={loading}
             loadingText={loadingText}
             disabled={disabled || item.disabled}
             formAction="none"
             className={styles.trigger}
             onClick={event => {
-              fireCancelableEvent(
-                onItemClick,
-                {
-                  id: item.id || 'undefined',
-                  href: item.href,
-                  external: item.external,
-                  // target: getItemTarget(item),
-                },
-                event
-              );
-              closeDropdown();
+              if (!loading && !disabled) {
+                fireCancelableEvent(onItemClick, itemClickDetail, event);
+                closeDropdown();
+              }
             }}
             onFollow={event => {
-              fireCancelableEvent(
-                onItemFollow,
-                {
-                  id: item.id || 'undefined',
-                  href: item.href,
-                  external: item.external,
-                  // target: getItemTarget(item),
-                },
-                event
-              );
-              closeDropdown();
+              if (!loading && !disabled) {
+                fireCancelableEvent(onItemFollow, itemClickDetail, event);
+                closeDropdown();
+              }
+            }}
+            __nativeAttributes={{
+              onKeyDown: (event: KeyboardEvent) => {
+                event.stopPropagation();
+              },
+              onKeyUp: (event: KeyboardEvent) => {
+                event.stopPropagation();
+              },
             }}
           >
             {item.text}
           </InternalButton>
           <InternalButton
+            ref={triggerRef}
             {...iconProps}
             variant="primary"
             disabled={loading || disabled}

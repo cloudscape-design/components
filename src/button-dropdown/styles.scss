@@ -49,6 +49,12 @@
 }
 
 .split-trigger {
+  display: flex;
+
+  & > .trigger:focus {
+    z-index: 1;
+  }
+
   & > .trigger:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
