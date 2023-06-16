@@ -37,6 +37,7 @@ export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     ...defaultPreferences,
     // set to "compact" for default "compact density setting".
+    contentDensity: 'compact',
   });
   const [selectedItems, setSelectedItems] = React.useState<any>([]);
 
@@ -87,6 +88,9 @@ export default function App() {
       })}
     </div>
   );
+  const [inlineEditTableDensity, setInlineEditTableDensity] = useState('compact' as 'comfortable' | 'compact');
+  const [stickyHeaderTableDensity, setStickyHeaderTableDensity] = useState('compact' as 'comfortable' | 'compact');
+
   return (
     <ScreenshotArea>
       <SpaceBetween size="l">
@@ -115,9 +119,7 @@ export default function App() {
               filteringAriaLabel="Filter instances"
             />
           }
-          variant="full-page"
           columnDisplay={preferences.contentDisplay}
-          footer={<a href="#">FOOTER</a>}
           preferences={
             <CollectionPreferences
               title="Preferences"
@@ -148,116 +150,170 @@ export default function App() {
             />
           }
         />
-        <Table<Instance>
-          {...collectionProps}
-          header={
-            <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-              Instances
-            </Header>
+        <h2>Table with inline edit</h2>
+        <button
+          aria-label="Toggle inline edit table content density"
+          onClick={() =>
+            setInlineEditTableDensity(inlineEditTableDensity === 'comfortable' ? 'compact' : 'comfortable')
           }
-          ariaLabels={ariaLabels}
-          selectionType="multi"
-          onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-          selectedItems={selectedItems}
-          stripedRows={preferences.stripedRows}
-          contentDensity={preferences.contentDensity}
-          wrapLines={preferences.wrapLines}
+        >
+          Toggle inline edit table content density
+        </button>
+        <Table
+          columnDefinitions={[
+            {
+              id: 'variable',
+              header: 'Variable name',
+              minWidth: 176,
+              cell: item => {
+                return item.name;
+              },
+              editConfig: {
+                ariaLabel: 'Name',
+                editIconAriaLabel: 'editable',
+                errorIconAriaLabel: 'Name Error',
+                editingCell: (item, { currentValue, setValue }) => {
+                  return (
+                    <Input
+                      autoFocus={true}
+                      value={currentValue ?? item.name}
+                      onChange={event => setValue(event.detail.value)}
+                    />
+                  );
+                },
+              },
+            },
+            {
+              id: 'type',
+              header: 'Type',
+              minWidth: 176,
+              editConfig: {
+                ariaLabel: 'Type',
+                editIconAriaLabel: 'editable',
+                editingCell: (item, { currentValue, setValue }) => {
+                  const value = currentValue ?? item.type;
+                  return (
+                    <Select
+                      autoFocus={true}
+                      selectedOption={
+                        [
+                          { label: '1A', value: '1A' },
+                          { label: '1B', value: '1B' },
+                          { label: '2A', value: '2A' },
+                          { label: '2B', value: '2B' },
+                        ].find(option => option.value === value) ?? null
+                      }
+                      onChange={event => {
+                        setValue(event.detail.selectedOption.value ?? item.type);
+                      }}
+                      options={[
+                        { label: '1A', value: '1A' },
+                        { label: '1B', value: '1B' },
+                        { label: '2A', value: '2A' },
+                        { label: '2B', value: '2B' },
+                      ]}
+                    />
+                  );
+                },
+              },
+              cell: item => {
+                return item.type;
+              },
+            },
+            {
+              id: 'description',
+              header: 'Description',
+              cell: e => e.description,
+            },
+          ]}
+          items={[
+            {
+              name: 'Item 1',
+              alt: 'First',
+              description: 'This is the first item',
+              type: '1A',
+              size: 'Small',
+            },
+            {
+              name: 'Item 2',
+              alt: 'Second',
+              description: 'This is the second item',
+              type: '1B',
+              size: 'Large',
+            },
+            {
+              name: 'Item 3',
+              alt: 'Third',
+              description: '-',
+              type: '1A',
+              size: 'Large',
+            },
+            {
+              name: 'Item 4',
+              alt: 'Fourth',
+              description: 'This is the fourth item',
+              type: '2A',
+              size: 'Small',
+            },
+            {
+              name: 'Item 5',
+              alt: '-',
+              description: 'This is the fifth item with a longer description',
+              type: '2A',
+              size: 'Large',
+            },
+            {
+              name: 'Item 6',
+              alt: 'Sixth',
+              description: 'This is the sixth item',
+              type: '1A',
+              size: 'Small',
+            },
+          ]}
+          loadingText="Loading resources"
+          submitEdit={async () => {
+            await new Promise(e => setTimeout(e, 1e3));
+          }}
+          ariaLabels={{
+            tableLabel: 'Distributions',
+            activateEditLabel: (column, item) => `Edit ${item.name} ${column.header}`,
+            cancelEditLabel: column => `Cancel editing ${column.header}`,
+            submitEditLabel: column => `Submit edit ${column.header}`,
+            submittingEditText: () => 'Loading edit response',
+            successfulEditLabel: () => 'Edit successful',
+          }}
+          contentDensity={inlineEditTableDensity}
+          empty={
+            <Box textAlign="center" color="inherit">
+              <b>No resources</b>
+              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+                No resources to display.
+              </Box>
+              <Button>Create resource</Button>
+            </Box>
+          }
+          header={<Header>Table with inline editing</Header>}
+        />
+
+        <h2>Sticky header table variants</h2>
+        {variantButtons}
+        <button
+          aria-label="Toggle sticky header table content density"
+          onClick={() =>
+            setStickyHeaderTableDensity(stickyHeaderTableDensity === 'comfortable' ? 'compact' : 'comfortable')
+          }
+        >
+          Toggle sticky header table content density
+        </button>
+        <Table
+          header={<Header headingTagOverride="h1">Sticky header table</Header>}
           columnDefinitions={columnsConfig}
           items={items}
-          filter={
-            <TextFilter
-              {...filterProps!}
-              countText={getMatchesCountText(filteredItemsCount!)}
-              filteringAriaLabel="Filter instances"
-            />
-          }
-          footer={'happy days'}
-          columnDisplay={preferences.contentDisplay}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              pageSizePreference={{
-                title: 'Select page size',
-                options: pageSizeOptions,
-              }}
-              contentDisplayPreference={{
-                ...contentDisplayPreference,
-                ...contentDisplayPreferenceI18nStrings,
-              }}
-              wrapLinesPreference={{
-                label: 'Wrap lines',
-                description: 'Wrap lines description',
-              }}
-              stripedRowsPreference={{
-                label: 'Striped rows',
-                description: 'Striped rows description',
-              }}
-              contentDensityPreference={{
-                label: 'Compact mode',
-                description: 'Display content in a more compact, denser mode',
-              }}
-            />
-          }
+          stickyHeader={true}
+          variant={variant}
+          contentDensity={stickyHeaderTableDensity}
         />
-        <Table<Instance>
-          {...collectionProps}
-          header={
-            <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-              Instances
-            </Header>
-          }
-          ariaLabels={ariaLabels}
-          selectionType="multi"
-          onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-          selectedItems={selectedItems}
-          stripedRows={preferences.stripedRows}
-          contentDensity={preferences.contentDensity}
-          wrapLines={preferences.wrapLines}
-          columnDefinitions={columnsConfig}
-          items={items}
-          pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
-          filter={
-            <TextFilter
-              {...filterProps!}
-              countText={getMatchesCountText(filteredItemsCount!)}
-              filteringAriaLabel="Filter instances"
-            />
-          }
-          columnDisplay={preferences.contentDisplay}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              pageSizePreference={{
-                title: 'Select page size',
-                options: pageSizeOptions,
-              }}
-              contentDisplayPreference={{
-                ...contentDisplayPreference,
-                ...contentDisplayPreferenceI18nStrings,
-              }}
-              wrapLinesPreference={{
-                label: 'Wrap lines',
-                description: 'Wrap lines description',
-              }}
-              stripedRowsPreference={{
-                label: 'Striped rows',
-                description: 'Striped rows description',
-              }}
-              contentDensityPreference={{
-                label: 'Compact mode',
-                description: 'Display content in a more compact, denser mode',
-              }}
-            />
-          }
-        />
+        <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
       </SpaceBetween>
     </ScreenshotArea>
   );
