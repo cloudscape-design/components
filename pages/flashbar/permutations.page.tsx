@@ -14,7 +14,7 @@ const noop = () => void 0;
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   {
-    type: ['success', 'warning', 'error', 'info'],
+    type: ['success', 'warning', 'error', 'info', 'in-progress'],
     buttonText: ['Go for it!'],
     dismissible: [true],
     onDismiss: [noop],
@@ -64,7 +64,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     ],
   },
   {
-    type: ['success', 'error', 'warning', 'info'],
+    type: ['success', 'error', 'warning', 'info', 'in-progress'],
     header: ['Flash header'],
     action: [
       <Button iconName="external" iconAlign="right">
@@ -73,7 +73,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     ],
   },
   {
-    type: ['success', 'warning', 'error'],
+    type: ['success', 'warning', 'error', 'in-progress'],
     loading: [true, false],
     header: [
       <Link color="inverted" href="#" variant="primary">
@@ -89,7 +89,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     ],
   },
   {
-    type: ['success', 'error', 'warning', 'info'],
+    type: ['success', 'error', 'warning', 'info', 'in-progress'],
     header: [
       <span>
         Header with a button{' '}

@@ -32,7 +32,7 @@ export namespace FlashbarProps {
     warningIconAriaLabel?: string;
   }
 
-  export type Type = 'success' | 'warning' | 'info' | 'error';
+  export type Type = 'success' | 'warning' | 'info' | 'error' | 'in-progress';
   export type AriaRole = 'alert' | 'status';
 }
 
@@ -84,10 +84,8 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `warningIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `warning`.
    * * `infoIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `info`.
    * * `successIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `success`.
-   * * `inProgressIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where `loading` is set to `true`).
+   * * `inProgressIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of type `in-progress` or with `loading` set to `true`.
    * @i18n
    */
   i18nStrings?: FlashbarProps.I18nStrings;
 }
-
-export type FlashType = FlashbarProps.Type | 'progress';

@@ -23,6 +23,7 @@ const ICON_TYPES = {
   warning: 'status-warning',
   info: 'status-info',
   error: 'status-negative',
+  'in-progress': 'status-in-progress',
 } as const;
 
 function actionButton(
