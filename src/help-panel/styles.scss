@@ -102,12 +102,6 @@
   strong {
     font-weight: styles.$font-weight-bold;
   }
-  a {
-    @include styles.link-inline;
-    &:focus {
-      @include styles.link-focus;
-    }
-  }
 
   .header {
     @include styles.font-panel-header;
@@ -144,6 +138,10 @@
   h6:first-child {
     margin-top: 0;
   }
+
+  a {
+    @include styles.link-inline;
+  }
 }
 
 .footer {
@@ -157,5 +155,15 @@
   ul {
     list-style: none;
     padding-left: 0;
+  }
+  a {
+    @include styles.link-default;
+  }
+}
+
+.content,
+.footer {
+  a:focus {
+    @include styles.link-focus;
   }
 }
