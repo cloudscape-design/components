@@ -81,9 +81,6 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
     @include styles.font-smoothing;
     font-size: awsui.$font-expandable-heading-size;
     letter-spacing: awsui.$font-heading-s-letter-spacing;
-    &:hover {
-      color: awsui.$color-text-expandable-section-hover;
-    }
   }
 
   &-container {
@@ -184,6 +181,9 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 
 .click-target {
   cursor: pointer;
+  &:hover {
+    color: awsui.$color-text-expandable-section-hover;
+  }
 }
 
 .description-default {
