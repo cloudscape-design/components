@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { variantSupportsDescription } from './utis';
+import { variantSupportsDescription } from './utils';
 
 export const componentName = 'ExpandableSection';
 

@@ -16,7 +16,7 @@ import styles from './styles.css.js';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { variantSupportsDescription } from './utis';
+import { variantSupportsDescription } from './utils';
 
 type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
