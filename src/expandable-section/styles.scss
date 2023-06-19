@@ -2,7 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
+@use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
@@ -10,8 +10,9 @@
 
 @use './motion';
 
-$icon-width: awsui.$size-icon-normal;
-$icon-margin-left: '(#{awsui.$font-body-m-line-height} - #{$icon-width}) / -2';
+$icon-width-normal: awsui.$size-icon-normal;
+$icon-width-medium: awsui.$size-icon-medium;
+$icon-margin-left: '(#{awsui.$font-body-m-line-height} - #{$icon-width-normal}) / -2';
 $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 
 .root {
@@ -186,7 +187,10 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
   }
 }
 
+// Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
 .description-default {
-  // Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
-  padding-left: calc(#{$icon-width} + #{$icon-margin-right} + #{$icon-margin-left});
+  padding-left: calc(#{$icon-width-normal} + #{$icon-margin-right} + #{$icon-margin-left});
+}
+.description-container {
+  padding-left: calc(#{$icon-width-medium} + #{$icon-margin-right} + #{$icon-margin-left});
 }

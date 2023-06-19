@@ -177,7 +177,7 @@ const ExpandableHeaderTextWrapper = ({
       {isContainer ? (
         <InternalHeader
           variant="h2"
-          description={description}
+          description={<span className={styles['description-container']}>{description}</span>}
           counter={headerCounter}
           info={headerInfo}
           actions={headerActions}
