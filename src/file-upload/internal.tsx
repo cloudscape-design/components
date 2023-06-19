@@ -13,7 +13,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
 import checkControlled from '../internal/hooks/check-controlled';
 import clsx from 'clsx';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
 import TokenList from '../internal/components/token-list';

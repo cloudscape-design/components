@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalHeader from '../header/internal';
 import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export const componentName = 'ExpandableSection';
 

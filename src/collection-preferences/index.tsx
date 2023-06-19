@@ -27,7 +27,7 @@ import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import ContentDisplayPreference from './content-display';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useInternalI18n } from '../internal/i18n/context';
 
 export { CollectionPreferencesProps };

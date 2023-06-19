@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, createContext, useContext } from 'r
 import { TableProps } from './interfaces';
 import { getColumnKey } from './utils';
 import headerCellStyles from './header-cell/styles.css.js';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export const DEFAULT_WIDTH = 120;
 const SELECTION_CELL_WIDTH = 54;

@@ -9,7 +9,7 @@ import InternalBox from '../box/internal';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 import InternalChartFilters from './chart-filters';

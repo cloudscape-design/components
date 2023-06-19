@@ -5,7 +5,7 @@ import { InputProps } from '../../../input/interfaces';
 import { NonCancelableEventHandler, CancelableEventHandler } from '../../events';
 import { KeyCode } from '../../keycode';
 
-import * as logger from '../../logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { isCommand, isDigit } from './utils/keys';
 
 import MaskFormat from './utils/mask-format';
@@ -57,7 +57,7 @@ const useMask = ({
   setPosition,
 }: UseMaskProps): UseMaskHook => {
   if (!format.isValid(value)) {
-    logger.warnOnce('useMask', `Invalid string "${value}" provided`);
+    warnOnce('useMask', `Invalid string "${value}" provided`);
   }
 
   const onMaskChange = (updatedValue: string) => {
