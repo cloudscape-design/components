@@ -225,7 +225,7 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         }
       )}
-      aria-label={drawers.ariaLabel}
+      aria-label={drawers?.ariaLabel}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -247,7 +247,7 @@ function DesktopTriggers() {
           />
         )}
 
-        {drawers.items.map((item: DrawersProps.Drawer) => (
+        {drawers?.items.map((item: DrawerItemProps) => (
           <TriggerButton
             ariaLabel={item.ariaLabels?.triggerButton}
             className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
@@ -337,7 +337,7 @@ export function MobileTriggers() {
         />
       )}
 
-      {drawers.items.map((item: DrawersProps.Drawer) => (
+      {drawers.items.map((item: DrawerItemProps) => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
