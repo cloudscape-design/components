@@ -31,4 +31,24 @@
   &.badge-color-red {
     background-color: awsui.$color-background-notification-red;
   }
+
+  &.badge-color-critical {
+    background-color: awsui.$color-charts-status-critical;
+  }
+
+  &.badge-color-high {
+    background-color: awsui.$color-charts-status-high;
+  }
+
+  &.badge-color-medium {
+    background-color: awsui.$color-charts-status-medium;
+  }
+
+  &.badge-color-low {
+    background-color: awsui.$color-charts-status-low;
+  }
+
+  &.badge-color-neutral {
+    background-color: awsui.$color-charts-status-neutral;
+  }
 }

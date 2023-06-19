@@ -9,7 +9,7 @@ import PermutationsView from './utils/permutations-view';
 
 const permutations = createPermutations<BadgeProps>([
   {
-    color: ['blue', 'grey', 'green', 'red'],
+    color: ['blue', 'grey', 'green', 'red', 'critical', 'high', 'medium', 'low', 'neutral'],
     children: [
       'ABC',
       'Badge With A Very Long Text',
