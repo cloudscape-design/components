@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useRef, useState } from 'react';
-import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
+import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../../icon/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
@@ -44,13 +43,14 @@ function TableCellEditable<ItemType>({
   const tdNativeAttributes = {
     'data-inline-editing-active': isEditing.toString(),
   };
+  const isFocusMoveNeededRef = useRef(false);
 
-  useEffectOnUpdate(() => {
-    if (!isEditing && editActivateRef.current) {
+  useEffect(() => {
+    if (!isEditing && editActivateRef.current && isFocusMoveNeededRef.current) {
+      isFocusMoveNeededRef.current = false;
       editActivateRef.current.focus();
     }
   }, [isEditing]);
-
   // To improve the initial page render performance we only show the edit icon when necessary.
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
@@ -76,7 +76,10 @@ function TableCellEditable<ItemType>({
           ariaLabels={ariaLabels}
           column={column}
           item={item}
-          onEditEnd={onEditEnd}
+          onEditEnd={e => {
+            isFocusMoveNeededRef.current = true;
+            onEditEnd(e);
+          }}
           submitEdit={submitEdit ?? submitHandlerFallback}
         />
       ) : (
