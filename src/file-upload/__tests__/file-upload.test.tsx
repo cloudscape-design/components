@@ -4,13 +4,15 @@ import React, { useState } from 'react';
 import { fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
 import '../../__a11y__/to-validate-a11y';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
+
 jest.mock('../../../lib/components/internal/utils/date-time', () => ({
   formatDateTime: () => '2020-06-01T00:00:00',
 }));

@@ -7,7 +7,7 @@ import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
 import { useTelemetry } from '../internal/hooks/use-telemetry';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;

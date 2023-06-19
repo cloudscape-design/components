@@ -6,7 +6,7 @@ import { getExternalProps } from '../internal/utils/external-props';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { PopoverProps } from './interfaces';
 
 export { PopoverProps };

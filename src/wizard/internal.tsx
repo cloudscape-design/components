@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useControllable } from '../internal/hooks/use-controllable';

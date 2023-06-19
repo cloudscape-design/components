@@ -9,7 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import { FlashbarProps } from './interfaces';
 import { focusFlashById } from './flash';
 import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export const componentName = 'Flashbar';
 

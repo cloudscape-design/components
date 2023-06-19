@@ -23,7 +23,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { isDevelopment } from '../internal/is-development.js';
-import { warnOnce } from '../internal/logging.js';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';

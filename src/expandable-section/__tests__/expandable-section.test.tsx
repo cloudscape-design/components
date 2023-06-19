@@ -7,10 +7,11 @@ import ExpandableSection, { ExpandableSectionProps } from '../../../lib/componen
 import Button from '../../../lib/components/button';
 import Header from '../../../lib/components/header';
 import Link from '../../../lib/components/link';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import '../../__a11y__/to-validate-a11y';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 

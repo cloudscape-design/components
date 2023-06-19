@@ -14,13 +14,14 @@ import {
 import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/code-editor/styles.css.js';
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
