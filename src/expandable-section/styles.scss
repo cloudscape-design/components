@@ -181,7 +181,7 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 
 .click-target {
   cursor: pointer;
-  &:hover {
+  &:not(.wrapper-container):not(.header-container-button):hover {
     color: awsui.$color-text-expandable-section-hover;
   }
 }
