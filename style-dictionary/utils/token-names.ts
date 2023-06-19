@@ -305,6 +305,7 @@ export type ColorsTokenName =
   | 'colorBorderDropdownItemHover'
   | 'colorBorderDropdownItemSelected'
   | 'colorBorderDropdownItemTop'
+  | 'colorBorderEditableCellHover'
   | 'colorBorderInputDefault'
   | 'colorBorderInputDisabled'
   | 'colorBorderItemFocused'
