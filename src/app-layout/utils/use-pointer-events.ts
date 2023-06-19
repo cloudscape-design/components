@@ -18,9 +18,7 @@ export const usePointerEvents = ({
         return;
       }
 
-      if (hasTransitions) {
-        panelRef.current.classList.remove(styles['with-motion']);
-      }
+      panelRef.current.classList.remove(styles['with-motion']);
 
       if (position === 'side') {
         const mouseClientX = event.clientX;
@@ -40,7 +38,7 @@ export const usePointerEvents = ({
         setBottomPanelHeight(height);
       }
     },
-    [position, panelRef, handleRef, setSidePanelWidth, setBottomPanelHeight, hasTransitions]
+    [position, panelRef, handleRef, setSidePanelWidth, setBottomPanelHeight]
   );
 
   const onDocumentPointerUp = useCallback(() => {
