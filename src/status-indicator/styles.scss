@@ -11,7 +11,7 @@
 
 $_status-colors: (
   'error': awsui.$color-text-status-error,
-  'warning': awsui.$color-text-status-error,
+  'warning': awsui.$color-text-status-warning,
   'success': awsui.$color-text-status-success,
   'info': awsui.$color-text-status-info,
   'stopped': awsui.$color-text-status-inactive,

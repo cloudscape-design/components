@@ -44,6 +44,11 @@ export type ColorPaletteTokenName =
   | 'colorRed600'
   | 'colorRed700'
   | 'colorRed900'
+  | 'colorYellow100'
+  | 'colorYellow600'
+  | 'colorYellow700'
+  | 'colorYellow800'
+  | 'colorYellow900'
   | 'colorTransparent'
   | 'colorWhite';
 export type ColorChartsTokenName =
@@ -258,6 +263,7 @@ export type ColorsTokenName =
   | 'colorBackgroundNotificationGreen'
   | 'colorBackgroundNotificationGrey'
   | 'colorBackgroundNotificationRed'
+  | 'colorBackgroundNotificationYellow'
   | 'colorBackgroundNotificationStackBar'
   | 'colorBackgroundNotificationStackBarActive'
   | 'colorBackgroundNotificationStackBarHover'
@@ -414,6 +420,7 @@ export type ColorsTokenName =
   | 'colorTextLinkPrimaryUnderline'
   | 'colorTextNotificationDefault'
   | 'colorTextNotificationStackBar'
+  | 'colorTextNotificationYellow'
   | 'colorTextPaginationPageNumberActiveDisabled'
   | 'colorTextPaginationPageNumberDefault'
   | 'colorTextSegmentActive'

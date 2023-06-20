@@ -76,7 +76,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderSegmentHover: { light: '{colorGrey900}', dark: '{colorWhite}' },
   colorBorderStatusError: { dark: '{colorRed600}' },
   colorBorderStatusSuccess: { dark: '{colorGreen600}' },
-  colorBorderStatusWarning: { light: '{colorGrey400}', dark: '{colorGrey500}' },
   colorBorderTabsDivider: { light: '{colorGrey400}', dark: '{colorGrey650}' },
   colorBorderTabsShadow: { light: '{colorBorderDividerDefault}' },
   colorBorderTabsUnderline: '{colorTextInteractiveHover}',
