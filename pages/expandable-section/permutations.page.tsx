@@ -124,6 +124,12 @@ const permutations = createPermutations<ExpandableSectionProps>([
     children: ['Sample content'],
     headingTagOverride: [undefined, 'h2', 'h3'],
   },
+  {
+    defaultExpanded: [false],
+    variant: ['default', 'footer'],
+    header: ['Deprecated header prop'],
+    children: ['Sample content'],
+  },
 ]);
 /* eslint-enable react/jsx-key */
 
