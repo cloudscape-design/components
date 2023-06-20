@@ -270,3 +270,18 @@ describe('Classic only features', () => {
     expect(wrapper.findActiveDrawer()!.getElement().style.width).toBe('500px');
   });
 });
+
+describe('VR only features', () => {
+  beforeEach(() => {
+    (useVisualRefresh as jest.Mock).mockReturnValue(true);
+  });
+  afterEach(() => {
+    (useVisualRefresh as jest.Mock).mockReset();
+  });
+
+  test('should have motion class', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
+    act(() => wrapper.findDrawersTriggers()![0].click());
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
+  });
+});

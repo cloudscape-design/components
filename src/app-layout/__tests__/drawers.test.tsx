@@ -17,4 +17,16 @@ describeEachAppLayout(() => {
     rerender(<AppLayout />);
     expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
   });
+
+  test('should not render drawers if drawer items are empty', () => {
+    const emptyDrawerItems = {
+      drawers: {
+        ariaLabel: 'Drawers',
+        items: [],
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...emptyDrawerItems} />);
+
+    expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
+  });
 });
