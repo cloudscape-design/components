@@ -82,17 +82,7 @@ export default function InternalHeader({
             {info && <span className={styles.info}>{info}</span>}
           </InfoLinkLabelContext.Provider>
         </div>
-        {description && (
-          <p
-            className={clsx(
-              styles.description,
-              styles[`description-variant-${variantOverride}`],
-              isRefresh && styles[`description-variant-${variantOverride}-refresh`]
-            )}
-          >
-            {description}
-          </p>
-        )}
+        <Description variantOverride={variantOverride}>{description}</Description>
       </div>
       {actions && (
         <div
@@ -106,5 +96,23 @@ export default function InternalHeader({
         </div>
       )}
     </div>
+  );
+}
+
+export function Description({ children, variantOverride }: { children: React.ReactNode; variantOverride: string }) {
+  const isRefresh = useVisualRefresh();
+  return (
+    (children && (
+      <p
+        className={clsx(
+          styles.description,
+          styles[`description-variant-${variantOverride}`],
+          isRefresh && styles[`description-variant-${variantOverride}-refresh`]
+        )}
+      >
+        {children}
+      </p>
+    )) ||
+    null
   );
 }
