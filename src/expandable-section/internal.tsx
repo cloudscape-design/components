@@ -16,7 +16,6 @@ import styles from './styles.css.js';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { variantSupportsDescription } from './utils';
 
 type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
@@ -123,7 +122,7 @@ export default function InternalExpandableSection({
           role="group"
           aria-label={triggerProps.ariaLabel}
           aria-labelledby={triggerProps.ariaLabelledBy}
-          aria-describedby={variantSupportsDescription(variant) && headerDescription ? descriptionId : undefined}
+          aria-describedby={variant === 'container' && headerDescription ? descriptionId : undefined}
         >
           {children}
         </div>
