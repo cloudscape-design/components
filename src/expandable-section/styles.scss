@@ -100,6 +100,11 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 .header {
   /* used in test-utils */
 
+  &-deprecated {
+    display: flex;
+    font-weight: awsui.$font-heading-s-weight;
+  }
+
   &-wrapper {
     font-size: inherit;
     letter-spacing: inherit;
