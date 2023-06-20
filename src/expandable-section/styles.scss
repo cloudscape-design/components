@@ -10,10 +10,6 @@
 
 @use './motion';
 
-$icon-width: awsui.$size-icon-normal;
-$icon-margin-left: '(#{awsui.$font-body-m-line-height} - #{$icon-width}) / -2';
-$icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
-
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -34,9 +30,9 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 
 .icon-container {
   position: relative;
-  margin-left: calc(#{$icon-margin-left});
+  margin-left: calc((#{awsui.$font-body-m-line-height} - #{awsui.$size-icon-normal}) / -2);
   // For vertical alignment of text in side navigation items
-  margin-right: calc(#{$icon-margin-right});
+  margin-right: calc(#{awsui.$space-xxs} + #{awsui.$border-divider-list-width});
   &-container {
     margin-right: awsui.$space-xs;
   }
@@ -44,6 +40,7 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 
 .wrapper {
   box-sizing: border-box;
+  display: flex;
   border: none;
   width: 100%;
   line-height: awsui.$font-body-m-line-height;
@@ -67,20 +64,17 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
     border-left: awsui.$border-divider-section-width solid transparent;
   }
 
-  &-navigation,
-  &-footer,
-  &-container {
-    display: flex;
-    font-weight: awsui.$font-heading-s-weight;
-  }
-
   &-default,
   &-navigation,
   &-footer {
     color: awsui.$color-text-expandable-section-default;
+    font-weight: awsui.$font-heading-s-weight;
     @include styles.font-smoothing;
     font-size: awsui.$font-expandable-heading-size;
     letter-spacing: awsui.$font-heading-s-letter-spacing;
+    &:hover {
+      color: awsui.$color-text-expandable-section-hover;
+    }
   }
 
   &-container {
@@ -98,15 +92,14 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 }
 
 .header {
-  /* used in test-utils */
+  display: flex;
 
   &-wrapper {
+    font-weight: inherit;
     font-size: inherit;
     letter-spacing: inherit;
     margin: 0;
     padding: 0;
-    font-weight: awsui.$font-heading-s-weight;
-    display: flex;
   }
 
   &-button {
@@ -121,11 +114,20 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
     }
   }
 
+  &:not(.with-interactive-elements) {
+    cursor: pointer;
+  }
+
   &-container {
     width: 100%;
     // The icon-container style is kept for variant='container' and header
     > .icon-container {
       margin-top: awsui.$space-expandable-section-icon-offset-top;
+    }
+
+    // stylelint-disable-next-line selector-combinator-disallowed-list
+    &.with-interactive-elements &-button {
+      cursor: pointer;
     }
   }
 
@@ -177,16 +179,4 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
   @include focus-visible.when-visible {
     @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
   }
-}
-
-.click-target {
-  cursor: pointer;
-  &:not(.wrapper-container):not(.header-container-button):hover {
-    color: awsui.$color-text-expandable-section-hover;
-  }
-}
-
-.description-default {
-  // Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
-  padding-left: calc(#{$icon-width} + #{$icon-margin-right} + #{$icon-margin-left});
 }
