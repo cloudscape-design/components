@@ -10,6 +10,7 @@ import notificationStyles from '../../../lib/components/app-layout/notifications
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [1300, () => {}],
@@ -220,5 +221,52 @@ describeEachThemeAppLayout(false, () => {
 
     wrapper.findDrawersSlider()!.keydown(KeyCode.left);
     expect(onDrawerResize).toHaveBeenCalled();
+  });
+
+  test('should read relative size on resize handle', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
+
+    act(() => wrapper.findDrawersTriggers()![0].click());
+    expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-valuenow', '0');
+  });
+});
+
+// In VR we use a custom CSS property so we cannot test the style declaration.
+describe('Classic only features', () => {
+  beforeEach(() => {
+    (useVisualRefresh as jest.Mock).mockReturnValue(false);
+  });
+  afterEach(() => {
+    (useVisualRefresh as jest.Mock).mockReset();
+  });
+
+  test('should have width equal to the size declaration', () => {
+    const resizableDrawer = {
+      drawers: {
+        ariaLabel: 'Drawers',
+        activeDrawerId: 'security',
+        items: [
+          {
+            ariaLabels: {
+              closeButton: 'Security close button',
+              content: 'Security drawer content',
+              triggerButton: 'Security trigger button',
+              resizeHandle: 'Security resize handle',
+            },
+            resizable: true,
+            defaultSize: 500,
+            content: <span>Security</span>,
+            id: 'security',
+            trigger: {
+              iconName: 'security',
+            },
+          },
+        ],
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
+
+    act(() => wrapper.findDrawersTriggers()![0].click());
+    expect(wrapper.findActiveDrawer()!.getElement().style.width).toBe('500px');
   });
 });

@@ -87,12 +87,15 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
     }
   };
 
+  const position = 'side';
+  const setBottomPanelHeight = () => {};
+
   const sizeControlProps: SizeControlProps = {
-    position: 'side',
+    position,
     panelRef: drawerRefObject,
     handleRef: drawersRefs.slider,
     setSidePanelWidth,
-    setBottomPanelHeight: () => {},
+    setBottomPanelHeight,
     hasTransitions: true,
   };
 
