@@ -9,6 +9,7 @@ import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import { KeyCode } from '../../internal/keycode';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [1300, () => {}],
@@ -181,5 +182,43 @@ describeEachThemeAppLayout(false, () => {
 
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
+  });
+
+  test(`Should fire resize when expected`, () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
+
+    act(() => wrapper.findDrawersTriggers()![0].click());
+    expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
+  });
+
+  test('should fire drawer resize event', () => {
+    const onDrawerResize = jest.fn();
+    const resizableDrawer = {
+      drawers: {
+        ariaLabel: 'Drawers',
+        activeDrawerId: 'security',
+        items: [
+          {
+            ariaLabels: {
+              closeButton: 'Security close button',
+              content: 'Security drawer content',
+              triggerButton: 'Security trigger button',
+              resizeHandle: 'Security resize handle',
+            },
+            resizable: true,
+            onResize: onDrawerResize,
+            content: <span>Security</span>,
+            id: 'security',
+            trigger: {
+              iconName: 'security',
+            },
+          },
+        ],
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
+
+    wrapper.findDrawersSlider()!.keydown(KeyCode.left);
+    expect(onDrawerResize).toHaveBeenCalled();
   });
 });

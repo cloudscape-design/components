@@ -11,6 +11,10 @@ class AppLayoutDrawersPage extends BasePageObject {
     await this.click(wrapper.findDrawersTriggers().get(1).toSelector());
   }
 
+  async openThirdPanel() {
+    await this.click(wrapper.findDrawersTriggers().get(3).toSelector());
+  }
+
   async dragResizerTo({ x: targetX, y: targetY }: { x: number; y: number }) {
     const resizerSelector = wrapper.findDrawersSlider().toSelector();
     const resizerBox = await this.getBoundingBox(resizerSelector);
@@ -102,13 +106,14 @@ for (const visualRefresh of [true, false]) {
         expect((await page.getDrawerSize()).width).toEqual(362);
       })
     );
+
     test(
       'automatically shrinks drawer when screen resizes',
-      setupTest({ visualRefresh }, async page => {
+      setupTest({ visualRefresh: true }, async page => {
         const largeWindowWidth = 1400;
         const smallWindowWidth = 900;
         await page.setWindowSize({ ...viewports.desktop, width: largeWindowWidth });
-        await page.openPanel();
+        await page.openThirdPanel();
         const { width: originalWidth } = await page.getDrawerSize();
         await page.setWindowSize({ ...viewports.desktop, width: smallWindowWidth });
         const { width: newWidth } = await page.getDrawerSize();
