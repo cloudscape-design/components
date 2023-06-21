@@ -99,7 +99,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     if (!ace || !elem) {
       return;
     }
-    const config = getDefaultConfig();
+    const config = getDefaultConfig(ace);
     setEditor(
       ace.edit(elem, {
         ...config,

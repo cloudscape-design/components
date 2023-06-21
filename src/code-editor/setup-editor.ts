@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { Ace } from 'ace-builds';
-import { PaneStatus } from './util';
+import { PaneStatus, supportsKeyboardAccessibility } from './util';
 
 export function setupEditor(
   ace: any,
@@ -35,6 +35,16 @@ export function setupEditor(
     }
     setAnnotations(newAnnotations);
   });
+
+  if (!supportsKeyboardAccessibility(ace)) {
+    editor.commands.addCommand({
+      name: 'exitCodeEditor',
+      bindKey: 'Esc',
+      exec: () => {
+        editor.container.focus();
+      },
+    });
+  }
 
   editor.on('focus', () => {
     (editor as any).textInput.getElement().setAttribute('tabindex', 0);
