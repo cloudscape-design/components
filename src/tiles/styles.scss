@@ -33,13 +33,12 @@ $gutter: awsui.$space-grid-gutter;
   border: styles.$control-border-width solid awsui.$color-border-input-default;
   border-radius: awsui.$border-radius-tiles;
   background: awsui.$color-background-input-default;
-  //padding: awsui.$space-xs awsui.$space-scaled-m;
-  padding: awsui.$space-xs awsui.$space-s;
+  padding: calc(awsui.$space-scaled-s - awsui.$space-scaled-xxs) awsui.$space-s;
   display: flex;
   flex-direction: column;
 
   &.has-metadata {
-    padding-bottom: calc(awsui.$space-s - 2px);
+    padding-bottom: calc(awsui.$space-scaled-m - awsui.$space-scaled-xxs);
   }
 
   &.selected {
