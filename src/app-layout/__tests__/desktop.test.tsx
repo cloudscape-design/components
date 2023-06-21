@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act } from 'react-dom/test-utils';
+import { fireEvent } from '@testing-library/react';
 
 import { describeEachThemeAppLayout, isDrawerClosed, drawersConfigurations, renderComponent } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
@@ -11,10 +12,31 @@ import visualRefreshStyles from '../../../lib/components/app-layout/visual-refre
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import { usePointerEvents } from '../../../lib/components/app-layout/utils/use-pointer-events';
+import { renderHook } from '../../__tests__/render-hook';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [1300, () => {}],
 }));
+
+const sizeControlProps: any = {
+  position: 'side',
+  panelRef: {
+    current: {
+      clientHeight: 100,
+      clientWidth: 100,
+      getBoundingClientRect: jest.fn().mockReturnValue({ right: 100, bottom: 100 }),
+      classList: { remove: jest.fn() },
+    },
+  },
+  handleRef: {
+    current: {
+      getBoundingClientRect: jest.fn().mockReturnValue({ width: 100, height: 100 }),
+    },
+  },
+  setBottomPanelHeight: jest.fn(),
+  setSidePanelWidth: jest.fn(),
+};
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
@@ -229,6 +251,15 @@ describeEachThemeAppLayout(false, () => {
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-valuenow', '0');
   });
+
+  test('test that pointer events hook is working', () => {
+    const hook = renderHook(usePointerEvents, { initialProps: sizeControlProps });
+    hook.result.current();
+
+    fireEvent.pointerMove(document.documentElement, { clientX: 100 });
+    expect(sizeControlProps.setSidePanelWidth).toHaveBeenCalled();
+    expect(sizeControlProps.setSidePanelWidth).toHaveBeenCalledWith(150);
+  });
 });
 
 // In VR we use a custom CSS property so we cannot test the style declaration.
@@ -279,7 +310,7 @@ describe('VR only features', () => {
     (useVisualRefresh as jest.Mock).mockReset();
   });
 
-  test('should have motion class', () => {
+  test('should add motion class', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);

@@ -21,7 +21,7 @@ export const usePointerEvents = ({
       panelRef.current.classList.remove(styles['with-motion']);
 
       if (position === 'side') {
-        const mouseClientX = event.clientX;
+        const mouseClientX = event.clientX || 0;
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = handleRef.current.getBoundingClientRect().width / 2;
@@ -29,7 +29,7 @@ export const usePointerEvents = ({
 
         setSidePanelWidth(width);
       } else {
-        const mouseClientY = event.clientY;
+        const mouseClientY = event.clientY || 0;
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = handleRef.current.getBoundingClientRect().height / 2;
