@@ -16,7 +16,7 @@ import {
   barTimeData,
   barChartInstructions,
 } from '../mixed-line-bar-chart/common';
-import { Button } from '~components';
+import { Button, ButtonDropdown } from '~components';
 
 const months = ['May 2022', 'Jun 2022', 'Jul 2022', 'Aug 2022', 'Sep 2022'];
 
@@ -103,14 +103,27 @@ export default function () {
               {...commonProps}
               id="chart"
               height={250}
-              series={[{ title: 'Calories', type: 'bar', data: data3 }]}
-              xDomain={['Potatoes', 'Tangerines', 'Chocolate', 'Apples', 'Oranges']}
-              yDomain={[0, 700]}
+              series={barMonthSeries}
+              xDomain={months}
+              yDomain={[0, 2000000]}
               xTitle="Food"
               yTitle="Calories (kcal)"
               xScaleType="categorical"
               ariaLabel="Bar chart"
               ariaDescription={barChartInstructions}
+              detailPopoverFooter={() => (
+                <Box margin={{ top: 'm' }}>
+                  <ButtonDropdown
+                    items={[
+                      { id: '1', text: 'View' },
+                      { id: '2', text: 'Add to filter' },
+                    ]}
+                    expandToViewport={true}
+                  >
+                    Actions
+                  </ButtonDropdown>
+                </Box>
+              )}
             />
           </div>
           <BarChart
