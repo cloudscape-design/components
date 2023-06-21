@@ -23,6 +23,7 @@ export interface UseMouseHoverProps<T> {
   clearHighlightedSeries: () => void;
   isGroupNavigation: boolean;
   isHandlersDisabled: boolean;
+  isPinned: boolean;
   highlightX: (verticalMarker: VerticalMarkerX<T> | null) => void;
 }
 
@@ -36,6 +37,7 @@ export function useMouseHover<T>({
   clearHighlightedSeries,
   isGroupNavigation,
   isHandlersDisabled,
+  isPinned,
   highlightX,
 }: UseMouseHoverProps<T>) {
   const isMouseOverPopover = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
@@ -134,7 +136,7 @@ export function useMouseHover<T>({
   };
 
   const onPopoverLeave = (event: React.MouseEvent) => {
-    if (!plotRef.current!.svg.contains(event.relatedTarget as Node)) {
+    if (!isPinned && !plotRef.current!.svg.contains(event.relatedTarget as Node)) {
       highlightX(null);
       clearHighlightedSeries();
     }
