@@ -29,5 +29,5 @@ export default function Portal({ container, children }: PortalProps) {
     };
   }, [container]);
 
-  return activeContainer && createPortal(<div data-portal="true">{children}</div>, activeContainer);
+  return activeContainer && createPortal(children, activeContainer);
 }
