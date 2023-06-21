@@ -401,7 +401,7 @@ describe('Code editor component', () => {
     expect(wrapper.findPane()).toBeNull();
   });
 
-  it('highlights annotation when clicked in gutter', () => {
+  it('focuses annotation when clicked in gutter', () => {
     let gutterClickCallback: (event: any) => void;
     editorMock.on = jest.fn((name: string, _callback: (event: any) => void) => {
       if (name === 'gutterclick') {
@@ -419,7 +419,7 @@ describe('Code editor component', () => {
     expect(wrapper.findPane()).not.toBeNull(); // Pane should open
 
     const [item] = findPaneItems(wrapper.findPane()!);
-    expect(item.getElement().classList).toContain(styles['pane__item--highlighted']);
+    expect(document.activeElement).toBe(item.getElement());
 
     editorMock.on.mockRestore();
   });

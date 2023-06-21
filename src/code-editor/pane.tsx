@@ -60,10 +60,6 @@ export const Pane = ({
     }
   }, [highlighted, annotations]);
 
-  const onItemFocus = () => {
-    onAnnotationClear();
-  };
-
   const onItemClick = (annotation: Ace.Annotation) => {
     onAnnotationClick(annotation);
   };
@@ -89,7 +85,7 @@ export const Pane = ({
   return (
     <div id={id} className={styles.pane} onKeyDown={onEscKeyDown} role="tabpanel">
       <ResizableBox height={paneHeight} minHeight={MIN_HEIGHT} onResize={newHeight => setPaneHeight(newHeight)}>
-        <FocusLock disabled={!visible} className={styles['focus-lock']} autoFocus={true} restoreFocus={true}>
+        <FocusLock className={styles['focus-lock']} autoFocus={true} restoreFocus={true}>
           <div className={styles.pane__list} tabIndex={-1}>
             <table className={styles.pane__table} role="presentation">
               <colgroup>
@@ -100,15 +96,12 @@ export const Pane = ({
                 {annotations.map((annotation, i) => (
                   <tr
                     key={i}
-                    className={clsx(styles.pane__item, {
-                      [styles['pane__item--highlighted']]: annotation === highlighted,
-                    })}
-                    onFocus={onItemFocus}
+                    role="link"
+                    className={styles.pane__item}
                     onMouseOver={onAnnotationClear}
                     onClick={onItemClick.bind(null, annotation)}
                     onKeyDown={onItemKeyDown.bind(null, annotation)}
                     tabIndex={0}
-                    role="link"
                   >
                     <td className={clsx(styles.pane__location, styles.pane__cell)} tabIndex={-1}>
                       {cursorPositionLabel?.((annotation.row || 0) + 1, (annotation.column || 0) + 1) ?? ''}

@@ -32,6 +32,7 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
 import { useCurrentMode } from '../internal/hooks/use-visual-mode';
+import { useInternalI18n } from '../internal/i18n/context';
 import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -39,7 +40,6 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../internal/i18n/context';
 
 export { CodeEditorProps };
 

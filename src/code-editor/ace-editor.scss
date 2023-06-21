@@ -10,6 +10,15 @@
 
 /* stylelint-disable selector-combinator-disallowed-list, @cloudscape-design/no-implicit-descendant */
 
+.code-editor-refresh :global .ace_editor {
+  .ace_gutter {
+    border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+  }
+  .ace_scroller {
+    border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+  }
+}
+
 .code-editor :global .ace_editor {
   font-family: Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace;
   font-size: 14px;
@@ -92,7 +101,8 @@
 
   .ace_gutter,
   .ace_scroller {
-    @include focus-visible.when-visible {
+    &:focus {
+      // Inset focus visible styling that works with ace regions.
       box-shadow: inset 0 0 0 2px awsui.$color-border-item-focused;
     }
   }
@@ -226,15 +236,6 @@
         }
       }
     }
-  }
-}
-
-.code-editor-refresh :global .ace_editor {
-  .ace_gutter {
-    border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
-  }
-  .ace_scroller {
-    border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
 }
 

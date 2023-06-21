@@ -36,14 +36,6 @@ export function setupEditor(
     setAnnotations(newAnnotations);
   });
 
-  editor.commands.addCommand({
-    name: 'exitCodeEditor',
-    bindKey: 'Esc',
-    exec: () => {
-      editor.container.focus();
-    },
-  });
-
   editor.on('focus', () => {
     (editor as any).textInput.getElement().setAttribute('tabindex', 0);
   });
@@ -94,7 +86,7 @@ export function setupEditor(
 
   // open error/warning pane when user presses space/enter on gutter icon
   editor.on('gutterkeydown', e => {
-    if (e.getKey() === 'space' || e.getKey() === 'return') {
+    if (e.isInAnnotationLane() && (e.getKey() === 'space' || e.getKey() === 'return')) {
       const row: number = e.getRow();
       openAnnotation(row);
     }
