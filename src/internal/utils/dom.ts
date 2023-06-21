@@ -103,9 +103,16 @@ export function parseCssVariable(value: string) {
  * @param parent Parent node
  * @param descendant Node that is checked to be a descendant of the parent node
  */
-export function nodeContains(parent: Node | null, descendant: Node | null) {
+export function nodeContains(parent: Node | null, descendant: Node | null, ignorePortals?: boolean) {
   if (!parent || !descendant) {
     return false;
+  }
+
+  if (ignorePortals && descendant instanceof Element) {
+    const isInPortal = descendant.closest('[data-portal]');
+    if (isInPortal) {
+      return true;
+    }
   }
 
   // Use the native `contains` method when available
