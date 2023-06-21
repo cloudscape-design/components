@@ -208,15 +208,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     setPaneStatus(paneStatus !== 'warning' ? 'warning' : 'hidden');
   }, [paneStatus]);
 
-  const onPaneClose = useCallback(() => {
-    if (paneStatus === 'error' && errorsTabRef.current) {
-      errorsTabRef.current.focus();
-    }
-    if (paneStatus === 'warning' && warningsTabRef.current) {
-      warningsTabRef.current.focus();
-    }
+  const onPaneClose = () => {
     setPaneStatus('hidden');
-  }, [paneStatus]);
+  };
 
   const onAnnotationClick = ({ row = 0, column = 0 }: Ace.Annotation) => {
     if (!editor) {

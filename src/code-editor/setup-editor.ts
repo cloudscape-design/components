@@ -57,11 +57,7 @@ export function setupEditor(
 
   editor.commands.removeCommand('showSettingsMenu', false);
 
-  // Prevent default behavior on error/warning icon hover/click
-  editor.on('guttermousemove' as any, (e: any) => {
-    e.stop();
-  });
-
+  // Prevent default behavior on error/warning icon click
   editor.on('guttermousedown' as any, (e: any) => {
     e.stop();
   });
@@ -72,9 +68,7 @@ export function setupEditor(
     }
   };
 
-  // open error/warning pane when user clicks on gutter icon
-  editor.on('gutterclick' as any, (e: any) => {
-    const { row }: Ace.Point = e.getDocumentPosition();
+  const openAnnotation = (row: number) => {
     const currentAnnotations = editor.session.getAnnotations().filter(a => a.row === row && a.type !== 'info');
     const errors = currentAnnotations.filter(a => a.type === 'error');
     if (errors.length > 0) {
@@ -89,6 +83,20 @@ export function setupEditor(
       setHighlightedAnnotation(undefined);
       setPaneStatus('hidden');
       editor.gotoLine(row + 1, 0, false);
+    }
+  };
+
+  // open error/warning pane when user clicks on gutter icon
+  editor.on('gutterclick' as any, (e: any) => {
+    const { row }: Ace.Point = e.getDocumentPosition();
+    openAnnotation(row);
+  });
+
+  // open error/warning pane when user presses space/enter on gutter icon
+  editor.on('gutterkeydown', e => {
+    if (e.getKey() === 'space' || e.getKey() === 'return') {
+      const row: number = e.getRow();
+      openAnnotation(row);
     }
   });
 

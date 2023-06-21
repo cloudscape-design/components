@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import { Ace } from 'ace-builds';
 
 import { KeyCode } from '../internal/keycode';
-import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import FocusLock from '../internal/components/focus-lock';
 
 import { InternalButton } from '../button/internal';
@@ -45,7 +44,6 @@ export const Pane = ({
 }: PaneProps) => {
   const [paneHeight, setPaneHeight] = useState(MIN_HEIGHT);
   const listRef = useRef<HTMLTableSectionElement>(null);
-  const [isFocusTrapActive, setFocusTrapActive] = useState(false);
 
   useEffect(() => {
     if (!highlighted) {
@@ -58,30 +56,21 @@ export const Pane = ({
 
     if (highlightedAnnotationIndex > -1) {
       const errorItem = listRef.current?.children[highlightedAnnotationIndex] as HTMLElement | undefined;
-      scrollElementIntoView(errorItem);
+      errorItem?.focus();
     }
   }, [highlighted, annotations]);
 
-  useEffect(() => {
-    if (!visible) {
-      setFocusTrapActive(false);
-    }
-  }, [visible]);
-
   const onItemFocus = () => {
-    setFocusTrapActive(true);
     onAnnotationClear();
   };
 
   const onItemClick = (annotation: Ace.Annotation) => {
-    setFocusTrapActive(false);
     onAnnotationClick(annotation);
   };
 
   const onItemKeyDown = (annotation: Ace.Annotation, event: React.KeyboardEvent) => {
     if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
       event.preventDefault();
-      setFocusTrapActive(false);
       onAnnotationClick(annotation);
     }
   };
@@ -89,7 +78,6 @@ export const Pane = ({
   const onEscKeyDown = (event: React.KeyboardEvent) => {
     if (event.keyCode === KeyCode.escape) {
       event.preventDefault();
-      setFocusTrapActive(false);
       onClose();
     }
   };
@@ -101,7 +89,7 @@ export const Pane = ({
   return (
     <div id={id} className={styles.pane} onKeyDown={onEscKeyDown} role="tabpanel">
       <ResizableBox height={paneHeight} minHeight={MIN_HEIGHT} onResize={newHeight => setPaneHeight(newHeight)}>
-        <FocusLock disabled={!isFocusTrapActive} className={styles['focus-lock']} autoFocus={true}>
+        <FocusLock disabled={!visible} className={styles['focus-lock']} autoFocus={true} restoreFocus={true}>
           <div className={styles.pane__list} tabIndex={-1}>
             <table className={styles.pane__table} role="presentation">
               <colgroup>
