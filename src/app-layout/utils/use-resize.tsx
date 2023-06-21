@@ -9,7 +9,7 @@ import ResizeHandler from '../../split-panel/icons/resize-handler';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from './use-pointer-events';
 import { useKeyboardEvents } from './use-keyboard-events';
-import { DrawerItemProps, DrawersProps } from '../visual-refresh/drawers';
+import { InternalDrawerProps } from '../drawer/interfaces';
 
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -19,7 +19,7 @@ import { SizeControlProps } from './interfaces';
 
 export interface DrawerResizeProps {
   activeDrawerId?: string | null;
-  drawers?: DrawersProps;
+  drawers: InternalDrawerProps['drawers'];
   drawersRefs: DrawerFocusControlRefs;
   isToolsOpen: boolean;
   drawersMaxWidth: number;
@@ -28,7 +28,7 @@ export interface DrawerResizeProps {
 function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResizeProps: DrawerResizeProps) {
   const { activeDrawerId, drawers, drawersRefs, isToolsOpen, drawersMaxWidth } = drawerResizeProps;
 
-  const activeDrawer = drawers?.items.find((item: DrawerItemProps) => item.id === activeDrawerId) ?? null;
+  const activeDrawer = drawers?.items.find(item => item.id === activeDrawerId) ?? null;
   const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
   const toolsWidth = 290;
   const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 290 ? activeDrawer?.defaultSize : 290;
@@ -72,8 +72,9 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
   }, [drawerSize, drawersMaxWidth, MIN_WIDTH]);
 
   const drawerResize = (resizeDetail: { size: number; id: string }) => {
-    const drawerItem = drawers?.items.find((item: DrawerItemProps) => item.id === resizeDetail.id);
+    const drawerItem = drawers?.items.find(item => item.id === resizeDetail.id);
     fireNonCancelableEvent(drawerItem?.onResize, resizeDetail);
+    fireNonCancelableEvent(drawers?.onResize, resizeDetail);
     setDrawerItemSizes({ ...drawerItemSizes, [resizeDetail.id]: resizeDetail.size });
   };
 

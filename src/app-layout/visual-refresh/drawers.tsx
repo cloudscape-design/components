@@ -3,9 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { IconProps } from '../../icon/interfaces';
 import { InternalButton } from '../../button/internal';
-import { NonCancelableEventHandler } from '../../internal/events';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
@@ -13,50 +11,6 @@ import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-
-export interface InternalDrawersProps {
-  drawers?: DrawersProps;
-}
-
-export interface DrawersProps {
-  activeDrawerId: string | null;
-  items: ReadonlyArray<DrawerItemProps>;
-  onChange?: NonCancelableEventHandler<string | null>;
-  ariaLabel?: string;
-}
-
-export interface DrawerItemProps {
-  ariaLabels?: DrawersProps.Labels;
-  content: React.ReactNode;
-  id: string;
-  trigger: DrawersProps.Trigger;
-  resizable?: boolean;
-  defaultSize?: number;
-  onResize?: NonCancelableEventHandler<DrawersProps.ResizeDetail>;
-}
-
-namespace DrawersProps {
-  export interface ChangeDetail {
-    activeDrawerId: string | null;
-  }
-
-  export interface ResizeDetail {
-    size: number;
-    id: string;
-  }
-
-  export interface Labels {
-    closeButton?: string;
-    content?: string;
-    triggerButton?: string;
-    resizeHandle?: string;
-  }
-  export interface Trigger {
-    iconName?: IconProps.Name;
-    iconSvg?: React.ReactNode;
-    iconUrl?: string;
-  }
-}
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -247,7 +201,7 @@ function DesktopTriggers() {
           />
         )}
 
-        {drawers?.items.map((item: DrawerItemProps) => (
+        {drawers?.items.map(item => (
           <TriggerButton
             ariaLabel={item.ariaLabels?.triggerButton}
             className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
@@ -337,7 +291,7 @@ export function MobileTriggers() {
         />
       )}
 
-      {drawers.items.map((item: DrawerItemProps) => (
+      {drawers.items.map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}

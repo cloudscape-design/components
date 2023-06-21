@@ -14,7 +14,6 @@ import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps } from '../interfaces';
-import { DrawerItemProps, DrawersProps, InternalDrawersProps } from './drawers';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-drawer-focus-control';
@@ -27,13 +26,14 @@ import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
+import { InternalDrawerProps } from '../drawer/interfaces';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
-  drawers?: DrawersProps;
+  drawers?: InternalDrawerProps['drawers'];
   drawersRefs: DrawerFocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
@@ -415,7 +415,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * The hasDrawerViewportOverlay property is used to determine if any drawer is obscuring the entire
      * viewport. This currently applies to Navigation, Tools, and Drawers in mobile viewports.
      */
-    const drawers = (props as InternalDrawersProps).drawers;
+    const drawers = (props as InternalDrawerProps).drawers;
 
     const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
       componentName: 'AppLayout',
@@ -425,7 +425,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
-    const activeDrawer = drawers?.items.find((drawer: DrawerItemProps) => drawer.id === activeDrawerId);
+    const activeDrawer = drawers?.items.find(drawer => drawer.id === activeDrawerId);
 
     const {
       refs: drawersRefs,
@@ -449,7 +449,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
         setActiveDrawerId(newActiveDrawerId);
         !skipFocusControl && focusDrawersButtons();
-        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
+        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId!);
         setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
       },
       [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId, setDrawerLastInteraction]

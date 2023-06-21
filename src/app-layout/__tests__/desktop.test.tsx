@@ -1,10 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { fireEvent } from '@testing-library/react';
+import { act } from '@testing-library/react';
 
-import { describeEachThemeAppLayout, isDrawerClosed, drawersConfigurations, renderComponent } from './utils';
+import {
+  describeEachThemeAppLayout,
+  drawerWithoutLabels,
+  isDrawerClosed,
+  renderComponent,
+  resizableDrawer,
+  singleDrawer,
+  singleDrawerOpen,
+} from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
@@ -12,31 +19,11 @@ import visualRefreshStyles from '../../../lib/components/app-layout/visual-refre
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { usePointerEvents } from '../../../lib/components/app-layout/utils/use-pointer-events';
-import { renderHook } from '../../__tests__/render-hook';
+import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [1300, () => {}],
 }));
-
-const sizeControlProps: any = {
-  position: 'side',
-  panelRef: {
-    current: {
-      clientHeight: 100,
-      clientWidth: 100,
-      getBoundingClientRect: jest.fn().mockReturnValue({ right: 100, bottom: 100 }),
-      classList: { remove: jest.fn() },
-    },
-  },
-  handleRef: {
-    current: {
-      getBoundingClientRect: jest.fn().mockReturnValue({ width: 100, height: 100 }),
-    },
-  },
-  setBottomPanelHeight: jest.fn(),
-  setSidePanelWidth: jest.fn(),
-};
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
@@ -161,14 +148,14 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('should render drawers desktop triggers container', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
 
     expect(wrapper.findDrawersMobileTriggersContainer()).toBeFalsy();
     expect(wrapper.findDrawersDesktopTriggersContainer()).toBeTruthy();
   });
 
   test('should render an active drawer', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
 
     expect(wrapper.findDrawersMobileTriggersContainer()).toBeFalsy();
     expect(wrapper.findDrawersDesktopTriggersContainer()).toBeTruthy();
@@ -176,24 +163,19 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('Does not add a label to the toggle and landmark when they are not defined', () => {
-    const drawersClosed = {
-      drawers: {
-        items: drawersConfigurations.drawersItemsWithoutLabels,
-      },
-    };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
     expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
     expect(wrapper.findDrawersDesktopTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
   });
 
   test('Adds labels to toggle button and landmark when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
     expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
     expect(wrapper.findDrawersDesktopTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
 
   test(`should toggle drawer on click`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => wrapper.findDrawersTriggers()![0].click());
@@ -201,64 +183,58 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test(`Moves focus to slider when opened`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
   test(`Should fire resize when expected`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
-  test('should fire drawer resize event', () => {
-    const onDrawerResize = jest.fn();
-    const resizableDrawer = {
+  test('should change size via keyboard events on slider handle', () => {
+    const onResize = jest.fn();
+    const drawers: Required<InternalDrawerProps> = {
       drawers: {
-        ariaLabel: 'Drawers',
+        onResize: ({ detail }) => onResize(detail),
         activeDrawerId: 'security',
-        items: [
-          {
-            ariaLabels: {
-              closeButton: 'Security close button',
-              content: 'Security drawer content',
-              triggerButton: 'Security trigger button',
-              resizeHandle: 'Security resize handle',
-            },
-            resizable: true,
-            onResize: onDrawerResize,
-            content: <span>Security</span>,
-            id: 'security',
-            trigger: {
-              iconName: 'security',
-            },
-          },
-        ],
+        items: resizableDrawer.drawers.items,
       },
     };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
-
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawers} />);
     wrapper.findDrawersSlider()!.keydown(KeyCode.left);
-    expect(onDrawerResize).toHaveBeenCalled();
+
+    expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
+  });
+
+  test('should change size via mouse pointer on slider handle', () => {
+    const onResize = jest.fn();
+    const drawersOpen: Required<InternalDrawerProps> = {
+      drawers: {
+        onResize: ({ detail }) => onResize(detail),
+        activeDrawerId: 'security',
+        items: resizableDrawer.drawers.items,
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
+    wrapper.findDrawersSlider()!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    const resizeEvent = new MouseEvent('pointermove', { bubbles: true });
+    // Object.defineProperty(resizeEvent, 'clientX', { value: -400 });
+    wrapper.findDrawersSlider()!.fireEvent(resizeEvent);
+    wrapper.findDrawersSlider()!.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
+
+    expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
   });
 
   test('should read relative size on resize handle', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-valuenow', '0');
-  });
-
-  test('test that pointer events hook is working', () => {
-    const hook = renderHook(usePointerEvents, { initialProps: sizeControlProps });
-    hook.result.current();
-
-    fireEvent.pointerMove(document.documentElement, { clientX: 100 });
-    expect(sizeControlProps.setSidePanelWidth).toHaveBeenCalled();
-    expect(sizeControlProps.setSidePanelWidth).toHaveBeenCalledWith(150);
   });
 });
 
@@ -311,7 +287,7 @@ describe('VR only features', () => {
   });
 
   test('should add motion class', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
   });
