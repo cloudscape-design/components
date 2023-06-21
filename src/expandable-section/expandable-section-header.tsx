@@ -51,7 +51,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   ariaLabelledBy?: string;
 }
 
-const ExpandableDefaultHeader = ({
+const ExpandableDeprecatedHeader = ({
   id,
   className,
   onClick,
@@ -68,7 +68,7 @@ const ExpandableDefaultHeader = ({
     <div
       id={id}
       role="button"
-      className={clsx(className, styles['expand-button'], styles['click-target'])}
+      className={clsx(className, styles['expand-button'], styles['click-target'], styles['header-deprecated'])}
       tabIndex={0}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
@@ -286,13 +286,13 @@ export const ExpandableSectionHeader = ({
   }
 
   return (
-    <ExpandableDefaultHeader
+    <ExpandableDeprecatedHeader
       className={clsx(className, wrapperClassName, styles.focusable, expanded && styles.expanded)}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
       {...defaultHeaderProps}
     >
       {header}
-    </ExpandableDefaultHeader>
+    </ExpandableDeprecatedHeader>
   );
 };

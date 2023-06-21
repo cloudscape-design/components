@@ -69,7 +69,6 @@ $icon-margin-right-medium: awsui.$space-xs;
   }
 
   &-navigation,
-  &-footer,
   &-container {
     display: flex;
     font-weight: awsui.$font-heading-s-weight;
@@ -101,13 +100,17 @@ $icon-margin-right-medium: awsui.$space-xs;
 .header {
   /* used in test-utils */
 
+  &-wrapper,
+  &-deprecated {
+    display: flex;
+    font-weight: awsui.$font-heading-s-weight;
+  }
+
   &-wrapper {
     font-size: inherit;
     letter-spacing: inherit;
     margin: 0;
     padding: 0;
-    font-weight: awsui.$font-heading-s-weight;
-    display: flex;
   }
 
   &-button {

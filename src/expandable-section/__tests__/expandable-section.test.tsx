@@ -59,6 +59,7 @@ describe('Expandable Section', () => {
       for (const variant of variantsWithDescription) {
         test(`${variant} variant`, () => {
           const wrapper = renderExpandableSection({
+            variant,
             headerText: 'Test Header',
             headerDescription: 'Description',
           });
@@ -128,6 +129,7 @@ describe('Expandable Section', () => {
         describe(`${variant} variant`, () => {
           test('Counter', () => {
             const wrapper = renderExpandableSection({
+              variant,
               headerText: 'Test Header',
               headerCounter: '(3)',
             });
@@ -136,6 +138,7 @@ describe('Expandable Section', () => {
           });
           test('Info links', () => {
             const wrapper = renderExpandableSection({
+              variant,
               headerText: 'Test Header',
               headerInfo: <Link variant="info">Info</Link>,
             });
@@ -144,6 +147,7 @@ describe('Expandable Section', () => {
           });
           test('Action buttons', () => {
             const wrapper = renderExpandableSection({
+              variant,
               headerText: 'Test Header',
               headerInfo: <Button>Action</Button>,
             });
