@@ -67,7 +67,7 @@ export interface ButtonProps extends BaseComponentProps {
 
   /**
    * Adds `aria-label` to the button element. It should be used in buttons that don't have text in order to make
-   * them accessible.
+   * them accessible. The text will also be added to the `title` attribute of the button.
    */
   ariaLabel?: string;
 

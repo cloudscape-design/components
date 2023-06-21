@@ -5,9 +5,17 @@
 
 @use '~design-tokens' as tokens;
 
+.border-box-outer,
+.box {
+  border: 1px solid tokens.$color-border-status-info;
+}
+
+.border-box-inner {
+  border: 1px solid tokens.$color-border-status-error;
+}
+
 .box {
   background-color: tokens.$color-background-status-info;
-  border: 1px solid tokens.$color-border-status-info;
   display: inline-block;
   padding: 1rem;
 }

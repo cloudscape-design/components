@@ -2628,7 +2628,7 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
     },
     Object {
       "description": "Adds \`aria-label\` to the button element. It should be used in buttons that don't have text in order to make
-them accessible.",
+them accessible. The text will also be added to the \`title\` attribute of the button.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -3897,6 +3897,12 @@ To use it correctly, define an ID for each element that you want to use as a des
 and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
 ",
       "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-label\` to the code editor's textarea element.",
+      "name": "ariaLabel",
       "optional": true,
       "type": "string",
     },
@@ -11546,12 +11552,16 @@ Object {
       "description": "Determines how the child elements will be aligned based on the [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items) property of the CSS Flexbox.",
       "inlineType": Object {
         "name": "SpaceBetweenProps.AlignItems",
-        "properties": Array [],
-        "type": "object",
+        "type": "union",
+        "values": Array [
+          "center",
+          "start",
+          "end",
+        ],
       },
       "name": "alignItems",
       "optional": true,
-      "type": "SpaceBetweenProps.AlignItems",
+      "type": "string",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
