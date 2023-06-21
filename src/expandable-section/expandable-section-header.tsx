@@ -5,9 +5,10 @@ import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import InternalHeader from '../header/internal';
+import InternalHeader, { Description as HeaderDescription } from '../header/internal';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { variantSupportsDescription } from './utils';
 
 export const componentName = 'ExpandableSection';
 
@@ -50,7 +51,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   ariaLabelledBy?: string;
 }
 
-const ExpandableDefaultHeader = ({
+const ExpandableDeprecatedHeader = ({
   id,
   className,
   onClick,
@@ -67,7 +68,7 @@ const ExpandableDefaultHeader = ({
     <div
       id={id}
       role="button"
-      className={clsx(className, styles['expand-button'])}
+      className={clsx(className, styles['expand-button'], styles['click-target'], styles['header-deprecated'])}
       tabIndex={0}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
@@ -94,7 +95,7 @@ const ExpandableNavigationHeader = ({
   icon,
 }: ExpandableNavigationHeaderProps) => {
   return (
-    <div id={id} className={className} onClick={onClick}>
+    <div id={id} className={clsx(className, styles['click-target'])} onClick={onClick}>
       <button
         className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
@@ -130,22 +131,38 @@ const ExpandableHeaderTextWrapper = ({
   onKeyDown,
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
+  const isDefault = variant === 'default';
   const HeadingTag = headingTagOverride || 'div';
   const hasInteractiveElements = isContainer && (headerInfo || headerActions);
   const listeners = { onClick, onKeyDown, onKeyUp };
-  const wrapperListeners = hasInteractiveElements ? undefined : listeners;
+
+  // If interactive elements are present, constrain the clickable area to only the icon and the header text
+  // to prevent nesting interactive elements.
   const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
+  // For the default variant, include also the immediate wrapper around it to include the entire row
+  // for backwards compatibility, but exclude the description below.
+  const headingTagListeners = !headerButtonListeners && isDefault ? listeners : undefined;
+  // For all other cases, make the entire header clickable for backwards compatibility.
+  const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
+
+  const description = variantSupportsDescription(variant) && headerDescription && (
+    <span id={descriptionId} className={styles[`description-${variant}`]}>
+      {headerDescription}
+    </span>
+  );
+
   const headerButton = (
     <span
       className={clsx(
         styles['expand-button'],
-        isContainer ? styles['header-container-button'] : styles['header-button']
+        isContainer ? styles['header-container-button'] : styles['header-button'],
+        headerButtonListeners && styles['click-target']
       )}
       role="button"
       tabIndex={0}
       aria-label={ariaLabel}
-      aria-labelledby={!ariaLabel && isContainer ? id : undefined}
-      aria-describedby={isContainer && headerDescription ? descriptionId : undefined}
+      aria-labelledby={!ariaLabel && description ? id : undefined}
+      aria-describedby={description ? descriptionId : undefined}
       aria-controls={ariaControls}
       aria-expanded={expanded}
       {...headerButtonListeners}
@@ -156,14 +173,11 @@ const ExpandableHeaderTextWrapper = ({
   );
 
   return (
-    <div
-      className={clsx(className, hasInteractiveElements && styles['with-interactive-elements'])}
-      {...wrapperListeners}
-    >
+    <div className={clsx(className, wrapperListeners && styles['click-target'])} {...wrapperListeners}>
       {isContainer ? (
         <InternalHeader
           variant="h2"
-          description={headerDescription && <span id={descriptionId}>{headerDescription}</span>}
+          description={description}
           counter={headerCounter}
           info={headerInfo}
           actions={headerActions}
@@ -172,8 +186,14 @@ const ExpandableHeaderTextWrapper = ({
           {headerButton}
         </InternalHeader>
       ) : (
-        <HeadingTag className={styles['header-wrapper']}>{headerButton}</HeadingTag>
+        <HeadingTag
+          className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+          {...headingTagListeners}
+        >
+          {headerButton}
+        </HeadingTag>
       )}
+      {isDefault && description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
     </div>
   );
 };
@@ -215,10 +235,17 @@ export const ExpandableSectionHeader = ({
     variant,
   };
 
-  if ((headerDescription || headerCounter || headerInfo || headerActions) && variant !== 'container' && isDevelopment) {
+  if ((headerCounter || headerInfo || headerActions) && variant !== 'container' && isDevelopment) {
     warnOnce(
       componentName,
-      'The `headerCounter`, `headerDescription`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+      'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+    );
+  }
+
+  if (headerDescription && variant !== 'container' && variant !== 'default' && isDevelopment) {
+    warnOnce(
+      componentName,
+      'The `headerDescription` prop is only supported for the "default" and "container" variants.'
     );
   }
 
@@ -259,13 +286,13 @@ export const ExpandableSectionHeader = ({
   }
 
   return (
-    <ExpandableDefaultHeader
+    <ExpandableDeprecatedHeader
       className={clsx(className, wrapperClassName, styles.focusable, expanded && styles.expanded)}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
       {...defaultHeaderProps}
     >
       {header}
-    </ExpandableDefaultHeader>
+    </ExpandableDeprecatedHeader>
   );
 };
