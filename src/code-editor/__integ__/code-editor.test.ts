@@ -172,10 +172,10 @@ test(
     // Open errors pane
     await page.click(codeEditorWrapper.findErrorsTab().toSelector());
     // Tab to close button
-    await page.keys(['Tab', 'Tab', 'Tab', 'Tab']);
+    await page.keys(['Tab']);
     await expect(page.isFocused(codeEditorWrapper.findPane().findButton().toSelector())).resolves.toBe(true);
     // Loop around again
-    await page.keys(['Tab', 'Tab', 'Tab', 'Tab']);
+    await page.keys(['Tab', 'Tab']);
     await expect(page.isFocused(codeEditorWrapper.findPane().findButton().toSelector())).resolves.toBe(true);
   })
 );
