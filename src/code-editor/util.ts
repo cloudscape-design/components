@@ -17,15 +17,12 @@ const KEYBOARD_ACCESSIBILITY_MIN_ACE_VERSION = [1, 23];
 export function supportsKeyboardAccessibility(ace: any): boolean {
   // Split semantic version numbers. We don't need a full semver parser for this.
   const semanticVersion = ace?.version?.split('.').map((part: string) => {
-    try {
-      return parseInt(part);
-    } catch {
-      return part;
-    }
+    const parsed = parseInt(part);
+    return Number.isNaN(parsed) ? part : parsed;
   });
 
   return (
-    semanticVersion &&
+    !!semanticVersion &&
     typeof semanticVersion[0] === 'number' &&
     semanticVersion[0] >= KEYBOARD_ACCESSIBILITY_MIN_ACE_VERSION[0] &&
     typeof semanticVersion[1] === 'number' &&

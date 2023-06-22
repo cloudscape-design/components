@@ -13,8 +13,8 @@ describe('supportsKeyboardAccessibility', () => {
   });
 
   it('returns false if version is not provided or is invalid', () => {
-    expect(() => supportsKeyboardAccessibility({})).not.toThrow();
-    expect(() => supportsKeyboardAccessibility({ version: '1.0.0-alpha.100' })).not.toThrow();
-    expect(() => supportsKeyboardAccessibility({ version: 'testing' })).not.toThrow();
+    expect(supportsKeyboardAccessibility({})).toBe(false);
+    expect(supportsKeyboardAccessibility({ version: '1.0.0-alpha.100' })).toBe(false);
+    expect(supportsKeyboardAccessibility({ version: 'testing' })).toBe(false);
   });
 });
