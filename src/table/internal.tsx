@@ -18,7 +18,7 @@ import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
-import { checkColumnWidths, ColumnWidthsProvider, DEFAULT_WIDTH } from './use-column-widths';
+import { ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
@@ -33,7 +33,9 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
+import { useStickyColumns } from './use-sticky-columns';
+import { checkColumnWidths } from './column-widths-utils';
+import { SELECTION_CELL_WIDTH, selectionColumnId } from './constants';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -152,12 +154,17 @@ const InternalTable = React.forwardRef(
     const hasFooter = !!footer;
 
     const visibleColumnsWithSelection = useMemo(() => {
-      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
-      return hasSelection ? [selectionColumnId.toString(), ...columnIds] : columnIds ?? [];
+      const visible = visibleColumnDefinitions.map((c, i) => ({ ...c, id: getColumnKey(c, i).toString() }));
+      return hasSelection ? [{ id: selectionColumnId, width: SELECTION_CELL_WIDTH }, ...visible] : visible;
     }, [visibleColumnDefinitions, hasSelection]);
 
+    const visibleColumnIdsWithSelection = useMemo(
+      () => visibleColumnsWithSelection.map(c => c.id),
+      [visibleColumnsWithSelection]
+    );
+
     const stickyState = useStickyColumns({
-      visibleColumns: visibleColumnsWithSelection,
+      visibleColumns: visibleColumnIdsWithSelection,
       stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
     });
@@ -177,7 +184,7 @@ const InternalTable = React.forwardRef(
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
-          (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_WIDTH
+          (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_COLUMN_WIDTH
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
@@ -225,9 +232,8 @@ const InternalTable = React.forwardRef(
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
-        visibleColumnDefinitions={visibleColumnDefinitions}
+        visibleColumns={visibleColumnsWithSelection}
         resizableColumns={resizableColumns}
-        hasSelection={hasSelection}
       >
         <InternalContainer
           {...baseProps}
@@ -379,7 +385,7 @@ const InternalTable = React.forwardRef(
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
                             stickyState={stickyState}
-                            columnId={selectionColumnId.toString()}
+                            columnId={selectionColumnId}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}

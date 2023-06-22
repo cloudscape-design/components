@@ -13,6 +13,7 @@ import { InteractiveComponent } from '../thead';
 import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../internal/i18n/context';
+import { ColumnId } from '../constants';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -27,7 +28,7 @@ interface TableHeaderCellProps<ItemType> {
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
-  updateColumn: (colIndex: number, newWidth: number) => void;
+  updateColumn: (columnId: ColumnId, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   resizableColumns?: boolean;
@@ -156,7 +157,7 @@ export function TableHeaderCell<ItemType>({
           <Resizer
             tabIndex={tabIndex}
             showFocusRing={focusedComponent?.type === 'resizer' && focusedComponent.col === colIndex}
-            onDragMove={newWidth => updateColumn(colIndex, newWidth)}
+            onDragMove={newWidth => updateColumn(columnId, newWidth)}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}
             onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}

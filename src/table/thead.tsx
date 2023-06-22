@@ -10,11 +10,12 @@ import { getColumnKey, getStickyClassNames } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { selectionColumnId, StickyColumnsModel, useStickyCellStyles } from './use-sticky-columns';
+import { StickyColumnsModel, useStickyCellStyles } from './use-sticky-columns';
 import styles from './styles.css.js';
 import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { selectionColumnId } from './constants';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -95,7 +96,7 @@ const Thead = React.forwardRef(
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
-      columnId: selectionColumnId.toString(),
+      columnId: selectionColumnId,
       getClassName: props => getStickyClassNames(cellStyles, props),
     });
     return (
