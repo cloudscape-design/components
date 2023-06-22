@@ -135,20 +135,21 @@ const ExpandableHeaderTextWrapper = ({
   const hasInteractiveElements = isContainer && (headerInfo || headerActions);
   const listeners = { onClick, onKeyDown, onKeyUp };
 
-  // If interactive elements are present, constrain the clickable area to only the icon and the header text
-  // to prevent nesting interactive elements.
-  const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
-  // For the default and footer variants, include also the immediate wrapper around it to include the entire row
-  // for backwards compatibility, but exclude the description below.
-  const headingTagListeners = !headerButtonListeners && !isContainer ? listeners : undefined;
-  // For all other cases, make the entire header clickable for backwards compatibility.
-  const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
-
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
       {headerDescription}
     </span>
   );
+
+  // If interactive elements are present, constrain the clickable area to only the icon and the header text
+  // to prevent nesting interactive elements.
+  const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
+  // For the default and footer variants with description,
+  // include also the immediate wrapper around it to include the entire row for backwards compatibility,
+  // but exclude the description.
+  const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
+  // For all other cases, make the entire header clickable for backwards compatibility.
+  const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
 
   const headerButton = (
     <span
