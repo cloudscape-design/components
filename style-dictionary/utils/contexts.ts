@@ -33,3 +33,11 @@ export const createFlashbarContext = (tokens: TokenCategory<string, GlobalValue 
     tokens,
   };
 };
+
+export const createFlashbarWarningContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'flashbar-warning',
+    selector: '.awsui-context-flashbar-warning',
+    tokens,
+  };
+};

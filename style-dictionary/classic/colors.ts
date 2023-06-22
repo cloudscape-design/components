@@ -42,7 +42,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundNotificationStackBarHover: '{colorGrey600}',
   colorBackgroundProgressBarContentInFlash: { light: '{colorGreyOpaque70}', dark: '{colorGrey100}' },
   colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
-  colorBackgroundStatusWarning: { dark: '{colorGrey700}' },
   colorBackgroundTilesDisabled: { dark: '{colorGrey700}' },
   colorBackgroundToggleCheckedDisabled: { dark: '{colorBlue700}' },
   colorBorderButtonNormalActive: '{colorBorderButtonNormalDefault}',
