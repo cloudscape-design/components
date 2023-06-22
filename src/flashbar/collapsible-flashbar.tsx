@@ -245,7 +245,10 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     ? clsx(
                         styles['flash-list-item'],
                         !isFlashbarStackExpanded && styles.item,
-                        !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
+                        !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only'],
+                        getVisualContextClassname(
+                          item.type === 'warning' && !item.loading ? 'flashbar-warning' : 'flashbar'
+                        )
                       )
                     : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
                 }
@@ -298,8 +301,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         isCollapsible && styles.collapsible,
         items.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
-        isVisualRefresh && styles['visual-refresh'],
-        getVisualContextClassname('flashbar')
+        isVisualRefresh && styles['visual-refresh']
       )}
       ref={mergedRef}
     >

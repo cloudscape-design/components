@@ -97,7 +97,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
       <Flash
         // eslint-disable-next-line react/forbid-component-props
         className={clsx(
-          getVisualContextClassname('flashbar'),
+          getVisualContextClassname(item.type === 'warning' && !item.loading ? 'flashbar-warning' : 'flashbar'),
           animateFlash && styles['flash-with-motion'],
           isVisualRefresh && styles['flash-refresh']
         )}
