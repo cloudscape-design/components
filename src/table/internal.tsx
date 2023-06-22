@@ -25,7 +25,6 @@ import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
-import StickyScrollbar from './sticky-scrollbar';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
@@ -33,7 +32,8 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
+import { selectionColumnId, useStickyColumns } from '../internal/components/table-fragments/sticky-columns';
+import { StickyScrollbar } from '../internal/components/table-fragments/sticky-scrollbar';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;

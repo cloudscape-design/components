@@ -3,8 +3,8 @@
 import React, { useRef } from 'react';
 import { Box, Link } from '~components';
 import styles from './styles.scss';
-import { generateItems, Instance } from './generate-data';
-import StickyScrollbar from '~components/table/sticky-scrollbar';
+import { generateItems, Instance } from '../table/generate-data';
+import { StickyScrollbar } from '~components/internal/components/table-fragments/sticky-scrollbar';
 import { useScrollSync } from '~components/internal/hooks/use-scroll-sync';
 
 const items = generateItems(50);

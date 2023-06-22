@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import AsyncStore from '../area-chart/model/async-store';
-import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
+import AsyncStore from '../../../async-store';
+import { useStableEventHandler } from '../../../hooks/use-stable-event-handler';
+import { useResizeObserver } from '../../../hooks/container-queries';
 import clsx from 'clsx';
-import { useResizeObserver } from '../internal/hooks/container-queries';
 
 export const selectionColumnId = Symbol('selection-column-id');
 

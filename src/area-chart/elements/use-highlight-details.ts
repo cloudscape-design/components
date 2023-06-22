@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { useSelector } from '../../internal/async-store';
 import { CartesianChartProps } from '../../internal/components/cartesian-chart/interfaces';
 import { ChartSeriesDetailItem } from '../../internal/components/chart-series-details';
 import { useInternalI18n } from '../../internal/i18n/context';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
-import { useSelector } from '../model/async-store';
 
 export interface HighlightDetails {
   isPopoverPinned: boolean;

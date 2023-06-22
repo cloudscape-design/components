@@ -3,10 +3,9 @@
 import { ResizeObserver } from '@juggle/resize-observer';
 import { RefObject, useEffect, useState } from 'react';
 import styles from './styles.css.js';
-
-import { getOverflowParents } from '../internal/utils/scrollable-containers';
-import { browserScrollbarSize } from '../internal/utils/browser-scrollbar-size';
-import { supportsStickyPosition, getContainingBlock } from '../internal/utils/dom';
+import { getContainingBlock, supportsStickyPosition } from '../../../utils/dom';
+import { getOverflowParents } from '../../../utils/scrollable-containers';
+import { browserScrollbarSize } from '../../../utils/browser-scrollbar-size';
 
 export const updatePosition = (
   tableEl: HTMLElement | null,

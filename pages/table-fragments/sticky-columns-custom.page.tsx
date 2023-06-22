@@ -3,9 +3,13 @@
 import React, { useState } from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box, Checkbox, Container, Link } from '~components';
-import { useStickyColumns, useStickyCellStyles, StickyColumnsModel } from '~components/table/use-sticky-columns';
+import {
+  useStickyColumns,
+  useStickyCellStyles,
+  StickyColumnsModel,
+} from '~components/internal/components/table-fragments/sticky-columns';
 import styles from './styles.scss';
-import { generateItems, Instance } from './generate-data';
+import { generateItems, Instance } from '../table/generate-data';
 import clsx from 'clsx';
 
 const items = generateItems(50);

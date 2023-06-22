@@ -4,8 +4,9 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import styles from '../../../lib/components/table/styles.selectors.js';
+import scrollbarStyles from '../../../lib/components/internal/components/table-fragments/sticky-scrollbar/styles.selectors.js';
 
-const scrollbarSelector = `.${styles['sticky-scrollbar-visible']}`;
+const scrollbarSelector = `.${scrollbarStyles['sticky-scrollbar-visible']}`;
 const wrapper = createWrapper();
 const tableWrapper = wrapper.findTable();
 // All the columns fit in the viewport, which make it easier to test the columns' widths
