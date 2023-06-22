@@ -244,11 +244,8 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (headerDescription && variant !== 'container' && variant !== 'default' && isDevelopment) {
-    warnOnce(
-      componentName,
-      'The `headerDescription` prop is only supported for the "default" and "container" variants.'
-    );
+  if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
+    warnOnce(componentName, 'The `headerDescription` prop is not supported for this variant.');
   }
 
   const wrapperClassName = clsx(styles.wrapper, styles[`wrapper-${variant}`], expanded && styles['wrapper-expanded']);

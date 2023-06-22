@@ -264,7 +264,7 @@ describe('Expandable Section', () => {
             expect(warnOnce).toHaveBeenCalledTimes(1);
             expect(warnOnce).toHaveBeenCalledWith(
               componentName,
-              'The `headerDescription` prop is only supported for the "default" and "container" variants.'
+              'The `headerDescription` prop is not supported for this variant.'
             );
           });
         }
