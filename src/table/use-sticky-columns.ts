@@ -6,7 +6,7 @@ import AsyncStore from '../area-chart/model/async-store';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import clsx from 'clsx';
 import { useResizeObserver } from '../internal/hooks/container-queries';
-import { ColumnId } from './constants';
+import { ColumnId } from './interfaces';
 
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)

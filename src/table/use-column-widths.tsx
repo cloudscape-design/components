@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
 import headerCellStyles from './header-cell/styles.css.js';
-import { ColumnId } from './constants';
+import { ColumnId } from './interfaces';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 

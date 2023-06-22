@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './styles.css.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 import { getStickyClassNames } from '../utils';
-import { ColumnId } from '../constants';
+import { ColumnId } from '../interfaces';
 
 export interface TableTdElementProps {
   className?: string;
