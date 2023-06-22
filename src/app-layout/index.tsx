@@ -47,6 +47,8 @@ import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../internal/i18n/context';
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
 import { useDrawerFocusControl } from './utils/use-drawer-focus-control';
+import { awsuiPluginsInternal } from '../internal/plugins/api';
+import { DrawersLayout, convertRuntimeDrawers } from './runtime-api';
 
 export { AppLayoutProps };
 
@@ -56,6 +58,7 @@ const AppLayout = React.forwardRef(
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout');
+    const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({ before: [], after: [] });
     const isRefresh = useVisualRefresh();
 
     const i18n = useInternalI18n('app-layout');
@@ -73,10 +76,31 @@ const AppLayout = React.forwardRef(
     const props = { contentType, headerSelector, footerSelector, ...rest, ariaLabels };
 
     const baseProps = getBaseProps(rest);
+    const ownDrawers = (props as any).drawers;
+    const disableRuntimeDrawers = (props as any).__disableRuntimeDrawers;
+    const combinedDrawers = [...runtimeDrawers.before, ...(ownDrawers?.items ?? []), ...runtimeDrawers.after];
+    const finalDrawers = combinedDrawers.length > 0 ? { ...ownDrawers, items: combinedDrawers } : ownDrawers;
+
+    useEffect(() => {
+      if (disableRuntimeDrawers) {
+        return;
+      }
+      const unsubscribe = awsuiPluginsInternal.appLayout.onDrawersRegistered(drawers =>
+        setRuntimeDrawers(convertRuntimeDrawers(drawers))
+      );
+      return () => {
+        unsubscribe();
+        setRuntimeDrawers({ before: [], after: [] });
+      };
+    }, [disableRuntimeDrawers]);
 
     return (
       <div ref={__internalRootRef} {...baseProps}>
-        {isRefresh ? <RefreshedAppLayout {...props} ref={ref} /> : <OldAppLayout {...props} ref={ref} />}
+        {isRefresh ? (
+          <RefreshedAppLayout {...props} {...{ drawers: finalDrawers }} ref={ref} />
+        ) : (
+          <OldAppLayout {...props} {...{ drawers: finalDrawers }} ref={ref} />
+        )}
       </div>
     );
   }
