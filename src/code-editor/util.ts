@@ -15,6 +15,7 @@ export const DEFAULT_DARK_THEME: typeof DarkThemes[number]['value'] = 'tomorrow_
 const KEYBOARD_ACCESSIBILITY_MIN_ACE_VERSION = [1, 23];
 
 export function supportsKeyboardAccessibility(ace: any): boolean {
+  // Split semantic version numbers. We don't need a full semver parser for this.
   const semanticVersion = ace?.version?.split('.').map((part: string) => {
     try {
       return parseInt(part);
