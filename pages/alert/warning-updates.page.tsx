@@ -20,10 +20,10 @@ export default function AlertScenario() {
               Warning status indicator
             </StatusIndicator>
 
-            <Alert statusIconAriaLabel="Warning" dismissible={true} type="warning">
+            <Alert statusIconAriaLabel="Warning" dismissible={true} dismissAriaLabel="Dismiss" type="warning">
               Alert description
             </Alert>
-            <Alert statusIconAriaLabel="Warning" dismissible={true} type="warning">
+            <Alert statusIconAriaLabel="Warning" dismissible={true} dismissAriaLabel="Dismiss" type="warning">
               Alert description with a <Link href="#">normal link</Link>.
             </Alert>
             <Alert
@@ -38,6 +38,7 @@ export default function AlertScenario() {
             <Alert
               statusIconAriaLabel="Success"
               dismissible={true}
+              dismissAriaLabel="Dismiss"
               type="success"
               action={<Button>Do something!</Button>}
             >
@@ -51,6 +52,7 @@ export default function AlertScenario() {
                   id: '3',
                   type: 'warning',
                   dismissible: true,
+                  dismissLabel: 'Dismiss',
                   content: (
                     <div>
                       Flash description{' '}
