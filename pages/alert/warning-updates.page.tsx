@@ -47,10 +47,11 @@ export default function AlertScenario() {
 
             <Flashbar
               items={[
-                { id: '1', type: 'warning', content: 'Flash description' },
+                { id: '1', statusIconAriaLabel: 'Warning', type: 'warning', content: 'Flash description' },
                 {
                   id: '3',
                   type: 'warning',
+                  statusIconAriaLabel: 'Warning',
                   dismissible: true,
                   dismissLabel: 'Dismiss',
                   content: (
@@ -65,6 +66,7 @@ export default function AlertScenario() {
                 {
                   id: '4',
                   type: 'warning',
+                  statusIconAriaLabel: 'Warning',
                   header: 'Header message',
                   action: <Button>Do something!</Button>,
                   content: <div>Flash description with a button</div>,
@@ -72,6 +74,7 @@ export default function AlertScenario() {
                 {
                   id: '5',
                   type: 'success',
+                  statusIconAriaLabel: 'Success',
                   dismissible: true,
                   dismissLabel: 'Dismiss',
                   content: (
@@ -87,6 +90,7 @@ export default function AlertScenario() {
                 {
                   id: '6',
                   type: 'error',
+                  statusIconAriaLabel: 'Error',
                   dismissible: true,
                   dismissLabel: 'Dismiss',
                   content: (
@@ -99,7 +103,7 @@ export default function AlertScenario() {
                   ),
                   action: <Button>Action</Button>,
                 },
-                { id: '7', type: 'warning', content: 'Flash description' },
+                { id: '7', type: 'warning', statusIconAriaLabel: 'Warning', content: 'Flash description' },
               ]}
             />
           </SpaceBetween>
