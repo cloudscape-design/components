@@ -223,7 +223,6 @@ describeEachThemeAppLayout(false, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
     wrapper.findDrawersSlider()!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
     const resizeEvent = new MouseEvent('pointermove', { bubbles: true });
-    // Object.defineProperty(resizeEvent, 'clientX', { value: -400 });
     wrapper.findDrawersSlider()!.fireEvent(resizeEvent);
     wrapper.findDrawersSlider()!.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
 

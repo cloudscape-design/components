@@ -8,6 +8,7 @@
 @use './constants' as constants;
 
 /* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+// these styles are expected to apply to the entire document, so they do not follow the scoping rules
 .resize {
   &-active * {
     user-select: none;
@@ -23,6 +24,7 @@
     cursor: ns-resize;
   }
 }
+/* stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
 
 .with-motion {
   @include styles.with-motion {
@@ -67,6 +69,7 @@
   }
 }
 
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
 .unfocusable * {
   // Prevent content that is visually hidden behind drawers in mobile view from receiving focus
   visibility: hidden;
