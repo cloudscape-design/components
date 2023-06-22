@@ -18,7 +18,7 @@ const typesToColors: Record<FlashType, string> = {
   info: 'blue',
   progress: 'blue',
   success: 'green',
-  warning: 'blue',
+  warning: 'yellow',
 };
 
 function getColorFromType(type?: FlashType): string {
