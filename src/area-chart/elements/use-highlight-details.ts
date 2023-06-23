@@ -5,7 +5,7 @@ import { ChartSeriesDetailItem } from '../../internal/components/chart-series-de
 import { useInternalI18n } from '../../internal/i18n/context';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
-import { useSelector } from '../model/async-store';
+import { useSelector } from '../../internal/async-store';
 
 export interface HighlightDetails {
   isPopoverPinned: boolean;

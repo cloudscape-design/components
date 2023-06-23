@@ -8,7 +8,7 @@ import { ChartDataTypes } from '../../internal/components/cartesian-chart/interf
 import { act, render, fireEvent } from '@testing-library/react';
 import { AreaChartProps } from '../interfaces';
 import { KeyCode } from '../../internal/keycode';
-import { useReaction } from '../model/async-store';
+import { useReaction } from '../../internal/async-store';
 import { ChartModel } from '../model';
 import PlotPoint = ChartModel.PlotPoint;
 

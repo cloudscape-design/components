@@ -3,7 +3,7 @@
 import { ChartModel } from './index';
 import { AreaChartProps } from '../interfaces';
 
-import AsyncStore from './async-store';
+import AsyncStore from '../../internal/async-store';
 
 const initialState = Object.freeze({
   highlightedX: null,
