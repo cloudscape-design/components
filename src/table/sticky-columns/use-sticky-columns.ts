@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import AsyncStore from '../../internal/async-store';
+import AsyncStore from '../../area-chart/async-store';
 import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { useResizeObserver } from '../../internal/hooks/container-queries';
 import clsx from 'clsx';

@@ -14,7 +14,7 @@ import { useStableEventHandler } from '../../internal/hooks/use-stable-event-han
 import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
-import { useReaction } from '../../internal/async-store';
+import { useReaction } from '../async-store';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;

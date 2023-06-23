@@ -10,7 +10,7 @@ import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
 
 import styles from '../styles.css.js';
-import { useSelector } from '../../internal/async-store';
+import { useSelector } from '../async-store';
 
 export default memo(DataSeries) as typeof DataSeries;
 

@@ -6,7 +6,7 @@ import { ChartScale, NumericChartScale } from '../../internal/components/cartesi
 import { XDomain, YDomain } from '../../internal/components/cartesian-chart/interfaces';
 import { AreaChartProps } from '../interfaces';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
-import { ReadonlyAsyncStore } from '../../internal/async-store';
+import { ReadonlyAsyncStore } from '../async-store';
 
 export interface ChartModel<T extends AreaChartProps.DataTypes> {
   height: number;

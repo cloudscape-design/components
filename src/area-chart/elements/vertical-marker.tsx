@@ -6,7 +6,7 @@ import VerticalMarker from '../../internal/components/cartesian-chart/vertical-m
 
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
-import { useSelector } from '../../internal/async-store';
+import { useSelector } from '../async-store';
 
 export default memo(AreaVerticalMarker) as typeof AreaVerticalMarker;
 
