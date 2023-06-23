@@ -27,12 +27,12 @@ interface TableHeaderCellProps<ItemType> {
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
-  updateColumn: (colIndex: number, newWidth: number) => void;
+  updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
-  columnId: string;
+  columnId: PropertyKey;
   stickyState: StickyColumnsModel;
 
   focusedComponent?: InteractiveComponent | null;
@@ -156,7 +156,7 @@ export function TableHeaderCell<ItemType>({
           <Resizer
             tabIndex={tabIndex}
             showFocusRing={focusedComponent?.type === 'resizer' && focusedComponent.col === colIndex}
-            onDragMove={newWidth => updateColumn(colIndex, newWidth)}
+            onDragMove={newWidth => updateColumn(columnId, newWidth)}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}
             onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}

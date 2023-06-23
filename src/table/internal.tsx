@@ -18,7 +18,7 @@ import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
-import { checkColumnWidths, ColumnWidthsProvider, DEFAULT_WIDTH } from './use-column-widths';
+import { ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
@@ -32,8 +32,12 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { selectionColumnId, useStickyColumns } from '../internal/components/table-fragments/sticky-columns';
+import { useStickyColumns } from '../internal/components/table-fragments/sticky-columns';
 import { StickyScrollbar } from '../internal/components/table-fragments/sticky-scrollbar';
+import { checkColumnWidths } from './column-widths-utils';
+
+const SELECTION_COLUMN_WIDTH = 54;
+const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -152,12 +156,20 @@ const InternalTable = React.forwardRef(
     const hasFooter = !!footer;
 
     const visibleColumnsWithSelection = useMemo(() => {
-      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
-      return hasSelection ? [selectionColumnId.toString(), ...columnIds] : columnIds ?? [];
+      const visible = visibleColumnDefinitions.map((column, columnIndex) => ({
+        ...column,
+        id: getColumnKey(column, columnIndex),
+      }));
+      return hasSelection ? [{ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH }, ...visible] : visible;
     }, [visibleColumnDefinitions, hasSelection]);
 
+    const visibleColumnIdsWithSelection = useMemo(
+      () => visibleColumnsWithSelection.map(c => c.id),
+      [visibleColumnsWithSelection]
+    );
+
     const stickyState = useStickyColumns({
-      visibleColumns: visibleColumnsWithSelection,
+      visibleColumns: visibleColumnIdsWithSelection,
       stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
     });
@@ -177,7 +189,7 @@ const InternalTable = React.forwardRef(
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
-          (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_WIDTH
+          (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_COLUMN_WIDTH
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
@@ -187,6 +199,7 @@ const InternalTable = React.forwardRef(
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
       stickyState,
+      selectionColumnId,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -225,9 +238,8 @@ const InternalTable = React.forwardRef(
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
-        visibleColumnDefinitions={visibleColumnDefinitions}
+        visibleColumns={visibleColumnsWithSelection}
         resizableColumns={resizableColumns}
-        hasSelection={hasSelection}
       >
         <InternalContainer
           {...baseProps}
@@ -379,7 +391,7 @@ const InternalTable = React.forwardRef(
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
                             stickyState={stickyState}
-                            columnId={selectionColumnId.toString()}
+                            columnId={selectionColumnId}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -439,7 +451,7 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
-                              columnId={column.id ?? colIndex.toString()}
+                              columnId={column.id ?? colIndex}
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                             />
