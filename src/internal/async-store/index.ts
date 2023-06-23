@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useLayoutEffect, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 import { usePrevious } from '../hooks/use-previous';
 
 type Selector<S, R> = (state: S) => R;
@@ -57,13 +56,11 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
 
     this._state = newState;
 
-    unstable_batchedUpdates(() => {
-      for (const [selector, listener] of this._listeners) {
-        if (selector(prevState) !== selector(newState)) {
-          listener(newState, prevState);
-        }
+    for (const [selector, listener] of this._listeners) {
+      if (selector(prevState) !== selector(newState)) {
+        listener(newState, prevState);
       }
-    });
+    }
   }
 
   subscribe<R>(selector: Selector<S, R>, listener: Listener<S>): () => void {
