@@ -11,6 +11,10 @@ class AppLayoutDrawersPage extends BasePageObject {
     await this.click(wrapper.findDrawersTriggers().get(1).toSelector());
   }
 
+  async openThirdPanel() {
+    await this.click(wrapper.findDrawersTriggers().get(3).toSelector());
+  }
+
   async dragResizerTo({ x: targetX, y: targetY }: { x: number; y: number }) {
     const resizerSelector = wrapper.findDrawersSlider().toSelector();
     const resizerBox = await this.getBoundingBox(resizerSelector);
@@ -40,63 +44,82 @@ class AppLayoutDrawersPage extends BasePageObject {
   }
 }
 
-function setupTest(testFn: (page: AppLayoutDrawersPage) => Promise<void>, url = '#/light/app-layout/with-drawers') {
+function setupTest({ visualRefresh = false }, testFn: (page: AppLayoutDrawersPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new AppLayoutDrawersPage(browser);
     await page.setWindowSize(viewports.desktop);
-    await browser.url(`${url}?visualRefresh=false`);
+    await browser.url(`#/light/app-layout/with-drawers?visualRefresh=${visualRefresh}`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
 }
 
-test(
-  'slider is accessible by keyboard in side position',
-  setupTest(async page => {
-    await page.openPanel();
-    await page.keys(['Enter']);
-    await expect(page.isFocused(wrapper.findDrawersSlider().toSelector())).resolves.toBe(true);
+for (const visualRefresh of [true, false]) {
+  describe(`visualRefresh=${visualRefresh}`, () => {
+    test(
+      'slider is accessible by keyboard in side position',
+      setupTest({ visualRefresh }, async page => {
+        await page.openPanel();
+        await page.keys(['Enter']);
+        await expect(page.isFocused(wrapper.findDrawersSlider().toSelector())).resolves.toBe(true);
 
-    const { width } = await page.getDrawerSize();
-    await page.keys(['ArrowLeft']);
-    const expectedWidth = width + 10;
-    await expect((await page.getDrawerSize()).width).toEqual(expectedWidth);
-  })
-);
+        const { width } = await page.getDrawerSize();
+        await page.keys(['ArrowLeft']);
+        const expectedWidth = width + 10;
+        await expect((await page.getDrawerSize()).width).toEqual(expectedWidth);
+      })
+    );
 
-test(
-  'hides the resize handle on mobile',
-  setupTest(async page => {
-    await page.openPanel();
-    await expect(page.isExisting(wrapper.findDrawersSlider().toSelector())).resolves.toBe(true);
+    test(
+      'hides the resize handle on mobile',
+      setupTest({ visualRefresh }, async page => {
+        await page.openPanel();
+        await expect(page.isExisting(wrapper.findDrawersSlider().toSelector())).resolves.toBe(true);
 
-    await page.setWindowSize(viewports.mobile);
-    await expect(page.isExisting(wrapper.findDrawersSlider().toSelector())).resolves.toBe(false);
-  })
-);
+        await page.setWindowSize(viewports.mobile);
+        await expect(page.isExisting(wrapper.findDrawersSlider().toSelector())).resolves.toBe(false);
+      })
+    );
 
-test(
-  `should not allow resize drawer beyond min and max limits`,
-  setupTest(async page => {
-    await page.openPanel();
-    const { width } = await page.getWindowSize();
-    await page.dragResizerTo({ x: width, y: 0 });
-    expect((await page.getDrawerSize()).width).toEqual(280);
+    test(
+      `should not allow resize drawer beyond min and max limits`,
+      setupTest({ visualRefresh: false }, async page => {
+        await page.openPanel();
+        const { width } = await page.getWindowSize();
+        await page.dragResizerTo({ x: width, y: 0 });
+        expect((await page.getDrawerSize()).width).toEqual(280);
 
-    await page.dragResizerTo({ x: 0, y: 0 });
-    expect((await page.getDrawerSize()).width).toEqual(520);
-  })
-);
+        await page.dragResizerTo({ x: 0, y: 0 });
+        expect((await page.getDrawerSize()).width).toEqual(520);
+      })
+    );
 
-test(
-  'automatically shrinks drawer when screen resizes',
-  setupTest(async page => {
-    await page.openPanel();
-    const windowWidth = 900;
-    const { width: originalWidth } = await page.getDrawerSize();
-    await page.setWindowSize({ ...viewports.desktop, width: windowWidth });
-    const { width: newWidth } = await page.getDrawerSize();
-    expect(newWidth).toBeLessThan(originalWidth);
-    expect(newWidth).toBeLessThan(windowWidth);
-  })
-);
+    // in VR, there is a border that adds 2px to the width.
+    test(
+      `should not allow resize drawer beyond min and max limits`,
+      setupTest({ visualRefresh: true }, async page => {
+        await page.openPanel();
+        const { width } = await page.getWindowSize();
+        await page.dragResizerTo({ x: width, y: 0 });
+        expect((await page.getDrawerSize()).width).toEqual(292);
+        await page.dragResizerTo({ x: 0, y: 0 });
+        expect((await page.getDrawerSize()).width).toEqual(362);
+      })
+    );
+
+    test(
+      'automatically shrinks drawer when screen resizes',
+      setupTest({ visualRefresh: true }, async page => {
+        const largeWindowWidth = 1400;
+        const smallWindowWidth = 900;
+        await page.setWindowSize({ ...viewports.desktop, width: largeWindowWidth });
+        await page.openThirdPanel();
+        const { width: originalWidth } = await page.getDrawerSize();
+        await page.setWindowSize({ ...viewports.desktop, width: smallWindowWidth });
+        const { width: newWidth } = await page.getDrawerSize();
+        expect(newWidth).toBeLessThan(originalWidth);
+        expect(newWidth).toBeLessThan(smallWindowWidth);
+      })
+    );
+  });
+}
