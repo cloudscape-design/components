@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -42,6 +42,8 @@ export default function DataSeries<T extends ChartDataTypes>({
   yScale,
 }: DataSeriesProps<T>) {
   const chartAreaClipPath = useUniqueId('awsui-mixed-line-bar-chart__chart-area-');
+  const seriesRef = useRef<SVGGElement | null>(null);
+  const strokeWidth = useRef(0);
 
   const stackedBarOffsetMaps: StackedOffsets[] = useMemo(() => {
     if (!stackedBars) {
@@ -57,11 +59,17 @@ export default function DataSeries<T extends ChartDataTypes>({
     return calculateOffsetMaps(barData);
   }, [visibleSeries, stackedBars]);
 
+  useLayoutEffect(() => {
+    if (!strokeWidth.current && seriesRef.current) {
+      strokeWidth.current = parseInt(getComputedStyle(seriesRef.current).strokeWidth);
+    }
+  });
+
   return (
     <>
       <defs aria-hidden="true">
         <clipPath id={chartAreaClipPath}>
-          <rect x={0} y={0} width={plotWidth} height={plotHeight} />
+          <rect x={0} y={-strokeWidth.current / 2} width={plotWidth} height={plotHeight + strokeWidth.current} />
         </clipPath>
       </defs>
       <g aria-hidden={isGroupNavigation ? true : undefined} role="group">
@@ -81,6 +89,7 @@ export default function DataSeries<T extends ChartDataTypes>({
                     [styles['series--highlighted']]: isHighlighted,
                     [styles['series--dimmed']]: isDimmed,
                   })}
+                  ref={index === 0 ? seriesRef : undefined}
                 >
                   <LineSeries
                     axis={axis}
