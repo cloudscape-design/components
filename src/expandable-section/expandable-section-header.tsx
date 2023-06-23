@@ -131,25 +131,25 @@ const ExpandableHeaderTextWrapper = ({
   onKeyDown,
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
-  const isDefault = variant === 'default';
   const HeadingTag = headingTagOverride || 'div';
   const hasInteractiveElements = isContainer && (headerInfo || headerActions);
   const listeners = { onClick, onKeyDown, onKeyUp };
-
-  // If interactive elements are present, constrain the clickable area to only the icon and the header text
-  // to prevent nesting interactive elements.
-  const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
-  // For the default variant, include also the immediate wrapper around it to include the entire row
-  // for backwards compatibility, but exclude the description below.
-  const headingTagListeners = !headerButtonListeners && isDefault ? listeners : undefined;
-  // For all other cases, make the entire header clickable for backwards compatibility.
-  const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
 
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
       {headerDescription}
     </span>
   );
+
+  // If interactive elements are present, constrain the clickable area to only the icon and the header text
+  // to prevent nesting interactive elements.
+  const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
+  // For the default and footer variants with description,
+  // include also the immediate wrapper around it to include the entire row for backwards compatibility,
+  // but exclude the description.
+  const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
+  // For all other cases, make the entire header clickable for backwards compatibility.
+  const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
 
   const headerButton = (
     <span
@@ -186,14 +186,16 @@ const ExpandableHeaderTextWrapper = ({
           {headerButton}
         </InternalHeader>
       ) : (
-        <HeadingTag
-          className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-          {...headingTagListeners}
-        >
-          {headerButton}
-        </HeadingTag>
+        <>
+          <HeadingTag
+            className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+            {...headingTagListeners}
+          >
+            {headerButton}
+          </HeadingTag>
+          {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
+        </>
       )}
-      {isDefault && description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
     </div>
   );
 };
@@ -242,11 +244,8 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (headerDescription && variant !== 'container' && variant !== 'default' && isDevelopment) {
-    warnOnce(
-      componentName,
-      'The `headerDescription` prop is only supported for the "default" and "container" variants.'
-    );
+  if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
+    warnOnce(componentName, `The \`headerDescription\` prop is not supported for the ${variant} variant.`);
   }
 
   const wrapperClassName = clsx(styles.wrapper, styles[`wrapper-${variant}`], expanded && styles['wrapper-expanded']);

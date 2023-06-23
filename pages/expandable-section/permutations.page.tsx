@@ -125,7 +125,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     headingTagOverride: [undefined, 'h2', 'h3'],
   },
   {
-    variant: ['default', 'container'],
+    variant: ['default', 'container', 'footer'],
     headerText: ['With description'],
     children: ['Sample content'],
     headerDescription: ['Sample description'],

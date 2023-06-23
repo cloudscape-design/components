@@ -2,7 +2,6 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
@@ -10,9 +9,11 @@
 
 @use './motion';
 
-$icon-width: awsui.$size-icon-normal;
-$icon-margin-left: '(#{awsui.$font-body-m-line-height} - #{$icon-width}) / -2';
-$icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
+$icon-width-normal: awsui.$size-icon-normal;
+$icon-width-medium: awsui.$size-icon-medium;
+$icon-margin-left: '(#{awsui.$font-body-m-line-height} - #{$icon-width-normal}) / -2';
+$icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
+$icon-margin-right-medium: awsui.$space-xs;
 
 .root {
   @include styles.styles-reset;
@@ -36,9 +37,9 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
   position: relative;
   margin-left: calc(#{$icon-margin-left});
   // For vertical alignment of text in side navigation items
-  margin-right: calc(#{$icon-margin-right});
+  margin-right: calc(#{$icon-margin-right-normal});
   &-container {
-    margin-right: awsui.$space-xs;
+    margin-right: $icon-margin-right-medium;
   }
 }
 
@@ -189,7 +190,11 @@ $icon-margin-right: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
   }
 }
 
-.description-default {
-  // Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
-  padding-left: calc(#{$icon-width} + #{$icon-margin-right} + #{$icon-margin-left});
+// Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
+.description-default,
+.description-footer {
+  padding-left: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
+}
+.description-container {
+  padding-left: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
 }

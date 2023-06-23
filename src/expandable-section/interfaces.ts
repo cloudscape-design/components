@@ -56,7 +56,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   headerText?: React.ReactNode;
 
   /**
-   * Supplementary text below the heading. Use with the container variant.
+   * Supplementary text below the heading. Use with the container, default or footer variants.
    */
   headerDescription?: string;
 

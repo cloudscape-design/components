@@ -25,8 +25,8 @@ function renderExpandableSection(props: ExpandableSectionProps = {}): Expandable
 }
 
 describe('Expandable Section', () => {
-  const variantsWithDescription: ExpandableSectionProps.Variant[] = ['container', 'default'];
-  const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['footer', 'navigation'];
+  const variantsWithDescription: ExpandableSectionProps.Variant[] = ['container', 'default', 'footer'];
+  const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['navigation'];
   const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
 
   describe('variant property', () => {
@@ -264,7 +264,7 @@ describe('Expandable Section', () => {
             expect(warnOnce).toHaveBeenCalledTimes(1);
             expect(warnOnce).toHaveBeenCalledWith(
               componentName,
-              'The `headerDescription` prop is only supported for the "default" and "container" variants.'
+              `The \`headerDescription\` prop is not supported for the ${variant} variant.`
             );
           });
         }
