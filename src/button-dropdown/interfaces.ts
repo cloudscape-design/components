@@ -5,6 +5,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { IconProps } from '../icon/interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { ButtonProps } from '../button/interfaces';
 
 export interface ButtonDropdownProps extends BaseComponentProps {
   /**
@@ -98,10 +99,34 @@ export interface ButtonDropdownProps extends BaseComponentProps {
    * modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an `href` set.
    */
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  /**
+   * A standalone action displayed before the dropdown trigger. Use it with "primary" variant only.
+   */
+  mainAction?: ButtonDropdownProps.MainAction;
 }
 
 export namespace ButtonDropdownProps {
-  export type Variant = 'normal' | 'primary' | 'icon' | 'split-primary';
+  export type Variant = 'normal' | 'primary' | 'icon';
+
+  export interface MainAction {
+    text: string;
+    ariaLabel?: string;
+    onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
+    onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
+    disabled?: boolean;
+    loading?: boolean;
+    loadingText?: string;
+    href?: string;
+    target?: string;
+    rel?: string;
+    download?: boolean | string;
+    external?: boolean;
+    externalIconAriaLabel?: string;
+    iconAlt?: string;
+    iconName?: IconProps.Name;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
+  }
 
   export interface Item {
     id: string;

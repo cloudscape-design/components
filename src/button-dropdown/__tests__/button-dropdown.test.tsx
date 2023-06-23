@@ -6,7 +6,18 @@ import { act, render, screen } from '@testing-library/react';
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 import { KeyCode } from '../../../lib/components/internal/keycode';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 const renderButtonDropdown = (
   props: Parameters<typeof ButtonDropdown>[0],
@@ -17,10 +28,13 @@ const renderButtonDropdown = (
 };
 
 const renderSplitButtonDropdown = (
-  props: Parameters<typeof ButtonDropdown>[0],
+  props: Partial<Parameters<typeof ButtonDropdown>[0]>,
   ref?: React.Ref<ButtonDropdownProps.Ref>
 ) => {
-  return renderButtonDropdown({ ariaLabel: 'Actions', ...props, variant: 'split-primary' }, ref);
+  return renderButtonDropdown(
+    { ariaLabel: 'Actions', variant: 'primary', items: [{ id: '1', text: 'First item' }], ...props },
+    ref
+  );
 };
 
 const items: ButtonDropdownProps.Items = [
@@ -146,233 +160,171 @@ describe('ButtonDropdown component', () => {
   });
 });
 
-describe('"split-primary" variant', () => {
-  test('does not render split trigger when 0 items', () => {
-    const wrapper = renderSplitButtonDropdown({ items: [] });
+describe('with main action', () => {
+  test('main action is not rendered if variant is not "primary"', () => {
+    const wrapper = renderSplitButtonDropdown({ mainAction: { text: 'Main' }, variant: 'normal' });
 
-    expect(wrapper.findNativeButton()).not.toBe(null);
-    expect(wrapper.findSplitButton()).toBe(null);
+    expect(wrapper.findMainAction()).toBe(null);
 
-    wrapper.openDropdown();
-    expect(wrapper.findItems()).toHaveLength(0);
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'ButtonDropdown',
+      'Main action is only supported for "primary" component variant.'
+    );
   });
 
-  test('does not render split trigger when 1 item', () => {
-    const wrapper = renderSplitButtonDropdown({ items: [{ id: '1', text: 'First' }] });
+  test('renders main action', () => {
+    const wrapper = renderSplitButtonDropdown({ mainAction: { text: 'Main' } });
 
     expect(wrapper.findNativeButton()).not.toBe(null);
-    expect(wrapper.findSplitButton()).toBe(null);
+    expect(wrapper.findMainAction()).not.toBe(null);
 
     wrapper.openDropdown();
     expect(wrapper.findItems()).toHaveLength(1);
   });
 
-  test('does not render split trigger when the first item is a category', () => {
-    const wrapper = renderSplitButtonDropdown({
-      items: [
-        {
-          id: '1',
-          text: 'First',
-          items: [
-            { id: '1.1', text: 'First in group' },
-            { id: '1.2', text: 'Second in group' },
-          ],
-        },
-        {
-          id: '2',
-          text: 'Second',
-        },
-      ],
-    });
+  test('main action onClick is triggered', () => {
+    const onClick = jest.fn();
+    const onFollow = jest.fn();
+    const wrapper = renderSplitButtonDropdown({ mainAction: { text: 'Main', onClick, onFollow } });
 
-    expect(wrapper.findNativeButton()).not.toBe(null);
-    expect(wrapper.findSplitButton()).toBe(null);
+    wrapper.findMainAction()!.click();
 
-    wrapper.openDropdown();
-    expect(wrapper.findItems()).toHaveLength(3);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onFollow).not.toHaveBeenCalled();
   });
 
-  test('renders split trigger and 1 item in the dropdown when 2 items', () => {
+  test('main action onFollow is triggered', () => {
+    const onClick = jest.fn();
+    const onFollow = jest.fn();
     const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First' },
-        { id: '2', text: 'Second' },
-      ],
+      mainAction: { text: 'Main', onClick, onFollow, href: 'https://external.com' },
     });
 
-    expect(wrapper.findNativeButton()).not.toBe(null);
-    expect(wrapper.findSplitButton()).not.toBe(null);
+    wrapper.findMainAction()!.click();
 
-    wrapper.openDropdown();
-    expect(wrapper.findItems()).toHaveLength(1);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onFollow).toHaveBeenCalledTimes(1);
   });
 
-  test('split trigger click calls onItemClick', () => {
-    const onItemClick = jest.fn();
-    const onItemFollow = jest.fn();
+  test('main action with external link has an icon and dedicated ARIA label', () => {
     const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First' },
-        { id: '2', text: 'Second' },
-      ],
-      onItemClick,
-      onItemFollow,
+      mainAction: {
+        text: 'Main',
+        href: 'https://external.com',
+        external: true,
+        externalIconAriaLabel: '(opens in a new tab)',
+      },
     });
 
-    wrapper.findSplitButton()!.click();
-
-    expect(onItemClick).toHaveBeenCalledTimes(1);
-    expect(onItemClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: '1' } }));
-    expect(onItemFollow).not.toHaveBeenCalled();
+    expect(wrapper.findMainAction()?.findByClassName(iconStyles.icon)).not.toBe(null);
+    expect(wrapper.findMainAction()!.getElement()).toHaveTextContent('Main');
+    expect(wrapper.findMainAction()!.getElement()).toHaveAccessibleName('Main (opens in a new tab)');
   });
 
-  test('split trigger click on external link calls onItemFollow', () => {
-    const onItemClick = jest.fn();
-    const onItemFollow = jest.fn();
+  test('main action can be set as disabled', () => {
     const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First', href: 'https://external.com', external: true },
-        { id: '2', text: 'Second' },
-      ],
-      onItemClick,
-      onItemFollow,
+      mainAction: { text: 'Main', disabled: true },
     });
 
-    wrapper.findSplitButton()!.click();
-
-    expect(onItemClick).toHaveBeenCalledTimes(1);
-    expect(onItemClick).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: { id: '1', href: 'https://external.com', external: true, target: '_blank' } })
-    );
-    expect(onItemFollow).toHaveBeenCalledTimes(1);
-    expect(onItemFollow).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: { id: '1', href: 'https://external.com', external: true, target: '_blank' } })
-    );
+    const mainAction = new ButtonWrapper(wrapper.findMainAction()!.getElement());
+    expect(mainAction.isDisabled()).toBe(true);
   });
 
-  test('split trigger with external link has an icon and dedicated ARIA label', () => {
+  test('main action can be set as loading', () => {
     const wrapper = renderSplitButtonDropdown({
-      items: [
-        {
-          id: '1',
-          text: 'First',
-          href: 'https://external.com',
-          external: true,
-          externalIconAriaLabel: '(opens in a new tab)',
-        },
-        { id: '2', text: 'Second' },
-      ],
+      mainAction: { text: 'Main', loading: true, loadingText: 'Loading...' },
     });
 
-    expect(wrapper.findSplitButton()!.findIcon()).not.toBe(null);
-    expect(wrapper.findSplitButton()!.getElement()).toHaveTextContent('First');
-    expect(wrapper.findSplitButton()!.getElement()).toHaveAccessibleName('First (opens in a new tab)');
+    expect(wrapper.findMainAction()?.findLoadingIndicator()).not.toBe(null);
+    const liveRegion = wrapper.findByClassName(liveRegionStyles.root)!.getElement();
+    expect(liveRegion.textContent).toBe('Loading...');
   });
 
-  test('split trigger can be set as disabled', () => {
+  test('button-dropdown disabled state is only set on the trigger', () => {
     const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First', disabled: true },
-        { id: '2', text: 'Second' },
-      ],
-    });
-
-    const splitButton = new ButtonWrapper(wrapper.findSplitButton()!.getElement());
-    expect(splitButton.isDisabled()).toBe(true);
-  });
-
-  test('disabled state applies to both split- and dropdown triggers', () => {
-    const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First' },
-        { id: '2', text: 'Second' },
-      ],
+      mainAction: { text: 'Main' },
       disabled: true,
     });
 
-    const splitButton = new ButtonWrapper(wrapper.findSplitButton()!.getElement());
-    expect(splitButton.isDisabled()).toBe(true);
+    expect(wrapper.findMainAction()!.isDisabled()).toBe(false);
 
     const dropdownTrigger = new ButtonWrapper(wrapper.findNativeButton()!.getElement());
     expect(dropdownTrigger.isDisabled()).toBe(true);
   });
 
-  test('loading state applies to the split button and the dropdown trigger is set as disabled', () => {
+  test('button-dropdown loading state is only set on the trigger', () => {
     const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First' },
-        { id: '2', text: 'Second' },
-      ],
-      loading: true,
-    });
-
-    const splitButton = new ButtonWrapper(wrapper.findSplitButton()!.getElement());
-    expect(splitButton.isDisabled()).toBe(true);
-    expect(splitButton.findLoadingIndicator()).not.toBe(null);
-
-    const dropdownTrigger = new ButtonWrapper(wrapper.findNativeButton()!.getElement());
-    expect(dropdownTrigger.isDisabled()).toBe(true);
-    expect(dropdownTrigger.findLoadingIndicator()).toBe(null);
-  });
-
-  test('loading text is set once', () => {
-    const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First' },
-        { id: '2', text: 'Second' },
-      ],
+      mainAction: { text: 'Main' },
       loading: true,
       loadingText: 'Loading...',
     });
 
-    const liveRegions = wrapper.findAllByClassName(liveRegionStyles.root).map(w => w.getElement());
-    expect(liveRegions).toHaveLength(1);
-    expect(liveRegions[0].textContent).toBe('Loading...');
+    const mainAction = wrapper.findMainAction()!;
+    expect(mainAction.isDisabled()).toBe(false);
+    expect(mainAction.findLoadingIndicator()).toBe(null);
+
+    const dropdownTrigger = new ButtonWrapper(wrapper.findNativeButton()!.getElement());
+    expect(dropdownTrigger.isDisabled()).toBe(true);
+    expect(dropdownTrigger.findLoadingIndicator()).not.toBe(null);
+    const liveRegion = wrapper.findByClassName(liveRegionStyles.root)!.getElement();
+    expect(liveRegion.textContent).toBe('Loading...');
   });
 
-  test('keyup/keydown events on the split-button do not trigger dropdown to open', () => {
+  test('keyup/keydown events on the main action do not trigger dropdown to open', () => {
     const wrapper = renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First' },
-        { id: '2', text: 'Second' },
-      ],
+      mainAction: { text: 'Main' },
     });
 
-    wrapper.findSplitButton()!.keydown(KeyCode.enter);
+    wrapper.findMainAction()!.keydown(KeyCode.enter);
     expect(wrapper.findOpenDropdown()).not.toBeTruthy();
 
-    wrapper.findSplitButton()!.keyup(KeyCode.space);
+    wrapper.findMainAction()!.keyup(KeyCode.space);
     expect(wrapper.findOpenDropdown()).not.toBeTruthy();
+  });
+
+  test('dropdown is closed upon main action click', () => {
+    const wrapper = renderSplitButtonDropdown({
+      mainAction: { text: 'Main' },
+    });
+
+    wrapper.openDropdown();
+    expect(wrapper.findOpenDropdown()).toBeTruthy();
+
+    wrapper.findMainAction()!.click();
+    expect(wrapper.findOpenDropdown()).not.toBeTruthy();
+  });
+
+  test('dropdown is not closed is main action click was cancelled', () => {
+    const onClick = (event: Event) => event.stopPropagation();
+    const wrapper = renderSplitButtonDropdown({
+      mainAction: { text: 'Main', onClick },
+    });
+
+    wrapper.openDropdown();
+    expect(wrapper.findOpenDropdown()).toBeTruthy();
+
+    wrapper.findMainAction()!.click();
+    expect(wrapper.findOpenDropdown()).toBeTruthy();
   });
 
   test('buttons are wrapped in a semantic group', () => {
     renderSplitButtonDropdown({
-      items: [
-        { id: '1', text: 'First' },
-        { id: '2', text: 'Second' },
-      ],
+      mainAction: { text: 'Main' },
       ariaLabel: 'Test actions',
     });
 
     expect(screen.getByRole('group')).toHaveAccessibleName('Test actions');
-    expect(screen.getAllByRole('button')[0]).toHaveAccessibleName('First');
+    expect(screen.getAllByRole('button')[0]).toHaveAccessibleName('Main');
     expect(screen.getAllByRole('button')[1]).toHaveAccessibleName('Test actions');
   });
 
-  test('ref.focus() focuses the split action', () => {
+  test('ref.focus() focuses the main action', () => {
     const ref = React.createRef<ButtonDropdownProps.Ref>();
-    const wrapper = renderSplitButtonDropdown(
-      {
-        items: [
-          { id: '1', text: 'First' },
-          { id: '2', text: 'Second' },
-        ],
-      },
-      ref
-    );
+    const wrapper = renderSplitButtonDropdown({ mainAction: { text: 'Main' } }, ref);
 
     ref.current!.focus();
 
-    expect(wrapper.findSplitButton()!.getElement()).toHaveFocus();
+    expect(wrapper.findMainAction()!.getElement()).toHaveFocus();
   });
 });

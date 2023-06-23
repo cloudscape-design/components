@@ -7,6 +7,7 @@ import dropdownStyles from '../../../internal/components/dropdown/styles.selecto
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import buttonStyles from '../../../button/styles.selectors.js';
+import ButtonWrapper from '../button/index.js';
 
 export default class ButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles['button-dropdown'];
@@ -17,8 +18,10 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
     return this.findByClassName(styles['dropdown-trigger'])!.find<HTMLButtonElement>(`button.${buttonStyles.button}`)!;
   }
 
-  findSplitButton(): null | ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName(styles['split-trigger'])?.find<HTMLButtonElement>(`.${buttonStyles.button}`) ?? null;
+  findMainAction(): null | ButtonWrapper {
+    return (
+      this.findByClassName(styles['split-trigger'])?.findComponent(`.${buttonStyles.button}`, ButtonWrapper) ?? null
+    );
   }
 
   findOpenDropdown(): ElementWrapper | null {

@@ -10,13 +10,14 @@ import Dropdown from '../internal/components/dropdown';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import OptionsList from '../internal/components/options-list';
-import { InternalButton } from '../button/internal';
+import { InternalButton, InternalButtonProps } from '../button/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { fireCancelableEvent } from '../internal/events/index.js';
+import { isDevelopment } from '../internal/is-development';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -36,6 +37,7 @@ const InternalButtonDropdown = React.forwardRef(
       title,
       description,
       preferCenter,
+      mainAction,
       __internalRootRef,
       ...props
     }: InternalButtonDropdownProps,
@@ -46,9 +48,16 @@ const InternalButtonDropdown = React.forwardRef(
     for (const item of items) {
       checkSafeUrl('ButtonDropdown', item.href);
     }
+    if (mainAction) {
+      checkSafeUrl('ButtonDropdown', mainAction.href);
+    }
 
-    const isValidSplitButton = variant === 'split-primary' && items.length > 1 && !('items' in items[0]);
-    const dropdownItems = isValidSplitButton ? items.slice(1) : items;
+    if (isDevelopment) {
+      if (mainAction && variant !== 'primary') {
+        warnOnce('ButtonDropdown', 'Main action is only supported for "primary" component variant.');
+      }
+    }
+    const isMainAction = mainAction && variant === 'primary';
 
     const {
       isOpen,
@@ -65,7 +74,7 @@ const InternalButtonDropdown = React.forwardRef(
       closeDropdown,
       setIsUsingMouse,
     } = useButtonDropdown({
-      items: dropdownItems,
+      items,
       onItemClick,
       onItemFollow,
       onReturnFocus: () => triggerRef.current?.focus(),
@@ -80,10 +89,10 @@ const InternalButtonDropdown = React.forwardRef(
 
     const baseProps = getBaseProps(props);
 
-    const splitActionRef = useRef<HTMLElement>(null);
+    const mainActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
 
-    useForwardFocus(ref, isValidSplitButton ? splitActionRef : triggerRef);
+    useForwardFocus(ref, isMainAction ? mainActionRef : triggerRef);
 
     const clickHandler = () => {
       if (!loading && !disabled) {
@@ -94,8 +103,7 @@ const InternalButtonDropdown = React.forwardRef(
 
     const canBeOpened = !loading && !disabled;
 
-    let triggerVariant = variant === 'navigation' ? undefined : variant;
-    triggerVariant = triggerVariant === 'split-primary' ? 'primary' : triggerVariant;
+    const triggerVariant = variant === 'navigation' ? undefined : variant;
 
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
       variant === 'icon'
@@ -108,6 +116,25 @@ const InternalButtonDropdown = React.forwardRef(
             __iconClass: canBeOpened && isOpen ? styles['rotate-up'] : styles['rotate-down'],
           };
 
+    const baseTriggerProps: InternalButtonProps = {
+      className: styles['trigger-button'],
+      ...iconProps,
+      variant: triggerVariant,
+      loading,
+      loadingText,
+      disabled,
+      onClick: (event: Event) => {
+        event.preventDefault();
+        clickHandler();
+      },
+      ariaLabel,
+      ariaExpanded: canBeOpened && isOpen,
+      formAction: 'none',
+      __nativeAttributes: {
+        'aria-haspopup': true,
+      },
+    };
+
     let trigger: React.ReactNode = null;
     if (customTriggerBuilder) {
       trigger = (
@@ -115,93 +142,47 @@ const InternalButtonDropdown = React.forwardRef(
           {customTriggerBuilder(clickHandler, triggerRef, disabled, isOpen, ariaLabel)}
         </div>
       );
-    } else if (isValidSplitButton) {
-      const item = items[0];
-      const { iconName, iconAlt, iconSvg, iconUrl } = item;
-      const splitButtonIconProps = item.external
+    } else if (isMainAction) {
+      const { text, iconName, iconAlt, iconSvg, iconUrl, external, externalIconAriaLabel, ...mainActionProps } =
+        mainAction;
+      const mainActionIconProps = external
         ? ({ iconName: 'external', iconAlign: 'right' } as const)
         : ({ iconName, iconAlt, iconSvg, iconUrl } as const);
-      const itemAriaLabel = item.externalIconAriaLabel ? `${item.text} ${item.externalIconAriaLabel}` : undefined;
-      const itemClickDetail = {
-        id: item.id || 'undefined',
-        href: item.href,
-        external: item.external,
-        target: item.external ? '_blank' : undefined,
-      };
+      const mainActionAriaLabel = externalIconAriaLabel
+        ? `${mainAction.ariaLabel ?? mainAction.text} ${mainAction.externalIconAriaLabel}`
+        : undefined;
 
       trigger = (
         <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
-          <div className={clsx(styles['trigger-item'], styles['split-trigger'])}>
+          <div
+            className={clsx(styles['trigger-item'], styles['split-trigger'])}
+            // Close dropdown upon main action click unless event is cancelled.
+            onClick={closeDropdown}
+            // Prevent keyboard events from propagation to the button dropdown handler.
+            onKeyDown={e => e.stopPropagation()}
+            onKeyUp={e => e.stopPropagation()}
+          >
             <InternalButton
-              ref={splitActionRef}
+              ref={mainActionRef}
+              {...mainActionProps}
+              {...mainActionIconProps}
               className={styles['trigger-button']}
-              {...splitButtonIconProps}
-              href={item.href}
               variant="primary"
-              ariaLabel={itemAriaLabel}
-              loading={loading}
-              loadingText={loadingText}
-              disabled={disabled || item.disabled}
+              ariaLabel={mainActionAriaLabel}
               formAction="none"
-              onClick={event => {
-                fireCancelableEvent(onItemClick, itemClickDetail, event);
-                closeDropdown();
-              }}
-              onFollow={event => {
-                fireCancelableEvent(onItemFollow, itemClickDetail, event);
-                closeDropdown();
-              }}
-              // Prevent keyboard events from propagation to the button dropdown handler.
-              __nativeAttributes={{
-                onKeyDown: (event: KeyboardEvent) => {
-                  event.stopPropagation();
-                },
-                onKeyUp: (event: KeyboardEvent) => {
-                  event.stopPropagation();
-                },
-              }}
             >
-              {item.text}
+              {text}
             </InternalButton>
           </div>
           <div className={clsx(styles['trigger-item'], styles['dropdown-trigger'])}>
-            <InternalButton
-              ref={triggerRef}
-              className={styles['trigger-button']}
-              {...iconProps}
-              variant="primary"
-              disabled={loading || disabled}
-              onClick={(event: Event) => {
-                event.preventDefault();
-                clickHandler();
-              }}
-              ariaLabel={ariaLabel}
-              aria-haspopup={true}
-              ariaExpanded={canBeOpened && isOpen}
-              formAction="none"
-            />
+            <InternalButton ref={triggerRef} {...baseTriggerProps} />
           </div>
         </div>
       );
     } else {
       trigger = (
         <div className={styles['dropdown-trigger']}>
-          <InternalButton
-            ref={triggerRef}
-            {...iconProps}
-            variant={triggerVariant}
-            loading={loading}
-            loadingText={loadingText}
-            disabled={disabled}
-            onClick={(event: Event) => {
-              event.preventDefault();
-              clickHandler();
-            }}
-            ariaLabel={ariaLabel}
-            aria-haspopup={true}
-            ariaExpanded={canBeOpened && isOpen}
-            formAction="none"
-          >
+          <InternalButton ref={triggerRef} {...baseTriggerProps}>
             {children}
           </InternalButton>
         </div>
@@ -211,7 +192,6 @@ const InternalButtonDropdown = React.forwardRef(
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
 
-    const stylesVariant = variant === 'split-primary' ? 'primary' : variant;
     return (
       <div
         {...baseProps}
@@ -219,7 +199,7 @@ const InternalButtonDropdown = React.forwardRef(
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
         onMouseMove={handleMouseEvent}
-        className={clsx(styles['button-dropdown'], styles[`variant-${stylesVariant}`], baseProps.className)}
+        className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
         ref={__internalRootRef}
       >
@@ -264,7 +244,7 @@ const InternalButtonDropdown = React.forwardRef(
             statusType="finished"
           >
             <ItemsList
-              items={dropdownItems}
+              items={items}
               onItemActivate={onItemActivate}
               onGroupToggle={onGroupToggle}
               hasExpandableGroups={expandableGroups}
@@ -274,7 +254,7 @@ const InternalButtonDropdown = React.forwardRef(
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}
-              variant={stylesVariant}
+              variant={variant}
             />
           </OptionsList>
         </Dropdown>

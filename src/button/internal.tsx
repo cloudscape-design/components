@@ -13,7 +13,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 
-type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
+export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
   __nativeAttributes?: Record<string, any>;
   __iconClass?: string;

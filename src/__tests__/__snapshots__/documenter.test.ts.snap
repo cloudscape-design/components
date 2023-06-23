@@ -3105,6 +3105,103 @@ It prevents clicks.",
       "type": "string",
     },
     Object {
+      "description": "A standalone action displayed before the dropdown trigger. Use it with \\"primary\\" variant only.",
+      "inlineType": Object {
+        "name": "ButtonDropdownProps.MainAction",
+        "properties": Array [
+          Object {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "disabled",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "download",
+            "optional": true,
+            "type": "boolean | string",
+          },
+          Object {
+            "name": "external",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "iconAlt",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "iconName",
+            "optional": true,
+            "type": "IconProps.Name",
+          },
+          Object {
+            "name": "iconSvg",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          Object {
+            "name": "iconUrl",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "loading",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "loadingText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "onClick",
+            "optional": true,
+            "type": "CancelableEventHandler<ClickDetail>",
+          },
+          Object {
+            "name": "onFollow",
+            "optional": true,
+            "type": "CancelableEventHandler<ButtonProps.FollowDetail>",
+          },
+          Object {
+            "name": "rel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "mainAction",
+      "optional": true,
+      "type": "ButtonDropdownProps.MainAction",
+    },
+    Object {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
@@ -3118,7 +3215,6 @@ It prevents clicks.",
           "normal",
           "primary",
           "icon",
-          "split-primary",
         ],
       },
       "name": "variant",
