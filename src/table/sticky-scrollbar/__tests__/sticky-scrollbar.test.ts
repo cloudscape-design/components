@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { updatePosition } from '../../../../../../lib/components/internal/components/table-fragments/sticky-scrollbar/use-sticky-scrollbar';
+import { updatePosition } from '../../../../lib/components/table/sticky-scrollbar/use-sticky-scrollbar';
 
 describe('updatePosition', () => {
   it('satisfies istanbul coverage', () => {

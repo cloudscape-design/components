@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import AsyncStore from '../../../async-store';
-import { useStableEventHandler } from '../../../hooks/use-stable-event-handler';
-import { useResizeObserver } from '../../../hooks/container-queries';
+import AsyncStore from '../../internal/async-store';
+import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
+import { useResizeObserver } from '../../internal/hooks/container-queries';
 import clsx from 'clsx';
 
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns

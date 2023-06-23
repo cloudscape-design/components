@@ -7,10 +7,7 @@ import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/
 import { supportsStickyPosition } from '../../../lib/components/internal/utils/dom';
 import { useContainerQuery } from '../../../lib/components/internal/hooks/container-queries';
 import styles from '../../../lib/components/table/styles.css.js';
-import {
-  useStickyColumns,
-  useStickyCellStyles,
-} from '../../../lib/components/internal/components/table-fragments/sticky-columns';
+import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/table/sticky-columns';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
   useContainerQuery: jest.fn(() => [600, () => {}]),
@@ -22,7 +19,7 @@ jest.mock('../../../lib/components/internal/utils/dom', () => ({
   findUpUntil: jest.fn(),
 }));
 
-jest.mock('../../../lib/components/internal/components/table-fragments/sticky-columns', () => ({
+jest.mock('../../../lib/components/table/sticky-columns', () => ({
   useStickyColumns: jest.fn(),
   useStickyCellStyles: jest.fn(),
   selectionColumnId: 'id',

@@ -8,7 +8,7 @@ import Multiselect from '~components/multiselect';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { useStickyColumns } from '~components/internal/components/table-fragments/sticky-columns';
+import { useStickyColumns } from '~components/table/sticky-columns';
 
 const baseColumnDefinition = { cell: () => 'Cell content', header: 'Column header' };
 

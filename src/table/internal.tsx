@@ -32,8 +32,8 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns } from '../internal/components/table-fragments/sticky-columns';
-import { StickyScrollbar } from '../internal/components/table-fragments/sticky-scrollbar';
+import { useStickyColumns } from './sticky-columns';
+import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 
 const SELECTION_COLUMN_WIDTH = 54;

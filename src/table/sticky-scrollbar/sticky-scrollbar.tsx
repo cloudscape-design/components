@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef } from 'react';
 import { useStickyScrollbar } from './use-sticky-scrollbar';
-import { useMergeRefs } from '../../../hooks/use-merge-refs';
-import { useAppLayoutContext } from '../../../context/app-layout-context';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { useAppLayoutContext } from '../../internal/context/app-layout-context';
 import styles from './styles.css.js';
 
 interface StickyScrollbarProps {

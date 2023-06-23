@@ -4,10 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
-import {
-  StickyColumnsModel,
-  useStickyCellStyles,
-} from '../../internal/components/table-fragments/sticky-columns/use-sticky-columns';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns/use-sticky-columns.js';
 
 export interface TableTdElementProps {
   className?: string;

@@ -5,7 +5,7 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import { TableBodyCell } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
-import { useStickyColumns } from '../../../lib/components/internal/components/table-fragments/sticky-columns';
+import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 
 const testItem = {
   test: 'testData',

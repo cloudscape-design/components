@@ -12,7 +12,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../internal/i18n/context';
-import { StickyColumnsModel, useStickyCellStyles } from '../../internal/components/table-fragments/sticky-columns';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;

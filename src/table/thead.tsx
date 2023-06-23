@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { StickyColumnsModel, useStickyCellStyles } from '../internal/components/table-fragments/sticky-columns';
+import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
