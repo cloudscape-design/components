@@ -14,6 +14,31 @@ export interface ReadonlyAsyncStore<S> {
   unsubscribe(listener: Listener<any>): void;
 }
 
+/**
+ * Async store utility can be used to distribute component state without using React context.
+ * The state can be represented by an object of any shape. Components can subscribe to state changes
+ * to be notified when the change of the entire state or particular properties occur.
+ *
+ * function WestSideComponent({ store }) {
+ *   const westValue = useSelector(store, state => state.west)
+ *   return <div>{westValue}</div>;
+ * }
+ *
+ * function EastSideComponent({ store }) {
+ *   const eastValue = useSelector(store, state => state.east)
+ *   return <div>{eastValue}</div>;
+ * }
+ *
+ * function SidesComponent() {
+ *   const store = new AsyncStore<{ west: number, east: number }>({ west: 0, east: 0 });
+ *   return (
+ *     <>
+ *       <WestSideComponent store={store} />
+ *       <EastSideComponent store={store} />
+ *     <>
+ *   );
+ * }
+ */
 export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
   _state: S;
   _listeners: [Selector<S, any>, Listener<any>][] = [];
@@ -59,6 +84,11 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
   }
 }
 
+/**
+ * Triggers an effect when selected state changes.
+ *
+ * useReaction(store, state => state.east, (east) => console.log('east', east));
+ */
 export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>, effect: Listener<R>): void {
   useLayoutEffect(
     () => {
@@ -73,6 +103,11 @@ export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Select
   );
 }
 
+/**
+ * Transforms selected state to React state.
+ *
+ * const eastValue = useSelector(store, state => state.east);
+ */
 export function useSelector<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>): R {
   const [state, setState] = useState<R>(selector(store.get()));
 
