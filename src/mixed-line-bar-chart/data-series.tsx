@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -11,6 +11,9 @@ import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './i
 
 import styles from './styles.css.js';
 import { calculateOffsetMaps, StackedOffsets } from './utils';
+
+// Should have the same value as the `border-line-chart-width` token.
+const STROKE_WIDTH = 2;
 
 export interface DataSeriesProps<T> {
   axis: 'x' | 'y';
@@ -42,8 +45,6 @@ export default function DataSeries<T extends ChartDataTypes>({
   yScale,
 }: DataSeriesProps<T>) {
   const chartAreaClipPath = useUniqueId('awsui-mixed-line-bar-chart__chart-area-');
-  const seriesRef = useRef<SVGGElement | null>(null);
-  const strokeWidth = useRef(0);
 
   const stackedBarOffsetMaps: StackedOffsets[] = useMemo(() => {
     if (!stackedBars) {
@@ -59,17 +60,11 @@ export default function DataSeries<T extends ChartDataTypes>({
     return calculateOffsetMaps(barData);
   }, [visibleSeries, stackedBars]);
 
-  useLayoutEffect(() => {
-    if (!strokeWidth.current && seriesRef.current) {
-      strokeWidth.current = parseInt(getComputedStyle(seriesRef.current).strokeWidth);
-    }
-  });
-
   return (
     <>
       <defs aria-hidden="true">
         <clipPath id={chartAreaClipPath}>
-          <rect x={0} y={-strokeWidth.current / 2} width={plotWidth} height={plotHeight + strokeWidth.current} />
+          <rect x={0} y={-STROKE_WIDTH / 2} width={plotWidth} height={plotHeight + STROKE_WIDTH} />
         </clipPath>
       </defs>
       <g aria-hidden={isGroupNavigation ? true : undefined} role="group">
@@ -89,7 +84,6 @@ export default function DataSeries<T extends ChartDataTypes>({
                     [styles['series--highlighted']]: isHighlighted,
                     [styles['series--dimmed']]: isDimmed,
                   })}
-                  ref={index === 0 ? seriesRef : undefined}
                 >
                   <LineSeries
                     axis={axis}
