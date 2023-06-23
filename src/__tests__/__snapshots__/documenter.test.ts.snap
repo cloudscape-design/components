@@ -28,6 +28,7 @@ when the \`dismissible\` property is set to \`true\`.",
     },
     Object {
       "description": "Adds an aria-label to the dismiss button.",
+      "i18nTag": true,
       "name": "dismissAriaLabel",
       "optional": true,
       "type": "string",
@@ -390,6 +391,7 @@ Example:
   toolsToggle: \\"Open help panel\\"
 }
 \`\`\`",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "AppLayoutProps.Labels",
         "properties": Array [
@@ -738,6 +740,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
     },
     Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -776,6 +779,7 @@ A value of \`null\` means no series is highlighted.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "AreaChartProps.I18nStrings",
         "properties": Array [
@@ -861,12 +865,14 @@ A value of \`null\` means no series is highlighted.
     },
     Object {
       "description": "Text that is displayed when the chart is loading, i.e. when \`statusType\` is set to \`\\"loading\\"\`.",
+      "i18nTag": true,
       "name": "loadingText",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Text for the recovery button that is displayed next to the error text.",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -1144,6 +1150,7 @@ The display of a row is handled by the \`definition\` property.",
     },
     Object {
       "description": "Specifies the text that's displayed in the remove button.",
+      "i18nTag": true,
       "name": "removeButtonText",
       "optional": true,
       "type": "string",
@@ -1422,6 +1429,7 @@ scrolled out of the viewport.",
     },
     Object {
       "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "i18nTag": true,
       "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
@@ -1458,6 +1466,7 @@ receive focus.",
     },
     Object {
       "description": "Specifies a function that generates the custom value indicator (for example, \`Use \\"\${value}\\"\`).",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "AutosuggestProps.EnteredTextLabel",
         "parameters": Array [
@@ -1475,12 +1484,14 @@ receive focus.",
     },
     Object {
       "description": "Provides a text alternative for the error icon in the error message.",
+      "i18nTag": true,
       "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -1624,6 +1635,7 @@ Don't use read-only inputs outside a form.
     Object {
       "description": "Specifies the text for the recovery button. The text is displayed next to the error text.
 Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -1661,6 +1673,7 @@ For more information, see the
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).",
+      "i18nTag": true,
       "name": "selectedAriaLabel",
       "optional": true,
       "type": "string",
@@ -1872,6 +1885,7 @@ See the usage guidelines for more details.",
     },
     Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -1918,6 +1932,7 @@ This can only be used when the chart consists exclusively of bar series.",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CartesianChartProps.I18nStrings",
         "properties": Array [
@@ -1993,12 +2008,14 @@ This can only be used when the chart consists exclusively of bar series.",
     },
     Object {
       "description": "Text that is displayed when the chart is loading, i.e. when \`statusType\` is set to \`\\"loading\\"\`.",
+      "i18nTag": true,
       "name": "loadingText",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Text for the recovery button that is displayed next to the error text.",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -2479,6 +2496,7 @@ without pressing modifier keys (that is, CTRL, ALT, SHIFT, META).",
     },
     Object {
       "description": "Provides an \`aria-label\` to the ellipsis button that screen readers can read (for accessibility).",
+      "i18nTag": true,
       "name": "expandAriaLabel",
       "optional": true,
       "type": "string",
@@ -3207,12 +3225,14 @@ Supported values and formats are listed in the
     },
     Object {
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
+      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
+      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -3226,6 +3246,7 @@ By default the starting day of the week is defined by the locale, but you can us
     },
     Object {
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
+      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -3285,6 +3306,7 @@ You can use the first arguments of type \`SelectionState\` to access the current
 state of the component (for example, the \`selectedItems\` list). The label function for individual
 items also receives the corresponding  \`Item\` object. You can use the group label to
 add a meaningful description to the whole selection.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CardsProps.AriaLabels",
         "properties": Array [
@@ -3879,6 +3901,12 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     Object {
+      "description": "Adds \`aria-label\` to the code editor's textarea element.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -3920,6 +3948,7 @@ The object should contain, among others:
 * \`errorState\` - Specifies the text to display if there is an error loading Ace.
 * \`errorStateRecovery\`: Specifies the text for the recovery button that's displayed next to the error text.
    Use the \`recoveryClick\` event to do a recovery action (for example, retrying the request).",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CodeEditorProps.I18nStrings",
         "properties": Array [
@@ -4192,6 +4221,7 @@ The values for all configured preferences are present even if the user didn't ch
   "properties": Array [
     Object {
       "description": "Label of the cancel button in the modal footer.",
+      "i18nTag": true,
       "name": "cancelLabel",
       "optional": true,
       "type": "string",
@@ -4205,6 +4235,7 @@ The values for all configured preferences are present even if the user didn't ch
     },
     Object {
       "description": "Label of the confirm button in the modal footer.",
+      "i18nTag": true,
       "name": "confirmLabel",
       "optional": true,
       "type": "string",
@@ -4218,6 +4249,7 @@ It contains the following:
 - \`description\` (string) - Specifies the text displayed below the checkbox label.
 
 You must set the current value in the \`preferences.contentDensity\` property.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CollectionPreferencesProps.ContentDensityPreference",
         "properties": Array [
@@ -4259,6 +4291,7 @@ Each option contains the following:
 - \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.
 
 You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CollectionPreferencesProps.ContentDisplayPreference",
         "properties": Array [
@@ -4363,6 +4396,7 @@ It contains the following:
   - \`label\` (string) - A label for the radio button (for example, \\"10 resources\\").
 
 You must set the current value in the \`preferences.pageSize\` property.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CollectionPreferencesProps.PageSizePreference",
         "properties": Array [
@@ -4451,6 +4485,7 @@ It contains the following:
 - \`description\` (string) - Specifies the text displayed below each radio group label.
 
 You must set the current value in the \`preferences.stickyColumns\` property.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CollectionPreferencesProps.StickyColumnsPreference",
         "properties": Array [
@@ -4480,6 +4515,7 @@ It contains the following:
 - \`description\` (string) - Specifies the text displayed below the checkbox label.
 
 You must set the current value in the \`preferences.stripedRows\` property.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CollectionPreferencesProps.StripedRowsPreference",
         "properties": Array [
@@ -4502,6 +4538,7 @@ You must set the current value in the \`preferences.stripedRows\` property.",
     },
     Object {
       "description": "Specifies the title of the preferences modal dialog. It is also used as an \`aria-label\` for the trigger button.",
+      "i18nTag": true,
       "name": "title",
       "optional": true,
       "type": "string",
@@ -4552,6 +4589,7 @@ It contains the following:
 - \`description\` (string) - Specifies the text displayed below the checkbox label.
 
 You must set the current value in the \`preferences.wrapLines\` property.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CollectionPreferencesProps.WrapLinesPreference",
         "properties": Array [
@@ -5196,6 +5234,7 @@ Supported values and formats are listed in the
     },
     Object {
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
+      "i18nTag": true,
       "name": "nextMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5228,6 +5267,7 @@ a human-readable localised string representing the current value of the input.
     },
     Object {
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
+      "i18nTag": true,
       "name": "previousMonthAriaLabel",
       "optional": true,
       "type": "string",
@@ -5252,6 +5292,7 @@ By default the starting day of the week is defined by the locale, but you can us
     },
     Object {
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
+      "i18nTag": true,
       "name": "todayAriaLabel",
       "optional": true,
       "type": "string",
@@ -5435,6 +5476,7 @@ Default: the user's current time offset as provided by the browser.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "DateRangePickerProps.I18nStrings",
         "properties": Array [
@@ -5814,7 +5856,7 @@ Behaves similar to the Header component counter.",
       "type": "string",
     },
     Object {
-      "description": "Supplementary text below the heading. Use with the container variant.",
+      "description": "Supplementary text below the heading. Use with the container, default or footer variants.",
       "name": "headerDescription",
       "optional": true,
       "type": "string",
@@ -6149,6 +6191,7 @@ If \`stackItems\` is set to \`true\`, it should also contain:
 * \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
 * \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
 * \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "FlashbarProps.I18nStrings",
         "properties": Array [
@@ -6263,6 +6306,7 @@ Object {
     },
     Object {
       "description": "Provides a text alternative for the error icon in the error alert.",
+      "i18nTag": true,
       "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
@@ -6350,6 +6394,7 @@ This only works well if you're using a single control in the form field.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "FormFieldProps.I18nStrings",
         "properties": Array [
@@ -6620,6 +6665,7 @@ Object {
     },
     Object {
       "description": "Specifies the text that's displayed when the panel is in a loading state.",
+      "i18nTag": true,
       "name": "loadingText",
       "optional": true,
       "type": "string",
@@ -7156,6 +7202,7 @@ scrolled out of the viewport.",
     },
     Object {
       "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "i18nTag": true,
       "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
@@ -7416,6 +7463,7 @@ See the usage guidelines for more details.",
     },
     Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -7454,6 +7502,7 @@ A value of \`null\` means no series is highlighted.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CartesianChartProps.I18nStrings",
         "properties": Array [
@@ -7529,12 +7578,14 @@ A value of \`null\` means no series is highlighted.
     },
     Object {
       "description": "Text that is displayed when the chart is loading, i.e. when \`statusType\` is set to \`\\"loading\\"\`.",
+      "i18nTag": true,
       "name": "loadingText",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Text for the recovery button that is displayed next to the error text.",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -7755,6 +7806,7 @@ is provided, opens the link in a new tab when clicked.",
     },
     Object {
       "description": "Adds an aria-label to the external icon.",
+      "i18nTag": true,
       "name": "externalIconAriaLabel",
       "optional": true,
       "type": "string",
@@ -7956,6 +8008,7 @@ See the usage guidelines for more details.",
     },
     Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -8002,6 +8055,7 @@ This can only be used when the chart consists exclusively of bar series.",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "CartesianChartProps.I18nStrings",
         "properties": Array [
@@ -8077,12 +8131,14 @@ This can only be used when the chart consists exclusively of bar series.",
     },
     Object {
       "description": "Text that is displayed when the chart is loading, i.e. when \`statusType\` is set to \`\\"loading\\"\`.",
+      "i18nTag": true,
       "name": "loadingText",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Text for the recovery button that is displayed next to the error text.",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -8261,6 +8317,7 @@ The event detail contains the \`reason\`, which can be any of the following:
     },
     Object {
       "description": "Adds an \`aria-label\` to the close button, for accessibility.",
+      "i18nTag": true,
       "name": "closeAriaLabel",
       "optional": true,
       "type": "string",
@@ -8471,6 +8528,7 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Specifies an \`aria-label\` for the token deselection button.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "MultiselectProps.DeselectAriaLabelFunction",
         "parameters": Array [
@@ -8494,12 +8552,14 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Provides a text alternative for the error icon in the error message.",
+      "i18nTag": true,
       "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -8523,6 +8583,7 @@ in a slight, visible lag when scrolling complex pages.",
     },
     Object {
       "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "i18nTag": true,
       "name": "filteringClearAriaLabel",
       "optional": true,
       "type": "string",
@@ -8692,6 +8753,7 @@ on your own.
     Object {
       "description": "Specifies the text for the recovery button. The text is displayed next to the error text.
 Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -8729,6 +8791,7 @@ For more information, see the
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
+      "i18nTag": true,
       "name": "selectedAriaLabel",
       "optional": true,
       "type": "string",
@@ -8889,6 +8952,7 @@ Example:
   pageLabel: pageNumber => \`Page \${pageNumber}\`
 }
 \`\`\`",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "PaginationProps.Labels",
         "properties": Array [
@@ -9094,6 +9158,7 @@ Each pair has the following properties:
     },
     Object {
       "description": "Text that's displayed when the chart is in error state (that is, when \`statusType\` is set to \`error\`).",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -9142,6 +9207,7 @@ A value of \`null\` means no segment is being highlighted.
     },
     Object {
       "description": "An object that contains all of the localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "PieChartProps.I18nStrings",
         "properties": Array [
@@ -9225,12 +9291,14 @@ This is usually the unit of the \`innerMetricValue\`.",
     },
     Object {
       "description": "Text that's displayed when the chart is loading (that is, when \`statusType\` is set to \`loading\`).",
+      "i18nTag": true,
       "name": "loadingText",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Text for the recovery button that's displayed next to the error text.",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -9357,6 +9425,7 @@ Object {
     },
     Object {
       "description": "Adds an \`aria-label\` to the dismiss button for accessibility.",
+      "i18nTag": true,
       "name": "dismissAriaLabel",
       "optional": true,
       "type": "string",
@@ -9859,6 +9928,7 @@ operations are communicated to the user in another way.",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "PropertyFilterProps.I18nStrings",
         "properties": Array [
@@ -10343,6 +10413,7 @@ The return type of the function should be a promise that resolves to a list of v
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "S3ResourceSelectorProps.I18nStrings",
         "properties": Array [
@@ -10966,12 +11037,14 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Provides a text alternative for the error icon in the error message.",
+      "i18nTag": true,
       "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
+      "i18nTag": true,
       "name": "errorText",
       "optional": true,
       "type": "string",
@@ -10995,6 +11068,7 @@ in a slight, visible lag when scrolling complex pages.",
     },
     Object {
       "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "i18nTag": true,
       "name": "filteringClearAriaLabel",
       "optional": true,
       "type": "string",
@@ -11125,6 +11199,7 @@ on your own.
     Object {
       "description": "Specifies the text for the recovery button. The text is displayed next to the error text.
 Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).",
+      "i18nTag": true,
       "name": "recoveryText",
       "optional": true,
       "type": "string",
@@ -11162,6 +11237,7 @@ For more information, see the
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
+      "i18nTag": true,
       "name": "selectedAriaLabel",
       "optional": true,
       "type": "string",
@@ -11476,12 +11552,16 @@ Object {
       "description": "Determines how the child elements will be aligned based on the [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items) property of the CSS Flexbox.",
       "inlineType": Object {
         "name": "SpaceBetweenProps.AlignItems",
-        "properties": Array [],
-        "type": "object",
+        "type": "union",
+        "values": Array [
+          "center",
+          "start",
+          "end",
+        ],
       },
       "name": "alignItems",
       "optional": true,
-      "type": "SpaceBetweenProps.AlignItems",
+      "type": "string",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -11655,6 +11735,7 @@ Object {
 - \`preferencesConfirm\` - The text of the preference modal confirm button.
 - \`preferencesCancel\` - The text of the preference modal cancel button.
 - \`resizeHandleAriaLabel\` - The label of the resize handle aria label.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "SplitPanelProps.I18nStrings",
         "properties": Array [
@@ -11988,6 +12069,7 @@ add a meaningful description to the whole selection.
                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
 * \`submittingEditText\` (EditableColumnDefinition) => string -
                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
         "properties": Array [
@@ -12494,6 +12576,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "TabsProps.I18nStrings",
         "properties": Array [
@@ -12618,6 +12701,7 @@ character validation. You should use this property only when absolutely necessar
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "TagEditorProps.I18nStrings",
         "properties": Array [
@@ -13859,6 +13943,7 @@ Object {
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "TokenGroupProps.I18nStrings",
         "properties": Array [
@@ -13931,6 +14016,7 @@ Object {
     },
     Object {
       "description": "An object containing all the localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "TopNavigationProps.I18nStrings",
         "properties": Array [
@@ -14377,6 +14463,7 @@ Defaults to \`false\`.
 - \`optional\` (string) - The text displayed next to the step title and form header title when a step is declared optional.
 - \`nextButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *next* button is in a loading state.
 - \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.",
+      "i18nTag": true,
       "inlineType": Object {
         "name": "WizardProps.I18nStrings",
         "properties": Array [
