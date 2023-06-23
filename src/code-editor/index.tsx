@@ -54,6 +54,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     i18nStrings,
     editorContentHeight,
     onEditorContentResize,
+    ariaLabel,
     languageLabel: customLanguageLabel,
     ...rest
   } = props;
@@ -80,9 +81,10 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     const updateAttribute = (attribute: string, value: string | undefined) =>
       value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
     updateAttribute('id', controlId);
+    updateAttribute('aria-label', ariaLabel);
     updateAttribute('aria-labelledby', ariaLabelledby);
     updateAttribute('aria-describedby', ariaDescribedby);
-  }, [ariaDescribedby, ariaLabelledby, controlId, editor]);
+  }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);

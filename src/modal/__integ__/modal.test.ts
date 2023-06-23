@@ -78,3 +78,19 @@ test(
     }
   })
 );
+
+test(
+  'should not let content with z-index overlap footer',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/vertical-scroll');
+
+    // Open modal
+    await page.click('[data-testid="modal-trigger"]');
+    const modal = createWrapper().findModal();
+    const footerSelector = modal.findFooter().toSelector();
+
+    // this will throw an error if the footer is overlapped by the content
+    await page.click(footerSelector);
+  })
+);

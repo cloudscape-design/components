@@ -1,7 +1,4 @@
 {
-  "alert": {
-    "dismissAriaLabel": "アラートを閉じる"
-  },
   "[charts]": {
     "loadingText": "グラフのロード中",
     "errorText": "データを取得できませんでした。後でもう一度お試しください。",
@@ -9,9 +6,11 @@
     "i18nStrings.filterLabel": "表示されたデータをフィルタリング",
     "i18nStrings.filterPlaceholder": "データをフィルタリング",
     "i18nStrings.legendAriaLabel": "凡例",
-    "i18nStrings.detailPopoverDismissAriaLabel": "閉じる",
-    "i18nStrings.xAxisAriaRoleDescription": "x 軸",
-    "i18nStrings.yAxisAriaRoleDescription": "y 軸"
+    "i18nStrings.xAxisAriaRoleDescription": "x-軸",
+    "i18nStrings.yAxisAriaRoleDescription": "y-軸"
+  },
+  "alert": {
+    "dismissAriaLabel": "アラートを閉じる"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "次へ",
@@ -28,20 +27,19 @@
     "ariaLabels.navigationToggle": "サイドナビゲーションを開く",
     "ariaLabels.notifications": "通知",
     "ariaLabels.tools": "ヘルプパネル",
-    "ariaLabels.toolsClose": "ヘルプパネルを開く",
-    "ariaLabels.toolsToggle": "ヘルプパネルを閉じる"
+    "ariaLabels.toolsClose": "ヘルプパネルを閉じる",
+    "ariaLabels.toolsToggle": "ヘルプパネルを開く"
   },
   "area-chart": {
     "i18nStrings.detailTotalLabel": "合計"
   },
   "attribute-editor": {
-    "removeButtonText": "削除",
-    "i18nStrings.errorIconAriaLabel": "エラー"
+    "removeButtonText": "削除"
   },
   "autosuggest": {
     "errorIconAriaLabel": "エラー",
     "selectedAriaLabel": "選択済み",
-    "enteredTextLabel": "使用: {value}",
+    "enteredTextLabel": "使用:「{value}」",
     "recoveryText": "再試行"
   },
   "breadcrumb-group": {
@@ -90,7 +88,9 @@
     "contentDisplayPreference.dragHandleAriaLabel": "ドラッグハンドル",
     "contentDisplayPreference.dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",
-    "contentDisplayPreference.liveAnnouncementDndDiscarded": "順序変更をキャンセルしました"
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "順序変更をキャンセルしました",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}"
   },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "相対モード",
@@ -124,11 +124,11 @@
     "i18nStrings.successIconAriaLabel": "成功",
     "i18nStrings.warningIconAriaLabel": "警告"
   },
-  "form": {
-    "errorIconAriaLabel": "エラー"
-  },
   "form-field": {
     "i18nStrings.errorIconAriaLabel": "エラー"
+  },
+  "form": {
+    "errorIconAriaLabel": "エラー"
   },
   "help-panel": {
     "loadingText": "コンテンツのロード中"
@@ -142,18 +142,19 @@
   "modal": {
     "closeAriaLabel": "モーダルを閉じる"
   },
+  "multiselect": {
+    "deselectAriaLabel": "{option__label} を削除"
+  },
   "pagination": {
     "ariaLabels.nextPageLabel": "次のページ",
     "ariaLabels.pageLabel": "全ページ中 {pageNumber} ページ",
     "ariaLabels.previousPageLabel": "前のページ"
   },
   "pie-chart": {
-    "loadingText": "グラフのロード中",
-    "errorText": "データを取得できませんでした。後でもう一度お試しください。",
-    "recoveryText": "再試行"
-  },
-  "multiselect": {
-    "deselectAriaLabel": "{option__label} を削除"
+    "i18nStrings.detailsValue": "値",
+    "i18nStrings.detailsPercentage": "パーセンテージ",
+    "i18nStrings.chartAriaRoleDescription": "円グラフ",
+    "i18nStrings.segmentAriaRoleDescription": "セグメント"
   },
   "popover": {
     "dismissAriaLabel": "ポップオーバーを閉じる"
@@ -172,10 +173,10 @@
     "i18nStrings.operatorDoesNotContainText": "次を含まない:",
     "i18nStrings.operatorDoesNotEqualText": "次と等しくない:",
     "i18nStrings.operatorEqualsText": "次と等しい:",
-    "i18nStrings.operatorGreaterOrEqualText": "次以上:",
-    "i18nStrings.operatorGreaterText": "次より大きい:",
-    "i18nStrings.operatorLessOrEqualText": "次以下:",
-    "i18nStrings.operatorLessText": "次未満:",
+    "i18nStrings.operatorGreaterOrEqualText": "次以上",
+    "i18nStrings.operatorGreaterText": "次より大きい",
+    "i18nStrings.operatorLessOrEqualText": "次以下",
+    "i18nStrings.operatorLessText": "次より少ない",
     "i18nStrings.operatorText": "演算子",
     "i18nStrings.operatorsText": "演算子",
     "i18nStrings.propertyText": "プロパティ",
@@ -184,21 +185,120 @@
     "i18nStrings.valueText": "値",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyKey} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyKey} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyKey} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以上} less_than {フィルターを削除、{token__propertyKey} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以下} contains {フィルターを削除、{token__propertyKey} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyKey} は {token__value} を含まない} other {}}"
   },
-  "s3-resource-selector": {},
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "バージョンを選択してください",
+    "i18nStrings.inContextBrowseButton": "S3 を参照",
+    "i18nStrings.inContextViewButton": "表示",
+    "i18nStrings.inContextViewButtonAriaLabel": "表示 (新しいタブで開きます)",
+    "i18nStrings.inContextLoadingText": "リソースのロード中",
+    "i18nStrings.inContextUriLabel": "S3 URI",
+    "i18nStrings.inContextVersionSelectLabel": "オブジェクトのバージョン",
+    "i18nStrings.modalTitle": "S3 のアーカイブを選択",
+    "i18nStrings.modalCancelButton": "キャンセル",
+    "i18nStrings.modalSubmitButton": "選択",
+    "i18nStrings.modalBreadcrumbRootItem": "S3 バケット",
+    "i18nStrings.selectionBuckets": "バケット",
+    "i18nStrings.selectionObjects": "オブジェクト",
+    "i18nStrings.selectionVersions": "バージョン",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "バケットを検索します",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "プレフィックスでオブジェクトを検索します",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "バージョンを検索します",
+    "i18nStrings.selectionBucketsLoading": "バケットのロード中",
+    "i18nStrings.selectionBucketsNoItems": "バケットなし",
+    "i18nStrings.selectionObjectsLoading": "オブジェクトのロード中",
+    "i18nStrings.selectionObjectsNoItems": "オブジェクトなし",
+    "i18nStrings.selectionVersionsLoading": "バージョンのロード中",
+    "i18nStrings.selectionVersionsNoItems": "バージョンなし",
+    "i18nStrings.filteringNoMatches": "一致なし",
+    "i18nStrings.filteringCantFindMatch": "一致が見つかりません。",
+    "i18nStrings.clearFilterButtonText": "フィルターをクリア",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "名前",
+    "i18nStrings.columnBucketCreationDate": "作成日",
+    "i18nStrings.columnBucketRegion": "リージョン",
+    "i18nStrings.columnObjectKey": "キー",
+    "i18nStrings.columnObjectLastModified": "最終更新日",
+    "i18nStrings.columnObjectSize": "サイズ",
+    "i18nStrings.columnVersionID": "バージョン ID",
+    "i18nStrings.columnVersionLastModified": "最終更新日",
+    "i18nStrings.columnVersionSize": "サイズ",
+    "i18nStrings.validationPathMustBegin": "パスの先頭は s3:// である必要があります",
+    "i18nStrings.validationBucketLowerCase": "バケット名の先頭は小文字または数字である必要があります。",
+    "i18nStrings.validationBucketMustNotContain": "バケット名には大文字を使用できません。",
+    "i18nStrings.validationBucketLength": "バケット名は 3～63 文字である必要があります。",
+    "i18nStrings.validationBucketMustComplyDns": "バケット名は DNS 命名規則に準拠している必要があります。",
+    "i18nStrings.labelSortedDescending": "{columnName} (降順でソート)",
+    "i18nStrings.labelSortedAscending": "{columnName} (昇順でソート)",
+    "i18nStrings.labelNotSorted": "{columnName} (ソートなし)",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "バケット",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "オブジェクト",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "バージョン",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "{itemsType} を検索",
+    "i18nStrings.labelRefresh": "データを更新",
+    "i18nStrings.labelBreadcrumbs": "S3 ナビゲーション",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 件の一致} other {{count} 件の一致}}"
+  },
   "select": {
     "errorIconAriaLabel": "エラー",
-    "selectedAriaLabel": "選択済み"
+    "selectedAriaLabel": "選択済み",
+    "recoveryText": "再試行"
   },
-  "split-panel": {},
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "パネルを閉じる",
+    "i18nStrings.openButtonAriaLabel": "パネルを開く",
+    "i18nStrings.preferencesTitle": "分割パネルの詳細設定",
+    "i18nStrings.preferencesPositionLabel": "分割パネルの位置",
+    "i18nStrings.preferencesPositionDescription": "サービスの分割パネルのデフォルトの位置を選択します。",
+    "i18nStrings.preferencesPositionSide": "横",
+    "i18nStrings.preferencesPositionBottom": "下",
+    "i18nStrings.preferencesConfirm": "確認",
+    "i18nStrings.preferencesCancel": "キャンセル",
+    "i18nStrings.resizeHandleAriaLabel": "分割パネルのサイズを変更"
+  },
   "table": {
     "ariaLabels.submittingEditText": "編集を送信中",
     "ariaLabels.successfulEditLabel": "編集に成功しました",
     "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",
-    "columnDefinitions.editConfig.editIconAriaLabel": "dditable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "編集可能"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "左にスクロール",
     "i18nStrings.scrollRightAriaLabel": "右にスクロール"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "キーを入力",
+    "i18nStrings.valuePlaceholder": "値を入力",
+    "i18nStrings.addButton": "新しいタグを追加",
+    "i18nStrings.removeButton": "削除",
+    "i18nStrings.removeButtonAriaLabel": "{tag__key} を削除",
+    "i18nStrings.undoButton": "元に戻す",
+    "i18nStrings.undoPrompt": "このタグは、変更を保存すると削除されます",
+    "i18nStrings.loading": "このリソースに関連付けられているタグをロードしています",
+    "i18nStrings.keyHeader": "キー",
+    "i18nStrings.valueHeader": "値",
+    "i18nStrings.optional": "オプション",
+    "i18nStrings.keySuggestion": "カスタムのタグキー",
+    "i18nStrings.valueSuggestion": "カスタムのタグ値",
+    "i18nStrings.emptyTags": "リソースに関連付けられたタグがありません。",
+    "i18nStrings.tooManyKeysSuggestion": "表示できる数を超えるキーがあります",
+    "i18nStrings.tooManyValuesSuggestion": "表示できる数を超える値があります",
+    "i18nStrings.keysSuggestionLoading": "タグキーをロードしています",
+    "i18nStrings.keysSuggestionError": "タグキーを取得できませんでした",
+    "i18nStrings.valuesSuggestionLoading": "タグ値をロードしています",
+    "i18nStrings.valuesSuggestionError": "タグ値を取得できませんでした",
+    "i18nStrings.emptyKeyError": "タグキーを指定してください",
+    "i18nStrings.maxKeyCharLengthError": "タグキーには最大 128 文字を使用できます。",
+    "i18nStrings.maxValueCharLengthError": "タグ値には最大 256 文字を使用できます。",
+    "i18nStrings.duplicateKeyError": "一意のタグキーを指定してください。",
+    "i18nStrings.invalidKeyError": "無効なキー。キーには、Unicode 文字、数字、空白、および次のいずれかのみを含めることができます: _.:/=+@-",
+    "i18nStrings.invalidValueError": "無効な値。値には、Unicode 文字、数字、空白、および次のいずれかのみを含めることができます: _.:/=+@-",
+    "i18nStrings.awsPrefixError": "aws: で始めることはできません",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {タグの上限数である 1 個に達しました。} other {タグの上限数である {tagLimit} 個に達しました。}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {タグの上限数である 1 個を超えました。} other {タグの上限数である {tagLimit} 個を超えました。}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {最大 {tagLimit} 個のタグを追加できます。}}} false {{availableTags, plural, one {最大 1 個のタグをさらに追加できます。} other {最大 {availableTags} 個のタグをさらに追加できます。}}} other {}}"
   },
   "token-group": {
     "i18nStrings.limitShowFewer": "少なく表示",

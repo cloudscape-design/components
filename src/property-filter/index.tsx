@@ -91,7 +91,6 @@ const PropertyFilter = React.forwardRef(
       cancelActionText: i18n('i18nStrings.cancelActionText', rest.i18nStrings.cancelActionText),
       clearFiltersText: i18n('i18nStrings.clearFiltersText', rest.i18nStrings.clearFiltersText),
       editTokenHeader: i18n('i18nStrings.editTokenHeader', rest.i18nStrings.editTokenHeader),
-      enteredTextLabel: i18n('i18nStrings.enteredTextLabel', rest.i18nStrings.enteredTextLabel),
       groupPropertiesText: i18n('i18nStrings.groupPropertiesText', rest.i18nStrings.groupPropertiesText),
       groupValuesText: i18n('i18nStrings.groupValuesText', rest.i18nStrings.groupValuesText),
       operationAndText: i18n('i18nStrings.operationAndText', rest.i18nStrings.operationAndText),

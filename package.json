@@ -36,7 +36,6 @@
     "date-fns": "^2.25.0",
     "intl-messageformat": "^10.3.1",
     "mnth": "^2.0.0",
-    "react-focus-lock": "~2.8.1",
     "react-keyed-flatten-children": "^1.3.0",
     "react-transition-group": "^4.4.2",
     "react-virtual": "^2.8.2",

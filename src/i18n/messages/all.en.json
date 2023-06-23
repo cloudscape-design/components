@@ -1,7 +1,4 @@
 {
-  "alert": {
-    "dismissAriaLabel": "Dismiss alert"
-  },
   "[charts]": {
     "loadingText": "Loading chart",
     "errorText": "The data couldn't be fetched. Try again later.",
@@ -9,8 +6,12 @@
     "i18nStrings.filterLabel": "Filter displayed data",
     "i18nStrings.filterPlaceholder": "Filter data",
     "i18nStrings.legendAriaLabel": "Legend",
+    "i18nStrings.chartAriaRoleDescription": "Chart",
     "i18nStrings.xAxisAriaRoleDescription": "x-axis",
     "i18nStrings.yAxisAriaRoleDescription": "y-axis"
+  },
+  "alert": {
+    "dismissAriaLabel": "Dismiss alert"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Next",
@@ -27,8 +28,8 @@
     "ariaLabels.navigationToggle": "Open side navigation",
     "ariaLabels.notifications": "Notifications",
     "ariaLabels.tools": "Help panel",
-    "ariaLabels.toolsClose": "Open help panel",
-    "ariaLabels.toolsToggle": "Close help panel"
+    "ariaLabels.toolsClose": "Close help panel",
+    "ariaLabels.toolsToggle": "Open help panel"
   },
   "area-chart": {
     "i18nStrings.detailTotalLabel": "Total"
@@ -124,11 +125,11 @@
     "i18nStrings.successIconAriaLabel": "Success",
     "i18nStrings.warningIconAriaLabel": "Warning"
   },
-  "form": {
-    "errorIconAriaLabel": "Error"
-  },
   "form-field": {
     "i18nStrings.errorIconAriaLabel": "Error"
+  },
+  "form": {
+    "errorIconAriaLabel": "Error"
   },
   "help-panel": {
     "loadingText": "Loading content"
@@ -142,6 +143,9 @@
   "modal": {
     "closeAriaLabel": "Close modal"
   },
+  "multiselect": {
+    "deselectAriaLabel": "Remove {option__label}"
+  },
   "pagination": {
     "ariaLabels.nextPageLabel": "Next page",
     "ariaLabels.pageLabel": "Page {pageNumber} of all pages",
@@ -152,9 +156,6 @@
     "i18nStrings.detailsPercentage": "Percentage",
     "i18nStrings.chartAriaRoleDescription": "Pie chart",
     "i18nStrings.segmentAriaRoleDescription": "Segment"
-  },
-  "multiselect": {
-    "deselectAriaLabel": "Remove {option__label}"
   },
   "popover": {
     "dismissAriaLabel": "Close popover"
@@ -186,7 +187,6 @@
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remove filter, {token__propertyKey} equals {token__value}} not_equals {Remove filter, {token__propertyKey} does not equal {token__value}} greater_than {Remove filter, {token__propertyKey} is greater than {token__value}} greater_than_equal {Remove filter, {token__propertyKey} is greater than or equal to {token__value}} less_than {Remove filter, {token__propertyKey} is less than {token__value}} less_than_equal {Remove filter, {token__propertyKey} is less than or equal to {token__value}} contains {Remove filter, {token__propertyKey} contains {token__value}} not_contains {Remove filter, {token__propertyKey} does not contain {token__value}} other {}}"
   },
   "s3-resource-selector": {
-    "i18nStrings.inContextInputPlaceholder": "s3://bucket/prefix/object",
     "i18nStrings.inContextSelectPlaceholder": "Choose a version",
     "i18nStrings.inContextBrowseButton": "Browse S3",
     "i18nStrings.inContextViewButton": "View",

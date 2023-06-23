@@ -1,7 +1,4 @@
 {
-  "alert": {
-    "dismissAriaLabel": "Avviso di disattivazione"
-  },
   "[charts]": {
     "loadingText": "Caricamento del grafico in corso",
     "errorText": "Non è stato possibile recuperare i dati. Riprova più tardi.",
@@ -9,9 +6,11 @@
     "i18nStrings.filterLabel": "Filtra i dati visualizzati",
     "i18nStrings.filterPlaceholder": "Filtra i dati",
     "i18nStrings.legendAriaLabel": "Legenda",
-    "i18nStrings.detailPopoverDismissAriaLabel": "Ignora",
     "i18nStrings.xAxisAriaRoleDescription": "asse x",
     "i18nStrings.yAxisAriaRoleDescription": "asse y"
+  },
+  "alert": {
+    "dismissAriaLabel": "Avviso di disattivazione"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Successivo",
@@ -28,20 +27,19 @@
     "ariaLabels.navigationToggle": "Apri navigazione laterale",
     "ariaLabels.notifications": "Notifiche",
     "ariaLabels.tools": "Pannello di aiuto",
-    "ariaLabels.toolsClose": "Apri il pannello di aiuto",
-    "ariaLabels.toolsToggle": "Chiudere il pannello di aiuto"
+    "ariaLabels.toolsClose": "Chiudi il pannello di aiuto",
+    "ariaLabels.toolsToggle": "Apri il pannello di aiuto"
   },
   "area-chart": {
     "i18nStrings.detailTotalLabel": "Totale"
   },
   "attribute-editor": {
-    "removeButtonText": "Rimuovi",
-    "i18nStrings.errorIconAriaLabel": "Errore"
+    "removeButtonText": "Rimuovi"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Errore",
     "selectedAriaLabel": "Selezionato",
-    "enteredTextLabel": "Utilizza {value}",
+    "enteredTextLabel": "Utilizza: «{value}»",
     "recoveryText": "Riprova"
   },
   "breadcrumb-group": {
@@ -72,7 +70,7 @@
     "i18nStrings.preferencesModalWrapLines": "Righe a capo",
     "i18nStrings.preferencesModalTheme": "Tema",
     "i18nStrings.preferencesModalLightThemes": "Temi chiari",
-    "i18nStrings.preferencesModalDarkThemes": "Tema scuro"
+    "i18nStrings.preferencesModalDarkThemes": "Temi scuri"
   },
   "collection-preferences": {
     "title": "Preferenze",
@@ -88,9 +86,11 @@
     "contentDisplayPreference.title": "Preferenze di colonna",
     "contentDisplayPreference.description": "Personalizza la visibilità e l'ordine delle colonne.",
     "contentDisplayPreference.dragHandleAriaLabel": "Punto di trascinamento",
-    "contentDisplayPreference.dragHandleAriaDescription": "Utilizza Space (Spazio) o Enter (Invio) per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Space (Spazio) o Enter (Invio) oppure per annullare lo spostamento, usare Escape (Esc).",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, usa Esc.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Elemento raccolto nella posizione {position} di {total}",
-    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Riordinamento annullato"
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Riordinamento annullato",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Spostamento dell'elemento di nuovo nella posizione {currentPosition} di {total}} false {Spostamento dell'elemento nella posizione {currentPosition} di {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'elemento è stato spostato di nuovo nella posizione originale {initialPosition} di {total}} false {Elemento spostato da una posizione {initialPosition} alla posizione {finalPosition} di {total}} other {}}"
   },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Modalità relativa",
@@ -124,11 +124,11 @@
     "i18nStrings.successIconAriaLabel": "Esito positivo",
     "i18nStrings.warningIconAriaLabel": "Avviso"
   },
-  "form": {
-    "errorIconAriaLabel": "Errore"
-  },
   "form-field": {
     "i18nStrings.errorIconAriaLabel": "Errore"
+  },
+  "form": {
+    "errorIconAriaLabel": "Errore"
   },
   "help-panel": {
     "loadingText": "Caricamento dei contenuti"
@@ -142,18 +142,19 @@
   "modal": {
     "closeAriaLabel": "Chiudi modale"
   },
+  "multiselect": {
+    "deselectAriaLabel": "Rimuovi {option__label}"
+  },
   "pagination": {
     "ariaLabels.nextPageLabel": "Pagina successiva",
     "ariaLabels.pageLabel": "Pagina {pageNumber} di tutte le pagine",
     "ariaLabels.previousPageLabel": "Pagina precedente"
   },
   "pie-chart": {
-    "loadingText": "Caricamento del grafico in corso",
-    "errorText": "Non è stato possibile recuperare i dati. Riprova più tardi.",
-    "recoveryText": "Riprova"
-  },
-  "multiselect": {
-    "deselectAriaLabel": "Rimuovi {option__label}"
+    "i18nStrings.detailsValue": "Valore",
+    "i18nStrings.detailsPercentage": "Percentuale",
+    "i18nStrings.chartAriaRoleDescription": "Grafico a torta",
+    "i18nStrings.segmentAriaRoleDescription": "Segmento"
   },
   "popover": {
     "dismissAriaLabel": "Chiudi popover"
@@ -182,23 +183,122 @@
     "i18nStrings.tokenLimitShowFewer": "Mostra meno",
     "i18nStrings.tokenLimitShowMore": "Mostra altro",
     "i18nStrings.valueText": "Valore",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Rimuovi filtro {token__propertyKey}, uguale a {token__value}} not_equals {Rimuovi filtro, {token__propertyKey} non è uguale a {token__value}} greater_than {Rimuovi filtro, {token__propertyKey} è maggiore di {token__value}} greater_than_equal {Rimuovi filtro, {token__propertyKey} è maggiore o uguale a {token__value}} less_than {Rimuovi filtro, {token__propertyKey} è inferiore a {token__value}} less_than_equal {Rimuovi filtro, {token__propertyKey} è minore o uguale a {token__value}} contains {Rimuovi filtro, {token__propertyKey} contiene {token__value}} not_contains {Rimuovi filtro, {token__propertyKey} non contiene {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Rimuovi filtro, {token__propertyKey} uguale a {token__value}} not_equals {Rimuovi filtro, {token__propertyKey} non è uguale a {token__value}} greater_than {Rimuovi filtro, {token__propertyKey} è maggiore di {token__value}} greater_than_equal {Rimuovi filtro, {token__propertyKey} è maggiore o uguale a {token__value}} less_than {Rimuovi filtro, {token__propertyKey} è inferiore a {token__value}} less_than_equal {Rimuovi filtro, {token__propertyKey} è minore o uguale a {token__value}} contains {Rimuovi filtro, {token__propertyKey} contiene {token__value}} not_contains {Rimuovi filtro, {token__propertyKey} non contiene {token__value}} other {}}"
   },
-  "s3-resource-selector": {},
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "Scegli una versione",
+    "i18nStrings.inContextBrowseButton": "Sfoglia S3",
+    "i18nStrings.inContextViewButton": "Visualizza",
+    "i18nStrings.inContextViewButtonAriaLabel": "Visualizza (si apre in una nuova scheda)",
+    "i18nStrings.inContextLoadingText": "Caricamento delle risorse in corso",
+    "i18nStrings.inContextUriLabel": "S3 URI",
+    "i18nStrings.inContextVersionSelectLabel": "Versione dell’oggetto",
+    "i18nStrings.modalTitle": "Scegli un archivio in S3",
+    "i18nStrings.modalCancelButton": "Annulla",
+    "i18nStrings.modalSubmitButton": "Scegli",
+    "i18nStrings.modalBreadcrumbRootItem": "Bucket S3",
+    "i18nStrings.selectionBuckets": "Bucket",
+    "i18nStrings.selectionObjects": "Oggetti",
+    "i18nStrings.selectionVersions": "Versioni",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "Trova bucket",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "Trova oggetto per prefisso",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "Trova versione",
+    "i18nStrings.selectionBucketsLoading": "Caricamento dei bucket in corso",
+    "i18nStrings.selectionBucketsNoItems": "Nessun bucket",
+    "i18nStrings.selectionObjectsLoading": "Caricamento di oggetti in corso",
+    "i18nStrings.selectionObjectsNoItems": "Nessun oggetto",
+    "i18nStrings.selectionVersionsLoading": "Caricamento delle versioni in corso",
+    "i18nStrings.selectionVersionsNoItems": "Nessuna versione",
+    "i18nStrings.filteringNoMatches": "Nessuna corrispondenza",
+    "i18nStrings.filteringCantFindMatch": "Impossibile trovare una corrispondenza.",
+    "i18nStrings.clearFilterButtonText": "Cancella filtro",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "Nome",
+    "i18nStrings.columnBucketCreationDate": "Data di creazione",
+    "i18nStrings.columnBucketRegion": "Regione",
+    "i18nStrings.columnObjectKey": "Chiave",
+    "i18nStrings.columnObjectLastModified": "Ultima modifica",
+    "i18nStrings.columnObjectSize": "Dimensione",
+    "i18nStrings.columnVersionID": "ID Versione",
+    "i18nStrings.columnVersionLastModified": "Ultima modifica",
+    "i18nStrings.columnVersionSize": "Dimensione",
+    "i18nStrings.validationPathMustBegin": "Il percorso deve iniziare con s3://",
+    "i18nStrings.validationBucketLowerCase": "Il nome del bucket deve iniziare con un carattere minuscolo o un numero.",
+    "i18nStrings.validationBucketMustNotContain": "Il nome del bucket non deve contenere caratteri maiuscoli.",
+    "i18nStrings.validationBucketLength": "Il nome del bucket deve contenere da 3 a 63 caratteri.",
+    "i18nStrings.validationBucketMustComplyDns": "Il nome del bucket deve essere conforme alle convenzioni di denominazione DNS.",
+    "i18nStrings.labelSortedDescending": "{columnName}, ordinati in ordine decrescente",
+    "i18nStrings.labelSortedAscending": "{columnName}, ordinati in ordine ascendente",
+    "i18nStrings.labelNotSorted": "{columnName}, non ordinati",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "Bucket",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "Oggetti",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "Versioni",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "Trova {itemsType}",
+    "i18nStrings.labelRefresh": "Aggiorna i dati",
+    "i18nStrings.labelBreadcrumbs": "Navigazione S3",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 corrispondenza} other {{count} corrispondenze}}"
+  },
   "select": {
     "errorIconAriaLabel": "Errore",
-    "selectedAriaLabel": "Selezionato"
+    "selectedAriaLabel": "Selezionato",
+    "recoveryText": "Riprova"
   },
-  "split-panel": {},
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "Chiudi pannello",
+    "i18nStrings.openButtonAriaLabel": "Apri pannello",
+    "i18nStrings.preferencesTitle": "Preferenze del pannello diviso",
+    "i18nStrings.preferencesPositionLabel": "Posizione del pannello diviso",
+    "i18nStrings.preferencesPositionDescription": "Scegli la posizione predefinita del pannello diviso per il servizio.",
+    "i18nStrings.preferencesPositionSide": "Lato",
+    "i18nStrings.preferencesPositionBottom": "Parte inferiore",
+    "i18nStrings.preferencesConfirm": "Conferma",
+    "i18nStrings.preferencesCancel": "Annulla",
+    "i18nStrings.resizeHandleAriaLabel": "Ridimensiona il pannello diviso"
+  },
   "table": {
     "ariaLabels.submittingEditText": "Invio della modifica in corso",
-    "ariaLabels.successfulEditLabel": "Modifica riuscita",
+    "ariaLabels.successfulEditLabel": "Modifica eseguita correttamente",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Errore",
-    "columnDefinitions.editConfig.editIconAriaLabel": "Modificabile"
+    "columnDefinitions.editConfig.editIconAriaLabel": "modificabile"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Scorri a sinistra",
     "i18nStrings.scrollRightAriaLabel": "Scorri a destra"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "Inserisci chiave",
+    "i18nStrings.valuePlaceholder": "Inserisci valore",
+    "i18nStrings.addButton": "Aggiungi nuovo tag",
+    "i18nStrings.removeButton": "Rimuovi",
+    "i18nStrings.removeButtonAriaLabel": "Rimuovi {tag__key}",
+    "i18nStrings.undoButton": "Annulla",
+    "i18nStrings.undoPrompt": "Questo tag verrà rimosso al momento del salvataggio delle modifiche",
+    "i18nStrings.loading": "Caricamento dei tag associati a questa risorsa",
+    "i18nStrings.keyHeader": "Chiave",
+    "i18nStrings.valueHeader": "Valore",
+    "i18nStrings.optional": "facoltativo",
+    "i18nStrings.keySuggestion": "Chiave di tag personalizzata",
+    "i18nStrings.valueSuggestion": "Valore di tag personalizzato",
+    "i18nStrings.emptyTags": "Nessun tag associato alla risorsa.",
+    "i18nStrings.tooManyKeysSuggestion": "Hai più chiavi di quelle che possono essere visualizzate",
+    "i18nStrings.tooManyValuesSuggestion": "Hai più valori di quelli che possono essere visualizzati",
+    "i18nStrings.keysSuggestionLoading": "Caricamento delle chiavi dei tag",
+    "i18nStrings.keysSuggestionError": "Impossibile recuperare le chiavi dei tag",
+    "i18nStrings.valuesSuggestionLoading": "Caricamento dei valori dei tag",
+    "i18nStrings.valuesSuggestionError": "Impossibile recuperare i valori dei tag",
+    "i18nStrings.emptyKeyError": "Devi specificare una chiave di tag",
+    "i18nStrings.maxKeyCharLengthError": "Il numero massimo di caratteri che è possibile utilizzare in una chiave di tag è 128.",
+    "i18nStrings.maxValueCharLengthError": "Il numero massimo di caratteri che è possibile utilizzare in un valore di tag è 256.",
+    "i18nStrings.duplicateKeyError": "Devi specificare una chiave di tag univoca.",
+    "i18nStrings.invalidKeyError": "Chiave non valida. Le chiavi possono contenere solo caratteri Unicode, lettere, spazi e uno dei seguenti: _.:/=+@-",
+    "i18nStrings.invalidValueError": "Valore non valido. I valori possono contenere solo caratteri Unicode, lettere, spazi e uno dei seguenti: _.:/=+@-",
+    "i18nStrings.awsPrefixError": "Impossibile iniziare con aws:",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {Hai raggiunto il limite di 1 tag.} other {Hai raggiunto il limite di {tagLimit} tag.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {Hai superato il limite di 1 tag.} other {Hai superato il limite di {tagLimit} tag.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {È possibile aggiungere fino a {tagLimit} tag.}}} false {{availableTags, plural, one {È possibile aggiungere al massimo 1 altro tag.} other {È possibile aggiungere fino a {availableTags} altri tag.}}} other {}}"
   },
   "token-group": {
     "i18nStrings.limitShowFewer": "Mostra meno",

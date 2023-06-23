@@ -29,7 +29,7 @@ import { useFormFieldContext } from '../contexts/form-field';
 import { useInternalI18n } from '../internal/i18n/context';
 
 import styles from './styles.css.js';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 

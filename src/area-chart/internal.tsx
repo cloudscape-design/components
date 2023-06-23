@@ -20,7 +20,7 @@ import useChartModel from './model/use-chart-model';
 import useFilterProps from './model/use-filter-props';
 import useHighlightProps from './model/use-highlight-props';
 import { isSeriesValid } from './model/utils';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { nodeContains } from '../internal/utils/dom';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';

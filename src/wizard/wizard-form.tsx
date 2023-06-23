@@ -76,32 +76,35 @@ export default function WizardForm({
         stepNameSelector={`.${styles['form-header-component-wrapper']}`}
         stepNumber={activeStepIndex + 1}
       >
-        <InternalForm
-          className={clsx(styles['form-component'])}
-          actions={
-            <WizardActions
-              cancelButtonText={i18nStrings.cancelButton}
-              primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
-              primaryButtonLoadingText={
-                isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
-              }
-              previousButtonText={i18nStrings.previousButton}
-              onCancelClick={onCancelClick}
-              onPreviousClick={onPreviousClick}
-              onPrimaryClick={onPrimaryClick}
-              onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
-              showPrevious={activeStepIndex !== 0}
-              isPrimaryLoading={isPrimaryLoading}
-              showSkipTo={showSkipTo}
-              skipToButtonText={skipToButtonText}
-            />
-          }
-          secondaryActions={secondaryActions}
-          errorText={errorText}
-          errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-        >
-          {content}
-        </InternalForm>
+        {({ funnelStepProps }) => (
+          <InternalForm
+            className={clsx(styles['form-component'])}
+            actions={
+              <WizardActions
+                cancelButtonText={i18nStrings.cancelButton}
+                primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
+                primaryButtonLoadingText={
+                  isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
+                }
+                previousButtonText={i18nStrings.previousButton}
+                onCancelClick={onCancelClick}
+                onPreviousClick={onPreviousClick}
+                onPrimaryClick={onPrimaryClick}
+                onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
+                showPrevious={activeStepIndex !== 0}
+                isPrimaryLoading={isPrimaryLoading}
+                showSkipTo={showSkipTo}
+                skipToButtonText={skipToButtonText}
+              />
+            }
+            secondaryActions={secondaryActions}
+            errorText={errorText}
+            errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+            {...funnelStepProps}
+          >
+            {content}
+          </InternalForm>
+        )}
       </AnalyticsFunnelStep>
     </>
   );

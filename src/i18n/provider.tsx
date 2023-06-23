@@ -6,7 +6,8 @@ import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
-import { warnOnce } from '../internal/logging';
+import { useTelemetry } from '../internal/hooks/use-telemetry';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;
@@ -34,6 +35,8 @@ export namespace I18nProviderProps {
 const I18nMessagesContext = React.createContext<I18nProviderProps.Messages>({});
 
 export function I18nProvider({ messages: messagesArray, locale: providedLocale, children }: I18nProviderProps) {
+  useTelemetry('I18nProvider');
+
   if (typeof document === 'undefined' && !providedLocale) {
     warnOnce(
       'I18nProvider',
@@ -60,13 +63,13 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
     locale = 'en';
   }
 
-  const format: FormatFunction = <T,>(
+  const format: FormatFunction = <ReturnValue, FormatFnArgs extends Record<string, string | number>>(
     namespace: string,
     component: string,
     key: string,
-    provided: T,
-    customHandler?: CustomHandler<T>
-  ): T => {
+    provided: ReturnValue,
+    customHandler?: CustomHandler<ReturnValue, FormatFnArgs>
+  ): ReturnValue => {
     // A general rule in the library is that undefined is basically
     // treated as "not provided". So even if a user explicitly provides an
     // undefined value, it will default to i18n values.
@@ -96,7 +99,7 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
       return customHandler(args => intlMessageFormat.format(args) as string);
     }
     // Assuming `T extends string` since a customHandler wasn't provided.
-    return intlMessageFormat.format() as T;
+    return intlMessageFormat.format() as ReturnValue;
   };
 
   return (

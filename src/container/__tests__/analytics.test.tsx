@@ -6,6 +6,7 @@ import { render, fireEvent } from '@testing-library/react';
 import Container from '../../../lib/components/container';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors';
 
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
@@ -22,7 +23,7 @@ describe('Funnel Analytics', () => {
 
   test('renders normally when outside the context of a funnel', () => {
     const { getByTestId } = render(<Container data-testid="container" />);
-    expect(getByTestId('container')).not.toHaveAttribute('data-analytics-funnel-substep');
+    expect(getByTestId('container')).not.toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP);
   });
 
   test('adds additional analytics attributes', () => {
@@ -34,7 +35,7 @@ describe('Funnel Analytics', () => {
       </AnalyticsFunnel>
     );
 
-    expect(getByTestId('container')).toHaveAttribute('data-analytics-funnel-substep', expect.any(String));
+    expect(getByTestId('container')).toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP, expect.any(String));
   });
 
   test('sends funnelSubStepStart and funnelSubStepComplete metric when focussed and blurred', () => {

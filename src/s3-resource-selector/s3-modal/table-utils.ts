@@ -15,7 +15,7 @@ export const compareDates = (itemA: string | undefined, itemB: string | undefine
 };
 
 export function getColumnAriaLabel(
-  i18n: ComponentFormatFunction,
+  i18n: ComponentFormatFunction<'s3-resource-selector'>,
   i18nStrings?: Pick<
     S3ResourceSelectorProps.I18nStrings,
     'labelNotSorted' | 'labelSortedDescending' | 'labelSortedAscending'

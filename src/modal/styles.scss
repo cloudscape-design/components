@@ -111,6 +111,7 @@ $modal-z-index: 5000;
   // Make sure that the footer is always visible
   position: sticky;
   bottom: 0;
+  z-index: 800;
 
   &--stuck {
     border-radius: 0 0 awsui.$border-radius-container awsui.$border-radius-container;

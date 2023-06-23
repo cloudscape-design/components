@@ -7,7 +7,7 @@ import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { isDevelopment } from '../internal/is-development';
 import { throttle } from '../internal/utils/throttle';
 import LiveRegion from '../internal/components/live-region';
@@ -16,6 +16,7 @@ import { ButtonProps } from '../button/interfaces';
 import { sendDismissMetric } from './internal/analytics';
 
 import { FOCUS_THROTTLE_DELAY } from './utils';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
 
 const ICON_TYPES = {
   success: 'status-positive',
@@ -117,6 +118,10 @@ export const Flash = React.forwardRef(
       onDismiss && onDismiss(event);
     };
 
+    const analyticsAttributes = {
+      [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
+    };
+
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
       // eslint-disable-next-line @cloudscape-design/prefer-live-region
@@ -124,7 +129,6 @@ export const Flash = React.forwardRef(
         ref={ref}
         role={ariaRole}
         aria-live={ariaRole ? 'off' : undefined}
-        data-analytics-flashbar={effectiveType}
         data-itemid={id}
         className={clsx(
           styles.flash,
@@ -139,6 +143,7 @@ export const Flash = React.forwardRef(
             [styles.exited]: transitionState === 'exited',
           }
         )}
+        {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
           <div className={styles['flash-focus-container']} tabIndex={-1}>

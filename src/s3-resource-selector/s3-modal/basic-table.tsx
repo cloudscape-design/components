@@ -23,6 +23,7 @@ interface BasicS3TableStrings<T> {
   loadingText?: string;
   filteringPlaceholder?: string;
   filteringAriaLabel?: string;
+  filteringClearAriaLabel?: string;
   filteringCounterText?: S3ResourceSelectorProps.I18nStrings['filteringCounterText'];
   emptyText?: string;
   noMatchTitle?: string;
@@ -46,7 +47,7 @@ interface BasicS3TableProps<T> {
 }
 
 export function getSharedI18Strings(
-  i18n: ComponentFormatFunction,
+  i18n: ComponentFormatFunction<'s3-resource-selector'>,
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined
 ) {
   return {
@@ -60,6 +61,7 @@ export function getSharedI18Strings(
     noMatchTitle: i18n('i18nStrings.filteringNoMatches', i18nStrings?.filteringNoMatches),
     noMatchSubtitle: i18n('i18nStrings.filteringCantFindMatch', i18nStrings?.filteringCantFindMatch),
     clearFilterButtonText: i18n('i18nStrings.clearFilterButtonText', i18nStrings?.clearFilterButtonText),
+    filteringClearAriaLabel: i18nStrings?.labelClearFilter,
   };
 }
 
@@ -150,6 +152,7 @@ export function BasicS3Table<T>({
           {...filterProps}
           ref={textFilterRef}
           filteringAriaLabel={i18nStrings.filteringAriaLabel}
+          filteringClearAriaLabel={i18nStrings.filteringClearAriaLabel}
           filteringPlaceholder={i18nStrings.filteringPlaceholder}
           countText={i18nStrings.filteringCounterText ? i18nStrings.filteringCounterText(filteredItemsCount!) : ''}
         />

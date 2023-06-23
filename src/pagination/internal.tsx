@@ -89,9 +89,8 @@ export default function InternalPagination({
 
   const i18n = useInternalI18n('pagination');
 
+  const paginationLabel = ariaLabels?.paginationLabel;
   const nextPageLabel = i18n('ariaLabels.nextPageLabel', ariaLabels?.nextPageLabel) ?? defaultAriaLabels.nextPageLabel;
-  const paginationLabel =
-    i18n('ariaLabels.paginationLabel', ariaLabels?.paginationLabel) ?? defaultAriaLabels.paginationLabel;
   const previousPageLabel =
     i18n('ariaLabels.previousPageLabel', ariaLabels?.previousPageLabel) ?? defaultAriaLabels.previousPageLabel;
   const pageNumberLabelFn =

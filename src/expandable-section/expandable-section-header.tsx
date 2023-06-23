@@ -5,16 +5,16 @@ import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import InternalHeader from '../header/internal';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import InternalHeader, { Description as HeaderDescription } from '../header/internal';
 import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { variantSupportsDescription } from './utils';
 
 export const componentName = 'ExpandableSection';
 
 interface ExpandableDefaultHeaderProps {
   id: string;
+  descriptionId?: string;
   className?: string;
   children?: ReactNode;
   expanded: boolean;
@@ -51,7 +51,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   ariaLabelledBy?: string;
 }
 
-const ExpandableDefaultHeader = ({
+const ExpandableDeprecatedHeader = ({
   id,
   className,
   onClick,
@@ -68,7 +68,7 @@ const ExpandableDefaultHeader = ({
     <div
       id={id}
       role="button"
-      className={className}
+      className={clsx(className, styles['expand-button'], styles['click-target'], styles['header-deprecated'])}
       tabIndex={0}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
@@ -95,9 +95,9 @@ const ExpandableNavigationHeader = ({
   icon,
 }: ExpandableNavigationHeaderProps) => {
   return (
-    <div id={id} className={className} onClick={onClick}>
+    <div id={id} className={clsx(className, styles['click-target'])} onClick={onClick}>
       <button
-        className={styles['icon-container']}
+        className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
         aria-controls={ariaControls}
@@ -113,6 +113,7 @@ const ExpandableNavigationHeader = ({
 
 const ExpandableHeaderTextWrapper = ({
   id,
+  descriptionId,
   className,
   onClick,
   ariaLabel,
@@ -129,36 +130,54 @@ const ExpandableHeaderTextWrapper = ({
   onKeyUp,
   onKeyDown,
 }: ExpandableHeaderTextWrapperProps) => {
-  const screenreaderContentId = useUniqueId('expandable-section-header-content-');
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const hasInteractiveElements = headerInfo || headerActions;
+  const hasInteractiveElements = isContainer && (headerInfo || headerActions);
   const listeners = { onClick, onKeyDown, onKeyUp };
-  const wrapperListeners = hasInteractiveElements ? undefined : listeners;
+
+  const description = variantSupportsDescription(variant) && headerDescription && (
+    <span id={descriptionId} className={styles[`description-${variant}`]}>
+      {headerDescription}
+    </span>
+  );
+
+  // If interactive elements are present, constrain the clickable area to only the icon and the header text
+  // to prevent nesting interactive elements.
   const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
+  // For the default and footer variants with description,
+  // include also the immediate wrapper around it to include the entire row for backwards compatibility,
+  // but exclude the description.
+  const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
+  // For all other cases, make the entire header clickable for backwards compatibility.
+  const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
+
   const headerButton = (
     <span
-      className={isContainer ? styles['header-container-button'] : styles['header-button']}
+      className={clsx(
+        styles['expand-button'],
+        isContainer ? styles['header-container-button'] : styles['header-button'],
+        headerButtonListeners && styles['click-target']
+      )}
       role="button"
       tabIndex={0}
       aria-label={ariaLabel}
-      // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
-      aria-labelledby={ariaLabel || !isContainer ? undefined : screenreaderContentId}
+      aria-labelledby={!ariaLabel && description ? id : undefined}
+      aria-describedby={description ? descriptionId : undefined}
       aria-controls={ariaControls}
       aria-expanded={expanded}
       {...headerButtonListeners}
     >
       <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-      <span>{children}</span>
+      <span id={id}>{children}</span>
     </span>
   );
 
   return (
-    <div id={id} className={className} {...wrapperListeners}>
+    <div className={clsx(className, wrapperListeners && styles['click-target'])} {...wrapperListeners}>
       {isContainer ? (
         <InternalHeader
           variant="h2"
-          description={headerDescription}
+          description={description}
           counter={headerCounter}
           info={headerInfo}
           actions={headerActions}
@@ -167,12 +186,15 @@ const ExpandableHeaderTextWrapper = ({
           {headerButton}
         </InternalHeader>
       ) : (
-        <HeadingTag className={styles['header-wrapper']}>{headerButton}</HeadingTag>
-      )}
-      {isContainer && (
-        <ScreenreaderOnly id={screenreaderContentId}>
-          {children} {headerCounter} {headerDescription}
-        </ScreenreaderOnly>
+        <>
+          <HeadingTag
+            className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+            {...headingTagListeners}
+          >
+            {headerButton}
+          </HeadingTag>
+          {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
+        </>
       )}
     </div>
   );
@@ -180,6 +202,7 @@ const ExpandableHeaderTextWrapper = ({
 
 export const ExpandableSectionHeader = ({
   id,
+  descriptionId,
   className,
   variant,
   header,
@@ -214,11 +237,15 @@ export const ExpandableSectionHeader = ({
     variant,
   };
 
-  if ((headerDescription || headerCounter || headerInfo || headerActions) && variant !== 'container' && isDevelopment) {
+  if ((headerCounter || headerInfo || headerActions) && variant !== 'container' && isDevelopment) {
     warnOnce(
       componentName,
-      'The `headerCounter`, `headerDescription`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+      'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
     );
+  }
+
+  if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
+    warnOnce(componentName, `The \`headerDescription\` prop is not supported for the ${variant} variant.`);
   }
 
   const wrapperClassName = clsx(styles.wrapper, styles[`wrapper-${variant}`], expanded && styles['wrapper-expanded']);
@@ -235,15 +262,10 @@ export const ExpandableSectionHeader = ({
   }
 
   if (headerText) {
-    const hasInteractiveElements = headerInfo || headerActions;
     return (
       <ExpandableHeaderTextWrapper
-        className={clsx(
-          className,
-          wrapperClassName,
-          hasInteractiveElements && styles['with-interactive-elements'],
-          expanded && styles.expanded
-        )}
+        className={clsx(className, wrapperClassName, expanded && styles.expanded)}
+        descriptionId={descriptionId}
         headerDescription={headerDescription}
         headerCounter={headerCounter}
         headerInfo={headerInfo}
@@ -263,13 +285,13 @@ export const ExpandableSectionHeader = ({
   }
 
   return (
-    <ExpandableDefaultHeader
+    <ExpandableDeprecatedHeader
       className={clsx(className, wrapperClassName, styles.focusable, expanded && styles.expanded)}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
       {...defaultHeaderProps}
     >
       {header}
-    </ExpandableDefaultHeader>
+    </ExpandableDeprecatedHeader>
   );
 };

@@ -7,6 +7,7 @@ import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
 import { createFlashbarWrapper, findList } from './common';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
 
 let mockUseAnimations = false;
 let useAnimations = false;
@@ -676,12 +677,15 @@ describe('Analytics', () => {
     );
   });
 
-  test('adds the correct data-analytics tag', () => {
-    const { container, rerender } = reactRender(<Flashbar items={[{ id: '0', type: 'success' }]} />);
-    expect(container.querySelector('[data-analytics-flashbar="success"]')).toBeInTheDocument();
+  describe('analytics', () => {
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the flashbar type`, () => {
+      const { container } = reactRender(<Flashbar items={[{ id: '0', type: 'success' }]} />);
+      expect(container.querySelector(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="success"]`)).toBeInTheDocument();
+    });
 
-    // Effective type when loading is info
-    rerender(<Flashbar items={[{ id: '0', type: 'success', loading: true }]} />);
-    expect(container.querySelector('[data-analytics-flashbar="info"]')).toBeInTheDocument();
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the effective flashbar type when loading`, () => {
+      const { container } = reactRender(<Flashbar items={[{ id: '0', type: 'success', loading: true }]} />);
+      expect(container.querySelector(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="info"]`)).toBeInTheDocument();
+    });
   });
 });

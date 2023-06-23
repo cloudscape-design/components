@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Header from '../../../lib/components/header';
 import styles from '../../../lib/components/header/styles.css.js';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../../../lib/components/internal/analytics/selectors';
 
 function renderHeader(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -71,13 +72,13 @@ test('supports title tag name override with non-default variant', () => {
 });
 
 describe('Analytics', () => {
-  test('adds data-analytics attribute for the heading text', () => {
-    const { container } = render(
+  test(`adds ${DATA_ATTR_FUNNEL_KEY} attribute for the heading text`, () => {
+    const wrapper = renderHeader(
       <Header headingTagOverride="h2" variant="h3">
         title
       </Header>
     );
 
-    expect(container.querySelector('[data-analytics="heading-text"]')).toBeInTheDocument();
+    expect(wrapper.findHeadingText().getElement()).toHaveAttribute(DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME);
   });
 });

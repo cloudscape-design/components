@@ -70,7 +70,7 @@ function LeftLabels({
       className={clsx(styles['labels-left'])}
       aria-label={title}
       role="list"
-      aria-roledescription={i18n('i18nStrings.ariaRoleDescription', ariaRoleDescription)}
+      aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}
       aria-hidden={true}
     >
       {visibleTicks.map(

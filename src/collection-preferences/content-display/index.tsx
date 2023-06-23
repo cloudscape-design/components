@@ -69,7 +69,7 @@ export default function ContentDisplayPreference({
       'contentDisplayPreference.liveAnnouncementDndItemReordered',
       liveAnnouncementDndItemReordered,
       format => (initialPosition, currentPosition, total) =>
-        format({ initialPosition, currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
+        format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
     ),
     liveAnnouncementDndItemCommitted: i18n(
       'contentDisplayPreference.liveAnnouncementDndItemCommitted',

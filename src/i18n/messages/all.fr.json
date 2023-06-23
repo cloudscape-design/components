@@ -1,7 +1,4 @@
 {
-  "alert": {
-    "dismissAriaLabel": "Ignorer l'alerte"
-  },
   "[charts]": {
     "loadingText": "Chargement du graphique",
     "errorText": "Impossible d'extraire les données. Réessayez plus tard.",
@@ -9,9 +6,11 @@
     "i18nStrings.filterLabel": "Filtrer les données affichées",
     "i18nStrings.filterPlaceholder": "Filtrer les données",
     "i18nStrings.legendAriaLabel": "Légende",
-    "i18nStrings.detailPopoverDismissAriaLabel": "Ignorer",
     "i18nStrings.xAxisAriaRoleDescription": "axe X",
     "i18nStrings.yAxisAriaRoleDescription": "axe Y"
+  },
+  "alert": {
+    "dismissAriaLabel": "Ignorer l'alerte"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Suivant",
@@ -28,20 +27,19 @@
     "ariaLabels.navigationToggle": "Ouvrir la navigation latérale",
     "ariaLabels.notifications": "Notifications",
     "ariaLabels.tools": "Volet d'aide",
-    "ariaLabels.toolsClose": "Ouvrir le volet d'aide",
-    "ariaLabels.toolsToggle": "Fermer le volet d'aide"
+    "ariaLabels.toolsClose": "Fermer le volet d'aide",
+    "ariaLabels.toolsToggle": "Ouvrir le volet d'aide"
   },
   "area-chart": {
     "i18nStrings.detailTotalLabel": "Total"
   },
   "attribute-editor": {
-    "removeButtonText": "Supprimer",
-    "i18nStrings.errorIconAriaLabel": "Erreur"
+    "removeButtonText": "Supprimer"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Erreur",
     "selectedAriaLabel": "Sélectionné",
-    "enteredTextLabel": "Utiliser {value}",
+    "enteredTextLabel": "Utiliser : «{value}»",
     "recoveryText": "Réessayer"
   },
   "breadcrumb-group": {
@@ -88,9 +86,11 @@
     "contentDisplayPreference.title": "Préférences de colonne",
     "contentDisplayPreference.description": "Personnalisez la visibilité et l'ordre des colonnes.",
     "contentDisplayPreference.dragHandleAriaLabel": "Faire glisser",
-    "contentDisplayPreference.dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l'élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Esc.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l'élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Échap.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Élément sélectionné à la position {position} de {total}",
-    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Réorganisation annulée"
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Réorganisation annulée",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Remettre l'élément à la position {currentPosition} de {total}} false {Déplacer l'élément vers la position {currentPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} other {}}"
   },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Mode relatif",
@@ -121,14 +121,14 @@
     "i18nStrings.infoIconAriaLabel": "Informations",
     "i18nStrings.notificationBarAriaLabel": "Toutes les notifications",
     "i18nStrings.notificationBarText": "Notifications",
-    "i18nStrings.successIconAriaLabel": "Réussite",
+    "i18nStrings.successIconAriaLabel": "Réussi",
     "i18nStrings.warningIconAriaLabel": "Avertissement"
-  },
-  "form": {
-    "errorIconAriaLabel": "Erreur"
   },
   "form-field": {
     "i18nStrings.errorIconAriaLabel": "Erreur"
+  },
+  "form": {
+    "errorIconAriaLabel": "Erreur"
   },
   "help-panel": {
     "loadingText": "Chargement du contenu en cours"
@@ -142,18 +142,19 @@
   "modal": {
     "closeAriaLabel": "Fermer le modal"
   },
+  "multiselect": {
+    "deselectAriaLabel": "Supprimer {option__label}"
+  },
   "pagination": {
     "ariaLabels.nextPageLabel": "Page suivante",
     "ariaLabels.pageLabel": "Page {pageNumber} de toutes les pages",
     "ariaLabels.previousPageLabel": "Page précédente"
   },
   "pie-chart": {
-    "loadingText": "Chargement du graphique",
-    "errorText": "Impossible d'extraire les données. Réessayez plus tard.",
-    "recoveryText": "Réessayer"
-  },
-  "multiselect": {
-    "deselectAriaLabel": "Supprimer {option__label}"
+    "i18nStrings.detailsValue": "Valeur",
+    "i18nStrings.detailsPercentage": "Pourcentage",
+    "i18nStrings.chartAriaRoleDescription": "Diagramme circulaire",
+    "i18nStrings.segmentAriaRoleDescription": "Segment"
   },
   "popover": {
     "dismissAriaLabel": "Fermer la fenêtre contextuelle"
@@ -184,21 +185,120 @@
     "i18nStrings.valueText": "Valeur",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Supprimer le filtre, {token__propertyKey} est égal à {token__value}} not_equals {Supprimer le filtre, {token__propertyKey} n'est pas égal à {token__value}} greater_than {Supprimer le filtre, {token__propertyKey} est supérieur à {token__value}} greater_than_equal {Supprimer le filtre, {token__propertyKey} est supérieur ou égal à {token__value}} less_than {Supprimer le filtre, {token__propertyKey} est inférieur à {token__value}} less_than_equal {Supprimer le filtre, {token__propertyKey} est inférieur ou égal à {token__value}} contains {Supprimer le filtre, {token__propertyKey} contient {token__value}} not_contains {Supprimer le filtre, {token__propertyKey} ne contient pas {token__value}} other {}}"
   },
-  "s3-resource-selector": {},
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "Choisir une version",
+    "i18nStrings.inContextBrowseButton": "Parcourir S3",
+    "i18nStrings.inContextViewButton": "Afficher",
+    "i18nStrings.inContextViewButtonAriaLabel": "Afficher (s'ouvre dans un nouvel onglet)",
+    "i18nStrings.inContextLoadingText": "Chargement de la ressource",
+    "i18nStrings.inContextUriLabel": "URI S3",
+    "i18nStrings.inContextVersionSelectLabel": "Version de l'objet",
+    "i18nStrings.modalTitle": "Choisir une archive dans S3",
+    "i18nStrings.modalCancelButton": "Annuler",
+    "i18nStrings.modalSubmitButton": "Choisir",
+    "i18nStrings.modalBreadcrumbRootItem": "Compartiments S3",
+    "i18nStrings.selectionBuckets": "Compartiments",
+    "i18nStrings.selectionObjects": "Objets",
+    "i18nStrings.selectionVersions": "Versions",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "Trouver un compartiment",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "Rechercher un objet par préfixe",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "Trouver la version",
+    "i18nStrings.selectionBucketsLoading": "Chargement des compartiments",
+    "i18nStrings.selectionBucketsNoItems": "Aucun compartiment",
+    "i18nStrings.selectionObjectsLoading": "Chargement des objets",
+    "i18nStrings.selectionObjectsNoItems": "Aucun objet",
+    "i18nStrings.selectionVersionsLoading": "Chargement des versions",
+    "i18nStrings.selectionVersionsNoItems": "Aucune version",
+    "i18nStrings.filteringNoMatches": "Aucune correspondance",
+    "i18nStrings.filteringCantFindMatch": "Impossible de trouver une correspondance.",
+    "i18nStrings.clearFilterButtonText": "Effacer le filtre",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "Nom",
+    "i18nStrings.columnBucketCreationDate": "Date de création",
+    "i18nStrings.columnBucketRegion": "Région",
+    "i18nStrings.columnObjectKey": "Clé",
+    "i18nStrings.columnObjectLastModified": "Dernière modification",
+    "i18nStrings.columnObjectSize": "Taille",
+    "i18nStrings.columnVersionID": "ID de version",
+    "i18nStrings.columnVersionLastModified": "Dernière modification",
+    "i18nStrings.columnVersionSize": "Taille",
+    "i18nStrings.validationPathMustBegin": "Le chemin doit commencer par s3 ://",
+    "i18nStrings.validationBucketLowerCase": "Le nom du compartiment doit commencer par une minuscule ou un chiffre.",
+    "i18nStrings.validationBucketMustNotContain": "Le nom du compartiment ne doit pas contenir de majuscules.",
+    "i18nStrings.validationBucketLength": "Le nom du compartiment doit comporter entre 3 et 63 caractères.",
+    "i18nStrings.validationBucketMustComplyDns": "Le nom du compartiment doit être conforme aux conventions de dénomination DNS.",
+    "i18nStrings.labelSortedDescending": "{columnName}, triés par ordre décroissant",
+    "i18nStrings.labelSortedAscending": "{columnName}, triés par ordre croissant",
+    "i18nStrings.labelNotSorted": "{columnName}, non triés",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "Compartiments",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "Objets",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "Versions",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "Trouver {itemsType}",
+    "i18nStrings.labelRefresh": "Actualiser les données",
+    "i18nStrings.labelBreadcrumbs": "Navigation S3",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 correspondance} other {{count} correspondances}}"
+  },
   "select": {
     "errorIconAriaLabel": "Erreur",
-    "selectedAriaLabel": "Sélectionné"
+    "selectedAriaLabel": "Sélectionné",
+    "recoveryText": "Réessayer"
   },
-  "split-panel": {},
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "Fermer le panneau",
+    "i18nStrings.openButtonAriaLabel": "Ouvrir le panneau",
+    "i18nStrings.preferencesTitle": "Préférences du panneau divisé",
+    "i18nStrings.preferencesPositionLabel": "Position du panneau divisé",
+    "i18nStrings.preferencesPositionDescription": "Choisir la position par défaut du panneau divisé pour le service.",
+    "i18nStrings.preferencesPositionSide": "Côté",
+    "i18nStrings.preferencesPositionBottom": "En bas",
+    "i18nStrings.preferencesConfirm": "Confirmer",
+    "i18nStrings.preferencesCancel": "Annuler",
+    "i18nStrings.resizeHandleAriaLabel": "Redimensionner le panneau divisé"
+  },
   "table": {
     "ariaLabels.submittingEditText": "Soumission de modification",
     "ariaLabels.successfulEditLabel": "Modification réussie",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Erreur",
-    "columnDefinitions.editConfig.editIconAriaLabel": "Modifiable"
+    "columnDefinitions.editConfig.editIconAriaLabel": "modifiable"
   },
   "tabs": {
     "i18nStrings.scrollLeftAriaLabel": "Faire défiler vers la gauche",
     "i18nStrings.scrollRightAriaLabel": "Faire défiler vers la droite"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "Saisir une clé",
+    "i18nStrings.valuePlaceholder": "Saisir une valeur",
+    "i18nStrings.addButton": "Ajouter une nouvelle identification",
+    "i18nStrings.removeButton": "Supprimer",
+    "i18nStrings.removeButtonAriaLabel": "Supprimer {tag__key}",
+    "i18nStrings.undoButton": "Annuler",
+    "i18nStrings.undoPrompt": "Cette identification sera supprimée lors de l'enregistrement des modifications.",
+    "i18nStrings.loading": "Chargement des identifications associées à cette ressource en cours",
+    "i18nStrings.keyHeader": "Clé",
+    "i18nStrings.valueHeader": "Valeur",
+    "i18nStrings.optional": "facultatif",
+    "i18nStrings.keySuggestion": "Clé d'identification personnalisée",
+    "i18nStrings.valueSuggestion": "Valeur d'identification personnalisée",
+    "i18nStrings.emptyTags": "Aucune identification n'est associée à la ressource.",
+    "i18nStrings.tooManyKeysSuggestion": "Vous avez plus de clés que ce qui peut être affiché.",
+    "i18nStrings.tooManyValuesSuggestion": "Vous avez plus de valeurs que ce qui peut être affiché.",
+    "i18nStrings.keysSuggestionLoading": "Chargement des clés d'identification en cours",
+    "i18nStrings.keysSuggestionError": "Les clés d'identification n'ont pas pu être récupérées.",
+    "i18nStrings.valuesSuggestionLoading": "Chargement des valeurs d'identification en cours",
+    "i18nStrings.valuesSuggestionError": "Les valeurs d'identification n'ont pas pu être récupérées.",
+    "i18nStrings.emptyKeyError": "Vous devez spécifier une clé d'identification.",
+    "i18nStrings.maxKeyCharLengthError": "Le nombre maximal de caractères que vous pouvez utiliser dans une clé d'identification est de 128.",
+    "i18nStrings.maxValueCharLengthError": "Le nombre maximal de caractères que vous pouvez utiliser dans une valeur d'identification est de 256.",
+    "i18nStrings.duplicateKeyError": "Vous devez spécifier une clé d'identification unique.",
+    "i18nStrings.invalidKeyError": "Clé non valide. Les clés peuvent contenir uniquement des caractères Unicode, des chiffres, des espaces blancs et l'un des éléments suivants : _.:/=+@-",
+    "i18nStrings.invalidValueError": "Valeur non valide. Les valeurs peuvent contenir uniquement des caractères Unicode, des chiffres, des espaces blancs et l'un des éléments suivants : _.:/=+@-",
+    "i18nStrings.awsPrefixError": "Impossible de commencer par aws :",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {Vous avez atteint la limite de 1 identification.} other {Vous avez atteint la limite de {tagLimit} identifications.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {Vous avez dépassé la limite de 1 identification.} other {Vous avez dépassé la limite de {tagLimit} identifications.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {Vous pouvez ajouter jusqu'à {tagLimit} identifications.}}} false {{availableTags, plural, one {Vous pouvez ajouter jusqu'à 1 identification supplémentaire.} other {Vous pouvez ajouter jusqu'à {availableTags} identifications supplémentaires.}}} other {}}"
   },
   "token-group": {
     "i18nStrings.limitShowFewer": "Afficher moins",
@@ -220,12 +320,12 @@
     "i18nStrings.tutorialCompletedText": "Didacticiel terminé",
     "i18nStrings.learnMoreLinkText": "En savoir plus",
     "i18nStrings.startTutorialButtonText": "Commencer le didacticiel",
-    "i18nStrings.restartTutorialButtonText": "Didacticiel de redémarrage",
+    "i18nStrings.restartTutorialButtonText": "Redémarrer le didacticiel",
     "i18nStrings.completionScreenTitle": "Félicitations ! Vous avez terminé le didacticiel.",
     "i18nStrings.feedbackLinkText": "Commentaires",
     "i18nStrings.dismissTutorialButtonText": "Ignorer le didacticiel",
     "i18nStrings.taskTitle": "Tâche {taskNumber}: {taskTitle}",
-    "i18nStrings.stepTitle": "Étape {stepNumber} : {stepTitle}",
+    "i18nStrings.stepTitle": "Étape {stepNumber} : {stepTitle}",
     "i18nStrings.labelExitTutorial": "Ignorer le didacticiel",
     "i18nStrings.labelTotalSteps": "Nombre total d'étapes : {totalStepCount}",
     "i18nStrings.labelsTaskStatus.pending": "En attente",

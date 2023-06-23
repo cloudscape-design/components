@@ -16,6 +16,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
+import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
@@ -61,11 +62,14 @@ export default function InternalAlert({
   );
 
   const hasAction = Boolean(action || buttonText);
+  const analyticsAttributes = {
+    [DATA_ATTR_ANALYTICS_ALERT]: type,
+  };
 
   return (
     <div
       {...baseProps}
-      data-analytics-alert={type}
+      {...analyticsAttributes}
       aria-hidden={!visible}
       className={clsx(
         styles.root,

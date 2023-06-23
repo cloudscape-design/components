@@ -16,10 +16,16 @@ import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
 import { useInternalI18n } from '../internal/i18n/context';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_FIELD_ERROR,
+  DATA_ATTR_FIELD_LABEL,
+  getFieldSlotSeletor,
+  getSubStepAllSelector,
+} from '../internal/analytics/selectors';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -106,15 +112,10 @@ export default function InternalFormField({
     invalid: !!errorText || !!parentInvalid,
   };
 
-  const analyticsAttributes: Record<string, string> = {};
-
-  if (slotIds.label) {
-    analyticsAttributes['data-analytics-field-label-selector'] = `[id="${slotIds.label}"]`;
-  }
-
-  if (slotIds.error) {
-    analyticsAttributes['data-analytics-field-error-selector'] = `[id="${slotIds.error}"]`;
-  }
+  const analyticsAttributes = {
+    [DATA_ATTR_FIELD_LABEL]: slotIds.label ? getFieldSlotSeletor(slotIds.label) : undefined,
+    [DATA_ATTR_FIELD_ERROR]: slotIds.error ? getFieldSlotSeletor(slotIds.error) : undefined,
+  };
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
@@ -124,8 +125,8 @@ export default function InternalFormField({
         subStepNameSelector,
         stepNumber,
         stepNameSelector,
-        fieldErrorSelector: `[id="${slotIds.error}"]`,
-        fieldLabelSelector: `[id="${slotIds.label}"]`,
+        fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
+        fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
         subStepAllSelector: getSubStepAllSelector(),
       });
     }
@@ -146,7 +147,9 @@ export default function InternalFormField({
             {label}
           </label>
         )}
-        {!__hideLabel && info && <span className={styles.info}>{info}</span>}
+        <InfoLinkLabelContext.Provider value={slotIds.label}>
+          {!__hideLabel && info && <span className={styles.info}>{info}</span>}
+        </InfoLinkLabelContext.Provider>
       </div>
 
       {description && (

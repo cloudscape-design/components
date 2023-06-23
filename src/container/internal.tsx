@@ -42,6 +42,7 @@ export default function InternalContainer({
   disableHeaderPaddings = false,
   disableContentPaddings = false,
   fitHeight,
+  media,
   __stickyOffset,
   __mobileStickyOffset,
   __stickyHeader = false,
@@ -100,6 +101,9 @@ export default function InternalContainer({
   // In this case we don't want the container to have sticky styles, as only the table header row will show as stuck on scroll.
   const shouldHaveStickyStyles = isSticky && !isMobile;
 
+  const hasMedia = !!media?.content;
+  const mediaPosition = media?.position ?? 'top';
+
   return (
     <div
       {...baseProps}
@@ -109,50 +113,62 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
+        hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >
-      {header && (
-        <StickyHeaderContext.Provider value={{ isStuck }}>
-          <div
-            className={clsx(styles.header, styles[`header-variant-${variant}`], {
-              [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-              [styles['header-sticky-enabled']]: isSticky,
-              [styles['header-dynamic-height']]: hasDynamicHeight,
-              [styles['header-stuck']]: isStuck,
-              [styles['with-paddings']]: !disableHeaderPaddings,
-              [styles['with-hidden-content']]: !children || __hiddenContent,
-            })}
-            {...headerIdProp}
-            {...stickyStyles}
-            ref={headerMergedRef}
-          >
-            {__darkHeader ? (
-              <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
-            ) : (
-              header
-            )}
-          </div>
-        </StickyHeaderContext.Provider>
-      )}
-      <div
-        className={clsx(styles.content, {
-          [styles['with-paddings']]: !disableContentPaddings,
-        })}
-      >
-        {children}
-      </div>
-      {footer && (
+      {hasMedia && (
         <div
-          className={clsx(styles.footer, {
-            [styles['with-divider']]: !__disableFooterDivider,
-            [styles['with-paddings']]: !__disableFooterPaddings,
-          })}
+          className={clsx(styles[`media-${mediaPosition === 'side' ? 'side' : 'top'}`], styles.media)}
+          style={mediaPosition === 'top' ? { height: media?.height || '' } : { width: media?.width || '' }}
         >
-          {footer}
+          {media.content}
         </div>
       )}
+      <div className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}>
+        {header && (
+          <StickyHeaderContext.Provider value={{ isStuck }}>
+            <div
+              className={clsx(styles.header, styles[`header-variant-${variant}`], {
+                [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                [styles['header-sticky-enabled']]: isSticky,
+                [styles['header-dynamic-height']]: hasDynamicHeight,
+                [styles['header-stuck']]: isStuck,
+                [styles['with-paddings']]: !disableHeaderPaddings,
+                [styles['with-hidden-content']]: !children || __hiddenContent,
+                [styles['header-with-media']]: hasMedia,
+              })}
+              {...headerIdProp}
+              {...stickyStyles}
+              ref={headerMergedRef}
+            >
+              {__darkHeader ? (
+                <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
+              ) : (
+                header
+              )}
+            </div>
+          </StickyHeaderContext.Provider>
+        )}
+        <div
+          className={clsx(styles.content, fitHeight && styles['content-fit-height'], {
+            [styles['with-paddings']]: !disableContentPaddings,
+          })}
+        >
+          {children}
+        </div>
+        {footer && (
+          <div
+            className={clsx(styles.footer, {
+              [styles['with-divider']]: !__disableFooterDivider,
+              [styles['with-paddings']]: !__disableFooterPaddings,
+            })}
+          >
+            {footer}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

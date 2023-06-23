@@ -7,16 +7,12 @@ import { useStableEventHandler } from '../internal/hooks/use-stable-event-handle
 import clsx from 'clsx';
 import { useResizeObserver } from '../internal/hooks/container-queries';
 
-export const selectionColumnId = Symbol('selection-column-id');
-
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)
 const MINIMUM_SCROLLABLE_SPACE = 148;
 
-type ColumnId = string | symbol;
-
 interface StickyColumnsProps {
-  visibleColumns: readonly ColumnId[];
+  visibleColumns: readonly PropertyKey[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
 }
@@ -30,12 +26,12 @@ export interface StickyColumnsModel {
   refs: {
     table: React.RefCallback<HTMLElement>;
     wrapper: React.RefCallback<HTMLElement>;
-    cell: (columnId: ColumnId, node: null | HTMLElement) => void;
+    cell: (columnId: PropertyKey, node: null | HTMLElement) => void;
   };
 }
 
 export interface StickyColumnsState {
-  cellState: Record<ColumnId, null | StickyColumnsCellState>;
+  cellState: Record<PropertyKey, null | StickyColumnsCellState>;
   wrapperState: StickyColumnsWrapperState;
 }
 
@@ -61,7 +57,7 @@ export function useStickyColumns({
   const store = useMemo(() => new StickyColumnsStore(), []);
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
   const tableRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
-  const cellsRef = useRef<Record<ColumnId, HTMLElement>>({});
+  const cellsRef = useRef<Record<PropertyKey, HTMLElement>>({});
 
   const hasStickyColumns = stickyColumnsFirst + stickyColumnsLast > 0;
 
@@ -137,7 +133,7 @@ export function useStickyColumns({
     tableRef.current = node;
   }, []);
 
-  const setCell = useCallback((columnId: ColumnId, node: null | HTMLElement) => {
+  const setCell = useCallback((columnId: PropertyKey, node: null | HTMLElement) => {
     if (node) {
       cellsRef.current[columnId] = node;
     } else {
@@ -158,7 +154,7 @@ export function useStickyColumns({
 
 interface UseStickyCellStylesProps {
   stickyColumns: StickyColumnsModel;
-  columnId: ColumnId;
+  columnId: PropertyKey;
   getClassName: (styles: null | StickyColumnsCellState) => Record<string, boolean>;
 }
 
@@ -255,14 +251,14 @@ function isWrapperStatesEqual(s1: StickyColumnsWrapperState, s2: StickyColumnsWr
 interface UpdateCellStylesProps {
   wrapper: HTMLElement;
   table: HTMLElement;
-  cells: Record<ColumnId, HTMLElement>;
-  visibleColumns: readonly ColumnId[];
+  cells: Record<PropertyKey, HTMLElement>;
+  visibleColumns: readonly PropertyKey[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
 }
 
 export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
-  private cellOffsets = new Map<ColumnId, { first: number; last: number }>();
+  private cellOffsets = new Map<PropertyKey, { first: number; last: number }>();
   private stickyWidthLeft = 0;
   private stickyWidthRight = 0;
   private isStuckToTheLeft = false;
@@ -303,7 +299,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     this.padLeft = tablePaddingLeft !== 0 && this.isStuckToTheLeft;
   }
 
-  private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, null | StickyColumnsCellState> => {
+  private generateCellStyles = (props: UpdateCellStylesProps): Record<PropertyKey, null | StickyColumnsCellState> => {
     const isEnabled = this.isEnabled(props);
     const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
     const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
@@ -336,7 +332,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
         },
       };
       return acc;
-    }, {} as Record<ColumnId, null | StickyColumnsCellState>);
+    }, {} as Record<PropertyKey, null | StickyColumnsCellState>);
   };
 
   private updateCellOffsets = (props: UpdateCellStylesProps): void => {

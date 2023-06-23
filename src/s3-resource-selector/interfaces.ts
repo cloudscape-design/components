@@ -118,6 +118,7 @@ export interface S3ResourceSelectorProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: S3ResourceSelectorProps.I18nStrings;
 
@@ -253,6 +254,8 @@ export namespace S3ResourceSelectorProps {
     labelRefresh?: string;
     labelModalDismiss?: string;
     labelBreadcrumbs?: string;
+    labelExpandBreadcrumbs?: string;
+    labelClearFilter?: string;
   }
 
   export interface ChangeDetail {
