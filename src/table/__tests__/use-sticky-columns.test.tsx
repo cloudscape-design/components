@@ -27,7 +27,7 @@ function createMockTable(
 
   stickyColumns.refs.wrapper(wrapper);
   stickyColumns.refs.table(table);
-  cells.forEach((cell, index) => stickyColumns.refs.cell((index + 1).toString(), cell));
+  cells.forEach((cell, index) => stickyColumns.refs.cell(index + 1, cell));
 
   return { wrapper, table, cells };
 }

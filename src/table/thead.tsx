@@ -15,7 +15,6 @@ import styles from './styles.css.js';
 import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { selectionColumnId } from './constants';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -42,7 +41,7 @@ export interface TheadProps {
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
-
+  selectionColumnId: PropertyKey;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
@@ -69,7 +68,7 @@ const Thead = React.forwardRef(
       hidden = false,
       stuck = false,
       stickyState,
-
+      selectionColumnId,
       focusedComponent,
       onFocusedComponentChange,
     }: TheadProps,
@@ -161,7 +160,7 @@ const Thead = React.forwardRef(
                 wrapLines={wrapLines}
                 hidden={hidden}
                 colIndex={colIndex}
-                columnId={column.id ?? colIndex.toString()}
+                columnId={column.id ?? colIndex}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}

@@ -13,7 +13,6 @@ import { InteractiveComponent } from '../thead';
 import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../internal/i18n/context';
-import { ColumnId } from '../interfaces';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -28,12 +27,12 @@ interface TableHeaderCellProps<ItemType> {
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
-  updateColumn: (columnId: ColumnId, newWidth: number) => void;
+  updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
-  columnId: string;
+  columnId: PropertyKey;
   stickyState: StickyColumnsModel;
 
   focusedComponent?: InteractiveComponent | null;

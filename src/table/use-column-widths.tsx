@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
 import headerCellStyles from './header-cell/styles.css.js';
-import { ColumnId } from './interfaces';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
 function readWidths(headerEl: HTMLElement, visibleColumns: readonly Column[]) {
-  const result: Record<ColumnId, number> = {};
+  const result: Record<PropertyKey, number> = {};
   for (let index = 0; index < visibleColumns.length; index++) {
     const column = visibleColumns[index];
     let width = (column.width as number) || 0;
@@ -27,9 +26,9 @@ function readWidths(headerEl: HTMLElement, visibleColumns: readonly Column[]) {
 
 function updateWidths(
   visibleColumns: readonly Column[],
-  oldWidths: Record<ColumnId, number>,
+  oldWidths: Record<PropertyKey, number>,
   newWidth: number,
-  columnId: ColumnId
+  columnId: PropertyKey
 ) {
   const column = visibleColumns.find(column => column.id === columnId);
   const minWidth = typeof column?.minWidth === 'number' ? column.minWidth : DEFAULT_COLUMN_WIDTH;
@@ -42,8 +41,8 @@ function updateWidths(
 
 interface WidthsContext {
   totalWidth: number;
-  columnWidths: Record<ColumnId, number>;
-  updateColumn: (columnId: ColumnId, newWidth: number) => void;
+  columnWidths: Record<PropertyKey, number>;
+  updateColumn: (columnId: PropertyKey, newWidth: number) => void;
 }
 
 const WidthsContext = createContext<WidthsContext>({
@@ -60,14 +59,14 @@ interface WidthProviderProps {
 }
 
 interface Column {
-  id: ColumnId;
+  id: PropertyKey;
   minWidth?: string | number;
   width?: string | number;
 }
 
 export function ColumnWidthsProvider({ tableRef, visibleColumns, resizableColumns, children }: WidthProviderProps) {
-  const visibleColumnsRef = useRef<(ColumnId | undefined)[] | null>(null);
-  const [columnWidths, setColumnWidths] = useState<Record<ColumnId, number>>({});
+  const visibleColumnsRef = useRef<(PropertyKey | undefined)[] | null>(null);
+  const [columnWidths, setColumnWidths] = useState<Record<PropertyKey, number>>({});
 
   // The widths of the dynamically added columns (after the first render) if not set explicitly
   // will default to the DEFAULT_COLUMN_WIDTH.
@@ -101,7 +100,7 @@ export function ColumnWidthsProvider({ tableRef, visibleColumns, resizableColumn
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function updateColumn(columnId: ColumnId, newWidth: number) {
+  function updateColumn(columnId: PropertyKey, newWidth: number) {
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths, newWidth, columnId));
   }
 

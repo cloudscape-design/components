@@ -457,5 +457,3 @@ export namespace TableProps {
     visible: boolean;
   }
 }
-
-export type ColumnId = string | symbol;

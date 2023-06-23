@@ -5,7 +5,6 @@ import React from 'react';
 import styles from './styles.css.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 import { getStickyClassNames } from '../utils';
-import { ColumnId } from '../interfaces';
 
 export interface TableTdElementProps {
   className?: string;
@@ -29,7 +28,7 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
-  columnId: ColumnId;
+  columnId: PropertyKey;
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
 }

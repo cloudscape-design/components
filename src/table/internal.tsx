@@ -35,7 +35,9 @@ import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './use-sticky-columns';
 import { checkColumnWidths } from './column-widths-utils';
-import { SELECTION_CELL_WIDTH, selectionColumnId } from './constants';
+
+const SELECTION_COLUMN_WIDTH = 54;
+const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -154,8 +156,11 @@ const InternalTable = React.forwardRef(
     const hasFooter = !!footer;
 
     const visibleColumnsWithSelection = useMemo(() => {
-      const visible = visibleColumnDefinitions.map((c, i) => ({ ...c, id: getColumnKey(c, i).toString() }));
-      return hasSelection ? [{ id: selectionColumnId, width: SELECTION_CELL_WIDTH }, ...visible] : visible;
+      const visible = visibleColumnDefinitions.map((column, columnIndex) => ({
+        ...column,
+        id: getColumnKey(column, columnIndex),
+      }));
+      return hasSelection ? [{ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH }, ...visible] : visible;
     }, [visibleColumnDefinitions, hasSelection]);
 
     const visibleColumnIdsWithSelection = useMemo(
@@ -194,6 +199,7 @@ const InternalTable = React.forwardRef(
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
       stickyState,
+      selectionColumnId,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -445,7 +451,7 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
-                              columnId={column.id ?? colIndex.toString()}
+                              columnId={column.id ?? colIndex}
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                             />
