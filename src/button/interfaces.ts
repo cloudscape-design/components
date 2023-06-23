@@ -112,6 +112,7 @@ export interface ButtonProps extends BaseComponentProps {
    * * `link` for tertiary buttons.
    * * `icon` to display an icon only (no text).
    * * `inline-icon` to display an icon-only (no text) button within a text context.
+   * * `inline-link` to display a tertiary button with no outer padding.
    */
   variant?: ButtonProps.Variant;
 
@@ -149,7 +150,7 @@ export interface ButtonProps extends BaseComponentProps {
 }
 
 export namespace ButtonProps {
-  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon';
+  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon' | 'inline-link';
   export type ClickDetail = _ClickDetail;
   export type FollowDetail = BaseNavigationDetail;
 

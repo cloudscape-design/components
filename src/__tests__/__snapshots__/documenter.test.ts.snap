@@ -2898,7 +2898,8 @@ This property only applies when an \`href\` is provided.",
 * \`normal\` for secondary buttons.
 * \`link\` for tertiary buttons.
 * \`icon\` to display an icon only (no text).
-* \`inline-icon\` to display an icon-only (no text) button within a text context.",
+* \`inline-icon\` to display an icon-only (no text) button within a text context.
+* \`inline-link\` to display a tertiary button with no outer padding.",
       "inlineType": Object {
         "name": "ButtonProps.Variant",
         "type": "union",
@@ -2908,6 +2909,7 @@ This property only applies when an \`href\` is provided.",
           "link",
           "icon",
           "inline-icon",
+          "inline-link",
         ],
       },
       "name": "variant",
@@ -3143,7 +3145,8 @@ It prevents clicks.",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
 * \`normal\` for secondary buttons
-* \`icon\` for icon buttons",
+* \`icon\` for icon buttons
+* \`inline-icon\` for icon buttons with no outer padding",
       "inlineType": Object {
         "name": "ButtonDropdownProps.Variant",
         "type": "union",
@@ -3151,6 +3154,7 @@ It prevents clicks.",
           "normal",
           "primary",
           "icon",
+          "inline-icon",
         ],
       },
       "name": "variant",

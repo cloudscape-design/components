@@ -58,6 +58,7 @@ export interface ButtonDropdownProps extends BaseComponentProps {
    * * `primary` for primary buttons
    * * `normal` for secondary buttons
    * * `icon` for icon buttons
+   * * `inline-icon` for icon buttons with no outer padding
    */
   variant?: ButtonDropdownProps.Variant;
   /**
@@ -100,7 +101,7 @@ export interface ButtonDropdownProps extends BaseComponentProps {
 }
 
 export namespace ButtonDropdownProps {
-  export type Variant = 'normal' | 'primary' | 'icon';
+  export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
 
   export interface Item {
     id: string;
