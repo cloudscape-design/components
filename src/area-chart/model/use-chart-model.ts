@@ -7,7 +7,6 @@ import { findClosest, circleIndex } from './utils';
 import { nodeContains } from '../../internal/utils/dom';
 import { KeyCode } from '../../internal/keycode';
 import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
-import { useReaction } from './async-store';
 import computeChartProps from './compute-chart-props';
 import createSeriesDecorator from './create-series-decorator';
 import InteractionsStore from './interactions-store';
@@ -15,6 +14,7 @@ import { useStableEventHandler } from '../../internal/hooks/use-stable-event-han
 import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
+import { useReaction } from '../async-store';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
