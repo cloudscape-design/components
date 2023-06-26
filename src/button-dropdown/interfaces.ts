@@ -101,6 +101,13 @@ export interface ButtonDropdownProps extends BaseComponentProps {
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   /**
    * A standalone action displayed before the dropdown trigger. Use it with "primary" variant only.
+   * Main action properties:
+   * * `text` (string) - Specifies the text shown in the main action.
+   * * `external` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.
+   * * `externalIconAriaLabel` (string) - Adds an ARIA label to the external icon.
+   *
+   * The main action also supports the following properties of the [button](/components/button/?tabId=api) component:
+   * `ariaLabel`, `disabled`, `loading`, `loadingText`, `href`, `target`, `rel`, `download`, `iconAlt`, `iconName`, `iconUrl`, `iconSvg`, `onClick`, `onFollow`.
    */
   mainAction?: ButtonDropdownProps.MainAction;
 }
