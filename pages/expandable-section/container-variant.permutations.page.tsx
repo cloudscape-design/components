@@ -26,7 +26,11 @@ const permutations = createPermutations<ExpandableSectionProps>([
     ],
   },
 ]);
-export default function ExpandableSectionContainerVariantPermutations() {
+export default function ExpandableSectionContainerVariantPermutations({
+  variant = 'container',
+}: {
+  variant: ExpandableSectionProps.Variant;
+}) {
   return (
     <article>
       <h1>Expandable Section - container variant</h1>
@@ -41,7 +45,7 @@ export default function ExpandableSectionContainerVariantPermutations() {
               {...permutation}
               headerText={'Expandable section heading'}
               defaultExpanded={true}
-              variant="container"
+              variant={variant}
             >
               Expandable section content
             </ExpandableSection>
