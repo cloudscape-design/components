@@ -11,6 +11,7 @@
   overflow-y: hidden;
   bottom: 0;
   width: 100%;
+  z-index: 800; // Higher than sticky-columns
 
   &-content {
     height: 15px;
