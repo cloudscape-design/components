@@ -118,24 +118,13 @@ const items: ButtonDropdownProps.Items = [
 
 describe('ButtonDropdown component', () => {
   describe('URL sanitization', () => {
-    let consoleWarnSpy: jest.SpyInstance;
-    let consoleErrorSpy: jest.SpyInstance;
-    beforeEach(() => {
-      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-    });
-    afterEach(() => {
-      consoleWarnSpy?.mockRestore();
-      consoleErrorSpy?.mockRestore();
-    });
-
     test('does not throw an error when a safe javascript: URL is passed', () => {
       const element = renderButtonDropdown({ items: [{ id: 'test', text: 'test', href: 'javascript:void(0)' }] });
       act(() => element.openDropdown());
       expect((element.findItemById('test')!.find('a')!.getElement() as HTMLAnchorElement).href).toBe(
         'javascript:void(0)'
       );
-      expect(console.warn).toHaveBeenCalledTimes(0);
+      expect(warnOnce).toHaveBeenCalledTimes(0);
     });
 
     test('throws an error when a dangerous javascript: URL is passed', () => {
@@ -143,9 +132,9 @@ describe('ButtonDropdown component', () => {
         renderButtonDropdown({ items: [{ id: 'test', text: 'test', href: "javascript:alert('Hello!')" }] })
       ).toThrow('A javascript: URL was blocked as a security precaution.');
 
-      expect(console.warn).toHaveBeenCalledTimes(1);
-      expect(console.warn).toHaveBeenCalledWith(
-        `[AwsUi] [ButtonDropdown] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello!')".`
+      expect(warnOnce).toHaveBeenCalledWith(
+        'ButtonDropdown',
+        `A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello!')".`
       );
     });
 
