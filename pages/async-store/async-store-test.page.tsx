@@ -27,6 +27,8 @@ export default function AsyncStoreTestPage() {
 
   return (
     <Box padding="m">
+      <Box variant="h1">Async store test page</Box>
+
       <SpaceBetween direction="horizontal" size="m">
         <Button data-testid="west" onClick={() => store.set(prev => ({ ...prev, west: prev.west + 1 }))}>
           Increment west
