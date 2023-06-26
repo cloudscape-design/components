@@ -24,13 +24,13 @@ export const ExpandableSectionContainer = ({
   __internalRootRef,
   ...rest
 }: ExpandableSectionContainerProps) => {
-  if (variant === 'container') {
+  if (variant === 'container' || variant === 'stacked') {
     return (
       <InternalContainer
         {...rest}
         className={className}
         header={header}
-        variant="default"
+        variant={variant === 'stacked' ? 'stacked' : 'default'}
         disableContentPaddings={disableContentPaddings || !expanded}
         disableHeaderPaddings={true}
         __hiddenContent={!expanded}
