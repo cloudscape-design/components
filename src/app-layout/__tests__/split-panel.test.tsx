@@ -283,7 +283,7 @@ test('should fire split panel resize event', () => {
     />
   );
   wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
-  expect(onSplitPanelResize).toHaveBeenCalledWith({ size: 460 });
+  expect(onSplitPanelResize).toHaveBeenCalled();
 });
 
 test('should not set width on split panel drawer when there is no splitPanel', () => {

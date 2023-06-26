@@ -1088,7 +1088,6 @@ A maximum of four fields are supported.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
-      "i18nTag": true,
       "inlineType": Object {
         "name": "AttributeEditorProps.I18nStrings",
         "properties": Array [
@@ -1151,6 +1150,7 @@ The display of a row is handled by the \`definition\` property.",
     },
     Object {
       "description": "Specifies the text that's displayed in the remove button.",
+      "i18nTag": true,
       "name": "removeButtonText",
       "optional": true,
       "type": "string",

@@ -3,7 +3,14 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, isDrawerClosed, drawersConfigurations, renderComponent } from './utils';
+import {
+  describeEachAppLayout,
+  drawerWithoutLabels,
+  isDrawerClosed,
+  renderComponent,
+  singleDrawer,
+  singleDrawerOpen,
+} from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
 describeEachAppLayout(() => {
@@ -220,7 +227,7 @@ describeEachAppLayout(() => {
       const drawersClosed = {
         drawers: {
           onChange: onChange,
-          items: drawersConfigurations.drawersItems,
+          items: singleDrawer.drawers.items,
         },
       };
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
@@ -235,7 +242,7 @@ describeEachAppLayout(() => {
       const drawersClosed = {
         drawers: {
           onChange: onChange,
-          items: drawersConfigurations.drawersItems,
+          items: singleDrawer.drawers.items,
         },
       };
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
@@ -252,7 +259,7 @@ describeEachAppLayout(() => {
         drawers: {
           onChange: onChange,
           activeDrawerId: 'security',
-          items: drawersConfigurations.drawersItems,
+          items: singleDrawer.drawers.items,
         },
       };
 
@@ -264,7 +271,7 @@ describeEachAppLayout(() => {
     });
 
     test('Renders aria-expanded only on toggle', () => {
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
 
       expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-haspopup', 'true');
@@ -274,7 +281,7 @@ describeEachAppLayout(() => {
     });
 
     test('Close button does have a label if it is defined', () => {
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
 
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute(
         'aria-label',
@@ -286,7 +293,7 @@ describeEachAppLayout(() => {
       const drawersOpen = {
         drawers: {
           activeDrawerId: 'security',
-          items: drawersConfigurations.drawersItemsWithoutLabels,
+          items: drawerWithoutLabels.drawers.items,
         },
       };
 
@@ -297,7 +304,7 @@ describeEachAppLayout(() => {
 
     test('Opens and closes drawer in uncontrolled mode', () => {
       // use content type with initial closed state for all drawers
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
       expect(wrapper.findActiveDrawer()).toBeNull();
 
       act(() => wrapper.findDrawersTriggers()![0].click());
