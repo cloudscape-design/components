@@ -9,7 +9,7 @@ export function findUpUntil(node: HTMLElement, callback: (element: HTMLElement) 
     current = current.parentElement;
     // If a component is used within an svg (i.e. as foreignObject), then it will
     // have some ancestor nodes that are SVGElement. We want to skip those,
-    // as they have very different properties to HTLMElements.
+    // as they have very different properties to HTMLElements.
     while (current && !(current instanceof HTMLElement)) {
       current = (current as Element).parentElement;
     }

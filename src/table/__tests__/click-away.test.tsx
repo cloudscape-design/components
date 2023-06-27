@@ -7,10 +7,9 @@ import Box from '../../../lib/components/box';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import { ClickAway, useClickAway } from '../body-cell/click-away';
+import { useClickAway } from '../body-cell/click-away';
 
 const onHookClickAway = jest.fn() as () => void;
-const onComponentClickAway = jest.fn() as () => void;
 
 const TestHookComponent = () => {
   const clickAwayRef = useClickAway(onHookClickAway);
@@ -21,18 +20,6 @@ const TestHookComponent = () => {
         some text
         <div data-testid="inside-inside">nested calls</div>
       </div>
-    </Box>
-  );
-};
-
-const TestComponentWithClickAway = () => {
-  return (
-    <Box>
-      <div data-testid="outside">outside text</div>
-      <ClickAway onClick={onComponentClickAway}>
-        inside
-        <div data-testid="inside-inside">nested calls</div>
-      </ClickAway>
     </Box>
   );
 };
@@ -64,29 +51,5 @@ describe('Hook Version', () => {
     const { getByTestId } = renderComponent(<TestHookComponent />);
     fireEvent.click(getByTestId('inside-inside'));
     expect(onHookClickAway).not.toHaveBeenCalled();
-  });
-});
-
-describe('Component Version', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('should call the callback when clicking outside the element', () => {
-    const { getByTestId } = renderComponent(<TestComponentWithClickAway />);
-    fireEvent.click(getByTestId('outside'));
-    expect(onComponentClickAway).toHaveBeenCalled();
-  });
-
-  test('should not call the callback when clicking inside the element', () => {
-    const { wrapper } = renderComponent(<TestComponentWithClickAway />);
-    fireEvent.click(wrapper.getElement().querySelector('[data-testid="outside"] + span')!);
-    expect(onComponentClickAway).not.toHaveBeenCalled();
-  });
-
-  test('should not call the callback when clicking inside the nested element', () => {
-    const { getByTestId } = renderComponent(<TestComponentWithClickAway />);
-    fireEvent.click(getByTestId('inside-inside'));
-    expect(onComponentClickAway).not.toHaveBeenCalled();
   });
 });

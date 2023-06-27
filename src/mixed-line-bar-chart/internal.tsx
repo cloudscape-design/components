@@ -22,9 +22,9 @@ import { isDevelopment } from '../internal/is-development';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale';
 import { ScaledPoint } from './make-scaled-series';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { nodeContains } from '../internal/utils/dom';
 import { SomeRequired } from '../internal/types';
 import { isXThreshold, isYThreshold } from './utils';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,
@@ -184,7 +184,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   };
 
   const onBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
+    if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
       highlightedSeries && onHighlightChange(highlightedSeries);
       setHighlightedPoint(null);
       setHighlightedGroupIndex(null);
