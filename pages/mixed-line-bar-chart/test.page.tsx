@@ -4,6 +4,7 @@ import React from 'react';
 
 import Grid from '~components/grid';
 import Box from '~components/box';
+import Button from '~components/button';
 import MixedLineBarChart from '~components/mixed-line-bar-chart';
 import { colorChartsThresholdInfo } from '~design-tokens';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -36,6 +37,11 @@ export default function () {
               xScaleType="categorical"
               ariaLabel="Mixed chart 1"
               ariaDescription={barChartInstructions}
+              detailPopoverFooter={xValue => (
+                <Box margin={{ top: 'm' }}>
+                  <Button>Filter by {xValue}</Button>
+                </Box>
+              )}
             />
           </div>
           <div>
