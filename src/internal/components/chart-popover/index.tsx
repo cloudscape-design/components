@@ -121,6 +121,7 @@ function ChartPopover(
             dismissAriaLabel={dismissAriaLabel}
             header={title}
             onDismiss={onDismiss}
+            overflowVisible="content"
             className={styles['popover-body']}
           >
             {children}
