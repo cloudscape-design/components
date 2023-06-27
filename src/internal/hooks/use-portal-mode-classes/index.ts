@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useVisualContext } from '../../components/visual-context';
 import { useCurrentMode, useDensityMode, useVisualRefresh } from '../use-visual-mode';
+import styles from './styles.css.js';
 
 export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
   const colorMode = useCurrentMode(ref);
