@@ -16,6 +16,7 @@ import {
   barTimeData,
   barChartInstructions,
 } from '../mixed-line-bar-chart/common';
+import ButtonDropdown from '~components/button-dropdown';
 
 export default function () {
   return (
@@ -45,6 +46,19 @@ export default function () {
               xScaleType="categorical"
               ariaLabel="Bar chart"
               ariaDescription={barChartInstructions}
+              detailPopoverFooter={() => (
+                <Box margin={{ top: 'm' }}>
+                  <ButtonDropdown
+                    items={[
+                      { id: '1', text: 'View' },
+                      { id: '2', text: 'Add to filter' },
+                    ]}
+                    expandToViewport={true}
+                  >
+                    Actions
+                  </ButtonDropdown>
+                </Box>
+              )}
             />
           </div>
           <BarChart
