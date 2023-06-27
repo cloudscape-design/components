@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { warnOnce } from '../logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 const allowedJavascriptUrls = ['javascript:void(0)', 'javascript:void(0);', 'javascript:;'];
 

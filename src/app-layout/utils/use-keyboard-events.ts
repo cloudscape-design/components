@@ -2,24 +2,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { KeyCode } from '../../internal/keycode';
-import { SizeControlProps } from '../interfaces';
+import { SizeControlProps } from './interfaces';
 
 const KEYBOARD_SINGLE_STEP_SIZE = 10;
 const KEYBOARD_MULTIPLE_STEPS_SIZE = 60;
 
-const getCurrentSize = (splitPanelRef?: React.RefObject<HTMLDivElement>) => {
-  if (!splitPanelRef || !splitPanelRef.current) {
+const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
+  if (!panelRef || !panelRef.current) {
     return {
-      splitPanelHeight: 0,
-      splitPanelWidth: 0,
+      panelHeight: 0,
+      panelWidth: 0,
     };
   }
 
-  const safeParseFloat = (size = '') => parseFloat(size) || 0;
-
   return {
-    splitPanelHeight: safeParseFloat(splitPanelRef.current.style.height),
-    splitPanelWidth: safeParseFloat(splitPanelRef.current.style.width),
+    panelHeight: panelRef.current.clientHeight,
+    panelWidth: panelRef.current.clientWidth,
   };
 };
 
@@ -27,23 +25,23 @@ export const useKeyboardEvents = ({
   position,
   setSidePanelWidth,
   setBottomPanelHeight,
-  splitPanelRef,
+  panelRef,
 }: SizeControlProps) => {
   return (event: React.KeyboardEvent) => {
     let setSizeFunction;
     let currentSize;
     let maxSize;
 
-    const { splitPanelHeight, splitPanelWidth } = getCurrentSize(splitPanelRef);
+    const { panelHeight, panelWidth } = getCurrentSize(panelRef);
 
     if (position === 'side') {
       setSizeFunction = setSidePanelWidth;
-      currentSize = splitPanelWidth;
+      currentSize = panelWidth;
       // don't need the exact max size as it's constrained in the set size function
       maxSize = window.innerWidth;
     } else {
       setSizeFunction = setBottomPanelHeight;
-      currentSize = splitPanelHeight;
+      currentSize = panelHeight;
       // don't need the exact max size as it's constrained in the set size function
       maxSize = window.innerHeight;
     }
@@ -58,6 +56,7 @@ export const useKeyboardEvents = ({
       case primaryGrowKey:
       case altGrowKey:
         setSizeFunction(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
+
         break;
       case primaryShrinkKey:
       case altShrinkKey:

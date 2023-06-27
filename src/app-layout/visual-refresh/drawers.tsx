@@ -3,47 +3,14 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { IconProps } from '../../icon/interfaces';
 import { InternalButton } from '../../button/internal';
-import { NonCancelableEventHandler } from '../../internal/events';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
+import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-
-export interface DrawersProps {
-  activeDrawerId?: string;
-  items: ReadonlyArray<DrawersProps.Drawer>;
-  onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
-  ariaLabel?: string;
-}
-
-namespace DrawersProps {
-  export interface Drawer {
-    ariaLabels?: Labels;
-    content: React.ReactNode;
-    id: string;
-    trigger: Trigger;
-  }
-
-  export interface ChangeDetail {
-    activeDrawerId: string | null;
-  }
-
-  interface Labels {
-    closeButton?: string;
-    content?: string;
-    triggerButton?: string;
-    resizeHandle?: string;
-  }
-  interface Trigger {
-    iconName?: IconProps.Name;
-    iconSvg?: React.ReactNode;
-    iconUrl?: string;
-  }
-}
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -85,7 +52,6 @@ export default function Drawers() {
 function ActiveDrawer() {
   const {
     activeDrawerId,
-    activeDrawerWidth,
     ariaLabels,
     drawers,
     drawersRefs,
@@ -98,6 +64,11 @@ function ActiveDrawer() {
     navigationHide,
     tools,
     toolsRefs,
+    loseDrawersFocus,
+    resizeHandle,
+    drawerSize,
+    drawersMaxWidth,
+    drawerRef,
   } = useAppLayoutInternals();
 
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
@@ -110,20 +81,29 @@ function ActiveDrawer() {
   const isHidden = !activeDrawerId && !isToolsOpen;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
 
+  const size = Math.min(drawersMaxWidth, drawerSize);
+
   return (
     <aside
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, {
+      className={clsx(styles.drawer, sharedStyles['with-motion'], {
         [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsOpen,
       })}
       style={{
-        ...(!isMobile && activeDrawerWidth && { [customCssProps.activeDrawerWidth]: `${activeDrawerWidth}px` }),
+        ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
+      }}
+      ref={drawerRef}
+      onBlur={e => {
+        if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+          loseDrawersFocus();
+        }
       }}
     >
+      {!isMobile && activeDrawer?.resizable && resizeHandle}
       <div className={clsx(styles['drawer-close-button'])}>
         <InternalButton
           ariaLabel={computedAriaLabels.closeButton}
@@ -199,7 +179,7 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         }
       )}
-      aria-label={drawers.ariaLabel}
+      aria-label={drawers?.ariaLabel}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -221,7 +201,7 @@ function DesktopTriggers() {
           />
         )}
 
-        {drawers.items.map((item: DrawersProps.Drawer) => (
+        {drawers?.items.map(item => (
           <TriggerButton
             ariaLabel={item.ariaLabels?.triggerButton}
             className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
@@ -311,7 +291,7 @@ export function MobileTriggers() {
         />
       )}
 
-      {drawers.items.map((item: DrawersProps.Drawer) => (
+      {drawers.items.map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}

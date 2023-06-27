@@ -281,7 +281,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       &:hover {
         position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
-        border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+        border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
         @include focused-editor-styles;

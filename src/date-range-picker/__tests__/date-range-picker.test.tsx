@@ -10,11 +10,12 @@ import { NonCancelableEventHandler } from '../../../lib/components/internal/even
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 import { changeMode } from './change-mode';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from '../../../lib/components/date-range-picker/styles.css.js';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 

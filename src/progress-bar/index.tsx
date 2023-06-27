@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import styles from './styles.css.js';
 import { getBaseProps } from '../internal/base-component';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { ProgressBarProps } from './interfaces';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useUniqueId } from '../internal/hooks/use-unique-id';

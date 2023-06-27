@@ -6,7 +6,7 @@ import { isMotionDisabled } from '../../motion';
 import { findUpUntil } from '../../utils/dom';
 import { useMutationObserver } from '../use-mutation-observer';
 import { isDevelopment } from '../../is-development';
-import { warnOnce } from '../../logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 // Note that this hook doesn't take into consideration @media print (unlike the dark mode CSS),
 // due to challenges with cross-browser implementations of media/print state change listeners.

@@ -10,11 +10,11 @@ import { getColumnKey, getStickyClassNames } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { selectionColumnId, StickyColumnsModel, useStickyCellStyles } from './use-sticky-columns';
 import styles from './styles.css.js';
 import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -41,7 +41,7 @@ export interface TheadProps {
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
-
+  selectionColumnId: PropertyKey;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
@@ -68,7 +68,7 @@ const Thead = React.forwardRef(
       hidden = false,
       stuck = false,
       stickyState,
-
+      selectionColumnId,
       focusedComponent,
       onFocusedComponentChange,
     }: TheadProps,
@@ -95,7 +95,7 @@ const Thead = React.forwardRef(
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
-      columnId: selectionColumnId.toString(),
+      columnId: selectionColumnId,
       getClassName: props => getStickyClassNames(cellStyles, props),
     });
     return (
@@ -160,7 +160,7 @@ const Thead = React.forwardRef(
                 wrapLines={wrapLines}
                 hidden={hidden}
                 colIndex={colIndex}
-                columnId={column.id ?? colIndex.toString()}
+                columnId={column.id ?? colIndex}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}

@@ -14,12 +14,12 @@ import { defaultSplitPanelContextProps } from './helpers';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 const onKeyDown = jest.fn();
-jest.mock('../../../lib/components/split-panel/utils/use-keyboard-events', () => ({
+jest.mock('../../../lib/components/app-layout/utils/use-keyboard-events', () => ({
   useKeyboardEvents: () => onKeyDown,
 }));
 
 const onSliderPointerDown = jest.fn();
-jest.mock('../../../lib/components/split-panel/utils/use-pointer-events', () => ({
+jest.mock('../../../lib/components/app-layout/utils/use-pointer-events', () => ({
   usePointerEvents: () => onSliderPointerDown,
 }));
 

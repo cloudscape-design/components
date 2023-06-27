@@ -7,10 +7,11 @@ import ExpandableSection, { ExpandableSectionProps } from '../../../lib/componen
 import Button from '../../../lib/components/button';
 import Header from '../../../lib/components/header';
 import Link from '../../../lib/components/link';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import '../../__a11y__/to-validate-a11y';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
@@ -23,17 +24,27 @@ function renderExpandableSection(props: ExpandableSectionProps = {}): Expandable
   return createWrapper(container).findExpandableSection()!;
 }
 
+const containerizedVariants: ExpandableSectionProps.Variant[] = ['container', 'stacked'];
+
 describe('Expandable Section', () => {
+  const variantsWithDescription: ExpandableSectionProps.Variant[] = [...containerizedVariants, 'default', 'footer'];
+  const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['navigation'];
+  const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
+
   describe('variant property', () => {
     test('has one trigger button and no div=[role=button] for variant navigation', () => {
       const wrapper = renderExpandableSection({ variant: 'navigation' });
       expect(wrapper.findAll('button').length).toBe(1);
       expect(wrapper.findAll('div[role=button]').length).toBe(0);
     });
-    test('has no trigger button and div=[role=button] for variant container', () => {
-      const wrapper = renderExpandableSection({ variant: 'container' });
-      expect(wrapper.findAll('div[role=button]').length).toBe(1);
-      expect(wrapper.findAll('button').length).toBe(0);
+    describe('has no trigger button and div=[role=button]', () => {
+      for (const variant of containerizedVariants) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({ variant });
+          expect(wrapper.findAll('div[role=button]').length).toBe(1);
+          expect(wrapper.findAll('button').length).toBe(0);
+        });
+      }
     });
     test('has no trigger button and div=[role=button] for variant footer', () => {
       const wrapper = renderExpandableSection({ variant: 'footer' });
@@ -50,27 +61,48 @@ describe('Expandable Section', () => {
       const header = wrapper.findHeader().getElement();
       expect(header).toHaveTextContent('Test Header');
     });
-    test('populates info links slot correctly for "container" variant', () => {
-      const wrapper = renderExpandableSection({
-        headerText: 'Test Header',
-        variant: 'container',
-        headerInfo: <Link>Info</Link>,
-      });
-      const infoLink = wrapper.findHeader().findLink();
-      expect(infoLink).toBeTruthy();
-      expect(infoLink!.getElement()).toHaveTextContent('Info');
+    describe('populates description slot correctly', () => {
+      for (const variant of variantsWithDescription) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            variant,
+            headerText: 'Test Header',
+            headerDescription: 'Description',
+          });
+          const header = wrapper.findHeader().getElement();
+          expect(header).toHaveTextContent('Description');
+        });
+      }
     });
-    test('populates action buttons slot correctly for "container" variant', () => {
-      const wrapper = renderExpandableSection({
-        headerText: 'Test Header',
-        variant: 'container',
-        headerActions: <Button>Action</Button>,
-      });
-      const button = wrapper.findHeader().findButton();
-      expect(button).toBeTruthy();
-      expect(button!.getElement()).toHaveTextContent('Action');
+    describe('populates info links slot correctly', () => {
+      for (const variant of containerizedVariants) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            headerText: 'Test Header',
+            variant,
+            headerInfo: <Link>Info</Link>,
+          });
+          const infoLink = wrapper.findHeader().findLink();
+          expect(infoLink).toBeTruthy();
+          expect(infoLink!.getElement()).toHaveTextContent('Info');
+        });
+      }
     });
-    test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation'])(
+    describe('populates action buttons slot correctly', () => {
+      for (const variant of containerizedVariants) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            headerText: 'Test Header',
+            variant,
+            headerActions: <Button>Action</Button>,
+          });
+          const button = wrapper.findHeader().findButton();
+          expect(button).toBeTruthy();
+          expect(button!.getElement()).toHaveTextContent('Action');
+        });
+      }
+    });
+    test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation', 'stacked'])(
       'populates content slot correctly for "%s" variant',
       variant => {
         const wrapper = renderExpandableSection({
@@ -89,6 +121,55 @@ describe('Expandable Section', () => {
       });
       const expandedContent = wrapper.findExpandedContent()?.getElement();
       expect(expandedContent).toHaveTextContent('Example content');
+    });
+  });
+
+  describe('does not populate non-supported slots', () => {
+    describe('Description', () => {
+      for (const variant of variantsWithoutDescription) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            headerText: 'Test Header',
+            headerDescription: 'Description',
+            variant,
+          });
+          const header = wrapper.findHeader().getElement();
+          expect(header).not.toHaveTextContent('Description');
+        });
+      }
+    });
+    describe('Other props', () => {
+      for (const variant of nonContainerVariants) {
+        describe(`${variant} variant`, () => {
+          test('Counter', () => {
+            const wrapper = renderExpandableSection({
+              variant,
+              headerText: 'Test Header',
+              headerCounter: '(3)',
+            });
+            const header = wrapper.findHeader().getElement();
+            expect(header).not.toHaveTextContent('(3)');
+          });
+          test('Info links', () => {
+            const wrapper = renderExpandableSection({
+              variant,
+              headerText: 'Test Header',
+              headerInfo: <Link variant="info">Info</Link>,
+            });
+            const header = wrapper.findHeader().getElement();
+            expect(header).not.toHaveTextContent('Info');
+          });
+          test('Action buttons', () => {
+            const wrapper = renderExpandableSection({
+              variant,
+              headerText: 'Test Header',
+              headerInfo: <Button>Action</Button>,
+            });
+            const header = wrapper.findHeader().getElement();
+            expect(header).not.toHaveTextContent('Action');
+          });
+        });
+      }
     });
   });
 
@@ -136,18 +217,22 @@ describe('Expandable Section', () => {
   });
 
   describe('a11y', () => {
-    test('content region is labelled by header', () => {
-      const wrapper = renderExpandableSection({
-        variant: 'container',
-        headerText: 'Container header',
-        headerDescription: 'Container description',
-      });
-      const header = wrapper.findExpandButton().getElement();
-      const expandedContent = wrapper.findContent().getElement();
-      const contentId = expandedContent?.getAttribute('id');
-      expect(header).toHaveAttribute('aria-controls', contentId);
-      expect(expandedContent).toHaveAccessibleName('Container header');
-      expect(expandedContent).toHaveAccessibleDescription('Container description');
+    describe('content region is labelled by header', () => {
+      for (const variant of variantsWithDescription) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            variant,
+            headerText: 'Header',
+            headerDescription: 'Description',
+          });
+          const header = wrapper.findExpandButton().getElement();
+          const expandedContent = wrapper.findContent().getElement();
+          const contentId = expandedContent?.getAttribute('id');
+          expect(header).toHaveAttribute('aria-controls', contentId);
+          expect(expandedContent).toHaveAccessibleName('Header');
+          expect(expandedContent).toHaveAccessibleDescription('Description');
+        });
+      }
     });
     test('aria-expanded=false when collapsed', () => {
       const wrapper = renderExpandableSection();
@@ -175,7 +260,6 @@ describe('Expandable Section', () => {
 
   describe('dev warnings', () => {
     const componentName = 'ExpandableSection';
-    const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
 
     test('logs warning for deprecated header prop', () => {
       render(<ExpandableSection variant="container" header={<Header />} />);
@@ -187,31 +271,63 @@ describe('Expandable Section', () => {
     });
 
     describe('logs warning for non supported configurations', () => {
-      const testWarnings = (props: ExpandableSectionProps) => {
-        render(<ExpandableSection {...props} />);
-        expect(warnOnce).toHaveBeenCalledTimes(1);
-        expect(warnOnce).toHaveBeenCalledWith(
-          componentName,
-          'The `headerCounter`, `headerDescription`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
-        );
-      };
+      describe('headerDescription', () => {
+        for (const variant of variantsWithoutDescription) {
+          test(`${variant} variant`, () => {
+            render(<ExpandableSection variant={variant} headerDescription={'Description'} />);
+            expect(warnOnce).toHaveBeenCalledTimes(1);
+            expect(warnOnce).toHaveBeenCalledWith(
+              componentName,
+              `The \`headerDescription\` prop is not supported for the ${variant} variant.`
+            );
+          });
+        }
+      });
 
-      for (const variant of nonContainerVariants) {
-        describe(`${variant} variant`, () => {
-          test('headerCounter', () => {
-            testWarnings({ variant, headerCounter: '(2)' });
+      describe('other properties', () => {
+        const testWarnings = (props: ExpandableSectionProps) => {
+          render(<ExpandableSection {...props} />);
+          expect(warnOnce).toHaveBeenCalledTimes(1);
+          expect(warnOnce).toHaveBeenCalledWith(
+            componentName,
+            'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+          );
+        };
+
+        for (const variant of nonContainerVariants) {
+          describe(`${variant} variant`, () => {
+            test('headerCounter', () => {
+              testWarnings({ variant, headerCounter: '(2)' });
+            });
+            test('headerInfo', () => {
+              testWarnings({ variant, headerInfo: <Link>Info</Link> });
+            });
+            test('headerActions', () => {
+              testWarnings({ variant, headerActions: <Button>Action</Button> });
+            });
           });
-          test('headerCounter', () => {
-            testWarnings({ variant, headerDescription: 'Description' });
+        }
+      });
+
+      describe('headerDescription and other properties combined', () => {
+        const testWarnings = (props: ExpandableSectionProps) => {
+          render(<ExpandableSection {...props} headerDescription="Description" />);
+          expect(warnOnce).toHaveBeenCalledTimes(2);
+        };
+        for (const variant of variantsWithoutDescription) {
+          describe(`${variant} variant`, () => {
+            test('headerCounter', () => {
+              testWarnings({ variant, headerCounter: '(2)' });
+            });
+            test('headerInfo', () => {
+              testWarnings({ variant, headerInfo: <Link>Info</Link> });
+            });
+            test('headerActions', () => {
+              testWarnings({ variant, headerActions: <Button>Action</Button> });
+            });
           });
-          test('headerInfo', () => {
-            testWarnings({ variant, headerInfo: <Link>Info</Link> });
-          });
-          test('headerActions', () => {
-            testWarnings({ variant, headerActions: <Button>Action</Button> });
-          });
-        });
-      }
+        }
+      });
     });
 
     describe('does not log warning for supported configurations', () => {
@@ -225,14 +341,22 @@ describe('Expandable Section', () => {
           testWarnings({ variant });
         });
       }
+      for (const variant of containerizedVariants) {
+        test(`${variant} variant`, () => {
+          testWarnings({
+            variant,
+            headerCounter: '(2)',
+            headerDescription: 'Description',
+            headerInfo: <Link>Info</Link>,
+            headerActions: <Button>Action</Button>,
+          });
+        });
+      }
 
-      test('container variant', () => {
+      test('default variant', () => {
         testWarnings({
-          variant: 'container',
-          headerCounter: '(2)',
+          variant: 'default',
           headerDescription: 'Description',
-          headerInfo: <Link>Info</Link>,
-          headerActions: <Button>Action</Button>,
         });
       });
     });
@@ -240,22 +364,24 @@ describe('Expandable Section', () => {
 });
 
 describe('headingTagOverride', () => {
-  test('container variant tag defaults to h2', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
+  for (const variant of containerizedVariants) {
+    test(`${variant} variant tag defaults to h2`, () => {
+      const wrapper = renderExpandableSection({
+        variant,
+        headerText: 'Header component',
+      });
+      expect(wrapper.findHeader().findAll('h2').length).toBe(1);
     });
-    expect(wrapper.findHeader().findAll('h2').length).toBe(1);
-  });
-  test('container variant tag can be overwritten', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
-      headingTagOverride: 'h3',
+    test(`${variant} variant tag can be overwritten`, () => {
+      const wrapper = renderExpandableSection({
+        variant,
+        headerText: 'Header component',
+        headingTagOverride: 'h3',
+      });
+      expect(wrapper.findHeader().findAll('h2').length).toBe(0);
+      expect(wrapper.findHeader().findAll('h3').length).toBe(1);
     });
-    expect(wrapper.findHeader().findAll('h2').length).toBe(0);
-    expect(wrapper.findHeader().findAll('h3').length).toBe(1);
-  });
+  }
   for (const variant of ['default', 'footer']) {
     describe.each<ExpandableSectionProps.Variant>(['default', 'footer'])(`variant: ${variant}`, variant => {
       test('tag defaults to div', () => {
@@ -277,89 +403,85 @@ describe('headingTagOverride', () => {
   }
 });
 
-describe('Variant container with headerText', () => {
-  test('validate a11y for container with headerText', async () => {
-    const { container } = render(
-      <ExpandableSection
-        variant="container"
-        headerText="Header component"
-        headerCounter="5"
-        headerDescription="Testing"
-      />
-    );
-    await expect(container).toValidateA11y();
-  });
+describe('headerText', () => {
+  for (const variant of containerizedVariants) {
+    describe(`with ${variant} variant`, () => {
+      test('validate a11y for container with headerText', async () => {
+        const { container } = render(
+          <ExpandableSection
+            variant={variant}
+            headerText="Header component"
+            headerCounter="5"
+            headerDescription="Testing"
+          />
+        );
+        await expect(container).toValidateA11y();
+      });
 
-  test('header button have aria-controls associated to expanded content', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
+      test('header button have aria-controls associated to expanded content', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+        });
+        const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+        const expandedContent = wrapper.findContent().getElement();
+        const contentId = expandedContent?.getAttribute('id');
+        expect(headerButton).toHaveAttribute('aria-controls', contentId);
+      });
+      test('aria-expanded=false when collapsed', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+        });
+        const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+        expect(headerButton).toHaveAttribute('aria-expanded', 'false');
+      });
+      test('aria-expanded=true when expanded', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+          defaultExpanded: true,
+        });
+        const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+        expect(headerButton).toHaveAttribute('aria-expanded', 'true');
+      });
+      test('set headerAriaLabel assigns an aria-label to the header, and no aria-labelledby will be set', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+          headerAriaLabel: 'ARIA Label',
+        });
+        const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+        const content = wrapper.findContent().getElement();
+        expect(headerButton).toHaveAttribute('aria-label', 'ARIA Label');
+        expect(content).toHaveAttribute('aria-label', 'ARIA Label');
+        expect(headerButton).not.toHaveAttribute('aria-labelledby');
+      });
+      test('set aria labels when no headerAriaLabel is set', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+        });
+        const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+        expect(headerButton).toHaveAccessibleName('Header component');
+      });
+      test('set aria description if description present', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+          headerDescription: 'Expand to see more content',
+        });
+        const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+        expect(headerButton).toHaveAccessibleDescription('Expand to see more content');
+      });
+      test('button should be under heading', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+        });
+        expect(wrapper.findHeader().find('[role="button"]')!.findAll('h2')!.length).toBe(0);
+        expect(wrapper.find('h2')!.find('[role="button"]')!.getElement()).toHaveTextContent('Header component');
+      });
     });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    const expandedContent = wrapper.findContent().getElement();
-    const contentId = expandedContent?.getAttribute('id');
-    expect(headerButton).toHaveAttribute('aria-controls', contentId);
-  });
-  test('aria-expanded=false when collapsed', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
-    });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    expect(headerButton).toHaveAttribute('aria-expanded', 'false');
-  });
-  test('aria-expanded=true when expanded', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
-      defaultExpanded: true,
-    });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    expect(headerButton).toHaveAttribute('aria-expanded', 'true');
-  });
-  test('set headerAriaLabel assigns an aria-label to the header, and no aria-labelledby will be set', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
-      headerAriaLabel: 'ARIA Label',
-    });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    const content = wrapper.findContent().getElement();
-    expect(headerButton).toHaveAttribute('aria-label', 'ARIA Label');
-    expect(content).toHaveAttribute('aria-label', 'ARIA Label');
-    expect(headerButton).not.toHaveAttribute('aria-labelledby');
-  });
-  test('set aria labels when no headerAriaLabel is set', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
-    });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    expect(headerButton).toHaveAccessibleName('Header component');
-  });
-  test('set aria description if description present', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
-      headerDescription: 'Expand to see more content',
-    });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    expect(headerButton).toHaveAccessibleDescription('Expand to see more content');
-  });
-  test('does not set aria-labelledby for default variant', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'default',
-      headerText: 'Header component',
-    });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    expect(headerButton).not.toHaveAttribute('aria-labelledby');
-  });
-  test('button should be under heading', () => {
-    const wrapper = renderExpandableSection({
-      variant: 'container',
-      headerText: 'Header component',
-    });
-    expect(wrapper.findHeader().find('[role="button"]')!.findAll('h2')!.length).toBe(0);
-    expect(wrapper.find('h2')!.find('[role="button"]')!.getElement()).toHaveTextContent('Header component');
-  });
+  }
 });
