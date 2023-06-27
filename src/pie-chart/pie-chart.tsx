@@ -67,6 +67,7 @@ export default <T extends PieChartProps.Datum>({
   hideDescriptions,
   detailPopoverContent,
   detailPopoverSize,
+  detailPopoverFooter,
   width,
   additionalFilters,
   hideFilter,
@@ -128,6 +129,11 @@ export default <T extends PieChartProps.Datum>({
     }
     return null;
   }, [pieData, highlightedSegment]);
+
+  const detailPopoverFooterContent = useMemo(
+    () => (detailPopoverFooter && highlightedSegment ? detailPopoverFooter(highlightedSegment) : null),
+    [detailPopoverFooter, highlightedSegment]
+  );
 
   const i18n = useInternalI18n('pie-chart');
   const detailFunction = detailPopoverContent || defaultDetails(i18n, i18nStrings);
@@ -408,6 +414,7 @@ export default <T extends PieChartProps.Datum>({
               onMouseLeave={onPopoverLeave}
             >
               {tooltipContent}
+              {detailPopoverFooterContent}
             </ChartPopover>
           )}
         </div>
