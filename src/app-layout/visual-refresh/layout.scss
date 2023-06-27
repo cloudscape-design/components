@@ -236,7 +236,7 @@ explicitly set in script.
 
   // Set the Main gap when it follows the Header
   &.has-header {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
+    #{custom-props.$mainGap}: #{awsui.$space-content-header-padding-bottom};
   }
 
   // Set the Main gap when it is the first page content
