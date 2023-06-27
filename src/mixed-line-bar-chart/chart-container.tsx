@@ -266,7 +266,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
     clearHighlightedSeries,
     isGroupNavigation,
     isHandlersDisabled,
-    isPinned: isPopoverPinned,
     highlightX,
   });
 
