@@ -24,6 +24,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { nodeContains } from '../internal/utils/dom';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import { isInsidePortal } from '../internal/hooks/use-portal-mode-classes';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -123,7 +124,8 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   }, [model.handlers.onDocumentKeyDown]);
 
   const onBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
+    const { relatedTarget } = event;
+    if (relatedTarget && !isInsidePortal(relatedTarget) && !nodeContains(containerRef.current, relatedTarget)) {
       model.handlers.onContainerBlur();
     }
   };
