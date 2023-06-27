@@ -85,8 +85,8 @@
 }
 
 .section {
-  margin-top: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
-  margin-bottom: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  margin-top: calc(#{awsui.$space-nav-section-vertical} - #{awsui.$border-divider-section-width});
+  margin-bottom: calc(#{awsui.$space-nav-section-vertical} - #{awsui.$border-divider-section-width});
 
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
