@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Button, FlashbarProps } from '~components';
+import { Button, FlashbarProps, ProgressBar } from '~components';
 import pseudoRandom from '../utils/pseudo-random';
 
 export const i18nStrings = {
@@ -56,6 +56,20 @@ export const sampleNotifications: Record<string, FlashbarProps.MessageDefinition
     statusIconAriaLabel: 'Error',
     content: 'It all broke, like, really bad.',
     id: 'error',
+  },
+  'in-progress': {
+    ...genericNotificationProps,
+    type: 'in-progress',
+    statusIconAriaLabel: 'In progress',
+    content: (
+      <ProgressBar
+        label="Progress bar label"
+        description="Progress bar description"
+        value={37}
+        additionalInfo="Additional information"
+        variant="flash"
+      />
+    ),
   },
 };
 

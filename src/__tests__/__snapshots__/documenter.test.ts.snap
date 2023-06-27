@@ -6193,7 +6193,7 @@ If \`stackItems\` is set to \`true\`, it should also contain:
 * \`warningIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`warning\`.
 * \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
 * \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
-* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).",
+* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`in-progress\` or with \`loading\` set to \`true\`.",
       "i18nTag": true,
       "inlineType": Object {
         "name": "FlashbarProps.I18nStrings",
