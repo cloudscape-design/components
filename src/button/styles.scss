@@ -80,7 +80,7 @@
   letter-spacing: awsui.$font-button-letter-spacing;
   border-radius: awsui.$border-radius-button;
   border: styles.$control-border-width solid;
-  padding: styles.$control-padding-vertical awsui.$space-l;
+  padding: styles.$control-padding-vertical awsui.$space-button-horizontal;
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
