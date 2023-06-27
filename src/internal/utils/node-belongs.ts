@@ -11,9 +11,10 @@ import { containsOrEqual, findUpUntil } from './dom';
  * @param target Node that is checked to be a descendant of the container
  */
 export function nodeBelongs(container: Node | null, target: Node): boolean {
-  const portal =
-    target instanceof HTMLElement &&
-    findUpUntil(target, node => node instanceof HTMLElement && !!node.dataset.awsuiReferrerId);
+  const portal = findUpUntil(
+    target as HTMLElement,
+    node => node instanceof HTMLElement && !!node.dataset.awsuiReferrerId
+  );
   const referrer = portal instanceof HTMLElement ? document.getElementById(portal.dataset.awsuiReferrerId ?? '') : null;
   return referrer ? containsOrEqual(container, referrer) : containsOrEqual(container, target);
 }

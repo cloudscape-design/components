@@ -204,7 +204,7 @@ const Demo = forwardRef(
     { setModalVisible }: { setModalVisible: React.Dispatch<React.SetStateAction<boolean>> },
     tableRef: ForwardedRef<TableProps.Ref>
   ) => {
-    const [items, setItems] = useState(initialItems.slice(0, 1));
+    const [items, setItems] = useState(initialItems);
 
     const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;

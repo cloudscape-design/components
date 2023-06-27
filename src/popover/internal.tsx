@@ -19,6 +19,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useInternalI18n } from '../internal/i18n/context';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -148,6 +149,7 @@ function InternalPopover(
   );
 
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
+  const referrerId = useUniqueId();
 
   return (
     <span
@@ -162,14 +164,16 @@ function InternalPopover(
       }}
     >
       {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog">
+        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId}>
           <span className={styles['trigger-inner-text']}>{children}</span>
         </button>
       ) : (
-        <span {...triggerProps}>{children}</span>
+        <span {...triggerProps} id={referrerId}>
+          {children}
+        </span>
       )}
       <FormFieldContext.Provider value={{}}>
-        {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
+        {renderWithPortal ? <Portal referrerId={referrerId}>{popoverContent}</Portal> : popoverContent}
       </FormFieldContext.Provider>
     </span>
   );
