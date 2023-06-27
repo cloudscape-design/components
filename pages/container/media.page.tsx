@@ -110,9 +110,9 @@ export default function MediaContainers() {
     <article>
       <h1>Media containers</h1>
 
-      <ScreenshotArea>
-        <SpaceBetween size="l">
-          <SettingsForm />
+      <SpaceBetween size="l">
+        <SettingsForm />
+        <ScreenshotArea>
           <ContainerPlayground
             header={
               <Header
@@ -154,8 +154,8 @@ export default function MediaContainers() {
               Content area takes the available vertical space, fixed height of 400px
             </ContainerPlayground>
           </div>
-        </SpaceBetween>
-      </ScreenshotArea>
+        </ScreenshotArea>
+      </SpaceBetween>
     </article>
   );
 }
