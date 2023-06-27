@@ -9212,6 +9212,23 @@ Each pair has the following properties:
       "type": "PieChartProps.DetailPopoverContentFunction<T>",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "PieChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "segment",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "PieChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width of the popover.",
       "inlineType": Object {
