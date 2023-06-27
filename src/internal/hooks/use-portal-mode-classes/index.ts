@@ -17,3 +17,7 @@ export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
     [`awsui-context-${context}`]: context,
   });
 }
+
+export function isInsidePortal(node: Element | null): boolean {
+  return !!node?.closest(`.${styles.portal}`);
+}
