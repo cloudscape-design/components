@@ -235,11 +235,7 @@ const InternalTable = React.forwardRef(
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
     return (
-      <ColumnWidthsProvider
-        tableRef={tableRefObject}
-        visibleColumns={visibleColumnWidthsWithSelection}
-        resizableColumns={resizableColumns}
-      >
+      <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
         <InternalContainer
           {...baseProps}
           __internalRootRef={__internalRootRef}

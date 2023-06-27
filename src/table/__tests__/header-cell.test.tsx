@@ -57,6 +57,7 @@ it('renders a fake focus outline on the sort control', () => {
         onResizeFinish={() => {}}
         stickyState={result.current}
         columnId="id"
+        cellRef={() => {}}
       />
     </TableWrapper>
   );
@@ -80,6 +81,7 @@ it('renders a fake focus outline on the resize control', () => {
         onResizeFinish={() => {}}
         stickyState={result.current}
         columnId="id"
+        cellRef={() => {}}
       />
     </TableWrapper>
   );
@@ -105,6 +107,7 @@ describe('i18n', () => {
             stickyState={result.current}
             columnId="id"
             isEditable={true}
+            cellRef={() => {}}
           />
         </TableWrapper>
       </TestI18nProvider>
