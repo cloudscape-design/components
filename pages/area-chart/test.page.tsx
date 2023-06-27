@@ -10,6 +10,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 import Example from './example';
 import { createLinearTimeLatencyProps, createLogXYProps } from './series';
+import { Box, ButtonDropdown } from '~components';
 
 const logXProps = createLogXYProps({ xLog: true });
 const linearLatencyProps = createLinearTimeLatencyProps();
@@ -47,6 +48,19 @@ export default function () {
             highlightedSeries={highlightedSeries}
             onHighlightChange={onHighlightChange}
             xDomain={xDomain}
+            detailPopoverFooter={() => (
+              <Box margin={{ top: 'm' }}>
+                <ButtonDropdown
+                  items={[
+                    { id: '1', text: 'View' },
+                    { id: '2', text: 'Add to filter' },
+                  ]}
+                  expandToViewport={true}
+                >
+                  Actions
+                </ButtonDropdown>
+              </Box>
+            )}
           />
 
           <Example name="Log-x latency chart" {...logXProps} />

@@ -8,6 +8,7 @@ import PieChart, { PieChartProps } from '~components/pie-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 
 import { commonProps, data1 } from './common';
+import Button from '~components/button';
 
 interface FoodData {
   title: string;
@@ -38,6 +39,11 @@ export default function () {
               ariaLabel="Food facts"
               size="medium"
               onHighlightChange={e => setActiveSegment(e.detail.highlightedSegment)}
+              detailPopoverFooter={segment => (
+                <Box margin={{ top: 'm' }}>
+                  <Button>Filter by {segment.title}</Button>
+                </Box>
+              )}
             />
           </div>
 

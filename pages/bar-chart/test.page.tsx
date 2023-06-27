@@ -16,50 +16,6 @@ import {
   barTimeData,
   barChartInstructions,
 } from '../mixed-line-bar-chart/common';
-import { Button, ButtonDropdown } from '~components';
-
-const months = ['May 2022', 'Jun 2022', 'Jul 2022', 'Aug 2022', 'Sep 2022'];
-
-const valueFormatter = (n: number) => '$' + n.toLocaleString('en-US');
-
-export const barMonthSeries = [
-  {
-    title: 'EC2',
-    type: 'bar' as const,
-    data: barTimeData.map(({ site1 }, i) => ({ x: months[i], y: site1 })),
-    valueFormatter,
-  },
-  {
-    title: 'Cloudfront',
-    type: 'bar' as const,
-    data: barTimeData.map(({ site2 }, i) => ({ x: months[i], y: site2 })),
-    valueFormatter,
-  },
-  {
-    title: 'ECS',
-    type: 'bar' as const,
-    data: barTimeData.map(({ site3 }, i) => ({ x: months[i], y: site3 })),
-    valueFormatter,
-  },
-  {
-    title: 'Route 53',
-    type: 'bar' as const,
-    data: barTimeData.map(({ site4 }, i) => ({ x: months[i], y: site4 })),
-    valueFormatter,
-  },
-  {
-    title: 'Sagemaker',
-    type: 'bar' as const,
-    data: barTimeData.map(({ site5 }, i) => ({ x: months[i], y: site5 })),
-    valueFormatter,
-  },
-  {
-    title: 'Glue',
-    type: 'bar' as const,
-    data: barTimeData.map(({ site6 }, i) => ({ x: months[i], y: site6 })),
-    valueFormatter,
-  },
-];
 
 export default function () {
   return (
@@ -76,54 +32,19 @@ export default function () {
           ]}
         >
           <div>
-            <BarChart
-              {...commonProps}
-              height={300}
-              series={barMonthSeries}
-              xDomain={months}
-              yDomain={[0, 2000000]}
-              xTitle="Month"
-              yTitle="Money spent (USD)"
-              xScaleType="categorical"
-              yScaleType="linear"
-              stackedBars={true}
-              ariaLabel="Multiple data series line chart"
-              i18nStrings={{ ...commonProps.i18nStrings }}
-              ariaDescription={barChartInstructions}
-              detailPopoverFooter={xValue => (
-                <Box margin={{ top: 'm' }}>
-                  <Button variant="normal">View bill for {xValue}</Button>
-                </Box>
-              )}
-            />
-          </div>
-          <div>
             <input id="focus-target" aria-label="focus input" placeholder="focus input" />
             <BarChart
               {...commonProps}
               id="chart"
               height={250}
-              series={barMonthSeries}
-              xDomain={months}
-              yDomain={[0, 2000000]}
+              series={[{ title: 'Calories', type: 'bar', data: data3 }]}
+              xDomain={['Potatoes', 'Tangerines', 'Chocolate', 'Apples', 'Oranges']}
+              yDomain={[0, 700]}
               xTitle="Food"
               yTitle="Calories (kcal)"
               xScaleType="categorical"
               ariaLabel="Bar chart"
               ariaDescription={barChartInstructions}
-              detailPopoverFooter={() => (
-                <Box margin={{ top: 'm' }}>
-                  <ButtonDropdown
-                    items={[
-                      { id: '1', text: 'View' },
-                      { id: '2', text: 'Add to filter' },
-                    ]}
-                    expandToViewport={true}
-                  >
-                    Actions
-                  </ButtonDropdown>
-                </Box>
-              )}
             />
           </div>
           <BarChart
