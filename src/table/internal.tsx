@@ -34,7 +34,6 @@ import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
-import { useMobile } from '../internal/hooks/use-mobile';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -85,7 +84,6 @@ const InternalTable = React.forwardRef(
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
-    const isMobile = useMobile();
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
 
@@ -151,8 +149,8 @@ const InternalTable = React.forwardRef(
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
-    const hasMobilePagination = isMobile && !!pagination;
-    const hasFooter = !!footer || hasMobilePagination;
+    const hasFooterPagination = variant === 'full-page' && !!pagination;
+    const hasFooter = !!footer || hasFooterPagination;
 
     const visibleColumnsWithSelection = useMemo(() => {
       const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
@@ -219,7 +217,6 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
-
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -276,9 +273,9 @@ const InternalTable = React.forwardRef(
           footer={
             hasFooter ? (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                <div className={clsx(styles.footer, hasMobilePagination && styles['footer-with-pagination'])}>
+                <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
                   {footer && <span>{footer}</span>}
-                  {hasMobilePagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+                  {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
                 </div>
               </div>
             ) : null

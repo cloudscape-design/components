@@ -139,7 +139,9 @@ const Cards = React.forwardRef(function <T = any>(
             </div>
           )
         }
-        footer={isMobile && !!pagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+        footer={
+          variant === 'full-page' && !!pagination && <div className={styles['footer-pagination']}>{pagination}</div>
+        }
         disableContentPaddings={true}
         disableHeaderPaddings={computedVariant === 'full-page'}
         variant={computedVariant === 'container' ? 'cards' : computedVariant}

@@ -3,17 +3,18 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
-import { CardsWrapper } from '../../../lib/components/test-utils/dom';
+import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+import styles from '../../../lib/components/cards/styles.css.js';
 
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn().mockReturnValue(false),
-}));
 interface Item {
   id: number;
   name: string;
+}
+
+function findFooterPagination(wrapper: CardsWrapper): PaginationWrapper | null {
+  return wrapper.findComponent(`.${styles['footer-pagination']}`, PaginationWrapper);
 }
 
 const cardDefinition: CardsProps.CardDefinition<Item> = {
@@ -196,18 +197,18 @@ describe('Cards', () => {
   });
 
   describe('pagination region', () => {
-    it('is displayed', () => {
+    it('should render table with no pagination in the footer for default variant', () => {
       wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} pagination="pagination" />).wrapper;
       expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
-      expect(wrapper.findFooterPagination()).toBeNull();
+      expect(findFooterPagination(wrapper)).toBeNull();
     });
 
-    it('is displayed in the footer on mobile viewports', () => {
-      (useMobile as jest.Mock).mockReturnValue(true);
-
-      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} pagination="pagination" />).wrapper;
+    it('is displayed in the footer on full-page variant', () => {
+      wrapper = renderCards(
+        <Cards<Item> variant="full-page" cardDefinition={{}} items={defaultItems} pagination="pagination" />
+      ).wrapper;
       expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
-      expect(wrapper.findFooterPagination()?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
     });
   });
 
