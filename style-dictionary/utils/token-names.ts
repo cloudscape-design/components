@@ -607,6 +607,7 @@ export type SpacingTokenName =
   | 'spaceLayoutTogglePadding'
   | 'spaceModalContentBottom'
   | 'spaceModalHorizontal'
+  | 'spaceOptionIconBigTop'
   | 'spacePanelNavLeft'
   | 'spacePanelSideLeft'
   | 'spacePanelSideRight'
