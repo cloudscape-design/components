@@ -141,10 +141,6 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findComponent(`.${styles['tools-pagination']}`, PaginationWrapper);
   }
 
-  findFooterPagination(): PaginationWrapper | null {
-    return this.findComponent(`.${styles['footer-pagination']}`, PaginationWrapper);
-  }
-
   /**
    * Returns the button that activates inline editing for a table cell based on given row and column indices.
    *
