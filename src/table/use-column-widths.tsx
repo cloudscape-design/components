@@ -5,7 +5,13 @@ import headerCellStyles from './header-cell/styles.css.js';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
-function readWidths(headerEl: HTMLElement, visibleColumns: readonly Column[]) {
+export interface ColumnWidthDefinition {
+  id: PropertyKey;
+  minWidth?: string | number;
+  width?: string | number;
+}
+
+function readWidths(headerEl: HTMLElement, visibleColumns: readonly ColumnWidthDefinition[]) {
   const result: Record<PropertyKey, number> = {};
   for (let index = 0; index < visibleColumns.length; index++) {
     const column = visibleColumns[index];
@@ -25,7 +31,7 @@ function readWidths(headerEl: HTMLElement, visibleColumns: readonly Column[]) {
 }
 
 function updateWidths(
-  visibleColumns: readonly Column[],
+  visibleColumns: readonly ColumnWidthDefinition[],
   oldWidths: Record<PropertyKey, number>,
   newWidth: number,
   columnId: PropertyKey
@@ -53,15 +59,9 @@ const WidthsContext = createContext<WidthsContext>({
 
 interface WidthProviderProps {
   tableRef: React.MutableRefObject<HTMLElement | null>;
-  visibleColumns: readonly Column[];
+  visibleColumns: readonly ColumnWidthDefinition[];
   resizableColumns: boolean | undefined;
   children: React.ReactNode;
-}
-
-interface Column {
-  id: PropertyKey;
-  minWidth?: string | number;
-  width?: string | number;
 }
 
 export function ColumnWidthsProvider({ tableRef, visibleColumns, resizableColumns, children }: WidthProviderProps) {

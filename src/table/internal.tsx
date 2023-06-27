@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -18,7 +18,7 @@ import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
-import { ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
@@ -155,18 +155,17 @@ const InternalTable = React.forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
-    const visibleColumnsWithSelection = useMemo(() => {
-      const visible = visibleColumnDefinitions.map((column, columnIndex) => ({
-        ...column,
-        id: getColumnKey(column, columnIndex),
-      }));
-      return hasSelection ? [{ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH }, ...visible] : visible;
-    }, [visibleColumnDefinitions, hasSelection]);
-
-    const visibleColumnIdsWithSelection = useMemo(
-      () => visibleColumnsWithSelection.map(c => c.id),
-      [visibleColumnsWithSelection]
-    );
+    const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
+    const visibleColumnIdsWithSelection: PropertyKey[] = [];
+    if (hasSelection) {
+      visibleColumnWidthsWithSelection.push({ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH });
+      visibleColumnIdsWithSelection.push(selectionColumnId);
+    }
+    for (let columnIndex = 0; columnIndex < visibleColumnDefinitions.length; columnIndex++) {
+      const columnId = getColumnKey(visibleColumnDefinitions[columnIndex], columnIndex);
+      visibleColumnWidthsWithSelection.push({ ...visibleColumnDefinitions[columnIndex], id: columnId });
+      visibleColumnIdsWithSelection.push(columnId);
+    }
 
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnIdsWithSelection,
@@ -238,7 +237,7 @@ const InternalTable = React.forwardRef(
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
-        visibleColumns={visibleColumnsWithSelection}
+        visibleColumns={visibleColumnWidthsWithSelection}
         resizableColumns={resizableColumns}
       >
         <InternalContainer
