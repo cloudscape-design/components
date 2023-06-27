@@ -580,6 +580,7 @@ export type SpacingTokenName =
   | 'spaceAlertMessageRight'
   | 'spaceAlertVertical'
   | 'spaceButtonFocusOutlineGutter'
+  | 'spaceButtonHorizontal'
   | 'spaceButtonIconFocusOutlineGutterVertical'
   | 'spaceButtonIconOnlyHorizontal'
   | 'spaceButtonInlineIconFocusOutlineGutter'
