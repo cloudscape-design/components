@@ -5,9 +5,9 @@ import {
   useStickyColumns,
   StickyColumnsModel,
   useStickyCellStyles,
-} from '../../../lib/components/table/use-sticky-columns';
-import { getStickyClassNames } from '../utils';
-import { renderHook } from '../../__tests__/render-hook';
+} from '../../../../lib/components/table/sticky-columns';
+import { getStickyClassNames } from '../../../../lib/components/table/utils';
+import { renderHook } from '../../../__tests__/render-hook';
 
 function createElementWithWidth(tag: string, width = 0) {
   const element = document.createElement(tag);

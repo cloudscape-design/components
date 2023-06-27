@@ -1088,7 +1088,6 @@ A maximum of four fields are supported.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
-      "i18nTag": true,
       "inlineType": Object {
         "name": "AttributeEditorProps.I18nStrings",
         "properties": Array [
@@ -1151,6 +1150,7 @@ The display of a row is handled by the \`definition\` property.",
     },
     Object {
       "description": "Specifies the text that's displayed in the remove button.",
+      "i18nTag": true,
       "name": "removeButtonText",
       "optional": true,
       "type": "string",
@@ -5894,7 +5894,8 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
  * \`footer\` - Use this variant in container footers.
  * \`container\` - Use this variant in a detail page alongside other containers.
  * \`navigation\` - Use this variant in the navigation panel with anchors and custom styled content.
-   It doesn't have any default styles.",
+   It doesn't have any default styles.
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
       "inlineType": Object {
         "name": "ExpandableSectionProps.Variant",
         "type": "union",
@@ -5903,11 +5904,13 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
           "footer",
           "container",
           "navigation",
+          "stacked",
         ],
       },
       "name": "variant",
       "optional": true,
       "type": "string",
+      "visualRefreshTag": "\`stacked\` variant",
     },
   ],
   "regions": Array [

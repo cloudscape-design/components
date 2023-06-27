@@ -39,3 +39,26 @@ awsuiPlugins.appLayout.registerDrawer({
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle',
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<>Nothing to see here</>, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});

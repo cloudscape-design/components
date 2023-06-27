@@ -79,14 +79,6 @@ export interface DrawerItem {
   onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
 }
 
-export interface SizeControlProps {
-  position: 'side';
-  splitPanelRef?: React.RefObject<HTMLDivElement>;
-  handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
-}
-
 export interface InternalDrawerProps {
   drawers?: {
     items: Array<DrawerItem>;

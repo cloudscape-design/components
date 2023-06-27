@@ -64,6 +64,15 @@ describe('Runtime drawers', () => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 
+  test('propagates iconSvg as html content', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      trigger: { iconSvg: `<rect data-testid="custom-icon" />` },
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.find('[data-testid="custom-icon"]')).toBeTruthy();
+  });
+
   test('persists drawer config between mounts/unmounts', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper, rerender } = await renderComponent(<AppLayout key="first" />);

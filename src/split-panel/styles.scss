@@ -16,24 +16,6 @@ $slider-width: 16px;
 // Values taken from app layout
 $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-layout-toggle-padding});
 
-/* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
-.resize {
-  &-active * {
-    user-select: none;
-  }
-  &-active iframe {
-    // Prevents iframes from eating the mouseup event if the cursor is on top of it.
-    pointer-events: none;
-  }
-  &-side * {
-    cursor: ew-resize;
-  }
-  &-bottom * {
-    cursor: ns-resize;
-  }
-}
-/* stylelint-enable */
-
 .root {
   @include styles.styles-reset;
 }
