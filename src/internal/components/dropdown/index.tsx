@@ -15,18 +15,25 @@ import { DropdownContextProvider, DropdownContextProviderProps } from './context
 import { useMobile } from '../../hooks/use-mobile';
 import TabTrap from '../tab-trap/index.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
+import { useUniqueId } from '../../hooks/use-unique-id/index.js';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
   renderWithPortal?: boolean;
   id?: string;
+  referrerId?: string;
   open?: boolean;
 }
 
-const DropdownContainer = ({ children, renderWithPortal = false, id, open }: DropdownContainerProps) => {
+const DropdownContainer = ({ children, renderWithPortal = false, id, referrerId, open }: DropdownContainerProps) => {
   if (renderWithPortal) {
     if (open) {
-      return createPortal(<div id={id}>{children}</div>, document.body);
+      return createPortal(
+        <div id={id} data-awsui-referrer-id={referrerId}>
+          {children}
+        </div>,
+        document.body
+      );
     } else {
       return null;
     }
@@ -336,6 +343,8 @@ const Dropdown = ({
     };
   }, [open, expandToViewport]);
 
+  const referrerId = useUniqueId();
+
   return (
     <div
       className={clsx(
@@ -347,7 +356,7 @@ const Dropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
+      <div id={referrerId} className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
         {trigger}
       </div>
 
@@ -356,7 +365,12 @@ const Dropdown = ({
         disabled={!open || !loopFocus}
       />
 
-      <DropdownContainer renderWithPortal={expandToViewport && !interior} id={dropdownId} open={open}>
+      <DropdownContainer
+        renderWithPortal={expandToViewport && !interior}
+        id={dropdownId}
+        referrerId={referrerId}
+        open={open}
+      >
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
             <div ref={dropdownContainerRef}>

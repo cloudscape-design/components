@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { nodeContains } from '../internal/utils/dom';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 import { getXTickCount, getYTickCount, createXTicks, createYTicks } from '../internal/components/cartesian-chart/ticks';
@@ -33,6 +32,7 @@ import styles from './styles.css.js';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 const LEFT_LABELS_MARGIN = 16;
 const BOTTOM_LABELS_OFFSET = 12;
@@ -342,7 +342,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (
       blurTarget === null ||
       !(blurTarget instanceof Element) ||
-      !nodeContains(containerRefObject.current, blurTarget)
+      !nodeBelongs(containerRefObject.current, blurTarget)
     ) {
       setHighlightedPoint(null);
       setVerticalMarkerX(null);

@@ -21,9 +21,9 @@ import useFilterProps from './model/use-filter-props';
 import useHighlightProps from './model/use-highlight-props';
 import { isSeriesValid } from './model/utils';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { nodeContains } from '../internal/utils/dom';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -123,7 +123,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   }, [model.handlers.onDocumentKeyDown]);
 
   const onBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
+    if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
       model.handlers.onContainerBlur();
     }
   };
