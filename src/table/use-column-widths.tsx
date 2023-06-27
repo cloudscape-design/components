@@ -74,16 +74,17 @@ export function ColumnWidthsProvider({ tableRef, visibleColumns, resizableColumn
     if (!resizableColumns) {
       return;
     }
+    const updates: Record<PropertyKey, number> = {};
     const lastVisible = visibleColumnsRef.current;
     if (lastVisible) {
       for (let index = 0; index < visibleColumns.length; index++) {
         const column = visibleColumns[index];
         if (!columnWidths[column.id] && lastVisible.indexOf(column.id) === -1) {
-          setColumnWidths(columnWidths => ({
-            ...columnWidths,
-            [column.id]: (column.width as number) || DEFAULT_COLUMN_WIDTH,
-          }));
+          updates[column.id] = (column.width as number) || DEFAULT_COLUMN_WIDTH;
         }
+      }
+      if (Object.keys(updates).length > 0) {
+        setColumnWidths(columnWidths => ({ ...columnWidths, ...updates }));
       }
     }
     visibleColumnsRef.current = visibleColumns.map(column => column.id);
