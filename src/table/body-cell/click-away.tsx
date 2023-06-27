@@ -1,15 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
-import { containsOrEqual } from '../../internal/utils/dom';
+import { containsOrEqual, findUpUntil } from '../../internal/utils/dom';
 import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 
+// TODO: reuse this one or the detection part
 export function useClickAway(onClick: () => void) {
   const awayRef = useRef<any>(null);
   const onClickStable = useStableEventHandler(onClick);
   useEffect(() => {
     function handleClick(event: Event) {
-      if (!containsOrEqual(awayRef.current, event.target as Node)) {
+      // TODO: should we use awsui data prop name or first find the portal using a class name?
+      const portal = findUpUntil(event.target as HTMLElement, node => !!node.dataset.awsuiReferrerId);
+      const referrer = portal ? document.getElementById(portal.dataset.awsuiReferrerId ?? '') : null;
+
+      if (
+        !containsOrEqual(awayRef.current, event.target as Node) &&
+        referrer &&
+        !containsOrEqual(awayRef.current, referrer)
+      ) {
         onClickStable();
       }
     }
@@ -26,6 +35,8 @@ interface ClickAwayActive {
   onClick: () => void;
   children: React.ReactNode;
 }
+
+// TODO: this one is only used in tests, remove
 export function ClickAway({ onClick, children }: ClickAwayActive) {
   const onClickStable = useStableEventHandler(onClick);
   const ref = useRef<HTMLSpanElement>(null);

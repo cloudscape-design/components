@@ -185,6 +185,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
               placeholder="Choose options"
               selectedAriaLabel="Selected"
               deselectAriaLabel={e => `Remove ${e.label}`}
+              expandToViewport={true}
             />
           </Box>
         );
@@ -203,7 +204,7 @@ const Demo = forwardRef(
     { setModalVisible }: { setModalVisible: React.Dispatch<React.SetStateAction<boolean>> },
     tableRef: ForwardedRef<TableProps.Ref>
   ) => {
-    const [items, setItems] = useState(initialItems);
+    const [items, setItems] = useState(initialItems.slice(0, 1));
 
     const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;
@@ -251,6 +252,7 @@ const Demo = forwardRef(
         items={items}
         resizableColumns={true}
         ariaLabels={ariaLabels}
+        stickyHeader={true}
       />
     );
   }
