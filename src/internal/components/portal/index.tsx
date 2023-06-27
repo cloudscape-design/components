@@ -2,11 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import styles from './styles.css.js';
 
 export interface PortalProps {
   container?: Element;
-  referrerId?: string;
   children: React.ReactNode;
 }
 
@@ -14,7 +12,7 @@ export interface PortalProps {
  * A safe react portal component that renders to a provided node.
  * If a node isn't provided, it creates one under document.body.
  */
-export default function Portal({ container, referrerId, children }: PortalProps) {
+export default function Portal({ container, children }: PortalProps) {
   const [activeContainer, setActiveContainer] = useState<Element | null>(container ?? null);
 
   useLayoutEffect(() => {
@@ -31,13 +29,5 @@ export default function Portal({ container, referrerId, children }: PortalProps)
     };
   }, [container]);
 
-  return (
-    activeContainer &&
-    createPortal(
-      <div className={styles.portal} data-awsui-referrer-id={referrerId}>
-        {children}
-      </div>,
-      activeContainer
-    )
-  );
+  return activeContainer && createPortal(children, activeContainer);
 }

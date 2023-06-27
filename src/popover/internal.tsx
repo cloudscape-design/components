@@ -118,11 +118,13 @@ function InternalPopover(
     className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
   };
 
+  const referrerId = useUniqueId();
   const popoverContent = (
     <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
       className={clsx(popoverClasses, styles['popover-content'])}
+      data-awsui-referrer-id={referrerId}
     >
       {visible && (
         <PopoverContainer
@@ -149,7 +151,6 @@ function InternalPopover(
   );
 
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
-  const referrerId = useUniqueId();
 
   return (
     <span
@@ -173,7 +174,7 @@ function InternalPopover(
         </span>
       )}
       <FormFieldContext.Provider value={{}}>
-        {renderWithPortal ? <Portal referrerId={referrerId}>{popoverContent}</Portal> : popoverContent}
+        {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
       </FormFieldContext.Provider>
     </span>
   );
