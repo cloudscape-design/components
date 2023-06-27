@@ -31,23 +31,21 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
         <Box variant="p" color="inherit" padding={{ top: 'n' }}>
           Box (paragraph variant) content.{' '}
           <Link color="inverted" href="https://en.wikipedia.org/wiki/Pizza" external={true}>
-            Pizza
+            Sed
           </Link>{' '}
-          is a yeasted flatbread popularly topped with tomato sauce and cheese and baked in an oven. It is commonly
-          topped with a selection of meats, vegetables and condiments. The term was first recorded in the 10th century,
-          in a Latin manuscript from Gaeta in Central Italy. The modern pizza was invented in Naples, Italy, and the
-          dish and its variants have since become popular and common in many areas of the world.
+          ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+          aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
+          dolores eos qui ratione voluptatem sequi nesciunt.
         </Box>
         <Box variant="p" color="inherit">
-          In 2009, upon Italy&apos;s request, Neapolitan pizza was safeguarded in the European Union as a Traditional
-          Speciality Guaranteed dish. The Associazione Verace Pizza Napoletana (the True Neapolitan Pizza Association)
-          is a non-profit organization founded in 1984 with headquarters in Naples. It promotes and protects the
-          &apos;true Neapolitan pizza&apos;.
+          Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non
+          numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
         </Box>
         <Box variant="p" color="inherit" padding={{ bottom: 'n' }}>
-          Pizza is sold fresh or frozen, either whole or in portions, and is a common fast food item in Europe and North
-          America. Various types of ovens are used to cook them and many varieties exist. Several similar dishes are
-          prepared from ingredients commonly used in pizza preparation, such as calzone and stromboli.
+          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex
+          ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil
+          molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
         </Box>
       </>,
       <span>Simple span content</span>,
