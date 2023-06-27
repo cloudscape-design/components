@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import balanced from 'balanced-match';
-import portalStyles from '../hooks/use-portal-mode-classes/styles.css.js';
 import { calculateOnce } from './calculate-once';
 
 export function findUpUntil(node: HTMLElement, callback: (element: HTMLElement) => boolean): HTMLElement | null {
@@ -104,16 +103,9 @@ export function parseCssVariable(value: string) {
  * @param parent Parent node
  * @param descendant Node that is checked to be a descendant of the parent node
  */
-export function nodeContains(parent: Node | null, descendant: Node | null, ignorePortals?: boolean) {
+export function nodeContains(parent: Node | null, descendant: Node | null) {
   if (!parent || !descendant) {
     return false;
-  }
-
-  if (ignorePortals && descendant instanceof Element) {
-    const isInPortal = descendant.closest(`.${portalStyles.portal}`);
-    if (isInPortal) {
-      return true;
-    }
   }
 
   // Use the native `contains` method when available

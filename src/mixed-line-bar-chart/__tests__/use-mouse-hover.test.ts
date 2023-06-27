@@ -22,7 +22,6 @@ const commonProps = {
   clearHighlightedSeries: jest.fn(),
   isGroupNavigation: false,
   isHandlersDisabled: false,
-  isPinned: false,
   setPlotFocused: jest.fn(),
   highlightX: jest.fn(),
 };
