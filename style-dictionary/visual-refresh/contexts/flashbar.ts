@@ -17,7 +17,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
   colorBorderItemFocused: '{colorGrey100}',
   colorTextExpandableSectionDefault: '{colorGrey100}',
-  colorTextExpandableSectionHover: '{colorBlue500}',
+  colorTextExpandableSectionHover: '{colorWhite}',
   colorTextExpandableSectionNavigationIconDefault: '{colorGrey300}',
   colorTextBodyDefault: '{colorGrey100}',
 };
