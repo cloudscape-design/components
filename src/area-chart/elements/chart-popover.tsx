@@ -4,6 +4,7 @@ import React from 'react';
 
 import ChartPopover from '../../internal/components/chart-popover';
 import ChartSeriesDetails from '../../internal/components/chart-series-details';
+import InternalBox from '../../box/internal';
 
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
@@ -14,11 +15,13 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
   model,
   highlightDetails,
   dismissAriaLabel,
+  footer,
   size,
 }: {
   model: ChartModel<T>;
   highlightDetails: null | HighlightDetails;
   dismissAriaLabel?: string;
+  footer?: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
 }) {
   if (!highlightDetails) {
@@ -45,6 +48,7 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
       <ChartSeriesDetails details={highlightDetails.seriesDetails} />
       <div className={styles['popover-divider']} />
       <ChartSeriesDetails details={highlightDetails.totalDetails} />
+      {footer && <InternalBox margin={{ top: 's' }}>{footer}</InternalBox>}
     </ChartPopover>
   );
 }

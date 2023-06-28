@@ -608,6 +608,16 @@ describe('Details popover', () => {
     expect(detailPopover?.findContent()?.getElement()).toHaveTextContent('Custom');
     expect(detailPopover?.findContent()?.getElement()).toHaveTextContent('Static content');
   });
+
+  test('can contain custom content in the footer', () => {
+    const { wrapper } = renderPieChart(
+      <PieChart data={defaultData} detailPopoverFooter={segment => <span>Details about {segment.title}</span>} />
+    );
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findContent()?.getElement()).toHaveTextContent(`Details about ${defaultData[0].title}`);
+  });
 });
 
 describe('Labels', () => {

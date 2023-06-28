@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, memo, useRef } from 'react';
+import React, { useState, useEffect, memo, useRef, useMemo } from 'react';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 import ChartPlot from '../internal/components/chart-plot';
@@ -19,6 +19,7 @@ import AreaVerticalMarker from './elements/vertical-marker';
 import styles from './styles.css.js';
 import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
+import { useSelector } from './async-store';
 
 const DEFAULT_CHART_WIDTH = 500;
 const LEFT_LABELS_MARGIN = 16;
@@ -29,7 +30,14 @@ type TickFormatter = undefined | ((value: AreaChartProps.DataTypes) => string);
 interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   extends Pick<
     AreaChartProps<T>,
-    'xTitle' | 'yTitle' | 'detailPopoverSize' | 'ariaLabel' | 'ariaLabelledby' | 'ariaDescription' | 'i18nStrings'
+    | 'xTitle'
+    | 'yTitle'
+    | 'detailPopoverSize'
+    | 'detailPopoverFooter'
+    | 'ariaLabel'
+    | 'ariaLabelledby'
+    | 'ariaDescription'
+    | 'i18nStrings'
   > {
   model: ChartModel<T>;
   autoWidth: (value: number) => void;
@@ -43,6 +51,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   xTitle,
   yTitle,
   detailPopoverSize,
+  detailPopoverFooter,
   ariaLabel,
   ariaLabelledby,
   ariaDescription,
@@ -80,6 +89,13 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   const mergedRef = useMergeRefs(containerWidthRef, model.refs.container);
 
   const isPointHighlighted = model.interactions.get().highlightedPoint !== null;
+
+  const highlightedX = useSelector(model.interactions, state => state.highlightedX);
+
+  const detailPopoverFooterContent = useMemo(
+    () => (detailPopoverFooter && highlightedX ? detailPopoverFooter(highlightedX[0].x) : null),
+    [detailPopoverFooter, highlightedX]
+  );
 
   return (
     <div className={styles['chart-container']} ref={mergedRef}>
@@ -154,6 +170,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           highlightDetails={highlightDetails}
           dismissAriaLabel={detailPopoverDismissAriaLabel}
           size={detailPopoverSize}
+          footer={detailPopoverFooterContent}
         />
       </div>
     </div>

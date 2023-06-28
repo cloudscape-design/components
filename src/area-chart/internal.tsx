@@ -54,6 +54,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   legendTitle,
   statusType,
   detailPopoverSize,
+  detailPopoverFooter,
   empty,
   noMatch,
   errorText,
@@ -176,6 +177,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             model={model}
             autoWidth={setWidth}
             detailPopoverSize={detailPopoverSize}
+            detailPopoverFooter={detailPopoverFooter}
             xTitle={xTitle}
             yTitle={yTitle}
             ariaLabel={ariaLabel}
