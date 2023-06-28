@@ -136,7 +136,7 @@ const ExpandableHeaderTextWrapper = ({
   const listeners = { onClick, onKeyDown, onKeyUp };
 
   const description = variantSupportsDescription(variant) && headerDescription && (
-    <span id={descriptionId} className={styles[`description-${variant}`]}>
+    <span id={descriptionId} className={clsx(styles.description, styles[`description-${variant}`])}>
       {headerDescription}
     </span>
   );

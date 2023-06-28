@@ -190,11 +190,14 @@ $icon-margin-right-medium: awsui.$space-xs;
   }
 }
 
-// Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
-.description-default,
-.description-footer {
-  padding-left: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
-}
-.description-container {
-  padding-left: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
+.description {
+  display: block;
+  // Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
+  &-default,
+  &-footer {
+    padding-left: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
+  }
+  &-container {
+    padding-left: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
+  }
 }
