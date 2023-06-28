@@ -6,7 +6,8 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
-$header-padding: awsui.$space-container-header-vertical awsui.$space-container-horizontal;
+$header-padding: awsui.$space-container-header-vertical awsui.$space-container-horizontal awsui.$space-static-xs
+  awsui.$space-container-horizontal;
 $footer-padding: awsui.$space-scaled-s awsui.$space-container-horizontal;
 
 // HACK: Remediate focus border for expandable section
