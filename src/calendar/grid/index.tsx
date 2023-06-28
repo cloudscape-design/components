@@ -8,7 +8,6 @@ import { getCalendarMonth } from 'mnth';
 import { DayIndex } from '../internal';
 import { DatePickerProps } from '../../date-picker/interfaces';
 import { getDateLabel, renderDayName } from '../utils/intl';
-import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
@@ -39,7 +38,7 @@ export interface GridProps {
   onFocusDate: (date: null | Date) => void;
   onChangeMonth: (date: Date) => void;
   startOfWeek: DayIndex;
-  todayAriaLabel: string;
+  todayAriaLabel?: string;
   selectedDate: Date | null;
   ariaLabelledby: string;
 }
@@ -116,8 +115,6 @@ export default function Grid({
   );
   const weekdays = weeks[0].map(date => date.getDay());
 
-  const focusVisible = useFocusVisible();
-
   return (
     <table role="grid" className={styles['calendar-grid']} aria-labelledby={ariaLabelledby}>
       <thead>
@@ -175,7 +172,6 @@ export default function Grid({
                     [styles['calendar-day-selected']]: isSelected,
                     [styles['calendar-day-today']]: isDateOnSameDay,
                   })}
-                  {...focusVisible}
                 >
                   <span className={styles['day-inner']} aria-hidden="true">
                     {date.getDate()}

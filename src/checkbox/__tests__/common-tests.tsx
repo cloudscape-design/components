@@ -98,6 +98,14 @@ export function createCommonTests(Component: React.ComponentType<BaseCheckboxPro
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
 
+    test('aria-controls can be set', () => {
+      const { wrapper, rerender } = renderComponent(<Component checked={false} />);
+      expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-controls');
+
+      rerender(<Component checked={false} ariaControls="aria-controls-value" />);
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-controls', 'aria-controls-value');
+    });
+
     test('disables native control when disabled', () => {
       const { wrapper, rerender } = renderComponent(<Component checked={false} disabled={false} />);
       const labelElement = wrapper.findLabel().getElement();

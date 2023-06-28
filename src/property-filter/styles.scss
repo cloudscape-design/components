@@ -5,7 +5,6 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/hooks/focus-visible' as focus-visible;
 
 .root {
   @include styles.styles-reset;
@@ -89,28 +88,6 @@
 
 .input {
   flex: 1;
-}
-
-.results {
-  color: awsui.$color-text-form-label;
-  display: inline-block;
-  box-sizing: border-box;
-  white-space: nowrap;
-  &-visible {
-    padding-left: awsui.$space-s;
-  }
-}
-
-.separator {
-  margin: 0px awsui.$space-scaled-m;
-  height: 100%;
-  width: awsui.$border-divider-section-width;
-  background-color: awsui.$color-border-divider-default;
-}
-
-.toggle-collapsed {
-  margin-top: calc(-1 * #{awsui.$space-scaled-xxs});
-  margin-left: awsui.$space-xs;
 }
 
 .token-trigger {

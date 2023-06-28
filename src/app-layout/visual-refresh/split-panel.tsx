@@ -1,16 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
-import {
-  SplitPanelContextProvider,
-  SplitPanelContextProps,
-  SplitPanelLastInteraction,
-} from '../../internal/context/split-panel-context';
+import { SplitPanelContextProvider, SplitPanelContextProps } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
 import { AppLayoutProps } from '../interfaces';
-import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
@@ -20,27 +15,21 @@ import customCssProps from '../../internal/generated/custom-css-properties';
  */
 function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
   const {
+    footerHeight,
     handleSplitPanelClick,
     handleSplitPanelPreferencesChange,
     handleSplitPanelResize,
+    headerHeight,
     isMobile,
     isSplitPanelForcedPosition,
     isSplitPanelOpen,
     setSplitPanelReportedSize,
     setSplitPanelReportedHeaderHeight,
-    splitPanelPosition,
-    splitPanelSize,
     setSplitPanelToggle,
-    headerHeight,
-    footerHeight,
+    splitPanelPosition,
+    splitPanelRefs,
+    splitPanelSize,
   } = useAppLayoutInternals();
-
-  const [splitPanelLastInteraction, setSplitPanelLastInteraction] = useState<undefined | SplitPanelLastInteraction>();
-  useEffectOnUpdate(
-    () => setSplitPanelLastInteraction(isSplitPanelOpen ? { type: 'open' } : { type: 'close' }),
-    [isSplitPanelOpen]
-  );
-  useEffectOnUpdate(() => setSplitPanelLastInteraction({ type: 'position' }), [splitPanelPosition]);
 
   const context: SplitPanelContextProps = {
     bottomOffset: 0,
@@ -64,7 +53,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     size: splitPanelSize || 0,
     topOffset: 0,
     setSplitPanelToggle,
-    lastInteraction: splitPanelLastInteraction,
+    refs: splitPanelRefs,
   };
 
   return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;
@@ -79,9 +68,9 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
 function SplitPanelBottom() {
   const {
     disableBodyScroll,
+    hasOpenDrawer,
     isNavigationOpen,
     isSplitPanelOpen,
-    isToolsOpen,
     splitPanel,
     splitPanelPosition,
     splitPanelReportedSize,
@@ -99,9 +88,9 @@ function SplitPanelBottom() {
           className={clsx(styles['split-panel-bottom'], styles[`position-${splitPanelPosition}`], {
             [styles.animating]: state === 'entering',
             [styles['disable-body-scroll']]: disableBodyScroll,
+            [styles['has-open-drawer']]: hasOpenDrawer,
             [styles['is-navigation-open']]: isNavigationOpen,
             [styles['is-split-panel-open']]: isSplitPanelOpen,
-            [styles['is-tools-open']]: isToolsOpen,
           })}
           ref={transitionEventsRef}
           style={{

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import useTableFocusNavigation from '../use-table-focus-navigation';
@@ -26,7 +26,7 @@ const TestComponent = () => {
 
   const editConfig = { __mock: true };
 
-  useTableFocusNavigation('none', tableRef, [{ editConfig }, { editConfig: undefined }, { editConfig }] as any, 3);
+  useTableFocusNavigation(undefined, tableRef, [{ editConfig }, { editConfig: undefined }, { editConfig }] as any, 3);
 
   const focusHandler = (evt: React.FocusEvent) => {
     focusFn(evt.target.innerHTML);
@@ -108,6 +108,14 @@ const TestComponent = () => {
 describe('useTableFocusNavigation', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    jest.spyOn(HTMLTableElement.prototype, 'querySelector').mockImplementation(selector => {
+      // jsdom doesn't support :focus-within, so we implement a workaround here using :focus
+      if (selector.includes(':focus-within')) {
+        return document.querySelector('table :focus')?.closest('td') ?? null;
+      }
+      return null;
+    });
   });
 
   it('should skip over non-editable cells', () => {
@@ -115,7 +123,7 @@ describe('useTableFocusNavigation', () => {
     fireEvent.click(getByTestId('0,0'));
     fireEvent.keyDown(getByTestId('0,0'), { key: 'ArrowRight' });
 
-    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,0'], ['0,2']]));
+    expect(focusFn.mock.calls).toEqual([['0,0'], ['0,2']]);
   });
 
   it('should skip over non-editable cells when navigating backwards', () => {
@@ -123,7 +131,7 @@ describe('useTableFocusNavigation', () => {
     fireEvent.click(getByTestId('0,2'));
     fireEvent.keyDown(getByTestId('0,2'), { key: 'ArrowLeft' });
 
-    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,2'], ['0,0']]));
+    expect(focusFn.mock.calls).toEqual([['0,2'], ['0,0']]);
   });
 
   it('should navigate focus vertically', () => {
@@ -132,7 +140,7 @@ describe('useTableFocusNavigation', () => {
     fireEvent.keyDown(getByTestId('0,0'), { key: 'ArrowDown' });
     fireEvent.keyDown(getByTestId('1,0'), { key: 'ArrowUp' });
 
-    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,0'], ['1,0'], ['0,0']]));
+    expect(focusFn.mock.calls).toEqual([['0,0'], ['1,0'], ['0,0']]);
   });
 
   it('should navigate focus horizontally', () => {
@@ -143,7 +151,7 @@ describe('useTableFocusNavigation', () => {
 
     fireEvent.keyDown(getByTestId('0,2'), { key: 'ArrowLeft' });
 
-    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,0'], ['0,2'], ['0,0']]));
+    expect(focusFn.mock.calls).toEqual([['0,0'], ['0,2'], ['0,0']]);
   });
 
   it('should not navigate focus while editing a cell', () => {
@@ -161,7 +169,7 @@ describe('useTableFocusNavigation', () => {
     fireEvent.click(getByTestId('0,0'));
     fireEvent.keyUp(getByTestId('0,0'), { key: 'BIGUP' });
     unmount();
-    waitFor(() => expect(rootRemoveEventListener).toHaveBeenCalled());
+    expect(rootRemoveEventListener).toHaveBeenCalled();
   });
 
   it('should not navigate focus when focus navigation is disabled', () => {
@@ -196,7 +204,7 @@ describe('useTableFocusNavigation', () => {
     it('should attach event listener for focus navigation', () => {
       renderHook(() =>
         useTableFocusNavigation(
-          'none',
+          undefined,
           { current: table },
           [
             {
@@ -213,19 +221,7 @@ describe('useTableFocusNavigation', () => {
         )
       );
 
-      waitFor(() => {
-        expect(addEventListener).toHaveBeenCalledWith('focusin', expect.any(Function), { passive: true });
-        expect(addEventListenerRoot).toHaveBeenCalled();
-      });
-    });
-
-    it('should detach event listener for focus navigation', () => {
-      const { unmount } = renderHook(() =>
-        useTableFocusNavigation('none', { current: table }, [{ editConfig }, { editConfig }, { editConfig }], 3)
-      );
-      expect(removeEventListener).not.toHaveBeenCalled();
-      unmount();
-      waitFor(() => expect(removeEventListener).toHaveBeenCalled());
+      expect(addEventListenerRoot).toHaveBeenCalled();
     });
 
     it('satisfies istanbul coverage', () => {

@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import { SegmentedControlProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
-import useFocusVisible from '../internal/hooks/focus-visible';
 
 export interface SegmentProps extends SegmentedControlProps.Option {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -19,11 +18,9 @@ export const Segment = React.forwardRef(
     { disabled, text, iconName, iconAlt, iconUrl, iconSvg, isActive, onClick, onKeyDown, tabIndex }: SegmentProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const focusVisible = useFocusVisible();
     return (
       <button
         className={clsx(styles.segment, { [styles.disabled]: !!disabled }, { [styles.selected]: isActive })}
-        {...focusVisible}
         ref={ref}
         onClick={onClick}
         onKeyDown={onKeyDown}

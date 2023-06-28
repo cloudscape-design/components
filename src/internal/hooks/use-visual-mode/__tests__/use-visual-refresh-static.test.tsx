@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { useVisualRefresh } from '../index';
 import { render, screen } from '@testing-library/react';
+import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode';
 
-jest.mock('../../../environment', () => ({ ALWAYS_VISUAL_REFRESH: true }), { virtual: true });
+jest.mock('../../../../../lib/components/internal/environment', () => ({ ALWAYS_VISUAL_REFRESH: true }));
 
 describe('useVisualRefresh with locked visual refresh mode', () => {
   function App() {

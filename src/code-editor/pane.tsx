@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import FocusLock from 'react-focus-lock';
 import { Ace } from 'ace-builds';
 
 import { KeyCode } from '../internal/keycode';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
+import FocusLock from '../internal/components/focus-lock';
 
 import { InternalButton } from '../button/internal';
 import { ResizableBox } from './resizable-box';
@@ -24,10 +24,9 @@ export interface PaneProps {
   annotations: Ace.Annotation[];
   highlighted?: Ace.Annotation;
 
-  cursorPositionLabel: (row: number, column: number) => string;
-  closeButtonAriaLabel: string;
+  cursorPositionLabel?: (row: number, column: number) => string;
+  closeButtonAriaLabel?: string;
 
-  onAllowlist: (activeElement: HTMLElement) => boolean;
   onClose: () => void;
   onAnnotationClick: (annotation: Ace.Annotation) => void;
   onAnnotationClear: () => void;
@@ -38,7 +37,6 @@ export const Pane = ({
   visible,
   annotations,
   highlighted,
-  onAllowlist,
   onClose,
   onAnnotationClick,
   onAnnotationClear,
@@ -64,6 +62,12 @@ export const Pane = ({
     }
   }, [highlighted, annotations]);
 
+  useEffect(() => {
+    if (!visible) {
+      setFocusTrapActive(false);
+    }
+  }, [visible]);
+
   const onItemFocus = () => {
     setFocusTrapActive(true);
     onAnnotationClear();
@@ -73,6 +77,7 @@ export const Pane = ({
     setFocusTrapActive(false);
     onAnnotationClick(annotation);
   };
+
   const onItemKeyDown = (annotation: Ace.Annotation, event: React.KeyboardEvent) => {
     if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
       event.preventDefault();
@@ -96,13 +101,7 @@ export const Pane = ({
   return (
     <div id={id} className={styles.pane} onKeyDown={onEscKeyDown} role="tabpanel">
       <ResizableBox height={paneHeight} minHeight={MIN_HEIGHT} onResize={newHeight => setPaneHeight(newHeight)}>
-        <FocusLock
-          disabled={!isFocusTrapActive}
-          className={styles['focus-lock']}
-          autoFocus={false}
-          returnFocus={false}
-          whiteList={onAllowlist}
-        >
+        <FocusLock disabled={!isFocusTrapActive} className={styles['focus-lock']} autoFocus={true}>
           <div className={styles.pane__list} tabIndex={-1}>
             <table className={styles.pane__table} role="presentation">
               <colgroup>
@@ -124,7 +123,7 @@ export const Pane = ({
                     role="link"
                   >
                     <td className={clsx(styles.pane__location, styles.pane__cell)} tabIndex={-1}>
-                      {cursorPositionLabel((annotation.row || 0) + 1, (annotation.column || 0) + 1)}
+                      {cursorPositionLabel?.((annotation.row || 0) + 1, (annotation.column || 0) + 1) ?? ''}
                     </td>
                     <td className={clsx(styles.pane__description, styles.pane__cell)} tabIndex={-1}>
                       {annotation.text}

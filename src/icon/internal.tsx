@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from './styles.css.js';
 import icons from './icons';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';

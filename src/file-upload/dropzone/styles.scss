@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: awsui.$space-static-xxs;
+  padding: awsui.$space-static-l;
+  border-radius: awsui.$border-radius-dropzone;
+  color: awsui.$color-dropzone-text-active;
+  background-color: awsui.$color-dropzone-background-active;
+  font-weight: styles.$font-weight-bold;
+  &-hovered {
+    color: awsui.$color-dropzone-text-hover;
+    background-color: awsui.$color-dropzone-background-hover;
+  }
+}

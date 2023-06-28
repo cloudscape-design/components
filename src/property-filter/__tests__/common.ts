@@ -1,7 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Token } from '../interfaces';
+import {
+  FilteringOption,
+  FilteringProperty,
+  InternalFilteringOption,
+  InternalFilteringProperty,
+  Token,
+} from '../interfaces';
 
 export const i18nStrings = {
   filteringAriaLabel: 'your choice',
@@ -40,3 +46,25 @@ export const i18nStrings = {
     'Remove token ' + token.propertyKey + ' ' + token.operator + ' ' + token.value,
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 } as const;
+
+export function toInternalProperties(properties: FilteringProperty[]): InternalFilteringProperty[] {
+  return properties.map(property => ({
+    propertyKey: property.key,
+    propertyLabel: property.propertyLabel,
+    groupValuesLabel: property.groupValuesLabel,
+    propertyGroup: property.group,
+    operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
+    defaultOperator: property.defaultOperator ?? '=',
+    getValueFormatter: () => null,
+    getValueFormRenderer: () => null,
+    externalProperty: property,
+  }));
+}
+
+export function toInternalOptions(options: FilteringOption[]): InternalFilteringOption[] {
+  return options.map(option => ({
+    propertyKey: option.propertyKey,
+    value: option.value,
+    label: option.label ?? option.value ?? '',
+  }));
+}

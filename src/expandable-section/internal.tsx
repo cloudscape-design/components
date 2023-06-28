@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { variantSupportsDescription } from './utils';
 
 type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
@@ -29,6 +30,8 @@ export default function InternalExpandableSection({
   headerText,
   headerCounter,
   headerDescription,
+  headerInfo,
+  headerActions,
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
@@ -38,6 +41,7 @@ export default function InternalExpandableSection({
   const ref = useRef<HTMLDivElement>(null);
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
+  const descriptionId = `${controlId}-description`;
 
   const baseProps = getBaseProps(props);
   const [expanded, setExpanded] = useControllable(controlledExpanded, onChange, defaultExpanded, {
@@ -85,6 +89,9 @@ export default function InternalExpandableSection({
     onClick,
   };
 
+  // Map stacked variant to container to avoid code duplication
+  const baseVariant: ExpandableSectionProps.Variant = variant === 'stacked' ? 'container' : variant;
+
   return (
     <ExpandableSectionContainer
       {...baseProps}
@@ -95,13 +102,16 @@ export default function InternalExpandableSection({
       header={
         <ExpandableSectionHeader
           id={triggerControlId}
-          className={clsx(styles.header, styles[`header-${variant}`])}
-          variant={variant}
+          descriptionId={descriptionId}
+          className={clsx(styles.header, styles[`header-${baseVariant}`])}
+          variant={baseVariant}
           expanded={!!expanded}
           header={header}
           headerText={headerText}
           headerDescription={headerDescription}
           headerCounter={headerCounter}
+          headerInfo={headerInfo}
+          headerActions={headerActions}
           headingTagOverride={headingTagOverride}
           {...triggerProps}
         />
@@ -112,10 +122,11 @@ export default function InternalExpandableSection({
         <div
           id={controlId}
           ref={ref}
-          className={clsx(styles.content, styles[`content-${variant}`], expanded && styles['content-expanded'])}
+          className={clsx(styles.content, styles[`content-${baseVariant}`], expanded && styles['content-expanded'])}
           role="group"
           aria-label={triggerProps.ariaLabel}
           aria-labelledby={triggerProps.ariaLabelledBy}
+          aria-describedby={variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined}
         >
           {children}
         </div>

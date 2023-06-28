@@ -50,20 +50,8 @@ $sizes-vertical: (
 
   @each $name, $size in $sizes-horizontal {
     &-#{$name} {
-      // This cancels out the margins of the children in the first row / in the first column.
-      margin-left: calc(-1 * #{$size});
-      margin-bottom: calc(-1 * #{$size});
+      gap: $size;
     }
-  }
-}
-
-@each $name, $size in $sizes-horizontal {
-  .child-horizontal-#{$name} {
-    margin-left: $size;
-    margin-bottom: $size;
-
-    // This is a fix for IE11. It prevents the content from overflowing.
-    min-width: 1px;
   }
 }
 
@@ -73,10 +61,22 @@ $sizes-vertical: (
 
 .vertical {
   flex-direction: column;
+
+  @each $name, $size in $sizes-vertical {
+    &-#{$name} {
+      row-gap: $size;
+    }
+  }
 }
 
-@each $name, $size in $sizes-vertical {
-  .child-vertical-#{$name}:not(:last-child) {
-    margin-bottom: $size;
-  }
+.align-center {
+  align-items: center;
+}
+
+.align-start {
+  align-items: start;
+}
+
+.align-end {
+  align-items: end;
 }

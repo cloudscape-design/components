@@ -2,15 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useCallback, useRef } from 'react';
-import useFocusVisible from '../../internal/hooks/focus-visible';
-import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import Button from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
+import React, { useEffect, useRef, useState } from 'react';
+import Icon from '../../icon/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
-import { useStableScrollPosition } from './use-stable-scroll-position';
+import LiveRegion from '../../internal/components/live-region/index.js';
+import { useInternalI18n } from '../../internal/i18n/context';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -20,8 +18,9 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
+  successfulEdit?: boolean;
   onEditStart: () => void;
-  onEditEnd: () => void;
+  onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
 }
@@ -36,38 +35,26 @@ function TableCellEditable<ItemType>({
   submitEdit,
   ariaLabels,
   isVisualRefresh,
+  successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
-  const editActivateRef = useRef<ButtonProps.Ref>(null);
-  const cellRef = useRef<HTMLTableCellElement>(null);
-  const focusVisible = useFocusVisible();
-  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
-
-  const handleEditStart = () => {
-    storeScrollPosition();
-    if (!isEditing) {
-      onEditStart();
-    }
-  };
-
-  const scheduleRestoreScrollPosition = useCallback(
-    () => setTimeout(restoreScrollPosition, 0),
-    [restoreScrollPosition]
-  );
-
+  const i18n = useInternalI18n('table');
+  const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
-    ...(focusVisible as Record<string, string>),
-    onFocus: scheduleRestoreScrollPosition,
     'data-inline-editing-active': isEditing.toString(),
   };
+  const isFocusMoveNeededRef = useRef(false);
 
-  useEffectOnUpdate(() => {
-    if (!isEditing && editActivateRef.current) {
-      editActivateRef.current.focus({ preventScroll: true });
+  useEffect(() => {
+    if (!isEditing && editActivateRef.current && isFocusMoveNeededRef.current) {
+      isFocusMoveNeededRef.current = false;
+      editActivateRef.current.focus();
     }
-    const timer = scheduleRestoreScrollPosition();
-    return () => clearTimeout(timer);
-  }, [isEditing, scheduleRestoreScrollPosition]);
+  }, [isEditing]);
+  // To improve the initial page render performance we only show the edit icon when necessary.
+  const [hasHover, setHasHover] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const showIcon = hasHover || hasFocus;
 
   return (
     <TableTdElement
@@ -77,33 +64,50 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
+        successfulEdit && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={handleEditStart}
-      ref={cellRef}
+      onClick={!isEditing ? onEditStart : undefined}
+      onMouseEnter={() => setHasHover(true)}
+      onMouseLeave={() => setHasHover(false)}
     >
       {isEditing ? (
         <InlineEditor
           ariaLabels={ariaLabels}
           column={column}
           item={item}
-          onEditEnd={onEditEnd}
+          onEditEnd={e => {
+            isFocusMoveNeededRef.current = true;
+            onEditEnd(e);
+          }}
           submitEdit={submitEdit ?? submitHandlerFallback}
-          __onRender={restoreScrollPosition}
         />
       ) : (
         <>
           {column.cell(item)}
-          <span className={styles['body-cell-editor']}>
-            <Button
-              __hideFocusOutline={true}
-              __internalRootRef={editActivateRef}
-              ariaLabel={ariaLabels?.activateEditLabel?.(column)}
-              formAction="none"
-              iconName="edit"
-              variant="inline-icon"
-            />
-          </span>
+          {successfulEdit && (
+            <>
+              <span
+                className={styles['body-cell-success']}
+                aria-label={ariaLabels?.successfulEditLabel?.(column)}
+                role="img"
+              >
+                <Icon name="status-positive" variant="success" />
+              </span>
+              <LiveRegion>
+                {i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
+              </LiveRegion>
+            </>
+          )}
+          <button
+            className={styles['body-cell-editor']}
+            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+            ref={editActivateRef}
+            onFocus={() => setHasFocus(true)}
+            onBlur={() => setHasFocus(false)}
+          >
+            {showIcon && <Icon name="edit" />}
+          </button>
         </>
       )}
     </TableTdElement>

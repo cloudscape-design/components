@@ -108,6 +108,7 @@ describe('Tag Editor', () => {
         // 2. Add new tag -> Remove added tag -> Add new tag
         await page.addTag();
         await page.removeTag(5);
+        page.focusTagEditor();
         await page.addTag();
 
         // 3. Remove existing tag -> Undo remove -> Remove existing tag

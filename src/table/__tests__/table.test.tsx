@@ -3,12 +3,19 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import PropertyFilter from '../../../lib/components/property-filter';
+import Select from '../../../lib/components/select';
+import createWrapper, { ElementWrapper, PaginationWrapper, TableWrapper } from '../../../lib/components/test-utils/dom';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
+import styles from '../../../lib/components/table/styles.css.js';
 
 interface Item {
   id: number;
   name: string;
+}
+
+function findFooterPagination(wrapper: TableWrapper) {
+  return wrapper.findComponent(`.${styles['footer-pagination']}`, PaginationWrapper);
 }
 
 function getHeaderHtmlContent(wrapper: ElementWrapper) {
@@ -34,7 +41,7 @@ function Counter({ id }: { id: number | string }) {
 }
 
 const defaultColumns: TableProps.ColumnDefinition<Item>[] = [
-  { header: 'id', cell: item => item.id },
+  { header: 'id', cell: item => item.id, isRowHeader: true },
   { header: 'name', cell: item => item.name },
 ];
 const defaultColumnsWithIds: TableProps.ColumnDefinition<Item>[] = [
@@ -77,6 +84,22 @@ test('should render table without extra slots', () => {
   expect(wrapper.findPagination()).toBeNull();
 });
 
+test('should render table with no pagination in the footer for default variant', () => {
+  const { wrapper } = renderTable(
+    <Table pagination="pagination" columnDefinitions={defaultColumns} items={defaultItems} />
+  );
+  expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+  expect(findFooterPagination(wrapper)).toBeNull();
+});
+
+test('should render table with pagination in the footer for full-page variants', () => {
+  const { wrapper } = renderTable(
+    <Table pagination="pagination" variant="full-page" columnDefinitions={defaultColumns} items={defaultItems} />
+  );
+  expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+  expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
+});
+
 test('should render table with header and footer', () => {
   const { wrapper } = renderTable(
     <Table header="Header" footer="Footer" columnDefinitions={defaultColumns} items={defaultItems} />
@@ -109,6 +132,37 @@ test('should render table with empty state when loading text is not set', () => 
   expect(wrapper.findLoadingText()).toBeNull();
 });
 
+test('should render table with a property filter', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumns}
+      items={defaultItems}
+      filter={
+        <PropertyFilter
+          onChange={() => {}}
+          query={{ tokens: [], operation: 'and' }}
+          i18nStrings={{ filteringAriaLabel: 'filter' }}
+          filteringProperties={[]}
+        />
+      }
+    />
+  );
+
+  expect(wrapper.findPropertyFilter()).not.toBeNull();
+});
+
+test('should render table with a select filter', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumns}
+      items={defaultItems}
+      filter={<Select onChange={() => {}} selectedOption={{}} />}
+    />
+  );
+
+  expect(wrapper.findFilterSlot()?.findSelect()).not.toBeNull();
+});
+
 test('should render table with empty state when  loading text is defined', () => {
   const { wrapper } = renderTable(
     <Table columnDefinitions={defaultColumns} items={[]} empty="no content" loadingText="loading" />
@@ -137,12 +191,53 @@ test('should render table with accessible headers', () => {
   });
 });
 
+test('should render row headers if defined', () => {
+  const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={defaultItems} />);
+  defaultItems.forEach((item, index) => {
+    const cellElement = wrapper.findBodyCell(index + 1, 1)?.getElement();
+    expect(cellElement?.tagName).toBe('TH');
+    expect(cellElement).toHaveAttribute('scope', 'row');
+  });
+});
+
 test('should render table header with icons to indicate editable columns', () => {
   const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
   const columnHeaders = wrapper.findColumnHeaders();
   columnHeaders.forEach(header => {
     expect(header.getElement().querySelector('svg')).toBeInTheDocument();
   });
+});
+
+test('should show edit icon on hover', () => {
+  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
+
+  // No icon by default
+  const editButton = wrapper.findEditCellButton(1, 1);
+  expect(editButton?.findIcon()).toBeNull();
+
+  // Show icon on hover
+  fireEvent.mouseEnter(editButton!.getElement());
+  expect(editButton?.findIcon()).not.toBeNull();
+
+  // Remove icon when mouse moves away
+  fireEvent.mouseLeave(editButton!.getElement());
+  expect(editButton?.findIcon()).toBeNull();
+});
+
+test('should show edit icon on focus', () => {
+  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
+
+  // No icon by default
+  const editButton = wrapper.findEditCellButton(1, 1);
+  expect(editButton?.findIcon()).toBeNull();
+
+  // Show icon on focus
+  editButton?.focus();
+  expect(editButton?.findIcon()).not.toBeNull();
+
+  // Remove icon on blur
+  editButton?.blur();
+  expect(editButton?.findIcon()).toBeNull();
 });
 
 test('should cancel edit using ref imperative method', async () => {
@@ -158,8 +253,7 @@ test('should cancel edit using ref imperative method', async () => {
     />
   );
 
-  const bodyCell = wrapper.findBodyCell(2, 2)!;
-  const button = bodyCell.findButton(`[type="button"]`)!;
+  const button = wrapper.findEditCellButton(2, 2)!;
 
   fireEvent.click(button.getElement());
   act(() => {
@@ -198,6 +292,80 @@ test('should render only columns with id in visibleColumns', () => {
   expect(wrapper.findLoadingText()).toBeNull();
   expect(wrapper.findRows()).toHaveLength(3);
   expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('Oranges');
+});
+
+test('should render only columns with visible attribute set to true in columnDisplay', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[
+        { id: 'id', visible: true },
+        { id: 'name', visible: false },
+      ]}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['id']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('2');
+  expect(wrapper.findBodyCell(2, 2)).toBeNull();
+});
+
+test('should not render columns not included in columnDisplay', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[{ id: 'id', visible: true }]}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['id']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('2');
+  expect(wrapper.findBodyCell(2, 2)).toBeNull();
+});
+
+test('should render columns in the order specified by columnDisplay', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[
+        { id: 'name', visible: true },
+        { id: 'id', visible: true },
+      ]}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['name', 'id']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('Oranges');
+  expect(wrapper.findBodyCell(2, 2)!.getElement()).toContainHTML('2');
+});
+
+test('should ignore visibleColumns if columnDisplay is set', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[
+        { id: 'id', visible: false },
+        { id: 'name', visible: true },
+      ]}
+      visibleColumns={['id']}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['name']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('Oranges');
+  expect(wrapper.findBodyCell(2, 2)).toBeNull();
 });
 
 test('inner state is tracked by row index by default', () => {
@@ -316,7 +484,7 @@ test('should submit edits successfully', async () => {
   );
 
   const bodyCell = wrapper.find('td');
-  const button = bodyCell?.findButton(`[aria-label="activate-edit"]`);
+  const button = wrapper.findEditCellButton(1, 1);
 
   // activate edit
   fireEvent.click(button!.getElement()!);

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState, forwardRef } from 'react';
 import { Ace } from 'ace-builds';
 import clsx from 'clsx';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -27,9 +27,10 @@ import PreferencesModal from './preferences-modal';
 import LoadingScreen from './loading-screen';
 import ErrorScreen from './error-screen';
 
+import useBaseComponent from '../internal/hooks/use-base-component';
+import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
-import useBaseComponent from '../internal/hooks/use-base-component';
 import { useCurrentMode } from '../internal/hooks/use-visual-mode';
 import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -38,10 +39,12 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { CodeEditorProps };
 
-export default function CodeEditor(props: CodeEditorProps) {
+const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditorProps.Ref>) => {
+  const codeEditorRef = useRef<HTMLDivElement>(null);
   const { __internalRootRef } = useBaseComponent('CodeEditor');
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const {
@@ -51,6 +54,7 @@ export default function CodeEditor(props: CodeEditorProps) {
     i18nStrings,
     editorContentHeight,
     onEditorContentResize,
+    ariaLabel,
     languageLabel: customLanguageLabel,
     ...rest
   } = props;
@@ -60,27 +64,11 @@ export default function CodeEditor(props: CodeEditorProps) {
     controlledProp: 'editorContentHeight',
   });
   const baseProps = getBaseProps(rest);
+  const i18n = useInternalI18n('code-editor');
 
   const [editor, setEditor] = useState<Ace.Editor>();
   const mode = useCurrentMode(__internalRootRef);
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
-
-  const editorRef = useCallback(
-    (elem: HTMLDivElement) => {
-      if (!ace || !elem) {
-        return;
-      }
-
-      const config = getDefaultConfig();
-      setEditor(
-        ace.edit(elem, {
-          ...config,
-          theme: getAceTheme(getDefaultTheme(elem)),
-        })
-      );
-    },
-    [ace]
-  );
 
   useEffect(() => {
     if (!editor) {
@@ -93,9 +81,10 @@ export default function CodeEditor(props: CodeEditorProps) {
     const updateAttribute = (attribute: string, value: string | undefined) =>
       value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
     updateAttribute('id', controlId);
+    updateAttribute('aria-label', ariaLabel);
     updateAttribute('aria-labelledby', ariaLabelledby);
     updateAttribute('aria-describedby', ariaDescribedby);
-  }, [ariaDescribedby, ariaLabelledby, controlId, editor]);
+  }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -105,10 +94,22 @@ export default function CodeEditor(props: CodeEditorProps) {
 
   const errorsTabRef = useRef<HTMLButtonElement>(null);
   const warningsTabRef = useRef<HTMLButtonElement>(null);
-
+  useEffect(() => {
+    const elem = codeEditorRef.current;
+    if (!ace || !elem) {
+      return;
+    }
+    const config = getDefaultConfig();
+    setEditor(
+      ace.edit(elem, {
+        ...config,
+        theme: getAceTheme(getDefaultTheme(elem)),
+      })
+    );
+  }, [ace, props.loading]);
   const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.width);
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
-
+  useForwardFocus(ref, codeEditorRef);
   const isRefresh = useVisualRefresh();
 
   useEffect(() => {
@@ -230,25 +231,6 @@ export default function CodeEditor(props: CodeEditorProps) {
     setHighlightedAnnotation(undefined);
   }, []);
 
-  /**
-   * Ignore focus lock if focused element is the pane tab button or within editor tree.
-   * This check is required:
-   * - When closing the pane with `ESC` key: The panel closes asynchronously and its focus lock
-   *   still exists when trying to focus the tab button in higher-order component.
-   * - When clicking or hittin `Enter` on an annotation: The panel remains open but focus lock
-   *   deactivates asynchronously.
-   */
-  const shouldHandleFocus = useCallback(
-    (activeElement: HTMLElement): boolean => {
-      return (
-        activeElement !== errorsTabRef.current &&
-        activeElement !== warningsTabRef.current &&
-        !editor?.container.contains(activeElement)
-      );
-    },
-    [editor]
-  );
-
   const [isPreferencesModalVisible, setPreferencesModalVisible] = useState(false);
   const onPreferencesOpen = () => setPreferencesModalVisible(true);
   const onPreferencesConfirm = (p: CodeEditorProps.Preferences) => {
@@ -256,6 +238,8 @@ export default function CodeEditor(props: CodeEditorProps) {
     setPreferencesModalVisible(false);
   };
   const onPreferencesDismiss = () => setPreferencesModalVisible(false);
+
+  const isPaneVisible = paneStatus !== 'hidden';
 
   return (
     <div
@@ -265,13 +249,16 @@ export default function CodeEditor(props: CodeEditorProps) {
     >
       {props.loading && (
         <LoadingScreen>
-          <LiveRegion visible={true}>{i18nStrings.loadingState}</LiveRegion>
+          <LiveRegion visible={true}>{i18n('i18nStrings.loadingState', i18nStrings?.loadingState)}</LiveRegion>
         </LoadingScreen>
       )}
 
       {!ace && !props.loading && (
-        <ErrorScreen recoveryText={i18nStrings.errorStateRecovery} onRecoveryClick={props.onRecoveryClick}>
-          {i18nStrings.errorState}
+        <ErrorScreen
+          recoveryText={i18n('i18nStrings.errorStateRecovery', i18nStrings?.errorStateRecovery)}
+          onRecoveryClick={props.onRecoveryClick}
+        >
+          {i18n('i18nStrings.errorState', i18nStrings?.errorState)}
         </ErrorScreen>
       )}
 
@@ -287,18 +274,25 @@ export default function CodeEditor(props: CodeEditorProps) {
             }}
           >
             <div
-              ref={editorRef}
+              ref={codeEditorRef}
               className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
               onKeyDown={onEditorKeydown}
               tabIndex={0}
               role="group"
-              aria-label={i18nStrings.editorGroupAriaLabel}
+              aria-label={i18n('i18nStrings.editorGroupAriaLabel', i18nStrings?.editorGroupAriaLabel)}
             />
           </ResizableBox>
-          <div role="group" aria-label={i18nStrings.statusBarGroupAriaLabel}>
+          <div
+            role="group"
+            aria-label={i18n('i18nStrings.statusBarGroupAriaLabel', i18nStrings?.statusBarGroupAriaLabel)}
+          >
             <StatusBar
               languageLabel={languageLabel}
-              cursorPosition={i18nStrings.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1)}
+              cursorPosition={i18n(
+                'i18nStrings.cursorPosition',
+                i18nStrings?.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1),
+                format => format({ row: cursorPosition.row + 1, column: cursorPosition.column + 1 })
+              )}
               errorCount={errorCount}
               warningCount={warningCount}
               paneStatus={paneStatus}
@@ -310,21 +304,24 @@ export default function CodeEditor(props: CodeEditorProps) {
               warningsTabRef={warningsTabRef}
               i18nStrings={i18nStrings}
               isTabFocused={isTabFocused}
-              paneId={paneId}
+              paneId={isPaneVisible ? paneId : undefined}
               onPreferencesOpen={onPreferencesOpen}
               isRefresh={isRefresh}
             />
             <Pane
               id={paneId}
-              visible={paneStatus !== 'hidden'}
+              visible={isPaneVisible}
               annotations={currentAnnotations}
               highlighted={highlightedAnnotation}
               onAnnotationClick={onAnnotationClick}
               onAnnotationClear={onAnnotationClear}
               onClose={onPaneClose}
-              onAllowlist={shouldHandleFocus}
-              cursorPositionLabel={i18nStrings.cursorPosition}
-              closeButtonAriaLabel={i18nStrings.paneCloseButtonAriaLabel}
+              cursorPositionLabel={i18n(
+                'i18nStrings.cursorPosition',
+                i18nStrings?.cursorPosition,
+                format => (row, column) => format({ row, column })
+              )}
+              closeButtonAriaLabel={i18n('i18nStrings.paneCloseButtonAriaLabel', i18nStrings?.paneCloseButtonAriaLabel)}
             />
           </div>
           {isPreferencesModalVisible && (
@@ -335,13 +332,16 @@ export default function CodeEditor(props: CodeEditorProps) {
               preferences={props.preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{
-                header: i18nStrings.preferencesModalHeader,
-                cancel: i18nStrings.preferencesModalCancel,
-                confirm: i18nStrings.preferencesModalConfirm,
-                wrapLines: i18nStrings.preferencesModalWrapLines,
-                theme: i18nStrings.preferencesModalTheme,
-                lightThemes: i18nStrings.preferencesModalLightThemes,
-                darkThemes: i18nStrings.preferencesModalDarkThemes,
+                header: i18n('i18nStrings.preferencesModalHeader', i18nStrings?.preferencesModalHeader),
+                cancel: i18n('i18nStrings.preferencesModalCancel', i18nStrings?.preferencesModalCancel),
+                confirm: i18n('i18nStrings.preferencesModalConfirm', i18nStrings?.preferencesModalConfirm),
+                wrapLines: i18n('i18nStrings.preferencesModalWrapLines', i18nStrings?.preferencesModalWrapLines),
+                theme: i18n('i18nStrings.preferencesModalTheme', i18nStrings?.preferencesModalTheme),
+                lightThemes: i18n('i18nStrings.preferencesModalLightThemes', i18nStrings?.preferencesModalLightThemes),
+                darkThemes: i18n('i18nStrings.preferencesModalDarkThemes', i18nStrings?.preferencesModalDarkThemes),
+                themeFilteringAriaLabel: i18nStrings?.preferencesModalThemeFilteringAriaLabel,
+                themeFilteringClearAriaLabel: i18nStrings?.preferencesModalThemeFilteringClearAriaLabel,
+                themeFilteringPlaceholder: i18nStrings?.preferencesModalThemeFilteringPlaceholder,
               }}
             />
           )}
@@ -349,6 +349,7 @@ export default function CodeEditor(props: CodeEditorProps) {
       )}
     </div>
   );
-}
+});
 
 applyDisplayName(CodeEditor, 'CodeEditor');
+export default CodeEditor;

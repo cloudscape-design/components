@@ -15,6 +15,7 @@ import { validate, getErrorText } from './validation';
 import styles from './styles.css.js';
 import { SearchInput } from './search-input';
 import LiveRegion from '../../internal/components/live-region';
+import { useInternalI18n } from '../../internal/i18n/context';
 
 interface S3InContextProps {
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
@@ -47,6 +48,7 @@ export const S3InContext = React.forwardRef(
     }: S3InContextProps,
     ref: React.Ref<S3InContextRef>
   ) => {
+    const i18n = useInternalI18n('s3-resource-selector');
     const isInputBlurredRef = useRef(true);
     const [isInputTouched, setInputTouched] = useState(false);
     const { versions, loading, loadVersions, resetVersions } = useVersionsFetch(fetchVersions);
@@ -62,14 +64,14 @@ export const S3InContext = React.forwardRef(
       const uri = event.detail.value;
       const errorCode = isInputTouched ? validate(uri) : undefined;
       resetVersions();
-      onChange({ uri }, getErrorText(i18nStrings, errorCode));
+      onChange({ uri }, getErrorText(i18n, i18nStrings, errorCode));
     }
 
     function handleUriBlur() {
       isInputBlurredRef.current = true;
       setInputTouched(true);
       const errorCode = validate(resource.uri);
-      onChange(resource, getErrorText(i18nStrings, errorCode));
+      onChange(resource, getErrorText(i18n, i18nStrings, errorCode));
       if (supportsVersions) {
         loadVersions(resource.uri);
       }
@@ -86,7 +88,11 @@ export const S3InContext = React.forwardRef(
     return (
       <div className={styles.root}>
         <div className={styles.layout}>
-          <InternalFormField className={styles['layout-uri']} label={i18nStrings?.inContextUriLabel} stretch={true}>
+          <InternalFormField
+            className={styles['layout-uri']}
+            label={i18n('i18nStrings.inContextUriLabel', i18nStrings?.inContextUriLabel)}
+            stretch={true}
+          >
             <SearchInput
               ref={inputRef}
               value={uri}
@@ -102,12 +108,12 @@ export const S3InContext = React.forwardRef(
           {supportsVersions && (
             <InternalFormField
               className={styles['layout-version']}
-              label={i18nStrings?.inContextVersionSelectLabel}
+              label={i18n('i18nStrings.inContextVersionSelectLabel', i18nStrings?.inContextVersionSelectLabel)}
               stretch={true}
             >
               <InternalSelect
                 selectedOption={selectedVersion}
-                placeholder={i18nStrings?.inContextSelectPlaceholder}
+                placeholder={i18n('i18nStrings.inContextSelectPlaceholder', i18nStrings?.inContextSelectPlaceholder)}
                 disabled={versions.length === 0}
                 options={versions}
                 onChange={event => onChange({ ...resource, versionId: event.detail.selectedOption.value }, undefined)}
@@ -124,15 +130,15 @@ export const S3InContext = React.forwardRef(
               iconName="external"
               iconAlign="right"
               formAction="none"
-              ariaLabel={i18nStrings?.inContextViewButtonAriaLabel}
+              ariaLabel={i18n('i18nStrings.inContextViewButtonAriaLabel', i18nStrings?.inContextViewButtonAriaLabel)}
             >
-              {i18nStrings?.inContextViewButton}
+              {i18n('i18nStrings.inContextViewButton', i18nStrings?.inContextViewButton)}
             </InternalButton>
           </div>
           <div className={styles['layout-divider']} />
           <div>
             <InternalButton className={styles['browse-button']} disabled={loading} formAction="none" onClick={onBrowse}>
-              {i18nStrings?.inContextBrowseButton}
+              {i18n('i18nStrings.inContextBrowseButton', i18nStrings?.inContextBrowseButton)}
             </InternalButton>
           </div>
         </div>
@@ -141,7 +147,9 @@ export const S3InContext = React.forwardRef(
           {loading && (
             <InternalBox margin={{ top: 's' }}>
               <InternalStatusIndicator type="loading">
-                <LiveRegion visible={true}>{i18nStrings?.inContextLoadingText}</LiveRegion>
+                <LiveRegion visible={true}>
+                  {i18n('i18nStrings.inContextLoadingText', i18nStrings?.inContextLoadingText)}
+                </LiveRegion>
               </InternalStatusIndicator>
             </InternalBox>
           )}

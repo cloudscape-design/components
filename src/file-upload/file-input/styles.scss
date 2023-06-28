@@ -1,0 +1,28 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+
+.upload-button,
+.upload-input {
+  /* used in test-utils */
+}
+
+.file-input-container {
+  position: relative;
+}
+
+.upload-input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+.upload-button {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.force-focus-outline {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+}

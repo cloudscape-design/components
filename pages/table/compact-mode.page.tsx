@@ -20,8 +20,10 @@ import {
   getMatchesCountText,
   paginationLabels,
   pageSizeOptions,
-  visibleContentOptions,
+  contentDisplayPreference,
+  defaultPreferences,
 } from './shared-configs';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 const ariaLabels: TableProps<Instance>['ariaLabels'] = {
@@ -33,9 +35,7 @@ const ariaLabels: TableProps<Instance>['ariaLabels'] = {
 
 export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
-    pageSize: 20,
-    visibleContent: ['id', 'type', 'dnsName', 'state'],
-    wrapLines: false,
+    ...defaultPreferences,
     // set to "compact" for default "compact density setting".
     contentDensity: 'compact',
   });
@@ -66,7 +66,7 @@ export default function App() {
   );
 
   const [variant, setVariant] = useState<TableProps.Variant>('container');
-  const variants: TableProps.Variant[] = ['container', 'embedded', 'full-page', 'stacked'];
+  const variants: TableProps.Variant[] = ['container', 'embedded', 'full-page', 'stacked', 'borderless'];
 
   const variantButtons = (
     <div style={{ paddingBottom: '10px', display: 'inline-flex', gap: '10px' }}>
@@ -119,7 +119,7 @@ export default function App() {
               filteringAriaLabel="Filter instances"
             />
           }
-          visibleColumns={preferences.visibleContent}
+          columnDisplay={preferences.contentDisplay}
           preferences={
             <CollectionPreferences
               title="Preferences"
@@ -131,9 +131,9 @@ export default function App() {
                 title: 'Select page size',
                 options: pageSizeOptions,
               }}
-              visibleContentPreference={{
-                title: 'Select visible columns',
-                options: visibleContentOptions,
+              contentDisplayPreference={{
+                ...contentDisplayPreference,
+                ...contentDisplayPreferenceI18nStrings,
               }}
               wrapLinesPreference={{
                 label: 'Wrap lines',
@@ -276,9 +276,11 @@ export default function App() {
           }}
           ariaLabels={{
             tableLabel: 'Distributions',
-            activateEditLabel: column => `Edit ${column.header}`,
+            activateEditLabel: (column, item) => `Edit ${item.name} ${column.header}`,
             cancelEditLabel: column => `Cancel editing ${column.header}`,
             submitEditLabel: column => `Submit edit ${column.header}`,
+            submittingEditText: () => 'Loading edit response',
+            successfulEditLabel: () => 'Edit successful',
           }}
           contentDensity={inlineEditTableDensity}
           empty={

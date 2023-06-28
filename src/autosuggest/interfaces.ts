@@ -10,7 +10,7 @@ import {
   OptionsFilteringType,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputProps } from '../input/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps
@@ -19,6 +19,7 @@ export interface AutosuggestProps
     InputAutoCorrect,
     BaseDropdownHostProps,
     InputKeyEvents,
+    InputClearLabel,
     FormFieldValidationControlProps,
     DropdownStatusProps {
   /**
@@ -28,6 +29,7 @@ export interface AutosuggestProps
    * #### Option
    * - `value` (string) - The returned value of the option when selected.
    * - `label` (string) - (Optional) Option text displayed to the user.
+   * - `lang` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
    * - `description` (string) - (Optional) Further information about the option that appears below the label.
    * - `disabled` (boolean) - (Optional) Determines whether the option is disabled.
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
@@ -72,8 +74,14 @@ export interface AutosuggestProps
 
   /**
    * Specifies a function that generates the custom value indicator (for example, `Use "${value}"`).
+   * @i18n
    */
-  enteredTextLabel: AutosuggestProps.EnteredTextLabel;
+  enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
+
+  /**
+   * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
 
   /**
    * Specifies the text that's displayed when there aren't any suggestions to display.
@@ -91,6 +99,7 @@ export interface AutosuggestProps
    * Specifies the localized string that describes an option as being selected.
    * This is required to provide a good screen reader experience. For more information, see the
    * [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).
+   * @i18n
    */
   selectedAriaLabel?: string;
   /**
@@ -122,6 +131,7 @@ export namespace AutosuggestProps {
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
     value: string;
+    selectedOption?: Option;
   }
 
   export interface ContainingOptionAndGroupString {

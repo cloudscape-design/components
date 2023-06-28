@@ -20,10 +20,10 @@ import useChartModel from './model/use-chart-model';
 import useFilterProps from './model/use-filter-props';
 import useHighlightProps from './model/use-highlight-props';
 import { isSeriesValid } from './model/utils';
-import { warnOnce } from '../internal/logging';
-import { nodeContains } from '../internal/utils/dom';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -54,6 +54,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   legendTitle,
   statusType,
   detailPopoverSize,
+  detailPopoverFooter,
   empty,
   noMatch,
   errorText,
@@ -111,7 +112,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     visibleData: visibleSeries,
     statusType,
   });
-  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch);
+  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch) && (additionalFilters || !hideFilter);
   const showLegend = !hideLegend && !isEmpty && statusType === 'finished';
   const reserveLegendSpace = !showChart && !hideLegend;
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
@@ -123,7 +124,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   }, [model.handlers.onDocumentKeyDown]);
 
   const onBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
+    if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
       model.handlers.onContainerBlur();
     }
   };
@@ -176,6 +177,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             model={model}
             autoWidth={setWidth}
             detailPopoverSize={detailPopoverSize}
+            detailPopoverFooter={detailPopoverFooter}
             xTitle={xTitle}
             yTitle={yTitle}
             ariaLabel={ariaLabel}

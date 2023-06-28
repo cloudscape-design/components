@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render, waitFor } from '@testing-library/react';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Select, { SelectProps } from '../../../lib/components/select';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
@@ -18,6 +19,7 @@ const defaultOptions: SelectProps.Options = [
       {
         label: 'Third',
         value: '3',
+        lang: 'de',
       },
       {
         label: 'Forth',
@@ -62,6 +64,18 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     expect(wrapper.findDropdown({ expandToViewport })?.findOpenDropdown()).toBeFalsy();
   });
 
+  test('allows dropdown to be opened with Space', () => {
+    const { wrapper } = renderSelect();
+    wrapper.findTrigger()!.keydown(KeyCode.space);
+    expect(wrapper.findDropdown({ expandToViewport })).toBeTruthy();
+  });
+
+  test('allows dropdown to be opened with Enter', () => {
+    const { wrapper } = renderSelect();
+    wrapper.findTrigger()!.keydown(KeyCode.enter);
+    expect(wrapper.findDropdown({ expandToViewport })).toBeTruthy();
+  });
+
   test('selects top-level option', () => {
     const onChange = jest.fn();
     const { wrapper } = renderSelect({ onChange });
@@ -80,6 +94,15 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     const { wrapper } = renderSelect();
     wrapper.openDropdown();
     expect(wrapper.findDropdown({ expandToViewport })!.findOptionByValue(VALUE_WITH_SPECIAL_CHARS)).toBeTruthy();
+  });
+
+  test('renders lang on options', () => {
+    const { wrapper } = renderSelect();
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown({ expandToViewport })!.findOptionByValue('3')!.getElement()).toHaveAttribute(
+      'lang',
+      'de'
+    );
   });
 
   test('throws an error when attempting to select an option with closed dropdown', () => {
@@ -241,6 +264,17 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         expect(Boolean(dropdown.findByClassName(selectPartsStyles['list-bottom']))).toBe(!isSticky);
       });
 
+      test(`should link ${statusType} status text in ${
+        isSticky ? 'sticky' : 'non-sticky'
+      } footer to dropdown list`, () => {
+        const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
+        const { wrapper } = renderSelect({ statusType: statusType as any, ...statusText });
+        wrapper.openDropdown();
+        expect(wrapper.findDropdown({ expandToViewport }).find('ul')!.getElement()).toHaveAccessibleDescription(
+          `Test ${statusType} text`
+        );
+      });
+
       test(`check a11y for ${statusType} and ${isSticky ? 'sticky' : 'non-sticky'} footer`, async () => {
         const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
         const { container, wrapper } = renderSelect({
@@ -268,6 +302,68 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         .getElement();
       expect(statusIcon).toHaveAttribute('aria-label', 'Test error text');
       expect(statusIcon).toHaveAttribute('role', 'img');
+    });
+  });
+
+  describe('Filtering results', () => {
+    const options = [
+      { label: 'First', value: '1' },
+      { label: 'Second', value: '2' },
+      { label: 'Another', value: '3' },
+    ];
+    test('shows filtering result text after typing', () => {
+      const { wrapper } = renderSelect({
+        options,
+        expandToViewport: true,
+        statusType: 'pending',
+        filteringType: 'auto',
+        noMatch: 'No match',
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount}/${totalCount}`,
+      });
+      wrapper.openDropdown();
+      const statusIndicator = wrapper.findStatusIndicator({ expandToViewport })!;
+      expect(statusIndicator).toBeNull();
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('First');
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('1/3');
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('Hey');
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('No match');
+    });
+
+    test('Error and loading states have advantage over filtering text', () => {
+      const defaultParams: Partial<SelectProps> = {
+        options,
+        expandToViewport: true,
+        errorText: 'Error',
+        filteringType: 'auto',
+        finishedText: 'End of results',
+        filteringResultsText: (matchesCount, totalCount) => `${matchesCount}/${totalCount}`,
+        loadingText: 'Loading',
+        noMatch: 'No match',
+      };
+      const { wrapper, rerender } = renderSelect({
+        ...defaultParams,
+        statusType: 'pending',
+      });
+      wrapper.openDropdown();
+
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('First');
+      rerender({
+        ...defaultParams,
+        statusType: 'loading',
+      });
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('Loading');
+      rerender({
+        ...defaultParams,
+        statusType: 'pending',
+      });
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('1/3');
+
+      wrapper.findFilteringInput({ expandToViewport: true })!.setInputValue('Another');
+      rerender({
+        ...defaultParams,
+        statusType: 'error',
+      });
+      expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('Error');
     });
   });
 

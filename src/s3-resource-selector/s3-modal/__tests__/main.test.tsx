@@ -19,7 +19,7 @@ async function renderModal(jsx: React.ReactElement) {
 test('renders correct strings and aria labels', async () => {
   const wrapper = await renderModal(<S3Modal {...modalDefaultProps} />);
   const modal = wrapper.findModal()!;
-  expect(modal.findHeader().getElement()).toHaveTextContent(i18nStrings.modalTitle);
+  expect(modal.findHeader().getElement()).toHaveTextContent(i18nStrings.modalTitle!);
   expect(screen.getByRole('button', { name: i18nStrings.modalSubmitButton })).toBeTruthy();
   expect(screen.getByRole('button', { name: i18nStrings.modalCancelButton })).toBeTruthy();
   expect(modal.findContent().findBreadcrumbGroup()!.getElement()).toHaveAttribute(
@@ -27,6 +27,15 @@ test('renders correct strings and aria labels', async () => {
     i18nStrings.labelBreadcrumbs
   );
   expect(modal.findDismissButton().getElement()).toHaveAttribute('aria-label', i18nStrings.labelModalDismiss);
+});
+
+test('modal has valid hierarchy of headings', async () => {
+  const wrapper = await renderModal(<S3Modal {...modalDefaultProps} />);
+  const modal = wrapper.findModal()!;
+  expect(modal.findHeader().findAll('h2').length).toBe(1);
+  const table = wrapper.findTable()!;
+  await waitForFetch();
+  expect(table.findHeaderSlot()!.findHeader()!.findAll('h3').length).toBe(1);
 });
 
 test('renders alert content when provided', async () => {

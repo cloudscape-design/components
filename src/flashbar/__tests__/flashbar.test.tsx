@@ -7,6 +7,7 @@ import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
 import { createFlashbarWrapper, findList } from './common';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
 
 let mockUseAnimations = false;
 let useAnimations = false;
@@ -195,6 +196,26 @@ describe('Flashbar component', () => {
         }
       });
 
+      test('findItemsByType', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { content: 'Flash', type: 'success' },
+              { content: 'Flash', type: 'error' },
+              { content: 'Flash', type: 'error' },
+              { content: 'Flash', type: 'warning' },
+              { content: 'Flash', type: 'info' },
+              { content: 'Flash', type: 'warning', loading: true }, // assuming info
+              { content: 'Flash', loading: true }, // assuming info
+            ]}
+          />
+        );
+        expect(wrapper.findItemsByType('success')).toHaveLength(1);
+        expect(wrapper.findItemsByType('error')).toHaveLength(2);
+        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+        expect(wrapper.findItemsByType('info')).toHaveLength(3);
+      });
+
       test('correct aria-role', () => {
         const wrapper = createFlashbarWrapper(
           <Flashbar
@@ -370,6 +391,26 @@ describe('Flashbar component', () => {
           const list = findList(flashbar)!;
           expect(list).toBeTruthy();
           expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
+        });
+
+        test('renders the label, header, and content in an aria-live region for ariaRole="status"', () => {
+          const { rerender, container } = reactRender(<Flashbar items={[]} />);
+          rerender(
+            <Flashbar
+              items={[
+                {
+                  id: '1',
+                  ariaRole: 'status',
+                  type: 'error',
+                  statusIconAriaLabel: 'Error',
+                  header: 'The header',
+                  content: 'The content',
+                },
+              ]}
+            />
+          );
+          // Render area of the LiveRegion component.
+          expect(container.querySelector('span[aria-hidden]')).toHaveTextContent('Error The header The content');
         });
       });
     });
@@ -634,5 +675,17 @@ describe('Analytics', () => {
         timestamp: expect.any(Number),
       })
     );
+  });
+
+  describe('analytics', () => {
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the flashbar type`, () => {
+      const { container } = reactRender(<Flashbar items={[{ id: '0', type: 'success' }]} />);
+      expect(container.querySelector(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="success"]`)).toBeInTheDocument();
+    });
+
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the effective flashbar type when loading`, () => {
+      const { container } = reactRender(<Flashbar items={[{ id: '0', type: 'success', loading: true }]} />);
+      expect(container.querySelector(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="info"]`)).toBeInTheDocument();
+    });
   });
 });

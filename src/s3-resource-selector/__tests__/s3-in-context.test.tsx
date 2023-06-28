@@ -7,6 +7,7 @@ import FormField from '../../../lib/components/form-field';
 import S3ResourceSelector from '../../../lib/components/s3-resource-selector';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 const defaultProps = {
   resource: { uri: '' },
@@ -47,10 +48,10 @@ test('renders element labels', () => {
     i18nStrings.inContextInputPlaceholder
   );
   expect(wrapper.findVersionsSelect()!.findTrigger().getElement()).toHaveTextContent(
-    i18nStrings.inContextSelectPlaceholder
+    i18nStrings.inContextSelectPlaceholder!
   );
-  expect(wrapper.findViewButton().getElement()).toHaveTextContent(i18nStrings.inContextViewButton);
-  expect(wrapper.findBrowseButton().getElement()).toHaveTextContent(i18nStrings.inContextBrowseButton);
+  expect(wrapper.findViewButton().getElement()).toHaveTextContent(i18nStrings.inContextViewButton!);
+  expect(wrapper.findBrowseButton().getElement()).toHaveTextContent(i18nStrings.inContextBrowseButton!);
 });
 
 test('inherits aria-describedby from the surrounding FormField', () => {
@@ -84,7 +85,7 @@ test('renders loading state', async () => {
   expect(wrapper.findUriInput().findNativeInput().getElement()).toBeEnabled();
   expect(wrapper.findVersionsSelect()!.isDisabled()).toEqual(true);
   expect(wrapper.findBrowseButton().getElement()).toBeDisabled();
-  expect(findLoadingIndicator(wrapper)!.getElement()).toHaveTextContent(i18nStrings.inContextLoadingText);
+  expect(findLoadingIndicator(wrapper)!.getElement()).toHaveTextContent(i18nStrings.inContextLoadingText!);
   await waitForFetch();
   expect(wrapper.findVersionsSelect()!.isDisabled()).toEqual(false);
   expect(wrapper.findBrowseButton().getElement()).toBeEnabled();
@@ -342,5 +343,32 @@ describe('onChange', () => {
       errorText: undefined,
       resource: { uri: 's3://my-bucket/folder-1/my-song.mp3', versionId: versions[1].VersionId },
     });
+  });
+});
+
+describe('i18n', () => {
+  test('supports using in-context strings from i18n provider', () => {
+    const wrapper = renderComponent(
+      <TestI18nProvider
+        messages={{
+          's3-resource-selector': {
+            'i18nStrings.inContextUriLabel': 'Custom URI label',
+            'i18nStrings.inContextSelectPlaceholder': 'Custom version select',
+            'i18nStrings.inContextViewButton': 'Custom view',
+            'i18nStrings.inContextViewButtonAriaLabel': 'Custom view aria label',
+            'i18nStrings.inContextBrowseButton': 'Custom browse',
+          },
+        }}
+      >
+        <S3ResourceSelector {...defaultProps} i18nStrings={undefined} />
+      </TestI18nProvider>
+    );
+    expect(createWrapper(wrapper.getElement()).findFormField()!.findLabel()!.getElement()).toHaveTextContent(
+      'Custom URI label'
+    );
+    expect(wrapper.findVersionsSelect()!.findTrigger().getElement()).toHaveTextContent('Custom version select');
+    expect(wrapper.findViewButton()!.getElement()).toHaveTextContent('Custom view');
+    expect(wrapper.findViewButton()!.getElement()).toHaveAttribute('aria-label', 'Custom view aria label');
+    expect(wrapper.findBrowseButton().getElement()).toHaveTextContent('Custom browse');
   });
 });

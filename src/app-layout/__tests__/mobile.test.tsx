@@ -2,7 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { describeEachThemeAppLayout, isDrawerClosed, renderComponent, splitPanelI18nStrings } from './utils';
+import {
+  describeEachThemeAppLayout,
+  drawerWithoutLabels,
+  isDrawerClosed,
+  renderComponent,
+  singleDrawer,
+  singleDrawerOpen,
+  splitPanelI18nStrings,
+} from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -10,6 +18,7 @@ import styles from '../../../lib/components/app-layout/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 
 jest.mock('../../../lib/components/internal/motion', () => ({
   isMotionDisabled: jest.fn().mockReturnValue(true),
@@ -21,6 +30,8 @@ describeEachThemeAppLayout(true, theme => {
   const blockBodyScrollClassName =
     theme === 'refresh' ? visualRefreshRefactoredStyles['block-body-scroll'] : toolbarStyles['block-body-scroll'];
   const unfocusableClassName = theme === 'refresh' ? visualRefreshRefactoredStyles.unfocusable : styles.unfocusable;
+  const isUnfocusable = (element: HTMLElement) =>
+    !!findUpUntil(element, current => current.classList.contains(unfocusableClassName));
 
   test('Renders closed drawer state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
@@ -237,9 +248,12 @@ describeEachThemeAppLayout(true, theme => {
 
     test('content and toolbar is unfocusable when navigation is open', () => {
       const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} navigationOpen={true} />);
+
       if (isUsingGridLayout) {
         // In refactored Visual Refresh we make tools-container unfocusable. This is needed
         // because of CSS animations the tools-container is not set to `display: none;` anymore.
+        expect(isUnfocusable(wrapper.findTools().getElement())).toBe(true);
+        expect(isUnfocusable(wrapper.findNavigation().getElement())).toBe(false);
         expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(5);
         expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
         expect(wrapper.findByClassName(testUtilsStyles.content)?.getElement()).toHaveClass(unfocusableClassName);
@@ -259,12 +273,42 @@ describeEachThemeAppLayout(true, theme => {
       if (isUsingGridLayout) {
         // In refactored Visual Refresh we make navigation-container unfocusable. This is needed
         // because of CSS animations the tools-container is not set to `display: none;` anymore.
+        expect(isUnfocusable(wrapper.findTools().getElement())).toBe(false);
+        expect(isUnfocusable(wrapper.findNavigation().getElement())).toBe(true);
         expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(5);
         expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
         expect(wrapper.findByClassName(testUtilsStyles.content)?.getElement()).toHaveClass(unfocusableClassName);
         expect(
           wrapper.findByClassName(visualRefreshRefactoredStyles['navigation-container'])?.getElement()
         ).toHaveClass(unfocusableClassName);
+      } else {
+        expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(styles['layout-main'])?.getElement()).toHaveClass(unfocusableClassName);
+      }
+    });
+
+    test('when both navigation and tools rendered, the tools take precedence', () => {
+      const { wrapper, isUsingGridLayout } = renderComponent(
+        <AppLayout {...props} navigationOpen={true} toolsOpen={true} />
+      );
+
+      if (isUsingGridLayout) {
+        expect(isUnfocusable(wrapper.findTools().getElement())).toBe(false);
+        expect(isUnfocusable(wrapper.findNavigation().getElement())).toBe(true);
+      } else {
+        expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(styles['layout-main'])?.getElement()).toHaveClass(unfocusableClassName);
+      }
+    });
+
+    test('navigation can open when tools in the open+hidden state', () => {
+      const { wrapper, isUsingGridLayout } = renderComponent(
+        <AppLayout {...props} navigationOpen={true} toolsOpen={true} toolsHide={true} />
+      );
+      if (isUsingGridLayout) {
+        expect(isUnfocusable(wrapper.findNavigation().getElement())).toBe(false);
       } else {
         expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
         expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
@@ -281,5 +325,32 @@ describeEachThemeAppLayout(true, theme => {
       const { wrapper } = renderComponent(<AppLayout {...props} toolsOpen={true} toolsHide={true} />);
       expect(wrapper.findByClassName(unfocusableClassName)).toBeFalsy();
     });
+  });
+
+  test('should render drawers mobile triggers container', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+
+    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
+  });
+
+  test('should render an active drawer', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
+
+    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
+    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
+  test('Does not add a label to the toggle and landmark when they are not defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
+    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
+    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
+  });
+
+  test('Adds labels to toggle button and landmark when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
+    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
 });

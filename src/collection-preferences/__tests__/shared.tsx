@@ -57,3 +57,47 @@ export const contentDensityPreference: CollectionPreferencesProps.ContentDensity
   label: 'Compact mode',
   description: 'Display the content in a denser, more compact mode',
 };
+
+export const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
+  firstColumns: {
+    title: 'Stick first column(s)',
+    description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'First column', value: 1 },
+      { label: 'First two columns', value: 2 },
+    ],
+  },
+  lastColumns: {
+    title: 'Stick last column',
+    description: 'Keep the last column visible while horizontally scrolling table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'Last column', value: 1 },
+    ],
+  },
+};
+
+export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplayPreference = {
+  title: 'Content display title',
+  description: 'Content display description',
+  options: [
+    { id: 'id1', label: 'Item 1', alwaysVisible: true },
+    { id: 'id2', label: 'Item 2' },
+    { id: 'id3', label: 'Item 3' },
+    { id: 'id4', label: 'Item 4' },
+  ],
+  dragHandleAriaLabel: 'Drag handle',
+  dragHandleAriaDescription:
+    "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
+  liveAnnouncementDndStarted: (position, total) => `Picked up item at position ${position} of ${total}`,
+  liveAnnouncementDndDiscarded: 'Reordering canceled',
+  liveAnnouncementDndItemReordered: (initialPosition, currentPosition, total) =>
+    initialPosition === currentPosition
+      ? `Moving item back to position ${currentPosition} of ${total}`
+      : `Moving item to position ${currentPosition} of ${total}`,
+  liveAnnouncementDndItemCommitted: (initialPosition, finalPosition, total) =>
+    initialPosition === finalPosition
+      ? `Item moved back to its original position ${initialPosition} of ${total}`
+      : `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
+};

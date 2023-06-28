@@ -14,6 +14,8 @@ export interface ButtonDropdownProps extends BaseComponentProps {
 
    * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
 
+   * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
+
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
@@ -103,6 +105,7 @@ export namespace ButtonDropdownProps {
   export interface Item {
     id: string;
     text: string;
+    lang?: string;
     disabled?: boolean;
     disabledReason?: string;
     description?: string;

@@ -3,11 +3,13 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use './app-bar.scss';
 @use './background.scss';
+@use './breadcrumbs.scss';
+@use './drawers.scss';
 @use './header.scss';
 @use './layout.scss';
 @use './main.scss';
+@use './mobile-toolbar.scss';
 @use './navigation.scss';
 @use './notifications.scss';
 @use './split-panel.scss';

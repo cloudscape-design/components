@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent, fireCancelableEvent } from '../internal/events';
 import { SideNavigationProps } from './interfaces';
-import { Header, ItemList } from './internal';
+import { Header, NavigationItemsList } from './internal';
 import { generateExpandableItemsMapping, checkDuplicateHrefs } from './util';
 import styles from './styles.css.js';
 import { isDevelopment } from '../internal/is-development';
@@ -62,7 +62,7 @@ export default function SideNavigation({
       )}
       {items && (
         <div className={styles['list-container']}>
-          <ItemList
+          <NavigationItemsList
             variant="root"
             items={items}
             fireFollow={onFollowHandler}

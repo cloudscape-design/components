@@ -21,7 +21,18 @@ type InternalTilesProps = TilesProps & InternalBaseComponentProps;
 
 const InternalTiles = React.forwardRef(
   (
-    { value, items, ariaLabel, ariaRequired, columns, onChange, __internalRootRef = null, ...rest }: InternalTilesProps,
+    {
+      name,
+      value,
+      items,
+      ariaLabel,
+      ariaRequired,
+      ariaControls,
+      columns,
+      onChange,
+      __internalRootRef = null,
+      ...rest
+    }: InternalTilesProps,
     ref: React.Ref<TilesProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
@@ -41,6 +52,7 @@ const InternalTiles = React.forwardRef(
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
         aria-required={ariaRequired}
+        aria-controls={ariaControls}
         {...baseProps}
         className={clsx(baseProps.className, styles.root)}
         ref={mergedRef}
@@ -53,7 +65,7 @@ const InternalTiles = React.forwardRef(
                 key={item.value}
                 item={item}
                 selected={item.value === value}
-                name={generatedName}
+                name={name || generatedName}
                 breakpoint={breakpoint}
                 onChange={onChange}
               />

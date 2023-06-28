@@ -30,6 +30,7 @@ import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { SomeRequired } from '../internal/types';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
+import { useInternalI18n } from '../internal/i18n/context.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;
@@ -43,6 +44,7 @@ const InternalSelect = React.forwardRef(
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
+      filteringResultsText,
       ariaRequired,
       placeholder,
       disabled,
@@ -55,7 +57,6 @@ const InternalSelect = React.forwardRef(
       recoveryText,
       noMatch,
       triggerVariant = 'label',
-      selectedAriaLabel,
       renderHighlightedAriaLive,
       selectedOption,
       onBlur,
@@ -74,6 +75,10 @@ const InternalSelect = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
 
+    const i18n = useInternalI18n('select');
+    const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
+    const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
       options,
@@ -86,7 +91,11 @@ const InternalSelect = React.forwardRef(
 
     const [filteringValue, setFilteringValue] = useState('');
 
-    const { filteredOptions, parentMap } = prepareOptions(options, filteringType, filteringValue);
+    const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+      options,
+      filteringType,
+      filteringValue
+    );
 
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -118,6 +127,7 @@ const InternalSelect = React.forwardRef(
       externalRef,
       fireLoadItems,
       setFilteringValue,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
@@ -128,6 +138,7 @@ const InternalSelect = React.forwardRef(
     });
 
     const selectAriaLabelId = useUniqueId('select-arialabel-');
+    const footerId = useUniqueId('footer');
 
     useEffect(() => {
       scrollToIndex.current?.(highlightedIndex);
@@ -161,14 +172,12 @@ const InternalSelect = React.forwardRef(
       />
     );
 
-    const menuProps = {
-      ...getMenuProps(),
-      onLoadMore: handleLoadMore,
-      ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
-    };
-
     const isEmpty = !options || options.length === 0;
     const isNoMatch = filteredOptions && filteredOptions.length === 0;
+    const isFiltered =
+      filteringType !== 'none' && filteringValue.length > 0 && filteredOptions && filteredOptions.length > 0;
+    const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
+
     const dropdownStatus = useDropdownStatus({
       statusType,
       empty,
@@ -179,9 +188,18 @@ const InternalSelect = React.forwardRef(
       isEmpty,
       isNoMatch,
       noMatch,
+      isFiltered,
+      filteringResultsText: filteredText,
+      errorIconAriaLabel,
       onRecoveryClick: handleRecoveryClick,
-      errorIconAriaLabel: restProps.errorIconAriaLabel,
     });
+
+    const menuProps = {
+      ...getMenuProps(),
+      onLoadMore: handleLoadMore,
+      ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
+      ariaDescribedby: dropdownStatus.content ? footerId : undefined,
+    };
 
     const announcement = useAnnouncement({
       announceSelected,
@@ -218,12 +236,18 @@ const InternalSelect = React.forwardRef(
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}
-          footer={dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null}
+          footer={
+            dropdownStatus.isSticky ? (
+              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+            ) : null
+          }
           expandToViewport={expandToViewport}
         >
           <ListComponent
             listBottom={
-              !dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null
+              !dropdownStatus.isSticky ? (
+                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+              ) : null
             }
             menuProps={menuProps}
             getOptionProps={getOptionProps}

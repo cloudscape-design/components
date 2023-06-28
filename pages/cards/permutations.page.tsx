@@ -95,6 +95,12 @@ const permutations = createPermutations<CardsProps>([
     ],
     items: [createSimpleItems(4)],
   },
+  {
+    cardDefinition: [cardDefinition],
+    items: [createSimpleItems(3)],
+    variant: [undefined, 'full-page'],
+    pagination: [undefined, 'pagination'],
+  },
 ]);
 /* eslint-enable react/jsx-key */
 

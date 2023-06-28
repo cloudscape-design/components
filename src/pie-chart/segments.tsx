@@ -9,6 +9,7 @@ import { InternalChartDatum } from './pie-chart';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import clsx from 'clsx';
+import { useInternalI18n } from '../internal/i18n/context';
 
 interface SegmentsProps<T> {
   pieData: Array<PieArcDatum<InternalChartDatum<T>>>;
@@ -36,6 +37,7 @@ export default function Segments<T extends PieChartProps.Datum>({
   onMouseOver,
   onMouseOut,
 }: SegmentsProps<T>) {
+  const i18n = useInternalI18n('pie-chart');
   const isRefresh = useVisualRefresh();
 
   const { arcFactory, highlightedArcFactory } = useMemo(() => {
@@ -91,7 +93,7 @@ export default function Segments<T extends PieChartProps.Datum>({
             ref={isHighlighted ? focusedSegmentRef : undefined}
             aria-label={`${datum.data.datum.title} (${datum.data.datum.value})`}
             role="button"
-            aria-roledescription={segmentAriaRoleDescription}
+            aria-roledescription={i18n('i18nStrings.segmentAriaRoleDescription', segmentAriaRoleDescription)}
           >
             <path d={arcPath} fill={datum.data.color} className={styles.segment__path} aria-hidden="true" />
             <path

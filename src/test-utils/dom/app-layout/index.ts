@@ -46,4 +46,28 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   findSplitPanel(): SplitPanelWrapper | null {
     return this.findComponent(`.${SplitPanelWrapper.rootSelector}`, SplitPanelWrapper);
   }
+
+  findActiveDrawer(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['active-drawer']);
+  }
+
+  findActiveDrawerCloseButton(): ElementWrapper<HTMLButtonElement> | null {
+    return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button']);
+  }
+
+  findDrawersDesktopTriggersContainer(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['drawers-desktop-triggers-container']);
+  }
+
+  findDrawersMobileTriggersContainer(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['drawers-mobile-triggers-container']);
+  }
+
+  findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
+    return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
+  }
+
+  findDrawersSlider(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['drawers-slider']);
+  }
 }

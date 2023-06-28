@@ -9,7 +9,6 @@ import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';
 import styles from '../../styles.css.js';
 
-import useFocusVisible from '../../../internal/hooks/focus-visible/index';
 import { hasValue } from '../../../internal/utils/has-value';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../../../calendar/utils/navigation';
@@ -41,7 +40,7 @@ export interface GridProps {
 
   locale: string;
   startOfWeek: DayIndex;
-  todayAriaLabel: string;
+  todayAriaLabel?: string;
   headingIdPrefix: string;
 }
 
@@ -162,10 +161,7 @@ export const Grids = ({
     }
   };
 
-  const focusVisible = useFocusVisible();
-
-  const isRangeVisible =
-    (selectedStartDate && selectedEndDate) || (gridHasFocus && !!focusVisible['data-awsui-focus-visible']);
+  const isRangeVisible = (selectedStartDate && selectedEndDate) || gridHasFocus;
 
   const rangeEnds: Date[] = [selectedStartDate ?? focusedDate, selectedEndDate ?? focusedDate].filter(hasValue);
 

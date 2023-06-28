@@ -17,6 +17,7 @@ import { ItemProps } from '../parts/item';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { BaseKeyDetail, NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { DropdownStatusProps } from '../../internal/components/dropdown-status';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
@@ -33,6 +34,7 @@ interface UseSelectProps {
   fireLoadItems: (filteringText: string) => void;
   setFilteringValue: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
+  statusType: DropdownStatusProps.StatusType;
 }
 
 export interface SelectTriggerProps {
@@ -55,6 +57,7 @@ export function useSelect({
   fireLoadItems,
   setFilteringValue,
   useInteractiveGroups = false,
+  statusType,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
@@ -65,7 +68,6 @@ export function useSelect({
   const menuRef = useRef<HTMLUListElement>(null);
   const hasFilter = filteringType !== 'none';
   const activeRef = hasFilter ? filterRef : menuRef;
-  const isSelectingUsingSpace = useRef<boolean>(false);
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
     if (item.value) {
@@ -107,7 +109,6 @@ export function useSelect({
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const selectOption = (option?: DropdownOption) => {
-    isSelectingUsingSpace.current = false;
     const optionToSelect = option || highlightedOption;
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
@@ -128,7 +129,6 @@ export function useSelect({
       triggerRef.current?.focus();
       closeDropdown();
     },
-    isSelectingUsingSpace,
     preventNativeSpace: !hasFilter,
   });
 
@@ -196,6 +196,7 @@ export function useSelect({
           setHighlightedIndexWithMouse(itemIndex);
         }
       },
+      statusType,
     };
     if (!hasFilter) {
       menuProps.onKeyDown = activeKeyDownHandler;

@@ -11,16 +11,18 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 
 import styles from './styles.css.js';
 import { useFlashbar } from './common';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { FlashbarProps };
 
-export default function NonCollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, ariaLabel, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar(
-    {
-      items,
-      ...restProps,
-    }
-  );
+export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
+  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+    items,
+    ...restProps,
+  });
+
+  const i18n = useInternalI18n('flashbar');
+  const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being

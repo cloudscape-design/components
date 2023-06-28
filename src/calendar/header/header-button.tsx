@@ -7,7 +7,7 @@ import styles from '../styles.css.js';
 import { addMonths } from 'date-fns';
 
 interface HeaderButtonProps {
-  ariaLabel: string;
+  ariaLabel?: string;
   baseDate: Date;
   onChangeMonth: (date: Date) => void;
 }

@@ -23,6 +23,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       children,
       description,
       ariaLabel,
+      ariaControls,
       onFocus,
       onBlur,
       onChange,
@@ -53,6 +54,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}
         ariaDescribedby={ariaDescribedby}
+        ariaControls={ariaControls}
         nativeControl={nativeControlProps => (
           <input
             {...nativeControlProps}

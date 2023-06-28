@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, MutableRefObject } from 'react';
+import { useCallback } from 'react';
 import { KeyCode } from '../../../keycode';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
 
@@ -14,7 +14,6 @@ interface UseMenuKeyboard {
     goHome: () => void;
     goEnd: () => void;
     closeDropdown: () => void;
-    isSelectingUsingSpace: MutableRefObject<boolean>;
     preventNativeSpace?: boolean;
   }): CancelableEventHandler<BaseKeyDetail>;
 }
@@ -25,7 +24,6 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
   goHome,
   goEnd,
   closeDropdown,
-  isSelectingUsingSpace,
   preventNativeSpace = false,
 }) => {
   return useCallback(
@@ -56,11 +54,10 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
           if (preventNativeSpace) {
             e.preventDefault();
             selectOption();
-            isSelectingUsingSpace.current = true;
           }
       }
     },
-    [moveHighlight, selectOption, goHome, goEnd, closeDropdown, isSelectingUsingSpace, preventNativeSpace]
+    [moveHighlight, selectOption, goHome, goEnd, closeDropdown, preventNativeSpace]
   );
 };
 
@@ -79,6 +76,7 @@ export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome })
           openDropdown();
           break;
         case KeyCode.space:
+        case KeyCode.enter:
           e.preventDefault();
           openDropdown();
           break;

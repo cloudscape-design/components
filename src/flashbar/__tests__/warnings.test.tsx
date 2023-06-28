@@ -110,4 +110,20 @@ describe('Flashbar component', () => {
       '[AwsUi] [Flashbar] You have set the `dismissible` prop without an `onDismiss` handler. This will render a non-interactive dismiss button.'
     );
   });
+
+  test('warns when ariaRole="alert" is used without id', () => {
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    render(<Flashbar items={[{ content: 'The content' }]} />);
+    expect(console.warn).not.toHaveBeenCalled();
+
+    render(<Flashbar items={[{ content: 'The content', ariaRole: 'alert', id: '1' }]} />);
+    expect(console.warn).not.toHaveBeenCalled();
+
+    render(<Flashbar items={[{ content: 'The content', ariaRole: 'alert' }]} />);
+    expect(console.warn).toHaveBeenCalledTimes(1);
+    expect(console.warn).toHaveBeenCalledWith(
+      '[AwsUi] [Flashbar] You provided `ariaRole="alert"` for a flashbar item without providing an `id`. Focus will not be moved to the newly added flash message.'
+    );
+  });
 });

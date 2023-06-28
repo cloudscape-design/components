@@ -15,7 +15,6 @@ import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
 import { CSSTransition } from 'react-transition-group';
 import { HotspotContext } from '../../../annotation-context/context.js';
 import InternalIcon from '../../../icon/internal';
-import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
 import LiveRegion from '../../../internal/components/live-region/index.js';
@@ -24,7 +23,6 @@ export interface TutorialListProps {
   loading?: boolean;
   tutorials: TutorialPanelProps['tutorials'];
   onStartTutorial: HotspotContext['onStartTutorial'];
-  filteringFunction: (tutorial: TutorialPanelProps.Tutorial, searchTerm: string) => boolean;
   i18nStrings: TutorialPanelProps['i18nStrings'];
   downloadUrl: TutorialPanelProps['downloadUrl'];
 }
@@ -38,19 +36,6 @@ export default function TutorialList({
 }: TutorialListProps) {
   checkSafeUrl('TutorialPanel', downloadUrl);
 
-  /*
-  // Filtering is not available in the Beta release.
-
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const onSearchChangeCallback: InputProps['onChange'] = useCallback(event => setSearchTerm(event.detail.value), [
-    setSearchTerm
-  ]);
-
-  const filteredTutorials = tutorials.filter(tutorial => filteringFunction(tutorial, searchTerm))
-  */
-
-  const focusVisible = useFocusVisible();
   const isRefresh = useVisualRefresh();
 
   return (
@@ -65,43 +50,30 @@ export default function TutorialList({
           </InternalBox>
         </InternalSpaceBetween>
         <InternalSpaceBetween size="l">
-          <a
-            {...focusVisible}
-            href={downloadUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles['download-link']}
-            aria-label={i18nStrings.labelTutorialListDownloadLink}
-          >
-            <InternalIcon name="download" />
-            <InternalBox padding={{ left: 'xs' }} color="inherit" fontWeight="bold" display="inline">
-              {i18nStrings.tutorialListDownloadLinkText}
-            </InternalBox>
-          </a>
-
-          {/*
-          <FormField label="Filter tutorials">
-            <Input type="search" value={searchTerm} placeholder="Filter tutorials" onChange={onSearchChangeCallback} />
-          </FormField>
-        */}
+          {downloadUrl && (
+            <a
+              href={downloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles['download-link']}
+              aria-label={i18nStrings.labelTutorialListDownloadLink}
+            >
+              <InternalIcon name="download" />
+              <InternalBox padding={{ left: 'xs' }} color="inherit" fontWeight="bold" display="inline">
+                {i18nStrings.tutorialListDownloadLinkText}
+              </InternalBox>
+            </a>
+          )}
           {loading ? (
             <InternalStatusIndicator type="loading">
               <LiveRegion visible={true}>{i18nStrings.loadingText}</LiveRegion>
             </InternalStatusIndicator>
           ) : (
-            <>
-              <ul className={styles['tutorial-list']} role="list">
-                {tutorials.map((tutorial, index) => (
-                  <Tutorial
-                    tutorial={tutorial}
-                    key={index}
-                    onStartTutorial={onStartTutorial}
-                    i18nStrings={i18nStrings}
-                  />
-                ))}
-              </ul>
-              {/* {filteredTutorials.length === 0 && searchTerm && <Box>No tutorials match this search filter.</Box>} */}
-            </>
+            <ul className={styles['tutorial-list']} role="list">
+              {tutorials.map((tutorial, index) => (
+                <Tutorial tutorial={tutorial} key={index} onStartTutorial={onStartTutorial} i18nStrings={i18nStrings} />
+              ))}
+            </ul>
           )}
         </InternalSpaceBetween>
       </InternalSpaceBetween>

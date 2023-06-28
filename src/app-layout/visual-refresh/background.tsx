@@ -5,28 +5,32 @@ import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
-/**
- * The CSS class 'awsui-context-content-header' needs to be added to the root element so
- * that the design tokens used are overridden with the appropriate values.
- */
 export default function Background() {
-  const { hasNotificationsContent, hasStickyBackground, stickyNotifications } = useAppLayoutInternals();
+  const {
+    breadcrumbs,
+    contentHeader,
+    dynamicOverlapHeight,
+    hasNotificationsContent,
+    hasStickyBackground,
+    isMobile,
+    stickyNotifications,
+  } = useAppLayoutInternals();
+
+  if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !contentHeader && dynamicOverlapHeight <= 0) {
+    return null;
+  }
 
   return (
     <div className={clsx(styles.background, 'awsui-context-content-header')}>
-      <div
-        className={clsx(styles['notifications-appbar-header'], {
-          [styles['has-notifications-content']]: hasNotificationsContent,
-          [styles['has-sticky-background']]: hasStickyBackground,
-          [styles['sticky-notifications']]: stickyNotifications,
-        })}
-      />
+      <div className={styles['scrolling-background']} />
 
-      <div
-        className={clsx(styles.overlap, {
-          [styles['has-sticky-background']]: hasStickyBackground,
-        })}
-      />
+      {!isMobile && hasStickyBackground && (
+        <div
+          className={clsx(styles['sticky-background'], {
+            [styles['has-sticky-notifications']]: stickyNotifications,
+          })}
+        />
+      )}
     </div>
   );
 }

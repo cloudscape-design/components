@@ -732,9 +732,9 @@ describe('Filter', () => {
     expect(wrapper.findDefaultFilter()).not.toBeNull();
   });
 
-  test('is rendered when hideFilter is set but does not contain the default filter', () => {
+  test('is not rendered when hideFilter is set', () => {
     const { wrapper } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} hideFilter={true} />);
-    expect(wrapper.findFilterContainer()).not.toBeNull();
+    expect(wrapper.findFilterContainer()).toBeNull();
     expect(wrapper.findDefaultFilter()).toBeNull();
   });
 
@@ -959,6 +959,15 @@ describe('Details popover', () => {
 
     wrapper.findDefaultFilter()?.openDropdown();
     expect(wrapper.findByClassName(styles['series--dimmed'])).toBeNull();
+  });
+
+  test('can contain custom content in the footer', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart {...barChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
+    );
+
+    wrapper.findApplication()!.focus();
+    expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
   });
 });
 

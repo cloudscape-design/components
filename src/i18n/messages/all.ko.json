@@ -1,0 +1,347 @@
+{
+  "[charts]": {
+    "loadingText": "차트 로드 중",
+    "errorText": "데이터를 가져올 수 없습니다. 나중에 다시 시도하세요.",
+    "recoveryText": "재시도",
+    "i18nStrings.filterLabel": "표시된 데이터 필터링",
+    "i18nStrings.filterPlaceholder": "데이터 필터링",
+    "i18nStrings.legendAriaLabel": "범례",
+    "i18nStrings.xAxisAriaRoleDescription": "x축",
+    "i18nStrings.yAxisAriaRoleDescription": "y축"
+  },
+  "alert": {
+    "dismissAriaLabel": "알림 무시"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "다음",
+    "i18nStrings.previousButtonText": "이전",
+    "i18nStrings.finishButtonText": "완료",
+    "i18nStrings.labelDismissAnnotation": "주석 무시",
+    "i18nStrings.stepCounterText": "{stepNumber}/{totalStepCount}단계",
+    "i18nStrings.taskTitle": "작업 {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {{stepNumber}/{totalStepCount}단계에 대한 주석 닫기} false {{stepNumber}/{totalStepCount}단계에 대한 주석 열기} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.navigation": "측면 탐색",
+    "ariaLabels.navigationClose": "측면 탐색 닫기",
+    "ariaLabels.navigationToggle": "측면 탐색 열기",
+    "ariaLabels.notifications": "알림",
+    "ariaLabels.tools": "도움말 창",
+    "ariaLabels.toolsClose": "도움말 창 닫기",
+    "ariaLabels.toolsToggle": "도움말 창 열기"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "합계"
+  },
+  "attribute-editor": {
+    "removeButtonText": "제거"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "오류",
+    "selectedAriaLabel": "선택됨",
+    "enteredTextLabel": "사용: ‘{value}’",
+    "recoveryText": "재시도"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "경로 표시"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "다음 달",
+    "previousMonthAriaLabel": "이전 달",
+    "todayAriaLabel": "오늘"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "항목 선택"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "코드 편집기 로드 중",
+    "i18nStrings.errorState": "코드 편집기를 로드하는 중 오류가 발생했습니다.",
+    "i18nStrings.errorStateRecovery": "재시도",
+    "i18nStrings.editorGroupAriaLabel": "코드 편집기",
+    "i18nStrings.statusBarGroupAriaLabel": "상태 표시줄",
+    "i18nStrings.cursorPosition": "{row}번째 줄, {column}번째 열",
+    "i18nStrings.errorsTab": "오류",
+    "i18nStrings.warningsTab": "경고",
+    "i18nStrings.preferencesButtonAriaLabel": "기본 설정",
+    "i18nStrings.paneCloseButtonAriaLabel": "닫기",
+    "i18nStrings.preferencesModalHeader": "기본 설정",
+    "i18nStrings.preferencesModalCancel": "취소",
+    "i18nStrings.preferencesModalConfirm": "확인",
+    "i18nStrings.preferencesModalWrapLines": "줄 바꿈",
+    "i18nStrings.preferencesModalTheme": "테마",
+    "i18nStrings.preferencesModalLightThemes": "밝은 테마",
+    "i18nStrings.preferencesModalDarkThemes": "다크 테마"
+  },
+  "collection-preferences": {
+    "title": "기본 설정",
+    "confirmLabel": "확인",
+    "cancelLabel": "취소",
+    "pageSizePreference.title": "페이지 크기",
+    "wrapLinesPreference.label": "줄 바꿈",
+    "wrapLinesPreference.description": "모든 텍스트를 보고 줄 바꿈을 하려면 선택",
+    "stripedRowsPreference.label": "스트라이핑된 행",
+    "stripedRowsPreference.description": "교대로 음영 처리된 행을 추가하려면 선택",
+    "contentDensityPreference.label": "압축 모드",
+    "contentDensityPreference.description": "콘텐츠를 더 조밀하게 압축하여 표시하려면 선택",
+    "contentDisplayPreference.title": "열 기본 설정",
+    "contentDisplayPreference.description": "열 표시 여부 및 순서를 사용자 지정합니다.",
+    "contentDisplayPreference.dragHandleAriaLabel": "핸들 끌기",
+    "contentDisplayPreference.dragHandleAriaDescription": "스페이스 또는 Enter를 사용하여 항목 끌기 기능을 활성화하고 화살표 키를 사용하여 항목의 위치를 이동합니다. 위치 이동을 완료하려면 스페이스 또는 Enter를 사용하거나 이동을 취소하려면 Escape를 사용합니다.",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total}개 위치에서 선택한 항목",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "재정렬 취소됨",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {{currentPosition}/{total} 위치로 항목 다시 이동} false {{currentPosition}/{total} 위치로 항목 이동} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {항목이 원래 위치인 {initialPosition}/{total} 위치로 다시 이동됨} false {항목이 {initialPosition}/{total} 위치에서 인 {finalPosition}/{total} 위치로 이동됨} other {}}"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "상대 모드",
+    "i18nStrings.absoluteModeTitle": "절대 모드",
+    "i18nStrings.relativeRangeSelectionHeading": "범위 선택",
+    "i18nStrings.cancelButtonLabel": "취소",
+    "i18nStrings.clearButtonLabel": "지우기 및 무시",
+    "i18nStrings.applyButtonLabel": "적용",
+    "i18nStrings.customRelativeRangeOptionLabel": "사용자 지정 범위",
+    "i18nStrings.customRelativeRangeOptionDescription": "과거의 사용자 지정 범위 설정",
+    "i18nStrings.customRelativeRangeUnitLabel": "시간 단위",
+    "i18nStrings.customRelativeRangeDurationLabel": "기간",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "기간 입력",
+    "i18nStrings.startDateLabel": "시작 날짜",
+    "i18nStrings.startTimeLabel": "시작 시간",
+    "i18nStrings.endDateLabel": "종료 날짜",
+    "i18nStrings.endTimeLabel": "종료 시간",
+    "i18nStrings.dateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}~{endDate}에서 선택한 범위",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {마지막 {amount}{unit}} other {마지막 {amount}{unit}}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "알림",
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.inProgressIconAriaLabel": "진행 중",
+    "i18nStrings.infoIconAriaLabel": "정보",
+    "i18nStrings.notificationBarAriaLabel": "모든 알림",
+    "i18nStrings.notificationBarText": "알림",
+    "i18nStrings.successIconAriaLabel": "성공",
+    "i18nStrings.warningIconAriaLabel": "경고"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "오류"
+  },
+  "form": {
+    "errorIconAriaLabel": "오류"
+  },
+  "help-panel": {
+    "loadingText": "콘텐츠 로드 중"
+  },
+  "input": {
+    "clearAriaLabel": "지우기"
+  },
+  "link": {
+    "externalIconAriaLabel": "새 탭에서 열림"
+  },
+  "modal": {
+    "closeAriaLabel": "모달 닫기"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "{option__label} 제거"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "다음 페이지",
+    "ariaLabels.pageLabel": "전체 페이지 중 {pageNumber}페이지",
+    "ariaLabels.previousPageLabel": "이전 페이지"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "값",
+    "i18nStrings.detailsPercentage": "백분율",
+    "i18nStrings.chartAriaRoleDescription": "원형 차트",
+    "i18nStrings.segmentAriaRoleDescription": "세그먼트"
+  },
+  "popover": {
+    "dismissAriaLabel": "팝오버 닫기"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "모든 속성",
+    "i18nStrings.applyActionText": "적용",
+    "i18nStrings.cancelActionText": "취소",
+    "i18nStrings.clearFiltersText": "필터 지우기",
+    "i18nStrings.editTokenHeader": "필터 편집",
+    "i18nStrings.groupPropertiesText": "속성",
+    "i18nStrings.groupValuesText": "값",
+    "i18nStrings.operationAndText": "및",
+    "i18nStrings.operationOrText": "또는",
+    "i18nStrings.operatorContainsText": "포함",
+    "i18nStrings.operatorDoesNotContainText": "포함 안 함",
+    "i18nStrings.operatorDoesNotEqualText": "같지 않음",
+    "i18nStrings.operatorEqualsText": "같음",
+    "i18nStrings.operatorGreaterOrEqualText": "크거나 같음",
+    "i18nStrings.operatorGreaterText": "보다 큼",
+    "i18nStrings.operatorLessOrEqualText": "작거나 같음",
+    "i18nStrings.operatorLessText": "보다 작음",
+    "i18nStrings.operatorText": "연산자",
+    "i18nStrings.operatorsText": "연산자",
+    "i18nStrings.propertyText": "속성",
+    "i18nStrings.tokenLimitShowFewer": "간단히 표시",
+    "i18nStrings.tokenLimitShowMore": "자세히 표시",
+    "i18nStrings.valueText": "값",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}이(가) {token__value}과(와) 같음 필터 제거} not_equals {{token__propertyKey}이(가) {token__value}과(와) 같지 않음 필터 제거} greater_than {{token__propertyKey}이(가) {token__value}보다 큼 필터 제거} greater_than_equal {{token__propertyKey}이(가) {token__value}보다 크거나 같음 필터 제거} less_than {{token__propertyKey}이(가) {token__value}보다 작음 필터 제거} less_than_equal {{token__propertyKey}이(가) {token__value}보다 작거나 같음 필터 제거} contains {{token__propertyKey}이(가) {token__value}을(를) 포함함 필터 제거} not_contains {{token__propertyKey}이(가) {token__value}을(를) 포함하지 않음 필터 제거} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "버전 선택",
+    "i18nStrings.inContextBrowseButton": "S3 둘러보기",
+    "i18nStrings.inContextViewButton": "보기",
+    "i18nStrings.inContextViewButtonAriaLabel": "보기(새 탭에서 열림)",
+    "i18nStrings.inContextLoadingText": "리소스 로드 중",
+    "i18nStrings.inContextUriLabel": "S3 URI",
+    "i18nStrings.inContextVersionSelectLabel": "객체 버전",
+    "i18nStrings.modalTitle": "S3에서 아카이브 선택",
+    "i18nStrings.modalCancelButton": "취소",
+    "i18nStrings.modalSubmitButton": "선택",
+    "i18nStrings.modalBreadcrumbRootItem": "S3 버킷",
+    "i18nStrings.selectionBuckets": "버킷",
+    "i18nStrings.selectionObjects": "객체",
+    "i18nStrings.selectionVersions": "버전",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "버킷 찾기",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "접두사로 객체 찾기",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "버전 찾기",
+    "i18nStrings.selectionBucketsLoading": "버킷 로드 중",
+    "i18nStrings.selectionBucketsNoItems": "버킷 없음",
+    "i18nStrings.selectionObjectsLoading": "객체 로드 중",
+    "i18nStrings.selectionObjectsNoItems": "객체 없음",
+    "i18nStrings.selectionVersionsLoading": "버전 로드 중",
+    "i18nStrings.selectionVersionsNoItems": "버전 없음",
+    "i18nStrings.filteringNoMatches": "일치 항목 없음",
+    "i18nStrings.filteringCantFindMatch": "일치 항목을 찾을 수 없습니다.",
+    "i18nStrings.clearFilterButtonText": "필터 지우기",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "이름",
+    "i18nStrings.columnBucketCreationDate": "생성 날짜",
+    "i18nStrings.columnBucketRegion": "리전",
+    "i18nStrings.columnObjectKey": "키",
+    "i18nStrings.columnObjectLastModified": "최종 수정 날짜",
+    "i18nStrings.columnObjectSize": "크기",
+    "i18nStrings.columnVersionID": "버전 ID",
+    "i18nStrings.columnVersionLastModified": "최종 수정 날짜",
+    "i18nStrings.columnVersionSize": "크기",
+    "i18nStrings.validationPathMustBegin": "경로는 s3://로 시작해야 합니다.",
+    "i18nStrings.validationBucketLowerCase": "버킷 이름은 소문자나 숫자로 시작해야 합니다.",
+    "i18nStrings.validationBucketMustNotContain": "버킷 이름에 대문자를 포함할 수 없습니다.",
+    "i18nStrings.validationBucketLength": "버킷 이름은 3~63자여야 합니다.",
+    "i18nStrings.validationBucketMustComplyDns": "버킷 이름은 DNS 명명 규칙을 준수해야 합니다.",
+    "i18nStrings.labelSortedDescending": "{columnName}, 내림차순 정렬",
+    "i18nStrings.labelSortedAscending": "{columnName}, 오름차순 정렬",
+    "i18nStrings.labelNotSorted": "{columnName}, 정렬되지 않음",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "버킷",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "객체",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "버전",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "{itemsType} 찾기",
+    "i18nStrings.labelRefresh": "데이터 새로고침",
+    "i18nStrings.labelBreadcrumbs": "S3 탐색",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1개 일치} other {{count}개 일치}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "오류",
+    "selectedAriaLabel": "선택됨",
+    "recoveryText": "재시도"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "패널 닫기",
+    "i18nStrings.openButtonAriaLabel": "패널 열기",
+    "i18nStrings.preferencesTitle": "분할 패널 환경 설정",
+    "i18nStrings.preferencesPositionLabel": "분할 패널 위치",
+    "i18nStrings.preferencesPositionDescription": "서비스의 기본 분할 패널 위치를 선택합니다.",
+    "i18nStrings.preferencesPositionSide": "측면",
+    "i18nStrings.preferencesPositionBottom": "하단",
+    "i18nStrings.preferencesConfirm": "확인",
+    "i18nStrings.preferencesCancel": "취소",
+    "i18nStrings.resizeHandleAriaLabel": "분할 패널 크기 조정"
+  },
+  "table": {
+    "ariaLabels.submittingEditText": "편집 제출 중",
+    "ariaLabels.successfulEditLabel": "편집 성공",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "오류",
+    "columnDefinitions.editConfig.editIconAriaLabel": "편집 가능"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "왼쪽으로 스크롤",
+    "i18nStrings.scrollRightAriaLabel": "오른쪽으로 스크롤"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "키 입력",
+    "i18nStrings.valuePlaceholder": "값 입력",
+    "i18nStrings.addButton": "새 태그 추가",
+    "i18nStrings.removeButton": "제거",
+    "i18nStrings.removeButtonAriaLabel": "{tag__key} 제거",
+    "i18nStrings.undoButton": "실행 취소",
+    "i18nStrings.undoPrompt": "이 태그는 변경 사항을 저장할 때 제거됩니다.",
+    "i18nStrings.loading": "이 리소스와 연결된 태그를 로드하는 중",
+    "i18nStrings.keyHeader": "키",
+    "i18nStrings.valueHeader": "값",
+    "i18nStrings.optional": "선택 사항",
+    "i18nStrings.keySuggestion": "사용자 지정 태그 키",
+    "i18nStrings.valueSuggestion": "사용자 지정 태그 값",
+    "i18nStrings.emptyTags": "리소스와 연결된 태그가 없습니다.",
+    "i18nStrings.tooManyKeysSuggestion": "표시할 수 있는 것보다 많은 키가 있습니다.",
+    "i18nStrings.tooManyValuesSuggestion": "표시할 수 있는 것보다 많은 값이 있습니다.",
+    "i18nStrings.keysSuggestionLoading": "태그 키 로드 중",
+    "i18nStrings.keysSuggestionError": "태그 키를 검색할 수 없음",
+    "i18nStrings.valuesSuggestionLoading": "태그 값 로드 중",
+    "i18nStrings.valuesSuggestionError": "태그 값을 검색할 수 없음",
+    "i18nStrings.emptyKeyError": "태그 키를 지정해야 합니다.",
+    "i18nStrings.maxKeyCharLengthError": "태그 키에 사용할 수 있는 최대 문자 수는 128자입니다.",
+    "i18nStrings.maxValueCharLengthError": "태그 값에 사용할 수 있는 최대 문자 수는 256자입니다.",
+    "i18nStrings.duplicateKeyError": "고유한 태그 키를 지정해야 합니다.",
+    "i18nStrings.invalidKeyError": "잘못된 키입니다. 키는 유니코드 문자, 숫자, 공백 및 다음의 기호만 가능합니다. _.:/=+@-",
+    "i18nStrings.invalidValueError": "잘못된 값입니다. 값은 유니코드 문자, 숫자, 공백 및 다음의 기호만 가능합니다. _.:/=+@-",
+    "i18nStrings.awsPrefixError": "aws로 시작할 수 없음:",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {태그 1개의 한도에 도달했습니다.} other {태그 {tagLimit}개의 한도에 도달했습니다.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {태그 1개의 한도를 초과했습니다.} other {태그 {tagLimit}개의 한도를 초과했습니다.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {최대 {tagLimit}개의 태그를 더 추가할 수 있습니다.}}} false {{availableTags, plural, one {태그를 최대 1개 더 추가할 수 있습니다.} other {최대 {availableTags}개의 태그를 더 추가할 수 있습니다.}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "간단히 표시",
+    "i18nStrings.limitShowMore": "자세히 표시"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "검색",
+    "i18nStrings.searchDismissIconAriaLabel": "검색 닫기",
+    "i18nStrings.overflowMenuTriggerText": "더 보기",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "메뉴 닫기",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "뒤로",
+    "i18nStrings.overflowMenuTitleText": "모두"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "로드 중",
+    "i18nStrings.tutorialListTitle": "자습서 선택",
+    "i18nStrings.tutorialListDownloadLinkText": "PDF 버전 다운로드",
+    "i18nStrings.labelTutorialListDownloadLink": "이 자습서의 PDF 버전 다운로드",
+    "i18nStrings.tutorialCompletedText": "자습서 완료함",
+    "i18nStrings.learnMoreLinkText": "자세히 알아보기",
+    "i18nStrings.startTutorialButtonText": "자습서 시작",
+    "i18nStrings.restartTutorialButtonText": "자습서 다시 시작",
+    "i18nStrings.completionScreenTitle": "축하합니다! 자습서를 완료하셨습니다.",
+    "i18nStrings.feedbackLinkText": "피드백",
+    "i18nStrings.dismissTutorialButtonText": "자습서 닫기",
+    "i18nStrings.taskTitle": "작업 {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "{stepNumber}단계: {stepTitle}",
+    "i18nStrings.labelExitTutorial": "자습서 닫기",
+    "i18nStrings.labelTotalSteps": "총 단계: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "대기 중",
+    "i18nStrings.labelsTaskStatus.in-progress": "진행 중",
+    "i18nStrings.labelsTaskStatus.success": "성공"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "{stepNumber}단계",
+    "i18nStrings.collapsedStepsLabel": "{stepNumber}/{stepsCount}단계",
+    "i18nStrings.skipToButtonLabel": "{task__title}(으)로 건너뛰기",
+    "i18nStrings.navigationAriaLabel": "단계",
+    "i18nStrings.cancelButton": "취소",
+    "i18nStrings.previousButton": "이전",
+    "i18nStrings.nextButton": "다음",
+    "i18nStrings.optional": "선택 사항",
+    "i18nStrings.nextButtonLoadingAnnouncement": "다음 단계 로드 중",
+    "i18nStrings.submitButtonLoadingAnnouncement": "양식 제출 중"
+  }
+}

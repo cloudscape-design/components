@@ -6,7 +6,6 @@ import { BaseComponentProps, getBaseProps } from '../../base-component';
 import InternalIcon from '../../../icon/internal';
 import styles from './styles.css.js';
 import { fireKeyboardEvent, fireCancelableEvent, CancelableEventHandler, BaseKeyDetail } from '../../events';
-import useFocusVisible from '../../hooks/focus-visible';
 
 export interface ButtonTriggerProps extends BaseComponentProps {
   children?: React.ReactNode;
@@ -54,10 +53,7 @@ const ButtonTrigger = (
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
-  const focusVisible = useFocusVisible();
-
   const attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
-    ...focusVisible,
     ...baseProps,
     type: 'button',
     className: clsx(

@@ -56,9 +56,8 @@ describe('useTriggerKeyboard', () => {
 describe('useMenuKeyboard', () => {
   test('should move highlight up when pressing up', () => {
     const moveHighlight = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, moveHighlight, isSelectingUsingSpace },
+      initialProps: { ...menuInitialProps, moveHighlight },
     });
     act(() => hook.result.current(menuKeys.up));
     expect(moveHighlight).toHaveBeenCalledWith(-1);
@@ -67,9 +66,8 @@ describe('useMenuKeyboard', () => {
 
   test('should move highlight down when pressing down', () => {
     const moveHighlight = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, moveHighlight, isSelectingUsingSpace },
+      initialProps: { ...menuInitialProps, moveHighlight },
     });
     act(() => hook.result.current(menuKeys.down));
     expect(moveHighlight).toHaveBeenCalledWith(1);
@@ -78,9 +76,8 @@ describe('useMenuKeyboard', () => {
 
   test('should go home when pressing home', () => {
     const goHome = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, goHome, isSelectingUsingSpace },
+      initialProps: { ...menuInitialProps, goHome },
     });
     act(() => hook.result.current(menuKeys.home));
     expect(goHome).toHaveBeenCalled();
@@ -89,9 +86,8 @@ describe('useMenuKeyboard', () => {
 
   test('should go to end when pressing end', () => {
     const goEnd = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, goEnd, isSelectingUsingSpace },
+      initialProps: { ...menuInitialProps, goEnd },
     });
     act(() => hook.result.current(menuKeys.end));
     expect(goEnd).toHaveBeenCalled();
@@ -100,9 +96,8 @@ describe('useMenuKeyboard', () => {
 
   test('should close the dropdown when pressing escape', () => {
     const closeDropdown = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, closeDropdown, isSelectingUsingSpace },
+      initialProps: { ...menuInitialProps, closeDropdown },
     });
     act(() => hook.result.current(menuKeys.escape));
     expect(closeDropdown).toHaveBeenCalled();
@@ -111,9 +106,8 @@ describe('useMenuKeyboard', () => {
 
   test('should select option when pressing enter', () => {
     const selectOption = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, selectOption, isSelectingUsingSpace },
+      initialProps: { ...menuInitialProps, selectOption },
     });
     act(() => hook.result.current(menuKeys.enter));
     expect(selectOption).toHaveBeenCalled();
@@ -122,9 +116,8 @@ describe('useMenuKeyboard', () => {
 
   test('should not select option when pressing space when native space is in action (filtering enabled)', () => {
     const selectOption = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, selectOption, isSelectingUsingSpace },
+      initialProps: { ...menuInitialProps, selectOption },
     });
     act(() => hook.result.current(menuKeys.space));
     expect(selectOption).not.toHaveBeenCalled();
@@ -133,22 +126,11 @@ describe('useMenuKeyboard', () => {
 
   test('should select option when pressing space when preventNativeSpace is enabled', () => {
     const selectOption = jest.fn();
-    const isSelectingUsingSpace = { current: false };
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, selectOption, isSelectingUsingSpace, preventNativeSpace: true },
+      initialProps: { ...menuInitialProps, selectOption, preventNativeSpace: true },
     });
     act(() => hook.result.current(menuKeys.space));
     expect(selectOption).toHaveBeenCalled();
     expect(menuKeys.space.preventDefault).toHaveBeenCalled();
-  });
-
-  test('should update `isSelectingUsingSpace` when selecting an item with space key', () => {
-    const selectOption = jest.fn();
-    const isSelectingUsingSpace = { current: false };
-    const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, selectOption, isSelectingUsingSpace, preventNativeSpace: true },
-    });
-    act(() => hook.result.current(menuKeys.space));
-    expect(isSelectingUsingSpace.current).toBe(true);
   });
 });

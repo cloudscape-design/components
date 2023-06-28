@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useRef, useEffect } from 'react';
+import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { IconProps } from '../icon/interfaces';
@@ -14,6 +14,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import styles from './styles.css.js';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export interface InternalInputProps
   extends BaseComponentProps,
@@ -46,7 +47,7 @@ function InternalInput(
     inputMode,
     autoComplete = true,
     ariaLabel,
-    clearAriaLabel,
+    clearAriaLabel: clearAriaLabelOverride,
     name,
     value,
     placeholder,
@@ -81,6 +82,7 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
+  const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
   const handleChange = (value: string) => {
@@ -95,14 +97,7 @@ function InternalInput(
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
 
   const formFieldContext = useFormFieldContext(rest);
-  const { ariaLabelledby, ariaDescribedby, controlId, invalid, __useReactAutofocus } = __inheritFormFieldProps
-    ? formFieldContext
-    : { __useReactAutofocus: undefined, ...rest };
-
-  const autoFocusEnabled = __nativeAttributes?.autoFocus || autoFocus;
-  const reactAutofocusProps = __useReactAutofocus
-    ? { autoFocus: !autoFocusEnabled, 'data-awsui-react-autofocus': autoFocusEnabled }
-    : {};
+  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -141,7 +136,6 @@ function InternalInput(
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
-    ...reactAutofocusProps,
   };
 
   if (type === 'number') {
@@ -172,12 +166,6 @@ function InternalInput(
     attributes.type = 'text';
   }
 
-  useEffect(() => {
-    if (__useReactAutofocus && autoFocusEnabled) {
-      inputRef.current?.focus({ preventScroll: true });
-    }
-  }, [__useReactAutofocus, autoFocusEnabled]);
-
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
       {__leftIcon && (
@@ -196,7 +184,7 @@ function InternalInput(
             formAction="none"
             iconName={__rightIcon}
             onClick={__onRightIconClick}
-            ariaLabel={clearAriaLabel}
+            ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
             disabled={disabled}
           />
         </span>

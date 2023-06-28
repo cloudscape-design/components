@@ -58,6 +58,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusDropzone: {
+    description: 'The border radius of file upload dropzone.',
+    public: false,
+    themeable: false,
+  },
   borderRadiusFlashbar: {
     description: 'The border radius of flash messages in flashbars.',
     public: true,

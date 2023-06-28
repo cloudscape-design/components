@@ -14,6 +14,7 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
   visible?: boolean;
   tagName?: 'span' | 'div';
   children: React.ReactNode;
+  id?: string;
 }
 
 /**
@@ -57,6 +58,7 @@ function LiveRegion({
   visible = false,
   tagName: TagName = 'span',
   children,
+  id,
   ...restProps
 }: LiveRegionProps) {
   const sourceRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
@@ -103,7 +105,11 @@ function LiveRegion({
 
   return (
     <>
-      {visible && <TagName ref={sourceRef}>{children}</TagName>}
+      {visible && (
+        <TagName ref={sourceRef} id={id}>
+          {children}
+        </TagName>
+      )}
 
       <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
         {!visible && (

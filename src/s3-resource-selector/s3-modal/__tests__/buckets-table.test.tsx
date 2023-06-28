@@ -139,7 +139,7 @@ test('filtering buckets', async () => {
   expect(wrapper.findTextFilter()!.findResultsCount().getElement()).toHaveTextContent('0 matches');
   wrapper.findEmptySlot()!.findButton()!.click();
   expect(wrapper.findRows()).toHaveLength(2);
-  expect(wrapper.findTextFilter()!.findResultsCount().getElement()).toBeEmptyDOMElement();
+  expect(wrapper.findTextFilter()!.findResultsCount()).toBe(null);
 });
 
 test('paginating buckets', async () => {

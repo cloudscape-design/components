@@ -25,7 +25,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
   );
 
   test(
-    'should fire change event when selecting suggestions with SPACE',
+    'should allow entering spaces after focusing a dropdown item',
     setupTest(async page => {
       await page.focusInput();
       await page.keys(['opt']);
@@ -33,6 +33,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
 
       await page.keys(['ArrowDown', 'Space']);
       await page.assertEventsFired(['onChange']);
+      await expect(page.getAutosuggestValue()).resolves.toEqual('opt ');
     })
   );
 

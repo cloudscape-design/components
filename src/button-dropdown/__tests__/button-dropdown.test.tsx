@@ -11,26 +11,6 @@ const renderButtonDropdown = (props: Parameters<typeof ButtonDropdown>[0]) => {
   return createWrapper(renderResult.container).findButtonDropdown()!;
 };
 
-const renderButtonDropdownInShadowDOM = (props: Parameters<typeof ButtonDropdown>[0]) => {
-  const shadowHost = document.createElement('div');
-  const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
-  document.body.appendChild(shadowHost);
-
-  const renderResult = render(
-    <div>
-      <ButtonDropdown {...props} />
-    </div>,
-    {
-      container: shadowRoot,
-    }
-  );
-
-  return {
-    wrapper: createWrapper(renderResult.container.firstElementChild!).findButtonDropdown()!,
-    cleanup: () => document.body.removeChild(shadowHost),
-  };
-};
-
 const items: ButtonDropdownProps.Items = [
   { id: 'i1', text: 'item1', description: 'Item 1 description' },
   {
@@ -150,46 +130,6 @@ describe('ButtonDropdown component', () => {
       expect(wrapper.findOpenDropdown()).toBeTruthy();
       triggerButton.click();
       expect(wrapper.findOpenDropdown()).not.toBeTruthy();
-    });
-  });
-  describe('Shadow DOM', () => {
-    test('should invoke onItemClick callback upon clicking an option', () => {
-      const itemClickSpy = jest.fn();
-      const { wrapper, cleanup } = renderButtonDropdownInShadowDOM({ items, onItemClick: itemClickSpy });
-
-      // open the dropdown
-      wrapper.openDropdown();
-
-      // click the first option
-      const optionId = items[0].id!;
-      const option = wrapper.findItemById(optionId)?.getElement();
-      option?.click();
-
-      // callback must be called
-      expect(itemClickSpy).toHaveBeenCalled();
-
-      // verify that the dropdown is now hidden
-      expect(wrapper.findItemById(optionId)).toBeNull();
-      cleanup();
-    });
-
-    test('should toggle dropdown when clicking the trigger', () => {
-      const { wrapper, cleanup } = renderButtonDropdownInShadowDOM({ items });
-
-      // open the dropdown
-      const triggerButton = wrapper.findNativeButton().getElement();
-      triggerButton.click();
-
-      // verify that the option is visible
-      const optionId = items[0].id!;
-      expect(wrapper.findItemById(optionId)).toBeTruthy();
-
-      // click again on the trigger button
-      triggerButton.click();
-
-      // verify that the dropdown is now hidden
-      expect(wrapper.findItemById(optionId)).toBeNull();
-      cleanup();
     });
   });
 });

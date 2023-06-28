@@ -1,4 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <polyline class="stroke-linejoin-round" points="13 8 13 14 3 14 3 2 9.5 2"/>
-  <line class="stroke-linejoin-round" x1="6" y1="10" x2="14" y2="2"/>
+	<path class="filled" d="M8.2 13.9H14v.1H8.1l.1-.1Zm2.37-9.17.7.7-5.3 5.3-.7-.7 5.3-5.3Zm2.71-2.7a.1.1 0 0 1 .14 0l.57.57a.1.1 0 0 1 0 .14l-.58.58-.71-.71.58-.58ZM3.15 12.15l.7.71-.24.24a1 1 0 0 1-.43.26l-.74.2.21-.73a1 1 0 0 1 .26-.44l.24-.24Z" />
 </svg>

@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
@@ -12,13 +11,13 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
+import { useButtonContext } from '../internal/context/button-context';
 
-type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
+export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
   __nativeAttributes?: Record<string, any>;
   __iconClass?: string;
   __activated?: boolean;
-  __hideFocusOutline?: boolean;
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -44,8 +43,9 @@ export const InternalButton = React.forwardRef(
       download,
       formAction = 'submit',
       ariaLabel,
+      ariaDescribedby,
       ariaExpanded,
-      __hideFocusOutline = false,
+      fullWidth,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -54,46 +54,48 @@ export const InternalButton = React.forwardRef(
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     checkSafeUrl('Button', href);
-    const focusVisible = useFocusVisible();
     const isAnchor = Boolean(href);
-    const isDisabled = loading || disabled;
+    const isNotInteractive = loading || disabled;
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
     const buttonRef = useRef<HTMLElement>(null);
     useForwardFocus(ref, buttonRef);
 
-    const handleClick = useCallback(
-      (event: React.MouseEvent) => {
-        if (isAnchor && isDisabled) {
-          return event.preventDefault();
-        }
+    const buttonContext = useButtonContext();
 
-        if (isAnchor && isPlainLeftClick(event)) {
-          fireCancelableEvent(onFollow, null, event);
-        }
+    const handleClick = (event: React.MouseEvent) => {
+      if (isNotInteractive) {
+        return event.preventDefault();
+      }
 
-        const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
-        fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
-      },
-      [isAnchor, isDisabled, onClick, onFollow]
-    );
+      if (isAnchor && isPlainLeftClick(event)) {
+        fireCancelableEvent(onFollow, { href, target }, event);
+      }
+
+      const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
+      fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
+      buttonContext.onClick({ variant });
+    };
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
-      [styles.disabled]: isDisabled,
+      [styles.disabled]: isNotInteractive,
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['is-activated']]: __activated,
+      [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
     const buttonProps = {
       ...props,
-      ...(__hideFocusOutline ? undefined : focusVisible),
       ...__nativeAttributes,
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef as any, __internalRootRef),
       'aria-label': ariaLabel,
+      'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
+      // add ariaLabel as `title` as visible hint text
+      title: ariaLabel,
       className: buttonClass,
       onClick: handleClick,
     } as const;
@@ -127,8 +129,8 @@ export const InternalButton = React.forwardRef(
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-            tabIndex={isDisabled ? -1 : undefined}
-            aria-disabled={isDisabled ? true : undefined}
+            tabIndex={isNotInteractive ? -1 : undefined}
+            aria-disabled={isNotInteractive ? true : undefined}
             download={download}
           >
             {buttonContent}
@@ -139,7 +141,12 @@ export const InternalButton = React.forwardRef(
     }
     return (
       <>
-        <button {...buttonProps} type={formAction === 'none' ? 'button' : 'submit'} disabled={isDisabled}>
+        <button
+          {...buttonProps}
+          type={formAction === 'none' ? 'button' : 'submit'}
+          disabled={disabled}
+          aria-disabled={loading && !disabled ? true : undefined}
+        >
           {buttonContent}
         </button>
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}

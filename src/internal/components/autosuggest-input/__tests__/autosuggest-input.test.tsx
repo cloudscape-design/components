@@ -18,7 +18,9 @@ function render(jsx: React.ReactElement) {
 describe('imperative interface', () => {
   test('focuses input and opens dropdown', () => {
     const ref = React.createRef<AutosuggestInputRef>();
-    const { wrapper } = render(<AutosuggestInput ref={ref} value="" onChange={() => undefined} />);
+    const { wrapper } = render(
+      <AutosuggestInput ref={ref} value="" onChange={() => undefined} dropdownContent="..." />
+    );
     expect(wrapper.findInput().findNativeInput().getElement()).not.toHaveFocus();
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     ref.current!.focus();
@@ -28,7 +30,9 @@ describe('imperative interface', () => {
 
   test('focuses input and keeps dropdown closed', () => {
     const ref = React.createRef<AutosuggestInputRef>();
-    const { wrapper } = render(<AutosuggestInput ref={ref} value="" onChange={() => undefined} />);
+    const { wrapper } = render(
+      <AutosuggestInput ref={ref} value="" onChange={() => undefined} dropdownContent="..." />
+    );
     expect(wrapper.findInput().findNativeInput().getElement()).not.toHaveFocus();
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     ref.current!.focus({ preventDropdown: true });
@@ -51,7 +55,7 @@ describe('imperative interface', () => {
   test('opens and closes dropdown', () => {
     const ref = React.createRef<AutosuggestInputRef>();
     const onChange = jest.fn();
-    const { wrapper } = render(<AutosuggestInput ref={ref} value="123" onChange={onChange} />);
+    const { wrapper } = render(<AutosuggestInput ref={ref} value="123" onChange={onChange} dropdownContent="..." />);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     act(() => ref.current!.open());
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
@@ -62,7 +66,7 @@ describe('imperative interface', () => {
 
 describe('keyboard interactions', () => {
   test('closes dropdown on enter and opens it on arrow keys', () => {
-    const { wrapper } = render(<AutosuggestInput value="" onChange={() => undefined} />);
+    const { wrapper } = render(<AutosuggestInput value="" onChange={() => undefined} dropdownContent="..." />);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.down);
@@ -76,7 +80,9 @@ describe('keyboard interactions', () => {
   });
 
   test('onPressEnter can prevent dropdown from closing', () => {
-    const { wrapper } = render(<AutosuggestInput value="" onChange={() => undefined} onPressEnter={() => true} />);
+    const { wrapper } = render(
+      <AutosuggestInput value="" onChange={() => undefined} onPressEnter={() => true} dropdownContent="..." />
+    );
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.down);
@@ -88,7 +94,7 @@ describe('keyboard interactions', () => {
 
   test('closes dropdown and clears input on esc', () => {
     const onChange = jest.fn();
-    const { wrapper, rerender } = render(<AutosuggestInput value="1" onChange={onChange} />);
+    const { wrapper, rerender } = render(<AutosuggestInput value="1" onChange={onChange} dropdownContent="..." />);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.down);
@@ -103,7 +109,7 @@ describe('keyboard interactions', () => {
     expect(onChange).toBeCalledTimes(1);
     expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '' } }));
 
-    rerender(<AutosuggestInput value="" onChange={onChange} />);
+    rerender(<AutosuggestInput value="" onChange={onChange} dropdownContent="..." />);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
@@ -123,6 +129,7 @@ describe('keyboard interactions', () => {
         onPressArrowDown={onPressArrowDown}
         onPressEnter={onPressEnter}
         onKeyDown={onKeyDown}
+        dropdownContent="..."
       />
     );
 
@@ -160,7 +167,7 @@ describe('input events', () => {
 
   test('opens dropdown and calls onChange when input changes', () => {
     const onChange = jest.fn();
-    const { wrapper } = render(<AutosuggestInput value="1" onChange={onChange} />);
+    const { wrapper } = render(<AutosuggestInput value="1" onChange={onChange} dropdownContent="..." />);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     act(() => wrapper.findInput().setInputValue('2'));
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
@@ -169,7 +176,9 @@ describe('input events', () => {
 
   test('opens dropdown and calls onFocus when input receives focus', () => {
     const onFocus = jest.fn();
-    const { wrapper } = render(<AutosuggestInput value="1" onChange={() => undefined} onFocus={onFocus} />);
+    const { wrapper } = render(
+      <AutosuggestInput value="1" onChange={() => undefined} onFocus={onFocus} dropdownContent="..." />
+    );
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     wrapper.findInput().findNativeInput().focus();
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
@@ -178,7 +187,9 @@ describe('input events', () => {
 
   test('opens dropdown and calls onFocus when input loses focus', () => {
     const onBlur = jest.fn();
-    const { wrapper } = render(<AutosuggestInput value="1" onChange={() => undefined} onBlur={onBlur} />);
+    const { wrapper } = render(
+      <AutosuggestInput value="1" onChange={() => undefined} onBlur={onBlur} dropdownContent="..." />
+    );
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     wrapper.findInput().findNativeInput().focus();
     wrapper.findInput().findNativeInput().blur();
@@ -190,7 +201,7 @@ describe('input events', () => {
     jest.useFakeTimers();
     const onDelayedInput = jest.fn();
     const { wrapper } = render(
-      <AutosuggestInput value="1" onChange={() => undefined} onDelayedInput={onDelayedInput} />
+      <AutosuggestInput value="1" onChange={() => undefined} onDelayedInput={onDelayedInput} dropdownContent="..." />
     );
     act(() => wrapper.findInput().setInputValue('2'));
     expect(onDelayedInput).not.toHaveBeenCalled();
@@ -212,7 +223,7 @@ describe('dropdown events', () => {
             onChange={() => undefined}
             onBlur={onBlur}
             dropdownContentFocusable={dropdownContentFocusable}
-            dropdownContent="content"
+            dropdownContent="..."
           />
         </div>
       );
@@ -231,7 +242,7 @@ describe('blur handling', () => {
     const { wrapper, getByTestId } = render(
       <div>
         <button data-testid="target">target</button>
-        <AutosuggestInput value="1" onChange={() => undefined} onBlur={onBlur} />
+        <AutosuggestInput value="1" onChange={() => undefined} onBlur={onBlur} dropdownContent="..." />
       </div>
     );
     wrapper.findInput().findNativeInput().focus();
@@ -266,6 +277,7 @@ describe('blur handling', () => {
           value="1"
           onChange={() => undefined}
           onBlur={onBlur}
+          dropdownContent="..."
           dropdownFooter={<button data-testid="target">target</button>}
         />
       </div>
@@ -275,4 +287,10 @@ describe('blur handling', () => {
     expect(onBlur).not.toBeCalled();
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
   });
+});
+
+test('dropdown is not shown when no content provided', () => {
+  const { wrapper } = render(<AutosuggestInput value="1" />);
+  act(() => wrapper.findInput().setInputValue('1'));
+  expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
 });

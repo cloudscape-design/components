@@ -6,7 +6,8 @@
 // mixin to apply styles only when keyboard focus is needed
 // requires JavaScript part from useFocusVisible hook to be applied
 @mixin when-visible {
-  &[data-awsui-focus-visible='true']:focus {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &:focus {
     @content;
   }
 }

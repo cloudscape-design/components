@@ -15,7 +15,12 @@ import { getBaseProps } from '../internal/base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { SomeRequired } from '../internal/types';
+import { useInternalI18n } from '../internal/i18n/context';
+
+/**
+ * Provided for backwards compatibility
+ */
+const DEFAULT_EXPAND_ARIA_LABEL = 'Show path';
 
 const DropdownTrigger = (
   clickHandler: () => void,
@@ -49,10 +54,12 @@ const EllipsisDropdown = ({
   onDropdownItemClick,
   onDropdownItemFollow,
 }: EllipsisDropdownProps) => {
+  const i18n = useInternalI18n('breadcrumb-group');
+
   return (
     <li className={styles.ellipsis}>
       <InternalButtonDropdown
-        ariaLabel={ariaLabel}
+        ariaLabel={i18n('expandAriaLabel', ariaLabel) ?? DEFAULT_EXPAND_ARIA_LABEL}
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}
@@ -71,11 +78,8 @@ export const getEventDetail = <T extends BreadcrumbGroupProps.Item>(item: T) => 
   href: item.href,
 });
 
-type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> = SomeRequired<
-  BreadcrumbGroupProps<T>,
-  'expandAriaLabel'
-> &
-  InternalBaseComponentProps;
+type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
+  BreadcrumbGroupProps<T> & InternalBaseComponentProps;
 
 export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],
@@ -113,7 +117,7 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
   };
 
   // Add ellipsis
-  if (breadcrumbItems.length >= 3) {
+  if (breadcrumbItems.length >= 2) {
     const dropdownItems: Array<LinkItem> = items
       .slice(1, items.length - 1)
       .map((item: BreadcrumbGroupProps.Item, index: number) => ({
@@ -138,7 +142,12 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
   return (
     <nav
       {...baseProps}
-      className={clsx(styles['breadcrumb-group'], isMobile && styles.mobile, baseProps.className)}
+      className={clsx(
+        styles['breadcrumb-group'],
+        isMobile && styles.mobile,
+        items.length <= 2 && styles['mobile-short'],
+        baseProps.className
+      )}
       aria-label={ariaLabel || undefined}
       ref={__internalRootRef}
     >

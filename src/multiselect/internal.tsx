@@ -28,12 +28,14 @@ import { checkOptionValueField } from '../select/utils/check-option-value-field.
 import Filter from '../select/parts/filter';
 import Trigger from '../select/parts/trigger';
 
-import TokenGroup, { TokenGroupProps } from '../token-group/index.js';
+import InternalTokenGroup from '../token-group/internal';
+import { TokenGroupProps } from '../token-group/interfaces';
 
 import { MultiselectProps } from './interfaces';
 import styles from './styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { joinStrings } from '../internal/utils/strings';
+import { useInternalI18n } from '../internal/i18n/context';
 
 type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps;
 
@@ -45,6 +47,7 @@ const InternalMultiselect = React.forwardRef(
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
+      filteringResultsText,
       ariaRequired,
       placeholder,
       disabled,
@@ -80,6 +83,7 @@ const InternalMultiselect = React.forwardRef(
 
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+    const i18n = useInternalI18n('multiselect');
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
@@ -88,7 +92,11 @@ const InternalMultiselect = React.forwardRef(
     });
     const useInteractiveGroups = true;
     const [filteringValue, setFilteringValue] = useState('');
-    const { filteredOptions, parentMap } = prepareOptions(options, filteringType, filteringValue);
+    const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+      options,
+      filteringType,
+      filteringValue
+    );
 
     const updateSelectedOption = useCallback(
       (option: OptionDefinition | OptionGroup) => {
@@ -135,6 +143,8 @@ const InternalMultiselect = React.forwardRef(
 
     const multiSelectAriaLabelId = useUniqueId('multiselect-arialabel-');
 
+    const footerId = useUniqueId('footer');
+
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const {
       isOpen,
@@ -160,6 +170,7 @@ const InternalMultiselect = React.forwardRef(
       fireLoadItems,
       setFilteringValue,
       useInteractiveGroups,
+      statusType,
     });
 
     const handleNativeSearch = useNativeSearch({
@@ -172,6 +183,9 @@ const InternalMultiselect = React.forwardRef(
 
     const isEmpty = !options || options.length === 0;
     const isNoMatch = filteredOptions && filteredOptions.length === 0;
+    const isFiltered =
+      filteringType !== 'none' && filteringValue.length > 0 && filteredOptions && filteredOptions.length > 0;
+    const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
     const dropdownStatus = useDropdownStatus({
       statusType,
       empty,
@@ -182,6 +196,8 @@ const InternalMultiselect = React.forwardRef(
       isEmpty,
       isNoMatch,
       noMatch,
+      isFiltered,
+      filteringResultsText: filteredText,
       onRecoveryClick: handleRecoveryClick,
       errorIconAriaLabel: restProps.errorIconAriaLabel,
     });
@@ -215,6 +231,7 @@ const InternalMultiselect = React.forwardRef(
       ...getMenuProps(),
       onLoadMore: handleLoadMore,
       ariaLabelledby: joinStrings(multiSelectAriaLabelId, controlId),
+      ariaDescribedby: dropdownStatus.content ? footerId : undefined,
     };
 
     const announcement = useAnnouncement({
@@ -235,7 +252,9 @@ const InternalMultiselect = React.forwardRef(
       iconUrl: option.iconUrl,
       iconSvg: option.iconSvg,
       tags: option.tags,
-      dismissLabel: deselectAriaLabel ? deselectAriaLabel(option) : undefined,
+      dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
+        format({ option__label: option.label ?? '' })
+      ),
     }));
 
     useEffect(() => {
@@ -283,12 +302,18 @@ const InternalMultiselect = React.forwardRef(
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}
-          footer={dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null}
+          footer={
+            dropdownStatus.isSticky ? (
+              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+            ) : null
+          }
           expandToViewport={expandToViewport}
         >
           <ListComponent
             listBottom={
-              !dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null
+              !dropdownStatus.isSticky ? (
+                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+              ) : null
             }
             menuProps={menuProps}
             getOptionProps={getOptionProps}
@@ -303,7 +328,8 @@ const InternalMultiselect = React.forwardRef(
           />
         </Dropdown>
         {showTokens && (
-          <TokenGroup
+          <InternalTokenGroup
+            alignment="horizontal"
             limit={tokenLimit}
             items={tokens}
             onDismiss={handleTokenDismiss}

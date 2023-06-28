@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.file-option {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  gap: awsui.$space-scaled-xs;
+}
+
+.file-option-metadata {
+  width: 100%;
+  overflow: hidden;
+}
+
+.file-option-name-label {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

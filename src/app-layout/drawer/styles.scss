@@ -1,0 +1,96 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles/tokens' as awsui;
+@use '../constants' as constants;
+
+// should be above sticky notifications
+$drawer-z-index: 830;
+// should be above mobile toolbar
+$drawer-z-index-mobile: 1001;
+
+.toggle {
+  box-sizing: border-box;
+  padding: constants.$toggle-padding;
+}
+
+.drawer-triggers {
+  box-sizing: border-box;
+}
+
+.drawer {
+  flex-shrink: 0;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: awsui.$shadow-panel;
+  &:not(.drawer-mobile) {
+    z-index: $drawer-z-index;
+  }
+  &-closed {
+    min-width: constants.$sidebar-size-closed;
+    cursor: pointer;
+    &.drawer-mobile {
+      display: none;
+    }
+  }
+}
+.drawer-content {
+  position: fixed;
+  overflow: auto;
+  background-color: awsui.$color-background-layout-panel-content;
+  .drawer-mobile > & {
+    z-index: $drawer-z-index-mobile;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .drawer-closed > & {
+    width: constants.$sidebar-size-closed;
+    &:hover {
+      background: awsui.$color-background-layout-panel-hover;
+    }
+    &.non-interactive {
+      &:hover {
+        background: awsui.$color-background-layout-panel-content;
+        cursor: default;
+      }
+    }
+  }
+  & > [aria-hidden='true'] {
+    display: none;
+  }
+}
+
+.trigger {
+  .drawer-content > .drawer-triggers > & {
+    background: awsui.$color-background-layout-toggle-default;
+    border: 0;
+    border-radius: 0;
+    color: awsui.$color-text-layout-toggle;
+    padding: constants.$drawers-padding-vertical awsui.$space-s;
+    margin-top: 1px;
+
+    &:not(:last-child) {
+      box-shadow: 0px 1px awsui.$color-shadow-layout-toggle;
+    }
+    &-drawer {
+      &:hover:not(.selected) {
+        color: awsui.$color-text-layout-toggle-hover;
+        &:not(:last-child) {
+          box-shadow: 0px 1px awsui.$color-shadow-layout-toggle;
+        }
+      }
+    }
+
+    &.selected,
+    &.selected:hover {
+      background-color: awsui.$color-background-layout-toggle-selected-default;
+      border-top: 1px solid awsui.$color-background-layout-toggle-selected-default;
+      box-shadow: none;
+      color: awsui.$color-text-layout-toggle-active;
+      margin: 0;
+    }
+  }
+}

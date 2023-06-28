@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '../../button/internal';
 import FormField from '../../form-field/internal';
 import SpaceBetween from '../../space-between/internal';
@@ -8,6 +8,9 @@ import { useClickAway } from './click-away';
 import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
 import { Optional } from '../../internal/types';
+import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
+import LiveRegion from '../../internal/components/live-region';
+import { useInternalI18n } from '../../internal/i18n/context';
 
 // A function that does nothing
 const noop = () => undefined;
@@ -16,7 +19,7 @@ interface InlineEditorProps<ItemType> {
   ariaLabels: TableProps['ariaLabels'];
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
-  onEditEnd: () => void;
+  onEditEnd: (cancelled: boolean) => void;
   submitEdit: TableProps.SubmitEditFunction<ItemType>;
   __onRender?: () => void;
 }
@@ -31,6 +34,9 @@ export function InlineEditor<ItemType>({
 }: InlineEditorProps<ItemType>) {
   const [currentEditLoading, setCurrentEditLoading] = useState(false);
   const [currentEditValue, setCurrentEditValue] = useState<Optional<any>>();
+  const i18n = useInternalI18n('table');
+
+  const focusLockRef = useRef<FocusLockRef>(null);
 
   const cellContext = {
     currentValue: currentEditValue,
@@ -41,7 +47,7 @@ export function InlineEditor<ItemType>({
     if (!cancel) {
       setCurrentEditValue(undefined);
     }
-    onEditEnd();
+    onEditEnd(cancel);
   }
 
   async function onSubmitClick(evt: React.FormEvent) {
@@ -58,6 +64,7 @@ export function InlineEditor<ItemType>({
       finishEdit();
     } catch (e) {
       setCurrentEditLoading(false);
+      focusLockRef.current?.focusFirst();
     }
   }
 
@@ -84,48 +91,63 @@ export function InlineEditor<ItemType>({
   }, [__onRender]);
 
   // asserting non-undefined editConfig here because this component is unreachable otherwise
-  const { ariaLabel = undefined, validation = noop, errorIconAriaLabel, editingCell } = column.editConfig!;
+  const {
+    ariaLabel = undefined,
+    validation = noop,
+    errorIconAriaLabel,
+    constraintText,
+    editingCell,
+  } = column.editConfig!;
 
   return (
-    <form
-      ref={clickAwayRef}
-      onSubmit={onSubmitClick}
-      onKeyDown={handleEscape}
-      className={styles['body-cell-editor-form']}
-    >
-      <FormField
-        stretch={true}
-        label={ariaLabel}
-        __hideLabel={true}
-        __disableGutters={true}
-        __useReactAutofocus={true}
-        i18nStrings={{ errorIconAriaLabel }}
-        errorText={validation(item, currentEditValue)}
+    <FocusLock restoreFocus={true} ref={focusLockRef}>
+      <div
+        role="dialog"
+        ref={clickAwayRef}
+        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+        onKeyDown={handleEscape}
       >
-        <div className={styles['body-cell-editor-row']}>
-          {editingCell(item, cellContext)}
-          <span className={styles['body-cell-editor-controls']}>
-            <SpaceBetween direction="horizontal" size="xxs">
-              {!currentEditLoading ? (
-                <Button
-                  ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
-                  formAction="none"
-                  iconName="close"
-                  variant="inline-icon"
-                  onClick={onCancel}
-                />
-              ) : null}
-              <Button
-                ariaLabel={ariaLabels?.submitEditLabel?.(column)}
-                formAction="submit"
-                iconName="check"
-                variant="inline-icon"
-                loading={currentEditLoading}
-              />
-            </SpaceBetween>
-          </span>
-        </div>
-      </FormField>
-    </form>
+        <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
+          <FormField
+            stretch={true}
+            label={ariaLabel}
+            constraintText={constraintText}
+            __hideLabel={true}
+            __disableGutters={true}
+            i18nStrings={{ errorIconAriaLabel }}
+            errorText={validation(item, currentEditValue)}
+          >
+            <div className={styles['body-cell-editor-row']}>
+              {editingCell(item, cellContext)}
+              <span className={styles['body-cell-editor-controls']}>
+                <SpaceBetween direction="horizontal" size="xxs">
+                  {!currentEditLoading ? (
+                    <Button
+                      ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
+                      formAction="none"
+                      iconName="close"
+                      variant="inline-icon"
+                      onClick={onCancel}
+                    />
+                  ) : null}
+                  <Button
+                    ariaLabel={ariaLabels?.submitEditLabel?.(column)}
+                    formAction="submit"
+                    iconName="check"
+                    variant="inline-icon"
+                    loading={currentEditLoading}
+                  />
+                </SpaceBetween>
+                <LiveRegion>
+                  {currentEditLoading
+                    ? i18n('ariaLabels.submittingEditText', ariaLabels?.submittingEditText?.(column))
+                    : ''}
+                </LiveRegion>
+              </span>
+            </div>
+          </FormField>
+        </form>
+      </div>
+    </FocusLock>
   );
 }

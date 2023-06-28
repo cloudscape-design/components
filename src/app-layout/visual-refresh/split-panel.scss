@@ -22,7 +22,7 @@ section.split-panel-bottom {
   bottom: var(#{custom-props.$footerHeight});
   display: none;
   grid-column: 1 / 6;
-  grid-row: 5;
+  grid-row: 10;
   height: auto;
   /*
   The position sticky will work in conjunction with the align self: end; property.
@@ -52,7 +52,7 @@ section.split-panel-bottom {
     grid-column-start: 2;
   }
 
-  &.is-tools-open.position-bottom {
+  &.has-open-drawer.position-bottom {
     grid-column-end: 5;
   }
 

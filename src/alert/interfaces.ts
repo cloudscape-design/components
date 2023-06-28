@@ -31,6 +31,7 @@ export interface AlertProps extends BaseComponentProps {
   dismissible?: boolean;
   /**
    * Adds an aria-label to the dismiss button.
+   * @i18n
    */
   dismissAriaLabel?: string;
   /**
@@ -59,7 +60,7 @@ export interface AlertProps extends BaseComponentProps {
   onDismiss?: NonCancelableEventHandler;
   /**
    * Fired when the user clicks the action button.
-   * @deprecated Replaced by `action`.
+   * **Deprecated** Replaced by `action`.
    */
   onButtonClick?: NonCancelableEventHandler;
 }

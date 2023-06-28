@@ -6,11 +6,13 @@ import { AreaChartWrapper } from '../../../lib/components/test-utils/dom';
 import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import popoverStyles from '../../../lib/components/popover/styles.css.js';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 import { cloneDeep } from 'lodash';
 import '../../__a11y__/to-validate-a11y';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
@@ -76,6 +78,7 @@ test('error and recovery texts are assigned', () => {
       loadingText="Loading..."
       errorText="Ooops!"
       recoveryText="Try again"
+      onRecoveryClick={() => {}}
     />
   );
   expect(wrapper.findStatusContainer()!.getElement()).toHaveTextContent('Ooops! Try again');
@@ -311,6 +314,21 @@ test('popover size is assigned', () => {
 test('value formatters are assigned', () => {
   const { wrapper } = renderAreaChart(
     <AreaChart
+      series={[areaSeries1]}
+      statusType="finished"
+      detailPopoverFooter={xValue => <span>Details about {xValue}</span>}
+    />
+  );
+
+  // Show popover for the first data point.
+  wrapper.findApplication()!.focus();
+
+  expect(wrapper.findDetailPopover()!.findContent()!.getElement()).toHaveTextContent('Details about 0');
+});
+
+test('can contain custom content in the footer', () => {
+  const { wrapper } = renderAreaChart(
+    <AreaChart
       series={[
         {
           ...areaSeries1,
@@ -433,4 +451,30 @@ test('warns when data series have different x values', () => {
   renderAreaChart(<AreaChart series={[s1, s2]} statusType="finished" />);
 
   expect(warnOnce).toHaveBeenCalledTimes(1);
+});
+
+describe('i18n', () => {
+  test('detailTotalLabel can be provided through provider', () => {
+    const { wrapper } = renderAreaChart(
+      <TestI18nProvider
+        messages={{
+          'area-chart': { 'i18nStrings.detailTotalLabel': 'Custom total label' },
+          popover: { dismissAriaLabel: 'Custom dismiss' },
+        }}
+      >
+        <AreaChart series={[areaSeries1]} statusType="finished" />
+      </TestI18nProvider>
+    );
+
+    // Show popover for the first data point.
+    wrapper.findApplication()!.focus();
+    // Pin popover.
+    wrapper.findApplication()!.keydown(KeyCode.enter);
+
+    expect(wrapper.findDetailPopover()!.findDismissButton()!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom dismiss'
+    );
+    expect(wrapper.findDetailPopover()!.findContent()!.getElement()).toHaveTextContent('Custom total label');
+  });
 });

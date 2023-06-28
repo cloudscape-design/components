@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import { pie } from 'd3-shape';
 
 import { KeyCode } from '../internal/keycode';
-import { nodeContains } from '../internal/utils/dom';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import ChartPopover from '../internal/components/chart-popover';
 import SeriesDetails from '../internal/components/chart-series-details';
@@ -21,6 +20,8 @@ import Segments from './segments';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
+import { useInternalI18n } from '../internal/i18n/context';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -66,6 +67,7 @@ export default <T extends PieChartProps.Datum>({
   hideDescriptions,
   detailPopoverContent,
   detailPopoverSize,
+  detailPopoverFooter,
   width,
   additionalFilters,
   hideFilter,
@@ -128,7 +130,13 @@ export default <T extends PieChartProps.Datum>({
     return null;
   }, [pieData, highlightedSegment]);
 
-  const detailFunction = detailPopoverContent || defaultDetails(i18nStrings);
+  const detailPopoverFooterContent = useMemo(
+    () => (detailPopoverFooter && highlightedSegment ? detailPopoverFooter(highlightedSegment) : null),
+    [detailPopoverFooter, highlightedSegment]
+  );
+
+  const i18n = useInternalI18n('pie-chart');
+  const detailFunction = detailPopoverContent || defaultDetails(i18n, i18nStrings);
   const details = tooltipData ? detailFunction(tooltipData.datum, dataSum) : [];
   const tooltipContent = tooltipData && <SeriesDetails details={details} />;
 
@@ -271,7 +279,7 @@ export default <T extends PieChartProps.Datum>({
   const onBlur = useCallback(
     (event: React.FocusEvent) => {
       const blurTarget = event.relatedTarget || event.target;
-      if (blurTarget === null || !(blurTarget instanceof Element) || !nodeContains(containerRef.current, blurTarget)) {
+      if (blurTarget === null || !(blurTarget instanceof Element) || !nodeBelongs(containerRef.current, blurTarget)) {
         // We only need to close the tooltip and remove the pinned segment so that we keep track of the current
         // highlighted legendSeries. using clearHighlightedSegment() would set the legendSeries to null, in that case
         // using Keyboard Tab will always highlight the first legend item in the legend component.
@@ -406,6 +414,9 @@ export default <T extends PieChartProps.Datum>({
               onMouseLeave={onPopoverLeave}
             >
               {tooltipContent}
+              {detailPopoverFooterContent && (
+                <InternalBox margin={{ top: 's' }}>{detailPopoverFooterContent}</InternalBox>
+              )}
             </ChartPopover>
           )}
         </div>

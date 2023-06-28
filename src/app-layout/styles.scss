@@ -7,11 +7,31 @@
 @use '../internal/styles/tokens' as awsui;
 @use './constants' as constants;
 
-$drawer-z-index: 830;
-// should be above mobile toolbar
-$drawer-z-index-mobile: 1001;
+/* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+// these styles are expected to apply to the entire document, so they do not follow the scoping rules
+.resize {
+  &-active * {
+    user-select: none;
+  }
+  &-active iframe {
+    // Prevents iframes from eating the mouseup event if the cursor is on top of it.
+    pointer-events: none;
+  }
+  &-side * {
+    cursor: ew-resize;
+  }
+  &-bottom * {
+    cursor: ns-resize;
+  }
+}
+/* stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
 
-$drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-layout-toggle-padding});
+.with-motion {
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-refresh-only-fast;
+    transition-property: border-color, opacity, width;
+  }
+}
 
 // double flex container to work around flexbox issue in IE
 // https://github.com/philipwalton/flexbugs#flexbug-3
@@ -20,6 +40,7 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   display: flex;
   flex-direction: column;
   position: relative;
+  color: awsui.$color-text-body-default;
 }
 
 .root-no-scroll {
@@ -54,75 +75,6 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   visibility: hidden;
 }
 
-.navigation-panel {
-  overflow-anchor: none;
-}
-
-.drawer {
-  flex-shrink: 0;
-  position: relative;
-  word-wrap: break-word;
-  box-shadow: awsui.$shadow-panel;
-
-  &:not(.drawer-mobile) {
-    z-index: $drawer-z-index;
-  }
-  &-closed {
-    min-width: constants.$sidebar-size-closed;
-    cursor: pointer;
-    &.drawer-mobile {
-      display: none;
-    }
-  }
-}
-
-.drawer-content {
-  position: fixed;
-  overflow: auto;
-  background-color: awsui.$color-background-layout-panel-content;
-
-  .drawer-mobile > & {
-    z-index: $drawer-z-index-mobile;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-
-  .drawer-closed > & {
-    width: constants.$sidebar-size-closed;
-    &:hover {
-      background: awsui.$color-background-layout-panel-hover;
-    }
-  }
-
-  & > [aria-hidden='true'] {
-    display: none;
-  }
-}
-
-.toggle {
-  box-sizing: border-box;
-  padding: constants.$toggle-padding;
-}
-
-.visual-refresh-toggle {
-  position: fixed;
-  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
-  &-type-tools {
-    right: 0;
-  }
-  &-type-navigation {
-    left: 0;
-  }
-  &[aria-hidden='true'] {
-    visibility: hidden;
-  }
-  &[aria-hidden='false'] {
-    visibility: visible;
-  }
-}
-
 .breadcrumbs-desktop {
   padding-top: awsui.$space-scaled-m;
   padding-bottom: awsui.$space-scaled-s;
@@ -144,27 +96,4 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   // extra top padding when there are no breadcrumbs above,
   // applied to content or content header, whatever comes first
   padding-top: awsui.$space-scaled-m;
-}
-
-.panel-wrapper-outer {
-  position: fixed;
-  height: 100%;
-  z-index: $drawer-z-index;
-  display: flex;
-
-  &.mobile {
-    left: 0;
-    right: 0;
-    z-index: -1;
-    pointer-events: none;
-    &.open {
-      z-index: $drawer-z-index-mobile;
-      width: 100vw;
-      pointer-events: auto;
-    }
-  }
-}
-
-.panel-wrapper-inner {
-  background: awsui.$color-background-layout-panel-content;
 }

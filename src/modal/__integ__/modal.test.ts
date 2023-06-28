@@ -51,3 +51,46 @@ test(
     await expect(page.isFocused('body')).resolves.toBe(true);
   })
 );
+
+test(
+  'should not let the sticky footer cover focused elements',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/scroll-padding');
+
+    // Open modal
+    await page.click('[data-testid="modal-trigger"]');
+    const modal = createWrapper().findModal();
+    const modalContent = modal.findContent();
+    const footerSelector = modal.findFooter().toSelector();
+    for (let i = 0; i < 100; i++) {
+      page.keys('Tab');
+      const input = modalContent
+        .findAll('div')
+        .get(i + 1)
+        .find('input');
+      const inputSelector = input.toSelector();
+      expect(await page.isFocused(inputSelector)).toBe(true);
+      const inputBox = await page.getBoundingBox(inputSelector);
+      const footerBox = await page.getBoundingBox(footerSelector);
+      const inputCenter = inputBox.top + inputBox.height / 2;
+      expect(inputCenter).toBeLessThan(footerBox.top);
+    }
+  })
+);
+
+test(
+  'should not let content with z-index overlap footer',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/vertical-scroll');
+
+    // Open modal
+    await page.click('[data-testid="modal-trigger"]');
+    const modal = createWrapper().findModal();
+    const footerSelector = modal.findFooter().toSelector();
+
+    // this will throw an error if the footer is overlapped by the content
+    await page.click(footerSelector);
+  })
+);

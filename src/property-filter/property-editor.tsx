@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-import { FilteringProperty, I18nStrings, Token, ExtendedOperatorForm, ComparisonOperator } from './interfaces';
+import { I18nStrings, Token, ExtendedOperatorForm, ComparisonOperator, InternalFilteringProperty } from './interfaces';
 import styles from './styles.css.js';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 
-interface PorpertyEditorProps<TokenValue> {
-  property: FilteringProperty;
+interface PropertyEditorProps<TokenValue> {
+  property: InternalFilteringProperty;
   operator: ComparisonOperator;
   filter: string;
   operatorForm: ExtendedOperatorForm<TokenValue>;
@@ -25,9 +25,9 @@ export function PropertyEditor<TokenValue = any>({
   onCancel,
   onSubmit,
   i18nStrings,
-}: PorpertyEditorProps<TokenValue>) {
+}: PropertyEditorProps<TokenValue>) {
   const [value, onChange] = useState<null | TokenValue>(null);
-  const submitToken = () => onSubmit({ propertyKey: property.key, operator, value });
+  const submitToken = () => onSubmit({ propertyKey: property.propertyKey, operator, value });
   return (
     <div className={styles['property-editor']}>
       <div className={styles['property-editor-form']}>

@@ -4,9 +4,11 @@ import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { TableBodyCell } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
+import { renderHook } from '../../__tests__/render-hook';
+import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 
 const testItem = {
-  test: 'test',
+  test: 'testData',
 };
 
 const column: TableProps.ColumnDefinition<typeof testItem> = {
@@ -25,6 +27,10 @@ const column: TableProps.ColumnDefinition<typeof testItem> = {
 const onEditEnd = jest.fn();
 const onEditStart = jest.fn();
 
+const { result } = renderHook(() =>
+  useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
+);
+
 const TestComponent = ({ isEditing = false }) => {
   return (
     <table>
@@ -37,7 +43,7 @@ const TestComponent = ({ isEditing = false }) => {
             onEditStart={onEditStart}
             onEditEnd={onEditEnd}
             ariaLabels={{
-              activateEditLabel: () => 'activate edit',
+              activateEditLabel: (column, item) => `Edit ${item.test} ${column.id}`,
               cancelEditLabel: () => 'cancel edit',
               submitEditLabel: () => 'submit edit',
             }}
@@ -48,6 +54,8 @@ const TestComponent = ({ isEditing = false }) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            stickyState={result.current}
+            columnId="id"
           />
         </tr>
       </tbody>
@@ -78,6 +86,8 @@ const TestComponent2 = ({ column }: any) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            stickyState={result.current}
+            columnId="id"
           />
         </tr>
       </tbody>
@@ -93,7 +103,7 @@ describe('TableBodyCell', () => {
 
   it('should call onEditStart', () => {
     render(<TestComponent />);
-    fireEvent.click(screen.getByRole('button', { name: 'activate edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Edit testData test' }));
     expect(onEditStart).toHaveBeenCalled();
   });
 
@@ -103,14 +113,14 @@ describe('TableBodyCell', () => {
     expect(onEditEnd).toHaveBeenCalled();
   });
 
-  it('should call onEditEnd with value', () => {
+  it('should call onEditEnd with value when submitting', () => {
     const { container } = render(<TestComponent isEditing={true} />);
     fireEvent.change(container.querySelector('input')!, { target: { value: 'test2' } });
     fireEvent.click(screen.getByRole('button', { name: 'submit edit' }));
     expect(onEditEnd).toHaveBeenCalled();
   });
 
-  it('should call onEditEnd with value', () => {
+  it('should call onEditEnd with value when cancelling', () => {
     const { container } = render(<TestComponent isEditing={true} />);
     fireEvent.change(container.querySelector('input')!, { target: { value: 'test2' } });
     fireEvent.click(screen.getByRole('button', { name: 'cancel edit' }));

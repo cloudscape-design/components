@@ -3,10 +3,11 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Table from '../../../lib/components/table';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 

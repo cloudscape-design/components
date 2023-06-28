@@ -35,6 +35,7 @@ export interface FormFieldProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: FormFieldProps.I18nStrings;
 
@@ -91,11 +92,4 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    * Disable the gutter applied by default.
    */
   __disableGutters?: boolean;
-
-  /**
-   * Use a React based implementation of the autofocus behavior. This is to prevent scroll jumps
-   * when the autofocus behavior is triggered. Built-in browser autofocus behavior seems to
-   * trigger a scroll jump even when the element is already in the viewport.
-   */
-  __useReactAutofocus?: boolean;
 }

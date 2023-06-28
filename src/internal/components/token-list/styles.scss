@@ -1,0 +1,92 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles/tokens' as awsui;
+@use '../../styles' as styles;
+@use '../../hooks/focus-visible' as focus-visible;
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-scaled-xs;
+
+  &.horizontal {
+    gap: awsui.$space-xs;
+    flex-direction: row;
+  }
+  &.vertical {
+    flex-direction: column;
+  }
+}
+
+.list {
+  display: contents;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &.horizontal,
+  &.vertical {
+    display: flex;
+    flex-wrap: wrap;
+    gap: awsui.$space-xs;
+  }
+  &.horizontal {
+    flex-direction: row;
+  }
+  &.vertical {
+    flex-direction: column;
+  }
+}
+
+.list-item {
+  // To override v2.1 list styling
+  padding: 0;
+  margin: 0;
+}
+
+.toggle-container-inline {
+  padding-left: awsui.$space-xs;
+  display: flex;
+  align-items: center;
+}
+
+.toggle {
+  @include styles.styles-reset;
+  @include styles.link-default;
+
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: styles.$control-border-width solid transparent;
+
+  padding: 0;
+
+  // Icon svg has one pixel around it. We need to shift the button one
+  // pixel to the left to vertically align it with the input field
+  margin-left: -1px;
+
+  &:active,
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    text-decoration-color: transparent;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
+  }
+
+  > .description {
+    margin-left: awsui.$space-xxs;
+  }
+}
+
+.separator {
+  margin: 0px awsui.$space-scaled-m;
+  width: awsui.$border-divider-section-width;
+  background-color: awsui.$color-border-divider-default;
+}

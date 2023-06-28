@@ -14,6 +14,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
+  showOutline?: boolean;
 }
 
 const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
@@ -23,6 +24,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       name,
       checked,
       disabled,
+      ariaRequired,
       indeterminate,
       children,
       description,
@@ -31,6 +33,8 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       onBlur,
       onChange,
       tabIndex,
+      showOutline,
+      ariaControls,
       __internalRootRef,
       ...rest
     },
@@ -60,6 +64,8 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}
         ariaDescribedby={ariaDescribedby}
+        ariaControls={ariaControls}
+        showOutline={showOutline}
         nativeControl={nativeControlProps => (
           <input
             {...nativeControlProps}
@@ -67,6 +73,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             type="checkbox"
             checked={checked}
             name={name}
+            aria-required={ariaRequired ? 'true' : undefined}
             tabIndex={tabIndex}
             onFocus={() => fireNonCancelableEvent(onFocus)}
             onBlur={() => fireNonCancelableEvent(onBlur)}

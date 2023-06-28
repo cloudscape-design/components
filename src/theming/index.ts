@@ -6,15 +6,17 @@ import { preset, TypedOverride } from '../internal/generated/theming';
 export type Theme = TypedOverride;
 export interface ApplyThemeParams {
   theme: Theme;
+  baseThemeId?: string;
 }
 
 export interface ApplyThemeResult {
   reset: () => void;
 }
 
-export function applyTheme({ theme }: ApplyThemeParams): ApplyThemeResult {
+export function applyTheme({ theme, baseThemeId }: ApplyThemeParams): ApplyThemeResult {
   return coreApplyTheme({
     override: theme,
     preset,
+    baseThemeId,
   });
 }

@@ -33,7 +33,7 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
   /**
    * An event handler called when the value changes.
    * The event `detail` contains the current value of the code editor content.
-   * @deprecated Replaced by `onDelayedChange`.
+   * **Deprecated** Replaced by `onDelayedChange`.
    */
   onChange?: NonCancelableEventHandler<CodeEditorProps.ChangeDetail>;
 
@@ -97,8 +97,9 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
    * * `errorState` - Specifies the text to display if there is an error loading Ace.
    * * `errorStateRecovery`: Specifies the text for the recovery button that's displayed next to the error text.
    *    Use the `recoveryClick` event to do a recovery action (for example, retrying the request).
+   * @i18n
    */
-  i18nStrings: CodeEditorProps.I18nStrings;
+  i18nStrings?: CodeEditorProps.I18nStrings;
 
   /**
    * Specifies the height of the code editor document.
@@ -110,6 +111,11 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
    * The event `detail` contains the new height of the editor in pixels.
    */
   onEditorContentResize?: NonCancelableEventHandler<CodeEditorProps.ResizeDetail>;
+
+  /**
+   * Adds `aria-label` to the code editor's textarea element.
+   */
+  ariaLabel?: string;
 }
 
 // Prevents typescript from collapsing a string union type into a string type while still allowing any string.
@@ -154,6 +160,10 @@ export namespace CodeEditorProps {
     preferencesModalTheme: string;
     preferencesModalLightThemes: string;
     preferencesModalDarkThemes: string;
+
+    preferencesModalThemeFilteringPlaceholder?: string;
+    preferencesModalThemeFilteringAriaLabel?: string;
+    preferencesModalThemeFilteringClearAriaLabel?: string;
   }
   export interface ResizeDetail {
     height: number;
@@ -164,5 +174,12 @@ export namespace CodeEditorProps {
 
   export interface ValidateDetail {
     annotations: Ace.Annotation[];
+  }
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the code editor control.
+     */
+    focus(): void;
   }
 }

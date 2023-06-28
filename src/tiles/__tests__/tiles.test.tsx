@@ -37,12 +37,14 @@ test('renders attributes for assistive technology when set', function () {
   const ariaLabelledby = 'something';
   const ariaDescribedby = 'something else';
   const ariaLabel = 'the last one';
+  const ariaControls = 'aria controls';
 
   const { wrapper } = renderTiles(
     <Tiles
       ariaLabelledby={ariaLabelledby}
       ariaDescribedby={ariaDescribedby}
       ariaLabel={ariaLabel}
+      ariaControls={ariaControls}
       value={null}
       items={defaultItems}
     />
@@ -51,6 +53,7 @@ test('renders attributes for assistive technology when set', function () {
   expect(rootElement).toHaveAttribute('aria-labelledby', ariaLabelledby);
   expect(rootElement).toHaveAttribute('aria-describedby', ariaDescribedby);
   expect(rootElement).toHaveAttribute('aria-label', ariaLabel);
+  expect(rootElement).toHaveAttribute('aria-controls', ariaControls);
 });
 
 test('does not render attributes for assistive technology when not set', function () {
@@ -117,12 +120,6 @@ describe('items', () => {
     expect(wrapper.findItems()[0].findLabel().getElement()).toHaveTextContent('');
   });
 
-  test('generates a random name', () => {
-    const { wrapper } = renderTiles(<Tiles value="val1" items={defaultItems} />);
-    expect(wrapper.findInputByValue('val1')!.getElement().name).toMatch(/awsui-tiles-\d+/);
-    expect(wrapper.findInputByValue('val2')!.getElement().name).toMatch(/awsui-tiles-\d+/);
-  });
-
   test('displays the description', () => {
     const { wrapper } = renderTiles(
       <Tiles value={null} items={[{ value: '1', label: 'Please select', description: 'Tile description test' }]} />
@@ -138,6 +135,20 @@ describe('items', () => {
   it('renders the image region for items', function () {
     const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} />);
     expect(wrapper.findItemByValue('val1')!.findImage()).not.toBe(null);
+  });
+});
+
+describe('name', () => {
+  test('propagates its name onto the child tiles', () => {
+    const { wrapper } = renderTiles(<Tiles name="test" value="val1" items={defaultItems} />);
+    expect(wrapper.findInputByValue('val1')!.getElement().name).toMatch('test');
+    expect(wrapper.findInputByValue('val2')!.getElement().name).toMatch('test');
+  });
+
+  test('generates a random name', () => {
+    const { wrapper } = renderTiles(<Tiles value="val1" items={defaultItems} />);
+    expect(wrapper.findInputByValue('val1')!.getElement().name).toMatch(/awsui-tiles-\d+/);
+    expect(wrapper.findInputByValue('val2')!.getElement().name).toMatch(/awsui-tiles-\d+/);
   });
 });
 

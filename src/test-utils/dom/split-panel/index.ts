@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import ButtonWrapper from '../button';
 import styles from '../../../split-panel/styles.selectors.js';
 
@@ -20,7 +20,8 @@ export default class SplitPanelWrapper extends ComponentWrapper {
   }
 
   findOpenButton(): ButtonWrapper | null {
-    return this.findComponent(`.${styles['open-button']}`, ButtonWrapper);
+    const wrapper = createWrapper();
+    return wrapper.findComponent(`.${styles['open-button']}`, ButtonWrapper);
   }
 
   findSlider(): ElementWrapper | null {

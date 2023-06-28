@@ -11,6 +11,7 @@ export interface BaseOption {
 
 export interface OptionDefinition extends BaseOption {
   value?: string;
+  lang?: string;
   labelTag?: string;
   description?: string;
   iconAlt?: string;
@@ -43,4 +44,5 @@ export interface OptionProps extends BaseComponentProps {
   highlightedOption?: boolean;
   selectedOption?: boolean;
   isGroupOption?: boolean;
+  isGenericGroup?: boolean;
 }

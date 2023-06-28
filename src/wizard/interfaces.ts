@@ -50,6 +50,9 @@ export interface WizardProps extends BaseComponentProps {
    * - `nextButton` (string) - The text of the button that enables the user to move to the next step.
    * - `submitButton` (string) - The text of the button that enables the user to submit the form.
    * - `optional` (string) - The text displayed next to the step title and form header title when a step is declared optional.
+   * - `nextButtonLoadingAnnouncement` (string) - The text that a screen reader announces when the *next* button is in a loading state.
+   * - `submitButtonLoadingAnnouncement` (string) - The text that a screen reader announces when the *submit* button is in a loading state.
+   * @i18n
    */
   i18nStrings: WizardProps.I18nStrings;
 
@@ -112,16 +115,18 @@ export namespace WizardProps {
   }
 
   export interface I18nStrings {
-    stepNumberLabel(stepNumber: number): string;
-    collapsedStepsLabel(stepNumber: number, stepsCount: number): string;
+    stepNumberLabel?(stepNumber: number): string;
+    collapsedStepsLabel?(stepNumber: number, stepsCount: number): string;
     skipToButtonLabel?(targetStep: WizardProps.Step, targetStepNumber: number): string;
     navigationAriaLabel?: string;
     errorIconAriaLabel?: string;
-    cancelButton: string;
-    previousButton: string;
-    nextButton: string;
+    cancelButton?: string;
+    previousButton?: string;
+    nextButton?: string;
     submitButton: string;
     optional?: string;
+    nextButtonLoadingAnnouncement?: string;
+    submitButtonLoadingAnnouncement?: string;
   }
 
   export interface NavigateDetail {

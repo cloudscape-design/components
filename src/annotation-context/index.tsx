@@ -10,23 +10,9 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { HotspotProps } from '../hotspot/interfaces';
 import { useTelemetry } from '../internal/hooks/use-telemetry';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getStepInfo } from './utils';
 
 export { AnnotationContextProps };
-
-export function getStepInfo(annotations: readonly AnnotationContextProps.Task[], index: number) {
-  if (index >= 0) {
-    let taskIndex = 0;
-    for (const task of annotations) {
-      if (task.steps.length <= index) {
-        index -= task.steps.length;
-        taskIndex++;
-        continue;
-      }
-      return { task, step: task.steps[index], localIndex: index, taskIndex };
-    }
-  }
-  return { task: undefined, step: undefined, localIndex: 0, taskIndex: 0 };
-}
 
 // constant empty array to keep hook dependency stable
 const emptyTasks: ReadonlyArray<AnnotationContextProps.Task> = [];

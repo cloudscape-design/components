@@ -17,9 +17,9 @@ const handleEditEnd = jest.fn();
 let thereBeErrors = false;
 
 function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender, getByTestId, queryByTestId } = render(jsx);
+  const { container, rerender, getByTestId, queryByTestId, getByRole } = render(jsx);
   const wrapper = createWrapper(container).find('[data-testid="inline-editor"]')!;
-  return { wrapper, rerender, getByTestId, queryByTestId };
+  return { wrapper, rerender, getByTestId, queryByTestId, getByRole };
 }
 
 const TestComponent = () => {
@@ -29,6 +29,7 @@ const TestComponent = () => {
     editConfig: {
       ariaLabel: 'test-input',
       errorIconAriaLabel: 'error-icon',
+      constraintText: 'Requirement',
       validation: () => (thereBeErrors ? 'there be errors' : undefined),
       editingCell: (item: any, { currentValue, setValue }: TableProps.CellContext<string>) => (
         <input value={currentValue ?? item.test} onChange={() => setValue('test')} />
@@ -41,6 +42,7 @@ const TestComponent = () => {
     <div data-testid="inline-editor">
       <InlineEditor
         ariaLabels={{
+          activateEditLabel: () => 'edit cell',
           submitEditLabel: () => 'save edit',
           cancelEditLabel: () => 'cancel edit',
         }}
@@ -67,6 +69,11 @@ describe('InlineEditor', () => {
   it('should render', () => {
     const { getByTestId } = renderComponent(<TestComponent />);
     expect(getByTestId('inline-editor')).toBeInTheDocument();
+  });
+
+  it('should render as a dialog', () => {
+    const { getByRole } = renderComponent(<TestComponent />);
+    expect(getByRole('dialog')).toHaveAttribute('aria-label', 'edit cell');
   });
 
   it('should show error', () => {
@@ -146,5 +153,11 @@ describe('InlineEditor', () => {
       expect(button.findLoadingIndicator()).toBeNull();
       expect(button).not.toHaveAttribute('disabled');
     });
+  });
+
+  it('should show constraint text', () => {
+    const { wrapper } = renderComponent(<TestComponent />);
+
+    expect(wrapper.findFormField()?.findConstraint()?.getElement()).toHaveTextContent('Requirement');
   });
 });

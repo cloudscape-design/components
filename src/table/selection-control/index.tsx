@@ -7,21 +7,19 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../radio-group/radio-button';
 
-import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
+import { InteractiveComponent } from '../thead';
+import { SelectionProps } from '../use-selection';
 
-export interface SelectionControlProps {
-  selectionType: TableProps['selectionType'];
-  checked: boolean;
-  disabled: boolean;
-  name: string;
-  indeterminate?: boolean;
-  onChange?: () => void;
+export interface SelectionControlProps extends SelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
   ariaLabel?: string;
   tabIndex?: -1;
+
+  focusedComponent?: InteractiveComponent | null;
+  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
 
 export default function SelectionControl({
@@ -32,6 +30,9 @@ export default function SelectionControl({
   onFocusDown,
   name,
   ariaLabel,
+
+  focusedComponent,
+  onFocusedComponentChange,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -76,7 +77,14 @@ export default function SelectionControl({
   };
 
   const selector = isMultiSelection ? (
-    <InternalCheckbox {...sharedProps} controlId={controlId} indeterminate={indeterminate} />
+    <InternalCheckbox
+      {...sharedProps}
+      showOutline={focusedComponent?.type === 'selection'}
+      onFocus={() => onFocusedComponentChange?.({ type: 'selection' })}
+      onBlur={() => onFocusedComponentChange?.(null)}
+      controlId={controlId}
+      indeterminate={indeterminate}
+    />
   ) : (
     <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} label={''} />
   );
@@ -92,6 +100,7 @@ export default function SelectionControl({
         htmlFor={controlId}
         className={clsx(styles.label, styles.root)}
         aria-label={ariaLabel}
+        title={ariaLabel}
       >
         {selector}
       </label>

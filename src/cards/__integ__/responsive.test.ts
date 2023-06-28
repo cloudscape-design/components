@@ -4,12 +4,9 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import createWrapper, { CardsWrapper } from '../../../lib/components/test-utils/selectors';
 
-export default class CardsPage extends BasePageObject {
+class CardsPage extends BasePageObject {
   wrapper = new CardsWrapper(createWrapper('body').find(`.${CardsWrapper.rootSelector}`).getElement());
   selectWrapper = createWrapper('body').findSelect();
-  setContainerWidth = async (width: number) => {
-    await this.browser.setWindowSize(width, 500);
-  };
 
   getCardsPerRow = async () => {
     const { width: cardWidth } = await this.getBoundingBox(this.wrapper.findItems().get(1).toSelector());
@@ -18,10 +15,9 @@ export default class CardsPage extends BasePageObject {
   };
 
   testCardsPerRow = async (width: number, cardsPerRow: number) => {
-    if (width) {
-      await this.setContainerWidth(width);
-    }
-    expect(await this.getCardsPerRow()).toEqual(cardsPerRow);
+    await this.setWindowSize({ width, height: 500 });
+    await this.waitForJsTimers();
+    await expect(this.getCardsPerRow()).resolves.toEqual(cardsPerRow);
   };
 
   selectCardsPerRow = async (index: number) => {

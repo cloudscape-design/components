@@ -2,4 +2,4 @@
 // SPDX-License-Identifier: Apache-2.0
 import runA11yTests from './run-a11y-tests';
 
-runA11yTests('visual-refresh', 'dark', ['theming/tokens']);
+runA11yTests('visual-refresh', 'dark');

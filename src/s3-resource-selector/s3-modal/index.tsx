@@ -14,6 +14,7 @@ import { ObjectsTable } from './objects-table';
 import { VersionsTable } from './versions-table';
 import styles from './styles.css.js';
 import { joinObjectPath } from '../utils';
+import { useInternalI18n } from '../../internal/i18n/context';
 
 export interface S3ModalProps {
   alert: React.ReactNode;
@@ -107,6 +108,7 @@ export function S3Modal({
 }: S3ModalProps) {
   const [{ currentView, breadcrumbs, selectedItem }, dispatch] = useReducer(s3BrowseReducer, initialBrowseState);
   const forwardFocusRef = useRef<ForwardFocusRef>(null);
+  const i18n = useInternalI18n('s3-resource-selector');
 
   const isVisualRefresh = useVisualRefresh();
 
@@ -119,13 +121,13 @@ export function S3Modal({
       <InternalModal
         visible={true}
         size="max"
-        closeAriaLabel={i18nStrings?.labelModalDismiss ?? ''}
+        closeAriaLabel={i18nStrings?.labelModalDismiss}
         onDismiss={onDismiss}
-        header={i18nStrings?.modalTitle}
+        header={i18n('i18nStrings.modalTitle', i18nStrings?.modalTitle)}
         footer={
           <InternalSpaceBetween className={styles['modal-actions']} size="xs" direction="horizontal">
             <InternalButton variant="link" formAction="none" onClick={onDismiss}>
-              {i18nStrings?.modalCancelButton}
+              {i18n('i18nStrings.modalCancelButton', i18nStrings?.modalCancelButton)}
             </InternalButton>
             <InternalButton
               variant="primary"
@@ -134,22 +136,22 @@ export function S3Modal({
               formAction="none"
               onClick={() => onSubmit(createResourceInfo({ currentView, breadcrumbs, selectedItem }))}
             >
-              {i18nStrings?.modalSubmitButton}
+              {i18n('i18nStrings.modalSubmitButton', i18nStrings?.modalSubmitButton)}
             </InternalButton>
           </InternalSpaceBetween>
         }
       >
         <InternalSpaceBetween size={isVisualRefresh ? 'xxs' : 'xs'}>
           <InternalBreadcrumbGroup
-            ariaLabel={i18nStrings?.labelBreadcrumbs}
-            expandAriaLabel="Show path"
+            ariaLabel={i18n('i18nStrings.labelBreadcrumbs', i18nStrings?.labelBreadcrumbs)}
+            expandAriaLabel={i18nStrings?.labelExpandBreadcrumbs}
             onFollow={event => {
               event.preventDefault();
               event.detail.item.meta.onClick();
             }}
             items={[
               {
-                text: i18nStrings?.modalBreadcrumbRootItem ?? '',
+                text: i18n('i18nStrings.modalBreadcrumbRootItem', i18nStrings?.modalBreadcrumbRootItem) ?? '',
                 href: '',
                 meta: { onClick: () => dispatch({ type: 'browse-buckets' }) },
               },

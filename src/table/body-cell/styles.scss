@@ -5,7 +5,6 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
-@use '../../internal/hooks/focus-visible' as focus-visible;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
@@ -26,6 +25,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   border-top: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  font-weight: inherit;
   &:not(.body-cell-wrap) {
     white-space: nowrap;
     overflow: hidden;
@@ -53,6 +53,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       */
     &:first-child.has-striped-rows {
       padding-left: awsui.$space-xxs;
+      &-sticky-cell-pad-left {
+        padding-left: awsui.$space-table-horizontal;
+      }
     }
 
     /*
@@ -102,6 +105,48 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
 
+  &.sticky-cell {
+    position: sticky;
+    background: awsui.$color-background-container-content;
+    z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
+    &-pad-left:not(.has-selection):not(.is-visual-refresh.body-cell:first-child.has-striped-rows) {
+      padding-left: awsui.$space-table-horizontal;
+    }
+    &.body-cell-shaded {
+      background: awsui.$color-background-cell-shaded;
+    }
+    &.body-cell-selected {
+      background-color: awsui.$color-background-item-selected;
+
+      // Create a background using box-shadow and clip path to hide underlying elements
+      &:first-child {
+        box-shadow: 0 0 0 4px awsui.$color-background-container-content;
+        clip-path: inset(0 0 0 0);
+      }
+      &:last-child {
+        box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
+        clip-path: inset(0 0 0 0);
+        &.sticky-cell-last-right {
+          box-shadow: awsui.$shadow-sticky-column-last, 8px 0 0 0 awsui.$color-background-container-content;
+          clip-path: inset(0 0 0 -24px);
+        }
+      }
+    }
+    &-last-left {
+      box-shadow: awsui.$shadow-sticky-column-first;
+      clip-path: inset(0px -24px 0px 0px);
+    }
+    &-last-right {
+      box-shadow: awsui.$shadow-sticky-column-last;
+      clip-path: inset(0 0 0 -24px);
+    }
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
+  }
+
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
     padding-top: $cell-vertical-padding-w-border;
@@ -135,6 +180,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
   }
+  &-success,
   &-editor {
     top: 0;
     right: 0;
@@ -145,7 +191,23 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     align-items: center;
     justify-content: flex-end;
 
-    padding-right: awsui.$space-xs;
+    // Reset some native <button> styles
+    cursor: pointer;
+    outline: 0;
+    background: 0;
+    border: 0;
+    padding: 0;
+
+    // Additional xxs padding that would normally come from the Inline Icon Button
+    padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
+    color: awsui.$color-text-button-normal-default;
+
+    &:hover {
+      color: awsui.$color-text-button-normal-hover;
+    }
+    &:active {
+      color: awsui.$color-text-button-normal-active;
+    }
 
     &-form {
       margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
@@ -176,22 +238,59 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     position: relative;
     cursor: pointer;
 
+    &.sticky-cell {
+      position: sticky;
+    }
+
     &.body-cell-edit-active {
       overflow: visible;
+      &.sticky-cell {
+        position: sticky;
+      }
     }
 
     &:not(.body-cell-edit-active) {
+      @mixin focused-editor-styles {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        & > .body-cell-editor {
+          opacity: 1;
+        }
+        & > .body-cell-success {
+          opacity: 0;
+        }
+      }
       & > .body-cell-editor {
         opacity: 0;
+      }
+      &.body-cell-has-success {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+      }
+      // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
+      // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
+      // It's therefore important to display the focus outline, even when a keyboard user wasn't detected.
+      // For example, when an edit button is selected from the VoiceOver rotor menu.
+      &:focus-within {
+        @include focused-editor-styles;
+        @include styles.focus-highlight(
+          (
+            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+          )
+        );
       }
       &:hover {
         position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
-        border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+        border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
+        @include focused-editor-styles;
+        &:first-child {
+          left: 0;
+          right: 0;
+        }
         & > .body-cell-editor {
-          padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
+          padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs} - (2 * #{awsui.$border-divider-list-width}));
         }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
@@ -206,35 +305,16 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
         }
       }
-      &:hover,
-      &[data-awsui-focus-visible='true']:focus-within {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
-        & > .body-cell-editor {
-          opacity: 1;
-        }
-      }
-      &:hover:first-child {
-        left: 0;
-        right: 0;
-      }
-      &[data-awsui-focus-visible='true']:not(:hover):focus-within {
-        @include styles.focus-highlight(
-          (
-            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-          )
-        );
-      }
     }
   }
   &-editable.is-visual-refresh:not(.body-cell-edit-active):hover {
     &:first-child {
-      border-top-left-radius: awsui.$border-radius-control-default-focus-ring;
-      border-bottom-left-radius: awsui.$border-radius-control-default-focus-ring;
+      border-top-left-radius: awsui.$border-radius-item;
+      border-bottom-left-radius: awsui.$border-radius-item;
     }
     &:last-child {
-      border-top-right-radius: awsui.$border-radius-control-default-focus-ring;
-      border-bottom-right-radius: awsui.$border-radius-control-default-focus-ring;
+      border-top-right-radius: awsui.$border-radius-item;
+      border-bottom-right-radius: awsui.$border-radius-item;
     }
     &.body-cell-first-row > .body-cell-editor {
       padding-top: awsui.$border-divider-list-width;

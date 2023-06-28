@@ -4,13 +4,14 @@ import { CancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../internal/base-component';
 import { IconProps } from '../icon/interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { ButtonProps } from '../button/interfaces';
 
 export interface TopNavigationProps extends BaseComponentProps {
   /**
    * Properties describing the product identity. They are as follows:
    *
    * * `title` (string) - Specifies the title text.
-   * * `logo` ({ src: string, alt: string }) - Specifies the logo for the product.
+   * * `logo` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
    * * `href` (string) - Specifies the `href` that the header links to.
    * * `onFollow` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
    */
@@ -43,22 +44,27 @@ export interface TopNavigationProps extends BaseComponentProps {
    *
    * * `variant` ('primary-button' | 'link') - The visual appearance of the button. The default value is 'link'.
    * * `href` (string) - Specifies the `href` for a link styled as a button.
+   * * `target` (string) - Specifies where to open the linked URL (for example, to open in a new browser window or tab use `_blank`). This property only applies when an `href` is provided.
+   * * `rel` (string) - Adds a `rel` attribute to the link. By default, the component sets the `rel` attribute to "noopener noreferrer" when `target` is `"_blank"`. If the `rel` property is provided, it overrides the default behavior.
    * * `external` (boolean) - Marks the link as external by adding an icon after the text. When clicked, the link opens in a new tab.
    * * `externalIconAriaLabel` (string) - Adds an `aria-label` for the external icon.
    * * `onClick` (() => void) - Specifies the event handler called when the utility is clicked.
+   * * `onFollow` (() => void) - Specifies the event handler called when the utility is clicked without pressing modifier keys, and the utility has an `href` set.
    *
    * ### menu-dropdown
    *
    * * `description` (string) - The description displayed inside the dropdown.
    * * `items` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the `items` property of the [button dropdown component](/components/button-dropdown).
    * * `onItemClick` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
+   * * `onItemFollow` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected without pressing modifier keys, and the item has an `href` set.
    */
   utilities?: ReadonlyArray<TopNavigationProps.Utility>;
 
   /**
    * An object containing all the localized strings required by the component.
+   * @i18n
    */
-  i18nStrings: TopNavigationProps.I18nStrings;
+  i18nStrings?: TopNavigationProps.I18nStrings;
 }
 
 export namespace TopNavigationProps {
@@ -93,13 +99,17 @@ export namespace TopNavigationProps {
     description?: string;
     items: ButtonDropdownProps.Items;
     onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+    onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   }
 
   export interface ButtonUtility extends BaseUtility {
     type: 'button';
     variant?: 'primary-button' | 'link';
     onClick?: CancelableEventHandler;
+    onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
     href?: string;
+    target?: string;
+    rel?: string;
     external?: boolean;
     externalIconAriaLabel?: string;
   }
@@ -111,7 +121,7 @@ export namespace TopNavigationProps {
     searchDismissIconAriaLabel?: string;
     overflowMenuDismissIconAriaLabel?: string;
     overflowMenuBackIconAriaLabel?: string;
-    overflowMenuTriggerText: string;
-    overflowMenuTitleText: string;
+    overflowMenuTriggerText?: string;
+    overflowMenuTitleText?: string;
   }
 }

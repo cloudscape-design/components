@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import FocusLock from 'react-focus-lock';
 
 import { useNavigate } from '../router';
 import Header from '../header';
 import { SubmenuItem } from '../menu-item';
 import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
+import FocusLock from '../../../../internal/components/focus-lock';
 
 import { TopNavigationProps } from '../../../interfaces';
 
 import { View } from '..';
 import styles from '../../../styles.css.js';
-import { fireCancelableEvent } from '../../../../internal/events';
+import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
 
 interface SubmenuViewProps extends View {
   definition: TopNavigationProps.MenuDropdownUtility;
@@ -33,7 +33,7 @@ const SubmenuView = ({
   const headerId = useUniqueId('overflow-menu-header');
 
   return (
-    <FocusLock returnFocus={true}>
+    <FocusLock autoFocus={true}>
       <Header
         secondaryText={headerSecondaryText}
         dismissIconAriaLabel={dismissIconAriaLabel}
@@ -51,8 +51,20 @@ const SubmenuView = ({
           <SubmenuItem
             key={index}
             {...item}
-            onItemClick={item => {
-              fireCancelableEvent(definition.onItemClick, { id: item.id, href: item.href, external: item.external });
+            onClick={(event, item) => {
+              if (item.href && isPlainLeftClick(event)) {
+                fireCancelableEvent(
+                  definition.onItemFollow,
+                  { id: item.id, href: item.href, external: item.external },
+                  event
+                );
+              }
+
+              fireCancelableEvent(
+                definition.onItemClick,
+                { id: item.id, href: item.href, external: item.external },
+                event
+              );
               onClose?.();
             }}
           />

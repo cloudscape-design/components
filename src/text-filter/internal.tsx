@@ -9,6 +9,8 @@ import { fireNonCancelableEvent } from '../internal/events';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TextFilterProps } from './interfaces';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { SearchResults } from './search-results';
 
 type InternalTextFilterProps = TextFilterProps & InternalBaseComponentProps;
 
@@ -28,9 +30,11 @@ const InternalTextFilter = React.forwardRef(
     }: InternalTextFilterProps,
     ref: React.Ref<TextFilterProps.Ref>
   ) => {
-    const inputRef = useRef<HTMLInputElement>(null);
     const baseProps = getBaseProps(rest);
+    const inputRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, inputRef);
+
+    const searchResultsId = useUniqueId('text-filter-search-results');
     const showResults = filteringText && countText && !disabled;
 
     return (
@@ -44,17 +48,12 @@ const InternalTextFilter = React.forwardRef(
           value={filteringText}
           disabled={disabled}
           autoComplete={false}
+          ariaDescribedby={showResults ? searchResultsId : undefined}
           clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
-        <span
-          aria-live="polite"
-          aria-atomic="true"
-          className={clsx(styles.results, showResults && styles['results-visible'])}
-        >
-          {showResults ? countText : ''}
-        </span>
+        {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
       </div>
     );
   }

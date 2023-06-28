@@ -9,7 +9,7 @@ import InternalBox from '../box/internal';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 import InternalChartFilters from './chart-filters';
@@ -22,9 +22,9 @@ import { isDevelopment } from '../internal/is-development';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale';
 import { ScaledPoint } from './make-scaled-series';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { nodeContains } from '../internal/utils/dom';
 import { SomeRequired } from '../internal/types';
 import { isXThreshold, isYThreshold } from './utils';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,
@@ -65,6 +65,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   legendTitle,
   statusType,
   detailPopoverSize,
+  detailPopoverFooter,
   emphasizeBaselineAxis,
   empty,
   noMatch,
@@ -184,7 +185,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   };
 
   const onBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
+    if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
       highlightedSeries && onHighlightChange(highlightedSeries);
       setHighlightedPoint(null);
       setHighlightedGroupIndex(null);
@@ -197,7 +198,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
     visibleData: visibleSeries || [],
     statusType,
   });
-  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch);
+  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch) && (additionalFilters || !hideFilter);
   const showLegend = !hideLegend && !isEmpty && statusType === 'finished';
   const reserveLegendSpace = !showChart && !hideLegend;
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
@@ -258,6 +259,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             highlightedGroupIndex={highlightedGroupIndex}
             setHighlightedGroupIndex={setHighlightedGroupIndex}
             detailPopoverSize={detailPopoverSize}
+            detailPopoverFooter={detailPopoverFooter}
             xTitle={xTitle}
             yTitle={yTitle}
             ariaLabel={ariaLabel}

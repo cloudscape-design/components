@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { waitFor } from '@testing-library/react';
-import { isDrawerClosed, renderComponent } from './utils';
+import { isDrawerClosed, renderComponent, singleDrawer } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
@@ -115,6 +115,43 @@ describe.each([
   });
 });
 
+describe('drawers', () => {
+  const findElement = (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawer()!;
+  const findToggle = (wrapper: AppLayoutWrapper) => wrapper.findDrawersTriggers()![0];
+  const findClose = (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawerCloseButton()!;
+
+  test('property is controlled', () => {
+    const onChange = jest.fn();
+    const drawers = {
+      drawers: {
+        onChange: onChange,
+        activeDrawerId: null,
+        items: singleDrawer.drawers.items,
+      },
+    };
+
+    const drawersOpen = {
+      drawers: {
+        onChange: onChange,
+        activeDrawerId: 'security',
+        items: singleDrawer.drawers.items,
+      },
+    };
+
+    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...drawers} />);
+
+    expect(findElement(wrapper)).toBeNull();
+    findToggle(wrapper).click();
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
+
+    rerender(<AppLayout contentType="form" {...drawersOpen} />);
+
+    expect(findElement(wrapper)).not.toBeNull();
+    findClose(wrapper).click();
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: null }));
+  });
+});
+
 describe('Content height calculation', () => {
   test('should take the full page height by default', () => {
     const { contentElement } = renderComponent(<AppLayout />);
@@ -161,6 +198,32 @@ test('a11y', async () => {
       notifications={<div></div>}
       breadcrumbs={<div></div>}
       splitPanel={<div></div>}
+      ariaLabels={{
+        // notifications?: string;
+        // navigation?: string;
+        navigationToggle: 'Open navigation',
+        navigationClose: 'Close navigation',
+        // tools?: string;
+        toolsToggle: 'Open tools',
+        toolsClose: 'Close tools',
+      }}
+    />
+  );
+  await expect(container).toValidateA11y();
+});
+
+test('drawers a11y', async () => {
+  const { container } = renderComponent(
+    <AppLayout
+      navigationOpen={true}
+      toolsOpen={true}
+      splitPanelOpen={true}
+      navigation={<div></div>}
+      content={<div></div>}
+      notifications={<div></div>}
+      breadcrumbs={<div></div>}
+      splitPanel={<div></div>}
+      {...singleDrawer}
       ariaLabels={{
         // notifications?: string;
         // navigation?: string;

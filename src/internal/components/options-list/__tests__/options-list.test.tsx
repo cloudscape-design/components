@@ -12,7 +12,7 @@ function renderList(jsx: React.ReactElement) {
 test('calls onMouseMove handler with item index', () => {
   const onMouseMove = jest.fn();
   const container = renderList(
-    <OptionsList open={true} onMouseMove={onMouseMove}>
+    <OptionsList open={true} statusType="pending" onMouseMove={onMouseMove}>
       <div data-testid="not-target">Not a target</div>
       <div data-mouse-target="1">One</div>
       <div data-mouse-target="2">Two</div>
@@ -31,7 +31,7 @@ test('calls onMouseMove handler with item index', () => {
 test('calls onMouseUp handler with item index', () => {
   const onMouseUp = jest.fn();
   const container = renderList(
-    <OptionsList open={true} onMouseUp={onMouseUp}>
+    <OptionsList open={true} statusType="pending" onMouseUp={onMouseUp}>
       <div data-testid="not-target">Not a target</div>
       <div data-mouse-target="1">One</div>
       <div data-mouse-target="2">Two</div>
@@ -49,9 +49,63 @@ test('calls onMouseUp handler with item index', () => {
 
 test('supports ariaLabelledby', () => {
   const container = renderList(
-    <OptionsList open={true} ariaLabelledby="someid">
+    <OptionsList open={true} statusType="pending" ariaLabelledby="someid">
       <div>Option</div>
     </OptionsList>
   );
   expect(container.querySelector('ul')).toHaveAttribute('aria-labelledby', 'someid');
+});
+
+test('onLoadMore fires when dropdown opens and its bottom is on the screen', () => {
+  const onLoadMore = jest.fn();
+  const { rerender } = render(
+    <OptionsList open={false} statusType="pending" onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).not.toHaveBeenCalled();
+
+  rerender(
+    <OptionsList open={true} statusType="pending" onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).toHaveBeenCalledTimes(1);
+
+  rerender(
+    <OptionsList open={true} statusType="pending" onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).toHaveBeenCalledTimes(1);
+});
+
+test('onLoadMore is called when dropdown is open and status type changes to "pending"', () => {
+  const onLoadMore = jest.fn();
+  const { rerender } = render(
+    <OptionsList open={true} statusType="pending" onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).toHaveBeenCalledTimes(1);
+
+  rerender(
+    <OptionsList open={true} statusType="loading" onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).toHaveBeenCalledTimes(1);
+
+  rerender(
+    <OptionsList open={true} statusType="pending" onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).toHaveBeenCalledTimes(2);
 });

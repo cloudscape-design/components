@@ -100,6 +100,11 @@
     white-space: nowrap;
   }
 
+  &.full-width {
+    width: 100%;
+    text-align: center;
+  }
+
   &.variant-icon,
   &.variant-inline-icon,
   &.variant-flashbar-icon {

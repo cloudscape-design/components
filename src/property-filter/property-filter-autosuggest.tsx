@@ -9,7 +9,7 @@ import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import DropdownFooter from '../internal/components/dropdown-footer';
 
-import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import {
   fireNonCancelableEvent,
   CancelableEventHandler,
@@ -29,15 +29,19 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { filterOptions } from './filter-options';
+import { joinStrings } from '../internal/utils/strings';
 
 const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
 const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
 
-export interface PropertyFilterAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
+export interface PropertyFilterAutosuggestProps
+  extends Omit<AutosuggestProps, 'filteringResultsText'>,
+    InternalBaseComponentProps {
   customForm?: React.ReactNode;
   filterText?: string;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
+  searchResultsId?: string;
 }
 
 const PropertyFilterAutosuggest = React.forwardRef(
@@ -61,6 +65,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       filterText,
       onOptionClick,
       hideEnteredTextOption,
+      searchResultsId,
       ...rest
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
@@ -143,10 +148,16 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const selfControlId = useUniqueId('input');
     const controlId = rest.controlId ?? selfControlId;
     const listId = useUniqueId('list');
-    const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
+    const footerId = useUniqueId('footer');
+    const highlightedOptionIdSource = useUniqueId();
+    const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
     const isEmpty = !value && !autosuggestItemsState.items.length;
-    const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
+    const dropdownStatus = useDropdownStatus({
+      ...props,
+      isEmpty,
+      onRecoveryClick: handleRecoveryClick,
+    });
 
     let content = null;
     if (customForm) {
@@ -158,6 +169,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     } else if (autosuggestItemsState.items.length > 0) {
       content = (
         <AutosuggestOptionsList
+          statusType={statusType}
           autosuggestItemsState={autosuggestItemsState}
           autosuggestItemsHandlers={autosuggestItemsHandlers}
           highlightedOptionId={highlightedOptionId}
@@ -168,7 +180,10 @@ const PropertyFilterAutosuggest = React.forwardRef(
           handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
           hasDropdownStatus={dropdownStatus.content !== null}
           virtualScroll={virtualScroll}
-          listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          listBottom={
+            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerId} /> : null
+          }
+          ariaDescribedby={dropdownStatus.content ? footerId : undefined}
         />
       );
     }
@@ -190,12 +205,17 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
+        ariaDescribedby={joinStrings(searchResultsId, rest.ariaDescribedby)}
         dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null || !!customForm}
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}
         dropdownFooter={
           dropdownStatus.isSticky ? (
-            <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
+            <DropdownFooter
+              content={dropdownStatus.content}
+              hasItems={autosuggestItemsState.items.length >= 1}
+              id={footerId}
+            />
           ) : null
         }
         dropdownWidth={customForm ? DROPDOWN_WIDTH_CUSTOM_FORM : DROPDOWN_WIDTH_OPTIONS_LIST}

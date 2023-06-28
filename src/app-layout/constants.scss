@@ -12,10 +12,21 @@ $toggle-padding-horizontal: 0.7 * styles.$base-size;
 $toggle-padding-vertical: awsui.$space-xxs;
 $toggle-padding: $toggle-padding-vertical $toggle-padding-horizontal;
 
+// New styles for when there are drawers
+$drawers-padding-horizontal: 0.6 * styles.$base-size;
+$drawers-padding-vertical: awsui.$space-scaled-xs;
+$drawers-padding: $drawers-padding-vertical $drawers-padding-horizontal;
+
 $sidebar-size-closed: 4 * styles.$base-size;
 
 $adaptive-content-widths: (
   styles.$breakpoint-large: 1280px,
   styles.$breakpoint-x-large: 1440px,
   styles.$breakpoint-xx-large: 1620px,
+);
+
+$dashboard-content-widths: (
+  styles.$breakpoint-large: 1280px,
+  styles.$breakpoint-x-large: 1620px,
+  styles.$breakpoint-xx-large: 2160px,
 );

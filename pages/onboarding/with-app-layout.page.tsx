@@ -6,6 +6,7 @@ import { Button, Header, NonCancelableCustomEvent, SpaceBetween, Tabs } from '~c
 import AnnotationContext from '~components/annotation-context';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import TutorialPanel, { TutorialPanelProps } from '~components/tutorial-panel';
+import ScreenshotArea from '../utils/screenshot-area';
 import tutorialData from './tutorials';
 
 import { PageOne } from './pages/page1';
@@ -108,40 +109,42 @@ export default function OnboardingDemoPage() {
       onFinish={onFinish}
       i18nStrings={annotationContextStrings}
     >
-      <AppLayout
-        ariaLabels={labels}
-        navigationHide={true}
-        toolsOpen={toolsPanelVisible}
-        onToolsChange={onToolsChange}
-        toolsWidth={330}
-        tools={
-          <Tabs
-            activeTabId="tutorials-panel"
-            tabs={[
-              { id: 'help-panel', label: 'Info', content: null },
-              {
-                id: 'tutorials-panel',
-                label: 'Tutorials',
-                content: (
-                  <TutorialPanel
-                    i18nStrings={tutorialPanelStrings}
-                    tutorials={tutorials}
-                    onFeedbackClick={onFeedbackClick}
-                    downloadUrl={window.location.href}
-                  />
-                ),
-              },
-            ]}
-            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
-          />
-        }
-        content={
-          <SpaceBetween size="l">
-            {currentPage > 0 && <Button onClick={loadPreviousPage}>Back to page {currentPage}</Button>}
-            {routingContent}
-          </SpaceBetween>
-        }
-      />
+      <ScreenshotArea gutters={false}>
+        <AppLayout
+          ariaLabels={labels}
+          navigationHide={true}
+          toolsOpen={toolsPanelVisible}
+          onToolsChange={onToolsChange}
+          toolsWidth={330}
+          tools={
+            <Tabs
+              activeTabId="tutorials-panel"
+              tabs={[
+                { id: 'help-panel', label: 'Info', content: null },
+                {
+                  id: 'tutorials-panel',
+                  label: 'Tutorials',
+                  content: (
+                    <TutorialPanel
+                      i18nStrings={tutorialPanelStrings}
+                      tutorials={tutorials}
+                      onFeedbackClick={onFeedbackClick}
+                      downloadUrl={window.location.href}
+                    />
+                  ),
+                },
+              ]}
+              i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+            />
+          }
+          content={
+            <SpaceBetween size="l">
+              {currentPage > 0 && <Button onClick={loadPreviousPage}>Back to page {currentPage}</Button>}
+              {routingContent}
+            </SpaceBetween>
+          }
+        />
+      </ScreenshotArea>
     </AnnotationContext>
   );
 }

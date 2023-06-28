@@ -14,6 +14,7 @@ import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-f
 import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { S3ResourceSelectorProps } from '../interfaces';
 import { EmptyState } from './empty-state';
+import { ComponentFormatFunction } from '../../internal/i18n/context';
 
 interface BasicS3TableStrings<T> {
   labelRefresh?: string;
@@ -22,6 +23,7 @@ interface BasicS3TableStrings<T> {
   loadingText?: string;
   filteringPlaceholder?: string;
   filteringAriaLabel?: string;
+  filteringClearAriaLabel?: string;
   filteringCounterText?: S3ResourceSelectorProps.I18nStrings['filteringCounterText'];
   emptyText?: string;
   noMatchTitle?: string;
@@ -44,14 +46,22 @@ interface BasicS3TableProps<T> {
   onSelect: (item: T | undefined) => void;
 }
 
-export function getSharedI18Strings(i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined) {
+export function getSharedI18Strings(
+  i18n: ComponentFormatFunction<'s3-resource-selector'>,
+  i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined
+) {
   return {
-    filteringCounterText: i18nStrings?.filteringCounterText,
-    labelRefresh: i18nStrings?.labelRefresh,
+    filteringCounterText: i18n(
+      'i18nStrings.filteringCounterText',
+      i18nStrings?.filteringCounterText,
+      format => count => format({ count })
+    ),
+    labelRefresh: i18n('i18nStrings.labelRefresh', i18nStrings?.labelRefresh),
     labelsPagination: i18nStrings?.labelsPagination,
-    noMatchTitle: i18nStrings?.filteringNoMatches,
-    noMatchSubtitle: i18nStrings?.filteringCantFindMatch,
-    clearFilterButtonText: i18nStrings?.clearFilterButtonText,
+    noMatchTitle: i18n('i18nStrings.filteringNoMatches', i18nStrings?.filteringNoMatches),
+    noMatchSubtitle: i18n('i18nStrings.filteringCantFindMatch', i18nStrings?.filteringCantFindMatch),
+    clearFilterButtonText: i18n('i18nStrings.clearFilterButtonText', i18nStrings?.clearFilterButtonText),
+    filteringClearAriaLabel: i18nStrings?.labelClearFilter,
   };
 }
 
@@ -124,11 +134,12 @@ export function BasicS3Table<T>({
 
   return (
     <InternalTable<T>
-      variant="embedded"
+      variant={isVisualRefresh ? 'borderless' : 'container'}
       {...collectionProps}
       header={
         <InternalHeader
           variant={isVisualRefresh ? 'h3' : 'h2'}
+          headingTagOverride={'h3'}
           actions={<InternalButton iconName="refresh" ariaLabel={i18nStrings.labelRefresh} onClick={loadData} />}
           counter={selectedItem ? `(1/${allItems.length})` : `(${allItems.length})`}
         >
@@ -141,6 +152,7 @@ export function BasicS3Table<T>({
           {...filterProps}
           ref={textFilterRef}
           filteringAriaLabel={i18nStrings.filteringAriaLabel}
+          filteringClearAriaLabel={i18nStrings.filteringClearAriaLabel}
           filteringPlaceholder={i18nStrings.filteringPlaceholder}
           countText={i18nStrings.filteringCounterText ? i18nStrings.filteringCounterText(filteredItemsCount!) : ''}
         />

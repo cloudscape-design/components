@@ -9,6 +9,7 @@ import { TICK_LENGTH, TICK_MARGIN } from './constants';
 import styles from './styles.css.js';
 import { formatTicks, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
+import { useInternalI18n } from '../../i18n/context';
 
 const OFFSET_PX = 12;
 
@@ -36,6 +37,7 @@ function LeftLabels({
   title,
   ariaRoleDescription,
 }: LeftLabelsProps) {
+  const i18n = useInternalI18n('[charts]');
   const virtualTextRef = useRef<SVGTextElement>(null);
 
   const yOffset = axis === 'x' && scale.isCategorical() ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
@@ -68,7 +70,7 @@ function LeftLabels({
       className={clsx(styles['labels-left'])}
       aria-label={title}
       role="list"
-      aria-roledescription={ariaRoleDescription}
+      aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}
       aria-hidden={true}
     >
       {visibleTicks.map(

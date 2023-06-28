@@ -24,7 +24,10 @@ export default class SideNavigationWrapper extends ComponentWrapper {
   }
 
   findItemByIndex(index: number): SideNavigationItemWrapper | null {
-    return this.findComponent(`.${styles['list-variant-root']} > li:nth-child(${index})`, SideNavigationItemWrapper);
+    return this.findComponent(
+      `.${styles['list-variant-root']} > [data-itemid="item-${index}"]`,
+      SideNavigationItemWrapper
+    );
   }
 }
 
@@ -58,7 +61,7 @@ export class SideNavigationItemWrapper extends ElementWrapper {
   }
 
   findItemByIndex(index: number): SideNavigationItemWrapper | null {
-    return this.findComponent(`li:nth-child(${index})`, SideNavigationItemWrapper);
+    return this.findComponent(`[data-itemid="item-${index}"]`, SideNavigationItemWrapper);
   }
 
   findItems(): Array<SideNavigationItemWrapper> {

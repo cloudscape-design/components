@@ -52,7 +52,6 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableEmbeddedHeaderTop: '0px',
   spaceTableFooterHorizontal: '{spaceTableHeaderHorizontal}',
   spaceTabsFocusOutlineGutter: '-8px',
-  spaceTextGridVertical: '{spaceScaledM}',
 
   spaceScaled2xNone: '{spaceNone}',
   spaceScaled2xXxxs: { comfortable: '{spaceXxxs}', compact: '{spaceNone}' },
@@ -86,7 +85,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceStaticXxl: '{spaceXxl}',
   spaceStaticXxxl: '{spaceXxxl}',
 
-  spaceNone: '0',
+  spaceNone: '0px',
   spaceXxxs: '2px',
   spaceXxs: '4px',
   spaceXs: '8px',

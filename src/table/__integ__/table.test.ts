@@ -38,10 +38,10 @@ test(
     const header = createWrapper().findContainer().findHeader().toSelector();
     await browser.url('#/light/table/full-page-variant?visualRefresh=true');
     const page = new BasePageObject(browser);
-    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '115px', marginBottom: '0px' });
+    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '101px', marginBottom: '0px' });
     await page.windowScrollTo({ top: 100 });
     await page.waitForJsTimers();
-    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '105px', marginBottom: '10px' });
+    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '91px', marginBottom: '10px' });
   })
 );
 
@@ -55,5 +55,32 @@ test(
     await page.waitForJsTimers();
     const { left: scrollLeft } = await page.getElementScroll(tableWrapper.findByClassName(styles.wrapper).toSelector());
     expect(scrollLeft).toEqual(50);
+  })
+);
+
+test(
+  'sets role=region and aria-label on scrollable wrapper when overflowing',
+  useBrowser(async browser => {
+    const tableWrapper = createWrapper().findTable();
+    const tableLabel = 'Full-page table';
+    await browser.url('#/light/table/full-page-variant?visualRefresh=true');
+    const page = new BasePageObject(browser);
+
+    // Find the scrollable wrapper element
+    const scrollableWrapperSelector = tableWrapper.findByClassName(styles.wrapper).toSelector();
+
+    let role, ariaLabel;
+    // Get the 'role' and 'aria-label' attributes of the scrollable wrapper
+    role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
+    ariaLabel = await page.getElementAttribute(scrollableWrapperSelector, 'aria-label');
+
+    // Verify that the 'role' and 'aria-label' attributes are set correctly
+    await expect(role).toBeNull();
+    await expect(ariaLabel).toBeNull();
+    await page.setWindowSize({ width: 400, height: 800 });
+    role = await page.getElementAttribute(scrollableWrapperSelector, 'role');
+    ariaLabel = await page.getElementAttribute(scrollableWrapperSelector, 'aria-label');
+    await expect(role).toEqual('region');
+    await expect(ariaLabel).toEqual(tableLabel);
   })
 );

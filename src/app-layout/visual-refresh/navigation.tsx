@@ -7,7 +7,6 @@ import { InternalButton } from '../../button/internal';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { useFocusControl } from '../utils/use-focus-control';
 import { Transition } from '../../internal/components/transition';
 import { findUpUntil } from '../../internal/utils/dom';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -22,18 +21,18 @@ import customCssProps from '../../internal/generated/custom-css-properties';
 export default function Navigation() {
   const {
     ariaLabels,
+    disableBodyScroll,
     handleNavigationClick,
+    hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
+    isToolsOpen,
     navigation,
     navigationHide,
+    navigationRefs,
     navigationWidth,
-    isToolsOpen,
-    isAnyPanelOpen,
     toolsHide,
   } = useAppLayoutInternals();
-
-  const { refs: focusRefs } = useFocusControl(isNavigationOpen);
 
   if (navigationHide) {
     return null;
@@ -50,15 +49,16 @@ export default function Navigation() {
     }
   };
 
-  const isUnfocusable = isMobile && isAnyPanelOpen && isToolsOpen && !toolsHide;
+  const isUnfocusable = hasDrawerViewportOverlay && (!isNavigationOpen || (isToolsOpen && !toolsHide));
 
   return (
     <Transition in={isNavigationOpen}>
       {(state, transitionEventsRef) => (
         <div
           className={clsx(styles['navigation-container'], {
-            [testutilStyles['drawer-closed']]: !isNavigationOpen,
+            [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
+            [testutilStyles['drawer-closed']]: !isNavigationOpen,
           })}
           // Overwrite the default nav width (depends on breakpoints) only when the `navigationWidth` property is set.
           style={{ ...(navigationWidth && { [customCssProps.navigationWidth]: `${navigationWidth}px` }) }}
@@ -78,7 +78,7 @@ export default function Navigation() {
                 iconName="menu"
                 className={testutilStyles['navigation-toggle']}
                 onClick={() => handleNavigationClick(true)}
-                ref={focusRefs.toggle}
+                ref={navigationRefs.toggle}
               />
             </nav>
           )}
@@ -108,7 +108,7 @@ export default function Navigation() {
                   variant="icon"
                   formAction="none"
                   className={testutilStyles['navigation-close']}
-                  ref={focusRefs.close}
+                  ref={navigationRefs.close}
                 />
               </div>
               {navigation}

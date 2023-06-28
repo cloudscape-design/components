@@ -21,8 +21,9 @@ export interface TagEditorProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
-  i18nStrings: TagEditorProps.I18nStrings;
+  i18nStrings?: TagEditorProps.I18nStrings;
 
   /**
    * Renders the component in a loading state.
@@ -93,40 +94,41 @@ export namespace TagEditorProps {
   }
 
   export interface I18nStrings {
-    keyPlaceholder: string;
-    valuePlaceholder: string;
-    addButton: string;
-    removeButton: string;
-    undoButton: string;
-    undoPrompt: string;
-    loading: string;
-    keyHeader: string;
-    valueHeader: string;
-    optional: string;
-    keySuggestion: string;
-    valueSuggestion: string;
-    tooManyKeysSuggestion: string;
-    tooManyValuesSuggestion: string;
-    emptyTags: string;
+    keyPlaceholder?: string;
+    valuePlaceholder?: string;
+    addButton?: string;
+    removeButton?: string;
+    undoButton?: string;
+    undoPrompt?: string;
+    loading?: string;
+    keyHeader?: string;
+    valueHeader?: string;
+    optional?: string;
+    keySuggestion?: string;
+    valueSuggestion?: string;
+    tooManyKeysSuggestion?: string;
+    tooManyValuesSuggestion?: string;
+    emptyTags?: string;
     errorIconAriaLabel?: string;
-    keysSuggestionLoading: string;
-    keysSuggestionError: string;
-    valuesSuggestionError: string;
-    valuesSuggestionLoading: string;
-    emptyKeyError: string;
-    maxKeyCharLengthError: string;
-    maxValueCharLengthError: string;
-    duplicateKeyError: string;
-    invalidKeyError: string;
-    invalidValueError: string;
-    awsPrefixError: string;
+    keysSuggestionLoading?: string;
+    keysSuggestionError?: string;
+    valuesSuggestionError?: string;
+    valuesSuggestionLoading?: string;
+    emptyKeyError?: string;
+    maxKeyCharLengthError?: string;
+    maxValueCharLengthError?: string;
+    duplicateKeyError?: string;
+    invalidKeyError?: string;
+    invalidValueError?: string;
+    awsPrefixError?: string;
     clearAriaLabel?: string;
     itemRemovedAriaLive?: string;
-    tagLimit: (availableTags: number, tagLimit: number) => string;
-    tagLimitReached: (tagLimit: number) => string;
-    tagLimitExceeded: (tagLimit: number) => string;
-    enteredKeyLabel: (enteredText: string) => string;
-    enteredValueLabel: (enteredText: string) => string;
+    tagLimit?: (availableTags: number, tagLimit: number) => string;
+    tagLimitReached?: (tagLimit: number) => string;
+    tagLimitExceeded?: (tagLimit: number) => string;
+    enteredKeyLabel?: (enteredText: string) => string;
+    enteredValueLabel?: (enteredText: string) => string;
+    removeButtonAriaLabel?: (item: TagEditorProps.Tag) => string;
   }
 
   export interface ChangeDetail {

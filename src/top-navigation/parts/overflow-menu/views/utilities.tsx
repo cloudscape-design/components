@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
-import FocusLock from 'react-focus-lock';
+import FocusLock from '../../../../internal/components/focus-lock';
 
 import Header from '../header';
 import { UtilityMenuItem } from '../menu-item';
@@ -30,13 +30,19 @@ const UtilitiesView = ({ headerText, dismissIconAriaLabel, onClose, items = [], 
   }, [focusIndex]);
 
   return (
-    <FocusLock returnFocus={true}>
+    <FocusLock autoFocus={true}>
       <Header dismissIconAriaLabel={dismissIconAriaLabel} onClose={onClose}>
         <span id={headerId}>{headerText}</span>
       </Header>
       <ul className={styles['overflow-menu-list']} aria-labelledby={headerId}>
         {items.map((utility, index) => (
-          <UtilityMenuItem key={index} index={index} ref={index === focusIndex ? ref : undefined} {...utility} />
+          <UtilityMenuItem
+            key={index}
+            index={index}
+            ref={index === focusIndex ? ref : undefined}
+            onClose={onClose}
+            {...utility}
+          />
         ))}
       </ul>
     </FocusLock>

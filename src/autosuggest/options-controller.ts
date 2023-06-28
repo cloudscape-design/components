@@ -25,6 +25,7 @@ export interface UseAutosuggestItemsProps {
 export interface AutosuggestItemsState extends HighlightedOptionState<AutosuggestItem> {
   items: readonly AutosuggestItem[];
   showAll: boolean;
+  getItemGroup: (item: AutosuggestItem) => undefined | AutosuggestProps.OptionGroup;
 }
 
 export interface AutosuggestItemsHandlers extends HighlightedOptionHandlers<AutosuggestItem> {
@@ -38,9 +39,6 @@ const isHighlightable = (option?: AutosuggestItem) => {
   return !!option && option.type !== 'parent';
 };
 
-const parentMap = new WeakMap<AutosuggestItem, AutosuggestItem>();
-export const getParentGroup = (item: AutosuggestItem) => parentMap.get(item);
-
 const isInteractive = (option?: AutosuggestItem) => !!option && !option.disabled && option.type !== 'parent';
 
 export const useAutosuggestItems = ({
@@ -53,16 +51,16 @@ export const useAutosuggestItems = ({
 }: UseAutosuggestItemsProps): [AutosuggestItemsState, AutosuggestItemsHandlers] => {
   const [showAll, setShowAll] = useState(false);
 
-  const items = useMemo(() => createItems(options), [options]);
+  const { items, getItemGroup } = useMemo(() => createItems(options), [options]);
 
   const filteredItems = useMemo(() => {
     const filteredItems = filteringType === 'auto' && !showAll ? filterOptions(items, filterText) : [...items];
     if (filterValue && !hideEnteredTextLabel) {
       filteredItems.unshift({ value: filterValue, type: 'use-entered', option: { value: filterValue } });
     }
-    generateTestIndexes(filteredItems, getParentGroup);
+    generateTestIndexes(filteredItems, getItemGroup);
     return filteredItems;
-  }, [items, filterValue, filterText, filteringType, showAll, hideEnteredTextLabel]);
+  }, [items, getItemGroup, filterValue, filterText, filteringType, showAll, hideEnteredTextLabel]);
 
   const [highlightedOptionState, highlightedOptionHandlers] = useHighlightedOption({
     options: filteredItems,
@@ -90,7 +88,7 @@ export const useAutosuggestItems = ({
   };
 
   return [
-    { ...highlightedOptionState, items: filteredItems, showAll },
+    { ...highlightedOptionState, items: filteredItems, showAll, getItemGroup },
     {
       ...highlightedOptionHandlers,
       setShowAll,
@@ -101,8 +99,11 @@ export const useAutosuggestItems = ({
   ];
 };
 
-function createItems(options: Options): AutosuggestItem[] {
+function createItems(options: Options) {
   const items: AutosuggestItem[] = [];
+  const itemToGroup = new WeakMap<AutosuggestItem, AutosuggestProps.OptionGroup>();
+  const getItemGroup = (item: AutosuggestItem) => itemToGroup.get(item);
+
   for (const option of options) {
     if (isGroup(option)) {
       for (const item of flattenGroup(option)) {
@@ -112,39 +113,39 @@ function createItems(options: Options): AutosuggestItem[] {
       items.push({ ...option, option });
     }
   }
-  return items;
+
+  function flattenGroup(group: AutosuggestProps.OptionGroup) {
+    const { options, ...rest } = group;
+
+    let hasOnlyDisabledChildren = true;
+
+    const items: AutosuggestItem[] = [{ ...rest, type: 'parent', option: group }];
+
+    for (const option of options) {
+      if (!option.disabled) {
+        hasOnlyDisabledChildren = false;
+      }
+
+      const childOption: AutosuggestItem = {
+        ...option,
+        type: 'child',
+        disabled: option.disabled || rest.disabled,
+        option,
+      };
+
+      items.push(childOption);
+
+      itemToGroup.set(childOption, group);
+    }
+
+    items[0].disabled = items[0].disabled || hasOnlyDisabledChildren;
+
+    return items;
+  }
+
+  return { items, getItemGroup };
 }
 
 function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is AutosuggestProps.OptionGroup {
   return 'options' in optionOrGroup;
-}
-
-function flattenGroup(group: AutosuggestProps.OptionGroup): AutosuggestItem[] {
-  const { options, ...rest } = group;
-
-  let hasOnlyDisabledChildren = true;
-
-  const items: AutosuggestItem[] = [{ ...rest, type: 'parent', option: group }];
-
-  for (const option of options) {
-    if (!option.disabled) {
-      hasOnlyDisabledChildren = false;
-    }
-
-    const childOption: AutosuggestItem = {
-      ...option,
-      type: 'child',
-      disabled: option.disabled || rest.disabled,
-      option,
-    };
-
-    items.push(childOption);
-
-    // TODO: Refactor parentMap and remove this side effect
-    parentMap.set(childOption, { ...group, option: group });
-  }
-
-  items[0].disabled = items[0].disabled || hasOnlyDisabledChildren;
-
-  return items;
 }

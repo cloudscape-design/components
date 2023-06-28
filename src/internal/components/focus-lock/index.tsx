@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import TabTrap from '../tab-trap/index';
@@ -14,21 +14,19 @@ export interface FocusLockProps {
   children: React.ReactNode;
 }
 
-export default function FocusLock({ className, disabled, autoFocus, restoreFocus, children }: FocusLockProps) {
+export interface FocusLockRef {
+  /**
+   * Focuses the first element in the component.
+   */
+  focusFirst(): void;
+}
+
+function FocusLock(
+  { className, disabled, autoFocus, restoreFocus, children }: FocusLockProps,
+  ref: React.Ref<FocusLockRef>
+) {
   const returnFocusToRef = useRef<HTMLOrSVGElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-
-  // Using a callback ref to detect component unmounts, which is safer than using useEffect.
-  const restoreFocusHandler = useCallback(
-    (elem: HTMLDivElement | null) => {
-      if (elem === null && restoreFocus) {
-        returnFocusToRef.current?.focus();
-      }
-    },
-    [restoreFocus]
-  );
-
-  const mergedRef = useMergeRefs(containerRef, restoreFocusHandler);
 
   const focusFirst = () => {
     if (containerRef.current) {
@@ -42,6 +40,8 @@ export default function FocusLock({ className, disabled, autoFocus, restoreFocus
     }
   };
 
+  // Captures focus when `autoFocus` is set, and the component is mounted or
+  // `disabled` changes from true to false.
   useEffect(() => {
     if (autoFocus && !disabled) {
       returnFocusToRef.current = document.activeElement as HTMLOrSVGElement | null;
@@ -49,17 +49,33 @@ export default function FocusLock({ className, disabled, autoFocus, restoreFocus
     }
   }, [autoFocus, disabled]);
 
-  // Returns focus when disabled changes from false to true.
-  const [prevDisabled, setPrevDisabled] = useState(!!disabled);
+  // Restore focus if `restoreFocus` is set, and `disabled` changes from false
+  // to true.
+  const [previouslyDisabled, setPreviouslyDisabled] = useState(!!disabled);
   useEffect(() => {
-    if (prevDisabled !== !!disabled) {
-      setPrevDisabled(!!disabled);
-      if (disabled && restoreFocus) {
+    if (previouslyDisabled !== !!disabled) {
+      setPreviouslyDisabled(!!disabled);
+      if (restoreFocus && disabled) {
         returnFocusToRef.current?.focus();
         returnFocusToRef.current = null;
       }
     }
-  }, [prevDisabled, disabled, restoreFocus]);
+  }, [previouslyDisabled, disabled, restoreFocus]);
+
+  // Restore focus if `restoreFocus` is set and the component is unmounted.
+  // Using a callback ref for this is safer than using useEffect cleanups.
+  const restoreFocusHandler = useCallback(
+    (elem: HTMLDivElement | null) => {
+      if (elem === null && restoreFocus) {
+        returnFocusToRef.current?.focus();
+        returnFocusToRef.current = null;
+      }
+    },
+    [restoreFocus]
+  );
+
+  useImperativeHandle(ref, () => ({ focusFirst }));
+  const mergedRef = useMergeRefs(containerRef, restoreFocusHandler);
 
   return (
     <>
@@ -71,3 +87,5 @@ export default function FocusLock({ className, disabled, autoFocus, restoreFocus
     </>
   );
 }
+
+export default React.forwardRef(FocusLock);

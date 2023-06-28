@@ -19,7 +19,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale';
 import useContainerWidth from '../internal/utils/use-container-width';
-import { nodeContains } from '../internal/utils/dom';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 export { PieChartProps };
 
@@ -124,7 +124,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   );
 
   const onBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
+    if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
       highlightedSegment && onHighlightChange(null);
       setLegendSegment(null);
     }
@@ -134,7 +134,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 
   return (
     <div {...containerAttr} ref={mergedRef} onBlur={onBlur}>
-      {statusType === 'finished' && !isEmpty && (
+      {statusType === 'finished' && !isEmpty && (additionalFilters || !hideFilter) && (
         <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
           <InternalSpaceBetween
             size="l"

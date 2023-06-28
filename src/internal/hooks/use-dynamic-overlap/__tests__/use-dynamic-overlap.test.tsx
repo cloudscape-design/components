@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { useDynamicOverlap } from '../../../../../lib/components/internal/hooks/use-dynamic-overlap';
-import { AppLayoutContext } from '../../../../../lib/components/internal/context/app-layout-context';
+import { DynamicOverlapContext } from '../../../../../lib/components/internal/context/dynamic-overlap-context';
 
 jest.mock('../../../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
   useContainerQuery: () => [800, () => {}],
@@ -16,12 +16,10 @@ function renderApp(children: React.ReactNode) {
   function App(props: { children: React.ReactNode }) {
     const [dynamicOverlapHeight, setDynamicOverlapHeight] = useState<number | undefined>(0);
     return (
-      <AppLayoutContext.Provider
-        value={{ hasBreadcrumbs: false, stickyOffsetTop: 0, stickyOffsetBottom: 0, setDynamicOverlapHeight }}
-      >
+      <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>
         <div data-testid={testId}>{dynamicOverlapHeight}</div>
         {props.children}
-      </AppLayoutContext.Provider>
+      </DynamicOverlapContext.Provider>
     );
   }
 

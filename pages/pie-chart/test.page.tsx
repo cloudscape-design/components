@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import Grid from '~components/grid';
 import Box from '~components/box';
+import Button from '~components/button';
 import PieChart, { PieChartProps } from '~components/pie-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -38,6 +39,7 @@ export default function () {
               ariaLabel="Food facts"
               size="medium"
               onHighlightChange={e => setActiveSegment(e.detail.highlightedSegment)}
+              detailPopoverFooter={segment => <Button>Filter by {segment.title}</Button>}
             />
           </div>
 

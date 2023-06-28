@@ -1,0 +1,33 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  order: 0;
+  flex-grow: 10;
+  margin-right: 0;
+  margin-bottom: -16px;
+
+  /* stylelint-disable-next-line selector-max-type */
+  > div {
+    margin-right: 16px;
+    margin-bottom: 12px;
+  }
+}
+
+.input-filter {
+  order: 0;
+  flex-grow: 6;
+  width: auto;
+  max-width: 728px;
+}
+
+.select-filter {
+  max-width: 130px;
+  flex-grow: 2;
+  width: auto;
+}

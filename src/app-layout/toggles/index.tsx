@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { ButtonProps } from '../../button/interfaces';
-import { IconProps } from '../../icon/interfaces';
 import { InternalButton } from '../../button/internal';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutButtonProps } from './interfaces';
@@ -31,7 +30,7 @@ export const togglesConfig = {
 
 export const AppLayoutButton = React.forwardRef(
   (
-    { className, ariaLabel, ariaExpanded, iconName, disabled, onClick }: AppLayoutButtonProps,
+    { className, ariaLabel, ariaExpanded, iconName, iconSvg, disabled, onClick }: AppLayoutButtonProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     return (
@@ -43,6 +42,7 @@ export const AppLayoutButton = React.forwardRef(
         formAction="none"
         onClick={onClick}
         iconName={iconName}
+        iconSvg={iconSvg}
         disabled={disabled}
         ariaExpanded={ariaExpanded ? undefined : false}
         __nativeAttributes={{ 'aria-haspopup': ariaExpanded ? undefined : true }}
@@ -55,11 +55,10 @@ interface CloseButtonProps {
   className?: string;
   ariaLabel: string | undefined;
   onClick: () => void;
-  iconName: IconProps.Name;
 }
 
 export const CloseButton = React.forwardRef(
-  ({ className, ariaLabel, onClick, iconName }: CloseButtonProps, ref: React.Ref<ButtonProps.Ref>) => {
+  ({ className, ariaLabel, onClick }: CloseButtonProps, ref: React.Ref<ButtonProps.Ref>) => {
     return (
       <span className={styles['close-button']}>
         <AppLayoutButton
@@ -67,7 +66,7 @@ export const CloseButton = React.forwardRef(
           className={className}
           ariaExpanded={true}
           ariaLabel={ariaLabel}
-          iconName={iconName}
+          iconName="close"
           onClick={onClick}
         />
       </span>

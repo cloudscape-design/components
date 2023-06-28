@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { TutorialPanelProps } from '../../interfaces';
 import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
@@ -31,9 +31,10 @@ export default function TutorialDetailView({
     fireNonCancelableEvent(onExitTutorialHandler, { tutorial });
   }, [onExitTutorialHandler, tutorial]);
 
-  const onFeedbackClick = useCallback(() => {
-    fireNonCancelableEvent(onFeedbackClickHandler, { tutorial });
-  }, [onFeedbackClickHandler, tutorial]);
+  const onFeedbackClick = useMemo(
+    () => onFeedbackClickHandler && (() => fireNonCancelableEvent(onFeedbackClickHandler, { tutorial })),
+    [onFeedbackClickHandler, tutorial]
+  );
 
   return (
     <>

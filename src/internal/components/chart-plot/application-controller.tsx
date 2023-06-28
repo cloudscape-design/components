@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import focusSvgElement from '../../utils/focus-svg-element';
 import styles from './styles.css.js';
 
 export interface ApplicationRef {
@@ -119,7 +118,7 @@ function focusApplication(app: SVGGElement, target: null | SVGGElement) {
   app.setAttribute('aria-hidden', 'false');
 
   // Focus app.
-  focusSvgElement(app);
+  app.focus({ preventScroll: true });
 }
 
 // The application is to be only focused programmatically.

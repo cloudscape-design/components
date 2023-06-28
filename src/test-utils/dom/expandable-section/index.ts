@@ -15,9 +15,16 @@ export default class ExpandableSectionWrapper extends ComponentWrapper {
     return this.findByClassName(styles.content)!;
   }
 
+  /*
+   * Returns the area that can be clicked in order to expand or collapse the section.
+   */
+  findExpandButton(): ElementWrapper {
+    return this.findByClassName(styles['expand-button'])!;
+  }
+
   findExpandedContent(): ElementWrapper | null {
     return this.find(
-      `:scope > .${styles['content-expanded']}, :scope > .${containerStyles.content} > .${styles['content-expanded']}`
+      `:scope > .${styles['content-expanded']}, :scope > .${containerStyles['content-wrapper']} > .${containerStyles.content} > .${styles['content-expanded']}`
     );
   }
 

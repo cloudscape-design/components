@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from './interfaces';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { formatTimezoneOffset, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
 import { addMinutes } from 'date-fns';
 

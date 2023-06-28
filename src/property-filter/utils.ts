@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringOption, FilteringProperty, Token } from './interfaces';
+import { ComparisonOperator, InternalFilteringOption, InternalFilteringProperty, Token } from './interfaces';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
-  filteringProperties: readonly FilteringProperty[],
+  filteringProperties: readonly InternalFilteringProperty[],
   filteringText: string
-): null | FilteringProperty {
+): null | InternalFilteringProperty {
   let maxLength = 0;
-  let matchedProperty: null | FilteringProperty = null;
+  let matchedProperty: null | InternalFilteringProperty = null;
 
   for (const property of filteringProperties) {
     if (
@@ -61,7 +61,7 @@ export function matchOperatorPrefix(
   return null;
 }
 
-export function matchTokenValue(token: Token, filteringOptions: readonly FilteringOption[]): Token {
+export function matchTokenValue(token: Token, filteringOptions: readonly InternalFilteringOption[]): Token {
   const propertyOptions = filteringOptions.filter(option => option.propertyKey === token.propertyKey);
   const bestMatch = { ...token };
   for (const option of propertyOptions) {
@@ -69,13 +69,33 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Filteri
       // exact match found: return it
       return { ...token, value: option.value };
     }
-    if (token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()) {
+
+    // By default, the token value is a string, but when a custom property is used,
+    // the token value can be any, therefore we need to check for its type before calling toLowerCase()
+    if (
+      typeof token.value === 'string' &&
+      token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()
+    ) {
       // non-exact match: save and keep running in case exact match found later
       bestMatch.value = option.value;
     }
   }
 
   return bestMatch;
+}
+
+export function getPropertyByKey(filteringProperties: readonly InternalFilteringProperty[], key: string) {
+  const propertyMap = new Map(filteringProperties.map(prop => [prop.propertyKey, prop]));
+  return propertyMap.get(key) as InternalFilteringProperty | undefined;
+}
+
+export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
+  const property = token.propertyKey ? getPropertyByKey(filteringProperties, token.propertyKey) : undefined;
+  const valueFormatter = property?.getValueFormatter(token.operator);
+  const propertyLabel = property && property.propertyLabel;
+  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
+  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
 }
 
 export function trimStart(source: string): string {

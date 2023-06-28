@@ -1,0 +1,73 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+$border-radius: awsui.$border-radius-item;
+
+@mixin focus-visible {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] & {
+    @content;
+  }
+}
+
+@mixin animated {
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+}
+
+.content-display-option-toggle {
+  /* used in test-utils */
+}
+
+.content-display-option-content {
+  @include styles.styles-reset;
+  display: flex;
+  align-items: flex-start;
+  padding: awsui.$space-xs awsui.$space-scaled-xs awsui.$space-xs 0;
+  background-color: awsui.$color-background-container-content;
+  border-radius: $border-radius;
+}
+
+.content-display-option {
+  list-style: none;
+  position: relative;
+  border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  &:not(.placeholder).sorting {
+    @include animated;
+  }
+  &.placeholder {
+    > .content-display-option-content {
+      position: relative;
+      &:after {
+        content: ' ';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: awsui.$color-drag-placeholder-hover;
+        border-radius: $border-radius;
+      }
+    }
+  }
+}
+
+.content-display-option-label {
+  flex-grow: 1;
+  @include styles.text-wrapping;
+  padding-right: awsui.$space-l;
+}
+
+.drag-overlay {
+  box-shadow: awsui.$shadow-container-active;
+  border-radius: $border-radius;
+  @include focus-visible {
+    @include styles.focus-highlight(0px, $border-radius);
+  }
+}

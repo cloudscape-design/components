@@ -3,11 +3,18 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
-import { CardsWrapper } from '../../../lib/components/test-utils/dom';
+import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import styles from '../../../lib/components/cards/styles.css.js';
 
 interface Item {
   id: number;
   name: string;
+}
+
+function findFooterPagination(wrapper: CardsWrapper): PaginationWrapper | null {
+  return wrapper.findComponent(`.${styles['footer-pagination']}`, PaginationWrapper);
 }
 
 const cardDefinition: CardsProps.CardDefinition<Item> = {
@@ -171,11 +178,37 @@ describe('Cards', () => {
 
     it('maintains logical relationship between header and cards', () => {
       wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} header="abcedefg" />).wrapper;
-      const headerElement = wrapper.findHeader()!.getElement();
-      expect(headerElement).toHaveAttribute('id');
       const cardsOrderedList = getCard(0).getElement().parentElement;
-      expect(cardsOrderedList).toHaveAttribute('aria-labelledby', headerElement!.getAttribute('id'));
-      expect(cardsOrderedList).toHaveAttribute('aria-describedby', headerElement!.getAttribute('id'));
+      expect(cardsOrderedList).toHaveAccessibleName('abcedefg');
+    });
+
+    it('allows label to be overridden', () => {
+      wrapper = renderCards(
+        <Cards<Item>
+          cardDefinition={{}}
+          items={defaultItems}
+          header="abcedefg"
+          ariaLabels={{ itemSelectionLabel: () => 'Item', selectionGroupLabel: 'Group', cardsLabel: 'Custom label' }}
+        />
+      ).wrapper;
+      const cardsOrderedList = getCard(0).getElement().parentElement;
+      expect(cardsOrderedList).toHaveAccessibleName('Custom label');
+    });
+  });
+
+  describe('pagination region', () => {
+    it('should render table with no pagination in the footer for default variant', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} pagination="pagination" />).wrapper;
+      expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)).toBeNull();
+    });
+
+    it('is displayed in the footer on full-page variant', () => {
+      wrapper = renderCards(
+        <Cards<Item> variant="full-page" cardDefinition={{}} items={defaultItems} pagination="pagination" />
+      ).wrapper;
+      expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
     });
   });
 
@@ -209,6 +242,43 @@ describe('Cards', () => {
       ).wrapper;
       expect(wrapper.findItems()).toHaveLength(0);
       expect(wrapper?.findLoadingText()?.getElement()).toHaveTextContent('Resources loading');
+    });
+  });
+  describe('live region', () => {
+    test('Should render a live region with table total count and indices when renderAriaLive and firstIndex are available', () => {
+      const firstIndex = 1;
+      const totalItemsCount = defaultItems.length;
+      const lastIndex = firstIndex + defaultItems.length - 1;
+
+      const wrapper = renderCards(
+        <Cards<Item>
+          cardDefinition={cardDefinition}
+          items={defaultItems}
+          firstIndex={firstIndex}
+          totalItemsCount={totalItemsCount}
+          renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }) =>
+            `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
+          }
+        />
+      ).wrapper;
+
+      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(
+        `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`
+      );
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using selectionGroupLabel from i18n provider', () => {
+      ({ wrapper } = renderCards(
+        <TestI18nProvider messages={{ cards: { 'ariaLabels.selectionGroupLabel': 'Custom label' } }}>
+          <Cards<Item> cardDefinition={cardDefinition} selectionType="multi" items={defaultItems} />
+        </TestI18nProvider>
+      ));
+      expect(getCard(0).findSelectionArea()!.getElement()).toHaveAttribute(
+        'aria-label',
+        expect.stringContaining('Custom label')
+      );
     });
   });
 });

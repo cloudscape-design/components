@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es2015.collection", "es2015.Iterable", "es2015.promise", "dom"],
+    "lib": ["ES2015", "ES2017.Intl", "ES2018.Intl", "ES2020.Intl", "DOM"],
+    "target": "ES2015",
     "types": [],
-    "module": "esnext",
+    "module": "ES2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "importHelpers": true,
@@ -14,5 +15,5 @@
     "incremental": true
   },
   "include": ["src", "types"],
-   "exclude": ["**/__tests__/**", "src/test-utils/**", "**/__integ__/**", "**/__a11y__/**", "src/internal/vendor/**"]
+  "exclude": ["**/__tests__/**", "src/test-utils/**", "**/__integ__/**", "**/__a11y__/**", "src/internal/vendor/**"]
 }

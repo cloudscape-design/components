@@ -31,12 +31,42 @@
     padding-right: awsui.$space-xs;
   }
 
+  &.sticky-cell {
+    position: sticky;
+    background: awsui.$color-background-table-header;
+    z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+    &-pad-left:not(.has-selection) {
+      padding-left: awsui.$space-table-horizontal;
+    }
+    &-last-left {
+      box-shadow: awsui.$shadow-sticky-column-first;
+      clip-path: inset(0px -24px 0px 0px);
+      &:not(.header-cell-resizable):before {
+        display: none;
+      }
+    }
+    &-last-right {
+      box-shadow: awsui.$shadow-sticky-column-last;
+      clip-path: inset(0 0 0 -24px);
+    }
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
+  }
+
   &:not(:last-child):before {
+    $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+
     content: '';
     position: absolute;
     right: 0;
-    bottom: 25%;
-    height: 50%;
+    bottom: 0;
+    top: 0;
+    min-height: awsui.$font-heading-xs-line-height;
+    max-height: calc(100% - #{$gap});
+    margin: auto;
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
   }
@@ -48,7 +78,8 @@
 
 .sorting-icon {
   position: absolute;
-  top: awsui.$space-scaled-xxs;
+  top: 50%;
+  transform: translateY(-50%);
   right: awsui.$space-xxs;
   color: awsui.$color-text-column-sorting-icon;
 }
@@ -75,7 +106,8 @@
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  &.header-cell-fake-focus {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
   }
 
@@ -100,6 +132,11 @@
 }
 
 .header-cell-text {
+  line-height: awsui.$font-heading-xs-line-height;
+
+  padding-top: calc(#{awsui.$space-xxxs} / 2);
+  padding-bottom: calc(#{awsui.$space-xxxs} / 2);
+
   &:not(.header-cell-text-wrap) {
     white-space: nowrap;
     overflow: hidden;
@@ -127,6 +164,9 @@ settings icon in the pagination slot.
 .header-cell.is-visual-refresh {
   &:first-child:not(.has-striped-rows) {
     padding-left: awsui.$space-xxxs;
+    &.sticky-cell-pad-left {
+      padding-left: awsui.$space-table-horizontal;
+    }
   }
 
   /*

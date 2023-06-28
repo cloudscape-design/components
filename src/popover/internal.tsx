@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { KeyCode } from '../internal/keycode';
 import { getBaseProps } from '../internal/base-component';
-import useFocusVisible from '../internal/hooks/focus-visible';
+import { FormFieldContext } from '../internal/context/form-field-context';
 
 import Arrow from './arrow';
 import Portal from '../internal/components/portal';
@@ -18,6 +18,8 @@ import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/e
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { useInternalI18n } from '../internal/i18n/context';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -36,7 +38,6 @@ function InternalPopover(
     fixedWidth = false,
     triggerType = 'text',
     dismissButton = true,
-    dismissAriaLabel,
 
     children,
     header,
@@ -51,10 +52,12 @@ function InternalPopover(
   ref: React.Ref<InternalPopoverRef>
 ) {
   const baseProps = getBaseProps(restProps);
-  const focusVisible = useFocusVisible();
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
+
+  const i18n = useInternalI18n('popover');
+  const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
 
   const [visible, setVisible] = useState(false);
 
@@ -115,11 +118,13 @@ function InternalPopover(
     className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
   };
 
+  const referrerId = useUniqueId();
   const popoverContent = (
     <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
       className={clsx(popoverClasses, styles['popover-content'])}
+      data-awsui-referrer-id={referrerId}
     >
       {visible && (
         <PopoverContainer
@@ -148,7 +153,7 @@ function InternalPopover(
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
 
   return (
-    <div
+    <span
       {...baseProps}
       className={clsx(styles.root, baseProps.className)}
       ref={mergedRef}
@@ -160,13 +165,17 @@ function InternalPopover(
       }}
     >
       {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog" {...focusVisible}>
+        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId}>
           <span className={styles['trigger-inner-text']}>{children}</span>
         </button>
       ) : (
-        <span {...triggerProps}>{children}</span>
+        <span {...triggerProps} id={referrerId}>
+          {children}
+        </span>
       )}
-      {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-    </div>
+      <FormFieldContext.Provider value={{}}>
+        {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
+      </FormFieldContext.Provider>
+    </span>
   );
 }

@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, createContext } from 'react';
-
-export type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
+import { SplitPanelFocusControlRefs } from '../../app-layout/utils/use-split-panel-focus-control';
 
 export interface SplitPanelSideToggleProps {
   displayed: boolean;
@@ -27,15 +26,13 @@ export interface SplitPanelContextProps {
   isOpen?: boolean;
   isMobile: boolean;
   isForcedPosition: boolean;
-  // The lastInteraction property indicates last meaningful state transition used to trigger split-panel effects.
-  // We can't observe properties in a regular way because split-panel is being mounted in several places at once.
-  lastInteraction?: SplitPanelLastInteraction;
   onResize: (detail: { size: number }) => void;
   onToggle: () => void;
   onPreferencesChange: (detail: { position: 'side' | 'bottom' }) => void;
   reportSize: (pixels: number) => void;
   reportHeaderHeight: (pixels: number) => void;
   setSplitPanelToggle: (config: SplitPanelSideToggleProps) => void;
+  refs: SplitPanelFocusControlRefs;
 }
 
 const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);

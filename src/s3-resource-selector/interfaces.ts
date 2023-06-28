@@ -118,6 +118,7 @@ export interface S3ResourceSelectorProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: S3ResourceSelectorProps.I18nStrings;
 
@@ -193,66 +194,68 @@ export namespace S3ResourceSelectorProps {
   export type SelectableItems = 'buckets' | 'objects' | 'versions';
 
   export interface I18nStrings {
-    inContextInputPlaceholder: string;
+    inContextInputPlaceholder?: string;
     inContextInputClearAriaLabel?: string;
-    inContextSelectPlaceholder: string;
-    inContextBrowseButton: string;
-    inContextViewButton: string;
+    inContextSelectPlaceholder?: string;
+    inContextBrowseButton?: string;
+    inContextViewButton?: string;
     inContextViewButtonAriaLabel?: string;
-    inContextLoadingText: string;
-    inContextUriLabel: string;
-    inContextVersionSelectLabel: string;
+    inContextLoadingText?: string;
+    inContextUriLabel?: string;
+    inContextVersionSelectLabel?: string;
 
-    modalTitle: string;
-    modalCancelButton: string;
-    modalSubmitButton: string;
-    modalBreadcrumbRootItem: string;
+    modalTitle?: string;
+    modalCancelButton?: string;
+    modalSubmitButton?: string;
+    modalBreadcrumbRootItem?: string;
 
-    selectionBuckets: string;
-    selectionObjects: string;
-    selectionVersions: string;
-    selectionBucketsSearchPlaceholder: string;
-    selectionObjectsSearchPlaceholder: string;
-    selectionVersionsSearchPlaceholder: string;
-    selectionBucketsLoading: string;
-    selectionBucketsNoItems: string;
-    selectionObjectsLoading: string;
-    selectionObjectsNoItems: string;
-    selectionVersionsLoading: string;
-    selectionVersionsNoItems: string;
+    selectionBuckets?: string;
+    selectionObjects?: string;
+    selectionVersions?: string;
+    selectionBucketsSearchPlaceholder?: string;
+    selectionObjectsSearchPlaceholder?: string;
+    selectionVersionsSearchPlaceholder?: string;
+    selectionBucketsLoading?: string;
+    selectionBucketsNoItems?: string;
+    selectionObjectsLoading?: string;
+    selectionObjectsNoItems?: string;
+    selectionVersionsLoading?: string;
+    selectionVersionsNoItems?: string;
 
-    filteringCounterText: (count: number) => string;
-    filteringNoMatches: string;
-    filteringCantFindMatch: string;
-    clearFilterButtonText: string;
+    filteringCounterText?: (count: number) => string;
+    filteringNoMatches?: string;
+    filteringCantFindMatch?: string;
+    clearFilterButtonText?: string;
 
-    columnBucketName: string;
+    columnBucketName?: string;
     columnBucketCreationDate?: string;
     columnBucketRegion?: string;
-    columnObjectKey: string;
+    columnObjectKey?: string;
     columnObjectLastModified?: string;
     columnObjectSize?: string;
-    columnVersionID: string;
-    columnVersionLastModified: string;
+    columnVersionID?: string;
+    columnVersionLastModified?: string;
     columnVersionSize?: string;
 
-    validationPathMustBegin: string;
-    validationBucketLowerCase: string;
-    validationBucketMustNotContain: string;
-    validationBucketLength: string;
-    validationBucketMustComplyDns: string;
+    validationPathMustBegin?: string;
+    validationBucketLowerCase?: string;
+    validationBucketMustNotContain?: string;
+    validationBucketLength?: string;
+    validationBucketMustComplyDns?: string;
 
-    labelSortedDescending: SortingColumnContainingString;
-    labelSortedAscending: SortingColumnContainingString;
-    labelNotSorted: SortingColumnContainingString;
-    labelsPagination: PaginationProps.Labels;
-    labelsBucketsSelection: SelectionLabels<Bucket>;
-    labelsObjectsSelection: SelectionLabels<S3ResourceSelectorProps.Object>;
-    labelsVersionsSelection: SelectionLabels<Version>;
-    labelFiltering: (itemsType: string) => string;
-    labelRefresh: string;
-    labelModalDismiss: string;
-    labelBreadcrumbs: string;
+    labelSortedDescending?: SortingColumnContainingString;
+    labelSortedAscending?: SortingColumnContainingString;
+    labelNotSorted?: SortingColumnContainingString;
+    labelsPagination?: PaginationProps.Labels;
+    labelsBucketsSelection?: SelectionLabels<Bucket>;
+    labelsObjectsSelection?: SelectionLabels<S3ResourceSelectorProps.Object>;
+    labelsVersionsSelection?: SelectionLabels<Version>;
+    labelFiltering?: (itemsType: string) => string;
+    labelRefresh?: string;
+    labelModalDismiss?: string;
+    labelBreadcrumbs?: string;
+    labelExpandBreadcrumbs?: string;
+    labelClearFilter?: string;
   }
 
   export interface ChangeDetail {

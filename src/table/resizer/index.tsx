@@ -8,20 +8,34 @@ import { findUpUntil } from '../../internal/utils/dom';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
-import { DEFAULT_WIDTH } from '../use-column-widths';
+import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
   onFinish: () => void;
   ariaLabelledby?: string;
   minWidth?: number;
+  tabIndex?: number;
+
+  showFocusRing?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
-export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth = DEFAULT_WIDTH }: ResizerProps) {
+export function Resizer({
+  onDragMove,
+  onFinish,
+  ariaLabelledby,
+  minWidth = DEFAULT_COLUMN_WIDTH,
+  tabIndex,
+  showFocusRing,
+  onFocus,
+  onBlur,
+}: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<HTMLElement>();
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
@@ -124,7 +138,11 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth = DEFAU
   }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus, minWidth]);
   return (
     <span
-      className={clsx(styles.resizer, isDragging && styles['resizer-active'], resizerHasFocus && styles['has-focus'])}
+      className={clsx(
+        styles.resizer,
+        isDragging && styles['resizer-active'],
+        (resizerHasFocus || showFocusRing) && styles['has-focus']
+      )}
       onMouseDown={event => {
         if (event.button !== 0) {
           return;
@@ -139,9 +157,11 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth = DEFAU
         setHeaderCellWidth(headerCell.getBoundingClientRect().width);
         setResizerHasFocus(true);
         setHeaderCell(headerCell);
+        onFocus?.();
       }}
       onBlur={() => {
         setResizerHasFocus(false);
+        onBlur?.();
       }}
       role="separator"
       aria-orientation="vertical"
@@ -150,7 +170,7 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth = DEFAU
       // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
       aria-valuetext={headerCellWidth.toString()}
       aria-valuemin={minWidth}
-      tabIndex={0}
+      tabIndex={tabIndex}
     />
   );
 }

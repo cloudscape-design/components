@@ -18,9 +18,11 @@ test('should have no initial value for filtering', () => {
   expect(wrapper.findInput().findNativeInput().getElement().value).toBe('');
 });
 
-test('should clear aria-describedby for filtering', () => {
-  const { wrapper } = renderTextFilter(<TextFilter filteringText="" />);
-  expect(wrapper.find('[aria-describedby]')).toBe(null);
+test('should attach aria-describedby to the filtering input', () => {
+  const { wrapper } = renderTextFilter(<TextFilter filteringText="test" countText="N matches" />);
+  const ariaDescribedby = wrapper.findInput().findNativeInput().getElement().getAttribute('aria-describedby');
+  expect(ariaDescribedby).not.toBeNull();
+  expect(document.getElementById(ariaDescribedby!)).toHaveTextContent('N matches');
 });
 
 test('should apply filteringPlaceholder', () => {
@@ -92,14 +94,14 @@ test('has autocomplete turned off', () => {
 });
 
 describe('countText', () => {
-  test('is empty if no value was given', () => {
+  test('not displayed if no value was given', () => {
     const { wrapper } = renderTextFilter(<TextFilter filteringText="" />);
-    expect(wrapper.findResultsCount().getElement().textContent).toEqual('');
+    expect(wrapper.findResultsCount()).toBe(null);
   });
 
   test('not displayed when filtering text is empty', () => {
     const { wrapper } = renderTextFilter(<TextFilter filteringText="" countText="0 matches" />);
-    expect(wrapper.findResultsCount().getElement().textContent).toEqual('');
+    expect(wrapper.findResultsCount()).toBe(null);
   });
 
   test('displays the text when all conditions met', () => {

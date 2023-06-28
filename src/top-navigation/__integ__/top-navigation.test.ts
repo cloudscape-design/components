@@ -8,10 +8,16 @@ import TopNavigationWrapper from '../../../lib/components/test-utils/selectors/t
 
 const wrapper = new TopNavigationWrapper(`.${TopNavigationWrapper.rootSelector}`);
 
-const setupTest = (pageWidth: number, testFn: (page: BasePageObject) => Promise<void>) => {
+class TopNavigationPage extends BasePageObject {
+  getLocation() {
+    return this.browser.getUrl();
+  }
+}
+
+const setupTest = (pageWidth: number, testFn: (page: TopNavigationPage) => Promise<void>) => {
   return useBrowser(async browser => {
     await browser.url('#/light/top-navigation/integ');
-    const page = new BasePageObject(browser);
+    const page = new TopNavigationPage(browser);
     await page.setWindowSize({ width: pageWidth, height: 600 });
     await page.waitForVisible(wrapper.toSelector());
     await testFn(page);
@@ -28,6 +34,15 @@ describe('Top navigation', () => {
         await expect(page.getText(wrapper.findUtility(1).toSelector())).resolves.toBe('New thing');
         await expect(page.getText(wrapper.findUtility(2).toSelector())).resolves.toBe('Docs ');
         await expect(page.getText(wrapper.findUtility(4).toSelector())).resolves.toBe('John Doe');
+      })
+    );
+
+    test(
+      'respects preventDefault on button onClick handler',
+      setupTest(pageWidth, async page => {
+        const previousLocation = await page.getLocation();
+        await page.click(wrapper.findUtility(3).toSelector());
+        await expect(page.getLocation()).resolves.toBe(previousLocation);
       })
     );
 

@@ -1,19 +1,37 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { render } from '@testing-library/react';
+import React, { useState } from 'react';
+import { render, screen } from '@testing-library/react';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
+import { Token } from '../../../lib/components/token-group/token';
 import createWrapper, { TokenGroupWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
 import icons from '../../../lib/components/icon/icons';
 
 import selectors from '../../../lib/components/token-group/styles.selectors.js';
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
-import spacebetweenSelectors from '../../../lib/components/space-between/styles.selectors.js';
+import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {
   const { container } = render(<TokenGroup {...props} />);
   return createWrapper(container).findTokenGroup()!;
+}
+
+function renderStatefulTokenGroup(props: Omit<TokenGroupProps, 'onDismiss'> = {}): TokenGroupWrapper {
+  const { container } = render(<StatefulTokenGroup {...props} />);
+  return createWrapper(container).findTokenGroup()!;
+}
+
+function StatefulTokenGroup({ items: initialItems = [], ...rest }: Omit<TokenGroupProps, 'onDismiss'>) {
+  const [items, setItems] = useState(initialItems);
+  return (
+    <TokenGroup
+      {...rest}
+      items={items}
+      onDismiss={event => setItems(prev => prev.filter((_, index) => index !== event.detail.itemIndex))}
+    />
+  );
 }
 
 const onDismiss = () => {};
@@ -52,13 +70,13 @@ describe('TokenGroup', () => {
 
   test('aligns tokens horizontally by default', () => {
     const wrapper = renderTokenGroup({ items, onDismiss });
-    expect(wrapper.findByClassName(spacebetweenSelectors.horizontal)).not.toBeNull();
+    expect(wrapper.find(`ul.${tokenListSelectors.horizontal}`)).not.toBeNull();
   });
 
   test('applies the alignment correctly', () => {
     const wrapper = renderTokenGroup({ alignment: 'vertical', items, onDismiss });
-    expect(wrapper.findByClassName(spacebetweenSelectors.horizontal)).toBeNull();
-    expect(wrapper.findByClassName(spacebetweenSelectors.vertical)).not.toBeNull();
+    expect(wrapper.find(`ul.${tokenListSelectors.horizontal}`)).toBeNull();
+    expect(wrapper.find(`ul.${tokenListSelectors.vertical}`)).not.toBeNull();
   });
 
   describe('Token', () => {
@@ -95,12 +113,14 @@ describe('TokenGroup', () => {
 
     test('sets aria-disabled on the token when disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: true }], onDismiss });
-      expect(findToken(wrapper)!.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(wrapper.findToken(1)!.getElement()).toHaveAttribute('aria-disabled', 'true');
     });
 
     test('does not set aria-disabled on the token when not disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: false }], onDismiss });
-      expect(findToken(wrapper)!.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.findByClassName(tokenListSelectors['list-item'])!.getElement()).not.toHaveAttribute(
+        'aria-disabled'
+      );
     });
 
     test('fires dismiss event on mouse click', () => {
@@ -150,7 +170,7 @@ describe('TokenGroup', () => {
     test('toggle button has aria-controls property that points to the token container', () => {
       const wrapper = renderTokenGroup({ items: generateItems(5), i18nStrings, limit: 2 });
 
-      const id = wrapper.findByClassName(spacebetweenSelectors.root)!.getElement().getAttribute('id');
+      const id = wrapper.findByClassName(tokenListSelectors.list)!.getElement().getAttribute('id');
       expect(wrapper.findTokenToggle()!.getElement()).toHaveAttribute('aria-controls', id);
     });
 
@@ -168,5 +188,100 @@ describe('TokenGroup', () => {
       const icon = wrapper.findTokenToggle()!.find('svg');
       expect(icon!.getElement()).toContainHTML(icons['treeview-collapse']);
     });
+  });
+
+  describe('Focus management', () => {
+    test('Focus is dispatched to the next active token when non-last token is removed', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1' },
+          { label: '2', dismissLabel: 'Remove 2' },
+          { label: '3', dismissLabel: 'Remove 3', disabled: true },
+          { label: '4', dismissLabel: 'Remove 4' },
+        ],
+      });
+      wrapper.findToken(2)!.findDismiss().click();
+
+      expect(wrapper.findToken(3)!.findDismiss().getElement()).toHaveFocus();
+    });
+
+    test('Focus is dispatched to the previous active token when last active token is removed', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1' },
+          { label: '2', dismissLabel: 'Remove 2' },
+          { label: '3', dismissLabel: 'Remove 3', disabled: true },
+          { label: '4', dismissLabel: 'Remove 4' },
+          { label: '5', dismissLabel: 'Remove 5', disabled: true },
+        ],
+      });
+      wrapper.findToken(4)!.findDismiss().click();
+
+      expect(wrapper.findToken(2)!.findDismiss().getElement()).toHaveFocus();
+    });
+
+    test('Focus is dispatched to the "show more" button when no active tokens visible after token removal', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1', disabled: true },
+          { label: '2', dismissLabel: 'Remove 2', disabled: true },
+          { label: '3', dismissLabel: 'Remove 3' },
+          { label: '4', dismissLabel: 'Remove 4', disabled: true },
+          { label: '5', dismissLabel: 'Remove 5' },
+        ],
+        limit: 3,
+      });
+      wrapper.findToken(3)!.findDismiss().click();
+
+      expect(wrapper.findTokenToggle()!.getElement()).toHaveFocus();
+    });
+
+    test('Focus returns to body when no active token and no "show more" button after token removal', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1', disabled: true },
+          { label: '2', dismissLabel: 'Remove 2', disabled: true },
+          { label: '3', dismissLabel: 'Remove 3' },
+        ],
+      });
+      wrapper.findToken(3)!.findDismiss().click();
+
+      expect(document.body).toHaveFocus();
+    });
+  });
+});
+
+describe('Token', () => {
+  test('Renders token error and associates it with the token', () => {
+    const { container } = render(
+      <Token errorText="Error text" errorIconAriaLabel="Error icon">
+        Content
+      </Token>
+    );
+    const tokenElement = createWrapper(container).findByClassName(selectors.token)!.getElement();
+    expect(screen.getByLabelText('Error icon')).toBeDefined();
+    expect(screen.getByText('Error text')).toBeDefined();
+    expect(tokenElement).toHaveAccessibleDescription('Error text');
+  });
+});
+
+describe('i18n', () => {
+  test('supports rendering limitShowFewer and limitShowMore using i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'token-group': {
+            'i18nStrings.limitShowFewer': 'Custom show fewer',
+            'i18nStrings.limitShowMore': 'Custom show more',
+          },
+        }}
+      >
+        <TokenGroup limit={1} items={[{ label: '1' }, { label: '2' }]} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findTokenGroup()!;
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom show more');
+    wrapper.findTokenToggle()!.click();
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom show fewer');
   });
 });

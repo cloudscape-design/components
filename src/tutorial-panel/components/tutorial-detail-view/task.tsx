@@ -58,7 +58,7 @@ export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpa
 
         <div className={styles['expandable-section-wrapper']}>
           <InternalExpandableSection
-            headerText={
+            header={
               <span className={styles['expandable-section-header']}>
                 {i18nStrings.labelTotalSteps(task.steps.length)}
               </span>

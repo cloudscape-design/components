@@ -1,0 +1,34 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+
+.file-option-name,
+.file-option-size,
+.file-option-last-modified,
+.file-option-thumbnail {
+  /* used in test-utils */
+}
+
+.file-option {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  gap: awsui.$space-scaled-xs;
+}
+
+.file-option-thumbnail {
+  margin-top: awsui.$space-static-xxs;
+  max-width: 60px;
+}
+
+.file-option-thumbnail-image {
+  width: 100%;
+  height: auto;
+}
+
+.file-option-metadata {
+  width: 100%;
+}

@@ -22,6 +22,11 @@ export interface CheckboxProps extends BaseCheckboxProps {
    * Called when the user changes the component state. The event `detail` contains the current value for the `checked` property.
    */
   onChange?: NonCancelableEventHandler<CheckboxProps.ChangeDetail>;
+
+  /**
+   * Specifies whether to add `aria-required` to the native control.
+   */
+  ariaRequired?: boolean;
 }
 
 export namespace CheckboxProps {

@@ -38,6 +38,7 @@ export default function Example<T extends AreaChartProps.DataTypes>({
         loadingText="Loading chart data..."
         errorText="Error loading chart data."
         recoveryText="Retry"
+        onRecoveryClick={() => {}}
         empty={
           <Box textAlign="center" color="inherit">
             <b>No data</b>

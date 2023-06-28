@@ -150,11 +150,14 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * Adds labels to the selection components (checkboxes and radio buttons) as follows:
    * * `itemSelectionLabel` ((SelectionState, Item) => string) - Determines the label for an item.
    * * `selectionGroupLabel` (string) - Specifies the label for the group selection control.
+   * * `cardsLabel` (string) - Provides alternative text for the cards list.
+   *                            By default the contents of the `header` are used.
    *
    * You can use the first arguments of type `SelectionState` to access the current selection
    * state of the component (for example, the `selectedItems` list). The label function for individual
    * items also receives the corresponding  `Item` object. You can use the group label to
    * add a meaningful description to the whole selection.
+   * @i18n
    */
   ariaLabels?: CardsProps.AriaLabels<T>;
   /**
@@ -179,6 +182,22 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * need to position the sticky header below other fixed position elements on the page.
    */
   stickyHeaderVerticalOffset?: number;
+
+  /**
+   * Use this property to inform screen readers how many cards there are.
+   * It specifies the total number of cards.
+   * If there is an unknown total number of cards, leave this property undefined.   */
+  totalItemsCount?: number;
+  /**
+   *  Use this property to inform screen readers which range of cards is currently displayed.
+   *  It specifies the index (1-based) of the first card.
+   *  If the cards list has no pagination, leave this property undefined.   */
+  firstIndex?: number;
+  /**
+   * Use this function to announce page changes to screen reader users.
+   * Requires the properties firstIndex and totalItemsCount to be set correctly.
+   */
+  renderAriaLive?: (data: CardsProps.LiveAnnouncement) => string;
 
   /**
    * Specify a cards variant with one of the following:
@@ -225,7 +244,15 @@ export namespace CardsProps {
   export interface AriaLabels<T> {
     itemSelectionLabel: (data: CardsProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel: string;
+    cardsLabel?: string;
   }
+
+  export interface LiveAnnouncement {
+    totalItemsCount?: number;
+    firstIndex: number;
+    lastIndex: number;
+  }
+
   export interface Ref {
     /**
      * When the sticky header is enabled, calling this function scrolls cards's

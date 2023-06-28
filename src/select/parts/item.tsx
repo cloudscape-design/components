@@ -76,7 +76,7 @@ const Item = (
           </div>
         )}
         {isParent ? (
-          wrappedOption.label || wrappedOption.value
+          <span>{wrappedOption.label || wrappedOption.value}</span>
         ) : (
           <Option
             option={{ ...wrappedOption, disabled }}

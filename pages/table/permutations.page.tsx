@@ -42,6 +42,7 @@ const PROPERTY_COLUMNS: TableProps.ColumnDefinition<any>[] = [
     id: 'variable',
     header: 'Property',
     cell: item => <Link href="#">{item.name}</Link>,
+    isRowHeader: true,
   },
   {
     id: 'type',
@@ -60,6 +61,37 @@ const permutations = createPermutations<TableProps>([
   {
     wrapLines: [true, false],
     columnDefinitions: [PROPERTY_COLUMNS.map(column => ({ ...column }))],
+    items: [
+      [
+        {
+          name: 'Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color',
+          value: '#000000',
+          type: 'String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String',
+        },
+        {
+          name: 'Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width',
+          value: '100',
+          type: 'Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer',
+        },
+        {
+          name: 'Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height',
+          value: '200',
+          type: 'Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer',
+        },
+      ],
+    ],
+  },
+  {
+    wrapLines: [true],
+    columnDefinitions: [
+      PROPERTY_COLUMNS.map((column, index) => ({
+        ...column,
+        header: Array(20)
+          .fill(0)
+          .map(() => column.header)
+          .join(index < PROPERTY_COLUMNS.length - 1 ? ' ' : ''),
+      })),
+    ],
     items: [
       [
         {
@@ -178,6 +210,13 @@ const permutations = createPermutations<TableProps>([
     items: [createSimpleItems(3)],
     sortingColumn: [SORTABLE_COLUMNS[0]],
     sortingDescending: [true],
+  },
+  {
+    columnDefinitions: [SORTABLE_COLUMNS],
+    items: [createSimpleItems(3)],
+    variant: [undefined, 'full-page'],
+    pagination: [undefined, 'pagination'],
+    footer: [undefined, 'footer'],
   },
   {
     columnDefinitions: [SORTABLE_COLUMNS],

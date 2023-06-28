@@ -7,22 +7,23 @@ import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { isDevelopment } from '../internal/is-development';
 import { throttle } from '../internal/utils/throttle';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import LiveRegion from '../internal/components/live-region';
 import { ButtonProps } from '../button/interfaces';
 
 import { sendDismissMetric } from './internal/analytics';
 
 import { FOCUS_THROTTLE_DELAY } from './utils';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
 
 const ICON_TYPES = {
   success: 'status-positive',
   warning: 'status-warning',
   info: 'status-info',
   error: 'status-negative',
+  'in-progress': 'status-in-progress',
 } as const;
 
 function actionButton(
@@ -89,8 +90,6 @@ export const Flash = React.forwardRef(
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const focusVisible = useFocusVisible();
-
     if (isDevelopment) {
       if (buttonText && !onButtonClick) {
         warnOnce(
@@ -115,11 +114,13 @@ export const Flash = React.forwardRef(
 
     const effectiveType = loading ? 'info' : type;
 
-    const announcement = [statusIconAriaLabel, header, content].filter(Boolean).join(' ');
-
     const handleDismiss: ButtonProps['onClick'] = event => {
       sendDismissMetric(effectiveType);
       onDismiss && onDismiss(event);
+    };
+
+    const analyticsAttributes = {
+      [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
     };
 
     return (
@@ -143,9 +144,10 @@ export const Flash = React.forwardRef(
             [styles.exited]: transitionState === 'exited',
           }
         )}
+        {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
-          <div {...focusVisible} className={styles['flash-focus-container']} tabIndex={-1}>
+          <div className={styles['flash-focus-container']} tabIndex={-1}>
             <div
               className={clsx(styles['flash-icon'], styles['flash-text'])}
               role="img"
@@ -161,7 +163,11 @@ export const Flash = React.forwardRef(
           {button && <div className={styles['action-button-wrapper']}>{button}</div>}
         </div>
         {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        {ariaRole === 'status' && <LiveRegion>{announcement}</LiveRegion>}
+        {ariaRole === 'status' && (
+          <LiveRegion>
+            {statusIconAriaLabel} {header} {content}
+          </LiveRegion>
+        )}
       </div>
     );
   }

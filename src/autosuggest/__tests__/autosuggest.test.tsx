@@ -10,14 +10,10 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
-let uniqueId = 1;
-
-jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => ({
-  useUniqueId: () => 'random-' + uniqueId++,
-  generateUniqueId: () => 'random-' + uniqueId++,
-}));
-
-const defaultOptions: AutosuggestProps.Options = [{ value: '1', label: 'One' }, { value: '2' }];
+const defaultOptions: AutosuggestProps.Options = [
+  { value: '1', label: 'One' },
+  { value: '2', lang: 'fr' },
+];
 const defaultProps: AutosuggestProps = {
   enteredTextLabel: () => 'Use value',
   value: '',
@@ -37,6 +33,12 @@ test('renders correct labels when focused', () => {
   wrapper.focus();
   expect(wrapper.findDropdown().findOptionByValue('1')!.getElement()).toHaveTextContent('One');
   expect(wrapper.findDropdown().findOptionByValue('2')!.getElement()).toHaveTextContent('2');
+});
+
+test('renders lang on options', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+  wrapper.focus();
+  expect(wrapper.findDropdown()!.findOptionByValue('2')!.getElement()).toHaveAttribute('lang', 'fr');
 });
 
 test('option can be selected', () => {
@@ -130,7 +132,7 @@ describe('onSelect', () => {
     wrapper.focus();
     wrapper.selectSuggestion(1);
     expect(onChange).toHaveBeenCalledWith({ value: '1' });
-    expect(onSelect).toHaveBeenCalledWith({ value: '1' });
+    expect(onSelect).toHaveBeenCalledWith({ value: '1', selectedOption: defaultOptions[0] });
   });
 
   test('should select `enteredText` option', () => {
@@ -147,7 +149,8 @@ describe('onSelect', () => {
     wrapper.focus();
     wrapper.findEnteredTextOption()!.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
     expect(onChange).toHaveBeenCalledWith({ value: 'test' });
-    expect(onSelect).toHaveBeenCalledWith({ value: 'test' });
+    expect(onSelect).toHaveBeenCalledWith({ value: 'test', selectedOption: undefined });
+    expect(wrapper.findDropdown().findOpenDropdown()).toBeFalsy();
   });
 });
 
@@ -199,6 +202,22 @@ describe('Dropdown states', () => {
     expect(statusIcon).toHaveAttribute('role', 'img');
   });
 
+  test('should associate the error status footer with the dropdown', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} statusType="error" errorText="Test error text" />
+    );
+    wrapper.focus();
+    expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription('Test error text');
+  });
+
+  test('should associate the finished status footer with the dropdown', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} statusType="finished" finishedText="Finished text" />
+    );
+    wrapper.focus();
+    expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription('Finished text');
+  });
+
   it('when no options is matched the dropdown is shown but aria-expanded is false', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} statusType="finished" value="free-text" />);
     wrapper.setInputValue('free-text');
@@ -229,8 +248,8 @@ describe('a11y props', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
     const input = wrapper.findNativeInput().getElement();
     wrapper.findNativeInput().focus();
-    expect(input).toHaveAttribute('aria-controls', expect.stringContaining('random-'));
-    expect(input).toHaveAttribute('aria-owns', expect.stringContaining('random-'));
+    expect(input).toHaveAttribute('aria-controls', expect.any(String));
+    expect(input).toHaveAttribute('aria-owns', expect.any(String));
   });
 
   test('adds correct aria properties to input when expanded', () => {
@@ -251,7 +270,7 @@ describe('a11y props', () => {
     wrapper.findNativeInput().keydown(KeyCode.down);
     const input = wrapper.findNativeInput().getElement();
     const highlightedOption = wrapper.findDropdown().findHighlightedOption()!.getElement();
-    expect(highlightedOption).toHaveAttribute('id', expect.stringContaining('random-'));
+    expect(highlightedOption).toHaveAttribute('id', expect.any(String));
     expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
   });
 
@@ -309,7 +328,9 @@ describe('keyboard interactions', () => {
     wrapper.findNativeInput().keydown(KeyCode.down);
     wrapper.findNativeInput().keydown(KeyCode.enter);
     expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
-    expect(onSelect).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toBeCalledWith(
+      expect.objectContaining({ detail: { value: '1', selectedOption: defaultOptions[0] } })
+    );
   });
 
   test('closes dropdown on enter and opens it on arrow keys', () => {
@@ -377,4 +398,21 @@ describe('Ref', () => {
     expect(input.selectionStart).toBe(0);
     expect(input.selectionEnd).toBe(2);
   });
+});
+
+test('findOptionInGroup', () => {
+  const { container } = render(
+    <Autosuggest
+      value=""
+      onChange={() => {}}
+      enteredTextLabel={() => 'Use value'}
+      options={[
+        { label: 'Group 1', options: [{ value: '1' }, { value: '2' }] },
+        { label: 'Group 2', options: [{ value: '3' }] },
+      ]}
+    />
+  );
+  const wrapper = createWrapper(container).findAutosuggest()!;
+  wrapper.findNativeInput().focus();
+  expect(wrapper.findDropdown().findOptionInGroup(1, 2)).toBeTruthy();
 });

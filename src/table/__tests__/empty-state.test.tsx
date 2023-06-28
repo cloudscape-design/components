@@ -7,6 +7,7 @@ import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/
 import { supportsStickyPosition } from '../../../lib/components/internal/utils/dom';
 import { useContainerQuery } from '../../../lib/components/internal/hooks/container-queries';
 import styles from '../../../lib/components/table/styles.css.js';
+import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/table/sticky-columns';
 
 jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
   useContainerQuery: jest.fn(() => [600, () => {}]),
@@ -18,10 +19,32 @@ jest.mock('../../../lib/components/internal/utils/dom', () => ({
   findUpUntil: jest.fn(),
 }));
 
+jest.mock('../../../lib/components/table/sticky-columns', () => ({
+  useStickyColumns: jest.fn(),
+  useStickyCellStyles: jest.fn(),
+  selectionColumnId: 'id',
+}));
+
+const mockStickyStateModel = {
+  isEnabled: false,
+  store: jest.fn(),
+  style: {
+    wrapper: '',
+  },
+  refs: {
+    table: jest.fn(),
+    wrapper: jest.fn(),
+    cell: jest.fn(),
+  },
+};
+
+const mockStickyStyles = { ref: jest.fn(), className: '', style: { left: 0 } };
+
 beforeEach(() => {
   (supportsStickyPosition as jest.Mock).mockReturnValue(true);
+  (useStickyColumns as jest.Mock).mockReturnValue(mockStickyStateModel);
+  (useStickyCellStyles as jest.Mock).mockReturnValue(mockStickyStyles);
 });
-
 const defaultColumns: TableProps.ColumnDefinition<any>[] = [{ header: 'name', cell: item => item }];
 
 function renderTable(jsx: React.ReactElement) {

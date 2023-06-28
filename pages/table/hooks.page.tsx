@@ -15,18 +15,16 @@ import {
   getMatchesCountText,
   paginationLabels,
   pageSizeOptions,
-  visibleContentOptions,
+  contentDisplayPreference,
+  defaultPreferences,
 } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 
 export default function App() {
-  const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
-    pageSize: 20,
-    visibleContent: ['id', 'type', 'dnsName', 'state'],
-    wrapLines: false,
-  });
+  const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
     allItems,
     {
@@ -69,7 +67,7 @@ export default function App() {
             filteringAriaLabel="Filter instances"
           />
         }
-        visibleColumns={preferences.visibleContent}
+        columnDisplay={preferences.contentDisplay}
         preferences={
           <CollectionPreferences
             title="Preferences"
@@ -81,9 +79,9 @@ export default function App() {
               title: 'Select page size',
               options: pageSizeOptions,
             }}
-            visibleContentPreference={{
-              title: 'Select visible columns',
-              options: visibleContentOptions,
+            contentDisplayPreference={{
+              ...contentDisplayPreference,
+              ...contentDisplayPreferenceI18nStrings,
             }}
             wrapLinesPreference={{
               label: 'Wrap lines',

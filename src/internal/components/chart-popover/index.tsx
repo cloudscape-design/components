@@ -13,6 +13,7 @@ import { nodeContains } from '../../utils/dom';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import styles from './styles.css.js';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 export interface ChartPopoverProps extends PopoverProps {
   /** Title of the popover */
@@ -81,7 +82,7 @@ function ChartPopover(
     const onDocumentClick = (event: MouseEvent) => {
       if (
         event.target &&
-        !nodeContains(popoverObjectRef.current, event.target as Element) && // click not in popover
+        !nodeBelongs(popoverObjectRef.current, event.target as Element) && // click not in popover
         !nodeContains(container, event.target as Element) // click not in segment
       ) {
         onDismiss(true);
@@ -121,6 +122,7 @@ function ChartPopover(
             dismissAriaLabel={dismissAriaLabel}
             header={title}
             onDismiss={onDismiss}
+            overflowVisible="content"
             className={styles['popover-body']}
           >
             {children}

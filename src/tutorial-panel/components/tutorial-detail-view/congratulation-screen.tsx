@@ -11,7 +11,7 @@ import InternalBox from '../../../box/internal';
 
 interface CongratulationScreenProps {
   children: React.ReactNode;
-  onFeedbackClick: () => void;
+  onFeedbackClick?: () => void;
   i18nStrings: TutorialPanelProps['i18nStrings'];
 }
 
@@ -41,9 +41,11 @@ export function CongratulationScreen({ children, onFeedbackClick, i18nStrings }:
 
       <div className={styles.divider} />
 
-      <InternalLink onFollow={onFeedbackClick} className={styles['feedback-link']}>
-        {i18nStrings.feedbackLinkText}
-      </InternalLink>
+      {onFeedbackClick && (
+        <InternalLink onFollow={onFeedbackClick} className={styles['feedback-link']}>
+          {i18nStrings.feedbackLinkText}
+        </InternalLink>
+      )}
     </InternalSpaceBetween>
   );
 }

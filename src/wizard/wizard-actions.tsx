@@ -8,13 +8,14 @@ import { ButtonProps } from '../button/interfaces';
 import Unmount from './unmount';
 
 interface WizardActionsProps {
-  cancelButtonText: string;
+  cancelButtonText?: string;
   onCancelClick: () => void;
   isPrimaryLoading: boolean;
-  primaryButtonText: string;
+  primaryButtonText?: string;
+  primaryButtonLoadingText?: string;
   onPrimaryClick: () => void;
   showPrevious: boolean;
-  previousButtonText: string;
+  previousButtonText?: string;
   onPreviousClick: () => void;
   showSkipTo: boolean;
   skipToButtonText?: string;
@@ -26,6 +27,7 @@ export default function WizardActions({
   onCancelClick,
   isPrimaryLoading,
   primaryButtonText,
+  primaryButtonLoadingText,
   onPrimaryClick,
   showPrevious,
   previousButtonText,
@@ -86,6 +88,7 @@ export default function WizardActions({
           formAction="none"
           onClick={onPrimaryClick}
           loading={isPrimaryLoading}
+          loadingText={primaryButtonLoadingText}
         >
           {primaryButtonText}
         </InternalButton>

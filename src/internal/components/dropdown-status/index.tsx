@@ -15,7 +15,9 @@ export { DropdownStatusProps };
 export interface DropdownStatusPropsExtended extends DropdownStatusProps {
   isEmpty?: boolean;
   isNoMatch?: boolean;
+  isFiltered?: boolean;
   noMatch?: React.ReactNode;
+  filteringResultsText?: string;
   /**
    * Called when the user clicks the recovery button placed at the
    * bottom of the dropdown list in the error state. Use this to
@@ -34,10 +36,12 @@ type UseDropdownStatus = ({
   empty,
   loadingText,
   finishedText,
+  filteringResultsText,
   errorText,
   recoveryText,
   isEmpty,
   isNoMatch,
+  isFiltered,
   noMatch,
   onRecoveryClick,
 }: DropdownStatusPropsExtended) => DropdownStatusResult;
@@ -52,10 +56,12 @@ export const useDropdownStatus: UseDropdownStatus = ({
   empty,
   loadingText,
   finishedText,
+  filteringResultsText,
   errorText,
   recoveryText,
   isEmpty,
   isNoMatch,
+  isFiltered,
   noMatch,
   onRecoveryClick,
   errorIconAriaLabel,
@@ -90,6 +96,8 @@ export const useDropdownStatus: UseDropdownStatus = ({
     statusResult.content = empty;
   } else if (isNoMatch && noMatch) {
     statusResult.content = noMatch;
+  } else if (isFiltered && filteringResultsText) {
+    statusResult.content = filteringResultsText;
   } else if (statusType === 'finished' && finishedText) {
     statusResult.content = finishedText;
     statusResult.isSticky = false;

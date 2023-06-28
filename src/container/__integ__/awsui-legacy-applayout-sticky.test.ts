@@ -11,6 +11,7 @@ const appLayoutWrapper = createWrapper().findAppLayout();
 const containerWrapper = appLayoutWrapper.findContentRegion().findContainer();
 const containerHeaderSelector = containerWrapper.findHeader().toSelector();
 const flashBarSelector = createWrapper().findFlashbar().toSelector();
+const demoHeaderSelector = '#h';
 
 const CLASSIC_STICKY_OFFSET_SPACE = 0; // No borders on flashbars or additional padding below
 const VISUAL_REFRESH_STICKY_OFFSET_SPACE = 4; // space-xxs - from $offsetTopWithNotifications additional padding
@@ -59,13 +60,14 @@ describe.each([
   );
 
   test(
-    'Does not stick in narrow viewports',
+    'Sticky header is scrolled out of view in mobile viewports',
     setupTest({ viewport: viewports.mobile }, async page => {
+      const { height: demoPageHeaderHeight } = await page.getBoundingBox(demoHeaderSelector);
       const { top: topBefore } = await page.getBoundingBox(containerHeaderSelector);
-      expect(topBefore).toBeGreaterThan(0);
+      expect(topBefore).toBeGreaterThan(demoPageHeaderHeight);
       await page.scrollTo({ top: 400 });
       const { top: topAfter } = await page.getBoundingBox(containerHeaderSelector);
-      expect(topAfter).toBeLessThan(0);
+      expect(topAfter).toBeLessThan(demoPageHeaderHeight);
     })
   );
 });

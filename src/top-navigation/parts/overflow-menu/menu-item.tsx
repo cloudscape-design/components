@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id';
-import useFocusVisible from '../../../internal/hooks/focus-visible';
 
 import { LinkProps } from '../../../link/interfaces';
 import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
@@ -33,54 +32,28 @@ const ListItem = ({ children, startIcon, endIcon }: ListItemProps) => {
   );
 };
 
-interface LinkItemProps extends ButtonItemProps, Pick<LinkProps, 'href' | 'external'> {}
+interface LinkItemProps extends ButtonItemProps, Pick<LinkProps, 'href' | 'external' | 'target' | 'rel'> {}
 
 const LinkItem = forwardRef(
   (
-    { children, external, href, startIcon, endIcon, onFollow, context, testId }: LinkItemProps,
-    ref: React.Ref<HTMLAnchorElement>
+    { children, external, href, target, rel, startIcon, endIcon, onClick, context, testId }: LinkItemProps,
+    ref: React.Ref<HTMLAnchorElement & HTMLButtonElement>
   ) => {
-    const focusVisible = useFocusVisible();
-    const rel = external ? 'noopener noreferrer' : undefined;
-    const target = external ? '_blank' : undefined;
-
-    const anchorProps = {
-      rel,
-      target,
-      href,
-      onClick(event: React.MouseEvent) {
-        if (isPlainLeftClick(event)) {
-          onFollow?.(event);
-        }
-      },
-    };
-
-    const buttonProps = {
-      role: 'button',
-      tabIndex: 0,
-      onKeyDown(event: React.KeyboardEvent) {
-        if (event.key === ' ') {
-          event.preventDefault();
-        }
-      },
-      onKeyUp(event: React.KeyboardEvent) {
-        if (event.key === ' ' || event.key === 'Enter') {
-          onFollow?.(event);
-        }
-      },
-      onClick: onFollow,
-    };
+    const anchorTarget = target ?? (external ? '_blank' : undefined);
+    const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
 
     return (
       <a
         ref={ref}
+        onClick={onClick}
         className={clsx(
           styles['overflow-menu-control'],
           styles['overflow-menu-control-link'],
           context && styles[`overflow-menu-control-${context}`]
         )}
-        {...(typeof href === 'string' ? anchorProps : buttonProps)}
-        {...focusVisible}
+        href={href}
+        target={anchorTarget}
+        rel={anchorRel}
         {...(testId ? { 'data-testid': testId } : {})}
       >
         <ListItem startIcon={startIcon} endIcon={endIcon}>
@@ -92,22 +65,19 @@ const LinkItem = forwardRef(
 );
 
 interface ButtonItemProps extends ListItemProps {
-  onFollow?: (event: React.SyntheticEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 const ButtonItem = forwardRef(
   (
-    { children, startIcon, endIcon, onFollow: onClick, testId }: ButtonItemProps & { testId?: string },
+    { children, startIcon, endIcon, onClick, testId }: ButtonItemProps & { testId?: string },
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const focusVisible = useFocusVisible();
-
     return (
       <button
         ref={ref}
         className={styles['overflow-menu-control']}
         onClick={onClick}
-        {...focusVisible}
         {...(typeof testId === 'string' ? { 'data-testid': testId } : {})}
       >
         <ListItem startIcon={startIcon} endIcon={endIcon}>
@@ -136,7 +106,7 @@ const NavigationItem = forwardRef(
         startIcon={startIcon}
         endIcon={<InternalIcon name="angle-right" />}
         testId={testId}
-        onFollow={() =>
+        onClick={() =>
           navigate('dropdown-menu', {
             definition,
             headerText: definition.text || definition.title,
@@ -152,9 +122,9 @@ const NavigationItem = forwardRef(
 );
 
 const ExpandableItem: React.FC<
-  ButtonItemProps & ButtonDropdownProps.ItemGroup & { onItemClick: (item: ButtonDropdownProps.Item) => void }
+  ButtonItemProps &
+    ButtonDropdownProps.ItemGroup & { onItemClick: (event: React.MouseEvent, item: ButtonDropdownProps.Item) => void }
 > = ({ children, onItemClick, ...definition }) => {
-  const focusVisible = useFocusVisible();
   const [expanded, setExpanded] = useState(false);
   const headerId = useUniqueId('overflow-menu-item');
 
@@ -164,7 +134,6 @@ const ExpandableItem: React.FC<
         className={clsx(styles['overflow-menu-control'], styles['overflow-menu-control-expandable-menu-trigger'])}
         onClick={() => setExpanded(value => !value)}
         aria-expanded={expanded}
-        {...focusVisible}
       >
         <ListItem
           endIcon={
@@ -200,7 +169,7 @@ const ExpandableItem: React.FC<
 };
 
 function utilityComponentFactory(
-  utility: TopNavigationProps.Utility,
+  utility: TopNavigationProps.Utility & { onClose?: () => void },
   index: number,
   ref?: React.Ref<HTMLAnchorElement & HTMLButtonElement>
 ) {
@@ -212,14 +181,33 @@ function utilityComponentFactory(
 
   switch (utility.type) {
     case 'button': {
-      const handleClick = (event: Event | React.SyntheticEvent) => {
+      const handleClick = (event: React.MouseEvent) => {
+        if (Boolean(utility.href) && isPlainLeftClick(event)) {
+          fireCancelableEvent(utility.onFollow, { href: utility.href, target: utility.target }, event);
+        }
+
         fireCancelableEvent(utility.onClick, {}, event);
+        utility.onClose?.();
       };
 
-      if (utility.variant === 'primary-button') {
+      const content = (
+        <>
+          {label}
+          {utility.external && (
+            <>
+              {' '}
+              <span aria-label={utility.externalIconAriaLabel} role={utility.externalIconAriaLabel ? 'img' : undefined}>
+                <InternalIcon name="external" size="normal" />
+              </span>
+            </>
+          )}
+        </>
+      );
+
+      if (!utility.href) {
         return (
-          <ButtonItem ref={ref} startIcon={startIcon} onFollow={handleClick} testId={`__${index}`}>
-            {label}
+          <ButtonItem ref={ref} startIcon={startIcon} onClick={handleClick} testId={`__${index}`}>
+            {content}
           </ButtonItem>
         );
       }
@@ -230,18 +218,12 @@ function utilityComponentFactory(
           startIcon={startIcon}
           href={utility.href}
           external={utility.external}
+          target={utility.target}
+          rel={utility.rel}
           testId={`__${index}`}
-          onFollow={handleClick}
+          onClick={handleClick}
         >
-          {label}
-          {utility.external && (
-            <>
-              {' '}
-              <span aria-label={utility.externalIconAriaLabel} role={utility.externalIconAriaLabel ? 'img' : undefined}>
-                <InternalIcon name="external" size="normal" />
-              </span>
-            </>
-          )}
+          {content}
         </LinkItem>
       );
     }
@@ -264,7 +246,7 @@ function utilityComponentFactory(
 function dropdownComponentFactory(
   item: ButtonDropdownProps.ItemOrGroup,
   expandable: boolean,
-  onItemClick: (item: ButtonDropdownProps.Item) => void
+  onItemClick: (event: React.MouseEvent, item: ButtonDropdownProps.Item) => void
 ) {
   const label = item.text;
   const hasIcon = !!item.iconName || !!item.iconUrl || !!item.iconAlt || !!item.iconSvg;
@@ -287,7 +269,7 @@ function dropdownComponentFactory(
       external={item.external}
       context="dropdown-menu"
       testId={item.id}
-      onFollow={() => onItemClick(item as ButtonDropdownProps.Item)}
+      onClick={event => onItemClick(event, item as ButtonDropdownProps.Item)}
     >
       {label}
       {item.external && (
@@ -302,7 +284,7 @@ function dropdownComponentFactory(
   );
 }
 
-type UtilityMenuItemProps = TopNavigationProps.Utility & { index: number };
+type UtilityMenuItemProps = TopNavigationProps.Utility & { index: number; onClose?: () => void };
 
 export const UtilityMenuItem = forwardRef(
   ({ index, ...props }: UtilityMenuItemProps, ref: React.Ref<HTMLAnchorElement & HTMLButtonElement>) => {
@@ -314,7 +296,9 @@ export const UtilityMenuItem = forwardRef(
   }
 );
 
-type SubmenuItemProps = ButtonDropdownProps.ItemOrGroup & { onItemClick: (item: ButtonDropdownProps.Item) => void };
+type SubmenuItemProps = ButtonDropdownProps.ItemOrGroup & {
+  onClick: (event: React.MouseEvent, item: ButtonDropdownProps.Item) => void;
+};
 
 export const SubmenuItem = (props: SubmenuItemProps) => {
   const expandable = typeof (props as ButtonDropdownProps.ItemGroup).items !== 'undefined';
@@ -327,7 +311,7 @@ export const SubmenuItem = (props: SubmenuItemProps) => {
         expandable && styles[`overflow-menu-list-item-expandable`]
       )}
     >
-      {dropdownComponentFactory(props, expandable, props.onItemClick)}
+      {dropdownComponentFactory(props, expandable, props.onClick)}
     </li>
   );
 };

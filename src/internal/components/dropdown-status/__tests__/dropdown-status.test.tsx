@@ -112,4 +112,54 @@ describe('useDropdownStatus', () => {
     expect(getIcon()).toHaveAttribute('aria-label', 'error-icon');
     expect(getIcon()).toHaveAttribute('role', 'img');
   });
+
+  test('renders filtering text when filtered', () => {
+    const { getContent } = renderComponent({
+      statusType: 'pending',
+      filteringResultsText: '2 matches',
+      isFiltered: true,
+    });
+    expect(getContent()).toBe('2 matches');
+  });
+
+  test('does not render filtering text while loading', () => {
+    const { getContent } = renderComponent({
+      statusType: 'loading',
+      filteringResultsText: '2 matches',
+      isFiltered: true,
+      loadingText: 'Loading',
+    });
+    expect(getContent()).toBe('Loading');
+  });
+
+  test('does not render filtering text when error occurred', () => {
+    const { getContent } = renderComponent({
+      statusType: 'error',
+      filteringResultsText: '2 matches',
+      isFiltered: true,
+      errorText: 'We got a problem',
+      recoveryText: 'do not worry',
+    });
+    expect(getContent()).toBe('We got a problem do not worry');
+  });
+
+  test('render finished text when finished and not filtered', () => {
+    const { getContent } = renderComponent({
+      statusType: 'finished',
+      filteringResultsText: '10 out of 10 items',
+      isFiltered: false,
+      finishedText: 'End of results',
+    });
+    expect(getContent()).toBe('End of results');
+  });
+
+  test('render filtering text when finished and filtered', () => {
+    const { getContent } = renderComponent({
+      statusType: 'finished',
+      filteringResultsText: '10 out of 10 items',
+      isFiltered: true,
+      finishedText: 'End of results',
+    });
+    expect(getContent()).toBe('10 out of 10 items');
+  });
 });

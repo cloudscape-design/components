@@ -7,6 +7,7 @@ import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor';
 import createWrapper, { TagEditorWrapper } from '../../../lib/components/test-utils/dom';
 
 import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 const defaultProps = {
   i18nStrings,
@@ -352,9 +353,25 @@ describe('Tag Editor component', () => {
         })
       );
     });
+
+    test('renders `ariaLabel` on remove button using `removeButtonAriaLabel` on all rows', () => {
+      const removeButtonAriaLabel = (item: TagEditorProps.Tag) => `Remove ${item.key}`;
+      const { wrapper } = renderTagEditor({
+        tags: [{ key: 'test key', value: 'value', existing: false }],
+        i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel },
+      });
+      defaultProps.tags!.forEach((item, index) => {
+        expect(
+          wrapper
+            .findRow(index + 1)!
+            .findRemoveButton()!
+            .getElement()
+        ).toHaveAccessibleName(`Remove test key`);
+      });
+    });
   });
 
-  test('should render itemRemovedAriaLive when a tag is removed', () => {
+  test('should render itemRemovedAriaLive when a tag is removed', async () => {
     const tags = [
       { key: 'key', value: 'value', existing: false },
       { key: 'key2', value: 'value', existing: false },
@@ -368,7 +385,7 @@ describe('Tag Editor component', () => {
 
     wrapper.findRow(1)!.findRemoveButton()!.click();
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(wrapper.find(`[data-testid="removal-announcement"]`)!.getElement()).toHaveTextContent('removal-text-test');
     });
   });
@@ -494,6 +511,196 @@ describe('Tag Editor component', () => {
 
       // We wait as api call is fired on delayedInput
       await waitFor(() => expect(valueAutosuggest.findDropdown().findOptions()).toHaveLength(3));
+    });
+  });
+
+  describe('focus behavior', () => {
+    const renderControlledTagEditor = (props: Partial<TagEditorProps>) => {
+      const { wrapper, rerender, onChangeSpy } = renderTagEditor(props);
+      return { wrapper, rerender: () => rerender({ ...props, ...onChangeSpy.mock.lastCall[0].detail }) };
+    };
+
+    test('should focus key input when adding a new tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: false }],
+      });
+
+      wrapper.findAddButton().click();
+      rerender();
+      expect(wrapper.findRow(2)!.findAutosuggest()!.findNativeInput().getElement()).toHaveFocus();
+    });
+
+    test('should focus undo button when removing an existing tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: true }],
+      });
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      rerender();
+      expect(wrapper.findRow(1)?.findUndoButton()!.getElement()).toHaveFocus();
+    });
+
+    test('should focus remove button undoing marking for removal', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: true, markedForRemoval: true }],
+      });
+
+      wrapper.findRow(1)!.findUndoButton()!.click();
+      rerender();
+      expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveFocus();
+    });
+
+    test('should focus add button when removing single tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: false }],
+      });
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      rerender();
+      expect(wrapper.findAddButton().getElement()).toHaveFocus();
+    });
+
+    test('should focus next key input when removing non-last tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: false },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      rerender();
+      const nextInput = wrapper.findRow(1)!.findAutosuggest()!.findNativeInput().getElement();
+      expect(nextInput).toHaveValue('key2');
+      expect(nextInput).toHaveFocus();
+    });
+
+    test('should focus previous key input when removing last tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: false },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(2)!.findRemoveButton()!.click();
+      rerender();
+      const nextInput = wrapper.findRow(1)!.findAutosuggest()!.findNativeInput().getElement();
+      expect(nextInput).toHaveValue('key');
+      expect(nextInput).toHaveFocus();
+    });
+
+    test('should focus previous value input when removing last tag and previous is existing', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: true },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(2)!.findRemoveButton()!.click();
+      rerender();
+      const nextInput = wrapper
+        .findRow(1)!
+        .findField(2)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
+      expect(nextInput).toHaveValue('value');
+      expect(nextInput).toHaveFocus();
+    });
+
+    test('should focus previous undo button when removing last tag and previous is existing and flagged for removal', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: true, markedForRemoval: true },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(2)!.findRemoveButton()!.click();
+      rerender();
+      expect(wrapper.findRow(1)!.findUndoButton()!.getElement()).toHaveFocus();
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using i18nStrings.loading from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'tag-editor': {
+              'i18nStrings.loading': 'Custom loading',
+            },
+          }}
+        >
+          <StatefulTestComponent i18nStrings={undefined} loading={true} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+      expect(wrapper.findLoadingText()!.getElement()).toHaveTextContent('Custom loading');
+    });
+
+    test('supports using undo strings from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'tag-editor': {
+              'i18nStrings.undoPrompt': 'Custom prompt',
+              'i18nStrings.undoButton': 'Custom button',
+            },
+          }}
+        >
+          <TagEditor tags={[{ key: '', value: '', existing: true, markedForRemoval: true }]} i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+      expect(wrapper.findRow(1)!.findField(2)!.findControl()!.getElement()).toHaveTextContent(
+        'Custom prompt Custom button'
+      );
+    });
+
+    test('supports using basic strings from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'tag-editor': {
+              'i18nStrings.addButton': 'Custom add',
+              'i18nStrings.removeButtonAriaLabel': 'Custom remove {tag__key}',
+              'i18nStrings.emptyTags': 'Custom empty tags',
+              'i18nStrings.keyHeader': 'Custom key',
+              'i18nStrings.valueHeader': 'Custom value',
+              'i18nStrings.optional': 'Custom optional',
+              'i18nStrings.keySuggestion': 'Custom key suggestion',
+              'i18nStrings.valuePlaceholder': 'Custom value placeholder',
+              'i18nStrings.tagLimit': 'Custom limit {availableTags} out of {tagLimit}',
+              'i18nStrings.tagLimitReached': 'Custom limit reached {tagLimit}',
+            },
+          }}
+        >
+          <StatefulTestComponent i18nStrings={undefined} tagLimit={1} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+      expect(wrapper.findEmptySlot()!.getElement()).toHaveTextContent('Custom empty tags');
+      expect(wrapper.findAddButton().getElement()).toHaveTextContent('Custom add');
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit 1 out of 1');
+
+      wrapper.findAddButton().click();
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit reached 1');
+      expect(wrapper.findRow(1)!.findField(1)!.findLabel()!.getElement()).toHaveTextContent('Custom key');
+      expect(wrapper.findRow(1)!.findField(2)!.findLabel()!.getElement()).toHaveTextContent(
+        'Custom value - Custom optional'
+      );
+      expect(
+        wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.findDropdown().getElement()
+      ).toHaveTextContent('Custom key suggestion');
+      expect(
+        wrapper.findRow(1)!.findField(2)!.findControl()!.findAutosuggest()!.findNativeInput()!.getElement()
+      ).toHaveAttribute('placeholder', 'Custom value placeholder');
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.setInputValue('Key 1');
+      expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Custom remove Key 1');
     });
   });
 });

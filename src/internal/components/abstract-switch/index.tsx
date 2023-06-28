@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import useFocusVisible from '../../hooks/focus-visible';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
 
@@ -11,6 +10,7 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   controlId?: string;
   controlClassName: string;
   outlineClassName: string;
+  showOutline?: boolean;
   disabled?: boolean;
   nativeControl: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactElement;
   styledControl: React.ReactElement;
@@ -20,6 +20,7 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  ariaControls?: string;
   onClick: () => void;
 }
 
@@ -31,6 +32,7 @@ export default function AbstractSwitch({
   controlId,
   controlClassName,
   outlineClassName,
+  showOutline,
   disabled,
   nativeControl,
   styledControl,
@@ -40,6 +42,7 @@ export default function AbstractSwitch({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  ariaControls,
   onClick,
   __internalRootRef,
   ...rest
@@ -47,7 +50,6 @@ export default function AbstractSwitch({
   const uniqueId = useUniqueId();
   const id = controlId || uniqueId;
 
-  const focusVisible = useFocusVisible();
   const labelId = `${id}-label`;
   const descriptionId = `${id}-description`;
 
@@ -59,12 +61,12 @@ export default function AbstractSwitch({
     ariaLabelledByIds.push(ariaLabelledby);
   }
 
-  const ariaDescriptons = [];
+  const ariaDescriptions = [];
   if (ariaDescribedby) {
-    ariaDescriptons.push(ariaDescribedby);
+    ariaDescriptions.push(ariaDescribedby);
   }
   if (description) {
-    ariaDescriptons.push(descriptionId);
+    ariaDescriptions.push(descriptionId);
   }
 
   return (
@@ -77,15 +79,15 @@ export default function AbstractSwitch({
         <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
           {nativeControl({
-            ...focusVisible,
             id,
             disabled,
             className: styles['native-input'],
-            'aria-describedby': ariaDescriptons.length ? joinString(ariaDescriptons) : undefined,
+            'aria-describedby': ariaDescriptions.length ? joinString(ariaDescriptions) : undefined,
             'aria-labelledby': ariaLabelledByIds.length ? joinString(ariaLabelledByIds) : undefined,
             'aria-label': ariaLabel,
+            'aria-controls': ariaControls,
           })}
-          <span className={clsx(styles.outline, outlineClassName)} />
+          <span className={clsx(styles.outline, outlineClassName, showOutline && styles['show-outline'])} />
         </span>
         <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (

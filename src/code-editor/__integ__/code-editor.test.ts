@@ -93,6 +93,7 @@ const setupTest = (pageUrl: string, testFn: (page: CodeEditorPageObject) => Prom
     await testFn(page);
   });
 };
+
 test(
   'Commenting multiple lines',
   setupTest(simplePage, async page => {
@@ -105,6 +106,7 @@ test(
     );
   })
 );
+
 test(
   `Tab text reduces when screen is small`,
   setupTest(simplePage, async page => {
@@ -116,6 +118,7 @@ test(
     await expect(page.getText(codeEditorWrapper.findWarningsTab().toSelector())).resolves.toEqual('0');
   })
 );
+
 test(
   'Can reset controlled value',
   setupTest(simplePage, async page => {
@@ -127,6 +130,7 @@ test(
     await expect(page.getEditorContent()).resolves.toEqual('const pi = 3.14;');
   })
 );
+
 test(
   'Focuses code editor and preferences button',
   setupTest(simplePage, async page => {
@@ -144,8 +148,9 @@ test(
     await expect(page.isFocused('#javascript_sample_button')).resolves.toBe(true);
   })
 );
+
 test(
-  'focuses annotation and scrolls it into view',
+  'highlights annotation and scrolls it into view',
   setupTest(verticalScrollPage, async page => {
     const { top: scrollBefore } = await page.getWindowScroll();
     await page.typeIntoEditor('{(');
@@ -155,6 +160,46 @@ test(
     expect(scrollAfter).toBeGreaterThan(scrollBefore);
   })
 );
+
+test(
+  'traps focus when annotations pane is entered',
+  setupTest(simplePage, async page => {
+    // Wait for errors to appear
+    await page.typeIntoEditor('{(');
+    await page.waitForVisible(codeEditorWrapper.findErrorsTab().toSelector() + ':not(:disabled)');
+    // Open errors pane
+    await page.click(codeEditorWrapper.findErrorsTab().toSelector());
+    // Tab to close button
+    await page.keys(['Tab', 'Tab']);
+    await expect(page.isFocused(codeEditorWrapper.findPane().findButton().toSelector())).resolves.toBe(true);
+    // Loop around again
+    await page.keys(['Tab', 'Tab']);
+    await expect(page.isFocused(codeEditorWrapper.findPane().findButton().toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'returns focus to tab button when pane is closed',
+  setupTest(simplePage, async page => {
+    await page.typeIntoEditor('{(');
+    await page.waitForVisible(codeEditorWrapper.findErrorsTab().toSelector() + ':not(:disabled)');
+    // Open errors pane
+    await page.click(codeEditorWrapper.findErrorsTab().toSelector());
+    // Activate close button (Tab, Shift+Tab, Enter)
+    await page.keys(['Tab', 'Shift', 'Tab', 'Shift', 'Enter']);
+    await expect(page.isFocused(codeEditorWrapper.findErrorsTab().toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'keeps focus in editor when annotation icon is clicked',
+  setupTest(simplePage, async page => {
+    await page.typeIntoEditor('{(');
+    await page.selectAnnotation();
+    await expect(page.isFocused(codeEditorWrapper.findNativeTextArea().toSelector())).resolves.toBe(true);
+  })
+);
+
 test(
   'does not change scroll if annotation is already in the view',
   setupTest(verticalScrollPage, async page => {
@@ -167,24 +212,28 @@ test(
     expect(scrollAfter).toEqual(scrollBefore);
   })
 );
+
 test(
   'sets default editor height to 480',
   setupTest(simplePage, async page => {
     await expect(page.getEditorHeight()).resolves.toEqual(480);
   })
 );
+
 test(
   'sets editor height correctly when a size is specified',
   setupTest(controllableHeightPage, async page => {
     await expect(page.getEditorHeightById('code-editor-controlled')).resolves.toEqual(240);
   })
 );
+
 test(
   'sets editor height smaller than 20 to 20px',
   setupTest(controllableHeightPage, async page => {
     await expect(page.getEditorHeightById('editor-minheight')).resolves.toEqual(20);
   })
 );
+
 //react-resizable interactions can only be tested in integration tests
 //so we test the resize interaction here by binding the event content to a text element.
 test(

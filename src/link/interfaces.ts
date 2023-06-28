@@ -68,13 +68,16 @@ export interface LinkProps extends BaseComponentProps {
 
   /**
    * Adds an aria-label to the external icon.
+   * @i18n
    */
   externalIconAriaLabel?: string;
 
   /**
-   * Called when a link is clicked without any modifier keys.
-   * Use this event if you want to prevent default browser navigation
-   * (by calling `preventDefault`) and implement client-side routing yourself.
+   * Called when a link is clicked without any modifier keys. If the link has no `href` provided, it will be called on
+   * all clicks.
+   *
+   * If you want to implement client-side routing yourself, use this event and prevent default browser navigation
+   * (by calling `preventDefault`).
    */
   onFollow?: CancelableEventHandler<LinkProps.FollowDetail>;
 

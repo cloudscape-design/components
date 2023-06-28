@@ -10,6 +10,7 @@ import { InternalButton } from '../button/internal';
 import FocusLock from '../internal/components/focus-lock';
 
 import styles from './styles.css.js';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export interface PopoverBodyProps {
   dismissButton: boolean;
@@ -36,6 +37,7 @@ export default function PopoverBody({
   className,
   ariaLabelledby,
 }: PopoverBodyProps) {
+  const i18n = useInternalI18n('popover');
   const labelledById = useUniqueId('awsui-popover-');
   const dismissButtonFocused = useRef(false);
   const dismissButtonRef = useRef<ButtonProps.Ref>(null);
@@ -66,24 +68,33 @@ export default function PopoverBody({
         formAction="none"
         iconName="close"
         className={styles['dismiss-control']}
-        ariaLabel={dismissAriaLabel}
+        ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
         onClick={() => onDismiss()}
         ref={dismissButtonRef}
       />
     </div>
   );
 
+  const isDialog = showDismissButton;
+  const shouldTrapFocus = showDismissButton && variant !== 'annotation';
+
+  const dialogProps = isDialog
+    ? {
+        role: 'dialog',
+        'aria-modal': shouldTrapFocus ? true : undefined,
+        'aria-labelledby': ariaLabelledby ?? (header ? labelledById : undefined),
+      }
+    : {};
+
   return (
     <div
       className={clsx(styles.body, className, {
         [styles['body-overflow-visible']]: overflowVisible === 'both',
       })}
-      role={header ? 'dialog' : undefined}
       onKeyDown={onKeyDown}
-      aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
-      aria-labelledby={ariaLabelledby ?? (header ? labelledById : undefined)}
+      {...dialogProps}
     >
-      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={false}>
+      <FocusLock disabled={!shouldTrapFocus} autoFocus={false}>
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}

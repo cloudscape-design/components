@@ -137,6 +137,12 @@ const defaultProps: Record<string, Record<string, any>> = {
   flashbar: {
     items: [],
   },
+  'file-upload': {
+    value: [],
+    i18nStrings: {
+      uploadButtonText: () => 'Choose file(s)',
+    },
+  },
 };
 
 export function getRequiredPropsForComponent(componentName: string): Record<string, any> {

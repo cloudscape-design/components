@@ -11,11 +11,5 @@
     "noEmit": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "types",
-    "**/__tests__/**/*.tsx",
-    "**/__tests__/**/*.ts",
-    "**/__mocks__/**/*.ts",
-    "types"
-  ]
+  "include": ["types", "**/__tests__/**/*.tsx", "**/__tests__/**/*.ts", "**/__mocks__/**/*.ts", "types"]
 }

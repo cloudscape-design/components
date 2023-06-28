@@ -20,4 +20,9 @@ export const defaultSplitPanelContextProps: SplitPanelContextProps = {
   reportSize: jest.fn(),
   reportHeaderHeight: jest.fn(),
   setSplitPanelToggle: jest.fn(),
+  refs: {
+    preferences: { current: null },
+    slider: { current: null },
+    toggle: { current: null },
+  },
 };

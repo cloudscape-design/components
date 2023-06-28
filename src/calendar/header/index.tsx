@@ -9,8 +9,8 @@ interface CalendarHeaderProps {
   baseDate: Date;
   locale: string;
   onChangeMonth: (date: Date) => void;
-  previousMonthLabel: string;
-  nextMonthLabel: string;
+  previousMonthLabel?: string;
+  nextMonthLabel?: string;
   headingId: string;
 }
 

@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import range from 'lodash/range';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
@@ -8,21 +9,20 @@ const DOMAIN_ERROR = 'Must be a valid domain name';
 const tableWrapper = createWrapper().findTable()!;
 
 // $ = selector
-const EDIT_BTN$ = 'button:first-child:last-child';
 
 const bodyCell = tableWrapper.findBodyCell(2, 2)!;
 const cellRoot$ = bodyCell.toSelector();
 const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
-const cellEditButton$ = bodyCell.find(EDIT_BTN$).toSelector();
+const cellEditButton$ = tableWrapper.findEditCellButton(2, 2).toSelector();
 const cellSaveButton = tableWrapper.findEditingCellSaveButton();
 
 // for arrow key navigation
 const mainCell = tableWrapper.findBodyCell(4, 5);
 const mainCell$ = mainCell.toSelector();
-const leftCell$ = tableWrapper.findBodyCell(4, 4).find(EDIT_BTN$).toSelector();
-const rightCell$ = tableWrapper.findBodyCell(4, 6).find(EDIT_BTN$).toSelector();
-const cellAbove$ = tableWrapper.findBodyCell(3, 5).find(EDIT_BTN$).toSelector();
-const cellBelow$ = tableWrapper.findBodyCell(5, 5).find(EDIT_BTN$).toSelector();
+const leftCell$ = tableWrapper.findEditCellButton(4, 4).toSelector();
+const rightCell$ = tableWrapper.findEditCellButton(4, 6).toSelector();
+const cellAbove$ = tableWrapper.findEditCellButton(3, 5).toSelector();
+const cellBelow$ = tableWrapper.findEditCellButton(5, 5).toSelector();
 
 const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
@@ -30,7 +30,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1200, height: 800 });
-    await browser.url('#/light/table/editable-with-app-layout');
+    await browser.url('#/light/table/editable');
     await testFn(page);
   });
 };
@@ -63,6 +63,46 @@ test(
 );
 
 test(
+  'can start editing with mouse',
+  setupTest(async page => {
+    await page.click(cellEditButton$);
+    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'can start editing with Enter key',
+  setupTest(async page => {
+    // Focus element before the table
+    await page.click('[data-testid="focus"]');
+
+    // Tab to the first editable column
+    await page.keys(range(11).map(() => 'Tab'));
+    await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
+
+    // Activate with Enter
+    await page.keys(['Enter']);
+    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'can start editing with Space key',
+  setupTest(async page => {
+    // Focus element before the table
+    await page.click('[data-testid="focus"]');
+
+    // Tab to the first editable column
+    await page.keys(range(11).map(() => 'Tab'));
+    await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
+
+    // Activate with Space
+    await page.keys(['Space']);
+    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
   'cell focus is moved when arrow keys are pressed',
   setupTest(async page => {
     await page.click(mainCell$);
@@ -75,5 +115,19 @@ test(
     await expect(page.isFocused(cellAbove$)).resolves.toBe(true);
     await page.keys(['ArrowDown', 'ArrowDown']);
     await expect(page.isFocused(cellBelow$)).resolves.toBe(true);
+  })
+);
+
+test(
+  'input is focused when the edit operation failed',
+  setupTest(async page => {
+    await page.click(cellRoot$);
+
+    // "inline" is a special keyword that causes a server-side error
+    await page.setValue(cellInputField$, 'inline');
+    await page.keys('Enter');
+
+    // after loading, the focus should be back on the input
+    await page.waitForAssertion(() => expect(page.isFocused(cellInputField$)).resolves.toBe(true));
   })
 );

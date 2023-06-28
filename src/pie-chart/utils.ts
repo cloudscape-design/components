@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ComponentFormatFunction } from '../internal/i18n/context';
 import { PieChartProps } from './interfaces';
 import styles from './styles.css.js';
 
@@ -55,11 +56,12 @@ export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>,
 };
 
 export const defaultDetails =
-  (i18nStrings: PieChartProps.I18nStrings) => (datum: PieChartProps.Datum, dataSum: number) =>
+  (i18n: ComponentFormatFunction<'pie-chart'>, i18nStrings: PieChartProps.I18nStrings) =>
+  (datum: PieChartProps.Datum, dataSum: number) =>
     [
-      { key: i18nStrings.detailsValue || '', value: datum.value },
+      { key: i18n('i18nStrings.detailsValue', i18nStrings.detailsValue) || '', value: datum.value },
       {
-        key: i18nStrings.detailsPercentage || '',
+        key: i18n('i18nStrings.detailsPercentage', i18nStrings.detailsPercentage) || '',
         value: `${((datum.value * 100) / dataSum).toFixed(0)}%`,
       },
     ];

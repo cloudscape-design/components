@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import styles from '../../../lib/components/tabs/styles.css.js';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 let mockHorizontalOverflow = false;
 jest.mock('../../../lib/components/tabs/scroll-utils', () => {
@@ -33,29 +34,17 @@ function wrap(container: HTMLElement) {
 }
 
 function pressRight(wrapper: TabsWrapper) {
-  act(() => {
-    wrapper.findActiveTab()!.keydown(KeyCode.right);
-    wrapper.findActiveTab()!.keyup(KeyCode.right);
-  });
+  wrapper.findActiveTab()!.keydown(KeyCode.right);
 }
 function pressLeft(wrapper: TabsWrapper) {
-  act(() => {
-    wrapper.findActiveTab()!.keydown(KeyCode.left);
-    wrapper.findActiveTab()!.keyup(KeyCode.left);
-  });
+  wrapper.findActiveTab()!.keydown(KeyCode.left);
 }
 
 function pressHome(wrapper: TabsWrapper) {
-  act(() => {
-    wrapper.findActiveTab()!.keydown(KeyCode.home);
-    wrapper.findActiveTab()!.keyup(KeyCode.home);
-  });
+  wrapper.findActiveTab()!.keydown(KeyCode.home);
 }
 function pressEnd(wrapper: TabsWrapper) {
-  act(() => {
-    wrapper.findActiveTab()!.keydown(KeyCode.end);
-    wrapper.findActiveTab()!.keyup(KeyCode.end);
-  });
+  wrapper.findActiveTab()!.keydown(KeyCode.end);
 }
 
 function tabListHeader(wrapper: TabsWrapper) {
@@ -327,6 +316,13 @@ describe('Tabs', () => {
           },
         })
       );
+    });
+
+    test('does not fire an event on arrow navigation when a modifier key is used', () => {
+      const changeSpy = jest.fn();
+      const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="second" onChange={changeSpy} />);
+      wrapper.findActiveTab()!.keydown({ keyCode: KeyCode.right, metaKey: true });
+      expect(changeSpy).not.toHaveBeenCalled();
     });
 
     test('changes displayed content only when activeTabId changes (with onChange handler)', () => {
@@ -683,20 +679,23 @@ describe('Tabs', () => {
     });
 
     describe('Scroll buttons', () => {
+      let wrapper: TabsWrapper;
+
       beforeEach(() => {
         mockHorizontalOverflow = true;
+        ({ wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
+        ));
       });
+
       afterEach(() => {
         mockHorizontalOverflow = false;
       });
 
       const getScrollButtons = () => {
-        const { wrapper } = renderTabs(
-          <Tabs
-            tabs={defaultTabs}
-            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
-          />
-        );
         const buttons = wrapper.findAll('button');
         const scrollLeftButton = buttons[0];
         const scrollRightButton = buttons[buttons.length - 1];
@@ -713,6 +712,26 @@ describe('Tabs', () => {
         const { scrollLeftButton, scrollRightButton } = getScrollButtons();
         expect(scrollLeftButton.getElement()).not.toHaveAttribute('aria-hidden');
         expect(scrollRightButton.getElement()).not.toHaveAttribute('aria-hidden');
+      });
+
+      describe('i18n', () => {
+        it('supports rendering scrollLeftAriaLabel and scrollRightAriaLabel through i18n provider', () => {
+          ({ wrapper } = renderTabs(
+            <TestI18nProvider
+              messages={{
+                tabs: {
+                  'i18nStrings.scrollLeftAriaLabel': 'Custom scroll left',
+                  'i18nStrings.scrollRightAriaLabel': 'Custom scroll right',
+                },
+              }}
+            >
+              <Tabs tabs={defaultTabs} />
+            </TestI18nProvider>
+          ));
+          const { scrollLeftButton, scrollRightButton } = getScrollButtons();
+          expect(scrollLeftButton.getElement()).toHaveAttribute('aria-label', 'Custom scroll left');
+          expect(scrollRightButton.getElement()).toHaveAttribute('aria-label', 'Custom scroll right');
+        });
       });
     });
   });

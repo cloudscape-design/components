@@ -9,45 +9,33 @@ import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Main() {
   const {
-    breadcrumbs,
     content,
-    contentHeader,
-    contentType,
     disableContentPaddings,
-    dynamicOverlapHeight,
-    hasNotificationsContent,
+    footerHeight,
+    hasDrawerViewportOverlay,
     isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
-    isMobile,
-    isAnyPanelOpen,
     mainElement,
-    splitPanelDisplayed,
     offsetBottom,
-    footerHeight,
+    splitPanelDisplayed,
     splitPanelPosition,
   } = useAppLayoutInternals();
 
-  const isUnfocusable = isMobile && isAnyPanelOpen;
   const splitPanelHeight = offsetBottom - footerHeight;
 
   return (
     <div
       className={clsx(
         styles.container,
-        styles[`content-type-${contentType}`],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-content-paddings']]: disableContentPaddings,
-          [styles['has-breadcrumbs']]: breadcrumbs,
-          [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
-          [styles['has-header']]: contentHeader,
-          [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['is-navigation-open']]: isNavigationOpen,
           [styles['is-tools-open']]: isToolsOpen,
           [styles['is-split-panel-open']]: isSplitPanelOpen,
-          [styles.unfocusable]: isUnfocusable,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles.content
       )}

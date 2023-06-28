@@ -9,12 +9,14 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { HelpPanelProps } from './interfaces';
 import LiveRegion from '../internal/components/live-region';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { HelpPanelProps };
 
 export default function HelpPanel({ header, footer, children, loading, loadingText, ...restProps }: HelpPanelProps) {
   const { __internalRootRef } = useBaseComponent('HelpPanel');
   const baseProps = getBaseProps(restProps);
+  const i18n = useInternalI18n('help-panel');
   const containerProps = {
     ...baseProps,
     className: clsx(baseProps.className, styles['help-panel']),
@@ -22,7 +24,7 @@ export default function HelpPanel({ header, footer, children, loading, loadingTe
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
       <InternalStatusIndicator type="loading">
-        <LiveRegion visible={true}>{loadingText}</LiveRegion>
+        <LiveRegion visible={true}>{i18n('loadingText', loadingText)}</LiveRegion>
       </InternalStatusIndicator>
     </div>
   ) : (

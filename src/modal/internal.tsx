@@ -12,27 +12,38 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
 import Portal from '../internal/components/portal';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints, useContainerQuery } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { FormFieldContext } from '../internal/context/form-field-context';
 
 import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import FocusLock from '../internal/components/focus-lock';
+import { useInternalI18n } from '../internal/i18n/context';
+import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 
-type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
+type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
 
-export default function InternalModal({
+export default function InternalModal({ modalRoot, ...rest }: InternalModalProps) {
+  return (
+    <Portal container={modalRoot}>
+      <InnerModal {...rest} />
+    </Portal>
+  );
+}
+
+// Separate component to prevent the Portal from getting in the way of refs, as it needs extra cycles to render the inner components.
+// useContainerQuery needs its targeted element to exist on the first render in order to work properly.
+function InnerModal({
   size,
   visible,
-  closeAriaLabel,
   header,
   children,
   footer,
   disableContentPaddings,
   onDismiss,
-  modalRoot,
   __internalRootRef = null,
   ...rest
 }: InternalModalProps) {
@@ -40,6 +51,9 @@ export default function InternalModal({
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
+
+  const i18n = useInternalI18n('modal');
+  const closeAriaLabel = i18n('closeAriaLabel', rest.closeAriaLabel);
 
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);
@@ -91,8 +105,16 @@ export default function InternalModal({
     }
   };
 
+  // We use an empty div element at the end of the content slot as a sentinel
+  // to detect when the user has scrolled to the bottom.
+  const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
+
+  // Add extra scroll padding to account for the height of the sticky footer,
+  // to prevent it from covering focused elements.
+  const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
+
   return (
-    <Portal container={modalRoot}>
+    <FormFieldContext.Provider value={{}}>
       <div
         {...baseProps}
         className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className, isRefresh && styles.refresh)}
@@ -102,6 +124,7 @@ export default function InternalModal({
         onMouseDown={onOverlayMouseDown}
         onClick={onOverlayClick}
         ref={mergedRef}
+        style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
       >
         <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
           <div
@@ -112,7 +135,6 @@ export default function InternalModal({
               isRefresh && styles.refresh
             )}
             onKeyDown={escKeyHandler}
-            tabIndex={-1}
           >
             <div className={styles.container}>
               <div className={styles.header}>
@@ -137,12 +159,17 @@ export default function InternalModal({
               </div>
               <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
                 {children}
+                <div ref={stickySentinelRef} />
               </div>
-              {footer && <div className={styles.footer}>{footer}</div>}
+              {footer && (
+                <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
+                  {footer}
+                </div>
+              )}
             </div>
           </div>
         </FocusLock>
       </div>
-    </Portal>
+    </FormFieldContext.Provider>
   );
 }

@@ -4,6 +4,7 @@ import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/events';
 import { Optional } from '../internal/types';
+import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
 
 /*
  * HACK: Cast the component to a named parametrized interface.
@@ -63,7 +64,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * The columns configuration object
    * * `id` (string) - Specifies a unique column identifier. The property is used 1) as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering,
-   *   and 2) to match entries in the `visibleColumns` property, if defined.
+   *   and 2) to match entries in the `columnDisplay` property, if defined.
    * * `header` (ReactNode) - Determines the display of the column header.
    * * `cell` ((item) => ReactNode) - Determines the display of a cell's content. You receive the current table row
    *   item as an argument.
@@ -101,6 +102,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *        The `cellContext` object contains the following properties:
    *  *  * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *  *  * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
+   *  * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
@@ -166,12 +168,17 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * items also receives the corresponding  `Item` object. You can use the `selectionGroupLabel` to
    * add a meaningful description to the whole selection.
    *
-   * * `activateEditLabel` (EditableColumnDefinition) => string -
+   * * `activateEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the edit button in editable cells.
    * * `cancelEditLabel` (EditableColumnDefinition) => string -
    *                      Specifies an alternative text for the cancel button in editable cells.
    * * `submitEditLabel` (EditableColumnDefinition) => string -
    *                      Specifies an alternative text for the submit button in editable cells.
+   * * `successfulEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
+   * * `submittingEditText` (EditableColumnDefinition) => string -
+   *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+   * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
 
@@ -191,12 +198,32 @@ export interface TableProps<T = any> extends BaseComponentProps {
   sortingDisabled?: boolean;
 
   /**
+   * Specifies the number of first and/or last columns that should be sticky.
+   *
+   * If the available scrollable space is less than a certain threshold, the feature is deactivated.
+   *
+   * Use it in conjunction with the sticky columns preference of the
+   * [collection preferences](/components/collection-preferences/) component.
+   *
+   */
+  stickyColumns?: TableProps.StickyColumns;
+
+  /**
+   * Specifies an array that represents the table columns in the order in which they will be displayed, together with their visibility.
+   *
+   * If not set, all columns are displayed and the order is dictated by the `columnDefinitions` property.
+   *
+   * Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+   */
+  columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
+
+  /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
    *
    * Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
    *
-   * The order of ids doesn't influence the order in which columns are displayed - this is dictated by the `columnDefinitions` property
-   */
+   * The order of ids doesn't influence the order in which columns are displayed - this is dictated by the `columnDefinitions` property.
+   * */
   visibleColumns?: ReadonlyArray<string>;
 
   /**
@@ -250,8 +277,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specify a table variant with one of the following:
    * * `container` - Use this variant to have the table displayed within a container.
+   * * `borderless` - Use this variant when the table should have no outer borders or shadow
+   *                  (such as in a dashboard item container).
    * * `embedded` - Use this variant within a parent container (such as a modal, expandable
    *                section, container or split panel).
+   *                **Deprecated**, replaced by `borderless` and `container`.
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
    *               table).
    * * `full-page` – Use this variant when the table is the entire content of a page. Full page variants
@@ -338,11 +368,17 @@ export namespace TableProps {
     minWidth?: number | string;
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
+    isRowHeader?: boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
+  export interface StickyColumns {
+    first?: number;
+    last?: number;
+  }
+
   export type SelectionType = 'single' | 'multi';
-  export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
+  export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;
   }
@@ -357,9 +393,11 @@ export namespace TableProps {
     tableLabel?: string;
     // do not use <T> to prevent overly strict validation on consumer end
     // it works, practically, we are only interested in `id` and `header` properties only
-    activateEditLabel?: (column: ColumnDefinition<any>) => string;
+    activateEditLabel?: (column: ColumnDefinition<any>, item: T) => string;
     cancelEditLabel?: (column: ColumnDefinition<any>) => string;
     submitEditLabel?: (column: ColumnDefinition<any>) => string;
+    submittingEditText?: (column: ColumnDefinition<any>) => string;
+    successfulEditLabel?: (column: ColumnDefinition<any>) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -413,4 +451,9 @@ export namespace TableProps {
     column: ColumnDefinition<ItemType>,
     newValue: ValueType
   ) => Promise<void> | void;
+
+  export interface ColumnDisplayProperties {
+    id: string;
+    visible: boolean;
+  }
 }

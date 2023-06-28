@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
+import { RefObject, useCallback, useEffect, useMemo } from 'react';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
 
 function iterateTableCells<T extends HTMLElement>(
@@ -25,23 +26,21 @@ function iterateTableCells<T extends HTMLElement>(
  * @param numRows - The number of rows in the table.
  */
 function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>(
-  selectionType: 'single' | 'multi' | 'none' = 'none',
+  selectionType: TableProps['selectionType'],
   tableRoot: RefObject<HTMLTableElement>,
   columnDefinitions: Readonly<T[]>,
   numRows: number
 ) {
-  const currentFocusCell = useRef<[number, number] | null>(null);
-
   const focusableColumns = useMemo(() => {
     const cols = columnDefinitions.map(column => !!column.editConfig);
-    if (selectionType !== 'none') {
+    if (selectionType) {
       cols.unshift(false);
     }
     return cols;
   }, [columnDefinitions, selectionType]);
 
-  const maxColumnIndex = useMemo(() => focusableColumns.length - 1, [focusableColumns]);
-  const minColumnIndex = useMemo(() => (selectionType !== 'none' ? 1 : 0), [selectionType]);
+  const maxColumnIndex = focusableColumns.length - 1;
+  const minColumnIndex = selectionType ? 1 : 0;
 
   const focusCell = useCallback(
     (rowIndex: number, columnIndex: number) => {
@@ -49,7 +48,11 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
         iterateTableCells(tableRoot.current, (cell, rIndex, cIndex) => {
           if (rIndex === rowIndex && cIndex === columnIndex) {
             const editButton = cell.querySelector('button:last-child') as HTMLButtonElement | null;
-            editButton?.focus?.({ preventScroll: true });
+
+            if (editButton) {
+              editButton.focus?.();
+              scrollElementIntoView(editButton);
+            }
           }
         });
       }
@@ -59,11 +62,14 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
 
   const shiftFocus = useCallback(
     (vertical: -1 | 0 | 1, horizontal: -1 | 0 | 1) => {
-      // istanbul ignore if next
-      if (!currentFocusCell.current) {
+      const focusedCell = tableRoot.current?.querySelector<HTMLTableCellElement>('td:focus-within');
+      if (!focusedCell) {
         return;
       }
-      const [rowIndex, columnIndex] = currentFocusCell.current.slice();
+
+      const columnIndex = focusedCell.cellIndex;
+      const rowIndex = (focusedCell.parentElement as HTMLTableRowElement).rowIndex;
+
       let newRowIndex = rowIndex;
       let newColumnIndex = columnIndex;
 
@@ -80,11 +86,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
         }
       }
 
-      if (
-        (rowIndex !== newRowIndex || columnIndex !== newColumnIndex) &&
-        currentFocusCell.current &&
-        tableRoot.current
-      ) {
+      if ((rowIndex !== newRowIndex || columnIndex !== newColumnIndex) && tableRoot.current) {
         focusCell(newRowIndex, newColumnIndex);
       }
     },
@@ -126,40 +128,14 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
   );
 
   useEffect(() => {
-    const eventListeners = new Map<[number, number], { focusin(evt: any): void }>();
-    // istanbul ignore if
     if (!tableRoot.current) {
       return;
     }
 
     const tableElement = tableRoot.current;
+    tableRoot.current.addEventListener('keydown', handleArrowKeyEvents);
 
-    // istanbul ignore next (tested in use-focus-navigation.test.tsx#L210)
-    function cleanUpListeners() {
-      iterateTableCells(tableElement, (cell, rowIndex, columnIndex) => {
-        const listeners = eventListeners.get([rowIndex, columnIndex]);
-        if (listeners?.focusin) {
-          cell.removeEventListener('focusin', listeners.focusin);
-        }
-      });
-      tableElement.removeEventListener('keydown', handleArrowKeyEvents);
-    }
-
-    iterateTableCells(tableElement, (cell, rowIndex, cellIndex) => {
-      if (!focusableColumns[cellIndex]) {
-        return;
-      }
-      const listenerFns = {
-        focusin: () => {
-          currentFocusCell.current = [rowIndex, cellIndex];
-        },
-      };
-      eventListeners.set([rowIndex, cellIndex], listenerFns);
-      cell.addEventListener('focusin', listenerFns.focusin, { passive: true });
-    });
-    tableElement.addEventListener('keydown', handleArrowKeyEvents);
-
-    return () => tableElement && cleanUpListeners();
+    return () => tableElement && tableElement.removeEventListener('keydown', handleArrowKeyEvents);
   }, [focusableColumns, handleArrowKeyEvents, tableRoot]);
 }
 

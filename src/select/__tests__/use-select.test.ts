@@ -65,6 +65,7 @@ const initialProps = {
   filteringType: 'auto',
   fireLoadItems: () => {},
   setFilteringValue: () => {},
+  statusType: 'pending' as const,
 };
 
 describe('useSelect', () => {

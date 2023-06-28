@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 
@@ -17,7 +16,7 @@ interface TabButtonProps {
   tabIndex?: number;
   ariaHidden?: boolean;
   ariaLabel?: string;
-  paneId: string;
+  paneId?: string;
   isRefresh: boolean;
 
   className: string;
@@ -46,7 +45,6 @@ export const TabButton = React.forwardRef(
     }: TabButtonProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const focusVisible = useFocusVisible();
     return (
       <button
         className={clsx([styles['tab-button'], className], {
@@ -54,6 +52,7 @@ export const TabButton = React.forwardRef(
           [styles['tab-button--disabled']]: disabled,
           [styles['tab-button--refresh']]: isRefresh,
         })}
+        type="button"
         onClick={onClick}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -65,7 +64,6 @@ export const TabButton = React.forwardRef(
         aria-controls={paneId}
         aria-hidden={ariaHidden}
         aria-label={ariaLabel}
-        {...focusVisible}
       >
         <InternalIcon name={iconName} /> {text}
       </button>

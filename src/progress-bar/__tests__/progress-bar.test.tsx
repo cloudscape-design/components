@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, act } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar';
@@ -195,28 +195,21 @@ standaloneAndKeyvalueVariants.forEach(variant => {
 });
 
 describe('Progress updates', () => {
-  const wait = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));
-  jest.setTimeout(7000);
-  test('Announced progress value changes not more often then given interval', async () => {
+  test('Announced progress value changes not more often then given interval', () => {
+    jest.useFakeTimers(); // Mock timers
     const label = 'progress';
     const { container, rerender } = render(<ProgressBar label={label} value={0} />);
     const wrapper = createWrapper(container).findProgressBar()!;
 
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 0%`);
+    rerender(<ProgressBar label={label} value={1} />);
 
-    await act(async () => {
-      await wait(2000);
-      rerender(<ProgressBar label={label} value={1} />);
-    });
     // live region has an old value
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 0%`);
+    rerender(<ProgressBar label={label} value={2} />);
 
-    await act(async () => {
-      await wait(2000);
-      rerender(<ProgressBar label={label} value={2} />);
-      await wait(2000);
-    });
     // 6 seconds passed, live region has a new value
+    jest.advanceTimersByTime(6000);
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 2%`);
   });
 });

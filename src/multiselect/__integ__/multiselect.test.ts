@@ -108,7 +108,7 @@ const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: Multise
 });
 
 describe('focus handling', () => {
-  test('focuses trigger after dismissing a token', () => {
+  test('focuses trigger after dismissing all tokens', () => {
     const wrapper = createWrapper().findMultiselect('#keep_open');
     const setupTest = createSetupTest(wrapper);
 
@@ -117,6 +117,8 @@ describe('focus handling', () => {
       await page.focusSelect();
       await page.keys(['Tab', 'Tab']);
       await expect(page.isFocused(wrapper.findToken(2).findDismiss().toSelector())).resolves.toBe(true);
+      await page.keys(['Enter']);
+      await expect(page.isFocused(wrapper.findToken(1).findDismiss().toSelector())).resolves.toBe(true);
       await page.keys(['Enter']);
       await expect(page.isFocused(wrapper.findTrigger().toSelector())).resolves.toBe(true);
     })();

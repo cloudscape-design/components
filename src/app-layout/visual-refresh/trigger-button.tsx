@@ -2,31 +2,29 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import useFocusVisible from '../../internal/hooks/focus-visible';
 import Icon from '../../icon/internal';
 import styles from './styles.css.js';
 import { ButtonProps } from '../../button/interfaces';
 import { IconProps } from '../../icon/interfaces';
 
-interface TriggerButtonProps {
+export interface TriggerButtonProps {
   ariaLabel?: string;
-  iconName: IconProps.Name;
+  className?: string;
+  iconName?: IconProps.Name;
+  iconSvg?: React.ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
-  className?: string;
 }
 
 function TriggerButton(
-  { ariaLabel, iconName, onClick, selected = false, className }: TriggerButtonProps,
+  { ariaLabel, className, iconName, iconSvg, onClick, selected = false }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
-  const focusVisible = useFocusVisible();
-
   return (
     <button
-      aria-label={ariaLabel}
       aria-expanded={false}
       aria-haspopup={true}
+      aria-label={ariaLabel}
       className={clsx(
         styles.trigger,
         {
@@ -35,11 +33,10 @@ function TriggerButton(
         className
       )}
       onClick={onClick}
-      type="button"
       ref={ref as React.Ref<HTMLButtonElement>}
-      {...focusVisible}
+      type="button"
     >
-      <Icon name={iconName} />
+      <Icon name={iconName} svg={iconSvg} />
     </button>
   );
 }

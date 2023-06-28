@@ -14,6 +14,7 @@ export default function InternalSpaceBetween({
   direction = 'vertical',
   size,
   children,
+  alignItems,
   __internalRootRef,
   ...props
 }: InternalSpaceBetweenProps) {
@@ -27,16 +28,20 @@ export default function InternalSpaceBetween({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, styles[direction], styles[`${direction}-${size}`])}
+      className={clsx(
+        baseProps.className,
+        styles.root,
+        styles[direction],
+        styles[`${direction}-${size}`],
+        alignItems && styles[`align-${alignItems}`]
+      )}
       ref={__internalRootRef}
     >
       {flattenedChildren.map(child => {
-        // If this react child is a primitive value, the key will be undefined
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const key = (child as any).key;
+        const key = typeof child === 'object' ? child.key : undefined;
 
         return (
-          <div key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
+          <div key={key} className={styles.child}>
             {child}
           </div>
         );

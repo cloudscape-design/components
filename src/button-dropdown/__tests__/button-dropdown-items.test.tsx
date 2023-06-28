@@ -53,6 +53,12 @@ const checkElementItem = (renderedItem: ElementWrapper, item: ButtonDropdownProp
     }
   }
 
+  if (item.lang) {
+    expect(element.children[0]).toHaveAttribute('lang', item.lang);
+  } else {
+    expect(element.children[0]).not.toHaveAttribute('lang');
+  }
+
   if (disabled) {
     expect(element).toHaveClass(`${itemStyles.disabled}`);
     expect(element.children[0]).toHaveAttribute('aria-disabled', 'true');
@@ -164,6 +170,27 @@ const items: ButtonDropdownProps.Items = [
       const wrapper = renderButtonDropdown({ ...props, items: disabledCategory });
       wrapper.openDropdown();
       checkRenderedItems(wrapper.findOpenDropdown()!, disabledCategory);
+    });
+
+    test('should render lang on items', () => {
+      const items = [
+        {
+          id: 'i0',
+          text: 'Deutsch',
+          lang: 'de',
+        },
+        {
+          text: 'category',
+          disabled: true,
+          items: [
+            { id: 'i1', disabled: true, text: 'English', lang: 'en' },
+            { id: 'i2', text: 'item2' },
+          ],
+        },
+      ];
+      const wrapper = renderButtonDropdown({ ...props, items });
+      wrapper.openDropdown();
+      checkRenderedItems(wrapper.findOpenDropdown()!, items);
     });
 
     test('should render mixed list of items and categories', () => {

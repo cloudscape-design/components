@@ -76,9 +76,9 @@ export const defaultProps: CodeEditorProps = {
   i18nStrings,
 };
 
-export function renderCodeEditor(props: Partial<CodeEditorProps> = {}) {
+export function renderCodeEditor(props: Partial<CodeEditorProps> = {}, ref?: React.Ref<CodeEditorProps.Ref>) {
   const renderProps = { ...defaultProps, ...props };
-  const { container, rerender, unmount } = render(<CodeEditor {...renderProps} />);
+  const { container, rerender, unmount } = render(<CodeEditor ref={ref} {...renderProps} />);
   return {
     wrapper: createWrapper(container).findCodeEditor()!,
     rerender,

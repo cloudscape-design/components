@@ -6,7 +6,6 @@ import React from 'react';
 import { MenuDropdownProps, ButtonTriggerProps } from './interfaces';
 import { getBaseProps } from '../../base-component';
 import { applyDisplayName } from '../../utils/apply-display-name';
-import useFocusVisible from '../../hooks/focus-visible';
 import InternalButtonDropdown from '../../../button-dropdown/internal';
 import InternalIcon from '../../../icon/internal';
 import buttonDropdownStyles from '../../../button-dropdown/styles.css.js';
@@ -31,12 +30,10 @@ export const ButtonTrigger = React.forwardRef(
     }: ButtonTriggerProps,
     ref: React.Ref<any>
   ) => {
-    const focusVisible = useFocusVisible();
     const hasIcon = iconName || iconUrl || iconSvg;
 
     return (
       <button
-        {...focusVisible}
         ref={ref}
         type="button"
         className={clsx(styles.button, styles[`offset-right-${offsetRight}`], { [styles.expanded]: expanded })}

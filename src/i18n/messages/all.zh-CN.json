@@ -1,0 +1,347 @@
+{
+  "[charts]": {
+    "loadingText": "正在加载图表",
+    "errorText": "无法获取数据。请稍后重试。",
+    "recoveryText": "重试",
+    "i18nStrings.filterLabel": "筛选显示的数据",
+    "i18nStrings.filterPlaceholder": "筛选数据",
+    "i18nStrings.legendAriaLabel": "图例",
+    "i18nStrings.xAxisAriaRoleDescription": "x 轴",
+    "i18nStrings.yAxisAriaRoleDescription": "y 轴"
+  },
+  "alert": {
+    "dismissAriaLabel": "关闭提示"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "下一步",
+    "i18nStrings.previousButtonText": "上一步",
+    "i18nStrings.finishButtonText": "完成",
+    "i18nStrings.labelDismissAnnotation": "关闭注释",
+    "i18nStrings.stepCounterText": "第 {stepNumber} 步，共 {totalStepCount} 步",
+    "i18nStrings.taskTitle": "任务 {taskNumber}：{taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {关闭第 {stepNumber} 步（共 {totalStepCount} 步）的注释} false {打开第 {stepNumber} 步（共 {totalStepCount} 步）的注释} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.navigation": "侧导航",
+    "ariaLabels.navigationClose": "关闭侧导航",
+    "ariaLabels.navigationToggle": "打开侧导航",
+    "ariaLabels.notifications": "通知",
+    "ariaLabels.tools": "帮助面板",
+    "ariaLabels.toolsClose": "关闭帮助面板",
+    "ariaLabels.toolsToggle": "打开帮助面板"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "总计"
+  },
+  "attribute-editor": {
+    "removeButtonText": "删除"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "错误",
+    "selectedAriaLabel": "已选定",
+    "enteredTextLabel": "使用：“{value}”",
+    "recoveryText": "重试"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "显示路径"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "下个月",
+    "previousMonthAriaLabel": "上个月",
+    "todayAriaLabel": "今天"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "项目选择"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "正在加载代码编辑器",
+    "i18nStrings.errorState": "加载代码编辑器时出错。",
+    "i18nStrings.errorStateRecovery": "重试",
+    "i18nStrings.editorGroupAriaLabel": "代码编辑器",
+    "i18nStrings.statusBarGroupAriaLabel": "状态栏",
+    "i18nStrings.cursorPosition": "第 {row} 行，第 {column} 列",
+    "i18nStrings.errorsTab": "错误",
+    "i18nStrings.warningsTab": "警告",
+    "i18nStrings.preferencesButtonAriaLabel": "首选项",
+    "i18nStrings.paneCloseButtonAriaLabel": "关闭",
+    "i18nStrings.preferencesModalHeader": "首选项",
+    "i18nStrings.preferencesModalCancel": "取消",
+    "i18nStrings.preferencesModalConfirm": "确认",
+    "i18nStrings.preferencesModalWrapLines": "换行",
+    "i18nStrings.preferencesModalTheme": "主题",
+    "i18nStrings.preferencesModalLightThemes": "浅色主题",
+    "i18nStrings.preferencesModalDarkThemes": "深色主题"
+  },
+  "collection-preferences": {
+    "title": "首选项",
+    "confirmLabel": "确认",
+    "cancelLabel": "取消",
+    "pageSizePreference.title": "页面大小",
+    "wrapLinesPreference.label": "换行",
+    "wrapLinesPreference.description": "选择查看所有文本并换行",
+    "stripedRowsPreference.label": "带条纹的行",
+    "stripedRowsPreference.description": "选择添加交替阴影行",
+    "contentDensityPreference.label": "紧凑模式",
+    "contentDensityPreference.description": "选择以更密集、更紧凑的模式显示内容",
+    "contentDisplayPreference.title": "列首选项",
+    "contentDisplayPreference.description": "自定义列的可见性和顺序。",
+    "contentDisplayPreference.dragHandleAriaLabel": "拖动手柄",
+    "contentDisplayPreference.dragHandleAriaDescription": "使用空格键或 Enter 键激活项目拖动功能，然后使用箭头键移动项目的位置。要完成位置移动，请使用空格键或 Enter 键，要放弃移动，请使用 Esc 键。",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "已选择位于位置 {position}（共 {total} 个位置）的项目",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "重新排序已取消",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {正在将项目移回位置 {currentPosition}（共 {total} 个位置）} false {正在将项目移动到位置 {currentPosition}（共 {total} 个位置）} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {已将项目移回其原始位置 {initialPosition}（共 {total} 个位置）} false {已将项目从位置 {initialPosition} 移动到位置 {finalPosition}（共 {total} 个位置）} other {}}"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "相对模式",
+    "i18nStrings.absoluteModeTitle": "绝对模式",
+    "i18nStrings.relativeRangeSelectionHeading": "选择一个范围",
+    "i18nStrings.cancelButtonLabel": "取消",
+    "i18nStrings.clearButtonLabel": "清除并关闭",
+    "i18nStrings.applyButtonLabel": "应用",
+    "i18nStrings.customRelativeRangeOptionLabel": "自定义范围",
+    "i18nStrings.customRelativeRangeOptionDescription": "设置过去的自定义范围",
+    "i18nStrings.customRelativeRangeUnitLabel": "时间单位",
+    "i18nStrings.customRelativeRangeDurationLabel": "持续时间",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "输入持续时间",
+    "i18nStrings.startDateLabel": "开始日期",
+    "i18nStrings.startTimeLabel": "开始时间",
+    "i18nStrings.endDateLabel": "结束日期",
+    "i18nStrings.endTimeLabel": "结束时间",
+    "i18nStrings.dateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
+    "i18nStrings.errorIconAriaLabel": "错误",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "选定范围从 {startDate} 到 {endDate}",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {最近 {amount} {unit}} other {最近 {amount} {unit}}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "通知",
+    "i18nStrings.errorIconAriaLabel": "错误",
+    "i18nStrings.inProgressIconAriaLabel": "进行中",
+    "i18nStrings.infoIconAriaLabel": "信息",
+    "i18nStrings.notificationBarAriaLabel": "所有通知",
+    "i18nStrings.notificationBarText": "通知",
+    "i18nStrings.successIconAriaLabel": "成功",
+    "i18nStrings.warningIconAriaLabel": "警告"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "错误"
+  },
+  "form": {
+    "errorIconAriaLabel": "错误"
+  },
+  "help-panel": {
+    "loadingText": "正在加载内容"
+  },
+  "input": {
+    "clearAriaLabel": "清除"
+  },
+  "link": {
+    "externalIconAriaLabel": "在新标签页中打开"
+  },
+  "modal": {
+    "closeAriaLabel": "关闭模态"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "删除 {option__label}"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "下一页",
+    "ariaLabels.pageLabel": "所有页面中的第 {pageNumber} 页",
+    "ariaLabels.previousPageLabel": "上一页"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "值",
+    "i18nStrings.detailsPercentage": "百分比",
+    "i18nStrings.chartAriaRoleDescription": "饼状图",
+    "i18nStrings.segmentAriaRoleDescription": "部分"
+  },
+  "popover": {
+    "dismissAriaLabel": "关闭弹出框"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "所有属性",
+    "i18nStrings.applyActionText": "应用",
+    "i18nStrings.cancelActionText": "取消",
+    "i18nStrings.clearFiltersText": "清除筛选条件",
+    "i18nStrings.editTokenHeader": "编辑筛选条件",
+    "i18nStrings.groupPropertiesText": "属性",
+    "i18nStrings.groupValuesText": "值",
+    "i18nStrings.operationAndText": "与",
+    "i18nStrings.operationOrText": "或",
+    "i18nStrings.operatorContainsText": "包含",
+    "i18nStrings.operatorDoesNotContainText": "不包含",
+    "i18nStrings.operatorDoesNotEqualText": "不等于",
+    "i18nStrings.operatorEqualsText": "等于",
+    "i18nStrings.operatorGreaterOrEqualText": "大于或等于",
+    "i18nStrings.operatorGreaterText": "大于",
+    "i18nStrings.operatorLessOrEqualText": "小于或等于",
+    "i18nStrings.operatorLessText": "小于",
+    "i18nStrings.operatorText": "运算符",
+    "i18nStrings.operatorsText": "运算符",
+    "i18nStrings.propertyText": "属性",
+    "i18nStrings.tokenLimitShowFewer": "显示更少",
+    "i18nStrings.tokenLimitShowMore": "显示更多",
+    "i18nStrings.valueText": "值",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {删除筛选条件，{token__propertyKey} 等于 {token__value}} not_equals {删除筛选条件，{token__propertyKey} 不等于 {token__value}} greater_than {删除筛选条件，{token__propertyKey} 大于 {token__value}} greater_than_equal {删除筛选条件，{token__propertyKey} 大于或等于 {token__value}} less_than {删除筛选条件，{token__propertyKey} 小于 {token__value}} less_than_equal {删除筛选条件，{token__propertyKey} 小于或等于 {token__value}} contains {删除筛选条件，{token__propertyKey} 包含 {token__value}} not_contains {删除筛选条件，{token__propertyKey} 不包含 {token__value}} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "选择版本",
+    "i18nStrings.inContextBrowseButton": "浏览 S3",
+    "i18nStrings.inContextViewButton": "查看",
+    "i18nStrings.inContextViewButtonAriaLabel": "查看（在新选项卡中打开）",
+    "i18nStrings.inContextLoadingText": "正在加载资源",
+    "i18nStrings.inContextUriLabel": "S3 URI",
+    "i18nStrings.inContextVersionSelectLabel": "对象版本",
+    "i18nStrings.modalTitle": "在 S3 中选择档案",
+    "i18nStrings.modalCancelButton": "取消",
+    "i18nStrings.modalSubmitButton": "选择",
+    "i18nStrings.modalBreadcrumbRootItem": "S3 存储桶",
+    "i18nStrings.selectionBuckets": "存储桶",
+    "i18nStrings.selectionObjects": "对象",
+    "i18nStrings.selectionVersions": "版本",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "查找存储桶",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "按前缀查找对象",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "查找版本",
+    "i18nStrings.selectionBucketsLoading": "正在加载存储桶",
+    "i18nStrings.selectionBucketsNoItems": "没有存储桶",
+    "i18nStrings.selectionObjectsLoading": "正在加载对象",
+    "i18nStrings.selectionObjectsNoItems": "没有对象",
+    "i18nStrings.selectionVersionsLoading": "正在加载版本",
+    "i18nStrings.selectionVersionsNoItems": "没有版本",
+    "i18nStrings.filteringNoMatches": "没有匹配项",
+    "i18nStrings.filteringCantFindMatch": "找不到匹配项",
+    "i18nStrings.clearFilterButtonText": "清除筛选条件",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "名称",
+    "i18nStrings.columnBucketCreationDate": "创建日期",
+    "i18nStrings.columnBucketRegion": "区域",
+    "i18nStrings.columnObjectKey": "键",
+    "i18nStrings.columnObjectLastModified": "上次修改时间",
+    "i18nStrings.columnObjectSize": "大小",
+    "i18nStrings.columnVersionID": "版本 ID",
+    "i18nStrings.columnVersionLastModified": "上次修改时间",
+    "i18nStrings.columnVersionSize": "大小",
+    "i18nStrings.validationPathMustBegin": "路径必须以 s3:// 开头",
+    "i18nStrings.validationBucketLowerCase": "存储桶名称必须以小写字符或数字开头。",
+    "i18nStrings.validationBucketMustNotContain": "存储桶名称不得包含大写字符。",
+    "i18nStrings.validationBucketLength": "存储桶名称必须介于 3 到 63 个字符之间。",
+    "i18nStrings.validationBucketMustComplyDns": "存储桶名称必须符合 DNS 命名惯例。",
+    "i18nStrings.labelSortedDescending": "{columnName}，按降序排序",
+    "i18nStrings.labelSortedAscending": "{columnName}，按升序排序",
+    "i18nStrings.labelNotSorted": "{columnName}，未排序",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "存储桶",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "对象",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "版本",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "查找 {itemsType}",
+    "i18nStrings.labelRefresh": "刷新数据",
+    "i18nStrings.labelBreadcrumbs": "S3 导航",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 个匹配项} other {{count} 个匹配项}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "错误",
+    "selectedAriaLabel": "已选定",
+    "recoveryText": "重试"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "关闭面板",
+    "i18nStrings.openButtonAriaLabel": "打开面板",
+    "i18nStrings.preferencesTitle": "拆分面板首选项",
+    "i18nStrings.preferencesPositionLabel": "拆分面板位置",
+    "i18nStrings.preferencesPositionDescription": "为服务选择默认的拆分面板位置。",
+    "i18nStrings.preferencesPositionSide": "侧面",
+    "i18nStrings.preferencesPositionBottom": "底部",
+    "i18nStrings.preferencesConfirm": "确认",
+    "i18nStrings.preferencesCancel": "取消",
+    "i18nStrings.resizeHandleAriaLabel": "调整拆分面板的大小"
+  },
+  "table": {
+    "ariaLabels.submittingEditText": "正在提交编辑",
+    "ariaLabels.successfulEditLabel": "编辑成功",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "错误",
+    "columnDefinitions.editConfig.editIconAriaLabel": "可编辑"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "向左滚动",
+    "i18nStrings.scrollRightAriaLabel": "向右滚动"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "输入键",
+    "i18nStrings.valuePlaceholder": "输入值",
+    "i18nStrings.addButton": "添加新标签",
+    "i18nStrings.removeButton": "删除",
+    "i18nStrings.removeButtonAriaLabel": "删除 {tag__key}",
+    "i18nStrings.undoButton": "撤销",
+    "i18nStrings.undoPrompt": "保存更改后将删除此标签",
+    "i18nStrings.loading": "正在加载与此资源关联的标签",
+    "i18nStrings.keyHeader": "键",
+    "i18nStrings.valueHeader": "值",
+    "i18nStrings.optional": "可选",
+    "i18nStrings.keySuggestion": "自定义标签键",
+    "i18nStrings.valueSuggestion": "自定义标签值",
+    "i18nStrings.emptyTags": "没有与资源关联的标签。",
+    "i18nStrings.tooManyKeysSuggestion": "您的键超过了可以显示的数量",
+    "i18nStrings.tooManyValuesSuggestion": "您的值超过了可以显示的数量",
+    "i18nStrings.keysSuggestionLoading": "正在加载标签键",
+    "i18nStrings.keysSuggestionError": "无法检索标签键",
+    "i18nStrings.valuesSuggestionLoading": "正在加载标签值",
+    "i18nStrings.valuesSuggestionError": "无法检索标签值",
+    "i18nStrings.emptyKeyError": "您必须指定标签键",
+    "i18nStrings.maxKeyCharLengthError": "标签键中最多可使用 128 个字符。",
+    "i18nStrings.maxValueCharLengthError": "标签值中最多可使用 256 个字符。",
+    "i18nStrings.duplicateKeyError": "您必须指定唯一的标签键。",
+    "i18nStrings.invalidKeyError": "键无效。键只能包含 Unicode 字母、数字、空格和以下任意字符：_.:/=+@-",
+    "i18nStrings.invalidValueError": "值无效。值只能包含 Unicode 字母、数字、空格和以下任意字符：_.:/=+@-",
+    "i18nStrings.awsPrefixError": "不能以 aws: 开头",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {您已达到 1 个标签的限制。} other {您已达到 {tagLimit} 个标签的限制。}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {您已超过 1 个标签的限制。} other {您已超过 {tagLimit} 个标签的限制。}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {您最多可以添加 {tagLimit} 个标签。}}} false {{availableTags, plural, one {您最多可以再添加 1 个标签。} other {您最多可以再添加 {availableTags} 个标签。}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "显示更少",
+    "i18nStrings.limitShowMore": "显示更多"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "搜索",
+    "i18nStrings.searchDismissIconAriaLabel": "关闭搜索",
+    "i18nStrings.overflowMenuTriggerText": "更多",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "关闭菜单",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "返回",
+    "i18nStrings.overflowMenuTitleText": "全部"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "正在加载",
+    "i18nStrings.tutorialListTitle": "选择教程",
+    "i18nStrings.tutorialListDownloadLinkText": "下载 PDF 版本",
+    "i18nStrings.labelTutorialListDownloadLink": "下载本教程的 PDF 版本",
+    "i18nStrings.tutorialCompletedText": "教程已完成",
+    "i18nStrings.learnMoreLinkText": "了解更多",
+    "i18nStrings.startTutorialButtonText": "启动教程",
+    "i18nStrings.restartTutorialButtonText": "重启教程",
+    "i18nStrings.completionScreenTitle": "恭喜！您完成了本教程。",
+    "i18nStrings.feedbackLinkText": "反馈",
+    "i18nStrings.dismissTutorialButtonText": "关闭教程",
+    "i18nStrings.taskTitle": "任务 {taskNumber}：{taskTitle}",
+    "i18nStrings.stepTitle": "步骤 {stepNumber}：{stepTitle}",
+    "i18nStrings.labelExitTutorial": "关闭教程",
+    "i18nStrings.labelTotalSteps": "总步骤数：{totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "待处理",
+    "i18nStrings.labelsTaskStatus.in-progress": "进行中",
+    "i18nStrings.labelsTaskStatus.success": "成功"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "第 {stepNumber} 步",
+    "i18nStrings.collapsedStepsLabel": "第 {stepNumber} 步，共 {stepsCount} 步",
+    "i18nStrings.skipToButtonLabel": "跳至 {task__title}",
+    "i18nStrings.navigationAriaLabel": "步骤",
+    "i18nStrings.cancelButton": "取消",
+    "i18nStrings.previousButton": "上一步",
+    "i18nStrings.nextButton": "下一步",
+    "i18nStrings.optional": "可选",
+    "i18nStrings.nextButtonLoadingAnnouncement": "正在加载下一步",
+    "i18nStrings.submitButtonLoadingAnnouncement": "正在提交表单"
+  }
+}

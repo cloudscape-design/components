@@ -10,11 +10,10 @@ export { BreadcrumbGroupProps };
 
 export default function BreadcrumbGroup<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],
-  expandAriaLabel = 'Show path',
   ...props
 }: BreadcrumbGroupProps<T>) {
   const baseComponentProps = useBaseComponent('BreadcrumbGroup');
-  return <InternalBreadcrumbGroup items={items} expandAriaLabel={expandAriaLabel} {...props} {...baseComponentProps} />;
+  return <InternalBreadcrumbGroup items={items} {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(BreadcrumbGroup, 'BreadcrumbGroup');

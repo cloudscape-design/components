@@ -48,7 +48,9 @@ describe.each<[boolean, boolean]>([
       setupTest(
         async page => {
           await page.focusSelect();
-          await page.keys(['ArrowDown', 'Space']);
+          await page.keys('ArrowDown');
+          // make sure there is an extra react render between these two keys
+          await page.keys('Space');
           await page.assertEventsFired(['onFocus', 'onChange']);
         },
         expandToViewport,

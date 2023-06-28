@@ -18,10 +18,10 @@
 .header {
   &-variant-full-page.header-refresh {
     @include container.borders-and-shadows;
-    padding-top: awsui.$space-container-header-vertical;
+    padding-top: 0;
     padding-left: 0;
     padding-right: 0;
-    padding-bottom: calc(#{awsui.$space-container-header-vertical} + #{awsui.$space-scaled-xxs});
+    padding-bottom: #{awsui.$space-container-header-vertical};
   }
 }
 
@@ -126,4 +126,9 @@
 }
 .section:last-child {
   padding: awsui.$space-xs 0 0 0;
+}
+
+.footer-pagination {
+  display: flex;
+  justify-content: end;
 }

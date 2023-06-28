@@ -39,6 +39,10 @@
         {
           "pattern": "./src/*/index.tsx",
           "message": "Disallowed import '{{ path }}'. Use the internal component for composition or the interface directly."
+        },
+        {
+          "pattern": "./src/*/index.js",
+          "message": "Disallowed import '{{ path }}'. Use the internal component for composition or the interface directly."
         }
       ]
     ],
@@ -76,12 +80,6 @@
   },
   "env": {
     "browser": true
-  },
-  "globals": {
-    // it is a part of es6, but supported in IE11
-    "Set": true,
-    "Map": true,
-    "WeakMap": true
   },
   "overrides": [
     {

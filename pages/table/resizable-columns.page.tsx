@@ -87,14 +87,23 @@ const items: Item[] = [
 export default function App() {
   const [renderKey, setRenderKey] = useState(0);
   const [columns, setColumns] = useState(columnsConfig);
-  const [visibleColumns, setVisibleColumns] = useState(columnsConfig.slice(0, -1).map(({ id }) => id!));
+  const [columnDisplay, setColumnDisplay] = useState([
+    { id: 'name', visible: true },
+    { id: 'region', visible: true },
+    { id: 'description', visible: true },
+    { id: 'state', visible: true },
+    { id: 'extra', visible: false },
+  ]);
   const [wrapLines, setWrapLines] = useState(false);
   const [stickyHeader, setStickyHeader] = useState(false);
   const [resizableColumns, setResizableColumns] = useState(true);
   const [sorting, setSorting] = useState<TableProps.SortingState<any>>();
 
   function handleWidthChange(event: NonCancelableCustomEvent<TableProps.ColumnWidthsChangeDetail>) {
-    const widths = zipObject(visibleColumns, event.detail.widths);
+    const widths = zipObject(
+      columnDisplay.map(column => column.id!),
+      event.detail.widths
+    );
     setColumns(oldColumns =>
       oldColumns.map(column => {
         if (!widths[column.id!]) {
@@ -134,14 +143,12 @@ export default function App() {
               <Checkbox
                 key={column.id}
                 id={`toggle-${column.id}`}
-                checked={visibleColumns.indexOf(column.id!) > -1}
-                onChange={event => {
-                  if (event.detail.checked) {
-                    setVisibleColumns(visible => visible.concat(column.id!));
-                  } else {
-                    setVisibleColumns(visible => visible.filter(id => id !== column.id!));
-                  }
-                }}
+                checked={!!columnDisplay.find(({ id }) => id === column.id)?.visible}
+                onChange={event =>
+                  setColumnDisplay(visible =>
+                    visible.map(item => (item.id === column.id ? { ...item, visible: event.detail.checked } : item))
+                  )
+                }
               >
                 {column.header}
               </Checkbox>
@@ -161,7 +168,7 @@ export default function App() {
           stickyHeader={stickyHeader}
           columnDefinitions={columns}
           resizableColumns={resizableColumns}
-          visibleColumns={visibleColumns}
+          columnDisplay={columnDisplay}
           items={items}
           wrapLines={wrapLines}
           sortingColumn={sorting?.sortingColumn}

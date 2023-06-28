@@ -7,7 +7,6 @@ import InternalAutosuggest from '../autosuggest/internal';
 import { InputProps } from '../input/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { KeyCode } from '../internal/keycode';
 import { makeCancellable, PromiseCancelledSignal } from '../internal/utils/promises';
 
@@ -22,15 +21,15 @@ export interface TagControlProps {
   value: string;
   readOnly: boolean;
   defaultOptions: AutosuggestProps.Options;
-  placeholder: string;
-  errorText: string;
-  loadingText: string;
-  suggestionText: string;
-  tooManySuggestionText: string;
+  placeholder?: string;
+  errorText?: string;
+  loadingText?: string;
+  suggestionText?: string;
+  tooManySuggestionText?: string;
   limit: number;
   filteringKey?: string;
   clearAriaLabel?: string;
-  enteredTextLabel: (value: string) => string;
+  enteredTextLabel?: (value: string) => string;
   onChange: (value: string, row: number) => void;
   onBlur?: (row: number) => void;
   onRequest?: (value: string) => Promise<readonly string[]>;
@@ -140,11 +139,8 @@ export interface UndoButtonProps {
 
 export const UndoButton = React.forwardRef(
   ({ children, onClick }: UndoButtonProps, ref: React.Ref<HTMLAnchorElement>) => {
-    const focusVisible = useFocusVisible();
-
     return (
       <a
-        {...focusVisible}
         ref={ref}
         role="button"
         tabIndex={0}

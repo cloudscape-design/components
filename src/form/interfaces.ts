@@ -21,6 +21,7 @@ export interface FormProps extends BaseComponentProps {
 
   /**
    * Provides a text alternative for the error icon in the error alert.
+   * @i18n
    */
   errorIconAriaLabel?: string;
 

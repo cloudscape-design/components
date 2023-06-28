@@ -37,13 +37,20 @@ export namespace AttributeEditorProps {
   }
 
   export interface Ref {
+    /**
+     * Focuses the 'remove' button for the given row index.
+     */
     focusRemoveButton(itemIndex: number): void;
+    /**
+     * Focuses the 'add' button. Use this, for example, after a user removes the last row.
+     */
+    focusAddButton(): void;
   }
 
-  export interface I18nStrings {
+  export interface I18nStrings<T = any> {
     errorIconAriaLabel?: string;
-
     itemRemovedAriaLive?: string;
+    removeButtonAriaLabel?: (item: T) => string;
   }
 }
 
@@ -65,8 +72,9 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * Specifies the text that's displayed in the remove button.
+   * @i18n
    */
-  removeButtonText: string;
+  removeButtonText?: string;
 
   /**
    * Specifies the items that serve as the data source for all rows.
@@ -113,5 +121,5 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
   /**
    * An object containing all the necessary localized strings required by the component.
    */
-  i18nStrings?: AttributeEditorProps.I18nStrings;
+  i18nStrings?: AttributeEditorProps.I18nStrings<T>;
 }

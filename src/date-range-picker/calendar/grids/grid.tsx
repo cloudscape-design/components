@@ -18,7 +18,6 @@ import { DateRangePickerProps, DayIndex } from '../../interfaces';
 import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
 import { formatDate } from '../../../internal/utils/date-time';
-import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only/index.js';
 
 /**
@@ -55,7 +54,7 @@ export interface GridProps {
 
   locale: string;
   startOfWeek: DayIndex;
-  todayAriaLabel: string;
+  todayAriaLabel?: string;
   ariaLabelledby: string;
 
   className?: string;
@@ -92,8 +91,6 @@ export function Grid({
     [baseDateTime, startOfWeek]
   );
   const weekdays = weeks[0].map(date => date.getDay());
-
-  const focusVisible = useFocusVisible();
 
   return (
     <table role="grid" aria-labelledby={ariaLabelledby} className={clsx(styles.grid, className)}>
@@ -203,7 +200,6 @@ export function Grid({
                     aria-disabled={!isEnabled}
                     tabIndex={tabIndex}
                     {...handlers}
-                    {...focusVisible}
                   >
                     <span className={styles['day-inner']} aria-hidden="true">
                       {date.getDate()}

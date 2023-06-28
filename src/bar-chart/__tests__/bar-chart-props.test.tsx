@@ -32,7 +32,7 @@ describe('Bar chart', () => {
         height: 500,
         series: [],
         statusType: 'finished',
-        xScaleType: 'linear',
+        xScaleType: 'categorical',
         yScaleType: 'linear',
       }),
       {}

@@ -9,8 +9,8 @@ import WizardActions from './wizard-actions';
 import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -53,8 +53,6 @@ export default function WizardForm({
     }
   }, [activeStepIndex]);
 
-  const focusVisible = useFocusVisible();
-
   const showSkipTo = allowSkipTo && skipToTargetIndex !== -1;
   const skipToButtonText =
     skipToTargetIndex !== -1 && i18nStrings.skipToButtonLabel
@@ -64,45 +62,50 @@ export default function WizardForm({
   return (
     <>
       <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
-        <div
-          className={clsx(
-            styles['collapsed-steps'],
-            !showCollapsedSteps && styles['collapsed-steps-hidden'],
-            isVisualRefresh && isMobile && styles['collapsed-steps-extra-padding']
-          )}
-        >
-          {i18nStrings.collapsedStepsLabel(activeStepIndex + 1, steps.length)}
+        <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
+          {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
         </div>
         <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
-          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef} {...focusVisible}>
+          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef}>
             {title}
             {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
           </span>
         </InternalHeader>
       </WizardFormHeader>
-      <InternalForm
-        className={clsx(styles['form-component'])}
-        actions={
-          <WizardActions
-            cancelButtonText={i18nStrings.cancelButton}
-            primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
-            previousButtonText={i18nStrings.previousButton}
-            onCancelClick={onCancelClick}
-            onPreviousClick={onPreviousClick}
-            onPrimaryClick={onPrimaryClick}
-            onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
-            showPrevious={activeStepIndex !== 0}
-            isPrimaryLoading={isPrimaryLoading}
-            showSkipTo={showSkipTo}
-            skipToButtonText={skipToButtonText}
-          />
-        }
-        secondaryActions={secondaryActions}
-        errorText={errorText}
-        errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+      <AnalyticsFunnelStep
+        stepNameSelector={`.${styles['form-header-component-wrapper']}`}
+        stepNumber={activeStepIndex + 1}
       >
-        {content}
-      </InternalForm>
+        {({ funnelStepProps }) => (
+          <InternalForm
+            className={clsx(styles['form-component'])}
+            actions={
+              <WizardActions
+                cancelButtonText={i18nStrings.cancelButton}
+                primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
+                primaryButtonLoadingText={
+                  isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
+                }
+                previousButtonText={i18nStrings.previousButton}
+                onCancelClick={onCancelClick}
+                onPreviousClick={onPreviousClick}
+                onPrimaryClick={onPrimaryClick}
+                onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
+                showPrevious={activeStepIndex !== 0}
+                isPrimaryLoading={isPrimaryLoading}
+                showSkipTo={showSkipTo}
+                skipToButtonText={skipToButtonText}
+              />
+            }
+            secondaryActions={secondaryActions}
+            errorText={errorText}
+            errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+            {...funnelStepProps}
+          >
+            {content}
+          </InternalForm>
+        )}
+      </AnalyticsFunnelStep>
     </>
   );
 }

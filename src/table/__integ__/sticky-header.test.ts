@@ -4,6 +4,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import styles from '../../../lib/components/table/styles.selectors.js';
+import selectionStyles from '../../../lib/components/table/selection-control/styles.selectors.js';
 
 const tableWrapper = createWrapper().findTable();
 const tableScrollWrapper = tableWrapper.findByClassName(styles.wrapper);
@@ -26,8 +27,13 @@ class StickyHeaderPage extends BasePageObject {
         }));
     }, selector);
   }
+
   findTable() {
     return tableWrapper.toSelector();
+  }
+
+  findTableHiddenSelectAllTrigger() {
+    return tableWrapper.find(`.${styles.wrapper} .${selectionStyles.root} input`);
   }
 }
 
@@ -118,14 +124,10 @@ describe('Sticky header', () => {
     setupTest(async page => {
       await page.click(togglePaginationSelector);
       await page.click(tableWrapper.findTextFilter().findInput().toSelector());
-      // skip preferences toggle
-      await page.keys(['Tab', 'Tab']);
-      // select all checkbox
-      await expect(
-        page.isFocused(tableWrapper.findSelectAllTrigger().find('input').toSelector())
-      ).resolves.toBeTruthy();
-      // skips table scrollable region
-      await page.keys('Tab');
+      // skip preferences toggle and table scrollable region
+      await page.keys(['Tab', 'Tab', 'Tab']);
+      // find the hidden table select checkbox
+      await expect(page.isFocused(page.findTableHiddenSelectAllTrigger().getElement())).resolves.toBeTruthy();
       // column headers
       for (const column of ['ID', 'Type', 'DNS name', 'Image ID', 'State']) {
         await page.keys('Tab');
@@ -155,14 +157,19 @@ describe('Sticky header', () => {
   );
 
   test(
-    'sticky feature is disabled on mobile',
+    'sticky header does not get stuck on mobile but table header row does',
     setupTest(async page => {
       await page.setWindowSize(mobileSize);
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
-      const { top: oldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      const { top: headerOldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
       await page.elementScrollTo(scrollContainerSelector, { top: 400 });
-      const { top: newOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
-      expect(oldOffset).not.toEqual(newOffset);
+      const { top: headerNewOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      expect(headerOldOffset).not.toEqual(headerNewOffset);
+
+      const { top: tableHeaderRowOldOffset } = await page.getBoundingBox(headerSecondary.toSelector());
+      await page.elementScrollTo(scrollContainerSelector, { top: 600 });
+      const { top: tableHeaderRowNewOffset } = await page.getBoundingBox(headerSecondary.toSelector());
+      expect(tableHeaderRowOldOffset).toEqual(tableHeaderRowNewOffset);
     })
   );
 

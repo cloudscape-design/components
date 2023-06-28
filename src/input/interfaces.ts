@@ -54,11 +54,6 @@ export interface BaseInputProps {
   ariaLabel?: string;
 
   /**
-   * Adds an `aria-label` to the clear button inside the search input.
-   */
-  clearAriaLabel?: string;
-
-  /**
    * Specifies whether to add `aria-required` to the native control.
    */
   ariaRequired?: boolean;
@@ -133,6 +128,14 @@ export interface InputKeyEvents {
   onKeyUp?: CancelableEventHandler<InputProps.KeyDetail>;
 }
 
+export interface InputClearLabel {
+  /**
+   * Adds an `aria-label` to the clear button inside the search input.
+   * @i18n
+   */
+  clearAriaLabel?: string;
+}
+
 export interface InputProps
   extends BaseComponentProps,
     BaseInputProps,
@@ -140,6 +143,7 @@ export interface InputProps
     InputAutoCorrect,
     InputAutoComplete,
     InputSpellcheck,
+    InputClearLabel,
     FormFieldValidationControlProps {
   /**
    * Specifies the type of control to render.

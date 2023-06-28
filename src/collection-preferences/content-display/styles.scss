@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+@import 'content-display-option';
+
+.content-display {
+  /* used in test-utils */
+}
+
+.content-display-title {
+  @include styles.font-label;
+  color: awsui.$color-text-form-label;
+  margin: 0;
+}
+
+.content-display-description {
+  @include styles.form-control-description;
+  margin-top: awsui.$space-scaled-xxxs;
+}
+
+.content-display-option-list {
+  position: relative;
+  list-style: none;
+  padding: 0;
+}

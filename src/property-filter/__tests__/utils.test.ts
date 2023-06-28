@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringProperty, Token } from '../interfaces';
+import { ComparisonOperator, Token } from '../interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, matchTokenValue } from '../utils';
+import { toInternalOptions, toInternalProperties } from './common';
 
-const filteringProperties: FilteringProperty[] = [
+const filteringProperties = toInternalProperties([
   {
     key: 'instanceId',
     propertyLabel: 'Instance ID',
@@ -13,48 +14,48 @@ const filteringProperties: FilteringProperty[] = [
   },
   {
     key: 'averageLatency',
-    propertyLabel: 'Averange latency',
+    propertyLabel: 'Average latency',
     operators: ['=', '!=', '<', '<=', '>', '>='],
     groupValuesLabel: '',
   },
-];
+]);
 
 const operators: ComparisonOperator[] = ['!:', ':', 'contains', 'does not contain'] as any;
 
 describe('matchFilteringProperty', () => {
   test('should match property by label when filtering text equals to it', () => {
-    const property = matchFilteringProperty(filteringProperties, 'Averange latency');
+    const property = matchFilteringProperty(filteringProperties, 'Average latency');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should match property by label ignoring case', () => {
-    const property = matchFilteringProperty(filteringProperties, 'averange Latency');
+    const property = matchFilteringProperty(filteringProperties, 'average Latency');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should match property by label when filtering text has trailing space', () => {
-    const property = matchFilteringProperty(filteringProperties, 'Averange latency ');
+    const property = matchFilteringProperty(filteringProperties, 'Average latency ');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should match property by label when filtering text has trailing symbol', () => {
-    const property = matchFilteringProperty(filteringProperties, 'Averange latencyX');
+    const property = matchFilteringProperty(filteringProperties, 'Average latencyX');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should not match property by label when filtering text has leading space', () => {
-    const property = matchFilteringProperty(filteringProperties, ' Averange latency');
+    const property = matchFilteringProperty(filteringProperties, ' Average latency');
     expect(property).toBe(null);
   });
   test('should prefer an exact match to non-exact', () => {
-    const properties: FilteringProperty[] = [
+    const properties = toInternalProperties([
       { key: 'Test', propertyLabel: 'Test', groupValuesLabel: '' },
       { key: 'test', propertyLabel: 'test', groupValuesLabel: '' },
-    ];
+    ]);
     const property = matchFilteringProperty(properties, 'test');
     expect(property).toBe(properties[1]);
   });
   test('should prefer an exact match to non-exact (with operator)', () => {
-    const properties: FilteringProperty[] = [
+    const properties = toInternalProperties([
       { key: 'Test', propertyLabel: 'Test', groupValuesLabel: '' },
       { key: 'test', propertyLabel: 'test', groupValuesLabel: '' },
-    ];
+    ]);
     const property = matchFilteringProperty(properties, 'test =');
     expect(property).toBe(properties[1]);
   });
@@ -109,31 +110,45 @@ describe('matchOperatorPrefix', () => {
 describe('matchTokenValue', () => {
   test('should return token as-is if no match found', () => {
     const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(token, [{ propertyKey: 'key', value: 'two' }]);
+    const result = matchTokenValue(token, toInternalOptions([{ propertyKey: 'key', value: 'two' }]));
     expect(result.value).toBe('one');
   });
   test('should match by label', () => {
     const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(token, [
-      { propertyKey: 'key', label: 'one', value: '1' },
-      { propertyKey: 'key', value: 'two' },
-    ]);
+    const result = matchTokenValue(
+      token,
+      toInternalOptions([
+        { propertyKey: 'key', label: 'one', value: '1' },
+        { propertyKey: 'key', value: 'two' },
+      ])
+    );
     expect(result.value).toBe('1');
   });
   test('should case-insensitive match', () => {
     const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(token, [
-      { propertyKey: 'key', value: 'One' },
-      { propertyKey: 'key', value: 'two' },
-    ]);
+    const result = matchTokenValue(
+      token,
+      toInternalOptions([
+        { propertyKey: 'key', value: 'One' },
+        { propertyKey: 'key', value: 'two' },
+      ])
+    );
     expect(result.value).toBe('One');
   });
   test('should prefer case-sensitive match', () => {
     const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(token, [
-      { propertyKey: 'key', value: 'One' },
-      { propertyKey: 'key', value: 'one' },
-    ]);
+    const result = matchTokenValue(
+      token,
+      toInternalOptions([
+        { propertyKey: 'key', value: 'One' },
+        { propertyKey: 'key', value: 'one' },
+      ])
+    );
     expect(result.value).toBe('one');
+  });
+  test('should return token as-is for a token value of type string[]', () => {
+    const token: Token = { propertyKey: 'key', operator: '=', value: ['one', 'two', 'three'] };
+    const result = matchTokenValue(token, toInternalOptions([{ propertyKey: 'key', value: 'one,two,three' }]));
+    expect(result.value).toEqual(['one', 'two', 'three']);
   });
 });

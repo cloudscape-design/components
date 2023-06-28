@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import SplitPanel from '~components/split-panel';
 import Header from '~components/header';
@@ -66,6 +66,9 @@ export default function () {
     sorting: {},
   });
 
+  const [splitPanelOpen, setSplitPanelOpen] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<Instance[]>([]);
+
   return (
     <>
       <AppLayout
@@ -74,6 +77,8 @@ export default function () {
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
         disableContentPaddings={true}
+        splitPanelOpen={splitPanelOpen}
+        onSplitPanelToggle={e => setSplitPanelOpen(e.detail.open)}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -104,6 +109,17 @@ export default function () {
               }
               columnDefinitions={columnsConfig}
               items={items}
+              selectionType="single"
+              selectedItems={selectedItems}
+              ariaLabels={{
+                itemSelectionLabel(data, row) {
+                  return `Select item ${row.id}`;
+                },
+              }}
+              onSelectionChange={e => {
+                setSelectedItems(e.detail.selectedItems);
+                setSplitPanelOpen(e.detail.selectedItems.length > 0);
+              }}
             />
           </>
         }

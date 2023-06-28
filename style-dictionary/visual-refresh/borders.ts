@@ -29,6 +29,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusControlCircularFocusRing: '4px',
   borderRadiusControlDefaultFocusRing: '4px',
   borderRadiusDropdown: '{borderRadiusItem}',
+  borderRadiusDropzone: '12px',
   borderRadiusFlashbar: '12px',
   borderRadiusItem: '8px',
   borderRadiusInput: '8px',

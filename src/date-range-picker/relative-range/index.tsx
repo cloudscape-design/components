@@ -11,13 +11,14 @@ import InternalRadioGroup from '../../radio-group/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import styles from './styles.css.js';
+import { useInternalI18n } from '../../internal/i18n/context';
 
 export interface RelativeRangePickerProps {
   dateOnly: boolean;
   options: ReadonlyArray<DateRangePickerProps.RelativeOption>;
   initialSelection: DateRangePickerProps.RelativeValue | null;
   onChange: (range: DateRangePickerProps.RelativeValue) => void;
-  i18nStrings: DateRangePickerProps.I18nStrings;
+  i18nStrings?: DateRangePickerProps.I18nStrings;
   isSingleGrid: boolean;
 }
 
@@ -39,14 +40,31 @@ export default function RelativeRangePicker({
   i18nStrings,
   isSingleGrid,
 }: RelativeRangePickerProps) {
+  const i18n = useInternalI18n('date-range-picker');
+  const formatRelativeRange = i18n(
+    'i18nStrings.formatRelativeRange',
+    i18nStrings?.formatRelativeRange,
+    format =>
+      ({ amount, unit }) =>
+        format({ amount, unit })
+  );
+  const formatUnit = i18n(
+    'i18nStrings.formatUnit',
+    i18nStrings?.formatUnit,
+    format => (unit, amount) => format({ amount, unit })
+  );
+
   const radioOptions: RadioGroupProps.RadioButtonDefinition[] = clientOptions.map(option => ({
     value: option.key,
-    label: i18nStrings.formatRelativeRange(option),
+    label: formatRelativeRange?.(option),
   }));
   radioOptions.push({
     value: CUSTOM_OPTION_SELECT_KEY,
-    label: i18nStrings.customRelativeRangeOptionLabel,
-    description: i18nStrings.customRelativeRangeOptionDescription,
+    label: i18n('i18nStrings.customRelativeRangeOptionLabel', i18nStrings?.customRelativeRangeOptionLabel),
+    description: i18n(
+      'i18nStrings.customRelativeRangeOptionDescription',
+      i18nStrings?.customRelativeRangeOptionDescription
+    ),
   });
 
   const [selectedRadio, setSelectedRadio] = useState(() => {
@@ -76,7 +94,9 @@ export default function RelativeRangePicker({
     <div>
       <InternalSpaceBetween size="xs" direction="vertical">
         {showRadioControl && (
-          <InternalFormField label={i18nStrings.relativeRangeSelectionHeading}>
+          <InternalFormField
+            label={i18n('i18nStrings.relativeRangeSelectionHeading', i18nStrings?.relativeRangeSelectionHeading)}
+          >
             <InternalRadioGroup
               className={styles['relative-range-radio-group']}
               onChange={({ detail }) => {
@@ -105,7 +125,10 @@ export default function RelativeRangePicker({
           <InternalSpaceBetween direction="vertical" size="xs">
             {!showRadioControl && (
               <InternalBox fontSize="body-m" color="text-body-secondary">
-                {i18nStrings.customRelativeRangeOptionDescription}
+                {i18n(
+                  'i18nStrings.customRelativeRangeOptionDescription',
+                  i18nStrings?.customRelativeRangeOptionDescription
+                )}
               </InternalBox>
             )}
 
@@ -120,7 +143,12 @@ export default function RelativeRangePicker({
                 })}
               >
                 <div className={styles['custom-range-duration']}>
-                  <InternalFormField label={i18nStrings.customRelativeRangeDurationLabel}>
+                  <InternalFormField
+                    label={i18n(
+                      'i18nStrings.customRelativeRangeDurationLabel',
+                      i18nStrings?.customRelativeRangeDurationLabel
+                    )}
+                  >
                     <InternalInput
                       type="number"
                       className={styles['custom-range-duration-input']}
@@ -131,20 +159,25 @@ export default function RelativeRangePicker({
                         setCustomDuration(amount);
                         onChangeRangeSize({ amount, unit: customUnitOfTime, type: 'relative' });
                       }}
-                      placeholder={i18nStrings.customRelativeRangeDurationPlaceholder}
+                      placeholder={i18n(
+                        'i18nStrings.customRelativeRangeDurationPlaceholder',
+                        i18nStrings?.customRelativeRangeDurationPlaceholder
+                      )}
                       __inheritFormFieldProps={true}
                     />
                   </InternalFormField>
                 </div>
 
                 <div className={styles['custom-range-unit']}>
-                  <InternalFormField label={i18nStrings.customRelativeRangeUnitLabel}>
+                  <InternalFormField
+                    label={i18n('i18nStrings.customRelativeRangeUnitLabel', i18nStrings?.customRelativeRangeUnitLabel)}
+                  >
                     <InternalSelect
                       className={styles['custom-range-unit-select']}
                       selectedOption={
                         {
                           value: customUnitOfTime,
-                          label: i18nStrings.formatUnit(customUnitOfTime, customDuration),
+                          label: formatUnit?.(customUnitOfTime, customDuration),
                         } as UnitSelectOption
                       }
                       onChange={e => {
@@ -155,7 +188,7 @@ export default function RelativeRangePicker({
                       }}
                       options={(dateOnly ? dayUnits : units).map(unit => ({
                         value: unit,
-                        label: i18nStrings.formatUnit(unit, customDuration),
+                        label: formatUnit?.(unit, customDuration),
                       }))}
                       renderHighlightedAriaLive={option => option.label || option.value || ''}
                     />

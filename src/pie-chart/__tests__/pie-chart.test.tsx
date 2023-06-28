@@ -9,6 +9,7 @@ import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
 import styles from '../../../lib/components/pie-chart/styles.css.js';
 import * as colors from '../../../lib/design-tokens';
 import { act } from 'react-dom/test-utils';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 
 const variants: Array<PieChartProps<PieChartProps.Datum>['variant']> = ['pie', 'donut'];
 const sizes: Array<PieChartProps<PieChartProps.Datum>['size']> = ['small', 'medium', 'large'];
@@ -79,7 +80,7 @@ describe('Chart container', () => {
 });
 
 describe('i18nStrings', () => {
-  test('are applied', () => {
+  test('are applied directly', () => {
     const i18nStrings: PieChartProps.I18nStrings = {
       detailsValue: 'Value',
       detailsPercentage: 'Percentage',
@@ -122,6 +123,48 @@ describe('i18nStrings', () => {
     );
     expect(detailPopover?.getElement()).toHaveTextContent(i18nStrings.detailsValue!);
     expect(detailPopover?.getElement()).toHaveTextContent(i18nStrings.detailsPercentage!);
+  });
+
+  test('are applied from i18n provider', () => {
+    const { wrapper } = renderPieChart(
+      <TestI18nProvider
+        messages={{
+          '[charts]': {
+            'i18nStrings.filterLabel': 'Custom filter label',
+            'i18nStrings.filterPlaceholder': 'Custom filter placeholder',
+            'i18nStrings.legendAriaLabel': 'Custom legend',
+            'i18nStrings.chartAriaRoleDescription': 'Custom chart',
+          },
+          'pie-chart': {
+            'i18nStrings.detailsValue': 'Custom value',
+            'i18nStrings.detailsPercentage': 'Custom percentage',
+            'i18nStrings.segmentAriaRoleDescription': 'Custom segment',
+          },
+        }}
+      >
+        <PieChart data={defaultData} />
+      </TestI18nProvider>
+    );
+
+    expect(wrapper.findChart()?.getElement()).toHaveAttribute('aria-roledescription', 'Custom chart');
+    expect(wrapper.findSegments()[0].getElement()).toHaveAttribute('aria-roledescription', 'Custom segment');
+
+    expect(wrapper.findFilterContainer()!.findFormField()?.findLabel()?.getElement()).toHaveTextContent(
+      'Custom filter label'
+    );
+    expect(wrapper.findFilterContainer()!.findMultiselect()?.findTrigger()?.getElement()).toHaveTextContent(
+      'Custom filter placeholder'
+    );
+
+    expect(wrapper.findLegend()!.getElement()).toHaveAttribute('aria-label', 'Custom legend');
+
+    // Open and pin one popover
+    wrapper.findApplication()!.focus();
+    wrapper.findApplication()!.keydown(KeyCode.enter);
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover!.getElement()).toHaveTextContent('Custom value');
+    expect(detailPopover!.getElement()).toHaveTextContent('Custom percentage');
   });
 });
 
@@ -183,9 +226,9 @@ describe('Filter container', () => {
     expect(wrapper.findDefaultFilter()).not.toBeNull();
   });
 
-  test('is rendered when hideFilter is set but does not contain the default filter', () => {
+  test('is not rendered when hideFilter is set', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} hideFilter={true} />);
-    expect(wrapper.findFilterContainer()).not.toBeNull();
+    expect(wrapper.findFilterContainer()).toBeNull();
     expect(wrapper.findDefaultFilter()).toBeNull();
   });
 
@@ -290,7 +333,9 @@ describe('States', () => {
   });
 
   test('error state is shown when error occurred', () => {
-    const { wrapper } = renderPieChart(<PieChart {...stateProps} data={[]} statusType="error" />);
+    const { wrapper } = renderPieChart(
+      <PieChart {...stateProps} data={[]} statusType="error" onRecoveryClick={() => {}} />
+    );
     expect(wrapper.findStatusContainer()?.getElement()).toHaveTextContent('Error');
     expect(wrapper.findStatusContainer()?.getElement()).toHaveTextContent('Recover');
   });
@@ -562,6 +607,16 @@ describe('Details popover', () => {
     expect(detailPopover?.findContent()?.getElement()).toHaveTextContent('My value');
     expect(detailPopover?.findContent()?.getElement()).toHaveTextContent('Custom');
     expect(detailPopover?.findContent()?.getElement()).toHaveTextContent('Static content');
+  });
+
+  test('can contain custom content in the footer', () => {
+    const { wrapper } = renderPieChart(
+      <PieChart data={defaultData} detailPopoverFooter={segment => <span>Details about {segment.title}</span>} />
+    );
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findContent()?.getElement()).toHaveTextContent(`Details about ${defaultData[0].title}`);
   });
 });
 

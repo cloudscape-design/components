@@ -22,7 +22,9 @@ export interface TabsProps extends BaseComponentProps {
   /**
    * The possible visual variants of tabs are the following:
    * * `default` - Use in any context.
-   * * `container` - A variant with borders, for use alongside other containers.
+   * * `container` - Use this variant to have the tabs displayed within a container header.
+   * * `stacked` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+   * @visualrefresh `stacked` variant
    */
   variant?: TabsProps.Variant;
 
@@ -59,11 +61,12 @@ export interface TabsProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: TabsProps.I18nStrings;
 }
 export namespace TabsProps {
-  export type Variant = 'default' | 'container';
+  export type Variant = 'default' | 'container' | 'stacked';
 
   export interface Tab {
     /**
@@ -107,10 +110,10 @@ export namespace TabsProps {
     /**
      * ARIA label for the scroll left button that appears when the tab header is wider than the container.
      */
-    scrollLeftAriaLabel: string;
+    scrollLeftAriaLabel?: string;
     /**
      * ARIA label for the scroll right button that appears when the tab header is wider than the container.
      */
-    scrollRightAriaLabel: string;
+    scrollRightAriaLabel?: string;
   }
 }

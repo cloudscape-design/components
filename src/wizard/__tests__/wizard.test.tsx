@@ -1,12 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
+import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
+
+import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
 declare global {
   interface Window {
@@ -14,46 +18,6 @@ declare global {
     panorama?: any;
   }
 }
-
-const DEFAULT_I18N_SETS = [
-  {
-    stepNumberLabel: stepNumber => `Step ${stepNumber}`,
-    collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
-    skipToButtonLabel: (step: WizardProps.Step, stepNumber) => `Skip to ${step.title}(${stepNumber})`,
-    navigationAriaLabel: 'Steps',
-    cancelButton: 'Cancel',
-    previousButton: 'Previous',
-    nextButton: 'Next',
-    submitButton: 'Create record',
-    optional: 'optional',
-  },
-  {
-    stepNumberLabel: stepNumber => `第 ${stepNumber} 步`,
-    collapsedStepsLabel: (stepNumber, stepsCount) => `第 ${stepNumber} 步 / 共 ${stepsCount} 步`,
-    navigationAriaLabel: 'Steps',
-    cancelButton: '取消',
-    previousButton: '上一步',
-    nextButton: '下一步',
-    submitButton: '提交',
-    optional: '視需要',
-  },
-] as ReadonlyArray<WizardProps.I18nStrings>;
-
-const DEFAULT_STEPS = [
-  {
-    title: 'Step 1',
-    content: 'Content 1',
-  },
-  {
-    title: 'Step 2',
-    content: 'Content 2',
-    isOptional: true,
-  },
-  {
-    title: 'Step 3',
-    content: 'Content 3',
-  },
-] as ReadonlyArray<WizardProps.Step>;
 
 const renderWizard = (wizardProps: WizardProps): [WizardWrapper, (props: WizardProps) => void] => {
   const { container, rerender } = render(<Wizard {...wizardProps} />);
@@ -94,19 +58,19 @@ describe('i18nStrings', () => {
       );
 
       wrapper.findAllByClassName(styles['navigation-link-label']).forEach((label, index) => {
-        const expectedTitle = i18nStrings.stepNumberLabel(index + 1);
+        const expectedTitle = i18nStrings.stepNumberLabel!(index + 1);
         const expectedLabel = DEFAULT_STEPS[index].isOptional
           ? `${expectedTitle} - ${i18nStrings.optional}`
           : expectedTitle;
         expect(label?.getElement()).toHaveTextContent(expectedLabel);
       });
 
-      expect(wrapper.findCancelButton().getElement()).toHaveTextContent(i18nStrings.cancelButton);
-      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.nextButton);
+      expect(wrapper.findCancelButton().getElement()).toHaveTextContent(i18nStrings.cancelButton!);
+      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.nextButton!);
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
-      const expectedCollapsedSteps = `${i18nStrings.collapsedStepsLabel(2, DEFAULT_STEPS.length)}`;
+      const expectedCollapsedSteps = `${i18nStrings.collapsedStepsLabel!(2, DEFAULT_STEPS.length)}`;
       expect(wrapper.findByClassName(styles['collapsed-steps'])!.getElement()).toHaveTextContent(
         expectedCollapsedSteps
       );
@@ -114,7 +78,7 @@ describe('i18nStrings', () => {
       const expectedFormTitle = `${DEFAULT_STEPS[1].title} - ${i18nStrings.optional}`;
       expect(wrapper.findHeader()!.getElement()).toHaveTextContent(expectedFormTitle);
 
-      expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent(i18nStrings.previousButton);
+      expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent(i18nStrings.previousButton!);
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
@@ -250,7 +214,7 @@ describe('Primary button', () => {
     const [wrapper] = renderDefaultWizard();
     DEFAULT_STEPS.forEach((step, index) => {
       if (index < DEFAULT_STEPS.length - 1) {
-        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton);
+        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
       } else {
         expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton);
       }
@@ -503,12 +467,17 @@ test('disables all navigation while a step is loading', () => {
   expect(wrapper.findPreviousButton()!.getElement()).toBeDisabled();
   expect(wrapper.findSkipToButton()!.getElement()).toBeDisabled();
   expect(wrapper.findCancelButton()!.getElement()).toBeEnabled();
-  expect(wrapper.findPrimaryButton()!.getElement()).toBeDisabled();
+  expect(wrapper.findPrimaryButton()!.getElement()).toHaveAttribute('aria-disabled', 'true');
 
   expect(wrapper.findMenuNavigationLink(1, 'disabled')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(2, 'active')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(3, 'disabled')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(4, 'disabled')).not.toBeNull();
+
+  // check for screen reader announcement
+  expect(wrapper.findActions()?.findByClassName(liveRegionStyles.root)?.getElement()).toHaveTextContent(
+    DEFAULT_I18N_SETS[0].nextButtonLoadingAnnouncement!
+  );
 
   rerender({ ...props, isLoadingNextStep: false });
 
@@ -533,170 +502,43 @@ describe('Custom actions', () => {
   });
 });
 
-describe('Metrics', () => {
-  beforeEach(() => {
-    window.panorama = () => {};
-    jest.spyOn(window, 'panorama');
-  });
-
-  test('sets the funnel to the wizard id if provided', () => {
-    renderDefaultWizard({ id: 'wizard-id' });
-    expect(window.panorama).toBeCalledTimes(1);
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step1',
-        eventDetail: 'step1',
-        eventType: 'csa_wizard_step',
-        timestamp: expect.any(Number),
-        funnel: 'wizard-id',
-      })
+describe('i18n', () => {
+  test('supports rendering static strings using i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          wizard: {
+            'i18nStrings.stepNumberLabel': 'Custom step {stepNumber}',
+            'i18nStrings.collapsedStepsLabel': 'Custom step {stepNumber} of {stepsCount}',
+            'i18nStrings.skipToButtonLabel': 'Custom skip to {task__title}',
+            'i18nStrings.navigationAriaLabel': 'Custom steps',
+            'i18nStrings.cancelButton': 'Custom cancel',
+            'i18nStrings.previousButton': 'Custom previous',
+            'i18nStrings.nextButton': 'Custom next',
+            'i18nStrings.optional': 'Custom optional',
+          },
+        }}
+      >
+        <Wizard
+          i18nStrings={{ submitButton: 'Create instance' }}
+          allowSkipTo={true}
+          steps={[
+            { title: 'Step 1', content: 'Content 1', isOptional: true },
+            { title: 'Step 2', content: 'Content 2', isOptional: true },
+            { title: 'Step 3', content: 'Content 3', isOptional: true },
+          ]}
+        />
+      </TestI18nProvider>
     );
-  });
-
-  test('sends a startStep step metric on initial render', () => {
-    renderDefaultWizard();
-    expect(window.panorama).toBeCalledTimes(1);
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step1',
-        eventDetail: 'step1',
-        eventType: 'csa_wizard_step',
-        timestamp: expect.any(Number),
-      })
+    const wrapper = createWrapper(container).findWizard()!;
+    expect(wrapper.find('li:nth-child(1)')!.getElement()).toHaveTextContent(
+      'Custom step 1 - Custom optional' + 'Step 1'
     );
-  });
-
-  test('does not send multiple startStep metrics on rerenders', () => {
-    const [, rerender] = renderDefaultWizard();
-    rerender({});
-    expect(window.panorama).toBeCalledTimes(1);
-  });
-
-  test('sends a startStep metric when navigating to a new step when navigating between steps using the primary button', () => {
-    const [wrapper] = renderDefaultWizard();
-    act(() => wrapper.findPrimaryButton().click());
-
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step2',
-        eventDetail: 'step2',
-        eventType: 'csa_wizard_step',
-        timestamp: expect.any(Number),
-      })
-    );
-  });
-
-  test('sends a startStep metric when navigating to previous step using the primary button', () => {
-    const [wrapper] = renderDefaultWizard();
-    act(() => wrapper.findPrimaryButton().click());
-
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step2',
-        eventDetail: 'step2',
-        eventType: 'csa_wizard_step',
-        timestamp: expect.any(Number),
-      })
-    );
-
-    act(() => wrapper.findPreviousButton()!.click());
-
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step1',
-        eventDetail: 'step1',
-        eventType: 'csa_wizard_step',
-        timestamp: expect.any(Number),
-      })
-    );
-  });
-
-  test('sends a startStep metric when navigating to a new step when navigating with the navigation', () => {
-    const [wrapper] = renderDefaultWizard({
-      steps: [
-        { title: 'Step 1', isOptional: true, content: 'content 1' },
-        { title: 'Step 2', isOptional: true, content: 'content 2' },
-        { title: 'Step 3', isOptional: true, content: 'content 3' },
-      ],
-      allowSkipTo: true,
-    });
-    act(() => wrapper.findMenuNavigationLink(2)!.click());
-
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step2',
-        eventDetail: 'step2',
-        eventType: 'csa_wizard_step',
-        timestamp: expect.any(Number),
-      })
-    );
-  });
-
-  test('sends a navigate metric when navigating between steps using the primary button', () => {
-    const [wrapper] = renderDefaultWizard();
-    act(() => wrapper.findPrimaryButton().click());
-    expect(window.panorama).toBeCalledTimes(3); // start step 1, navigate, start step 2
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step1',
-        eventDetail: 'step2',
-        eventType: 'csa_wizard_navigate',
-        timestamp: expect.any(Number),
-      })
-    );
-  });
-
-  test('sends a startStep metric when navigating to a new step when navigating with the navigation', () => {
-    const [wrapper] = renderDefaultWizard({
-      steps: [
-        { title: 'Step 1', isOptional: true, content: 'content 1' },
-        { title: 'Step 2', isOptional: true, content: 'content 2' },
-        { title: 'Step 3', isOptional: true, content: 'content 3' },
-      ],
-      allowSkipTo: true,
-    });
-    act(() => wrapper.findMenuNavigationLink(2)!.click());
-
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step1',
-        eventDetail: 'step2',
-        eventType: 'csa_wizard_navigate',
-        timestamp: expect.any(Number),
-      })
-    );
-  });
-
-  test('sends a submit metric using the submit button', () => {
-    const [wrapper] = renderDefaultWizard({
-      steps: [
-        { title: 'Step 1', content: 'content 1' },
-        { title: 'Step 2', content: 'content 2' },
-      ],
-    });
-
-    act(() => wrapper.findPrimaryButton().click()); // Move to step 2
-
-    window.panorama?.mockClear(); // clear previous events
-    act(() => wrapper.findPrimaryButton().click()); // Submit
-
-    expect(window.panorama).toBeCalledTimes(1);
-    expect(window.panorama).toHaveBeenCalledWith(
-      'trackCustomEvent',
-      expect.objectContaining({
-        eventContext: 'csa_wizard_step2',
-        eventDetail: 'step2',
-        eventType: 'csa_wizard_submit',
-        timestamp: expect.any(Number),
-      })
-    );
+    expect(wrapper.getElement()).toHaveTextContent('Custom step 1 of 3');
+    expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Custom cancel');
+    expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Custom next');
+    expect(wrapper.findSkipToButton()!.getElement()).toHaveTextContent('Custom skip to Step 3');
+    wrapper.findPrimaryButton().click();
+    expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent('Custom previous');
   });
 });

@@ -106,6 +106,16 @@ $modal-z-index: 5000;
 .footer {
   @include container.divider;
   padding: container.$footer-padding;
+  background-color: awsui.$color-background-container-content;
+
+  // Make sure that the footer is always visible
+  position: sticky;
+  bottom: 0;
+  z-index: 800;
+
+  &--stuck {
+    border-radius: 0 0 awsui.$border-radius-container awsui.$border-radius-container;
+  }
 
   &:after {
     content: '';

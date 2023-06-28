@@ -38,7 +38,7 @@ const permutations = createPermutations<TabsProps>([
     ],
   },
   {
-    variant: ['default', 'container'],
+    variant: ['default', 'container', 'stacked'],
     tabs: [
       ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eight'].map(id => ({
         label: `${id} tab`,

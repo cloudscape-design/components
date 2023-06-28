@@ -3,21 +3,21 @@
 import React from 'react';
 import {
   ComparisonOperator,
-  FilteringOption,
-  FilteringProperty,
   GroupText,
   I18nStrings,
+  InternalFilteringOption,
+  InternalFilteringProperty,
   JoinOperation,
   LoadItemsDetail,
   Token,
 } from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
-import { getExtendedOperator, getPropertyByKey } from './controller';
 
 import FilteringToken from '../internal/components/filtering-token';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { getFormattedToken } from './utils';
 
 interface TokenProps {
   asyncProperties?: boolean;
@@ -26,8 +26,8 @@ interface TokenProps {
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
-  filteringOptions: readonly FilteringOption[];
-  filteringProperties: readonly FilteringProperty[];
+  filteringOptions: readonly InternalFilteringOption[];
+  filteringProperties: readonly InternalFilteringProperty[];
   first?: boolean;
   hideOperations?: boolean;
   i18nStrings: I18nStrings;
@@ -58,18 +58,15 @@ export const TokenButton = ({
   disableFreeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const valueFormatter =
-    token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
-  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
-  const propertyLabel = property && property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const formattedToken = getFormattedToken(filteringProperties, token);
   return (
     <FilteringToken
+      ariaLabel={formattedToken.label}
       showOperation={!first && !hideOperations}
       operation={operation}
-      andText={i18nStrings.operationAndText}
-      orText={i18nStrings.operationOrText}
-      dismissAriaLabel={i18nStrings.removeTokenButtonAriaLabel(token)}
+      andText={i18nStrings.operationAndText ?? ''}
+      orText={i18nStrings.operationOrText ?? ''}
+      dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(token)}
       operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
       onChange={setOperation}
       onDismiss={removeToken}
@@ -79,7 +76,7 @@ export const TokenButton = ({
         setToken={setToken}
         triggerComponent={
           <span className={styles['token-trigger']}>
-            <TokenTrigger property={propertyLabel} operator={token.operator} value={tokenValue} />
+            <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
           </span>
         }
         filteringOptions={filteringOptions}

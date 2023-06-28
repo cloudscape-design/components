@@ -3,11 +3,11 @@
 import clsx from 'clsx';
 import React, { useRef, memo } from 'react';
 
-import useFocusVisible from '../../hooks/focus-visible';
 import InternalBox from '../../../box/internal';
 import { KeyCode } from '../../keycode';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import styles from './styles.css.js';
+import { useInternalI18n } from '../../i18n/context';
 
 export interface ChartLegendItem<T> {
   label: string;
@@ -35,7 +35,7 @@ function ChartLegend<T>({
   ariaLabel,
   plotContainerRef,
 }: ChartLegendProps<T>) {
-  const focusVisible = useFocusVisible();
+  const i18n = useInternalI18n('[charts]');
   const containerRef = useRef<HTMLDivElement>(null);
   const segmentsRef = useRef<Record<number, HTMLElement>>([]);
 
@@ -106,7 +106,7 @@ function ChartLegend<T>({
       <div
         ref={containerRef}
         role="toolbar"
-        aria-label={legendTitle || ariaLabel}
+        aria-label={legendTitle || i18n('i18nStrings.legendAriaLabel', ariaLabel)}
         className={styles.root}
         onKeyDown={handleKeyPress}
         onBlur={handleBlur}
@@ -124,7 +124,6 @@ function ChartLegend<T>({
             const isDimmed = someHighlighted && !isHighlighted;
             return (
               <div
-                {...focusVisible}
                 role="button"
                 key={index}
                 aria-pressed={isHighlighted}

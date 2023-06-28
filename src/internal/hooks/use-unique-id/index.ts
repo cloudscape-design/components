@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 let counter = 0;
-export function generateUniqueId(prefix?: string) {
-  return `${prefix ? prefix : ''}${counter++}-${Date.now()}-${Math.round(Math.random() * 10000)}`;
-}
-
-export function useUniqueId(prefix?: string) {
+const useIdFallback = () => {
   const idRef = useRef<string | null>(null);
   if (!idRef.current) {
-    idRef.current = generateUniqueId(prefix);
+    idRef.current = `${counter++}-${Date.now()}-${Math.round(Math.random() * 10000)}`;
   }
   return idRef.current;
+};
+
+const useId: typeof useIdFallback = (React as any).useId ?? useIdFallback;
+
+export function useUniqueId(prefix?: string) {
+  return `${prefix ? prefix : ''}` + useId();
 }

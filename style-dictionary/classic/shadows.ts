@@ -35,6 +35,14 @@ const tokens: StyleDictionary.ShadowsDictionary = {
   shadowSplitSide: '{shadowContainer}',
   shadowSticky: { light: '0px 1px 4px -2px rgba(0, 28, 36, 0.5)', dark: '0px 1px 4px -2px rgba(0, 0, 0, 0.5)' },
   shadowStickyEmbedded: '{shadowSticky}',
+  shadowStickyColumnFirst: {
+    light: '4px 0 8px 0 rgba(0, 28, 36, 0.1)',
+    dark: '4px 0 8px 0 rgba(0, 0, 0, 0.5)',
+  },
+  shadowStickyColumnLast: {
+    light: '-4px 0 8px 0 rgba(0, 28, 36, 0.1)',
+    dark: '-4px 0 8px 0 rgba(0, 0, 0, 0.5)',
+  },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(

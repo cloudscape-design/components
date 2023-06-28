@@ -5,7 +5,6 @@ import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
 import InternalIcon from '../../icon/internal';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import useFocusVisible from '../../internal/hooks/focus-visible';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { getEventDetail } from '../internal';
 import { Transition } from '../../internal/components/transition';
@@ -13,6 +12,8 @@ import PopoverContainer from '../../popover/container';
 import PopoverBody from '../../popover/body';
 import Portal from '../../internal/components/portal';
 import popoverStyles from '../../popover/styles.css.js';
+import { DATA_ATTR_FUNNEL_KEY } from '../../internal/analytics/selectors';
+import { FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
   item: T;
@@ -26,7 +27,6 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   anchorAttributes,
   ...itemAttributes
 }: BreadcrumbItemWithPopoverProps<T>) => {
-  const focusVisible = useFocusVisible();
   const [showPopover, setShowPopover] = useState(false);
   const textRef = useRef<HTMLElement>(null);
   const virtualTextRef = useRef<HTMLElement>(null);
@@ -97,7 +97,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
           isTruncated(textRef, virtualTextRef) && setShowPopover(true);
         }}
         onMouseLeave={() => setShowPopover(false)}
-        anchorAttributes={{ ...focusVisible, ...anchorAttributes }}
+        anchorAttributes={anchorAttributes}
       >
         <span className={styles.text} ref={textRef}>
           {item.text}
@@ -112,14 +112,17 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
 };
 
 type ItemProps = React.HTMLAttributes<HTMLElement> & {
+  dataAttributes?: React.DataHTMLAttributes<HTMLElement>;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
   isLast: boolean;
 };
-const Item = ({ anchorAttributes, children, isLast, ...itemAttributes }: ItemProps) =>
+const Item = ({ anchorAttributes, dataAttributes, children, isLast, ...itemAttributes }: ItemProps) =>
   isLast ? (
-    <span {...itemAttributes}>{children}</span>
+    <span {...itemAttributes} {...dataAttributes}>
+      {children}
+    </span>
   ) : (
-    <a {...itemAttributes} {...anchorAttributes}>
+    <a {...itemAttributes} {...anchorAttributes} {...dataAttributes}>
       {children}
     </a>
   );
@@ -132,7 +135,6 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   isLast = false,
   isCompressed = false,
 }: BreadcrumbItemProps<T>) {
-  const focusVisible = useFocusVisible();
   const preventDefault = (event: React.MouseEvent) => event.preventDefault();
   const onClickHandler = (event: React.MouseEvent) => {
     if (isPlainLeftClick(event)) {
@@ -149,27 +151,30 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     onClick: isLast ? preventDefault : onClickHandler,
   };
 
+  const dataAttibutes: Record<string, string> = {};
+  if (isLast) {
+    dataAttibutes[DATA_ATTR_FUNNEL_KEY] = FUNNEL_KEY_FUNNEL_NAME;
+  }
+
   return (
-    <>
-      <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
-        {isDisplayed && isCompressed ? (
-          <BreadcrumbItemWithPopover
-            item={item}
-            isLast={isLast}
-            anchorAttributes={anchorAttributes}
-            {...itemAttributes}
-          />
-        ) : (
-          <Item isLast={isLast} anchorAttributes={{ ...anchorAttributes, ...focusVisible }} {...itemAttributes}>
-            <span className={styles.text}>{item.text}</span>
-          </Item>
-        )}
-        {!isLast ? (
-          <span className={styles.icon}>
-            <InternalIcon name="angle-right" />
-          </span>
-        ) : null}
-      </div>
-    </>
+    <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
+      {isDisplayed && isCompressed ? (
+        <BreadcrumbItemWithPopover
+          item={item}
+          isLast={isLast}
+          anchorAttributes={anchorAttributes}
+          {...itemAttributes}
+        />
+      ) : (
+        <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes} {...dataAttibutes}>
+          <span className={styles.text}>{item.text}</span>
+        </Item>
+      )}
+      {!isLast ? (
+        <span className={styles.icon}>
+          <InternalIcon name="angle-right" />
+        </span>
+      ) : null}
+    </div>
   );
 }

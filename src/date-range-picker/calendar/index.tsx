@@ -20,6 +20,7 @@ import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay } from './utils';
+import { useInternalI18n } from '../../internal/i18n/context.js';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
   value: DateRangePickerProps.PendingAbsoluteValue;
@@ -27,7 +28,7 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   locale?: string;
   startOfWeek?: number;
   isDateEnabled?: (date: Date) => boolean;
-  i18nStrings: RangeCalendarI18nStrings;
+  i18nStrings?: RangeCalendarI18nStrings;
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
@@ -47,6 +48,7 @@ export default function DateRangePickerCalendar({
   const isSingleGrid = useMobile();
   const normalizedLocale = normalizeLocale('DateRangePicker', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
+  const i18n = useInternalI18n('date-range-picker');
 
   const [announcement, setAnnouncement] = useState('');
   const [currentMonth, setCurrentMonth] = useState(() => findMonthToDisplay(value, isSingleGrid));
@@ -74,11 +76,11 @@ export default function DateRangePickerCalendar({
   // because the user is not aware of the fact that a start/end time is also set as soon as they select a date
   const announceStart = (startDate: Date) => {
     return (
-      i18nStrings.startDateLabel +
+      i18n('i18nStrings.startDateLabel', i18nStrings?.startDateLabel) +
       ', ' +
       getDateLabel(normalizedLocale, startDate) +
       ', ' +
-      i18nStrings.startTimeLabel +
+      i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel) +
       ', ' +
       renderTimeLabel(normalizedLocale, startDate, timeInputFormat) +
       '. '
@@ -87,22 +89,28 @@ export default function DateRangePickerCalendar({
 
   const announceEnd = (endDate: Date) => {
     return (
-      i18nStrings.endDateLabel +
+      i18n('i18nStrings.endDateLabel', i18nStrings?.endDateLabel) +
       ', ' +
       getDateLabel(normalizedLocale, endDate) +
       ', ' +
-      i18nStrings.endTimeLabel +
+      i18n('i18nStrings.endTimeLabel', i18nStrings?.endTimeLabel) +
       ', ' +
       renderTimeLabel(normalizedLocale, endDate, timeInputFormat) +
       '. '
     );
   };
 
+  const renderSelectedAbsoluteRangeAriaLive = i18n(
+    'i18nStrings.renderSelectedAbsoluteRangeAriaLive',
+    i18nStrings?.renderSelectedAbsoluteRangeAriaLive,
+    format => (startDate, endDate) => format({ startDate, endDate })
+  );
+
   const announceRange = (startDate: Date, endDate: Date) => {
-    if (!i18nStrings.renderSelectedAbsoluteRangeAriaLive) {
+    if (!renderSelectedAbsoluteRangeAriaLive) {
       return `${getDateLabel(normalizedLocale, startDate)} – ${getDateLabel(normalizedLocale, endDate)}`;
     }
-    return i18nStrings.renderSelectedAbsoluteRangeAriaLive(
+    return renderSelectedAbsoluteRangeAriaLive(
       getDateLabel(normalizedLocale, startDate),
       getDateLabel(normalizedLocale, endDate)
     );
@@ -217,8 +225,8 @@ export default function DateRangePickerCalendar({
               baseDate={currentMonth}
               locale={normalizedLocale}
               onChangeMonth={onHeaderChangeMonthHandler}
-              previousMonthLabel={i18nStrings.previousMonthAriaLabel}
-              nextMonthLabel={i18nStrings.nextMonthAriaLabel}
+              previousMonthLabel={i18nStrings?.previousMonthAriaLabel}
+              nextMonthLabel={i18nStrings?.nextMonthAriaLabel}
               isSingleGrid={isSingleGrid}
               headingIdPrefix={headingIdPrefix}
             />
@@ -233,7 +241,7 @@ export default function DateRangePickerCalendar({
               onSelectDate={onSelectDateHandler}
               onChangeMonth={setCurrentMonth}
               startOfWeek={normalizedStartOfWeek}
-              todayAriaLabel={i18nStrings.todayAriaLabel}
+              todayAriaLabel={i18nStrings?.todayAriaLabel}
               selectedStartDate={parseDate(value.start.date, true)}
               selectedEndDate={parseDate(value.end.date, true)}
               headingIdPrefix={headingIdPrefix}

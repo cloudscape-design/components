@@ -15,6 +15,7 @@ const scenarios = findAllPages()
   .map(pageName => ({
     label: pageName,
     url: `http://localhost:8080/#/light/${pageName}`,
+    delay: 1000,
   }));
 
 module.exports = {
@@ -45,7 +46,7 @@ module.exports = {
     args: ['--no-sandbox', '--disable-gpu', '--headless', '--force-prefers-reduced-motion'],
   },
   asyncCaptureLimit: 5,
-  asyncCompareLimit: 50,
+  asyncCompareLimit: 5,
   resembleOutputOptions: {
     ignoreAntialiasing: true,
   },

@@ -17,10 +17,6 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
 
   @usesDom
   isDisabled(): boolean {
-    if (this.element.tagName === 'A') {
-      return this.element.getAttribute('aria-disabled') === 'true';
-    } else {
-      return this.element.disabled;
-    }
+    return this.element.disabled || this.element.getAttribute('aria-disabled') === 'true';
   }
 }
