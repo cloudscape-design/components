@@ -9659,6 +9659,13 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
       "type": "string",
     },
     Object {
+      "defaultValue": "100",
+      "description": "Specifies the maximum value of the progress when type ratio is selected.",
+      "name": "maxValue",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
       "description": "Specifies the text for the button that's displayed when the \`status\` is set to \`error\` or \`success\`.
 If \`resultButtonText\` is empty, the result button isn't displayed.
 Note: If you use the \`flash\` variant, the result button isn't displayed.
@@ -9685,6 +9692,21 @@ Add a button using the \`action\` property of the flashbar item instead.
         ],
       },
       "name": "status",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"percentage\\"",
+      "description": "Specifies the progress type.",
+      "inlineType": Object {
+        "name": "ProgressBarProps.ContentType",
+        "type": "union",
+        "values": Array [
+          "percentage",
+          "ratio",
+        ],
+      },
+      "name": "type",
       "optional": true,
       "type": "string",
     },
