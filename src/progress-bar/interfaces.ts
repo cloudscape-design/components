@@ -10,9 +10,18 @@ export interface ProgressBarProps extends BaseComponentProps {
   value?: number;
 
   /**
-   * Indicates the maximum value of the progress bar. If this is set, progress bar shows the value and max as a ratio instead of as a percent.
+   * Specifies the progress type.
+   *
+   * @defaultValue 'percentage'
    */
-  max?: number;
+  type?: ProgressBarProps.ContentType;
+
+  /**
+   * Specifies the maximum value of the progress when type ratio is selected.
+   *
+   * @defaultValue 100
+   */
+  maxValue?: number;
 
   /**
    * Specifies the status of the progress bar. You can set it to one of the following:
