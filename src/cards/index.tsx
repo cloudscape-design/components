@@ -139,6 +139,9 @@ const Cards = React.forwardRef(function <T = any>(
             </div>
           )
         }
+        footer={
+          variant === 'full-page' && !!pagination && <div className={styles['footer-pagination']}>{pagination}</div>
+        }
         disableContentPaddings={true}
         disableHeaderPaddings={computedVariant === 'full-page'}
         variant={computedVariant === 'container' ? 'cards' : computedVariant}
@@ -147,6 +150,7 @@ const Cards = React.forwardRef(function <T = any>(
         __headerRef={headerRef}
         __headerId={cardsHeaderId}
         __darkHeader={computedVariant === 'full-page'}
+        __disableFooterDivider={true}
       >
         <div className={clsx(hasToolsHeader && styles['has-header'])}>
           {!!renderAriaLive && !!firstIndex && (

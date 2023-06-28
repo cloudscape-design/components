@@ -153,7 +153,8 @@ const InternalTable = React.forwardRef(
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
-    const hasFooter = !!footer;
+    const hasFooterPagination = variant === 'full-page' && !!pagination;
+    const hasFooter = !!footer || hasFooterPagination;
 
     const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
     const visibleColumnIdsWithSelection: PropertyKey[] = [];
@@ -228,7 +229,6 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
-
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -278,11 +278,14 @@ const InternalTable = React.forwardRef(
           __disableFooterDivider={true}
           __disableStickyMobile={false}
           footer={
-            footer && (
+            hasFooter ? (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                <div className={styles.footer}>{footer}</div>
+                <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
+                  {footer && <span>{footer}</span>}
+                  {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+                </div>
               </div>
-            )
+            ) : null
           }
           __stickyHeader={stickyHeader}
           __mobileStickyOffset={toolsHeaderHeight}
