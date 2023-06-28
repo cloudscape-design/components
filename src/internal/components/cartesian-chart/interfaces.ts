@@ -85,6 +85,11 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
   detailPopoverSize?: 'small' | 'medium' | 'large';
 
   /**
+   * Additional content that is displayed at the bottom of the detail popover.
+   */
+  detailPopoverFooter?: CartesianChartProps.DetailPopoverFooter<T>;
+
+  /**
    * When set to `true`, the legend beneath the chart is not displayed.
    * It is highly recommended to keep this set to `false`.
    */
@@ -188,6 +193,10 @@ export namespace CartesianChartProps {
 
   export interface ValueFormatter<YType, XType = null> {
     (yValue: YType, xValue: XType): string;
+  }
+
+  export interface DetailPopoverFooter<T> {
+    (xValue: T): React.ReactNode;
   }
 
   export interface I18nStrings<T> {

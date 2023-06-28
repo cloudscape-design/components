@@ -723,6 +723,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -1858,6 +1875,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -6193,7 +6227,7 @@ If \`stackItems\` is set to \`true\`, it should also contain:
 * \`warningIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`warning\`.
 * \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
 * \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
-* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).",
+* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`in-progress\` or with \`loading\` set to \`true\`.",
       "i18nTag": true,
       "inlineType": Object {
         "name": "FlashbarProps.I18nStrings",
@@ -7441,6 +7475,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -7984,6 +8035,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -9142,6 +9210,23 @@ Each pair has the following properties:
       "name": "detailPopoverContent",
       "optional": true,
       "type": "PieChartProps.DetailPopoverContentFunction<T>",
+    },
+    Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "PieChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "segment",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "PieChartProps.DetailPopoverFooter<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",

@@ -211,6 +211,18 @@ the default white background of the container component.
 
 .footer {
   padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
+  &-with-pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-s;
+  }
+  &-pagination {
+    // Align the footer pagination on the right
+    margin-left: auto;
+  }
 }
 
 .thead-active,

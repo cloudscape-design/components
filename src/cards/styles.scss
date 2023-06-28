@@ -127,3 +127,8 @@
 .section:last-child {
   padding: awsui.$space-xs 0 0 0;
 }
+
+.footer-pagination {
+  display: flex;
+  justify-content: end;
+}

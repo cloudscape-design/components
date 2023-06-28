@@ -960,6 +960,15 @@ describe('Details popover', () => {
     wrapper.findDefaultFilter()?.openDropdown();
     expect(wrapper.findByClassName(styles['series--dimmed'])).toBeNull();
   });
+
+  test('can contain custom content in the footer', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart {...barChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
+    );
+
+    wrapper.findApplication()!.focus();
+    expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
+  });
 });
 
 test('highlighted series are controllable', () => {
