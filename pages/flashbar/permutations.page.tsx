@@ -8,6 +8,7 @@ import Flashbar, { FlashbarProps } from '~components/flashbar';
 import Link from '~components/link';
 import Box from '~components/box';
 import Button from '~components/button';
+import ExpandableSection from '~components/expandable-section';
 
 const noop = () => void 0;
 
@@ -111,6 +112,14 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     buttonText: ['Go for it!'],
     header: ['header'],
     content: ['content'],
+  },
+  {
+    header: ['header'],
+    content: [
+      <ExpandableSection defaultExpanded={true} headerText="Details">
+        Expandable Section content
+      </ExpandableSection>,
+    ],
   },
 ]);
 /* eslint-enable react/jsx-key */
