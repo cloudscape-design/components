@@ -5,6 +5,7 @@ import React from 'react';
 import Grid from '~components/grid';
 import Box from '~components/box';
 import BarChart from '~components/bar-chart';
+import ButtonDropdown from '~components/button-dropdown';
 import ScreenshotArea from '../utils/screenshot-area';
 
 import {
@@ -16,7 +17,6 @@ import {
   barTimeData,
   barChartInstructions,
 } from '../mixed-line-bar-chart/common';
-import ButtonDropdown from '~components/button-dropdown';
 
 export default function () {
   return (
@@ -47,17 +47,15 @@ export default function () {
               ariaLabel="Bar chart"
               ariaDescription={barChartInstructions}
               detailPopoverFooter={() => (
-                <Box margin={{ top: 'm' }}>
-                  <ButtonDropdown
-                    items={[
-                      { id: '1', text: 'View' },
-                      { id: '2', text: 'Add to filter' },
-                    ]}
-                    expandToViewport={true}
-                  >
-                    Actions
-                  </ButtonDropdown>
-                </Box>
+                <ButtonDropdown
+                  items={[
+                    { id: '1', text: 'View' },
+                    { id: '2', text: 'Add to filter' },
+                  ]}
+                  expandToViewport={true}
+                >
+                  Actions
+                </ButtonDropdown>
               )}
             />
           </div>

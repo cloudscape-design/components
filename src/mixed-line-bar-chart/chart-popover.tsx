@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
 import ChartSeriesDetails from '../internal/components/chart-series-details';
+import InternalBox from '../box/internal';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -62,7 +63,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseLeave={onMouseLeave}
             >
               <ChartSeriesDetails details={highlightDetails.details} />
-              {footer}
+              {footer && <InternalBox margin={{ top: 's' }}>{footer}</InternalBox>}
             </ChartPopover>
           )}
         </div>

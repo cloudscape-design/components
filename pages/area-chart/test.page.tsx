@@ -5,12 +5,12 @@ import React, { useCallback, useState } from 'react';
 import { AreaChartProps } from '~components/area-chart';
 import { NonCancelableEventHandler } from '~components/internal/events';
 import SpaceBetween from '~components/space-between';
+import ButtonDropdown from '~components/button-dropdown';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
 import Example from './example';
 import { createLinearTimeLatencyProps, createLogXYProps } from './series';
-import { Box, ButtonDropdown } from '~components';
 
 const logXProps = createLogXYProps({ xLog: true });
 const linearLatencyProps = createLinearTimeLatencyProps();
@@ -49,17 +49,15 @@ export default function () {
             onHighlightChange={onHighlightChange}
             xDomain={xDomain}
             detailPopoverFooter={() => (
-              <Box margin={{ top: 'm' }}>
-                <ButtonDropdown
-                  items={[
-                    { id: '1', text: 'View' },
-                    { id: '2', text: 'Add to filter' },
-                  ]}
-                  expandToViewport={true}
-                >
-                  Actions
-                </ButtonDropdown>
-              </Box>
+              <ButtonDropdown
+                items={[
+                  { id: '1', text: 'View' },
+                  { id: '2', text: 'Add to filter' },
+                ]}
+                expandToViewport={true}
+              >
+                Actions
+              </ButtonDropdown>
             )}
           />
 

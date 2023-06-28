@@ -414,7 +414,9 @@ export default <T extends PieChartProps.Datum>({
               onMouseLeave={onPopoverLeave}
             >
               {tooltipContent}
-              {detailPopoverFooterContent}
+              {detailPopoverFooterContent && (
+                <InternalBox margin={{ top: 's' }}>{detailPopoverFooterContent}</InternalBox>
+              )}
             </ChartPopover>
           )}
         </div>

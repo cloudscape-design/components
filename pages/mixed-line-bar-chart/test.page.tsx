@@ -37,11 +37,7 @@ export default function () {
               xScaleType="categorical"
               ariaLabel="Mixed chart 1"
               ariaDescription={barChartInstructions}
-              detailPopoverFooter={xValue => (
-                <Box margin={{ top: 'm' }}>
-                  <Button>Filter by {xValue}</Button>
-                </Box>
-              )}
+              detailPopoverFooter={xValue => <Button>Filter by {xValue}</Button>}
             />
           </div>
           <div>

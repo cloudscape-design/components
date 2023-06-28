@@ -4,6 +4,7 @@ import React from 'react';
 
 import ChartPopover from '../../internal/components/chart-popover';
 import ChartSeriesDetails from '../../internal/components/chart-series-details';
+import InternalBox from '../../box/internal';
 
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
@@ -47,7 +48,7 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
       <ChartSeriesDetails details={highlightDetails.seriesDetails} />
       <div className={styles['popover-divider']} />
       <ChartSeriesDetails details={highlightDetails.totalDetails} />
-      {footer}
+      {footer && <InternalBox margin={{ top: 's' }}>{footer}</InternalBox>}
     </ChartPopover>
   );
 }
