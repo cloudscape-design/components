@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../../icon/internal';
+import SpaceBetween from '../../space-between/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
@@ -56,6 +57,23 @@ function TableCellEditable<ItemType>({
   const [hasFocus, setHasFocus] = useState(false);
   const showIcon = hasHover || hasFocus;
 
+  const prevSuccessfulEdit = useRef(successfulEdit);
+  const prevHasFocus = useRef(hasFocus);
+  const [showSuccessIcon, setShowSuccessIcon] = useState(false);
+
+  useEffect(() => {
+    // Show the success icon right after a successful edit (when successfulEdit switches to true)
+    if (successfulEdit && prevSuccessfulEdit.current && hasFocus === false && prevHasFocus.current) {
+      setShowSuccessIcon(false);
+    }
+    // Hide the success icon after a successful edit, when the cell loses focus.
+    if (successfulEdit && prevSuccessfulEdit.current === false) {
+      setShowSuccessIcon(true);
+    }
+    prevSuccessfulEdit.current = successfulEdit;
+    prevHasFocus.current = hasFocus;
+  }, [hasFocus, successfulEdit]);
+
   return (
     <TableTdElement
       {...rest}
@@ -64,7 +82,7 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
-        successfulEdit && styles['body-cell-has-success'],
+        successfulEdit && showIcon && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
@@ -85,29 +103,33 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
-          {successfulEdit && (
-            <>
-              <span
-                className={styles['body-cell-success']}
-                aria-label={ariaLabels?.successfulEditLabel?.(column)}
-                role="img"
+          <div className={styles['body-cell-editor-control']}>
+            <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
+              {showSuccessIcon && showIcon && (
+                <>
+                  <span
+                    className={styles['body-cell-success']}
+                    aria-label={ariaLabels?.successfulEditLabel?.(column)}
+                    role="img"
+                  >
+                    <Icon name="status-positive" variant="success" />
+                  </span>
+                  <LiveRegion>
+                    {i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
+                  </LiveRegion>
+                </>
+              )}
+              <button
+                className={styles['body-cell-editor']}
+                aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+                ref={editActivateRef}
+                onFocus={() => setHasFocus(true)}
+                onBlur={() => setHasFocus(false)}
               >
-                <Icon name="status-positive" variant="success" />
-              </span>
-              <LiveRegion>
-                {i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
-              </LiveRegion>
-            </>
-          )}
-          <button
-            className={styles['body-cell-editor']}
-            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-            ref={editActivateRef}
-            onFocus={() => setHasFocus(true)}
-            onBlur={() => setHasFocus(false)}
-          >
-            {showIcon && <Icon name="edit" />}
-          </button>
+                {showIcon && <Icon name="edit" />}
+              </button>
+            </SpaceBetween>
+          </div>
         </>
       )}
     </TableTdElement>

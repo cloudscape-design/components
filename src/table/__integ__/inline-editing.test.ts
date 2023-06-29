@@ -4,6 +4,7 @@ import range from 'lodash/range';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
 const DOMAIN_ERROR = 'Must be a valid domain name';
 const tableWrapper = createWrapper().findTable()!;
@@ -15,6 +16,8 @@ const cellRoot$ = bodyCell.toSelector();
 const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
 const cellEditButton$ = tableWrapper.findEditCellButton(2, 2).toSelector();
 const cellSaveButton = tableWrapper.findEditingCellSaveButton();
+const successIcon$ = bodyCell.findByClassName(styles['body-cell-success']).toSelector();
+const ariaLiveAnnouncement$ = bodyCell.find(`[aria-live="polite"]`).toSelector();
 
 // for arrow key navigation
 const mainCell = tableWrapper.findBodyCell(4, 5);
@@ -59,6 +62,42 @@ test(
     await page.click(cellRoot$);
     await page.click(cellSaveButton.toSelector());
     await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
+  })
+);
+
+test(
+  'success icon is displayed and aria live region is rendered in after a successful edit',
+  setupTest(async page => {
+    await page.click(cellRoot$);
+    await page.click(cellSaveButton.toSelector());
+    await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
+    await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
+    await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
+  })
+);
+
+test(
+  'success icon is not displayed, no aria live region is rendered after the successfully edited when cell loses focus and gets re-focused',
+  setupTest(async page => {
+    // Edit cell and perform a successful save
+    await page.click(cellRoot$);
+    await page.click(cellSaveButton.toSelector());
+    // Success icon is displayed, aria live is rendered, the cell is focused.
+    await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
+    await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
+    await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
+    // Tab to another cell
+    await page.keys('ArrowRight');
+    // Edited cell lost focus, success icon is not visible, aria live region is not rendered
+    await expect(page.isFocused(cellEditButton$)).resolves.toBe(false);
+    await expect(page.isDisplayed(successIcon$)).resolves.toBe(false);
+    await expect(page.getElementsCount(ariaLiveAnnouncement$)).resolves.toBe(0);
+    // Tab back to the origin cell
+    await page.keys('ArrowLeft');
+    // Edited cell got focus again, the success icon is not visible, aria live region is not rendered
+    await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
+    await expect(page.isDisplayed(successIcon$)).resolves.toBe(false);
+    await expect(page.getElementsCount(ariaLiveAnnouncement$)).resolves.toBe(0);
   })
 );
 

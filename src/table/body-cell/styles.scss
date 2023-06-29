@@ -180,8 +180,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
   }
-  &-success,
-  &-editor {
+  &-editor-control {
     top: 0;
     right: 0;
     bottom: 0;
@@ -191,6 +190,17 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     align-items: center;
     justify-content: flex-end;
 
+    // Additional xxs padding that would normally come from the Inline Icon Button
+    padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
+  }
+  &-editor {
+    // The button is empty (no icon as child) by default. The icon is displayed on hover or on focus.
+    // Having a min dimension on the edit button makes it interactable via browser automation (test-utils, our integration tests)
+    min-width: #{awsui.$space-xxs};
+    min-height: #{awsui.$space-xxs};
+  }
+  &-success,
+  &-editor {
     // Reset some native <button> styles
     cursor: pointer;
     outline: 0;
@@ -198,8 +208,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     border: 0;
     padding: 0;
 
-    // Additional xxs padding that would normally come from the Inline Icon Button
-    padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
     color: awsui.$color-text-button-normal-default;
 
     &:hover {
@@ -252,6 +260,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     &:not(.body-cell-edit-active) {
       @mixin focused-editor-styles {
         padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        &.body-cell-has-success {
+          padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{awsui.$space-l});
+        }
         & > .body-cell-editor {
           opacity: 1;
         }
@@ -261,9 +272,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       }
       & > .body-cell-editor {
         opacity: 0;
-      }
-      &.body-cell-has-success {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
       }
       // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
       // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
@@ -295,6 +303,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         & > .body-cell-editor {
           padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs} - (2 * #{awsui.$border-divider-list-width}));
         }
+        & > .body-cell-editor-control {
+          padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs} - (2 * #{awsui.$border-divider-list-width}));
+        }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
           padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
@@ -322,7 +333,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-top-right-radius: awsui.$border-radius-item;
       border-bottom-right-radius: awsui.$border-radius-item;
     }
-    &.body-cell-first-row > .body-cell-editor {
+    &.body-cell-first-row > .body-cell-editor-control {
       padding-top: awsui.$border-divider-list-width;
     }
   }
