@@ -9,7 +9,6 @@ const tokens = {
   colorBorderItemFocused: '{colorGrey100}',
   colorTextExpandableSectionDefault: '{colorGrey100}',
   colorTextExpandableSectionHover: '{colorGrey100}',
-  colorTextExpandableSectionNavigationIconDefault: '{colorGrey300}',
   colorTextBodyDefault: '{colorGrey100}',
 };
 
