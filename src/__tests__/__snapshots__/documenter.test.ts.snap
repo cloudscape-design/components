@@ -3213,8 +3213,7 @@ The main action also supports the following properties of the [button](/componen
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
 * \`normal\` for secondary buttons
-* \`icon\` for icon buttons
-* \`split-primary\` for primary buttons with the first item exposed as standalone",
+* \`icon\` for icon buttons",
       "inlineType": Object {
         "name": "ButtonDropdownProps.Variant",
         "type": "union",

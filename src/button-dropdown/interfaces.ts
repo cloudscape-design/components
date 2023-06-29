@@ -59,7 +59,6 @@ export interface ButtonDropdownProps extends BaseComponentProps {
    * * `primary` for primary buttons
    * * `normal` for secondary buttons
    * * `icon` for icon buttons
-   * * `split-primary` for primary buttons with the first item exposed as standalone
    */
   variant?: ButtonDropdownProps.Variant;
   /**
