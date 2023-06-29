@@ -264,7 +264,7 @@ const OldAppLayout = React.forwardRef(
       footerSelector,
       disableBodyScroll
     );
-    const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
+    const [isSplitPanelForcedPosition, setIsSplitPanelForcedPosition] = useState(false);
     const [isResizeInvalid, setIsResizeInvalid] = useState(false);
 
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
@@ -436,7 +436,7 @@ const OldAppLayout = React.forwardRef(
       }
     });
 
-    const finalSplitPanePosition = isSplitpanelForcedPosition ? 'bottom' : splitPanelPosition;
+    const finalSplitPanePosition = isSplitPanelForcedPosition ? 'bottom' : splitPanelPosition;
 
     const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
     const splitPanelOpenOnTheSide = splitPaneAvailableOnTheSide && splitPanelOpen;
@@ -456,7 +456,7 @@ const OldAppLayout = React.forwardRef(
     useEffect(() => {
       const contentWidth = contentWidthWithSplitPanel - splitPanelSize;
 
-      setIsSplitpanelForcedPosition(isMobile || (defaults.minContentWidth || 0) > contentWidth);
+      setIsSplitPanelForcedPosition(isMobile || (defaults.minContentWidth || 0) > contentWidth);
       setIsResizeInvalid(isMobile || (defaults.minContentWidth || 0) > contentWidthWithSplitPanel);
       // This is a workaround to avoid a forced position due to splitPanelSize, which is
       // user controlled variable.
@@ -507,7 +507,7 @@ const OldAppLayout = React.forwardRef(
       contentWidthStyles: contentMaxWidthStyle,
       isOpen: splitPanelOpen,
       isMobile,
-      isForcedPosition: isSplitpanelForcedPosition,
+      isForcedPosition: isSplitPanelForcedPosition,
       onResize: onSplitPanelSizeSet,
       onToggle: onSplitPanelToggleHandler,
       onPreferencesChange: onSplitPanelPreferencesSet,
