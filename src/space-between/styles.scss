@@ -74,9 +74,9 @@ $sizes-vertical: (
 }
 
 .align-start {
-  align-items: start;
+  align-items: flex-start;
 }
 
 .align-end {
-  align-items: end;
+  align-items: flex-end;
 }
