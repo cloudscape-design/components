@@ -121,7 +121,7 @@ $label-horizontal-spacing: awsui.$space-l;
   }
 
   &.refresh {
-    padding: awsui.$space-static-xs 0 awsui.$space-static-xs 0;
+    padding: calc(awsui.$space-static-xs - 1px) 0 awsui.$space-static-xs 0;
   }
 }
 
