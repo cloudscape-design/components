@@ -40,13 +40,13 @@
     position: relative;
     @include styles.container-shadow;
     margin: 0;
-    padding: awsui.$space-scaled-l awsui.$space-l;
+    padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
     width: 280px;
     box-sizing: border-box;
 
     > li {
       display: grid;
-      column-gap: awsui.$space-s;
+      column-gap: awsui.$space-xs;
       grid-template-columns: awsui.$space-l 1fr;
       grid-template-rows: repeat(2, auto);
 
@@ -67,7 +67,7 @@
 
       > a {
         align-items: start;
-        column-gap: awsui.$space-s;
+        column-gap: awsui.$space-xs;
         cursor: pointer;
         display: grid;
         font-size: awsui.$font-body-m-size;
@@ -100,7 +100,7 @@
     }
 
     > li:not(:first-child) > .number {
-      margin-top: awsui.$space-scaled-xl;
+      margin-top: awsui.$space-m;
     }
 
     > li:last-child > hr {

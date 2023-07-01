@@ -9,6 +9,9 @@
 $header-padding: awsui.$space-container-header-vertical awsui.$space-container-horizontal;
 $footer-padding: awsui.$space-scaled-s awsui.$space-container-horizontal;
 
+$header-padding-refresh: awsui.$space-container-header-vertical awsui.$space-container-horizontal awsui.$space-scaled-xs
+  awsui.$space-container-horizontal;
+
 // HACK: Remediate focus border for expandable section
 $header-focus-visible-padding: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width})
   calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
