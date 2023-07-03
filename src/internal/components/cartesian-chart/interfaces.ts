@@ -176,6 +176,13 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
    * Called when the highlighted series has changed because of user interaction.
    */
   onHighlightChange?: NonCancelableEventHandler<CartesianChartProps.HighlightChangeDetail<Series>>;
+
+  /**
+   * Enabling this property will make the chart fit into available height.
+   * Use `height` property to specify the minimal height of the chart SVG.
+   * If the chart elements cannot fit the available height the scrollbar is shown.
+   */
+  fitHeight?: boolean;
 }
 
 export namespace CartesianChartProps {

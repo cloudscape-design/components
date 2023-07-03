@@ -21,11 +21,6 @@ export interface AreaChartProps<T extends AreaChartProps.DataTypes>
    * @i18n
    */
   i18nStrings?: AreaChartProps.I18nStrings<T>;
-
-  /**
-   * Enabling this property will make the chart to fit into available height.
-   */
-  fitHeight?: boolean;
 }
 
 export namespace AreaChartProps {
