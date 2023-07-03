@@ -2,16 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import { Box, Button, Checkbox, PieChart, SpaceBetween } from '~components';
+import { Box, Button, Checkbox, PieChart, SegmentedControl, SpaceBetween } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { FoodData, commonProps, data1 } from './common';
 
-type DemoContext = React.Context<AppContextType<{ hideFilter: boolean; hideLegend: boolean; minHeight: number }>>;
+type DemoContext = React.Context<
+  AppContextType<{ hideFilter: boolean; hideLegend: boolean; minSize: 'large' | 'medium' | 'small' }>
+>;
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-  const minHeight = parseInt(urlParams.minHeight?.toString() || '0');
+  const minSize = urlParams.minSize ?? 'small';
   const heights = [800, 600, 400, 300, 200, 100];
   return (
     <Box padding="m">
@@ -25,13 +27,18 @@ export default function () {
           hide legend
         </Checkbox>
         <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-          <input
-            id="min-height-input"
-            type="number"
-            value={minHeight}
-            onChange={e => setUrlParams({ minHeight: parseInt(e.target.value) })}
+          <SegmentedControl
+            id="min-size-input"
+            label="Position"
+            options={[
+              { id: 'large', text: 'Large' },
+              { id: 'medium', text: 'Medium' },
+              { id: 'small', text: 'Small' },
+            ]}
+            selectedId={minSize}
+            onChange={e => setUrlParams({ minSize: e.detail.selectedId as any })}
           />
-          <label htmlFor="min-height-input">min height</label>
+          <label htmlFor="min-size-input">min size</label>
         </SpaceBetween>
       </Box>
 
@@ -50,8 +57,10 @@ export default function () {
                   hideLegend={urlParams.hideLegend}
                   data={data1}
                   ariaLabel="Food facts"
-                  size="medium"
+                  size={minSize}
                   detailPopoverFooter={segment => <Button>Filter by {segment.title}</Button>}
+                  variant="donut"
+                  innerMetricValue="180"
                 />
               </div>
             </Box>

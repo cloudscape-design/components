@@ -80,6 +80,15 @@
 .chart-container {
   display: flex;
   flex: 1;
+
+  &--fit-height {
+    height: 100%;
+  }
+}
+
+.chart-container-chart-plot-fit-height-wrapper {
+  position: absolute;
+  inset: 0;
 }
 
 .inner-content {

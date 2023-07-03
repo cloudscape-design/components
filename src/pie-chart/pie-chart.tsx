@@ -22,6 +22,7 @@ import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { useResizeObserver } from '../internal/hooks/container-queries';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -98,7 +99,15 @@ export default <T extends PieChartProps.Datum>({
   const radius = dimensions.outerRadius;
 
   const hasLabels = !(hideTitles && hideDescriptions);
-  const height = 2 * (radius + dimensions.padding + (hasLabels ? dimensions.paddingLabels : 0));
+  const explicitHeight = 2 * (radius + dimensions.padding + (hasLabels ? dimensions.paddingLabels : 0));
+
+  const plotMeasureRef = useRef<SVGLineElement>(null);
+  const [measuredHeight, setHeight] = useState(0);
+  useResizeObserver(
+    () => plotMeasureRef.current,
+    entry => setHeight(entry.borderBoxHeight)
+  );
+  const height = fitHeight ? measuredHeight : explicitHeight;
 
   // Inner content is only available for donut charts and the inner description is not displayed for small charts
   const hasInnerContent = variant === 'donut' && (innerMetricValue || (innerMetricDescription && size !== 'small'));
@@ -313,6 +322,64 @@ export default <T extends PieChartProps.Datum>({
     clearHighlightedSegment();
   };
 
+  const chartPlot = (
+    <ChartPlot
+      ref={plotRef}
+      width="100%"
+      height={fitHeight ? '100%' : height}
+      transform={`translate(${width / 2} ${height / 2})`}
+      isPrecise={true}
+      isClickable={!isTooltipOpen}
+      ariaLabel={ariaLabel}
+      ariaLabelledby={ariaLabelledby}
+      ariaDescription={ariaDescription}
+      ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
+      ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
+      ariaLiveRegion={tooltipContent}
+      activeElementRef={focusedSegmentRef}
+      activeElementKey={highlightedSegmentIndex?.toString()}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onKeyDown={onKeyDown}
+      onMouseOut={onMouseOut}
+    >
+      <line
+        ref={plotMeasureRef}
+        x1="0"
+        x2="0"
+        y1="0"
+        y2="100%"
+        stroke="transparent"
+        strokeWidth={1}
+        style={{ pointerEvents: 'none' }}
+      />
+      <Segments
+        pieData={pieData}
+        size={size}
+        variant={variant}
+        focusedSegmentRef={focusedSegmentRef}
+        popoverTrackRef={popoverTrackRef}
+        highlightedSegment={highlightedSegment}
+        segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
+        onMouseDown={onMouseDown}
+        onMouseOver={onMouseOver}
+        onMouseOut={onMouseOut}
+      />
+      {hasLabels && (
+        <Labels
+          pieData={pieData}
+          size={size}
+          segmentDescription={segmentDescription}
+          visibleDataSum={dataSum}
+          hideTitles={hideTitles}
+          hideDescriptions={hideDescriptions}
+          highlightedSegment={highlightedSegment}
+          containerRef={containerRef}
+        />
+      )}
+    </ChartPlot>
+  );
+
   return (
     <div
       className={clsx(styles.content, styles[`content--${size}`], {
@@ -335,52 +402,16 @@ export default <T extends PieChartProps.Datum>({
         onRecoveryClick={onRecoveryClick}
       />
       {showChart && (
-        <div className={styles['chart-container']} ref={containerRef}>
-          <ChartPlot
-            ref={plotRef}
-            width={width}
-            height={height}
-            transform={`translate(${width / 2} ${height / 2})`}
-            isPrecise={true}
-            isClickable={!isTooltipOpen}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
-            ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
-            ariaLiveRegion={tooltipContent}
-            activeElementRef={focusedSegmentRef}
-            activeElementKey={highlightedSegmentIndex?.toString()}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onKeyDown={onKeyDown}
-            onMouseOut={onMouseOut}
-          >
-            <Segments
-              pieData={pieData}
-              size={size}
-              variant={variant}
-              focusedSegmentRef={focusedSegmentRef}
-              popoverTrackRef={popoverTrackRef}
-              highlightedSegment={highlightedSegment}
-              segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
-              onMouseDown={onMouseDown}
-              onMouseOver={onMouseOver}
-              onMouseOut={onMouseOut}
-            />
-            {hasLabels && (
-              <Labels
-                pieData={pieData}
-                size={size}
-                segmentDescription={segmentDescription}
-                visibleDataSum={dataSum}
-                hideTitles={hideTitles}
-                hideDescriptions={hideDescriptions}
-                highlightedSegment={highlightedSegment}
-                containerRef={containerRef}
-              />
-            )}
-          </ChartPlot>
+        <div
+          className={clsx(styles['chart-container'], fitHeight && styles['chart-container--fit-height'])}
+          ref={containerRef}
+        >
+          {fitHeight ? (
+            <div className={styles['chart-container-chart-plot-fit-height-wrapper']}>{chartPlot}</div>
+          ) : (
+            chartPlot
+          )}
+
           {hasInnerContent && (
             <div className={styles['inner-content']} id={innerMetricId}>
               {innerMetricValue && (
@@ -395,6 +426,7 @@ export default <T extends PieChartProps.Datum>({
               )}
             </div>
           )}
+
           {isTooltipOpen && tooltipData && (
             <ChartPopover
               ref={popoverRef}
