@@ -171,56 +171,57 @@ export function useStickyCellStyles({
 }: UseStickyCellStylesProps): StickyCellStyles {
   const cellRef = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
   const setCell = stickyColumns.refs.cell;
+
+  // unsubscribeRef to hold the function to unsubscribe from the store's updates
+  const unsubscribeRef = useRef<null | (() => void)>(null);
+
+  // refCallback updates the cell ref and sets up the store subscription
   const refCallback = useCallback(
     node => {
+      if (unsubscribeRef.current) {
+        // Unsubscribe before we do any updates to avoid leaving any subscriptions hanging
+        unsubscribeRef.current();
+      }
+
+      // Update cellRef and the store's state to point to the new DOM node
       cellRef.current = node;
       setCell(columnId, node);
+
+      // If the node is not null (i.e., the table cell is being mounted or updated, not unmounted),
+      // set up a new subscription to the store's updates
+      if (node) {
+        unsubscribeRef.current = stickyColumns.store.subscribe(selector, (newState, prevState) => {
+          updateCellStyles(selector(newState), selector(prevState));
+        });
+      }
     },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [columnId, setCell]
   );
 
   // Update cell styles imperatively to avoid unnecessary re-renders.
-  useEffect(
-    () => {
-      if (!stickyColumns.isEnabled) {
-        return;
-      }
+  const selector = (state: StickyColumnsState) => state.cellState[columnId];
 
-      const selector = (state: StickyColumnsState) => state.cellState[columnId];
+  const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
+    if (isCellStatesEqual(state, prev)) {
+      return;
+    }
 
-      const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
-        if (isCellStatesEqual(state, prev)) {
-          return;
+    const className = getClassName(state);
+    const cellElement = cellRef.current;
+    if (cellElement) {
+      Object.keys(className).forEach(key => {
+        if (className[key]) {
+          cellElement.classList.add(key);
+        } else {
+          cellElement.classList.remove(key);
         }
-
-        const className = getClassName(state);
-        const cellElement = cellRef.current;
-        if (cellElement) {
-          Object.keys(className).forEach(key => {
-            if (className[key]) {
-              cellElement.classList.add(key);
-            } else {
-              cellElement.classList.remove(key);
-            }
-          });
-          cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
-          cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
-        }
-      };
-
-      const unsubscribe = stickyColumns.store.subscribe(selector, (newState, prevState) =>
-        updateCellStyles(selector(newState), selector(prevState))
-      );
-      return () => {
-        unsubscribe();
-        // Force the cleanup
-        updateCellStyles(null, { padLeft: false, lastLeft: false, lastRight: false, offset: {} });
-      };
-    },
-    // getClassName is expected to be pure
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [stickyColumns.store, stickyColumns.isEnabled, columnId]
-  );
+      });
+      cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
+      cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
+    }
+  };
 
   // Provide cell styles as props so that a re-render won't cause invalidation.
   const cellStyles = stickyColumns.store.get().cellState[columnId];
