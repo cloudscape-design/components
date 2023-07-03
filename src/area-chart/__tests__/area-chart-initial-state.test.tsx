@@ -314,6 +314,21 @@ test('popover size is assigned', () => {
 test('value formatters are assigned', () => {
   const { wrapper } = renderAreaChart(
     <AreaChart
+      series={[areaSeries1]}
+      statusType="finished"
+      detailPopoverFooter={xValue => <span>Details about {xValue}</span>}
+    />
+  );
+
+  // Show popover for the first data point.
+  wrapper.findApplication()!.focus();
+
+  expect(wrapper.findDetailPopover()!.findContent()!.getElement()).toHaveTextContent('Details about 0');
+});
+
+test('can contain custom content in the footer', () => {
+  const { wrapper } = renderAreaChart(
+    <AreaChart
       series={[
         {
           ...areaSeries1,

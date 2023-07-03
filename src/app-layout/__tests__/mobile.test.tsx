@@ -4,9 +4,11 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import {
   describeEachThemeAppLayout,
-  drawersConfigurations,
+  drawerWithoutLabels,
   isDrawerClosed,
   renderComponent,
+  singleDrawer,
+  singleDrawerOpen,
   splitPanelI18nStrings,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
@@ -326,14 +328,14 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('should render drawers mobile triggers container', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
 
     expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
     expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
   });
 
   test('should render an active drawer', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
 
     expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
     expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
@@ -341,18 +343,13 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('Does not add a label to the toggle and landmark when they are not defined', () => {
-    const drawersClosed = {
-      drawers: {
-        items: drawersConfigurations.drawersItemsWithoutLabels,
-      },
-    };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
     expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
     expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
   });
 
   test('Adds labels to toggle button and landmark when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
     expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
     expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });

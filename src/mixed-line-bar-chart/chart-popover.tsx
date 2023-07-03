@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
 import ChartSeriesDetails from '../internal/components/chart-series-details';
+import InternalBox from '../box/internal';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -19,6 +20,7 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   highlightDetails: null | HighlightDetails;
   onDismiss(): void;
   size: MixedLineBarChartProps<T>['detailPopoverSize'];
+  footer?: React.ReactNode;
   dismissAriaLabel?: string;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
@@ -33,6 +35,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
     isOpen,
     isPinned,
     highlightDetails,
+    footer,
     onDismiss,
     size = 'medium',
     dismissAriaLabel,
@@ -60,6 +63,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseLeave={onMouseLeave}
             >
               <ChartSeriesDetails details={highlightDetails.details} />
+              {footer && <InternalBox margin={{ top: 's' }}>{footer}</InternalBox>}
             </ChartPopover>
           )}
         </div>

@@ -42,7 +42,6 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
-              defaultSize: 500,
               onResize: ({ detail: { size } }) => {
                 // A drawer implementer may choose to listen to THEIR drawer's
                 // resize event,should they want to persist, or otherwise respond
@@ -64,6 +63,21 @@ export default function WithDrawers() {
               id: 'pro-help',
               trigger: {
                 iconName: 'contact',
+              },
+            },
+            {
+              ariaLabels: {
+                closeButton: 'Links close button',
+                content: 'Links drawer content',
+                triggerButton: 'Links trigger button',
+                resizeHandle: 'Links resize handle',
+              },
+              resizable: true,
+              defaultSize: 500,
+              content: <Links />,
+              id: 'links',
+              trigger: {
+                iconName: 'share',
               },
             },
           ] as DrawerItem[],
@@ -148,4 +162,8 @@ function Security() {
 
 function ProHelp() {
   return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;
+}
+
+function Links() {
+  return <HelpPanel header={<h2>Links</h2>}>Here is a link.</HelpPanel>;
 }

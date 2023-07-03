@@ -112,6 +112,7 @@ export default function InternalWizard({
       rest.i18nStrings?.collapsedStepsLabel,
       format => (stepNumber, stepsCount) => format({ stepNumber, stepsCount })
     ),
+    navigationAriaLabel: i18n('i18nStrings.navigationAriaLabel', rest.i18nStrings.navigationAriaLabel),
     cancelButton: i18n('i18nStrings.cancelButton', rest.i18nStrings.cancelButton),
     previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings.previousButton),
     nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings.nextButton),

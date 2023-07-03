@@ -185,6 +185,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
               placeholder="Choose options"
               selectedAriaLabel="Selected"
               deselectAriaLabel={e => `Remove ${e.label}`}
+              expandToViewport={true}
             />
           </Box>
         );
@@ -251,6 +252,7 @@ const Demo = forwardRef(
         items={items}
         resizableColumns={true}
         ariaLabels={ariaLabels}
+        stickyHeader={true}
       />
     );
   }

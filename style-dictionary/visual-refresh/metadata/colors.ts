@@ -326,6 +326,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextBreadcrumbCurrent: {
+    description: 'The text color that marks the breadcrumb item for the page the user is currently viewing.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBreadcrumbIcon: {
+    description: 'The color used for the icon delimiter between breadcrumb items.',
+    themeable: true,
+    public: true,
+  },
   colorTextButtonNormalActive: {
     description: 'The active text color of normal buttons. For example: Active text color in normal and link buttons.',
     themeable: true,

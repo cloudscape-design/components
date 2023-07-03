@@ -8,7 +8,7 @@ import { findUpUntil } from '../../internal/utils/dom';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
-import { DEFAULT_WIDTH } from '../use-column-widths';
+import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
@@ -30,7 +30,7 @@ export function Resizer({
   onDragMove,
   onFinish,
   ariaLabelledby,
-  minWidth = DEFAULT_WIDTH,
+  minWidth = DEFAULT_COLUMN_WIDTH,
   tabIndex,
   showFocusRing,
   onFocus,

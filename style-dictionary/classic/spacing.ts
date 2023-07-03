@@ -37,7 +37,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spacePanelSideLeft: '{spaceScaledXxl}',
   spacePanelSideRight: '{spaceScaledXxl}',
   spacePanelSplitTop: '0px',
-  spaceSegmentedControlFocusOutlineGutter: '0px',
+  spaceSegmentedControlFocusOutlineGutter: '3px',
   spaceTableHeaderFocusOutlineGutter: { compact: '0px' },
   spaceTabsContentTop: '{spaceScaledM}',
   spaceTableHorizontal: '0px',
