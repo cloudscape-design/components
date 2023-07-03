@@ -33,6 +33,7 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ChartLayout } from '../internal/components/cartesian-chart/chart-layout';
+import { useResizeObserver } from '../internal/hooks/container-queries';
 
 const LEFT_LABELS_MARGIN = 16;
 const BOTTOM_LABELS_OFFSET = 12;
@@ -81,7 +82,7 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
 
 export default function ChartContainer<T extends ChartDataTypes>({
   fitHeight,
-  height: plotHeight,
+  height: explicitPlotHeight,
   series,
   visibleSeries,
   highlightedSeries,
@@ -119,6 +120,14 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
+
+  const plotMeasureRef = useRef<SVGLineElement>(null);
+  const [measuredHeight, setHeight] = useState(0);
+  useResizeObserver(
+    () => plotMeasureRef.current,
+    entry => setHeight(entry.borderBoxHeight)
+  );
+  const plotHeight = fitHeight ? measuredHeight : explicitPlotHeight;
 
   const isRefresh = useVisualRefresh();
 
@@ -454,8 +463,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
       chartPlot={
         <ChartPlot
           ref={plotRef}
-          width={plotWidth}
-          height={plotHeight}
+          width="100%"
+          height={fitHeight ? `calc(100% - ${bottomLabelsHeight}px)` : plotHeight}
           offsetBottom={bottomLabelsHeight}
           isClickable={isPopoverOpen && !isPopoverPinned}
           ariaLabel={ariaLabel}
@@ -477,6 +486,17 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onBlur={onSVGBlur}
           onKeyDown={onSVGKeyDown}
         >
+          <line
+            ref={plotMeasureRef}
+            x1="0"
+            x2="0"
+            y1="0"
+            y2="100%"
+            stroke="transparent"
+            strokeWidth={1}
+            style={{ pointerEvents: 'none' }}
+          />
+
           <LeftLabels
             axis={y}
             ticks={xy.ticks[y]}

@@ -20,6 +20,8 @@ interface ChartWrapperProps {
   onBlur?: (event: React.FocusEvent) => void;
 }
 
+const MIN_CHART_HEIGHT_PX = 40;
+
 export const ChartWrapper = forwardRef(
   (
     {
@@ -56,7 +58,7 @@ export const ChartWrapper = forwardRef(
               [styles['content--reserve-legend']]: reserveLegendSpace,
               [styles['content--fit-height']]: fitHeight,
             })}
-            style={{ minHeight: height }}
+            style={{ minHeight: Math.max(MIN_CHART_HEIGHT_PX, height) }}
           >
             {chart}
           </div>
