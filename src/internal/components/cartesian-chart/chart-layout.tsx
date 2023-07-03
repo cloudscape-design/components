@@ -5,25 +5,19 @@ import React, { forwardRef } from 'react';
 import styles from './styles.css.js';
 import clsx from 'clsx';
 
+interface ChartLayoutProps {
+  fitHeight?: boolean;
+  bottomLabelsHeight: number;
+  leftLabels: React.ReactNode;
+  bottomLabels: React.ReactNode;
+  chartPlot: React.ReactNode;
+  labelsMeasure: React.ReactNode;
+  popover: React.ReactNode;
+}
+
 export const ChartLayout = forwardRef(
   (
-    {
-      fitHeight,
-      bottomLabelsHeight,
-      leftLabels,
-      bottomLabels,
-      chartPlot,
-      labelsMeasure,
-      popover,
-    }: {
-      fitHeight?: boolean;
-      bottomLabelsHeight: number;
-      leftLabels: React.ReactNode;
-      bottomLabels: React.ReactNode;
-      chartPlot: React.ReactNode;
-      labelsMeasure: React.ReactNode;
-      popover: React.ReactNode;
-    },
+    { fitHeight, bottomLabelsHeight, leftLabels, bottomLabels, chartPlot, labelsMeasure, popover }: ChartLayoutProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
     return (
@@ -40,13 +34,15 @@ export const ChartLayout = forwardRef(
 
           <div className={styles['chart-container__vertical']}>
             {fitHeight ? (
-              <div style={{ position: 'absolute', inset: 0, bottom: bottomLabelsHeight }}>{chartPlot}</div>
+              <div className={styles['container-chart-plot-fit-height-wrapper']} style={{ bottom: bottomLabelsHeight }}>
+                {chartPlot}
+              </div>
             ) : (
               chartPlot
             )}
 
             {fitHeight ? (
-              <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>{bottomLabels}</div>
+              <div className={styles['container-bottom-labels-fit-height-wrapper']}>{bottomLabels}</div>
             ) : (
               bottomLabels
             )}

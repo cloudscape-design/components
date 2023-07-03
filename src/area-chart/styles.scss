@@ -38,31 +38,6 @@
   }
 }
 
-.chart-container {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-
-  &--fit-height {
-    height: 100%;
-  }
-}
-
-.chart-container__vertical {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.chart-container__horizontal {
-  display: flex;
-
-  &--fit-height {
-    flex: 1;
-  }
-}
-
 .content {
   display: flex;
   position: relative;

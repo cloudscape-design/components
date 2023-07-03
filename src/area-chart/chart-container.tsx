@@ -19,7 +19,7 @@ import AreaVerticalMarker from './elements/vertical-marker';
 import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useSelector } from './async-store';
-import { ChartLayout } from './chart-layout';
+import { ChartLayout } from '../internal/components/cartesian-chart/chart-layout';
 
 const DEFAULT_CHART_WIDTH = 500;
 const LEFT_LABELS_MARGIN = 16;
