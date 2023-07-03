@@ -61,11 +61,27 @@ export function getDimensionsBySize({
 }: {
   size: NonNullable<PieChartProps['size']> | number;
   visualRefresh?: boolean;
-}): Dimension {
+}): Dimension & { size: NonNullable<PieChartProps['size']> } {
   if (typeof size === 'string') {
-    return visualRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
+    const dimensions = visualRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
+    return { ...dimensions, size };
   }
-  return visualRefresh ? refreshDimensionsBySize.large : dimensionsBySize.large;
+  const sizeSpec = visualRefresh ? refreshDimensionsBySize : dimensionsBySize;
+
+  let matchedSize: NonNullable<PieChartProps['size']> = 'small';
+  if (size > sizeSpec.medium.outerRadius * 1.2) {
+    matchedSize = 'medium';
+  }
+  if (size > sizeSpec.large.outerRadius * 1.2) {
+    matchedSize = 'large';
+  }
+
+  return {
+    ...sizeSpec[matchedSize],
+    innerRadius: (size * 0.65) / 2,
+    outerRadius: (size * 0.8) / 2,
+    size: matchedSize,
+  };
 }
 
 export const defaultDetails =
