@@ -12,6 +12,24 @@
 .root {
   @include styles.styles-reset;
   display: block;
+
+  &--fit-height {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.wrapper {
+  display: contents;
+
+  &--fit-height {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 }
 
 .filter-container {
@@ -49,6 +67,10 @@
   &.content--reserve-legend {
     margin-bottom: calc(2 * #{awsui.$font-body-m-line-height});
   }
+}
+
+.content--fit-height {
+  flex: 1;
 }
 
 .status-container {

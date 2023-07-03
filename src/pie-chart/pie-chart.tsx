@@ -53,6 +53,7 @@ export interface TooltipData<T> {
 }
 
 export default <T extends PieChartProps.Datum>({
+  fitHeight,
   variant,
   size,
   i18nStrings,
@@ -318,6 +319,7 @@ export default <T extends PieChartProps.Datum>({
         [styles['content--without-labels']]: !hasLabels,
         [styles['content--reserve-filter']]: reserveFilterSpace,
         [styles['content--reserve-legend']]: reserveLegendSpace,
+        [styles['content--fit-height']]: fitHeight,
       })}
     >
       <ChartStatusContainer

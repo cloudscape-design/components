@@ -24,6 +24,7 @@ import { nodeBelongs } from '../internal/utils/node-belongs';
 export { PieChartProps };
 
 const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps.Datum>({
+  fitHeight,
   variant = 'pie',
   size = 'medium',
   hideTitles = false,
@@ -45,10 +46,6 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const { __internalRootRef = null } = useBaseComponent('PieChart');
   const baseProps = getBaseProps(props);
   const isEmpty = !externalData || externalData.length === 0;
-  const containerAttr = {
-    ...baseProps,
-    className: clsx(baseProps.className, styles.root),
-  };
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, measureRef] = useContainerWidth();
 
@@ -133,63 +130,71 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const mergedRef = useMergeRefs(containerRef, measureRef, __internalRootRef);
 
   return (
-    <div {...containerAttr} ref={mergedRef} onBlur={onBlur}>
-      {statusType === 'finished' && !isEmpty && (additionalFilters || !hideFilter) && (
-        <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
-          <InternalSpaceBetween
-            size="l"
-            direction="horizontal"
-            className={clsx({
-              [styles['has-default-filter']]: !hideFilter,
-            })}
-          >
-            {!hideFilter && (
-              <Filter
-                series={filterItems}
-                onChange={filterChange}
-                selectedSeries={visibleSegments}
-                i18nStrings={i18nStrings}
-              />
-            )}
-            {additionalFilters}
-          </InternalSpaceBetween>
-        </InternalBox>
-      )}
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root, fitHeight && styles['root--fit-height'])}
+      ref={mergedRef}
+      onBlur={onBlur}
+    >
+      <div className={clsx(styles.wrapper, fitHeight && styles['wrapper--fit-height'])}>
+        {statusType === 'finished' && !isEmpty && (additionalFilters || !hideFilter) && (
+          <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
+            <InternalSpaceBetween
+              size="l"
+              direction="horizontal"
+              className={clsx({
+                [styles['has-default-filter']]: !hideFilter,
+              })}
+            >
+              {!hideFilter && (
+                <Filter
+                  series={filterItems}
+                  onChange={filterChange}
+                  selectedSeries={visibleSegments}
+                  i18nStrings={i18nStrings}
+                />
+              )}
+              {additionalFilters}
+            </InternalSpaceBetween>
+          </InternalBox>
+        )}
 
-      <InternalPieChart
-        {...props}
-        variant={variant}
-        size={size}
-        data={externalData}
-        visibleData={visibleData}
-        width={containerWidth}
-        statusType={statusType}
-        hideTitles={hideTitles}
-        hideDescriptions={hideDescriptions}
-        hideLegend={hideLegend}
-        hideFilter={hideFilter}
-        additionalFilters={additionalFilters}
-        i18nStrings={i18nStrings}
-        onHighlightChange={onHighlightChange}
-        highlightedSegment={highlightedSegment}
-        legendSegment={legendSegment}
-        pinnedSegment={pinnedSegment}
-        setPinnedSegment={setPinnedSegment}
-        detailPopoverSize={detailPopoverSize}
-      />
+        <InternalPieChart
+          {...props}
+          fitHeight={fitHeight}
+          variant={variant}
+          size={size}
+          data={externalData}
+          visibleData={visibleData}
+          width={containerWidth}
+          statusType={statusType}
+          hideTitles={hideTitles}
+          hideDescriptions={hideDescriptions}
+          hideLegend={hideLegend}
+          hideFilter={hideFilter}
+          additionalFilters={additionalFilters}
+          i18nStrings={i18nStrings}
+          onHighlightChange={onHighlightChange}
+          highlightedSegment={highlightedSegment}
+          legendSegment={legendSegment}
+          pinnedSegment={pinnedSegment}
+          setPinnedSegment={setPinnedSegment}
+          detailPopoverSize={detailPopoverSize}
+        />
 
-      {!hideLegend && !isEmpty && statusType === 'finished' && (
-        <InternalBox margin={{ top: 'm' }}>
-          <Legend<T>
-            series={legendItems}
-            highlightedSeries={legendSegment}
-            legendTitle={legendTitle}
-            ariaLabel={i18nStrings?.legendAriaLabel}
-            onHighlightChange={onHighlightChange}
-            plotContainerRef={containerRef}
-          />
-        </InternalBox>
-      )}
+        {!hideLegend && !isEmpty && statusType === 'finished' && (
+          <InternalBox margin={{ top: 'm' }}>
+            <Legend<T>
+              series={legendItems}
+              highlightedSeries={legendSegment}
+              legendTitle={legendTitle}
+              ariaLabel={i18nStrings?.legendAriaLabel}
+              onHighlightChange={onHighlightChange}
+              plotContainerRef={containerRef}
+            />
+          </InternalBox>
+        )}
+      </div>
     </div>
   );
 };
