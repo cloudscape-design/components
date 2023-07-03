@@ -69,9 +69,6 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   const containerRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  const minContainerHeight = fitHeight ? externalHeight : undefined;
-  const minChartHeight = fitHeight ? undefined : externalHeight;
-
   if (isDevelopment) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
@@ -135,10 +132,13 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
 
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
+  const minContainerHeight = fitHeight ? externalHeight : undefined;
+  const minChartHeight = fitHeight ? undefined : externalHeight;
+
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, fitHeight && styles['root--fit-height'])}
       style={{ minHeight: minContainerHeight }}
       ref={mergedRef}
       onBlur={onBlur}
@@ -167,6 +167,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
         className={clsx(styles.content, {
           [styles['content--reserve-filter']]: reserveFilterSpace,
           [styles['content--reserve-legend']]: reserveLegendSpace,
+          [styles['content--fit-height']]: fitHeight,
         })}
         style={{ minHeight: minChartHeight }}
       >
@@ -194,6 +195,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             ariaLabelledby={ariaLabelledby}
             ariaDescription={ariaDescription}
             i18nStrings={i18nStrings}
+            fitHeight={fitHeight}
           />
         )}
       </div>

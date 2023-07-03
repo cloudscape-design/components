@@ -57,8 +57,7 @@ const chartProps: AreaChartProps<number> = {
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-  const minHeight = urlParams.minHeight || 100;
-
+  const minHeight = parseInt(urlParams.minHeight?.toString() || '100');
   return (
     <Box padding="m">
       <h1>Area chart fit height</h1>

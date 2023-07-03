@@ -20,6 +20,7 @@ import styles from './styles.css.js';
 import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useSelector } from './async-store';
+import clsx from 'clsx';
 
 const DEFAULT_CHART_WIDTH = 500;
 const LEFT_LABELS_MARGIN = 16;
@@ -41,6 +42,7 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   > {
   model: ChartModel<T>;
   autoWidth: (value: number) => void;
+  fitHeight?: boolean;
 }
 
 export default memo(ChartContainer) as typeof ChartContainer;
@@ -65,6 +67,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
     yAxisAriaRoleDescription,
     detailPopoverDismissAriaLabel,
   } = {},
+  fitHeight,
 }: ChartContainerProps<T>) {
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [bottomLabelsHeight, setBottomLabelsHeight] = useState(0);
@@ -98,10 +101,18 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   );
 
   return (
-    <div className={styles['chart-container']} ref={mergedRef}>
+    <div
+      className={clsx(styles['chart-container'], fitHeight && styles['chart-container--fit-height'])}
+      ref={mergedRef}
+    >
       <AxisLabel axis="y" position="left" title={yTitle} />
 
-      <div className={styles['chart-container__horizontal']}>
+      <div
+        className={clsx(
+          styles['chart-container__horizontal'],
+          fitHeight && styles['chart-container__horizontal--fit-height']
+        )}
+      >
         <LabelsMeasure
           scale={model.computed.yScale}
           ticks={model.computed.yTicks}
