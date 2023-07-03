@@ -59,9 +59,6 @@
       padding-bottom: awsui.$space-xxxs;
     }
   }
-  :not(.root-no-actions) > &-variant-h1-refresh {
-    padding-top: awsui.$space-scaled-xxxs;
-  }
 
   // So that headers with only a title have the same height as headers with actions and descriptions
   &-variant-h2,

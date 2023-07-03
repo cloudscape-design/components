@@ -22,12 +22,13 @@
   ul {
     padding-left: awsui.$space-l;
     list-style-position: outside;
+    margin: awsui.$space-s 0;
+  }
+  li {
+    margin: awsui.$space-scaled-xxs 0;
   }
 
   a,
-  ul,
-  ol,
-  li,
   h2,
   h3,
   h4,
@@ -49,7 +50,7 @@
   }
 
   dl {
-    margin: awsui.$space-xs 0;
+    margin: awsui.$space-s 0;
     /* stylelint-disable-next-line selector-max-universal */
     * {
       margin-top: 0;
