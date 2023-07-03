@@ -18,6 +18,17 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.wrapper {
+  display: contents;
+
+  &--fit-height {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 }
 
@@ -38,6 +49,7 @@
 }
 
 .chart-container__vertical {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;

@@ -16,11 +16,10 @@ import AreaChartPopover from './elements/chart-popover';
 import AreaHighlightedPoint from './elements/highlighted-point';
 import AreaVerticalMarker from './elements/vertical-marker';
 
-import styles from './styles.css.js';
 import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useSelector } from './async-store';
-import clsx from 'clsx';
+import { ChartLayout } from './chart-layout';
 
 const DEFAULT_CHART_WIDTH = 500;
 const LEFT_LABELS_MARGIN = 16;
@@ -101,92 +100,85 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   );
 
   return (
-    <div
-      className={clsx(styles['chart-container'], fitHeight && styles['chart-container--fit-height'])}
+    <ChartLayout
       ref={mergedRef}
-    >
-      <AxisLabel axis="y" position="left" title={yTitle} />
+      fitHeight={fitHeight}
+      bottomLabelsHeight={bottomLabelsHeight}
+      leftLabels={<AxisLabel axis="y" position="left" title={yTitle} />}
+      bottomLabels={<AxisLabel axis="x" position="bottom" title={xTitle} />}
+      chartPlot={
+        <ChartPlot
+          ref={model.refs.plot}
+          width="100%"
+          height={fitHeight ? `calc(100% - ${bottomLabelsHeight}px)` : model.height}
+          offsetBottom={bottomLabelsHeight}
+          ariaLabel={ariaLabel}
+          ariaLabelledby={ariaLabelledby}
+          ariaDescription={ariaDescription}
+          ariaRoleDescription={chartAriaRoleDescription}
+          activeElementKey={!highlightDetails?.isPopoverPinned && highlightDetails?.activeLabel}
+          activeElementRef={isPointHighlighted ? highlightedPointRef : model.refs.verticalMarker}
+          activeElementFocusOffset={isPointHighlighted ? 3 : { x: 8, y: 0 }}
+          isClickable={!highlightDetails?.isPopoverPinned}
+          onMouseMove={model.handlers.onSVGMouseMove}
+          onMouseOut={model.handlers.onSVGMouseOut}
+          onMouseDown={model.handlers.onSVGMouseDown}
+          onKeyDown={model.handlers.onSVGKeyDown}
+          onFocus={model.handlers.onSVGFocus}
+          onBlur={model.handlers.onSVGBlur}
+        >
+          <line
+            ref={model.refs.plotMeasure}
+            x1="0"
+            x2="0"
+            y1="0"
+            y2="100%"
+            stroke="transparent"
+            strokeWidth={1}
+            style={{ pointerEvents: 'none' }}
+          />
 
-      <div
-        className={clsx(
-          styles['chart-container__horizontal'],
-          fitHeight && styles['chart-container__horizontal--fit-height']
-        )}
-      >
+          <LeftLabels
+            width={model.width}
+            height={model.height}
+            scale={model.computed.yScale}
+            ticks={model.computed.yTicks}
+            tickFormatter={yTickFormatter}
+            title={yTitle}
+            ariaRoleDescription={yAxisAriaRoleDescription}
+          />
+
+          <AreaDataSeries model={model} />
+
+          <BottomLabels
+            width={model.width}
+            height={model.height}
+            scale={model.computed.xScale}
+            ticks={model.computed.xTicks}
+            tickFormatter={xTickFormatter as TickFormatter}
+            title={xTitle}
+            ariaRoleDescription={xAxisAriaRoleDescription}
+            autoHeight={setBottomLabelsHeight}
+            offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
+            offsetRight={BOTTOM_LABELS_OFFSET}
+          />
+
+          <EmphasizedBaseline width={model.width} height={model.height} scale={model.computed.yScale} />
+
+          <AreaVerticalMarker model={model} />
+
+          <AreaHighlightedPoint ref={highlightedPointRef} model={model} ariaLabel={highlightDetails?.activeLabel} />
+        </ChartPlot>
+      }
+      labelsMeasure={
         <LabelsMeasure
           scale={model.computed.yScale}
           ticks={model.computed.yTicks}
           tickFormatter={yTickFormatter as TickFormatter}
           autoWidth={setLeftLabelsWidth}
         />
-
-        <div className={styles['chart-container__vertical']}>
-          <ChartPlot
-            ref={model.refs.plot}
-            width="100%"
-            height={`calc(100% - ${bottomLabelsHeight}px)`}
-            offsetBottom={bottomLabelsHeight}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            ariaRoleDescription={chartAriaRoleDescription}
-            activeElementKey={!highlightDetails?.isPopoverPinned && highlightDetails?.activeLabel}
-            activeElementRef={isPointHighlighted ? highlightedPointRef : model.refs.verticalMarker}
-            activeElementFocusOffset={isPointHighlighted ? 3 : { x: 8, y: 0 }}
-            isClickable={!highlightDetails?.isPopoverPinned}
-            onMouseMove={model.handlers.onSVGMouseMove}
-            onMouseOut={model.handlers.onSVGMouseOut}
-            onMouseDown={model.handlers.onSVGMouseDown}
-            onKeyDown={model.handlers.onSVGKeyDown}
-            onFocus={model.handlers.onSVGFocus}
-            onBlur={model.handlers.onSVGBlur}
-          >
-            <line
-              ref={model.refs.plotMeasure}
-              x1="0"
-              x2="0"
-              y1="0"
-              y2="100%"
-              stroke="transparent"
-              strokeWidth={1}
-              style={{ pointerEvents: 'none' }}
-            />
-
-            <LeftLabels
-              width={model.width}
-              height={model.height}
-              scale={model.computed.yScale}
-              ticks={model.computed.yTicks}
-              tickFormatter={yTickFormatter}
-              title={yTitle}
-              ariaRoleDescription={yAxisAriaRoleDescription}
-            />
-
-            <AreaDataSeries model={model} />
-
-            <BottomLabels
-              width={model.width}
-              height={model.height}
-              scale={model.computed.xScale}
-              ticks={model.computed.xTicks}
-              tickFormatter={xTickFormatter as TickFormatter}
-              title={xTitle}
-              ariaRoleDescription={xAxisAriaRoleDescription}
-              autoHeight={setBottomLabelsHeight}
-              offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
-              offsetRight={BOTTOM_LABELS_OFFSET}
-            />
-
-            <EmphasizedBaseline width={model.width} height={model.height} scale={model.computed.yScale} />
-
-            <AreaVerticalMarker model={model} />
-
-            <AreaHighlightedPoint ref={highlightedPointRef} model={model} ariaLabel={highlightDetails?.activeLabel} />
-          </ChartPlot>
-
-          <AxisLabel axis="x" position="bottom" title={xTitle} />
-        </div>
-
+      }
+      popover={
         <AreaChartPopover
           model={model}
           highlightDetails={highlightDetails}
@@ -194,7 +186,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           size={detailPopoverSize}
           footer={detailPopoverFooterContent}
         />
-      </div>
-    </div>
+      }
+    />
   );
 }

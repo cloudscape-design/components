@@ -57,11 +57,12 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   const verticalMarkerRef = useRef<SVGLineElement>(null);
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
-  const [height, setHeight] = useState(explicitHeight);
+  const [measuredHeight, setHeight] = useState(0);
   useResizeObserver(
     () => plotMeasureRef.current,
     entry => setHeight(entry.borderBoxHeight)
   );
+  const height = explicitHeight || measuredHeight;
 
   const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
 

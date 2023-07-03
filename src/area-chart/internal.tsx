@@ -132,84 +132,82 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
 
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
-  const minContainerHeight = fitHeight ? externalHeight : undefined;
-  const minChartHeight = fitHeight ? undefined : externalHeight;
-
   return (
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles.root, fitHeight && styles['root--fit-height'])}
-      style={{ minHeight: minContainerHeight }}
       ref={mergedRef}
       onBlur={onBlur}
     >
-      {showFilters && (
-        <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
-          <InternalSpaceBetween
-            size="l"
-            direction="horizontal"
-            className={clsx({ [styles['has-default-filter']]: !hideFilter })}
-          >
-            {!hideFilter && (
-              <AreaChartFilter
-                model={model}
-                filterLabel={i18nStrings.filterLabel}
-                filterPlaceholder={i18nStrings.filterPlaceholder}
-                filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
-              />
-            )}
-            {additionalFilters}
-          </InternalSpaceBetween>
-        </InternalBox>
-      )}
+      <div className={clsx(styles.wrapper, fitHeight && styles['wrapper--fit-height'])}>
+        {showFilters && (
+          <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
+            <InternalSpaceBetween
+              size="l"
+              direction="horizontal"
+              className={clsx({ [styles['has-default-filter']]: !hideFilter })}
+            >
+              {!hideFilter && (
+                <AreaChartFilter
+                  model={model}
+                  filterLabel={i18nStrings.filterLabel}
+                  filterPlaceholder={i18nStrings.filterPlaceholder}
+                  filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
+                />
+              )}
+              {additionalFilters}
+            </InternalSpaceBetween>
+          </InternalBox>
+        )}
 
-      <div
-        className={clsx(styles.content, {
-          [styles['content--reserve-filter']]: reserveFilterSpace,
-          [styles['content--reserve-legend']]: reserveLegendSpace,
-          [styles['content--fit-height']]: fitHeight,
-        })}
-        style={{ minHeight: minChartHeight }}
-      >
-        <ChartStatusContainer
-          isEmpty={isEmpty}
-          isNoMatch={isNoMatch}
-          showChart={showChart}
-          statusType={statusType}
-          empty={empty}
-          noMatch={noMatch}
-          loadingText={loadingText}
-          errorText={errorText}
-          recoveryText={recoveryText}
-          onRecoveryClick={onRecoveryClick}
-        />
-        {showChart && (
-          <ChartContainer
-            model={model}
-            autoWidth={setWidth}
-            detailPopoverSize={detailPopoverSize}
-            detailPopoverFooter={detailPopoverFooter}
-            xTitle={xTitle}
-            yTitle={yTitle}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            i18nStrings={i18nStrings}
-            fitHeight={fitHeight}
+        <div
+          className={clsx(styles.content, {
+            [styles['content--reserve-filter']]: reserveFilterSpace,
+            [styles['content--reserve-legend']]: reserveLegendSpace,
+            [styles['content--fit-height']]: fitHeight,
+          })}
+          style={{ minHeight: externalHeight }}
+        >
+          <ChartStatusContainer
+            isEmpty={isEmpty}
+            isNoMatch={isNoMatch}
+            showChart={showChart}
+            statusType={statusType}
+            empty={empty}
+            noMatch={noMatch}
+            loadingText={loadingText}
+            errorText={errorText}
+            recoveryText={recoveryText}
+            onRecoveryClick={onRecoveryClick}
           />
+          {showChart && (
+            <ChartContainer
+              model={model}
+              autoWidth={setWidth}
+              detailPopoverSize={detailPopoverSize}
+              detailPopoverFooter={detailPopoverFooter}
+              xTitle={xTitle}
+              yTitle={yTitle}
+              ariaLabel={ariaLabel}
+              ariaLabelledby={ariaLabelledby}
+              ariaDescription={ariaDescription}
+              i18nStrings={i18nStrings}
+              fitHeight={fitHeight}
+            />
+          )}
+        </div>
+
+        {showLegend && (
+          <InternalBox margin={{ top: 'm' }}>
+            <AreaChartLegend
+              plotContainerRef={containerRef}
+              model={model}
+              legendTitle={legendTitle}
+              ariaLabel={i18nStrings.legendAriaLabel}
+            />
+          </InternalBox>
         )}
       </div>
-
-      {showLegend && (
-        <InternalBox margin={{ top: 'm' }}>
-          <AreaChartLegend
-            plotContainerRef={containerRef}
-            model={model}
-            legendTitle={legendTitle}
-            ariaLabel={i18nStrings.legendAriaLabel}
-          />
-        </InternalBox>
-      )}
     </div>
   );
 }
