@@ -86,7 +86,7 @@ test('error and recovery texts are assigned', () => {
 
 test('chart height is assigned', () => {
   const { wrapper } = renderAreaChart(<AreaChart height={333} statusType="finished" series={[areaSeries1]} />);
-  expect(wrapper.findChart()!.getElement()).toHaveAttribute('height', '333');
+  expect(wrapper.findChart()!.getElement().style.height).toContain('333');
 });
 
 test('empty text is assigned', () => {

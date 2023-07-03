@@ -5,6 +5,7 @@ import React, { useContext } from 'react';
 import { createLinearTimeLatencyProps } from './series';
 import { AreaChart, AreaChartProps, Box, Button, Checkbox, SpaceBetween } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type DemoContext = React.Context<AppContextType<{ hideFilter: boolean; hideLegend: boolean; minHeight: number }>>;
 
@@ -58,63 +59,47 @@ const chartProps: AreaChartProps<number> = {
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const minHeight = parseInt(urlParams.minHeight?.toString() || '0');
+  const heights = [800, 600, 400, 300, 200, 100];
   return (
     <Box padding="m">
       <h1>Area chart fit height</h1>
-      <SpaceBetween size="l">
-        <Box>
-          <Checkbox checked={urlParams.hideFilter} onChange={e => setUrlParams({ hideFilter: e.detail.checked })}>
-            hide filter
-          </Checkbox>
-          <Checkbox checked={urlParams.hideLegend} onChange={e => setUrlParams({ hideLegend: e.detail.checked })}>
-            hide legend
-          </Checkbox>
-          <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-            <input
-              type="number"
-              value={minHeight}
-              onChange={e => setUrlParams({ minHeight: parseInt(e.target.value) })}
-            />
-            <Box>min height</Box>
-          </SpaceBetween>
-        </Box>
-        <Box>
-          <Box>800px</Box>
-          <div style={{ ...containerStyle, height: '800px' }}>
-            <AreaChart
-              fitHeight={true}
-              height={minHeight}
-              hideFilter={urlParams.hideFilter}
-              hideLegend={urlParams.hideLegend}
-              {...chartProps}
-            />
-          </div>
-        </Box>
-        <Box>
-          <Box>400px</Box>
-          <div style={{ ...containerStyle, height: '400px' }}>
-            <AreaChart
-              fitHeight={true}
-              height={minHeight}
-              hideFilter={urlParams.hideFilter}
-              hideLegend={urlParams.hideLegend}
-              {...chartProps}
-            />
-          </div>
-        </Box>
-        <Box>
-          <Box>200px</Box>
-          <div style={{ ...containerStyle, height: '200px' }}>
-            <AreaChart
-              fitHeight={true}
-              height={minHeight}
-              hideFilter={urlParams.hideFilter}
-              hideLegend={urlParams.hideLegend}
-              {...chartProps}
-            />
-          </div>
-        </Box>
-      </SpaceBetween>
+
+      <Box>
+        <Checkbox checked={urlParams.hideFilter} onChange={e => setUrlParams({ hideFilter: e.detail.checked })}>
+          hide filter
+        </Checkbox>
+        <Checkbox checked={urlParams.hideLegend} onChange={e => setUrlParams({ hideLegend: e.detail.checked })}>
+          hide legend
+        </Checkbox>
+        <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+          <input
+            id="min-height-input"
+            type="number"
+            value={minHeight}
+            onChange={e => setUrlParams({ minHeight: parseInt(e.target.value) })}
+          />
+          <label htmlFor="min-height-input">min height</label>
+        </SpaceBetween>
+      </Box>
+
+      <ScreenshotArea>
+        <SpaceBetween size="l">
+          {heights.map(height => (
+            <Box key={height}>
+              <Box>{height}px</Box>
+              <div style={{ ...containerStyle, height }}>
+                <AreaChart
+                  fitHeight={true}
+                  height={minHeight}
+                  hideFilter={urlParams.hideFilter}
+                  hideLegend={urlParams.hideLegend}
+                  {...chartProps}
+                />
+              </div>
+            </Box>
+          ))}
+        </SpaceBetween>
+      </ScreenshotArea>
     </Box>
   );
 }
