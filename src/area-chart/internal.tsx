@@ -32,7 +32,8 @@ type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   InternalBaseComponentProps;
 
 export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
-  height,
+  fitHeight,
+  height: externalHeight,
   xScaleType,
   yScaleType,
   xDomain,
@@ -68,6 +69,9 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   const containerRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
+  const minContainerHeight = fitHeight ? externalHeight : undefined;
+  const minChartHeight = fitHeight ? undefined : externalHeight;
+
   if (isDevelopment) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
@@ -102,7 +106,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     yDomain,
     xScaleType,
     yScaleType,
-    height,
+    height: fitHeight ? 0 : externalHeight,
     width,
     popoverRef,
   });
@@ -132,7 +136,13 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef} onBlur={onBlur}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root)}
+      style={{ minHeight: minContainerHeight }}
+      ref={mergedRef}
+      onBlur={onBlur}
+    >
       {showFilters && (
         <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
           <InternalSpaceBetween
@@ -158,7 +168,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
           [styles['content--reserve-filter']]: reserveFilterSpace,
           [styles['content--reserve-legend']]: reserveLegendSpace,
         })}
-        style={{ minHeight: height }}
+        style={{ minHeight: minChartHeight }}
       >
         <ChartStatusContainer
           isEmpty={isEmpty}

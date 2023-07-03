@@ -6,6 +6,8 @@ import { createLinearTimeLatencyProps } from './series';
 import { AreaChart, AreaChartProps, Box, Button, Checkbox, SpaceBetween } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 
+type DemoContext = React.Context<AppContextType<{ hideFilter: boolean; hideLegend: boolean; minHeight: number }>>;
+
 const containerStyle: React.CSSProperties = {
   boxSizing: 'border-box',
   width: '100%',
@@ -53,10 +55,9 @@ const chartProps: AreaChartProps<number> = {
   xDomain: [0, 119],
 };
 
-type DemoContext = React.Context<AppContextType<{ hideFilter: boolean; hideLegend: boolean }>>;
-
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const minHeight = urlParams.minHeight || 100;
 
   return (
     <Box padding="m">
@@ -64,19 +65,28 @@ export default function () {
       <SpaceBetween size="l">
         <Box>
           <Checkbox checked={urlParams.hideFilter} onChange={e => setUrlParams({ hideFilter: e.detail.checked })}>
-            Hide filter
+            hide filter
           </Checkbox>
           <Checkbox checked={urlParams.hideLegend} onChange={e => setUrlParams({ hideLegend: e.detail.checked })}>
-            Hide legend
+            hide legend
           </Checkbox>
+          <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+            <input
+              type="number"
+              value={minHeight}
+              onChange={e => setUrlParams({ minHeight: parseInt(e.target.value) })}
+            />
+            <Box>min height</Box>
+          </SpaceBetween>
         </Box>
         <Box>
           <Box>800px</Box>
           <div style={{ ...containerStyle, height: '800px' }}>
             <AreaChart
+              fitHeight={true}
+              height={minHeight}
               hideFilter={urlParams.hideFilter}
               hideLegend={urlParams.hideLegend}
-              height={250}
               {...chartProps}
             />
           </div>
@@ -85,9 +95,10 @@ export default function () {
           <Box>400px</Box>
           <div style={{ ...containerStyle, height: '400px' }}>
             <AreaChart
+              fitHeight={true}
+              height={minHeight}
               hideFilter={urlParams.hideFilter}
               hideLegend={urlParams.hideLegend}
-              height={250}
               {...chartProps}
             />
           </div>
@@ -96,9 +107,10 @@ export default function () {
           <Box>200px</Box>
           <div style={{ ...containerStyle, height: '200px' }}>
             <AreaChart
+              fitHeight={true}
+              height={minHeight}
               hideFilter={urlParams.hideFilter}
               hideLegend={urlParams.hideLegend}
-              height={250}
               {...chartProps}
             />
           </div>

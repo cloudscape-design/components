@@ -15,6 +15,7 @@ import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
 import { useReaction } from '../async-store';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
@@ -46,7 +47,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   yDomain,
   xScaleType,
   yScaleType,
-  height,
+  height: explicitHeight,
   width,
   popoverRef,
 }: UseChartModelProps<T>): ChartModel<T> {
@@ -54,6 +55,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   const plotRef = useRef<ChartPlotRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const verticalMarkerRef = useRef<SVGLineElement>(null);
+  const [plotContainerObserverHeight, plotMeasureRef] = useContainerQuery(e => e.contentBoxHeight);
+  const height = plotContainerObserverHeight ?? explicitHeight;
 
   const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
 
@@ -341,12 +344,25 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       },
       refs: {
         plot: plotRef,
+        plotMeasure: plotMeasureRef,
         container: containerRef,
         verticalMarker: verticalMarkerRef,
         popoverRef,
       },
     };
-  }, [allSeries, series, xDomain, yDomain, xScaleType, yScaleType, height, width, stableSetVisibleSeries, popoverRef]);
+  }, [
+    allSeries,
+    series,
+    xDomain,
+    yDomain,
+    xScaleType,
+    yScaleType,
+    height,
+    width,
+    stableSetVisibleSeries,
+    popoverRef,
+    plotMeasureRef,
+  ]);
 
   // Notify client when series highlight change.
   useReaction(model.interactions, state => state.highlightedSeries, setHighlightedSeries);

@@ -112,8 +112,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
         <div className={styles['chart-container__vertical']}>
           <ChartPlot
             ref={model.refs.plot}
-            width={model.width}
-            height={model.height}
+            width="100%"
+            height={`calc(100% - ${bottomLabelsHeight}px)`}
             offsetBottom={bottomLabelsHeight}
             ariaLabel={ariaLabel}
             ariaLabelledby={ariaLabelledby}
@@ -130,6 +130,17 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
             onFocus={model.handlers.onSVGFocus}
             onBlur={model.handlers.onSVGBlur}
           >
+            <line
+              ref={model.refs.plotMeasure}
+              x1="0"
+              x2="0"
+              y1="0"
+              y2="100%"
+              stroke="transparent"
+              strokeWidth={1}
+              style={{ pointerEvents: 'none' }}
+            />
+
             <LeftLabels
               width={model.width}
               height={model.height}
