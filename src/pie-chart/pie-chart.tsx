@@ -15,7 +15,7 @@ import InternalBox from '../box/internal';
 import Labels from './labels';
 import { PieChartProps, SeriesInfo } from './interfaces';
 import styles from './styles.css.js';
-import { defaultDetails, dimensionsBySize, refreshDimensionsBySize } from './utils';
+import { defaultDetails, getDimensionsBySize } from './utils';
 import Segments from './segments';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
@@ -95,7 +95,7 @@ export default <T extends PieChartProps.Datum>({
   const popoverRef = useRef<HTMLElement | null>(null);
   const isRefresh = useVisualRefresh();
 
-  const dimensions = isRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
+  const dimensions = getDimensionsBySize({ size, visualRefresh: isRefresh });
   const radius = dimensions.outerRadius;
 
   const hasLabels = !(hideTitles && hideDescriptions);
@@ -354,6 +354,8 @@ export default <T extends PieChartProps.Datum>({
         style={{ pointerEvents: 'none' }}
       />
       <Segments
+        height={height}
+        fitHeight={fitHeight}
         pieData={pieData}
         size={size}
         variant={variant}
@@ -367,6 +369,8 @@ export default <T extends PieChartProps.Datum>({
       />
       {hasLabels && (
         <Labels
+          height={height}
+          fitHeight={fitHeight}
           pieData={pieData}
           size={size}
           segmentDescription={segmentDescription}

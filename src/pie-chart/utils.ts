@@ -13,7 +13,7 @@ interface Dimension {
   cornerRadius?: number;
 }
 
-export const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
+const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
     innerRadius: 33,
     outerRadius: 50,
@@ -37,7 +37,7 @@ export const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimens
   },
 };
 
-export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
+const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
     ...dimensionsBySize.small,
     innerRadius: 38,
@@ -54,6 +54,19 @@ export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>,
     cornerRadius: 5,
   },
 };
+
+export function getDimensionsBySize({
+  size,
+  visualRefresh,
+}: {
+  size: NonNullable<PieChartProps['size']> | number;
+  visualRefresh?: boolean;
+}): Dimension {
+  if (typeof size === 'string') {
+    return visualRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
+  }
+  return visualRefresh ? refreshDimensionsBySize.large : dimensionsBySize.large;
+}
 
 export const defaultDetails =
   (i18n: ComponentFormatFunction<'pie-chart'>, i18nStrings: PieChartProps.I18nStrings) =>
