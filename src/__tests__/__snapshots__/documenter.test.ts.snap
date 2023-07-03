@@ -763,7 +763,9 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will make the chart to fit into available height.",
+      "description": "Enabling this property will make the chart fit into available height.
+Use \`height\` property to specify the minimal height of the chart SVG.
+If the chart elements cannot fit the available height the scrollbar is shown.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",
@@ -1929,6 +1931,14 @@ See the usage guidelines for more details.",
       "name": "errorText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Enabling this property will make the chart fit into available height.
+Use \`height\` property to specify the minimal height of the chart SVG.
+If the chart elements cannot fit the available height the scrollbar is shown.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "defaultValue": "500",
@@ -7529,6 +7539,14 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enabling this property will make the chart fit into available height.
+Use \`height\` property to specify the minimal height of the chart SVG.
+If the chart elements cannot fit the available height the scrollbar is shown.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
 If not set explicitly, the component will use a default height that is defined internally.",
@@ -8089,6 +8107,14 @@ See the usage guidelines for more details.",
       "name": "errorText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Enabling this property will make the chart fit into available height.
+Use \`height\` property to specify the minimal height of the chart SVG.
+If the chart elements cannot fit the available height the scrollbar is shown.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "defaultValue": "500",
@@ -9256,6 +9282,14 @@ Each pair has the following properties:
       "name": "errorText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Enabling this property will make the chart fit into available height.
+Use \`height\` property to specify the minimal height of the chart SVG.
+If the chart elements cannot fit the available height the scrollbar is shown.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "defaultValue": "false",
