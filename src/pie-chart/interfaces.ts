@@ -214,6 +214,13 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
    * @i18n
    */
   i18nStrings?: PieChartProps.I18nStrings;
+
+  /**
+   * Enabling this property will make the chart fit into available height.
+   * Use `height` property to specify the minimal height of the chart SVG.
+   * If the chart elements cannot fit the available height the scrollbar is shown.
+   */
+  fitHeight?: boolean;
 }
 
 export namespace PieChartProps {
