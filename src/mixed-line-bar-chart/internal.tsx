@@ -1,11 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
-import InternalBox from '../box/internal';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { usePrevious } from '../internal/hooks/use-previous';
@@ -15,7 +13,6 @@ import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 import InternalChartFilters from './chart-filters';
 import InternalChartLegend from './chart-legend';
 import ChartContainer from './chart-container';
-import cartesianStyles from '../internal/components/cartesian-chart/styles.css.js';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
@@ -25,6 +22,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { isXThreshold, isYThreshold } from './utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { ChartWrapper } from '../internal/components/cartesian-chart/chart-wrapper';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,
@@ -41,6 +39,7 @@ type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   InternalBaseComponentProps;
 
 export default function InternalMixedLineBarChart<T extends number | string | Date>({
+  fitHeight,
   height,
   xScaleType,
   yScaleType,
@@ -205,9 +204,14 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef} onBlur={onBlur}>
-      {showFilters && (
-        <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
+    <ChartWrapper
+      ref={mergedRef}
+      baseProps={baseProps}
+      className={styles.root}
+      fitHeight={fitHeight}
+      height={height}
+      filters={
+        showFilters ? (
           <InternalChartFilters
             series={series}
             visibleSeries={externalVisibleSeries || []}
@@ -216,63 +220,57 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             hideFilter={hideFilter}
             additionalFilters={additionalFilters}
           />
-        </InternalBox>
-      )}
-
-      <div
-        className={clsx(styles.content, {
-          [styles['content--reserve-filter']]: reserveFilterSpace,
-          [styles['content--reserve-legend']]: reserveLegendSpace,
-        })}
-        style={{ minHeight: height }}
-      >
-        <ChartStatusContainer
-          isEmpty={isEmpty}
-          isNoMatch={isNoMatch}
-          showChart={showChart}
-          statusType={statusType}
-          empty={empty}
-          noMatch={noMatch}
-          loadingText={loadingText}
-          errorText={errorText}
-          recoveryText={recoveryText}
-          onRecoveryClick={onRecoveryClick}
-        />
-        {showChart && (
-          <ChartContainer
-            height={height}
-            xScaleType={xScaleType}
-            yScaleType={yScaleType}
-            xDomain={xDomain}
-            yDomain={yDomain}
-            xTickFormatter={i18nStrings?.xTickFormatter}
-            yTickFormatter={i18nStrings?.yTickFormatter}
-            emphasizeBaselineAxis={emphasizeBaselineAxis}
-            stackedBars={stackedBars}
-            horizontalBars={horizontalBars}
-            series={series}
-            visibleSeries={visibleSeries}
-            highlightedSeries={highlightedSeries}
-            onHighlightChange={onHighlightChange}
-            highlightedPoint={highlightedPoint}
-            setHighlightedPoint={setHighlightedPoint}
-            highlightedGroupIndex={highlightedGroupIndex}
-            setHighlightedGroupIndex={setHighlightedGroupIndex}
-            detailPopoverSize={detailPopoverSize}
-            detailPopoverFooter={detailPopoverFooter}
-            xTitle={xTitle}
-            yTitle={yTitle}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            i18nStrings={i18nStrings}
-            plotContainerRef={containerRef}
+        ) : null
+      }
+      chart={
+        <>
+          <ChartStatusContainer
+            isEmpty={isEmpty}
+            isNoMatch={isNoMatch}
+            showChart={showChart}
+            statusType={statusType}
+            empty={empty}
+            noMatch={noMatch}
+            loadingText={loadingText}
+            errorText={errorText}
+            recoveryText={recoveryText}
+            onRecoveryClick={onRecoveryClick}
           />
-        )}
-      </div>
-
-      {showLegend && (
-        <InternalBox margin={{ top: 'm' }}>
+          {showChart && (
+            <ChartContainer
+              height={height}
+              xScaleType={xScaleType}
+              yScaleType={yScaleType}
+              xDomain={xDomain}
+              yDomain={yDomain}
+              xTickFormatter={i18nStrings?.xTickFormatter}
+              yTickFormatter={i18nStrings?.yTickFormatter}
+              emphasizeBaselineAxis={emphasizeBaselineAxis}
+              stackedBars={stackedBars}
+              horizontalBars={horizontalBars}
+              series={series}
+              visibleSeries={visibleSeries}
+              highlightedSeries={highlightedSeries}
+              onHighlightChange={onHighlightChange}
+              highlightedPoint={highlightedPoint}
+              setHighlightedPoint={setHighlightedPoint}
+              highlightedGroupIndex={highlightedGroupIndex}
+              setHighlightedGroupIndex={setHighlightedGroupIndex}
+              detailPopoverSize={detailPopoverSize}
+              detailPopoverFooter={detailPopoverFooter}
+              xTitle={xTitle}
+              yTitle={yTitle}
+              ariaLabel={ariaLabel}
+              ariaLabelledby={ariaLabelledby}
+              ariaDescription={ariaDescription}
+              i18nStrings={i18nStrings}
+              plotContainerRef={containerRef}
+            />
+          )}
+        </>
+      }
+      legend={
+        showLegend ? (
           <InternalChartLegend
             series={series}
             visibleSeries={externalVisibleSeries || []}
@@ -282,8 +280,11 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             ariaLabel={i18nStrings?.legendAriaLabel}
             plotContainerRef={containerRef}
           />
-        </InternalBox>
-      )}
-    </div>
+        ) : null
+      }
+      reserveFilterSpace={!!reserveFilterSpace}
+      reserveLegendSpace={!!reserveLegendSpace}
+      onBlur={onBlur}
+    />
   );
 }
