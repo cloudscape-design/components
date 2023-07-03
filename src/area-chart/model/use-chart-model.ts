@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { AreaChartProps } from '../interfaces';
-import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
+import React, { useEffect, useMemo, useRef, RefObject, MouseEvent, useState } from 'react';
 import { findClosest, circleIndex } from './utils';
 
 import { nodeContains } from '../../internal/utils/dom';
@@ -15,7 +15,7 @@ import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
 import { useReaction } from '../async-store';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver } from '../../internal/hooks/container-queries';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
@@ -55,8 +55,13 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   const plotRef = useRef<ChartPlotRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const verticalMarkerRef = useRef<SVGLineElement>(null);
-  const [plotContainerObserverHeight, plotMeasureRef] = useContainerQuery(e => e.contentBoxHeight);
-  const height = plotContainerObserverHeight ?? explicitHeight;
+
+  const plotMeasureRef = useRef<SVGLineElement>(null);
+  const [height, setHeight] = useState(explicitHeight);
+  useResizeObserver(
+    () => plotMeasureRef.current,
+    entry => setHeight(entry.borderBoxHeight)
+  );
 
   const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
 
@@ -350,19 +355,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
         popoverRef,
       },
     };
-  }, [
-    allSeries,
-    series,
-    xDomain,
-    yDomain,
-    xScaleType,
-    yScaleType,
-    height,
-    width,
-    stableSetVisibleSeries,
-    popoverRef,
-    plotMeasureRef,
-  ]);
+  }, [allSeries, series, xDomain, yDomain, xScaleType, yScaleType, height, width, stableSetVisibleSeries, popoverRef]);
 
   // Notify client when series highlight change.
   useReaction(model.interactions, state => state.highlightedSeries, setHighlightedSeries);
