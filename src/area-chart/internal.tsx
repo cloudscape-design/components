@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { isDevelopment } from '../internal/is-development';
 import { getBaseProps } from '../internal/base-component';
-import InternalBox from '../box/internal';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 
 import AreaChartFilter from './elements/area-chart-filter';
@@ -13,7 +12,6 @@ import AreaChartLegend from './elements/area-chart-legend';
 import { AreaChartProps } from './interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import ChartContainer from './chart-container';
-import cartesianStyles from '../internal/components/cartesian-chart/styles.css.js';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import useChartModel from './model/use-chart-model';
@@ -24,6 +22,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { ChartWrapper } from '../internal/components/cartesian-chart/chart-wrapper';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -33,7 +32,7 @@ type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
 
 export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   fitHeight,
-  height: externalHeight,
+  height,
   xScaleType,
   yScaleType,
   xDomain,
@@ -103,7 +102,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     yDomain,
     xScaleType,
     yScaleType,
-    height: fitHeight ? 0 : externalHeight,
+    height: fitHeight ? 0 : height,
     width,
     popoverRef,
   });
@@ -133,41 +132,33 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
   return (
-    <div
-      {...baseProps}
-      className={clsx(baseProps.className, styles.root, fitHeight && styles['root--fit-height'])}
+    <ChartWrapper
       ref={mergedRef}
-      onBlur={onBlur}
-    >
-      <div className={clsx(styles.wrapper, fitHeight && styles['wrapper--fit-height'])}>
-        {showFilters && (
-          <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
-            <InternalSpaceBetween
-              size="l"
-              direction="horizontal"
-              className={clsx({ [styles['has-default-filter']]: !hideFilter })}
-            >
-              {!hideFilter && (
-                <AreaChartFilter
-                  model={model}
-                  filterLabel={i18nStrings.filterLabel}
-                  filterPlaceholder={i18nStrings.filterPlaceholder}
-                  filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
-                />
-              )}
-              {additionalFilters}
-            </InternalSpaceBetween>
-          </InternalBox>
-        )}
-
-        <div
-          className={clsx(styles.content, {
-            [styles['content--reserve-filter']]: reserveFilterSpace,
-            [styles['content--reserve-legend']]: reserveLegendSpace,
-            [styles['content--fit-height']]: fitHeight,
-          })}
-          style={{ minHeight: externalHeight }}
-        >
+      baseProps={baseProps}
+      className={styles.root}
+      fitHeight={fitHeight}
+      height={height}
+      filters={
+        showFilters ? (
+          <InternalSpaceBetween
+            size="l"
+            direction="horizontal"
+            className={clsx({ [styles['has-default-filter']]: !hideFilter })}
+          >
+            {!hideFilter && (
+              <AreaChartFilter
+                model={model}
+                filterLabel={i18nStrings.filterLabel}
+                filterPlaceholder={i18nStrings.filterPlaceholder}
+                filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
+              />
+            )}
+            {additionalFilters}
+          </InternalSpaceBetween>
+        ) : null
+      }
+      chart={
+        <>
           <ChartStatusContainer
             isEmpty={isEmpty}
             isNoMatch={isNoMatch}
@@ -195,19 +186,21 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
               fitHeight={fitHeight}
             />
           )}
-        </div>
-
-        {showLegend && (
-          <InternalBox margin={{ top: 'm' }}>
-            <AreaChartLegend
-              plotContainerRef={containerRef}
-              model={model}
-              legendTitle={legendTitle}
-              ariaLabel={i18nStrings.legendAriaLabel}
-            />
-          </InternalBox>
-        )}
-      </div>
-    </div>
+        </>
+      }
+      legend={
+        showLegend ? (
+          <AreaChartLegend
+            plotContainerRef={containerRef}
+            model={model}
+            legendTitle={legendTitle}
+            ariaLabel={i18nStrings.legendAriaLabel}
+          />
+        ) : null
+      }
+      reserveFilterSpace={!!reserveFilterSpace}
+      reserveLegendSpace={!!reserveLegendSpace}
+      onBlur={onBlur}
+    />
   );
 }
