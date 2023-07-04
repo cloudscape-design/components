@@ -112,6 +112,11 @@
   &-variant-h2,
   &-variant-h3 {
     padding: awsui.$space-scaled-xxs 0;
+    &-refresh {
+      &.root-has-description {
+        padding-bottom: awsui.$space-scaled-xxxs;
+      }
+    }
   }
   &-variant-h2 {
     font-size: awsui.$font-heading-l-size;
