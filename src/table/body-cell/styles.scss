@@ -277,6 +277,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
             'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
           )
         );
+        &.sticky-cell {
+          position: sticky;
+        }
       }
       &:hover {
         position: relative;
@@ -303,6 +306,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         &.body-cell-first-row:not(.body-cell-selected) {
           padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
           padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+        }
+        &.sticky-cell {
+          position: sticky;
         }
       }
     }
