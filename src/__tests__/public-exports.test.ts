@@ -9,8 +9,9 @@ const packageJson = require('../../lib/components/package.json');
 
 test('all exports declarations resolve to a file', () => {
   for (const exportPath of Object.values<string>(packageJson.exports)) {
-    // context export is a folder, cannot be resolved
-    if (exportPath === './internal/context/') {
+    // this path is a hack, does not resolve to a
+    // file
+    if (exportPath === './i18n/messages') {
       continue;
     }
     expect(() => require.resolve(exportPath, { paths: [path.join(__dirname, '../../lib/components')] })).not.toThrow();

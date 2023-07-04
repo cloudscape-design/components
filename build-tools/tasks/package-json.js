@@ -46,7 +46,9 @@ function getComponentsExports() {
     result[`./i18n/messages/${subset}.${locale}`] = `./i18n/messages/${subset}.${locale}.js`;
     result[`./i18n/messages/${subset}.${locale}.json`] = `./i18n/messages/${subset}.${locale}.json`;
   }
-
+  // hack for webpack https://github.com/webpack/webpack/issues/13865
+  // this path does not need to resolve anywhere, but it needs to be allowed
+  result[`./i18n/messages`] = { webpack: 'nowhere' };
   // i18n beta specific imports (delete after people switch over)
   result['./internal/i18n'] = './internal/i18n/index.js';
   result[`./internal/i18n/messages/all.all`] = `./internal/i18n/messages/all.all.js`;
