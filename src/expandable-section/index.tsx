@@ -15,7 +15,7 @@ export default function ExpandableSection({ variant = 'default', ...props }: Exp
 
   const expandableSection = <InternalExpandableSection variant={variant} {...props} {...baseComponentProps} />;
 
-  if (variant === 'container') {
+  if (variant === 'container' || variant === 'stacked') {
     return <AnalyticsFunnelSubStep>{expandableSection}</AnalyticsFunnelSubStep>;
   } else {
     return expandableSection;
