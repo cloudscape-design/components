@@ -4,8 +4,8 @@ import React, { memo, useMemo } from 'react';
 
 import { AreaChartProps } from '../interfaces';
 import ChartLegend from '../../internal/components/chart-legend';
-import { useSelector } from '../model/async-store';
 import { ChartModel } from '../model';
+import { useSelector } from '../async-store';
 
 export default memo(AreaChartLegend) as typeof AreaChartLegend;
 

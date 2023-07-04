@@ -36,8 +36,7 @@ function TriggerButton(
       ref={ref as React.Ref<HTMLButtonElement>}
       type="button"
     >
-      {iconName && !iconSvg && <Icon name={iconName} />}
-      {iconSvg}
+      <Icon name={iconName} svg={iconSvg} />
     </button>
   );
 }

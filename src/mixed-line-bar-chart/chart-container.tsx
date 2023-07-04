@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { nodeContains } from '../internal/utils/dom';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 import { getXTickCount, getYTickCount, createXTicks, createYTicks } from '../internal/components/cartesian-chart/ticks';
@@ -33,6 +32,7 @@ import styles from './styles.css.js';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 const LEFT_LABELS_MARGIN = 16;
 const BOTTOM_LABELS_OFFSET = 12;
@@ -45,6 +45,7 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
 
   height: number;
   detailPopoverSize: MixedLineBarChartProps<T>['detailPopoverSize'];
+  detailPopoverFooter: MixedLineBarChartProps<T>['detailPopoverFooter'];
 
   xScaleType: ScaleType;
   yScaleType: 'linear' | 'log';
@@ -87,6 +88,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   setHighlightedPoint,
   highlightedGroupIndex,
   setHighlightedGroupIndex,
+  detailPopoverFooter,
   detailPopoverSize = 'medium',
   stackedBars = false,
   horizontalBars = false,
@@ -342,7 +344,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (
       blurTarget === null ||
       !(blurTarget instanceof Element) ||
-      !nodeContains(containerRefObject.current, blurTarget)
+      !nodeBelongs(containerRefObject.current, blurTarget)
     ) {
       setHighlightedPoint(null);
       setVerticalMarkerX(null);
@@ -420,6 +422,11 @@ export default function ChartContainer<T extends ChartDataTypes>({
     // Otherwise - show all visible series details.
     return formatHighlighted(highlightedX, visibleSeries, xTickFormatter);
   }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter]);
+
+  const detailPopoverFooterContent = useMemo(
+    () => (detailPopoverFooter && highlightedX ? detailPopoverFooter(highlightedX) : null),
+    [detailPopoverFooter, highlightedX]
+  );
 
   const activeAriaLabel = useMemo(
     () =>
@@ -564,6 +571,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           highlightDetails={highlightDetails}
           onDismiss={onPopoverDismiss}
           size={detailPopoverSize}
+          footer={detailPopoverFooterContent}
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
         />

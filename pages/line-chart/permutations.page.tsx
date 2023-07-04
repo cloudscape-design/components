@@ -235,9 +235,82 @@ const stringPermutations = createPermutations<LineChartProps<string>>([
   },
 ]);
 
+const overflowPermutations = createPermutations<LineChartProps<Date>>([
+  // With some values at the edges and some values overflowing the graph
+  {
+    i18nStrings: [
+      {
+        ...commonProps.i18nStrings,
+        xTickFormatter: e =>
+          e
+            .toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              hour12: !1,
+            })
+            .split(',')
+            .join('\n'),
+        yTickFormatter: function l(e) {
+          return Math.abs(e) >= 1e9
+            ? (e / 1e9).toFixed(1).replace(/\.0$/, '') + 'G'
+            : Math.abs(e) >= 1e6
+            ? (e / 1e6).toFixed(1).replace(/\.0$/, '') + 'M'
+            : Math.abs(e) >= 1e3
+            ? (e / 1e3).toFixed(1).replace(/\.0$/, '') + 'K'
+            : e.toFixed(2);
+        },
+      },
+    ],
+    ariaLabel: ['Test chart'],
+    height: [200],
+    series: [
+      [
+        {
+          title: 'Site 1',
+          type: 'line',
+          data: [
+            { x: new Date(1601017200000), y: 58020 },
+            { x: new Date(1601018100000), y: 102402 },
+            { x: new Date(1601019000000), y: 500000 },
+            { x: new Date(1601019900000), y: 500000 },
+            { x: new Date(1601020800000), y: 500000 },
+            { x: new Date(1601021700000), y: 264286 },
+            { x: new Date(1601022600000), y: 0 },
+            { x: new Date(1601023500000), y: 0 },
+            { x: new Date(1601024400000), y: 289210 },
+            { x: new Date(1601025300000), y: 600000 },
+            { x: new Date(1601026200000), y: 294020 },
+            { x: new Date(1601027100000), y: 385975 },
+            { x: new Date(1601028000000), y: -100000 },
+            { x: new Date(1601028900000), y: 490447 },
+          ],
+          valueFormatter: function l(e) {
+            return Math.abs(e) >= 1e9
+              ? (e / 1e9).toFixed(1).replace(/\.0$/, '') + 'G'
+              : Math.abs(e) >= 1e6
+              ? (e / 1e6).toFixed(1).replace(/\.0$/, '') + 'M'
+              : Math.abs(e) >= 1e3
+              ? (e / 1e3).toFixed(1).replace(/\.0$/, '') + 'K'
+              : e.toFixed(2);
+          },
+        },
+      ],
+    ],
+    xScaleType: ['time'],
+    xDomain: [[new Date(1601017200000), new Date(1601028900000)]],
+    yDomain: [[0, 500000]],
+    xTitle: ['Time (UTC)'],
+    yTitle: ['Bytes transferred'],
+    hideFilter: [true],
+    hideLegend: [true],
+  },
+]);
+
 /* eslint-enable react/jsx-key */
 
-const permutations = [...numericPermutations, ...timePermutations, ...stringPermutations];
+const permutations = [...numericPermutations, ...timePermutations, ...stringPermutations, ...overflowPermutations];
 
 export default function () {
   return (

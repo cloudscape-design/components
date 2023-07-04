@@ -1,49 +1,59 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback } from 'react';
-import { SizeControlProps } from '../interfaces';
 import styles from '../styles.css.js';
+import { SizeControlProps } from './interfaces';
 
 export const usePointerEvents = ({
   position,
-  splitPanelRef,
+  panelRef,
   handleRef,
   setSidePanelWidth,
   setBottomPanelHeight,
+  hasTransitions = false,
 }: SizeControlProps) => {
   const onDocumentPointerMove = useCallback(
     (event: PointerEvent) => {
-      if (!splitPanelRef || !splitPanelRef.current || !handleRef || !handleRef.current) {
+      if (!panelRef || !panelRef.current || !handleRef || !handleRef.current) {
         return;
       }
 
+      panelRef.current.classList.remove(styles['with-motion']);
+
       if (position === 'side') {
-        const mouseClientX = event.clientX;
+        const mouseClientX = event.clientX || 0;
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = handleRef.current.getBoundingClientRect().width / 2;
-        const width = splitPanelRef.current.getBoundingClientRect().right - mouseClientX + handleOffset;
+        const width = panelRef.current.getBoundingClientRect().right - mouseClientX + handleOffset;
 
         setSidePanelWidth(width);
       } else {
-        const mouseClientY = event.clientY;
+        const mouseClientY = event.clientY || 0;
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = handleRef.current.getBoundingClientRect().height / 2;
-        const height = splitPanelRef.current.getBoundingClientRect().bottom - mouseClientY + handleOffset;
+        const height = panelRef.current.getBoundingClientRect().bottom - mouseClientY + handleOffset;
 
         setBottomPanelHeight(height);
       }
     },
-    [position, splitPanelRef, handleRef, setSidePanelWidth, setBottomPanelHeight]
+    [position, panelRef, handleRef, setSidePanelWidth, setBottomPanelHeight]
   );
 
   const onDocumentPointerUp = useCallback(() => {
+    if (!panelRef || !panelRef.current) {
+      return;
+    }
+
+    if (hasTransitions) {
+      panelRef.current.classList.add(styles['with-motion']);
+    }
     document.body.classList.remove(styles['resize-active']);
     document.body.classList.remove(styles[`resize-${position}`]);
     document.removeEventListener('pointerup', onDocumentPointerUp);
     document.removeEventListener('pointermove', onDocumentPointerMove);
-  }, [onDocumentPointerMove, position]);
+  }, [panelRef, onDocumentPointerMove, position, hasTransitions]);
 
   const onSliderPointerDown = useCallback(() => {
     document.body.classList.add(styles['resize-active']);

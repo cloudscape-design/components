@@ -1,0 +1,27 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.sticky-scrollbar {
+  height: 15px;
+  position: sticky;
+  display: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  bottom: 0;
+  width: 100%;
+  z-index: 800; // Higher than sticky-columns
+
+  &-content {
+    height: 15px;
+  }
+  &-visible {
+    display: block;
+  }
+  &-native-invisible {
+    // Native scrollbar does not take space when it is not always invisible
+    // For example it is set as "show when scrolling"
+    margin-top: -15px;
+  }
+}

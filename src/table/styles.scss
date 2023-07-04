@@ -149,28 +149,6 @@ filter search icon.
   }
 }
 
-.sticky-scrollbar {
-  height: 15px;
-  position: sticky;
-  display: none;
-  overflow-x: auto;
-  overflow-y: hidden;
-  bottom: 0;
-  width: 100%;
-
-  &-content {
-    height: 15px;
-  }
-  &-visible {
-    display: block;
-  }
-  &-native-invisible {
-    // Native scrollbar does not take space when it is not always invisible
-    // For example it is set as "show when scrolling"
-    margin-top: -15px;
-  }
-}
-
 /*
 The dynamic height dark header needs a background that will cover
 the default white background of the container component.
@@ -233,6 +211,18 @@ the default white background of the container component.
 
 .footer {
   padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
+  &-with-pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-s;
+  }
+  &-pagination {
+    // Align the footer pagination on the right
+    margin-left: auto;
+  }
 }
 
 .thead-active,

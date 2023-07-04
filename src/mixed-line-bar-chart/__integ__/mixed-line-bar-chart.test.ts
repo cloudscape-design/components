@@ -158,7 +158,7 @@ describe('Series', () => {
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Oranges');
 
       // Tab to the next chart
-      await page.keys(['Tab', 'Tab', 'Tab', 'ArrowRight']);
+      await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'ArrowRight']);
       await expect(page.getText(popoverHeaderSelector(groupedBarWrapper))).resolves.toContain('Apples');
       await expect(page.getText(popoverContentSelector(groupedBarWrapper))).resolves.toContain('John\n5');
       await expect(page.getText(popoverContentSelector(groupedBarWrapper))).resolves.toContain('Jane\n2');

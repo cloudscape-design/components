@@ -110,52 +110,54 @@ export default function MediaContainers() {
     <article>
       <h1>Media containers</h1>
 
-      <ScreenshotArea>
-        <SpaceBetween size="l">
-          <SettingsForm />
-          <ContainerPlayground
-            header={
-              <Header
-                variant="h2"
-                headingTagOverride="h1"
-                description={
-                  <>
-                    Some additional text{' '}
-                    <Link fontSize="inherit" variant="primary">
-                      with a link
-                    </Link>
-                    .
-                  </>
-                }
-                info={<Link variant="info">Info</Link>}
-              >
-                <Link fontSize="heading-m" href="" variant="primary">
-                  Secondary link
-                </Link>
-              </Header>
-            }
-            footer={<Link>Learn more</Link>}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
-            tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
-            tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
-          </ContainerPlayground>
-          <ContainerPlayground header="ContainerPlayground plain text in header">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
-            tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
-            tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
-          </ContainerPlayground>
-          <div className={styles.grid}>
+      <SpaceBetween size="l">
+        <SettingsForm />
+        <ScreenshotArea>
+          <SpaceBetween size="l">
             <ContainerPlayground
-              fitHeight={true}
-              header={<Header variant="h2">Fixed Height Container</Header>}
-              footer="Footer"
+              header={
+                <Header
+                  variant="h2"
+                  headingTagOverride="h1"
+                  description={
+                    <>
+                      Some additional text{' '}
+                      <Link fontSize="inherit" variant="primary">
+                        with a link
+                      </Link>
+                      .
+                    </>
+                  }
+                  info={<Link variant="info">Info</Link>}
+                >
+                  <Link fontSize="heading-m" href="" variant="primary">
+                    Secondary link
+                  </Link>
+                </Header>
+              }
+              footer={<Link>Learn more</Link>}
             >
-              Content area takes the available vertical space, fixed height of 400px
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
+              tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam
+              dui tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
             </ContainerPlayground>
-          </div>
-        </SpaceBetween>
-      </ScreenshotArea>
+            <ContainerPlayground header="ContainerPlayground plain text in header">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
+              tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam
+              dui tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
+            </ContainerPlayground>
+            <div className={styles.grid}>
+              <ContainerPlayground
+                fitHeight={true}
+                header={<Header variant="h2">Fixed Height Container</Header>}
+                footer="Footer"
+              >
+                Content area takes the available vertical space, fixed height of 400px
+              </ContainerPlayground>
+            </div>
+          </SpaceBetween>
+        </ScreenshotArea>
+      </SpaceBetween>
     </article>
   );
 }

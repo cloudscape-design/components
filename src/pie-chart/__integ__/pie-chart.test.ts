@@ -90,8 +90,8 @@ describe('Segments', () => {
       // Now focused on the first segment
       await page.waitForVisible(highlightedSegmentSelector);
 
-      // Tab out of the chart and out of the legend
-      await page.keys(['Tab', 'Tab']);
+      // Tab out of the chart (including the action in the popover) and out of the legend
+      await page.keys(['Tab', 'Tab', 'Tab']);
       await expect(page.isDisplayed(highlightedSegmentSelector)).resolves.toBe(false);
     })
   );

@@ -13,7 +13,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<ExpandableSectionProps>([
   {
-    expanded: [true, false],
+    defaultExpanded: [true, false],
     variant: ['default'],
     headerText: [
       'Default Example Header',
@@ -28,7 +28,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     ],
   },
   {
-    expanded: [true],
+    defaultExpanded: [true],
     variant: ['footer'],
     headerText: [
       'Footer Example Header',
@@ -40,7 +40,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     ],
   },
   {
-    expanded: [true, false],
+    defaultExpanded: [true, false],
     variant: ['container'],
     headerText: [
       'Container example header',
@@ -53,7 +53,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     ],
   },
   {
-    expanded: [true],
+    defaultExpanded: [true],
     variant: ['container'],
     headerText: [
       'Container example header',
@@ -66,7 +66,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     headerCounter: [undefined, '(0)'],
   },
   {
-    expanded: [true],
+    defaultExpanded: [true],
     variant: ['container'],
     headerText: ['Container example header'],
     children: [
@@ -82,7 +82,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     disableContentPaddings: [false],
   },
   {
-    expanded: [true],
+    defaultExpanded: [true],
     variant: ['container'],
     // keep on variant='container' with header for screenshot test to check no style breaks
     header: [<Header variant="h2">Container example header</Header>],
@@ -99,7 +99,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     disableContentPaddings: [true],
   },
   {
-    expanded: [true, false],
+    defaultExpanded: [true, false],
     variant: ['navigation'],
     headerText: [
       'Navigation Example Header',
@@ -111,18 +111,31 @@ const permutations = createPermutations<ExpandableSectionProps>([
     children: ['Navigation content'],
   },
   {
-    expanded: [true],
+    defaultExpanded: [true],
     headerAriaLabel: ['Header with ARIA label (ARIA)'],
     variant: ['default', 'footer', 'navigation'],
     headerText: ['Header with ARIA label'],
     children: ['Sample content'],
   },
   {
-    expanded: [false],
+    defaultExpanded: [false],
     variant: ['default', 'footer', 'navigation'],
     headerText: ['Custom heading tag override'],
     children: ['Sample content'],
     headingTagOverride: [undefined, 'h2', 'h3'],
+  },
+  {
+    variant: ['default', 'container', 'footer'],
+    headerText: ['With description'],
+    children: ['Sample content'],
+    headerDescription: ['Sample description'],
+    defaultExpanded: [false, true],
+  },
+  {
+    defaultExpanded: [false],
+    variant: ['default', 'footer'],
+    header: ['Deprecated header prop'],
+    children: ['Sample content'],
   },
 ]);
 /* eslint-enable react/jsx-key */

@@ -63,7 +63,7 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles['drawers-mobile-triggers-container']);
   }
 
-  findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] | null {
+  findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
     return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
 

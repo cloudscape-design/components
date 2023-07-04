@@ -723,6 +723,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -1088,7 +1105,6 @@ A maximum of four fields are supported.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
-      "i18nTag": true,
       "inlineType": Object {
         "name": "AttributeEditorProps.I18nStrings",
         "properties": Array [
@@ -1151,6 +1167,7 @@ The display of a row is handled by the \`definition\` property.",
     },
     Object {
       "description": "Specifies the text that's displayed in the remove button.",
+      "i18nTag": true,
       "name": "removeButtonText",
       "optional": true,
       "type": "string",
@@ -1858,6 +1875,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -5856,7 +5890,7 @@ Behaves similar to the Header component counter.",
       "type": "string",
     },
     Object {
-      "description": "Supplementary text below the heading. Use with the container variant.",
+      "description": "Supplementary text below the heading. Use with the container, default or footer variants.",
       "name": "headerDescription",
       "optional": true,
       "type": "string",
@@ -5894,7 +5928,8 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
  * \`footer\` - Use this variant in container footers.
  * \`container\` - Use this variant in a detail page alongside other containers.
  * \`navigation\` - Use this variant in the navigation panel with anchors and custom styled content.
-   It doesn't have any default styles.",
+   It doesn't have any default styles.
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
       "inlineType": Object {
         "name": "ExpandableSectionProps.Variant",
         "type": "union",
@@ -5903,11 +5938,13 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
           "footer",
           "container",
           "navigation",
+          "stacked",
         ],
       },
       "name": "variant",
       "optional": true,
       "type": "string",
+      "visualRefreshTag": "\`stacked\` variant",
     },
   ],
   "regions": Array [
@@ -6190,7 +6227,7 @@ If \`stackItems\` is set to \`true\`, it should also contain:
 * \`warningIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`warning\`.
 * \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
 * \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
-* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).",
+* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`in-progress\` or with \`loading\` set to \`true\`.",
       "i18nTag": true,
       "inlineType": Object {
         "name": "FlashbarProps.I18nStrings",
@@ -7438,6 +7475,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -7981,6 +8035,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -9139,6 +9210,23 @@ Each pair has the following properties:
       "name": "detailPopoverContent",
       "optional": true,
       "type": "PieChartProps.DetailPopoverContentFunction<T>",
+    },
+    Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "PieChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "segment",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "PieChartProps.DetailPopoverFooter<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -13028,9 +13116,44 @@ period of time. If you want a delayed handler to invoke a filtering API call, yo
   "name": "TextFilter",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
       "optional": true,
       "type": "string",
     },
