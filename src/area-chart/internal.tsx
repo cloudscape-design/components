@@ -21,7 +21,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';
-import { ChartWrapper } from '../internal/components/cartesian-chart/chart-wrapper';
+import { ChartWrapper } from '../internal/components/chart-wrapper';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -134,7 +134,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
       ref={mergedRef}
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
-      chartMinHeight={height}
+      contentMinHeight={height}
       defaultFilter={
         showFilters && !hideFilter ? (
           <AreaChartFilter

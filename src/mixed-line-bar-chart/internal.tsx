@@ -23,7 +23,7 @@ import { SomeRequired } from '../internal/types';
 import { chartLegendMap, isXThreshold, isYThreshold } from './utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import Filter, { ChartFilterProps } from '../internal/components/chart-filter';
-import { ChartWrapper } from '../internal/components/cartesian-chart/chart-wrapper';
+import { ChartWrapper } from '../internal/components/chart-wrapper';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,
@@ -219,7 +219,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
       ref={mergedRef}
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
-      chartMinHeight={height}
+      contentMinHeight={height}
       defaultFilter={
         showFilters && !hideFilter ? (
           <Filter

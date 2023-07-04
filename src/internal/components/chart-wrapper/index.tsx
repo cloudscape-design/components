@@ -5,12 +5,11 @@ import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
 import styles from './styles.css.js';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import InternalBox from '../../../box/internal';
-import InternalSpaceBetween from '../../../space-between/internal';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
+import InternalBox from '../../../box/internal.js';
+import InternalSpaceBetween from '../../../space-between/internal.js';
 
 interface ChartWrapperProps extends BaseComponentProps {
-  chartMinHeight: number;
   defaultFilter: React.ReactNode;
   additionalFilters: React.ReactNode;
   reserveFilterSpace: boolean;
@@ -19,12 +18,13 @@ interface ChartWrapperProps extends BaseComponentProps {
   chart: React.ReactNode;
   legend: React.ReactNode;
   onBlur?(event: React.FocusEvent): void;
+  contentClassName?: string;
+  contentMinHeight?: number;
 }
 
 export const ChartWrapper = forwardRef(
   (
     {
-      chartMinHeight,
       defaultFilter,
       additionalFilters,
       reserveFilterSpace,
@@ -33,6 +33,8 @@ export const ChartWrapper = forwardRef(
       chart,
       legend,
       onBlur,
+      contentClassName,
+      contentMinHeight,
       ...props
     }: ChartWrapperProps,
     ref: React.Ref<HTMLDivElement>
@@ -54,11 +56,11 @@ export const ChartWrapper = forwardRef(
         )}
 
         <div
-          className={clsx(styles.content, {
+          className={clsx(styles.content, contentClassName, {
             [styles['content--reserve-filter']]: reserveFilterSpace,
             [styles['content--reserve-legend']]: reserveLegendSpace,
           })}
-          style={{ minHeight: chartMinHeight }}
+          style={{ minHeight: contentMinHeight }}
         >
           {chartStatus}
           {chart}
