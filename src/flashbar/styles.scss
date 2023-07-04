@@ -137,7 +137,10 @@
 }
 
 .flash-type-info,
-.flash-type-in-progress,
+.flash-type-in-progress {
+  background-color: awsui.$color-background-notification-blue;
+}
+
 .flash-type-warning {
   color: awsui.$color-text-notification-yellow;
   background-color: awsui.$color-background-notification-yellow;
