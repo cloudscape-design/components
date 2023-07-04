@@ -187,6 +187,29 @@ export function useStickyCellStyles({
       cellRef.current = node;
       setCell(columnId, node);
 
+      // Update cell styles imperatively to avoid unnecessary re-renders.
+      const selector = (state: StickyColumnsState) => state.cellState[columnId];
+
+      const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
+        if (isCellStatesEqual(state, prev)) {
+          return;
+        }
+
+        const className = getClassName(state);
+        const cellElement = cellRef.current;
+        if (cellElement) {
+          Object.keys(className).forEach(key => {
+            if (className[key]) {
+              cellElement.classList.add(key);
+            } else {
+              cellElement.classList.remove(key);
+            }
+          });
+          cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
+          cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
+        }
+      };
+
       // If the node is not null (i.e., the table cell is being mounted or updated, not unmounted),
       // set up a new subscription to the store's updates
       if (node) {
@@ -196,32 +219,8 @@ export function useStickyCellStyles({
       }
     },
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [columnId, setCell]
+    [columnId, setCell, stickyColumns.store, getClassName]
   );
-
-  // Update cell styles imperatively to avoid unnecessary re-renders.
-  const selector = (state: StickyColumnsState) => state.cellState[columnId];
-
-  const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
-    if (isCellStatesEqual(state, prev)) {
-      return;
-    }
-
-    const className = getClassName(state);
-    const cellElement = cellRef.current;
-    if (cellElement) {
-      Object.keys(className).forEach(key => {
-        if (className[key]) {
-          cellElement.classList.add(key);
-        } else {
-          cellElement.classList.remove(key);
-        }
-      });
-      cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
-      cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
-    }
-  };
 
   // Provide cell styles as props so that a re-render won't cause invalidation.
   const cellStyles = stickyColumns.store.get().cellState[columnId];
