@@ -219,7 +219,9 @@ export function useStickyCellStyles({
       }
     },
 
-    [columnId, setCell, stickyColumns.store, getClassName]
+    // getClassName is expected to be pure
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [columnId, setCell, stickyColumns.store]
   );
 
   // Provide cell styles as props so that a re-render won't cause invalidation.
