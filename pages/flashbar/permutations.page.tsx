@@ -73,10 +73,16 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     content: ['content'],
   },
   {
-    header: ['header'],
+    type: ['success', 'error', 'warning', 'info', 'in-progress'],
+    header: ['With expandable section inside'],
     content: [
       <ExpandableSection defaultExpanded={true} headerText="Details">
-        Expandable Section content
+        <div>
+          <p>Expandable Section content with a button </p>
+          <Button href="#" iconName="external">
+            Click me
+          </Button>
+        </div>
       </ExpandableSection>,
     ],
   },
