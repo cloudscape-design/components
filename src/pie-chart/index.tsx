@@ -142,10 +142,11 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
     return { pieData, dataSum };
   }, [visibleData]);
 
+  const hasNoData = !externalData || externalData.length === 0;
   const { isEmpty, showChart } = getChartStatus({ externalData: data, visibleData: pieData, statusType });
   // Pie charts have a special condition for empty/noMatch due to how zero-value segments are handled.
   const isNoMatch = isEmpty && visibleData.length !== data.length;
-  const showFilters = statusType === 'finished' && !isEmpty && (additionalFilters || !hideFilter);
+  const showFilters = statusType === 'finished' && !hasNoData && (additionalFilters || !hideFilter);
   const reserveLegendSpace = !showChart && !hideLegend;
   const reserveFilterSpace = statusType !== 'finished' && !isNoMatch && (!hideFilter || additionalFilters);
   const hasLabels = !(hideTitles && hideDescriptions);
@@ -209,7 +210,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
       }
       legend={
         !hideLegend &&
-        !isEmpty &&
+        !hasNoData &&
         statusType === 'finished' && (
           <Legend<T>
             series={legendItems}

@@ -42,7 +42,7 @@ export const ChartWrapper = forwardRef(
     const baseProps = getBaseProps(props);
     return (
       <div ref={ref} {...baseProps} className={clsx(baseProps.className, styles.wrapper)} onBlur={onBlur}>
-        {defaultFilter && additionalFilters && (
+        {(defaultFilter || additionalFilters) && (
           <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
             <InternalSpaceBetween
               size="l"
