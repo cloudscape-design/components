@@ -156,7 +156,7 @@ explicitly set in script.
   &.has-sticky-notifications.has-sticky-background {
     #{custom-props.$offsetTopWithNotifications}: calc(
       var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
-        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-scaled-s}
+        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-static-s}
     );
   }
   /* stylelint-enable scss/operator-no-newline-after */
