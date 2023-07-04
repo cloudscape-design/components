@@ -8,8 +8,6 @@ import { FlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
-import { getVisualContextClassname } from '../internal/components/visual-context';
-
 import styles from './styles.css.js';
 import { counterTypes, getFlashTypeCount, getVisibleCollapsedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
@@ -245,10 +243,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     ? clsx(
                         styles['flash-list-item'],
                         !isFlashbarStackExpanded && styles.item,
-                        !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only'],
-                        getVisualContextClassname(
-                          item.type === 'warning' && !item.loading ? 'flashbar-warning' : 'flashbar'
-                        )
+                        !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
                       )
                     : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
                 }
