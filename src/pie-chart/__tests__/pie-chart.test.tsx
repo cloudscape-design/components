@@ -7,6 +7,7 @@ import createWrapper, { ElementWrapper } from '../../../lib/components/test-util
 import { PieChartWrapper } from '../../../lib/components/test-utils/dom';
 import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
 import styles from '../../../lib/components/pie-chart/styles.css.js';
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import * as colors from '../../../lib/design-tokens';
 import { act } from 'react-dom/test-utils';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
@@ -704,8 +705,8 @@ describe('Inner content', () => {
 });
 
 describe('Reserve space', () => {
-  const reserveFilterClass = styles['content--reserve-filter'];
-  const reserveLegendClass = styles['content--reserve-legend'];
+  const reserveFilterClass = chartWrapperStyles['content--reserve-filter'];
+  const reserveLegendClass = chartWrapperStyles['content--reserve-legend'];
 
   test('by applying the correct size class', () => {
     const { wrapper, rerender } = renderPieChart(<PieChart data={defaultData} />);
