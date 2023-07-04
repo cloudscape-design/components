@@ -19,7 +19,12 @@ import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-fun
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { DATA_ATTR_FUNNEL_VALUE, getFunnelValueSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_FUNNEL_VALUE,
+  getFunnelValueSelector,
+  getNameFromSelector,
+  getSubStepAllSelector,
+} from '../internal/analytics/selectors';
 
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
@@ -65,21 +70,31 @@ const InternalLink = React.forwardRef(
 
     const fireFunnelEvent = (funnelInteractionId: string) => {
       if (variant === 'info') {
+        const stepName = getNameFromSelector(stepNameSelector);
+        const subStepName = getNameFromSelector(subStepNameSelector);
+
         FunnelMetrics.helpPanelInteracted({
           funnelInteractionId,
           stepNumber,
+          stepName,
           stepNameSelector,
           subStepSelector,
+          subStepName,
           subStepNameSelector,
           elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),
         });
       } else if (external) {
+        const stepName = getNameFromSelector(stepNameSelector);
+        const subStepName = getNameFromSelector(subStepNameSelector);
+
         FunnelMetrics.externalLinkInteracted({
           funnelInteractionId,
           stepNumber,
+          stepName,
           stepNameSelector,
           subStepSelector,
+          subStepName,
           subStepNameSelector,
           elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),

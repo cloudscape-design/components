@@ -17,7 +17,7 @@ import { useInternalI18n } from '../internal/i18n/context';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector } from '../internal/analytics/selectors';
+import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
 
 import WizardForm from './wizard-form';
 import WizardNavigation from './wizard-navigation';
@@ -63,11 +63,15 @@ export default function InternalWizard({
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
     if (funnelInteractionId) {
+      const stepNameSelector = `.${styles['form-header-component-wrapper']}`;
+      const stepName = getNameFromSelector(stepNameSelector);
+
       FunnelMetrics.funnelStepNavigation({
         navigationType: reason,
         funnelInteractionId,
         stepNumber: actualActiveStepIndex + 1,
-        stepNameSelector: `.${styles['form-header-component-wrapper']}`,
+        stepName,
+        stepNameSelector,
         destinationStepNumber: requestedStepIndex + 1,
         subStepAllSelector: getSubStepAllSelector(),
       });
