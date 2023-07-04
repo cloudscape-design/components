@@ -19,6 +19,11 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   // Dismiss button
   colorTextInteractiveInvertedDefault: '{colorGrey600}',
   colorTextInteractiveInvertedHover: '{colorGrey900}',
+
+  // Prevent expandable section header from changing color on hover
+  colorTextExpandableSectionHover: '{colorTextExpandableSectionDefault}',
+  // Affects bottom border of expandable section header
+  colorBorderDividerDefault: '{colorTextButtonNormalDefault}',
 };
 
 const tokens: StyleDictionary.ColorsDictionary = {
