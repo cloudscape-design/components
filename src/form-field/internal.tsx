@@ -24,6 +24,7 @@ import {
   DATA_ATTR_FIELD_ERROR,
   DATA_ATTR_FIELD_LABEL,
   getFieldSlotSeletor,
+  getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
 
@@ -119,11 +120,16 @@ export default function InternalFormField({
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
+      const stepName = getNameFromSelector(stepNameSelector);
+      const subStepName = getNameFromSelector(subStepNameSelector);
+
       FunnelMetrics.funnelSubStepError({
         funnelInteractionId,
         subStepSelector,
+        subStepName,
         subStepNameSelector,
         stepNumber,
+        stepName,
         stepNameSelector,
         fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
         fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
