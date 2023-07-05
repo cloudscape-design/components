@@ -9,7 +9,7 @@ import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Instance, generateItems } from './generate-data';
-import { columnsConfig } from './shared-configs';
+import { columnsConfig, selectionLabels } from './shared-configs';
 import Link from '~components/link';
 
 const items = generateItems(10);
@@ -154,16 +154,19 @@ export default function () {
         <h1>Tables with inline actions</h1>
         <SpaceBetween size="l">
           <Table
+            ariaLabels={selectionLabels}
             header={<Header>Table with single actions</Header>}
             columnDefinitions={columnDefinitionsSingle}
             items={items}
           />
           <Table
+            ariaLabels={selectionLabels}
             header={<Header>Table with multiple actions</Header>}
             columnDefinitions={columnDefinitionsMultiple}
             items={items}
           />
           <Table
+            ariaLabels={selectionLabels}
             header={
               <Header
                 actions={
@@ -189,11 +192,13 @@ export default function () {
             items={items}
           />
           <Table
+            ariaLabels={selectionLabels}
             header={<Header>Table with mixed actions</Header>}
             columnDefinitions={columnDefinitionsMixed}
             items={items}
           />
           <Table
+            ariaLabels={selectionLabels}
             header={<Header>Table with only icon actions</Header>}
             columnDefinitions={columnDefinitionsOnlyIcons}
             items={items}
