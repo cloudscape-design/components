@@ -221,7 +221,7 @@
   }
 
   > .form-header > .form-header-content {
-    padding-top: awsui.$space-xl;
+    padding-top: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-l);
     padding-bottom: awsui.$space-scaled-m;
   }
 
