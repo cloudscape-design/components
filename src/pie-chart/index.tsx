@@ -160,6 +160,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const radius = defaultDimensions.outerRadius;
   const explicitHeight = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
 
+  // TODO: move back to container?
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const [measuredHeight, setHeight] = useState(0);
   // TODO: optimise
@@ -180,8 +181,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
       fitHeight={!!fitHeight}
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
-      // TODO: default dimensions size here!
-      contentClassName={clsx(styles.content, styles[`content--${dimensions.size}`], {
+      contentClassName={clsx(styles.content, styles[`content--${defaultDimensions.size}`], {
         [styles['content--without-labels']]: !hasLabels,
         [styles['content--fit-height']]: fitHeight,
       })}

@@ -346,6 +346,7 @@ export default <T extends PieChartProps.Datum>({
       className={clsx(styles['chart-container'], fitHeight && styles['chart-container--fit-height'])}
       ref={containerRef}
     >
+      {/* TODO: use display contents */}
       {fitHeight ? (
         <div className={styles['chart-container-chart-plot-fit-height-wrapper']}>{chartPlot}</div>
       ) : (

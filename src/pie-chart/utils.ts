@@ -55,6 +55,7 @@ const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimens
   },
 };
 
+// TODO: justify numbers
 export function getDimensionsBySize({
   size,
   visualRefresh,
