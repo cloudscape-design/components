@@ -114,6 +114,7 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  min-height: 40px;
 
   &.fit-height {
     height: 100%;
@@ -121,18 +122,18 @@
 }
 
 .chart-container-outer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.chart-container-inner {
   display: flex;
 
   &.fit-height {
     flex: 1;
   }
+}
+
+.chart-container-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .chart-container-plot {

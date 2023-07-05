@@ -92,6 +92,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     controlledOnHighlightChange
   );
   const model = useChartModel({
+    fitHeight,
     externalSeries,
     visibleSeries,
     setVisibleSeries,
@@ -101,7 +102,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     yDomain,
     xScaleType,
     yScaleType,
-    height: fitHeight ? 0 : height,
+    height,
     width,
     popoverRef,
   });

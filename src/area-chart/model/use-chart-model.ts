@@ -22,6 +22,7 @@ const SVG_HOVER_THROTTLE = 25;
 const POPOVER_DEADZONE = 12;
 
 export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
+  fitHeight?: boolean;
   externalSeries: readonly AreaChartProps.Series<T>[];
   visibleSeries: readonly AreaChartProps.Series<T>[];
   setVisibleSeries: (series: readonly AreaChartProps.Series<T>[]) => void;
@@ -38,6 +39,7 @@ export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
 
 // Represents the core the chart logic, including the model of all allowed user interactions.
 export default function useChartModel<T extends AreaChartProps.DataTypes>({
+  fitHeight,
   externalSeries: allSeries,
   visibleSeries: series,
   setVisibleSeries,
@@ -58,12 +60,11 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const [measuredHeight, setHeight] = useState(0);
-  // TODO: optimise
   useResizeObserver(
     () => plotMeasureRef.current,
-    entry => setHeight(entry.borderBoxHeight)
+    entry => fitHeight && setHeight(entry.borderBoxHeight)
   );
-  const height = explicitHeight || measuredHeight;
+  const height = fitHeight ? measuredHeight : explicitHeight;
 
   const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
 
