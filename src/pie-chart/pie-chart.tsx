@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { PieArcDatum } from 'd3-shape';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { KeyCode } from '../internal/keycode';
@@ -19,7 +20,6 @@ import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
 import { nodeBelongs } from '../internal/utils/node-belongs';
-import { PieArcDatum } from 'd3-shape';
 
 export interface InternalChartDatum<T> {
   index: number;

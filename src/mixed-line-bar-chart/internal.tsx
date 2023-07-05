@@ -22,7 +22,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { chartLegendMap, isXThreshold, isYThreshold } from './utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
-import Filter, { ChartFilterProps } from '../internal/components/chart-filter';
+import Filter from '../internal/components/chart-filter';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
@@ -203,16 +203,12 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
-  const filterItems: ChartFilterProps<MixedLineBarChartProps.ChartSeries<T>>['series'] = useMemo(
-    () =>
-      series.map(({ series, color }) => ({
-        label: series.title,
-        type: chartLegendMap[series.type],
-        color,
-        datum: series,
-      })),
-    [series]
-  );
+  const filterItems = series.map(({ series, color }) => ({
+    label: series.title,
+    type: chartLegendMap[series.type],
+    color,
+    datum: series,
+  }));
 
   return (
     <ChartWrapper
