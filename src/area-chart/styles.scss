@@ -10,22 +10,6 @@
   /* used in test-utils */
 }
 
-.chart-container {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-}
-
-.chart-container__vertical {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.chart-container__horizontal {
-  display: flex;
-}
-
 .series {
   display: block;
   stroke-width: awsui.$border-line-chart-width;
