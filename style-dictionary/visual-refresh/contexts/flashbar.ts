@@ -20,6 +20,7 @@ export const baseTokens: StyleDictionary.ColorsDictionary = {
   colorTextExpandableSectionHover: '{colorWhite}',
   colorTextBodyDefault: '{colorGrey100}',
   colorTextHeadingSecondary: '{colorGrey100}',
+  colorBorderDividerDefault: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(

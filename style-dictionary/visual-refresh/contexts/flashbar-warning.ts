@@ -24,9 +24,9 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',
   colorTextExpandableSectionHover: '{colorTextNotificationYellow}',
   // Bottom border of the header when expanded (default variant)
-  colorBorderDividerDefault: '{colorTextButtonNormalDefault}',
+  colorBorderDividerDefault: '{colorTextNotificationYellow}',
   // Description
-  colorTextHeadingSecondary: '{colorTextButtonNormalDefault}',
+  colorTextHeadingSecondary: '{colorTextNotificationYellow}',
   // Content
   colorTextBodyDefault: '{colorTextNotificationYellow}',
 };

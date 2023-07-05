@@ -10,6 +10,8 @@ const tokens = {
   colorTextExpandableSectionDefault: '{colorGrey100}',
   colorTextExpandableSectionHover: '{colorGrey100}',
   colorTextBodyDefault: '{colorGrey100}',
+  colorTextHeadingSecondary: '{colorGrey100}',
+  colorBorderDividerDefault: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
