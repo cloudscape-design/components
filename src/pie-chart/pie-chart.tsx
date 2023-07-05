@@ -13,13 +13,15 @@ import InternalBox from '../box/internal';
 import Labels from './labels';
 import { PieChartProps, SeriesInfo } from './interfaces';
 import styles from './styles.css.js';
-import { Dimension, defaultDetails } from './utils';
+import { defaultDetails, getDimensionsBySize } from './utils';
 import Segments from './segments';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import clsx from 'clsx';
+import { useResizeObserver } from '../internal/hooks/container-queries';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -32,9 +34,8 @@ interface InternalPieChartProps<T extends PieChartProps.Datum>
     Omit<PieChartProps<T>, 'onHighlightChange' | 'statusType'>,
     'variant' | 'size' | 'i18nStrings' | 'hideTitles' | 'hideDescriptions'
   > {
-  height: number;
   width: number;
-  dimensions: Dimension;
+  height: number;
 
   highlightedSegment: T | null;
   onHighlightChange: (segment: null | T) => void;
@@ -46,8 +47,6 @@ interface InternalPieChartProps<T extends PieChartProps.Datum>
 
   pieData: PieArcDatum<InternalChartDatum<T>>[];
   dataSum: number;
-
-  plotMeasureRef: React.Ref<SVGLineElement>;
 }
 
 export interface TooltipData<T> {
@@ -58,11 +57,10 @@ export interface TooltipData<T> {
 
 export default <T extends PieChartProps.Datum>({
   fitHeight,
+  height: explicitHeight,
   variant,
   size,
   width,
-  height,
-  dimensions,
   i18nStrings,
   ariaLabel,
   ariaLabelledby,
@@ -82,7 +80,6 @@ export default <T extends PieChartProps.Datum>({
   setPinnedSegment,
   pieData,
   dataSum,
-  plotMeasureRef,
 }: InternalPieChartProps<T>) => {
   const plotRef = useRef<ChartPlotRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,8 +87,24 @@ export default <T extends PieChartProps.Datum>({
   const popoverTrackRef = useRef<SVGCircleElement>(null);
   const popoverRef = useRef<HTMLElement | null>(null);
 
+  const isRefresh = useVisualRefresh();
+
+  const plotMeasureRef = useRef<SVGLineElement>(null);
+  const [measuredHeight, setHeight] = useState(0);
+  useResizeObserver(
+    () => plotMeasureRef.current,
+    entry => fitHeight && setHeight(entry.borderBoxHeight)
+  );
+  const height = fitHeight ? measuredHeight : explicitHeight;
+
+  const dimensions = useMemo(
+    () => getDimensionsBySize({ size: fitHeight ? height : size, visualRefresh: isRefresh }),
+    [fitHeight, height, size, isRefresh]
+  );
+
   // Inner content is only available for donut charts and the inner description is not displayed for small charts
-  const hasInnerContent = variant === 'donut' && (innerMetricValue || (innerMetricDescription && size !== 'small'));
+  const hasInnerContent =
+    variant === 'donut' && (innerMetricValue || (innerMetricDescription && dimensions.size !== 'small'));
 
   const innerMetricId = useUniqueId('awsui-pie-chart__inner');
 
@@ -354,11 +367,16 @@ export default <T extends PieChartProps.Datum>({
       {hasInnerContent && (
         <div className={styles['inner-content']} id={innerMetricId}>
           {innerMetricValue && (
-            <InternalBox variant={size === 'small' ? 'h3' : 'h1'} tagOverride="div" color="inherit" padding="n">
+            <InternalBox
+              variant={dimensions.size === 'small' ? 'h3' : 'h1'}
+              tagOverride="div"
+              color="inherit"
+              padding="n"
+            >
               {innerMetricValue}
             </InternalBox>
           )}
-          {innerMetricDescription && size !== 'small' && (
+          {innerMetricDescription && dimensions.size !== 'small' && (
             <InternalBox variant="h3" color="text-body-secondary" tagOverride="div" padding="n">
               {innerMetricDescription}
             </InternalBox>

@@ -13,27 +13,29 @@ export interface Dimension {
   cornerRadius?: number;
 }
 
+const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
+
 const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
     innerRadius: 33,
     outerRadius: 50,
     innerLabelPadding: 8,
     padding: 8, // = space-xs
-    paddingLabels: 44, // = 2 * (size-lineHeight-body-100)
+    paddingLabels,
   },
   medium: {
     innerRadius: 66,
     outerRadius: 100,
     innerLabelPadding: 12,
     padding: 12, // = space-s
-    paddingLabels: 44, // = 2 * (size-lineHeight-body-100)
+    paddingLabels,
   },
   large: {
     innerRadius: 93,
     outerRadius: 140,
     innerLabelPadding: 12,
     padding: 12, // = space-s
-    paddingLabels: 44, // = 2 * (size-lineHeight-body-100)
+    paddingLabels,
   },
 };
 
@@ -55,7 +57,6 @@ const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimens
   },
 };
 
-// TODO: justify numbers
 export function getDimensionsBySize({
   size,
   visualRefresh,
@@ -70,19 +71,18 @@ export function getDimensionsBySize({
   const sizeSpec = visualRefresh ? refreshDimensionsBySize : dimensionsBySize;
 
   let matchedSize: NonNullable<PieChartProps['size']> = 'small';
-  if (size > sizeSpec.medium.outerRadius * 1.2) {
+  if (size > sizeSpec.medium.outerRadius * 2 + sizeSpec.medium.padding * 2) {
     matchedSize = 'medium';
   }
-  if (size > sizeSpec.large.outerRadius * 1.2) {
+  if (size > sizeSpec.large.outerRadius * 2 + sizeSpec.large.padding * 2) {
     matchedSize = 'large';
   }
 
-  return {
-    ...sizeSpec[matchedSize],
-    innerRadius: (size * 0.65) / 2,
-    outerRadius: (size * 0.8) / 2,
-    size: matchedSize,
-  };
+  const radiiRatio = sizeSpec[matchedSize].outerRadius / sizeSpec[matchedSize].innerRadius;
+  const outerRadius = size / 2 - paddingLabels;
+  const innerRadius = outerRadius / radiiRatio;
+
+  return { ...sizeSpec[matchedSize], outerRadius, innerRadius, size: matchedSize };
 }
 
 export const defaultDetails =

@@ -23,7 +23,6 @@ import { ChartWrapper } from '../internal/components/chart-wrapper';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getDimensionsBySize } from './utils';
-import { useResizeObserver } from '../internal/hooks/container-queries';
 
 export { PieChartProps };
 
@@ -158,22 +157,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const isRefresh = useVisualRefresh();
   const defaultDimensions = getDimensionsBySize({ size, visualRefresh: isRefresh });
   const radius = defaultDimensions.outerRadius;
-  const explicitHeight = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
-
-  // TODO: move back to container?
-  const plotMeasureRef = useRef<SVGLineElement>(null);
-  const [measuredHeight, setHeight] = useState(0);
-  // TODO: optimise
-  useResizeObserver(
-    () => plotMeasureRef.current,
-    entry => setHeight(entry.borderBoxHeight)
-  );
-  const height = fitHeight ? measuredHeight : explicitHeight;
-
-  const dimensions = useMemo(
-    () => getDimensionsBySize({ size: fitHeight ? height : size, visualRefresh: isRefresh }),
-    [fitHeight, height, size, isRefresh]
-  );
+  const height = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
 
   return (
     <ChartWrapper
@@ -219,8 +203,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
             variant={variant}
             size={size}
             height={height}
-            dimensions={dimensions}
-            plotMeasureRef={plotMeasureRef}
+            fitHeight={fitHeight}
             data={externalData}
             width={containerWidth}
             hideTitles={hideTitles}
