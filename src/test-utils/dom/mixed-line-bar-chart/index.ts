@@ -5,10 +5,11 @@ import ChartWrapper from '../internal/charts';
 import styles from '../../../mixed-line-bar-chart/styles.selectors.js';
 import chartPlotStyles from '../../../internal/components/chart-plot/styles.selectors.js';
 import cartesianStyles from '../../../internal/components/cartesian-chart/styles.selectors.js';
+import chartWrapperStyles from '../../../internal/components/chart-wrapper/styles.selectors.js';
 
 export class BaseCartesianChartWrapper extends ChartWrapper {
   findFilterContainer(): ElementWrapper | null {
-    return this.findByClassName(cartesianStyles['filter-container']);
+    return this.findByClassName(chartWrapperStyles['filter-container']);
   }
 
   findChart(): ElementWrapper | null {
