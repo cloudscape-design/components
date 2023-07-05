@@ -109,3 +109,19 @@
   stroke: awsui.$color-border-item-focused;
   stroke-width: 2px;
 }
+
+.chart-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.chart-container__vertical {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.chart-container__horizontal {
+  display: flex;
+}
