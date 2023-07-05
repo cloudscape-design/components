@@ -797,8 +797,8 @@ describe('Reserve space', () => {
   const reserveLegendClass = chartWrapperStyles['content--reserve-legend'];
 
   test('by applying the correct minimum height', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} height={100} />);
-    expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '100px' });
+    const { wrapper } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} height={150} />);
+    expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '150px' });
   });
 
   test('unless there is a chart showing', () => {
