@@ -21,6 +21,7 @@ import { FunnelProps, FunnelStepProps } from '../interfaces';
 import {
   DATA_ATTR_FUNNEL_STEP,
   getFunnelNameSelector,
+  getNameFromSelector,
   getSubStepAllSelector,
   getSubStepNameSelector,
   getSubStepSelector,
@@ -108,10 +109,13 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
   // to record the beginning of the interaction with the current step.
   // On unmount, it does a similar thing but this time calling 'funnelStepComplete' to record the completion of the interaction.
   useEffect(() => {
+    const stepName = getNameFromSelector(stepNameSelector);
+
     if (funnelInteractionId) {
       FunnelMetrics.funnelStepStart({
         funnelInteractionId,
         stepNumber,
+        stepName,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
       });
@@ -122,6 +126,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
           stepNumber,
+          stepName,
           stepNameSelector,
           subStepAllSelector: getSubStepAllSelector(),
         });
