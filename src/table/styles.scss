@@ -192,12 +192,18 @@ the default white background of the container component.
   &.variant-container {
     padding-left: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
     padding-right: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
+    &.refresh {
+      padding-bottom: awsui.$space-scaled-xs;
+    }
   }
   &.variant-embedded,
   &.variant-borderless {
     padding-left: awsui.$space-table-header-horizontal;
     padding-right: awsui.$space-table-header-horizontal;
     padding-top: awsui.$space-table-embedded-header-top;
+    &.refresh {
+      padding-bottom: awsui.$space-scaled-xs;
+    }
   }
 }
 
