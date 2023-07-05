@@ -401,7 +401,7 @@ describe('Code editor component', () => {
     expect(wrapper.findPane()).toBeNull();
   });
 
-  it('highlights annotation when clicked in gutter', () => {
+  it('focuses annotation when clicked in gutter', () => {
     let gutterClickCallback: (event: any) => void;
     editorMock.on = jest.fn((name: string, _callback: (event: any) => void) => {
       if (name === 'gutterclick') {
@@ -419,7 +419,30 @@ describe('Code editor component', () => {
     expect(wrapper.findPane()).not.toBeNull(); // Pane should open
 
     const [item] = findPaneItems(wrapper.findPane()!);
-    expect(item.getElement().classList).toContain(styles['pane__item--highlighted']);
+    expect(document.activeElement).toBe(item.getElement());
+
+    editorMock.on.mockRestore();
+  });
+
+  it('focuses annotation when annotation is activated with keyboard in gutter', () => {
+    let gutterKeydownCallback: (event: any) => void;
+    editorMock.on = jest.fn((name: string, _callback: (event: any) => void) => {
+      if (name === 'gutterkeydown') {
+        gutterKeydownCallback = _callback;
+      }
+    });
+    editorMock.session.getAnnotations.mockReturnValue([{ type: 'error', row: 1, column: 1 }]);
+    const { wrapper } = renderCodeEditor();
+
+    act(() => {
+      emulateAceAnnotationEvent!();
+      gutterKeydownCallback!({ isInAnnotationLane: () => true, getKey: () => 'return', getRow: () => 1 }); // emulate gutter keydown
+    });
+
+    expect(wrapper.findPane()).not.toBeNull(); // Pane should open
+
+    const [item] = findPaneItems(wrapper.findPane()!);
+    expect(document.activeElement).toBe(item.getElement());
 
     editorMock.on.mockRestore();
   });

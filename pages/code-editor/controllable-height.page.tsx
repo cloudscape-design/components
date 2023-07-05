@@ -15,6 +15,9 @@ export default function () {
   useEffect(() => {
     import('ace-builds').then(ace => {
       ace.config.set('basePath', './ace/');
+      ace.config.set('themePath', './ace/');
+      ace.config.set('modePath', './ace/');
+      ace.config.set('workerPath', './ace/');
       ace.config.set('useStrictCSP', true);
       setAce(ace);
       setLoading(false);

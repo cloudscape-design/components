@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 
 import { isDevelopment } from '../internal/is-development';
 import { getBaseProps } from '../internal/base-component';
@@ -10,7 +9,6 @@ import ChartStatusContainer, { getChartStatus } from '../internal/components/cha
 import AreaChartFilter from './elements/area-chart-filter';
 import AreaChartLegend from './elements/area-chart-legend';
 import { AreaChartProps } from './interfaces';
-import InternalSpaceBetween from '../space-between/internal';
 import ChartContainer from './chart-container';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -22,7 +20,8 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';
-import { ChartWrapper } from '../internal/components/cartesian-chart/chart-wrapper';
+import { ChartWrapper } from '../internal/components/chart-wrapper';
+import clsx from 'clsx';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -134,59 +133,51 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   return (
     <ChartWrapper
       ref={mergedRef}
-      baseProps={baseProps}
-      className={styles.root}
-      fitHeight={fitHeight}
-      height={height}
-      filters={
-        showFilters ? (
-          <InternalSpaceBetween
-            size="l"
-            direction="horizontal"
-            className={clsx({ [styles['has-default-filter']]: !hideFilter })}
-          >
-            {!hideFilter && (
-              <AreaChartFilter
-                model={model}
-                filterLabel={i18nStrings.filterLabel}
-                filterPlaceholder={i18nStrings.filterPlaceholder}
-                filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
-              />
-            )}
-            {additionalFilters}
-          </InternalSpaceBetween>
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root)}
+      fitHeight={!!fitHeight}
+      contentMinHeight={height}
+      defaultFilter={
+        showFilters && !hideFilter ? (
+          <AreaChartFilter
+            model={model}
+            filterLabel={i18nStrings.filterLabel}
+            filterPlaceholder={i18nStrings.filterPlaceholder}
+            filterSelectedAriaLabel={i18nStrings.filterSelectedAriaLabel}
+          />
         ) : null
       }
+      additionalFilters={showFilters && additionalFilters}
+      chartStatus={
+        <ChartStatusContainer
+          isEmpty={isEmpty}
+          isNoMatch={isNoMatch}
+          showChart={showChart}
+          statusType={statusType}
+          empty={empty}
+          noMatch={noMatch}
+          loadingText={loadingText}
+          errorText={errorText}
+          recoveryText={recoveryText}
+          onRecoveryClick={onRecoveryClick}
+        />
+      }
       chart={
-        <>
-          <ChartStatusContainer
-            isEmpty={isEmpty}
-            isNoMatch={isNoMatch}
-            showChart={showChart}
-            statusType={statusType}
-            empty={empty}
-            noMatch={noMatch}
-            loadingText={loadingText}
-            errorText={errorText}
-            recoveryText={recoveryText}
-            onRecoveryClick={onRecoveryClick}
+        showChart && (
+          <ChartContainer
+            model={model}
+            autoWidth={setWidth}
+            detailPopoverSize={detailPopoverSize}
+            detailPopoverFooter={detailPopoverFooter}
+            xTitle={xTitle}
+            yTitle={yTitle}
+            ariaLabel={ariaLabel}
+            ariaLabelledby={ariaLabelledby}
+            ariaDescription={ariaDescription}
+            i18nStrings={i18nStrings}
+            fitHeight={fitHeight}
           />
-          {showChart && (
-            <ChartContainer
-              model={model}
-              autoWidth={setWidth}
-              detailPopoverSize={detailPopoverSize}
-              detailPopoverFooter={detailPopoverFooter}
-              xTitle={xTitle}
-              yTitle={yTitle}
-              ariaLabel={ariaLabel}
-              ariaLabelledby={ariaLabelledby}
-              ariaDescription={ariaDescription}
-              i18nStrings={i18nStrings}
-              fitHeight={fitHeight}
-            />
-          )}
-        </>
+        )
       }
       legend={
         showLegend ? (

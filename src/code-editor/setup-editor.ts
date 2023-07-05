@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { Ace } from 'ace-builds';
-import { PaneStatus } from './util';
+import { PaneStatus, supportsKeyboardAccessibility } from './util';
 
 export function setupEditor(
   ace: any,
@@ -36,13 +36,15 @@ export function setupEditor(
     setAnnotations(newAnnotations);
   });
 
-  editor.commands.addCommand({
-    name: 'exitCodeEditor',
-    bindKey: 'Esc',
-    exec: () => {
-      editor.container.focus();
-    },
-  });
+  if (!supportsKeyboardAccessibility(ace)) {
+    editor.commands.addCommand({
+      name: 'exitCodeEditor',
+      bindKey: 'Esc',
+      exec: () => {
+        editor.container.focus();
+      },
+    });
+  }
 
   editor.on('focus', () => {
     (editor as any).textInput.getElement().setAttribute('tabindex', 0);
@@ -68,9 +70,7 @@ export function setupEditor(
     }
   };
 
-  // open error/warning pane when user clicks on gutter icon
-  editor.on('gutterclick' as any, (e: any) => {
-    const { row }: Ace.Point = e.getDocumentPosition();
+  const openAnnotation = (row: number) => {
     const currentAnnotations = editor.session.getAnnotations().filter(a => a.row === row && a.type !== 'info');
     const errors = currentAnnotations.filter(a => a.type === 'error');
     if (errors.length > 0) {
@@ -85,6 +85,20 @@ export function setupEditor(
       setHighlightedAnnotation(undefined);
       setPaneStatus('hidden');
       editor.gotoLine(row + 1, 0, false);
+    }
+  };
+
+  // open error/warning pane when user clicks on gutter icon
+  editor.on('gutterclick' as any, (e: any) => {
+    const { row }: Ace.Point = e.getDocumentPosition();
+    openAnnotation(row);
+  });
+
+  // open error/warning pane when user presses space/enter on gutter icon
+  editor.on('gutterkeydown', e => {
+    if (e.isInAnnotationLane() && (e.getKey() === 'space' || e.getKey() === 'return')) {
+      const row: number = e.getRow();
+      openAnnotation(row);
     }
   });
 

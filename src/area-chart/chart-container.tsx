@@ -19,7 +19,7 @@ import AreaVerticalMarker from './elements/vertical-marker';
 import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useSelector } from './async-store';
-import { ChartLayout } from '../internal/components/cartesian-chart/chart-layout';
+import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 
 const DEFAULT_CHART_WIDTH = 500;
 const LEFT_LABELS_MARGIN = 16;
@@ -100,12 +100,20 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   );
 
   return (
-    <ChartLayout
+    <CartesianChartContainer
       ref={mergedRef}
-      fitHeight={fitHeight}
+      fitHeight={!!fitHeight}
       bottomLabelsHeight={bottomLabelsHeight}
-      leftLabels={<AxisLabel axis="y" position="left" title={yTitle} />}
-      bottomLabels={<AxisLabel axis="x" position="bottom" title={xTitle} />}
+      leftAxisLabel={<AxisLabel axis="y" position="left" title={yTitle} />}
+      leftAxisLabelMeasure={
+        <LabelsMeasure
+          scale={model.computed.yScale}
+          ticks={model.computed.yTicks}
+          tickFormatter={yTickFormatter as TickFormatter}
+          autoWidth={setLeftLabelsWidth}
+        />
+      }
+      bottomAxisLabel={<AxisLabel axis="x" position="bottom" title={xTitle} />}
       chartPlot={
         <ChartPlot
           ref={model.refs.plot}
@@ -169,14 +177,6 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
 
           <AreaHighlightedPoint ref={highlightedPointRef} model={model} ariaLabel={highlightDetails?.activeLabel} />
         </ChartPlot>
-      }
-      labelsMeasure={
-        <LabelsMeasure
-          scale={model.computed.yScale}
-          ticks={model.computed.yTicks}
-          tickFormatter={yTickFormatter as TickFormatter}
-          autoWidth={setLeftLabelsWidth}
-        />
       }
       popover={
         <AreaChartPopover

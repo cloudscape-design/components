@@ -26,3 +26,6 @@ export const getSubStepNameSelector = (subStepId: string) =>
   [`${getSubStepSelector(subStepId)}`, `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_SUBSTEP_NAME}"]`].join(' ');
 
 export const getFieldSlotSeletor = (id: string | undefined) => (id ? `[id="${id}"]` : undefined);
+
+export const getNameFromSelector = (selector: string | undefined): string | undefined =>
+  selector ? document.querySelector<HTMLElement>(selector)?.innerText : undefined;

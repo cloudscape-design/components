@@ -10,12 +10,6 @@
   /* used in test-utils */
 }
 
-.has-default-filter {
-  & > :first-child {
-    flex: 280px 0 1;
-  }
-}
-
 .series {
   display: block;
   stroke-width: awsui.$border-line-chart-width;

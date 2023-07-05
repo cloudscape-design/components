@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Link from '~components/link';
@@ -12,12 +12,16 @@ import Table from '~components/table';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
 import Button from '~components/button';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type PageContext = React.Context<AppContextType<{ stickyNotifications: boolean }>>;
 
 const items = generateItems(20);
 
 export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<keyof typeof toolsContent>('long');
+  const { urlParams } = useContext(AppContext as PageContext);
 
   function openHelp(article: keyof typeof toolsContent) {
     setToolsOpen(true);
@@ -35,6 +39,7 @@ export default function () {
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         notifications={<Notifications />}
+        stickyNotifications={urlParams.stickyNotifications}
         content={
           <Table<Instance>
             header={

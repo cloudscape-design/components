@@ -32,7 +32,7 @@ import { CartesianChartProps } from '../internal/components/cartesian-chart/inte
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
-import { ChartLayout } from '../internal/components/cartesian-chart/chart-layout';
+import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 import { useResizeObserver } from '../internal/hooks/container-queries';
 
 const LEFT_LABELS_MARGIN = 16;
@@ -454,12 +454,20 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const isLineXKeyboardFocused = isPlotFocused && !highlightedPoint && verticalMarkerX;
 
   return (
-    <ChartLayout
+    <CartesianChartContainer
       ref={containerRef}
-      fitHeight={fitHeight}
+      fitHeight={!!fitHeight}
       bottomLabelsHeight={bottomLabelsHeight}
-      leftLabels={<AxisLabel axis={y} position="left" title={xy.title[y]} />}
-      bottomLabels={<AxisLabel axis={x} position="bottom" title={xy.title[x]} />}
+      leftAxisLabel={<AxisLabel axis={y} position="left" title={xy.title[y]} />}
+      leftAxisLabelMeasure={
+        <LabelsMeasure
+          ticks={xy.ticks[y]}
+          scale={xy.scale[y]}
+          tickFormatter={xy.tickFormatter[y] as TickFormatter}
+          autoWidth={setLeftLabelsWidth}
+        />
+      }
+      bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={xy.title[x]} />}
       chartPlot={
         <ChartPlot
           ref={plotRef}
@@ -576,14 +584,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
             autoHeight={setBottomLabelsHeight}
           />
         </ChartPlot>
-      }
-      labelsMeasure={
-        <LabelsMeasure
-          ticks={xy.ticks[y]}
-          scale={xy.scale[y]}
-          tickFormatter={xy.tickFormatter[y] as TickFormatter}
-          autoWidth={setLeftLabelsWidth}
-        />
       }
       popover={
         <ChartPopover

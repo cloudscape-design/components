@@ -8,8 +8,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { fireNonCancelableEvent } from '../internal/events';
 import Legend, { ChartLegendProps } from '../internal/components/chart-legend';
 import Filter, { ChartFilterProps } from '../internal/components/chart-filter';
-import InternalSpaceBetween from '../space-between/internal';
-import InternalBox from '../box/internal';
+import { pie } from 'd3-shape';
 
 import InternalPieChart, { InternalChartDatum } from './pie-chart';
 import { PieChartProps } from './interfaces';
@@ -20,6 +19,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { ChartWrapper } from '../internal/components/chart-wrapper';
+import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 
 export { PieChartProps };
 
@@ -45,7 +46,6 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 }: PieChartProps<T>) {
   const { __internalRootRef = null } = useBaseComponent('PieChart');
   const baseProps = getBaseProps(props);
-  const isEmpty = !externalData || externalData.length === 0;
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, measureRef] = useContainerWidth();
 
@@ -129,73 +129,105 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 
   const mergedRef = useMergeRefs(containerRef, measureRef, __internalRootRef);
 
+  const { pieData, dataSum } = useMemo(() => {
+    const dataSum = visibleData.reduce((sum, d) => sum + d.datum.value, 0);
+
+    const pieFactory = pie<InternalChartDatum<T>>()
+      // Minimum 1% segment size
+      .value(d => (d.datum.value < dataSum / 100 ? dataSum / 100 : d.datum.value))
+      .sort(null);
+
+    // Filter out segments with value of zero or below
+    const pieData = pieFactory(visibleData.filter(d => d.datum.value > 0));
+
+    return { pieData, dataSum };
+  }, [visibleData]);
+
+  const hasNoData = !externalData || externalData.length === 0;
+  const { isEmpty, showChart } = getChartStatus({ externalData: data, visibleData: pieData, statusType });
+  // Pie charts have a special condition for empty/noMatch due to how zero-value segments are handled.
+  const isNoMatch = isEmpty && visibleData.length !== data.length;
+  const showFilters = statusType === 'finished' && !hasNoData && (additionalFilters || !hideFilter);
+  const reserveLegendSpace = !showChart && !hideLegend;
+  const reserveFilterSpace = statusType !== 'finished' && !isNoMatch && (!hideFilter || additionalFilters);
+  const hasLabels = !(hideTitles && hideDescriptions);
+
   return (
-    <div
-      {...baseProps}
-      className={clsx(baseProps.className, styles.root, fitHeight && styles['root--fit-height'])}
+    <ChartWrapper
       ref={mergedRef}
-      onBlur={onBlur}
-    >
-      <div className={clsx(styles.wrapper, fitHeight && styles['wrapper--fit-height'])}>
-        {statusType === 'finished' && !isEmpty && (additionalFilters || !hideFilter) && (
-          <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
-            <InternalSpaceBetween
-              size="l"
-              direction="horizontal"
-              className={clsx({
-                [styles['has-default-filter']]: !hideFilter,
-              })}
-            >
-              {!hideFilter && (
-                <Filter
-                  series={filterItems}
-                  onChange={filterChange}
-                  selectedSeries={visibleSegments}
-                  i18nStrings={i18nStrings}
-                />
-              )}
-              {additionalFilters}
-            </InternalSpaceBetween>
-          </InternalBox>
-        )}
-
-        <InternalPieChart
-          {...props}
-          fitHeight={fitHeight}
-          variant={variant}
-          size={size}
-          data={externalData}
-          visibleData={visibleData}
-          width={containerWidth}
+      fitHeight={!!fitHeight}
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root)}
+      // TODO: default dimensions size here!
+      contentClassName={clsx(styles.content, styles[`content--${size}`], {
+        [styles['content--without-labels']]: !hasLabels,
+        [styles['content--fit-height']]: fitHeight,
+      })}
+      defaultFilter={
+        showFilters && !hideFilter ? (
+          <Filter
+            series={filterItems}
+            onChange={filterChange}
+            selectedSeries={visibleSegments}
+            i18nStrings={i18nStrings}
+          />
+        ) : null
+      }
+      additionalFilters={showFilters ? additionalFilters : null}
+      reserveFilterSpace={!!reserveFilterSpace}
+      reserveLegendSpace={!!reserveLegendSpace}
+      chartStatus={
+        <ChartStatusContainer
+          isEmpty={isEmpty}
+          isNoMatch={isNoMatch}
+          showChart={showChart}
           statusType={statusType}
-          hideTitles={hideTitles}
-          hideDescriptions={hideDescriptions}
-          hideLegend={hideLegend}
-          hideFilter={hideFilter}
-          additionalFilters={additionalFilters}
-          i18nStrings={i18nStrings}
-          onHighlightChange={onHighlightChange}
-          highlightedSegment={highlightedSegment}
-          legendSegment={legendSegment}
-          pinnedSegment={pinnedSegment}
-          setPinnedSegment={setPinnedSegment}
-          detailPopoverSize={detailPopoverSize}
+          empty={props.empty}
+          noMatch={props.noMatch}
+          loadingText={props.loadingText}
+          errorText={props.errorText}
+          recoveryText={props.recoveryText}
+          onRecoveryClick={props.onRecoveryClick}
         />
-
-        {!hideLegend && !isEmpty && statusType === 'finished' && (
-          <InternalBox margin={{ top: 'm' }}>
-            <Legend<T>
-              series={legendItems}
-              highlightedSeries={legendSegment}
-              legendTitle={legendTitle}
-              ariaLabel={i18nStrings?.legendAriaLabel}
-              onHighlightChange={onHighlightChange}
-              plotContainerRef={containerRef}
-            />
-          </InternalBox>
-        )}
-      </div>
-    </div>
+      }
+      chart={
+        showChart ? (
+          <InternalPieChart
+            {...props}
+            variant={variant}
+            size={size}
+            data={externalData}
+            width={containerWidth}
+            hideTitles={hideTitles}
+            hideDescriptions={hideDescriptions}
+            i18nStrings={i18nStrings}
+            onHighlightChange={onHighlightChange}
+            highlightedSegment={highlightedSegment}
+            legendSegment={legendSegment}
+            pinnedSegment={pinnedSegment}
+            setPinnedSegment={setPinnedSegment}
+            detailPopoverSize={detailPopoverSize}
+            pieData={pieData}
+            dataSum={dataSum}
+          />
+        ) : null
+      }
+      legend={
+        !hideLegend &&
+        !hasNoData &&
+        statusType === 'finished' && (
+          <Legend<T>
+            series={legendItems}
+            highlightedSeries={legendSegment}
+            legendTitle={legendTitle}
+            ariaLabel={i18nStrings?.legendAriaLabel}
+            onHighlightChange={onHighlightChange}
+            plotContainerRef={containerRef}
+          />
+        )
+      }
+      onBlur={onBlur}
+    />
   );
 };
 

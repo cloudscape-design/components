@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import clsx from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { getBaseProps } from '../internal/base-component';
@@ -10,7 +11,6 @@ import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import InternalChartFilters from './chart-filters';
 import InternalChartLegend from './chart-legend';
 import ChartContainer from './chart-container';
 import styles from './styles.css.js';
@@ -20,9 +20,10 @@ import createCategoryColorScale from '../internal/utils/create-category-color-sc
 import { ScaledPoint } from './make-scaled-series';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
-import { isXThreshold, isYThreshold } from './utils';
+import { chartLegendMap, isXThreshold, isYThreshold } from './utils';
 import { nodeBelongs } from '../internal/utils/node-belongs';
-import { ChartWrapper } from '../internal/components/cartesian-chart/chart-wrapper';
+import Filter from '../internal/components/chart-filter';
+import { ChartWrapper } from '../internal/components/chart-wrapper';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,
@@ -203,72 +204,78 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
+  const filterItems = series.map(({ series, color }) => ({
+    label: series.title,
+    type: chartLegendMap[series.type],
+    color,
+    datum: series,
+  }));
+
   return (
     <ChartWrapper
       ref={mergedRef}
-      baseProps={baseProps}
-      className={styles.root}
-      fitHeight={fitHeight}
-      height={height}
-      filters={
-        showFilters ? (
-          <InternalChartFilters
-            series={series}
-            visibleSeries={externalVisibleSeries || []}
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root)}
+      fitHeight={!!fitHeight}
+      contentMinHeight={height}
+      defaultFilter={
+        showFilters && !hideFilter ? (
+          <Filter
+            series={filterItems}
             onChange={filterChange}
+            selectedSeries={externalVisibleSeries || []}
             i18nStrings={i18nStrings}
-            hideFilter={hideFilter}
-            additionalFilters={additionalFilters}
           />
         ) : null
       }
+      additionalFilters={showFilters ? additionalFilters : null}
+      chartStatus={
+        <ChartStatusContainer
+          isEmpty={isEmpty}
+          isNoMatch={isNoMatch}
+          showChart={showChart}
+          statusType={statusType}
+          empty={empty}
+          noMatch={noMatch}
+          loadingText={loadingText}
+          errorText={errorText}
+          recoveryText={recoveryText}
+          onRecoveryClick={onRecoveryClick}
+        />
+      }
       chart={
-        <>
-          <ChartStatusContainer
-            isEmpty={isEmpty}
-            isNoMatch={isNoMatch}
-            showChart={showChart}
-            statusType={statusType}
-            empty={empty}
-            noMatch={noMatch}
-            loadingText={loadingText}
-            errorText={errorText}
-            recoveryText={recoveryText}
-            onRecoveryClick={onRecoveryClick}
+        showChart && (
+          <ChartContainer
+            fitHeight={fitHeight}
+            height={height}
+            xScaleType={xScaleType}
+            yScaleType={yScaleType}
+            xDomain={xDomain}
+            yDomain={yDomain}
+            xTickFormatter={i18nStrings?.xTickFormatter}
+            yTickFormatter={i18nStrings?.yTickFormatter}
+            emphasizeBaselineAxis={emphasizeBaselineAxis}
+            stackedBars={stackedBars}
+            horizontalBars={horizontalBars}
+            series={series}
+            visibleSeries={visibleSeries}
+            highlightedSeries={highlightedSeries}
+            onHighlightChange={onHighlightChange}
+            highlightedPoint={highlightedPoint}
+            setHighlightedPoint={setHighlightedPoint}
+            highlightedGroupIndex={highlightedGroupIndex}
+            setHighlightedGroupIndex={setHighlightedGroupIndex}
+            detailPopoverSize={detailPopoverSize}
+            detailPopoverFooter={detailPopoverFooter}
+            xTitle={xTitle}
+            yTitle={yTitle}
+            ariaLabel={ariaLabel}
+            ariaLabelledby={ariaLabelledby}
+            ariaDescription={ariaDescription}
+            i18nStrings={i18nStrings}
+            plotContainerRef={containerRef}
           />
-          {showChart && (
-            <ChartContainer
-              fitHeight={fitHeight}
-              height={height}
-              xScaleType={xScaleType}
-              yScaleType={yScaleType}
-              xDomain={xDomain}
-              yDomain={yDomain}
-              xTickFormatter={i18nStrings?.xTickFormatter}
-              yTickFormatter={i18nStrings?.yTickFormatter}
-              emphasizeBaselineAxis={emphasizeBaselineAxis}
-              stackedBars={stackedBars}
-              horizontalBars={horizontalBars}
-              series={series}
-              visibleSeries={visibleSeries}
-              highlightedSeries={highlightedSeries}
-              onHighlightChange={onHighlightChange}
-              highlightedPoint={highlightedPoint}
-              setHighlightedPoint={setHighlightedPoint}
-              highlightedGroupIndex={highlightedGroupIndex}
-              setHighlightedGroupIndex={setHighlightedGroupIndex}
-              detailPopoverSize={detailPopoverSize}
-              detailPopoverFooter={detailPopoverFooter}
-              xTitle={xTitle}
-              yTitle={yTitle}
-              ariaLabel={ariaLabel}
-              ariaLabelledby={ariaLabelledby}
-              ariaDescription={ariaDescription}
-              i18nStrings={i18nStrings}
-              plotContainerRef={containerRef}
-            />
-          )}
-        </>
+        )
       }
       legend={
         showLegend ? (

@@ -4,7 +4,6 @@
 */
 
 @use '../../styles/tokens' as awsui;
-@use '../../styles' as styles;
 
 .axis,
 %axis {
@@ -111,91 +110,49 @@
   stroke-width: 2px;
 }
 
-.filter-container {
-  /* used in test-utils */
-}
-
-.wrapper {
-  @include styles.styles-reset;
-
-  position: relative;
-  display: block;
-
-  &--fit-height {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-y: auto;
-  }
-}
-
-.inner-wrapper {
-  display: contents;
-
-  &--fit-height {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-}
-
-.has-default-filter {
-  & > :first-child {
-    flex: 280px 0 1;
-  }
-}
-
-.content {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-}
-
-.content--reserve-filter {
-  margin-top: calc(2 * #{awsui.$font-body-m-line-height});
-}
-
-.content--reserve-legend {
-  margin-bottom: calc(2 * #{awsui.$font-body-m-line-height});
-}
-
-.content--fit-height {
-  flex: 1;
-}
-
 .chart-container {
   display: flex;
   width: 100%;
   flex-direction: column;
 
-  &--fit-height {
+  &.fit-height {
     height: 100%;
   }
 }
 
-.chart-container__vertical {
+.chart-container-outer {
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.chart-container__horizontal {
+.chart-container-inner {
   display: flex;
 
-  &--fit-height {
+  &.fit-height {
     flex: 1;
   }
 }
 
-.container-chart-plot-fit-height-wrapper {
-  position: absolute;
-  inset: 0;
+.chart-container-plot {
+  display: contents;
+
+  &.fit-height {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
 }
-.container-bottom-labels-fit-height-wrapper {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+
+.chart-container-bottom-labels {
+  display: contents;
+
+  &.fit-height {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 }
