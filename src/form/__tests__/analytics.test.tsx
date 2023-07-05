@@ -8,6 +8,7 @@ import Button from '../../../lib/components/button';
 import Form from '../../../lib/components/form';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
@@ -140,6 +141,32 @@ describe('Form Analytics', () => {
         funnelInteractionId: expect.any(String),
       })
     );
+  });
+
+  test('increments the submissionAttempt counter when clicking Submit', () => {
+    const ChildComponent = () => {
+      const { submissionAttempt } = useFunnel();
+      return <div data-testid="submission-attempt">{submissionAttempt}</div>;
+    };
+
+    const { container, getByTestId } = render(
+      <Form
+        actions={
+          <Button data-testid="submit" variant="primary">
+            Submit
+          </Button>
+        }
+      >
+        <ChildComponent />
+      </Form>
+    );
+    const formWrapper = createWrapper(container).findForm();
+    const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
+
+    expect(getByTestId('submission-attempt').textContent).toBe('0');
+
+    act(() => submitButton!.click());
+    expect(getByTestId('submission-attempt').textContent).toBe('1');
   });
 
   test('sends a funnelError metric when an error is rendered', () => {
