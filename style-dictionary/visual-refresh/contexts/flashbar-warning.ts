@@ -20,9 +20,10 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextInteractiveInvertedDefault: '{colorGrey600}',
   colorTextInteractiveInvertedHover: '{colorGrey900}',
 
-  // Prevent expandable section header from changing color on hover
-  colorTextExpandableSectionHover: '{colorTextExpandableSectionDefault}',
-  // Affects bottom border of expandable section header
+  // Expandable sections
+  colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',
+  colorTextExpandableSectionHover: '{colorTextNotificationYellow}',
+  // Bottom border of expandable section header when expanded (default variant)
   colorBorderDividerDefault: '{colorTextButtonNormalDefault}',
 };
 
