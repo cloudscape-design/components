@@ -13,14 +13,12 @@ import InternalBox from '../box/internal';
 import Labels from './labels';
 import { PieChartProps, SeriesInfo } from './interfaces';
 import styles from './styles.css.js';
-import { defaultDetails, getDimensionsBySize } from './utils';
+import { Dimension, defaultDetails } from './utils';
 import Segments from './segments';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
 import { nodeBelongs } from '../internal/utils/node-belongs';
-import { useResizeObserver } from '../internal/hooks/container-queries';
 import clsx from 'clsx';
 
 export interface InternalChartDatum<T> {
@@ -34,7 +32,9 @@ interface InternalPieChartProps<T extends PieChartProps.Datum>
     Omit<PieChartProps<T>, 'onHighlightChange' | 'statusType'>,
     'variant' | 'size' | 'i18nStrings' | 'hideTitles' | 'hideDescriptions'
   > {
+  height: number;
   width: number;
+  dimensions: Dimension;
 
   highlightedSegment: T | null;
   onHighlightChange: (segment: null | T) => void;
@@ -46,6 +46,8 @@ interface InternalPieChartProps<T extends PieChartProps.Datum>
 
   pieData: PieArcDatum<InternalChartDatum<T>>[];
   dataSum: number;
+
+  plotMeasureRef: React.Ref<SVGLineElement>;
 }
 
 export interface TooltipData<T> {
@@ -58,6 +60,9 @@ export default <T extends PieChartProps.Datum>({
   fitHeight,
   variant,
   size,
+  width,
+  height,
+  dimensions,
   i18nStrings,
   ariaLabel,
   ariaLabelledby,
@@ -69,7 +74,6 @@ export default <T extends PieChartProps.Datum>({
   detailPopoverContent,
   detailPopoverSize,
   detailPopoverFooter,
-  width,
   segmentDescription,
   highlightedSegment,
   onHighlightChange,
@@ -78,33 +82,16 @@ export default <T extends PieChartProps.Datum>({
   setPinnedSegment,
   pieData,
   dataSum,
+  plotMeasureRef,
 }: InternalPieChartProps<T>) => {
   const plotRef = useRef<ChartPlotRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedSegmentRef = useRef<SVGGElement>(null);
   const popoverTrackRef = useRef<SVGCircleElement>(null);
   const popoverRef = useRef<HTMLElement | null>(null);
-  const isRefresh = useVisualRefresh();
-
-  const defaultDimensions = getDimensionsBySize({ size, visualRefresh: isRefresh });
-  const radius = defaultDimensions.outerRadius;
-
-  const hasLabels = !(hideTitles && hideDescriptions);
-  const explicitHeight = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
-
-  const plotMeasureRef = useRef<SVGLineElement>(null);
-  const [measuredHeight, setHeight] = useState(0);
-  useResizeObserver(
-    () => plotMeasureRef.current,
-    entry => setHeight(entry.borderBoxHeight)
-  );
-  const height = fitHeight ? measuredHeight : explicitHeight;
-
-  const dimensions = getDimensionsBySize({ size: fitHeight ? height : size, visualRefresh: isRefresh });
 
   // Inner content is only available for donut charts and the inner description is not displayed for small charts
-  const hasInnerContent =
-    variant === 'donut' && (innerMetricValue || (innerMetricDescription && dimensions.size !== 'small'));
+  const hasInnerContent = variant === 'donut' && (innerMetricValue || (innerMetricDescription && size !== 'small'));
 
   const innerMetricId = useUniqueId('awsui-pie-chart__inner');
 
@@ -294,6 +281,8 @@ export default <T extends PieChartProps.Datum>({
     clearHighlightedSegment();
   };
 
+  const hasLabels = !(hideTitles && hideDescriptions);
+
   const chartPlot = (
     <ChartPlot
       ref={plotRef}
@@ -326,10 +315,8 @@ export default <T extends PieChartProps.Datum>({
         style={{ pointerEvents: 'none' }}
       />
       <Segments
-        height={height}
-        fitHeight={fitHeight}
         pieData={pieData}
-        size={dimensions.size}
+        dimensions={dimensions}
         variant={variant}
         focusedSegmentRef={focusedSegmentRef}
         popoverTrackRef={popoverTrackRef}
@@ -341,10 +328,8 @@ export default <T extends PieChartProps.Datum>({
       />
       {hasLabels && (
         <Labels
-          height={height}
-          fitHeight={fitHeight}
           pieData={pieData}
-          size={dimensions.size}
+          dimensions={dimensions}
           segmentDescription={segmentDescription}
           visibleDataSum={dataSum}
           hideTitles={hideTitles}
@@ -370,16 +355,11 @@ export default <T extends PieChartProps.Datum>({
       {hasInnerContent && (
         <div className={styles['inner-content']} id={innerMetricId}>
           {innerMetricValue && (
-            <InternalBox
-              variant={dimensions.size === 'small' ? 'h3' : 'h1'}
-              tagOverride="div"
-              color="inherit"
-              padding="n"
-            >
+            <InternalBox variant={size === 'small' ? 'h3' : 'h1'} tagOverride="div" color="inherit" padding="n">
               {innerMetricValue}
             </InternalBox>
           )}
-          {innerMetricDescription && dimensions.size !== 'small' && (
+          {innerMetricDescription && size !== 'small' && (
             <InternalBox variant="h3" color="text-body-secondary" tagOverride="div" padding="n">
               {innerMetricDescription}
             </InternalBox>

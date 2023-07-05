@@ -4,7 +4,7 @@ import { ComponentFormatFunction } from '../internal/i18n/context';
 import { PieChartProps } from './interfaces';
 import styles from './styles.css.js';
 
-interface Dimension {
+export interface Dimension {
   innerRadius: number;
   outerRadius: number;
   padding: number;

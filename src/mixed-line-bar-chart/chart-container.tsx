@@ -123,6 +123,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const [measuredHeight, setHeight] = useState(0);
+  // TODO: optimise
   useResizeObserver(
     () => plotMeasureRef.current,
     entry => setHeight(entry.borderBoxHeight)

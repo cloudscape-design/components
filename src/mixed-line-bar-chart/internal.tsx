@@ -229,6 +229,8 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
         ) : null
       }
       additionalFilters={showFilters ? additionalFilters : null}
+      reserveFilterSpace={!!reserveFilterSpace}
+      reserveLegendSpace={!!reserveLegendSpace}
       chartStatus={
         <ChartStatusContainer
           isEmpty={isEmpty}
@@ -244,7 +246,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
         />
       }
       chart={
-        showChart && (
+        showChart ? (
           <ChartContainer
             fitHeight={fitHeight}
             height={height}
@@ -275,7 +277,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             i18nStrings={i18nStrings}
             plotContainerRef={containerRef}
           />
-        )
+        ) : null
       }
       legend={
         showLegend ? (
@@ -290,8 +292,6 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
           />
         ) : null
       }
-      reserveFilterSpace={!!reserveFilterSpace}
-      reserveLegendSpace={!!reserveLegendSpace}
       onBlur={onBlur}
     />
   );

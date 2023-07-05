@@ -21,6 +21,9 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { getDimensionsBySize } from './utils';
+import { useResizeObserver } from '../internal/hooks/container-queries';
 
 export { PieChartProps };
 
@@ -152,6 +155,25 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const reserveFilterSpace = statusType !== 'finished' && !isNoMatch && (!hideFilter || additionalFilters);
   const hasLabels = !(hideTitles && hideDescriptions);
 
+  const isRefresh = useVisualRefresh();
+  const defaultDimensions = getDimensionsBySize({ size, visualRefresh: isRefresh });
+  const radius = defaultDimensions.outerRadius;
+  const explicitHeight = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
+
+  const plotMeasureRef = useRef<SVGLineElement>(null);
+  const [measuredHeight, setHeight] = useState(0);
+  // TODO: optimise
+  useResizeObserver(
+    () => plotMeasureRef.current,
+    entry => setHeight(entry.borderBoxHeight)
+  );
+  const height = fitHeight ? measuredHeight : explicitHeight;
+
+  const dimensions = useMemo(
+    () => getDimensionsBySize({ size: fitHeight ? height : size, visualRefresh: isRefresh }),
+    [fitHeight, height, size, isRefresh]
+  );
+
   return (
     <ChartWrapper
       ref={mergedRef}
@@ -159,7 +181,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
       // TODO: default dimensions size here!
-      contentClassName={clsx(styles.content, styles[`content--${size}`], {
+      contentClassName={clsx(styles.content, styles[`content--${dimensions.size}`], {
         [styles['content--without-labels']]: !hasLabels,
         [styles['content--fit-height']]: fitHeight,
       })}
@@ -196,6 +218,9 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
             {...props}
             variant={variant}
             size={size}
+            height={height}
+            dimensions={dimensions}
+            plotMeasureRef={plotMeasureRef}
             data={externalData}
             width={containerWidth}
             hideTitles={hideTitles}

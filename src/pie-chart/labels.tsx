@@ -7,17 +7,14 @@ import { arc, PieArcDatum } from 'd3-shape';
 import { PieChartProps } from './interfaces';
 import styles from './styles.css.js';
 import { InternalChartDatum } from './pie-chart';
-import { getDimensionsBySize, balanceLabelNodes } from './utils';
+import { Dimension, balanceLabelNodes } from './utils';
 import { useResizeObserver } from '../internal/hooks/container-queries';
 import ResponsiveText from './responsive-text';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export interface LabelsProps<T> {
-  height: number;
-  fitHeight?: boolean;
   pieData: PieArcDatum<InternalChartDatum<T>>[];
   visibleDataSum: number;
-  size: NonNullable<PieChartProps['size']>;
+  dimensions: Dimension;
   hideTitles: boolean;
   hideDescriptions: boolean;
   highlightedSegment: PieChartProps.Datum | null;
@@ -71,10 +68,8 @@ function LabelElement({
 }
 
 export default <T extends PieChartProps.Datum>({
-  height,
-  fitHeight,
   pieData,
-  size,
+  dimensions,
   highlightedSegment,
   segmentDescription,
   visibleDataSum,
@@ -82,14 +77,10 @@ export default <T extends PieChartProps.Datum>({
   hideDescriptions,
   containerRef,
 }: LabelsProps<T>) => {
-  const isRefresh = useVisualRefresh();
   const containerBoundaries = useElementBoundaries(containerRef);
 
   const markers = useMemo(() => {
-    const { outerRadius: radius, innerLabelPadding } = getDimensionsBySize({
-      size: fitHeight ? height : size,
-      visualRefresh: isRefresh,
-    });
+    const { outerRadius: radius, innerLabelPadding } = dimensions;
 
     // More arc factories for the label positioning
     const arcMarkerStart = arc<PieArcDatum<any>>()
@@ -127,7 +118,7 @@ export default <T extends PieChartProps.Datum>({
         datum,
       };
     });
-  }, [pieData, size, fitHeight, height, isRefresh]);
+  }, [pieData, dimensions]);
 
   const rootRef = useRef<SVGGElement>(null);
 

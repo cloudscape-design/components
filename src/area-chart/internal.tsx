@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import { isDevelopment } from '../internal/is-development';
 import { getBaseProps } from '../internal/base-component';
@@ -21,7 +22,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
-import clsx from 'clsx';
 
 type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   AreaChartProps<T>,
@@ -147,7 +147,9 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
           />
         ) : null
       }
-      additionalFilters={showFilters && additionalFilters}
+      additionalFilters={showFilters ? additionalFilters : null}
+      reserveFilterSpace={!!reserveFilterSpace}
+      reserveLegendSpace={!!reserveLegendSpace}
       chartStatus={
         <ChartStatusContainer
           isEmpty={isEmpty}
@@ -163,7 +165,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
         />
       }
       chart={
-        showChart && (
+        showChart ? (
           <ChartContainer
             model={model}
             autoWidth={setWidth}
@@ -177,7 +179,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             i18nStrings={i18nStrings}
             fitHeight={fitHeight}
           />
-        )
+        ) : null
       }
       legend={
         showLegend ? (
@@ -189,8 +191,6 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
           />
         ) : null
       }
-      reserveFilterSpace={!!reserveFilterSpace}
-      reserveLegendSpace={!!reserveLegendSpace}
       onBlur={onBlur}
     />
   );

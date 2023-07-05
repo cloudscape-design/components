@@ -58,6 +58,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const [measuredHeight, setHeight] = useState(0);
+  // TODO: optimise
   useResizeObserver(
     () => plotMeasureRef.current,
     entry => setHeight(entry.borderBoxHeight)
