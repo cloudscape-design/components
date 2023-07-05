@@ -21,6 +21,8 @@ export { ProgressBarProps };
 
 export default function ProgressBar({
   value = 0,
+  type = 'percentage',
+  maxValue = 100,
   status = 'in-progress',
   variant = 'standalone',
   resultButtonText,
@@ -42,9 +44,10 @@ export default function ProgressBar({
   const [assertion, setAssertion] = useState('');
   const throttledAssertion = useMemo(() => {
     return throttle((value: ProgressBarProps['value']) => {
-      setAssertion(`${label ?? ''}: ${value}%`);
+      const announcement = type === 'ratio' ? `${value} of ${maxValue}}` : `${value}%`;
+      setAssertion(`${label ?? ''}: ${announcement}`);
     }, ASSERTION_FREQUENCY);
-  }, [label]);
+  }, [label, maxValue, type]);
 
   useEffect(() => {
     throttledAssertion(value);
@@ -71,7 +74,7 @@ export default function ProgressBar({
         <div>
           {isInProgressState ? (
             <>
-              <Progress value={value} labelId={labelId} isInFlash={isInFlash} />
+              <Progress value={value} maxValue={maxValue} type={type} labelId={labelId} isInFlash={isInFlash} />
               <LiveRegion delay={0}>{assertion}</LiveRegion>
             </>
           ) : (

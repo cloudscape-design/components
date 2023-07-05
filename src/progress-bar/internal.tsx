@@ -18,29 +18,31 @@ const clamp = (value: number, lowerLimit: number, upperLimit: number) => {
 };
 
 interface ProgressProps {
+  type: 'percentage' | 'ratio';
   value: number;
+  maxValue: number;
   isInFlash: boolean;
   labelId: string;
 }
-export const Progress = ({ value, isInFlash, labelId }: ProgressProps) => {
+export const Progress = ({ value, maxValue = MAX_VALUE, type, isInFlash, labelId }: ProgressProps) => {
   const roundedValue = Math.round(value);
-  const progressValue = clamp(roundedValue, 0, MAX_VALUE);
+  const progressValue = clamp(roundedValue, 0, maxValue);
 
   return (
     <div className={styles['progress-container']}>
       <progress
         className={clsx(
           styles.progress,
-          progressValue >= MAX_VALUE && styles.complete,
+          progressValue >= maxValue && styles.complete,
           isInFlash && styles['progress-in-flash']
         )}
-        max={MAX_VALUE}
+        max={maxValue}
         value={progressValue}
         aria-labelledby={labelId}
       />
       <span aria-hidden="true" className={styles['percentage-container']}>
         <InternalBox className={styles.percentage} variant="small" color={isInFlash ? 'inherit' : undefined}>
-          {`${progressValue}%`}
+          {type === 'ratio' ? `${progressValue}/${maxValue}` : `${progressValue}%`}
         </InternalBox>
       </span>
     </div>
