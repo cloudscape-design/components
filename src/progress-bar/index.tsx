@@ -44,7 +44,7 @@ export default function ProgressBar({
   const [assertion, setAssertion] = useState('');
   const throttledAssertion = useMemo(() => {
     return throttle((value: ProgressBarProps['value']) => {
-      const announcement = type === 'ratio' ? `${value} of ${maxValue}}` : `${value}%`;
+      const announcement = type === 'ratio' ? `${value}/${maxValue}` : `${value}%`;
       setAssertion(`${label ?? ''}: ${announcement}`);
     }, ASSERTION_FREQUENCY);
   }, [label, maxValue, type]);
