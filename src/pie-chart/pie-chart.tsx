@@ -283,75 +283,73 @@ export default <T extends PieChartProps.Datum>({
 
   const hasLabels = !(hideTitles && hideDescriptions);
 
-  const chartPlot = (
-    <ChartPlot
-      ref={plotRef}
-      width="100%"
-      height={fitHeight ? '100%' : height}
-      transform={`translate(${width / 2} ${height / 2})`}
-      isPrecise={true}
-      isClickable={!isTooltipOpen}
-      ariaLabel={ariaLabel}
-      ariaLabelledby={ariaLabelledby}
-      ariaDescription={ariaDescription}
-      ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
-      ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
-      ariaLiveRegion={tooltipContent}
-      activeElementRef={focusedSegmentRef}
-      activeElementKey={highlightedSegmentIndex?.toString()}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      onKeyDown={onKeyDown}
-      onMouseOut={onMouseOut}
-    >
-      <line
-        ref={plotMeasureRef}
-        x1="0"
-        x2="0"
-        y1="0"
-        y2="100%"
-        stroke="transparent"
-        strokeWidth={1}
-        style={{ pointerEvents: 'none' }}
-      />
-      <Segments
-        pieData={pieData}
-        dimensions={dimensions}
-        variant={variant}
-        focusedSegmentRef={focusedSegmentRef}
-        popoverTrackRef={popoverTrackRef}
-        highlightedSegment={highlightedSegment}
-        segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
-        onMouseDown={onMouseDown}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}
-      />
-      {hasLabels && (
-        <Labels
-          pieData={pieData}
-          dimensions={dimensions}
-          segmentDescription={segmentDescription}
-          visibleDataSum={dataSum}
-          hideTitles={hideTitles}
-          hideDescriptions={hideDescriptions}
-          highlightedSegment={highlightedSegment}
-          containerRef={containerRef}
-        />
-      )}
-    </ChartPlot>
-  );
-
   return (
     <div
       className={clsx(styles['chart-container'], fitHeight && styles['chart-container--fit-height'])}
       ref={containerRef}
     >
-      {/* TODO: use display contents */}
-      {fitHeight ? (
-        <div className={styles['chart-container-chart-plot-fit-height-wrapper']}>{chartPlot}</div>
-      ) : (
-        chartPlot
-      )}
+      <div
+        className={clsx(
+          styles['chart-container-chart-plot'],
+          fitHeight && styles['chart-container-chart-plot--fit-height']
+        )}
+      >
+        <ChartPlot
+          ref={plotRef}
+          width="100%"
+          height={fitHeight ? '100%' : height}
+          transform={`translate(${width / 2} ${height / 2})`}
+          isPrecise={true}
+          isClickable={!isTooltipOpen}
+          ariaLabel={ariaLabel}
+          ariaLabelledby={ariaLabelledby}
+          ariaDescription={ariaDescription}
+          ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
+          ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
+          ariaLiveRegion={tooltipContent}
+          activeElementRef={focusedSegmentRef}
+          activeElementKey={highlightedSegmentIndex?.toString()}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          onMouseOut={onMouseOut}
+        >
+          <line
+            ref={plotMeasureRef}
+            x1="0"
+            x2="0"
+            y1="0"
+            y2="100%"
+            stroke="transparent"
+            strokeWidth={1}
+            style={{ pointerEvents: 'none' }}
+          />
+          <Segments
+            pieData={pieData}
+            dimensions={dimensions}
+            variant={variant}
+            focusedSegmentRef={focusedSegmentRef}
+            popoverTrackRef={popoverTrackRef}
+            highlightedSegment={highlightedSegment}
+            segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
+            onMouseDown={onMouseDown}
+            onMouseOver={onMouseOver}
+            onMouseOut={onMouseOut}
+          />
+          {hasLabels && (
+            <Labels
+              pieData={pieData}
+              dimensions={dimensions}
+              segmentDescription={segmentDescription}
+              visibleDataSum={dataSum}
+              hideTitles={hideTitles}
+              hideDescriptions={hideDescriptions}
+              highlightedSegment={highlightedSegment}
+              containerRef={containerRef}
+            />
+          )}
+        </ChartPlot>
+      </div>
 
       {hasInnerContent && (
         <div className={styles['inner-content']} id={innerMetricId}>

@@ -44,9 +44,13 @@
   }
 }
 
-.chart-container-chart-plot-fit-height-wrapper {
-  position: absolute;
-  inset: 0;
+.chart-container-chart-plot {
+  display: contents;
+
+  &--fit-height {
+    position: absolute;
+    inset: 0;
+  }
 }
 
 .inner-content {
