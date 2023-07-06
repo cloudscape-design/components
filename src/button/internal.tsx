@@ -124,10 +124,11 @@ export const InternalButton = React.forwardRef(
       if (loading) {
         loadingButtonCount.current++;
         return () => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
           loadingButtonCount.current--;
         };
       }
-    }, [loading]);
+    }, [loading, loadingButtonCount]);
 
     if (isAnchor) {
       return (

@@ -140,12 +140,13 @@ export default function InternalFormField({
       });
 
       return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         errorCount.current--;
       };
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, errorText, submissionAttempt]);
+  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
 
   return (
     <div

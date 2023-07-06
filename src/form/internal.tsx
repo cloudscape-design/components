@@ -39,10 +39,11 @@ export default function InternalForm({
       errorCount.current++;
       FunnelMetrics.funnelError({ funnelInteractionId });
       return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         errorCount.current--;
       };
     }
-  }, [funnelInteractionId, errorText, submissionAttempt]);
+  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>

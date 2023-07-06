@@ -72,6 +72,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     /*
       A funnel counts as "successful" if it is unmounted after being "complete".
     */
+    /* eslint-disable react-hooks/exhaustive-deps */
     return () => {
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
@@ -86,9 +87,8 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
         funnelState.current === 'cancelled';
       }
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const funnelSubmit = () => {
     funnelState.current = 'validating';
@@ -178,6 +178,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
     }
 
     return () => {
+      //eslint-disable-next-line react-hooks/exhaustive-deps
       if (funnelInteractionId && funnelState.current === 'default') {
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
@@ -188,6 +189,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
         });
       }
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funnelInteractionId, stepNumber, stepNameSelector]);
 
   const contextValue: FunnelStepContextValue = { funnelInteractionId, stepNumber, stepNameSelector, funnelStepProps };
