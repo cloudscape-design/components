@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
@@ -12,6 +12,7 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 import { useButtonContext } from '../internal/context/button-context';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -117,6 +118,16 @@ export const InternalButton = React.forwardRef(
         <RightIcon {...iconProps} />
       </>
     );
+
+    const { loadingButtonCount } = useFunnel();
+    useEffect(() => {
+      if (loading) {
+        loadingButtonCount.current++;
+        return () => {
+          loadingButtonCount.current--;
+        };
+      }
+    }, [loading]);
 
     if (isAnchor) {
       return (

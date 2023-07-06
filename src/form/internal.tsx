@@ -32,11 +32,15 @@ export default function InternalForm({
   const i18n = useInternalI18n('form');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
 
-  const { funnelInteractionId, submissionAttempt } = useFunnel();
+  const { funnelInteractionId, submissionAttempt, errorCount } = useFunnel();
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
+      errorCount.current++;
       FunnelMetrics.funnelError({ funnelInteractionId });
+      return () => {
+        errorCount.current--;
+      };
     }
   }, [funnelInteractionId, errorText, submissionAttempt]);
 

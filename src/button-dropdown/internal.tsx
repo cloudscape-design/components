@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
@@ -16,6 +16,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -125,6 +126,16 @@ const InternalButtonDropdown = React.forwardRef(
 
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
+
+    const { loadingButtonCount } = useFunnel();
+    useEffect(() => {
+      if (loading) {
+        loadingButtonCount.current++;
+        return () => {
+          loadingButtonCount.current--;
+        };
+      }
+    }, [loading]);
 
     return (
       <div

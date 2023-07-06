@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import {
+  Alert,
   BreadcrumbGroup,
   Button,
   Checkbox,
@@ -16,6 +17,8 @@ import {
 export default function FormScenario() {
   const [value, setValue] = useState('');
   const [simulateServerError, setSimulateServerError] = useState(true);
+  const [showInlineSuccess, setShowInlineSuccess] = useState(false);
+  const [submitWithDelay, setSubmitWithDelay] = useState(false);
 
   const [attemptedToSubmit, setAttemptedToSubmit] = useState(false);
 
@@ -34,7 +37,7 @@ export default function FormScenario() {
 
     setLoading(true);
 
-    setTimeout(() => {
+    const submit = () => {
       setLoading(false);
 
       if (simulateServerError) {
@@ -42,7 +45,13 @@ export default function FormScenario() {
       } else {
         setFinished(true);
       }
-    }, 2000);
+    };
+
+    if (submitWithDelay) {
+      setTimeout(submit, 2000);
+    } else {
+      submit();
+    }
   };
 
   return (
@@ -53,7 +62,7 @@ export default function FormScenario() {
           { text: 'Create a resource', href: '#' },
         ]}
       />
-      {finished ? (
+      {finished && !showInlineSuccess ? (
         <Container>Finished</Container>
       ) : (
         <Form
@@ -73,29 +82,50 @@ export default function FormScenario() {
         >
           <SpaceBetween direction="vertical" size="l">
             <Container header={<Header variant="h2">Form section 1</Header>}>
+              <FormField
+                label="Form field"
+                errorText={
+                  attemptedToSubmit && value.length > 4 ? 'The text must not be longer than 4 letters' : undefined
+                }
+                constraintText="Maximum length: 4 letters"
+              >
+                <Input value={value} onChange={e => setValue(e.detail.value)} disabled={loading} />
+              </FormField>
+            </Container>
+            <Container header={<Header variant="h2">Form section 2</Header>}>
               <SpaceBetween direction="vertical" size="l">
-                <FormField
-                  label="Form field"
-                  errorText={
-                    attemptedToSubmit && value.length > 4 ? 'The text must not be longer than 4 letters' : undefined
-                  }
-                  constraintText="Maximum length: 4 letters"
-                >
-                  <Input value={value} onChange={e => setValue(e.detail.value)} disabled={loading} />
+                <FormField label="Apply delay">
+                  <Checkbox
+                    checked={submitWithDelay}
+                    onChange={e => setSubmitWithDelay(e.detail.checked)}
+                    disabled={loading}
+                  >
+                    Apply a loading state when submitting the form
+                  </Checkbox>
+                </FormField>
+
+                <FormField label="Error simulation">
+                  <Checkbox
+                    checked={simulateServerError}
+                    onChange={e => setSimulateServerError(e.detail.checked)}
+                    disabled={loading}
+                  >
+                    Show a server side error when this form is submitted
+                  </Checkbox>
+                </FormField>
+
+                <FormField label="Success display">
+                  <Checkbox
+                    checked={showInlineSuccess}
+                    onChange={e => setShowInlineSuccess(e.detail.checked)}
+                    disabled={loading}
+                  >
+                    Show success inline instead of on a new page
+                  </Checkbox>
                 </FormField>
               </SpaceBetween>
             </Container>
-            <Container header={<Header variant="h2">Form section 2</Header>}>
-              <FormField label="Error simulation">
-                <Checkbox
-                  checked={simulateServerError}
-                  onChange={e => setSimulateServerError(e.detail.checked)}
-                  disabled={loading}
-                >
-                  Show a server side error when this form is submitted
-                </Checkbox>
-              </FormField>
-            </Container>
+            {finished && showInlineSuccess && <Alert type="success">The resource was successfully created.</Alert>}
           </SpaceBetween>
         </Form>
       )}
