@@ -93,13 +93,11 @@ $modal-z-index: 5000;
 }
 
 .header {
-  padding: awsui.$space-s awsui.$space-modal-horizontal;
+  padding: awsui.$space-container-header-vertical awsui.$space-modal-horizontal awsui.$space-container-header-bottom
+    awsui.$space-modal-horizontal;
   background-color: awsui.$color-background-container-header;
   border-bottom: 1px solid awsui.$color-border-container-divider;
   border-radius: awsui.$border-radius-container awsui.$border-radius-container 0 0;
-  &.refresh {
-    padding: awsui.$space-s awsui.$space-m awsui.$space-scaled-xs awsui.$space-modal-horizontal;
-  }
 }
 
 .header--text {
@@ -129,9 +127,6 @@ $modal-z-index: 5000;
 
 .dismiss-control {
   /* used in test-utils */
-  &.refresh {
-    padding-top: awsui.$space-scaled-xxxs;
-  }
 }
 
 // Added to `document.body` to disable body scroll

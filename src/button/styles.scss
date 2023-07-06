@@ -117,6 +117,7 @@
   &.variant-modal-dismiss {
     padding: awsui.$space-button-modal-dismiss-vertical awsui.$space-xxs;
     margin-right: calc(-1 * #{awsui.$space-xxs});
+    border-right: 0;
   }
 
   &.variant-inline-icon {

@@ -591,6 +591,7 @@ export type SpacingTokenName =
   | 'spaceCodeEditorStatusFocusOutlineGutter'
   | 'spaceContainerContentTop'
   | 'spaceContainerHeaderVertical'
+  | 'spaceContainerHeaderBottom'
   | 'spaceContainerHorizontal'
   | 'spaceContentHeaderPaddingBottom'
   | 'spaceDarkHeaderOverlapDistance'

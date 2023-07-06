@@ -138,7 +138,6 @@ export default function InternalContainer({
                 [styles['with-paddings']]: !disableHeaderPaddings,
                 [styles['with-hidden-content']]: !children || __hiddenContent,
                 [styles['header-with-media']]: hasMedia,
-                [styles.refresh]: isRefresh,
               })}
               {...headerIdProp}
               {...stickyStyles}

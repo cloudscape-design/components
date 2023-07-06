@@ -137,14 +137,14 @@ function InnerModal({
             onKeyDown={escKeyHandler}
           >
             <div className={styles.container}>
-              <div className={clsx(styles.header, isRefresh && styles.refresh)}>
+              <div className={clsx(styles.header)}>
                 <InternalHeader
                   variant="h2"
                   __disableActionsWrapping={true}
                   actions={
                     <InternalButton
                       ariaLabel={closeAriaLabel}
-                      className={clsx(styles['dismiss-control'], isRefresh && styles.refresh)}
+                      className={styles['dismiss-control']}
                       variant="modal-dismiss"
                       iconName="close"
                       formAction="none"

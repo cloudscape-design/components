@@ -21,6 +21,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceCodeEditorStatusFocusOutlineGutter: '-7px',
   spaceContainerContentTop: '0px',
   spaceContainerHeaderVertical: '{spaceS}',
+  spaceContainerHeaderBottom: '{spaceScaledXs}',
   spaceContainerHorizontal: '{spaceL}',
   spaceContentHeaderPaddingBottom: '{spaceScaledM}',
   spaceDarkHeaderOverlapDistance: { comfortable: '36px', compact: '32px' },
