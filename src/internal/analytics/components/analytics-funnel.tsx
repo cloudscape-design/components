@@ -36,6 +36,7 @@ type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
 
 export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
+  const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const funnelResultRef = useRef<boolean>(false);
   const isVisualRefresh = useVisualRefresh();
 
@@ -78,6 +79,8 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     funnelResultRef.current = true;
   };
 
+  const funnelNextOrSubmitAttempt = () => setSubmissionAttempt(i => i + 1);
+
   const funnelCancel = () => {
     funnelResultRef.current = false;
   };
@@ -90,6 +93,8 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     totalFunnelSteps: props.totalFunnelSteps,
     funnelSubmit,
     funnelCancel,
+    submissionAttempt,
+    funnelNextOrSubmitAttempt,
   };
 
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;

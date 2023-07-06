@@ -14,6 +14,8 @@ export interface FunnelContextValue extends BaseContextProps {
   funnelSubmit: () => void;
   funnelCancel: () => void;
   setFunnelInteractionId: (funnelInteractionId: string) => void;
+  submissionAttempt: number;
+  funnelNextOrSubmitAttempt: () => void;
 }
 
 export interface FunnelStepContextValue extends BaseContextProps {
@@ -30,6 +32,7 @@ export interface FunnelSubStepContextValue extends FunnelStepContextValue {
   funnelSubStepProps?: Record<string, string | number | boolean | undefined>;
 }
 
+/* istanbul ignore next */
 export const FunnelContext = createContext<FunnelContextValue>({
   funnelInteractionId: undefined,
   setFunnelInteractionId: () => {},
@@ -38,6 +41,8 @@ export const FunnelContext = createContext<FunnelContextValue>({
   totalFunnelSteps: 0,
   funnelSubmit: () => {},
   funnelCancel: () => {},
+  submissionAttempt: 0,
+  funnelNextOrSubmitAttempt: () => {},
 });
 
 export const FunnelStepContext = createContext<FunnelStepContextValue>({

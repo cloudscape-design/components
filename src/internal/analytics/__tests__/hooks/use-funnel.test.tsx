@@ -28,6 +28,8 @@ describe('useFunnel hook', () => {
           totalFunnelSteps: 0,
           funnelSubmit: () => {},
           funnelCancel: () => {},
+          submissionAttempt: 0,
+          funnelNextOrSubmitAttempt: () => {},
         }}
       >
         <ChildComponent />
@@ -64,6 +66,8 @@ describe('useFunnel hook', () => {
           setFunnelInteractionId,
           funnelSubmit,
           funnelCancel,
+          submissionAttempt: 0,
+          funnelNextOrSubmitAttempt: () => {},
         }}
       >
         <ChildComponent />

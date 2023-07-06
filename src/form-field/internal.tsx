@@ -19,7 +19,7 @@ import { useInternalI18n } from '../internal/i18n/context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 
 import { FunnelMetrics } from '../internal/analytics';
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import {
   DATA_ATTR_FIELD_ERROR,
   DATA_ATTR_FIELD_LABEL,
@@ -92,8 +92,9 @@ export default function InternalFormField({
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
 
-  const { funnelInteractionId, stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } =
-    useFunnelSubStep();
+  const { funnelInteractionId, submissionAttempt } = useFunnel();
+
+  const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
   const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText);
 
@@ -138,7 +139,7 @@ export default function InternalFormField({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, errorText]);
+  }, [funnelInteractionId, errorText, submissionAttempt]);
 
   return (
     <div
