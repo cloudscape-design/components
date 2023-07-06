@@ -76,6 +76,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
       <span>
         <InternalStatusIndicator
           type="error"
+          __display="inline"
           __animate={previousStatusType !== 'error'}
           iconAriaLabel={errorIconAriaLabel}
         >
