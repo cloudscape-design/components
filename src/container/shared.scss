@@ -8,7 +8,8 @@
 
 $header-padding-horizontal: awsui.$space-container-horizontal;
 $header-padding-vertical: awsui.$space-container-header-vertical;
-$header-padding: $header-padding-vertical $header-padding-horizontal;
+$header-padding: $header-padding-vertical $header-padding-horizontal awsui.$space-container-header-bottom
+  $header-padding-horizontal;
 
 $footer-padding: awsui.$space-scaled-s awsui.$space-container-horizontal;
 
