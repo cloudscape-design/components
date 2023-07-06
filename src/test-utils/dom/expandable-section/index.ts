@@ -3,6 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../expandable-section/styles.selectors.js';
 import containerStyles from '../../../container/styles.selectors.js';
+import headerStyles from '../../../header/styles.selectors.js';
 
 export default class ExpandableSectionWrapper extends ComponentWrapper {
   static rootSelector = styles.root;
@@ -30,5 +31,13 @@ export default class ExpandableSectionWrapper extends ComponentWrapper {
 
   findExpandIcon(): ElementWrapper {
     return this.findByClassName(styles['icon-container'])!;
+  }
+
+  findHeaderText(): ElementWrapper | null {
+    return this.findByClassName(styles['header-text']);
+  }
+
+  findHeaderDescription(): ElementWrapper | null {
+    return this.findByClassName(headerStyles.description);
   }
 }
