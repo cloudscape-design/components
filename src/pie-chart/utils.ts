@@ -15,7 +15,7 @@ export interface Dimension {
 
 const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
 
-const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
+export const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
     innerRadius: 33,
     outerRadius: 50,
@@ -39,7 +39,7 @@ const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = 
   },
 };
 
-const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
+export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
     ...dimensionsBySize.small,
     innerRadius: 38,

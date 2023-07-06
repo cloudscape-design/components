@@ -3,7 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { balanceLabelNodes } from '../../../lib/components/pie-chart/utils';
+import {
+  balanceLabelNodes,
+  getDimensionsBySize,
+  dimensionsBySize,
+  refreshDimensionsBySize,
+} from '../../../lib/components/pie-chart/utils';
 
 // Sample test cases gathered from charts with overlapping labels and other edge cases
 const testCases = [
@@ -284,5 +289,35 @@ describe('balanceLabelNodes', () => {
 
       expect(labels).toMatchSnapshot();
     });
+  });
+});
+
+describe('getDimensionsBySize', () => {
+  test.each(['small', 'medium', 'large'] as const)('get correct dimensions for size="%s" in classic', size => {
+    const dimensions = getDimensionsBySize({ size, visualRefresh: false });
+    expect(dimensions).toEqual({ ...dimensionsBySize[size], size });
+  });
+
+  test.each(['small', 'medium', 'large'] as const)('get correct dimensions for size="%s" in visual refresh', size => {
+    const dimensions = getDimensionsBySize({ size, visualRefresh: true });
+    expect(dimensions).toEqual({ ...refreshDimensionsBySize[size], size });
+  });
+
+  test.each([
+    [dimensionsBySize.medium.outerRadius * 2 + dimensionsBySize.medium.padding * 2 - 1, 'small'],
+    [dimensionsBySize.large.outerRadius * 2 + dimensionsBySize.large.padding * 2 - 1, 'medium'],
+    [dimensionsBySize.large.outerRadius * 2 + dimensionsBySize.large.padding * 2 + 1, 'large'],
+  ])('matches size correctly for height=$0 in classic', (height, matchedSize) => {
+    const dimensions = getDimensionsBySize({ size: height, visualRefresh: false });
+    expect(dimensions.size).toBe(matchedSize);
+  });
+
+  test.each([
+    [refreshDimensionsBySize.medium.outerRadius * 2 + refreshDimensionsBySize.medium.padding * 2 - 1, 'small'],
+    [refreshDimensionsBySize.large.outerRadius * 2 + refreshDimensionsBySize.large.padding * 2 - 1, 'medium'],
+    [refreshDimensionsBySize.large.outerRadius * 2 + refreshDimensionsBySize.large.padding * 2 + 1, 'large'],
+  ])('matches size correctly for height=$0 in visual refresh', (height, matchedSize) => {
+    const dimensions = getDimensionsBySize({ size: height, visualRefresh: true });
+    expect(dimensions.size).toBe(matchedSize);
   });
 });
