@@ -168,7 +168,9 @@ const ExpandableHeaderTextWrapper = ({
       {...headerButtonListeners}
     >
       <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-      <span id={id}>{children}</span>
+      <span id={id} className={styles['header-text']}>
+        {children}
+      </span>
     </span>
   );
 

@@ -54,12 +54,14 @@ describe('Expandable Section', () => {
   });
 
   describe('slots', () => {
-    test('populates header slot correctly', () => {
+    test('populates header text correctly', () => {
       const wrapper = renderExpandableSection({
         headerText: 'Test Header',
       });
-      const header = wrapper.findHeader().getElement();
-      expect(header).toHaveTextContent('Test Header');
+      // Keep the test util for the deprecated header slot for coverage
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('Test Header');
+      // New test util
+      expect(wrapper.findHeaderText()?.getElement()).toHaveTextContent('Test Header');
     });
     describe('populates description slot correctly', () => {
       for (const variant of variantsWithDescription) {
@@ -69,8 +71,10 @@ describe('Expandable Section', () => {
             headerText: 'Test Header',
             headerDescription: 'Description',
           });
-          const header = wrapper.findHeader().getElement();
-          expect(header).toHaveTextContent('Description');
+          // Keep the test util for the deprecated header slot for coverage
+          expect(wrapper.findHeader().getElement()).toHaveTextContent('Description');
+          // New test util
+          expect(wrapper.findHeaderDescription()?.getElement()).toHaveTextContent('Description');
         });
       }
     });
@@ -133,8 +137,7 @@ describe('Expandable Section', () => {
             headerDescription: 'Description',
             variant,
           });
-          const header = wrapper.findHeader().getElement();
-          expect(header).not.toHaveTextContent('Description');
+          expect(wrapper.findHeaderDescription()).toBeNull();
         });
       }
     });
