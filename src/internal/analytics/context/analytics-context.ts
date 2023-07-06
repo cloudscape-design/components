@@ -32,6 +32,7 @@ export interface FunnelSubStepContextValue extends FunnelStepContextValue {
   funnelSubStepProps?: Record<string, string | number | boolean | undefined>;
 }
 
+/* istanbul ignore next */
 export const FunnelContext = createContext<FunnelContextValue>({
   funnelInteractionId: undefined,
   setFunnelInteractionId: () => {},
