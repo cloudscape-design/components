@@ -89,10 +89,9 @@ export default <T extends PieChartProps.Datum>({
 
   const isRefresh = useVisualRefresh();
 
-  const plotMeasureRef = useRef<SVGLineElement>(null);
   const [measuredHeight, setHeight] = useState(0);
   useResizeObserver(
-    () => plotMeasureRef.current,
+    () => plotRef.current?.svg ?? null,
     entry => fitHeight && setHeight(entry.borderBoxHeight)
   );
   const height = fitHeight ? measuredHeight : explicitHeight;
@@ -327,16 +326,6 @@ export default <T extends PieChartProps.Datum>({
           onKeyDown={onKeyDown}
           onMouseOut={onMouseOut}
         >
-          <line
-            ref={plotMeasureRef}
-            x1="0"
-            x2="0"
-            y1="0"
-            y2="100%"
-            stroke="transparent"
-            strokeWidth={1}
-            style={{ pointerEvents: 'none' }}
-          />
           <Segments
             pieData={pieData}
             dimensions={dimensions}
