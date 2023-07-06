@@ -6,6 +6,7 @@ import { AreaChartWrapper } from '../../../lib/components/test-utils/dom';
 import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import popoverStyles from '../../../lib/components/popover/styles.css.js';
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 import { cloneDeep } from 'lodash';
@@ -84,9 +85,21 @@ test('error and recovery texts are assigned', () => {
   expect(wrapper.findStatusContainer()!.getElement()).toHaveTextContent('Ooops! Try again');
 });
 
-test('chart height is assigned', () => {
+test('explicit chart height is assigned', () => {
   const { wrapper } = renderAreaChart(<AreaChart height={333} statusType="finished" series={[areaSeries1]} />);
   expect(wrapper.findChart()!.getElement().style.height).toContain('333');
+});
+
+test('when fitHeight=true chart height is flexible', () => {
+  const { wrapper } = renderAreaChart(
+    <AreaChart height={333} fitHeight={true} statusType="finished" series={[areaSeries1]} />
+  );
+  expect(wrapper.findChart()!.getElement().style.height).toContain('100%');
+});
+
+test.each([false, true])('when fitHeight=%s content min height is explicitly set', fitHeight => {
+  const { wrapper } = renderAreaChart(<AreaChart height={333} fitHeight={fitHeight} series={[]} />);
+  expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '333px' });
 });
 
 test('empty text is assigned', () => {
