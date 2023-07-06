@@ -14,11 +14,12 @@ import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel
 export { FormProps };
 
 const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormProps) => {
-  const { funnelProps, funnelSubmit } = useFunnel();
+  const { funnelProps, funnelSubmit, funnelNextOrSubmitAttempt } = useFunnel();
   const { funnelStepProps } = useFunnelStep();
 
   const handleActionButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
     if (variant === 'primary') {
+      funnelNextOrSubmitAttempt();
       funnelSubmit();
     }
   };

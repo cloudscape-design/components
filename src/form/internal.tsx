@@ -32,13 +32,13 @@ export default function InternalForm({
   const i18n = useInternalI18n('form');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
 
-  const { funnelInteractionId } = useFunnel();
+  const { funnelInteractionId, submissionAttempt } = useFunnel();
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
       FunnelMetrics.funnelError({ funnelInteractionId });
     }
-  }, [funnelInteractionId, errorText]);
+  }, [funnelInteractionId, errorText, submissionAttempt]);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>

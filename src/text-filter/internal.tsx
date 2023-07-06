@@ -6,11 +6,13 @@ import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { fireNonCancelableEvent } from '../internal/events';
-import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { TextFilterProps } from './interfaces';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings';
+import { TextFilterProps } from './interfaces';
 import { SearchResults } from './search-results';
+
+import styles from './styles.css.js';
 
 type InternalTextFilterProps = TextFilterProps & InternalBaseComponentProps;
 
@@ -21,6 +23,9 @@ const InternalTextFilter = React.forwardRef(
       filteringAriaLabel,
       filteringPlaceholder,
       filteringClearAriaLabel,
+      controlId,
+      ariaLabelledby,
+      ariaDescribedby,
       disabled,
       countText,
       onChange,
@@ -40,6 +45,7 @@ const InternalTextFilter = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <InternalInput
+          __inheritFormFieldProps={true}
           ref={inputRef}
           className={styles.input}
           type="search"
@@ -47,8 +53,10 @@ const InternalTextFilter = React.forwardRef(
           placeholder={filteringPlaceholder}
           value={filteringText}
           disabled={disabled}
+          controlId={controlId}
+          ariaLabelledby={ariaLabelledby}
+          ariaDescribedby={joinStrings(showResults ? searchResultsId : undefined, ariaDescribedby)}
           autoComplete={false}
-          ariaDescribedby={showResults ? searchResultsId : undefined}
           clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}

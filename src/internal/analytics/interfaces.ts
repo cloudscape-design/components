@@ -33,6 +33,7 @@ export type FunnelStartMethod = (props: FunnelStartProps) => string;
 // Define individual method props by extending the base
 export interface FunnelStepProps extends BaseFunnelProps {
   stepNumber: number;
+  stepName?: string | undefined;
   stepNameSelector: string;
   subStepAllSelector: string;
 }
@@ -44,6 +45,7 @@ export interface FunnelStepNavigationProps extends FunnelStepProps {
 
 export interface FunnelSubStepProps extends FunnelStepProps {
   subStepSelector: string;
+  subStepName?: string | undefined;
   subStepNameSelector: string;
 }
 

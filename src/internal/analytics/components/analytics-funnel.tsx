@@ -21,6 +21,7 @@ import { FunnelProps, FunnelStepProps } from '../interfaces';
 import {
   DATA_ATTR_FUNNEL_STEP,
   getFunnelNameSelector,
+  getNameFromSelector,
   getSubStepAllSelector,
   getSubStepNameSelector,
   getSubStepSelector,
@@ -35,6 +36,7 @@ type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
 
 export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
+  const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const funnelResultRef = useRef<boolean>(false);
   const isVisualRefresh = useVisualRefresh();
 
@@ -77,6 +79,8 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     funnelResultRef.current = true;
   };
 
+  const funnelNextOrSubmitAttempt = () => setSubmissionAttempt(i => i + 1);
+
   const funnelCancel = () => {
     funnelResultRef.current = false;
   };
@@ -89,6 +93,8 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     totalFunnelSteps: props.totalFunnelSteps,
     funnelSubmit,
     funnelCancel,
+    submissionAttempt,
+    funnelNextOrSubmitAttempt,
   };
 
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
@@ -108,10 +114,13 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
   // to record the beginning of the interaction with the current step.
   // On unmount, it does a similar thing but this time calling 'funnelStepComplete' to record the completion of the interaction.
   useEffect(() => {
+    const stepName = getNameFromSelector(stepNameSelector);
+
     if (funnelInteractionId) {
       FunnelMetrics.funnelStepStart({
         funnelInteractionId,
         stepNumber,
+        stepName,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
       });
@@ -122,6 +131,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
           stepNumber,
+          stepName,
           stepNameSelector,
           subStepAllSelector: getSubStepAllSelector(),
         });
