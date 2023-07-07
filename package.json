@@ -120,7 +120,7 @@
     "rollup-plugin-license": "^3.0.1",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
-    "stylelint": "^14.15.0",
+    "stylelint": "^15.10.1",
     "stylelint-config-prettier": "^9.0.4",
     "stylelint-config-recommended-scss": "^8.0.0",
     "stylelint-no-unsupported-browser-features": "^6.0.1",
