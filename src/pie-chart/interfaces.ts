@@ -57,6 +57,11 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
   detailPopoverContent?: PieChartProps.DetailPopoverContentFunction<T>;
 
   /**
+   * Additional content that is displayed at the bottom of the detail popover.
+   */
+  detailPopoverFooter?: PieChartProps.DetailPopoverFooter<T>;
+
+  /**
    * A function that determines the description of a segment that is displayed on the chart, unless `hideDescriptions` is set to `true`.
    * This is an optional description that explains the segment and is displayed underneath the label.
    * The function is called with the data object of each segment and is expected to return the description as a string.
@@ -222,6 +227,10 @@ export namespace PieChartProps {
 
   export interface DetailPopoverContentFunction<T = Datum> {
     (segment: T, visibleDataSum: number): ReadonlyArray<ChartDetailPair>;
+  }
+
+  export interface DetailPopoverFooter<T> {
+    (segment: T): React.ReactNode;
   }
 
   export interface SegmentDescriptionFunction<T = Datum> {

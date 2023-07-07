@@ -26,7 +26,7 @@ function delay() {
 const drawerDefaults: DrawerConfig = {
   id: 'test',
   ariaLabels: {},
-  trigger: {},
+  trigger: { iconSvg: '' },
   mountContent: () => {},
   unmountContent: () => {},
 };
@@ -62,6 +62,25 @@ describe('Runtime drawers', () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     await delay();
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+  });
+
+  test('propagates iconSvg as html content', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      trigger: { iconSvg: `<rect data-testid="custom-icon" />` },
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.find('[data-testid="custom-icon"]')).toBeTruthy();
+  });
+
+  test('does not support iconName', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      // @ts-expect-error testing that unsupported feature does not fail in runtime
+      trigger: { iconName: `<rect data-testid="custom-icon" />` },
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findDrawersTriggers()[0].find('svg')).toBeFalsy();
   });
 
   test('persists drawer config between mounts/unmounts', async () => {

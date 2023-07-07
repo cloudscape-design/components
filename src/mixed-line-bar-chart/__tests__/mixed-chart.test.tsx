@@ -7,6 +7,7 @@ import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
@@ -792,12 +793,12 @@ describe('Filter', () => {
 });
 
 describe('Reserve space', () => {
-  const reserveFilterClass = styles['content--reserve-filter'];
-  const reserveLegendClass = styles['content--reserve-legend'];
+  const reserveFilterClass = chartWrapperStyles['content--reserve-filter'];
+  const reserveLegendClass = chartWrapperStyles['content--reserve-legend'];
 
   test('by applying the correct minimum height', () => {
     const { wrapper } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} height={100} />);
-    expect(wrapper.findByClassName(styles.content)?.getElement()).toHaveStyle({ minHeight: '100px' });
+    expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '100px' });
   });
 
   test('unless there is a chart showing', () => {
@@ -959,6 +960,15 @@ describe('Details popover', () => {
 
     wrapper.findDefaultFilter()?.openDropdown();
     expect(wrapper.findByClassName(styles['series--dimmed'])).toBeNull();
+  });
+
+  test('can contain custom content in the footer', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart {...barChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
+    );
+
+    wrapper.findApplication()!.focus();
+    expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
   });
 });
 

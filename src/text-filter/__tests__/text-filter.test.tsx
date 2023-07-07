@@ -3,6 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce';
+import FormField from '../../../lib/components/form-field';
 import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import '../../__a11y__/to-validate-a11y';
@@ -93,6 +94,18 @@ test('has autocomplete turned off', () => {
   expect(wrapper.findInput().findNativeInput().getElement()).toHaveAttribute('autocomplete', 'off');
 });
 
+test('should pass through properties using form field context', () => {
+  const { wrapper } = renderTextFilter(
+    <FormField label="Test label" description="Test description" controlId="control-id">
+      <TextFilter filteringText="" />
+    </FormField>
+  );
+  const nativeInput = wrapper.findInput().findNativeInput().getElement();
+  expect(document.getElementById(nativeInput.getAttribute('aria-labelledby')!)).toHaveTextContent('Test label');
+  expect(document.getElementById(nativeInput.getAttribute('aria-describedby')!)).toHaveTextContent('Test description');
+  expect(nativeInput.id).toBe('control-id');
+});
+
 describe('countText', () => {
   test('not displayed if no value was given', () => {
     const { wrapper } = renderTextFilter(<TextFilter filteringText="" />);
@@ -107,6 +120,21 @@ describe('countText', () => {
   test('displays the text when all conditions met', () => {
     const { wrapper } = renderTextFilter(<TextFilter filteringText="test" countText="10 matches" />);
     expect(wrapper.findResultsCount().getElement().textContent).toEqual('10 matches');
+  });
+
+  test('placed first in the aria-describedby list', () => {
+    const { wrapper } = renderTextFilter(
+      <TextFilter filteringText="test" ariaDescribedby="test-description" countText="10 matches" />
+    );
+    const ariaDescribedby = wrapper
+      .findInput()
+      .findNativeInput()
+      .getElement()
+      .getAttribute('aria-describedby')!
+      .split(' ');
+
+    expect(document.getElementById(ariaDescribedby[0])).toHaveTextContent('10 matches');
+    expect(ariaDescribedby[1]).toBe('test-description');
   });
 });
 

@@ -17,7 +17,7 @@ import { useInternalI18n } from '../internal/i18n/context';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector } from '../internal/analytics/selectors';
+import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
 
 import WizardForm from './wizard-form';
 import WizardNavigation from './wizard-navigation';
@@ -52,7 +52,7 @@ export default function InternalWizard({
     controlledProp: 'activeStepIndex',
     changeHandler: 'onNavigate',
   });
-  const { funnelInteractionId, funnelSubmit, funnelCancel, funnelProps } = useFunnel();
+  const { funnelInteractionId, funnelSubmit, funnelCancel, funnelProps, funnelNextOrSubmitAttempt } = useFunnel();
   const actualActiveStepIndex = activeStepIndex ? Math.min(activeStepIndex, steps.length - 1) : 0;
 
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
@@ -63,11 +63,15 @@ export default function InternalWizard({
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
     if (funnelInteractionId) {
+      const stepNameSelector = `.${styles['form-header-component-wrapper']}`;
+      const stepName = getNameFromSelector(stepNameSelector);
+
       FunnelMetrics.funnelStepNavigation({
         navigationType: reason,
         funnelInteractionId,
         stepNumber: actualActiveStepIndex + 1,
-        stepNameSelector: `.${styles['form-header-component-wrapper']}`,
+        stepName,
+        stepNameSelector,
         destinationStepNumber: requestedStepIndex + 1,
         subStepAllSelector: getSubStepAllSelector(),
       });
@@ -84,6 +88,8 @@ export default function InternalWizard({
   };
   const onPreviousClick = () => navigationEvent(actualActiveStepIndex - 1, 'previous');
   const onPrimaryClick = () => {
+    funnelNextOrSubmitAttempt();
+
     if (isLastStep) {
       funnelSubmit();
       fireNonCancelableEvent(onSubmit);
@@ -112,6 +118,7 @@ export default function InternalWizard({
       rest.i18nStrings?.collapsedStepsLabel,
       format => (stepNumber, stepsCount) => format({ stepNumber, stepsCount })
     ),
+    navigationAriaLabel: i18n('i18nStrings.navigationAriaLabel', rest.i18nStrings.navigationAriaLabel),
     cancelButton: i18n('i18nStrings.cancelButton', rest.i18nStrings.cancelButton),
     previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings.previousButton),
     nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings.nextButton),

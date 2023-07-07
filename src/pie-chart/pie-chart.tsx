@@ -1,16 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { PieArcDatum } from 'd3-shape';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import clsx from 'clsx';
-import { pie } from 'd3-shape';
 
 import { KeyCode } from '../internal/keycode';
-import { nodeContains } from '../internal/utils/dom';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import ChartPopover from '../internal/components/chart-popover';
 import SeriesDetails from '../internal/components/chart-series-details';
 import SeriesMarker from '../internal/components/chart-series-marker';
-import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import InternalBox from '../box/internal';
 
 import Labels from './labels';
@@ -22,6 +19,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -31,10 +29,9 @@ export interface InternalChartDatum<T> {
 
 interface InternalPieChartProps<T extends PieChartProps.Datum>
   extends SomeRequired<
-    Omit<PieChartProps<T>, 'onHighlightChange'>,
-    'variant' | 'size' | 'i18nStrings' | 'hideTitles' | 'hideDescriptions' | 'statusType'
+    Omit<PieChartProps<T>, 'onHighlightChange' | 'statusType'>,
+    'variant' | 'size' | 'i18nStrings' | 'hideTitles' | 'hideDescriptions'
   > {
-  visibleData: Array<InternalChartDatum<T>>;
   width: number;
 
   highlightedSegment: T | null;
@@ -44,6 +41,9 @@ interface InternalPieChartProps<T extends PieChartProps.Datum>
 
   pinnedSegment: T | null;
   setPinnedSegment: React.Dispatch<React.SetStateAction<T | null>>;
+
+  pieData: PieArcDatum<InternalChartDatum<T>>[];
+  dataSum: number;
 }
 
 export interface TooltipData<T> {
@@ -58,8 +58,6 @@ export default <T extends PieChartProps.Datum>({
   i18nStrings,
   ariaLabel,
   ariaLabelledby,
-  data,
-  visibleData,
   ariaDescription,
   innerMetricValue,
   innerMetricDescription,
@@ -67,23 +65,16 @@ export default <T extends PieChartProps.Datum>({
   hideDescriptions,
   detailPopoverContent,
   detailPopoverSize,
+  detailPopoverFooter,
   width,
-  additionalFilters,
-  hideFilter,
-  hideLegend,
-  statusType,
-  empty,
-  noMatch,
-  errorText,
-  recoveryText,
-  loadingText,
-  onRecoveryClick,
   segmentDescription,
   highlightedSegment,
   onHighlightChange,
   legendSegment,
   pinnedSegment,
   setPinnedSegment,
+  pieData,
+  dataSum,
 }: InternalPieChartProps<T>) => {
   const plotRef = useRef<ChartPlotRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -106,20 +97,6 @@ export default <T extends PieChartProps.Datum>({
   const [isTooltipOpen, setTooltipOpen] = useState<boolean>(false);
   const [tooltipData, setTooltipData] = useState<TooltipData<T>>();
 
-  const { pieData, dataSum } = useMemo(() => {
-    const dataSum = visibleData.reduce((sum, d) => sum + d.datum.value, 0);
-
-    const pieFactory = pie<InternalChartDatum<T>>()
-      // Minimum 1% segment size
-      .value(d => (d.datum.value < dataSum / 100 ? dataSum / 100 : d.datum.value))
-      .sort(null);
-
-    // Filter out segments with value of zero or below
-    const pieData = pieFactory(visibleData.filter(d => d.datum.value > 0));
-
-    return { pieData, dataSum };
-  }, [visibleData]);
-
   const highlightedSegmentIndex = useMemo(() => {
     for (let index = 0; index < pieData.length; index++) {
       if (pieData[index].data.datum === highlightedSegment) {
@@ -129,18 +106,15 @@ export default <T extends PieChartProps.Datum>({
     return null;
   }, [pieData, highlightedSegment]);
 
+  const detailPopoverFooterContent = useMemo(
+    () => (detailPopoverFooter && highlightedSegment ? detailPopoverFooter(highlightedSegment) : null),
+    [detailPopoverFooter, highlightedSegment]
+  );
+
   const i18n = useInternalI18n('pie-chart');
   const detailFunction = detailPopoverContent || defaultDetails(i18n, i18nStrings);
   const details = tooltipData ? detailFunction(tooltipData.datum, dataSum) : [];
   const tooltipContent = tooltipData && <SeriesDetails details={details} />;
-
-  const { isEmpty, showChart } = getChartStatus({ externalData: data, visibleData: pieData, statusType });
-
-  // Pie charts have a special condition for empty/noMatch due to how zero-value segments are handled.
-  const isNoMatch = isEmpty && visibleData.length !== data.length;
-
-  const reserveLegendSpace = !showChart && !hideLegend;
-  const reserveFilterSpace = statusType !== 'finished' && !isNoMatch && (!hideFilter || additionalFilters);
 
   const popoverDismissedRecently = useRef(false);
   const escapePressed = useRef(false);
@@ -273,7 +247,7 @@ export default <T extends PieChartProps.Datum>({
   const onBlur = useCallback(
     (event: React.FocusEvent) => {
       const blurTarget = event.relatedTarget || event.target;
-      if (blurTarget === null || !(blurTarget instanceof Element) || !nodeContains(containerRef.current, blurTarget)) {
+      if (blurTarget === null || !(blurTarget instanceof Element) || !nodeBelongs(containerRef.current, blurTarget)) {
         // We only need to close the tooltip and remove the pinned segment so that we keep track of the current
         // highlighted legendSeries. using clearHighlightedSegment() would set the legendSeries to null, in that case
         // using Keyboard Tab will always highlight the first legend item in the legend component.
@@ -307,110 +281,89 @@ export default <T extends PieChartProps.Datum>({
   };
 
   return (
-    <div
-      className={clsx(styles.content, styles[`content--${size}`], {
-        [styles['content--without-labels']]: !hasLabels,
-        [styles['content--reserve-filter']]: reserveFilterSpace,
-        [styles['content--reserve-legend']]: reserveLegendSpace,
-      })}
-    >
-      <ChartStatusContainer
-        isEmpty={isEmpty}
-        isNoMatch={isNoMatch}
-        showChart={showChart}
-        statusType={statusType}
-        empty={empty}
-        noMatch={noMatch}
-        loadingText={loadingText}
-        errorText={errorText}
-        recoveryText={recoveryText}
-        onRecoveryClick={onRecoveryClick}
-      />
-      {showChart && (
-        <div className={styles['chart-container']} ref={containerRef}>
-          <ChartPlot
-            ref={plotRef}
-            width={width}
-            height={height}
-            transform={`translate(${width / 2} ${height / 2})`}
-            isPrecise={true}
-            isClickable={!isTooltipOpen}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
-            ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
-            ariaLiveRegion={tooltipContent}
-            activeElementRef={focusedSegmentRef}
-            activeElementKey={highlightedSegmentIndex?.toString()}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onKeyDown={onKeyDown}
-            onMouseOut={onMouseOut}
-          >
-            <Segments
-              pieData={pieData}
-              size={size}
-              variant={variant}
-              focusedSegmentRef={focusedSegmentRef}
-              popoverTrackRef={popoverTrackRef}
-              highlightedSegment={highlightedSegment}
-              segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
-              onMouseDown={onMouseDown}
-              onMouseOver={onMouseOver}
-              onMouseOut={onMouseOut}
-            />
-            {hasLabels && (
-              <Labels
-                pieData={pieData}
-                size={size}
-                segmentDescription={segmentDescription}
-                visibleDataSum={dataSum}
-                hideTitles={hideTitles}
-                hideDescriptions={hideDescriptions}
-                highlightedSegment={highlightedSegment}
-                containerRef={containerRef}
-              />
-            )}
-          </ChartPlot>
-          {hasInnerContent && (
-            <div className={styles['inner-content']} id={innerMetricId}>
-              {innerMetricValue && (
-                <InternalBox variant={size === 'small' ? 'h3' : 'h1'} tagOverride="div" color="inherit" padding="n">
-                  {innerMetricValue}
-                </InternalBox>
-              )}
-              {innerMetricDescription && size !== 'small' && (
-                <InternalBox variant="h3" color="text-body-secondary" tagOverride="div" padding="n">
-                  {innerMetricDescription}
-                </InternalBox>
-              )}
-            </div>
+    <div className={styles['chart-container']} ref={containerRef}>
+      <ChartPlot
+        ref={plotRef}
+        width={width}
+        height={height}
+        transform={`translate(${width / 2} ${height / 2})`}
+        isPrecise={true}
+        isClickable={!isTooltipOpen}
+        ariaLabel={ariaLabel}
+        ariaLabelledby={ariaLabelledby}
+        ariaDescription={ariaDescription}
+        ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
+        ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
+        ariaLiveRegion={tooltipContent}
+        activeElementRef={focusedSegmentRef}
+        activeElementKey={highlightedSegmentIndex?.toString()}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onKeyDown={onKeyDown}
+        onMouseOut={onMouseOut}
+      >
+        <Segments
+          pieData={pieData}
+          size={size}
+          variant={variant}
+          focusedSegmentRef={focusedSegmentRef}
+          popoverTrackRef={popoverTrackRef}
+          highlightedSegment={highlightedSegment}
+          segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
+          onMouseDown={onMouseDown}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
+        />
+        {hasLabels && (
+          <Labels
+            pieData={pieData}
+            size={size}
+            segmentDescription={segmentDescription}
+            visibleDataSum={dataSum}
+            hideTitles={hideTitles}
+            hideDescriptions={hideDescriptions}
+            highlightedSegment={highlightedSegment}
+            containerRef={containerRef}
+          />
+        )}
+      </ChartPlot>
+      {hasInnerContent && (
+        <div className={styles['inner-content']} id={innerMetricId}>
+          {innerMetricValue && (
+            <InternalBox variant={size === 'small' ? 'h3' : 'h1'} tagOverride="div" color="inherit" padding="n">
+              {innerMetricValue}
+            </InternalBox>
           )}
-          {isTooltipOpen && tooltipData && (
-            <ChartPopover
-              ref={popoverRef}
-              title={
-                tooltipData.series && (
-                  <InternalBox className={styles['popover-header']} variant="strong">
-                    <SeriesMarker color={tooltipData.series.color} type={tooltipData.series.markerType} />{' '}
-                    {tooltipData.series.label}
-                  </InternalBox>
-                )
-              }
-              trackRef={tooltipData.trackRef}
-              trackKey={tooltipData.series.index}
-              dismissButton={pinnedSegment !== null}
-              dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
-              onDismiss={onPopoverDismiss}
-              container={plotRef.current?.svg || null}
-              size={detailPopoverSize}
-              onMouseLeave={onPopoverLeave}
-            >
-              {tooltipContent}
-            </ChartPopover>
+          {innerMetricDescription && size !== 'small' && (
+            <InternalBox variant="h3" color="text-body-secondary" tagOverride="div" padding="n">
+              {innerMetricDescription}
+            </InternalBox>
           )}
         </div>
+      )}
+      {isTooltipOpen && tooltipData && (
+        <ChartPopover
+          ref={popoverRef}
+          title={
+            tooltipData.series && (
+              <InternalBox className={styles['popover-header']} variant="strong">
+                <SeriesMarker color={tooltipData.series.color} type={tooltipData.series.markerType} />{' '}
+                {tooltipData.series.label}
+              </InternalBox>
+            )
+          }
+          trackRef={tooltipData.trackRef}
+          trackKey={tooltipData.series.index}
+          dismissButton={pinnedSegment !== null}
+          dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
+          onDismiss={onPopoverDismiss}
+          container={plotRef.current?.svg || null}
+          size={detailPopoverSize}
+          onMouseLeave={onPopoverLeave}
+        >
+          {tooltipContent}
+          {detailPopoverFooterContent && <InternalBox margin={{ top: 's' }}>{detailPopoverFooterContent}</InternalBox>}
+        </ChartPopover>
       )}
     </div>
   );

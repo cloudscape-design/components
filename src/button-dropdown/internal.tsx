@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
@@ -19,6 +19,7 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -105,10 +106,9 @@ const InternalButtonDropdown = React.forwardRef(
 
     const canBeOpened = !loading && !disabled;
 
-    const triggerVariant = variant === 'navigation' ? undefined : variant;
-
+    const triggerVariant = variant === 'navigation' ? undefined : variant === 'inline-icon' ? 'inline-icon' : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
-      variant === 'icon'
+      variant === 'icon' || variant === 'inline-icon'
         ? {
             iconName: 'ellipsis',
           }
@@ -199,6 +199,17 @@ const InternalButtonDropdown = React.forwardRef(
 
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
+
+    const { loadingButtonCount } = useFunnel();
+    useEffect(() => {
+      if (loading) {
+        loadingButtonCount.current++;
+        return () => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          loadingButtonCount.current--;
+        };
+      }
+    }, [loading, loadingButtonCount]);
 
     return (
       <div

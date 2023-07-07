@@ -10,9 +10,10 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../internal/i18n/context';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -34,7 +35,7 @@ interface TableHeaderCellProps<ItemType> {
   isEditable?: boolean;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
-
+  cellRef: React.RefCallback<HTMLElement>;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
@@ -59,6 +60,7 @@ export function TableHeaderCell<ItemType>({
   isEditable,
   columnId,
   stickyState,
+  cellRef,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -89,6 +91,8 @@ export function TableHeaderCell<ItemType>({
     getClassName: props => getStickyClassNames(styles, props),
   });
 
+  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef);
+
   return (
     <th
       className={clsx(
@@ -107,7 +111,7 @@ export function TableHeaderCell<ItemType>({
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={{ ...style, ...stickyStyles.style }}
       scope="col"
-      ref={stickyStyles.ref}
+      ref={mergedRef}
     >
       <div
         className={clsx(styles['header-cell-content'], {

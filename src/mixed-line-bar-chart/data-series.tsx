@@ -12,6 +12,9 @@ import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './i
 import styles from './styles.css.js';
 import { calculateOffsetMaps, StackedOffsets } from './utils';
 
+// Should have the same value as the `border-line-chart-width` token.
+const STROKE_WIDTH = 2;
+
 export interface DataSeriesProps<T> {
   axis: 'x' | 'y';
 
@@ -43,6 +46,9 @@ export default function DataSeries<T extends ChartDataTypes>({
 }: DataSeriesProps<T>) {
   const chartAreaClipPath = useUniqueId('awsui-mixed-line-bar-chart__chart-area-');
 
+  // Lines get a small extra space at the top and bottom to account for the strokes when they are at the edge of the graph.
+  const lineAreaClipPath = useUniqueId('awsui-line-chart__chart-area-');
+
   const stackedBarOffsetMaps: StackedOffsets[] = useMemo(() => {
     if (!stackedBars) {
       return [];
@@ -62,6 +68,9 @@ export default function DataSeries<T extends ChartDataTypes>({
       <defs aria-hidden="true">
         <clipPath id={chartAreaClipPath}>
           <rect x={0} y={0} width={plotWidth} height={plotHeight} />
+        </clipPath>
+        <clipPath id={lineAreaClipPath}>
+          <rect x={0} y={-STROKE_WIDTH / 2} width={plotWidth} height={plotHeight + STROKE_WIDTH} />
         </clipPath>
       </defs>
       <g aria-hidden={isGroupNavigation ? true : undefined} role="group">
@@ -88,7 +97,7 @@ export default function DataSeries<T extends ChartDataTypes>({
                     color={color}
                     xScale={xScale}
                     yScale={yScale}
-                    chartAreaClipPath={chartAreaClipPath}
+                    chartAreaClipPath={lineAreaClipPath}
                   />
                 </g>
               );

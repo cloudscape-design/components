@@ -24,7 +24,10 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   trigger: {
-    iconName: 'security',
+    iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <rect x="2" y="7" width="12" height="7" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M4,7V5a4,4,0,0,1,8,0V7" fill="none" stroke="currentColor" stroke-width="2" />
+    </svg>`,
   },
 
   resizable: true,
@@ -36,6 +39,29 @@ awsuiPlugins.appLayout.registerDrawer({
 
   mountContent: container => {
     ReactDOM.render(<Content />, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle',
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<>Nothing to see here</>, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

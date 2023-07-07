@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -18,14 +18,13 @@ import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
-import { ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
-import StickyScrollbar from './sticky-scrollbar';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
@@ -33,7 +32,8 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns } from './use-sticky-columns';
+import { useStickyColumns } from './sticky-columns';
+import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 
 const SELECTION_COLUMN_WIDTH = 54;
@@ -153,20 +153,20 @@ const InternalTable = React.forwardRef(
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
-    const hasFooter = !!footer;
+    const hasFooterPagination = variant === 'full-page' && !!pagination;
+    const hasFooter = !!footer || hasFooterPagination;
 
-    const visibleColumnsWithSelection = useMemo(() => {
-      const visible = visibleColumnDefinitions.map((column, columnIndex) => ({
-        ...column,
-        id: getColumnKey(column, columnIndex),
-      }));
-      return hasSelection ? [{ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH }, ...visible] : visible;
-    }, [visibleColumnDefinitions, hasSelection]);
-
-    const visibleColumnIdsWithSelection = useMemo(
-      () => visibleColumnsWithSelection.map(c => c.id),
-      [visibleColumnsWithSelection]
-    );
+    const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
+    const visibleColumnIdsWithSelection: PropertyKey[] = [];
+    if (hasSelection) {
+      visibleColumnWidthsWithSelection.push({ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH });
+      visibleColumnIdsWithSelection.push(selectionColumnId);
+    }
+    for (let columnIndex = 0; columnIndex < visibleColumnDefinitions.length; columnIndex++) {
+      const columnId = getColumnKey(visibleColumnDefinitions[columnIndex], columnIndex);
+      visibleColumnWidthsWithSelection.push({ ...visibleColumnDefinitions[columnIndex], id: columnId });
+      visibleColumnIdsWithSelection.push(columnId);
+    }
 
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnIdsWithSelection,
@@ -229,18 +229,13 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
-
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
     return (
-      <ColumnWidthsProvider
-        tableRef={tableRefObject}
-        visibleColumns={visibleColumnsWithSelection}
-        resizableColumns={resizableColumns}
-      >
+      <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
         <InternalContainer
           {...baseProps}
           __internalRootRef={__internalRootRef}
@@ -283,11 +278,14 @@ const InternalTable = React.forwardRef(
           __disableFooterDivider={true}
           __disableStickyMobile={false}
           footer={
-            footer && (
+            hasFooter ? (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                <div className={styles.footer}>{footer}</div>
+                <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
+                  {footer && <span>{footer}</span>}
+                  {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+                </div>
               </div>
-            )
+            ) : null
           }
           __stickyHeader={stickyHeader}
           __mobileStickyOffset={toolsHeaderHeight}

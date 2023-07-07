@@ -89,6 +89,9 @@ export default function InternalExpandableSection({
     onClick,
   };
 
+  // Map stacked variant to container to avoid code duplication
+  const baseVariant: ExpandableSectionProps.Variant = variant === 'stacked' ? 'container' : variant;
+
   return (
     <ExpandableSectionContainer
       {...baseProps}
@@ -100,8 +103,8 @@ export default function InternalExpandableSection({
         <ExpandableSectionHeader
           id={triggerControlId}
           descriptionId={descriptionId}
-          className={clsx(styles.header, styles[`header-${variant}`])}
-          variant={variant}
+          className={clsx(styles.header, styles[`header-${baseVariant}`])}
+          variant={baseVariant}
           expanded={!!expanded}
           header={header}
           headerText={headerText}
@@ -119,11 +122,11 @@ export default function InternalExpandableSection({
         <div
           id={controlId}
           ref={ref}
-          className={clsx(styles.content, styles[`content-${variant}`], expanded && styles['content-expanded'])}
+          className={clsx(styles.content, styles[`content-${baseVariant}`], expanded && styles['content-expanded'])}
           role="group"
           aria-label={triggerProps.ariaLabel}
           aria-labelledby={triggerProps.ariaLabelledBy}
-          aria-describedby={variantSupportsDescription(variant) && headerDescription ? descriptionId : undefined}
+          aria-describedby={variantSupportsDescription(baseVariant) && headerDescription ? descriptionId : undefined}
         >
           {children}
         </div>

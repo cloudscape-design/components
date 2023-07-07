@@ -5,26 +5,25 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
-import InternalBox from '../box/internal';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
-import InternalChartFilters from './chart-filters';
 import InternalChartLegend from './chart-legend';
 import ChartContainer from './chart-container';
-import cartesianStyles from '../internal/components/cartesian-chart/styles.css.js';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale';
 import { ScaledPoint } from './make-scaled-series';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { nodeContains } from '../internal/utils/dom';
 import { SomeRequired } from '../internal/types';
-import { isXThreshold, isYThreshold } from './utils';
+import { chartLegendMap, isXThreshold, isYThreshold } from './utils';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import Filter from '../internal/components/chart-filter';
+import { ChartWrapper } from '../internal/components/chart-wrapper';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,
@@ -65,6 +64,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   legendTitle,
   statusType,
   detailPopoverSize,
+  detailPopoverFooter,
   emphasizeBaselineAxis,
   empty,
   noMatch,
@@ -184,7 +184,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   };
 
   const onBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
+    if (event.relatedTarget && !nodeBelongs(containerRef.current, event.relatedTarget)) {
       highlightedSeries && onHighlightChange(highlightedSeries);
       setHighlightedPoint(null);
       setHighlightedGroupIndex(null);
@@ -203,28 +203,33 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
   const mergedRef = useMergeRefs(containerRef, __internalRootRef);
 
-  return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef} onBlur={onBlur}>
-      {showFilters && (
-        <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
-          <InternalChartFilters
-            series={series}
-            visibleSeries={externalVisibleSeries || []}
-            onChange={filterChange}
-            i18nStrings={i18nStrings}
-            hideFilter={hideFilter}
-            additionalFilters={additionalFilters}
-          />
-        </InternalBox>
-      )}
+  const filterItems = series.map(({ series, color }) => ({
+    label: series.title,
+    type: chartLegendMap[series.type],
+    color,
+    datum: series,
+  }));
 
-      <div
-        className={clsx(styles.content, {
-          [styles['content--reserve-filter']]: reserveFilterSpace,
-          [styles['content--reserve-legend']]: reserveLegendSpace,
-        })}
-        style={{ minHeight: height }}
-      >
+  return (
+    <ChartWrapper
+      ref={mergedRef}
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root)}
+      contentMinHeight={height}
+      defaultFilter={
+        showFilters && !hideFilter ? (
+          <Filter
+            series={filterItems}
+            onChange={filterChange}
+            selectedSeries={externalVisibleSeries || []}
+            i18nStrings={i18nStrings}
+          />
+        ) : null
+      }
+      additionalFilters={showFilters ? additionalFilters : null}
+      reserveFilterSpace={!!reserveFilterSpace}
+      reserveLegendSpace={!!reserveLegendSpace}
+      chartStatus={
         <ChartStatusContainer
           isEmpty={isEmpty}
           isNoMatch={isNoMatch}
@@ -237,7 +242,9 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
           recoveryText={recoveryText}
           onRecoveryClick={onRecoveryClick}
         />
-        {showChart && (
+      }
+      chart={
+        showChart ? (
           <ChartContainer
             height={height}
             xScaleType={xScaleType}
@@ -258,6 +265,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             highlightedGroupIndex={highlightedGroupIndex}
             setHighlightedGroupIndex={setHighlightedGroupIndex}
             detailPopoverSize={detailPopoverSize}
+            detailPopoverFooter={detailPopoverFooter}
             xTitle={xTitle}
             yTitle={yTitle}
             ariaLabel={ariaLabel}
@@ -266,11 +274,10 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             i18nStrings={i18nStrings}
             plotContainerRef={containerRef}
           />
-        )}
-      </div>
-
-      {showLegend && (
-        <InternalBox margin={{ top: 'm' }}>
+        ) : null
+      }
+      legend={
+        showLegend ? (
           <InternalChartLegend
             series={series}
             visibleSeries={externalVisibleSeries || []}
@@ -280,8 +287,9 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             ariaLabel={i18nStrings?.legendAriaLabel}
             plotContainerRef={containerRef}
           />
-        </InternalBox>
-      )}
-    </div>
+        ) : null
+      }
+      onBlur={onBlur}
+    />
   );
 }

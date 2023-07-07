@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { waitFor } from '@testing-library/react';
-import { isDrawerClosed, drawersConfigurations, renderComponent } from './utils';
+import { isDrawerClosed, renderComponent, singleDrawer } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
@@ -126,7 +126,7 @@ describe('drawers', () => {
       drawers: {
         onChange: onChange,
         activeDrawerId: null,
-        items: drawersConfigurations.drawersItems,
+        items: singleDrawer.drawers.items,
       },
     };
 
@@ -134,7 +134,7 @@ describe('drawers', () => {
       drawers: {
         onChange: onChange,
         activeDrawerId: 'security',
-        items: drawersConfigurations.drawersItems,
+        items: singleDrawer.drawers.items,
       },
     };
 
@@ -223,7 +223,7 @@ test('drawers a11y', async () => {
       notifications={<div></div>}
       breadcrumbs={<div></div>}
       splitPanel={<div></div>}
-      {...drawersConfigurations.singleDrawer}
+      {...singleDrawer}
       ariaLabels={{
         // notifications?: string;
         // navigation?: string;

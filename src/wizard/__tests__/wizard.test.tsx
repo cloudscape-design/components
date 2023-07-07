@@ -538,6 +538,7 @@ describe('i18n', () => {
     expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Custom cancel');
     expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Custom next');
     expect(wrapper.findSkipToButton()!.getElement()).toHaveTextContent('Custom skip to Step 3');
+    expect(wrapper.find('nav')!.getElement()).toHaveAccessibleName('Custom steps');
     wrapper.findPrimaryButton().click();
     expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent('Custom previous');
   });

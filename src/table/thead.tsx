@@ -10,11 +10,11 @@ import { getColumnKey, getStickyClassNames } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { StickyColumnsModel, useStickyCellStyles } from './use-sticky-columns';
 import styles from './styles.css.js';
 import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -91,7 +91,7 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
+    const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
@@ -130,11 +130,13 @@ const Thead = React.forwardRef(
           ) : null}
 
           {columnDefinitions.map((column, colIndex) => {
+            const columnId = getColumnKey(column, colIndex);
+
             let widthOverride;
             if (resizableColumns) {
               if (columnWidths) {
                 // use stateful value if available
-                widthOverride = columnWidths[getColumnKey(column, colIndex)];
+                widthOverride = columnWidths[columnId];
               }
               if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
                 // let the last column grow and fill the container width
@@ -143,7 +145,7 @@ const Thead = React.forwardRef(
             }
             return (
               <TableHeaderCell
-                key={getColumnKey(column, colIndex)}
+                key={columnId}
                 className={headerCellClass}
                 style={{
                   width: widthOverride || column.width,
@@ -160,13 +162,14 @@ const Thead = React.forwardRef(
                 wrapLines={wrapLines}
                 hidden={hidden}
                 colIndex={colIndex}
-                columnId={column.id ?? colIndex}
+                columnId={columnId}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}
+                cellRef={node => setCell(columnId, node)}
               />
             );
           })}
