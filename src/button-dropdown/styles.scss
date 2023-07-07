@@ -6,6 +6,8 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$dropdown-trigger-icon-offset: 2px;
+
 .button-dropdown {
   display: inline-block;
 }
@@ -61,7 +63,7 @@
     & > .trigger-button {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      padding-right: awsui.$space-s;
+      padding-right: awsui.$space-xs;
       margin-right: awsui.$space-xxxs;
     }
   }
@@ -70,8 +72,14 @@
     & > .trigger-button {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      padding-left: awsui.$space-xs;
-      padding-right: awsui.$space-xs;
+      padding-left: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+      padding-right: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+    }
+
+    &.visual-refresh {
+      & > .trigger-button {
+        padding-right: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
+      }
     }
   }
 }

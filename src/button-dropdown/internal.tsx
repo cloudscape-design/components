@@ -18,6 +18,7 @@ import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -58,6 +59,7 @@ const InternalButtonDropdown = React.forwardRef(
       }
     }
     const isMainAction = mainAction && variant === 'primary';
+    const isVisualRefresh = useVisualRefresh();
 
     const {
       isOpen,
@@ -174,7 +176,13 @@ const InternalButtonDropdown = React.forwardRef(
               {text}
             </InternalButton>
           </div>
-          <div className={clsx(styles['trigger-item'], styles['dropdown-trigger'])}>
+          <div
+            className={clsx(
+              styles['trigger-item'],
+              styles['dropdown-trigger'],
+              isVisualRefresh && styles['visual-refresh']
+            )}
+          >
             <InternalButton ref={triggerRef} {...baseTriggerProps} />
           </div>
         </div>
