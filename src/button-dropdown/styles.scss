@@ -6,6 +6,8 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$dropdown-trigger-icon-offset: 2px;
+
 .button-dropdown {
   display: inline-block;
 }
@@ -46,4 +48,44 @@
 .title,
 .description {
   color: awsui.$color-text-dropdown-header;
+}
+
+.split-trigger-wrapper {
+  display: flex;
+
+  & > .trigger-item {
+    & > button:focus {
+      z-index: 1;
+    }
+  }
+
+  & > .trigger-item:not(:last-child) {
+    & > .trigger-button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-right: awsui.$space-xs;
+      margin-right: awsui.$space-xxxs;
+    }
+  }
+
+  & > .trigger-item:not(:first-child) {
+    & > .trigger-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-left: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+      padding-right: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
+    }
+
+    &.visual-refresh {
+      & > .trigger-button {
+        padding-right: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
+      }
+    }
+  }
+}
+.split-trigger {
+  display: contents;
+}
+.dropdown-trigger {
+  display: contents;
 }

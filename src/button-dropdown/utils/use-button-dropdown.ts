@@ -24,6 +24,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
+  closeDropdown: () => void;
   setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
@@ -194,6 +195,7 @@ export function useButtonDropdown({
     onItemActivate,
     onGroupToggle,
     toggleDropdown,
+    closeDropdown,
     setIsUsingMouse,
   };
 }
