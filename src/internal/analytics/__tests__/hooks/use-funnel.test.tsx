@@ -30,6 +30,9 @@ describe('useFunnel hook', () => {
           funnelCancel: () => {},
           submissionAttempt: 0,
           funnelNextOrSubmitAttempt: () => {},
+          funnelState: { current: 'default' },
+          loadingButtonCount: { current: 0 },
+          errorCount: { current: 0 },
         }}
       >
         <ChildComponent />
@@ -68,6 +71,9 @@ describe('useFunnel hook', () => {
           funnelCancel,
           submissionAttempt: 0,
           funnelNextOrSubmitAttempt: () => {},
+          funnelState: { current: 'default' },
+          loadingButtonCount: { current: 0 },
+          errorCount: { current: 0 },
         }}
       >
         <ChildComponent />

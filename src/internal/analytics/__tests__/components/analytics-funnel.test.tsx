@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 
 import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
 import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
@@ -66,7 +66,7 @@ describe('AnalyticsFunnel', () => {
     );
   });
 
-  test('calls funnelComplete only when funnelSubmit is called', () => {
+  test('calls funnelComplete only when funnelSubmit is called', async () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -81,7 +81,9 @@ describe('AnalyticsFunnel', () => {
     );
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
-    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    });
   });
 
   test('calls funnelSuccessful when the component unmounts after submitting', () => {
@@ -124,34 +126,6 @@ describe('AnalyticsFunnel', () => {
 
     unmount();
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(0);
-    expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
-  });
-
-  test('calls funnelComplete and funnelCancelled when the component unmounts after submitting then cancelling', () => {
-    const ChildComponent = () => {
-      const { funnelSubmit, funnelCancel } = useFunnel();
-
-      return (
-        <>
-          <button onClick={funnelSubmit}>Submit</button>
-          <button onClick={funnelCancel}>Cancel</button>
-        </>
-      );
-    };
-
-    const { unmount, getByText } = render(
-      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-        <ChildComponent />
-      </AnalyticsFunnel>
-    );
-    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
-
-    fireEvent.click(getByText('Submit'));
-    fireEvent.click(getByText('Cancel'));
-    unmount();
-
-    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
-    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
   });
 });
