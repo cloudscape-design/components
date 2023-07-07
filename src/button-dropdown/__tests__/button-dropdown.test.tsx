@@ -284,7 +284,7 @@ describe('with main action', () => {
     expect(wrapper.findOpenDropdown()).not.toBeTruthy();
   });
 
-  test('dropdown is not closed is main action click was cancelled', () => {
+  test('dropdown is not closed if main action click was cancelled', () => {
     const onClick = (event: Event) => event.stopPropagation();
     const wrapper = renderSplitButtonDropdown({
       mainAction: { text: 'Main', onClick },
