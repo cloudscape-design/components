@@ -35,6 +35,7 @@ import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './sticky-columns';
 import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
+import { useMobile } from '../internal/hooks/use-mobile';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -90,6 +91,7 @@ const InternalTable = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
+    const isMobile = useMobile();
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const wrapperRefObject = useRef(null);
@@ -153,7 +155,7 @@ const InternalTable = React.forwardRef(
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
-    const hasFooterPagination = variant === 'full-page' && !!pagination;
+    const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
     const hasFooter = !!footer || hasFooterPagination;
 
     const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
