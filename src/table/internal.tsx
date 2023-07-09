@@ -174,6 +174,8 @@ const InternalTable = React.forwardRef(
       stickyColumnsLast: stickyColumns?.last || 0,
     });
 
+    const hasStickyColumns = (stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0;
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -468,6 +470,7 @@ const InternalTable = React.forwardRef(
             wrapperRef={wrapperRefObject}
             tableRef={tableRefObject}
             onScroll={handleScroll}
+            offsetScrollbar={hasStickyColumns}
           />
         </InternalContainer>
       </ColumnWidthsProvider>
