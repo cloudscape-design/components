@@ -30,7 +30,6 @@ import ErrorScreen from './error-screen';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
 import { useCurrentMode } from '../internal/hooks/use-visual-mode';
 import { useInternalI18n } from '../internal/i18n/context';
 import { StatusBar } from './status-bar';
@@ -40,6 +39,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export { CodeEditorProps };
 
@@ -107,7 +107,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
       })
     );
   }, [ace, props.loading]);
-  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.width);
+  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
   useForwardFocus(ref, codeEditorRef);
   const isRefresh = useVisualRefresh();

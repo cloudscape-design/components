@@ -12,7 +12,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
 import Portal from '../internal/components/portal';
-import { useContainerBreakpoints, useContainerQuery } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { FormFieldContext } from '../internal/context/form-field-context';
 
@@ -23,6 +23,7 @@ import { SomeRequired } from '../internal/types';
 import FocusLock from '../internal/components/focus-lock';
 import { useInternalI18n } from '../internal/i18n/context';
 import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
 
