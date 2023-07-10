@@ -763,9 +763,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will make the chart fit into available height.
-Use \`height\` property to specify the minimal height of the chart SVG.
-If the chart elements cannot fit the available height the scrollbar is shown.",
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",
@@ -773,7 +771,8 @@ If the chart elements cannot fit the available height the scrollbar is shown.",
     Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -1933,9 +1932,7 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will make the chart fit into available height.
-Use \`height\` property to specify the minimal height of the chart SVG.
-If the chart elements cannot fit the available height the scrollbar is shown.",
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",
@@ -1943,7 +1940,8 @@ If the chart elements cannot fit the available height the scrollbar is shown.",
     Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -7539,9 +7537,7 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will make the chart fit into available height.
-Use \`height\` property to specify the minimal height of the chart SVG.
-If the chart elements cannot fit the available height the scrollbar is shown.",
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",
@@ -7549,7 +7545,8 @@ If the chart elements cannot fit the available height the scrollbar is shown.",
     Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -8109,9 +8106,7 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will make the chart fit into available height.
-Use \`height\` property to specify the minimal height of the chart SVG.
-If the chart elements cannot fit the available height the scrollbar is shown.",
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",
@@ -8119,7 +8114,8 @@ If the chart elements cannot fit the available height the scrollbar is shown.",
     Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -9284,9 +9280,7 @@ Each pair has the following properties:
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will make the chart fit into available height.
-Use \`height\` property to specify the minimal height of the chart SVG.
-If the chart elements cannot fit the available height the scrollbar is shown.",
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",
@@ -9456,7 +9450,8 @@ The function is called with the data object of each segment and is expected to r
     },
     Object {
       "defaultValue": "\\"medium\\"",
-      "description": "Specifies the size of the pie or donut chart.",
+      "description": "Specifies the size of the pie or donut chart.
+When used with \`fitHeight\`, this property defines the minimum size of the chart area.",
       "inlineType": Object {
         "name": "",
         "type": "union",
