@@ -56,11 +56,8 @@
   &-variant-h1 {
     padding: awsui.$space-scaled-2x-xxs 0;
     &-refresh {
-      padding: awsui.$space-xxs 0;
+      padding-bottom: awsui.$space-xxxs;
     }
-  }
-  :not(.root-no-actions) > &-variant-h1-refresh {
-    padding-top: awsui.$space-scaled-xxxs;
   }
 
   // So that headers with only a title have the same height as headers with actions and descriptions
@@ -87,7 +84,7 @@
   &-variant-h1 {
     padding: awsui.$space-scaled-xs 0;
     &-refresh {
-      padding: awsui.$space-xs 0;
+      padding: awsui.$space-scaled-xxs 0;
     }
   }
   &-variant-h2,
@@ -98,7 +95,7 @@
     }
   }
   &-variant-h2-refresh {
-    padding-bottom: awsui.$space-xxxs;
+    padding: 0 0 awsui.$space-xxxs 0;
   }
   &-variant-h3-refresh {
     padding-bottom: 0;
@@ -115,6 +112,11 @@
   &-variant-h2,
   &-variant-h3 {
     padding: awsui.$space-scaled-xxs 0;
+    &-refresh {
+      &.root-has-description {
+        padding-bottom: awsui.$space-scaled-xxxs;
+      }
+    }
   }
   &-variant-h2 {
     font-size: awsui.$font-heading-l-size;

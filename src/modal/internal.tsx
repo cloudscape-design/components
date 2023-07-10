@@ -138,7 +138,7 @@ function InnerModal({
             onKeyDown={escKeyHandler}
           >
             <div className={styles.container}>
-              <div className={styles.header}>
+              <div className={clsx(styles.header)}>
                 <InternalHeader
                   variant="h2"
                   __disableActionsWrapping={true}

@@ -18,7 +18,7 @@ const spacingTokens: StyleDictionary.SpacingDictionary = {
 };
 
 const sizeTokens: StyleDictionary.SizesDictionary = {
-  sizeVerticalInput: '30px',
+  sizeVerticalInput: '28px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(

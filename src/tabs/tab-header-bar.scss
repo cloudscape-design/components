@@ -119,6 +119,10 @@ $label-horizontal-spacing: awsui.$space-l;
       border-right-color: transparent;
     }
   }
+
+  &.refresh {
+    padding: calc(awsui.$space-static-xs - 1px) 0 awsui.$space-static-xs 0;
+  }
 }
 
 // Remediate focus shadow

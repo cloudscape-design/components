@@ -37,6 +37,13 @@ $gutter: awsui.$space-grid-gutter;
   display: flex;
   flex-direction: column;
 
+  &.refresh {
+    padding: awsui.$space-xs awsui.$space-s;
+    &.has-metadata {
+      padding-bottom: awsui.$space-scaled-s;
+    }
+  }
+
   &.has-metadata {
     padding-bottom: awsui.$space-s;
   }

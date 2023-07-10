@@ -233,6 +233,7 @@ const InternalTable = React.forwardRef(
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
+    const isRefresh = useVisualRefresh();
 
     return (
       <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
@@ -249,7 +250,11 @@ const InternalTable = React.forwardRef(
                 >
                   <div
                     ref={toolsHeaderWrapper}
-                    className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
+                    className={clsx(
+                      styles['header-controls'],
+                      styles[`variant-${computedVariant}`],
+                      isRefresh && styles.refresh
+                    )}
                   >
                     <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
                   </div>
