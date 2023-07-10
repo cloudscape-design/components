@@ -6,7 +6,6 @@ import { CardsForwardRefType, CardsProps } from './interfaces';
 import styles from './styles.css.js';
 import { getCardsPerRow } from './cards-layout-helper';
 import { getBaseProps } from '../internal/base-component';
-import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
 import ToolsHeader from '../table/tools-header';
 import { getItemKey } from '../table/utils';
 import { focusMarkers, useFocusMove, useSelection } from '../table/use-selection';
@@ -24,6 +23,7 @@ import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import { useInternalI18n } from '../internal/i18n/context';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export { CardsProps };
 
@@ -59,14 +59,15 @@ const Cards = React.forwardRef(function <T = any>(
   const { __internalRootRef } = useBaseComponent('Cards');
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
-  const computedVariant = isRefresh ? variant : 'container';
+  const isMobile = useMobile();
 
+  const computedVariant = isRefresh ? variant : 'container';
   const instanceUniqueId = useUniqueId('cards');
   const cardsId = baseProps?.id || instanceUniqueId;
   const cardsHeaderId = header ? `${cardsId}-header` : undefined;
 
   const [columns, measureRef] = useContainerQuery<number>(
-    ({ width }) => getCardsPerRow(width, cardsPerRow),
+    ({ contentBoxWidth }) => getCardsPerRow(contentBoxWidth, cardsPerRow),
     [cardsPerRow]
   );
   const refObject = useRef(null);
@@ -87,8 +88,9 @@ const Cards = React.forwardRef(function <T = any>(
     },
   });
   const hasToolsHeader = header || filter || pagination || preferences;
+  const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
   const headerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMobile();
+
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
   stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
@@ -139,9 +141,7 @@ const Cards = React.forwardRef(function <T = any>(
             </div>
           )
         }
-        footer={
-          variant === 'full-page' && !!pagination && <div className={styles['footer-pagination']}>{pagination}</div>
-        }
+        footer={hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
         disableContentPaddings={true}
         disableHeaderPaddings={computedVariant === 'full-page'}
         variant={computedVariant === 'container' ? 'cards' : computedVariant}

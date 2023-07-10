@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import React from 'react';
-import { useContainerQuery } from '../hooks/container-queries';
 
 export default function useContainerWidth(
   defaultValue = 0,
@@ -9,9 +9,9 @@ export default function useContainerWidth(
 ): [width: number, ref: React.Ref<HTMLDivElement>] {
   const [width, ref] = useContainerQuery<number>((rect, prev) => {
     if (prev === null) {
-      return rect.width;
+      return rect.contentBoxWidth;
     }
-    return Math.abs(prev - rect.width) >= threshold ? rect.width : prev;
+    return Math.abs(prev - rect.contentBoxWidth) >= threshold ? rect.contentBoxWidth : prev;
   });
 
   return [width ?? defaultValue, ref];
