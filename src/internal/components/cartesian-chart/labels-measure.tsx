@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import { ChartScale, NumericChartScale } from './scales';
 
 import styles from './styles.css.js';
-import { useContainerQuery } from '../../hooks/container-queries';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 interface LabelsMeasureProps {
   scale: ChartScale | NumericChartScale;
@@ -20,7 +20,7 @@ export default memo(LabelsMeasure) as typeof LabelsMeasure;
 
 // Places the invisible left-hand side labels to calculate their maximum width.
 function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth }: LabelsMeasureProps) {
-  const [width, ref] = useContainerQuery<number>(rect => rect.width);
+  const [width, ref] = useContainerQuery<number>(rect => rect.contentBoxWidth);
 
   // Tell elements's width to the parent.
   useEffect(() => {
