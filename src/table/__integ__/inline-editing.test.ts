@@ -68,8 +68,12 @@ test(
 test(
   'success icon is displayed and aria live region is rendered in after a successful edit',
   setupTest(async page => {
+    // Before the edit, no live region and success icon is shown.
+    await expect(page.isExisting(successIcon$)).resolves.toBe(false);
+    await expect(page.isExisting(ariaLiveAnnouncement$)).resolves.toBe(false);
     await page.click(cellRoot$);
     await page.click(cellSaveButton.toSelector());
+    // Success icon and live region is rendered after the successful edit.
     await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
     await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
     await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
