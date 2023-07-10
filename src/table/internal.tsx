@@ -10,7 +10,6 @@ import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
-import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
@@ -36,6 +35,7 @@ import { useStickyColumns } from './sticky-columns';
 import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -93,10 +93,10 @@ const InternalTable = React.forwardRef(
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
 
-    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
+    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const wrapperRefObject = useRef(null);
 
-    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
+    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const tableRefObject = useRef(null);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);

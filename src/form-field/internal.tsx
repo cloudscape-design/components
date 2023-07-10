@@ -92,7 +92,7 @@ export default function InternalFormField({
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
 
-  const { funnelInteractionId, submissionAttempt } = useFunnel();
+  const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
 
   const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
@@ -120,9 +120,11 @@ export default function InternalFormField({
   };
 
   useEffect(() => {
-    if (funnelInteractionId && errorText) {
+    if (funnelInteractionId && errorText && funnelState.current !== 'complete') {
       const stepName = getNameFromSelector(stepNameSelector);
       const subStepName = getNameFromSelector(subStepNameSelector);
+
+      errorCount.current++;
 
       FunnelMetrics.funnelSubStepError({
         funnelInteractionId,
@@ -136,10 +138,15 @@ export default function InternalFormField({
         fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
         subStepAllSelector: getSubStepAllSelector(),
       });
+
+      return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        errorCount.current--;
+      };
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, errorText, submissionAttempt]);
+  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
 
   return (
     <div

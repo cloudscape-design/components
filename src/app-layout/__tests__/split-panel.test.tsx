@@ -37,12 +37,13 @@ jest.mock('../../../lib/components/internal/motion', () => ({
 
 let isMocked = false;
 
-const actualUseContainerQuery = jest.requireActual(
-  '../../../lib/components/internal/hooks/container-queries/use-container-query'
-);
-jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
-  useContainerQuery: (arg: any) => (isMocked ? [800, () => {}] : actualUseContainerQuery.useContainerQuery(arg)),
-}));
+jest.mock('@cloudscape-design/component-toolkit', () => {
+  const actualUseContainerQuery = jest.requireActual('@cloudscape-design/component-toolkit');
+  return {
+    ...actualUseContainerQuery,
+    useContainerQuery: (arg: any) => (isMocked ? [800, () => {}] : actualUseContainerQuery.useContainerQuery(arg)),
+  };
+});
 
 beforeEach(() => {
   originalDocumentHeight = document.documentElement.clientHeight;

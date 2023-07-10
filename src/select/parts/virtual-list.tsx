@@ -5,10 +5,10 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'rea
 import OptionsList from '../../internal/components/options-list';
 import { renderOptions } from '../utils/render-options';
 import { SelectListProps } from './plain-list';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
 
 import styles from './styles.css.js';
 import { useVirtual } from '../../internal/hooks/use-virtual';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const VirtualList = (props: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
   return props.menuProps.open ? <VirtualListOpen {...props} ref={ref} /> : <VirtualListClosed {...props} ref={ref} />;
@@ -31,7 +31,7 @@ const VirtualListOpen = forwardRef(
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
     // update component, when it gets wider or narrower to reposition items
-    const [width, menuMeasureRef] = useContainerQuery(rect => rect.width, []);
+    const [width, menuMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
 

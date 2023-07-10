@@ -32,13 +32,18 @@ export default function InternalForm({
   const i18n = useInternalI18n('form');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
 
-  const { funnelInteractionId, submissionAttempt } = useFunnel();
+  const { funnelInteractionId, submissionAttempt, errorCount } = useFunnel();
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
+      errorCount.current++;
       FunnelMetrics.funnelError({ funnelInteractionId });
+      return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        errorCount.current--;
+      };
     }
-  }, [funnelInteractionId, errorText, submissionAttempt]);
+  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
