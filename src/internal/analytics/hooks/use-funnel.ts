@@ -19,8 +19,10 @@ import { FunnelMetrics } from '../';
 export const useFunnelSubStep = () => {
   const subStepRef = useRef<HTMLDivElement | null>(null);
   const context = useContext(FunnelSubStepContext);
-  const { funnelInteractionId, subStepId, subStepSelector, subStepNameSelector, stepNumber, stepNameSelector } =
-    context;
+  const { funnelInteractionId } = useFunnel();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
+
+  const { subStepId, subStepSelector, subStepNameSelector } = context;
 
   const { funnelState } = useFunnel();
 
