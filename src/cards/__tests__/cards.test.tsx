@@ -209,12 +209,13 @@ describe('Cards', () => {
     });
 
     it('is not displayed in the footer on full-page variant on desktop', () => {
-      (useMobile as jest.Mock).mockReturnValue(true);
+      (useMobile as jest.Mock).mockReturnValue(false);
       wrapper = renderCards(
         <Cards<Item> variant="full-page" cardDefinition={{}} items={defaultItems} pagination="pagination" />
       ).wrapper;
       expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
-      expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)).toBeNull();
+      jest.resetAllMocks();
     });
 
     it('is displayed in the footer on full-page variant on mobile', () => {
@@ -224,6 +225,7 @@ describe('Cards', () => {
       ).wrapper;
       expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
       expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
+      jest.resetAllMocks();
     });
   });
 
