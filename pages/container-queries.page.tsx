@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { colorBackgroundContainerHeader } from '~design-tokens';
-import { useContainerQuery, useContainerBreakpoints } from '~components/internal/hooks/container-queries';
+import { useContainerBreakpoints } from '~components/internal/hooks/container-queries';
 import { Breakpoint } from '~components/internal/breakpoints';
 import { SegmentedControl } from '~components';
 

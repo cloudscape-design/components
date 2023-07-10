@@ -21,7 +21,8 @@ import { KeyCode } from '../../internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 
-jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
 
