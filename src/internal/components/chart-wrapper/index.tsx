@@ -44,8 +44,6 @@ export const ChartWrapper = forwardRef(
     ref: React.Ref<HTMLDivElement>
   ) => {
     const baseProps = getBaseProps(props);
-    contentMinHeight =
-      contentMinHeight !== undefined ? Math.max(CONTENT_MIN_HEIGHT_BOUNDARY, contentMinHeight) : undefined;
     return (
       <div
         ref={ref}
@@ -73,7 +71,10 @@ export const ChartWrapper = forwardRef(
               [styles['content--reserve-legend']]: reserveLegendSpace,
               [styles['content--fit-height']]: fitHeight,
             })}
-            style={{ minHeight: contentMinHeight }}
+            style={{
+              minHeight:
+                contentMinHeight !== undefined ? Math.max(CONTENT_MIN_HEIGHT_BOUNDARY, contentMinHeight) : undefined,
+            }}
           >
             {chartStatus}
             {chart}

@@ -57,6 +57,10 @@ export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>,
   },
 };
 
+/**
+ * When `size` is a string ("small", "medium" or "large") the predefined pie chart element dimensions for classic and visual refresh are used.
+ * When `size` is a number the outer and inner radii are computed and the rest of the dimensions are taken from the closest predefined size.
+ */
 export function getDimensionsBySize({
   size,
   visualRefresh,
