@@ -5,6 +5,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { IconProps } from '../icon/interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { ButtonProps } from '../button/interfaces';
 
 export interface ButtonDropdownProps extends BaseComponentProps {
   /**
@@ -58,6 +59,7 @@ export interface ButtonDropdownProps extends BaseComponentProps {
    * * `primary` for primary buttons
    * * `normal` for secondary buttons
    * * `icon` for icon buttons
+   * * `inline-icon` for icon buttons with no outer padding
    */
   variant?: ButtonDropdownProps.Variant;
   /**
@@ -97,10 +99,41 @@ export interface ButtonDropdownProps extends BaseComponentProps {
    * modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an `href` set.
    */
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  /**
+   * A standalone action that is shown prior to the dropdown trigger. Use it with "primary" variant only.
+   * Main action properties:
+   * * `text` (string) - Specifies the text shown in the main action.
+   * * `external` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.
+   * * `externalIconAriaLabel` (string) - Adds an ARIA label to the external icon.
+   *
+   * The main action also supports the following properties of the [button](/components/button/?tabId=api) component:
+   * `ariaLabel`, `disabled`, `loading`, `loadingText`, `href`, `target`, `rel`, `download`, `iconAlt`, `iconName`, `iconUrl`, `iconSvg`, `onClick`, `onFollow`.
+   */
+  mainAction?: ButtonDropdownProps.MainAction;
 }
 
 export namespace ButtonDropdownProps {
-  export type Variant = 'normal' | 'primary' | 'icon';
+  export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
+
+  export interface MainAction {
+    text: string;
+    ariaLabel?: string;
+    onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
+    onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
+    disabled?: boolean;
+    loading?: boolean;
+    loadingText?: string;
+    href?: string;
+    target?: string;
+    rel?: string;
+    download?: boolean | string;
+    external?: boolean;
+    externalIconAriaLabel?: string;
+    iconAlt?: string;
+    iconName?: IconProps.Name;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
+  }
 
   export interface Item {
     id: string;

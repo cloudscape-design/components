@@ -189,6 +189,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       }
     }
   }
+
+  &-text {
+    /* used in test-utils */
+  }
 }
 
 .content {

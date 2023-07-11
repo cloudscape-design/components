@@ -3,9 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
 import { InternalColumnLayoutProps } from '../interfaces';
 import styles from './styles.css.js';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const isOdd = (value: number): boolean => value % 2 !== 0;
 
@@ -40,7 +40,7 @@ export default function FlexibleColumnLayout({
   variant,
   children,
 }: FlexibleColumnLayoutProps) {
-  const [containerWidth, containerRef] = useContainerQuery(rect => rect.width);
+  const [containerWidth, containerRef] = useContainerQuery(rect => rect.contentBoxWidth);
 
   const columnCount = calculcateCssColumnCount(columns, minColumnWidth, containerWidth);
   const shouldDisableGutters = variant !== 'text-grid' && disableGutters;

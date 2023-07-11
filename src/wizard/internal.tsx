@@ -52,7 +52,7 @@ export default function InternalWizard({
     controlledProp: 'activeStepIndex',
     changeHandler: 'onNavigate',
   });
-  const { funnelInteractionId, funnelSubmit, funnelCancel, funnelProps } = useFunnel();
+  const { funnelInteractionId, funnelSubmit, funnelCancel, funnelProps, funnelNextOrSubmitAttempt } = useFunnel();
   const actualActiveStepIndex = activeStepIndex ? Math.min(activeStepIndex, steps.length - 1) : 0;
 
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
@@ -88,6 +88,8 @@ export default function InternalWizard({
   };
   const onPreviousClick = () => navigationEvent(actualActiveStepIndex - 1, 'previous');
   const onPrimaryClick = () => {
+    funnelNextOrSubmitAttempt();
+
     if (isLastStep) {
       funnelSubmit();
       fireNonCancelableEvent(onSubmit);

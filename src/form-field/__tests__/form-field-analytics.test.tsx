@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import FormField from '../../../lib/components/form-field';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { DATA_ATTR_FIELD_LABEL, DATA_ATTR_FIELD_ERROR } from '../../../lib/components/internal/analytics/selectors';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import {
   AnalyticsFunnel,
@@ -67,6 +68,35 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+
+    expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(2);
+  });
+
+  test('sends a funnelSubStepError metric when there is an error and the user attempts to submit the form', () => {
+    let funnelNextOrSubmitAttempt: undefined | (() => void) = undefined;
+
+    const ChildComponent = () => {
+      funnelNextOrSubmitAttempt = useFunnel().funnelNextOrSubmitAttempt;
+      return <></>;
+    };
+
+    const jsx = (
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
+          <AnalyticsFunnelSubStep>
+            <FormField errorText="Error" label="Label" />
+          </AnalyticsFunnelSubStep>
+
+          <ChildComponent />
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+
+    const { rerender } = render(jsx);
+    expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
+
+    act(() => funnelNextOrSubmitAttempt!());
+    rerender(jsx);
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(2);
   });
