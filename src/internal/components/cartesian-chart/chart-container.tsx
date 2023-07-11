@@ -6,6 +6,7 @@ import styles from './styles.css.js';
 import clsx from 'clsx';
 
 interface CartesianChartContainerProps {
+  minHeight: number;
   fitHeight: boolean;
   leftAxisLabel: React.ReactNode;
   leftAxisLabelMeasure: React.ReactNode;
@@ -14,9 +15,12 @@ interface CartesianChartContainerProps {
   popover: React.ReactNode;
 }
 
+const CONTENT_MIN_HEIGHT_BOUNDARY = 40;
+
 export const CartesianChartContainer = forwardRef(
   (
     {
+      minHeight,
       fitHeight,
       leftAxisLabel,
       leftAxisLabelMeasure,
@@ -35,7 +39,10 @@ export const CartesianChartContainer = forwardRef(
           {leftAxisLabelMeasure}
 
           <div className={styles['chart-container-inner']}>
-            <div className={withFitHeight(styles['chart-container-plot-wrapper'])}>
+            <div
+              className={withFitHeight(styles['chart-container-plot-wrapper'])}
+              style={{ minHeight: Math.max(minHeight, CONTENT_MIN_HEIGHT_BOUNDARY) }}
+            >
               <div className={withFitHeight(styles['chart-container-plot'])}>{chartPlot}</div>
             </div>
 

@@ -179,6 +179,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             ariaDescription={ariaDescription}
             i18nStrings={i18nStrings}
             fitHeight={fitHeight}
+            minHeight={height}
           />
         ) : null
       }

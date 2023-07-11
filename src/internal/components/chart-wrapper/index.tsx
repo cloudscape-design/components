@@ -9,8 +9,6 @@ import { BaseComponentProps, getBaseProps } from '../../base-component/index.js'
 import InternalBox from '../../../box/internal.js';
 import InternalSpaceBetween from '../../../space-between/internal.js';
 
-const CONTENT_MIN_HEIGHT_BOUNDARY = 40;
-
 interface ChartWrapperProps extends BaseComponentProps {
   fitHeight: boolean;
   defaultFilter: React.ReactNode;
@@ -72,8 +70,7 @@ export const ChartWrapper = forwardRef(
               [styles['content--fit-height']]: fitHeight,
             })}
             style={{
-              minHeight:
-                contentMinHeight !== undefined ? Math.max(CONTENT_MIN_HEIGHT_BOUNDARY, contentMinHeight) : undefined,
+              minHeight: !fitHeight ? contentMinHeight : undefined,
             }}
           >
             {chartStatus}

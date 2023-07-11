@@ -456,6 +456,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   return (
     <CartesianChartContainer
       ref={containerRef}
+      minHeight={explicitPlotHeight}
       fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis={y} position="left" title={xy.title[y]} />}
       leftAxisLabelMeasure={

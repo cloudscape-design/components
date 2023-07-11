@@ -42,6 +42,7 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   model: ChartModel<T>;
   autoWidth: (value: number) => void;
   fitHeight?: boolean;
+  minHeight: number;
 }
 
 export default memo(ChartContainer) as typeof ChartContainer;
@@ -67,6 +68,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
     detailPopoverDismissAriaLabel,
   } = {},
   fitHeight,
+  minHeight,
 }: ChartContainerProps<T>) {
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [bottomLabelsHeight, setBottomLabelsHeight] = useState(0);
@@ -102,6 +104,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   return (
     <CartesianChartContainer
       ref={mergedRef}
+      minHeight={minHeight}
       fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis="y" position="left" title={yTitle} />}
       leftAxisLabelMeasure={
