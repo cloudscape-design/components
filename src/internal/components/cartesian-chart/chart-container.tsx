@@ -7,7 +7,6 @@ import clsx from 'clsx';
 
 interface CartesianChartContainerProps {
   fitHeight: boolean;
-  bottomLabelsHeight: number;
   leftAxisLabel: React.ReactNode;
   leftAxisLabelMeasure: React.ReactNode;
   bottomAxisLabel: React.ReactNode;
@@ -19,7 +18,6 @@ export const CartesianChartContainer = forwardRef(
   (
     {
       fitHeight,
-      bottomLabelsHeight,
       leftAxisLabel,
       leftAxisLabelMeasure,
       bottomAxisLabel,
@@ -37,8 +35,8 @@ export const CartesianChartContainer = forwardRef(
           {leftAxisLabelMeasure}
 
           <div className={styles['chart-container-inner']}>
-            <div className={withFitHeight(styles['chart-container-plot'])} style={{ bottom: bottomLabelsHeight }}>
-              {chartPlot}
+            <div className={withFitHeight(styles['chart-container-plot-wrapper'])}>
+              <div className={withFitHeight(styles['chart-container-plot'])}>{chartPlot}</div>
             </div>
 
             <div className={withFitHeight(styles['chart-container-bottom-labels'])}>{bottomAxisLabel}</div>

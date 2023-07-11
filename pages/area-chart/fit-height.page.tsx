@@ -83,6 +83,7 @@ export default function () {
                     chartAriaRoleDescription: 'area chart',
                     xAxisAriaRoleDescription: 'x axis',
                     yAxisAriaRoleDescription: 'y axis',
+                    xTickFormatter: value => `${value}\nxxx`,
                   }}
                   xDomain={[0, 119]}
                   {...chartData}

@@ -136,6 +136,16 @@
   width: 100%;
 }
 
+.chart-container-plot-wrapper {
+  display: contents;
+
+  &.fit-height {
+    display: block;
+    position: relative;
+    flex: 1;
+  }
+}
+
 .chart-container-plot {
   display: contents;
 
@@ -154,9 +164,5 @@
 
   &.fit-height {
     display: block;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
   }
 }

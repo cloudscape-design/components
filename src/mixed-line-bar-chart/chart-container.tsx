@@ -457,7 +457,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
     <CartesianChartContainer
       ref={containerRef}
       fitHeight={!!fitHeight}
-      bottomLabelsHeight={bottomLabelsHeight}
       leftAxisLabel={<AxisLabel axis={y} position="left" title={xy.title[y]} />}
       leftAxisLabelMeasure={
         <LabelsMeasure
