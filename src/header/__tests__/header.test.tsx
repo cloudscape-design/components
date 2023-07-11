@@ -51,7 +51,7 @@ test('supports title tag name override', () => {
 test('renders h1 variant', () => {
   const wrapper = renderHeader(<Header variant="h1">title</Header>);
   expect(wrapper.find('h1')!.getElement()).toHaveTextContent('title');
-  expect(wrapper.getElement()).toHaveClass(styles['root-variant-h1']);
+  expect(wrapper.findHeadingText().getElement()).toHaveClass(styles['heading-text-variant-h1']);
 });
 
 test('renders h3 variant', () => {

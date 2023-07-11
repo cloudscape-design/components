@@ -13,29 +13,18 @@
   width: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
-
-  &-no-actions {
-    &.root-variant-h1 {
-      padding-bottom: 0;
-      &-refresh {
-        padding-bottom: awsui.$space-xxxs;
-      }
-    }
+  column-gap: awsui.$space-xs;
+  &.refresh {
+    row-gap: awsui.$space-scaled-xxs;
   }
 
   &-no-actions,
   &-has-description {
-    &.root-variant-h2 {
+    &.root-variant-h2:not(.refresh) {
       padding-bottom: awsui.$space-scaled-xxs;
-      &-refresh {
-        padding-bottom: awsui.$space-xxxs;
-      }
     }
-    &.root-variant-h3 {
+    &.root-variant-h3:not(.refresh) {
       padding-bottom: awsui.$space-scaled-xxs;
-      &-refresh {
-        padding-bottom: 0;
-      }
     }
   }
 
@@ -49,32 +38,31 @@
   word-wrap: break-word;
   max-width: 100%;
 
-  :not(.root-no-actions) > & {
-    margin-right: awsui.$space-xs;
+  &.refresh {
+    display: flex;
+    flex-direction: column;
+    // Can't use justify-content: center because it won't align with configurable dashboard handle icon
   }
 
   &-variant-h1 {
     padding: awsui.$space-scaled-2x-xxs 0;
-    &-refresh {
-      padding: awsui.$space-xxs 0;
+    &.refresh {
+      padding: 0;
+      row-gap: awsui.$space-scaled-xxs;
     }
-  }
-  :not(.root-no-actions) > &-variant-h1-refresh {
-    padding-top: awsui.$space-scaled-xxxs;
   }
 
   // So that headers with only a title have the same height as headers with actions and descriptions
   &-variant-h2,
   &-variant-h3 {
-    padding-top: awsui.$space-scaled-xxs;
-    :not(.root-has-description) > & {
-      padding-bottom: awsui.$space-xxxs;
+    &:not(.refresh) {
+      padding-top: awsui.$space-scaled-xxs;
+      :not(.root-has-description) > & {
+        padding-bottom: awsui.$space-xxxs;
+      }
     }
-  }
-  &-variant-h2-refresh {
-    padding-top: 0;
-    :not(.root-has-description) > & {
-      padding-bottom: 0;
+    &.refresh {
+      row-gap: awsui.$space-scaled-xxxs;
     }
   }
 }
@@ -84,24 +72,28 @@
   // https://github.com/philipwalton/flexbugs/issues/170
   display: flex;
   align-items: flex-start;
-  &-variant-h1 {
-    padding: awsui.$space-scaled-xs 0;
-    &-refresh {
-      padding: awsui.$space-xs 0;
-    }
+
+  // Calculate padding so the heading text is better aligned with the buttons.
+  // Can't align-items: middle because we want buttons to stay at the top of the container when text wraps to multiple lines.
+  &-variant-h1.refresh {
+    padding: calc((#{awsui.$font-heading-xl-line-height} - #{awsui.$size-vertical-input}) / 2) 0;
   }
-  &-variant-h2,
-  &-variant-h3 {
+  &-variant-h2.refresh {
+    padding: calc((#{awsui.$font-heading-l-line-height} - #{awsui.$size-vertical-input}) / 2) 0;
+  }
+  &-variant-h3.refresh {
+    padding: calc((#{awsui.$font-heading-m-line-height} - #{awsui.$size-vertical-input}) / 2) 0;
+  }
+
+  &-variant-h1:not(.refresh) {
+    padding: awsui.$space-scaled-xs 0;
+  }
+  &-variant-h2:not(.refresh),
+  &-variant-h3:not(.refresh) {
     padding: awsui.$space-scaled-xxs 0;
     .root-has-description > & {
       padding-bottom: 0;
     }
-  }
-  &-variant-h2-refresh {
-    padding-bottom: awsui.$space-xxxs;
-  }
-  &-variant-h3-refresh {
-    padding-bottom: 0;
   }
 }
 
@@ -111,19 +103,27 @@
 
   &-variant-h1 {
     font-size: awsui.$font-heading-xl-size;
-  }
-  &-variant-h2,
-  &-variant-h3 {
-    padding: awsui.$space-scaled-xxs 0;
+    // Use padding rather than center align so that all headers of the same size start at the same height in the container,
+    // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
+    &.refresh {
+      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-xl-line-height}) / 2);
+    }
   }
   &-variant-h2 {
     font-size: awsui.$font-heading-l-size;
-    &-refresh {
-      padding-top: awsui.$space-scaled-2x-xxs;
+    &.refresh {
+      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-l-line-height}) / 2);
     }
   }
   &-variant-h3 {
     font-size: awsui.$font-heading-m-size;
+    &.refresh {
+      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-m-line-height}) / 2);
+    }
+  }
+  &-variant-h2:not(.refresh),
+  &-variant-h3:not(.refresh) {
+    padding: awsui.$space-scaled-xxs 0;
   }
 }
 
@@ -140,21 +140,21 @@
 
   &-variant-h1 {
     @include styles.font-body-m;
-    padding-top: awsui.$space-scaled-xxs;
-    &-refresh {
-      padding-top: awsui.$space-scaled-xs;
+    &:not(.refresh) {
+      padding-top: awsui.$space-scaled-xxs;
     }
   }
   &-variant-h2 {
     font-size: awsui.$font-header-h2-description-size;
     line-height: awsui.$font-header-h2-description-line-height;
-    padding-bottom: awsui.$space-scaled-xxs;
+    &:not(.refresh) {
+      padding-bottom: awsui.$space-scaled-xxs;
+    }
   }
   &-variant-h3 {
     @include styles.font-body-s;
-    padding-bottom: awsui.$space-scaled-xxs;
-    &-refresh {
-      padding-top: awsui.$space-xxxs;
+    &:not(.refresh) {
+      padding-bottom: awsui.$space-scaled-xxs;
     }
   }
 }
