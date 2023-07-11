@@ -31,6 +31,7 @@ type InternalWizardProps = WizardProps & InternalBaseComponentProps;
 export default function InternalWizard({
   steps,
   activeStepIndex: controlledActiveStepIndex,
+  submitButtonText,
   isLoadingNextStep = false,
   allowSkipTo = false,
   secondaryActions,
@@ -101,7 +102,7 @@ export default function InternalWizard({
   const i18n = useInternalI18n('wizard');
   const skipToButtonLabel = i18n(
     'i18nStrings.skipToButtonLabel',
-    rest.i18nStrings.skipToButtonLabel,
+    rest.i18nStrings?.skipToButtonLabel,
     format => task => format({ task__title: task.title })
   );
 
@@ -118,11 +119,11 @@ export default function InternalWizard({
       rest.i18nStrings?.collapsedStepsLabel,
       format => (stepNumber, stepsCount) => format({ stepNumber, stepsCount })
     ),
-    navigationAriaLabel: i18n('i18nStrings.navigationAriaLabel', rest.i18nStrings.navigationAriaLabel),
-    cancelButton: i18n('i18nStrings.cancelButton', rest.i18nStrings.cancelButton),
-    previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings.previousButton),
-    nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings.nextButton),
-    optional: i18n('i18nStrings.optional', rest.i18nStrings.optional),
+    navigationAriaLabel: i18n('i18nStrings.navigationAriaLabel', rest.i18nStrings?.navigationAriaLabel),
+    cancelButton: i18n('i18nStrings.cancelButton', rest.i18nStrings?.cancelButton),
+    previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings?.previousButton),
+    nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings?.nextButton),
+    optional: i18n('i18nStrings.optional', rest.i18nStrings?.optional),
   };
 
   if (activeStepIndex && activeStepIndex >= steps.length) {
@@ -167,6 +168,7 @@ export default function InternalWizard({
             isVisualRefresh={isVisualRefresh}
             showCollapsedSteps={smallContainer}
             i18nStrings={i18nStrings}
+            submitButtonText={submitButtonText}
             activeStepIndex={actualActiveStepIndex}
             isPrimaryLoading={isLoadingNextStep}
             allowSkipTo={allowSkipTo}

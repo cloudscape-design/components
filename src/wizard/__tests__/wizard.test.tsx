@@ -31,7 +31,7 @@ type DefaultWizardProps = Optional<WizardProps, 'i18nStrings' | 'steps'>;
 const renderDefaultWizard = (
   wizardProps?: DefaultWizardProps
 ): [WizardWrapper, (props: DefaultWizardProps) => void] => {
-  const defaultProps = { i18nStrings: DEFAULT_I18N_SETS[0], steps: DEFAULT_STEPS };
+  const defaultProps = { i18nStrings: DEFAULT_I18N_SETS[0], submitButtonText: 'Create record', steps: DEFAULT_STEPS };
   const [wrapper, rerender] = renderWizard({ ...defaultProps, ...wizardProps });
   return [wrapper, (newProps: DefaultWizardProps) => rerender({ ...defaultProps, ...newProps })];
 };
@@ -47,8 +47,10 @@ afterEach(() => {
 describe('i18nStrings', () => {
   DEFAULT_I18N_SETS.forEach((i18nStrings, index) => {
     test(`match provided i18nStrings, i18nSets[${index}], shown on the wizard component`, () => {
+      const submitButtonText = 'Submit';
       const [wrapper] = renderWizard({
         i18nStrings,
+        submitButtonText,
         steps: DEFAULT_STEPS,
       });
 
@@ -82,7 +84,7 @@ describe('i18nStrings', () => {
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
-      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.submitButton);
+      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(submitButtonText);
     });
   });
 });
@@ -216,7 +218,7 @@ describe('Primary button', () => {
       if (index < DEFAULT_STEPS.length - 1) {
         expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
       } else {
-        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton);
+        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton!);
       }
       wrapper.findPrimaryButton().click();
     });
