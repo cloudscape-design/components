@@ -7,6 +7,7 @@ import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import popoverStyles from '../../../lib/components/popover/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
+import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 import { cloneDeep } from 'lodash';
@@ -97,9 +98,16 @@ test('when fitHeight=true chart height is flexible', () => {
   expect(wrapper.findChart()!.getElement().style.height).toContain('100%');
 });
 
-test.each([false, true])('when fitHeight=%s content min height is explicitly set', fitHeight => {
-  const { wrapper } = renderAreaChart(<AreaChart height={333} fitHeight={fitHeight} series={[]} />);
+test('when fitHeight=false content min height is explicitly set', () => {
+  const { wrapper } = renderAreaChart(<AreaChart height={333} fitHeight={false} series={[]} />);
   expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '333px' });
+});
+
+test.each([false, true])('when fitHeight=%s plot min-height is explicitly set', fitHeight => {
+  const { wrapper } = renderAreaChart(<AreaChart height={333} fitHeight={fitHeight} series={[areaSeries1]} />);
+  expect(wrapper.findByClassName(cartesianStyles['chart-container-plot-wrapper'])?.getElement()).toHaveStyle({
+    minHeight: '333px',
+  });
 });
 
 test('empty text is assigned', () => {
