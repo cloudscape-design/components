@@ -356,10 +356,8 @@ test('tick formatters are assigned', () => {
     <AreaChart
       series={[areaSeries1]}
       statusType="finished"
-      i18nStrings={{
-        xTickFormatter: (x: number) => `x${x}`,
-        yTickFormatter: (y: number) => `y${y}`,
-      }}
+      xTickFormatter={(x: number) => `x${x}`}
+      yTickFormatter={(y: number) => `y${y}`}
     />
   );
 

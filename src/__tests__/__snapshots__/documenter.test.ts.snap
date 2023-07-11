@@ -963,6 +963,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -992,6 +1009,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -2132,6 +2166,23 @@ Use \`categorical\` for bar charts.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -2161,6 +2212,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -7828,6 +7896,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -7857,6 +7942,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -8407,6 +8509,23 @@ Use \`categorical\` for charts with bars.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -8436,6 +8555,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
