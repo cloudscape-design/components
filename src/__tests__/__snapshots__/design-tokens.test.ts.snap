@@ -10951,7 +10951,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -12365,7 +12365,7 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -15149,7 +15149,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -16563,7 +16563,7 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -17248,7 +17248,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -18662,7 +18662,7 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -19347,7 +19347,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -20761,7 +20761,7 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e0ca57",
-            "light": "rgba(141, 102, 5)",
+            "light": "#8d6605",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -25644,7 +25644,7 @@ Object {
       "$description": "The border color of an item in warning state. For example: warning alerts.",
       "$value": Object {
         "dark": "#e0ca57",
-        "light": "rgba(141, 102, 5)",
+        "light": "#8d6605",
       },
     },
     "color-charts-blue-1-1000": Object {
@@ -27058,7 +27058,7 @@ Object {
       "$description": "The color of warning icons.",
       "$value": Object {
         "dark": "#e0ca57",
-        "light": "rgba(141, 102, 5)",
+        "light": "#8d6605",
       },
     },
     "color-text-top-navigation-title": Object {

@@ -51,6 +51,6 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorYellow100: '#fffce9',
   colorYellow600: '#ffe457',
   colorYellow700: '#e0ca57',
-  colorYellow800: '#906806',
+  colorYellow800: '#8d6605',
   colorYellow900: '#1d1906',
 };
