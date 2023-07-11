@@ -1166,6 +1166,12 @@ The display of a row is handled by the \`definition\` property.",
       "type": "ReadonlyArray<T>",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the remove button.",
+      "name": "removeButtonAriaLabel",
+      "optional": true,
+      "type": "(item: T) => string",
+    },
+    Object {
       "description": "Specifies the text that's displayed in the remove button.",
       "i18nTag": true,
       "name": "removeButtonText",

@@ -193,10 +193,7 @@ describe('Attribute Editor', () => {
 
     test('renders `ariaLabel` on remove button using `removeButtonAriaLabel` on all rows', () => {
       const removeButtonAriaLabel = (item: Item) => `Remove ${item.key}`;
-      const wrapper = renderAttributeEditor({
-        ...defaultProps,
-        i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel },
-      });
+      const wrapper = renderAttributeEditor({ ...defaultProps, removeButtonAriaLabel });
       defaultProps.items!.forEach((item, index) => {
         expect(
           wrapper

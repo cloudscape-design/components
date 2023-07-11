@@ -26,6 +26,7 @@ export interface RowProps<T> {
   removeButtonText?: string;
   removeButtonRefs: Array<ButtonProps.Ref | undefined>;
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
+  removeButtonAriaLabel?: (item: T) => string;
 }
 
 function render<T>(
@@ -49,6 +50,7 @@ export const Row = React.memo(
     removeButtonText,
     removeButtonRefs,
     onRemoveButtonClick,
+    removeButtonAriaLabel,
   }: RowProps<T>) => {
     const i18n = useInternalI18n('attribute-editor');
     const isNarrowViewport = breakpoint === 'default' || breakpoint === 'xxs';
@@ -101,7 +103,7 @@ export const Row = React.memo(
                   ref={ref => {
                     removeButtonRefs[index] = ref ?? undefined;
                   }}
-                  ariaLabel={i18nStrings.removeButtonAriaLabel?.(item)}
+                  ariaLabel={(removeButtonAriaLabel ?? i18nStrings.removeButtonAriaLabel)?.(item)}
                   onClick={handleRemoveClick}
                 >
                   {i18n('removeButtonText', removeButtonText)}
@@ -114,7 +116,7 @@ export const Row = React.memo(
       </InternalBox>
     );
   }
-);
+) as <T>(props: RowProps<T>) => JSX.Element;
 
 interface ButtonContainer {
   index: number;
