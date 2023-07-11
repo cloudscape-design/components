@@ -59,8 +59,9 @@ const Cards = React.forwardRef(function <T = any>(
   const { __internalRootRef } = useBaseComponent('Cards');
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
-  const computedVariant = isRefresh ? variant : 'container';
+  const isMobile = useMobile();
 
+  const computedVariant = isRefresh ? variant : 'container';
   const instanceUniqueId = useUniqueId('cards');
   const cardsId = baseProps?.id || instanceUniqueId;
   const cardsHeaderId = header ? `${cardsId}-header` : undefined;
@@ -87,8 +88,9 @@ const Cards = React.forwardRef(function <T = any>(
     },
   });
   const hasToolsHeader = header || filter || pagination || preferences;
+  const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
   const headerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMobile();
+
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
   stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
@@ -139,9 +141,7 @@ const Cards = React.forwardRef(function <T = any>(
             </div>
           )
         }
-        footer={
-          variant === 'full-page' && !!pagination && <div className={styles['footer-pagination']}>{pagination}</div>
-        }
+        footer={hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
         disableContentPaddings={true}
         disableHeaderPaddings={computedVariant === 'full-page'}
         variant={computedVariant === 'container' ? 'cards' : computedVariant}
