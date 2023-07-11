@@ -58,6 +58,8 @@ interface TransitionContentProps {
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
   onMouseDown?: React.MouseEventHandler<Element>;
+  id?: string;
+  role?: string;
 }
 
 const TransitionContent = ({
@@ -76,6 +78,8 @@ const TransitionContent = ({
   position,
   open,
   onMouseDown,
+  id,
+  role,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   return (
@@ -90,6 +94,8 @@ const TransitionContent = ({
         [styles['use-portal']]: expandToViewport && !interior,
       })}
       ref={contentRef}
+      id={id}
+      role={role}
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
@@ -132,6 +138,8 @@ const Dropdown = ({
   onFocus,
   onBlur,
   contentKey,
+  dropdownContentId,
+  dropdownContentRole,
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLDivElement | null>(null);
@@ -394,6 +402,8 @@ const Dropdown = ({
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}
                 position={position}
+                id={dropdownContentId}
+                role={dropdownContentRole}
               >
                 {children}
               </TransitionContent>

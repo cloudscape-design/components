@@ -459,6 +459,31 @@ test('Trigger should have refer to the element using aria-label value and placeh
   expect(label).toBe('multi select select options');
 });
 
+describe('a11y properties', () => {
+  test('trigger should aria-control the list (role="listbox") when filtering disabled', () => {
+    const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+    const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
+    expect(hasPopup).toBe('listbox');
+    const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
+    expect(controlledId).toBeTruthy();
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown().getElement().querySelector(`#${controlledId}`)!.getAttribute('role')).toBe('listbox');
+  });
+  test('trigger should aria-control the dropdown (role="dialog") when filtering enabled', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect selectedOptions={[]} options={defaultOptions} filteringType="auto" />
+    );
+    const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
+    expect(hasPopup).toBe('dialog');
+    const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
+    expect(controlledId).toBeTruthy();
+    wrapper.openDropdown();
+    expect(
+      wrapper.findDropdown().getElement().parentNode!.querySelector(`#${controlledId}`)!.getAttribute('role')
+    ).toBe('dialog');
+  });
+});
+
 test('Trigger receives focus when autofocus is true', () => {
   const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={groupOptions} autoFocus={true} />);
   expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
