@@ -19,6 +19,7 @@ import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
 describe('AnalyticsFunnel', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -88,7 +89,7 @@ describe('AnalyticsFunnel', () => {
     });
   });
 
-  test('does not call funnelComplete when the form is submitted with errors', async () => {
+  test('does not call funnelComplete when the form is submitted with errors', () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = ({ renderError }: { renderError: boolean }) => {
       const { funnelSubmit } = useFunnel();
@@ -115,11 +116,11 @@ describe('AnalyticsFunnel', () => {
       </AnalyticsFunnel>
     );
 
-    await new Promise(r => setTimeout(r, 1000));
+    jest.runAllTimers();
     expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
   });
 
-  test('calls funnelComplete once when the form is unmounted during the validation phase', async () => {
+  test('calls funnelComplete once when the form is unmounted during the validation phase', () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -138,11 +139,11 @@ describe('AnalyticsFunnel', () => {
 
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
 
-    await new Promise(r => setTimeout(r, 1000));
+    jest.runAllTimers();
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
   });
 
-  test('does not emit events while the form is in a loading state', async () => {
+  test('does not emit events while the form is in a loading state', () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -166,7 +167,7 @@ describe('AnalyticsFunnel', () => {
       </AnalyticsFunnel>
     );
 
-    await new Promise(r => setTimeout(r, 2000));
+    jest.runOnlyPendingTimers();
 
     expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
@@ -179,7 +180,7 @@ describe('AnalyticsFunnel', () => {
       </AnalyticsFunnel>
     );
 
-    await new Promise(r => setTimeout(r, 1000));
+    jest.runAllTimers();
 
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
@@ -207,7 +208,7 @@ describe('AnalyticsFunnel', () => {
     expect(FunnelMetrics.funnelSuccessful).toHaveBeenCalledTimes(1);
   });
 
-  test('does not call funnelSuccessful when the form is submitted without errors but not unmounted', async () => {
+  test('does not call funnelSuccessful when the form is submitted without errors but not unmounted', () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -224,12 +225,12 @@ describe('AnalyticsFunnel', () => {
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
 
-    await new Promise(r => setTimeout(r, 1000));
+    jest.runAllTimers();
 
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
   });
 
-  test('calls funnelSuccessful when the form is submitted and then later unmounted', async () => {
+  test('calls funnelSuccessful when the form is submitted and then later unmounted', () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -246,7 +247,9 @@ describe('AnalyticsFunnel', () => {
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
 
-    await new Promise(r => setTimeout(r, 1000));
+    jest.runAllTimers();
+
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
 
     unmount();
 
