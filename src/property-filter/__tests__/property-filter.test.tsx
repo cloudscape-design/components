@@ -89,6 +89,8 @@ const filteringOptions: readonly FilteringOption[] = [
 const defaultProps: PropertyFilterProps = {
   filteringProperties,
   filteringOptions,
+  filteringPlaceholder: 'Search',
+  filteringAriaLabel: 'your choice',
   onChange: () => {},
   query: { tokens: [], operation: 'and' },
   i18nStrings,
@@ -181,7 +183,7 @@ describe('property filter parts', () => {
     test('recieves `placeholder`, `ariaLabel` and `disabled` properties passed to the component', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         disabled: true,
-        i18nStrings: { ...i18nStrings, filteringPlaceholder: 'placeholder' },
+        filteringPlaceholder: 'placeholder',
       });
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('placeholder', 'placeholder');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('disabled');

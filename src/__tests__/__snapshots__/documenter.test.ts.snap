@@ -10037,6 +10037,13 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "Label that will be passed down to the Autosuggest \`ariaLabel\` property.
+See the [Autosuggest API](/system/components/autosuggest/?tabId=api) page for more details.",
+      "name": "filteringAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
       "name": "filteringErrorText",
       "optional": true,
@@ -10078,6 +10085,12 @@ const filteringOptions = [
       "name": "filteringOptions",
       "optional": true,
       "type": "ReadonlyArray<PropertyFilterProps.FilteringOption>",
+    },
+    Object {
+      "description": "Placeholder for the filtering input.",
+      "name": "filteringPlaceholder",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "An array of properties by which the data set can be filtered. Each element has the following properties:
@@ -10176,7 +10189,7 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "filteringAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10288,7 +10301,7 @@ operations are communicated to the user in another way.",
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "PropertyFilterProps.I18nStrings",
     },
     Object {
