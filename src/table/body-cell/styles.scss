@@ -19,9 +19,10 @@ $selected-border: awsui.$border-item-width solid awsui.$color-border-item-select
 $selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
 $border-placeholder: awsui.$border-item-width solid transparent;
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
-// Right paddings of the absolute positioned icons (success next to the edit icon)
-// Cell vertical padding + xxs space that would normally come from the button.
-$edit-button-padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
+// Right paddings of the absolute positioned icons (success icon is shown next to the edit icon)
+$edit-button-padding-right: calc(
+  #{awsui.$space-xs} + #{awsui.$space-xxs}
+); // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 
 .body-cell {
@@ -245,7 +246,6 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       flex-shrink: 0;
     }
   }
-
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
@@ -301,10 +301,6 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
         border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
-        &.body-cell-has-success {
-          padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
-        }
         @include focused-editor-styles;
         &:first-child {
           left: 0;
@@ -314,7 +310,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
           padding-right: calc(#{$edit-button-padding-right} - (2 * #{awsui.$border-divider-list-width}));
         }
         & > .body-cell-success {
-          // Update padding to avoid a jumping icon because of the additional borders added when hovering a cell.
+          // Update padding to avoid a jumping icon because of the additional borders added when hovering an editable cell.
           padding-right: calc(#{$success-icon-padding-right} - (2 * #{awsui.$border-divider-list-width}));
         }
         &.body-cell-last-row.body-cell-selected,

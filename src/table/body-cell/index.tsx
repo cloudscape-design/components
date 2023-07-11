@@ -9,6 +9,7 @@ import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../internal/i18n/context';
+import { usePrevious } from '../../internal/hooks/use-previous';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -56,27 +57,20 @@ function TableCellEditable<ItemType>({
   const [hasFocus, setHasFocus] = useState(false);
   const showIcon = hasHover || hasFocus;
 
-  const prevSuccessfulEdit = useRef(successfulEdit);
-  const prevHasFocus = useRef(hasFocus);
+  const prevSuccessfulEdit = usePrevious(successfulEdit);
+  const prevHasFocus = usePrevious(hasFocus);
   const [showSuccessIcon, setShowSuccessIcon] = useState(false);
 
   useEffect(() => {
-    // Early return if there hasn't been any successfulEdit state changes.
-    if (successfulEdit === false && prevSuccessfulEdit.current === false) {
-      return;
-    }
-
-    // Show the success icon right after a successful edit (when successfulEdit switches to true)
-    if (successfulEdit && prevSuccessfulEdit.current && hasFocus === false && prevHasFocus.current) {
+    // Hide the success icon after a successful edit, when cell loses focus.
+    if (successfulEdit && prevSuccessfulEdit && !hasFocus && prevHasFocus) {
       setShowSuccessIcon(false);
     }
-    // Hide the success icon after a successful edit, when the cell loses focus.
-    if (successfulEdit && prevSuccessfulEdit.current === false) {
+    // Show success icon right after a successful edit, when `successfulEdit` switches to true.
+    if (successfulEdit && !prevSuccessfulEdit) {
       setShowSuccessIcon(true);
     }
-    prevSuccessfulEdit.current = successfulEdit;
-    prevHasFocus.current = hasFocus;
-  }, [hasFocus, successfulEdit]);
+  }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
   return (
     <TableTdElement

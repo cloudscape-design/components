@@ -66,7 +66,7 @@ test(
 );
 
 test(
-  'success icon is displayed and aria live region is rendered in after a successful edit',
+  'success icon is displayed and aria live region is rendered after a successful edit',
   setupTest(async page => {
     // Before the edit, no live region and success icon is shown.
     await expect(page.isExisting(successIcon$)).resolves.toBe(false);
@@ -81,7 +81,7 @@ test(
 );
 
 test(
-  'success icon is not displayed, no aria live region is rendered after the successfully edited when cell loses focus and gets re-focused',
+  'success icon is not displayed, no aria live region is rendered after successfully edited cell lost focus and gets re-focused',
   setupTest(async page => {
     // Edit cell and perform a successful save
     await page.click(cellRoot$);
