@@ -309,7 +309,7 @@ const PropertyFilter = React.forwardRef(
           <PropertyFilterAutosuggest
             ref={inputRef}
             virtualScroll={virtualScroll}
-            enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
+            enteredTextLabel={i18nStrings.enteredTextLabel}
             ariaLabel={filteringAriaLabel ?? i18nStrings.filteringAriaLabel}
             placeholder={filteringPlaceholder ?? i18nStrings.filteringPlaceholder}
             ariaLabelledby={rest.ariaLabelledby}
@@ -388,7 +388,12 @@ const PropertyFilter = React.forwardRef(
                   limitShowMore: i18nStrings.tokenLimitShowMore,
                 }}
                 after={
-                  <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
+                  <InternalButton
+                    formAction="none"
+                    onClick={removeAllTokens}
+                    className={styles['remove-all']}
+                    disabled={disabled}
+                  >
                     {i18nStrings.clearFiltersText}
                   </InternalButton>
                 }

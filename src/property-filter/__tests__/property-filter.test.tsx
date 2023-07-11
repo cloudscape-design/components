@@ -20,6 +20,7 @@ import {
   PropertyFilterProps,
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import '../../__a11y__/to-validate-a11y';
 
 const states: Record<string, string> = {
@@ -119,15 +120,32 @@ const renderStatefulComponent = (props?: Partial<PropertyFilterProps>) => {
   return { container, propertyFilterWrapper: pageWrapper.findPropertyFilter()!, pageWrapper };
 };
 
+function findPropertyField(wrapper: ElementWrapper) {
+  return wrapper.findFormField(`.${styles['token-editor-field-property']}`)!;
+}
+function findOperatorField(wrapper: ElementWrapper) {
+  return wrapper.findFormField(`.${styles['token-editor-field-operator']}`)!;
+}
+function findValueField(wrapper: ElementWrapper) {
+  return wrapper.findFormField(`.${styles['token-editor-field-value']}`)!;
+}
+function findCancelButton(wrapper: ElementWrapper) {
+  return wrapper.findButton(`.${styles['token-editor-cancel']}`)!;
+}
+function findSubmitButton(wrapper: ElementWrapper) {
+  return wrapper.findButton(`.${styles['token-editor-submit']}`)!;
+}
+
 function findPropertySelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['token-editor-field-property'])!.findSelect()!;
+  return findPropertyField(wrapper).findControl()!.findSelect()!;
 }
 function findOperatorSelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['token-editor-field-operator'])!.findSelect()!;
+  return findOperatorField(wrapper).findControl()!.findSelect()!;
 }
 function findValueSelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['token-editor-field-value'])!.findAutosuggest()!;
+  return findValueField(wrapper).findControl()!.findAutosuggest()!;
 }
+
 function openTokenEditor(wrapper: PropertyFilterWrapper, index = 0) {
   const tokenWrapper = createWrapper(wrapper.findTokens()![index].getElement());
   const popoverWrapper = tokenWrapper.findPopover()!;
@@ -1312,5 +1330,111 @@ describe('property filter parts', () => {
   test('check a11y', async () => {
     const { container } = render(<PropertyFilter {...defaultProps} />);
     await expect(container).toValidateA11y();
+  });
+});
+
+describe('i18n', () => {
+  it('uses dropdown labels from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'property-filter': {
+            'i18nStrings.allPropertiesLabel': 'Custom All properties',
+            'i18nStrings.groupPropertiesText': 'Custom Properties',
+            'i18nStrings.groupValuesText': 'Custom Values',
+            'i18nStrings.operatorContainsText': 'Custom Contains',
+            'i18nStrings.operatorDoesNotContainText': 'Custom Does not contain',
+            'i18nStrings.operatorDoesNotEqualText': 'Custom Does not equal',
+            'i18nStrings.operatorEqualsText': 'Custom Equals',
+            'i18nStrings.operatorGreaterOrEqualText': 'Custom Greater than or equal',
+            'i18nStrings.operatorGreaterText': 'Custom Greater than',
+            'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
+            'i18nStrings.operatorLessText': 'Custom Less than',
+            'i18nStrings.operatorText': 'Custom Operator',
+            'i18nStrings.operatorsText': 'Custom Operators',
+            'i18nStrings.propertyText': 'Custom Property',
+          },
+        }}
+      >
+        <PropertyFilter
+          {...defaultProps}
+          i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findPropertyFilter()!;
+
+    wrapper.focus();
+    const dropdown = wrapper.findDropdown()!;
+    expect(dropdown.find('li')!.getElement()).toHaveTextContent('Custom Properties');
+
+    wrapper.selectSuggestion(1);
+    expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
+    expect(
+      dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
+    ).toEqual(['Custom Equals', 'Custom Does not equal', 'Custom Contains', 'Custom Does not contain']);
+  });
+
+  it('uses token and editor labels from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'property-filter': {
+            'i18nStrings.applyActionText': 'Custom Apply',
+            'i18nStrings.cancelActionText': 'Custom Cancel',
+            'i18nStrings.clearFiltersText': 'Custom Clear filters',
+            'i18nStrings.editTokenHeader': 'Custom Edit filter',
+            'i18nStrings.groupPropertiesText': 'Custom Properties',
+            'i18nStrings.groupValuesText': 'Custom Values',
+            'i18nStrings.operationAndText': 'Custom and',
+            'i18nStrings.operationOrText': 'Custom or',
+            'i18nStrings.operatorText': 'Custom Operator',
+            'i18nStrings.operatorsText': 'Operators',
+            'i18nStrings.propertyText': 'Custom Property',
+            'i18nStrings.tokenLimitShowFewer': 'Custom Show fewer',
+            'i18nStrings.tokenLimitShowMore': 'Custom Show more',
+            'i18nStrings.valueText': 'Custom Value',
+            'i18nStrings.removeTokenButtonAriaLabel':
+              '{token__operator, select, equals {Remove filter, {token__propertyKey} Custom equals {token__value}} not_equals {Remove filter, {token__propertyKey} Custom does not equal {token__value}} other {}}',
+          },
+        }}
+      >
+        <PropertyFilter
+          {...defaultProps}
+          tokenLimit={1}
+          query={{
+            operation: 'and',
+            tokens: [
+              { propertyKey: 'string', operator: '=', value: 'value1' },
+              { propertyKey: 'string', operator: '!=', value: 'value2' },
+            ],
+          }}
+          i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findPropertyFilter()!;
+    console.log(wrapper.getElement().innerHTML);
+    expect(wrapper.findRemoveAllButton()!.getElement()).toHaveTextContent('Custom Clear filters');
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show more');
+    wrapper.findTokenToggle()!.click();
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show fewer');
+
+    expect(wrapper.findTokens()[0].findRemoveButton().getElement()).toHaveAccessibleName(
+      'Remove filter, string Custom equals value1'
+    );
+
+    const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
+    tokenOperation.openDropdown();
+    expect(tokenOperation.findDropdown()!.findOption(1)!.getElement()).toHaveTextContent('Custom and');
+    expect(tokenOperation.findDropdown()!.findOption(2)!.getElement()).toHaveTextContent('Custom or');
+
+    const [popoverContent, popover] = openTokenEditor(wrapper);
+    expect(popover.findHeader()!.getElement()).toHaveTextContent('Custom Edit filter');
+    expect(findPropertyField(popoverContent).findLabel()!.getElement()).toHaveTextContent('Custom Property');
+    expect(findOperatorField(popoverContent).findLabel()!.getElement()).toHaveTextContent('Custom Operator');
+    expect(findValueField(popoverContent).findLabel()!.getElement()).toHaveTextContent('Custom Value');
+    expect(findCancelButton(popoverContent).getElement()).toHaveTextContent('Custom Cancel');
+    expect(findSubmitButton(popoverContent).getElement()).toHaveTextContent('Custom Apply');
   });
 });
