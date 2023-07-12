@@ -61,8 +61,8 @@ $dropdown-trigger-icon-offset: 2px;
 
   & > .trigger-item:not(:last-child) {
     & > .trigger-button {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
       padding-inline-end: awsui.$space-xs;
       margin-inline-end: awsui.$space-xxxs;
     }
@@ -70,8 +70,8 @@ $dropdown-trigger-icon-offset: 2px;
 
   & > .trigger-item:not(:first-child) {
     & > .trigger-button {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
       padding-inline-start: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
       padding-inline-end: calc(#{awsui.$space-xs} - #{$dropdown-trigger-icon-offset});
     }

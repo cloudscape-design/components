@@ -86,8 +86,8 @@
     padding-block-end: 0px;
   }
   &:not(.has-header) {
-    border-top-right-radius: awsui.$border-radius-container;
-    border-top-left-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-container;
   }
   &::-webkit-scrollbar {
     display: none; /* Hide scrollbar in Safari and Chrome */

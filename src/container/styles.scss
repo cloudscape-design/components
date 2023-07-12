@@ -33,15 +33,15 @@
     &-stacked:not(:last-child),
     &-stacked:not(:last-child)::before,
     &-stacked:not(:last-child)::after {
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
+      border-end-end-radius: 0;
+      border-end-start-radius: 0;
     }
     // Meld container top corners into preceding container
     &-stacked + &-stacked,
     &-stacked + &-stacked::before,
     &-stacked + &-stacked::after {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
     }
     // Replace container border with a divider
     &-stacked + &-stacked::before {
@@ -100,21 +100,21 @@
 
   &-top {
     max-block-size: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-top-right-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
   }
 
   &-side {
     max-inline-size: 66%;
-    border-top-left-radius: awsui.$border-radius-container;
-    border-bottom-left-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
   }
 }
 
 .header {
   background-color: awsui.$color-background-container-header;
-  border-top-left-radius: awsui.$border-radius-container;
-  border-top-right-radius: awsui.$border-radius-container;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
 
   &.header-with-media {
     background: none;
@@ -161,8 +161,8 @@
   }
 
   &.with-hidden-content {
-    border-bottom-left-radius: awsui.$border-radius-container;
-    border-bottom-right-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
   }
 
   &-variant-cards {
@@ -174,8 +174,8 @@
     &.header-stuck::after,
     &.header-stuck::before {
       border: 0;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
     }
   }
 

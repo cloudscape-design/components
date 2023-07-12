@@ -12,10 +12,10 @@
 
 .code-editor-refresh :global .ace_editor {
   .ace_gutter {
-    border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+    border-start-start-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
   .ace_scroller {
-    border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+    border-start-end-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
 }
 

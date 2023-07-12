@@ -15,13 +15,13 @@
     border-block-end: $border;
     &:first-child {
       border-inline-start: $border;
-      border-top-left-radius: $radius;
-      border-bottom-left-radius: $radius;
+      border-start-start-radius: $radius;
+      border-end-start-radius: $radius;
     }
     &:last-child {
       border-inline-end: $border;
-      border-top-right-radius: $radius;
-      border-bottom-right-radius: $radius;
+      border-start-end-radius: $radius;
+      border-end-end-radius: $radius;
     }
   }
 }
@@ -33,8 +33,8 @@
   flex: 1;
 
   border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
-  border-bottom-left-radius: awsui.$border-radius-code-editor;
-  border-bottom-right-radius: awsui.$border-radius-code-editor;
+  border-end-start-radius: awsui.$border-radius-code-editor;
+  border-end-end-radius: awsui.$border-radius-code-editor;
   background: awsui.$color-background-code-editor-status-bar;
   color: awsui.$color-text-body-default;
 
