@@ -126,7 +126,7 @@ $label-horizontal-spacing: awsui.$space-l;
   margin-inline-start: 1px;
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
-    padding-left: calc(#{$label-horizontal-spacing} - 1px);
+    padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
 
@@ -135,7 +135,7 @@ $label-horizontal-spacing: awsui.$space-l;
   margin-inline-end: 1px;
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
-    padding-right: calc(#{$label-horizontal-spacing} - 1px);
+    padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }
 }
 

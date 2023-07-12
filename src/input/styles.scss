@@ -79,7 +79,7 @@
   &.input-invalid {
     @include styles.form-invalid-control();
     &.input-has-icon-left {
-      padding-left: calc(
+      padding-inline-start: calc(
         #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
       );
     }
@@ -104,10 +104,10 @@
     }
   }
   &.input-has-icon-left {
-    padding-left: styles.$control-icon-horizontal-padding;
+    padding-inline-start: styles.$control-icon-horizontal-padding;
   }
   &.input-has-icon-right {
-    padding-right: styles.$control-icon-horizontal-padding;
+    padding-inline-end: styles.$control-icon-horizontal-padding;
   }
   &.input-has-no-border-radius {
     border-radius: awsui.$border-radius-dropdown;

@@ -28,7 +28,7 @@
   }
   &:last-child,
   &.header-cell-sortable {
-    padding-right: awsui.$space-xs;
+    padding-inline-end: awsui.$space-xs;
   }
 
   &.sticky-cell {
@@ -36,7 +36,7 @@
     background: awsui.$color-background-table-header;
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
     &-pad-left:not(.has-selection) {
-      padding-left: awsui.$space-table-horizontal;
+      padding-inline-start: awsui.$space-table-horizontal;
     }
     &-last-left {
       box-shadow: awsui.$shadow-sticky-column-first;
@@ -95,7 +95,7 @@
 
   padding: awsui.$space-scaled-xxs awsui.$space-s;
   .header-cell-sortable > & {
-    padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
   }
   &:focus {
     outline: none;
@@ -134,8 +134,8 @@
 .header-cell-text {
   line-height: awsui.$font-heading-xs-line-height;
 
-  padding-top: calc(#{awsui.$space-xxxs} / 2);
-  padding-bottom: calc(#{awsui.$space-xxxs} / 2);
+  padding-block-start: calc(#{awsui.$space-xxxs} / 2);
+  padding-block-end: calc(#{awsui.$space-xxxs} / 2);
 
   &:not(.header-cell-text-wrap) {
     white-space: nowrap;
@@ -157,15 +157,15 @@ settings icon in the pagination slot.
 */
 .header-cell:not(.is-visual-refresh) {
   &:first-child {
-    padding-left: awsui.$space-xs;
+    padding-inline-start: awsui.$space-xs;
   }
 }
 
 .header-cell.is-visual-refresh {
   &:first-child:not(.has-striped-rows) {
-    padding-left: awsui.$space-xxxs;
+    padding-inline-start: awsui.$space-xxxs;
     &.sticky-cell-pad-left {
-      padding-left: awsui.$space-table-horizontal;
+      padding-inline-start: awsui.$space-table-horizontal;
     }
   }
 
@@ -175,14 +175,14 @@ settings icon in the pagination slot.
   to the table edge.
   */
   &:first-child.has-striped-rows {
-    padding-left: awsui.$space-xxs;
+    padding-inline-start: awsui.$space-xxs;
   }
 
   &:first-child > .header-cell-content {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 
   &:last-child.header-cell-sortable {
-    padding-right: awsui.$space-xxxs;
+    padding-inline-end: awsui.$space-xxxs;
   }
 }

@@ -130,8 +130,8 @@ the grid layout will be:
       #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 * #{$border-width} -
         #{$offset-bottom}
     );
-    padding-top: $notification-bar-padding-vertical;
-    padding-bottom: $notification-bar-padding-vertical;
+    padding-block-start: $notification-bar-padding-vertical;
+    padding-block-end: $notification-bar-padding-vertical;
   }
 }
 
@@ -229,8 +229,8 @@ the grid layout will be:
     cursor: pointer;
     margin-block-start: 0;
     margin-block-end: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-block-start: 0;
+    padding-block-end: 0;
   }
 
   > .status {
@@ -272,15 +272,15 @@ the grid layout will be:
   &.visual-refresh {
     $border-width: map.get($notification-bar-border-width, 'visual-refresh');
     border-width: $border-width;
-    padding-left: awsui.$space-l;
-    padding-right: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
+    padding-inline-end: awsui.$space-l;
   }
 
   &:not(.visual-refresh) {
     $border-width: map.get($notification-bar-border-width, 'classic');
     border-width: $border-width;
-    padding-left: awsui.$space-s;
-    padding-right: awsui.$space-s;
+    padding-inline-start: awsui.$space-s;
+    padding-inline-end: awsui.$space-s;
 
     &:focus {
       text-decoration: none;
@@ -296,8 +296,8 @@ the grid layout will be:
     flex-grow: 1;
     background: none;
     border: 0 none;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-block-start: 0;
+    padding-block-end: 0;
 
     > .icon {
       @include styles.with-motion {
@@ -321,5 +321,5 @@ the grid layout will be:
 // Prevent the sticky Flashbar from reaching the end of the window by leaving some space below.
 .stack.expanded:not(.floating) {
   // Default to 0 so that this does not apply to non-sticky Flashbar.
-  padding-bottom: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
+  padding-block-end: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
 }

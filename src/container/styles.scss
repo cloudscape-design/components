@@ -216,9 +216,9 @@ the default white background of the container component.
     padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
 
     .header + & {
-      padding-top: awsui.$space-container-content-top;
+      padding-block-start: awsui.$space-container-content-top;
       &.content-with-media {
-        padding-top: 0;
+        padding-block-start: 0;
       }
     }
   }

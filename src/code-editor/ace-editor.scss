@@ -50,8 +50,8 @@
   }
 
   .ace_gutter-cell {
-    padding-left: $gutter-padding-left;
-    padding-right: $gutter-padding-right;
+    padding-inline-start: $gutter-padding-left;
+    padding-inline-end: $gutter-padding-right;
   }
 
   .ace_fold-widget {

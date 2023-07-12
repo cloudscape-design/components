@@ -104,11 +104,11 @@
 .search {
   inline-size: 100%;
   max-inline-size: 340px;
-  padding-left: awsui.$space-xxxl;
+  padding-inline-start: awsui.$space-xxxl;
 
   &-expanded {
     max-inline-size: none;
-    padding-left: awsui.$space-s;
+    padding-inline-start: awsui.$space-s;
   }
 }
 
@@ -117,14 +117,14 @@
   flex-shrink: 0;
   flex-direction: row;
   align-items: stretch;
-  padding-left: awsui.$space-m;
+  padding-inline-start: awsui.$space-m;
 
   // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
   block-size: 100%;
 
   .medium > .padding-box > &,
   .narrow > .padding-box > & {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 }
 
@@ -148,7 +148,7 @@
   }
 
   &.utility-wrapper-last:not(.utility-type-button-primary-button) {
-    padding-right: 0;
+    padding-inline-end: 0;
 
     &::after {
       display: none;
@@ -178,7 +178,7 @@
     margin-inline-end: 0;
 
     &.utility-type-button-primary-button {
-      padding-right: awsui.$space-l;
+      padding-inline-end: awsui.$space-l;
     }
   }
 }

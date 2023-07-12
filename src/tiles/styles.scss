@@ -38,7 +38,7 @@ $gutter: awsui.$space-grid-gutter;
   flex-direction: column;
 
   &.has-metadata {
-    padding-bottom: awsui.$space-s;
+    padding-block-end: awsui.$space-s;
   }
 
   &.selected {

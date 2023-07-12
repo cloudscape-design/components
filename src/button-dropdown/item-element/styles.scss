@@ -57,18 +57,18 @@
 
     // Additional spacing for groups of items
     &.first:not(.has-category-header) {
-      padding-top: styles.$option-padding-vertical;
+      padding-block-start: styles.$option-padding-vertical;
     }
     &.last {
-      padding-bottom: styles.$option-padding-vertical;
+      padding-block-end: styles.$option-padding-vertical;
     }
     &.first.last {
-      padding-bottom: styles.$option-padding-vertical;
-      padding-top: styles.$option-padding-vertical;
+      padding-block-end: styles.$option-padding-vertical;
+      padding-block-start: styles.$option-padding-vertical;
     }
     // Additional spacing for the very last item in the list
     &.last:last-child {
-      padding-bottom: styles.$option-padding-vertical;
+      padding-block-end: styles.$option-padding-vertical;
     }
   }
 }
@@ -88,12 +88,12 @@
   /* stylelint-disable-next-line selector-max-type */
   .has-category-header > &,
   .has-category-header > span > & {
-    padding-left: awsui.$space-xxl;
+    padding-inline-start: awsui.$space-xxl;
   }
 }
 
 .icon {
-  padding-right: awsui.$space-xs;
+  padding-inline-end: awsui.$space-xs;
   flex-shrink: 0;
 }
 

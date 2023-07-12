@@ -82,7 +82,7 @@
 
   ul,
   ol {
-    padding-left: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
     margin: awsui.$space-xxs 0;
     list-style-position: outside;
 
@@ -93,7 +93,7 @@
     > li + ol,
     > li > ul,
     > li > ol {
-      padding-top: awsui.$space-xxs;
+      padding-block-start: awsui.$space-xxs;
     }
 
     > li > ul,

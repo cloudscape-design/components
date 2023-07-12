@@ -49,13 +49,13 @@
 .description {
   @include styles.form-control-description;
   &-bottom-padding {
-    padding-bottom: awsui.$space-scaled-xxs;
+    padding-block-end: awsui.$space-scaled-xxs;
   }
 }
 
 .label,
 .description {
-  padding-left: awsui.$space-xs;
+  padding-inline-start: awsui.$space-xs;
   &-disabled {
     color: awsui.$color-text-control-disabled;
   }

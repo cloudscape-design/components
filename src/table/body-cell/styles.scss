@@ -36,13 +36,13 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   }
   &:last-child {
     border-right: $border-placeholder;
-    padding-right: $cell-edge-horizontal-padding;
+    padding-inline-end: $cell-edge-horizontal-padding;
   }
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
-      padding-left: awsui.$space-xxxs;
+      padding-inline-start: awsui.$space-xxxs;
       &:not(.body-cell-edit-active).body-cell-editable:hover {
-        padding-left: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
+        padding-inline-start: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
       }
     }
 
@@ -52,9 +52,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       to the table edge.
       */
     &:first-child.has-striped-rows {
-      padding-left: awsui.$space-xxs;
+      padding-inline-start: awsui.$space-xxs;
       &-sticky-cell-pad-left {
-        padding-left: awsui.$space-table-horizontal;
+        padding-inline-start: awsui.$space-table-horizontal;
       }
     }
 
@@ -68,7 +68,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
   &:first-child:not(.is-visual-refresh) {
-    padding-left: $cell-edge-horizontal-padding;
+    padding-inline-start: $cell-edge-horizontal-padding;
   }
   &-first-row {
     border-top: $border-placeholder;
@@ -94,7 +94,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     background-color: awsui.$color-background-item-selected;
     border-top: $selected-border;
     border-bottom: $selected-border;
-    padding-bottom: $cell-vertical-padding;
+    padding-block-end: $cell-vertical-padding;
     &:first-child {
       border-left: $selected-border;
       border-radius: awsui.$border-radius-item 0 0 awsui.$border-radius-item;
@@ -110,7 +110,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     background: awsui.$color-background-container-content;
     z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
     &-pad-left:not(.has-selection):not(.is-visual-refresh.body-cell:first-child.has-striped-rows) {
-      padding-left: awsui.$space-table-horizontal;
+      padding-inline-start: awsui.$space-table-horizontal;
     }
     &.body-cell-shaded {
       background: awsui.$color-background-cell-shaded;
@@ -149,14 +149,14 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
-    padding-top: $cell-vertical-padding-w-border;
+    padding-block-start: $cell-vertical-padding-w-border;
   }
   &:not(.body-cell-selected).body-cell-next-selected {
     border-bottom: 0;
-    padding-bottom: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    padding-block-end: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
   }
   &-selected.body-cell-prev-selected {
-    padding-top: $cell-vertical-padding-w-border;
+    padding-block-start: $cell-vertical-padding-w-border;
     border-top: $selected-border-placeholder;
   }
   &-selected.body-cell-next-selected {
@@ -178,7 +178,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   // Reset padding for selected rows with no adjacent selected row above it,
   // because rows reuse adjacent selected borders (visual refresh)
   &-selected:not(.body-cell-prev-selected) {
-    padding-top: $cell-vertical-padding;
+    padding-block-start: $cell-vertical-padding;
   }
   &-success,
   &-editor {
@@ -199,7 +199,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     padding: 0;
 
     // Additional xxs padding that would normally come from the Inline Icon Button
-    padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
+    padding-inline-end: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
     color: awsui.$color-text-button-normal-default;
 
     &:hover {
@@ -251,7 +251,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
     &:not(.body-cell-edit-active) {
       @mixin focused-editor-styles {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
         & > .body-cell-editor {
           opacity: 1;
         }
@@ -263,7 +263,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         opacity: 0;
       }
       &.body-cell-has-success {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
       }
       // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
       // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
@@ -293,19 +293,21 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           right: 0;
         }
         & > .body-cell-editor {
-          padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs} - (2 * #{awsui.$border-divider-list-width}));
+          padding-inline-end: calc(
+            #{awsui.$space-xs} + #{awsui.$space-xxs} - (2 * #{awsui.$border-divider-list-width})
+          );
         }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
-          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
-          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+          padding-block-start: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+          padding-block-end: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
         }
         &.body-cell-last-row:not(.body-cell-selected) {
-          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          padding-block-start: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
         }
         &.body-cell-first-row:not(.body-cell-selected) {
-          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
-          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          padding-block-start: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          padding-block-end: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
         }
         &.sticky-cell {
           position: sticky;
@@ -323,7 +325,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-bottom-right-radius: awsui.$border-radius-item;
     }
     &.body-cell-first-row > .body-cell-editor {
-      padding-top: awsui.$border-divider-list-width;
+      padding-block-start: awsui.$border-divider-list-width;
     }
   }
 }

@@ -115,7 +115,7 @@ $calendar-header-color: awsui.$color-text-body-default;
 }
 
 .footer-button-wrapper {
-  padding-top: awsui.$space-s;
+  padding-block-start: awsui.$space-s;
 
   &:last-child {
     margin-inline-start: auto;

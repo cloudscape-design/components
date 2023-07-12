@@ -15,7 +15,7 @@
   /* stylelint-disable-next-line selector-max-type */
   > li + li {
     // Avoid Flashbar list gets additional padding to fix issue AWSUI-20382
-    padding-top: 0;
+    padding-block-start: 0;
   }
 }
 
@@ -83,7 +83,7 @@
 
 .flash-icon {
   flex: 0 0 auto;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .flash-message {
@@ -103,7 +103,7 @@
   flex: 0 0 auto;
   margin-inline-start: awsui.$space-s;
   margin-inline-end: calc(-1 * #{awsui.$space-xxs});
-  padding-right: awsui.$space-flashbar-dismiss-right;
+  padding-inline-end: awsui.$space-flashbar-dismiss-right;
 }
 
 .dismiss-button {
@@ -119,7 +119,7 @@
   display: block;
   & > .action-button-wrapper {
     margin-inline-start: awsui.$space-l;
-    padding-left: awsui.$space-xxs;
+    padding-inline-start: awsui.$space-xxs;
     margin-block-end: awsui.$space-xxs;
   }
 }

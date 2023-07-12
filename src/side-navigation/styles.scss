@@ -17,7 +17,7 @@
   margin: 0;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
-  padding-right: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
+  padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
 }
 
 .header-link {
@@ -53,7 +53,7 @@
 .list {
   margin: 0;
   padding: 0;
-  padding-left: awsui.$space-l;
+  padding-inline-start: awsui.$space-l;
 }
 
 .list-variant-root {
@@ -66,7 +66,7 @@
 }
 
 .list-variant-expandable-link-group {
-  padding-left: awsui.$space-xxxl;
+  padding-inline-start: awsui.$space-xxxl;
 }
 
 .list-item {

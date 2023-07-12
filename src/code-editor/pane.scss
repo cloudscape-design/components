@@ -81,11 +81,11 @@
   &__location {
     vertical-align: baseline;
     white-space: nowrap;
-    padding-left: calc(#{awsui.$space-l} + #{awsui.$space-s});
+    padding-inline-start: calc(#{awsui.$space-l} + #{awsui.$space-s});
   }
 
   &__description {
-    padding-right: 0;
+    padding-inline-end: 0;
     @include styles.text-wrapping;
   }
 }

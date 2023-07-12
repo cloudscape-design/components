@@ -8,11 +8,11 @@
 @use '../constants' as constants;
 
 .content-wrapper {
-  padding-left: awsui.$space-scaled-2x-xxxl;
-  padding-right: awsui.$space-scaled-2x-xxxl;
+  padding-inline-start: awsui.$space-scaled-2x-xxxl;
+  padding-inline-end: awsui.$space-scaled-2x-xxxl;
   &-mobile {
-    padding-left: awsui.$space-l;
-    padding-right: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
+    padding-inline-end: awsui.$space-l;
   }
 }
 

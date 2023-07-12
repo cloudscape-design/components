@@ -33,7 +33,7 @@
 .navigation.refresh {
   grid-column: 1;
   grid-row: 1 / span 2;
-  padding-top: var(#{custom-props.$containerFirstGap}, 0px);
+  padding-block-start: var(#{custom-props.$containerFirstGap}, 0px);
 
   > ul {
     background: awsui.$color-background-container-content;
@@ -168,7 +168,7 @@
   display: inline-block;
   margin-inline-end: calc(2 * #{awsui.$space-xxxl});
   min-inline-size: 20 * styles.$base-size;
-  padding-top: awsui.$space-xxs;
+  padding-block-start: awsui.$space-xxs;
   inline-size: 20 * styles.$base-size;
 
   > ul {
@@ -178,8 +178,8 @@
 
     > li {
       @include styles.text-wrapping;
-      padding-bottom: awsui.$space-scaled-m;
-      padding-top: 0;
+      padding-block-end: awsui.$space-scaled-m;
+      padding-block-start: 0;
     }
 
     > li:not(:first-child) {
@@ -221,8 +221,8 @@
   }
 
   > .form-header > .form-header-content {
-    padding-top: awsui.$space-scaled-m;
-    padding-bottom: awsui.$space-scaled-m;
+    padding-block-start: awsui.$space-scaled-m;
+    padding-block-end: awsui.$space-scaled-m;
   }
 
   > .form-component {
@@ -236,7 +236,7 @@
     }
 
     > .form-header > .form-header-content {
-      padding-top: 0;
+      padding-block-start: 0;
     }
 
     > .form-component {
@@ -252,7 +252,7 @@
 .collapsed-steps {
   color: awsui.$color-text-heading-secondary;
   font-weight: styles.$font-weight-bold;
-  padding-top: awsui.$space-scaled-xxs;
+  padding-block-start: awsui.$space-scaled-xxs;
   &-hidden {
     display: none;
   }

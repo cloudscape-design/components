@@ -9,13 +9,13 @@
 
 .custom-range {
   // This padding aligns the custom range selection with the radio labels
-  padding-left: calc(#{1.4 * styles.$base-size} + #{awsui.$space-xs});
+  padding-inline-start: calc(#{1.4 * styles.$base-size} + #{awsui.$space-xs});
 
   display: flex;
   inline-size: 80%;
 }
 .custom-range--no-padding {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .custom-range-form-controls {

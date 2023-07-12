@@ -219,11 +219,11 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .pane-bottom-content-nav-padding {
-  padding-left: $app-layout-drawer-width;
+  padding-inline-start: $app-layout-drawer-width;
 }
 
 .pane-bottom-content-tools-padding {
-  padding-right: $app-layout-drawer-width;
+  padding-inline-end: $app-layout-drawer-width;
 }
 
 .content-bottom-max-width {

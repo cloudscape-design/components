@@ -42,11 +42,11 @@
   // The value is calculated as follows:
   // padding-top = awsui-form-field-controls: 4px +
   // line height (also applies to icon size) awsui-form-field-label: 22px
-  padding-top: calc(#{awsui.$space-xxs} + #{awsui.$font-body-m-line-height});
+  padding-block-start: calc(#{awsui.$space-xxs} + #{awsui.$font-body-m-line-height});
 }
 
 .button-container-nolabel {
-  padding-top: #{awsui.$space-xxs};
+  padding-block-start: #{awsui.$space-xxs};
 }
 
 .divider {

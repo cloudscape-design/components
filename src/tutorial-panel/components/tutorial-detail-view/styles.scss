@@ -16,12 +16,12 @@
   display: flex;
   align-items: flex-start;
   margin-inline-start: calc(-1 * #{awsui.$space-xxs});
-  padding-bottom: awsui.$space-xxxs;
+  padding-block-end: awsui.$space-xxxs;
 }
 
 .task {
   list-style: none;
-  padding-top: 0;
+  padding-block-start: 0;
   &:not(:first-child) {
     margin-block-start: awsui.$space-xl;
   }
@@ -30,7 +30,7 @@
 .task-title {
   display: flex;
   align-items: flex-start;
-  padding-left: awsui.$border-divider-section-width;
+  padding-inline-start: awsui.$border-divider-section-width;
   @include styles.font(heading-s);
 
   &--status {
@@ -71,7 +71,7 @@
 }
 
 .step:not(:first-child) {
-  padding-top: awsui.$space-xxs;
+  padding-block-start: awsui.$space-xxs;
 }
 
 .expandable-section-wrapper {

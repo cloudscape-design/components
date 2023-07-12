@@ -20,7 +20,7 @@
 
   ol,
   ul {
-    padding-left: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
     list-style-position: outside;
   }
 
@@ -36,8 +36,8 @@
   pre,
   code {
     margin: awsui.$space-xs 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-block-start: 0;
+    padding-block-end: 0;
   }
 
   code {
@@ -106,10 +106,10 @@
   .header {
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
-    padding-bottom: awsui.$space-scaled-l;
-    padding-left: awsui.$space-panel-side-left;
+    padding-block-end: awsui.$space-scaled-l;
+    padding-inline-start: awsui.$space-panel-side-left;
     // padding to make sure the header doesn't overlap with the close icon
-    padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
     border: none;
     border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     margin: 0 calc(-1 * #{awsui.$space-panel-side-right}) awsui.$space-scaled-l
@@ -120,8 +120,8 @@
     h5,
     h6 {
       @include styles.font-panel-header;
-      padding-top: 0;
-      padding-bottom: 0;
+      padding-block-start: 0;
+      padding-block-end: 0;
       margin-block-start: 0;
       margin-block-end: 0;
     }
@@ -154,7 +154,7 @@
   }
   ul {
     list-style: none;
-    padding-left: 0;
+    padding-inline-start: 0;
   }
   a {
     @include styles.link-default;

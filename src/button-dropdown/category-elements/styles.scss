@@ -62,8 +62,8 @@ $option-padding-horizontal: awsui.$space-l;
     }
 
     &.variant-navigation {
-      padding-top: awsui.$space-xs;
-      padding-bottom: awsui.$space-xs;
+      padding-block-start: awsui.$space-xs;
+      padding-block-end: awsui.$space-xs;
 
       &.highlighted {
         border-color: transparent;
@@ -94,10 +94,10 @@ $option-padding-horizontal: awsui.$space-l;
   }
 
   &.variant-navigation {
-    padding-top: awsui.$space-xxs;
+    padding-block-start: awsui.$space-xxs;
 
     &.expandable {
-      padding-top: 0;
+      padding-block-start: 0;
     }
   }
 }

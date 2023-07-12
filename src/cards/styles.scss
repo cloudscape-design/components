@@ -18,10 +18,10 @@
 .header {
   &-variant-full-page.header-refresh {
     @include container.borders-and-shadows;
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: #{awsui.$space-container-header-vertical};
+    padding-block-start: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-block-end: #{awsui.$space-container-header-vertical};
   }
 }
 

@@ -21,17 +21,17 @@
     align-items: center;
     box-sizing: border-box;
     block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
-    padding-left: awsui.$space-xxl;
+    padding-inline-start: awsui.$space-xxl;
   }
 
   &.medium > .padding-box,
   &.narrow > .padding-box {
-    padding-left: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
   }
 
   &.medium > .padding-box {
     block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 
   &.narrow > .padding-box {
@@ -133,7 +133,7 @@
 
   .medium > .padding-box > &,
   .narrow > .padding-box > & {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 }
 
@@ -172,7 +172,7 @@
 
   &:not(.narrow):last-of-type,
   &:not(.medium):last-of-type {
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 }
 

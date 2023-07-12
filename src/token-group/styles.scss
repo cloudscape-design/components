@@ -12,7 +12,7 @@
   @include styles.styles-reset;
 
   &.has-items {
-    padding-top: awsui.$space-xs;
+    padding-block-start: awsui.$space-xs;
   }
 }
 

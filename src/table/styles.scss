@@ -39,7 +39,7 @@
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
     margin-inline-start: awsui.$space-xs;
-    padding-left: awsui.$space-xs;
+    padding-inline-start: awsui.$space-xs;
   }
 
   &-small > &-filtering {
@@ -63,27 +63,27 @@
   position: relative;
   box-sizing: border-box;
   inline-size: 100%;
-  padding-top: awsui.$space-table-content-top;
-  padding-bottom: awsui.$space-table-content-bottom;
+  padding-block-start: awsui.$space-table-content-top;
+  padding-block-end: awsui.$space-table-content-bottom;
   overflow-x: auto;
 
   scrollbar-width: none; /* Hide scrollbar in Firefox */
   &.variant-stacked,
   &.variant-container {
     & > .table {
-      padding-left: awsui.$space-table-horizontal;
-      padding-right: awsui.$space-table-horizontal;
+      padding-inline-start: awsui.$space-table-horizontal;
+      padding-inline-end: awsui.$space-table-horizontal;
     }
   }
   &.variant-embedded,
   &.variant-borderless {
-    padding-bottom: awsui.$space-table-embedded-content-bottom;
+    padding-block-end: awsui.$space-table-embedded-content-bottom;
   }
   &.has-header {
-    padding-top: 0px;
+    padding-block-start: 0px;
   }
   &.has-footer {
-    padding-bottom: 0px;
+    padding-block-end: 0px;
   }
   &:not(.has-header) {
     border-top-right-radius: awsui.$border-radius-container;
@@ -169,8 +169,8 @@ the default white background of the container component.
   &.variant-stacked,
   &.variant-container {
     & > .table {
-      padding-left: awsui.$space-table-horizontal;
-      padding-right: awsui.$space-table-horizontal;
+      padding-inline-start: awsui.$space-table-horizontal;
+      padding-inline-end: awsui.$space-table-horizontal;
     }
   }
   &::-webkit-scrollbar {
@@ -182,30 +182,30 @@ the default white background of the container component.
 }
 
 .header-controls {
-  padding-top: awsui.$space-container-header-vertical;
-  padding-bottom: awsui.$space-container-header-vertical;
+  padding-block-start: awsui.$space-container-header-vertical;
+  padding-block-end: awsui.$space-container-header-vertical;
 
   &.variant-full-page {
-    padding-top: 0;
+    padding-block-start: 0;
   }
   &.variant-stacked,
   &.variant-container {
-    padding-left: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
-    padding-right: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
+    padding-inline-start: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
+    padding-inline-end: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
   }
   &.variant-embedded,
   &.variant-borderless {
-    padding-left: awsui.$space-table-header-horizontal;
-    padding-right: awsui.$space-table-header-horizontal;
-    padding-top: awsui.$space-table-embedded-header-top;
+    padding-inline-start: awsui.$space-table-header-horizontal;
+    padding-inline-end: awsui.$space-table-header-horizontal;
+    padding-block-start: awsui.$space-table-embedded-header-top;
   }
 }
 
 .footer-wrapper {
   &.variant-stacked,
   &.variant-container {
-    padding-left: awsui.$space-table-horizontal;
-    padding-right: awsui.$space-table-horizontal;
+    padding-inline-start: awsui.$space-table-horizontal;
+    padding-inline-end: awsui.$space-table-horizontal;
   }
 }
 

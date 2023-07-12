@@ -29,7 +29,7 @@
     calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
 
   &.pad-bottom {
-    padding-bottom: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
+    padding-block-end: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
     border-bottom-color: transparent;
   }
 
@@ -48,7 +48,7 @@
     border-radius: awsui.$border-radius-item;
     padding: styles.$option-padding-vertical styles.$control-padding-horizontal;
     &.pad-bottom {
-      padding-bottom: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+      padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
     }
   }
 
@@ -103,10 +103,10 @@
   }
 
   &.child {
-    padding-left: calc(#{awsui.$space-xxl} + #{awsui.$border-item-width});
+    padding-inline-start: calc(#{awsui.$space-xxl} + #{awsui.$border-item-width});
     &.highlighted,
     &.selected {
-      padding-left: awsui.$space-xxl;
+      padding-inline-start: awsui.$space-xxl;
     }
   }
 
@@ -139,9 +139,9 @@
   inline-size: 100%;
   top: 0;
   left: 0;
-  padding-top: awsui.$border-divider-list-width;
+  padding-block-start: awsui.$border-divider-list-width;
   &-first {
-    padding-bottom: awsui.$border-divider-list-width;
+    padding-block-end: awsui.$border-divider-list-width;
   }
 }
 

@@ -9,7 +9,7 @@
 
 .container {
   grid-area: main;
-  padding-bottom: awsui.$space-layout-content-bottom;
+  padding-block-end: awsui.$space-layout-content-bottom;
 
   /*
   If the split panel is in the bottom position additional padding will need to be
@@ -18,7 +18,7 @@
   sticky position of the split panel.
   */
   &.has-split-panel.split-panel-position-bottom {
-    padding-bottom: calc(var(#{custom-props.$splitPanelHeight}) + #{awsui.$space-layout-content-bottom});
+    padding-block-end: calc(var(#{custom-props.$splitPanelHeight}) + #{awsui.$space-layout-content-bottom});
   }
 
   /*

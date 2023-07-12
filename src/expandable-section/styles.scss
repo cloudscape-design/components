@@ -80,40 +80,40 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-default {
-    padding-top: awsui.$space-scaled-xxs;
-    padding-bottom: awsui.$space-scaled-xxs;
-    padding-right: awsui.$space-xxs;
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-end: awsui.$space-scaled-xxs;
+    padding-inline-end: awsui.$space-xxs;
     &.header-deprecated {
-      padding-left: awsui.$space-xxs;
+      padding-inline-start: awsui.$space-xxs;
     }
     &:not(.header-deprecated) {
-      padding-left: calc(#{awsui.$space-xxs} + #{$icon-total-space-normal});
+      padding-inline-start: calc(#{awsui.$space-xxs} + #{$icon-total-space-normal});
     }
   }
 
   &-footer {
     // We remove left and right padding here to better align the carat icon
-    padding-top: awsui.$space-scaled-xxs;
-    padding-bottom: awsui.$space-scaled-xxs;
-    padding-right: 0;
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-end: awsui.$space-scaled-xxs;
+    padding-inline-end: 0;
     &.header-deprecated {
-      padding-left: 0;
+      padding-inline-start: 0;
     }
     &:not(.header-deprecated) {
-      padding-left: $icon-total-space-normal;
+      padding-inline-start: $icon-total-space-normal;
     }
   }
 
   &-container {
-    padding-top: container.$header-padding-vertical;
-    padding-bottom: container.$header-padding-vertical;
-    padding-right: container.$header-padding-horizontal;
+    padding-block-start: container.$header-padding-vertical;
+    padding-block-end: container.$header-padding-vertical;
+    padding-inline-end: container.$header-padding-horizontal;
 
     &.header-deprecated {
-      padding-left: container.$header-padding-horizontal;
+      padding-inline-start: container.$header-padding-horizontal;
     }
     &:not(.header-deprecated) {
-      padding-left: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
+      padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
     }
 
     @include focus-visible.when-visible {

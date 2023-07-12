@@ -59,7 +59,7 @@
 }
 
 .label-tag {
-  padding-left: awsui.$space-s;
+  padding-inline-start: awsui.$space-s;
   flex: auto;
   text-align: right;
 
@@ -89,18 +89,18 @@
 }
 
 .tag:not(:last-child) {
-  padding-right: awsui.$space-m;
+  padding-inline-end: awsui.$space-m;
 }
 
 .icon {
-  padding-right: awsui.$space-xs;
+  padding-inline-end: awsui.$space-xs;
   align-content: center;
   display: flex;
   flex-shrink: 0;
 }
 
 .icon-size-big {
-  padding-top: awsui.$space-xxxs;
+  padding-block-start: awsui.$space-xxxs;
 }
 
 .filtering-match-highlight {

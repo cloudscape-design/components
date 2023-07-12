@@ -76,16 +76,16 @@
 }
 
 .breadcrumbs-desktop {
-  padding-top: awsui.$space-scaled-m;
-  padding-bottom: awsui.$space-scaled-s;
+  padding-block-start: awsui.$space-scaled-m;
+  padding-block-end: awsui.$space-scaled-s;
 }
 
 .content-header-wrapper {
-  padding-bottom: awsui.$space-content-header-padding-bottom;
+  padding-block-end: awsui.$space-content-header-padding-bottom;
 }
 
 .content-wrapper {
-  padding-bottom: awsui.$space-layout-content-bottom;
+  padding-block-end: awsui.$space-layout-content-bottom;
 }
 
 .content-overlapped {
@@ -95,5 +95,5 @@
 .content-extra-top-padding {
   // extra top padding when there are no breadcrumbs above,
   // applied to content or content header, whatever comes first
-  padding-top: awsui.$space-scaled-m;
+  padding-block-start: awsui.$space-scaled-m;
 }

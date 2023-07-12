@@ -61,7 +61,7 @@ $border-radius: awsui.$border-radius-item;
 .content-display-option-label {
   flex-grow: 1;
   @include styles.text-wrapping;
-  padding-right: awsui.$space-l;
+  padding-inline-end: awsui.$space-l;
 }
 
 .drag-overlay {

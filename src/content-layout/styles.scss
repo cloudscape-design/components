@@ -20,7 +20,7 @@ nodes will directly touch with no gap between them.
   }
 
   > .header {
-    padding-bottom: awsui.$space-content-header-padding-bottom;
+    padding-block-end: awsui.$space-content-header-padding-bottom;
   }
 }
 
@@ -44,7 +44,7 @@ nodes will directly touch with no gap between them.
   > .header {
     grid-column: 1;
     grid-row: 1;
-    padding-bottom: awsui.$space-content-header-padding-bottom;
+    padding-block-end: awsui.$space-content-header-padding-bottom;
   }
 
   > .content {
@@ -60,7 +60,7 @@ nodes will directly touch with no gap between them.
       1fr;
 
     > .content {
-      padding-top: var(#{custom-props.$containerFirstGap}, 0px);
+      padding-block-start: var(#{custom-props.$containerFirstGap}, 0px);
     }
   }
 

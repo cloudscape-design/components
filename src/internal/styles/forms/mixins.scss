@@ -111,7 +111,7 @@
 @mixin form-invalid-control {
   color: awsui.$color-text-status-error;
   border-color: awsui.$color-text-status-error;
-  padding-left: constants.$invalid-control-left-padding;
+  padding-inline-start: constants.$invalid-control-left-padding;
   border-left-width: constants.$invalid-control-left-border;
   &:focus {
     box-shadow: foundation.$box-shadow-focused-light-invalid;

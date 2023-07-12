@@ -24,7 +24,7 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 
 .visible-content-group-label {
   color: awsui.$color-text-group-label;
-  padding-bottom: awsui.$space-xs;
+  padding-block-end: awsui.$space-xs;
   border-bottom: $border;
 }
 
@@ -42,6 +42,6 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 .visible-content-option-label {
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: awsui.$space-l;
+  padding-inline-end: awsui.$space-l;
   flex-grow: 1;
 }

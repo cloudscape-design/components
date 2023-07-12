@@ -54,7 +54,7 @@
     flex: 1;
     display: flex;
     flex-wrap: wrap;
-    padding-left: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
     border-right: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   }
 
@@ -98,7 +98,7 @@
   z-index: 1;
 
   &--refresh {
-    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$border-active-width} - 2px);
+    padding-block-end: calc(#{awsui.$space-scaled-xs} + #{awsui.$border-active-width} - 2px);
   }
 
   &::after {

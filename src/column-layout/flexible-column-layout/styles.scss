@@ -15,12 +15,12 @@
   &.grid-variant-text-grid {
     > .item {
       border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-      padding-left: awsui.$space-grid-gutter;
-      padding-right: awsui.$space-grid-gutter;
+      padding-inline-start: awsui.$space-grid-gutter;
+      padding-inline-end: awsui.$space-grid-gutter;
 
       &.first-column {
         border-left: 0;
-        padding-left: 0;
+        padding-inline-start: 0;
       }
     }
   }
