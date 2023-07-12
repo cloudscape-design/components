@@ -48,7 +48,7 @@ export interface WizardProps extends BaseComponentProps {
    * - `cancelButton` (string) - The text of the button that enables the user to exit the flow.
    * - `previousButton` (string) - The text of the button that enables the user to return to the previous step.
    * - `nextButton` (string) - The text of the button that enables the user to move to the next step.
-   * - `submitButton` (deprecated) (string) - The text of the button that enables the user to submit the form.
+   * - `submitButton` (string) - The text of the button that enables the user to submit the form. **Deprecated**, replaced by the `submitButtonText` component property.
    * - `optional` (string) - The text displayed next to the step title and form header title when a step is declared optional.
    * - `nextButtonLoadingAnnouncement` (string) - The text that a screen reader announces when the *next* button is in a loading state.
    * - `submitButtonLoadingAnnouncement` (string) - The text that a screen reader announces when the *submit* button is in a loading state.

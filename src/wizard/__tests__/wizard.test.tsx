@@ -31,7 +31,7 @@ type DefaultWizardProps = Optional<WizardProps, 'i18nStrings' | 'steps'>;
 const renderDefaultWizard = (
   wizardProps?: DefaultWizardProps
 ): [WizardWrapper, (props: DefaultWizardProps) => void] => {
-  const defaultProps = { i18nStrings: DEFAULT_I18N_SETS[0], submitButtonText: 'Create record', steps: DEFAULT_STEPS };
+  const defaultProps = { i18nStrings: DEFAULT_I18N_SETS[0], steps: DEFAULT_STEPS };
   const [wrapper, rerender] = renderWizard({ ...defaultProps, ...wizardProps });
   return [wrapper, (newProps: DefaultWizardProps) => rerender({ ...defaultProps, ...newProps })];
 };
@@ -45,12 +45,18 @@ afterEach(() => {
 });
 
 describe('i18nStrings', () => {
+  test('uses submitButtonText over i18nStrings.submitButton', () => {
+    const [wrapper] = renderDefaultWizard({ submitButtonText: 'Create DB instance' });
+    for (let i = 0; i < DEFAULT_STEPS.length - 1; i++) {
+      wrapper.findPrimaryButton().click();
+    }
+    expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Create DB instance');
+  });
+
   DEFAULT_I18N_SETS.forEach((i18nStrings, index) => {
     test(`match provided i18nStrings, i18nSets[${index}], shown on the wizard component`, () => {
-      const submitButtonText = 'Submit';
       const [wrapper] = renderWizard({
         i18nStrings,
-        submitButtonText,
         steps: DEFAULT_STEPS,
       });
 
@@ -84,7 +90,7 @@ describe('i18nStrings', () => {
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
-      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(submitButtonText);
+      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.submitButton!);
     });
   });
 });
