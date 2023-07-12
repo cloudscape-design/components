@@ -4,14 +4,60 @@ import React from 'react';
 import Toc from '~components/toc';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
+import styles from './styles.scss';
 
-export default function SimpleContainers() {
+const TextContent = () => {
+  return (
+    <SpaceBetween size="l">
+      <h2 id="section-1">Section 1</h2>
+      <p>Section 1 text...</p>
+
+      <h3 id="section-1-1">Section 1.1</h3>
+      <p>Section 1.1 text...</p>
+
+      <h4 id="section-1-1-1">Section 1.1.1</h4>
+      <p>Section 1.1.1 text...</p>
+
+      <h4 id="section-1-1-2">Section 1.1.2</h4>
+      <p>Section 1.1.2 text...</p>
+
+      <h3 id="section-1-2">Section 1.2</h3>
+      <p>Section 1.2 text...</p>
+
+      <h4 id="section-1-2-1">Section 1.2.1</h4>
+      <p>Section 1.2.1 text...</p>
+
+      <h5 id="section-1-2-1-1">Section 1.2.1.1</h5>
+      <p>Section 1.2.1.1 text...</p>
+    </SpaceBetween>
+  );
+};
+
+export default function SimpleToc() {
   return (
     <article>
       <h1>Simple table of contents</h1>
       <ScreenshotArea>
         <SpaceBetween size="l">
-          <Toc />
+          <div className={styles['content-grid']}>
+            <TextContent />
+            <div>
+              <div className={styles.toc}>
+                <Toc
+                  anchors={[
+                    { id: 'section-1', text: 'Section 1', level: 1 },
+                    { id: 'section-1-1', text: 'Section 1.1', level: 2 },
+                    { id: 'section-1-1-1', text: 'Section 1.1.1', level: 3 },
+                    { id: 'section-1-1-2', text: 'Section 1.1.2', level: 3 },
+                    { id: 'section-1-2', text: 'Section 1.2', level: 2 },
+                    { id: 'section-1-2-1', text: 'Section 1.2.1', level: 3 },
+                    { id: 'section-1-2-1-1', text: 'Section 1.2.1.1', level: 4 },
+                  ]}
+                  title="On this page"
+                />
+              </div>
+            </div>
+          </div>
         </SpaceBetween>
       </ScreenshotArea>
     </article>

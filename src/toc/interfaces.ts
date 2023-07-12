@@ -3,7 +3,23 @@
 
 export interface TocProps {
   /**
-   * Specify the title.
+   * Specify the TOC title, displayed above the items.
    */
   title?: string;
+
+  /**
+   * List of anchors
+   *
+   * */
+  anchors: TocProps.Anchor[];
+}
+
+export namespace TocProps {
+  /**
+   * Anchor with the id.
+   */ export interface Anchor {
+    text: string;
+    id: string;
+    level: number;
+  }
 }
