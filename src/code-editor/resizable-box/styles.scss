@@ -12,8 +12,8 @@
 
 .resizable-box-handle {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  inset-inline-end: 0;
+  inset-block-end: 0;
   z-index: 10; // above editor, when editor is overflowing
 
   inline-size: awsui.$space-l;

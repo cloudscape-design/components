@@ -19,7 +19,7 @@ section.split-panel-bottom {
   This could be off the viewport if the content area has enough content to be scrollable.
   */
   align-self: end;
-  bottom: var(#{custom-props.$footerHeight});
+  inset-block-end: var(#{custom-props.$footerHeight});
   display: none;
   grid-column: 1 / 6;
   grid-row: 10;
@@ -45,7 +45,7 @@ section.split-panel-bottom {
 
   // If the Layout is the scrollable element then the footer height is not relevant
   &.disable-body-scroll {
-    bottom: 0;
+    inset-block-end: 0;
   }
 
   &.is-navigation-open.position-bottom {

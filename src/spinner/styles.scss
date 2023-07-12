@@ -72,18 +72,18 @@
   &:after {
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation: 1.5s ease-in-out infinite;
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
     block-size: 100%;
     inline-size: 200%;
   }
   &.circle-left:after {
-    left: 0;
+    inset-inline-start: 0;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-left;
   }
   &.circle-right:after {
-    left: -100%;
+    inset-inline-start: -100%;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
   }

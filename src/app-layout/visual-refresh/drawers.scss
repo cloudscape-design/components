@@ -15,7 +15,7 @@
   block-size: var(#{custom-props.$contentHeight});
   pointer-events: none;
   position: sticky;
-  top: var(#{custom-props.$offsetTop});
+  inset-block-start: var(#{custom-props.$offsetTop});
   z-index: 830;
 
   &.has-open-drawer {
@@ -38,7 +38,7 @@
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     position: fixed;
-    right: 0;
+    inset-inline-end: 0;
     z-index: 1001;
 
     /*
@@ -49,7 +49,7 @@
     relative to the body.
     */
     &.disable-body-scroll {
-      top: var(#{custom-props.$headerHeight});
+      inset-block-start: var(#{custom-props.$headerHeight});
     }
   }
 }

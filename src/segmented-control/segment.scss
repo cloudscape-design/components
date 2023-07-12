@@ -105,13 +105,13 @@ $selected-color: awsui.$color-text-segment-active;
 
 .with-text {
   position: relative;
-  left: calc(-1 * #{awsui.$space-xxs});
+  inset-inline-start: calc(-1 * #{awsui.$space-xxs});
   margin-inline-end: awsui.$space-xxs;
 }
 
 .with-no-text {
   margin-inline-end: auto;
   margin-inline-start: auto;
-  right: 0;
-  left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
 }

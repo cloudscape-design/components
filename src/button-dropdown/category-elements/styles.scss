@@ -104,7 +104,7 @@ $option-padding-horizontal: awsui.$space-l;
 
 .expand-icon {
   position: relative;
-  left: awsui.$space-s;
+  inset-inline-start: awsui.$space-s;
   inline-size: awsui.$space-m;
   display: inline-block;
 

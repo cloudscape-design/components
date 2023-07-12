@@ -20,7 +20,7 @@ section.mobile-toolbar {
   grid-template-columns: auto minmax(0, 1fr) auto;
   padding: 0 awsui.$space-m;
   position: sticky;
-  top: var(#{custom-props.$offsetTop});
+  inset-block-start: var(#{custom-props.$offsetTop});
   z-index: 1000;
 
   > .mobile-toolbar-nav {

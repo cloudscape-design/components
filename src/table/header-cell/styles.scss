@@ -61,9 +61,9 @@
 
     content: '';
     position: absolute;
-    right: 0;
-    bottom: 0;
-    top: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inset-block-start: 0;
     min-block-size: awsui.$font-heading-xs-line-height;
     max-block-size: calc(100% - #{$gap});
     margin: auto;
@@ -78,9 +78,9 @@
 
 .sorting-icon {
   position: absolute;
-  top: 50%;
+  inset-block-start: 50%;
   transform: translateY(-50%);
-  right: awsui.$space-xxs;
+  inset-inline-end: awsui.$space-xxs;
   color: awsui.$color-text-column-sorting-icon;
 }
 

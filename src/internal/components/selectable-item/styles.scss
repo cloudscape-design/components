@@ -122,8 +122,8 @@
   }
   &.virtual {
     position: absolute;
-    top: awsui.$border-dropdown-virtual-offset-width;
-    left: 0;
+    inset-block-start: awsui.$border-dropdown-virtual-offset-width;
+    inset-inline-start: 0;
     inline-size: 100%;
     box-sizing: border-box;
     &:first-of-type:not(.selected, .highlighted) {
@@ -137,8 +137,8 @@
   pointer-events: none;
   block-size: 100%;
   inline-size: 100%;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   padding-block-start: awsui.$border-divider-list-width;
   &-first {
     padding-block-end: awsui.$border-divider-list-width;

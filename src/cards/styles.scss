@@ -47,8 +47,8 @@
   position: absolute;
   box-sizing: border-box;
   inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
-  top: 0;
-  right: 0;
+  inset-block-start: 0;
+  inset-inline-end: 0;
   padding: awsui.$space-scaled-l awsui.$space-card-horizontal;
 }
 

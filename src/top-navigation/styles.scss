@@ -150,9 +150,9 @@
     content: '';
 
     inline-size: 1px;
-    right: 0;
-    top: awsui.$space-s;
-    bottom: awsui.$space-s;
+    inset-inline-end: 0;
+    inset-block-start: awsui.$space-s;
+    inset-block-end: awsui.$space-s;
 
     background: awsui.$color-border-divider-default;
   }
@@ -178,7 +178,7 @@
 
 .utility-type-button-primary-button {
   // Hide dividers around primary buttons.
-  left: -1px;
+  inset-inline-start: -1px;
   border-left: 1px solid awsui.$color-background-container-content;
   &::after {
     display: none;

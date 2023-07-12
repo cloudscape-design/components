@@ -128,14 +128,14 @@
   > .icon-left {
     position: relative;
     // margin-left was breaking layout on firefox
-    left: calc(-1 * #{awsui.$space-xxs});
+    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
     margin-inline-end: awsui.$space-xxs;
   }
 
   > .icon-right {
     position: relative;
     // margin-right was breaking layout on firefox
-    right: calc(-1 * #{awsui.$space-xxs});
+    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
     margin-inline-start: awsui.$space-xxs;
   }
 
@@ -143,7 +143,7 @@
     margin-inline-end: auto;
     margin-inline-start: auto;
     // IE does not understand `initial`
-    right: 0;
-    left: 0;
+    inset-inline-end: 0;
+    inset-inline-start: 0;
   }
 }

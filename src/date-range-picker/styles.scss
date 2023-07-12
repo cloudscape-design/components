@@ -47,10 +47,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 
   &-header-months-wrapper {
     position: absolute;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
+    inset-inline-end: 0;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    inset-block-end: 0;
 
     margin: 0;
 

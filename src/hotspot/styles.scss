@@ -21,16 +21,16 @@
 .markerWrapper {
   position: absolute;
 
-  top: 0;
+  inset-block-start: 0;
 }
 
 .placement-right {
-  left: 100%;
+  inset-inline-start: 100%;
   margin-inline-start: awsui.$space-xxs;
 }
 
 .placement-left {
-  right: 100%;
+  inset-inline-end: 100%;
   margin-inline-end: awsui.$space-xxs;
 }
 

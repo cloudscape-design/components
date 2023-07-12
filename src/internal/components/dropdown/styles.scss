@@ -62,10 +62,10 @@
     }
   }
   &-drop-left {
-    right: 0;
+    inset-inline-end: 0;
   }
   &-drop-right {
-    left: 0;
+    inset-inline-start: 0;
   }
   &.occupy-entire-width {
     min-inline-size: 100%;

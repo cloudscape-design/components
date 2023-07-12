@@ -67,10 +67,10 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   :not(.drawer-closed) > & {
     overflow-y: auto;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
   }
 }
 
@@ -135,8 +135,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .slider-wrapper-bottom {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   inline-size: 100%;
   block-size: $slider-width + 2px;
   display: flex;
@@ -146,8 +146,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .slider-wrapper-side {
   position: absolute;
-  left: 0;
-  top: 0;
+  inset-inline-start: 0;
+  inset-block-start: 0;
   block-size: 100%;
   inline-size: $slider-width + 2px;
   display: flex;
@@ -182,7 +182,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .pane-header-wrapper-bottom {
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   position: sticky;
-  top: 0;
+  inset-block-start: 0;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -237,9 +237,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   box-sizing: border-box;
   overflow-y: auto;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   block-size: 100%;
   > .pane-header-wrapper-side {
     padding: 0 awsui.$space-m 0 awsui.$space-panel-side-left;

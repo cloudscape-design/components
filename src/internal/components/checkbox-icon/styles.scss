@@ -10,8 +10,8 @@
   position: absolute;
   inline-size: 100%;
   block-size: 100%;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
 
   > .styled-box {
     fill: awsui.$color-background-control-default;

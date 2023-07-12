@@ -35,8 +35,8 @@
 
   > .arrow {
     position: absolute;
-    right: styles.$control-icon-horizontal-offset;
-    top: styles.$control-icon-vertical-offset;
+    inset-inline-end: styles.$control-icon-horizontal-offset;
+    inset-block-start: styles.$control-icon-vertical-offset;
     color: awsui.$color-text-button-inline-icon-default;
   }
 

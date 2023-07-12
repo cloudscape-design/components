@@ -36,6 +36,6 @@
   block-size: 8px;
   border-radius: 8px;
   background-color: awsui.$color-text-status-info;
-  top: 2px;
-  right: -2px;
+  inset-block-start: 2px;
+  inset-inline-end: -2px;
 }

@@ -65,10 +65,10 @@
     content: '';
     position: absolute;
     z-index: 1;
-    top: calc(-1 * #{awsui.$border-item-width});
-    left: -1px;
-    bottom: -1px;
-    right: calc(-1 * #{awsui.$border-item-width});
+    inset-block-start: calc(-1 * #{awsui.$border-item-width});
+    inset-inline-start: -1px;
+    inset-block-end: -1px;
+    inset-inline-end: calc(-1 * #{awsui.$border-item-width});
     background-color: transparent;
   }
 

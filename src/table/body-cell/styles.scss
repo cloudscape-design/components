@@ -182,9 +182,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   }
   &-success,
   &-editor {
-    top: 0;
-    right: 0;
-    bottom: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
     position: absolute;
 
     display: flex;
@@ -285,12 +285,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
         border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
-        left: calc(-1 * #{awsui.$border-divider-list-width});
-        right: calc(-1 * #{awsui.$border-divider-list-width});
+        inset-inline-start: calc(-1 * #{awsui.$border-divider-list-width});
+        inset-inline-end: calc(-1 * #{awsui.$border-divider-list-width});
         @include focused-editor-styles;
         &:first-child {
-          left: 0;
-          right: 0;
+          inset-inline-start: 0;
+          inset-inline-end: 0;
         }
         & > .body-cell-editor {
           padding-inline-end: calc(

@@ -10,7 +10,7 @@
 .close-button {
   position: absolute;
   outline: none;
-  right: awsui.$space-m;
-  top: awsui.$size-vertical-panel-icon-offset;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: awsui.$size-vertical-panel-icon-offset;
   z-index: 1;
 }

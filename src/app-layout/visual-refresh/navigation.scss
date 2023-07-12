@@ -14,7 +14,7 @@
   grid-row: 1 / span 10;
   block-size: var(#{custom-props.$contentHeight});
   position: sticky;
-  top: var(#{custom-props.$offsetTop});
+  inset-block-start: var(#{custom-props.$offsetTop});
   z-index: 830;
 
   /*
@@ -34,7 +34,7 @@
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    left: 0;
+    inset-inline-start: 0;
     position: fixed;
     z-index: 1001;
 
@@ -46,7 +46,7 @@
     relative to the body.
     */
     &.disable-body-scroll {
-      top: var(#{custom-props.$headerHeight});
+      inset-block-start: var(#{custom-props.$headerHeight});
     }
   }
 }
@@ -88,7 +88,7 @@ nav.show-navigation {
 nav.navigation {
   background-color: awsui.$color-background-container-content;
   box-shadow: awsui.$shadow-panel;
-  bottom: 0;
+  inset-block-end: 0;
   block-size: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -143,6 +143,6 @@ nav.navigation {
 
 .hide-navigation {
   position: absolute;
-  right: awsui.$space-m;
-  top: awsui.$size-vertical-panel-icon-offset;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: awsui.$size-vertical-panel-icon-offset;
 }

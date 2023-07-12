@@ -122,14 +122,14 @@
 .input-icon-left {
   position: absolute;
   pointer-events: none;
-  left: styles.$control-icon-horizontal-offset;
-  top: styles.$control-icon-vertical-offset;
+  inset-inline-start: styles.$control-icon-horizontal-offset;
+  inset-block-start: styles.$control-icon-vertical-offset;
 }
 
 .input-icon-right {
   position: absolute;
-  top: styles.$control-icon-vertical-offset;
-  right: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
+  inset-block-start: styles.$control-icon-vertical-offset;
+  inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
 }
 
 .input-button-right {

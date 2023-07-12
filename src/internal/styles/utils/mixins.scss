@@ -8,8 +8,8 @@
 
 @mixin awsui-util-hide {
   position: absolute !important;
-  top: -9999px !important;
-  left: -9999px !important;
+  inset-block-start: -9999px !important;
+  inset-inline-start: -9999px !important;
 }
 
 @mixin text-wrapping {
@@ -52,8 +52,8 @@
 @mixin base-pseudo-element {
   content: '';
   position: absolute;
-  left: 0px;
-  top: 0px;
+  inset-inline-start: 0px;
+  inset-block-start: 0px;
   inline-size: 100%;
   block-size: 100%;
   pointer-events: none;

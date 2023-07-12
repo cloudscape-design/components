@@ -44,20 +44,20 @@ $grid-gutter-width: awsui.$space-grid-gutter;
     }
 
     &.push-#{$i} {
-      left: math.percentage(math.div($i, $grid-columns));
+      inset-inline-start: math.percentage(math.div($i, $grid-columns));
     }
 
     &.pull-#{$i} {
-      right: math.percentage(math.div($i, $grid-columns));
+      inset-inline-end: math.percentage(math.div($i, $grid-columns));
     }
   }
 
   &.push-0 {
-    left: auto;
+    inset-inline-start: auto;
   }
 
   &.pull-0 {
-    right: auto;
+    inset-inline-end: auto;
   }
 
   // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
