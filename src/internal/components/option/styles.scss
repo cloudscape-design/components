@@ -61,7 +61,7 @@
 .label-tag {
   padding-inline-start: awsui.$space-s;
   flex: auto;
-  text-align: right;
+  text-align: end;
 
   &:empty {
     display: none;

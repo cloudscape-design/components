@@ -53,7 +53,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   border: none;
   inline-size: 100%;
   line-height: awsui.$font-body-m-line-height;
-  text-align: left;
+  text-align: start;
 
   &-default,
   &-footer {

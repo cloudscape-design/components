@@ -109,7 +109,7 @@
 .drawers-trigger {
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     inline-size: constants.$sidebar-size-closed;
-    text-align: right;
+    text-align: end;
   }
 }
 

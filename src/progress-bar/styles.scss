@@ -61,7 +61,7 @@
   inline-size: 3.3 * styles.$base-size;
   flex-shrink: 0;
   white-space: nowrap;
-  text-align: right;
+  text-align: end;
   @include styles.font(body-s);
 }
 

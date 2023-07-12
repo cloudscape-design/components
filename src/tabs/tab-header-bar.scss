@@ -73,7 +73,7 @@ $label-horizontal-spacing: awsui.$space-l;
   display: flex;
   align-items: center;
   padding: awsui.$space-scaled-2x-xxs $label-horizontal-spacing;
-  text-align: left;
+  text-align: start;
   position: relative;
 
   @include styles.text-wrapping;
