@@ -10,4 +10,5 @@
   all: initial;
   box-sizing: border-box;
   @include typography.default-text-style;
+  direction: inherit;
 }
