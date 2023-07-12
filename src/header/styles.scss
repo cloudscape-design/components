@@ -57,7 +57,8 @@
     padding-block: awsui.$space-scaled-2x-xxs;
     padding-inline: 0;
     &-refresh {
-      padding: awsui.$space-xxs 0;
+      padding-block: awsui.$space-xxs;
+      padding-inline: 0;
     }
   }
   :not(.root-no-actions) > &-variant-h1-refresh {
@@ -86,14 +87,17 @@
   display: flex;
   align-items: flex-start;
   &-variant-h1 {
-    padding: awsui.$space-scaled-xs 0;
+    padding-block: awsui.$space-scaled-xs;
+    padding-inline: 0;
     &-refresh {
-      padding: awsui.$space-xs 0;
+      padding-block: awsui.$space-xs;
+      padding-inline: 0;
     }
   }
   &-variant-h2,
   &-variant-h3 {
-    padding: awsui.$space-scaled-xxs 0;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: 0;
     .root-has-description > & {
       padding-block-end: 0;
     }
@@ -115,7 +119,8 @@
   }
   &-variant-h2,
   &-variant-h3 {
-    padding: awsui.$space-scaled-xxs 0;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: 0;
   }
   &-variant-h2 {
     font-size: awsui.$font-heading-l-size;

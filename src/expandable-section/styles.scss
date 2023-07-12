@@ -118,7 +118,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
     @include focus-visible.when-visible {
       // HACK: Remediate focus border
-      padding: container.$header-focus-visible-padding;
+      padding-block: container.$header-focus-visible-padding;
+      padding-inline: container.$header-focus-visible-padding;
     }
   }
 
@@ -202,11 +203,13 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   display: none;
 
   &-default {
-    padding: awsui.$space-scaled-xs 0;
+    padding-block: awsui.$space-scaled-xs;
+    padding-inline: 0;
   }
 
   &-footer {
-    padding: awsui.$space-xs 0;
+    padding-block: awsui.$space-xs;
+    padding-inline: 0;
   }
 
   &-expanded {

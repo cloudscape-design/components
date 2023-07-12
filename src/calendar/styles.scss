@@ -61,7 +61,9 @@
   }
 
   &-day-header {
-    padding: awsui.$space-s 0 awsui.$space-xxs;
+    padding-block-start: awsui.$space-s;
+    padding-block-end: awsui.$space-xxs;
+    padding-inline: 0;
     color: calendar.$grid-day-name-color;
     @include styles.font-body-s;
   }

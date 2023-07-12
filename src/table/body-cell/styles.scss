@@ -21,7 +21,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
 .body-cell {
   box-sizing: border-box;
-  padding: $cell-vertical-padding $cell-horizontal-padding $cell-vertical-padding-w-border;
+  padding-block-start: $cell-vertical-padding;
+  padding-block-end: $cell-vertical-padding-w-border;
+  padding-inline: $cell-horizontal-padding;
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;

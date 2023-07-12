@@ -118,7 +118,8 @@ div.column-layout {
     }
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters) > * {
-      padding: calc(#{$grid-gutter-width} / 2);
+      padding-block: calc(#{$grid-gutter-width} / 2);
+      padding-inline: calc(#{$grid-gutter-width} / 2);
     }
 
     /* stylelint-disable-next-line selector-max-universal */

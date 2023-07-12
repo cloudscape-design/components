@@ -76,7 +76,8 @@
   }
 }
 .property-editor {
-  padding: awsui.$space-m;
+  padding-block: awsui.$space-m;
+  padding-inline: awsui.$space-m;
   overflow-y: auto;
 }
 

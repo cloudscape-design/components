@@ -38,7 +38,8 @@
   @include typography.font-body-s;
   font-family: typography.$font-family-monospace;
   background-color: awsui.$color-background-layout-main;
-  padding: 0 awsui.$space-xxs;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   word-wrap: break-word;
   white-space: pre-wrap;
 }

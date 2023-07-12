@@ -256,10 +256,14 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   inset-inline-end: 0;
   block-size: 100%;
   > .pane-header-wrapper-side {
-    padding: 0 awsui.$space-m 0 awsui.$space-panel-side-left;
+    padding-block: 0;
+    padding-inline-start: awsui.$space-m;
+    padding-inline-end: awsui.$space-panel-side-left;
   }
   > .pane-content-wrapper-side {
-    padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
+    padding-block: 0;
+    padding-inline-start: awsui.$space-panel-side-right;
+    padding-inline-end: awsui.$space-panel-side-left;
     margin-block-start: awsui.$space-panel-split-top;
   }
 }
@@ -276,7 +280,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   margin-inline: 0;
   &-text {
     @include styles.font-panel-header;
-    padding: awsui.$space-xxs 0 awsui.$space-scaled-xxs 0;
+    padding-block-start: awsui.$space-xxs;
+    padding-block-end: awsui.$space-scaled-xxs;
+    padding-inline: 0;
     margin-block: 0;
     margin-inline: 0;
   }

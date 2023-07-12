@@ -29,7 +29,9 @@ $border-radius: awsui.$border-radius-item;
   @include styles.styles-reset;
   display: flex;
   align-items: flex-start;
-  padding: awsui.$space-xs awsui.$space-scaled-xs awsui.$space-xs 0;
+  padding-block: awsui.$space-xs;
+  padding-inline-start: awsui.$space-scaled-xs;
+  padding-inline-end: 0;
   background-color: awsui.$color-background-container-content;
   border-radius: $border-radius;
 }

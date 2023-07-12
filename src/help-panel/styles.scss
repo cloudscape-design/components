@@ -10,7 +10,10 @@
 .help-panel {
   @include styles.styles-reset;
   word-wrap: break-word;
-  padding: awsui.$space-scaled-l awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
+  padding-block-start: awsui.$space-scaled-l;
+  padding-block-end: 0;
+  padding-inline-start: awsui.$space-panel-side-right;
+  padding-inline-end: awsui.$space-panel-side-left;
 
   hr {
     border: none;
@@ -48,7 +51,8 @@
 
   pre {
     @include styles.code-highlight;
-    padding: awsui.$space-xxs;
+    padding-block: awsui.$space-xxs;
+    padding-inline: awsui.$space-xxs;
   }
 
   dl {
@@ -156,7 +160,8 @@
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   margin-block: awsui.$space-scaled-xl;
   margin-inline: calc(-1 * #{awsui.$space-xs});
-  padding: 0 awsui.$space-s;
+  padding-block: 0;
+  padding-inline: awsui.$space-s;
   > :first-child {
     margin-block-start: awsui.$space-scaled-xl;
   }

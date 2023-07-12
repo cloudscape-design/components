@@ -28,8 +28,8 @@ $grid-gutter-width: awsui.$space-grid-gutter;
 .grid-column {
   box-sizing: border-box;
   position: relative;
-  padding: calc(#{$grid-gutter-width} / 2);
-
+  padding-block: calc(#{$grid-gutter-width} / 2);
+  padding-inline: calc(#{$grid-gutter-width} / 2);
   display: flex;
 
   .grid.no-gutters > & {

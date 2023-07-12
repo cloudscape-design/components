@@ -52,7 +52,8 @@
   inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
   inset-block-start: 0;
   inset-inline-end: 0;
-  padding: awsui.$space-scaled-l awsui.$space-card-horizontal;
+  padding-block: awsui.$space-scaled-l;
+  padding-inline: awsui.$space-card-horizontal;
 }
 
 .loading,
@@ -84,12 +85,12 @@
     margin-block-start: 0;
     margin-block-end: awsui.$space-grid-gutter awsui.$space-grid-gutter;
     margin-inline: 0;
-    padding: awsui.$space-scaled-l awsui.$space-card-horizontal awsui.$space-scaled-l;
+    padding-block: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-card-horizontal;
     // HACK: IE shadow comes with full border that we need to take into account
     @media screen and (-ms-high-contrast: active) {
-      padding: calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width})
-        calc(#{awsui.$space-card-horizontal} - #{awsui.$border-item-width})
-        calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
+      padding-block: calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
+      padding-inline: calc(#{awsui.$space-card-horizontal} - #{awsui.$border-item-width});
     }
     @include styles.container-shadow;
     inline-size: 100%;
@@ -121,7 +122,9 @@
   display: inline-block;
   box-sizing: border-box;
   // only scale bottom padding to reduce padding between sections and after the last section.
-  padding: awsui.$space-xs 0 awsui.$space-scaled-xs 0;
+  padding-block-start: awsui.$space-xs;
+  padding-block-end: awsui.$space-scaled-xs;
+  padding-inline: 0;
   vertical-align: top;
   &-header {
     @include styles.font-label;
@@ -132,7 +135,9 @@
   }
 }
 .section:last-child {
-  padding: awsui.$space-xs 0 0 0;
+  padding-block-start: awsui.$space-xs;
+  padding-block-end: 0;
+  padding-inline: 0;
 }
 
 .footer-pagination {

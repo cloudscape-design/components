@@ -39,6 +39,8 @@
 
 .tabs-container-content-wrapper {
   &.with-paddings > .tabs-content {
-    padding: awsui.$space-tabs-content-top awsui.$space-container-horizontal awsui.$space-scaled-l;
+    padding-block-start: awsui.$space-tabs-content-top;
+    padding-block-end: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
   }
 }

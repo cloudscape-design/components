@@ -35,7 +35,8 @@
 }
 
 .token-content {
-  padding: styles.$control-padding-vertical styles.$control-padding-horizontal;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
 }
 
 .dismiss-button {
@@ -43,7 +44,8 @@
   margin-block: 0;
   margin-inline: 0;
   border: none;
-  padding: 0 awsui.$space-xxs;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   color: awsui.$color-text-interactive-default;
   background-color: transparent;
   border-inline-start: styles.$control-border-width solid constants.$token-border-color;

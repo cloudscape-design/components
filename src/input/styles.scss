@@ -39,7 +39,8 @@
 
 .input {
   @include styles.styles-reset;
-  padding: styles.$control-padding;
+  padding-block: styles.$control-padding;
+  padding-inline: styles.$control-padding;
   color: awsui.$color-text-body-default;
   inline-size: 100%;
   cursor: text;
