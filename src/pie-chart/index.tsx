@@ -155,7 +155,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const hasLabels = !(hideTitles && hideDescriptions);
 
   const isRefresh = useVisualRefresh();
-  const defaultDimensions = getDimensionsBySize({ size, visualRefresh: isRefresh });
+  const defaultDimensions = getDimensionsBySize({ size, hasLabels, visualRefresh: isRefresh });
   const radius = defaultDimensions.outerRadius;
   const height = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
 

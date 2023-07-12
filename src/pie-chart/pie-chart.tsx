@@ -87,6 +87,7 @@ export default <T extends PieChartProps.Datum>({
   const popoverTrackRef = useRef<SVGCircleElement>(null);
   const popoverRef = useRef<HTMLElement | null>(null);
 
+  const hasLabels = !(hideTitles && hideDescriptions);
   const isRefresh = useVisualRefresh();
 
   const [measuredHeight, setHeight] = useState(0);
@@ -97,8 +98,8 @@ export default <T extends PieChartProps.Datum>({
   const height = fitHeight ? measuredHeight : explicitHeight;
 
   const dimensions = useMemo(
-    () => getDimensionsBySize({ size: fitHeight ? height : size, visualRefresh: isRefresh }),
-    [fitHeight, height, size, isRefresh]
+    () => getDimensionsBySize({ size: fitHeight ? height : size, hasLabels, visualRefresh: isRefresh }),
+    [fitHeight, height, size, hasLabels, isRefresh]
   );
 
   // Inner content is only available for donut charts and the inner description is not displayed for small charts
@@ -292,8 +293,6 @@ export default <T extends PieChartProps.Datum>({
     }
     clearHighlightedSegment();
   };
-
-  const hasLabels = !(hideTitles && hideDescriptions);
 
   return (
     <div

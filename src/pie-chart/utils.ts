@@ -14,27 +14,29 @@ export interface Dimension {
 }
 
 const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
+const defaultPadding = 12; // = space-s
+const smallPadding = 8; // = space-xs
 
 export const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
     innerRadius: 33,
     outerRadius: 50,
-    innerLabelPadding: 8,
-    padding: 8, // = space-xs
+    innerLabelPadding: smallPadding,
+    padding: smallPadding,
     paddingLabels,
   },
   medium: {
     innerRadius: 66,
     outerRadius: 100,
-    innerLabelPadding: 12,
-    padding: 12, // = space-s
+    innerLabelPadding: defaultPadding,
+    padding: defaultPadding,
     paddingLabels,
   },
   large: {
     innerRadius: 93,
     outerRadius: 140,
-    innerLabelPadding: 12,
-    padding: 12, // = space-s
+    innerLabelPadding: defaultPadding,
+    padding: defaultPadding,
     paddingLabels,
   },
 };
@@ -63,9 +65,11 @@ export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>,
  */
 export function getDimensionsBySize({
   size,
+  hasLabels,
   visualRefresh,
 }: {
   size: NonNullable<PieChartProps['size']> | number;
+  hasLabels: boolean;
   visualRefresh?: boolean;
 }): Dimension & { size: NonNullable<PieChartProps['size']> } {
   if (typeof size === 'string') {
@@ -73,17 +77,20 @@ export function getDimensionsBySize({
     return { ...dimensions, size };
   }
   const sizeSpec = visualRefresh ? refreshDimensionsBySize : dimensionsBySize;
+  const getPixelSize = (d: Dimension) => d.outerRadius * 2 + d.padding * 2 + (hasLabels ? d.paddingLabels : 0) * 2;
 
   let matchedSize: NonNullable<PieChartProps['size']> = 'small';
-  if (size > sizeSpec.medium.outerRadius * 2 + sizeSpec.medium.padding * 2) {
+  if (size > getPixelSize(sizeSpec.medium)) {
     matchedSize = 'medium';
   }
-  if (size > sizeSpec.large.outerRadius * 2 + sizeSpec.large.padding * 2) {
+  if (size > getPixelSize(sizeSpec.large)) {
     matchedSize = 'large';
   }
 
+  const padding = sizeSpec[matchedSize].padding;
+  const paddingLabels = hasLabels ? sizeSpec[matchedSize].paddingLabels : 0;
   const radiiRatio = sizeSpec[matchedSize].outerRadius / sizeSpec[matchedSize].innerRadius;
-  const outerRadius = size / 2 - paddingLabels;
+  const outerRadius = (size - 2 * paddingLabels - 2 * padding) / 2;
   const innerRadius = outerRadius / radiiRatio;
 
   return { ...sizeSpec[matchedSize], outerRadius, innerRadius, size: matchedSize };
