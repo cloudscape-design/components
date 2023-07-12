@@ -30,27 +30,27 @@
 }
 
 .container-body-size-small {
-  max-width: 210px;
+  max-inline-size: 210px;
   &.fixed-width {
-    width: 210px;
+    inline-size: 210px;
   }
 }
 
 .container-body-size-medium {
-  max-width: 310px;
+  max-inline-size: 310px;
   &.fixed-width {
-    width: 310px;
+    inline-size: 310px;
   }
 }
 
 .container-body-size-large {
-  max-width: 480px;
+  max-inline-size: 480px;
   @media (max-width: 480px) {
     // On viewports smaller than 480px, we default to the body-size-medium width
-    max-width: 310px;
+    max-inline-size: 310px;
   }
   &.fixed-width {
-    width: 480px;
+    inline-size: 480px;
   }
 }
 

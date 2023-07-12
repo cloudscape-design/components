@@ -41,7 +41,7 @@
   @include styles.styles-reset;
   padding: styles.$control-padding;
   color: awsui.$color-text-body-default;
-  width: 100%;
+  inline-size: 100%;
   cursor: text;
   box-sizing: border-box;
   background-color: awsui.$color-background-input-default;
@@ -49,7 +49,7 @@
   border: styles.$control-border-width solid awsui.$color-border-input-default;
   @include styles.font-body-m;
   // IE requires input height to be explicitly set
-  height: awsui.$size-vertical-input;
+  block-size: awsui.$size-vertical-input;
 
   &.input-readonly {
     @include styles.form-readonly-element;

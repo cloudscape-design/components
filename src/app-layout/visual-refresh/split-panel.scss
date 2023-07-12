@@ -23,7 +23,7 @@ section.split-panel-bottom {
   display: none;
   grid-column: 1 / 6;
   grid-row: 10;
-  height: auto;
+  block-size: auto;
   /*
   The position sticky will work in conjunction with the align self: end; property.
   If the grid row scrolls beyond the viewport, the sticky bottom position
@@ -35,11 +35,11 @@ section.split-panel-bottom {
   // Animation for the height when opening the split panel
   @keyframes openSplitPanelBottom {
     from {
-      height: var(#{custom-props.$splitPanelReportedHeaderSize}, 0);
+      block-size: var(#{custom-props.$splitPanelReportedHeaderSize}, 0);
     }
 
     to {
-      height: var(#{custom-props.$splitPanelReportedSize});
+      block-size: var(#{custom-props.$splitPanelReportedSize});
     }
   }
 
@@ -91,7 +91,7 @@ section.split-panel-bottom {
 }
 
 section.split-panel-side {
-  height: 100%;
+  block-size: 100%;
   overflow-x: hidden;
   pointer-events: auto;
 
@@ -99,18 +99,18 @@ section.split-panel-side {
   @keyframes openSplitPanelSide {
     from {
       opacity: 0;
-      width: var(#{custom-props.$splitPanelMinWidth}, 280px);
+      inline-size: var(#{custom-props.$splitPanelMinWidth}, 280px);
     }
 
     to {
       opacity: 1;
-      width: var(#{custom-props.$splitPanelReportedSize});
+      inline-size: var(#{custom-props.$splitPanelReportedSize});
     }
   }
 
   &:not(.is-split-panel-open),
   &.position-bottom {
-    width: 0;
+    inline-size: 0;
   }
 
   /*
@@ -120,8 +120,8 @@ section.split-panel-side {
   */
   &.is-split-panel-open.position-side {
     box-shadow: awsui.$shadow-panel;
-    max-width: var(#{custom-props.$splitPanelMaxWidth}, 280px);
-    min-width: var(#{custom-props.$splitPanelMinWidth}, 280px);
+    max-inline-size: var(#{custom-props.$splitPanelMaxWidth}, 280px);
+    min-inline-size: var(#{custom-props.$splitPanelMinWidth}, 280px);
     &.animating {
       @include styles.with-motion {
         animation: openSplitPanelSide awsui.$motion-duration-refresh-only-fast;
@@ -135,8 +135,8 @@ section.split-panel-side {
   prevent unwanted text wrapping.
   */
   > .animated-content {
-    height: 100%;
-    max-width: inherit;
-    width: var(#{custom-props.$splitPanelReportedSize});
+    block-size: 100%;
+    max-inline-size: inherit;
+    inline-size: var(#{custom-props.$splitPanelReportedSize});
   }
 }

@@ -24,7 +24,7 @@ $label-horizontal-spacing: awsui.$space-l;
   overflow-x: scroll;
   overflow-y: hidden;
   position: relative;
-  width: 100%;
+  inline-size: 100%;
   // do not use pointer-events none because it disables scroll by sliding
 
   // Hide scrollbar in all browsers
@@ -62,7 +62,7 @@ $label-horizontal-spacing: awsui.$space-l;
 
   flex-shrink: 0;
   display: flex;
-  max-width: calc(90% - #{$label-horizontal-spacing});
+  max-inline-size: calc(90% - #{$label-horizontal-spacing});
 
   & > button {
     background-color: transparent;
@@ -155,9 +155,9 @@ $label-horizontal-spacing: awsui.$space-l;
     content: '';
     position: absolute;
     left: 0;
-    width: 100%;
+    inline-size: 100%;
     bottom: calc(-1 * #{awsui.$border-divider-section-width});
-    height: awsui.$border-active-width;
+    block-size: awsui.$border-active-width;
     border-radius: awsui.$border-radius-tabs-focus-ring;
     background: awsui.$color-border-tabs-underline;
 

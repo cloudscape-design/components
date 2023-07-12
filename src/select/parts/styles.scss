@@ -19,10 +19,10 @@ $checkbox-size: awsui.$size-control;
 
   > .checkbox {
     position: relative;
-    min-height: $checkbox-size;
-    min-width: $checkbox-size;
-    height: $checkbox-size;
-    width: $checkbox-size;
+    min-block-size: $checkbox-size;
+    min-inline-size: $checkbox-size;
+    block-size: $checkbox-size;
+    inline-size: $checkbox-size;
     margin-right: styles.$control-padding-horizontal;
   }
 }
@@ -40,7 +40,7 @@ $checkbox-size: awsui.$size-control;
 }
 
 .layout-strut {
-  width: 100%;
+  inline-size: 100%;
   position: relative;
   // Prevent incorrect layer ordering in Safari by making sure
   // this element is also offloaded to the GPU along with the virtual items

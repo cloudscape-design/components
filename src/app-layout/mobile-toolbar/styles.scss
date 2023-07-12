@@ -18,22 +18,22 @@
   align-items: center;
   flex-shrink: 0;
   z-index: 1000;
-  width: 100%;
+  inline-size: 100%;
   box-sizing: border-box;
   background-color: awsui.$color-background-layout-mobile-panel;
   box-shadow: awsui.$shadow-panel;
-  height: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
+  block-size: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
 }
 
 .mobile-bar-breadcrumbs {
-  min-width: 0;
+  min-inline-size: 0;
   flex: 1;
   margin-left: awsui.$space-m;
   margin-right: awsui.$space-m;
 }
 
 .mobile-trigger-with-drawers {
-  width: constants.$sidebar-size-closed;
+  inline-size: constants.$sidebar-size-closed;
   display: flex;
   justify-content: center;
 }
@@ -43,7 +43,7 @@
   cursor: pointer;
   z-index: 1;
   padding: constants.$toggle-padding;
-  width: constants.$sidebar-size-closed;
+  inline-size: constants.$sidebar-size-closed;
   &:first-child {
     border-right: 1px solid awsui.$color-border-layout;
   }
@@ -56,9 +56,9 @@
 
   &-with-drawers {
     display: flex;
-    width: auto;
+    inline-size: auto;
     padding: 0;
-    height: 100%;
+    block-size: 100%;
 
     > .mobile-trigger-with-drawers {
       border-left: 1px solid awsui.$color-border-layout;

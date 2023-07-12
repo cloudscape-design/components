@@ -28,7 +28,7 @@ nodes will directly touch with no gap between them.
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto #{awsui.$space-dark-header-overlap-distance} 1fr;
-  min-height: 100%;
+  min-block-size: 100%;
 
   > .background {
     background-color: awsui.$color-background-layout-main;

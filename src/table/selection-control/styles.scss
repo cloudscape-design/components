@@ -16,9 +16,9 @@
   justify-content: center;
   position: absolute;
   padding-bottom: awsui.$space-xxs;
-  height: 100%;
+  block-size: 100%;
   top: 0;
-  width: 100%;
+  inline-size: 100%;
   left: 0;
   box-sizing: border-box;
   border-right: 0.1 * styles.$base-size solid transparent;

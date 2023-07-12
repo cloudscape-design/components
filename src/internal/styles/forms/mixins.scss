@@ -63,8 +63,8 @@
     position: absolute;
     left: calc(-1 * #{$gutter-horizontal});
     top: calc(-1 * #{$gutter-vertical});
-    width: calc(100% + 2 * #{$gutter-horizontal});
-    height: calc(100% + 2 * #{$gutter-vertical});
+    inline-size: calc(100% + 2 * #{$gutter-horizontal});
+    block-size: calc(100% + 2 * #{$gutter-vertical});
     border-radius: $border-radius;
     box-shadow: $box-shadow;
   }
@@ -180,8 +180,8 @@
 
 @mixin make-control-size($height, $width: $height) {
   margin-top: calc((#{awsui.$font-body-m-line-height} - #{$height}) / 2);
-  min-height: $height;
-  min-width: $width;
-  height: $height;
-  width: $width;
+  min-block-size: $height;
+  min-inline-size: $width;
+  block-size: $height;
+  inline-size: $width;
 }

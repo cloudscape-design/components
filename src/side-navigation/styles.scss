@@ -23,7 +23,7 @@
 .header-link {
   @include styles.font-panel-header;
   color: awsui.$color-text-heading-default;
-  min-height: awsui.$font-panel-header-line-height;
+  min-block-size: awsui.$font-panel-header-line-height;
 
   display: flex;
 
@@ -37,11 +37,11 @@
 .header-logo {
   margin-right: awsui.$space-s;
   margin-top: awsui.$space-xxxs;
-  max-width: calc(1.25 * #{awsui.$size-icon-big});
+  max-inline-size: calc(1.25 * #{awsui.$size-icon-big});
   align-self: flex-start;
 
   &--stretched {
-    max-width: 100%;
+    max-inline-size: 100%;
     margin-right: 0;
   }
 }

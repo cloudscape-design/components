@@ -37,17 +37,17 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   z-index: 840;
   &-closed {
     cursor: pointer;
-    min-width: constants.$sidebar-size-closed;
+    min-inline-size: constants.$sidebar-size-closed;
   }
 }
 
 .drawer-content-side {
   display: flex;
   align-items: center;
-  height: 100%;
+  block-size: 100%;
   overflow: auto;
   .drawer-closed > & {
-    width: constants.$sidebar-size-closed;
+    inline-size: constants.$sidebar-size-closed;
     &:hover {
       background: awsui.$color-background-layout-panel-hover;
     }
@@ -107,14 +107,14 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .position-side {
   border-top: none;
   box-shadow: awsui.$shadow-split-side;
-  height: 100%;
+  block-size: 100%;
 }
 
 .slider {
   padding: 0;
   cursor: ns-resize;
   margin: 2px 0 0 0;
-  height: $slider-width;
+  block-size: $slider-width;
   // Desktop Safari doesn't support touch events, but Safari on iOS does.
   // stylelint-disable-next-line plugin/no-unsupported-browser-features
   touch-action: none;
@@ -137,8 +137,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: $slider-width + 2px;
+  inline-size: 100%;
+  block-size: $slider-width + 2px;
   display: flex;
   justify-content: center;
   z-index: 2;
@@ -148,8 +148,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   position: absolute;
   left: 0;
   top: 0;
-  height: 100%;
-  width: $slider-width + 2px;
+  block-size: 100%;
+  inline-size: $slider-width + 2px;
   display: flex;
   align-items: center;
   z-index: 1;
@@ -228,7 +228,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .content-bottom-max-width {
   flex-grow: 1;
-  max-width: 100%;
+  max-inline-size: 100%;
 }
 
 .content-side {
@@ -240,7 +240,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   top: 0;
   left: 0;
   right: 0;
-  height: 100%;
+  block-size: 100%;
   > .pane-header-wrapper-side {
     padding: 0 awsui.$space-m 0 awsui.$space-panel-side-left;
   }
@@ -256,7 +256,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  width: 100%;
+  inline-size: 100%;
   margin: awsui.$space-scaled-m 0 awsui.$space-m 0;
   &-text {
     @include styles.font-panel-header;

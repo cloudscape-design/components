@@ -28,16 +28,16 @@
     margin: awsui.$space-xs;
   }
   &-uri {
-    min-width: 200px;
+    min-inline-size: 200px;
     flex: 1;
   }
   &-version {
-    max-width: 180px;
-    min-width: 140px;
-    width: 20%;
+    max-inline-size: 180px;
+    min-inline-size: 140px;
+    inline-size: 20%;
   }
   &-divider {
-    height: calc(
+    block-size: calc(
       2 * #{awsui.$border-divider-section-width} + 2 * #{awsui.$space-scaled-xxs} + #{awsui.$font-body-m-line-height}
     ); // replicate the button layout: 2x border, 2x vertical padding, text line-height
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;

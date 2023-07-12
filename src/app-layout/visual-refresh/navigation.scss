@@ -12,7 +12,7 @@
   display: flex;
   grid-column: 1;
   grid-row: 1 / span 10;
-  height: var(#{custom-props.$contentHeight});
+  block-size: var(#{custom-props.$contentHeight});
   position: sticky;
   top: var(#{custom-props.$offsetTop});
   z-index: 830;
@@ -89,7 +89,7 @@ nav.navigation {
   background-color: awsui.$color-background-container-content;
   box-shadow: awsui.$shadow-panel;
   bottom: 0;
-  height: 100%;
+  block-size: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior-y: contain;
@@ -101,18 +101,18 @@ nav.navigation {
   @keyframes openNavigation {
     from {
       opacity: 0;
-      width: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+      inline-size: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
     }
 
     to {
       opacity: 1;
-      width: var(#{custom-props.$navigationWidth});
+      inline-size: var(#{custom-props.$navigationWidth});
     }
   }
 
   // All content is hidden by the overflow-x property
   &:not(.is-navigation-open) {
-    width: 0;
+    inline-size: 0;
     // We need to hide the closed panel to make containing focusable elements not focusable anymore.
     display: none;
   }
@@ -132,7 +132,7 @@ nav.navigation {
   prevent unwanted text wrapping.
   */
   > .animated-content {
-    width: var(#{custom-props.$navigationWidth});
+    inline-size: var(#{custom-props.$navigationWidth});
   }
 
   // The Navigation drawer will take up the entire viewport on mobile

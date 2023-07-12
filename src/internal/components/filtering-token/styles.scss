@@ -20,7 +20,7 @@
   background: constants.$token-background;
   border-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
-  height: 100%;
+  block-size: 100%;
   box-sizing: border-box;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .dismiss-button {
-  width: 30px;
+  inline-size: 30px;
   margin: 0;
   border: none;
   padding: 0 awsui.$space-xxs;

@@ -25,7 +25,7 @@ $gutter: awsui.$space-grid-gutter;
   // IE11 ignores calc functions in flex shorthand declarations
   // https://github.com/philipwalton/flexbugs#flexbug-8
   flex-basis: calc(#{$p} - #{$gutter});
-  max-width: calc(#{$p} - #{$gutter});
+  max-inline-size: calc(#{$p} - #{$gutter});
 }
 
 .tile-container {
@@ -95,7 +95,7 @@ $gutter: awsui.$space-grid-gutter;
   // an item. We do not have control over the img element.
   // stylelint-disable-next-line selector-max-type
   & > img {
-    max-width: 100%;
+    max-inline-size: 100%;
   }
 
   &.disabled {

@@ -64,8 +64,8 @@
     right: 0;
     bottom: 0;
     top: 0;
-    min-height: awsui.$font-heading-xs-line-height;
-    max-height: calc(100% - #{$gap});
+    min-block-size: awsui.$font-heading-xs-line-height;
+    max-block-size: calc(100% - #{$gap});
     margin: auto;
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;

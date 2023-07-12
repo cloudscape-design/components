@@ -29,7 +29,7 @@
 
 .date-picker-container {
   position: relative;
-  max-width: 234px;
+  max-inline-size: 234px;
 }
 
 .date-picker-trigger {
@@ -38,7 +38,7 @@
 
 .date-picker-input {
   padding-right: awsui.$space-xs;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .open-calendar-button {

@@ -68,7 +68,7 @@
     left: 0;
   }
   &.occupy-entire-width {
-    min-width: 100%;
+    min-inline-size: 100%;
   }
   &.hide-upper-border > .dropdown-content-wrapper {
     border-top: none;
@@ -102,7 +102,7 @@
 .dropdown-content {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  inline-size: 100%;
 }
 
 // Child flex wrapper used because when combining an absolute position
@@ -113,5 +113,5 @@
 }
 
 .stretch-trigger-height {
-  height: 100%;
+  block-size: 100%;
 }

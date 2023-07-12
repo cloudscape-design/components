@@ -28,7 +28,7 @@ $drawer-z-index-mobile: 1001;
     z-index: $drawer-z-index;
   }
   &-closed {
-    min-width: constants.$sidebar-size-closed;
+    min-inline-size: constants.$sidebar-size-closed;
     cursor: pointer;
     &.drawer-mobile {
       display: none;
@@ -47,7 +47,7 @@ $drawer-z-index-mobile: 1001;
     right: 0;
   }
   .drawer-closed > & {
-    width: constants.$sidebar-size-closed;
+    inline-size: constants.$sidebar-size-closed;
     &:hover {
       background: awsui.$color-background-layout-panel-hover;
     }

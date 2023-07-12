@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   // The xs breakpoint, minus the table tools container padding
-  max-width: calc(688px - 2 * #{awsui.$space-l});
+  max-inline-size: calc(688px - 2 * #{awsui.$space-l});
 }
 
 .input {

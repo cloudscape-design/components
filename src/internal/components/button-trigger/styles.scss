@@ -15,7 +15,7 @@
 
   position: relative;
   display: flex;
-  width: 100%;
+  inline-size: 100%;
   justify-content: space-between;
   align-items: center;
   padding: styles.$control-padding-vertical styles.$control-padding-horizontal;
@@ -23,7 +23,7 @@
   background-color: awsui.$color-background-input-default;
   border-radius: styles.$control-border-radius;
   border: styles.$control-border-width solid awsui.$color-border-input-default;
-  min-height: awsui.$size-vertical-input;
+  min-block-size: awsui.$size-vertical-input;
 
   &.has-caret {
     padding-right: styles.$control-icon-horizontal-padding;
@@ -93,7 +93,7 @@
     border-color: tokenGroup.$token-border-color;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    height: 100%;
+    block-size: 100%;
     @include focus-visible.when-visible {
       @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
     }

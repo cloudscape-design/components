@@ -18,17 +18,17 @@
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
     padding: 0 0 0 awsui.$space-l;
   }
 
   &.medium > .padding-box,
   &.narrow > .padding-box {
-    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
   }
 
   &.narrow > .padding-box {
-    height: awsui.$space-xxxl;
+    block-size: awsui.$space-xxxl;
     padding: 0 0 0 awsui.$space-xs;
   }
 }
@@ -36,7 +36,7 @@
 .hidden {
   @include styles.awsui-util-hide;
   visibility: hidden;
-  width: 9000px;
+  inline-size: 9000px;
 }
 
 // Ensures that tabbable child elements are hidden to a11y software.
@@ -64,21 +64,21 @@
 
   &.no-logo {
     // Prevent responsiveness from completely hiding the title.
-    min-width: 100px;
+    min-inline-size: 100px;
   }
 }
 
 .logo {
   display: block;
-  max-height: awsui.$space-xxl;
+  max-block-size: awsui.$space-xxl;
   margin-left: awsui.$space-s;
-  width: auto;
+  inline-size: auto;
 
   // Setting an arbitrary min-width here discourages browser from lazy rendering
-  min-width: 10px;
+  min-inline-size: 10px;
 
   &.narrow {
-    max-height: awsui.$space-xl;
+    max-block-size: awsui.$space-xl;
   }
 }
 
@@ -96,18 +96,18 @@
 
 .inputs {
   flex: 1;
-  min-width: 0;
+  min-inline-size: 0;
   display: flex;
   justify-content: center;
 }
 
 .search {
-  width: 100%;
-  max-width: 340px;
+  inline-size: 100%;
+  max-inline-size: 340px;
   padding-left: awsui.$space-xxxl;
 
   &-expanded {
-    max-width: none;
+    max-inline-size: none;
     padding-left: awsui.$space-s;
   }
 }
@@ -120,7 +120,7 @@
   padding-left: awsui.$space-m;
 
   // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
-  height: 100%;
+  block-size: 100%;
 
   .medium > .padding-box > &,
   .narrow > .padding-box > & {
@@ -139,7 +139,7 @@
     position: absolute;
     content: '';
 
-    width: 1px;
+    inline-size: 1px;
     right: 0;
     top: awsui.$space-s;
     bottom: awsui.$space-s;

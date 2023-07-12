@@ -15,7 +15,7 @@
 @mixin text-wrapping {
   // When using with Flexbox, a flex item has min-width set to "auto" by default, which
   // prevents the text wrapping. We need to override the min-width by setting it to "0"
-  min-width: 0;
+  min-inline-size: 0;
 
   // IE does not support `word-break: break-word`.
   // We use `-ms-word-break: break-all` as a compromise for IE.
@@ -30,7 +30,7 @@
 
 @mixin text-flex-wrapping {
   word-wrap: break-word;
-  max-width: 100%;
+  max-inline-size: 100%;
   overflow: hidden;
 }
 
@@ -54,8 +54,8 @@
   position: absolute;
   left: 0px;
   top: 0px;
-  width: 100%;
-  height: 100%;
+  inline-size: 100%;
+  block-size: 100%;
   pointer-events: none;
   background: transparent;
   box-sizing: border-box;

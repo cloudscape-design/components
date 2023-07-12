@@ -13,7 +13,7 @@ section.mobile-toolbar {
   border-bottom: 1px solid awsui.$color-border-divider-default;
   box-shadow: awsui.$shadow-panel-toggle;
   box-sizing: border-box;
-  height: var(#{custom-props.$mobileBarHeight});
+  block-size: var(#{custom-props.$mobileBarHeight});
   display: grid;
   grid-area: mobileToolbar;
   grid-column: 1 / span 5;

@@ -37,7 +37,7 @@
   @for $i from 1 through 20 {
     &.list-grid-#{$i} {
       > .card {
-        width: math.div(100%, $i);
+        inline-size: math.div(100%, $i);
       }
     }
   }
@@ -46,7 +46,7 @@
 .selection-control {
   position: absolute;
   box-sizing: border-box;
-  width: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
+  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
   top: 0;
   right: 0;
   padding: awsui.$space-scaled-l awsui.$space-card-horizontal;
@@ -85,19 +85,19 @@
         calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
     }
     @include styles.container-shadow;
-    width: 100%;
-    min-width: 0;
+    inline-size: 100%;
+    min-inline-size: 0;
   }
   &-header {
     @include styles.font-heading-m;
     &-inner {
-      width: 100%;
+      inline-size: 100%;
       display: inline-block;
     }
   }
   &-selectable {
     > .card-inner > .card-header {
-      width: 90%;
+      inline-size: 90%;
     }
   }
   &-selected {

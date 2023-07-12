@@ -21,7 +21,7 @@
   margin-right: auto;
   @each $breakpoint, $width in constants.$dashboard-content-widths {
     @include styles.media-breakpoint-up($breakpoint) {
-      max-width: $width;
+      max-inline-size: $width;
     }
   }
 }

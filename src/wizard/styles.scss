@@ -41,7 +41,7 @@
     @include styles.container-shadow;
     margin: 0;
     padding: awsui.$space-scaled-l awsui.$space-l;
-    width: 280px;
+    inline-size: 280px;
     box-sizing: border-box;
 
     > li {
@@ -54,8 +54,8 @@
         background-color: awsui.$color-border-divider-default;
         border: 0;
         grid-column: 1;
-        height: 100%;
-        width: awsui.$space-xxxs;
+        block-size: 100%;
+        inline-size: awsui.$space-xxxs;
       }
 
       > .number {
@@ -78,10 +78,10 @@
         > .circle {
           border-radius: 100%;
           grid-column: 1;
-          height: 10px;
+          block-size: 10px;
           justify-self: center;
           margin-top: 6px;
-          width: 10px;
+          inline-size: 10px;
         }
 
         > .title {
@@ -167,9 +167,9 @@
   color: awsui.$color-text-disabled;
   display: inline-block;
   margin-right: calc(2 * #{awsui.$space-xxxl});
-  min-width: 20 * styles.$base-size;
+  min-inline-size: 20 * styles.$base-size;
   padding-top: awsui.$space-xxs;
-  width: 20 * styles.$base-size;
+  inline-size: 20 * styles.$base-size;
 
   > ul {
     list-style: none;
@@ -194,7 +194,7 @@
 
 .form:not(.refresh) {
   @include styles.text-wrapping;
-  width: 100%;
+  inline-size: 100%;
 
   > .form-header {
     position: relative;

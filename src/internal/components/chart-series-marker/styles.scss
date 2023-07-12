@@ -11,23 +11,23 @@
   margin-right: awsui.$space-xxs;
   margin-top: awsui.$space-xxs;
   border-radius: 2px;
-  width: 1.4 * styles.$base-size;
+  inline-size: 1.4 * styles.$base-size;
   flex-shrink: 0;
   cursor: inherit;
 
   &--line {
     // same margin as in filled marker + half the difference in their size
     margin-top: 0.9 * styles.$base-size;
-    height: 0.4 * styles.$base-size;
+    block-size: 0.4 * styles.$base-size;
   }
 
   &--rectangle {
-    height: 1.4 * styles.$base-size;
+    block-size: 1.4 * styles.$base-size;
     border-radius: 2px;
   }
 
   &--hollow-rectangle {
-    height: 1.4 * styles.$base-size;
+    block-size: 1.4 * styles.$base-size;
     border-radius: 2px;
 
     // inner rectangle
@@ -35,15 +35,15 @@
       content: '';
       display: block;
       margin: 0.2 * styles.$base-size;
-      height: 1 * styles.$base-size;
+      block-size: 1 * styles.$base-size;
       background-color: awsui.$color-background-container-content;
       opacity: 0.5;
     }
   }
 
   &--dashed {
-    height: 0.4 * styles.$base-size;
-    width: 0.6 * styles.$base-size;
+    block-size: 0.4 * styles.$base-size;
+    inline-size: 0.6 * styles.$base-size;
     // same margins as in filled marker + half the difference in their size
     margin-top: 0.9 * styles.$base-size;
     margin-right: 1.2 * styles.$base-size;
@@ -51,8 +51,8 @@
     &::after {
       content: '';
       display: block;
-      width: 0.6 * styles.$base-size;
-      height: 0.4 * styles.$base-size;
+      inline-size: 0.6 * styles.$base-size;
+      block-size: 0.4 * styles.$base-size;
       margin-left: 0.8 * styles.$base-size;
       border-radius: 2px;
       background-color: inherit;

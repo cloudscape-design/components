@@ -51,7 +51,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 .wrapper {
   box-sizing: border-box;
   border: none;
-  width: 100%;
+  inline-size: 100%;
   line-height: awsui.$font-body-m-line-height;
   text-align: left;
 
@@ -161,7 +161,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-container {
-    width: 100%;
+    inline-size: 100%;
     // The icon-container style is kept for variant='container' and header
     > .icon-container {
       margin-top: awsui.$space-expandable-section-icon-offset-top;

@@ -20,7 +20,7 @@
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
     padding-left: awsui.$space-xxl;
   }
 
@@ -30,17 +30,17 @@
   }
 
   &.medium > .padding-box {
-    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
     padding-right: 0;
   }
 
   &.narrow > .padding-box {
-    height: awsui.$space-xxxl;
+    block-size: awsui.$space-xxxl;
   }
 }
 
 .virtual {
-  width: 9000px;
+  inline-size: 9000px;
 }
 
 .hidden {
@@ -57,7 +57,7 @@
 }
 
 .identity {
-  min-width: 0;
+  min-inline-size: 0;
 
   > .identity-link {
     display: flex;
@@ -76,22 +76,22 @@
 
   &.no-logo {
     // Prevent responsiveness from completely hiding the title.
-    min-width: 100px;
+    min-inline-size: 100px;
   }
 }
 
 .logo {
   display: block;
-  max-height: awsui.$space-xxl;
+  max-block-size: awsui.$space-xxl;
   margin-right: awsui.$space-s;
-  width: auto;
+  inline-size: auto;
   flex-shrink: 0;
 
   // Setting an arbitrary min-width here discourages browser from lazy rendering
-  min-width: 10px;
+  min-inline-size: 10px;
 
   &.narrow {
-    max-height: awsui.$space-xl;
+    max-block-size: awsui.$space-xl;
   }
 }
 
@@ -114,11 +114,11 @@
 }
 
 .search {
-  width: 100%;
-  max-width: 340px;
+  inline-size: 100%;
+  max-inline-size: 340px;
 
   &-expanded {
-    max-width: none;
+    max-inline-size: none;
   }
 }
 
@@ -129,7 +129,7 @@
   align-items: stretch;
 
   // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
-  height: 100%;
+  block-size: 100%;
 
   .medium > .padding-box > &,
   .narrow > .padding-box > & {
@@ -149,7 +149,7 @@
     position: absolute;
     content: '';
 
-    width: 1px;
+    inline-size: 1px;
     right: 0;
     top: awsui.$space-s;
     bottom: awsui.$space-s;
@@ -208,21 +208,21 @@
 /* Overflow Menu */
 .overflow-menu-drawer {
   position: fixed;
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
   z-index: 1001;
 }
 
 .overflow-menu {
   @include styles.styles-reset;
   background: awsui.$color-background-container-content;
-  height: 100%;
+  block-size: 100%;
 }
 
 .overflow-menu-header {
   display: flex;
   align-items: center;
-  min-height: awsui.$font-panel-header-line-height;
+  min-block-size: awsui.$font-panel-header-line-height;
   padding: awsui.$space-scaled-m;
   border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
@@ -256,7 +256,7 @@
 .overflow-menu-control {
   @include styles.styles-reset;
   display: flex;
-  width: 100%;
+  inline-size: 100%;
   padding: 0;
   background: none;
   border: none;

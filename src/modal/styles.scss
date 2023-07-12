@@ -48,7 +48,7 @@ $modal-z-index: 5000;
   top: 0;
   transform: translate(0, 0);
 
-  width: calc(100vw - #{awsui.$space-s} * 2);
+  inline-size: calc(100vw - #{awsui.$space-s} * 2);
 
   box-sizing: border-box;
   outline: none; // prevent highlight when focus set for ESC support
@@ -57,20 +57,20 @@ $modal-z-index: 5000;
   pointer-events: all;
 
   &.small {
-    max-width: 320px;
+    max-inline-size: 320px;
   }
 
   &.medium {
-    max-width: 600px;
+    max-inline-size: 600px;
   }
 
   &.large {
-    max-width: 820px;
+    max-inline-size: 820px;
   }
 
   &.max.breakpoint-xs {
     // viewport - (closed app layout panel widths + 20px on each side)
-    max-width: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
+    max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
     margin: auto;
   }
 }

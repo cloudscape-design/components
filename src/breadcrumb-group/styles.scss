@@ -22,7 +22,7 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    width: 100%;
+    inline-size: 100%;
     flex-wrap: wrap;
 
     > .item,
@@ -54,7 +54,7 @@
         flex-shrink: 0;
       }
       > .item {
-        min-width: 0;
+        min-inline-size: 0;
         &:not(:first-child):not(:last-child) {
           display: none;
         }

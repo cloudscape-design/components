@@ -19,10 +19,10 @@ handleSplitPanelMaxWidth function in the context.
   box-shadow: awsui.$shadow-panel-toggle;
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
-  height: awsui.$space-layout-toggle-diameter;
+  block-size: awsui.$space-layout-toggle-diameter;
   padding: 0 awsui.$space-s;
   pointer-events: auto;
-  width: awsui.$space-layout-toggle-diameter;
+  inline-size: awsui.$space-layout-toggle-diameter;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);

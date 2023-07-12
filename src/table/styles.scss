@@ -10,7 +10,7 @@
 
 .root {
   @include styles.default-text-style;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .tools {
@@ -26,7 +26,7 @@
     @supports not (flex-basis: fit-content) {
       flex: 1 1 auto;
     }
-    max-width: 100%;
+    max-inline-size: 100%;
     margin-right: awsui.$space-l;
   }
 
@@ -50,7 +50,7 @@
 }
 
 .table {
-  width: 100%;
+  inline-size: 100%;
   border-spacing: 0;
   position: relative;
   box-sizing: border-box;
@@ -62,7 +62,7 @@
 .wrapper {
   position: relative;
   box-sizing: border-box;
-  width: 100%;
+  inline-size: 100%;
   padding-top: awsui.$space-table-content-top;
   padding-bottom: awsui.$space-table-content-bottom;
   overflow-x: auto;
@@ -110,7 +110,7 @@
   }
   &-content {
     box-sizing: border-box;
-    width: 100%;
+    inline-size: 100%;
     padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l;
     /* stylelint-disable plugin/no-unsupported-browser-features */
     @supports (position: sticky) {
@@ -138,10 +138,10 @@ filter search icon.
 */
 .selection-control {
   box-sizing: border-box;
-  max-width: awsui.$size-table-selection-horizontal;
-  min-width: awsui.$size-table-selection-horizontal;
+  max-inline-size: awsui.$size-table-selection-horizontal;
+  min-inline-size: awsui.$size-table-selection-horizontal;
   position: relative;
-  width: awsui.$size-table-selection-horizontal;
+  inline-size: awsui.$size-table-selection-horizontal;
 
   &.selection-control-header {
     padding: awsui.$space-scaled-xs awsui.$space-scaled-l;
@@ -163,7 +163,7 @@ the default white background of the container component.
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   box-sizing: border-box;
-  width: 100%;
+  inline-size: 100%;
   border-radius: 0;
   background: awsui.$color-background-table-header;
   &.variant-stacked,

@@ -65,8 +65,8 @@
 
 .circle {
   display: inline-block;
-  width: 50%;
-  height: 100%;
+  inline-size: 50%;
+  block-size: 100%;
   overflow: hidden;
   @include awsui-spinner-circle;
   &:after {
@@ -74,8 +74,8 @@
     animation: 1.5s ease-in-out infinite;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 200%;
+    block-size: 100%;
+    inline-size: 200%;
   }
   &.circle-left:after {
     left: 0;

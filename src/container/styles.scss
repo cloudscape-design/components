@@ -15,7 +15,7 @@
   &.fit-height {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    block-size: 100%;
     &.with-side-media {
       flex-direction: row;
     }
@@ -77,9 +77,9 @@
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  inline-size: 100%;
   &-fit-height {
-    height: 100%;
+    block-size: 100%;
     overflow: hidden;
   }
 }
@@ -92,20 +92,20 @@
   img,
   video,
   picture {
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    block-size: 100%;
     object-fit: cover;
     object-position: center;
   }
 
   &-top {
-    max-height: 66%;
+    max-block-size: 66%;
     border-top-left-radius: awsui.$border-radius-container;
     border-top-right-radius: awsui.$border-radius-container;
   }
 
   &-side {
-    max-width: 66%;
+    max-inline-size: 66%;
     border-top-left-radius: awsui.$border-radius-container;
     border-bottom-left-radius: awsui.$border-radius-container;
   }

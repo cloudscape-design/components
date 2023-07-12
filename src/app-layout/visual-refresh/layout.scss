@@ -76,7 +76,7 @@ explicitly set in script.
     var(#{custom-props.$mainGap})
     var(#{custom-props.$overlapHeight}) // main template area with overlap
     var(#{custom-props.$mainTemplateRows}); // main template area
-  min-height: var(#{custom-props.$contentHeight});
+  min-block-size: var(#{custom-props.$contentHeight});
   position: relative;
 
   /*
@@ -294,7 +294,7 @@ notifications top margin and some additional vertical space for aesthetics.
 .layout.disable-body-scroll {
   #{custom-props.$mainTemplateRows}: 1fr auto;
   #{custom-props.$offsetTop}: 0px;
-  height: var(#{custom-props.$contentHeight});
+  block-size: var(#{custom-props.$contentHeight});
   overflow-y: scroll;
 
   &.has-split-panel.split-panel-position-bottom {

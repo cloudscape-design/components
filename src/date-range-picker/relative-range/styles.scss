@@ -12,7 +12,7 @@
   padding-left: calc(#{1.4 * styles.$base-size} + #{awsui.$space-xs});
 
   display: flex;
-  width: 80%;
+  inline-size: 80%;
 }
 .custom-range--no-padding {
   padding-left: 0;
@@ -20,11 +20,11 @@
 
 .custom-range-form-controls {
   display: flex;
-  width: 100%;
+  inline-size: 100%;
 
   > .custom-range-duration,
   > .custom-range-unit {
-    width: 50%;
+    inline-size: 50%;
   }
 
   > .custom-range-duration {
@@ -36,7 +36,7 @@
 
     > .custom-range-duration,
     > .custom-range-unit {
-      width: 100%;
+      inline-size: 100%;
     }
 
     > .custom-range-unit {

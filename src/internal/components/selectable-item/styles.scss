@@ -124,7 +124,7 @@
     position: absolute;
     top: awsui.$border-dropdown-virtual-offset-width;
     left: 0;
-    width: 100%;
+    inline-size: 100%;
     box-sizing: border-box;
     &:first-of-type:not(.selected, .highlighted) {
       border-top-color: awsui.$color-border-dropdown-item-top;
@@ -135,8 +135,8 @@
 .measure-strut {
   position: absolute;
   pointer-events: none;
-  height: 100%;
-  width: 100%;
+  block-size: 100%;
+  inline-size: 100%;
   top: 0;
   left: 0;
   padding-top: awsui.$border-divider-list-width;

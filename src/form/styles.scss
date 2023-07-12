@@ -34,12 +34,12 @@
   margin-bottom: calc(-1 * #{awsui.$space-scaled-m});
 }
 .secondary-actions {
-  min-width: 1px;
+  min-inline-size: 1px;
   margin-left: awsui.$space-scaled-m;
   margin-bottom: awsui.$space-scaled-m;
 }
 .actions {
-  min-width: 1px;
+  min-inline-size: 1px;
   margin-left: awsui.$space-scaled-m;
   margin-bottom: awsui.$space-scaled-m;
 }

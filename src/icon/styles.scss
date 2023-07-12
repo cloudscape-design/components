@@ -32,8 +32,8 @@
 .badge::after {
   content: '';
   position: absolute;
-  width: 8px;
-  height: 8px;
+  inline-size: 8px;
+  block-size: 8px;
   border-radius: 8px;
   background-color: awsui.$color-text-status-info;
   top: 2px;

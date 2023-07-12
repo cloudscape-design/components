@@ -47,13 +47,13 @@
   &__list {
     flex: 1;
     overflow: auto;
-    max-height: 100%;
+    max-block-size: 100%;
     box-sizing: border-box;
     margin-right: calc(#{awsui.$font-body-m-line-height} + 2 * #{awsui.$space-xs});
   }
 
   &__table {
-    width: 100%;
+    inline-size: 100%;
     border-spacing: 0;
     margin: awsui.$space-s 0;
   }
@@ -91,5 +91,5 @@
 }
 
 .focus-lock {
-  height: 100%;
+  block-size: 100%;
 }

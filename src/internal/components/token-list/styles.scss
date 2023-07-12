@@ -87,6 +87,6 @@
 
 .separator {
   margin: 0px awsui.$space-scaled-m;
-  width: awsui.$border-divider-section-width;
+  inline-size: awsui.$border-divider-section-width;
   background-color: awsui.$color-border-divider-default;
 }

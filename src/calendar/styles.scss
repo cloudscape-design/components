@@ -18,7 +18,7 @@
 .calendar {
   display: block;
   // IE11 does not calculate the height correctly when in nested flex containers (@see https://github.com/philipwalton/flexbugs#flexbug-3)
-  width: awsui.$size-calendar-grid-width;
+  inline-size: awsui.$size-calendar-grid-width;
   overflow: auto;
 
   &-inner {
@@ -47,12 +47,12 @@
   }
 
   &-grid {
-    width: 100%;
+    inline-size: 100%;
     border-spacing: 0;
   }
 
   &-grid-cell {
-    width: calc(100% / 7);
+    inline-size: calc(100% / 7);
     word-break: break-word;
     text-align: center;
     font-weight: unset;

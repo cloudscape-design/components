@@ -61,7 +61,7 @@
 
 .layout-main {
   flex: 1;
-  min-width: 0;
+  min-inline-size: 0;
   background-color: awsui.$color-background-layout-main;
   position: relative;
   &-scrollable {

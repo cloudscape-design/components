@@ -49,8 +49,8 @@
   scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
 
   // These dimensions match the dimensions of the contained SVG icon.
-  width: 16px;
-  height: 16px;
+  inline-size: 16px;
+  block-size: 16px;
 
   &:focus {
     outline: none;

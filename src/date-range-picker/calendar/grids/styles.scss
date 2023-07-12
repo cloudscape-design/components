@@ -31,11 +31,11 @@
 }
 
 .grid {
-  width: awsui.$size-calendar-grid-width;
+  inline-size: awsui.$size-calendar-grid-width;
   border-spacing: 0;
 }
 .grid-cell {
-  width: calc(100% / 7);
+  inline-size: calc(100% / 7);
   word-break: break-word;
   text-align: center;
   font-weight: unset;

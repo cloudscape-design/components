@@ -15,7 +15,7 @@
   display: inline-block;
   border: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   border-radius: awsui.$border-radius-code-editor;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .editor {
@@ -107,7 +107,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: awsui.$border-active-width;
+    block-size: awsui.$border-active-width;
     border-radius: awsui.$border-radius-tabs-focus-ring;
     background: awsui.$color-text-status-error;
     opacity: 0;
@@ -149,8 +149,8 @@
 
   &--divider {
     display: inline-block;
-    height: awsui.$font-body-m-line-height;
-    width: awsui.$border-code-editor-status-divider-width;
+    block-size: awsui.$font-body-m-line-height;
+    inline-size: awsui.$border-code-editor-status-divider-width;
     background: awsui.$color-border-tabs-divider;
     vertical-align: middle;
   }
@@ -168,7 +168,7 @@ $default-height: 480px;
   align-items: center;
   justify-content: center;
 
-  height: $default-height;
+  block-size: $default-height;
 
   color: awsui.$color-text-body-secondary;
   background: awsui.$color-background-code-editor-loading;

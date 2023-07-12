@@ -21,7 +21,7 @@
 
 .button,
 .dots {
-  min-width: awsui.$space-l;
+  min-inline-size: awsui.$space-l;
   border: styles.$control-border-width solid transparent;
 }
 

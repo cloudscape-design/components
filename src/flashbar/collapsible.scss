@@ -83,7 +83,7 @@ the grid layout will be:
        with one single line of text.
        This makes them look better during the collapse animation, in which they are already empty.
      */
-    min-height: calc(
+    min-block-size: calc(
       #{awsui.$font-body-m-line-height} + (
           #{awsui.$space-scaled-xs} + #{awsui.$border-field-width} + #{awsui.$space-scaled-xxs}
         ) * 2

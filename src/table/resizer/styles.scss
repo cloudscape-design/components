@@ -21,14 +21,14 @@ $active-separator-width: 2px;
   position: absolute;
   right: calc(-1 * #{$handle-width} / 2);
   top: 0;
-  width: $handle-width;
+  inline-size: $handle-width;
   z-index: 10;
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     pointer-events: none;
   }
   th:last-child > & {
-    width: calc(#{$handle-width} / 2);
+    inline-size: calc(#{$handle-width} / 2);
     right: 0;
   }
   th:not(:last-child) > & {
@@ -42,8 +42,8 @@ $active-separator-width: 2px;
         left: calc(#{$handle-width} / 2 - #{$active-separator-width});
         bottom: 0;
         top: 0;
-        min-height: awsui.$font-heading-xs-line-height;
-        max-height: calc(100% - #{$gap});
+        min-block-size: awsui.$font-heading-xs-line-height;
+        max-block-size: calc(100% - #{$gap});
         margin: auto;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
         box-sizing: border-box;
@@ -64,7 +64,7 @@ $active-separator-width: 2px;
   display: none;
   position: absolute;
   border-left: awsui.$border-divider-list-width dashed awsui.$color-border-divider-active;
-  width: 0;
+  inline-size: 0;
   top: 0;
   bottom: 0;
   //stylelint-disable-next-line selector-combinator-disallowed-list

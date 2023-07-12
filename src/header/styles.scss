@@ -10,7 +10,7 @@
   @include styles.styles-reset();
   cursor: inherit;
   display: flex;
-  width: 100%;
+  inline-size: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
 
@@ -47,7 +47,7 @@
 .main {
   // Like styles.text-flex-wrapping, but without overflow: hidden, to prevent headings from being partially cut off.
   word-wrap: break-word;
-  max-width: 100%;
+  max-inline-size: 100%;
 
   :not(.root-no-actions) > & {
     margin-right: awsui.$space-xs;

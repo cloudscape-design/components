@@ -82,7 +82,7 @@
 .labels-bottom {
   position: relative;
   display: block;
-  width: 100%;
+  inline-size: 100%;
   overflow: visible;
 }
 
@@ -112,14 +112,14 @@
 
 .chart-container {
   display: flex;
-  width: 100%;
+  inline-size: 100%;
   flex-direction: column;
 }
 
 .chart-container__vertical {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .chart-container__horizontal {

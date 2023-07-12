@@ -34,7 +34,7 @@
 .body {
   display: flex;
   flex: 1 1 0%;
-  min-width: 0;
+  min-inline-size: 0;
 }
 
 .header {
@@ -76,7 +76,7 @@
 
 .message {
   flex: 1 1 0%;
-  min-width: 0;
+  min-inline-size: 0;
 }
 
 .content {

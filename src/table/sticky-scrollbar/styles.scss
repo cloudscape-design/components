@@ -4,16 +4,16 @@
 */
 
 .sticky-scrollbar {
-  height: 15px;
+  block-size: 15px;
   position: sticky;
   display: none;
   overflow-x: auto;
   overflow-y: hidden;
   bottom: 0;
-  width: 100%;
+  inline-size: 100%;
 
   &-content {
-    height: 15px;
+    block-size: 15px;
   }
   &-visible {
     display: block;

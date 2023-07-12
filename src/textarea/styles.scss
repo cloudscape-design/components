@@ -21,8 +21,8 @@
 
   padding: styles.$control-padding;
   color: awsui.$color-text-body-default;
-  max-width: 100%;
-  width: 100%;
+  max-inline-size: 100%;
+  inline-size: 100%;
   display: block;
   box-sizing: border-box;
   background-color: awsui.$color-background-input-default;
