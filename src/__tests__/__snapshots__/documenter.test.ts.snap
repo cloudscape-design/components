@@ -10038,7 +10038,7 @@ in a slight, visible lag when scrolling complex pages.",
     },
     Object {
       "description": "Label that will be passed down to the Autosuggest \`ariaLabel\` property.
-See the [Autosuggest API](/system/components/autosuggest/?tabId=api) page for more details.",
+See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more details.",
       "name": "filteringAriaLabel",
       "optional": true,
       "type": "string",

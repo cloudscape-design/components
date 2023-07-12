@@ -142,7 +142,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   tokenLimit?: number;
   /**
    * Label that will be passed down to the Autosuggest `ariaLabel` property.
-   * See the [Autosuggest API](/system/components/autosuggest/?tabId=api) page for more details.
+   * See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more details.
    */
   filteringAriaLabel?: string;
   /**
