@@ -71,7 +71,7 @@
 .logo {
   display: block;
   max-block-size: awsui.$space-xxl;
-  margin-left: awsui.$space-s;
+  margin-inline-start: awsui.$space-s;
   inline-size: auto;
 
   // Setting an arbitrary min-width here discourages browser from lazy rendering
@@ -84,7 +84,7 @@
 
 .title {
   @include styles.font-heading-m;
-  margin-left: awsui.$space-s;
+  margin-inline-start: awsui.$space-s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -164,18 +164,18 @@
 
 .utility-wrapper-last {
   // Add appropriate space to the right for the last utility
-  margin-right: awsui.$space-s;
+  margin-inline-end: awsui.$space-s;
 
   &.utility-type-menu-dropdown {
     // Remove the margin in case of a dropdown, because it's added as padding to the trigger.
     // This makes sure that the dropdown trigger (and therefore the dropdown itself)
     // will expand completely to the right edge of the top nav.
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 
   // Adjust spacing in the smaller variant
   .narrow > .padding-box > .utilities > & {
-    margin-right: 0;
+    margin-inline-end: 0;
 
     &.utility-type-button-primary-button {
       padding-right: awsui.$space-l;
@@ -203,7 +203,7 @@
 }
 
 .utility-link-icon {
-  margin-right: awsui.$space-xxs;
+  margin-inline-end: awsui.$space-xxs;
 }
 
 .utility-button-external-icon {

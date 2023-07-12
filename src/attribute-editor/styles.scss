@@ -57,7 +57,7 @@
   @include styles.form-control-description;
   display: block;
   word-wrap: break-word;
-  margin-top: awsui.$space-xxs;
+  margin-block-start: awsui.$space-xxs;
 
   /* stylelint-disable-next-line selector-max-type */
   > a {

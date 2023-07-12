@@ -34,7 +34,7 @@
   }
 
   &:not(:first-child) {
-    margin-top: calc(-1 * #{awsui.$border-item-width});
+    margin-block-start: calc(-1 * #{awsui.$border-item-width});
   }
 
   &.has-background {

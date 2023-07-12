@@ -80,7 +80,7 @@
           grid-column: 1;
           block-size: 10px;
           justify-self: center;
-          margin-top: 6px;
+          margin-block-start: 6px;
           inline-size: 10px;
         }
 
@@ -100,7 +100,7 @@
     }
 
     > li:not(:first-child) > .number {
-      margin-top: awsui.$space-scaled-xl;
+      margin-block-start: awsui.$space-scaled-xl;
     }
 
     > li:last-child > hr {
@@ -166,7 +166,7 @@
 .navigation:not(.refresh) {
   color: awsui.$color-text-disabled;
   display: inline-block;
-  margin-right: calc(2 * #{awsui.$space-xxxl});
+  margin-inline-end: calc(2 * #{awsui.$space-xxxl});
   min-inline-size: 20 * styles.$base-size;
   padding-top: awsui.$space-xxs;
   inline-size: 20 * styles.$base-size;
@@ -183,7 +183,7 @@
     }
 
     > li:not(:first-child) {
-      margin-top: awsui.$space-scaled-m;
+      margin-block-start: awsui.$space-scaled-m;
     }
 
     > li:not(:last-child) {
@@ -198,7 +198,7 @@
 
   > .form-header {
     position: relative;
-    margin-bottom: awsui.$space-scaled-m;
+    margin-block-end: awsui.$space-scaled-m;
   }
 }
 

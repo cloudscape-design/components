@@ -20,7 +20,7 @@
 
 .content-display-description {
   @include styles.form-control-description;
-  margin-top: awsui.$space-scaled-xxxs;
+  margin-block-start: awsui.$space-scaled-xxxs;
 }
 
 .content-display-option-list {

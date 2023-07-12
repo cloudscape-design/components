@@ -8,8 +8,8 @@
 
 .marker {
   @include styles.styles-reset;
-  margin-right: awsui.$space-xxs;
-  margin-top: awsui.$space-xxs;
+  margin-inline-end: awsui.$space-xxs;
+  margin-block-start: awsui.$space-xxs;
   border-radius: 2px;
   inline-size: 1.4 * styles.$base-size;
   flex-shrink: 0;
@@ -17,7 +17,7 @@
 
   &--line {
     // same margin as in filled marker + half the difference in their size
-    margin-top: 0.9 * styles.$base-size;
+    margin-block-start: 0.9 * styles.$base-size;
     block-size: 0.4 * styles.$base-size;
   }
 
@@ -45,15 +45,15 @@
     block-size: 0.4 * styles.$base-size;
     inline-size: 0.6 * styles.$base-size;
     // same margins as in filled marker + half the difference in their size
-    margin-top: 0.9 * styles.$base-size;
-    margin-right: 1.2 * styles.$base-size;
+    margin-block-start: 0.9 * styles.$base-size;
+    margin-inline-end: 1.2 * styles.$base-size;
 
     &::after {
       content: '';
       display: block;
       inline-size: 0.6 * styles.$base-size;
       block-size: 0.4 * styles.$base-size;
-      margin-left: 0.8 * styles.$base-size;
+      margin-inline-start: 0.8 * styles.$base-size;
       border-radius: 2px;
       background-color: inherit;
     }

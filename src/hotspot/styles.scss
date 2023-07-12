@@ -26,14 +26,14 @@
 
 .placement-right {
   left: 100%;
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }
 
 .placement-left {
   right: 100%;
-  margin-right: awsui.$space-xxs;
+  margin-inline-end: awsui.$space-xxs;
 }
 
 .inlineWrapper {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }

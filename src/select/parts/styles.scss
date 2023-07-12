@@ -23,7 +23,7 @@ $checkbox-size: awsui.$size-control;
     min-inline-size: $checkbox-size;
     block-size: $checkbox-size;
     inline-size: $checkbox-size;
-    margin-right: styles.$control-padding-horizontal;
+    margin-inline-end: styles.$control-padding-horizontal;
   }
 }
 

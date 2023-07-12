@@ -42,7 +42,7 @@
   &-key-value {
     @include styles.font-label;
     color: awsui.$color-text-label;
-    margin-bottom: awsui.$space-scaled-xxxs;
+    margin-block-end: awsui.$space-scaled-xxxs;
   }
 }
 
@@ -92,7 +92,7 @@ $bar-color-edge-in-flash: rgba(255, 255, 255, 0.7);
 
 .progress {
   inline-size: 100%;
-  margin-right: awsui.$space-s;
+  margin-inline-end: awsui.$space-s;
   min-inline-size: 0;
   @include general-progress-background-style;
   background-color: $background-color;

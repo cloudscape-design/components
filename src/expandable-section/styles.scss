@@ -40,11 +40,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .icon-container {
   position: relative;
-  margin-left: calc(#{$icon-margin-left});
+  margin-inline-start: calc(#{$icon-margin-left});
   // For vertical alignment of text in side navigation items
-  margin-right: calc(#{$icon-margin-right-normal});
+  margin-inline-end: calc(#{$icon-margin-right-normal});
   &-container {
-    margin-right: $icon-margin-right-medium;
+    margin-inline-end: $icon-margin-inline-end-medium;
   }
 }
 
@@ -153,18 +153,18 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-button {
     box-sizing: border-box;
     display: flex;
-    margin-left: calc(-1 * #{$icon-total-space-normal});
+    margin-inline-start: calc(-1 * #{$icon-total-space-normal});
   }
 
   &-container-button {
-    margin-left: calc(-1 * #{$icon-total-space-medium});
+    margin-inline-start: calc(-1 * #{$icon-total-space-medium});
   }
 
   &-container {
     inline-size: 100%;
     // The icon-container style is kept for variant='container' and header
     > .icon-container {
-      margin-top: awsui.$space-expandable-section-icon-offset-top;
+      margin-block-start: awsui.$space-expandable-section-icon-offset-top;
     }
   }
 

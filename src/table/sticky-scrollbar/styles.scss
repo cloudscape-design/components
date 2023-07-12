@@ -21,6 +21,6 @@
   &-native-invisible {
     // Native scrollbar does not take space when it is not always invisible
     // For example it is set as "show when scrolling"
-    margin-top: -15px;
+    margin-block-start: -15px;
   }
 }

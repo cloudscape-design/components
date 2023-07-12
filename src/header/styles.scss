@@ -50,7 +50,7 @@
   max-inline-size: 100%;
 
   :not(.root-no-actions) > & {
-    margin-right: awsui.$space-xs;
+    margin-inline-end: awsui.$space-xs;
   }
 
   &-variant-h1 {

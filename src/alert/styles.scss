@@ -43,7 +43,7 @@
 
 .action {
   white-space: nowrap;
-  margin-left: awsui.$space-s;
+  margin-inline-start: awsui.$space-s;
 }
 
 .action-button {
@@ -54,12 +54,12 @@
   padding: awsui.$border-field-width 0; // To account for vertical misalignment due to button borders
   margin: awsui.$space-scaled-xxs awsui.$space-xxs;
   &.icon {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   &.message {
-    margin-right: awsui.$space-alert-message-right;
+    margin-inline-end: awsui.$space-alert-message-right;
     & + .action {
-      margin-left: awsui.$space-alert-action-left;
+      margin-inline-start: awsui.$space-alert-action-left;
     }
   }
 }
@@ -68,8 +68,8 @@
 .root.breakpoint-default > div > .alert > .body {
   display: block;
   & > .action {
-    margin-left: awsui.$space-xxs;
-    margin-bottom: awsui.$space-xxs;
+    margin-inline-start: awsui.$space-xxs;
+    margin-block-end: awsui.$space-xxs;
   }
 }
 /* stylelint-enable selector-max-type */
@@ -85,8 +85,8 @@
 
 .dismiss {
   flex: 0 0 auto;
-  margin-right: calc(-1 * #{awsui.$space-xxs});
-  margin-left: awsui.$space-s;
+  margin-inline-end: calc(-1 * #{awsui.$space-xxs});
+  margin-inline-start: awsui.$space-s;
 }
 
 .dismiss-button {

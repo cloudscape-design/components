@@ -65,7 +65,7 @@ $grid-gutter-width: awsui.$space-grid-gutter;
     // Avoid emitting useless .offset-0
     @if $i != 0 {
       &.offset-#{$i} {
-        margin-left: math.percentage(math.div($i, $grid-columns));
+        margin-inline-start: math.percentage(math.div($i, $grid-columns));
       }
     }
   }

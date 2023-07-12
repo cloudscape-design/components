@@ -82,7 +82,7 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab:not(:last-child) {
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
-    margin-right: calc(-1 * #{awsui.$border-divider-section-width});
+    margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
     border-right: awsui.$border-divider-section-width solid $separator-color;
   }
 }
@@ -94,7 +94,7 @@ $label-horizontal-spacing: awsui.$space-l;
   text-decoration: none;
   cursor: pointer;
   padding: calc(#{awsui.$space-scaled-s} - 1px) 0 awsui.$space-scaled-s 0;
-  margin-top: 1px;
+  margin-block-start: 1px;
   border: awsui.$border-divider-section-width solid transparent;
 
   font-size: awsui.$font-tabs-size;
@@ -123,7 +123,7 @@ $label-horizontal-spacing: awsui.$space-l;
 
 // Remediate focus shadow
 .tabs-tab:first-child {
-  margin-left: 1px;
+  margin-inline-start: 1px;
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
     padding-left: calc(#{$label-horizontal-spacing} - 1px);
@@ -132,7 +132,7 @@ $label-horizontal-spacing: awsui.$space-l;
 
 // Remediate focus shadow
 .tabs-tab:last-child {
-  margin-right: 1px;
+  margin-inline-end: 1px;
   & > a > .tabs-tab-label,
   & > button > .tabs-tab-label {
     padding-right: calc(#{$label-horizontal-spacing} - 1px);

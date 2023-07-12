@@ -89,7 +89,7 @@
 }
 
 .content-overlapped {
-  margin-top: calc(-1 * #{awsui.$space-dark-header-overlap-distance});
+  margin-block-start: calc(-1 * #{awsui.$space-dark-header-overlap-distance});
 }
 
 .content-extra-top-padding {

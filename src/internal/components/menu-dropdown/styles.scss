@@ -48,15 +48,15 @@
   }
 
   &.offset-right-none {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 
   &.offset-right-l {
-    margin-right: awsui.$space-s;
+    margin-inline-end: awsui.$space-s;
   }
 
   &.offset-right-xxl {
-    margin-right: awsui.$space-xl;
+    margin-inline-end: awsui.$space-xl;
   }
 
   @include focus-visible.when-visible {
@@ -66,9 +66,9 @@
 }
 
 .text {
-  margin-right: awsui.$space-xs;
+  margin-inline-end: awsui.$space-xs;
 }
 
 .icon + .text {
-  margin-left: awsui.$space-xs;
+  margin-inline-start: awsui.$space-xs;
 }

@@ -28,8 +28,8 @@
 .mobile-bar-breadcrumbs {
   min-inline-size: 0;
   flex: 1;
-  margin-left: awsui.$space-m;
-  margin-right: awsui.$space-m;
+  margin-inline-start: awsui.$space-m;
+  margin-inline-end: awsui.$space-m;
 }
 
 .mobile-trigger-with-drawers {

@@ -60,7 +60,7 @@
        </html>
     */
     inline-size: $gutter-padding-right - 2 * 1px; // gutter padding - 1px margin each side
-    margin-right: -$gutter-padding-right + 1px; // leave 1px margin on each side
+    margin-inline-end: -$gutter-padding-right + 1px; // leave 1px margin on each side
     background-color: transparent;
     border: none;
   }
@@ -68,7 +68,7 @@
   .ace_gutter_annotation {
     // To align our custom icon with the annotation clickable/focus area.
     // Based on -19px in ace's default stylesheet.
-    margin-left: -21px;
+    margin-inline-start: -21px;
   }
 
   .ace_fold-widget,

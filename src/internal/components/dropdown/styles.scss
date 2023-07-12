@@ -74,7 +74,7 @@
     border-top: none;
   }
   &.interior > .dropdown-content-wrapper {
-    margin-top: -1px;
+    margin-block-start: -1px;
     border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   }
   &.open {

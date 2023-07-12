@@ -83,7 +83,7 @@
 .logo {
   display: block;
   max-block-size: awsui.$space-xxl;
-  margin-right: awsui.$space-s;
+  margin-inline-end: awsui.$space-s;
   inline-size: auto;
   flex-shrink: 0;
 
@@ -186,7 +186,7 @@
 }
 
 .utility-link-icon {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }
 
 .utility-button-external-icon {
@@ -194,15 +194,15 @@
 }
 
 .offset-right-none {
-  margin-right: 0;
+  margin-inline-end: 0;
 }
 
 .offset-right-l {
-  margin-right: awsui.$space-xxs;
+  margin-inline-end: awsui.$space-xxs;
 }
 
 .offset-right-xxl {
-  margin-right: awsui.$space-m;
+  margin-inline-end: awsui.$space-m;
 }
 
 /* Overflow Menu */
@@ -305,7 +305,7 @@
   letter-spacing: awsui.$font-button-letter-spacing;
 
   &-icon {
-    margin-right: awsui.$space-xxs;
+    margin-inline-end: awsui.$space-xxs;
   }
 
   &-text {

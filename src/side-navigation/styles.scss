@@ -35,19 +35,19 @@
 }
 
 .header-logo {
-  margin-right: awsui.$space-s;
-  margin-top: awsui.$space-xxxs;
+  margin-inline-end: awsui.$space-s;
+  margin-block-start: awsui.$space-xxxs;
   max-inline-size: calc(1.25 * #{awsui.$size-icon-big});
   align-self: flex-start;
 
   &--stretched {
     max-inline-size: 100%;
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 }
 
 .list-container {
-  margin-top: awsui.$space-scaled-l;
+  margin-block-start: awsui.$space-scaled-l;
 }
 
 .list {
@@ -61,7 +61,7 @@
   padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-nav-left;
 
   &--last {
-    margin-bottom: awsui.$space-scaled-xxxl;
+    margin-block-end: awsui.$space-scaled-xxxl;
   }
 }
 
@@ -77,16 +77,16 @@
 
 .section,
 .expandable-link-group {
-  margin-left: calc(-1 * #{awsui.$space-l});
+  margin-inline-start: calc(-1 * #{awsui.$space-l});
 
   &--no-ident {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 }
 
 .section {
-  margin-top: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
-  margin-bottom: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  margin-block-start: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  margin-block-end: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
 
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
@@ -146,11 +146,11 @@
 }
 
 .info {
-  margin-left: awsui.$space-xs;
+  margin-inline-start: awsui.$space-xs;
 }
 
 .external-icon {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }
 
 .divider {
@@ -163,5 +163,5 @@
 }
 
 .divider-header {
-  margin-top: 0;
+  margin-block-start: 0;
 }

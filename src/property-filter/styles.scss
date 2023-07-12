@@ -24,7 +24,7 @@
 .add-token {
   border-left: 1px solid awsui.$color-border-divider-default;
   box-sizing: border-box;
-  margin-left: awsui.$space-m;
+  margin-inline-start: awsui.$space-m;
   padding-left: awsui.$space-m;
 }
 
@@ -41,19 +41,19 @@
   user-select: text;
   margin: awsui.$space-xxs;
   &-form {
-    margin-bottom: awsui.$space-scaled-l;
+    margin-block-end: awsui.$space-scaled-l;
   }
   &-field-property {
     /* used in test-utils */
   }
   &-field-operator {
-    margin-top: awsui.$space-scaled-l;
+    margin-block-start: awsui.$space-scaled-l;
   }
   &-field-value {
-    margin-top: awsui.$space-scaled-l;
+    margin-block-start: awsui.$space-scaled-l;
   }
   &-cancel {
-    margin-right: awsui.$space-xs;
+    margin-inline-end: awsui.$space-xs;
   }
   &-submit {
     /* used in test-utils */
@@ -69,8 +69,8 @@
   &-actions {
     // The below code cancels horizontal padding of the popover and horizontal margin of the token-editor.
     padding-right: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
-    margin-left: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
-    margin-right: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
+    margin-inline-start: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
+    margin-inline-end: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
   }
 }
 .property-editor {
@@ -83,7 +83,7 @@
 }
 
 .custom-control {
-  margin-right: awsui.$space-s;
+  margin-inline-end: awsui.$space-s;
 }
 
 .input {

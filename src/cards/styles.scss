@@ -57,13 +57,13 @@
   overflow: hidden;
   text-align: center;
   color: awsui.$color-text-empty;
-  margin-bottom: awsui.$space-scaled-l;
+  margin-block-end: awsui.$space-scaled-l;
 }
 
 .has-header {
   // Unfortunately, we don't have access to the header of InternalContainer
   // in order to use margin-bottom instead.
-  margin-top: awsui.$space-grid-gutter;
+  margin-block-start: awsui.$space-grid-gutter;
 }
 
 .card {

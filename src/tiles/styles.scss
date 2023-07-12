@@ -80,10 +80,10 @@ $gutter: awsui.$space-grid-gutter;
 
 .control {
   flex-grow: 1;
-  margin-bottom: awsui.$space-s;
+  margin-block-end: awsui.$space-s;
 
   &.no-image {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 }
 

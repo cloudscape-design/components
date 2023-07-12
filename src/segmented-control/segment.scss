@@ -106,12 +106,12 @@ $selected-color: awsui.$color-text-segment-active;
 .with-text {
   position: relative;
   left: calc(-1 * #{awsui.$space-xxs});
-  margin-right: awsui.$space-xxs;
+  margin-inline-end: awsui.$space-xxs;
 }
 
 .with-no-text {
-  margin-right: auto;
-  margin-left: auto;
+  margin-inline-end: auto;
+  margin-inline-start: auto;
   right: 0;
   left: 0;
 }

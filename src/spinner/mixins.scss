@@ -47,8 +47,8 @@ $_spinner-variants: (
       inline-size: $iconSizeMap;
       block-size: $iconSizeMap;
       padding: $padding;
-      margin-top: $margin;
-      margin-bottom: $margin;
+      margin-block-start: $margin;
+      margin-block-end: $margin;
       box-sizing: border-box;
     }
   }

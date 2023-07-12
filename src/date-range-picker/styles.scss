@@ -118,13 +118,13 @@ $calendar-header-color: awsui.$color-text-body-default;
   padding-top: awsui.$space-s;
 
   &:last-child {
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 }
 
 .icon-wrapper {
   color: awsui.$color-text-interactive-default;
-  margin-right: awsui.$space-xs;
+  margin-inline-end: awsui.$space-xs;
 }
 
 .label {

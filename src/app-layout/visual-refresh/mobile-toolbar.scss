@@ -25,7 +25,7 @@ section.mobile-toolbar {
 
   > .mobile-toolbar-nav {
     grid-column: 1;
-    margin-right: awsui.$space-m;
+    margin-inline-end: awsui.$space-m;
   }
 
   > .mobile-toolbar-breadcrumbs {
@@ -35,6 +35,6 @@ section.mobile-toolbar {
 
   > .mobile-toolbar-tools {
     grid-column: 3;
-    margin-left: awsui.$space-m;
+    margin-inline-start: awsui.$space-m;
   }
 }

@@ -26,11 +26,11 @@
 }
 
 .content--reserve-filter {
-  margin-top: calc(2 * #{awsui.$font-body-m-line-height});
+  margin-block-start: calc(2 * #{awsui.$font-body-m-line-height});
 }
 
 .content--reserve-legend {
-  margin-bottom: calc(2 * #{awsui.$font-body-m-line-height});
+  margin-block-end: calc(2 * #{awsui.$font-body-m-line-height});
 }
 
 .filter-container {

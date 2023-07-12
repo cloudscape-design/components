@@ -11,7 +11,7 @@
 }
 
 .header:not(.full-page) {
-  margin-bottom: awsui.$space-scaled-m;
+  margin-block-end: awsui.$space-scaled-m;
 }
 
 .content {
@@ -23,23 +23,23 @@
 }
 
 .footer {
-  margin-top: awsui.$space-scaled-l;
+  margin-block-start: awsui.$space-scaled-l;
 }
 .actions-section {
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-left: calc(-1 * #{awsui.$space-scaled-m});
-  margin-bottom: calc(-1 * #{awsui.$space-scaled-m});
+  margin-inline-start: calc(-1 * #{awsui.$space-scaled-m});
+  margin-block-end: calc(-1 * #{awsui.$space-scaled-m});
 }
 .secondary-actions {
   min-inline-size: 1px;
-  margin-left: awsui.$space-scaled-m;
-  margin-bottom: awsui.$space-scaled-m;
+  margin-inline-start: awsui.$space-scaled-m;
+  margin-block-end: awsui.$space-scaled-m;
 }
 .actions {
   min-inline-size: 1px;
-  margin-left: awsui.$space-scaled-m;
-  margin-bottom: awsui.$space-scaled-m;
+  margin-inline-start: awsui.$space-scaled-m;
+  margin-block-end: awsui.$space-scaled-m;
 }

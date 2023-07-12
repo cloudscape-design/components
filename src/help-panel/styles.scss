@@ -53,12 +53,12 @@
     margin: awsui.$space-xs 0;
     /* stylelint-disable-next-line selector-max-universal */
     * {
-      margin-top: 0;
-      margin-bottom: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
   }
   dt {
-    margin-top: awsui.$space-xs;
+    margin-block-start: awsui.$space-xs;
     font-weight: styles.$font-weight-bold;
   }
   dd {
@@ -70,12 +70,12 @@
   h4,
   h5,
   h6 {
-    margin-top: awsui.$space-xl;
+    margin-block-start: awsui.$space-xl;
     color: awsui.$color-text-heading-default;
   }
   // sets padding at the bottom of the panel
   & > :last-child {
-    margin-bottom: awsui.$space-scaled-xxxl;
+    margin-block-end: awsui.$space-scaled-xxxl;
   }
 
   // add basic font-sizes
@@ -122,8 +122,8 @@
       @include styles.font-panel-header;
       padding-top: 0;
       padding-bottom: 0;
-      margin-top: 0;
-      margin-bottom: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
   }
 }
@@ -136,7 +136,7 @@
   h4:first-child,
   h5:first-child,
   h6:first-child {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 
   a {
@@ -150,7 +150,7 @@
   margin: awsui.$space-scaled-xl calc(-1 * #{awsui.$space-xs});
   padding: 0 awsui.$space-s;
   > :first-child {
-    margin-top: awsui.$space-scaled-xl;
+    margin-block-start: awsui.$space-scaled-xl;
   }
   ul {
     list-style: none;

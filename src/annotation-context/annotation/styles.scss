@@ -22,7 +22,7 @@
 
 .description {
   overflow: hidden;
-  margin-top: awsui.$space-xxs;
+  margin-block-start: awsui.$space-xxs;
 }
 
 .actionBar {
@@ -33,7 +33,7 @@
 }
 
 .stepCounter {
-  margin-right: 2 * styles.$base-size;
+  margin-inline-end: 2 * styles.$base-size;
 }
 
 .divider {

@@ -13,7 +13,7 @@
   list-style: none;
   padding: 0;
   color: awsui.$color-text-dropdown-item-default;
-  margin-top: calc(-1 * #{styles.$control-border-width});
+  margin-block-start: calc(-1 * #{styles.$control-border-width});
   cursor: pointer;
 
   &.disabled {
@@ -21,7 +21,7 @@
     color: awsui.$color-text-dropdown-item-disabled;
   }
   &:first-child {
-    margin-top: 0;
+    margin-block-start: 0;
   }
   &.last {
     border-bottom: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
@@ -98,5 +98,5 @@
 }
 
 .external-icon {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }

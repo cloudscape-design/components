@@ -27,24 +27,24 @@
       flex: 1 1 auto;
     }
     max-inline-size: 100%;
-    margin-right: awsui.$space-l;
+    margin-inline-end: awsui.$space-l;
   }
 
   &-align-right {
     display: flex;
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 
   &-pagination + &-preferences {
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
-    margin-left: awsui.$space-xs;
+    margin-inline-start: awsui.$space-xs;
     padding-left: awsui.$space-xs;
   }
 
   &-small > &-filtering {
-    margin-right: 0;
-    margin-bottom: awsui.$space-scaled-xs;
+    margin-inline-end: 0;
+    margin-block-end: awsui.$space-scaled-xs;
     flex-basis: 100%;
   }
 }
@@ -221,7 +221,7 @@ the default white background of the container component.
   }
   &-pagination {
     // Align the footer pagination on the right
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 }
 

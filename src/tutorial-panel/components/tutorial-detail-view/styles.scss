@@ -15,7 +15,7 @@
 .tutorial-title {
   display: flex;
   align-items: flex-start;
-  margin-left: calc(-1 * #{awsui.$space-xxs});
+  margin-inline-start: calc(-1 * #{awsui.$space-xxs});
   padding-bottom: awsui.$space-xxxs;
 }
 
@@ -23,7 +23,7 @@
   list-style: none;
   padding-top: 0;
   &:not(:first-child) {
-    margin-top: awsui.$space-xl;
+    margin-block-start: awsui.$space-xl;
   }
 }
 

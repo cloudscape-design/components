@@ -28,7 +28,7 @@
   }
 
   > .custom-range-duration {
-    margin-right: awsui.$space-xs;
+    margin-inline-end: awsui.$space-xs;
   }
 
   &.vertical {
@@ -40,7 +40,7 @@
     }
 
     > .custom-range-unit {
-      margin-top: awsui.$space-s;
+      margin-block-start: awsui.$space-s;
     }
   }
 }

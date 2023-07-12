@@ -23,7 +23,7 @@
   padding: awsui.$space-m;
 
   &:not(:first-child) {
-    margin-top: awsui.$space-l;
+    margin-block-start: awsui.$space-l;
   }
 }
 
@@ -47,7 +47,7 @@
 
 .expandable-section {
   display: none;
-  margin-top: awsui.$space-m;
+  margin-block-start: awsui.$space-m;
 
   &.expanded {
     display: block;

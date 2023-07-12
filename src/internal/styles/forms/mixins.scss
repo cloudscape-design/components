@@ -120,11 +120,11 @@
 }
 
 @mixin label-info-link {
-  margin-left: typography.$base-size;
+  margin-inline-start: typography.$base-size;
 }
 
 @mixin info-link-spacing {
-  margin-right: awsui.$space-xs;
+  margin-inline-end: awsui.$space-xs;
   &:only-child {
     margin: 0;
   }
@@ -179,7 +179,7 @@
 }
 
 @mixin make-control-size($height, $width: $height) {
-  margin-top: calc((#{awsui.$font-body-m-line-height} - #{$height}) / 2);
+  margin-block-start: calc((#{awsui.$font-body-m-line-height} - #{$height}) / 2);
   min-block-size: $height;
   min-inline-size: $width;
   block-size: $height;

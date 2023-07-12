@@ -52,7 +52,7 @@
 
   &:not(.collapsed) {
     > li:not(:last-child) {
-      margin-bottom: awsui.$space-xxxs;
+      margin-block-end: awsui.$space-xxxs;
     }
   }
 }
@@ -101,8 +101,8 @@
 
 .dismiss-button-wrapper {
   flex: 0 0 auto;
-  margin-left: awsui.$space-s;
-  margin-right: calc(-1 * #{awsui.$space-xxs});
+  margin-inline-start: awsui.$space-s;
+  margin-inline-end: calc(-1 * #{awsui.$space-xxs});
   padding-right: awsui.$space-flashbar-dismiss-right;
 }
 
@@ -112,15 +112,15 @@
 
 .action-button-wrapper {
   white-space: nowrap;
-  margin-left: awsui.$space-flashbar-action-left;
+  margin-inline-start: awsui.$space-flashbar-action-left;
 }
 
 .flashbar.breakpoint-default > .flash-list > .flash-list-item > .flash > .flash-body {
   display: block;
   & > .action-button-wrapper {
-    margin-left: awsui.$space-l;
+    margin-inline-start: awsui.$space-l;
     padding-left: awsui.$space-xxs;
-    margin-bottom: awsui.$space-xxs;
+    margin-block-end: awsui.$space-xxs;
   }
 }
 
