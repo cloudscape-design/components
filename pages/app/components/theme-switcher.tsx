@@ -34,6 +34,13 @@ export default function ThemeSwitcher() {
         </select>
       </label>
       <label>
+        Direction
+        <select onChange={event => document.querySelector('body')?.setAttribute('dir', event.target.value)}>
+          <option value="ltr">Left-to-Right</option>
+          <option value="rtl">Right-to-Left</option>
+        </select>
+      </label>
+      <label>
         <input {...vrSwitchProps} />
         Visual refresh
       </label>
