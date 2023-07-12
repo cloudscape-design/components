@@ -187,7 +187,7 @@
     }
 
     > li:not(:last-child) {
-      border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-layout;
+      border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-layout;
     }
   }
 }

@@ -116,7 +116,7 @@ viewport size and state of the Tools drawer.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     &.is-tools-open.has-tools-form-persistence {
-      border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     }
   }
 

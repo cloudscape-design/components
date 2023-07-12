@@ -138,7 +138,7 @@
     @include utils.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
-    border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
     border-radius: awsui.$border-radius-container;
     z-index: 1;
   }
@@ -160,7 +160,7 @@
 @mixin dropdown-shadow {
   box-shadow: awsui.$shadow-dropdown;
   border-radius: awsui.$border-radius-dropdown;
-  border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
+  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   box-sizing: border-box;
 
   &::after {

@@ -10,7 +10,7 @@
 section.mobile-toolbar {
   align-items: center;
   background-color: awsui.$color-background-home-header;
-  border-bottom: 1px solid awsui.$color-border-divider-default;
+  border-block-end: 1px solid awsui.$color-border-divider-default;
   box-shadow: awsui.$shadow-panel-toggle;
   box-sizing: border-box;
   block-size: var(#{custom-props.$mobileBarHeight});

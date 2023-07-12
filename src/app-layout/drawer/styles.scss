@@ -87,7 +87,7 @@ $drawer-z-index-mobile: 1001;
     &.selected,
     &.selected:hover {
       background-color: awsui.$color-background-layout-toggle-selected-default;
-      border-top: 1px solid awsui.$color-background-layout-toggle-selected-default;
+      border-block-start: 1px solid awsui.$color-background-layout-toggle-selected-default;
       box-shadow: none;
       color: awsui.$color-text-layout-toggle-active;
       margin: 0;

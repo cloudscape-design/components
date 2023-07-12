@@ -179,7 +179,7 @@
 .utility-type-button-primary-button {
   // Hide dividers around primary buttons.
   inset-inline-start: -1px;
-  border-left: 1px solid awsui.$color-background-container-content;
+  border-inline-start: 1px solid awsui.$color-background-container-content;
   &::after {
     display: none;
   }
@@ -224,7 +224,7 @@
   align-items: center;
   min-block-size: awsui.$font-panel-header-line-height;
   padding: awsui.$space-scaled-m;
-  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
   &-text {
     @include styles.font-panel-header;
@@ -314,12 +314,12 @@
 
   &-utility {
     @include styles.font-button;
-    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
 
   &-submenu {
-    border-top: awsui.$border-divider-section-width solid transparent;
-    border-bottom: awsui.$border-divider-section-width solid transparent;
+    border-block-start: awsui.$border-divider-section-width solid transparent;
+    border-block-end: awsui.$border-divider-section-width solid transparent;
     padding: awsui.$space-scaled-xxs awsui.$space-scaled-l;
   }
 

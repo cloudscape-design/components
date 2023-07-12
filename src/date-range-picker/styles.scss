@@ -102,7 +102,7 @@ $calendar-header-color: awsui.$color-text-body-default;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  border-top: 1px solid #{awsui.$color-border-dropdown-item-default};
+  border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
   padding: 0 awsui.$space-l awsui.$space-s;
 
   &.has-clear-button {
@@ -154,8 +154,8 @@ $calendar-header-color: awsui.$color-text-body-default;
   // widths.
   overflow: auto;
 
-  border-top: 1px solid #{awsui.$color-border-container-top};
-  border-bottom: 1px solid #{awsui.$color-border-container-top};
+  border-block-start: 1px solid #{awsui.$color-border-container-top};
+  border-block-end: 1px solid #{awsui.$color-border-container-top};
   border-radius: awsui.$border-radius-dropdown;
 
   &:focus {

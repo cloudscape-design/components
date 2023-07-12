@@ -13,8 +13,8 @@ $option-padding-horizontal: awsui.$space-l;
   color: awsui.$color-text-dropdown-group-label;
   border: awsui.$border-divider-list-width solid transparent;
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
-  border-left: 0;
-  border-right: 0;
+  border-inline-start: 0;
+  border-inline-end: 0;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -86,11 +86,11 @@ $option-padding-horizontal: awsui.$space-l;
   }
 
   &.expandable {
-    border-top: 0;
+    border-block-start: 0;
   }
 
   &:last-child {
-    border-bottom: none;
+    border-block-end: none;
   }
 
   &.variant-navigation {

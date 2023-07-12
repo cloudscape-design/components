@@ -25,7 +25,7 @@
 }
 
 .show-operation {
-  border-left: none;
+  border-inline-start: none;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -45,7 +45,7 @@
   padding: 0 awsui.$space-xxs;
   color: awsui.$color-text-interactive-default;
   background-color: transparent;
-  border-left: styles.$control-border-width solid constants.$token-border-color;
+  border-inline-start: styles.$control-border-width solid constants.$token-border-color;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(awsui.$space-filtering-token-dismiss-button-focus-outline-gutter);

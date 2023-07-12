@@ -63,7 +63,7 @@ $column-breakpoint-spans: (
 @mixin make-horizontal-borders() {
   /* stylelint-disable selector-max-universal */
   > * {
-    border-bottom: $column-layout-border;
+    border-block-end: $column-layout-border;
 
     &:last-child {
       border-bottom-width: 0;

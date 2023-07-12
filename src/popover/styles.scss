@@ -31,7 +31,7 @@
   background-color: transparent;
 
   cursor: pointer;
-  border-bottom: awsui.$border-divider-list-width dashed currentColor;
+  border-block-end: awsui.$border-divider-list-width dashed currentColor;
 
   &:focus {
     outline: none;

@@ -80,7 +80,7 @@ $modal-z-index: 5000;
   display: block;
   background-color: awsui.$color-background-container-content;
   word-wrap: break-word;
-  border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+  border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
   border-radius: awsui.$border-radius-container;
   box-shadow: awsui.$shadow-modal;
 }
@@ -95,7 +95,7 @@ $modal-z-index: 5000;
 .header {
   padding: awsui.$space-s awsui.$space-modal-horizontal;
   background-color: awsui.$color-background-container-header;
-  border-bottom: 1px solid awsui.$color-border-container-divider;
+  border-block-end: 1px solid awsui.$color-border-container-divider;
   border-radius: awsui.$border-radius-container awsui.$border-radius-container 0 0;
 }
 

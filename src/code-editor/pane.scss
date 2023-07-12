@@ -11,15 +11,15 @@
   $border: awsui.$border-item-width solid $border-color;
   $radius: awsui.$border-radius-item;
   > .pane__cell {
-    border-top: $border;
-    border-bottom: $border;
+    border-block-start: $border;
+    border-block-end: $border;
     &:first-child {
-      border-left: $border;
+      border-inline-start: $border;
       border-top-left-radius: $radius;
       border-bottom-left-radius: $radius;
     }
     &:last-child {
-      border-right: $border;
+      border-inline-end: $border;
       border-top-right-radius: $radius;
       border-bottom-right-radius: $radius;
     }
@@ -32,7 +32,7 @@
   flex-direction: row;
   flex: 1;
 
-  border-top: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   border-bottom-left-radius: awsui.$border-radius-code-editor;
   border-bottom-right-radius: awsui.$border-radius-code-editor;
   background: awsui.$color-background-code-editor-status-bar;

@@ -45,7 +45,7 @@ $active-separator-width: 2px;
         min-block-size: awsui.$font-heading-xs-line-height;
         max-block-size: calc(100% - #{$gap});
         margin: auto;
-        border-left: $active-separator-width solid awsui.$color-border-divider-active;
+        border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
         box-sizing: border-box;
       }
     }
@@ -63,7 +63,7 @@ $active-separator-width: 2px;
 .tracker {
   display: none;
   position: absolute;
-  border-left: awsui.$border-divider-list-width dashed awsui.$color-border-divider-active;
+  border-inline-start: awsui.$border-divider-list-width dashed awsui.$color-border-divider-active;
   inline-size: 0;
   inset-block-start: 0;
   inset-block-end: 0;

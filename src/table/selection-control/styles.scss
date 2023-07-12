@@ -21,7 +21,7 @@
   inline-size: 100%;
   inset-inline-start: 0;
   box-sizing: border-box;
-  border-right: 0.1 * styles.$base-size solid transparent;
+  border-inline-end: 0.1 * styles.$base-size solid transparent;
 }
 
 .stud {

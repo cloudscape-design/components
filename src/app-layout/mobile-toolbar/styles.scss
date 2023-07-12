@@ -45,10 +45,10 @@
   padding: constants.$toggle-padding;
   inline-size: constants.$sidebar-size-closed;
   &:first-child {
-    border-right: 1px solid awsui.$color-border-layout;
+    border-inline-end: 1px solid awsui.$color-border-layout;
   }
   &:last-child:not(.mobile-toggle-with-drawers) {
-    border-left: 1px solid awsui.$color-border-layout;
+    border-inline-start: 1px solid awsui.$color-border-layout;
   }
   &:hover:not(.mobile-toggle-with-drawers) {
     background: awsui.$color-background-layout-panel-hover;
@@ -61,7 +61,7 @@
     block-size: 100%;
 
     > .mobile-trigger-with-drawers {
-      border-left: 1px solid awsui.$color-border-layout;
+      border-inline-start: 1px solid awsui.$color-border-layout;
       display: flex;
       align-items: center;
     }

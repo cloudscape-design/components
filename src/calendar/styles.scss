@@ -65,14 +65,14 @@
   }
 
   &-day {
-    border-bottom: calendar.$grid-border;
-    border-right: calendar.$grid-border;
+    border-block-end: calendar.$grid-border;
+    border-inline-end: calendar.$grid-border;
     padding: awsui.$space-xxs 0;
     color: calendar.$grid-disabled-day-color;
     position: relative;
 
     &:first-child {
-      border-left: calendar.$grid-border;
+      border-inline-start: calendar.$grid-border;
     }
 
     &-enabled {
@@ -162,7 +162,7 @@
   &-week {
     &:first-child {
       > .calendar-day {
-        border-top: calendar.$grid-border;
+        border-block-start: calendar.$grid-border;
       }
     }
   }

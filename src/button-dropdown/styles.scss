@@ -42,7 +42,7 @@ $dropdown-trigger-icon-offset: 2px;
   list-style: none;
   padding: awsui.$space-s awsui.$space-l;
   border: styles.$control-border-width solid transparent;
-  border-bottom: styles.$control-border-width solid awsui.$color-border-dropdown-group;
+  border-block-end: styles.$control-border-width solid awsui.$color-border-dropdown-group;
 }
 
 .title,

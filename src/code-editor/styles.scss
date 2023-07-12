@@ -41,7 +41,7 @@
   display: flex;
   vertical-align: middle;
 
-  border-top: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   background-color: awsui.$color-background-code-editor-status-bar;
   &-with-hidden-pane {
     border-bottom-left-radius: awsui.$border-radius-code-editor;
@@ -55,7 +55,7 @@
     display: flex;
     flex-wrap: wrap;
     padding-inline-start: awsui.$space-l;
-    border-right: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+    border-inline-end: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   }
 
   &__left-virtual {

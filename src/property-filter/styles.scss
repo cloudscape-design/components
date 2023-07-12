@@ -22,7 +22,7 @@
 }
 
 .add-token {
-  border-left: 1px solid awsui.$color-border-divider-default;
+  border-inline-start: 1px solid awsui.$color-border-divider-default;
   box-sizing: border-box;
   margin-inline-start: awsui.$space-m;
   padding-inline-start: awsui.$space-m;
@@ -62,7 +62,7 @@
     display: flex;
     justify-content: flex-end;
     padding-block-start: awsui.$space-s;
-    border-top: 1px solid #{awsui.$color-border-dropdown-item-default};
+    border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
   }
 }
 .token-editor {

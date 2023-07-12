@@ -51,8 +51,8 @@
 }
 
 .day {
-  border-bottom: calendar.$grid-border;
-  border-right: calendar.$grid-border;
+  border-block-end: calendar.$grid-border;
+  border-inline-end: calendar.$grid-border;
   padding: awsui.$space-xxs 0;
   color: calendar.$grid-disabled-day-color;
   position: relative;
@@ -87,7 +87,7 @@
 }
 
 .in-first-row:not(.in-previous-month) {
-  border-top: calendar.$grid-border;
+  border-block-start: calendar.$grid-border;
 }
 
 .in-previous-month:not(.last-day-of-month) {
@@ -99,10 +99,10 @@
 }
 
 .in-first-column {
-  border-left: 1px solid transparent;
+  border-inline-start: 1px solid transparent;
 
   &.in-current-month {
-    border-left: calendar.$grid-border;
+    border-inline-start: calendar.$grid-border;
   }
 }
 
