@@ -24,7 +24,8 @@
 .list {
   display: contents;
   list-style: none;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   margin-block: 0;
   margin-inline: 0;
 
@@ -44,7 +45,8 @@
 
 .list-item {
   // To override v2.1 list styling
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   margin-block: 0;
   margin-inline: 0;
 }
@@ -64,7 +66,8 @@
   background-color: transparent;
   border: styles.$control-border-width solid transparent;
 
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 
   // Icon svg has one pixel around it. We need to shift the button one
   // pixel to the left to vertically align it with the input field

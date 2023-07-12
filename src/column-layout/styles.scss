@@ -123,7 +123,8 @@ div.column-layout {
 
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters).grid-variant-text-grid > * {
-      padding: 0 $grid-gutter-width;
+      padding-block: 0;
+      padding-inline: $grid-gutter-width;
       margin-block: calc(#{$grid-gutter-width} / 2);
       margin-inline: 0;
     }

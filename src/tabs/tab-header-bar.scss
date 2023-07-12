@@ -14,14 +14,16 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-header {
   margin-block: 0;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   display: flex;
 }
 
 .tabs-header-list {
   margin-block: 0;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   display: flex;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -40,7 +42,8 @@ $label-horizontal-spacing: awsui.$space-l;
 .pagination-button {
   margin-block: awsui.$space-scaled-s;
   margin-inline: 0;
-  padding: 0 awsui.$space-xxs;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   display: flex;
   &-left {
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
@@ -61,7 +64,8 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab {
   // Clear list formatting that comes with list item
   list-style: none;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 
   flex-shrink: 0;
   display: flex;
@@ -75,7 +79,8 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab-label {
   display: flex;
   align-items: center;
-  padding: awsui.$space-scaled-2x-xxs $label-horizontal-spacing;
+  padding-block: awsui.$space-scaled-2x-xxs;
+  padding-inline: $label-horizontal-spacing;
   text-align: start;
   position: relative;
 

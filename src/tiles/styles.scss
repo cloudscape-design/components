@@ -33,7 +33,8 @@ $gutter: awsui.$space-grid-gutter;
   border: styles.$control-border-width solid awsui.$color-border-input-default;
   border-radius: awsui.$border-radius-tiles;
   background: awsui.$color-background-input-default;
-  padding: awsui.$space-xs awsui.$space-scaled-m;
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-scaled-m;
   display: flex;
   flex-direction: column;
 

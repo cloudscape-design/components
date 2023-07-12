@@ -52,7 +52,8 @@
 }
 
 nav.show-navigation {
-  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-layout-toggle-padding;
 
   // Animation for the buttons when they are added to the DOM
   @keyframes showButtons {

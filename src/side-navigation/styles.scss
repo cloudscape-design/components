@@ -54,7 +54,8 @@
 .list {
   margin-block: 0;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   padding-inline-start: awsui.$space-l;
 }
 
@@ -75,7 +76,8 @@
 .list-item {
   margin-block: awsui.$space-scaled-xs;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   list-style: none;
 }
 
@@ -95,14 +97,16 @@
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
   > div {
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
   }
 }
 
 .list-variant-section-group {
   margin-block: 0;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }
 
 .section-group {

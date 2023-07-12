@@ -22,7 +22,8 @@
   margin-inline-start: -1px;
   margin-inline-end: awsui.$space-xxs;
   border: 1px solid transparent;
-  padding: 0 awsui.$space-xxs;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   color: awsui.$color-text-button-inline-icon-default;
   background-color: transparent;
 
@@ -50,8 +51,9 @@
 .token-box {
   block-size: 100%;
   border: awsui.$border-field-width solid constants.$token-border-color;
-  padding: styles.$control-padding-vertical awsui.$space-xxs styles.$control-padding-vertical
-    styles.$control-padding-horizontal;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline-start: awsui.$space-xxs;
+  padding-inline-end: styles.$control-padding-horizontal;
   display: flex;
   align-items: flex-start;
   background: constants.$token-background;

@@ -42,7 +42,8 @@
   box-sizing: border-box;
   cursor: pointer;
   z-index: 1;
-  padding: constants.$toggle-padding;
+  padding-block: constants.$toggle-padding;
+  padding-inline: constants.$toggle-padding;
   inline-size: constants.$sidebar-size-closed;
   &:first-child {
     border-inline-end: 1px solid awsui.$color-border-layout;
@@ -57,7 +58,8 @@
   &-with-drawers {
     display: flex;
     inline-size: auto;
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
     block-size: 100%;
 
     > .mobile-trigger-with-drawers {

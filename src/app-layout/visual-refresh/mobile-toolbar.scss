@@ -18,7 +18,8 @@ section.mobile-toolbar {
   grid-area: mobileToolbar;
   grid-column: 1 / span 5;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  padding: 0 awsui.$space-m;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
   position: sticky;
   inset-block-start: var(#{custom-props.$offsetTop});
   z-index: 1000;

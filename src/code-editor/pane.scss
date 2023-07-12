@@ -76,7 +76,8 @@
 
   &__location,
   &__description {
-    padding: awsui.$space-xxs awsui.$space-s;
+    padding-block: awsui.$space-xxs;
+    padding-inline: awsui.$space-s;
   }
 
   &__location {

@@ -33,7 +33,8 @@ $grid-gutter-width: awsui.$space-grid-gutter;
   display: flex;
 
   .grid.no-gutters > & {
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
   }
 
   @for $i from 1 through $grid-columns {

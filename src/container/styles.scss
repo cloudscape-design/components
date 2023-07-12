@@ -157,7 +157,8 @@
   }
 
   &.with-paddings {
-    padding: shared.$header-padding;
+    padding-block: shared.$header-padding;
+    padding-inline: shared.$header-padding;
   }
 
   &.with-hidden-content {

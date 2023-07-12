@@ -141,7 +141,8 @@ handleSplitPanelMaxWidth function in the context.
 .show-tools {
   @include styles.styles-reset;
   box-sizing: border-box;
-  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-layout-toggle-padding;
 
   // Animation for the buttons when they are added to the DOM
   @keyframes showButtons {

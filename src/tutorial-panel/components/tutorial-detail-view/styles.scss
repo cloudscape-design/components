@@ -8,7 +8,8 @@
 
 .tutorial-list {
   @include styles.styles-reset;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   margin-block: 0;
   margin-inline: 0;
 }
@@ -68,7 +69,9 @@
 
 .step-list {
   list-style: none;
-  padding: 0 0 0 awsui.$space-xxxs;
+  padding-block: 0;
+  padding-inline-start: 0;
+  padding-inline-end: awsui.$space-xxxs;
 }
 
 .step:not(:first-child) {

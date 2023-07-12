@@ -32,7 +32,8 @@
   box-sizing: border-box;
   background: transparent;
   line-height: inherit;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 
   &:focus {
     outline: none;
@@ -86,7 +87,8 @@
   margin-inline: awsui.$space-xxs;
   text-align: center;
   box-sizing: border-box;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   &:first-child {
     margin-inline-start: 0;
   }

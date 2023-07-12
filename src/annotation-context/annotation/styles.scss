@@ -44,7 +44,8 @@
   @include styles.styles-reset;
   background: transparent;
   border: none;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   cursor: pointer;
   scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
 

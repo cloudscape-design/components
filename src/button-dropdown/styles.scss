@@ -13,7 +13,8 @@ $dropdown-trigger-icon-offset: 2px;
 }
 
 .items-list-container {
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   margin-block: 0;
   margin-inline: 0;
 
@@ -41,7 +42,8 @@ $dropdown-trigger-icon-offset: 2px;
   display: flex;
   flex-direction: column;
   list-style: none;
-  padding: awsui.$space-s awsui.$space-l;
+  padding-block: awsui.$space-s;
+  padding-inline: awsui.$space-l;
   border: styles.$control-border-width solid transparent;
   border-block-end: styles.$control-border-width solid awsui.$color-border-dropdown-group;
 }

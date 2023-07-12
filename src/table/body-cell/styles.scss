@@ -196,7 +196,8 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     outline: 0;
     background: 0;
     border: 0;
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
 
     // Additional xxs padding that would normally come from the Inline Icon Button
     padding-inline-end: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});

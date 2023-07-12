@@ -16,7 +16,8 @@
   border-width: map.get($variant, 'border-width');
   position: relative;
   text-decoration: none;
-  padding: map.get($variant, 'padding');
+  padding-block: map.get($variant, 'padding');
+  padding-inline: map.get($variant, 'padding');
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
@@ -80,7 +81,8 @@
   letter-spacing: awsui.$font-button-letter-spacing;
   border-radius: awsui.$border-radius-button;
   border: styles.$control-border-width solid;
-  padding: styles.$control-padding-vertical awsui.$space-l;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: awsui.$space-l;
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
@@ -115,7 +117,8 @@
   }
 
   &.variant-modal-dismiss {
-    padding: awsui.$space-button-modal-dismiss-vertical awsui.$space-xxs;
+    padding-block: awsui.$space-button-modal-dismiss-vertical;
+    padding-inline: awsui.$space-xxs;
     margin-inline-end: calc(-1 * #{awsui.$space-xxs});
   }
 

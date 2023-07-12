@@ -27,7 +27,8 @@
   align-items: flex-start;
   border-radius: awsui.$border-radius-alert;
   border: awsui.$border-field-width solid;
-  padding: awsui.$space-alert-vertical awsui.$space-alert-horizontal;
+  padding-block: awsui.$space-alert-vertical;
+  padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
 }
 
@@ -51,7 +52,9 @@
 }
 
 .text {
-  padding: awsui.$border-field-width 0; // To account for vertical misalignment due to button borders
+  // To account for vertical misalignment due to button borders
+  padding-block: awsui.$border-field-width;
+  padding-inline: 0;
   margin-block: awsui.$space-scaled-xxs;
   margin-inline: awsui.$space-xxs;
   &.icon {

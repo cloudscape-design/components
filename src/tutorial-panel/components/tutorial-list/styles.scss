@@ -11,7 +11,8 @@
 
 .tutorial-list {
   @include styles.styles-reset;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   margin-block: 0;
   margin-inline: 0;
 }
@@ -21,7 +22,8 @@
   list-style: none;
   border: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
   border-radius: awsui.$border-radius-tutorial-panel-item;
-  padding: awsui.$space-m;
+  padding-block: awsui.$space-m;
+  padding-inline: awsui.$space-m;
 
   &:not(:first-child) {
     margin-block-start: awsui.$space-l;

@@ -69,7 +69,8 @@
   &-day {
     border-block-end: calendar.$grid-border;
     border-inline-end: calendar.$grid-border;
-    padding: awsui.$space-xxs 0;
+    padding-block: awsui.$space-xxs;
+    padding-inline: 0;
     color: calendar.$grid-disabled-day-color;
     position: relative;
 

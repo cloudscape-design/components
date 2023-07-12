@@ -54,7 +54,8 @@
   }
 
   &-variant-h1 {
-    padding: awsui.$space-scaled-2x-xxs 0;
+    padding-block: awsui.$space-scaled-2x-xxs;
+    padding-inline: 0;
     &-refresh {
       padding: awsui.$space-xxs 0;
     }
@@ -136,7 +137,8 @@
   // Override built-in styles and global typography from 2.1 for <p> tag
   margin-block: 0;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   color: awsui.$color-text-heading-secondary;
 
   &-variant-h1 {

@@ -10,7 +10,8 @@
   @include styles.styles-reset;
   margin-block: 0;
   margin-inline: 0;
-  padding: awsui.$space-xxs 0;
+  padding-block: awsui.$space-xxs;
+  padding-inline: 0;
 
   > .item {
     @include styles.styles-reset;
@@ -20,7 +21,8 @@
   > .breadcrumb-group-list {
     display: flex;
     align-items: center;
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
     margin-block: 0;
     margin-inline: 0;
     list-style: none;
@@ -30,7 +32,8 @@
     > .item,
     > .ellipsis {
       display: inline-block;
-      padding: 0;
+      padding-block: 0;
+      padding-inline: 0;
       margin-block: 0;
       margin-inline: 0;
     }

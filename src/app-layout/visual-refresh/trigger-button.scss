@@ -20,7 +20,8 @@ handleSplitPanelMaxWidth function in the context.
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   block-size: awsui.$space-layout-toggle-diameter;
-  padding: 0 awsui.$space-s;
+  padding-block: 0;
+  padding-inline: awsui.$space-s;
   pointer-events: auto;
   inline-size: awsui.$space-layout-toggle-diameter;
 

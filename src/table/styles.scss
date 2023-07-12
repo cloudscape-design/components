@@ -100,7 +100,8 @@
 
 .cell-merged {
   text-align: center;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   &.has-footer {
     /*
     Add a bottom border to the body cell of an empty table as a separator between the 

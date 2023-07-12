@@ -30,7 +30,8 @@
   flex-wrap: wrap;
   box-sizing: border-box;
   // reset styles from OL
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   list-style: none;
   margin-block: 0;
   margin-inline-start: 0;
@@ -74,7 +75,8 @@
   word-wrap: break-word;
   margin-block: 0;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   list-style: none;
   &-inner {
     position: relative;

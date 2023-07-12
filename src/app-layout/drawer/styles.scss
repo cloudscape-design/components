@@ -12,7 +12,8 @@ $drawer-z-index-mobile: 1001;
 
 .toggle {
   box-sizing: border-box;
-  padding: constants.$toggle-padding;
+  padding-block: constants.$toggle-padding;
+  padding-inline: constants.$toggle-padding;
 }
 
 .drawer-triggers {
@@ -69,7 +70,8 @@ $drawer-z-index-mobile: 1001;
     border: 0;
     border-radius: 0;
     color: awsui.$color-text-layout-toggle;
-    padding: constants.$drawers-padding-vertical awsui.$space-s;
+    padding-block: constants.$drawers-padding-vertical;
+    padding-inline: awsui.$space-s;
     margin-block-start: 1px;
 
     &:not(:last-child) {

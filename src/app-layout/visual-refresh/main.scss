@@ -30,7 +30,8 @@
   */
   &.disable-content-paddings {
     grid-column: 1 / 6;
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
 
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
       &.is-navigation-open {

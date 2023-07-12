@@ -72,7 +72,8 @@
   &__cursor-position {
     display: inline-block;
     color: awsui.$color-text-body-default;
-    padding: awsui.$space-scaled-xs awsui.$space-s;
+    padding-block: awsui.$space-scaled-xs;
+    padding-inline: awsui.$space-s;
   }
 
   &__cog-button {

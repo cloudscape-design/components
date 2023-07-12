@@ -81,7 +81,8 @@ $option-padding-horizontal: awsui.$space-l;
 .category {
   list-style: none;
   margin-block-start: calc(-1 * #{awsui.$border-divider-list-width});
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   &:first-child {
     margin-block-start: 0;
   }
@@ -122,7 +123,8 @@ $option-padding-horizontal: awsui.$space-l;
 }
 
 .items-list-container {
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   margin-block-start: -1px;
   margin-block-end: 0;
   margin-inline: 0;
