@@ -29,7 +29,8 @@
 }
 
 .tokens {
-  margin: awsui.$space-xs 0;
+  margin-block: awsui.$space-xs;
+  margin-inline: 0;
 }
 
 .token-operator {
@@ -39,7 +40,8 @@
 .property-editor,
 .token-editor {
   user-select: text;
-  margin: awsui.$space-xxs;
+  margin-block: awsui.$space-xxs;
+  margin-inline: awsui.$space-xxs;
   &-form {
     margin-block-end: awsui.$space-scaled-l;
   }

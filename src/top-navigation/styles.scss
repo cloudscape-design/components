@@ -230,7 +230,8 @@
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
     flex: 1;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
     text-align: center;
 
     &--secondary {
@@ -292,11 +293,13 @@
 
 .overflow-menu-list {
   list-style: none;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0;
 
   &-submenu {
-    margin: awsui.$space-scaled-xxs 0;
+    margin-block: awsui.$space-scaled-xxs;
+    margin-inline: 0;
   }
 }
 

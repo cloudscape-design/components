@@ -15,11 +15,13 @@ $grid-gutter-width: awsui.$space-grid-gutter;
   @include styles.styles-reset;
   display: flex;
   flex-wrap: wrap;
-  margin: calc(#{$grid-gutter-width} / -2);
+  margin-block: calc(#{$grid-gutter-width} / -2);
+  margin-inline: calc(#{$grid-gutter-width} / -2);
   pointer-events: none;
 
   &.no-gutters {
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
   }
 }
 

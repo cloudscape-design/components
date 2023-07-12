@@ -48,7 +48,8 @@
 .flash-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
 
   &:not(.collapsed) {
     > li:not(:last-child) {
@@ -77,7 +78,8 @@
 }
 
 .flash-text {
-  margin: awsui.$border-field-width 0;
+  margin-block: awsui.$border-field-width;
+  margin-inline: 0;
   padding: awsui.$space-scaled-xxs awsui.$space-xxs;
 }
 

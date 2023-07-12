@@ -78,7 +78,8 @@
     z-index: 1;
     user-select: none;
     cursor: default;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
   }
 }
 /* stylelint-enable selector-max-type */

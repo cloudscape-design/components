@@ -32,7 +32,9 @@
   // reset styles from OL
   padding: 0;
   list-style: none;
-  margin: 0 0 0 calc(#{awsui.$space-grid-gutter} * -1);
+  margin-block: 0;
+  margin-inline-start: 0;
+  margin-inline-end: calc(#{awsui.$space-grid-gutter} * -1);
 
   @for $i from 1 through 20 {
     &.list-grid-#{$i} {
@@ -70,13 +72,16 @@
   display: flex;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0;
   list-style: none;
   &-inner {
     position: relative;
     background-color: awsui.$color-background-container-content;
-    margin: 0 0 awsui.$space-grid-gutter awsui.$space-grid-gutter;
+    margin-block-start: 0;
+    margin-block-end: awsui.$space-grid-gutter awsui.$space-grid-gutter;
+    margin-inline: 0;
     padding: awsui.$space-scaled-l awsui.$space-card-horizontal awsui.$space-scaled-l;
     // HACK: IE shadow comes with full border that we need to take into account
     @media screen and (-ms-high-contrast: active) {

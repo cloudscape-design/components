@@ -134,7 +134,8 @@
 
 .description {
   // Override built-in styles and global typography from 2.1 for <p> tag
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0;
   color: awsui.$color-text-heading-secondary;
 
@@ -160,7 +161,8 @@
 }
 
 .heading {
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   // We display heading element inline to achieve the proper line-wrapping with info links
   display: inline;
   font-size: inherit;

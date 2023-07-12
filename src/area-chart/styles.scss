@@ -32,6 +32,7 @@
 }
 
 .popover-divider {
-  margin: awsui.$space-xxs 0;
+  margin-block: awsui.$space-xxs;
+  margin-inline: 0;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }

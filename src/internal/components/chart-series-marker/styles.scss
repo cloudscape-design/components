@@ -34,7 +34,8 @@
     &::after {
       content: '';
       display: block;
-      margin: 0.2 * styles.$base-size;
+      margin-block: 0.2 * styles.$base-size;
+      margin-inline: 0.2 * styles.$base-size;
       block-size: 1 * styles.$base-size;
       background-color: awsui.$color-background-container-content;
       opacity: 0.5;

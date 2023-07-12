@@ -139,7 +139,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-wrapper {
     font-size: inherit;
     letter-spacing: inherit;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
     padding: 0;
   }
 

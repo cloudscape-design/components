@@ -27,7 +27,8 @@
 }
 .result-button {
   display: inline-block;
-  margin: awsui.$space-scaled-xxs 0;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: 0;
 }
 
 .word-wrap {

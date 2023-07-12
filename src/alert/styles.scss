@@ -52,7 +52,8 @@
 
 .text {
   padding: awsui.$border-field-width 0; // To account for vertical misalignment due to button borders
-  margin: awsui.$space-scaled-xxs awsui.$space-xxs;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: awsui.$space-xxs;
   &.icon {
     margin-inline-start: 0;
   }

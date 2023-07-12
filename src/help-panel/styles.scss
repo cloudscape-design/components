@@ -15,7 +15,8 @@
   hr {
     border: none;
     border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    margin: awsui.$space-scaled-xl calc(-1 * #{awsui.$space-xs});
+    margin-block: awsui.$space-scaled-xl;
+    margin-inline: calc(-1 * #{awsui.$space-xs});
   }
 
   ol,
@@ -35,7 +36,8 @@
   h5,
   pre,
   code {
-    margin: awsui.$space-xs 0;
+    margin-block: awsui.$space-xs;
+    margin-inline: 0;
     padding-block-start: 0;
     padding-block-end: 0;
   }
@@ -50,7 +52,8 @@
   }
 
   dl {
-    margin: awsui.$space-xs 0;
+    margin-block: awsui.$space-xs;
+    margin-inline: 0;
     /* stylelint-disable-next-line selector-max-universal */
     * {
       margin-block-start: 0;
@@ -62,7 +65,9 @@
     font-weight: styles.$font-weight-bold;
   }
   dd {
-    margin: 0 0 awsui.$space-xs;
+    margin-block-start: 0;
+    margin-block-end: awsui.$space-xs;
+    margin-inline: 0;
   }
 
   h2,
@@ -112,8 +117,10 @@
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
     border: none;
     border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    margin: 0 calc(-1 * #{awsui.$space-panel-side-right}) awsui.$space-scaled-l
-      calc(-1 * #{awsui.$space-panel-side-left});
+    margin-block-start: 0;
+    margin-inline-start: calc(-1 * #{awsui.$space-panel-side-right});
+    margin-block-end: awsui.$space-scaled-l;
+    margin-inline-end: calc(-1 * #{awsui.$space-panel-side-left});
     h2,
     h3,
     h4,
@@ -147,7 +154,8 @@
 .footer {
   color: awsui.$color-text-body-secondary;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  margin: awsui.$space-scaled-xl calc(-1 * #{awsui.$space-xs});
+  margin-block: awsui.$space-scaled-xl;
+  margin-inline: calc(-1 * #{awsui.$space-xs});
   padding: 0 awsui.$space-s;
   > :first-child {
     margin-block-start: awsui.$space-scaled-xl;

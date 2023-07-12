@@ -25,7 +25,8 @@
   display: contents;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
 
   &.horizontal,
   &.vertical {
@@ -44,7 +45,8 @@
 .list-item {
   // To override v2.1 list styling
   padding: 0;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
 }
 
 .toggle-container-inline {
@@ -86,7 +88,8 @@
 }
 
 .separator {
-  margin: 0px awsui.$space-scaled-m;
+  margin-block: 0px;
+  margin-inline: awsui.$space-scaled-m;
   inline-size: awsui.$border-divider-section-width;
   background-color: awsui.$color-border-divider-default;
 }

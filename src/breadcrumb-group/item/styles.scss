@@ -15,7 +15,8 @@
   display: flex;
 
   > .icon {
-    margin: 0 awsui.$space-xs;
+    margin-block: 0;
+    margin-inline: awsui.$space-xs;
     color: awsui.$color-text-breadcrumb-icon;
   }
 

@@ -103,15 +103,18 @@ div.column-layout {
   word-wrap: break-word;
 
   > .grid {
-    margin: calc(#{$grid-gutter-width} / -2);
+    margin-block: calc(#{$grid-gutter-width} / -2);
+    margin-inline: calc(#{$grid-gutter-width} / -2);
 
     &.grid-no-gutters {
-      margin: 0;
+      margin-block: 0;
+      margin-inline: 0;
     }
 
     &.grid-variant-text-grid {
       @include make-vertical-borders('left');
-      margin: calc(-1 * #{$grid-gutter-width} / 2) calc(-1 * #{$grid-gutter-width});
+      margin-block: calc(-1 * #{$grid-gutter-width} / 2);
+      margin-inline: calc(-1 * #{$grid-gutter-width});
     }
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters) > * {
@@ -121,7 +124,8 @@ div.column-layout {
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters).grid-variant-text-grid > * {
       padding: 0 $grid-gutter-width;
-      margin: calc(#{$grid-gutter-width} / 2) 0;
+      margin-block: calc(#{$grid-gutter-width} / 2);
+      margin-inline: 0;
     }
 
     &.grid-vertical-borders {

@@ -12,13 +12,15 @@ $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-l;
 
 .tabs-header {
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0;
   display: flex;
 }
 
 .tabs-header-list {
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0;
   display: flex;
   overflow-x: scroll;
@@ -36,7 +38,8 @@ $label-horizontal-spacing: awsui.$space-l;
 }
 
 .pagination-button {
-  margin: awsui.$space-scaled-s 0;
+  margin-block: awsui.$space-scaled-s;
+  margin-inline: 0;
   padding: 0 awsui.$space-xxs;
   display: flex;
   &-left {
