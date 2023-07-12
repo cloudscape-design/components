@@ -1771,35 +1771,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#545b64",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#d5dbdb",
             "light": "#545b64",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#1a2029",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#16191f",
             "light": "#ffffff",
@@ -3870,35 +3870,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#545b64",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#d5dbdb",
             "light": "#545b64",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#1a2029",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#16191f",
             "light": "#ffffff",
@@ -8068,35 +8068,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#95a5a6",
             "light": "#95a5a6",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#1a2029",
             "light": "#1a2029",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#00a1c9",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#16191f",
             "light": "#16191f",
@@ -10167,35 +10167,35 @@ Object {
       },
     },
     "color-text-label": Object {
-      "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+      "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
       "$value": Object {
         "dark": "#95a5a6",
         "light": "#545b64",
       },
     },
     "color-text-layout-toggle": Object {
-      "$description": "This is the default color of the app layout toggle.",
+      "$description": "The default color of the app layout toggle.",
       "$value": Object {
         "dark": "#d5dbdb",
         "light": "#545b64",
       },
     },
     "color-text-layout-toggle-active": Object {
-      "$description": "This is the color of the app layout toggle button when it's active.",
+      "$description": "The color of the app layout toggle button when it's active.",
       "$value": Object {
         "dark": "#1a2029",
         "light": "#ffffff",
       },
     },
     "color-text-layout-toggle-hover": Object {
-      "$description": "This is the color of the app layout toggle button on hover.",
+      "$description": "The color of the app layout toggle button on hover.",
       "$value": Object {
         "dark": "#00a1c9",
         "light": "#0073bb",
       },
     },
     "color-text-layout-toggle-selected": Object {
-      "$description": "This is the color of the app layout toggle button when it's selected.",
+      "$description": "The color of the app layout toggle button when it's selected.",
       "$value": Object {
         "dark": "#16191f",
         "light": "#ffffff",
@@ -12271,35 +12271,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#000716",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#000716",
             "light": "#ffffff",
@@ -14370,35 +14370,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#0f1b2a",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
@@ -16469,35 +16469,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#000716",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#000716",
             "light": "#ffffff",
@@ -18568,35 +18568,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#000716",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#000716",
             "light": "#ffffff",
@@ -22766,35 +22766,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#0f1b2a",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
@@ -24865,35 +24865,35 @@ Object {
           },
         },
         "color-text-label": Object {
-          "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+          "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
           },
         },
         "color-text-layout-toggle": Object {
-          "$description": "This is the default color of the app layout toggle.",
+          "$description": "The default color of the app layout toggle.",
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-text-layout-toggle-active": Object {
-          "$description": "This is the color of the app layout toggle button when it's active.",
+          "$description": "The color of the app layout toggle button when it's active.",
           "$value": Object {
             "dark": "#0f1b2a",
             "light": "#0f1b2a",
           },
         },
         "color-text-layout-toggle-hover": Object {
-          "$description": "This is the color of the app layout toggle button on hover.",
+          "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
           },
         },
         "color-text-layout-toggle-selected": Object {
-          "$description": "This is the color of the app layout toggle button when it's selected.",
+          "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
@@ -26964,35 +26964,35 @@ Object {
       },
     },
     "color-text-label": Object {
-      "$description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+      "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
       "$value": Object {
         "dark": "#d1d5db",
         "light": "#000716",
       },
     },
     "color-text-layout-toggle": Object {
-      "$description": "This is the default color of the app layout toggle.",
+      "$description": "The default color of the app layout toggle.",
       "$value": Object {
         "dark": "#ffffff",
         "light": "#ffffff",
       },
     },
     "color-text-layout-toggle-active": Object {
-      "$description": "This is the color of the app layout toggle button when it's active.",
+      "$description": "The color of the app layout toggle button when it's active.",
       "$value": Object {
         "dark": "#0f1b2a",
         "light": "#ffffff",
       },
     },
     "color-text-layout-toggle-hover": Object {
-      "$description": "This is the color of the app layout toggle button on hover.",
+      "$description": "The color of the app layout toggle button on hover.",
       "$value": Object {
         "dark": "#539fe5",
         "light": "#0972d3",
       },
     },
     "color-text-layout-toggle-selected": Object {
-      "$description": "This is the color of the app layout toggle button when it's selected.",
+      "$description": "The color of the app layout toggle button when it's selected.",
       "$value": Object {
         "dark": "#000716",
         "light": "#ffffff",

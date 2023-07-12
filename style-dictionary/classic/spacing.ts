@@ -33,6 +33,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceFlashbarHorizontal: '{spaceS}',
   spaceLayoutContentBottom: '{spaceScaledL}',
   spaceModalContentBottom: '{spaceScaledL}',
+  spaceOptionIconBigTop: '{spaceXxxs}',
   spacePanelNavLeft: '{spaceXxl}',
   spacePanelSideLeft: '{spaceScaledXxl}',
   spacePanelSideRight: '{spaceScaledXxl}',
