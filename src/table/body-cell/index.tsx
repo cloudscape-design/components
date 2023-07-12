@@ -93,6 +93,7 @@ function TableCellEditable<ItemType>({
           column={column}
           item={item}
           onEditEnd={e => {
+            setShowSuccessIcon(false);
             isFocusMoveNeededRef.current = true;
             onEditEnd(e);
           }}

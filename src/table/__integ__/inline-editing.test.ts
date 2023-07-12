@@ -15,6 +15,7 @@ const bodyCell = tableWrapper.findBodyCell(2, 2)!;
 const cellRoot$ = bodyCell.toSelector();
 const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
 const cellEditButton$ = tableWrapper.findEditCellButton(2, 2).toSelector();
+const cellCancelButton$ = tableWrapper.findEditingCellCancelButton().toSelector();
 const cellSaveButton = tableWrapper.findEditingCellSaveButton();
 const successIcon$ = bodyCell.findByClassName(styles['body-cell-success']).toSelector();
 const ariaLiveAnnouncement$ = bodyCell.find(`[aria-live="polite"]`).toSelector();
@@ -102,6 +103,24 @@ test(
     await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
     await expect(page.isDisplayed(successIcon$)).resolves.toBe(false);
     await expect(page.getElementsCount(ariaLiveAnnouncement$)).resolves.toBe(0);
+  })
+);
+
+test(
+  'success icon is not displayed, when successfully edited, clicking edit again an cancel the edit',
+  setupTest(async page => {
+    // Edit cell and perform a successful save
+    await page.click(cellRoot$);
+    await page.click(cellSaveButton.toSelector());
+    // Success icon is displayed, aria live is rendered.
+    await expect(page.isExisting(successIcon$)).resolves.toBe(true);
+    await expect(page.isExisting(ariaLiveAnnouncement$)).resolves.toBe(true);
+    // Edit the cell again and click cancel.
+    await page.click(cellRoot$);
+    await page.click(cellCancelButton$);
+    // Success icon and aria live region are not rendered.
+    await expect(page.isExisting(successIcon$)).resolves.toBe(false);
+    await expect(page.isExisting(ariaLiveAnnouncement$)).resolves.toBe(false);
   })
 );
 
