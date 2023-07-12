@@ -21,5 +21,6 @@ export namespace TocProps {
     text: string;
     id: string;
     level: number;
+    isActive?: boolean;
   }
 }
