@@ -17,6 +17,11 @@ export interface AreaChartProps<T extends AreaChartProps.DataTypes>
   series: ReadonlyArray<AreaChartProps.Series<T>>;
 
   /**
+   * Function to format the displayed values total.
+   */
+  detailTotalFormatter?: AreaChartProps.TickFormatter<number>;
+
+  /**
    * An object containing all the necessary localized strings required by the component.
    * @i18n
    */
@@ -60,7 +65,7 @@ export namespace AreaChartProps {
   export interface I18nStrings<T> extends CartesianChartProps.I18nStrings<T> {
     /** The title of the values total in the popover. */
     detailTotalLabel?: string;
-    /** Function to format the displayed values total. */
+    /** @deprecated Use `detailTotalFormatter` on the component instead. */
     detailTotalFormatter?: TickFormatter<number>;
   }
 }

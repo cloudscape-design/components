@@ -756,6 +756,17 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed values total.",
+      "inlineType": Object {
+        "name": "AreaChartProps.TickFormatter",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "detailTotalFormatter",
+      "optional": true,
+      "type": "AreaChartProps.TickFormatter<number>",
+    },
+    Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
       "i18nTag": true,
       "name": "errorText",

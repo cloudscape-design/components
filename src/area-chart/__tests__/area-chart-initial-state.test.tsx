@@ -371,13 +371,7 @@ test('tick formatters are assigned', () => {
 
 test('detail total formatter is assigned', () => {
   const { wrapper } = renderAreaChart(
-    <AreaChart
-      series={[areaSeries1]}
-      statusType="finished"
-      i18nStrings={{
-        detailTotalFormatter: (y: number) => `=${y}`,
-      }}
-    />
+    <AreaChart series={[areaSeries1]} statusType="finished" detailTotalFormatter={(y: number) => `=${y}`} />
   );
 
   // Show popover for the first data point.
