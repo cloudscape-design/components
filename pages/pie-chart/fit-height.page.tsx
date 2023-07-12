@@ -8,18 +8,27 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { FoodData, commonProps, data1 } from './common';
 
 type DemoContext = React.Context<
-  AppContextType<{ hideFilter: boolean; hideLegend: boolean; minSize: 'large' | 'medium' | 'small' }>
+  AppContextType<{
+    fitHeight: boolean;
+    hideFilter: boolean;
+    hideLegend: boolean;
+    minSize: 'large' | 'medium' | 'small';
+  }>
 >;
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const minSize = urlParams.minSize ?? 'small';
   const heights = [800, 600, 400, 300, 200, 100];
+  const fitHeight = urlParams.fitHeight ?? true;
   return (
     <Box padding="m">
       <h1>Pie chart fit height</h1>
 
       <Box>
+        <Checkbox checked={fitHeight} onChange={e => setUrlParams({ fitHeight: e.detail.checked })}>
+          fit height
+        </Checkbox>
         <Checkbox checked={urlParams.hideFilter} onChange={e => setUrlParams({ hideFilter: e.detail.checked })}>
           hide filter
         </Checkbox>

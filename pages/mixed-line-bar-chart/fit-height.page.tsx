@@ -8,17 +8,23 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { barChartInstructions, commonProps, data3, data4 } from './common';
 import { colorChartsThresholdInfo } from '~design-tokens';
 
-type DemoContext = React.Context<AppContextType<{ hideFilter: boolean; hideLegend: boolean; minHeight: number }>>;
+type DemoContext = React.Context<
+  AppContextType<{ fitHeight: boolean; hideFilter: boolean; hideLegend: boolean; minHeight: number }>
+>;
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const minHeight = parseInt(urlParams.minHeight?.toString() || '0');
   const heights = [800, 600, 400, 300, 200, 100];
+  const fitHeight = urlParams.fitHeight ?? true;
   return (
     <Box padding="m">
       <h1>Mixed chart fit height</h1>
 
       <Box>
+        <Checkbox checked={fitHeight} onChange={e => setUrlParams({ fitHeight: e.detail.checked })}>
+          fit height
+        </Checkbox>
         <Checkbox checked={urlParams.hideFilter} onChange={e => setUrlParams({ hideFilter: e.detail.checked })}>
           hide filter
         </Checkbox>
@@ -46,7 +52,7 @@ export default function () {
               >
                 <MixedLineBarChart
                   {...commonProps}
-                  fitHeight={true}
+                  fitHeight={fitHeight}
                   height={minHeight}
                   hideFilter={urlParams.hideFilter}
                   hideLegend={urlParams.hideLegend}

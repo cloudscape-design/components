@@ -7,7 +7,9 @@ import { AreaChart, Box, Button, Checkbox, SpaceBetween } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 
-type DemoContext = React.Context<AppContextType<{ hideFilter: boolean; hideLegend: boolean; minHeight: number }>>;
+type DemoContext = React.Context<
+  AppContextType<{ fitHeight: boolean; hideFilter: boolean; hideLegend: boolean; minHeight: number }>
+>;
 
 const chartData = createLinearTimeLatencyProps();
 
@@ -15,11 +17,15 @@ export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const minHeight = parseInt(urlParams.minHeight?.toString() || '0');
   const heights = [800, 600, 400, 300, 200, 100];
+  const fitHeight = urlParams.fitHeight ?? true;
   return (
     <Box padding="m">
       <h1>Area chart fit height</h1>
 
       <Box>
+        <Checkbox checked={fitHeight} onChange={e => setUrlParams({ fitHeight: e.detail.checked })}>
+          fit height
+        </Checkbox>
         <Checkbox checked={urlParams.hideFilter} onChange={e => setUrlParams({ hideFilter: e.detail.checked })}>
           hide filter
         </Checkbox>
@@ -46,7 +52,7 @@ export default function () {
                 style={{ boxSizing: 'border-box', width: '100%', padding: '8px', border: '2px solid black', height }}
               >
                 <AreaChart
-                  fitHeight={true}
+                  fitHeight={fitHeight}
                   height={minHeight}
                   hideFilter={urlParams.hideFilter}
                   hideLegend={urlParams.hideLegend}
