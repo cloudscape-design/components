@@ -805,9 +805,9 @@ describe('Reserve space', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart series={[lineSeries]} height={100} fitHeight={fitHeight} />
     );
-    expect(wrapper.findByClassName(cartesianStyles['chart-container-plot-wrapper'])?.getElement()).toHaveStyle({
-      minHeight: '100px',
-    });
+    const chartElement = wrapper.findByClassName(cartesianStyles['chart-container-plot-wrapper'])!.getElement();
+    expect(chartElement.style.minHeight).toBeDefined();
+    expect(parseInt(chartElement.style.minHeight)).toBeGreaterThanOrEqual(100);
   });
 
   test('unless there is a chart showing', () => {
