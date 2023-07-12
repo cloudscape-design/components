@@ -41,6 +41,7 @@
 
   &--fit-height {
     height: 100%;
+    min-height: inherit;
   }
 }
 
@@ -48,6 +49,7 @@
   display: contents;
 
   &--fit-height {
+    display: block;
     position: absolute;
     top: 0;
     right: 0;

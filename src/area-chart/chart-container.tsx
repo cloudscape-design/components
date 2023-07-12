@@ -104,7 +104,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   return (
     <CartesianChartContainer
       ref={mergedRef}
-      minHeight={minHeight}
+      minHeight={minHeight + bottomLabelsHeight}
       fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis="y" position="left" title={yTitle} />}
       leftAxisLabelMeasure={

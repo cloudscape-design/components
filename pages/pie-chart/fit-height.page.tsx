@@ -61,7 +61,7 @@ export default function () {
               >
                 <PieChart<FoodData>
                   {...commonProps}
-                  fitHeight={true}
+                  fitHeight={fitHeight}
                   hideFilter={urlParams.hideFilter}
                   hideLegend={urlParams.hideLegend}
                   data={data1}
