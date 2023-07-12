@@ -100,8 +100,10 @@ $label-horizontal-spacing: awsui.$space-l;
   font-size: awsui.$font-tabs-size;
   line-height: awsui.$font-tabs-line-height;
   font-weight: awsui.$font-wayfinding-link-active-weight;
-  @include styles.font-smoothing;
   color: awsui.$color-text-interactive-default;
+  &.refresh {
+    padding: calc(awsui.$space-static-xs - 1px) 0 awsui.$space-static-xs 0;
+  }
 
   &:hover {
     color: awsui.$color-text-accent;
@@ -110,6 +112,7 @@ $label-horizontal-spacing: awsui.$space-l;
   &:focus {
     outline: none;
   }
+  @include styles.font-smoothing;
 
   @include focus-visible.when-visible {
     z-index: 1;
