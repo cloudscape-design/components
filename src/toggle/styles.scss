@@ -66,3 +66,16 @@ $shadow-color: rgba(0, 0, 0, 0.25);
       background-color awsui.$motion-duration-fast awsui.$motion-easing-ease-out-quart;
   }
 }
+
+/* stylelint-disable */
+@supports selector(:dir(rtl)) {
+  .toggle-handle-checked:dir(rtl) {
+    transform: translateX(-0.8 * styles.$base-size);
+  }
+}
+
+@supports not selector(:dir(rtl)) {
+  [dir="rtl"] .toggle-handle-checked {
+    transform: translateX(-0.8 * styles.$base-size);
+  }
+}
