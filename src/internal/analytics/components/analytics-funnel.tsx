@@ -10,7 +10,7 @@ import {
   FunnelStepContextValue,
   FunnelState,
 } from '../context/analytics-context';
-import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
+import { useFunnel } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
@@ -192,7 +192,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funnelInteractionId, stepNumber, stepNameSelector]);
 
-  const contextValue: FunnelStepContextValue = { funnelInteractionId, stepNumber, stepNameSelector, funnelStepProps };
+  const contextValue: FunnelStepContextValue = { stepNumber, stepNameSelector, funnelStepProps };
   return (
     <FunnelStepContext.Provider value={contextValue}>
       {typeof children === 'function' ? children(contextValue) : children}
@@ -204,9 +204,6 @@ interface AnalyticsFunnelSubStepProps {
 }
 
 export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps) => {
-  const { funnelInteractionId } = useFunnel();
-  const { stepNumber, stepNameSelector } = useFunnelStep();
-
   const subStepId = useUniqueId('substep');
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
@@ -214,9 +211,6 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   return (
     <FunnelSubStepContext.Provider
       value={{
-        funnelInteractionId,
-        stepNumber,
-        stepNameSelector,
         subStepSelector,
         subStepNameSelector,
         subStepId,
