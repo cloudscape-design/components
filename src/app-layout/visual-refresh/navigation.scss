@@ -92,6 +92,7 @@ nav.navigation {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   position: relative;
   word-wrap: break-word;
