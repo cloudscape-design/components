@@ -4,6 +4,7 @@ import { ResizeObserver, ResizeObserverEntry } from '@juggle/resize-observer';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { useStableEventHandler } from '../use-stable-event-handler';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { flushSync } from 'react-dom';
 
 type ElementReference = (() => Element | null) | React.RefObject<Element>;
 
@@ -21,8 +22,13 @@ type ElementReference = (() => Element | null) | React.RefObject<Element>;
  *
  * @param elementRef React reference or memoized getter for the target element
  * @param onObserve Function to fire when observation occurs
+ * @param sync Whether to prevent concurrent rendering when calling onObserve
  */
-export function useResizeObserver(elementRef: ElementReference, onObserve: (entry: ContainerQueryEntry) => void) {
+export function useResizeObserver(
+  elementRef: ElementReference,
+  onObserve: (entry: ContainerQueryEntry) => void,
+  sync = false
+) {
   const stableOnObserve = useStableEventHandler(onObserve);
 
   // This effect provides a synchronous update required to prevent flakiness when initial state and first observed state are different.
@@ -47,7 +53,12 @@ export function useResizeObserver(elementRef: ElementReference, onObserve: (entr
       const observer = new ResizeObserver(entries => {
         // Prevent observe notifications on already unmounted component.
         if (connected) {
-          stableOnObserve(convertResizeObserverEntry(entries[0]));
+          const convertedEntry = convertResizeObserverEntry(entries[0]);
+          if (sync) {
+            queueMicrotask(() => flushSync(() => stableOnObserve(convertedEntry)));
+          } else {
+            stableOnObserve(convertedEntry);
+          }
         }
       });
       observer.observe(element);
@@ -56,7 +67,7 @@ export function useResizeObserver(elementRef: ElementReference, onObserve: (entr
         observer.disconnect();
       };
     }
-  }, [elementRef, stableOnObserve]);
+  }, [elementRef, stableOnObserve, sync]);
 }
 
 function convertResizeObserverEntry(entry: ResizeObserverEntry): ContainerQueryEntry {
