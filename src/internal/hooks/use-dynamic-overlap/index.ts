@@ -24,7 +24,7 @@ export interface UseDynamicOverlapProps {
 export function useDynamicOverlap(props?: UseDynamicOverlapProps) {
   const disabled = props?.disabled ?? false;
   const setDynamicOverlapHeight = useContext(DynamicOverlapContext);
-  const overlapElementRef = useRef<HTMLElement>(null);
+  const overlapElementRef = useRef(null);
   const [overlapHeight, setOverlapHeight] = useState<null | number>(null);
 
   const getElement = useCallback(() => overlapElementRef.current, [overlapElementRef]);
