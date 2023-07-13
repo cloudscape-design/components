@@ -61,6 +61,7 @@
   height: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
 
   &:not(.has-multiple-triggers).has-open-drawer {
@@ -124,6 +125,7 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
