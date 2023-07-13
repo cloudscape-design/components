@@ -6,6 +6,7 @@ import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
 import { useRef, useState, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import { useResizeObserver } from '../container-queries';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 
 export interface UseDynamicOverlapProps {
   /**
@@ -26,17 +27,17 @@ export function useDynamicOverlap(props?: UseDynamicOverlapProps) {
   const overlapElementRef = useRef<HTMLElement>(null);
   const [overlapHeight, setOverlapHeight] = useState<null | number>(null);
 
-  // Update getElement when deps change to trigger new observation.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getElement = useCallback(() => overlapElementRef.current, []);
-
-  useResizeObserver(getElement, entry =>
+  const getElement = useCallback(() => overlapElementRef.current, [overlapElementRef]);
+  const updateState = useCallback(
     // Use queueMicrotask to wait for possibly running renders
     // (for example when this function is called inside `useLayoutEffect`).
     // Use flushSync to let our state updates happen synchronously,
     // and therefore prevent different components from rendering out of sync.
-    queueMicrotask(() => flushSync(() => setOverlapHeight(entry.contentBoxHeight)))
+    (entry: ContainerQueryEntry) => queueMicrotask(() => flushSync(() => setOverlapHeight(entry.contentBoxHeight))),
+    [setOverlapHeight]
   );
+
+  useResizeObserver(getElement, updateState);
 
   useLayoutEffect(
     function handleDynamicOverlapHeight() {
