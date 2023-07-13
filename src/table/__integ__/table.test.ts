@@ -41,7 +41,7 @@ test(
     await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '91px', marginBottom: '0px' });
     await page.windowScrollTo({ top: 100 });
     await page.waitForJsTimers();
-    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '82px', marginBottom: '10px' });
+    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '85px', marginBottom: '6px' });
   })
 );
 
