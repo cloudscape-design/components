@@ -6,6 +6,7 @@ import { TableBodyCell } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
+import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
 const testItem = {
   test: 'testData',
@@ -31,7 +32,7 @@ const { result } = renderHook(() =>
   useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
 );
 
-const TestComponent = ({ isEditing = false }) => {
+const TestComponent = ({ isEditing = false, successfulEdit = false }) => {
   return (
     <table>
       <tbody>
@@ -55,6 +56,7 @@ const TestComponent = ({ isEditing = false }) => {
             isSelected={false}
             wrapLines={false}
             stickyState={result.current}
+            successfulEdit={successfulEdit}
             columnId="id"
           />
         </tr>
@@ -141,5 +143,15 @@ describe('TableBodyCell', () => {
       },
     };
     render(<TestComponent2 column={col} />);
+  });
+
+  it('should call onEditStart when success icon is clicked', () => {
+    const { container, rerender } = render(<TestComponent />);
+    // Success icon is shown when the cell is focused
+    screen.getByRole('button', { name: 'Edit testData test' }).focus();
+    rerender(<TestComponent successfulEdit={true} />);
+    const successIcon = container.querySelector(`.${styles['body-cell-success']}`)!;
+    fireEvent.mouseDown(successIcon);
+    expect(onEditStart).toHaveBeenCalled();
   });
 });
