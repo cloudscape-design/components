@@ -14709,7 +14709,7 @@ Defaults to \`false\`.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
-- \`submitButton\` (string) - The text of the button that enables the user to submit the form.
+- \`submitButton\` (string) - The text of the button that enables the user to submit the form. **Deprecated**, replaced by the \`submitButtonText\` component property.
 - \`optional\` (string) - The text displayed next to the step title and form header title when a step is declared optional.
 - \`nextButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *next* button is in a loading state.
 - \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.",
@@ -14754,7 +14754,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "submitButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -14781,7 +14781,7 @@ Defaults to \`false\`.
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "WizardProps.I18nStrings",
     },
     Object {
@@ -14815,6 +14815,12 @@ Use this if you need to wait for a response from the server before the user can 
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<WizardProps.Step>",
+    },
+    Object {
+      "description": "The text of the button that enables the user to submit the form.",
+      "name": "submitButtonText",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": Array [
