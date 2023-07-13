@@ -44,7 +44,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   // For vertical alignment of text in side navigation items
   margin-inline-end: calc(#{$icon-margin-right-normal});
   &-container {
-    margin-inline-end: $icon-margin-inline-end-medium;
+    margin-inline-end: $icon-margin-right-medium;
   }
 }
 

@@ -55,6 +55,15 @@ const InternalIcon = ({
   const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
   const baseProps = getBaseProps(props);
 
+  /**
+   * This is an example of how we can detect the computed direction in JavaScript.
+   */
+  const [direction, setDirection] = useState<string | null>(null);
+
+  if (!CSS.supports('selector(:dir(rtl))') && iconRef.current && !direction) {
+    setDirection(getComputedStyle(iconRef?.current).direction);
+  }
+
   baseProps.className = clsx(
     baseProps.className,
     styles.icon,
@@ -62,7 +71,8 @@ const InternalIcon = ({
     badge && styles.badge,
     !contextualSize && styles[`size-${iconSize}-mapped-height`],
     styles[`size-${iconSize}`],
-    styles[`variant-${variant}`]
+    styles[`variant-${variant}`],
+    styles[`name-${name}`]
   );
 
   // Possible infinite loop is not a concern here because line
@@ -105,6 +115,7 @@ const InternalIcon = ({
 
   return (
     <span
+      className={styles[`${name}`]}
       {...baseProps}
       // dangerouslySetInnerHTML is safe here, as we control the content coming from `icons`
       // eslint-disable-next-line react/no-danger

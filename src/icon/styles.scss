@@ -24,7 +24,6 @@
   }
 
   @include mixins.style-svg();
-
   @include mixins.make-icon-sizes;
   @include mixins.make-icon-variants;
 }
@@ -38,4 +37,33 @@
   background-color: awsui.$color-text-status-info;
   inset-block-start: 2px;
   inset-inline-end: -2px;
+}
+
+/* stylelint-disable */
+@supports selector(:dir(rtl)) {
+  .icon:dir(rtl):is(
+    .name-angle-left-double,
+    .name-angle-left,
+    .name-angle-right-double,
+    .name-angle-right, 
+    .name-arrow-left,
+    .name-caret-left-filled,
+    .name-caret-right-filled
+  ) {
+    transform: scaleX(-1);
+  }
+}
+
+@supports not selector(:dir(rtl)) {
+  [dir="rtl"] .icon:is(
+    .name-angle-left-double,
+    .name-angle-left,
+    .name-angle-right-double,
+    .name-angle-right, 
+    .name-arrow-left,
+    .name-caret-left-filled,
+    .name-caret-right-filled
+  ) {
+    transform: scaleX(-1);
+  }
 }

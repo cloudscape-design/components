@@ -35,7 +35,7 @@ export default function ThemeSwitcher() {
       </label>
       <label>
         Direction
-        <select onChange={event => document.querySelector('body')?.setAttribute('dir', event.target.value)}>
+        <select onChange={event => document.querySelector('html')?.setAttribute('dir', event.target.value)}>
           <option value="ltr">Left-to-Right</option>
           <option value="rtl">Right-to-Left</option>
         </select>
