@@ -193,7 +193,27 @@ describe('Attribute Editor', () => {
 
     test('renders `ariaLabel` on remove button using `removeButtonAriaLabel` on all rows', () => {
       const removeButtonAriaLabel = (item: Item) => `Remove ${item.key}`;
-      const wrapper = renderAttributeEditor({ ...defaultProps, removeButtonAriaLabel });
+      const wrapper = renderAttributeEditor({
+        ...defaultProps,
+        i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel },
+      });
+      defaultProps.items!.forEach((item, index) => {
+        expect(
+          wrapper
+            .findRow(index + 1)!
+            .findRemoveButton()!
+            .getElement()
+        ).toHaveAccessibleName(`Remove ${item.key}`);
+      });
+    });
+
+    test('uses `removeButtonAriaLabel` over `i18nStrings.removeButtonAriaLabel`', () => {
+      const removeButtonAriaLabel = (item: Item) => `Remove ${item.key}`;
+      const wrapper = renderAttributeEditor({
+        ...defaultProps,
+        i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel: () => `Don't render` },
+        removeButtonAriaLabel,
+      });
       defaultProps.items!.forEach((item, index) => {
         expect(
           wrapper
