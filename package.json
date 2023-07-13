@@ -126,7 +126,7 @@
     "stylelint-no-unsupported-browser-features": "^7.0.0",
     "stylelint-order": "^6.0.3",
     "stylelint-prettier": "^2.0.0",
-    "stylelint-scss": "^4.3.0",
+    "stylelint-scss": "^5.0.1",
     "svgo": "^2.8.0",
     "ts-jest": "^28.0.2",
     "ts-loader": "^9.2.6",
