@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 
 import Container from '../../../lib/components/container';
 
@@ -52,9 +52,88 @@ describe('Funnel Analytics', () => {
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(0);
 
     fireEvent.focus(getByTestId('input'));
-    fireEvent.blur(getByTestId('input'));
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSubStepComplete).not.toHaveBeenCalled();
 
+    fireEvent.blur(getByTestId('input'));
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledTimes(1);
+  });
+
+  test('moving the focus inside one container does not emit metrics', () => {
+    const { getByTestId } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
+          <Container>
+            <input data-testid="input-one" />
+
+            <input data-testid="input-two" />
+          </Container>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+
+    expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
+
+    act(() => getByTestId('input-one').focus());
+    act(() => getByTestId('input-two').focus());
+    act(() => getByTestId('input-one').focus());
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSubStepComplete).not.toHaveBeenCalled();
+  });
+
+  test('nested containers do not send their own events', () => {
+    const { getByTestId } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
+          <Container>
+            <input data-testid="input-one" />
+
+            <Container>
+              <input data-testid="input-two" />
+            </Container>
+          </Container>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+
+    expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
+
+    act(() => getByTestId('input-one').focus());
+    act(() => getByTestId('input-two').focus());
+    act(() => getByTestId('input-one').focus());
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSubStepComplete).not.toHaveBeenCalled();
+  });
+
+  test('sibling containers send their own events', () => {
+    const { getByTestId } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
+          <Container>
+            <input data-testid="input-one" />
+          </Container>
+          <Container>
+            <input data-testid="input-two" />
+          </Container>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+
+    expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
+
+    act(() => getByTestId('input-one').focus());
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSubStepComplete).not.toHaveBeenCalled();
+
+    act(() => getByTestId('input-two').focus());
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(2);
+    expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledTimes(1);
+
+    act(() => getByTestId('input-one').focus());
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(3);
+    expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledTimes(2);
   });
 });

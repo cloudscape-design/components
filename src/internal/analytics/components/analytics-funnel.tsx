@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   FunnelStepContext,
@@ -9,6 +9,7 @@ import {
   FunnelContextValue,
   FunnelStepContextValue,
   FunnelState,
+  FunnelSubStepContextValue,
 } from '../context/analytics-context';
 import { useFunnel } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
@@ -207,16 +208,19 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   const subStepId = useUniqueId('substep');
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
+  const subStepRef = useRef<HTMLDivElement | null>(null);
 
-  return (
-    <FunnelSubStepContext.Provider
-      value={{
-        subStepSelector,
-        subStepNameSelector,
-        subStepId,
-      }}
-    >
-      {children}
-    </FunnelSubStepContext.Provider>
-  );
+  const newContext: FunnelSubStepContextValue = {
+    subStepSelector,
+    subStepNameSelector,
+    subStepId,
+    subStepRef,
+    isNestedSubStep: false,
+  };
+
+  const inheritedContext = { ...useContext(FunnelSubStepContext), isNestedSubStep: true };
+
+  const context = inheritedContext.subStepId ? inheritedContext : newContext;
+
+  return <FunnelSubStepContext.Provider value={context}>{children}</FunnelSubStepContext.Provider>;
 };

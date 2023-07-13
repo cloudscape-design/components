@@ -30,6 +30,8 @@ export interface FunnelSubStepContextValue {
   subStepId: string;
   subStepSelector: string;
   subStepNameSelector: string;
+  subStepRef: MutableRefObject<HTMLDivElement | null>;
+  isNestedSubStep: boolean;
   funnelSubStepProps?: Record<string, string | number | boolean | undefined>;
 }
 
@@ -58,4 +60,6 @@ export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
   subStepId: '',
   subStepSelector: '',
   subStepNameSelector: '',
+  subStepRef: { current: null },
+  isNestedSubStep: false,
 });
