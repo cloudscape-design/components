@@ -5,7 +5,6 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import { useStableEventHandler } from '../use-stable-event-handler';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { convertResizeObserverEntry } from './utils';
-import { flushSync } from 'react-dom';
 
 type ElementReference = (() => Element | null) | React.RefObject<Element>;
 
@@ -23,13 +22,8 @@ type ElementReference = (() => Element | null) | React.RefObject<Element>;
  *
  * @param elementRef React reference or memoized getter for the target element
  * @param onObserve Function to fire when observation occurs
- * @param sync Prevent concurrent rendering when calling onObserve
  */
-export function useResizeObserver(
-  elementRef: ElementReference,
-  onObserve: (entry: ContainerQueryEntry) => void,
-  sync = false
-) {
+export function useResizeObserver(elementRef: ElementReference, onObserve: (entry: ContainerQueryEntry) => void) {
   const stableOnObserve = useStableEventHandler(onObserve);
 
   // This effect provides a synchronous update required to prevent flakiness when initial state and first observed state are different.
@@ -54,18 +48,7 @@ export function useResizeObserver(
       const observer = new ResizeObserver(entries => {
         // Prevent observe notifications on already unmounted component.
         if (connected) {
-          const callback = () => stableOnObserve(convertResizeObserverEntry(entries[0]));
-          if (sync) {
-            // Use flushSync to prevent rendering with inconsistent state.
-            // Any code that retrieves the state after this call will have access to the updated state values
-            // resulting from it.
-            // Because this is inside a useEffect hook, we also need to wrap the call inside queueMicrotask,
-            // to avoid possible interference with other render processes by deferring execution
-            // to the end of the current execution context.
-            queueMicrotask(() => flushSync(callback));
-          } else {
-            callback();
-          }
+          stableOnObserve(convertResizeObserverEntry(entries[0]));
         }
       });
       observer.observe(element);
@@ -74,5 +57,5 @@ export function useResizeObserver(
         observer.disconnect();
       };
     }
-  }, [elementRef, stableOnObserve, sync]);
+  }, [elementRef, stableOnObserve]);
 }
