@@ -20,12 +20,15 @@
 
   &-no-actions,
   &-has-description {
-    &.root-variant-h2:not(.refresh) {
-      padding-bottom: awsui.$space-scaled-xxs;
-    }
+    &.root-variant-h2:not(.refresh),
     &.root-variant-h3:not(.refresh) {
       padding-bottom: awsui.$space-scaled-xxs;
     }
+  }
+  // H3s are most often used inside containers, so minimal headings have extra padding below
+  // to prevent info links from having overlapping touch targets with surrounding elements.
+  &-no-actions:not(.root-has-description).refresh.root-variant-h3 {
+    padding-bottom: awsui.$space-scaled-xs;
   }
 
   &-no-wrap {
