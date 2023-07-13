@@ -3,7 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { FunnelSubStepContext } from '../../../../../lib/components/internal/analytics/context/analytics-context';
+import {
+  FunnelContext,
+  FunnelContextValue,
+  FunnelSubStepContext,
+} from '../../../../../lib/components/internal/analytics/context/analytics-context';
 import { useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
 import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
 import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../../../lib/components/internal/analytics/selectors';
@@ -24,24 +28,23 @@ describe('useFunnelSubStep hook', () => {
 
     const funnelInteractionId = '123';
     const subStepId = '456';
-    const stepNumber = 1;
-    const stepNameSelector = 'step1';
     const subStepSelector = 'subStep1';
     const subStepNameSelector = 'subStepName1';
 
     const { getByTestId } = render(
-      <FunnelSubStepContext.Provider
-        value={{
-          subStepId,
-          funnelInteractionId,
-          stepNumber,
-          stepNameSelector,
-          subStepSelector,
-          subStepNameSelector,
-        }}
+      <FunnelContext.Provider
+        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
       >
-        <ChildComponent />
-      </FunnelSubStepContext.Provider>
+        <FunnelSubStepContext.Provider
+          value={{
+            subStepId,
+            subStepSelector,
+            subStepNameSelector,
+          }}
+        >
+          <ChildComponent />
+        </FunnelSubStepContext.Provider>
+      </FunnelContext.Provider>
     );
 
     const container = getByTestId('container');
@@ -60,35 +63,31 @@ describe('useFunnelSubStep hook', () => {
 
     const funnelInteractionId = '123';
     const subStepId = '456';
-    const stepNumber = 1;
-    const stepNameSelector = 'step1';
     const subStepSelector = 'subStep1';
     const subStepNameSelector = 'subStepName1';
 
     const { getByTestId } = render(
-      <FunnelSubStepContext.Provider
-        value={{
-          subStepId,
-          funnelInteractionId,
-          stepNumber,
-          stepNameSelector,
-          subStepSelector,
-          subStepNameSelector,
-        }}
+      <FunnelContext.Provider
+        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
       >
-        <ChildComponent />
-      </FunnelSubStepContext.Provider>
+        <FunnelSubStepContext.Provider
+          value={{
+            subStepId,
+            subStepSelector,
+            subStepNameSelector,
+          }}
+        >
+          <ChildComponent />
+        </FunnelSubStepContext.Provider>
+      </FunnelContext.Provider>
     );
 
     getByTestId('input').focus();
 
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledWith(
       expect.objectContaining({
-        funnelInteractionId,
         subStepSelector,
         subStepNameSelector,
-        stepNumber,
-        stepNameSelector,
         subStepAllSelector: expect.any(String),
       })
     );
@@ -103,27 +102,25 @@ describe('useFunnelSubStep hook', () => {
         </div>
       );
     };
-
     const funnelInteractionId = '123';
     const subStepId = '456';
-    const stepNumber = 1;
-    const stepNameSelector = 'step1';
     const subStepSelector = 'subStep1';
     const subStepNameSelector = 'subStepName1';
 
     const { getByTestId } = render(
-      <FunnelSubStepContext.Provider
-        value={{
-          subStepId,
-          funnelInteractionId,
-          stepNumber,
-          stepNameSelector,
-          subStepSelector,
-          subStepNameSelector,
-        }}
+      <FunnelContext.Provider
+        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
       >
-        <ChildComponent />
-      </FunnelSubStepContext.Provider>
+        <FunnelSubStepContext.Provider
+          value={{
+            subStepId,
+            subStepSelector,
+            subStepNameSelector,
+          }}
+        >
+          <ChildComponent />
+        </FunnelSubStepContext.Provider>
+      </FunnelContext.Provider>
     );
 
     const input = getByTestId('input');
@@ -132,11 +129,8 @@ describe('useFunnelSubStep hook', () => {
 
     expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledWith(
       expect.objectContaining({
-        funnelInteractionId,
         subStepSelector,
         subStepNameSelector,
-        stepNumber,
-        stepNameSelector,
         subStepAllSelector: expect.any(String),
       })
     );

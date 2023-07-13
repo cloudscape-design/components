@@ -3,7 +3,7 @@
 import { StyleDictionary } from '../utils/interfaces';
 
 export const tokens: StyleDictionary.TypographyDictionary = {
-  fontBodyMLineHeight: '22px',
+  fontBodyMLineHeight: '20px',
   fontBodyMSize: '14px',
   fontBodySLetterSpacing: '0.005em',
   fontBodySLineHeight: '16px',

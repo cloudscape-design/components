@@ -10,6 +10,7 @@ import styles from './styles.css.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 interface TileProps {
   item: TilesProps.TilesDefinition;
@@ -23,6 +24,7 @@ export const Tile = React.forwardRef(
   ({ item, selected, name, breakpoint, onChange }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
     const internalRef = useRef<HTMLInputElement>(null);
     const controlId = item.controlId || `${name}-value-${item.value}`;
+    const isVisualRefresh = useVisualRefresh();
 
     const mergedRef = useMergeRefs(internalRef, forwardedRef);
 
@@ -33,6 +35,7 @@ export const Tile = React.forwardRef(
           { [styles['has-metadata']]: item.description || item.image },
           { [styles.selected]: selected },
           { [styles.disabled]: !!item.disabled },
+          { [styles.refresh]: isVisualRefresh },
           styles[`breakpoint-${breakpoint}`]
         )}
         data-value={item.value}

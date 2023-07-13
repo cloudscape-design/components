@@ -41,7 +41,7 @@
     &.key-label-variant {
       @include styles.font-label;
       color: awsui.$color-text-label;
-      margin-bottom: awsui.$space-scaled-xxxs;
+      margin-bottom: awsui.$space-key-value-gap;
     }
     &.value-large-variant {
       @include styles.font-display-l;

@@ -44,7 +44,8 @@
     "plugin/no-unsupported-browser-features": [
       true,
       {
-        "ignorePartialSupport": true
+        "ignorePartialSupport": true,
+        "ignore": ["css-nesting", "css-when-else", "flexbox-gap"]
       }
     ]
   },
