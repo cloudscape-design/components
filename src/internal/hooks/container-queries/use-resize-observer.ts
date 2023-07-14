@@ -3,7 +3,7 @@
 import { ResizeObserver, ResizeObserverEntry } from '@juggle/resize-observer';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { useStableEventHandler } from '../use-stable-event-handler';
-import { ContainerQueryEntry } from './interfaces';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 
 type ElementReference = (() => Element | null) | React.RefObject<Element>;
 
@@ -66,7 +66,5 @@ function convertResizeObserverEntry(entry: ResizeObserverEntry): ContainerQueryE
     contentBoxHeight: entry.contentBoxSize[0].blockSize,
     borderBoxWidth: entry.borderBoxSize[0].inlineSize,
     borderBoxHeight: entry.borderBoxSize[0].blockSize,
-    width: entry.contentBoxSize[0].inlineSize,
-    height: entry.contentBoxSize[0].blockSize,
   };
 }

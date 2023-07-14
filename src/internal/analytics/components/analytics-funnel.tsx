@@ -8,8 +8,9 @@ import {
   FunnelContext,
   FunnelContextValue,
   FunnelStepContextValue,
+  FunnelState,
 } from '../context/analytics-context';
-import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
+import { useFunnel } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
@@ -36,8 +37,11 @@ type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
 
 export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
-  const funnelResultRef = useRef<boolean>(false);
+  const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
+  const funnelState = useRef<FunnelState>('default');
+  const errorCount = useRef<number>(0);
+  const loadingButtonCount = useRef<number>(0);
 
   // This useEffect hook is run once on component mount to initiate the funnel analytics.
   // It first calls the 'funnelStart' method from FunnelMetrics, providing all necessary details
@@ -50,6 +54,9 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
   // The eslint-disable is required as we deliberately want this effect to run only once on mount and unmount,
   // hence we do not provide any dependencies.
   useEffect(() => {
+    // Reset the state, in case the component was re-mounted.
+    funnelState.current = 'default';
+
     const funnelInteractionId = FunnelMetrics.funnelStart({
       funnelNameSelector: getFunnelNameSelector(),
       optionalStepNumbers: props.optionalStepNumbers,
@@ -62,25 +69,69 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
 
     setFunnelInteractionId(funnelInteractionId);
 
+    /*
+      A funnel counts as "successful" if it is unmounted after being "complete".
+    */
+    /* eslint-disable react-hooks/exhaustive-deps */
     return () => {
-      if (funnelResultRef.current === true) {
+      if (funnelState.current === 'validating') {
+        // Finish the validation phase early.
+        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        funnelState.current = 'complete';
+      }
+
+      if (funnelState.current === 'complete') {
         FunnelMetrics.funnelSuccessful({ funnelInteractionId });
       } else {
         FunnelMetrics.funnelCancelled({ funnelInteractionId });
+        funnelState.current === 'cancelled';
+      }
+    };
+  }, []);
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  const funnelSubmit = () => {
+    funnelState.current = 'validating';
+
+    /*
+      When the user attempts to submit the form, we wait for 50 milliseconds before checking
+      if any form validation errors are present. This value was chosen to give enough time
+      for validation and rerendering to occur, but be low enough that the user will not
+      be able to take further action in the meantime.
+    */
+    const VALIDATION_WAIT_DELAY = 50;
+    /*
+     Loading is expected to take longer than validation, so we can keep the pressure on the CPU low.
+     */
+    const LOADING_WAIT_DELAY = 100;
+
+    const checkForCompleteness = () => {
+      if (funnelState.current === 'complete') {
+        return;
+      }
+
+      if (loadingButtonCount.current > 0) {
+        setTimeout(checkForCompleteness, LOADING_WAIT_DELAY);
+        return;
+      }
+
+      if (errorCount.current === 0) {
+        /*
+          If no validation errors are rendered, we treat the funnel as complete.
+        */
+        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        funnelState.current = 'complete';
+      } else {
+        funnelState.current = 'default';
       }
     };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const funnelSubmit = () => {
-    FunnelMetrics.funnelComplete({ funnelInteractionId });
-    funnelResultRef.current = true;
+    setTimeout(checkForCompleteness, VALIDATION_WAIT_DELAY);
   };
 
-  const funnelCancel = () => {
-    funnelResultRef.current = false;
-  };
+  const funnelNextOrSubmitAttempt = () => setSubmissionAttempt(i => i + 1);
+
+  const funnelCancel = () => {};
 
   const funnelContextValue: FunnelContextValue = {
     funnelInteractionId,
@@ -90,6 +141,11 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     totalFunnelSteps: props.totalFunnelSteps,
     funnelSubmit,
     funnelCancel,
+    submissionAttempt,
+    funnelNextOrSubmitAttempt,
+    funnelState,
+    errorCount,
+    loadingButtonCount,
   };
 
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
@@ -100,7 +156,7 @@ type AnalyticsFunnelStepProps = {
 } & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
 
 export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
-  const { funnelInteractionId } = useFunnel();
+  const { funnelInteractionId, funnelState } = useFunnel();
 
   const funnelStepProps = { [DATA_ATTR_FUNNEL_STEP]: stepNumber };
 
@@ -111,7 +167,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
   useEffect(() => {
     const stepName = getNameFromSelector(stepNameSelector);
 
-    if (funnelInteractionId) {
+    if (funnelInteractionId && funnelState.current === 'default') {
       FunnelMetrics.funnelStepStart({
         funnelInteractionId,
         stepNumber,
@@ -122,7 +178,8 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
     }
 
     return () => {
-      if (funnelInteractionId) {
+      //eslint-disable-next-line react-hooks/exhaustive-deps
+      if (funnelInteractionId && funnelState.current === 'default') {
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
           stepNumber,
@@ -132,9 +189,10 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
         });
       }
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funnelInteractionId, stepNumber, stepNameSelector]);
 
-  const contextValue: FunnelStepContextValue = { funnelInteractionId, stepNumber, stepNameSelector, funnelStepProps };
+  const contextValue: FunnelStepContextValue = { stepNumber, stepNameSelector, funnelStepProps };
   return (
     <FunnelStepContext.Provider value={contextValue}>
       {typeof children === 'function' ? children(contextValue) : children}
@@ -146,9 +204,6 @@ interface AnalyticsFunnelSubStepProps {
 }
 
 export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps) => {
-  const { funnelInteractionId } = useFunnel();
-  const { stepNumber, stepNameSelector } = useFunnelStep();
-
   const subStepId = useUniqueId('substep');
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
@@ -156,9 +211,6 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   return (
     <FunnelSubStepContext.Provider
       value={{
-        funnelInteractionId,
-        stepNumber,
-        stepNameSelector,
         subStepSelector,
         subStepNameSelector,
         subStepId,

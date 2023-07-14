@@ -15,7 +15,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useInternalI18n } from '../internal/i18n/context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -66,7 +66,8 @@ const InternalLink = React.forwardRef(
     const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
     const { funnelInteractionId } = useFunnel();
-    const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
+    const { stepNumber, stepNameSelector } = useFunnelStep();
+    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
     const fireFunnelEvent = (funnelInteractionId: string) => {
       if (variant === 'info') {

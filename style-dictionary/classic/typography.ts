@@ -5,6 +5,7 @@ import { tokens as parentTokens } from '../visual-refresh/typography';
 import merge from 'lodash/merge';
 
 const tokens: StyleDictionary.TypographyDictionary = {
+  fontBodyMLineHeight: '22px',
   fontBodySLetterSpacing: 'normal',
   fontButtonLetterSpacing: '0.25px',
   fontChartDetailSize: '{fontBodyMSize}',

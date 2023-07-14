@@ -32,6 +32,9 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
     AreaChartProps<T>,
     | 'xTitle'
     | 'yTitle'
+    | 'xTickFormatter'
+    | 'yTickFormatter'
+    | 'detailTotalFormatter'
     | 'detailPopoverSize'
     | 'detailPopoverFooter'
     | 'ariaLabel'
@@ -58,9 +61,9 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   ariaLabelledby,
   ariaDescription,
   i18nStrings: {
-    xTickFormatter,
-    yTickFormatter,
-    detailTotalFormatter,
+    xTickFormatter: deprecatedXTickFormatter,
+    yTickFormatter: deprecatedYTickFormatter,
+    detailTotalFormatter: deprecatedDetailTotalFormatter,
     detailTotalLabel,
     chartAriaRoleDescription,
     xAxisAriaRoleDescription,
@@ -69,6 +72,9 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   } = {},
   fitHeight,
   minHeight,
+  xTickFormatter = deprecatedXTickFormatter,
+  yTickFormatter = deprecatedYTickFormatter,
+  detailTotalFormatter = deprecatedDetailTotalFormatter,
 }: ChartContainerProps<T>) {
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [bottomLabelsHeight, setBottomLabelsHeight] = useState(0);

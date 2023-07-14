@@ -4,9 +4,14 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
 import styles from '../../../lib/components/cards/styles.css.js';
+
+jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
+  useMobile: jest.fn(),
+}));
 
 interface Item {
   id: number;
@@ -203,12 +208,24 @@ describe('Cards', () => {
       expect(findFooterPagination(wrapper)).toBeNull();
     });
 
-    it('is displayed in the footer on full-page variant', () => {
+    it('is not displayed in the footer on full-page variant on desktop', () => {
+      (useMobile as jest.Mock).mockReturnValue(false);
+      wrapper = renderCards(
+        <Cards<Item> variant="full-page" cardDefinition={{}} items={defaultItems} pagination="pagination" />
+      ).wrapper;
+      expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)).toBeNull();
+      jest.resetAllMocks();
+    });
+
+    it('is displayed in the footer on full-page variant on mobile', () => {
+      (useMobile as jest.Mock).mockReturnValue(true);
       wrapper = renderCards(
         <Cards<Item> variant="full-page" cardDefinition={{}} items={defaultItems} pagination="pagination" />
       ).wrapper;
       expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
       expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
+      jest.resetAllMocks();
     });
   });
 

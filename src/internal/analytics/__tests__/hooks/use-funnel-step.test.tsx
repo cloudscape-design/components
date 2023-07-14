@@ -21,7 +21,6 @@ describe('useFunnelStep hook', () => {
     const { getByTestId } = render(
       <FunnelStepContext.Provider
         value={{
-          funnelInteractionId: undefined,
           stepNameSelector: 'step_name_selector',
           stepNumber: 0,
         }}

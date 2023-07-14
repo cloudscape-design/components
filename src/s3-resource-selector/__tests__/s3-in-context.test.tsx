@@ -54,6 +54,12 @@ test('renders element labels', () => {
   expect(wrapper.findBrowseButton().getElement()).toHaveTextContent(i18nStrings.inContextBrowseButton!);
 });
 
+test('prefers inputPlaceholder over i18nStrings.inContextInputPlaceholder', () => {
+  const placeholder = 's3://bucket/component/test';
+  const wrapper = renderComponent(<S3ResourceSelector {...defaultProps} inputPlaceholder={placeholder} />);
+  expect(wrapper.findUriInput().findNativeInput().getElement()).toHaveAttribute('placeholder', placeholder);
+});
+
 test('inherits aria-describedby from the surrounding FormField', () => {
   const wrapper = renderComponent(
     <FormField controlId="test-control" description="test">

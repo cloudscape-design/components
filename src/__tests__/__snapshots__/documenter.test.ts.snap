@@ -756,6 +756,17 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed values total.",
+      "inlineType": Object {
+        "name": "AreaChartProps.TickFormatter",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "detailTotalFormatter",
+      "optional": true,
+      "type": "AreaChartProps.TickFormatter<number>",
+    },
+    Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
       "i18nTag": true,
       "name": "errorText",
@@ -970,6 +981,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -999,6 +1027,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -1171,6 +1216,12 @@ The display of a row is handled by the \`definition\` property.",
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<T>",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the remove button.",
+      "name": "removeButtonAriaLabel",
+      "optional": true,
+      "type": "(item: T) => string",
     },
     Object {
       "description": "Specifies the text that's displayed in the remove button.",
@@ -2146,6 +2197,23 @@ Use \`categorical\` for bar charts.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -2175,6 +2243,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -2826,6 +2911,9 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "settings",
           "share",
           "shrink",
+          "star-filled",
+          "star-half",
+          "star",
           "status-in-progress",
           "status-info",
           "status-negative",
@@ -2912,7 +3000,8 @@ This property only applies when an \`href\` is provided.",
 * \`normal\` for secondary buttons.
 * \`link\` for tertiary buttons.
 * \`icon\` to display an icon only (no text).
-* \`inline-icon\` to display an icon-only (no text) button within a text context.",
+* \`inline-icon\` to display an icon-only (no text) button within a text context.
+* \`inline-link\` to display a tertiary button with no outer padding.",
       "inlineType": Object {
         "name": "ButtonProps.Variant",
         "type": "union",
@@ -2922,6 +3011,7 @@ This property only applies when an \`href\` is provided.",
           "link",
           "icon",
           "inline-icon",
+          "inline-link",
         ],
       },
       "name": "variant",
@@ -3153,11 +3243,116 @@ It prevents clicks.",
       "type": "string",
     },
     Object {
+      "description": "A standalone action that is shown prior to the dropdown trigger. Use it with \\"primary\\" variant only.
+Main action properties:
+* \`text\` (string) - Specifies the text shown in the main action.
+* \`external\` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when \`href\` is also provided.
+* \`externalIconAriaLabel\` (string) - Adds an ARIA label to the external icon.
+The main action also supports the following properties of the [button](/components/button/?tabId=api) component:
+\`ariaLabel\`, \`disabled\`, \`loading\`, \`loadingText\`, \`href\`, \`target\`, \`rel\`, \`download\`, \`iconAlt\`, \`iconName\`, \`iconUrl\`, \`iconSvg\`, \`onClick\`, \`onFollow\`.
+",
+      "inlineType": Object {
+        "name": "ButtonDropdownProps.MainAction",
+        "properties": Array [
+          Object {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "disabled",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "download",
+            "optional": true,
+            "type": "boolean | string",
+          },
+          Object {
+            "name": "external",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "iconAlt",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "iconName",
+            "optional": true,
+            "type": "IconProps.Name",
+          },
+          Object {
+            "name": "iconSvg",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          Object {
+            "name": "iconUrl",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "loading",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "loadingText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "onClick",
+            "optional": true,
+            "type": "CancelableEventHandler<ClickDetail>",
+          },
+          Object {
+            "name": "onFollow",
+            "optional": true,
+            "type": "CancelableEventHandler<ButtonProps.FollowDetail>",
+          },
+          Object {
+            "name": "rel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "mainAction",
+      "optional": true,
+      "type": "ButtonDropdownProps.MainAction",
+    },
+    Object {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
 * \`normal\` for secondary buttons
-* \`icon\` for icon buttons",
+* \`icon\` for icon buttons
+* \`inline-icon\` for icon buttons with no outer padding",
       "inlineType": Object {
         "name": "ButtonDropdownProps.Variant",
         "type": "union",
@@ -3165,6 +3360,7 @@ It prevents clicks.",
           "normal",
           "primary",
           "icon",
+          "inline-icon",
         ],
       },
       "name": "variant",
@@ -6925,6 +7121,9 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "settings",
           "share",
           "shrink",
+          "star-filled",
+          "star-half",
+          "star",
           "status-in-progress",
           "status-info",
           "status-negative",
@@ -7735,6 +7934,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -7764,6 +7980,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -8321,6 +8554,23 @@ Use \`categorical\` for charts with bars.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -8350,6 +8600,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -9958,6 +10225,13 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "The label that will be passed down to the Autosuggest \`ariaLabel\` property.
+See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more details.",
+      "name": "filteringAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
       "name": "filteringErrorText",
       "optional": true,
@@ -9999,6 +10273,12 @@ const filteringOptions = [
       "name": "filteringOptions",
       "optional": true,
       "type": "ReadonlyArray<PropertyFilterProps.FilteringOption>",
+    },
+    Object {
+      "description": "Placeholder for the filtering input.",
+      "name": "filteringPlaceholder",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "An array of properties by which the data set can be filtered. Each element has the following properties:
@@ -10097,7 +10377,7 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "filteringAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10209,7 +10489,7 @@ operations are communicated to the user in another way.",
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "PropertyFilterProps.I18nStrings",
     },
     Object {
@@ -10843,6 +11123,12 @@ automatically set by the form field (for example, if you have two components wit
 To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
 ",
       "name": "inputAriaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds a placeholder to the S3 URI input.",
+      "name": "inputPlaceholder",
       "optional": true,
       "type": "string",
     },
@@ -14617,7 +14903,7 @@ Defaults to \`false\`.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
-- \`submitButton\` (string) - The text of the button that enables the user to submit the form.
+- \`submitButton\` (string) - The text of the button that enables the user to submit the form. **Deprecated**, replaced by the \`submitButtonText\` component property.
 - \`optional\` (string) - The text displayed next to the step title and form header title when a step is declared optional.
 - \`nextButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *next* button is in a loading state.
 - \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.",
@@ -14662,7 +14948,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "submitButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -14689,7 +14975,7 @@ Defaults to \`false\`.
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "WizardProps.I18nStrings",
     },
     Object {
@@ -14723,6 +15009,12 @@ Use this if you need to wait for a response from the server before the user can 
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<WizardProps.Step>",
+    },
+    Object {
+      "description": "The text of the button that enables the user to submit the form.",
+      "name": "submitButtonText",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": Array [

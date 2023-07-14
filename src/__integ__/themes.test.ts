@@ -43,6 +43,7 @@ describe('CSS Custom Properties', () => {
     ['reduced-motion', '#light/?visualRefresh=false&motionDisabled=true'],
     ['visual-refresh', '#light/?visualRefresh=true'],
     ['visual-refresh-dark', '#dark/?visualRefresh=true'],
+    ['visual-refresh-compact', '#light/?visualRefresh=true&density=compact'],
     [
       'visual-refresh-content-header',
       '#/light/visual-contexts/content-header/?visualRefresh=true',

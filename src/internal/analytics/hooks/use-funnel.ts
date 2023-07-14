@@ -19,14 +19,19 @@ import { FunnelMetrics } from '../';
 export const useFunnelSubStep = () => {
   const subStepRef = useRef<HTMLDivElement | null>(null);
   const context = useContext(FunnelSubStepContext);
-  const { funnelInteractionId, subStepId, subStepSelector, subStepNameSelector, stepNumber, stepNameSelector } =
-    context;
+  const { funnelInteractionId } = useFunnel();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
+
+  const { subStepId, subStepSelector, subStepNameSelector } = context;
+
+  const { funnelState } = useFunnel();
 
   const onFocus = (event: React.FocusEvent<HTMLDivElement>) => {
     if (
       funnelInteractionId &&
       subStepRef.current &&
-      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node))
+      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node)) &&
+      funnelState.current === 'default'
     ) {
       FunnelMetrics.funnelSubStepStart({
         funnelInteractionId,
@@ -40,7 +45,12 @@ export const useFunnelSubStep = () => {
   };
 
   const onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-    if (funnelInteractionId && subStepRef.current && !subStepRef.current.contains(event.relatedTarget)) {
+    if (
+      funnelInteractionId &&
+      subStepRef.current &&
+      !subStepRef.current.contains(event.relatedTarget) &&
+      funnelState.current === 'default'
+    ) {
       FunnelMetrics.funnelSubStepComplete({
         funnelInteractionId,
         subStepSelector,

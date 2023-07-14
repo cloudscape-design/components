@@ -17,7 +17,6 @@ import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 import { findUpUntil } from '../internal/utils/dom';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
-import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import {
@@ -49,6 +48,7 @@ import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control
 import { useDrawerFocusControl } from './utils/use-drawer-focus-control';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { DrawersLayout, convertRuntimeDrawers } from './runtime-api';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export { AppLayoutProps };
 
@@ -267,7 +267,7 @@ const OldAppLayout = React.forwardRef(
     const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
     const [isResizeInvalid, setIsResizeInvalid] = useState(false);
 
-    const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
+    const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.contentBoxHeight);
     const anyPanelOpen = navigationVisible || toolsVisible;
     const hasRenderedNotifications = notificationsHeight ? notificationsHeight > 0 : false;
     const stickyNotificationsHeight = stickyNotifications ? notificationsHeight : null;
@@ -559,7 +559,7 @@ const OldAppLayout = React.forwardRef(
         ? splitPanelReportedSize
         : splitPanelReportedHeaderHeight) ?? undefined;
 
-    const [mobileBarHeight, mobileBarRef] = useContainerQuery(rect => rect.height);
+    const [mobileBarHeight, mobileBarRef] = useContainerQuery(rect => rect.contentBoxHeight);
 
     return (
       <div

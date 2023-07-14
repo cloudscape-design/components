@@ -36,6 +36,9 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   yScaleType,
   xDomain,
   yDomain,
+  xTickFormatter,
+  yTickFormatter,
+  detailTotalFormatter,
   highlightedSeries: controlledHighlightedSeries,
   visibleSeries: controlledVisibleSeries,
   series: externalSeries,
@@ -174,6 +177,9 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             detailPopoverFooter={detailPopoverFooter}
             xTitle={xTitle}
             yTitle={yTitle}
+            xTickFormatter={xTickFormatter}
+            yTickFormatter={yTickFormatter}
+            detailTotalFormatter={detailTotalFormatter}
             ariaLabel={ariaLabel}
             ariaLabelledby={ariaLabelledby}
             ariaDescription={ariaDescription}

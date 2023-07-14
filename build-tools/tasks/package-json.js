@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const { writeFile, listPublicItems, listBetaVersions } = require('../utils/files');
 const themes = require('../utils/themes');
-const { task } = require('../utils/gulp-utils');
+const { task, copyTask } = require('../utils/gulp-utils');
 const workspace = require('../utils/workspace');
 const pkg = require('../../package.json');
 
@@ -116,6 +116,7 @@ module.exports = parallel([
   }),
   styleDictionaryPackageJson,
   componentsThemeablePackageJson,
+  copyTask('package-lock', ['package-lock.json'], path.join(workspace.targetPath, 'dev-pages', 'internal')),
   devPagesPackageJson,
 ]);
 module.exports.generatePackageJson = generatePackageJson;
