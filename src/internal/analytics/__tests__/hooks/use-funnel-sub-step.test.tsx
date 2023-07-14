@@ -31,6 +31,8 @@ describe('useFunnelSubStep hook', () => {
     const subStepSelector = 'subStep1';
     const subStepNameSelector = 'subStepName1';
 
+    const ref = { current: null };
+
     const { getByTestId } = render(
       <FunnelContext.Provider
         value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
@@ -40,9 +42,13 @@ describe('useFunnelSubStep hook', () => {
             subStepId,
             subStepSelector,
             subStepNameSelector,
+            subStepRef: ref,
+            isNestedSubStep: false,
           }}
         >
-          <ChildComponent />
+          <div ref={ref}>
+            <ChildComponent />
+          </div>
         </FunnelSubStepContext.Provider>
       </FunnelContext.Provider>
     );
@@ -66,6 +72,8 @@ describe('useFunnelSubStep hook', () => {
     const subStepSelector = 'subStep1';
     const subStepNameSelector = 'subStepName1';
 
+    const ref = { current: null };
+
     const { getByTestId } = render(
       <FunnelContext.Provider
         value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
@@ -75,9 +83,13 @@ describe('useFunnelSubStep hook', () => {
             subStepId,
             subStepSelector,
             subStepNameSelector,
+            subStepRef: ref,
+            isNestedSubStep: false,
           }}
         >
-          <ChildComponent />
+          <div ref={ref}>
+            <ChildComponent />
+          </div>
         </FunnelSubStepContext.Provider>
       </FunnelContext.Provider>
     );
@@ -107,6 +119,8 @@ describe('useFunnelSubStep hook', () => {
     const subStepSelector = 'subStep1';
     const subStepNameSelector = 'subStepName1';
 
+    const ref = { current: null };
+
     const { getByTestId } = render(
       <FunnelContext.Provider
         value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
@@ -116,9 +130,13 @@ describe('useFunnelSubStep hook', () => {
             subStepId,
             subStepSelector,
             subStepNameSelector,
+            subStepRef: ref,
+            isNestedSubStep: false,
           }}
         >
-          <ChildComponent />
+          <div ref={ref}>
+            <ChildComponent />
+          </div>
         </FunnelSubStepContext.Provider>
       </FunnelContext.Provider>
     );
