@@ -127,6 +127,8 @@ describe('useFunnelSubStep hook', () => {
       >
         <FunnelSubStepContext.Provider
           value={{
+            subStepRef: { current: null },
+            isNestedSubStep: false,
             subStepId,
             subStepSelector,
             subStepNameSelector,
@@ -143,6 +145,8 @@ describe('useFunnelSubStep hook', () => {
       >
         <FunnelSubStepContext.Provider
           value={{
+            subStepRef: { current: null },
+            isNestedSubStep: false,
             subStepId,
             subStepSelector,
             subStepNameSelector,
