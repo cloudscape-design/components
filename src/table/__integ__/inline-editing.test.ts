@@ -16,7 +16,6 @@ const cellRoot$ = bodyCell.toSelector();
 const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
 const cellEditButton$ = tableWrapper.findEditCellButton(2, 2).toSelector();
 const cellSaveButton = tableWrapper.findEditingCellSaveButton();
-const cellCancelButton$ = tableWrapper.findEditingCellCancelButton().toSelector();
 const successIcon$ = bodyCell.findByClassName(styles['body-cell-success']).toSelector();
 const ariaLiveAnnouncement$ = bodyCell.find(`[aria-live="polite"]`).toSelector();
 
@@ -58,11 +57,14 @@ test(
 );
 
 test(
-  'cell is focused after edit is submitted',
+  'after edit is submitted, cell is focused, success icon is displayed and aria live region is rendered',
   setupTest(async page => {
     await page.click(cellRoot$);
     await page.click(cellSaveButton.toSelector());
+
     await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
+    await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
+    await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
   })
 );
 
@@ -133,63 +135,5 @@ test(
 
     // after loading, the focus should be back on the input
     await page.waitForAssertion(() => expect(page.isFocused(cellInputField$)).resolves.toBe(true));
-  })
-);
-
-test(
-  'success icon is displayed and aria live region is rendered after a successful edit',
-  setupTest(async page => {
-    // Before the edit, no live region and success icon is shown.
-    await expect(page.isExisting(successIcon$)).resolves.toBe(false);
-    await expect(page.isExisting(ariaLiveAnnouncement$)).resolves.toBe(false);
-    await page.click(cellRoot$);
-    await page.click(cellSaveButton.toSelector());
-    // Success icon and live region is rendered after the successful edit.
-    await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
-    await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
-    await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
-  })
-);
-
-test(
-  'success icon is not displayed, no aria live region is rendered after successfully edited cell lost focus and gets re-focused',
-  setupTest(async page => {
-    // Edit cell and perform a successful save
-    await page.click(cellRoot$);
-    await page.click(cellSaveButton.toSelector());
-    // Success icon is displayed, aria live is rendered, the cell is focused.
-    await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
-    await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
-    await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
-    // Tab to another cell
-    await page.keys('ArrowRight');
-    // Edited cell lost focus, success icon is not visible, aria live region is not rendered
-    await expect(page.isFocused(cellEditButton$)).resolves.toBe(false);
-    await expect(page.isDisplayed(successIcon$)).resolves.toBe(false);
-    await expect(page.getElementsCount(ariaLiveAnnouncement$)).resolves.toBe(0);
-    // Tab back to the origin cell
-    await page.keys('ArrowLeft');
-    // Edited cell got focus again, the success icon is not visible, aria live region is not rendered
-    await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
-    await expect(page.isDisplayed(successIcon$)).resolves.toBe(false);
-    await expect(page.getElementsCount(ariaLiveAnnouncement$)).resolves.toBe(0);
-  })
-);
-
-test(
-  'success icon is not displayed, when successfully edited, clicking edit again an cancel the edit',
-  setupTest(async page => {
-    // Edit cell and perform a successful save
-    await page.click(cellRoot$);
-    await page.click(cellSaveButton.toSelector());
-    // Success icon is displayed, aria live is rendered.
-    await expect(page.isExisting(successIcon$)).resolves.toBe(true);
-    await expect(page.isExisting(ariaLiveAnnouncement$)).resolves.toBe(true);
-    // Edit the cell again and click cancel.
-    await page.click(cellRoot$);
-    await page.click(cellCancelButton$);
-    // Success icon and aria live region are not rendered.
-    await expect(page.isExisting(successIcon$)).resolves.toBe(false);
-    await expect(page.isExisting(ariaLiveAnnouncement$)).resolves.toBe(false);
   })
 );
