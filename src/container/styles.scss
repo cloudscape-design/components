@@ -158,6 +158,9 @@
 
   &.with-paddings {
     padding: shared.$header-padding;
+    &.refresh {
+      padding: shared.$header-padding-refresh;
+    }
   }
 
   &.with-hidden-content {
