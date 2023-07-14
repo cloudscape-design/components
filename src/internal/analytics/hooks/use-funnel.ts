@@ -31,8 +31,7 @@ export const useFunnelSubStep = () => {
     if (
       funnelInteractionId &&
       subStepRef.current &&
-      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node)) &&
-      funnelState.current === 'default'
+      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node))
     ) {
       FunnelMetrics.funnelSubStepStart({
         funnelInteractionId,

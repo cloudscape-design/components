@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import {
   FunnelContext,
@@ -17,6 +17,7 @@ import { mockFunnelMetrics } from '../mocks';
 describe('useFunnelSubStep hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -57,7 +58,7 @@ describe('useFunnelSubStep hook', () => {
     expect(container).toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP);
   });
 
-  test('calls funnelSubStepStart when the substep is focused', () => {
+  test('calls funnelSubStepStart when the substep is focused in the default phase', () => {
     const ChildComponent = () => {
       const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
       return (
@@ -94,7 +95,69 @@ describe('useFunnelSubStep hook', () => {
       </FunnelContext.Provider>
     );
 
-    getByTestId('input').focus();
+    act(() => getByTestId('input').focus());
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        subStepSelector,
+        subStepNameSelector,
+        subStepAllSelector: expect.any(String),
+      })
+    );
+  });
+
+  test('calls funnelSubStepStart when the substep is focused in the validation phase', () => {
+    const ChildComponent = () => {
+      const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+      return (
+        <div ref={subStepRef} {...funnelSubStepProps}>
+          <input data-testid="input" />
+        </div>
+      );
+    };
+
+    const funnelInteractionId = '123';
+    const subStepId = '456';
+    const subStepSelector = 'subStep1';
+    const subStepNameSelector = 'subStepName1';
+
+    const { getByTestId, rerender } = render(
+      <FunnelContext.Provider
+        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
+      >
+        <FunnelSubStepContext.Provider
+          value={{
+            subStepRef: { current: null },
+            isNestedSubStep: false,
+            subStepId,
+            subStepSelector,
+            subStepNameSelector,
+          }}
+        >
+          <ChildComponent />
+        </FunnelSubStepContext.Provider>
+      </FunnelContext.Provider>
+    );
+
+    rerender(
+      <FunnelContext.Provider
+        value={{ funnelInteractionId, funnelState: { current: 'validating' } } as Partial<FunnelContextValue> as any}
+      >
+        <FunnelSubStepContext.Provider
+          value={{
+            subStepRef: { current: null },
+            isNestedSubStep: false,
+            subStepId,
+            subStepSelector,
+            subStepNameSelector,
+          }}
+        >
+          <ChildComponent />
+        </FunnelSubStepContext.Provider>
+      </FunnelContext.Provider>
+    );
+
+    act(() => getByTestId('input').focus());
 
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledWith(
       expect.objectContaining({
