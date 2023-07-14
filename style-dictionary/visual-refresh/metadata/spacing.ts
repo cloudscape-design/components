@@ -76,7 +76,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   spaceScaledXl: {
     description:
-      'The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.',
+      'The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.',
     public: true,
     themeable: false,
   },
@@ -105,8 +105,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
   },
   spaceScaledXxxs: {
-    description:
-      'The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.',
+    description: 'The XXXS spacing unit which scales between modes.',
     public: true,
     themeable: false,
   },
