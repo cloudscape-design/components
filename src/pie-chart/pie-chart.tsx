@@ -98,8 +98,9 @@ export default <T extends PieChartProps.Datum>({
   const height = fitHeight ? measuredHeight : explicitHeight;
 
   const dimensions = useMemo(
-    () => getDimensionsBySize({ size: fitHeight ? height : size, hasLabels, visualRefresh: isRefresh }),
-    [fitHeight, height, size, hasLabels, isRefresh]
+    () =>
+      getDimensionsBySize({ size: fitHeight ? Math.min(height, width) : size, hasLabels, visualRefresh: isRefresh }),
+    [fitHeight, height, width, size, hasLabels, isRefresh]
   );
 
   // Inner content is only available for donut charts and the inner description is not displayed for small charts
