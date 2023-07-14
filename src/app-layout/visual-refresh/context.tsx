@@ -30,6 +30,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import customCssProps from '../../internal/generated/custom-css-properties';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
@@ -487,6 +488,15 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
+    const updateDynamicOverlapHeight = useCallback(
+      (height: number) => {
+        const element = typeof layoutElement === 'function' ? layoutElement(null) : layoutElement?.current;
+        element?.style.setProperty(customCssProps.overlapHeight, `${height}px`);
+        setDynamicOverlapHeight(height);
+      },
+      [layoutElement, setDynamicOverlapHeight]
+    );
+
     useLayoutEffect(
       function handleMainOffsetLeft() {
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
@@ -660,7 +670,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             setHasStickyBackground,
           }}
         >
-          <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>
+          <DynamicOverlapContext.Provider value={updateDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>
         </AppLayoutContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );
