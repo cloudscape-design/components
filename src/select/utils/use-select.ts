@@ -148,7 +148,7 @@ export function useSelect({
       onFocus: () => closeDropdown(),
       autoFocus,
       ariaHasPopup: hasFilter ? 'dialog' : 'listbox',
-      ariaControls: hasFilter ? dialogId : menuId,
+      ariaControls: isOpen ? (hasFilter ? dialogId : menuId) : undefined,
     };
     if (!disabled) {
       triggerProps.onMouseDown = (event: CustomEvent) => {
