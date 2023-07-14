@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
 import { DATA_ATTR_FUNNEL_INTERACTION_ID, DATA_ATTR_FUNNEL_SUBSTEP, getSubStepAllSelector } from '../selectors';
 import { FunnelMetrics } from '../';
@@ -17,14 +17,15 @@ import { FunnelMetrics } from '../';
  * The subStepRef is a reference to the DOM element of the funnel sub-step.
  */
 export const useFunnelSubStep = () => {
-  const subStepRef = useRef<HTMLDivElement | null>(null);
   const context = useContext(FunnelSubStepContext);
-  const { funnelInteractionId } = useFunnel();
+  const { funnelInteractionId, funnelState } = useFunnel();
   const { stepNumber, stepNameSelector } = useFunnelStep();
 
-  const { subStepId, subStepSelector, subStepNameSelector } = context;
+  const { subStepId, subStepSelector, subStepNameSelector, subStepRef, isNestedSubStep } = context;
 
-  const { funnelState } = useFunnel();
+  if (isNestedSubStep) {
+    return context;
+  }
 
   const onFocus = (event: React.FocusEvent<HTMLDivElement>) => {
     if (
@@ -69,7 +70,7 @@ export const useFunnelSubStep = () => {
       }
     : {};
 
-  return { funnelSubStepProps, subStepRef, ...context };
+  return { funnelSubStepProps, ...context };
 };
 
 /**
