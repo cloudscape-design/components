@@ -464,9 +464,9 @@ describe('a11y properties', () => {
     const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
     const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
     expect(hasPopup).toBe('listbox');
+    wrapper.openDropdown();
     const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
     expect(controlledId).toBeTruthy();
-    wrapper.openDropdown();
     expect(wrapper.findDropdown().getElement().querySelector(`#${controlledId}`)!.getAttribute('role')).toBe('listbox');
   });
   test('trigger should aria-control the dropdown (role="dialog") when filtering enabled', () => {
@@ -475,9 +475,9 @@ describe('a11y properties', () => {
     );
     const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
     expect(hasPopup).toBe('dialog');
+    wrapper.openDropdown();
     const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
     expect(controlledId).toBeTruthy();
-    wrapper.openDropdown();
     expect(
       wrapper.findDropdown().getElement().parentNode!.querySelector(`#${controlledId}`)!.getAttribute('role')
     ).toBe('dialog');
