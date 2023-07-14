@@ -310,9 +310,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       const { wrapper } = renderSelect();
       const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
       expect(hasPopup).toBe('listbox');
+      wrapper.openDropdown();
       const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
       expect(controlledId).toBeTruthy();
-      wrapper.openDropdown();
       expect(
         wrapper.findDropdown({ expandToViewport }).getElement().querySelector(`#${controlledId}`)!.getAttribute('role')
       ).toBe('listbox');
@@ -321,9 +321,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       const { wrapper } = renderSelect({ filteringType: 'auto' });
       const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
       expect(hasPopup).toBe('dialog');
+      wrapper.openDropdown();
       const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
       expect(controlledId).toBeTruthy();
-      wrapper.openDropdown();
       expect(
         wrapper
           .findDropdown({ expandToViewport })
