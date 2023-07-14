@@ -132,6 +132,15 @@ export interface DropdownProps extends ExpandToViewport {
    * Called when focus leaves the trigger or dropdown content.
    */
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * ID for the dropdown content wrapper
+   */
+  dropdownContentId?: string;
+  /**
+   * HTML role for the dropdown content wrapper
+   */
+  dropdownContentRole?: string;
 }
 
 export interface ExpandToViewport {

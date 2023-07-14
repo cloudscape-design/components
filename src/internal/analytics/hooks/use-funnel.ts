@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
 import { DATA_ATTR_FUNNEL_INTERACTION_ID, DATA_ATTR_FUNNEL_SUBSTEP, getSubStepAllSelector } from '../selectors';
 import { FunnelMetrics } from '../';
@@ -17,19 +17,21 @@ import { FunnelMetrics } from '../';
  * The subStepRef is a reference to the DOM element of the funnel sub-step.
  */
 export const useFunnelSubStep = () => {
-  const subStepRef = useRef<HTMLDivElement | null>(null);
   const context = useContext(FunnelSubStepContext);
-  const { funnelInteractionId, subStepId, subStepSelector, subStepNameSelector, stepNumber, stepNameSelector } =
-    context;
+  const { funnelInteractionId, funnelState } = useFunnel();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
 
-  const { funnelState } = useFunnel();
+  const { subStepId, subStepSelector, subStepNameSelector, subStepRef, isNestedSubStep } = context;
+
+  if (isNestedSubStep) {
+    return context;
+  }
 
   const onFocus = (event: React.FocusEvent<HTMLDivElement>) => {
     if (
       funnelInteractionId &&
       subStepRef.current &&
-      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node)) &&
-      funnelState.current === 'default'
+      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node))
     ) {
       FunnelMetrics.funnelSubStepStart({
         funnelInteractionId,
@@ -68,7 +70,7 @@ export const useFunnelSubStep = () => {
       }
     : {};
 
-  return { funnelSubStepProps, subStepRef, ...context };
+  return { funnelSubStepProps, ...context };
 };
 
 /**

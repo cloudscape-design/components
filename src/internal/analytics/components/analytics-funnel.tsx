@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   FunnelStepContext,
@@ -9,8 +9,9 @@ import {
   FunnelContextValue,
   FunnelStepContextValue,
   FunnelState,
+  FunnelSubStepContextValue,
 } from '../context/analytics-context';
-import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
+import { useFunnel } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
@@ -192,7 +193,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funnelInteractionId, stepNumber, stepNameSelector]);
 
-  const contextValue: FunnelStepContextValue = { funnelInteractionId, stepNumber, stepNameSelector, funnelStepProps };
+  const contextValue: FunnelStepContextValue = { stepNumber, stepNameSelector, funnelStepProps };
   return (
     <FunnelStepContext.Provider value={contextValue}>
       {typeof children === 'function' ? children(contextValue) : children}
@@ -204,25 +205,22 @@ interface AnalyticsFunnelSubStepProps {
 }
 
 export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps) => {
-  const { funnelInteractionId } = useFunnel();
-  const { stepNumber, stepNameSelector } = useFunnelStep();
-
   const subStepId = useUniqueId('substep');
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
+  const subStepRef = useRef<HTMLDivElement | null>(null);
 
-  return (
-    <FunnelSubStepContext.Provider
-      value={{
-        funnelInteractionId,
-        stepNumber,
-        stepNameSelector,
-        subStepSelector,
-        subStepNameSelector,
-        subStepId,
-      }}
-    >
-      {children}
-    </FunnelSubStepContext.Provider>
-  );
+  const newContext: FunnelSubStepContextValue = {
+    subStepSelector,
+    subStepNameSelector,
+    subStepId,
+    subStepRef,
+    isNestedSubStep: false,
+  };
+
+  const inheritedContext = { ...useContext(FunnelSubStepContext), isNestedSubStep: true };
+
+  const context = inheritedContext.subStepId ? inheritedContext : newContext;
+
+  return <FunnelSubStepContext.Provider value={context}>{children}</FunnelSubStepContext.Provider>;
 };

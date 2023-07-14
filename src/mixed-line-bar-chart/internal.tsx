@@ -45,6 +45,8 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
   yScaleType,
   xDomain,
   yDomain,
+  xTickFormatter,
+  yTickFormatter,
   highlightedSeries: controlledHighlightedSeries,
   visibleSeries: controlledVisibleSeries,
   series: externalSeries,
@@ -251,8 +253,8 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             yScaleType={yScaleType}
             xDomain={xDomain}
             yDomain={yDomain}
-            xTickFormatter={i18nStrings?.xTickFormatter}
-            yTickFormatter={i18nStrings?.yTickFormatter}
+            xTickFormatter={xTickFormatter ?? i18nStrings?.xTickFormatter}
+            yTickFormatter={yTickFormatter ?? i18nStrings?.yTickFormatter}
             emphasizeBaselineAxis={emphasizeBaselineAxis}
             stackedBars={stackedBars}
             horizontalBars={horizontalBars}

@@ -376,9 +376,23 @@ test('detail total formatter is assigned', () => {
     <AreaChart
       series={[areaSeries1]}
       statusType="finished"
-      i18nStrings={{
-        detailTotalFormatter: (y: number) => `=${y}`,
-      }}
+      i18nStrings={{ detailTotalFormatter: (y: number) => `=${y}` }}
+    />
+  );
+
+  // Show popover for the first data point.
+  wrapper.findApplication()!.focus();
+
+  expect(wrapper.findDetailPopover()!.findContent()!.getElement()).toHaveTextContent('Area Series 13=3');
+});
+
+test('uses detailTotalFormatter over i18nStrings.detailTotalFormatter', () => {
+  const { wrapper } = renderAreaChart(
+    <AreaChart
+      series={[areaSeries1]}
+      statusType="finished"
+      detailTotalFormatter={(y: number) => `=${y}`}
+      i18nStrings={{ detailTotalFormatter: (y: number) => `+${y}` }}
     />
   );
 

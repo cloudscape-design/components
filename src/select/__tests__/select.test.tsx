@@ -305,6 +305,35 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     });
   });
 
+  describe('a11y properties', () => {
+    test('trigger should aria-control the list (role="listbox") when filtering disabled', () => {
+      const { wrapper } = renderSelect();
+      const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
+      expect(hasPopup).toBe('listbox');
+      wrapper.openDropdown();
+      const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
+      expect(controlledId).toBeTruthy();
+      expect(
+        wrapper.findDropdown({ expandToViewport }).getElement().querySelector(`#${controlledId}`)!.getAttribute('role')
+      ).toBe('listbox');
+    });
+    test('trigger should aria-control the dropdown (role="dialog") when filtering enabled', () => {
+      const { wrapper } = renderSelect({ filteringType: 'auto' });
+      const hasPopup = wrapper.findTrigger().getElement().getAttribute('aria-haspopup');
+      expect(hasPopup).toBe('dialog');
+      wrapper.openDropdown();
+      const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
+      expect(controlledId).toBeTruthy();
+      expect(
+        wrapper
+          .findDropdown({ expandToViewport })
+          .getElement()
+          .parentNode!.querySelector(`#${controlledId}`)!
+          .getAttribute('role')
+      ).toBe('dialog');
+    });
+  });
+
   describe('Filtering results', () => {
     const options = [
       { label: 'First', value: '1' },

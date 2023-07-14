@@ -587,6 +587,21 @@ describe('Axes', () => {
     });
   });
 
+  test('users top-level tick formatters over i18nStrings tick formatters', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart
+        series={[lineSeries]}
+        height={250}
+        xDomain={[0, 12]}
+        yDomain={[0, 100]}
+        xTickFormatter={(value: number) => value.toFixed(2) + ' sec'}
+        yTickFormatter={(value: number) => value.toFixed(2) + ' kB'}
+      />
+    );
+    expect(wrapper.findXTicks()[0].getElement()).toHaveTextContent('0.00 sec');
+    expect(wrapper.findYTicks()[0].getElement()).toHaveTextContent('0.00 kB');
+  });
+
   test('categorical axis', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart
