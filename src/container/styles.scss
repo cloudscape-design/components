@@ -158,6 +158,9 @@
 
   &.with-paddings {
     padding: shared.$header-padding;
+    &.header-variant-cards {
+      padding: awsui.$space-scaled-s awsui.$space-container-horizontal;
+    }
   }
 
   &.with-hidden-content {
