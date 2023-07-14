@@ -105,8 +105,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-container {
-    padding-top: container.$header-padding-vertical;
-    padding-bottom: container.$header-padding-vertical;
+    padding-top: awsui.$space-container-header-top;
+    padding-bottom: awsui.$space-container-header-bottom;
     padding-right: container.$header-padding-horizontal;
 
     &.header-deprecated {
