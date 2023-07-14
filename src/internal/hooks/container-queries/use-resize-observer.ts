@@ -56,7 +56,12 @@ export function useResizeObserver(
         if (connected) {
           const callback = () => stableOnObserve(convertResizeObserverEntry(entries[0]));
           if (sync) {
-            // Opt out of concurrent rendering
+            // Use flushSync to prevent rendering with inconsistent state.
+            // Any code that retrieves the state after this call will have access to the updated state values
+            // resulting from it.
+            // Because this is inside a useEffect hook, we also need to wrap the call inside queueMicrotask,
+            // to avoid possible interference with other render processes by deferring execution
+            // to the end of the current execution context.
             queueMicrotask(() => flushSync(callback));
           } else {
             callback();
