@@ -1982,7 +1982,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "20px",
             "compact": "20px",
@@ -2017,7 +2017,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "0px",
             "compact": "0px",
@@ -4067,7 +4067,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "24px",
             "compact": "20px",
@@ -4102,7 +4102,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "2px",
             "compact": "0px",
@@ -6152,7 +6152,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "24px",
             "compact": "20px",
@@ -6187,7 +6187,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "2px",
             "compact": "0px",
@@ -8237,7 +8237,7 @@ Object {
       },
     },
     "space-scaled-xl": Object {
-      "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+      "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
       "$value": Object {
         "comfortable": "24px",
         "compact": "20px",
@@ -8272,7 +8272,7 @@ Object {
       },
     },
     "space-scaled-xxxs": Object {
-      "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+      "$description": "The XXXS spacing unit which scales between modes.",
       "$value": Object {
         "comfortable": "2px",
         "compact": "0px",
@@ -10327,7 +10327,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "24px",
             "compact": "20px",
@@ -10362,7 +10362,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "2px",
             "compact": "0px",
@@ -12412,7 +12412,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "24px",
             "compact": "20px",
@@ -12447,7 +12447,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "2px",
             "compact": "0px",
@@ -14497,7 +14497,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "20px",
             "compact": "20px",
@@ -14532,7 +14532,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "0px",
             "compact": "0px",
@@ -16582,7 +16582,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "24px",
             "compact": "20px",
@@ -16617,7 +16617,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "2px",
             "compact": "0px",
@@ -18667,7 +18667,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "24px",
             "compact": "20px",
@@ -18702,7 +18702,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "2px",
             "compact": "0px",
@@ -20752,7 +20752,7 @@ Object {
           },
         },
         "space-scaled-xl": Object {
-          "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+          "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
           "$value": Object {
             "comfortable": "24px",
             "compact": "20px",
@@ -20787,7 +20787,7 @@ Object {
           },
         },
         "space-scaled-xxxs": Object {
-          "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+          "$description": "The XXXS spacing unit which scales between modes.",
           "$value": Object {
             "comfortable": "2px",
             "compact": "0px",
@@ -22837,7 +22837,7 @@ Object {
       },
     },
     "space-scaled-xl": Object {
-      "$description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+      "$description": "The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.",
       "$value": Object {
         "comfortable": "24px",
         "compact": "20px",
@@ -22872,7 +22872,7 @@ Object {
       },
     },
     "space-scaled-xxxs": Object {
-      "$description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+      "$description": "The XXXS spacing unit which scales between modes.",
       "$value": Object {
         "comfortable": "2px",
         "compact": "0px",
