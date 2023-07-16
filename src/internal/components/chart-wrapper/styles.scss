@@ -10,6 +10,21 @@
   @include styles.styles-reset;
   position: relative;
   display: block;
+
+  &--fit-height {
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.inner-wrapper {
+  display: contents;
+
+  &--fit-height {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 }
 
 .has-default-filter {
@@ -31,6 +46,10 @@
 
 .content--reserve-legend {
   margin-bottom: calc(2 * #{awsui.$font-body-m-line-height});
+}
+
+.content--fit-height {
+  flex: 1;
 }
 
 .filter-container {
