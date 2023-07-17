@@ -27,6 +27,7 @@ export default function SelectEventsPage() {
   const [selectedOption, setValue] = useState<SelectProps['selectedOption']>(null);
   const [filteringEnabled, setFiltering] = useState(false);
   const [expandToViewport, setExpandToViewport] = useState(false);
+  const [expandDropdownWidth, setExpandDropdownWidth] = useState(false);
   return (
     <div style={{ padding: 10 }}>
       <ul>
@@ -52,6 +53,14 @@ export default function SelectEventsPage() {
             onChange={e => setExpandToViewport(e.target.checked)}
           />
         </label>
+        <label>
+          expand dropdown width
+          <input
+            type="checkbox"
+            checked={expandDropdownWidth}
+            onChange={e => setExpandDropdownWidth(e.target.checked)}
+          />
+        </label>
         <input aria-label="focusable" id="focusable" />
         <Select
           selectedOption={selectedOption}
@@ -65,6 +74,7 @@ export default function SelectEventsPage() {
           ariaLabel={'events select'}
           filteringType={filteringEnabled ? 'auto' : 'none'}
           expandToViewport={expandToViewport}
+          expandDropdownWidth={expandDropdownWidth}
         />
       </div>
     </div>
