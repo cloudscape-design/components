@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import qs from 'qs';
 import React, { createContext } from 'react';
 import mapValues from 'lodash/mapValues';
 import { THEME } from '~components/internal/environment';
@@ -38,7 +37,9 @@ const AppContext = createContext<AppContextType>(appContextDefaults);
 export default AppContext;
 
 export function parseQuery(query: string) {
-  const queryParams = { ...appContextDefaults.urlParams, ...qs.parse(query.substring(1)) } as Record<string, any>;
+  const queryParams: Record<string, any> = { ...appContextDefaults.urlParams };
+  const urlParams = new URLSearchParams(query);
+  urlParams.forEach((value, key) => (queryParams[key] = value));
 
   return mapValues(queryParams, value => {
     if (value === 'true' || value === 'false') {
@@ -49,10 +50,14 @@ export function parseQuery(query: string) {
 }
 
 function formatQuery(params: AppUrlParams) {
-  const query = qs.stringify(params, {
-    filter: (key, value) => (appContextDefaults.urlParams[key as keyof AppUrlParams] !== value ? value : undefined),
-  });
-  return query ? `?${query}` : '';
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value === appContextDefaults.urlParams[key as keyof AppUrlParams]) {
+      continue;
+    }
+    query.set(key, value);
+  }
+  return query ? `?${query.toString()}` : '';
 }
 
 export function AppContextProvider({ children }: { children: React.ReactNode }) {

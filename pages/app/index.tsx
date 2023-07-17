@@ -5,7 +5,6 @@ import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
-import './polyfills';
 
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
