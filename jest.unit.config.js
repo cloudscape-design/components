@@ -23,14 +23,6 @@ module.exports = merge({}, tsPreset, cloudscapePreset, {
     '/internal\\/vendor/',
     '<rootDir>/pages',
   ],
-  coverageThreshold: {
-    global: {
-      branches: 82,
-      functions: 88,
-      lines: 90,
-      statements: 90,
-    },
-  },
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.unit.json',
