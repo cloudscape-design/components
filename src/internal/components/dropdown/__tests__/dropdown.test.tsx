@@ -31,22 +31,38 @@ jest.mock('../../../../../lib/components/internal/components/dropdown/dropdown-f
 });
 
 describe('Dropdown Component', () => {
-  describe('Properties', () => {
+  describe.each([
+    [true, false],
+    [true, false],
+  ])('Properties (expandToViewport=%s, expandDropdownWidth=%s)', (expandToViewport, expandDropdownWidth) => {
     test('closed by default', () => {
       const [wrapper] = renderDropdown(
-        <Dropdown trigger={<button />}>
+        <Dropdown trigger={<button />} expandToViewport={expandToViewport} expandDropdownWidth={expandDropdownWidth}>
           <div id="content" />
         </Dropdown>
       );
       expect(wrapper.findOpenDropdown()).not.toBeTruthy();
     });
     test('opens with the prop', () => {
-      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} />);
+      const [wrapper] = renderDropdown(
+        <Dropdown
+          trigger={<button />}
+          open={true}
+          expandToViewport={expandToViewport}
+          expandDropdownWidth={expandDropdownWidth}
+        />
+      );
       expect(wrapper.findOpenDropdown()).toBeTruthy();
     });
     test('renders the trigger', () => {
       const id = 'trigger';
-      const [wrapper] = renderDropdown(<Dropdown trigger={<button id={id} />} />);
+      const [wrapper] = renderDropdown(
+        <Dropdown
+          trigger={<button id={id} />}
+          expandToViewport={expandToViewport}
+          expandDropdownWidth={expandDropdownWidth}
+        />
+      );
       expect(wrapper.find(`#${id}`)).toBeTruthy();
     });
   });

@@ -174,9 +174,7 @@ const Dropdown = ({
       verticalContainer.style.maxHeight = position.height;
     }
 
-    if (expandDropdownWidth) {
-      target.style.width = 'max-content';
-    } else if (entireWidth && !expandToViewport) {
+    if (entireWidth && !expandToViewport && !expandDropdownWidth) {
       if (stretchToTriggerWidth) {
         target.classList.add(styles['occupy-entire-width']);
       }
