@@ -31,7 +31,9 @@ export default function InternalToc({ anchors, ...props }: TocProps) {
   return (
     <div className={styles.root}>
       <InternalSpaceBetween direction="vertical" size="s">
-        <InternalBox variant="h4">{props.title}</InternalBox>
+        <InternalBox color="text-body-secondary" variant="h4">
+          {props.title}
+        </InternalBox>
         <ul className={styles['anchor-list']}>
           {anchors.map((props, index) => (
             <Anchor isActive={index === 2} key={index} {...props} />

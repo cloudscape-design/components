@@ -25,6 +25,7 @@
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
   margin-left: -2px;
+  padding: awsui.$space-scaled-xxs 0;
   &-active {
     border-left: 2px solid awsui.$color-text-accent;
   }
