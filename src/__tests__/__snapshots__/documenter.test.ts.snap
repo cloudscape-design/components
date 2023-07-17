@@ -1572,6 +1572,12 @@ receive focus.",
       "type": "string",
     },
     Object {
+      "description": "Activating this property allows the dropdown width to grow based on the content inside the dropdown.",
+      "name": "expandDropdownWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
 If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
@@ -5413,6 +5419,12 @@ receive focus.",
       "type": "boolean",
     },
     Object {
+      "description": "Activating this property allows the dropdown width to grow based on the content inside the dropdown.",
+      "name": "expandDropdownWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
 If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
@@ -5678,6 +5690,12 @@ Default: \`false\`.
       "description": "Specifies that the component is disabled, preventing the user from
 modifying the value. A disabled component cannot receive focus.",
       "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Activating this property allows the dropdown width to grow based on the content inside the dropdown.",
+      "name": "expandDropdownWidth",
       "optional": true,
       "type": "boolean",
     },
@@ -8931,6 +8949,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "description": "Activating this property allows the dropdown width to grow based on the content inside the dropdown.",
+      "name": "expandDropdownWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
 If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
@@ -10214,6 +10238,12 @@ in order to prevent the user from changing the filtering query.",
       "type": "boolean",
     },
     Object {
+      "description": "Activating this property allows the dropdown width to grow based on the content inside the dropdown.",
+      "name": "expandDropdownWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
 If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
@@ -11457,6 +11487,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "name": "errorText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Activating this property allows the dropdown width to grow based on the content inside the dropdown.",
+      "name": "expandDropdownWidth",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
