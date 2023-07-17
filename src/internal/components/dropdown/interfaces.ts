@@ -153,4 +153,9 @@ export interface ExpandToViewport {
    * in a slight, visible lag when scrolling complex pages.
    */
   expandToViewport?: boolean;
+
+  /**
+   * Activating this property allows the dropdown width to grow based on the content inside the dropdown.
+   */
+  expandDropdownWidth?: boolean;
 }

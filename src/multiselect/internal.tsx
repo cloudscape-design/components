@@ -73,6 +73,7 @@ const InternalMultiselect = React.forwardRef(
       virtualScroll,
       hideTokens = false,
       expandToViewport,
+      expandDropdownWidth,
       __internalRootRef = null,
       autoFocus,
       ...restProps
@@ -308,6 +309,7 @@ const InternalMultiselect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
+          expandDropdownWidth={expandDropdownWidth}
         >
           <ListComponent
             listBottom={

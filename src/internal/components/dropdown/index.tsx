@@ -52,6 +52,7 @@ interface TransitionContentProps {
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
+  expandDropdownWidth?: boolean;
   header?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
@@ -130,6 +131,7 @@ const Dropdown = ({
   stretchHeight = false,
   stretchToTriggerWidth = true,
   expandToViewport = false,
+  expandDropdownWidth = false,
   preferCenter = false,
   interior = false,
   minWidth,
@@ -172,7 +174,9 @@ const Dropdown = ({
       verticalContainer.style.maxHeight = position.height;
     }
 
-    if (entireWidth && !expandToViewport) {
+    if (expandDropdownWidth) {
+      target.style.width = 'max-content';
+    } else if (entireWidth && !expandToViewport) {
       if (stretchToTriggerWidth) {
         target.classList.add(styles['occupy-entire-width']);
       }
@@ -259,6 +263,10 @@ const Dropdown = ({
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
+        if (expandDropdownWidth) {
+          // let dropdown width grow according to the content
+          dropdownRef.current.classList.add(styles['expand-dropdown-width']);
+        }
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -275,9 +283,7 @@ const Dropdown = ({
           dropdownRef.current,
           verticalContainerRef.current
         );
-        if (scrollable) {
-          dropdownRef.current.classList.remove(styles.nowrap);
-        }
+        dropdownRef.current.classList.remove(styles.nowrap, styles['expand-dropdown-width']);
       }
     };
     onDropdownOpen();

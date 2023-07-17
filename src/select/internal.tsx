@@ -65,6 +65,7 @@ const InternalSelect = React.forwardRef(
       onChange,
       virtualScroll,
       expandToViewport,
+      expandDropdownWidth,
       autoFocus,
       __inFilteringToken,
       __internalRootRef = null,
@@ -242,6 +243,7 @@ const InternalSelect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
+          expandDropdownWidth={expandDropdownWidth}
         >
           <ListComponent
             listBottom={

@@ -76,6 +76,7 @@ const AutosuggestInput = React.forwardRef(
       ariaRequired,
       disableBrowserAutocorrect = false,
       expandToViewport,
+      expandDropdownWidth,
       ariaControls,
       ariaActivedescendant,
       clearAriaLabel,
@@ -285,6 +286,7 @@ const AutosuggestInput = React.forwardRef(
             )
           }
           expandToViewport={expandToViewport}
+          expandDropdownWidth={expandDropdownWidth}
           loopFocus={loopFocus}
         >
           {open && dropdownContent ? (
