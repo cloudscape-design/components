@@ -171,7 +171,10 @@ describeEachThemeAppLayout(false, () => {
 
   test('Adds labels to toggle button and landmark when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
     expect(wrapper.findDrawersDesktopTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
 

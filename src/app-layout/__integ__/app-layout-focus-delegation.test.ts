@@ -91,13 +91,14 @@ function setupTest(
           'drawers focus toggles between open and close buttons',
           setupTest(
             async page => {
-              await page.click(wrapper.findDrawersTriggers().get(2).toSelector());
+              const triggerSelector = wrapper.findDrawerTriggerById('pro-help').toSelector();
+              await page.click(triggerSelector);
               await page.keys('Enter');
-              await expect(page.isFocused(wrapper.findDrawersTriggers().get(2).toSelector())).resolves.toBe(true);
+              await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
               await page.keys('Enter');
               await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
               await page.keys('Enter');
-              await expect(page.isFocused(wrapper.findDrawersTriggers().get(2).toSelector())).resolves.toBe(true);
+              await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
             },
             { pageName: 'with-drawers', visualRefresh, mobile }
           )
