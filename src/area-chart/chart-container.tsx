@@ -44,8 +44,6 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   > {
   model: ChartModel<T>;
   autoWidth: (value: number) => void;
-  fitHeight?: boolean;
-  minHeight: number;
 }
 
 export default memo(ChartContainer) as typeof ChartContainer;
@@ -70,8 +68,6 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
     yAxisAriaRoleDescription,
     detailPopoverDismissAriaLabel,
   } = {},
-  fitHeight,
-  minHeight,
   xTickFormatter = deprecatedXTickFormatter,
   yTickFormatter = deprecatedYTickFormatter,
   detailTotalFormatter = deprecatedDetailTotalFormatter,
@@ -110,8 +106,6 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   return (
     <CartesianChartContainer
       ref={mergedRef}
-      minHeight={minHeight + bottomLabelsHeight}
-      fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis="y" position="left" title={yTitle} />}
       leftAxisLabelMeasure={
         <LabelsMeasure
@@ -125,8 +119,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
       chartPlot={
         <ChartPlot
           ref={model.refs.plot}
-          width="100%"
-          height={fitHeight ? `calc(100% - ${bottomLabelsHeight}px)` : model.height}
+          width={model.width}
+          height={model.height}
           offsetBottom={bottomLabelsHeight}
           ariaLabel={ariaLabel}
           ariaLabelledby={ariaLabelledby}
@@ -143,17 +137,6 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           onFocus={model.handlers.onSVGFocus}
           onBlur={model.handlers.onSVGBlur}
         >
-          <line
-            ref={model.refs.plotMeasure}
-            x1="0"
-            x2="0"
-            y1="0"
-            y2="100%"
-            stroke="transparent"
-            strokeWidth={1}
-            style={{ pointerEvents: 'none' }}
-          />
-
           <LeftLabels
             width={model.width}
             height={model.height}

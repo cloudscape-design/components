@@ -774,16 +774,9 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
-      "description": "Enable this property to make the chart fit into the available height of the parent container.",
-      "name": "fitHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.
-When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
+If not set explicitly, the component will use a default height that is defined internally.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -1983,16 +1976,9 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
-      "description": "Enable this property to make the chart fit into the available height of the parent container.",
-      "name": "fitHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.
-When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
+If not set explicitly, the component will use a default height that is defined internally.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -7736,16 +7722,9 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
-      "description": "Enable this property to make the chart fit into the available height of the parent container.",
-      "name": "fitHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.
-When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
+If not set explicitly, the component will use a default height that is defined internally.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -8339,16 +8318,9 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
-      "description": "Enable this property to make the chart fit into the available height of the parent container.",
-      "name": "fitHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.
-When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
+If not set explicitly, the component will use a default height that is defined internally.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -9547,12 +9519,6 @@ Each pair has the following properties:
       "type": "string",
     },
     Object {
-      "description": "Enable this property to make the chart fit into the available height of the parent container.",
-      "name": "fitHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "defaultValue": "false",
       "description": "Hides the label descriptions next to the chart segments when set to \`true\`.",
       "name": "hideDescriptions",
@@ -9717,8 +9683,7 @@ The function is called with the data object of each segment and is expected to r
     },
     Object {
       "defaultValue": "\\"medium\\"",
-      "description": "Specifies the size of the pie or donut chart.
-When used with \`fitHeight\`, this property defines the minimum size of the chart area.",
+      "description": "Specifies the size of the pie or donut chart.",
       "inlineType": Object {
         "name": "",
         "type": "union",

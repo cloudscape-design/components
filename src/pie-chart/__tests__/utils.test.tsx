@@ -3,12 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  balanceLabelNodes,
-  getDimensionsBySize,
-  dimensionsBySize,
-  refreshDimensionsBySize,
-} from '../../../lib/components/pie-chart/utils';
+import { balanceLabelNodes } from '../../../lib/components/pie-chart/utils';
 
 // Sample test cases gathered from charts with overlapping labels and other edge cases
 const testCases = [
@@ -289,32 +284,5 @@ describe('balanceLabelNodes', () => {
 
       expect(labels).toMatchSnapshot();
     });
-  });
-});
-
-describe.each([false, true])('getDimensionsBySize visualRefresh=%s', visualRefresh => {
-  const d = visualRefresh ? refreshDimensionsBySize : dimensionsBySize;
-
-  test.each(['small', 'medium', 'large'] as const)('get correct dimensions for size="%s"', size => {
-    const dimensions = getDimensionsBySize({ size, hasLabels: true, visualRefresh });
-    expect(dimensions).toEqual({ ...d[size], size });
-  });
-
-  test.each([
-    [d.medium.outerRadius * 2 + d.medium.padding * 2 - 1, 'small'],
-    [d.large.outerRadius * 2 + d.large.padding * 2 - 1, 'medium'],
-    [d.large.outerRadius * 2 + d.large.padding * 2 + 1, 'large'],
-  ])('matches size correctly for height=$0 and hasLabels=false', (height, matchedSize) => {
-    const dimensions = getDimensionsBySize({ size: height, hasLabels: false, visualRefresh });
-    expect(dimensions.size).toBe(matchedSize);
-  });
-
-  test.each([
-    [d.medium.outerRadius * 2 + d.medium.padding * 2 + d.medium.paddingLabels * 2 - 1, 'small'],
-    [d.large.outerRadius * 2 + d.large.padding * 2 + d.large.paddingLabels * 2 - 1, 'medium'],
-    [d.large.outerRadius * 2 + d.large.padding * 2 + d.large.paddingLabels * 2 + 1, 'large'],
-  ])('matches size correctly for height=$0 and hasLabels=true', (height, matchedSize) => {
-    const dimensions = getDimensionsBySize({ size: height, hasLabels: true, visualRefresh });
-    expect(dimensions.size).toBe(matchedSize);
   });
 });
