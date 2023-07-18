@@ -33,7 +33,6 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
-import { useResizeObserver } from '../internal/hooks/container-queries';
 
 const LEFT_LABELS_MARGIN = 16;
 const BOTTOM_LABELS_OFFSET = 12;
@@ -44,7 +43,6 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   series: ReadonlyArray<InternalChartSeries<T>>;
   visibleSeries: ReadonlyArray<InternalChartSeries<T>>;
 
-  fitHeight?: boolean;
   height: number;
   detailPopoverSize: MixedLineBarChartProps<T>['detailPopoverSize'];
   detailPopoverFooter: MixedLineBarChartProps<T>['detailPopoverFooter'];
@@ -81,8 +79,7 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
 }
 
 export default function ChartContainer<T extends ChartDataTypes>({
-  fitHeight,
-  height: explicitPlotHeight,
+  height: plotHeight,
   series,
   visibleSeries,
   highlightedSeries,
@@ -120,14 +117,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
-
-  const plotMeasureRef = useRef<SVGLineElement>(null);
-  const [measuredHeight, setHeight] = useState(0);
-  useResizeObserver(
-    () => plotMeasureRef.current,
-    entry => fitHeight && setHeight(entry.borderBoxHeight)
-  );
-  const plotHeight = fitHeight ? measuredHeight : explicitPlotHeight;
 
   const isRefresh = useVisualRefresh();
 
@@ -456,8 +445,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   return (
     <CartesianChartContainer
       ref={containerRef}
-      minHeight={explicitPlotHeight + bottomLabelsHeight}
-      fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis={y} position="left" title={xy.title[y]} />}
       leftAxisLabelMeasure={
         <LabelsMeasure
@@ -471,8 +458,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
       chartPlot={
         <ChartPlot
           ref={plotRef}
-          width="100%"
-          height={fitHeight ? `calc(100% - ${bottomLabelsHeight}px)` : plotHeight}
+          width={plotWidth}
+          height={plotHeight}
           offsetBottom={bottomLabelsHeight}
           isClickable={isPopoverOpen && !isPopoverPinned}
           ariaLabel={ariaLabel}
@@ -494,17 +481,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onBlur={onSVGBlur}
           onKeyDown={onSVGKeyDown}
         >
-          <line
-            ref={plotMeasureRef}
-            x1="0"
-            x2="0"
-            y1="0"
-            y2="100%"
-            stroke="transparent"
-            strokeWidth={1}
-            style={{ pointerEvents: 'none' }}
-          />
-
           <LeftLabels
             axis={y}
             ticks={xy.ticks[y]}
