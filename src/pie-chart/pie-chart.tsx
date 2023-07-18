@@ -289,7 +289,7 @@ export default <T extends PieChartProps.Datum>({
   };
 
   const onPopoverLeave = (event: React.MouseEvent) => {
-    if (pinnedSegment !== null || focusedSegmentRef.current!.contains(event.relatedTarget as Node)) {
+    if (pinnedSegment !== null || focusedSegmentRef.current?.contains(event.relatedTarget as Node)) {
       return;
     }
     clearHighlightedSegment();
