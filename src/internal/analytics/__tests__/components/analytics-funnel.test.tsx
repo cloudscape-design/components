@@ -341,7 +341,7 @@ describe('AnalyticsFunnelStep', () => {
     });
   });
 
-  test('calls funnelStepComplete with the correct arguments when the everything unmounts', () => {
+  test('does not call funnelStepComplete when the funnel unmounts without submitting', () => {
     const stepNumber = 1;
     const stepNameSelector = '.step-name-selector';
 
@@ -353,17 +353,9 @@ describe('AnalyticsFunnelStep', () => {
       </AnalyticsFunnel>
     );
 
-    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
-
     unmount();
 
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith({
-      funnelInteractionId: mockedFunnelInteractionId,
-      stepNumber,
-      stepNameSelector,
-      subStepAllSelector: expect.any(String),
-    });
+    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
   });
 
   test('calls funnelStepStart and funnelStepComplete when stepNumber changes', () => {
