@@ -553,11 +553,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextNotificationYellow: {
-    description: 'Warning text color for notifications. For example: the text on warning flash messages.',
-    public: true,
-    themeable: true,
-  },
   colorTextStatusError: {
     description: 'The color of error text and icons. For example: form field error text and error status indicators.',
     public: true,

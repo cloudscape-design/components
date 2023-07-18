@@ -1826,13 +1826,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -3925,13 +3918,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -6019,13 +6005,6 @@ Object {
         },
         "color-text-notification-default": Object {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
           "$value": Object {
             "dark": "#16191f",
             "light": "#16191f",
@@ -8123,13 +8102,6 @@ Object {
             "light": "#fafafa",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -10220,13 +10192,6 @@ Object {
       "$value": Object {
         "dark": "#fafafa",
         "light": "#fafafa",
-      },
-    },
-    "color-text-notification-yellow": Object {
-      "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-      "$value": Object {
-        "dark": "#16191f",
-        "light": "#16191f",
       },
     },
     "color-text-status-error": Object {
@@ -12326,13 +12291,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#000716",
-            "light": "#000716",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -14423,13 +14381,6 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
-          },
-        },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#000716",
-            "light": "#000716",
           },
         },
         "color-text-status-error": Object {
@@ -16524,13 +16475,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#000716",
-            "light": "#000716",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -18623,13 +18567,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#000716",
-            "light": "#000716",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -20717,13 +20654,6 @@ Object {
         },
         "color-text-notification-default": Object {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
-          "$value": Object {
-            "dark": "#000716",
-            "light": "#000716",
-          },
-        },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
@@ -22821,13 +22751,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#000716",
-            "light": "#000716",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -24920,13 +24843,6 @@ Object {
             "light": "#fbfbfb",
           },
         },
-        "color-text-notification-yellow": Object {
-          "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-          "$value": Object {
-            "dark": "#000716",
-            "light": "#000716",
-          },
-        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -27017,13 +26933,6 @@ Object {
       "$value": Object {
         "dark": "#fbfbfb",
         "light": "#fbfbfb",
-      },
-    },
-    "color-text-notification-yellow": Object {
-      "$description": "Warning text color for notifications. For example: the text on warning flash messages.",
-      "$value": Object {
-        "dark": "#000716",
-        "light": "#000716",
       },
     },
     "color-text-status-error": Object {
