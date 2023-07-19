@@ -490,6 +490,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const updateDynamicOverlapHeight = useCallback(
       (height: number) => {
+        // React 18 will trigger a paint before the state is correctly updated
+        // (see https://github.com/facebook/react/issues/24331).
+        // To work around this, imperatively update the custom property on the DOM before the next paint happens.
+        // An alternative would be to use `queueMicrotask` and `flushSync` in the ResizeObserver callback,
+        // but that would have some performance impact as it would delay the render.
         const element = typeof layoutElement === 'function' ? layoutElement(null) : layoutElement?.current;
         element?.style.setProperty(customCssProps.overlapHeight, `${height}px`);
         setDynamicOverlapHeight(height);
