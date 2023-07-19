@@ -32,6 +32,9 @@ export function useDynamicOverlap(props?: UseDynamicOverlapProps) {
     [setOverlapHeight]
   );
 
+  // Set sync to true in order to wrap the updateState callback inside flushSync
+  // and therefore work around React 18 triggering a paint before the state is consistently updated
+  // (see https://github.com/facebook/react/issues/24331)
   useResizeObserver(getElement, updateState, true);
 
   useLayoutEffect(

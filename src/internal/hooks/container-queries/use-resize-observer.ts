@@ -23,7 +23,7 @@ type ElementReference = (() => Element | null) | React.RefObject<Element>;
  *
  * @param elementRef React reference or memoized getter for the target element
  * @param onObserve Function to fire when observation occurs
- * @param sync Prevent concurrent rendering when calling onObserve
+ * @param sync Prevent batching onObserve with other state updates
  */
 export function useResizeObserver(
   elementRef: ElementReference,
@@ -56,10 +56,9 @@ export function useResizeObserver(
         if (connected) {
           const callback = () => stableOnObserve(convertResizeObserverEntry(entries[0]));
           if (sync) {
-            // Use flushSync to prevent rendering with inconsistent state.
-            // Any code that retrieves the state after this call will have access to the updated state values
-            // resulting from it.
-            // Because this is inside a useEffect hook, we also need to wrap the call inside queueMicrotask,
+            // Use flushSync to prevent state update batching.
+            // This will let all component renders have access to the resulting update state after running the callback.
+            // Because we do this is inside a useEffect hook, we also need to wrap the call inside queueMicrotask,
             // to avoid possible interference with other render processes by deferring execution
             // to the end of the current execution context.
             queueMicrotask(() => flushSync(callback));
