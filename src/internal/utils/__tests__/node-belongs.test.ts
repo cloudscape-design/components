@@ -34,10 +34,18 @@ describe('nodeBelongs', () => {
     const div = document.createElement('div');
     div.innerHTML = `
       <div id="container1">
+        <div id="portal"></div>
+      </div>
+      <div data-awsui-referrer-id="portal">
         <div id="node"></div>
       </div>
-      <div data-awsui-referrer-id="node"></div>
     `;
-    expect(nodeBelongs(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(true);
+    document.documentElement.appendChild(div);
+
+    try {
+      expect(nodeBelongs(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(true);
+    } finally {
+      document.documentElement.removeChild(div);
+    }
   });
 });
