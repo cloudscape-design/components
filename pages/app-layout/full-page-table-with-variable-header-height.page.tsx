@@ -19,7 +19,7 @@ export default function () {
       content={
         <Table<Instance>
           header={
-            <ExpandableSection headerText="Click to expand header area">
+            <ExpandableSection headerText="Click to expand header area" headingTagOverride="h1">
               <div style={{ height: '300px' }}>Content</div>
             </ExpandableSection>
           }
