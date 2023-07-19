@@ -85,7 +85,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
         FunnelMetrics.funnelSuccessful({ funnelInteractionId });
       } else {
         FunnelMetrics.funnelCancelled({ funnelInteractionId });
-        funnelState.current === 'cancelled';
+        funnelState.current = 'cancelled';
       }
     };
   }, []);
@@ -180,7 +180,7 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
 
     return () => {
       //eslint-disable-next-line react-hooks/exhaustive-deps
-      if (funnelInteractionId && funnelState.current === 'default') {
+      if (funnelInteractionId && funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
           stepNumber,

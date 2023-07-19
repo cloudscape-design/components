@@ -811,18 +811,9 @@ describe('Reserve space', () => {
   const reserveFilterClass = chartWrapperStyles['content--reserve-filter'];
   const reserveLegendClass = chartWrapperStyles['content--reserve-legend'];
 
-  test('by applying the correct minimum height when fitHeight=false', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart series={[]} height={100} fitHeight={false} />);
+  test('by applying the correct minimum height', () => {
+    const { wrapper } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} height={100} />);
     expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '100px' });
-  });
-
-  test.each([false, true])('when fitHeight=%s plot min-height is explicitly set', fitHeight => {
-    const { wrapper } = renderMixedChart(
-      <MixedLineBarChart series={[lineSeries]} height={100} fitHeight={fitHeight} />
-    );
-    const chartElement = wrapper.findByClassName(cartesianStyles['chart-container-plot-wrapper'])!.getElement();
-    expect(chartElement.style.minHeight).toBeDefined();
-    expect(parseInt(chartElement.style.minHeight)).toBeGreaterThanOrEqual(100);
   });
 
   test('unless there is a chart showing', () => {

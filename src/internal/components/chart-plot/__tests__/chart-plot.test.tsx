@@ -65,8 +65,8 @@ describe('initial state', () => {
     );
     const plot = plotWrapper.getElement();
 
-    expect(plot.style.width).toContain('200');
-    expect(plot.style.height).toContain('100');
+    expect(plot.getAttribute('width')).toBe('200');
+    expect(plot.getAttribute('height')).toBe('100');
     expect(plot.style.margin).toContain('1px 2px 3px 4px');
     expect(plot.textContent).toContain('Test');
     expect(plot.classList.contains(styles.clickable)).toBe(true);

@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use './motion';
 
