@@ -3,8 +3,16 @@
 import { nodeBelongs } from '../../../../lib/components/internal/utils/node-belongs';
 
 describe('nodeBelongs', () => {
+  let div: HTMLDivElement;
+
+  beforeEach(() => {
+    div = document.createElement('div');
+    document.documentElement.appendChild(div);
+  });
+
+  afterEach(() => document.documentElement.removeChild(div));
+
   test('returns "true", when the node and the container are the same element', () => {
-    const div = document.createElement('div');
     div.innerHTML = `
       <div id="container1"></div>
     `;
@@ -12,7 +20,6 @@ describe('nodeBelongs', () => {
   });
 
   test('returns "true", when the node is descendant from the container', () => {
-    const div = document.createElement('div');
     div.innerHTML = `
       <div id="container1">
         <div id="node"></div>
@@ -22,7 +29,6 @@ describe('nodeBelongs', () => {
   });
 
   test('returns "false", when the node is not a child of the container', () => {
-    const div = document.createElement('div');
     div.innerHTML = `
       <div id="container1"></div>
       <div id="node"></div>
@@ -31,7 +37,6 @@ describe('nodeBelongs', () => {
   });
 
   test('returns "true" when node belongs to a portal issued from within the container', () => {
-    const div = document.createElement('div');
     div.innerHTML = `
       <div id="container1">
         <div id="portal"></div>
@@ -40,12 +45,6 @@ describe('nodeBelongs', () => {
         <div id="node"></div>
       </div>
     `;
-    document.documentElement.appendChild(div);
-
-    try {
-      expect(nodeBelongs(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(true);
-    } finally {
-      document.documentElement.removeChild(div);
-    }
+    expect(nodeBelongs(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(true);
   });
 });
