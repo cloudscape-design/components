@@ -4,8 +4,9 @@ import React, { useMemo } from 'react';
 import { arc, PieArcDatum } from 'd3-shape';
 
 import { PieChartProps } from './interfaces';
-import { Dimension } from './utils';
+import { dimensionsBySize, refreshDimensionsBySize } from './utils';
 import { InternalChartDatum } from './pie-chart';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import clsx from 'clsx';
 import { useInternalI18n } from '../internal/i18n/context';
@@ -13,11 +14,12 @@ import { useInternalI18n } from '../internal/i18n/context';
 interface SegmentsProps<T> {
   pieData: Array<PieArcDatum<InternalChartDatum<T>>>;
   highlightedSegment: T | null;
-  dimensions: Dimension;
+  size: NonNullable<PieChartProps['size']>;
   variant: PieChartProps['variant'];
   focusedSegmentRef: React.RefObject<SVGGElement>;
   popoverTrackRef: React.RefObject<SVGCircleElement>;
   segmentAriaRoleDescription?: string;
+
   onMouseDown: (datum: InternalChartDatum<T>) => void;
   onMouseOver: (datum: InternalChartDatum<T>) => void;
   onMouseOut: (event: React.MouseEvent<SVGElement>) => void;
@@ -26,7 +28,7 @@ interface SegmentsProps<T> {
 export default function Segments<T extends PieChartProps.Datum>({
   pieData,
   highlightedSegment,
-  dimensions,
+  size,
   variant,
   focusedSegmentRef,
   popoverTrackRef,
@@ -36,8 +38,10 @@ export default function Segments<T extends PieChartProps.Datum>({
   onMouseOut,
 }: SegmentsProps<T>) {
   const i18n = useInternalI18n('pie-chart');
+  const isRefresh = useVisualRefresh();
 
   const { arcFactory, highlightedArcFactory } = useMemo(() => {
+    const dimensions = isRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
     const radius = dimensions.outerRadius;
     const innerRadius = variant === 'pie' ? 0 : dimensions.innerRadius;
     const cornerRadius = dimensions.cornerRadius || 0;
@@ -55,7 +59,7 @@ export default function Segments<T extends PieChartProps.Datum>({
       arcFactory,
       highlightedArcFactory,
     };
-  }, [dimensions, variant]);
+  }, [size, variant, isRefresh]);
 
   const centroid = useMemo(() => {
     for (const datum of pieData) {
