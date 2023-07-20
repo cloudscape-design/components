@@ -138,8 +138,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * If a child component utilizes a sticky header the hasStickyBackground property will determine
      * if the background remains in the same vertical position.
      */
-    const [isDynamicOverlapDisabled, setIsDynamicOverlapDisabled] = useState(false);
     const [isDynamicOverlapSet, setIsDynamicOverlapSet] = useState(false);
+    const [isDynamicOverlapDisabled, setIsDynamicOverlapDisabled] = useState(true);
     const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
