@@ -20,6 +20,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useInternalI18n } from '../internal/i18n/context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -62,8 +63,12 @@ function InternalPopover(
   const [visible, setVisible] = useState(false);
 
   const focusTrigger = useCallback(() => {
-    triggerRef.current?.focus();
-  }, []);
+    if (triggerType === 'text') {
+      triggerRef.current?.focus();
+    } else {
+      triggerRef.current && getFirstFocusable(triggerRef.current)?.focus();
+    }
+  }, [triggerType]);
 
   const onTriggerClick = useCallback(() => {
     fireNonCancelableEvent(__onOpen);
