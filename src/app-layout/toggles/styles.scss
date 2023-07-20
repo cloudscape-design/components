@@ -16,6 +16,10 @@
   padding: $padding-vertical $padding-horizontal;
   background: transparent;
   color: currentColor;
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
   @include focus-visible.when-visible {
     @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
   }
