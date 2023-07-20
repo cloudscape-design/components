@@ -331,7 +331,6 @@ export type ColorsTokenName =
   | 'colorForegroundControlDefault'
   | 'colorForegroundControlDisabled'
   | 'colorShadowDefault'
-  | 'colorShadowLayoutToggle'
   | 'colorShadowMedium'
   | 'colorShadowSide'
   | 'colorStrokeChartLine'

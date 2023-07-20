@@ -7,6 +7,20 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/hooks/focus-visible' as focus-visible;
 
+.toggle-button {
+  cursor: pointer;
+  border: 0;
+  // resemble button styles with an extra 1px offset for non-existing here border width
+  $padding-vertical: calc(#{awsui.$space-scaled-xxs} + 1px);
+  $padding-horizontal: calc(#{awsui.$space-xxs} + 1px);
+  padding: $padding-vertical $padding-horizontal;
+  background: transparent;
+  color: currentColor;
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+  }
+}
+
 .close-button {
   position: absolute;
   outline: none;
