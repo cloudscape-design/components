@@ -7,6 +7,7 @@ import Table from '~components/table';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
 import ExpandableSection from '~components/expandable-section';
+import Header from '~components/header';
 
 const items = generateItems(20);
 
@@ -19,9 +20,12 @@ export default function () {
       content={
         <Table<Instance>
           header={
-            <ExpandableSection headerText="Click to expand header area" headingTagOverride="h1">
-              <div style={{ height: '300px' }}>Content</div>
-            </ExpandableSection>
+            <>
+              <Header variant="awsui-h1-sticky">Header that changes size when scrolling</Header>
+              <ExpandableSection headerText="Click to expand header area">
+                <div style={{ height: '300px' }}>Content</div>
+              </ExpandableSection>
+            </>
           }
           stickyHeader={true}
           variant="full-page"
