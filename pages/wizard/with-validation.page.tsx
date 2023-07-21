@@ -8,6 +8,7 @@ export default function WizardPage() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [value, setValue] = useState('');
   const [attemptedToSubmit, setAttemptedToSubmit] = useState(false);
+  const [counter, setCounter] = useState(1);
 
   const steps: WizardProps['steps'] = [
     {
@@ -28,16 +29,27 @@ export default function WizardPage() {
     {
       title: 'Step 2',
       content: (
-        <Container header={<Header>A container for step 2</Header>}>
-          <FormField
-            key="2"
-            label="Form field in step 2"
-            errorText={attemptedToSubmit && value.length > 4 ? 'The text must not be longer than 4 letters' : undefined}
-            constraintText="Maximum length: 4 letters"
-          >
-            <Input value={value} onChange={e => setValue(e.detail.value)} />
-          </FormField>
-        </Container>
+        <>
+          <Container header={<Header>A container for step 2</Header>}>
+            <FormField
+              key="2"
+              label="Form field in step 2"
+              errorText={
+                attemptedToSubmit && value.length > 4 ? 'The text must not be longer than 4 letters' : undefined
+              }
+              constraintText="Maximum length: 4 letters"
+            >
+              <Input value={value} onChange={e => setValue(e.detail.value)} />
+            </FormField>
+          </Container>
+          <button onClick={() => setCounter(counter + 1)}>Add container</button>
+          <button onClick={() => setCounter(counter - 1)}>Remove container</button>
+          {Array.from(Array(counter).keys()).map(i => (
+            <Container key={i} header={<Header>Another container for step 2</Header>}>
+              This one is almost empty.
+            </Container>
+          ))}
+        </>
       ),
     },
     {
@@ -48,6 +60,8 @@ export default function WizardPage() {
           {Array.from(Array(5).keys()).map(key => (
             <div key={key}>Item {key}</div>
           ))}
+          <Container header={<Header>A container for step 3</Header>}>This one is almost empty.</Container>
+          <Container header={<Header>A container for step 3</Header>}>This one is almost empty.</Container>
         </>
       ),
     },
