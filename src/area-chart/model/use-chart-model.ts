@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { AreaChartProps } from '../interfaces';
-import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
+import React, { useEffect, useMemo, useRef, RefObject, MouseEvent, useState } from 'react';
 import { findClosest, circleIndex } from './utils';
 
 import { nodeContains } from '../../internal/utils/dom';
@@ -15,12 +15,14 @@ import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
 import { useReaction } from '../async-store';
+import { useResizeObserver } from '../../internal/hooks/container-queries';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
 const POPOVER_DEADZONE = 12;
 
 export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
+  fitHeight?: boolean;
   externalSeries: readonly AreaChartProps.Series<T>[];
   visibleSeries: readonly AreaChartProps.Series<T>[];
   setVisibleSeries: (series: readonly AreaChartProps.Series<T>[]) => void;
@@ -37,6 +39,7 @@ export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
 
 // Represents the core the chart logic, including the model of all allowed user interactions.
 export default function useChartModel<T extends AreaChartProps.DataTypes>({
+  fitHeight,
   externalSeries: allSeries,
   visibleSeries: series,
   setVisibleSeries,
@@ -46,7 +49,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   yDomain,
   xScaleType,
   yScaleType,
-  height,
+  height: explicitHeight,
   width,
   popoverRef,
 }: UseChartModelProps<T>): ChartModel<T> {
@@ -54,6 +57,14 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   const plotRef = useRef<ChartPlotRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const verticalMarkerRef = useRef<SVGLineElement>(null);
+
+  const plotMeasureRef = useRef<SVGLineElement>(null);
+  const [measuredHeight, setHeight] = useState(0);
+  useResizeObserver(
+    () => plotMeasureRef.current,
+    entry => fitHeight && setHeight(entry.borderBoxHeight)
+  );
+  const height = fitHeight ? measuredHeight : explicitHeight;
 
   const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
 
@@ -341,6 +352,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       },
       refs: {
         plot: plotRef,
+        plotMeasure: plotMeasureRef,
         container: containerRef,
         verticalMarker: verticalMarkerRef,
         popoverRef,

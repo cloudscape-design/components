@@ -27,6 +27,10 @@
   }
 }
 
+.content--fit-height {
+  flex: 1;
+}
+
 .status-container {
   /* used in test utils */
 }
@@ -34,6 +38,24 @@
 .chart-container {
   display: flex;
   flex: 1;
+
+  &--fit-height {
+    height: 100%;
+    min-height: inherit;
+  }
+}
+
+.chart-container-chart-plot {
+  display: contents;
+
+  &--fit-height {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
 }
 
 .inner-content {
