@@ -4,6 +4,7 @@ import React from 'react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
+import Header from '../../../lib/components/header';
 import { render } from '@testing-library/react';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
@@ -66,6 +67,21 @@ describe('labels', () => {
       ariaLabels: { itemSelectionLabel: () => '', selectionGroupLabel: '', tableLabel },
     });
     expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-label')).toEqual(tableLabel);
+  });
+
+  test('automatically labels table with header if provided', () => {
+    const wrapper = renderTableWrapper({
+      header: <Header counter="(10)">Labelled table</Header>,
+    });
+    expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName('Labelled table');
+  });
+
+  test('aria-label has priority over auto-labelling', () => {
+    const wrapper = renderTableWrapper({
+      header: <Header>Labelled table</Header>,
+      ariaLabels: { itemSelectionLabel: () => '', selectionGroupLabel: '', tableLabel },
+    });
+    expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName(tableLabel);
   });
 
   describe('rows', () => {

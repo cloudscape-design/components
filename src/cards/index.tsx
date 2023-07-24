@@ -26,6 +26,7 @@ import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { ScrollbarLabelContext } from '../internal/context/scrollbar-label-context';
 
 export { CardsProps };
 
@@ -64,9 +65,9 @@ const Cards = React.forwardRef(function <T = any>(
   const isMobile = useMobile();
 
   const computedVariant = isRefresh ? variant : 'container';
-  const instanceUniqueId = useUniqueId('cards');
-  const cardsId = baseProps?.id || instanceUniqueId;
-  const cardsHeaderId = header ? `${cardsId}-header` : undefined;
+
+  const headingId = useUniqueId('cards-heading');
+  const isLabelledByHeader = !ariaLabels?.cardsLabel && !!header;
 
   const [columns, measureRef] = useContainerQuery<number>(
     ({ contentBoxWidth }) => getCardsPerRow(contentBoxWidth, cardsPerRow),
@@ -141,7 +142,9 @@ const Cards = React.forwardRef(function <T = any>(
                     styles[`header-variant-${computedVariant}`]
                   )}
                 >
-                  <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                  <ScrollbarLabelContext.Provider value={headingId}>
+                    <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                  </ScrollbarLabelContext.Provider>
                 </div>
               )
             }
@@ -152,7 +155,6 @@ const Cards = React.forwardRef(function <T = any>(
             __stickyHeader={stickyHeader}
             __stickyOffset={stickyHeaderVerticalOffset}
             __headerRef={headerRef}
-            __headerId={cardsHeaderId}
             __darkHeader={computedVariant === 'full-page'}
             __disableFooterDivider={true}
           >

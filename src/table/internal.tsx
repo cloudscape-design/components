@@ -39,6 +39,8 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getTableRoleProps, getTableRowRoleProps } from './table-role';
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { ScrollbarLabelContext } from '../internal/context/scrollbar-label-context';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -159,6 +161,9 @@ const InternalTable = React.forwardRef(
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
     const hasFooter = !!footer || hasFooterPagination;
 
+    const headingId = useUniqueId('table-heading');
+    const isLabelledByHeader = !ariaLabels?.tableLabel && !!header;
+
     const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
     const visibleColumnIdsWithSelection: PropertyKey[] = [];
     if (hasSelection) {
@@ -252,7 +257,9 @@ const InternalTable = React.forwardRef(
                       ref={toolsHeaderWrapper}
                       className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
                     >
-                      <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                      <ScrollbarLabelContext.Provider value={headingId}>
+                        <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                      </ScrollbarLabelContext.Provider>
                     </div>
                   </div>
                 )}
@@ -318,6 +325,7 @@ const InternalTable = React.forwardRef(
                   resizableColumns && styles['table-layout-fixed'],
                   contentDensity === 'compact' && getVisualContextClassname('compact-table')
                 )}
+                aria-labelledby={isLabelledByHeader ? headingId : undefined}
                 {...getTableRoleProps({ tableRole, totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
               >
                 <Thead
