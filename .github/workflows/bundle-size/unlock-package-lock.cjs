@@ -8,7 +8,7 @@ const path = require('path');
 /**
  * Remove specific @cloudscape-design/* packages where we should always use the latest minor release.
  */
-const filename = path.resolve(__dirname, '..', 'package-lock.json');
+const filename = path.resolve(__dirname, 'package-lock.json');
 const packageLock = JSON.parse(fs.readFileSync(filename));
 
 Object.keys(packageLock.packages).forEach(dependencyName => {
