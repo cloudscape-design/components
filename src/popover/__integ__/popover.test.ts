@@ -22,55 +22,59 @@ const setupTest = (renderWithPortal: boolean, testFn: (page: PopoverFocusPage) =
 };
 
 describe.each([true, false])('With dismiss button (renderWithPortal=%s)', (renderWithPortal: boolean) => {
-  const selector = createWrapper().findPopover('#focus-trap');
-  const triggerSelector = selector.findTrigger().toSelector();
-  const dismissButtonSelector = selector.findDismissButton({ renderWithPortal }).toSelector();
+  describe.each(['string', 'custom'])('(triggerType=%s)', (triggerType: string) => {
+    const elementBeforePopover = triggerType === 'string' ? '#focus-trap-target' : '#focus-trap-target-button';
+    const selector = createWrapper().findPopover(triggerType === 'string' ? '#focus-trap' : '#focus-trap-button');
+    const triggerSelector =
+      triggerType === 'string' ? selector.findTrigger().toSelector() : selector.findTrigger().findButton().toSelector();
+    const dismissButtonSelector = selector.findDismissButton({ renderWithPortal }).toSelector();
 
-  test(
-    'Should trap focus when opened',
-    setupTest(renderWithPortal, async page => {
-      await page.click('#focus-trap-target');
-      await page.keys(['Tab', 'Space']);
-      await page.waitForVisible(dismissButtonSelector);
-      await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
-      await page.keys(['Tab', 'Tab']);
-      await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
-    })
-  );
+    test(
+      'Should trap focus when opened',
+      setupTest(renderWithPortal, async page => {
+        await page.click(elementBeforePopover);
+        await page.keys(['Tab', 'Space']);
+        await page.waitForVisible(dismissButtonSelector);
+        await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
+        await page.keys(['Tab', 'Tab']);
+        await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
+      })
+    );
 
-  test(
-    'Should return focus to the trigger when closed',
-    setupTest(renderWithPortal, async page => {
-      await page.click('#focus-trap-target');
-      await page.keys(['Tab', 'Space']);
-      await page.waitForVisible(dismissButtonSelector);
-      await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
-      await page.keys(['Escape']);
-      await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
-    })
-  );
+    test(
+      'Should return focus to the trigger when closed',
+      setupTest(renderWithPortal, async page => {
+        await page.click(elementBeforePopover);
+        await page.keys(['Tab', 'Space']);
+        await page.waitForVisible(dismissButtonSelector);
+        await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
+        await page.keys(['Escape']);
+        await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
+      })
+    );
 
-  test(
-    'Should not prevent focus from moving to the clicked element',
-    setupTest(renderWithPortal, async page => {
-      await page.click(triggerSelector);
-      await page.waitForVisible(dismissButtonSelector);
-      await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
-      await page.click('#focus-trap-target');
-      await expect(page.isFocused('#focus-trap-target')).resolves.toBe(true);
-    })
-  );
+    test(
+      'Should not prevent focus from moving to the clicked element',
+      setupTest(renderWithPortal, async page => {
+        await page.click(triggerSelector);
+        await page.waitForVisible(dismissButtonSelector);
+        await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
+        await page.click(elementBeforePopover);
+        await expect(page.isFocused(elementBeforePopover)).resolves.toBe(true);
+      })
+    );
 
-  test(
-    'Should not restore focus when clicking elsewhere on the page',
-    setupTest(renderWithPortal, async page => {
-      await page.click(triggerSelector);
-      await page.waitForVisible(dismissButtonSelector);
-      await page.click('#text-before-focus-trap');
-      await page.keys(['Tab']);
-      await expect(page.isFocused('#focus-trap-target')).resolves.toBe(true);
-    })
-  );
+    test(
+      'Should not restore focus when clicking elsewhere on the page',
+      setupTest(renderWithPortal, async page => {
+        await page.click(triggerSelector);
+        await page.waitForVisible(dismissButtonSelector);
+        await page.click('#text-before-focus-trap');
+        await page.keys(['Tab']);
+        await expect(page.isFocused('#focus-trap-target')).resolves.toBe(true);
+      })
+    );
+  });
 
   describe.each([true, false])('Inside focusable? %s)', (insideFocusable: boolean) => {
     const popover = createWrapper().findPopover(insideFocusable ? '#focus-trap-within-focusable' : '#focus-trap');
