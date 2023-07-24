@@ -15,6 +15,7 @@ function writeEnvironmentFile(theme) {
   };
   const basePath = path.join(theme.outputPath, filepath);
 
+  writeFile(`${basePath}.json`, JSON.stringify(values, null, 2));
   writeFile(
     `${basePath}.js`,
     Object.entries(values)
