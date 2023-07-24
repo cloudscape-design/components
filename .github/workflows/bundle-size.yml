@@ -141,12 +141,11 @@ jobs:
 
             const message = `${(pr / 1000).toFixed(1)} KB (${sign}${increasePercent} % / ${sign}${increaseKb} KB in this pull request)`
 
-            const name = "Bundle size";
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.pull_request.head.sha,
-              context: name,
+              context: "Bundle size",
               state: 'success',
               description: message,
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
@@ -163,7 +162,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.pull_request.head.sha,
-              context: name,
+              context: "Bundle size",
               state: 'error',
               description: "The workflow encountered an error.",
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`

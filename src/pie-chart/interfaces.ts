@@ -35,6 +35,7 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
 
   /**
    * Specifies the size of the pie or donut chart.
+   * When used with `fitHeight`, this property defines the minimum size of the chart area.
    */
   size?: 'small' | 'medium' | 'large';
 
@@ -214,6 +215,11 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
    * @i18n
    */
   i18nStrings?: PieChartProps.I18nStrings;
+
+  /**
+   * Enable this property to make the chart fit into the available height of the parent container.
+   */
+  fitHeight?: boolean;
 }
 
 export namespace PieChartProps {

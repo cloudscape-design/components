@@ -23,8 +23,8 @@ export interface ChartPlotRef {
 }
 
 export interface ChartPlotProps {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
   transform?: string;
   offsetTop?: number;
   offsetBottom?: number;
@@ -172,9 +172,9 @@ function ChartPlot(
         aria-hidden="false"
         {...plotAria}
         ref={svgRef}
-        width={width}
-        height={height}
         style={{
+          width,
+          height,
           marginTop: offsetTop,
           marginBottom: offsetBottom,
           marginLeft: offsetLeft,
