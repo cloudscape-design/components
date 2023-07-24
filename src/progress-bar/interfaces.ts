@@ -24,6 +24,14 @@ export interface ProgressBarProps extends BaseComponentProps {
   maxValue?: number;
 
   /**
+   * Control localization of the progress bar value.
+   *
+   * @defaultValue If type === `percentage`, `${value}%`
+   * @defaultValue If type === `ratio`, `${value} of ${maxValue}`
+   */
+  ariaValueText?: string;
+
+  /**
    * Specifies the status of the progress bar. You can set it to one of the following:
    *
    * - `"in-progress"` - Displays a progress bar.

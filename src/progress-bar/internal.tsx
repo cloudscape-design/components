@@ -23,10 +23,12 @@ interface ProgressProps {
   maxValue: number;
   isInFlash: boolean;
   labelId: string;
+  ariaValueText?: string;
 }
-export const Progress = ({ value, maxValue = MAX_VALUE, type, isInFlash, labelId }: ProgressProps) => {
+export const Progress = ({ value, maxValue = MAX_VALUE, type, isInFlash, labelId, ariaValueText }: ProgressProps) => {
   const roundedValue = Math.round(value);
   const progressValue = clamp(roundedValue, 0, maxValue);
+  const valueText = ariaValueText || type === 'ratio' ? `${progressValue}/${maxValue}` : `${progressValue}%`;
 
   return (
     <div className={styles['progress-container']}>
@@ -38,11 +40,15 @@ export const Progress = ({ value, maxValue = MAX_VALUE, type, isInFlash, labelId
         )}
         max={maxValue}
         value={progressValue}
+        aria-valuemin={0}
+        aria-valuemax={maxValue}
         aria-labelledby={labelId}
+        aria-valuenow={progressValue}
+        aria-valuetext={valueText}
       />
       <span aria-hidden="true" className={styles['percentage-container']}>
         <InternalBox className={styles.percentage} variant="small" color={isInFlash ? 'inherit' : undefined}>
-          {type === 'ratio' ? `${progressValue}/${maxValue}` : `${progressValue}%`}
+          {valueText}
         </InternalBox>
       </span>
     </div>

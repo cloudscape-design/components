@@ -54,12 +54,13 @@ const permutations = createPermutations<ProgressBarProps>([
     additionalInfo: [undefined, 'additional info'],
   },
   {
-    value: [0, 10],
-    maxValue: [10],
+    value: [8],
+    maxValue: [9],
     label: [undefined, 'Label'],
     description: [undefined, 'description'],
     additionalInfo: [undefined, 'additional info'],
     type: ['ratio'],
+    ariaValueText: [undefined, `${8} of ${9} tasks`],
   },
 ]);
 

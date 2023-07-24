@@ -23,6 +23,7 @@ export default function ProgressBar({
   value = 0,
   type = 'percentage',
   maxValue = 100,
+  ariaValueText,
   status = 'in-progress',
   variant = 'standalone',
   resultButtonText,
@@ -74,7 +75,14 @@ export default function ProgressBar({
         <div>
           {isInProgressState ? (
             <>
-              <Progress value={value} maxValue={maxValue} type={type} labelId={labelId} isInFlash={isInFlash} />
+              <Progress
+                value={value}
+                maxValue={maxValue}
+                type={type}
+                labelId={labelId}
+                isInFlash={isInFlash}
+                ariaValueText={ariaValueText}
+              />
               <LiveRegion delay={0}>{assertion}</LiveRegion>
             </>
           ) : (
