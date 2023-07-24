@@ -85,8 +85,8 @@ class ColumnWidthsStore extends AsyncStore<ColumnWidthsState> {
           return { visibleColumns, columnWidths, totalWidth };
         });
       }
-      this.lastVisible = visibleColumns.map(column => column.id);
     }
+    this.lastVisible = visibleColumns.map(column => column.id);
   };
 
   updateColumnWidth = (columnId: PropertyKey, newWidth: number) => {
