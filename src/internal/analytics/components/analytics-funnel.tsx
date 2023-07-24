@@ -11,7 +11,7 @@ import {
   FunnelState,
   FunnelSubStepContextValue,
 } from '../context/analytics-context';
-import { useFunnel } from '../hooks/use-funnel';
+import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
@@ -156,10 +156,20 @@ type AnalyticsFunnelStepProps = {
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
 } & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
 
-export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
+export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => (
+  /*
+   This wrapper is used to apply a `key` property to the actual (inner) AnalyticsFunnelStep
+   element. This allows us to keep the state and effects separate per step.
+   */
+  <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />
+);
+
+const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
   const { funnelInteractionId, funnelState } = useFunnel();
 
   const funnelStepProps = { [DATA_ATTR_FUNNEL_STEP]: stepNumber };
+
+  const subStepCount = useRef<number>(0);
 
   // This useEffect hook is used to track the start and completion of interaction with the step.
   // On mount, if there is a valid funnel interaction id, it calls the 'funnelStepStart' method from FunnelMetrics
@@ -175,11 +185,12 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
         stepName,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
+        totalSubSteps: subStepCount.current,
       });
     }
 
     return () => {
-      //eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (funnelInteractionId && funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
@@ -187,13 +198,15 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
           stepName,
           stepNameSelector,
           subStepAllSelector: getSubStepAllSelector(),
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          totalSubSteps: subStepCount.current,
         });
       }
     };
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funnelInteractionId, stepNumber, stepNameSelector]);
 
-  const contextValue: FunnelStepContextValue = { stepNumber, stepNameSelector, funnelStepProps };
+  const contextValue: FunnelStepContextValue = { stepNumber, stepNameSelector, funnelStepProps, subStepCount };
   return (
     <FunnelStepContext.Provider value={contextValue}>
       {typeof children === 'function' ? children(contextValue) : children}
@@ -209,6 +222,7 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
   const subStepRef = useRef<HTMLDivElement | null>(null);
+  const { subStepCount } = useFunnelStep();
 
   const newContext: FunnelSubStepContextValue = {
     subStepSelector,
@@ -220,7 +234,18 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
 
   const inheritedContext = { ...useContext(FunnelSubStepContext), isNestedSubStep: true };
 
-  const context = inheritedContext.subStepId ? inheritedContext : newContext;
+  const isNested = Boolean(inheritedContext.subStepId);
+
+  useEffect(() => {
+    if (!isNested) {
+      subStepCount.current++;
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      return () => void subStepCount.current--;
+    }
+  }, [isNested, subStepCount]);
+
+  const context = isNested ? inheritedContext : newContext;
 
   return <FunnelSubStepContext.Provider value={context}>{children}</FunnelSubStepContext.Provider>;
 };
