@@ -7,7 +7,7 @@ import PopoverContainer from '../popover/container';
 import PopoverBody from '../popover/body';
 import Portal from '../internal/components/portal';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { useReducedMotion } from '../internal/hooks/use-visual-mode';
+import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
 export interface TooltipProps {
   children?: React.ReactNode;
