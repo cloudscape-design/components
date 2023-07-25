@@ -18,6 +18,13 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
     ...originalVisualModeModule,
     useVisualRefresh: (...args: any) =>
       mockUseAnimations ? useAnimations : originalVisualModeModule.useVisualRefresh(...args),
+  };
+});
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalVisualModeModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+  return {
+    __esModule: true,
+    ...originalVisualModeModule,
     useReducedMotion: (...args: any) =>
       mockUseAnimations ? !useAnimations : originalVisualModeModule.useReducedMotion(...args),
   };

@@ -13,6 +13,9 @@ import {
 import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
 import Button from '../../../../../lib/components/button';
 import FormField from '../../../../../lib/components/form-field';
+import Container from '../../../../../lib/components/container';
+import Cards from '../../../../../lib/components/cards';
+import ExpandableSection from '../../../../../lib/components/expandable-section';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
 
@@ -303,6 +306,9 @@ describe('AnalyticsFunnelStep', () => {
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
           Step Content
+          <Container />
+          <Cards items={[]} cardDefinition={{}} />
+          <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
@@ -313,6 +319,7 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
+      totalSubSteps: 3,
     });
   });
 
@@ -324,6 +331,9 @@ describe('AnalyticsFunnelStep', () => {
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
           Step Content
+          <Container />
+          <Cards items={[]} cardDefinition={{}} />
+          <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
@@ -338,6 +348,7 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
+      totalSubSteps: 3,
     });
   });
 

@@ -143,18 +143,20 @@ const AutosuggestInput = React.forwardRef(
       preventOpenOnFocusRef.current = false;
     };
 
-    const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
-      switch (e.detail.keyCode) {
+    const fireKeydown = (event: CustomEvent<BaseKeyDetail>) => fireCancelableEvent(onKeyDown, event.detail, event);
+
+    const handleKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
+      switch (event.detail.keyCode) {
         case KeyCode.down: {
           onPressArrowDown?.();
           openDropdown();
-          e.preventDefault();
+          event.preventDefault();
           break;
         }
         case KeyCode.up: {
           onPressArrowUp?.();
           openDropdown();
-          e.preventDefault();
+          event.preventDefault();
           break;
         }
         case KeyCode.enter: {
@@ -162,9 +164,9 @@ const AutosuggestInput = React.forwardRef(
             if (!onPressEnter?.()) {
               closeDropdown();
             }
-            e.preventDefault();
+            event.preventDefault();
           }
-          fireCancelableEvent(onKeyDown, e.detail);
+          fireKeydown(event);
           break;
         }
         case KeyCode.escape: {
@@ -173,12 +175,12 @@ const AutosuggestInput = React.forwardRef(
           } else if (value) {
             fireNonCancelableEvent(onChange, { value: '' });
           }
-          e.preventDefault();
-          fireCancelableEvent(onKeyDown, e.detail);
+          event.preventDefault();
+          fireKeydown(event);
           break;
         }
         default: {
-          fireCancelableEvent(onKeyDown, e.detail);
+          fireKeydown(event);
         }
       }
     };
