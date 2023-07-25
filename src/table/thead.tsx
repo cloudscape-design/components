@@ -15,6 +15,7 @@ import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
+import { TableRole } from './table-role';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -44,6 +45,7 @@ export interface TheadProps {
   selectionColumnId: PropertyKey;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  tableRole: TableRole;
 }
 
 const Thead = React.forwardRef(
@@ -71,6 +73,7 @@ const Thead = React.forwardRef(
       selectionColumnId,
       focusedComponent,
       onFocusedComponentChange,
+      tableRole,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -112,6 +115,7 @@ const Thead = React.forwardRef(
               style={stickyStyles.style}
               ref={stickyStyles.ref}
               scope="col"
+              {...tableRole.getTableColHeaderProps({})}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
@@ -170,6 +174,7 @@ const Thead = React.forwardRef(
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}
                 cellRef={node => setCell(columnId, node)}
+                tableRole={tableRole}
               />
             );
           })}

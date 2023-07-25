@@ -14,7 +14,7 @@ import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../internal/i18n/context';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { createTableColHeaderRoleProps } from '../table-role';
+import { TableRole } from '../table-role';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -39,6 +39,7 @@ interface TableHeaderCellProps<ItemType> {
   cellRef: React.RefCallback<HTMLElement>;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  tableRole: TableRole;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -62,6 +63,7 @@ export function TableHeaderCell<ItemType>({
   columnId,
   stickyState,
   cellRef,
+  tableRole,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -93,7 +95,6 @@ export function TableHeaderCell<ItemType>({
   });
 
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef);
-  const colHeaderProps = createTableColHeaderRoleProps({ sortingStatus });
 
   return (
     <th
@@ -112,7 +113,7 @@ export function TableHeaderCell<ItemType>({
       )}
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
-      {...colHeaderProps}
+      {...tableRole.getTableColHeaderProps({ sortingStatus })}
     >
       <div
         className={clsx(styles['header-cell-content'], {

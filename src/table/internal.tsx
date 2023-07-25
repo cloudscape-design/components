@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -36,7 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { createTableRoleProps, createTableRowRoleProps } from './table-role';
+import { TableRole } from './table-role';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -177,6 +177,9 @@ const InternalTable = React.forwardRef(
       stickyColumnsLast: stickyColumns?.last || 0,
     });
 
+    const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
+    const tableRole = useMemo(() => new TableRole(hasEditableCells ? 'grid' : 'table'), [hasEditableCells]);
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -203,6 +206,7 @@ const InternalTable = React.forwardRef(
       stripedRows,
       stickyState,
       selectionColumnId,
+      tableRole,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -237,12 +241,6 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
-    const tableRoleProps = createTableRoleProps({
-      tableRole: 'table',
-      totalItemsCount,
-      ariaLabel: ariaLabels?.tableLabel,
-    });
-
     return (
       <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
         <InternalContainer
@@ -276,6 +274,7 @@ const InternalTable = React.forwardRef(
                   onScroll={handleScroll}
                   tableHasHeader={hasHeader}
                   contentDensity={contentDensity}
+                  tableRole={tableRole}
                 />
               )}
             </>
@@ -322,7 +321,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              {...tableRoleProps}
+              {...tableRole.getTableProps({ totalItemsCount })}
             >
               <Thead
                 ref={theadRef}
@@ -377,7 +376,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                        {...createTableRowRoleProps({ tableRole: 'table', firstIndex, rowIndex })}
+                        {...tableRole.getTableRowProps({ firstIndex, rowIndex })}
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
@@ -395,6 +394,7 @@ const InternalTable = React.forwardRef(
                             hasFooter={hasFooter}
                             stickyState={stickyState}
                             columnId={selectionColumnId}
+                            tableRole={tableRole}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -457,6 +457,7 @@ const InternalTable = React.forwardRef(
                               columnId={column.id ?? colIndex}
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
+                              tableRole={tableRole}
                             />
                           );
                         })}
