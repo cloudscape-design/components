@@ -12,7 +12,15 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 import { useButtonContext } from '../internal/context/button-context';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import {
+  DATA_ATTR_FUNNEL_VALUE,
+  getFunnelValueSelector,
+  getNameFromSelector,
+  getSubStepAllSelector,
+} from '../internal/analytics/selectors';
+import { FunnelMetrics } from '../internal/analytics';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -65,6 +73,11 @@ export const InternalButton = React.forwardRef(
 
     const buttonContext = useButtonContext();
 
+    const uniqueId = useUniqueId('button');
+    const { funnelInteractionId } = useFunnel();
+    const { stepNumber, stepNameSelector } = useFunnelStep();
+    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
+
     const handleClick = (event: React.MouseEvent) => {
       if (isNotInteractive) {
         return event.preventDefault();
@@ -72,6 +85,23 @@ export const InternalButton = React.forwardRef(
 
       if (isAnchor && isPlainLeftClick(event)) {
         fireCancelableEvent(onFollow, { href, target }, event);
+
+        if ((iconName === 'external' || target === '_blank') && funnelInteractionId) {
+          const stepName = getNameFromSelector(stepNameSelector);
+          const subStepName = getNameFromSelector(subStepNameSelector);
+
+          FunnelMetrics.externalLinkInteracted({
+            funnelInteractionId,
+            stepNumber,
+            stepName,
+            stepNameSelector,
+            subStepSelector,
+            subStepName,
+            subStepNameSelector,
+            elementSelector: getFunnelValueSelector(uniqueId),
+            subStepAllSelector: getSubStepAllSelector(),
+          });
+        }
       }
 
       const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
@@ -99,6 +129,7 @@ export const InternalButton = React.forwardRef(
       title: ariaLabel,
       className: buttonClass,
       onClick: handleClick,
+      [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     } as const;
     const iconProps: ButtonIconProps = {
       loading,
