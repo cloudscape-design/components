@@ -7,19 +7,21 @@ import InternalBox from '../box/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import { TocProps } from './interfaces';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import useScrollSpy from './scroll-spy.js';
+import InternalExpandableSection from '../expandable-section/internal.js';
 
-const Anchor = ({ id, text, level, isActive }: TocProps.Anchor) => {
-  checkSafeUrl('SideNavigation', id);
+const Anchor = ({ href, text, level, isActive }: TocProps.Anchor & { isActive: boolean }) => {
+  checkSafeUrl('SideNavigation', href);
 
   return (
-    <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })} key={id}>
+    <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })} key={href}>
       <a
         style={{
           // 2px for compensate for -2 negative margin, so active item borders overlap
           paddingLeft: `${level * 16}px`,
         }}
         className={clsx(styles['anchor-link'], { [styles['anchor-link-active']]: isActive })}
-        href={`#${id}`}
+        href={`#${href}`}
       >
         {text}
       </a>
@@ -27,18 +29,34 @@ const Anchor = ({ id, text, level, isActive }: TocProps.Anchor) => {
   );
 };
 
-export default function InternalToc({ anchors, ...props }: TocProps) {
+const AnchorList = ({ anchors, activeHref }: { anchors: TocProps.Anchor[]; activeHref?: string }) => {
+  return (
+    <ul className={styles['anchor-list']}>
+      {anchors.map((props, index) => (
+        <Anchor isActive={props.href === activeHref} key={index} {...props} />
+      ))}
+    </ul>
+  );
+};
+
+export default function InternalToc({ anchors, variant, ...props }: TocProps) {
+  //const [activeHref] = useScrollSpy({ hrefs: anchors.map(anchor => anchor.href) });
+  const activeHref = 'section-1';
   return (
     <div className={styles.root}>
       <InternalSpaceBetween direction="vertical" size="s">
-        <InternalBox color="text-body-secondary" variant="h4">
-          {props.title}
-        </InternalBox>
-        <ul className={styles['anchor-list']}>
-          {anchors.map((props, index) => (
-            <Anchor isActive={index === 2} key={index} {...props} />
-          ))}
-        </ul>
+        {variant === 'expandable' ? (
+          <InternalExpandableSection variant="footer" headerText={props.title}>
+            <AnchorList activeHref={activeHref} anchors={anchors} />
+          </InternalExpandableSection>
+        ) : (
+          <>
+            <InternalBox color="text-body-secondary" variant="h4">
+              {props.title}
+            </InternalBox>
+            <AnchorList activeHref={activeHref} anchors={anchors} />
+          </>
+        )}
       </InternalSpaceBetween>
     </div>
   );

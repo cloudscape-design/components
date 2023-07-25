@@ -12,6 +12,16 @@ export interface TocProps {
    *
    * */
   anchors: TocProps.Anchor[];
+
+  /**
+   *
+   * */
+  variant?: 'default' | 'expandable';
+
+  /**
+   * Disable scroll spy
+   * */
+  disableScrollSpy?: boolean;
 }
 
 export namespace TocProps {
@@ -19,8 +29,7 @@ export namespace TocProps {
    * Anchor with the id.
    */ export interface Anchor {
     text: string;
-    id: string;
+    href: string;
     level: number;
-    isActive?: boolean;
   }
 }

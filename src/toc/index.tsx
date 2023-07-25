@@ -7,7 +7,7 @@ import InternalToc from './internal';
 
 export { TocProps };
 
-export default function Toc({ ...props }: TocProps) {
-  return <InternalToc {...props} />;
+export default function Toc({ variant = 'default', ...props }: TocProps) {
+  return <InternalToc variant={variant} {...props} />;
 }
 applyDisplayName(Toc, 'Toc');
