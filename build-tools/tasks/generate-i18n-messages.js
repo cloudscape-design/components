@@ -11,9 +11,15 @@ const { writeFile } = require('../utils/files');
 const namespace = '@cloudscape-design/components';
 
 const destinationDir = path.join(targetPath, 'components/i18n/messages');
-const declarationFile = `import { I18nProviderProps } from "../provider";
+const internalDestinationDir = path.join(targetPath, 'components/internal/i18n/messages');
+
+const messagesDeclarationFile = `import { I18nProviderProps } from "../provider";
 declare const messages: I18nProviderProps.Messages;
 export default messages;
+`;
+
+const indexDeclarationFile = `import { I18nProviderProps } from "../provider";
+export function importMessages(locale: string): Promise<ReadonlyArray<I18nProviderProps.Messages>>;
 `;
 
 module.exports = function generateI18nMessages() {
@@ -35,16 +41,41 @@ module.exports = function generateI18nMessages() {
     );
     allParsedMessages[locale] = { ...(allParsedMessages[locale] ?? {}), ...parsedMessages };
     const resultFormat = { [namespace]: { [locale]: parsedMessages } };
-    writeFile(path.join(destinationDir, `${subset}.${locale}.json`), JSON.stringify(resultFormat));
-    writeFile(path.join(destinationDir, `${subset}.${locale}.d.ts`), declarationFile);
-    writeFile(path.join(destinationDir, `${subset}.${locale}.js`), `export default ${JSON.stringify(resultFormat)}`);
+
+    for (const directory of [destinationDir, internalDestinationDir]) {
+      writeFile(path.join(directory, `${subset}.${locale}.json`), JSON.stringify(resultFormat));
+      writeFile(path.join(directory, `${subset}.${locale}.d.ts`), messagesDeclarationFile);
+      writeFile(path.join(directory, `${subset}.${locale}.js`), `export default ${JSON.stringify(resultFormat)}`);
+    }
   }
 
   // Generate a ".all" file containing all locales.
   const resultFormat = { [namespace]: allParsedMessages };
-  writeFile(path.join(destinationDir, `all.all.json`), JSON.stringify(resultFormat));
-  writeFile(path.join(destinationDir, `all.all.d.ts`), declarationFile);
-  writeFile(path.join(destinationDir, `all.all.js`), `export default ${JSON.stringify(resultFormat)}`);
+
+  // Generate a dynamic provider function for automatic bundler splitting and imports.
+  const indexFile = [
+    `export function importMessages(locale) {`,
+    `  switch (locale) {`,
+    ...files.flatMap(fileName => {
+      const [subset, locale] = fileName.split('.');
+      if (subset !== 'all') {
+        return [];
+      }
+      return [`  case "${locale}":`, `    return import("./${subset}.${locale}.js").then(mod => [mod.default]);`];
+    }),
+    `  }`,
+    `  return Promise.resolve([]);`,
+    `}`,
+  ].join('\n');
+
+  for (const directory of [destinationDir, internalDestinationDir]) {
+    writeFile(path.join(directory, 'all.all.json'), JSON.stringify(resultFormat));
+    writeFile(path.join(directory, 'all.all.d.ts'), messagesDeclarationFile);
+    writeFile(path.join(directory, 'all.all.js'), `export default ${JSON.stringify(resultFormat)}`);
+
+    writeFile(path.join(directory, 'index.js'), indexFile);
+    writeFile(path.join(directory, 'index.d.ts'), indexDeclarationFile);
+  }
 
   return Promise.resolve();
 };
