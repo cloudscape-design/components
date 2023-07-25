@@ -136,7 +136,7 @@ export default function () {
 
 function BaseStaticWidget({ header, children, footer }: any) {
   return (
-    <div style={{ minHeight: '550px', height: '100%' }}>
+    <div style={{ minHeight: '850px', height: '100%' }}>
       <Container header={header} fitHeight={true} footer={footer}>
         {children}
       </Container>
