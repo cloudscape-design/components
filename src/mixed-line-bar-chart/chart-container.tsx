@@ -33,7 +33,7 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
-import { useResizeObserver } from '../internal/hooks/container-queries';
+import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 
 const LEFT_LABELS_MARGIN = 16;
 const BOTTOM_LABELS_OFFSET = 12;
@@ -122,12 +122,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const popoverRef = useRef<HTMLElement | null>(null);
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
-  const [measuredHeight, setHeight] = useState(0);
-  useResizeObserver(
-    () => plotMeasureRef.current,
-    entry => fitHeight && setHeight(entry.borderBoxHeight)
-  );
-  const plotHeight = fitHeight ? measuredHeight : explicitPlotHeight;
+  const plotHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight) ?? explicitPlotHeight;
 
   const isRefresh = useVisualRefresh();
 
