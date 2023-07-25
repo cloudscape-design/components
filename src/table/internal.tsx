@@ -36,6 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { createTableRoleProps, createTableRowRoleProps } from './table-role';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -236,6 +237,12 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
+    const tableRoleProps = createTableRoleProps({
+      tableRole: 'table',
+      totalItemsCount,
+      ariaLabel: ariaLabels?.tableLabel,
+    });
+
     return (
       <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
         <InternalContainer
@@ -315,11 +322,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              // Browsers have weird mechanism to guess whether it's a data table or a layout table.
-              // If we state explicitly, they get it always correctly even with low number of rows.
-              role="table"
-              aria-label={ariaLabels?.tableLabel}
-              aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
+              {...tableRoleProps}
             >
               <Thead
                 ref={theadRef}
@@ -374,7 +377,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                        aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
+                        {...createTableRowRoleProps({ tableRole: 'table', firstIndex, rowIndex })}
                       >
                         {selectionType !== undefined && (
                           <TableTdElement

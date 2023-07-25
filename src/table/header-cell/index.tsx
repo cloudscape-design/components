@@ -5,7 +5,7 @@ import React from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
-import { getAriaSort, getSortingIconName, getSortingStatus, isSorted } from './utils';
+import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
@@ -14,6 +14,7 @@ import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../internal/i18n/context';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { createTableColHeaderRoleProps } from '../table-role';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -92,6 +93,7 @@ export function TableHeaderCell<ItemType>({
   });
 
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef);
+  const colHeaderProps = createTableColHeaderRoleProps({ sortingStatus });
 
   return (
     <th
@@ -108,10 +110,9 @@ export function TableHeaderCell<ItemType>({
         },
         stickyStyles.className
       )}
-      aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={{ ...style, ...stickyStyles.style }}
-      scope="col"
       ref={mergedRef}
+      {...colHeaderProps}
     >
       <div
         className={clsx(styles['header-cell-content'], {
