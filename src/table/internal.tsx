@@ -321,7 +321,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              {...tableRole.getTableProps({ totalItemsCount })}
+              {...tableRole.getTableProps({ totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
             >
               <Thead
                 ref={theadRef}
