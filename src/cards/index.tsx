@@ -179,7 +179,7 @@ const Cards = React.forwardRef(function <T = any>(
                   updateShiftToggle={updateShiftToggle}
                   onFocus={onCardFocus}
                   ariaLabel={ariaLabels?.cardsLabel}
-                  ariaLabelledby={ariaLabels?.cardsLabel ? undefined : cardsHeaderId}
+                  ariaLabelledby={isLabelledByHeader ? headingId : undefined}
                 />
               )}
             </div>
