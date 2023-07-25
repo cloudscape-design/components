@@ -60,7 +60,7 @@ export default function InternalHeader({
             styles.title,
             styles[`title-variant-${variantOverride}`],
             isRefresh && styles.refresh,
-            description && [styles[`root-has-description`]]
+            actions && [styles[`has-actions`]]
           )}
         >
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>

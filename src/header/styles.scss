@@ -44,6 +44,7 @@
   &.refresh {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     // Can't use justify-content: center because it won't align with configurable dashboard handle icon
   }
 
@@ -108,21 +109,21 @@
     font-size: awsui.$font-heading-xl-size;
     // Use padding rather than center align so that all headers of the same size start at the same height in the container,
     // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
-    &.refresh {
-      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-xl-line-height}) / 2);
-    }
+    // &.refresh.has-actions {
+    //   padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-xl-line-height}) / 2);
+    // }
   }
   &-variant-h2 {
     font-size: awsui.$font-heading-l-size;
-    &.refresh {
-      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-l-line-height}) / 2);
-    }
+    // &.refresh.has-actions {
+    //   padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-l-line-height}) / 2);
+    // }
   }
   &-variant-h3 {
     font-size: awsui.$font-heading-m-size;
-    &.refresh {
-      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-m-line-height}) / 2);
-    }
+    // &.refresh.has-actions {
+    //   padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-m-line-height}) / 2);
+    // }
   }
   &-variant-h2:not(.refresh),
   &-variant-h3:not(.refresh) {
