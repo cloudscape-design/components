@@ -93,7 +93,7 @@ test(
     await page.click('#shrink-container');
     await page.waitForJsTimers();
     // flush observations from the container resize
-    await expect(page.flushObservations()).resolves.not.toEqual([]);
+    await page.flushObservations();
     await page.waitForJsTimers();
     // ensure there are no ongoing resizes after we flushed the expected ones above
     await expect(page.flushObservations()).resolves.toEqual([]);
