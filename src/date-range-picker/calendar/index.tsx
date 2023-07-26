@@ -20,7 +20,7 @@ import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay } from './utils';
-import { useInternalI18n } from '../../internal/i18n/context.js';
+import { useInternalI18n } from '../../i18n/context.js';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
   value: DateRangePickerProps.PendingAbsoluteValue;

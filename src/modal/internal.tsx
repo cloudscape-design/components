@@ -21,7 +21,7 @@ import { ModalProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import FocusLock from '../internal/components/focus-lock';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 

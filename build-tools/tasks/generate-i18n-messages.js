@@ -11,7 +11,6 @@ const { writeFile } = require('../utils/files');
 const namespace = '@cloudscape-design/components';
 
 const destinationDir = path.join(targetPath, 'components/i18n/messages');
-const internalDestinationDir = path.join(targetPath, 'components/internal/i18n/messages');
 const declarationFile = `import { I18nProviderProps } from "../provider";
 declare const messages: I18nProviderProps.Messages;
 export default messages;
@@ -36,21 +35,16 @@ module.exports = function generateI18nMessages() {
     );
     allParsedMessages[locale] = { ...(allParsedMessages[locale] ?? {}), ...parsedMessages };
     const resultFormat = { [namespace]: { [locale]: parsedMessages } };
-
-    for (const directory of [destinationDir, internalDestinationDir]) {
-      writeFile(path.join(directory, `${subset}.${locale}.json`), JSON.stringify(resultFormat));
-      writeFile(path.join(directory, `${subset}.${locale}.d.ts`), declarationFile);
-      writeFile(path.join(directory, `${subset}.${locale}.js`), `export default ${JSON.stringify(resultFormat)}`);
-    }
+    writeFile(path.join(destinationDir, `${subset}.${locale}.json`), JSON.stringify(resultFormat));
+    writeFile(path.join(destinationDir, `${subset}.${locale}.d.ts`), declarationFile);
+    writeFile(path.join(destinationDir, `${subset}.${locale}.js`), `export default ${JSON.stringify(resultFormat)}`);
   }
 
   // Generate a ".all" file containing all locales.
   const resultFormat = { [namespace]: allParsedMessages };
-  for (const directory of [destinationDir, internalDestinationDir]) {
-    writeFile(path.join(directory, `all.all.json`), JSON.stringify(resultFormat));
-    writeFile(path.join(directory, `all.all.d.ts`), declarationFile);
-    writeFile(path.join(directory, `all.all.js`), `export default ${JSON.stringify(resultFormat)}`);
-  }
+  writeFile(path.join(destinationDir, `all.all.json`), JSON.stringify(resultFormat));
+  writeFile(path.join(destinationDir, `all.all.d.ts`), declarationFile);
+  writeFile(path.join(destinationDir, `all.all.js`), `export default ${JSON.stringify(resultFormat)}`);
 
   return Promise.resolve();
 };

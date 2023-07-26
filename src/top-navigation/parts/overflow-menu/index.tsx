@@ -10,7 +10,7 @@ import { HeaderProps } from './header';
 
 import styles from '../../styles.css.js';
 import { TopNavigationProps } from '../../interfaces';
-import { useInternalI18n } from '../../../internal/i18n/context';
+import { useInternalI18n } from '../../../i18n/context';
 interface OverflowMenuProps {
   headerText?: string;
   items?: TopNavigationProps['utilities'];

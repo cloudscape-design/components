@@ -11,7 +11,7 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 
 import styles from './styles.css.js';
 import { useFlashbar } from './common';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export { FlashbarProps };
 

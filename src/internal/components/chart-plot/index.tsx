@@ -11,7 +11,7 @@ import LiveRegion from '../live-region/index';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
 import { Offset } from '../interfaces';
-import { useInternalI18n } from '../../i18n/context.js';
+import { useInternalI18n } from '../../../i18n/context';
 
 const DEFAULT_PLOT_FOCUS_OFFSET = 3;
 const DEFAULT_ELEMENT_FOCUS_OFFSET = 3;

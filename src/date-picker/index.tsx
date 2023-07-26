@@ -26,7 +26,7 @@ import FocusLock from '../internal/components/focus-lock';
 import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
-import { useLocale } from '../internal/i18n/context.js';
+import { useLocale } from '../i18n/context.js';
 
 export { DatePickerProps };
 

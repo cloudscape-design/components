@@ -8,7 +8,7 @@ import '../../__a11y__/to-validate-a11y';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 class PopoverInternalWrapper extends PopoverWrapper {
   findBody({ renderWithPortal } = { renderWithPortal: false }): ElementWrapper | null {

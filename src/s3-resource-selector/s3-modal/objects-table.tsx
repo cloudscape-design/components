@@ -10,7 +10,7 @@ import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { formatSize, formatDefault } from './column-formats';
 import { BasicS3Table, getSharedI18Strings } from './basic-table';
 import { joinObjectPath } from '../utils';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 interface ObjectsTableProps {
   forwardFocusRef: React.Ref<ForwardFocusRef>;
