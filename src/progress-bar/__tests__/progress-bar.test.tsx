@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar';
@@ -211,5 +211,40 @@ describe('Progress updates', () => {
     // 6 seconds passed, live region has a new value
     jest.advanceTimersByTime(6000);
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 2%`);
+  });
+});
+
+describe('ARIA value text', () => {
+  const setup = (props: Partial<ProgressBarProps>) => {
+    const wrapper = renderProgressBar(props);
+    return within(wrapper.getElement()).getByRole('progressbar');
+  };
+
+  describe('percentage', () => {
+    test('default', () => {
+      const progressBar = setup({ type: 'percentage', value: 1 });
+      expect(progressBar.getAttribute('aria-valuetext')).toEqual('1%');
+      expect(progressBar.getAttribute('aria-valuenow')).toEqual('1');
+    });
+  });
+
+  describe('ratio', () => {
+    test('default', () => {
+      const progressBar = setup({ type: 'ratio', value: 1 });
+      expect(progressBar.getAttribute('aria-valuetext')).toEqual('1/100');
+      expect(progressBar.getAttribute('aria-valuenow')).toEqual('1');
+    });
+
+    test('maxValue provided', () => {
+      const progressBar = setup({ type: 'ratio', value: 1, maxValue: 10 });
+      expect(progressBar.getAttribute('aria-valuetext')).toEqual('1/10');
+      expect(progressBar.getAttribute('aria-valuenow')).toEqual('1');
+    });
+
+    test('ariaValueText provided', () => {
+      const progressBar = setup({ type: 'ratio', value: 1, maxValue: 10, ariaValueText: '1 of 10 tasks' });
+      expect(progressBar.getAttribute('aria-valuetext')).toEqual('1 of 10 tasks');
+      expect(progressBar.getAttribute('aria-valuenow')).toEqual('1');
+    });
   });
 });

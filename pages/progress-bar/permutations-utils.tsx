@@ -51,6 +51,7 @@ const permutations = createPermutations<ProgressBarProps>([
     resultButtonText: [undefined, 'Result button text'],
     label: [undefined, 'Label'],
     description: [undefined, 'description'],
+    type: ['percentage'],
     additionalInfo: [undefined, 'additional info'],
   },
   {

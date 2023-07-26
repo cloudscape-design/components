@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import styles from './styles.css.js';
@@ -12,18 +12,11 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { Progress, ResultState, SmallText } from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { throttle } from '../internal/utils/throttle';
-import LiveRegion from '../internal/components/live-region';
-
-const ASSERTION_FREQUENCY = 5000; // interval in ms between progress announcements
 
 export { ProgressBarProps };
 
 export default function ProgressBar({
   value = 0,
-  type = 'percentage',
-  maxValue = 100,
-  ariaValueText,
   status = 'in-progress',
   variant = 'standalone',
   resultButtonText,
@@ -41,18 +34,6 @@ export default function ProgressBar({
   const labelId = `${generatedName}-label`;
   const isInFlash = variant === 'flash';
   const isInProgressState = status === 'in-progress';
-
-  const [assertion, setAssertion] = useState('');
-  const throttledAssertion = useMemo(() => {
-    return throttle((value: ProgressBarProps['value']) => {
-      const announcement = type === 'ratio' ? `${value} of ${maxValue}}` : `${value}%`;
-      setAssertion(`${label ?? ''}: ${announcement}`);
-    }, ASSERTION_FREQUENCY);
-  }, [label, maxValue, type]);
-
-  useEffect(() => {
-    throttledAssertion(value);
-  }, [throttledAssertion, value]);
 
   if (isInFlash && resultButtonText) {
     warnOnce(
@@ -76,14 +57,14 @@ export default function ProgressBar({
           {isInProgressState ? (
             <>
               <Progress
+                label={label}
+                type={rest.type || 'percentage'}
                 value={value}
-                maxValue={maxValue}
-                type={type}
+                maxValue={(rest.type === 'ratio' && rest.maxValue) || 100}
+                ariaValueText={rest.type === 'ratio' ? rest.ariaValueText : undefined}
                 labelId={labelId}
                 isInFlash={isInFlash}
-                ariaValueText={ariaValueText}
               />
-              <LiveRegion delay={0}>{assertion}</LiveRegion>
             </>
           ) : (
             <ResultState
