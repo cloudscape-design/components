@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { waitFor } from '@testing-library/react';
-import { isMotionDisabled } from '../../../lib/components/internal/motion';
+import { isMotionDisabled } from '@cloudscape-design/component-toolkit/internal';
 import nativeSupport from '../../../lib/components/tabs/native-smooth-scroll-supported';
 import smoothScroll from '../../../lib/components/tabs/smooth-scroll';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -11,10 +11,10 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 jest.mock('../../../lib/components/tabs/native-smooth-scroll-supported', () => {
   return jest.fn();
 });
-jest.mock('../../../lib/components/internal/motion', () => {
-  const mock = jest.fn();
-  return { isMotionDisabled: mock };
-});
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isMotionDisabled: jest.fn(),
+}));
 const nativeScrollMock = jest.fn();
 Element.prototype.scrollTo = nativeScrollMock;
 

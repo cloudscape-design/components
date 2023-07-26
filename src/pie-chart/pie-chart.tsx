@@ -20,8 +20,8 @@ import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import clsx from 'clsx';
-import { useResizeObserver } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -90,12 +90,7 @@ export default <T extends PieChartProps.Datum>({
   const hasLabels = !(hideTitles && hideDescriptions);
   const isRefresh = useVisualRefresh();
 
-  const [measuredHeight, setHeight] = useState(0);
-  useResizeObserver(
-    () => plotRef.current?.svg ?? null,
-    entry => fitHeight && setHeight(entry.borderBoxHeight)
-  );
-  const height = fitHeight ? measuredHeight : explicitHeight;
+  const height = useHeightMeasure(() => plotRef.current?.svg ?? null, !fitHeight) ?? explicitHeight;
 
   const dimensions = useMemo(
     () =>

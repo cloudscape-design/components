@@ -10,7 +10,8 @@ import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styl
 import sharedStyles from '../../../lib/components/app-layout/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
 
-jest.mock('../../../lib/components/internal/motion', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
 

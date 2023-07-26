@@ -30,7 +30,7 @@ import ErrorScreen from './error-screen';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { useCurrentMode } from '../internal/hooks/use-visual-mode';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 import { useInternalI18n } from '../internal/i18n/context';
 import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
