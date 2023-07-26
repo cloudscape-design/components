@@ -2,15 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 import { TagEditor } from '~components';
-import { I18nProvider, I18nProviderProps } from '~components/i18n';
-
-import { importMessages } from '~components/i18n/messages';
+import { I18nProvider, I18nProviderProps, importMessages } from '~components/i18n';
 
 const LOCALE = 'ja';
 
 export default function I18nDynamicPage() {
   const [messages, setMessages] = useState<ReadonlyArray<I18nProviderProps.Messages> | null>(null);
-
   useEffect(() => {
     importMessages(LOCALE).then(setMessages);
   }, []);

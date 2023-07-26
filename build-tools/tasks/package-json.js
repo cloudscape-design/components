@@ -39,13 +39,12 @@ function getComponentsExports() {
 
   // Internationalization and messages
   result['./i18n'] = './i18n/index.js';
-  result[`./i18n/messages`] = `./i18n/messages/index.js`;
+  result[`./i18n/messages/all.all`] = `./i18n/messages/all.all.js`;
+  result[`./i18n/messages/all.all.json`] = `./i18n/messages/all.all.json`;
   for (const translationFile of fs.readdirSync('src/i18n/messages')) {
     const [subset, locale] = translationFile.split('.');
-    if (subset && locale) {
-      result[`./i18n/messages/${subset}.${locale}`] = `./i18n/messages/${subset}.${locale}.js`;
-      result[`./i18n/messages/${subset}.${locale}.json`] = `./i18n/messages/${subset}.${locale}.json`;
-    }
+    result[`./i18n/messages/${subset}.${locale}`] = `./i18n/messages/${subset}.${locale}.js`;
+    result[`./i18n/messages/${subset}.${locale}.json`] = `./i18n/messages/${subset}.${locale}.json`;
   }
 
   return result;
