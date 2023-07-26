@@ -42,10 +42,11 @@ describe('Dynamic overlap', () => {
   }
 
   function renderApp(appLayoutProps?: AppLayoutProps) {
-    render(<AppLayout {...appLayoutProps} />);
+    const { rerender } = render(<AppLayout {...appLayoutProps} />);
     return {
       isDynamicOverlapSet: () => screen.getByTestId('is-dynamic-overlap-set').textContent,
       isDynamicOverlapDisabled: () => screen.getByTestId('is-dynamic-overlap-disabled').textContent,
+      rerender: (appLayoutProps?: AppLayoutProps) => rerender(<AppLayout {...appLayoutProps} />),
     };
   }
 
@@ -89,6 +90,17 @@ describe('Dynamic overlap', () => {
       content: <ComponentWithDynamicOverlap />,
       disableContentHeaderOverlap: true,
     });
+    expect(isDynamicOverlapDisabled()).toBe('true');
+  });
+
+  test('updates state accordingly when re-rendering', () => {
+    const { isDynamicOverlapSet, isDynamicOverlapDisabled, rerender } = renderApp({
+      content: <ComponentWithDynamicOverlap />,
+    });
+    expect(isDynamicOverlapSet()).toBe('true');
+    expect(isDynamicOverlapDisabled()).toBe('false');
+    rerender({ content: <ComponentWithoutDynamicOverlap /> });
+    expect(isDynamicOverlapSet()).toBe('false');
     expect(isDynamicOverlapDisabled()).toBe('true');
   });
 });
