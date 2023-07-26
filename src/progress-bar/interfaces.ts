@@ -3,33 +3,11 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface ProgressBarProps extends BaseComponentProps {
+interface BaseProgressBarProps extends BaseComponentProps {
   /**
    * Indicates the current progress as a percentage. The value must be between 0 and 100. Decimals are rounded.
    */
   value?: number;
-
-  /**
-   * Specifies the progress type.
-   *
-   * @defaultValue 'percentage'
-   */
-  type?: ProgressBarProps.ContentType;
-
-  /**
-   * Specifies the maximum value of the progress when type ratio is selected.
-   *
-   * @defaultValue 100
-   */
-  maxValue?: number;
-
-  /**
-   * Control localization of the progress bar value.
-   *
-   * @defaultValue If type === `percentage`, `${value}%`
-   * @defaultValue If type === `ratio`, `${value} of ${maxValue}`
-   */
-  ariaValueText?: string;
 
   /**
    * Specifies the status of the progress bar. You can set it to one of the following:
@@ -90,6 +68,41 @@ export interface ProgressBarProps extends BaseComponentProps {
    */
   onResultButtonClick?: NonCancelableEventHandler;
 }
+
+interface PercentageProgressBarProps extends BaseProgressBarProps {
+  /**
+   * Specifies the progress type.
+   *
+   * @defaultValue 'percentage'
+   */
+  type?: 'percentage';
+}
+
+interface RatioProgressBarProps extends BaseProgressBarProps {
+  /**
+   * Specifies the progress type.
+   *
+   * @defaultValue 'percentage'
+   */
+  type: 'ratio';
+
+  /**
+   * Specifies the maximum value of the progress when type ratio is selected.
+   *
+   * @defaultValue 100
+   */
+  maxValue?: number;
+
+  /**
+   * Control localization of the progress bar value.
+   *
+   * @defaultValue If type === `percentage`, `${value}%`
+   * @defaultValue If type === `ratio`, `${value} of ${maxValue}`
+   */
+  ariaValueText?: string;
+}
+
+export type ProgressBarProps = PercentageProgressBarProps | RatioProgressBarProps;
 
 export namespace ProgressBarProps {
   export type Status = 'in-progress' | 'success' | 'error';
