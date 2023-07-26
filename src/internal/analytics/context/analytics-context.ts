@@ -18,6 +18,7 @@ export interface FunnelContextValue {
   funnelState: RefObject<FunnelState>;
   errorCount: MutableRefObject<number>;
   loadingButtonCount: MutableRefObject<number>;
+  latestFocusCleanupFunction: MutableRefObject<undefined | (() => void)>;
 }
 
 export interface FunnelStepContextValue {
@@ -32,6 +33,19 @@ export interface FunnelSubStepContextValue {
   subStepSelector: string;
   subStepNameSelector: string;
   subStepRef: MutableRefObject<HTMLDivElement | null>;
+  mousePressed: MutableRefObject<boolean>;
+  /**
+   * `isFocusedSubStep` is almost the same as checking if document.activeElement
+   * is a child of the curren substep. However, `isFocusedSubStep` stays true
+   * while the mouse button is pressed down, even though some browsers move the focus
+   * to the body element during that time.
+   */
+  isFocusedSubStep: MutableRefObject<boolean>;
+
+  /**
+   * The focus cleanup function should be run when the user leaves the substep.
+   */
+  focusCleanupFunction: MutableRefObject<undefined | (() => void)>;
   isNestedSubStep: boolean;
   funnelSubStepProps?: Record<string, string | number | boolean | undefined>;
 }
@@ -50,6 +64,7 @@ export const FunnelContext = createContext<FunnelContextValue>({
   funnelState: { current: 'default' },
   errorCount: { current: 0 },
   loadingButtonCount: { current: 0 },
+  latestFocusCleanupFunction: { current: undefined },
 });
 
 export const FunnelStepContext = createContext<FunnelStepContextValue>({
@@ -64,4 +79,7 @@ export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
   subStepNameSelector: '',
   subStepRef: { current: null },
   isNestedSubStep: false,
+  mousePressed: { current: false },
+  isFocusedSubStep: { current: false },
+  focusCleanupFunction: { current: undefined },
 });

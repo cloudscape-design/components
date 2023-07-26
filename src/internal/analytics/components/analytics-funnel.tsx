@@ -43,6 +43,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
   const funnelState = useRef<FunnelState>('default');
   const errorCount = useRef<number>(0);
   const loadingButtonCount = useRef<number>(0);
+  const latestFocusCleanupFunction = useRef<undefined | (() => void)>(undefined);
 
   // This useEffect hook is run once on component mount to initiate the funnel analytics.
   // It first calls the 'funnelStart' method from FunnelMetrics, providing all necessary details
@@ -147,6 +148,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     funnelState,
     errorCount,
     loadingButtonCount,
+    latestFocusCleanupFunction,
   };
 
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
@@ -223,12 +225,20 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   const subStepNameSelector = getSubStepNameSelector(subStepId);
   const subStepRef = useRef<HTMLDivElement | null>(null);
   const { subStepCount } = useFunnelStep();
+  const mousePressed = useRef<boolean>(false);
+  const isFocusedSubStep = useRef<boolean>(false);
+  const focusCleanupFunction = useRef<undefined | (() => void)>(undefined);
+  const { funnelState, funnelInteractionId } = useFunnel();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
 
   const newContext: FunnelSubStepContextValue = {
     subStepSelector,
     subStepNameSelector,
     subStepId,
     subStepRef,
+    mousePressed,
+    isFocusedSubStep,
+    focusCleanupFunction,
     isNestedSubStep: false,
   };
 
@@ -246,6 +256,50 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   }, [isNested, subStepCount]);
 
   const context = isNested ? inheritedContext : newContext;
+
+  useEffect(() => {
+    const onMouseDown = () => (mousePressed.current = true);
+
+    const onMouseUp = async () => {
+      mousePressed.current = false;
+
+      if (!isFocusedSubStep.current) {
+        return;
+      }
+
+      /*
+        Some mouse events result in an element being focused. However,
+        this happens only _after_ the onMouseUp event. We yield the
+        event loop here, so that `document.activeElement` has the
+        correct new value.      
+      */
+      await new Promise(r => setTimeout(r, 1));
+
+      if (!subStepRef.current || !subStepRef.current.contains(document.activeElement)) {
+        isFocusedSubStep.current = false;
+
+        /*
+         Run this substep's own focus cleanup function if another substep
+         hasn't already done it for us.
+         */
+        focusCleanupFunction.current?.();
+      }
+    };
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mouseup', onMouseUp);
+    return () => {
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [
+    funnelInteractionId,
+    funnelState,
+    stepNameSelector,
+    stepNumber,
+    subStepNameSelector,
+    subStepSelector,
+    focusCleanupFunction,
+  ]);
 
   return <FunnelSubStepContext.Provider value={context}>{children}</FunnelSubStepContext.Provider>;
 };
