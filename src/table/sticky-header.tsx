@@ -85,7 +85,7 @@ function StickyHeader(
           contentDensity === 'compact' && getVisualContextClassname('compact-table')
         )}
         ref={secondaryTableRef}
-        {...tableRole.getTableProps({})}
+        {...tableRole.assignTableProps({})}
       >
         <Thead
           ref={secondaryTheadRef}

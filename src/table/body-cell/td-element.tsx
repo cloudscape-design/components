@@ -66,11 +66,11 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     nativeAttributes = { ...nativeAttributes };
 
     let Element: 'th' | 'td' = 'td';
-    Object.assign(nativeAttributes, tableRole.getTableCellProps());
+    tableRole.assignTableCellProps(nativeAttributes);
 
     if (isRowHeader) {
       Element = 'th';
-      Object.assign(nativeAttributes, tableRole.getTableRowHeaderProps());
+      tableRole.assignTableRowHeaderProps(nativeAttributes);
     }
 
     const stickyStyles = useStickyCellStyles({

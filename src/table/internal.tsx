@@ -321,7 +321,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              {...tableRole.getTableProps({ totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
+              {...tableRole.assignTableProps({ totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
             >
               <Thead
                 ref={theadRef}
@@ -376,7 +376,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                        {...tableRole.getTableRowProps({ firstIndex, rowIndex })}
+                        {...tableRole.assignTableRowProps({ firstIndex, rowIndex })}
                       >
                         {selectionType !== undefined && (
                           <TableTdElement

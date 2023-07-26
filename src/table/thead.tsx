@@ -115,7 +115,7 @@ const Thead = React.forwardRef(
               style={stickyStyles.style}
               ref={stickyStyles.ref}
               scope="col"
-              {...tableRole.getTableColHeaderProps({})}
+              {...tableRole.assignTableColHeaderProps({})}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
