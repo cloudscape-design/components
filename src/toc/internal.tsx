@@ -40,8 +40,9 @@ const AnchorList = ({ anchors, activeHref }: { anchors: TocProps.Anchor[]; activ
 };
 
 export default function InternalToc({ anchors, variant, ...props }: TocProps) {
-  //const [activeHref] = useScrollSpy({ hrefs: anchors.map(anchor => anchor.href) });
-  const activeHref = 'section-1';
+  const [activeHref] = useScrollSpy({ hrefs: anchors.map(anchor => anchor.href) });
+  // console.log(activeHref);
+  // const activeHref = 'section-1';
   return (
     <div className={styles.root}>
       <InternalSpaceBetween direction="vertical" size="s">
