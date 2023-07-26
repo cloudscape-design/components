@@ -7,6 +7,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
 
 import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
@@ -21,6 +22,7 @@ function mockFunnelMetrics() {
     funnelStepStart: jest.fn(),
     funnelStepComplete: jest.fn(),
     funnelStepNavigation: jest.fn(),
+    funnelStepError: jest.fn(),
     funnelSubStepStart: jest.fn(),
     funnelSubStepComplete: jest.fn(),
     funnelSubStepError: jest.fn(),
@@ -114,6 +116,48 @@ describe('Wizard Analytics', () => {
         subStepAllSelector: expect.any(String),
       })
     );
+  });
+
+  const ChildComponent = () => {
+    const { submissionAttempt } = useFunnel();
+    return <div data-testid="submission-attempt">{submissionAttempt}</div>;
+  };
+
+  test('increments the submissionAttempt counter when clicking Next', () => {
+    const { container, getByTestId } = render(
+      <Wizard
+        steps={[
+          { title: 'Counter step', content: <ChildComponent /> },
+          { title: 'Other step', content: <></> },
+        ]}
+        activeStepIndex={0}
+        onNavigate={() => {}}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    const wizardWrapper = createWrapper(container).findWizard();
+
+    expect(getByTestId('submission-attempt').textContent).toBe('0');
+
+    wizardWrapper!.findPrimaryButton().click();
+    expect(getByTestId('submission-attempt').textContent).toBe('1');
+  });
+
+  test('increments the submissionAttempt counter when clicking Submit', () => {
+    const { container, getByTestId } = render(
+      <Wizard
+        steps={[{ title: 'Counter step', content: <ChildComponent /> }]}
+        activeStepIndex={0}
+        onNavigate={() => {}}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    const wizardWrapper = createWrapper(container).findWizard();
+
+    expect(getByTestId('submission-attempt').textContent).toBe('0');
+
+    wizardWrapper!.findPrimaryButton().click();
+    expect(getByTestId('submission-attempt').textContent).toBe('1');
   });
 
   test('sends a startStep metric when navigating to a new step when navigating with the navigation', () => {

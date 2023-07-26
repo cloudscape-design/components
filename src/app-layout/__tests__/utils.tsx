@@ -19,12 +19,13 @@ jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
-  useDensityMode: jest.fn().mockReturnValue('comfortable'),
-  useReducedMotion: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock('../../../lib/components/internal/motion', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   isMotionDisabled: jest.fn().mockReturnValue(true),
+  useDensityMode: jest.fn().mockReturnValue('comfortable'),
+  useReducedMotion: jest.fn().mockReturnValue(true),
 }));
 
 export function renderComponent(jsx: React.ReactElement) {

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
-import { useContainerQuery } from '~components/internal/hooks/container-queries';
 import { colorTextStatusError } from '~design-tokens';
 import styles from './screenshot-area.scss';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 // replicates the same constant from BrowserTestTools package
 const MAX_PAGE_HEIGHT = 16000;

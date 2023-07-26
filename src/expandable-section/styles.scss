@@ -15,6 +15,11 @@ $icon-margin-left: '(#{awsui.$font-body-m-line-height} - #{$icon-width-normal}) 
 $icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 $icon-margin-right-medium: awsui.$space-xs;
 
+// Total space occupied by the expand icon on the left and its margins.
+// Useful to keep elements correctly aligned.
+$icon-total-space-normal: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
+$icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
+
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -50,15 +55,6 @@ $icon-margin-right-medium: awsui.$space-xs;
   line-height: awsui.$font-body-m-line-height;
   text-align: left;
 
-  &-default {
-    padding: awsui.$space-scaled-xxs awsui.$space-xxs;
-  }
-
-  &-footer {
-    // We remove left and right padding here to better align the carat icon
-    padding: awsui.$space-scaled-xxs 0;
-  }
-
   &-default,
   &-footer {
     border: awsui.$border-divider-section-width solid transparent;
@@ -83,8 +79,42 @@ $icon-margin-right-medium: awsui.$space-xs;
     letter-spacing: awsui.$font-heading-s-letter-spacing;
   }
 
+  &-default {
+    padding-top: awsui.$space-scaled-xxs;
+    padding-bottom: awsui.$space-scaled-xxs;
+    padding-right: awsui.$space-xxs;
+    &.header-deprecated {
+      padding-left: awsui.$space-xxs;
+    }
+    &:not(.header-deprecated) {
+      padding-left: calc(#{awsui.$space-xxs} + #{$icon-total-space-normal});
+    }
+  }
+
+  &-footer {
+    // We remove left and right padding here to better align the carat icon
+    padding-top: awsui.$space-scaled-xxs;
+    padding-bottom: awsui.$space-scaled-xxs;
+    padding-right: 0;
+    &.header-deprecated {
+      padding-left: 0;
+    }
+    &:not(.header-deprecated) {
+      padding-left: $icon-total-space-normal;
+    }
+  }
+
   &-container {
-    padding: container.$header-padding;
+    padding-top: awsui.$space-container-header-top;
+    padding-bottom: awsui.$space-container-header-bottom;
+    padding-right: container.$header-padding-horizontal;
+
+    &.header-deprecated {
+      padding-left: container.$header-padding-horizontal;
+    }
+    &:not(.header-deprecated) {
+      padding-left: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
+    }
 
     @include focus-visible.when-visible {
       // HACK: Remediate focus border
@@ -113,16 +143,21 @@ $icon-margin-right-medium: awsui.$space-xs;
     padding: 0;
   }
 
-  &-button {
-    box-sizing: border-box;
-    display: flex;
-  }
-
   &-button,
   &-container-button {
     @include focus-visible.when-visible {
       @include styles.focus-highlight(0px);
     }
+  }
+
+  &-button {
+    box-sizing: border-box;
+    display: flex;
+    margin-left: calc(-1 * #{$icon-total-space-normal});
+  }
+
+  &-container-button {
+    margin-left: calc(-1 * #{$icon-total-space-medium});
   }
 
   &-container {
@@ -153,6 +188,10 @@ $icon-margin-right-medium: awsui.$space-xs;
         @include styles.focus-highlight(2px);
       }
     }
+  }
+
+  &-text {
+    /* used in test-utils */
   }
 }
 
@@ -188,13 +227,4 @@ $icon-margin-right-medium: awsui.$space-xs;
   &:not(.wrapper-container):not(.header-container-button):hover {
     color: awsui.$color-text-expandable-section-hover;
   }
-}
-
-// Indent the description by exactly the same amount as the header, which is pushed to the right by the icon.
-.description-default,
-.description-footer {
-  padding-left: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
-}
-.description-container {
-  padding-left: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
 }

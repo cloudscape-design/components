@@ -3,9 +3,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
-import { useContainerBreakpoints, useContainerQuery } from '../../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../../internal/hooks/container-queries';
 import { TopNavigationProps } from './interfaces';
 import styles from './styles.css.js';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export interface UseTopNavigationParams {
   __internalRootRef?: React.MutableRefObject<HTMLElement> | null;

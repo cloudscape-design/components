@@ -30,8 +30,8 @@ import ErrorScreen from './error-screen';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
-import { useCurrentMode } from '../internal/hooks/use-visual-mode';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import { useInternalI18n } from '../internal/i18n/context';
 import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -39,7 +39,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export { CodeEditorProps };
 
@@ -99,7 +99,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     if (!ace || !elem) {
       return;
     }
-    const config = getDefaultConfig();
+    const config = getDefaultConfig(ace);
     setEditor(
       ace.edit(elem, {
         ...config,
@@ -107,7 +107,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
       })
     );
   }, [ace, props.loading]);
-  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.width);
+  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
   useForwardFocus(ref, codeEditorRef);
   const isRefresh = useVisualRefresh();
@@ -208,15 +208,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     setPaneStatus(paneStatus !== 'warning' ? 'warning' : 'hidden');
   }, [paneStatus]);
 
-  const onPaneClose = useCallback(() => {
-    if (paneStatus === 'error' && errorsTabRef.current) {
-      errorsTabRef.current.focus();
-    }
-    if (paneStatus === 'warning' && warningsTabRef.current) {
-      warningsTabRef.current.focus();
-    }
+  const onPaneClose = () => {
     setPaneStatus('hidden');
-  }, [paneStatus]);
+  };
 
   const onAnnotationClick = ({ row = 0, column = 0 }: Ace.Annotation) => {
     if (!editor) {

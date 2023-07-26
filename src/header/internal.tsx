@@ -47,25 +47,20 @@ export default function InternalHeader({
         styles.root,
         baseProps.className,
         styles[`root-variant-${variantOverride}`],
-        isRefresh && styles[`root-variant-${variantOverride}-refresh`],
+        isRefresh && styles.refresh,
         !actions && [styles[`root-no-actions`]],
         description && [styles[`root-has-description`]],
         __disableActionsWrapping && [styles['root-no-wrap']]
       )}
       ref={__internalRootRef}
     >
-      <div
-        className={clsx(
-          styles.main,
-          styles[`main-variant-${variantOverride}`],
-          isRefresh && styles[`main-variant-${variantOverride}-refresh`]
-        )}
-      >
+      <div className={clsx(styles.main, styles[`main-variant-${variantOverride}`], isRefresh && styles.refresh)}>
         <div
           className={clsx(
             styles.title,
             styles[`title-variant-${variantOverride}`],
-            isRefresh && styles[`title-variant-${variantOverride}-refresh`]
+            isRefresh && styles.refresh,
+            description && [styles[`root-has-description`]]
           )}
         >
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
@@ -86,11 +81,7 @@ export default function InternalHeader({
       </div>
       {actions && (
         <div
-          className={clsx(
-            styles.actions,
-            styles[`actions-variant-${variantOverride}`],
-            isRefresh && styles[`actions-variant-${variantOverride}-refresh`]
-          )}
+          className={clsx(styles.actions, styles[`actions-variant-${variantOverride}`], isRefresh && styles.refresh)}
         >
           {actions}
         </div>
@@ -107,7 +98,7 @@ export function Description({ children, variantOverride }: { children: React.Rea
         className={clsx(
           styles.description,
           styles[`description-variant-${variantOverride}`],
-          isRefresh && styles[`description-variant-${variantOverride}-refresh`]
+          isRefresh && styles.refresh
         )}
       >
         {children}

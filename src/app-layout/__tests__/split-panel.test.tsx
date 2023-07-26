@@ -28,21 +28,24 @@ const fakeComputedStyle: Window['getComputedStyle'] = (...args) => {
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
+}));
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isMotionDisabled: jest.fn().mockReturnValue(true),
   useDensityMode: jest.fn().mockReturnValue('comfortable'),
   useReducedMotion: jest.fn().mockReturnValue(true),
-}));
-jest.mock('../../../lib/components/internal/motion', () => ({
-  isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
 
 let isMocked = false;
 
-const actualUseContainerQuery = jest.requireActual(
-  '../../../lib/components/internal/hooks/container-queries/use-container-query'
-);
-jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
-  useContainerQuery: (arg: any) => (isMocked ? [800, () => {}] : actualUseContainerQuery.useContainerQuery(arg)),
-}));
+jest.mock('@cloudscape-design/component-toolkit', () => {
+  const actualUseContainerQuery = jest.requireActual('@cloudscape-design/component-toolkit');
+  return {
+    ...actualUseContainerQuery,
+    useContainerQuery: (arg: any) => (isMocked ? [800, () => {}] : actualUseContainerQuery.useContainerQuery(arg)),
+  };
+});
 
 beforeEach(() => {
   originalDocumentHeight = document.documentElement.clientHeight;

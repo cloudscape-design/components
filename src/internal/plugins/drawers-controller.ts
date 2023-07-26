@@ -1,13 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { DrawerItem } from '../../app-layout/drawer/interfaces';
-import { IconProps } from '../../icon/interfaces';
 
-export type DrawerConfig = Omit<DrawerItem, 'content'> & {
+export type DrawerConfig = Omit<DrawerItem, 'content' | 'trigger'> & {
   orderPriority?: number;
   trigger: {
-    iconName?: IconProps.Name;
-    iconSvg?: string;
+    iconSvg: string;
   };
   mountContent: (container: HTMLElement) => void;
   unmountContent: (container: HTMLElement) => void;

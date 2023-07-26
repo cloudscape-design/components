@@ -7,6 +7,7 @@ import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
@@ -586,6 +587,21 @@ describe('Axes', () => {
     });
   });
 
+  test('users top-level tick formatters over i18nStrings tick formatters', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart
+        series={[lineSeries]}
+        height={250}
+        xDomain={[0, 12]}
+        yDomain={[0, 100]}
+        xTickFormatter={(value: number) => value.toFixed(2) + ' sec'}
+        yTickFormatter={(value: number) => value.toFixed(2) + ' kB'}
+      />
+    );
+    expect(wrapper.findXTicks()[0].getElement()).toHaveTextContent('0.00 sec');
+    expect(wrapper.findYTicks()[0].getElement()).toHaveTextContent('0.00 kB');
+  });
+
   test('categorical axis', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart
@@ -792,12 +808,22 @@ describe('Filter', () => {
 });
 
 describe('Reserve space', () => {
-  const reserveFilterClass = styles['content--reserve-filter'];
-  const reserveLegendClass = styles['content--reserve-legend'];
+  const reserveFilterClass = chartWrapperStyles['content--reserve-filter'];
+  const reserveLegendClass = chartWrapperStyles['content--reserve-legend'];
 
-  test('by applying the correct minimum height', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} height={100} />);
-    expect(wrapper.findByClassName(styles.content)?.getElement()).toHaveStyle({ minHeight: '100px' });
+  test('by applying the correct minimum height when fitHeight=false', () => {
+    const { wrapper } = renderMixedChart(<MixedLineBarChart series={[]} height={100} fitHeight={false} />);
+    expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '100px' });
+  });
+
+  test.each([false, true])('when fitHeight=%s plot min-height is explicitly set', fitHeight => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart series={[lineSeries]} height={100} fitHeight={fitHeight} />
+    );
+    const selector = fitHeight ? cartesianStyles['chart-container-plot-wrapper'] : chartWrapperStyles.content;
+    const chartElement = wrapper.findByClassName(selector)!.getElement();
+    expect(chartElement.style.minHeight).toBeDefined();
+    expect(parseInt(chartElement.style.minHeight)).toBeGreaterThanOrEqual(100);
   });
 
   test('unless there is a chart showing', () => {

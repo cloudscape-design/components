@@ -50,6 +50,7 @@ function stylesTask(theme) {
     const exposed = [];
     const themeable = [];
     const variablesMap = {};
+    const descriptions = {};
 
     Object.entries(metadata).forEach(([token, meta]) => {
       if (meta.public) {
@@ -60,6 +61,9 @@ function stylesTask(theme) {
       }
       if (meta.sassName) {
         variablesMap[token] = meta.sassName.substring(1);
+      }
+      if (meta.description) {
+        descriptions[token] = meta.description;
       }
     });
 
@@ -74,6 +78,8 @@ function stylesTask(theme) {
       skip: designTokensOutputDir ? [] : ['design-tokens'],
       designTokensOutputDir,
       designTokensFileName: theme.designTokensOutput,
+      descriptions,
+      jsonSchema: true,
     });
   });
 }

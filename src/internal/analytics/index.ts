@@ -24,6 +24,7 @@ export let FunnelMetrics: IFunnelMetrics = {
   funnelStepStart(): void {},
   funnelStepComplete(): void {},
   funnelStepNavigation(): void {},
+  funnelStepError(): void {},
   funnelSubStepStart(): void {},
   funnelSubStepComplete(): void {},
   funnelSubStepError(): void {},

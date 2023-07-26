@@ -10,6 +10,7 @@ import { defaultSplitPanelContextProps } from './required-props-for-components';
 
 const componentsDir = path.resolve(__dirname, '../../lib/components');
 const definitionsDir = path.resolve(__dirname, '../../lib/components-definitions/components');
+const designTokensDir = path.resolve(__dirname, '../../lib/design-tokens');
 
 export function getAllComponents(): string[] {
   return fs
@@ -68,4 +69,8 @@ export function requireComponent(componentName: string): any {
 
 export function requireComponentDefinition(componentName: string): any {
   return require(path.join(definitionsDir, componentName));
+}
+
+export function requireDesignTokensFile(fileName: string): any {
+  return require(path.join(designTokensDir, fileName));
 }

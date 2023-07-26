@@ -81,6 +81,14 @@ const permutations = createPermutations<ButtonProps>([
     variant: ['normal', 'primary', 'link'],
     children: ['Full width'],
   },
+  {
+    variant: ['inline-link'],
+    iconName: [undefined, 'download'],
+    iconAlign: ['left', 'right'],
+    children: ['Inline link'],
+    loading: [false, true],
+    disabled: [false, true],
+  },
 ]);
 
 export default function ButtonPermutations() {

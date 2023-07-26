@@ -4,6 +4,7 @@ import range from 'lodash/range';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
 const DOMAIN_ERROR = 'Must be a valid domain name';
 const tableWrapper = createWrapper().findTable()!;
@@ -15,6 +16,8 @@ const cellRoot$ = bodyCell.toSelector();
 const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
 const cellEditButton$ = tableWrapper.findEditCellButton(2, 2).toSelector();
 const cellSaveButton = tableWrapper.findEditingCellSaveButton();
+const successIcon$ = bodyCell.findByClassName(styles['body-cell-success']).toSelector();
+const ariaLiveAnnouncement$ = bodyCell.find(`[aria-live="polite"]`).toSelector();
 
 // for arrow key navigation
 const mainCell = tableWrapper.findBodyCell(4, 5);
@@ -54,11 +57,14 @@ test(
 );
 
 test(
-  'cell is focused after edit is submitted',
+  'after edit is submitted, cell is focused, success icon is displayed and aria live region is rendered',
   setupTest(async page => {
     await page.click(cellRoot$);
     await page.click(cellSaveButton.toSelector());
+
     await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
+    await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
+    await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
   })
 );
 

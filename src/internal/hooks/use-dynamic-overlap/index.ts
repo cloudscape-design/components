@@ -3,7 +3,7 @@
 import { useContext, useLayoutEffect } from 'react';
 
 import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
-import { useContainerQuery } from '../container-queries';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export interface UseDynamicOverlapProps {
   /**
@@ -21,7 +21,7 @@ export interface UseDynamicOverlapProps {
 export function useDynamicOverlap(props?: UseDynamicOverlapProps) {
   const disabled = props?.disabled ?? false;
   const setDynamicOverlapHeight = useContext(DynamicOverlapContext);
-  const [overlapHeight, overlapElementRef] = useContainerQuery(rect => rect.height);
+  const [overlapHeight, overlapElementRef] = useContainerQuery(rect => rect.contentBoxHeight);
 
   useLayoutEffect(
     function handleDynamicOverlapHeight() {

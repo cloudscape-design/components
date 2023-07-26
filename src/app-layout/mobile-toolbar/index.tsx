@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 import { AppLayoutProps } from '../interfaces';
 import { DrawerItem } from '../drawer/interfaces';
-import { AppLayoutButton, togglesConfig } from '../toggles';
+import { ToggleButton, togglesConfig } from '../toggles';
 import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -23,12 +23,12 @@ const MobileToggle = React.forwardRef(
 
     return (
       <TagName
-        className={clsx(styles['mobile-toggle'])}
+        className={clsx(styles['mobile-toggle'], styles[`mobile-toggle-type-${type}`])}
         aria-hidden={disabled}
         aria-label={mainLabel}
         onClick={e => e.target === e.currentTarget && onClick()}
       >
-        <AppLayoutButton
+        <ToggleButton
           ref={ref}
           className={className}
           iconName={iconName}
@@ -120,22 +120,20 @@ export function MobileToolbar({
       {drawers && (
         <aside
           aria-label={drawers.ariaLabel}
-          className={clsx(
-            styles['mobile-toggle'],
-            styles['mobile-toggle-with-drawers'],
-            testutilStyles['drawers-mobile-triggers-container']
-          )}
+          className={clsx(styles['drawers-container'], testutilStyles['drawers-mobile-triggers-container'])}
         >
           {drawers.items.map((item: DrawerItem, index: number) => (
-            <AppLayoutButton
-              className={clsx(styles['mobile-trigger-with-drawers'], testutilStyles['drawers-trigger'])}
-              key={`drawer-trigger-${index}`}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
-              ariaLabel={item.ariaLabels?.triggerButton}
-              onClick={() => drawers.onChange({ activeDrawerId: item.id })}
-              ariaExpanded={drawers.activeDrawerId !== undefined}
-            />
+            <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])} key={index}>
+              <ToggleButton
+                className={testutilStyles['drawers-trigger']}
+                iconName={item.trigger.iconName}
+                iconSvg={item.trigger.iconSvg}
+                ariaLabel={item.ariaLabels?.triggerButton}
+                onClick={() => drawers.onChange({ activeDrawerId: item.id })}
+                ariaExpanded={drawers.activeDrawerId !== undefined}
+                testId={`awsui-app-layout-trigger-${item.id}`}
+              />
+            </span>
           ))}
         </aside>
       )}

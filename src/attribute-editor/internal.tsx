@@ -35,6 +35,7 @@ const InternalAttributeEditor = React.forwardRef(
       empty,
       addButtonText,
       removeButtonText,
+      removeButtonAriaLabel,
       i18nStrings,
       onAddButtonClick,
       onRemoveButtonClick,
@@ -85,7 +86,7 @@ const InternalAttributeEditor = React.forwardRef(
         <InternalBox margin={{ bottom: 'l' }}>
           {isEmpty && <div className={clsx(styles.empty, wasNonEmpty.current && styles['empty-appear'])}>{empty}</div>}
           {items.map((item, index) => (
-            <Row
+            <Row<T>
               key={index}
               index={index}
               breakpoint={breakpoint}
@@ -96,6 +97,7 @@ const InternalAttributeEditor = React.forwardRef(
               removeButtonText={removeButtonText}
               removeButtonRefs={removeButtonRefs.current}
               onRemoveButtonClick={onRemoveButtonClick}
+              removeButtonAriaLabel={removeButtonAriaLabel}
             />
           ))}
         </InternalBox>

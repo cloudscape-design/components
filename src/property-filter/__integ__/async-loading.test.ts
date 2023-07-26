@@ -3,7 +3,6 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import qs from 'qs';
 
 import { PropertyFilterProps } from '../../../lib/components/property-filter/interfaces';
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
@@ -67,11 +66,7 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const page = new AsyncPropertyFilterPage(browser);
-    const query = qs.stringify({
-      asyncProperties,
-      token,
-    });
-    await browser.url(`#/light/property-filter/async-loading.integ?${query}`);
+    await browser.url(`#/light/property-filter/async-loading.integ?asyncProperties=${asyncProperties}&token=${token}`);
     await page.waitForVisible('main');
     await testFn(page);
   });

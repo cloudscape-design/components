@@ -4,12 +4,13 @@ import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import CommonChartWrapper from '../internal/charts';
 import styles from '../../../pie-chart/styles.selectors.js';
 import chartPlotStyles from '../../../internal/components/chart-plot/styles.selectors.js';
+import chartWrapperStyles from '../../../internal/components/chart-wrapper/styles.selectors.js';
 
 export default class PieChartWrapper extends CommonChartWrapper {
   static rootSelector: string = styles.root;
 
   findFilterContainer(): ElementWrapper | null {
-    return this.findByClassName(styles['filter-container']);
+    return this.findByClassName(chartWrapperStyles['filter-container']);
   }
 
   findSegments(): Array<ElementWrapper> {
