@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { BoxProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { ScrollbarLabelContext } from '../internal/context/scrollbar-label-context';
 
 type InternalBoxProps = BoxProps & InternalBaseComponentProps;
 
@@ -24,7 +25,12 @@ export default function InternalBox({
   __internalRootRef = null,
   ...props
 }: InternalBoxProps) {
-  const baseProps = getBaseProps(props);
+  const wrapperHeadingId = useContext(ScrollbarLabelContext);
+  const elementId = props.id ?? wrapperHeadingId;
+  const baseProps = getBaseProps({
+    ...props,
+    id: elementId,
+  });
   const marginsClassNamesSuffices = getClassNamesSuffixes(margin);
   const paddingsClassNamesSuffices = getClassNamesSuffixes(padding);
   // This can be any arbitrary string if passed into tagOverride.
