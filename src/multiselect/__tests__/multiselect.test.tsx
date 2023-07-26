@@ -482,6 +482,16 @@ describe('a11y properties', () => {
       wrapper.findDropdown().getElement().parentNode!.querySelector(`#${controlledId}`)!.getAttribute('role')
     ).toBe('dialog');
   });
+  test('dropdown (role="dialog") should receive a label when filtering enabled', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect selectedOptions={[]} options={defaultOptions} filteringType="auto" ariaLabel="multiselect-label" />
+    );
+    wrapper.openDropdown();
+    const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
+    expect(wrapper.findDropdown().getElement().parentNode!.querySelector(`#${controlledId}`)!).toHaveAccessibleName(
+      'multiselect-label'
+    );
+  });
 });
 
 test('Trigger receives focus when autofocus is true', () => {
