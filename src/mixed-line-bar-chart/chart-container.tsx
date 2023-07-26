@@ -122,7 +122,10 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const popoverRef = useRef<HTMLElement | null>(null);
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
-  const measuredHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight || !bottomLabelsHeight);
+  const measuredHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight || !bottomLabelsHeight, [
+    fitHeight,
+    bottomLabelsHeight,
+  ]);
   const plotHeight = fitHeight ? (bottomLabelsHeight ? measuredHeight ?? 0 : 0) : explicitPlotHeight;
 
   const isRefresh = useVisualRefresh();

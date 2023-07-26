@@ -90,7 +90,7 @@ export default <T extends PieChartProps.Datum>({
   const hasLabels = !(hideTitles && hideDescriptions);
   const isRefresh = useVisualRefresh();
 
-  const height = useHeightMeasure(() => plotRef.current?.svg ?? null, !fitHeight) ?? explicitHeight;
+  const height = useHeightMeasure(() => plotRef.current?.svg ?? null, !fitHeight, [fitHeight]) ?? explicitHeight;
 
   const dimensions = useMemo(
     () =>
