@@ -10,7 +10,7 @@ const prepareCoordinate = (num: number) => Math.round(num);
 
 declare global {
   interface Window {
-    __tableResizes__: ResizeObserverEntry[];
+    __tableResizes__: number;
   }
 }
 
@@ -50,21 +50,17 @@ class ResizableColumnsPage extends BasePageObject {
 
   async installObserver(selector: string) {
     await this.browser.execute(selector => {
-      window.__tableResizes__ = [];
+      window.__tableResizes__ = 0;
       const target = document.querySelector(selector)!;
       const observer = new ResizeObserver(entries => {
-        window.__tableResizes__.push(...entries);
+        window.__tableResizes__ += entries.length;
       });
       observer.observe(target);
     }, selector);
   }
 
-  flushObservations() {
-    return this.browser.execute(() => {
-      const resizes = window.__tableResizes__;
-      window.__tableResizes__ = [];
-      return resizes;
-    });
+  getObservations() {
+    return this.browser.execute(() => window.__tableResizes__);
   }
 }
 
@@ -83,7 +79,7 @@ test(
   })
 );
 
-test(
+test.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])(
   'should not have oscillating size when the last column has the minimal width',
   useBrowser(async browser => {
     const page = new ResizableColumnsPage(browser);
@@ -92,11 +88,11 @@ test(
     await page.installObserver(wrapper.find('table').toSelector());
     await page.click('#shrink-container');
     await page.waitForJsTimers();
-    // flush observations from the container resize
-    await page.flushObservations();
+    // expected 1 observation after creating observer and 1 caused by container shrink
+    await expect(page.getObservations()).resolves.toBe(2);
     await page.waitForJsTimers();
-    // ensure there are no ongoing resizes after we flushed the expected ones above
-    await expect(page.flushObservations()).resolves.toEqual([]);
+    // ensure there are no more observations added after the expected 2
+    await expect(page.getObservations()).resolves.toBe(2);
   })
 );
 
