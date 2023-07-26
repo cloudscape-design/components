@@ -60,8 +60,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const hasVisibleSeries = series.length > 0;
-  const height =
-    useHeightMeasure(() => plotMeasureRef.current, !fitHeight, [hasVisibleSeries, fitHeight]) ?? explicitHeight;
+  const height = useHeightMeasure(() => plotMeasureRef.current, !fitHeight, [hasVisibleSeries]) ?? explicitHeight;
 
   const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
 
