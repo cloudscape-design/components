@@ -4,10 +4,11 @@
 import React, { useContext } from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
-
-import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
-import { useTelemetry } from '../internal/hooks/use-telemetry';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { useTelemetry } from '../internal/hooks/use-telemetry';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;
@@ -108,6 +109,8 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
     </InternalI18nContext.Provider>
   );
 }
+
+applyDisplayName(I18nProvider, 'I18nProvider');
 
 function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18nProviderProps.Messages {
   const result: I18nProviderProps.Messages = {};
