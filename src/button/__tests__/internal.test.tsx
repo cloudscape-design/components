@@ -49,8 +49,7 @@ describe('Analytics', () => {
         <Button iconName="external" href="https://example.com" />
       </AnalyticsFunnel>
     );
-    const wrapper = createWrapper(container).findButton()!;
-    wrapper.click();
+    createWrapper(container).findButton()!.click();
 
     expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalled();
     expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalledWith(
@@ -61,14 +60,26 @@ describe('Analytics', () => {
     );
   });
 
+  test('does not send an externalLinkInteracted metric when the button is not a link', () => {
+    const { container } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <Button iconName="external" data-testid="1" />
+        <Button target="_blank" data-testid="2" />
+      </AnalyticsFunnel>
+    );
+    createWrapper(container).findButton('[data-testid="1"]')!.click();
+    createWrapper(container).findButton('[data-testid="2"]')!.click();
+
+    expect(FunnelMetrics.externalLinkInteracted).not.toHaveBeenCalled();
+  });
+
   test('sends an externalLinkInteracted metric within a Funnel Context with target=_blank', () => {
     const { container } = render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <Button target="_blank" href="https://example.com" />
       </AnalyticsFunnel>
     );
-    const wrapper = createWrapper(container).findButton()!;
-    wrapper.click();
+    createWrapper(container).findButton()!.click();
 
     expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalled();
     expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalledWith(
@@ -85,8 +96,7 @@ describe('Analytics', () => {
         <Button href="https://example.com" />
       </AnalyticsFunnel>
     );
-    const wrapper = createWrapper(container).findButton()!;
-    wrapper.click();
+    createWrapper(container).findButton()!.click();
 
     expect(FunnelMetrics.externalLinkInteracted).not.toHaveBeenCalled();
   });
