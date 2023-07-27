@@ -490,6 +490,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
+    const hasContentHeader = !!props.contentHeader;
+
     const updateDynamicOverlapHeight = useCallback(
       (height: number) => {
         /**
@@ -498,7 +500,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
          * unless there is a dynamicOverlapHeight. The dynamicOverlapHeight property is set by a
          * component in the content slot that needs to manually control the overlap height.
          */
-        const isOverlapSet = !!props.contentHeader || height > 0;
+        const isOverlapSet = hasContentHeader || height > 0;
         const isOverlapDisabled = props.disableContentHeaderOverlap || !isOverlapSet;
         setIsDynamicOverlapSet(isOverlapSet);
         setIsDynamicOverlapDisabled(isOverlapDisabled);
@@ -519,7 +521,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           element?.style.setProperty(customCssProps.overlapHeight, `${height}px`);
         }
       },
-      [layoutElement, props.contentHeader, props.disableContentHeaderOverlap]
+      [layoutElement, hasContentHeader, props.disableContentHeaderOverlap]
     );
 
     useLayoutEffect(
