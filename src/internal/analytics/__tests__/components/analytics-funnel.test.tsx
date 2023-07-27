@@ -284,6 +284,7 @@ describe('AnalyticsFunnel', () => {
 describe('AnalyticsFunnelStep', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -421,6 +422,7 @@ describe('AnalyticsFunnelStep', () => {
 describe('AnalyticsFunnelSubStep', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -448,7 +450,7 @@ describe('AnalyticsFunnelSubStep', () => {
     expect(FunnelMetrics.funnelSubStepComplete).not.toHaveBeenCalled();
   });
 
-  test('calls funnelSubStepStart with the correct arguments when the substep is focused', () => {
+  test('calls funnelSubStepStart with the correct arguments when the substep is focused', async () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
@@ -472,7 +474,9 @@ describe('AnalyticsFunnelSubStep', () => {
       </AnalyticsFunnel>
     );
 
-    fireEvent.focus(getByTestId('input'));
+    getByTestId('input').focus();
+
+    await runPendingPromises();
 
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledWith({
@@ -485,7 +489,7 @@ describe('AnalyticsFunnelSubStep', () => {
     });
   });
 
-  test('calls funnelSubStepComplete with the correct arguments when the substep loses focus', () => {
+  test('calls funnelSubStepComplete with the correct arguments when the substep loses focus by keyboard', async () => {
     const ChildComponent = () => {
       const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
 
@@ -509,7 +513,57 @@ describe('AnalyticsFunnelSubStep', () => {
       </AnalyticsFunnel>
     );
 
-    fireEvent.blur(getByTestId('input'));
+    getByTestId('input').focus();
+
+    await runPendingPromises();
+
+    getByTestId('input').blur();
+
+    expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledWith({
+      funnelInteractionId: mockedFunnelInteractionId,
+      stepNumber,
+      stepNameSelector,
+      subStepAllSelector: expect.any(String),
+      subStepSelector: expect.any(String),
+      subStepNameSelector: expect.any(String),
+    });
+  });
+
+  test('calls funnelSubStepComplete with the correct arguments when the substep loses focus by mouse', async () => {
+    const ChildComponent = () => {
+      const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+
+      return (
+        <div ref={subStepRef} {...funnelSubStepProps}>
+          <input data-testid="input" />
+        </div>
+      );
+    };
+
+    const stepNumber = 1;
+    const stepNameSelector = '.step-name-selector';
+
+    const { getByTestId } = render(
+      <>
+        <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+          <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
+            <AnalyticsFunnelSubStep>
+              <ChildComponent />
+            </AnalyticsFunnelSubStep>
+          </AnalyticsFunnelStep>
+        </AnalyticsFunnel>
+        <input data-testid="outside" />
+      </>
+    );
+
+    simulateUserClick(getByTestId('input'));
+
+    await runPendingPromises();
+
+    simulateUserClick(getByTestId('outside'));
+
+    await runPendingPromises();
 
     expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledWith({
@@ -522,3 +576,16 @@ describe('AnalyticsFunnelSubStep', () => {
     });
   });
 });
+
+const simulateUserClick = (element: HTMLElement) => {
+  // See https://testing-library.com/docs/guide-events/
+  fireEvent.mouseDown(element);
+  element.focus();
+  fireEvent.mouseUp(element);
+  fireEvent.click(element);
+};
+
+const runPendingPromises = async () => {
+  jest.runAllTimers();
+  await Promise.resolve();
+};

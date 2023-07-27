@@ -18,6 +18,7 @@ import {
 describe('Expandable section funnel analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -41,7 +42,7 @@ describe('Expandable section funnel analytics', () => {
       expect(getByTestId('container')).toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP, expect.any(String));
     });
 
-    test('sends funnelSubStepStart and funnelSubStepComplete metric when focussed and blurred', () => {
+    test('sends funnelSubStepStart and funnelSubStepComplete metric when focussed and blurred', async () => {
       const { getByTestId } = render(
         <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
           <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
@@ -54,8 +55,10 @@ describe('Expandable section funnel analytics', () => {
 
       expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(0);
 
-      fireEvent.focus(getByTestId('input'));
-      fireEvent.blur(getByTestId('input'));
+      getByTestId('input').focus();
+      await runPendingPromises();
+
+      getByTestId('input').blur();
 
       expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
       expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledTimes(1);
@@ -98,3 +101,8 @@ describe('Expandable section funnel analytics', () => {
     });
   });
 });
+
+const runPendingPromises = async () => {
+  jest.runAllTimers();
+  await Promise.resolve();
+};
