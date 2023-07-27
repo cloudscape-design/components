@@ -15,7 +15,7 @@ import { validate, getErrorText } from './validation';
 import styles from './styles.css.js';
 import { SearchInput } from './search-input';
 import LiveRegion from '../../internal/components/live-region';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 interface S3InContextProps {
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;

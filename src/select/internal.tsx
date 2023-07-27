@@ -30,7 +30,7 @@ import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { SomeRequired } from '../internal/types';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
-import { useInternalI18n } from '../internal/i18n/context.js';
+import { useInternalI18n } from '../i18n/context.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;
@@ -222,6 +222,8 @@ const InternalSelect = React.forwardRef(
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
+    const dropdownProps = getDropdownProps();
+
     return (
       <div
         {...baseProps}
@@ -230,7 +232,11 @@ const InternalSelect = React.forwardRef(
         onKeyPress={handleNativeSearch}
       >
         <Dropdown
-          {...getDropdownProps()}
+          {...dropdownProps}
+          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
+          ariaDescribedby={
+            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
+          }
           open={isOpen}
           stretchTriggerHeight={__inFilteringToken}
           trigger={trigger}

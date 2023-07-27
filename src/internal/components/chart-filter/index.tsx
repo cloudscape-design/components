@@ -9,7 +9,7 @@ import InternalMultiselect from '../../../multiselect/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { MultiselectProps } from '../../../multiselect/interfaces';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
-import { useInternalI18n } from '../../i18n/context';
+import { useInternalI18n } from '../../../i18n/context';
 
 import styles from './styles.css.js';
 

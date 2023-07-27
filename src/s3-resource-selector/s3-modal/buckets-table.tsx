@@ -8,7 +8,7 @@ import { S3ResourceSelectorProps } from '../interfaces';
 import { compareDates, getColumnAriaLabel, includes } from './table-utils';
 import { formatDefault } from './column-formats';
 import { BasicS3Table, getSharedI18Strings } from './basic-table';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 interface BucketsTableProps {
   forwardFocusRef: React.Ref<ForwardFocusRef>;

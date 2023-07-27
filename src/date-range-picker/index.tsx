@@ -28,7 +28,7 @@ import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
 import { formatValue } from './utils.js';
-import { useInternalI18n } from '../internal/i18n/context.js';
+import { useInternalI18n } from '../i18n/context.js';
 
 export { DateRangePickerProps };
 

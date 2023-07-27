@@ -10,7 +10,7 @@ import styles from '../../../lib/components/pie-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import * as colors from '../../../lib/design-tokens';
 import { act } from 'react-dom/test-utils';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const variants: Array<PieChartProps<PieChartProps.Datum>['variant']> = ['pie', 'donut'];
 const sizes: Array<PieChartProps<PieChartProps.Datum>['size']> = ['small', 'medium', 'large'];

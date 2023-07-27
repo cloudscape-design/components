@@ -33,24 +33,8 @@ describe('Abstract switch', () => {
     expect(container).toValidateA11y();
   });
 
-  describe('aria-labelledby', () => {
-    test('should not have a labelId if a label is not provided', () => {
-      const wrapper = renderAbstractSwitch({
-        controlClassName: '',
-        outlineClassName: '',
-        styledControl: <div />,
-        controlId: 'custom-id',
-        description: 'Description goes here',
-        nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
-        onClick: noop,
-      });
-
-      const nativeControl = wrapper.find('.switch-element')!.getElement();
-      expect(nativeControl).not.toHaveAttribute('aria-labelledby');
-      expect(wrapper.find('#custom-id-label')).toBeNull();
-    });
-
-    test('should be set to labelId if a label is provided', () => {
+  describe('labels and descriptions', () => {
+    test('should be default use `label` and `description`', () => {
       const wrapper = renderAbstractSwitch({
         controlClassName: '',
         outlineClassName: '',
@@ -64,33 +48,49 @@ describe('Abstract switch', () => {
 
       const nativeControl = wrapper.find('.switch-element')!.getElement();
 
-      expect(nativeControl).toHaveAttribute('aria-labelledby', 'custom-id-label');
-      expect(nativeControl).toHaveAttribute('aria-describedby', 'custom-id-description');
-
-      expect(wrapper.find('#custom-id-label')?.getElement()).toHaveTextContent('Label goes here');
-      expect(wrapper.find('#custom-id-description')?.getElement()).toHaveTextContent('Description goes here');
+      expect(nativeControl).toHaveAccessibleName('Label goes here');
+      expect(nativeControl).toHaveAccessibleDescription('Description goes here');
     });
 
-    test('should include labelId if an ariaLabelledBy id is provided', () => {
+    test('label can be overwritten by `ariaLabel`', () => {
       const wrapper = renderAbstractSwitch({
         controlClassName: '',
         outlineClassName: '',
         styledControl: <div />,
+        label: 'Label goes here',
         controlId: 'custom-id',
-        ariaLabelledby: 'some-custom-label',
-        ariaDescribedby: 'some-custom-description',
-        label: 'label',
-        description: 'description',
+        ariaLabel: 'Custom aria label',
         nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
         onClick: noop,
       });
 
       const nativeControl = wrapper.find('.switch-element')!.getElement();
-      expect(nativeControl).toHaveAttribute('aria-labelledby', 'custom-id-label some-custom-label');
-      expect(nativeControl).toHaveAttribute('aria-describedby', 'some-custom-description custom-id-description');
 
-      expect(wrapper.find('#custom-id-label')).not.toBe(null);
-      expect(wrapper.find('#custom-id-description')).not.toBe(null);
+      expect(nativeControl).toHaveAccessibleName('Custom aria label');
+    });
+
+    test('can add additional labelledby and describedby references', () => {
+      const wrapper = renderAbstractSwitch({
+        controlClassName: '',
+        outlineClassName: '',
+        styledControl: (
+          <div>
+            <span id="some-custom-label">Custom label</span>
+            <span id="some-custom-description">Custom description</span>
+          </div>
+        ),
+        controlId: 'custom-id',
+        ariaLabelledby: 'some-custom-label',
+        ariaDescribedby: 'some-custom-description',
+        label: 'Default label',
+        description: 'Default description',
+        nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+        onClick: noop,
+      });
+
+      const nativeControl = wrapper.find('.switch-element')!.getElement();
+      expect(nativeControl).toHaveAccessibleName('Default label Custom label');
+      expect(nativeControl).toHaveAccessibleDescription('Custom description Default description');
     });
   });
 });

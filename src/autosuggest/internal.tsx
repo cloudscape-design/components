@@ -26,7 +26,7 @@ import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useFormFieldContext } from '../contexts/form-field';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 import styles from './styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';

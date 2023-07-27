@@ -35,7 +35,7 @@ import { MultiselectProps } from './interfaces';
 import styles from './styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { joinStrings } from '../internal/utils/strings';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps;
 
@@ -289,6 +289,8 @@ const InternalMultiselect = React.forwardRef(
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
+    const dropdownProps = getDropdownProps();
+
     return (
       <div
         {...baseProps}
@@ -297,7 +299,13 @@ const InternalMultiselect = React.forwardRef(
         onKeyPress={handleNativeSearch}
       >
         <Dropdown
-          {...getDropdownProps()}
+          {...dropdownProps}
+          ariaLabelledby={
+            dropdownProps.dropdownContentRole ? joinStrings(multiSelectAriaLabelId, controlId) : undefined
+          }
+          ariaDescribedby={
+            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
+          }
           open={isOpen}
           trigger={trigger}
           header={filter}

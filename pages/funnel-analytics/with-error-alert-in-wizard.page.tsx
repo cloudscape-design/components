@@ -7,6 +7,7 @@ import { i18nStrings } from '../wizard/common';
 import Alert from '~components/alert';
 import Container from '~components/container';
 import Header from '~components/header';
+import Link from '~components/link';
 
 export default function WizardPage() {
   const [errorMode, setErrorMode] = useState(0);
@@ -14,6 +15,7 @@ export default function WizardPage() {
   const steps: WizardProps.Step[] = [
     {
       title: 'Step 1',
+      info: <Link variant="info">Info</Link>,
       content: (
         <div>
           <div>Content 1</div>

@@ -17,7 +17,7 @@ import { defaultDetails, getDimensionsBySize } from './utils';
 import Segments from './segments';
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { SomeRequired } from '../internal/types';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import clsx from 'clsx';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
