@@ -12,7 +12,7 @@ import { isValidRange } from './is-valid-range';
 import { changeMode } from './change-mode';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from '../../../lib/components/date-range-picker/styles.css.js';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

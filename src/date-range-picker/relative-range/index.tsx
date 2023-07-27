@@ -11,7 +11,7 @@ import InternalRadioGroup from '../../radio-group/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import styles from './styles.css.js';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 export interface RelativeRangePickerProps {
   dateOnly: boolean;

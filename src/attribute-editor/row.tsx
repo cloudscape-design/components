@@ -12,7 +12,7 @@ import InternalGrid from '../grid/internal';
 import { InternalButton } from '../button/internal';
 import clsx from 'clsx';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 

@@ -10,7 +10,7 @@ import styles from './styles.css.js';
 import { Optional } from '../../internal/types';
 import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
 import LiveRegion from '../../internal/components/live-region';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 // A function that does nothing
 const noop = () => undefined;

@@ -11,7 +11,7 @@ import {
 import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/split-panel/styles.css.js';
 import { defaultSplitPanelContextProps } from './helpers';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/app-layout/utils/use-keyboard-events', () => ({

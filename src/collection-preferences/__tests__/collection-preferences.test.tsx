@@ -13,7 +13,7 @@ import {
   stripedRowsPreference,
   contentDisplayPreference,
 } from './shared';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const expectVisibleModal = (wrapper: CollectionPreferencesWrapper, visible = true) => {
   if (visible) {

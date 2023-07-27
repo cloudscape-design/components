@@ -14,7 +14,7 @@ import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-f
 import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { S3ResourceSelectorProps } from '../interfaces';
 import { EmptyState } from './empty-state';
-import { ComponentFormatFunction } from '../../internal/i18n/context';
+import { ComponentFormatFunction } from '../../i18n/context';
 
 interface BasicS3TableStrings<T> {
   labelRefresh?: string;

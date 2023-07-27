@@ -10,7 +10,7 @@ import { getTestOptionIndexes } from '../internal/components/options-list/utils/
 import styles from './styles.css.js';
 import { AutosuggestItem } from './interfaces';
 import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export interface AutosuggestOptionProps extends BaseComponentProps {
   nativeAttributes?: Record<string, any>;

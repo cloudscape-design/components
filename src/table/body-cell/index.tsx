@@ -8,7 +8,7 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
 
 const submitHandlerFallback = () => {

@@ -9,7 +9,7 @@ import InternalFormField from '../../form-field/internal';
 import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
-import { useInternalI18n } from '../../internal/i18n/context.js';
+import { useInternalI18n } from '../../i18n/context.js';
 
 type I18nStrings = Pick<
   RangeCalendarI18nStrings,

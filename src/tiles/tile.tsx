@@ -23,7 +23,6 @@ interface TileProps {
 export const Tile = React.forwardRef(
   ({ item, selected, name, breakpoint, onChange }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
     const internalRef = useRef<HTMLInputElement>(null);
-    const controlId = item.controlId || `${name}-value-${item.value}`;
     const isVisualRefresh = useVisualRefresh();
 
     const mergedRef = useMergeRefs(internalRef, forwardedRef);
@@ -58,7 +57,7 @@ export const Tile = React.forwardRef(
             label={item.label}
             description={item.description}
             disabled={item.disabled}
-            controlId={controlId}
+            controlId={item.controlId}
           />
         </div>
         {item.image && <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>}

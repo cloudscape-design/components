@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { S3ResourceSelectorProps } from '../interfaces';
 import { TableProps } from '../../table/interfaces';
-import { ComponentFormatFunction } from '../../internal/i18n/context';
+import { ComponentFormatFunction } from '../../i18n/context';
 
 export function includes<T>(array: ReadonlyArray<T> | undefined, item: T) {
   return !!array && array.indexOf(item) > -1;
