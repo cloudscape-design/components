@@ -289,6 +289,8 @@ const InternalMultiselect = React.forwardRef(
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
+    const dropdownProps = getDropdownProps();
+
     return (
       <div
         {...baseProps}
@@ -297,7 +299,13 @@ const InternalMultiselect = React.forwardRef(
         onKeyPress={handleNativeSearch}
       >
         <Dropdown
-          {...getDropdownProps()}
+          {...dropdownProps}
+          ariaLabelledby={
+            dropdownProps.dropdownContentRole ? joinStrings(multiSelectAriaLabelId, controlId) : undefined
+          }
+          ariaDescribedby={
+            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
+          }
           open={isOpen}
           trigger={trigger}
           header={filter}

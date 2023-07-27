@@ -46,6 +46,13 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     await expect(container).toValidateA11y();
   });
 
+  test('with filtering', async () => {
+    const { container, wrapper } = renderSelect({ filteringType: 'auto', filteringAriaLabel: 'Filter' });
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown({ expandToViewport })!.findOptionByValue('1')).toBeTruthy();
+    await expect(container).toValidateA11y();
+  });
+
   test('Option should have aria-selected', () => {
     const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '1' } });
     wrapper.openDropdown();
