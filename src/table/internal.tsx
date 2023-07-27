@@ -36,7 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { TableRole } from './table-role';
+import { createTableRoleHelper } from './table-role';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -178,7 +178,7 @@ const InternalTable = React.forwardRef(
     });
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = useMemo(() => new TableRole(hasEditableCells ? 'grid' : 'table'), [hasEditableCells]);
+    const tableRole = useMemo(() => createTableRoleHelper(hasEditableCells ? 'grid' : 'table'), [hasEditableCells]);
 
     const theadProps: TheadProps = {
       containerWidth,

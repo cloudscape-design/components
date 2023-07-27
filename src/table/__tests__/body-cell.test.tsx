@@ -7,9 +7,9 @@ import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
-import { TableRole } from '../../../lib/components/table/table-role/table-role-helper';
+import { createTableRoleHelper } from '../../../lib/components/table/table-role/table-role-helper';
 
-const tableRole = new TableRole('table');
+const tableRole = createTableRoleHelper('table');
 
 const testItem = {
   test: 'testData',

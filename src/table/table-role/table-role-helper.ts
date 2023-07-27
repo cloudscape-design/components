@@ -10,31 +10,41 @@ const stateToAriaSort = {
 } as const;
 const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingState];
 
+export interface TableRole {
+  assignTableProps(
+    options: { ariaLabel?: string; totalItemsCount?: number },
+    nativeProps?: React.TableHTMLAttributes<HTMLTableElement>
+  ): React.TableHTMLAttributes<HTMLTableElement>;
+
+  assignTableRowProps(
+    options: { rowIndex: number; firstIndex?: number },
+    nativeProps?: React.HTMLAttributes<HTMLTableRowElement>
+  ): React.HTMLAttributes<HTMLTableRowElement>;
+
+  assignTableColHeaderProps(
+    options: { sortingStatus?: SortingStatus },
+    nativeProps?: React.ThHTMLAttributes<HTMLTableCellElement>
+  ): React.ThHTMLAttributes<HTMLTableCellElement>;
+
+  assignTableRowHeaderProps(
+    nativeProps?: React.ThHTMLAttributes<HTMLTableCellElement>
+  ): React.ThHTMLAttributes<HTMLTableCellElement>;
+
+  assignTableCellProps(
+    nativeProps?: React.TdHTMLAttributes<HTMLTableCellElement>
+  ): React.TdHTMLAttributes<HTMLTableCellElement>;
+}
+
 /**
  * Depending on its content the table can have different semantic representation which includes the
  * ARIA role of the table component ("table", "grid", "treegrid") but also roles and other semantic attributes
  * of the child elements. The TableRole helper encapsulates table's semantic structure.
  */
-export class TableRole {
-  private readonly tableRole: 'table' | 'grid';
-
-  constructor(tableRole: 'table' | 'grid') {
-    this.tableRole = tableRole;
-  }
-
-  assignTableProps(
-    {
-      ariaLabel,
-      totalItemsCount,
-    }: {
-      ariaLabel?: string;
-      totalItemsCount?: number;
-    },
-    nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {}
-  ) {
+export function createTableRoleHelper(tableRole: 'table' | 'grid') {
+  const assignTableProps: TableRole['assignTableProps'] = ({ ariaLabel, totalItemsCount }, nativeProps = {}) => {
     // Browsers have weird mechanism to guess whether it's a data table or a layout table.
     // If we state explicitly, they get it always correctly even with low number of rows.
-    nativeProps.role = this.tableRole;
+    nativeProps.role = tableRole;
 
     nativeProps['aria-label'] = ariaLabel;
 
@@ -42,19 +52,10 @@ export class TableRole {
     nativeProps['aria-rowcount'] = totalItemsCount ? totalItemsCount + 1 : -1;
 
     return nativeProps;
-  }
+  };
 
-  assignTableRowProps(
-    {
-      rowIndex,
-      firstIndex,
-    }: {
-      rowIndex: number;
-      firstIndex?: number;
-    },
-    nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {}
-  ) {
-    if (this.tableRole === 'grid') {
+  const assignTableRowProps: TableRole['assignTableRowProps'] = ({ rowIndex, firstIndex }, nativeProps = {}) => {
+    if (tableRole === 'grid') {
       nativeProps.role = 'row';
     }
 
@@ -63,16 +64,9 @@ export class TableRole {
     }
 
     return nativeProps;
-  }
+  };
 
-  assignTableColHeaderProps(
-    {
-      sortingStatus,
-    }: {
-      sortingStatus?: SortingStatus;
-    },
-    nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {}
-  ) {
+  const assignTableColHeaderProps: TableRole['assignTableColHeaderProps'] = ({ sortingStatus }, nativeProps = {}) => {
     nativeProps.scope = 'col';
 
     if (sortingStatus) {
@@ -80,19 +74,27 @@ export class TableRole {
     }
 
     return nativeProps;
-  }
+  };
 
-  assignTableRowHeaderProps(nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {}) {
+  const assignTableRowHeaderProps: TableRole['assignTableRowHeaderProps'] = (nativeProps = {}) => {
     nativeProps.scope = 'row';
 
     return nativeProps;
-  }
+  };
 
-  assignTableCellProps(nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {}) {
-    if (this.tableRole === 'grid') {
+  const assignTableCellProps: TableRole['assignTableCellProps'] = (nativeProps = {}) => {
+    if (tableRole === 'grid') {
       nativeProps.role = 'gridcell';
     }
 
     return nativeProps;
-  }
+  };
+
+  return {
+    assignTableProps,
+    assignTableRowProps,
+    assignTableColHeaderProps,
+    assignTableRowHeaderProps,
+    assignTableCellProps,
+  };
 }
