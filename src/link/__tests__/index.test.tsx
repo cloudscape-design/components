@@ -6,7 +6,7 @@ import Link, { LinkProps } from '../../../lib/components/link';
 import styles from '../../../lib/components/link/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import FormField from '../../../lib/components/form-field';
 import Header from '../../../lib/components/header';
 

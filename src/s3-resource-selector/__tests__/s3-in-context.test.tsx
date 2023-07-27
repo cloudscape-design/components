@@ -7,7 +7,7 @@ import FormField from '../../../lib/components/form-field';
 import S3ResourceSelector from '../../../lib/components/s3-resource-selector';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps = {
   resource: { uri: '' },

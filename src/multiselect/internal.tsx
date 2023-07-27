@@ -35,7 +35,7 @@ import { MultiselectProps } from './interfaces';
 import styles from './styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { joinStrings } from '../internal/utils/strings';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps;
 

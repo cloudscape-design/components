@@ -8,7 +8,7 @@ import { Dimension } from './utils';
 import { InternalChartDatum } from './pie-chart';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 interface SegmentsProps<T> {
   pieData: Array<PieArcDatum<InternalChartDatum<T>>>;

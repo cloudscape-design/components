@@ -7,7 +7,7 @@ import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor';
 import createWrapper, { TagEditorWrapper } from '../../../lib/components/test-utils/dom';
 
 import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps = {
   i18nStrings,

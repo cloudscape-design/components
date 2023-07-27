@@ -32,7 +32,7 @@ import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 import TokenList from '../internal/components/token-list';
 import { SearchResults } from '../text-filter/search-results';
 

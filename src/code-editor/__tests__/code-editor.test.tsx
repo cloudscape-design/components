@@ -18,7 +18,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

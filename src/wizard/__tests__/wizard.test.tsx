@@ -7,7 +7,7 @@ import liveRegionStyles from '../../../lib/components/internal/components/live-r
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';

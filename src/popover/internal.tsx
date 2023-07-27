@@ -18,7 +18,7 @@ import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/e
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 
