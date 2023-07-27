@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentFormatFunction } from '../internal/i18n/context';
+import { ComponentFormatFunction } from '../i18n/context';
 import { TagEditorProps } from './interfaces';
 
 /**

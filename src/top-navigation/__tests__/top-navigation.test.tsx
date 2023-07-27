@@ -10,7 +10,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import TopNavigationWrapper, {
   OverflowMenu as OverflowMenuWrapper,
 } from '../../../lib/components/test-utils/dom/top-navigation';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 export const I18N_STRINGS: TopNavigationProps.I18nStrings = {
   searchIconAriaLabel: 'Search',

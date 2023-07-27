@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
 import { getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 

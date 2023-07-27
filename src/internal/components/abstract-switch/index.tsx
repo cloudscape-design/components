@@ -54,7 +54,7 @@ export default function AbstractSwitch({
   const descriptionId = `${id}-description`;
 
   const ariaLabelledByIds = [];
-  if (label) {
+  if (label && !ariaLabel) {
     ariaLabelledByIds.push(labelId);
   }
   if (ariaLabelledby) {

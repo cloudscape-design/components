@@ -9,7 +9,7 @@ import { renderHook } from '../../__tests__/render-hook';
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { TableRole } from '../../../lib/components/table/table-role';
 
 const tableRole = new TableRole('table');

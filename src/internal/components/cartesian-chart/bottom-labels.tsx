@@ -9,7 +9,7 @@ import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
 
 import styles from './styles.css.js';
 import { formatTicks, getVisibleTicks } from './label-utils';
-import { useInternalI18n } from '../../i18n/context';
+import { useInternalI18n } from '../../../i18n/context';
 
 interface BottomLabelsProps {
   axis?: 'x' | 'y';

@@ -3,7 +3,7 @@
 import { useSelector } from '../async-store';
 import { CartesianChartProps } from '../../internal/components/cartesian-chart/interfaces';
 import { ChartSeriesDetailItem } from '../../internal/components/chart-series-details';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
 

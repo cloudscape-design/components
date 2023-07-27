@@ -7,7 +7,7 @@ import LiveRegion from '../internal/components/live-region/index';
 import { TabButton } from './tab-button';
 import { InternalButton } from '../button/internal';
 import { CodeEditorProps } from './interfaces';
-import { useInternalI18n } from '../internal/i18n/context.js';
+import { useInternalI18n } from '../i18n/context.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 interface StatusBarProps {

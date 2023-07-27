@@ -16,7 +16,7 @@ const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingStat
  * of the child elements. The TableRole helper encapsulates table's semantic structure.
  */
 export class TableRole {
-  private tableRole: 'table' | 'grid';
+  private readonly tableRole: 'table' | 'grid';
 
   constructor(tableRole: 'table' | 'grid') {
     this.tableRole = tableRole;

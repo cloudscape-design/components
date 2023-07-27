@@ -14,7 +14,7 @@ export function useHeightMeasure(
 ) {
   const [measuredHeight, setHeight] = useState(0);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const stableGetMeasure = useCallback(getMeasure, deps);
+  const stableGetMeasure = useCallback(getMeasure, [...deps, skip]);
   useResizeObserver(stableGetMeasure, entry => !skip && setHeight(entry.borderBoxHeight));
   return !skip ? measuredHeight : undefined;
 }
