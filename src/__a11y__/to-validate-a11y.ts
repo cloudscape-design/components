@@ -19,8 +19,6 @@ Axe.configure(spec);
 const htmlValidator = new HtmlValidate({
   extends: ['html-validate:recommended'],
   rules: {
-    // set relaxed to exclude error that id does not begin with letter
-    'valid-id': ['error', { relaxed: true }],
     'no-inline-style': 'off',
     'prefer-native-element': ['error', { exclude: ['listbox', 'button', 'region'] }],
     //TODO: revisit 'no-redundant-for' when fixing AWSUI-18968

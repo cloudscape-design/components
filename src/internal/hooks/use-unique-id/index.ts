@@ -14,5 +14,5 @@ const useIdFallback = () => {
 const useId: typeof useIdFallback = (React as any).useId ?? useIdFallback;
 
 export function useUniqueId(prefix?: string) {
-  return `${prefix ? prefix : ''}` + useId();
+  return `${prefix ? prefix : 'i'}` + useId();
 }
