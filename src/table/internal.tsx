@@ -36,6 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { getTableRoleProps, getTableRowRoleProps } from './table-role';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -176,6 +177,9 @@ const InternalTable = React.forwardRef(
       stickyColumnsLast: stickyColumns?.last || 0,
     });
 
+    const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
+    const tableRole = hasEditableCells ? 'grid' : 'table';
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -202,6 +206,7 @@ const InternalTable = React.forwardRef(
       stripedRows,
       stickyState,
       selectionColumnId,
+      tableRole,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -269,6 +274,7 @@ const InternalTable = React.forwardRef(
                   onScroll={handleScroll}
                   tableHasHeader={hasHeader}
                   contentDensity={contentDensity}
+                  tableRole={tableRole}
                 />
               )}
             </>
@@ -315,11 +321,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              // Browsers have weird mechanism to guess whether it's a data table or a layout table.
-              // If we state explicitly, they get it always correctly even with low number of rows.
-              role="table"
-              aria-label={ariaLabels?.tableLabel}
-              aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
+              {...getTableRoleProps({ tableRole, totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
             >
               <Thead
                 ref={theadRef}
@@ -374,7 +376,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                        aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
+                        {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex })}
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
@@ -392,6 +394,7 @@ const InternalTable = React.forwardRef(
                             hasFooter={hasFooter}
                             stickyState={stickyState}
                             columnId={selectionColumnId}
+                            tableRole={tableRole}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -454,6 +457,7 @@ const InternalTable = React.forwardRef(
                               columnId={column.id ?? colIndex}
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
+                              tableRole={tableRole}
                             />
                           );
                         })}

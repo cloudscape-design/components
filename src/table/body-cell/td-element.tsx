@@ -4,7 +4,8 @@ import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
-import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns/use-sticky-columns.js';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
+import { TableRole, getTableCellRoleProps } from '../table-role/table-role-helper.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -31,6 +32,7 @@ export interface TableTdElementProps {
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
+  tableRole: TableRole;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -57,17 +59,13 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasFooter,
       columnId,
       stickyState,
+      tableRole,
     },
     ref
   ) => {
-    let Element: 'th' | 'td' = 'td';
-    if (isRowHeader) {
-      Element = 'th';
-      nativeAttributes = {
-        ...nativeAttributes,
-        scope: 'row',
-      };
-    }
+    const Element = isRowHeader ? 'th' : 'td';
+
+    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader }) };
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,

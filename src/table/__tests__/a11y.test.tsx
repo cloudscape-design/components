@@ -10,6 +10,7 @@ import liveRegionStyles from '../../../lib/components/internal/components/live-r
 interface Item {
   id: number;
   name: string;
+  value: string;
 }
 
 const defaultColumns: TableProps.ColumnDefinition<Item>[] = [
@@ -18,9 +19,9 @@ const defaultColumns: TableProps.ColumnDefinition<Item>[] = [
 ];
 
 const defaultItems: Item[] = [
-  { id: 1, name: 'Apples' },
-  { id: 2, name: 'Oranges' },
-  { id: 3, name: 'Bananas' },
+  { id: 1, name: 'Apples', value: 'apples' },
+  { id: 2, name: 'Oranges', value: 'oranges' },
+  { id: 3, name: 'Bananas', value: 'bananas' },
 ];
 
 function renderTableWrapper(props?: Partial<TableProps>) {
@@ -32,6 +33,26 @@ const tableLabel = 'Items';
 
 afterAll(() => {
   jest.restoreAllMocks();
+});
+
+describe('roles', () => {
+  test('table has role="table" when no columns are editable', () => {
+    const wrapper = renderTableWrapper({ columnDefinitions: defaultColumns });
+    expect(wrapper.find('[role="table"]')).not.toBeNull();
+    expect(wrapper.find('[role="grid"]')).toBeNull();
+  });
+
+  test('table has role="grid" when at least one defined column is editable', () => {
+    const wrapper = renderTableWrapper({
+      columnDefinitions: [
+        ...defaultColumns,
+        { header: 'value', cell: item => item.value, editConfig: { editingCell: () => null } },
+      ],
+      visibleColumns: ['id', 'name'],
+    });
+    expect(wrapper.find('[role="table"]')).toBeNull();
+    expect(wrapper.find('[role="grid"]')).not.toBeNull();
+  });
 });
 
 describe('labels', () => {

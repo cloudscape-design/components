@@ -8,6 +8,8 @@ import { renderHook } from '../../__tests__/render-hook';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
+const tableRole = 'table';
+
 const testItem = {
   test: 'testData',
 };
@@ -59,6 +61,7 @@ const TestComponent = ({ isEditing = false, successfulEdit = false }) => {
             stickyState={result.current}
             successfulEdit={successfulEdit}
             columnId="id"
+            tableRole={tableRole}
           />
         </tr>
       </tbody>
@@ -91,6 +94,7 @@ const TestComponent2 = ({ column }: any) => {
             wrapLines={false}
             stickyState={result.current}
             columnId="id"
+            tableRole={tableRole}
           />
         </tr>
       </tbody>
