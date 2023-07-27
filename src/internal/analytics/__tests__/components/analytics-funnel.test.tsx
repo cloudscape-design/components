@@ -489,7 +489,7 @@ describe('AnalyticsFunnelSubStep', () => {
     });
   });
 
-  test('calls funnelSubStepComplete with the correct arguments when the substep loses focus', async () => {
+  test('calls funnelSubStepComplete with the correct arguments when the substep loses focus by keyboard', async () => {
     const ChildComponent = () => {
       const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
 
@@ -529,7 +529,61 @@ describe('AnalyticsFunnelSubStep', () => {
       subStepNameSelector: expect.any(String),
     });
   });
+
+  test('calls funnelSubStepComplete with the correct arguments when the substep loses focus by mouse', async () => {
+    const ChildComponent = () => {
+      const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+
+      return (
+        <div ref={subStepRef} {...funnelSubStepProps}>
+          <input data-testid="input" />
+        </div>
+      );
+    };
+
+    const stepNumber = 1;
+    const stepNameSelector = '.step-name-selector';
+
+    const { getByTestId } = render(
+      <>
+        <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+          <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
+            <AnalyticsFunnelSubStep>
+              <ChildComponent />
+            </AnalyticsFunnelSubStep>
+          </AnalyticsFunnelStep>
+        </AnalyticsFunnel>
+        <input data-testid="outside" />
+      </>
+    );
+
+    simulateUserClick(getByTestId('input'));
+
+    await runPendingPromises();
+
+    simulateUserClick(getByTestId('outside'));
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledWith({
+      funnelInteractionId: mockedFunnelInteractionId,
+      stepNumber,
+      stepNameSelector,
+      subStepAllSelector: expect.any(String),
+      subStepSelector: expect.any(String),
+      subStepNameSelector: expect.any(String),
+    });
+  });
 });
+
+const simulateUserClick = (element: HTMLElement) => {
+  // See https://testing-library.com/docs/guide-events/
+  fireEvent.mouseDown(element);
+  element.focus();
+  fireEvent.mouseUp(element);
+  fireEvent.click(element);
+};
 
 const runPendingPromises = async () => {
   jest.runAllTimers();
