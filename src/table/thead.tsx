@@ -8,13 +8,14 @@ import { focusMarkers, SelectionProps } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { getColumnKey, getStickyClassNames } from './utils';
 import { TableHeaderCell } from './header-cell';
-import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
+import { useSelector } from '../area-chart/async-store';
+import { ColumnWidthsModel } from './use-column-widths';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -41,6 +42,7 @@ export interface TheadProps {
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
+  columnWidths: ColumnWidthsModel;
   selectionColumnId: PropertyKey;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
@@ -68,6 +70,7 @@ const Thead = React.forwardRef(
       hidden = false,
       stuck = false,
       stickyState,
+      columnWidths: columnWidthsStore,
       selectionColumnId,
       focusedComponent,
       onFocusedComponentChange,
@@ -91,7 +94,8 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
+    const columnWidths = useSelector(columnWidthsStore, s => s.columnWidths);
+    const totalWidth = useSelector(columnWidthsStore, s => s.totalWidth);
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
@@ -163,13 +167,13 @@ const Thead = React.forwardRef(
                 hidden={hidden}
                 colIndex={colIndex}
                 columnId={columnId}
-                updateColumn={updateColumn}
+                updateColumn={columnWidthsStore.updateColumnWidth}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}
-                cellRef={node => setCell(columnId, node)}
+                cellRef={node => columnWidthsStore.setCell(columnId, node)}
               />
             );
           })}
