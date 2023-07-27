@@ -13,7 +13,7 @@ import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 import Portal from '../../internal/components/portal';
 import ContentDisplayOption from './content-display-option';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 const componentPrefix = 'content-display';
 

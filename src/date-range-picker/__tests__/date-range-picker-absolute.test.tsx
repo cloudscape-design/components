@@ -7,7 +7,7 @@ import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/d
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 import '../../__a11y__/to-validate-a11y';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',

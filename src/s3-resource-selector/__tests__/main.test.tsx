@@ -6,7 +6,7 @@ import S3ResourceSelector, { S3ResourceSelectorProps } from '../../../lib/compon
 import createWrapper, { S3ResourceSelectorWrapper } from '../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
 import FormField from '../../../lib/components/form-field';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 jest.setTimeout(10_000);
 

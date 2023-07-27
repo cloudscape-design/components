@@ -9,7 +9,7 @@ import popoverStyles from '../../../lib/components/popover/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { cloneDeep } from 'lodash';
 import '../../__a11y__/to-validate-a11y';
 

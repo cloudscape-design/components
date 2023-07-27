@@ -7,7 +7,7 @@ import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/a
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import Input from '../../../lib/components/input';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 interface Item {
   key: string;

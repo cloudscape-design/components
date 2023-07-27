@@ -8,7 +8,7 @@ import InternalStatusIndicator from '../../../status-indicator/internal';
 import InternalLink from '../../../link/internal';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../../i18n/context';
+import { useInternalI18n } from '../../../i18n/context';
 
 interface ChartStatusContainerProps extends BaseComponentProps {
   statusType: 'loading' | 'finished' | 'error';

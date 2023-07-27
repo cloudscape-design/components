@@ -11,7 +11,7 @@ import { allItems, TableItem } from './table.data';
 import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
-import { I18nProvider } from '~components/internal/i18n';
+import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.all';
 
 export default function () {

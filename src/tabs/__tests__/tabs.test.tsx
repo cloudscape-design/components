@@ -7,7 +7,7 @@ import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import styles from '../../../lib/components/tabs/styles.css.js';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 let mockHorizontalOverflow = false;
 jest.mock('../../../lib/components/tabs/scroll-utils', () => {

@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ChartFilter from '../../../../../lib/components/internal/components/chart-filter';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
-import TestI18nProvider from '../../../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../../../lib/components/i18n/testing';
 
 const datum0 = {};
 const datum1 = {};

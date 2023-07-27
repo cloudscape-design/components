@@ -13,7 +13,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';

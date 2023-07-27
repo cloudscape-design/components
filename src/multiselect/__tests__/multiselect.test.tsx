@@ -8,7 +8,7 @@ import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js'
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },
@@ -481,6 +481,16 @@ describe('a11y properties', () => {
     expect(
       wrapper.findDropdown().getElement().parentNode!.querySelector(`#${controlledId}`)!.getAttribute('role')
     ).toBe('dialog');
+  });
+  test('dropdown (role="dialog") should receive a label when filtering enabled', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect selectedOptions={[]} options={defaultOptions} filteringType="auto" ariaLabel="multiselect-label" />
+    );
+    wrapper.openDropdown();
+    const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
+    expect(wrapper.findDropdown().getElement().parentNode!.querySelector(`#${controlledId}`)!).toHaveAccessibleName(
+      'multiselect-label'
+    );
   });
 });
 

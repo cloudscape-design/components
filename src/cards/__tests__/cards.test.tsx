@@ -6,7 +6,7 @@ import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import styles from '../../../lib/components/cards/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({

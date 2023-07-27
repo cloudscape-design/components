@@ -332,6 +332,18 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
           .getAttribute('role')
       ).toBe('dialog');
     });
+
+    test('dropdown (role="dialog") should receive a label when filtering enabled', () => {
+      const { wrapper } = renderSelect({
+        filteringType: 'auto',
+        ariaLabel: 'select-label',
+      });
+      wrapper.openDropdown();
+      const controlledId = wrapper.findTrigger().getElement().getAttribute('aria-controls');
+      expect(
+        wrapper.findDropdown({ expandToViewport }).getElement().parentNode!.querySelector(`#${controlledId}`)!
+      ).toHaveAccessibleName('select-label');
+    });
   });
 
   describe('Filtering results', () => {

@@ -141,6 +141,14 @@ export interface DropdownProps extends ExpandToViewport {
    * HTML role for the dropdown content wrapper
    */
   dropdownContentRole?: string;
+  /**
+   * Labelledby for the dropdown (required when role="dialog")
+   */
+  ariaLabelledby?: string;
+  /**
+   * Describedby for the dropdown (recommended when role="dialog")
+   */
+  ariaDescribedby?: string;
 }
 
 export interface ExpandToViewport {
