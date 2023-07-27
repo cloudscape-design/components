@@ -8,7 +8,7 @@ import Thead, { InteractiveComponent, TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import { TableRole, assignTableProps } from './table-role';
+import { TableRole, getTableRoleProps } from './table-role';
 
 export interface StickyHeaderRef {
   scrollToTop(): void;
@@ -85,7 +85,7 @@ function StickyHeader(
           contentDensity === 'compact' && getVisualContextClassname('compact-table')
         )}
         ref={secondaryTableRef}
-        {...assignTableProps({ tableRole })}
+        {...getTableRoleProps({ tableRole })}
       >
         <Thead
           ref={secondaryTheadRef}

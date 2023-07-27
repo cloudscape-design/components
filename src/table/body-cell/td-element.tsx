@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { TableRole, assignTableCellProps, assignTableRowHeaderProps } from '../table-role/table-role-helper.js';
+import { TableRole, getTableCellRoleProps } from '../table-role/table-role-helper.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -63,15 +63,9 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     },
     ref
   ) => {
-    nativeAttributes = { ...nativeAttributes };
+    const Element = isRowHeader ? 'th' : 'td';
 
-    let Element: 'th' | 'td' = 'td';
-    assignTableCellProps({ tableRole }, nativeAttributes);
-
-    if (isRowHeader) {
-      Element = 'th';
-      assignTableRowHeaderProps(nativeAttributes);
-    }
+    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader }) };
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,

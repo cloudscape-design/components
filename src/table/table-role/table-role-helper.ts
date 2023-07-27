@@ -16,10 +16,13 @@ const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingStat
 
 export type TableRole = 'table' | 'grid';
 
-export function assignTableProps(
-  options: { tableRole: TableRole; ariaLabel?: string; totalItemsCount?: number },
-  nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {}
-): React.TableHTMLAttributes<HTMLTableElement> {
+export function getTableRoleProps(options: {
+  tableRole: TableRole;
+  ariaLabel?: string;
+  totalItemsCount?: number;
+}): React.TableHTMLAttributes<HTMLTableElement> {
+  const nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {};
+
   // Browsers have weird mechanism to guess whether it's a data table or a layout table.
   // If we state explicitly, they get it always correctly even with low number of rows.
   nativeProps.role = options.tableRole;
@@ -32,10 +35,13 @@ export function assignTableProps(
   return nativeProps;
 }
 
-export function assignTableRowProps(
-  options: { tableRole: TableRole; rowIndex: number; firstIndex?: number },
-  nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {}
-): React.HTMLAttributes<HTMLTableRowElement> {
+export function getTableRowRoleProps(options: {
+  tableRole: TableRole;
+  rowIndex: number;
+  firstIndex?: number;
+}): React.HTMLAttributes<HTMLTableRowElement> {
+  const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
+
   if (options.tableRole === 'grid') {
     nativeProps.role = 'row';
   }
@@ -47,10 +53,11 @@ export function assignTableRowProps(
   return nativeProps;
 }
 
-export function assignTableColHeaderProps(
-  options: { sortingStatus?: SortingStatus },
-  nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {}
-): React.ThHTMLAttributes<HTMLTableCellElement> {
+export function getTableColHeaderRoleProps(options: {
+  sortingStatus?: SortingStatus;
+}): React.ThHTMLAttributes<HTMLTableCellElement> {
+  const nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {};
+
   nativeProps.scope = 'col';
 
   if (options.sortingStatus) {
@@ -60,20 +67,18 @@ export function assignTableColHeaderProps(
   return nativeProps;
 }
 
-export function assignTableRowHeaderProps(
-  nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {}
-): React.ThHTMLAttributes<HTMLTableCellElement> {
-  nativeProps.scope = 'row';
+export function getTableCellRoleProps(options: {
+  tableRole: TableRole;
+  isRowHeader?: boolean;
+}): React.TdHTMLAttributes<HTMLTableCellElement> {
+  const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
-  return nativeProps;
-}
-
-export function assignTableCellProps(
-  options: { tableRole: TableRole },
-  nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {}
-): React.TdHTMLAttributes<HTMLTableCellElement> {
   if (options.tableRole === 'grid') {
     nativeProps.role = 'gridcell';
+  }
+
+  if (options.isRowHeader) {
+    nativeProps.scope = 'row';
   }
 
   return nativeProps;

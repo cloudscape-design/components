@@ -14,7 +14,7 @@ import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { TableRole, assignTableColHeaderProps } from '../table-role';
+import { TableRole, getTableColHeaderRoleProps } from '../table-role';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -112,7 +112,7 @@ export function TableHeaderCell<ItemType>({
       )}
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
-      {...assignTableColHeaderProps({ sortingStatus })}
+      {...getTableColHeaderRoleProps({ sortingStatus })}
     >
       <div
         className={clsx(styles['header-cell-content'], {

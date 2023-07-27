@@ -3,9 +3,8 @@
 
 export {
   TableRole,
-  assignTableCellProps,
-  assignTableColHeaderProps,
-  assignTableProps,
-  assignTableRowHeaderProps,
-  assignTableRowProps,
+  getTableCellRoleProps,
+  getTableColHeaderRoleProps,
+  getTableRoleProps,
+  getTableRowRoleProps,
 } from './table-role-helper';

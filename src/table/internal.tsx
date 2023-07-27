@@ -36,7 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { assignTableProps, assignTableRowProps } from './table-role';
+import { getTableRoleProps, getTableRowRoleProps } from './table-role';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -321,7 +321,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              {...assignTableProps({ tableRole, totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
+              {...getTableRoleProps({ tableRole, totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
             >
               <Thead
                 ref={theadRef}
@@ -376,7 +376,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                        {...assignTableRowProps({ tableRole, firstIndex, rowIndex })}
+                        {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex })}
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
