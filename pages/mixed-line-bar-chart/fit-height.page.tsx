@@ -15,7 +15,7 @@ type DemoContext = React.Context<
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const minHeight = parseInt(urlParams.minHeight?.toString() || '0');
-  const heights = [800]; // [800, 600, 400, 300, 200, 100];
+  const heights = [800, 600, 400, 300, 200, 100];
   const fitHeight = urlParams.fitHeight ?? true;
   return (
     <Box padding="m">
