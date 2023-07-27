@@ -9,7 +9,7 @@ import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
 import LeftLabels from '../internal/components/cartesian-chart/left-labels';
-import BottomLabels from '../internal/components/cartesian-chart/bottom-labels';
+import BottomLabels, { useBottomLabels } from '../internal/components/cartesian-chart/bottom-labels';
 import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
 import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
@@ -80,24 +80,23 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   plotContainerRef: React.RefObject<HTMLDivElement>;
 }
 
-interface XAxisProps {
-  axis: 'X';
+interface BaseAxisProps {
   tickCount: number;
-  scale: ChartScale;
-  ticks: ChartDataTypes[];
   tickFormatter: TickFormatter;
   title?: string;
   ariaRoleDescription?: string;
 }
 
-interface YAxisProps {
-  axis: 'Y';
-  tickCount: number;
+interface XAxisProps extends BaseAxisProps {
+  axis: 'x';
+  scale: ChartScale;
+  ticks: ChartDataTypes[];
+}
+
+interface YAxisProps extends BaseAxisProps {
+  axis: 'y';
   scale: NumericChartScale;
   ticks: number[];
-  tickFormatter: TickFormatter;
-  title?: string;
-  ariaRoleDescription?: string;
 }
 
 export default function ChartContainer<T extends ChartDataTypes>({
@@ -133,7 +132,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const verticalMarkerRef = useRef<SVGLineElement>(null);
 
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
-  const [bottomLabelsHeight, setBottomLabelsHeight] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
   const [containerWidth, containerMeasureRef] = useContainerWidth(500);
   const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
@@ -154,7 +152,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     const scale = new ChartScale(xScaleType, xDomain, range, linesOnly);
     const ticks = createXTicks(scale, tickCount);
     return {
-      axis: 'X',
+      axis: 'x',
       tickCount,
       scale,
       ticks,
@@ -169,7 +167,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     const scale = new NumericChartScale(yScaleType, yDomain, range, props.yDomain ? null : tickCount);
     const ticks = createYTicks(scale, tickCount);
     return {
-      axis: 'Y',
+      axis: 'y',
       tickCount,
       scale,
       ticks,
@@ -183,16 +181,18 @@ export default function ChartContainer<T extends ChartDataTypes>({
     ? getXAxisProps(plotWidth, [0, plotWidth])
     : getYAxisProps(plotWidth, [0, plotWidth]);
 
+  const bottomLabelsProps = useBottomLabels({ ...bottomAxisProps });
+
   const plotMeasureRef = useRef<SVGLineElement>(null);
-  const measuredHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight || !bottomLabelsHeight);
-  const plotHeight = fitHeight ? (bottomLabelsHeight ? measuredHeight ?? 0 : 0) : explicitPlotHeight;
+  const measuredHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight);
+  const plotHeight = fitHeight ? measuredHeight ?? 0 : explicitPlotHeight;
 
   const leftAxisProps = !horizontalBars
     ? getYAxisProps(plotHeight, [plotHeight, 0])
     : getXAxisProps(plotHeight, [0, plotHeight]);
 
-  const xAxisProps = bottomAxisProps.axis === 'X' ? bottomAxisProps : leftAxisProps.axis === 'X' ? leftAxisProps : null;
-  const yAxisProps = bottomAxisProps.axis === 'Y' ? bottomAxisProps : leftAxisProps.axis === 'Y' ? leftAxisProps : null;
+  const xAxisProps = bottomAxisProps.axis === 'x' ? bottomAxisProps : leftAxisProps.axis === 'x' ? leftAxisProps : null;
+  const yAxisProps = bottomAxisProps.axis === 'y' ? bottomAxisProps : leftAxisProps.axis === 'y' ? leftAxisProps : null;
   if (!xAxisProps || !yAxisProps) {
     throw new Error('Invariant violation: invalid axis props.');
   }
@@ -492,7 +492,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   return (
     <CartesianChartContainer
       ref={containerRef}
-      minHeight={explicitPlotHeight + bottomLabelsHeight}
+      minHeight={explicitPlotHeight + bottomLabelsProps.height}
       fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis={y} position="left" title={leftAxisProps.title} />}
       leftAxisLabelMeasure={
@@ -508,8 +508,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
         <ChartPlot
           ref={plotRef}
           width="100%"
-          height={fitHeight ? `calc(100% - ${bottomLabelsHeight}px)` : plotHeight}
-          offsetBottom={bottomLabelsHeight}
+          height={fitHeight ? `calc(100% - ${bottomLabelsProps.height}px)` : plotHeight}
+          offsetBottom={bottomLabelsProps.height}
           isClickable={isPopoverOpen && !isPopoverPinned}
           ariaLabel={ariaLabel}
           ariaLabelledby={ariaLabelledby}
@@ -609,17 +609,15 @@ export default function ChartContainer<T extends ChartDataTypes>({
           )}
 
           <BottomLabels
+            {...bottomLabelsProps}
             axis={x}
-            ticks={bottomAxisProps.ticks}
             scale={bottomAxisProps.scale}
-            tickFormatter={bottomAxisProps.tickFormatter as TickFormatter}
             title={bottomAxisProps.title}
             ariaRoleDescription={bottomAxisProps.ariaRoleDescription}
             height={plotHeight}
             width={plotWidth}
             offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
             offsetRight={BOTTOM_LABELS_OFFSET}
-            autoHeight={setBottomLabelsHeight}
           />
         </ChartPlot>
       }
