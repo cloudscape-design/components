@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { Button } from '~components';
 import Popover from '~components/popover';
 
 export default function () {
@@ -46,6 +47,29 @@ export default function () {
         renderWithPortal={renderWithPortal}
       >
         Error
+      </Popover>
+      <br />
+      <button type="button" id="focus-trap-target-button">
+        Click to focus
+      </button>{' '}
+      <Popover
+        size="medium"
+        header="Memory error"
+        content={
+          <>
+            <p>
+              This instance contains insufficient memory. Stop the instance, choose a different instance type with more
+              memory, and restart it.
+            </p>
+            <input />
+          </>
+        }
+        dismissAriaLabel="Close"
+        id="focus-trap-button"
+        renderWithPortal={renderWithPortal}
+        triggerType="custom"
+      >
+        <Button>Open</Button>
       </Popover>
       <ul>
         <li>Popover without dismiss button should not trap focus when opened</li>

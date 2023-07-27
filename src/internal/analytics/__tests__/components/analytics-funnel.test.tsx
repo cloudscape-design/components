@@ -13,6 +13,9 @@ import {
 import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
 import Button from '../../../../../lib/components/button';
 import FormField from '../../../../../lib/components/form-field';
+import Container from '../../../../../lib/components/container';
+import Cards from '../../../../../lib/components/cards';
+import ExpandableSection from '../../../../../lib/components/expandable-section';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
 
@@ -303,6 +306,9 @@ describe('AnalyticsFunnelStep', () => {
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
           Step Content
+          <Container />
+          <Cards items={[]} cardDefinition={{}} />
+          <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
@@ -313,6 +319,7 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
+      totalSubSteps: 3,
     });
   });
 
@@ -324,6 +331,9 @@ describe('AnalyticsFunnelStep', () => {
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
           Step Content
+          <Container />
+          <Cards items={[]} cardDefinition={{}} />
+          <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
@@ -338,10 +348,11 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
+      totalSubSteps: 3,
     });
   });
 
-  test('calls funnelStepComplete with the correct arguments when the everything unmounts', () => {
+  test('does not call funnelStepComplete when the funnel unmounts without submitting', () => {
     const stepNumber = 1;
     const stepNameSelector = '.step-name-selector';
 
@@ -353,17 +364,9 @@ describe('AnalyticsFunnelStep', () => {
       </AnalyticsFunnel>
     );
 
-    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
-
     unmount();
 
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith({
-      funnelInteractionId: mockedFunnelInteractionId,
-      stepNumber,
-      stepNameSelector,
-      subStepAllSelector: expect.any(String),
-    });
+    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
   });
 
   test('calls funnelStepStart and funnelStepComplete when stepNumber changes', () => {

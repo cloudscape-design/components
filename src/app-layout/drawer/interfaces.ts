@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { ButtonProps } from '../../button/interfaces';
 import { togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
 import { IconProps } from '../../icon/interfaces';
@@ -14,8 +13,8 @@ export interface DesktopDrawerProps {
   toggleClassName: string;
   closeClassName: string;
   toggleRefs: {
-    toggle: React.Ref<ButtonProps.Ref>;
-    close: React.Ref<ButtonProps.Ref>;
+    toggle: React.Ref<{ focus(): void }>;
+    close: React.Ref<{ focus(): void }>;
   };
   width: number;
   topOffset: number | undefined;

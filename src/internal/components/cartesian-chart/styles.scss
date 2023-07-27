@@ -137,8 +137,6 @@
 }
 
 .chart-container-plot-wrapper {
-  display: contents;
-
   &.fit-height {
     display: block;
     position: relative;
@@ -147,8 +145,6 @@
 }
 
 .chart-container-plot {
-  display: contents;
-
   &.fit-height {
     display: block;
     position: absolute;
@@ -160,8 +156,6 @@
 }
 
 .chart-container-bottom-labels {
-  display: contents;
-
   &.fit-height {
     display: block;
   }

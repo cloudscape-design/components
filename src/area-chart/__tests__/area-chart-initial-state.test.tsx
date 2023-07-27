@@ -105,7 +105,8 @@ test('when fitHeight=false content min height is explicitly set', () => {
 
 test.each([false, true])('when fitHeight=%s plot min-height is explicitly set', fitHeight => {
   const { wrapper } = renderAreaChart(<AreaChart height={333} fitHeight={fitHeight} series={[areaSeries1]} />);
-  const chartElement = wrapper.findByClassName(cartesianStyles['chart-container-plot-wrapper'])!.getElement();
+  const selector = fitHeight ? cartesianStyles['chart-container-plot-wrapper'] : chartWrapperStyles.content;
+  const chartElement = wrapper.findByClassName(selector)!.getElement();
   expect(chartElement.style.minHeight).toBeDefined();
   expect(parseInt(chartElement.style.minHeight)).toBeGreaterThanOrEqual(333);
 });

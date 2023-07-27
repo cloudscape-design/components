@@ -147,6 +147,28 @@ describe('Focus behavior', () => {
     expect(document.activeElement).not.toBe(wrapper.findBody()!.getElement());
   });
 
+  it('moves focus back to trigger on dismiss', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    act(() => {
+      wrapper.findDismissButton()?.click();
+    });
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+  });
+
+  it('moves focus back to custom trigger on dismiss', () => {
+    const wrapper = renderPopover({ children: <button>Trigger</button>, content: 'Popover', triggerType: 'custom' });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    act(() => {
+      wrapper.findDismissButton()?.click();
+    });
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement().querySelector('button'));
+  });
+
   it('moves focus to the dismiss button on open if dismiss button is present - with portal', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal: true });
     act(() => {

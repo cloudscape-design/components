@@ -79,6 +79,7 @@ function stylesTask(theme) {
       designTokensOutputDir,
       designTokensFileName: theme.designTokensOutput,
       descriptions,
+      jsonSchema: true,
     });
   });
 }

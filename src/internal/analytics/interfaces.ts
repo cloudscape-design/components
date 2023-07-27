@@ -38,9 +38,21 @@ export interface FunnelStepProps extends BaseFunnelProps {
   subStepAllSelector: string;
 }
 
+export interface FunnelStepStartProps extends FunnelStepProps {
+  totalSubSteps?: number;
+}
+export interface FunnelStepCompleteProps extends FunnelStepProps {
+  totalSubSteps?: number;
+}
+
 export interface FunnelStepNavigationProps extends FunnelStepProps {
   destinationStepNumber: number;
   navigationType: string;
+  totalSubSteps?: number;
+}
+
+export interface FunnelStepErrorProps extends FunnelStepProps {
+  stepErrorSelector: string;
 }
 
 export interface FunnelSubStepProps extends FunnelStepProps {
@@ -70,9 +82,10 @@ export interface IFunnelMetrics {
   funnelComplete: FunnelMethod<BaseFunnelProps>;
   funnelSuccessful: FunnelMethod<BaseFunnelProps>;
   funnelCancelled: FunnelMethod<BaseFunnelProps>;
-  funnelStepStart: FunnelMethod<FunnelStepProps>;
-  funnelStepComplete: FunnelMethod<FunnelStepProps>;
+  funnelStepStart: FunnelMethod<FunnelStepStartProps>;
+  funnelStepComplete: FunnelMethod<FunnelStepCompleteProps>;
   funnelStepNavigation: FunnelMethod<FunnelStepNavigationProps>;
+  funnelStepError: FunnelMethod<FunnelStepErrorProps>;
   funnelSubStepStart: FunnelMethod<FunnelSubStepProps>;
   funnelSubStepComplete: FunnelMethod<FunnelSubStepProps>;
   funnelSubStepError: FunnelMethod<OptionalFunnelSubStepErrorProps>;

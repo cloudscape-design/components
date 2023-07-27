@@ -49,7 +49,7 @@ export const useFunnelSubStep = () => {
       funnelInteractionId &&
       subStepRef.current &&
       !subStepRef.current.contains(event.relatedTarget) &&
-      funnelState.current === 'default'
+      funnelState.current !== 'cancelled'
     ) {
       FunnelMetrics.funnelSubStepComplete({
         funnelInteractionId,

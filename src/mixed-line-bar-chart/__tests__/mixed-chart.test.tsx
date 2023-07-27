@@ -820,7 +820,8 @@ describe('Reserve space', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart series={[lineSeries]} height={100} fitHeight={fitHeight} />
     );
-    const chartElement = wrapper.findByClassName(cartesianStyles['chart-container-plot-wrapper'])!.getElement();
+    const selector = fitHeight ? cartesianStyles['chart-container-plot-wrapper'] : chartWrapperStyles.content;
+    const chartElement = wrapper.findByClassName(selector)!.getElement();
     expect(chartElement.style.minHeight).toBeDefined();
     expect(parseInt(chartElement.style.minHeight)).toBeGreaterThanOrEqual(100);
   });

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { AreaChartProps } from '../interfaces';
-import React, { useEffect, useMemo, useRef, RefObject, MouseEvent, useState } from 'react';
+import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
 import { findClosest, circleIndex } from './utils';
 
 import { nodeContains } from '../../internal/utils/dom';
@@ -15,7 +15,7 @@ import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
 import { useReaction } from '../async-store';
-import { useResizeObserver } from '../../internal/hooks/container-queries';
+import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
@@ -59,12 +59,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   const verticalMarkerRef = useRef<SVGLineElement>(null);
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
-  const [measuredHeight, setHeight] = useState(0);
-  useResizeObserver(
-    () => plotMeasureRef.current,
-    entry => fitHeight && setHeight(entry.borderBoxHeight)
-  );
-  const height = fitHeight ? measuredHeight : explicitHeight;
+  const hasVisibleSeries = series.length > 0;
+  const height = useHeightMeasure(() => plotMeasureRef.current, !fitHeight, [hasVisibleSeries]) ?? explicitHeight;
 
   const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
 

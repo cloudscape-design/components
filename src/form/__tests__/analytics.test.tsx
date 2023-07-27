@@ -45,20 +45,12 @@ describe('Form Analytics', () => {
     );
   });
 
-  test('sends a funnelStepComplete metric when Form is unmounted', () => {
+  test('does not send a funnelStepComplete metric when Form is unmounted', () => {
     const { unmount } = render(<Form />);
 
     unmount();
 
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith(
-      expect.objectContaining({
-        stepNumber: 1,
-        stepNameSelector: expect.any(String),
-        subStepAllSelector: expect.any(String),
-        funnelInteractionId: expect.any(String),
-      })
-    );
+    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
   });
 
   test('sends a funnelCancelled metric when Form is unmounted', () => {
@@ -119,7 +111,7 @@ describe('Form Analytics', () => {
    * 1. The submit button is the only primary button in the form
    * 2. The submit button is clicked before the Form is unmounted
    */
-  test('sends a funnelComplete metric when Form is unmounted after clicking a primary button in the actions slot', () => {
+  test('sends a funnelComplete and funnelStepComplete metric when Form is unmounted after clicking a primary button in the actions slot', () => {
     const { container, unmount } = render(
       <Form
         actions={
@@ -139,6 +131,16 @@ describe('Form Analytics', () => {
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
+      })
+    );
+
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepNumber: 1,
+        funnelInteractionId: expect.any(String),
+        stepNameSelector: expect.any(String),
+        subStepAllSelector: expect.any(String),
       })
     );
   });

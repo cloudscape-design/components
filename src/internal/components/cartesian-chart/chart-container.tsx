@@ -30,23 +30,43 @@ export const CartesianChartContainer = forwardRef(
     }: CartesianChartContainerProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const withFitHeight = (className: string) => clsx(className, fitHeight && styles['fit-height']);
+    if (fitHeight) {
+      return (
+        <div className={clsx(styles['chart-container'], styles['fit-height'])} ref={ref}>
+          {leftAxisLabel}
+
+          <div className={clsx(styles['chart-container-outer'], styles['fit-height'])}>
+            {leftAxisLabelMeasure}
+
+            <div className={styles['chart-container-inner']}>
+              <div
+                className={clsx(styles['chart-container-plot-wrapper'], styles['fit-height'])}
+                style={{ minHeight: Math.max(minHeight, CONTENT_MIN_HEIGHT_BOUNDARY) }}
+              >
+                <div className={clsx(styles['chart-container-plot'], styles['fit-height'])}>{chartPlot}</div>
+              </div>
+
+              <div className={clsx(styles['chart-container-bottom-labels'], styles['fit-height'])}>
+                {bottomAxisLabel}
+              </div>
+            </div>
+
+            {popover}
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className={withFitHeight(styles['chart-container'])} ref={ref}>
+      <div className={styles['chart-container']} ref={ref}>
         {leftAxisLabel}
 
-        <div className={withFitHeight(styles['chart-container-outer'])}>
+        <div className={styles['chart-container-outer']}>
           {leftAxisLabelMeasure}
 
           <div className={styles['chart-container-inner']}>
-            <div
-              className={withFitHeight(styles['chart-container-plot-wrapper'])}
-              style={{ minHeight: Math.max(minHeight, CONTENT_MIN_HEIGHT_BOUNDARY) }}
-            >
-              <div className={withFitHeight(styles['chart-container-plot'])}>{chartPlot}</div>
-            </div>
-
-            <div className={withFitHeight(styles['chart-container-bottom-labels'])}>{bottomAxisLabel}</div>
+            {chartPlot}
+            {bottomAxisLabel}
           </div>
 
           {popover}

@@ -60,6 +60,8 @@ interface TransitionContentProps {
   onMouseDown?: React.MouseEventHandler<Element>;
   id?: string;
   role?: string;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
 }
 
 const TransitionContent = ({
@@ -80,6 +82,8 @@ const TransitionContent = ({
   onMouseDown,
   id,
   role,
+  ariaLabelledby,
+  ariaDescribedby,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   return (
@@ -96,6 +100,8 @@ const TransitionContent = ({
       ref={contentRef}
       id={id}
       role={role}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
@@ -140,6 +146,8 @@ const Dropdown = ({
   contentKey,
   dropdownContentId,
   dropdownContentRole,
+  ariaLabelledby,
+  ariaDescribedby,
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLDivElement | null>(null);
@@ -404,6 +412,8 @@ const Dropdown = ({
                 position={position}
                 id={dropdownContentId}
                 role={dropdownContentRole}
+                ariaLabelledby={ariaLabelledby}
+                ariaDescribedby={ariaDescribedby}
               >
                 {children}
               </TransitionContent>

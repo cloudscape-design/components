@@ -42,43 +42,66 @@ export const ChartWrapper = forwardRef(
     ref: React.Ref<HTMLDivElement>
   ) => {
     const baseProps = getBaseProps(props);
-    return (
-      <div
-        ref={ref}
-        {...baseProps}
-        className={clsx(baseProps.className, styles.wrapper, fitHeight && styles['wrapper--fit-height'])}
-        onBlur={onBlur}
-      >
-        <div className={clsx(styles['inner-wrapper'], fitHeight && styles['inner-wrapper--fit-height'])}>
-          {(defaultFilter || additionalFilters) && (
-            <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
-              <InternalSpaceBetween
-                size="l"
-                direction="horizontal"
-                className={clsx({ [styles['has-default-filter']]: !!defaultFilter })}
-              >
-                {defaultFilter}
-                {additionalFilters}
-              </InternalSpaceBetween>
-            </InternalBox>
-          )}
 
-          <div
-            className={clsx(styles.content, contentClassName, {
-              [styles['content--reserve-filter']]: reserveFilterSpace,
-              [styles['content--reserve-legend']]: reserveLegendSpace,
-              [styles['content--fit-height']]: fitHeight,
-            })}
-            style={{
-              minHeight: !fitHeight ? contentMinHeight : undefined,
-            }}
-          >
-            {chartStatus}
-            {chart}
+    const filtersNode = (defaultFilter || additionalFilters) && (
+      <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
+        <InternalSpaceBetween
+          size="l"
+          direction="horizontal"
+          className={clsx({ [styles['has-default-filter']]: !!defaultFilter })}
+        >
+          {defaultFilter}
+          {additionalFilters}
+        </InternalSpaceBetween>
+      </InternalBox>
+    );
+
+    const legendNode = legend && <InternalBox margin={{ top: 'm' }}>{legend}</InternalBox>;
+
+    if (fitHeight) {
+      return (
+        <div
+          ref={ref}
+          {...baseProps}
+          className={clsx(baseProps.className, styles.wrapper, styles['wrapper--fit-height'])}
+          onBlur={onBlur}
+        >
+          <div className={clsx(styles['inner-wrapper'], styles['inner-wrapper--fit-height'])}>
+            {filtersNode}
+
+            <div
+              className={clsx(styles.content, contentClassName, {
+                [styles['content--reserve-filter']]: reserveFilterSpace,
+                [styles['content--reserve-legend']]: reserveLegendSpace,
+                [styles['content--fit-height']]: true,
+              })}
+            >
+              {chartStatus}
+              {chart}
+            </div>
+
+            {legendNode}
           </div>
-
-          {legend && <InternalBox margin={{ top: 'm' }}>{legend}</InternalBox>}
         </div>
+      );
+    }
+
+    return (
+      <div ref={ref} {...baseProps} className={clsx(baseProps.className, styles.wrapper)} onBlur={onBlur}>
+        {filtersNode}
+
+        <div
+          className={clsx(styles.content, contentClassName, {
+            [styles['content--reserve-filter']]: reserveFilterSpace,
+            [styles['content--reserve-legend']]: reserveLegendSpace,
+          })}
+          style={{ minHeight: contentMinHeight }}
+        >
+          {chartStatus}
+          {chart}
+        </div>
+
+        {legendNode}
       </div>
     );
   }

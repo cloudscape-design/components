@@ -23,6 +23,7 @@ describe('useFunnelStep hook', () => {
         value={{
           stepNameSelector: 'step_name_selector',
           stepNumber: 0,
+          subStepCount: { current: 0 },
         }}
       >
         <ChildComponent />
