@@ -51,26 +51,32 @@ module.exports = function generateI18nMessages() {
 
   // Generate a dynamic provider function for automatic bundler splitting and imports.
   const dynamicFile = [
-    `import { warnOnce } from '@cloudscape-design/component-toolkit/internal';`,
-    `import { isDevelopment } from '../internal/is-development';\n`,
-    `export function importMessages(locale) {`,
-    `  switch (locale.toLowerCase()) {`,
+    `import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { isDevelopment } from '../internal/is-development';
+import { getMatchableLocales } from './get-matchable-locales';
+
+export function importMessages(locale) {
+  for (const matchableLocale of getMatchableLocales(locale)) {
+    switch (matchableLocale.toLowerCase()) {`,
     ...files.flatMap(fileName => {
       const [subset, locale] = fileName.split('.');
       if (subset !== 'all') {
         return []; // For now, this only supports loading all messages for the locale.
       }
       return [
-        `  case "${locale.toLowerCase()}":`,
-        `    return import("./messages/${subset}.${locale}.js").then(mod => [mod.default]);`,
+        `    case "${locale.toLowerCase()}":
+      return import("./messages/${subset}.${locale}.js").then(mod => [mod.default]);`,
       ];
     }),
-    `  }\n`,
-    `  if (isDevelopment) {`,
-    `    warnOnce('importMessages', \`Unknown locale "\${locale}" provided to importMessages\`)`,
-    `  }\n`,
-    `  return Promise.resolve([]);`,
-    `}`,
+    `    }
+  }
+
+  if (isDevelopment) {
+    warnOnce('importMessages', \`Unknown locale "\${locale}" provided to importMessages\`)
+  }
+
+  return Promise.resolve([]);
+}`,
   ].join('\n');
 
   fs.copyFileSync(path.join(sourceI18nDir, 'dynamic.d.ts'), path.join(targetI18nDir, 'dynamic.d.ts'));

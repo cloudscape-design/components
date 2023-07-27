@@ -9,6 +9,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useTelemetry } from '../internal/hooks/use-telemetry';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
+import { getMatchableLocales } from './get-matchable-locales';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;
@@ -136,17 +137,4 @@ function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18n
     }
   }
   return result;
-}
-
-function getMatchableLocales(ietfLanguageTag: string): string[] {
-  const parts = ietfLanguageTag.split('-');
-  if (parts.length === 1) {
-    return [ietfLanguageTag];
-  }
-
-  const localeStrings: string[] = [];
-  for (let i = parts.length; i > 0; i--) {
-    localeStrings.push(parts.slice(0, i).join('-'));
-  }
-  return localeStrings;
 }
