@@ -10,91 +10,71 @@ const stateToAriaSort = {
 } as const;
 const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingState];
 
-export interface TableRole {
-  assignTableProps(
-    options: { ariaLabel?: string; totalItemsCount?: number },
-    nativeProps?: React.TableHTMLAttributes<HTMLTableElement>
-  ): React.TableHTMLAttributes<HTMLTableElement>;
+// Depending on its content the table can have different semantic representation which includes the
+// ARIA role of the table component ("table", "grid", "treegrid") but also roles and other semantic attributes
+// of the child elements. The TableRole helper encapsulates table's semantic structure.
 
-  assignTableRowProps(
-    options: { rowIndex: number; firstIndex?: number },
-    nativeProps?: React.HTMLAttributes<HTMLTableRowElement>
-  ): React.HTMLAttributes<HTMLTableRowElement>;
+export type TableRole = 'table' | 'grid';
 
-  assignTableColHeaderProps(
-    options: { sortingStatus?: SortingStatus },
-    nativeProps?: React.ThHTMLAttributes<HTMLTableCellElement>
-  ): React.ThHTMLAttributes<HTMLTableCellElement>;
+export function assignTableProps(
+  options: { tableRole: TableRole; ariaLabel?: string; totalItemsCount?: number },
+  nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {}
+): React.TableHTMLAttributes<HTMLTableElement> {
+  // Browsers have weird mechanism to guess whether it's a data table or a layout table.
+  // If we state explicitly, they get it always correctly even with low number of rows.
+  nativeProps.role = options.tableRole;
 
-  assignTableRowHeaderProps(
-    nativeProps?: React.ThHTMLAttributes<HTMLTableCellElement>
-  ): React.ThHTMLAttributes<HTMLTableCellElement>;
+  nativeProps['aria-label'] = options.ariaLabel;
 
-  assignTableCellProps(
-    nativeProps?: React.TdHTMLAttributes<HTMLTableCellElement>
-  ): React.TdHTMLAttributes<HTMLTableCellElement>;
+  // Incrementing the total count by one to account for the header row.
+  nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
+
+  return nativeProps;
 }
 
-/**
- * Depending on its content the table can have different semantic representation which includes the
- * ARIA role of the table component ("table", "grid", "treegrid") but also roles and other semantic attributes
- * of the child elements. The TableRole helper encapsulates table's semantic structure.
- */
-export function createTableRoleHelper(tableRole: 'table' | 'grid') {
-  const assignTableProps: TableRole['assignTableProps'] = ({ ariaLabel, totalItemsCount }, nativeProps = {}) => {
-    // Browsers have weird mechanism to guess whether it's a data table or a layout table.
-    // If we state explicitly, they get it always correctly even with low number of rows.
-    nativeProps.role = tableRole;
+export function assignTableRowProps(
+  options: { tableRole: TableRole; rowIndex: number; firstIndex?: number },
+  nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {}
+): React.HTMLAttributes<HTMLTableRowElement> {
+  if (options.tableRole === 'grid') {
+    nativeProps.role = 'row';
+  }
 
-    nativeProps['aria-label'] = ariaLabel;
+  if (options.firstIndex !== undefined) {
+    nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
+  }
 
-    // Incrementing the total count by one to account for the header row.
-    nativeProps['aria-rowcount'] = totalItemsCount ? totalItemsCount + 1 : -1;
+  return nativeProps;
+}
 
-    return nativeProps;
-  };
+export function assignTableColHeaderProps(
+  options: { sortingStatus?: SortingStatus },
+  nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {}
+): React.ThHTMLAttributes<HTMLTableCellElement> {
+  nativeProps.scope = 'col';
 
-  const assignTableRowProps: TableRole['assignTableRowProps'] = ({ rowIndex, firstIndex }, nativeProps = {}) => {
-    if (tableRole === 'grid') {
-      nativeProps.role = 'row';
-    }
+  if (options.sortingStatus) {
+    nativeProps['aria-sort'] = getAriaSort(options.sortingStatus);
+  }
 
-    if (firstIndex !== undefined) {
-      nativeProps['aria-rowindex'] = firstIndex + rowIndex + 1;
-    }
+  return nativeProps;
+}
 
-    return nativeProps;
-  };
+export function assignTableRowHeaderProps(
+  nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {}
+): React.ThHTMLAttributes<HTMLTableCellElement> {
+  nativeProps.scope = 'row';
 
-  const assignTableColHeaderProps: TableRole['assignTableColHeaderProps'] = ({ sortingStatus }, nativeProps = {}) => {
-    nativeProps.scope = 'col';
+  return nativeProps;
+}
 
-    if (sortingStatus) {
-      nativeProps['aria-sort'] = getAriaSort(sortingStatus);
-    }
+export function assignTableCellProps(
+  options: { tableRole: TableRole },
+  nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {}
+): React.TdHTMLAttributes<HTMLTableCellElement> {
+  if (options.tableRole === 'grid') {
+    nativeProps.role = 'gridcell';
+  }
 
-    return nativeProps;
-  };
-
-  const assignTableRowHeaderProps: TableRole['assignTableRowHeaderProps'] = (nativeProps = {}) => {
-    nativeProps.scope = 'row';
-
-    return nativeProps;
-  };
-
-  const assignTableCellProps: TableRole['assignTableCellProps'] = (nativeProps = {}) => {
-    if (tableRole === 'grid') {
-      nativeProps.role = 'gridcell';
-    }
-
-    return nativeProps;
-  };
-
-  return {
-    assignTableProps,
-    assignTableRowProps,
-    assignTableColHeaderProps,
-    assignTableRowHeaderProps,
-    assignTableCellProps,
-  };
+  return nativeProps;
 }

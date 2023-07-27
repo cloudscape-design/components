@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -36,7 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { createTableRoleHelper } from './table-role';
+import { assignTableProps, assignTableRowProps } from './table-role';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -178,7 +178,7 @@ const InternalTable = React.forwardRef(
     });
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = useMemo(() => createTableRoleHelper(hasEditableCells ? 'grid' : 'table'), [hasEditableCells]);
+    const tableRole = hasEditableCells ? 'grid' : 'table';
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -321,7 +321,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              {...tableRole.assignTableProps({ totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
+              {...assignTableProps({ tableRole, totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
             >
               <Thead
                 ref={theadRef}
@@ -376,7 +376,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                        {...tableRole.assignTableRowProps({ firstIndex, rowIndex })}
+                        {...assignTableRowProps({ tableRole, firstIndex, rowIndex })}
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
