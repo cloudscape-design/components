@@ -8,6 +8,7 @@ import Button from '../../../lib/components/button';
 import Form from '../../../lib/components/form';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
@@ -44,20 +45,12 @@ describe('Form Analytics', () => {
     );
   });
 
-  test('sends a funnelStepComplete metric when Form is unmounted', () => {
+  test('does not send a funnelStepComplete metric when Form is unmounted', () => {
     const { unmount } = render(<Form />);
 
     unmount();
 
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith(
-      expect.objectContaining({
-        stepNumber: 1,
-        stepNameSelector: expect.any(String),
-        subStepAllSelector: expect.any(String),
-        funnelInteractionId: expect.any(String),
-      })
-    );
+    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
   });
 
   test('sends a funnelCancelled metric when Form is unmounted', () => {
@@ -118,7 +111,7 @@ describe('Form Analytics', () => {
    * 1. The submit button is the only primary button in the form
    * 2. The submit button is clicked before the Form is unmounted
    */
-  test('sends a funnelComplete metric when Form is unmounted after clicking a primary button in the actions slot', () => {
+  test('sends a funnelComplete and funnelStepComplete metric when Form is unmounted after clicking a primary button in the actions slot', () => {
     const { container, unmount } = render(
       <Form
         actions={
@@ -140,6 +133,42 @@ describe('Form Analytics', () => {
         funnelInteractionId: expect.any(String),
       })
     );
+
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepNumber: 1,
+        funnelInteractionId: expect.any(String),
+        stepNameSelector: expect.any(String),
+        subStepAllSelector: expect.any(String),
+      })
+    );
+  });
+
+  test('increments the submissionAttempt counter when clicking Submit', () => {
+    const ChildComponent = () => {
+      const { submissionAttempt } = useFunnel();
+      return <div data-testid="submission-attempt">{submissionAttempt}</div>;
+    };
+
+    const { container, getByTestId } = render(
+      <Form
+        actions={
+          <Button data-testid="submit" variant="primary">
+            Submit
+          </Button>
+        }
+      >
+        <ChildComponent />
+      </Form>
+    );
+    const formWrapper = createWrapper(container).findForm();
+    const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
+
+    expect(getByTestId('submission-attempt').textContent).toBe('0');
+
+    act(() => submitButton!.click());
+    expect(getByTestId('submission-attempt').textContent).toBe('1');
   });
 
   test('sends a funnelError metric when an error is rendered', () => {

@@ -15,18 +15,25 @@ import { DropdownContextProvider, DropdownContextProviderProps } from './context
 import { useMobile } from '../../hooks/use-mobile';
 import TabTrap from '../tab-trap/index.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
+import { useUniqueId } from '../../hooks/use-unique-id/index.js';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
   renderWithPortal?: boolean;
   id?: string;
+  referrerId?: string;
   open?: boolean;
 }
 
-const DropdownContainer = ({ children, renderWithPortal = false, id, open }: DropdownContainerProps) => {
+const DropdownContainer = ({ children, renderWithPortal = false, id, referrerId, open }: DropdownContainerProps) => {
   if (renderWithPortal) {
     if (open) {
-      return createPortal(<div id={id}>{children}</div>, document.body);
+      return createPortal(
+        <div id={id} data-awsui-referrer-id={referrerId}>
+          {children}
+        </div>,
+        document.body
+      );
     } else {
       return null;
     }
@@ -51,6 +58,10 @@ interface TransitionContentProps {
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
   onMouseDown?: React.MouseEventHandler<Element>;
+  id?: string;
+  role?: string;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
 }
 
 const TransitionContent = ({
@@ -69,6 +80,10 @@ const TransitionContent = ({
   position,
   open,
   onMouseDown,
+  id,
+  role,
+  ariaLabelledby,
+  ariaDescribedby,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   return (
@@ -83,6 +98,10 @@ const TransitionContent = ({
         [styles['use-portal']]: expandToViewport && !interior,
       })}
       ref={contentRef}
+      id={id}
+      role={role}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
@@ -125,6 +144,10 @@ const Dropdown = ({
   onFocus,
   onBlur,
   contentKey,
+  dropdownContentId,
+  dropdownContentRole,
+  ariaLabelledby,
+  ariaDescribedby,
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLDivElement | null>(null);
@@ -336,6 +359,8 @@ const Dropdown = ({
     };
   }, [open, expandToViewport]);
 
+  const referrerId = useUniqueId();
+
   return (
     <div
       className={clsx(
@@ -347,7 +372,7 @@ const Dropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
+      <div id={referrerId} className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
         {trigger}
       </div>
 
@@ -356,7 +381,12 @@ const Dropdown = ({
         disabled={!open || !loopFocus}
       />
 
-      <DropdownContainer renderWithPortal={expandToViewport && !interior} id={dropdownId} open={open}>
+      <DropdownContainer
+        renderWithPortal={expandToViewport && !interior}
+        id={dropdownId}
+        referrerId={referrerId}
+        open={open}
+      >
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
             <div ref={dropdownContainerRef}>
@@ -380,6 +410,10 @@ const Dropdown = ({
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}
                 position={position}
+                id={dropdownContentId}
+                role={dropdownContentRole}
+                ariaLabelledby={ariaLabelledby}
+                ariaDescribedby={ariaDescribedby}
               >
                 {children}
               </TransitionContent>

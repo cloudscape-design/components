@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { ChartDataTypes } from './interfaces';
@@ -8,43 +8,32 @@ import { ChartScale, NumericChartScale } from './scales';
 import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
 
 import styles from './styles.css.js';
-import { formatTicks, getVisibleTicks } from './label-utils';
-import { useInternalI18n } from '../../i18n/context';
+import { formatTicks, getVisibleTicks, FormattedTick } from './label-utils';
+import { useInternalI18n } from '../../../i18n/context';
 
 interface BottomLabelsProps {
   axis?: 'x' | 'y';
   width: number;
   height: number;
   scale: ChartScale | NumericChartScale;
-  ticks: readonly ChartDataTypes[];
-  tickFormatter?: (value: ChartDataTypes) => string;
   title?: string;
   ariaRoleDescription?: string;
-  autoHeight: (value: number) => void;
   offsetLeft?: number;
   offsetRight?: number;
+  virtualTextRef: React.Ref<SVGTextElement>;
+  formattedTicks: readonly FormattedTick[];
 }
 
-export default memo(BottomLabels) as typeof BottomLabels;
-
-// Renders the visible tick labels on the bottom axis, as well as their grid lines.
-function BottomLabels({
-  axis = 'x',
-  width,
-  height,
-  scale,
+export function useBottomLabels({
   ticks,
+  scale,
   tickFormatter,
-  title,
-  ariaRoleDescription,
-  autoHeight,
-  offsetLeft = 0,
-  offsetRight = 0,
-}: BottomLabelsProps) {
-  const i18n = useInternalI18n('[charts]');
+}: {
+  scale: ChartScale | NumericChartScale;
+  ticks: readonly ChartDataTypes[];
+  tickFormatter?: (value: ChartDataTypes) => string;
+}) {
   const virtualTextRef = useRef<SVGTextElement>(null);
-
-  const xOffset = scale.isCategorical() && axis === 'x' ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
   const cacheRef = useRef<{ [label: string]: number }>({});
   const getLabelSpace = (label: string) => {
@@ -65,20 +54,37 @@ function BottomLabels({
     virtualTextRef.current.textContent = '';
   }
 
+  let height = TICK_LENGTH + TICK_MARGIN;
+  for (const { lines } of formattedTicks) {
+    height = Math.max(height, TICK_LENGTH + TICK_MARGIN + lines.length * TICK_LINE_HEIGHT);
+  }
+
+  return { virtualTextRef, formattedTicks, height };
+}
+
+export default memo(BottomLabels) as typeof BottomLabels;
+
+// Renders the visible tick labels on the bottom axis, as well as their grid lines.
+function BottomLabels({
+  axis = 'x',
+  width,
+  height,
+  scale,
+  title,
+  ariaRoleDescription,
+  offsetLeft = 0,
+  offsetRight = 0,
+  virtualTextRef,
+  formattedTicks,
+}: BottomLabelsProps) {
+  const i18n = useInternalI18n('[charts]');
+
+  const xOffset = scale.isCategorical() && axis === 'x' ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
+
   const from = 0 - offsetLeft - xOffset;
   const until = width + offsetRight - xOffset;
   const balanceLabels = axis === 'x' && scale.scaleType !== 'log';
   const visibleTicks = getVisibleTicks(formattedTicks, from, until, balanceLabels);
-
-  let maxHeight = TICK_LENGTH + TICK_MARGIN;
-  for (const { lines } of formattedTicks) {
-    maxHeight = Math.max(maxHeight, TICK_LENGTH + TICK_MARGIN + lines.length * TICK_LINE_HEIGHT);
-  }
-
-  // Tell elements's height to the parent.
-  useEffect(() => {
-    autoHeight(maxHeight);
-  }, [autoHeight, maxHeight]);
 
   return (
     <g

@@ -52,6 +52,11 @@ export interface S3ResourceSelectorProps extends BaseComponentProps {
   inputAriaDescribedby?: string;
 
   /**
+   * Adds a placeholder to the S3 URI input.
+   */
+  inputPlaceholder?: string;
+
+  /**
    * An array of the item types that are selectable in the table view. The array may contain the following items:
    * 'buckets', 'objects', or 'versions'. Example: ['buckets', 'objects']. By default, no items are selectable.
    * This property determines whether the component operates in Read mode or Write mode:
@@ -194,6 +199,9 @@ export namespace S3ResourceSelectorProps {
   export type SelectableItems = 'buckets' | 'objects' | 'versions';
 
   export interface I18nStrings {
+    /**
+     * @deprecated Use `inputPlaceholder` on the component instead.
+     */
     inContextInputPlaceholder?: string;
     inContextInputClearAriaLabel?: string;
     inContextSelectPlaceholder?: string;

@@ -17,7 +17,7 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  padding: awsui.$space-scaled-xs 0 awsui.$space-scaled-xxs;
+  padding: awsui.$space-scaled-xs 0 awsui.$space-table-header-tools-bottom;
 
   &-filtering {
     @supports (flex-basis: fit-content) {
@@ -63,8 +63,6 @@
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  padding-top: awsui.$space-table-content-top;
-  padding-bottom: awsui.$space-table-content-bottom;
   overflow-x: auto;
 
   scrollbar-width: none; /* Hide scrollbar in Firefox */
@@ -75,15 +73,8 @@
       padding-right: awsui.$space-table-horizontal;
     }
   }
-  &.variant-embedded,
-  &.variant-borderless {
-    padding-bottom: awsui.$space-table-embedded-content-bottom;
-  }
-  &.has-header {
-    padding-top: 0px;
-  }
-  &.has-footer {
-    padding-bottom: 0px;
+  &.variant-container:not(.has-footer) {
+    padding-bottom: awsui.$space-table-content-bottom;
   }
   &:not(.has-header) {
     border-top-right-radius: awsui.$border-radius-container;
@@ -182,11 +173,12 @@ the default white background of the container component.
 }
 
 .header-controls {
-  padding-top: awsui.$space-container-header-vertical;
-  padding-bottom: awsui.$space-container-header-vertical;
+  padding-top: awsui.$space-container-header-top;
+  padding-bottom: awsui.$space-container-header-bottom;
 
   &.variant-full-page {
     padding-top: 0;
+    padding-bottom: calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
   }
   &.variant-stacked,
   &.variant-container {
@@ -211,6 +203,18 @@ the default white background of the container component.
 
 .footer {
   padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
+  &-with-pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-s;
+  }
+  &-pagination {
+    // Align the footer pagination on the right
+    margin-left: auto;
+  }
 }
 
 .thead-active,

@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import StatusIndicator, { StatusIndicatorProps } from '~components/status-indicator';
+import StatusIndicator, { InternalStatusIndicatorProps } from '~components/status-indicator/internal';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const permutations = createPermutations<StatusIndicatorProps>([
+const permutations = createPermutations<InternalStatusIndicatorProps>([
   {
     type: ['error', 'warning', 'success', 'info', 'stopped', 'pending', 'in-progress', 'loading'],
   },
@@ -17,6 +17,7 @@ const permutations = createPermutations<StatusIndicatorProps>([
   {
     type: ['info'],
     wrapText: [true, false],
+    __display: ['inline', 'inline-block'],
     children: [
       'Simple',
       'very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text',
@@ -33,10 +34,12 @@ export default function StatusIndicatorPermutations() {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <div style={{ width: permutation.wrapText ? 'auto' : 200 }}>
-              <StatusIndicator {...permutation} iconAriaLabel={`status ${permutation.type}`}>
-                {permutation.children ?? <>Status {permutation.type}</>}
-              </StatusIndicator>
+            <div style={{ overflow: 'hidden' }}>
+              <div style={{ width: permutation.wrapText ? 'auto' : 200 }}>
+                <StatusIndicator {...permutation} iconAriaLabel={`status ${permutation.type}`}>
+                  {permutation.children ?? <>Status {permutation.type}</>}
+                </StatusIndicator>
+              </div>
             </div>
           )}
         />

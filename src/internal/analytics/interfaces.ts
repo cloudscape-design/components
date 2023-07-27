@@ -33,17 +33,31 @@ export type FunnelStartMethod = (props: FunnelStartProps) => string;
 // Define individual method props by extending the base
 export interface FunnelStepProps extends BaseFunnelProps {
   stepNumber: number;
+  stepName?: string | undefined;
   stepNameSelector: string;
   subStepAllSelector: string;
+}
+
+export interface FunnelStepStartProps extends FunnelStepProps {
+  totalSubSteps?: number;
+}
+export interface FunnelStepCompleteProps extends FunnelStepProps {
+  totalSubSteps?: number;
 }
 
 export interface FunnelStepNavigationProps extends FunnelStepProps {
   destinationStepNumber: number;
   navigationType: string;
+  totalSubSteps?: number;
+}
+
+export interface FunnelStepErrorProps extends FunnelStepProps {
+  stepErrorSelector: string;
 }
 
 export interface FunnelSubStepProps extends FunnelStepProps {
   subStepSelector: string;
+  subStepName?: string | undefined;
   subStepNameSelector: string;
 }
 
@@ -68,9 +82,10 @@ export interface IFunnelMetrics {
   funnelComplete: FunnelMethod<BaseFunnelProps>;
   funnelSuccessful: FunnelMethod<BaseFunnelProps>;
   funnelCancelled: FunnelMethod<BaseFunnelProps>;
-  funnelStepStart: FunnelMethod<FunnelStepProps>;
-  funnelStepComplete: FunnelMethod<FunnelStepProps>;
+  funnelStepStart: FunnelMethod<FunnelStepStartProps>;
+  funnelStepComplete: FunnelMethod<FunnelStepCompleteProps>;
   funnelStepNavigation: FunnelMethod<FunnelStepNavigationProps>;
+  funnelStepError: FunnelMethod<FunnelStepErrorProps>;
   funnelSubStepStart: FunnelMethod<FunnelSubStepProps>;
   funnelSubStepComplete: FunnelMethod<FunnelSubStepProps>;
   funnelSubStepError: FunnelMethod<OptionalFunnelSubStepErrorProps>;

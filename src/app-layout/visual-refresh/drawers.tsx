@@ -214,6 +214,7 @@ function DesktopTriggers() {
             }}
             ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
             selected={item.id === activeDrawerId}
+            testId={`awsui-app-layout-trigger-${item.id}`}
           />
         ))}
 
@@ -304,7 +305,7 @@ export function MobileTriggers() {
           onClick={() => handleDrawersClick(item.id)}
           ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
           variant="icon"
-          __nativeAttributes={{ 'aria-haspopup': true }}
+          __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
         />
       ))}
     </aside>

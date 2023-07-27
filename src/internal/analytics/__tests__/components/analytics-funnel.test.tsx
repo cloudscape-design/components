@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 
 import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
 import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
@@ -11,12 +11,18 @@ import {
   AnalyticsFunnelSubStep,
 } from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
 import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
+import Button from '../../../../../lib/components/button';
+import FormField from '../../../../../lib/components/form-field';
+import Container from '../../../../../lib/components/container';
+import Cards from '../../../../../lib/components/cards';
+import ExpandableSection from '../../../../../lib/components/expandable-section';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
 
 describe('AnalyticsFunnel', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -66,7 +72,7 @@ describe('AnalyticsFunnel', () => {
     );
   });
 
-  test('calls funnelComplete only when funnelSubmit is called', () => {
+  test('calls funnelComplete when the form is submitted without errors', async () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -81,10 +87,110 @@ describe('AnalyticsFunnel', () => {
     );
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
+    await waitFor(() => {
+      expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  test('does not call funnelComplete when the form is submitted with errors', () => {
+    // ChildComponent is a sample component that renders a button to call funnelSubmit
+    const ChildComponent = ({ renderError }: { renderError: boolean }) => {
+      const { funnelSubmit } = useFunnel();
+
+      return (
+        <>
+          <button onClick={funnelSubmit}>Submit</button>
+          <FormField errorText={renderError ? 'An error' : undefined} />
+        </>
+      );
+    };
+
+    const { getByText, rerender } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent renderError={false} />
+      </AnalyticsFunnel>
+    );
+
+    fireEvent.click(getByText('Submit')); // Trigger the button click event
+
+    rerender(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent renderError={true} />
+      </AnalyticsFunnel>
+    );
+
+    jest.runAllTimers();
+    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
+  });
+
+  test('calls funnelComplete once when the form is unmounted during the validation phase', () => {
+    // ChildComponent is a sample component that renders a button to call funnelSubmit
+    const ChildComponent = () => {
+      const { funnelSubmit } = useFunnel();
+
+      return <button onClick={funnelSubmit}>Submit</button>;
+    };
+
+    const { getByText, unmount } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+      </AnalyticsFunnel>
+    );
+
+    fireEvent.click(getByText('Submit')); // Trigger the button click event
+    unmount();
+
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+
+    jest.runAllTimers();
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
   });
 
-  test('calls funnelSuccessful when the component unmounts after submitting', () => {
+  test('does not emit events while the form is in a loading state', () => {
+    // ChildComponent is a sample component that renders a button to call funnelSubmit
+    const ChildComponent = () => {
+      const { funnelSubmit } = useFunnel();
+
+      return <button onClick={funnelSubmit}>Submit</button>;
+    };
+
+    const { getByText, rerender } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+        <Button />
+      </AnalyticsFunnel>
+    );
+
+    fireEvent.click(getByText('Submit')); // Trigger the button click event
+
+    rerender(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+        <Button loading={true} />
+      </AnalyticsFunnel>
+    );
+
+    jest.runOnlyPendingTimers();
+
+    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
+
+    rerender(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+        <Button />
+      </AnalyticsFunnel>
+    );
+
+    jest.runAllTimers();
+
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
+  });
+
+  test('calls funnelSuccessful when the component unmounts directly after submitting', () => {
     // ChildComponent is a sample component that renders a button to call funnelSubmit
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
@@ -105,7 +211,55 @@ describe('AnalyticsFunnel', () => {
     expect(FunnelMetrics.funnelSuccessful).toHaveBeenCalledTimes(1);
   });
 
-  test('calls funnelCancelled when the component unmounts after cancelling', () => {
+  test('does not call funnelSuccessful when the form is submitted without errors but not unmounted', () => {
+    // ChildComponent is a sample component that renders a button to call funnelSubmit
+    const ChildComponent = () => {
+      const { funnelSubmit } = useFunnel();
+
+      return <button onClick={funnelSubmit}>Submit</button>;
+    };
+
+    const { getByText } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+      </AnalyticsFunnel>
+    );
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+
+    fireEvent.click(getByText('Submit')); // Trigger the button click event
+
+    jest.runAllTimers();
+
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+  });
+
+  test('calls funnelSuccessful when the form is submitted and then later unmounted', () => {
+    // ChildComponent is a sample component that renders a button to call funnelSubmit
+    const ChildComponent = () => {
+      const { funnelSubmit } = useFunnel();
+
+      return <button onClick={funnelSubmit}>Submit</button>;
+    };
+
+    const { unmount, getByText } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+      </AnalyticsFunnel>
+    );
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+
+    fireEvent.click(getByText('Submit')); // Trigger the button click event
+
+    jest.runAllTimers();
+
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+
+    unmount();
+
+    expect(FunnelMetrics.funnelSuccessful).toHaveBeenCalledTimes(1);
+  });
+
+  test('calls funnelCancelled when the component is unmounted without submitting', () => {
     // ChildComponent is a sample component that renders a button to call funnelCancel
     const ChildComponent = () => {
       const { funnelCancel } = useFunnel();
@@ -113,45 +267,16 @@ describe('AnalyticsFunnel', () => {
       return <button onClick={funnelCancel}>Cancel</button>;
     };
 
-    const { unmount, getByText } = render(
+    const { unmount } = render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <ChildComponent />
       </AnalyticsFunnel>
     );
     expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
 
-    fireEvent.click(getByText('Cancel')); // Trigger the button click event
-
-    unmount();
-    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(0);
-    expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
-  });
-
-  test('calls funnelComplete and funnelCancelled when the component unmounts after submitting then cancelling', () => {
-    const ChildComponent = () => {
-      const { funnelSubmit, funnelCancel } = useFunnel();
-
-      return (
-        <>
-          <button onClick={funnelSubmit}>Submit</button>
-          <button onClick={funnelCancel}>Cancel</button>
-        </>
-      );
-    };
-
-    const { unmount, getByText } = render(
-      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-        <ChildComponent />
-      </AnalyticsFunnel>
-    );
-    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
-
-    fireEvent.click(getByText('Submit'));
-    fireEvent.click(getByText('Cancel'));
     unmount();
 
-    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
-    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
     expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
   });
 });
@@ -181,6 +306,9 @@ describe('AnalyticsFunnelStep', () => {
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
           Step Content
+          <Container />
+          <Cards items={[]} cardDefinition={{}} />
+          <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
@@ -191,6 +319,7 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
+      totalSubSteps: 3,
     });
   });
 
@@ -202,6 +331,9 @@ describe('AnalyticsFunnelStep', () => {
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
         <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
           Step Content
+          <Container />
+          <Cards items={[]} cardDefinition={{}} />
+          <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
@@ -216,10 +348,11 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
+      totalSubSteps: 3,
     });
   });
 
-  test('calls funnelStepComplete with the correct arguments when the everything unmounts', () => {
+  test('does not call funnelStepComplete when the funnel unmounts without submitting', () => {
     const stepNumber = 1;
     const stepNameSelector = '.step-name-selector';
 
@@ -231,17 +364,9 @@ describe('AnalyticsFunnelStep', () => {
       </AnalyticsFunnel>
     );
 
-    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
-
     unmount();
 
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith({
-      funnelInteractionId: mockedFunnelInteractionId,
-      stepNumber,
-      stepNameSelector,
-      subStepAllSelector: expect.any(String),
-    });
+    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
   });
 
   test('calls funnelStepStart and funnelStepComplete when stepNumber changes', () => {

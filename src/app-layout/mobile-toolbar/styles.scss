@@ -12,7 +12,6 @@
 }
 
 .mobile-bar {
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   position: sticky;
   display: flex;
   align-items: center;
@@ -32,38 +31,26 @@
   margin-right: awsui.$space-m;
 }
 
-.mobile-trigger-with-drawers {
-  width: constants.$sidebar-size-closed;
-  display: flex;
-  justify-content: center;
-}
-
 .mobile-toggle {
   box-sizing: border-box;
   cursor: pointer;
   z-index: 1;
   padding: constants.$toggle-padding;
   width: constants.$sidebar-size-closed;
-  &:first-child {
+  color: awsui.$color-text-interactive-default;
+  &-type-navigation {
     border-right: 1px solid awsui.$color-border-layout;
   }
-  &:last-child:not(.mobile-toggle-with-drawers) {
+  &-type-tools,
+  &-type-drawer {
     border-left: 1px solid awsui.$color-border-layout;
   }
-  &:hover:not(.mobile-toggle-with-drawers) {
+  &:hover {
     background: awsui.$color-background-layout-panel-hover;
   }
+}
 
-  &-with-drawers {
-    display: flex;
-    width: auto;
-    padding: 0;
-    height: 100%;
-
-    > .mobile-trigger-with-drawers {
-      border-left: 1px solid awsui.$color-border-layout;
-      display: flex;
-      align-items: center;
-    }
-  }
+.drawers-container {
+  display: flex;
+  align-items: stretch;
 }

@@ -26,7 +26,7 @@ import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useFormFieldContext } from '../contexts/form-field';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 import styles from './styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -129,12 +129,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     fireNonCancelableEvent(onFocus, null);
   };
 
-  const handleKeyUp = (e: CustomEvent<BaseKeyDetail>) => {
-    fireCancelableEvent(onKeyUp, e.detail);
+  const handleKeyUp = (event: CustomEvent<BaseKeyDetail>) => {
+    fireCancelableEvent(onKeyUp, event.detail, event);
   };
 
-  const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
-    fireCancelableEvent(onKeyDown, e.detail);
+  const handleKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
+    fireCancelableEvent(onKeyDown, event.detail, event);
   };
 
   const handlePressArrowDown = () => {

@@ -41,7 +41,7 @@ describe('in visual refresh', () => {
         <Header variant="awsui-h1-sticky">test</Header>
       </StickyHeaderContext.Provider>
     );
-    expect(wrapper.getElement()).toHaveClass(styles['root-variant-h1']);
+    expect(wrapper.findHeadingText().getElement()).toHaveClass(styles['heading-text-variant-h1']);
     expect(wrapper.find('h1')).toBeTruthy();
   });
   test('renders h2 variant when header is stuck', () => {
@@ -50,13 +50,13 @@ describe('in visual refresh', () => {
         <Header variant="awsui-h1-sticky">test</Header>
       </StickyHeaderContext.Provider>
     );
-    expect(wrapper.getElement()).toHaveClass(styles['root-variant-h2']);
+    expect(wrapper.findHeadingText().getElement()).toHaveClass(styles['heading-text-variant-h2']);
     expect(wrapper.find('h1')).toBeTruthy();
   });
 
   test('renders other variants as-is in visual refresh', () => {
     const wrapper = renderHeader(<Header variant="h1">test</Header>);
-    expect(wrapper.getElement()).toHaveClass(styles['root-variant-h1']);
+    expect(wrapper.findHeadingText().getElement()).toHaveClass(styles['heading-text-variant-h1']);
     expect(wrapper.find('h1')).toBeTruthy();
   });
 });

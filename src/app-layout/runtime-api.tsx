@@ -30,15 +30,12 @@ export interface DrawersLayout {
 export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): DrawersLayout {
   const converted = drawers.map(({ mountContent, unmountContent, trigger, ...runtimeDrawer }) => ({
     ...runtimeDrawer,
-    trigger: trigger.iconSvg
-      ? {
-          ...trigger,
-          iconSvg: (
-            // eslint-disable-next-line react/no-danger
-            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-          ),
-        }
-      : trigger,
+    trigger: {
+      iconSvg: (
+        // eslint-disable-next-line react/no-danger
+        <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+      ),
+    },
     content: (
       <RuntimeContentWrapper key={runtimeDrawer.id} mountContent={mountContent} unmountContent={unmountContent} />
     ),

@@ -7,7 +7,7 @@ import FormField from '../../../lib/components/form-field';
 import S3ResourceSelector from '../../../lib/components/s3-resource-selector';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps = {
   resource: { uri: '' },
@@ -52,6 +52,12 @@ test('renders element labels', () => {
   );
   expect(wrapper.findViewButton().getElement()).toHaveTextContent(i18nStrings.inContextViewButton!);
   expect(wrapper.findBrowseButton().getElement()).toHaveTextContent(i18nStrings.inContextBrowseButton!);
+});
+
+test('prefers inputPlaceholder over i18nStrings.inContextInputPlaceholder', () => {
+  const placeholder = 's3://bucket/component/test';
+  const wrapper = renderComponent(<S3ResourceSelector {...defaultProps} inputPlaceholder={placeholder} />);
+  expect(wrapper.findUriInput().findNativeInput().getElement()).toHaveAttribute('placeholder', placeholder);
 });
 
 test('inherits aria-describedby from the surrounding FormField', () => {

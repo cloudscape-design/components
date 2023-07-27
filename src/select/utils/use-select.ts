@@ -15,9 +15,10 @@ import { OptionsListProps } from '../../internal/components/options-list';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import { BaseKeyDetail, NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
+import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
+import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
@@ -37,12 +38,8 @@ interface UseSelectProps {
   statusType: DropdownStatusProps.StatusType;
 }
 
-export interface SelectTriggerProps {
+export interface SelectTriggerProps extends ButtonTriggerProps {
   ref: RefObject<HTMLButtonElement>;
-  onMouseDown?: (event: CustomEvent) => void;
-  onKeyDown?: (event: CustomEvent<BaseKeyDetail>) => void;
-  onFocus: NonCancelableEventHandler;
-  autoFocus?: boolean;
 }
 
 export function useSelect({
@@ -106,6 +103,7 @@ export function useSelect({
 
   const hasSelectedOption = __selectedOptions.length > 0;
   const menuId = useUniqueId('option-list');
+  const dialogId = useUniqueId('dialog');
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const selectOption = (option?: DropdownOption) => {
@@ -134,9 +132,14 @@ export function useSelect({
 
   const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome: goHomeWithKeyboard });
 
-  const getDropdownProps: () => Pick<DropdownProps, 'onFocus' | 'onBlur'> = () => ({
+  const getDropdownProps: () => Pick<
+    DropdownProps,
+    'onFocus' | 'onBlur' | 'dropdownContentId' | 'dropdownContentRole'
+  > = () => ({
     onFocus: handleFocus,
     onBlur: handleBlur,
+    dropdownContentId: dialogId,
+    dropdownContentRole: hasFilter ? 'dialog' : undefined,
   });
 
   const getTriggerProps = (disabled = false, autoFocus = false) => {
@@ -144,6 +147,8 @@ export function useSelect({
       ref: triggerRef,
       onFocus: () => closeDropdown(),
       autoFocus,
+      ariaHasPopup: hasFilter ? 'dialog' : 'listbox',
+      ariaControls: isOpen ? (hasFilter ? dialogId : menuId) : undefined,
     };
     if (!disabled) {
       triggerProps.onMouseDown = (event: CustomEvent) => {
@@ -277,5 +282,6 @@ export function useSelect({
     highlightOption: highlightOptionWithKeyboard,
     selectOption,
     announceSelected,
+    dialogId,
   };
 }

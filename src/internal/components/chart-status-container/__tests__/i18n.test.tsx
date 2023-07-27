@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
-import TestI18nProvider from '../../../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../../../lib/components/i18n/testing';
 import ChartStatusContainer from '../../../../../lib/components/internal/components/chart-status-container';
 import styles from '../../../../../lib/components/internal/components/chart-status-container/styles.css.js';
 

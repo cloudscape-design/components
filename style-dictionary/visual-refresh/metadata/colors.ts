@@ -321,6 +321,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextBreadcrumbCurrent: {
+    description: 'The text color that marks the breadcrumb item for the page the user is currently viewing.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBreadcrumbIcon: {
+    description: 'The color used for the icon delimiter between breadcrumb items.',
+    themeable: true,
+    public: true,
+  },
   colorTextButtonNormalActive: {
     description: 'The active text color of normal buttons. For example: Active text color in normal and link buttons.',
     themeable: true,
@@ -496,28 +506,28 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
   },
   colorTextLayoutToggle: {
-    description: 'This is the default color of the app layout toggle.',
+    description: 'The default color of the app layout toggle.',
     public: true,
     themeable: true,
   },
   colorTextLayoutToggleActive: {
-    description: "This is the color of the app layout toggle button when it's active.",
+    description: "The color of the app layout toggle button when it's active.",
     public: true,
     themeable: true,
   },
   colorTextLayoutToggleHover: {
-    description: 'This is the color of the app layout toggle button on hover.',
+    description: 'The color of the app layout toggle button on hover.',
     public: true,
     themeable: true,
   },
   colorTextLayoutToggleSelected: {
-    description: "This is the color of the app layout toggle button when it's selected.",
+    description: "The color of the app layout toggle button when it's selected.",
     public: true,
     themeable: true,
   },
   colorTextLabel: {
     description:
-      "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+      "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
     public: true,
     themeable: true,
   },

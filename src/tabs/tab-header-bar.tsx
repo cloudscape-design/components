@@ -5,7 +5,6 @@ import { TabsProps } from './interfaces';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
-import { useContainerQuery } from '../internal/hooks/container-queries';
 import { KeyCode } from '../internal/keycode';
 import {
   onPaginationClick,
@@ -16,7 +15,8 @@ import {
 } from './scroll-utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export interface TabHeaderBarProps {
   onChange: (changeDetail: TabsProps.ChangeDetail) => void;
@@ -46,7 +46,7 @@ export function TabHeaderBar({
 
   const isVisualRefresh = useVisualRefresh();
 
-  const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.width);
+  const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [leftOverflow, setLeftOverflow] = useState(false);

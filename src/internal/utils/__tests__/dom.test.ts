@@ -168,7 +168,7 @@ describe('containsOrEqual', () => {
     `;
     expect(containsOrEqual(div.querySelector('#container1'), div.querySelector('#container1') as Node)).toBe(true);
   });
-  test('returns "true", when the node is decsendant from the container', () => {
+  test('returns "true", when the node is descendant from the container', () => {
     const div = document.createElement('div');
     div.innerHTML = `
       <div id="container1">

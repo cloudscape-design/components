@@ -15,7 +15,8 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   readOnly?: boolean;
   invalid?: boolean;
   inFilteringToken?: boolean;
-  ariaHasPopup?: 'true' | 'listbox';
+  ariaHasPopup?: 'true' | 'listbox' | 'dialog';
+  ariaControls?: string;
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
@@ -41,6 +42,7 @@ const ButtonTrigger = (
     ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
+    ariaControls,
     onKeyDown,
     onKeyUp,
     onMouseDown,
@@ -72,6 +74,7 @@ const ButtonTrigger = (
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
+    'aria-controls': ariaControls,
     onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),

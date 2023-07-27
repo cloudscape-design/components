@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useRef } from 'react';
-import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
+import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -63,7 +63,7 @@ export const Drawer = React.forwardRef(
 
     const regularOpenButton = (
       <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
-        <AppLayoutButton
+        <ToggleButton
           ref={toggleRefs.toggle}
           className={toggleClassName}
           iconName={iconName}
@@ -109,7 +109,7 @@ export const Drawer = React.forwardRef(
       >
         <div
           style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
-          className={clsx(styles['drawer-content'], contentClassName)}
+          className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName)}
         >
           {!isMobile && regularOpenButton}
           {resizeHandle}
@@ -145,29 +145,29 @@ export function DrawerTriggersBar({
         [styles['drawer-mobile']]: isMobile,
       })}
     >
-      <div
-        style={{ top: topOffset, bottom: bottomOffset }}
-        className={clsx(styles['drawer-content'], styles['non-interactive'])}
-      >
+      <div style={{ top: topOffset, bottom: bottomOffset }} className={styles['drawer-content']}>
         {!isMobile && (
-          <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers'], contentClassName)}>
+          <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers-wrapper'], contentClassName)}>
             {drawers?.items?.map((item: DrawerItem, index: number) => (
-              <AppLayoutButton
+              <span
+                key={index}
                 className={clsx(
-                  toggleClassName,
-                  styles.trigger,
-                  styles['trigger-drawer'],
-                  drawers.activeDrawerId === item.id && styles.selected
+                  styles['drawer-trigger'],
+                  drawers.activeDrawerId === item.id && styles['drawer-trigger-active']
                 )}
-                key={`drawer-trigger-${index}`}
-                iconName={item.trigger.iconName}
-                iconSvg={item.trigger.iconSvg}
-                ariaLabel={item.ariaLabels?.triggerButton}
                 onClick={() =>
                   drawers.onChange({ activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined })
                 }
-                ariaExpanded={drawers.activeDrawerId !== undefined}
-              />
+              >
+                <ToggleButton
+                  className={toggleClassName}
+                  iconName={item.trigger.iconName}
+                  iconSvg={item.trigger.iconSvg}
+                  ariaLabel={item.ariaLabels?.triggerButton}
+                  ariaExpanded={drawers.activeDrawerId !== undefined}
+                  testId={`awsui-app-layout-trigger-${item.id}`}
+                />
+              </span>
             ))}
           </aside>
         )}

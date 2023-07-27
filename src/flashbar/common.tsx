@@ -4,12 +4,12 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getBaseProps } from '../internal/base-component';
 import { FlashbarProps } from './interfaces';
 import { focusFlashById } from './flash';
 import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export const componentName = 'Flashbar';
 

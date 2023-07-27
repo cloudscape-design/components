@@ -20,7 +20,6 @@ import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-draw
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { isDevelopment } from '../../internal/is-development';
 import { getSplitPanelPosition } from './split-panel';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -30,6 +29,7 @@ import { InternalDrawerProps } from '../drawer/interfaces';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
@@ -481,7 +481,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * This value is used to determine the max width constraint calculation
      * for the Tools container.
      */
-    const [layoutContainerQuery, layoutElement] = useContainerQuery(rect => rect.width);
+    const [layoutContainerQuery, layoutElement] = useContainerQuery(rect => rect.contentBoxWidth);
     const layoutWidth = layoutContainerQuery ?? 0;
 
     const mainElement = useRef<HTMLDivElement>(null);
@@ -506,7 +506,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * that it is not repeated in various components (such as MobileToolbar) that need to
      * know if the notifications slot is empty.
      */
-    const [notificationsContainerQuery, notificationsElement] = useContainerQuery(rect => rect.height);
+    const [notificationsContainerQuery, notificationsElement] = useContainerQuery(rect => rect.contentBoxHeight);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
     const [hasNotificationsContent, setHasNotificationsContent] = useState(false);
 

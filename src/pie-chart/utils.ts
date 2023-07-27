@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentFormatFunction } from '../internal/i18n/context';
+import { ComponentFormatFunction } from '../i18n/context';
 import { PieChartProps } from './interfaces';
 import styles from './styles.css.js';
 
-interface Dimension {
+export interface Dimension {
   innerRadius: number;
   outerRadius: number;
   padding: number;
@@ -13,27 +13,31 @@ interface Dimension {
   cornerRadius?: number;
 }
 
+const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
+const defaultPadding = 12; // = space-s
+const smallPadding = 8; // = space-xs
+
 export const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
     innerRadius: 33,
     outerRadius: 50,
-    innerLabelPadding: 8,
-    padding: 8, // = space-xs
-    paddingLabels: 44, // = 2 * (size-lineHeight-body-100)
+    innerLabelPadding: smallPadding,
+    padding: smallPadding,
+    paddingLabels,
   },
   medium: {
     innerRadius: 66,
     outerRadius: 100,
-    innerLabelPadding: 12,
-    padding: 12, // = space-s
-    paddingLabels: 44, // = 2 * (size-lineHeight-body-100)
+    innerLabelPadding: defaultPadding,
+    padding: defaultPadding,
+    paddingLabels,
   },
   large: {
     innerRadius: 93,
     outerRadius: 140,
-    innerLabelPadding: 12,
-    padding: 12, // = space-s
-    paddingLabels: 44, // = 2 * (size-lineHeight-body-100)
+    innerLabelPadding: defaultPadding,
+    padding: defaultPadding,
+    paddingLabels,
   },
 };
 
@@ -54,6 +58,43 @@ export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>,
     cornerRadius: 5,
   },
 };
+
+/**
+ * When `size` is a string ("small", "medium" or "large") the predefined pie chart element dimensions for classic and visual refresh are used.
+ * When `size` is a number the outer and inner radii are computed and the rest of the dimensions are taken from the closest predefined size.
+ */
+export function getDimensionsBySize({
+  size,
+  hasLabels,
+  visualRefresh,
+}: {
+  size: NonNullable<PieChartProps['size']> | number;
+  hasLabels: boolean;
+  visualRefresh?: boolean;
+}): Dimension & { size: NonNullable<PieChartProps['size']> } {
+  if (typeof size === 'string') {
+    const dimensions = visualRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
+    return { ...dimensions, size };
+  }
+  const sizeSpec = visualRefresh ? refreshDimensionsBySize : dimensionsBySize;
+  const getPixelSize = (d: Dimension) => d.outerRadius * 2 + d.padding * 2 + (hasLabels ? d.paddingLabels : 0) * 2;
+
+  let matchedSize: NonNullable<PieChartProps['size']> = 'small';
+  if (size > getPixelSize(sizeSpec.medium)) {
+    matchedSize = 'medium';
+  }
+  if (size > getPixelSize(sizeSpec.large)) {
+    matchedSize = 'large';
+  }
+
+  const padding = sizeSpec[matchedSize].padding;
+  const paddingLabels = hasLabels ? sizeSpec[matchedSize].paddingLabels : 0;
+  const radiiRatio = sizeSpec[matchedSize].outerRadius / sizeSpec[matchedSize].innerRadius;
+  const outerRadius = (size - 2 * paddingLabels - 2 * padding) / 2;
+  const innerRadius = outerRadius / radiiRatio;
+
+  return { ...sizeSpec[matchedSize], outerRadius, innerRadius, size: matchedSize };
+}
 
 export const defaultDetails =
   (i18n: ComponentFormatFunction<'pie-chart'>, i18nStrings: PieChartProps.I18nStrings) =>

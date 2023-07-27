@@ -6,7 +6,8 @@ import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/column-layout/flexible-column-layout/styles.css.js';
 
-jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [500, () => {}],
 }));
 

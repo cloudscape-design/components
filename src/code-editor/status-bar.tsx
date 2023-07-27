@@ -6,9 +6,9 @@ import styles from './styles.css.js';
 import LiveRegion from '../internal/components/live-region/index';
 import { TabButton } from './tab-button';
 import { InternalButton } from '../button/internal';
-import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
 import { CodeEditorProps } from './interfaces';
-import { useInternalI18n } from '../internal/i18n/context.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 interface StatusBarProps {
   languageLabel: string;
@@ -145,8 +145,8 @@ function InternalStatusBar({
 export const StatusBar = ({ errorsTabRef, warningsTabRef, ...restProps }: StatusBarProps) => {
   // create a virtual status bar, in order to calculate the width with full tab button text
   // and decide if tab button text needs to be reduced
-  const [realWidth, statusLeftBarRef] = useContainerQuery(rect => rect.width);
-  const [virtualWidth, virtualStatusLeftBarRef] = useContainerQuery(rect => rect.width);
+  const [realWidth, statusLeftBarRef] = useContainerQuery(rect => rect.contentBoxWidth);
+  const [virtualWidth, virtualStatusLeftBarRef] = useContainerQuery(rect => rect.contentBoxWidth);
 
   const minifyCounters = virtualWidth !== null && realWidth !== null && virtualWidth > realWidth;
 

@@ -15,10 +15,11 @@ import { validate, getErrorText } from './validation';
 import styles from './styles.css.js';
 import { SearchInput } from './search-input';
 import LiveRegion from '../../internal/components/live-region';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 interface S3InContextProps {
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
+  inputPlaceholder: string | undefined;
   resource: S3ResourceSelectorProps.Resource;
   viewHref: string | undefined;
   invalid: boolean | undefined;
@@ -37,6 +38,7 @@ export const S3InContext = React.forwardRef(
   (
     {
       i18nStrings,
+      inputPlaceholder,
       resource,
       viewHref,
       invalid,
@@ -98,7 +100,7 @@ export const S3InContext = React.forwardRef(
               value={uri}
               ariaDescribedby={inputAriaDescribedby}
               clearAriaLabel={i18nStrings?.inContextInputClearAriaLabel}
-              placeholder={i18nStrings?.inContextInputPlaceholder}
+              placeholder={inputPlaceholder ?? i18nStrings?.inContextInputPlaceholder}
               onChange={handleUriChange}
               invalid={invalid}
               onFocus={() => (isInputBlurredRef.current = false)}

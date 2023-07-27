@@ -6,7 +6,7 @@ import {
   Transition as ReactTransitionGroupTransition,
   TransitionStatus as ReactTransitionGroupTransitionStatus,
 } from 'react-transition-group';
-import { useReducedMotion } from '../../hooks/use-visual-mode';
+import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
 export type TransitionStatus = ReactTransitionGroupTransitionStatus | 'enter' | 'exit';
 

@@ -23,6 +23,7 @@ const ButtonDropdown = React.forwardRef(
       children,
       onItemClick,
       onItemFollow,
+      mainAction,
       ...props
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -44,6 +45,7 @@ const ButtonDropdown = React.forwardRef(
         ariaLabel={ariaLabel}
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
+        mainAction={mainAction}
       >
         {children}
       </InternalButtonDropdown>
