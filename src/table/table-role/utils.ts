@@ -1,49 +1,57 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getFirstFocusable } from '../../internal/components/focus-lock/utils';
+import { getFocusables } from '../../internal/components/focus-lock/utils';
 import { FocusedCell } from './interfaces';
 
 export function findFocusinCell(event: FocusEvent): null | FocusedCell {
-  if (!(event.target instanceof Element)) {
+  const element = event.target;
+
+  if (!(element instanceof HTMLElement)) {
     return null;
   }
 
-  const closestCell = event.target.closest('td,th') as null | HTMLTableCellElement;
-  const closestRow = closestCell?.closest('tr');
+  const cellElement = element.closest('td,th') as null | HTMLTableCellElement;
+  const rowElement = cellElement?.closest('tr');
 
-  if (!closestCell || !closestRow) {
+  if (!cellElement || !rowElement) {
     return null;
   }
 
-  const colIndex = parseInt(closestCell.getAttribute('aria-colindex') ?? '');
-  const rowIndex = parseInt(closestRow.getAttribute('aria-rowindex') ?? '');
-  if (isNaN(colIndex)) {
+  const colIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '');
+  const rowIndex = parseInt(rowElement.getAttribute('aria-rowindex') ?? '');
+  if (isNaN(colIndex) || isNaN(rowIndex)) {
     return null;
   }
 
-  return { rowIndex: isNaN(rowIndex) ? 0 : rowIndex, colIndex, cellElement: closestCell, element: event.target };
+  const cellFocusables = getFocusables(cellElement);
+  let elementIndex = cellFocusables.indexOf(element);
+  elementIndex = elementIndex === -1 ? 0 : elementIndex;
+
+  return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element };
 }
 
-export function moveFocusBy(
-  table: HTMLTableElement,
-  from: { rowIndex: number; colIndex: number },
-  delta: { rowIndex: number; colIndex: number }
-) {
-  const targetAriaRowIndex = from.rowIndex + delta.rowIndex;
-  const targetRow = findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.rowIndex);
+export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
+  const targetAriaRowIndex = from.rowIndex + delta.y;
+  const targetRow = delta.y === 0 ? from.rowElement : findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.y);
   if (!targetRow) {
     return;
   }
 
-  const targetAriaColIndex = from.colIndex + delta.colIndex;
-  const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.colIndex);
+  const cellFocusables = getFocusables(from.cellElement);
+  if (delta.x && 0 <= from.elementIndex + delta.x && from.elementIndex + delta.x < cellFocusables.length) {
+    cellFocusables[from.elementIndex + delta.x].focus();
+    return;
+  }
+
+  const targetAriaColIndex = from.colIndex + delta.x;
+  const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
   if (!targetCell) {
     return;
   }
 
-  const cellFirstFocusable = getFirstFocusable(targetCell);
-  const focusTarget = cellFirstFocusable ? cellFirstFocusable : targetCell;
+  const targetCellFocusables = getFocusables(targetCell);
+  const focusTarget = targetCellFocusables[from.elementIndex] ?? targetCellFocusables[0] ?? targetCell;
   focusTarget.focus();
 }
 

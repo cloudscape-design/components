@@ -123,43 +123,43 @@ class GridNavigationModel {
     switch (key) {
       case KeyCode.up:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: -1, colIndex: 0 });
+        return moveFocusBy(this.table, from, { y: -1, x: 0 });
 
       case KeyCode.down:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: 1, colIndex: 0 });
+        return moveFocusBy(this.table, from, { y: 1, x: 0 });
 
       case KeyCode.left:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: -1 });
+        return moveFocusBy(this.table, from, { y: 0, x: -1 });
 
       case KeyCode.right:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: 1 });
+        return moveFocusBy(this.table, from, { y: 0, x: 1 });
 
       case KeyCode.pageUp:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: -this.pageSize, colIndex: 0 });
+        return moveFocusBy(this.table, from, { y: -this.pageSize, x: 0 });
 
       case KeyCode.pageDown:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: this.pageSize, colIndex: 0 });
+        return moveFocusBy(this.table, from, { y: this.pageSize, x: 0 });
 
       case KeyCode.home:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: minExtreme });
+        return moveFocusBy(this.table, from, { y: 0, x: minExtreme });
 
       case KeyCode.end:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: maxExtreme });
+        return moveFocusBy(this.table, from, { y: 0, x: maxExtreme });
 
       case -KeyCode.home:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: minExtreme, colIndex: minExtreme });
+        return moveFocusBy(this.table, from, { y: minExtreme, x: minExtreme });
 
       case -KeyCode.end:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { rowIndex: maxExtreme, colIndex: maxExtreme });
+        return moveFocusBy(this.table, from, { y: maxExtreme, x: maxExtreme });
 
       default:
         return;
@@ -175,7 +175,7 @@ class GridNavigationModel {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {
           if (containsOrEqual(removedNode, this.prevFocusedCell.element)) {
-            moveFocusBy(this.table, this.prevFocusedCell, { rowIndex: 0, colIndex: 0 });
+            moveFocusBy(this.table, this.prevFocusedCell, { y: 0, x: 0 });
           }
         }
       }
