@@ -98,7 +98,7 @@ function ChartPopover(
   return (
     <div
       {...baseProps}
-      className={clsx(popoverStyles.root, styles.root, baseProps.className, { [styles.dismissable]: dismissButton })}
+      className={clsx(popoverStyles.root, styles.root, baseProps.className)}
       ref={popoverRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
