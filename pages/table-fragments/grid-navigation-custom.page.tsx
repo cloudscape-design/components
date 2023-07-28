@@ -76,21 +76,19 @@ export default function Page() {
     []
   );
 
-  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLTableElement>(null);
 
   const tableRole = 'grid';
   const gridNavigationApi = useGridNavigation({
     tableRole: 'grid',
-    getContainer: () => tableContainerRef.current,
     pageSize,
+    getTable: () => tableRef.current,
   });
 
   // TODO: use gridNavigationApi.focusCell
   if (Math.random() > 1) {
     console.log(gridNavigationApi);
   }
-
-  // TODO: add page buttons to increase/decrease amount of rows and columns
 
   return (
     <Box margin="l">
@@ -112,12 +110,9 @@ export default function Page() {
           header={<Link>Focusable element before grid</Link>}
           footer={<Link>Focusable element after grid</Link>}
         >
-          <div
-            ref={tableContainerRef}
-            className={styles['custom-table']}
-            {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}
-          >
+          <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
             <table
+              ref={tableRef}
               className={styles['custom-table-table']}
               {...getTableRoleProps({ tableRole, totalItemsCount: items.length })}
             >

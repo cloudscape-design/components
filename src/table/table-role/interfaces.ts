@@ -6,7 +6,7 @@ export type TableRole = 'table' | 'grid';
 export interface GridNavigationProps {
   tableRole: TableRole;
   pageSize: number;
-  getContainer: () => null | HTMLElement;
+  getTable: () => null | HTMLTableElement;
 }
 
 export interface GridNavigationAPI {

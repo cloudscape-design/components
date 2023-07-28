@@ -6,19 +6,19 @@ import { findFocusinCell, moveFocusBy } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 
-export function useGridNavigation({ tableRole, pageSize, getContainer }: GridNavigationProps): GridNavigationAPI {
+export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
 
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
   useEffect(
     () => {
       if (tableRole === 'grid') {
-        const container = getContainer();
-        container && model.init(container);
+        const table = getTable();
+        table && model.init(table);
       }
       return () => model.destroy();
     },
-    // Assuming getContainer is stable.
+    // Assuming getTable is stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [model, tableRole]
   );
@@ -34,23 +34,23 @@ export function useGridNavigation({ tableRole, pageSize, getContainer }: GridNav
 class GridNavigationModel {
   // Props
   private _pageSize = 0;
-  private _container: null | HTMLElement = null;
+  private _table: null | HTMLTableElement = null;
 
   // State
   private focusedCell: null | FocusedCell = null;
 
-  public init(container: HTMLElement) {
-    this._container = container;
+  public init(table: HTMLTableElement) {
+    this._table = table;
 
-    this.container.addEventListener('focusin', this.onFocusin);
-    this.container.addEventListener('focusout', this.onFocusout);
-    this.container.addEventListener('keydown', this.onKeydown);
+    this.table.addEventListener('focusin', this.onFocusin);
+    this.table.addEventListener('focusout', this.onFocusout);
+    this.table.addEventListener('keydown', this.onKeydown);
   }
 
   public destroy() {
-    this.container.removeEventListener('focusin', this.onFocusin);
-    this.container.removeEventListener('focusout', this.onFocusout);
-    this.container.removeEventListener('keydown', this.onKeydown);
+    this.table.removeEventListener('focusin', this.onFocusin);
+    this.table.removeEventListener('focusout', this.onFocusout);
+    this.table.removeEventListener('keydown', this.onKeydown);
   }
 
   public update({ pageSize }: { pageSize: number }) {
@@ -66,11 +66,11 @@ class GridNavigationModel {
     return this._pageSize;
   }
 
-  private get container(): HTMLElement {
-    if (!this._container) {
+  private get table(): HTMLTableElement {
+    if (!this._table) {
       throw new Error('Invariant violation: GridNavigationModel is used before initialization.');
     }
-    return this._container;
+    return this._table;
   }
 
   private onFocusin = (event: FocusEvent) => {
@@ -110,43 +110,43 @@ class GridNavigationModel {
     switch (key) {
       case KeyCode.up:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: -1, colIndex: 0 });
+        return moveFocusBy(this.table, from, { rowIndex: -1, colIndex: 0 });
 
       case KeyCode.down:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: 1, colIndex: 0 });
+        return moveFocusBy(this.table, from, { rowIndex: 1, colIndex: 0 });
 
       case KeyCode.left:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: -1 });
+        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: -1 });
 
       case KeyCode.right:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: 1 });
+        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: 1 });
 
       case KeyCode.pageUp:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: -this.pageSize, colIndex: 0 });
+        return moveFocusBy(this.table, from, { rowIndex: -this.pageSize, colIndex: 0 });
 
       case KeyCode.pageDown:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: this.pageSize, colIndex: 0 });
+        return moveFocusBy(this.table, from, { rowIndex: this.pageSize, colIndex: 0 });
 
       case KeyCode.home:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: minExtreme });
+        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: minExtreme });
 
       case KeyCode.end:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: maxExtreme });
+        return moveFocusBy(this.table, from, { rowIndex: 0, colIndex: maxExtreme });
 
       case -KeyCode.home:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: minExtreme, colIndex: minExtreme });
+        return moveFocusBy(this.table, from, { rowIndex: minExtreme, colIndex: minExtreme });
 
       case -KeyCode.end:
         event.preventDefault();
-        return moveFocusBy(this.container, from, { rowIndex: maxExtreme, colIndex: maxExtreme });
+        return moveFocusBy(this.table, from, { rowIndex: maxExtreme, colIndex: maxExtreme });
 
       default:
         return;

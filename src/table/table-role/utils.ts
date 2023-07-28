@@ -26,12 +26,12 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
 }
 
 export function moveFocusBy(
-  container: HTMLElement,
+  table: HTMLTableElement,
   from: { rowIndex: number; colIndex: number },
   delta: { rowIndex: number; colIndex: number }
 ) {
   const targetAriaRowIndex = from.rowIndex + delta.rowIndex;
-  const targetRow = findTableRowByAriaRowIndex(container, targetAriaRowIndex, delta.rowIndex);
+  const targetRow = findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.rowIndex);
   if (!targetRow) {
     return;
   }
@@ -47,7 +47,7 @@ export function moveFocusBy(
   focusTarget.focus();
 }
 
-function findTableRowByAriaRowIndex(table: HTMLElement, targetAriaRowIndex: number, delta: number) {
+function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {
   let targetRow: null | HTMLTableRowElement = null;
   const rowElements = table.querySelectorAll('tr[aria-rowindex]');
   for (let elementIndex = 0; elementIndex < rowElements.length; elementIndex++) {
@@ -61,7 +61,7 @@ function findTableRowByAriaRowIndex(table: HTMLElement, targetAriaRowIndex: numb
   return targetRow;
 }
 
-function findTableRowCellByAriaColIndex(tableRow: HTMLElement, targetAriaColIndex: number, delta: number) {
+function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAriaColIndex: number, delta: number) {
   let targetCell: null | HTMLTableCellElement = null;
   const cellElements = tableRow.querySelectorAll('td[aria-colindex],th[aria-colindex]');
   for (let elementIndex = 0; elementIndex < cellElements.length; elementIndex++) {
