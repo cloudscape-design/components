@@ -14,7 +14,7 @@ export interface GridNavigationProps {
 }
 
 export interface GridNavigationAPI {
-  focusCell: (coordinates: { row: number; column: number }) => void;
+  focusCell: (coordinates: { rowIndex: number; colIndex: number }) => void;
 }
 
 export function useGridNavigation({
@@ -58,18 +58,20 @@ class GridNavigationModel {
   private _container: null | HTMLElement = null;
 
   // State
-  private focusedCell: null | { row: number; column: number } = null;
+  private focusedCell: null | { rowIndex: number; colIndex: number } = null;
   private focusedElement: null | HTMLElement = null;
 
   public init(container: HTMLElement) {
     this._container = container;
 
     this.container.addEventListener('focusin', this.onFocusin);
+    this.container.addEventListener('focusout', this.onFocusout);
     this.container.addEventListener('keydown', this.onKeydown);
   }
 
   public destroy() {
     this.container.removeEventListener('focusin', this.onFocusin);
+    this.container.removeEventListener('focusout', this.onFocusout);
     this.container.removeEventListener('keydown', this.onKeydown);
   }
 
@@ -81,8 +83,8 @@ class GridNavigationModel {
   }
 
   // TODO: implement
-  public focusCell = ({ row, column }: { row: number; column: number }) => {
-    throw new Error(`focusCell({ row: ${row}, column: ${column} }) is not implemented.`);
+  public focusCell = ({ rowIndex, colIndex }: { rowIndex: number; colIndex: number }) => {
+    throw new Error(`focusCell({ rowIndex: ${rowIndex}, colIndex: ${colIndex} }) is not implemented.`);
   };
 
   private get rows() {
@@ -109,11 +111,20 @@ class GridNavigationModel {
     if (!cell) {
       return;
     }
+    if (cell.rowIndex === this.focusedCell?.rowIndex && cell.colIndex === this.focusedCell?.colIndex) {
+      return;
+    }
+    this.focusedCell = { rowIndex: cell.rowIndex, colIndex: cell.colIndex };
 
-    console.log('FOCUS IN WRAPPER', cell.rowIndex, cell.colIndex);
+    console.log('FOCUS IN WRAPPER', cell.rowIndex, cell.colIndex, cell.element);
 
     // check target - if inside cell, update state, listeners, etc.
     // if not cell - do nothing
+  }
+
+  private onFocusout() {
+    console.log('FOCUS OUT WRAPPER', this.focusedCell);
+    this.focusedCell = null;
   }
 
   private onCellFocus() {}

@@ -34,12 +34,17 @@ export function getTableRoleProps(options: { tableRole: TableRole; ariaLabel?: s
 export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScrollable: boolean; ariaLabel?: string }) {
   const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
 
-  // When the table has role="grid" the wrapper is made focusable so that keypress listeners can be attached.
   // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
-  if (options.tableRole === 'grid' || options.isScrollable) {
+  if (options.tableRole === 'table' || options.isScrollable) {
     nativeProps.role = 'region';
     nativeProps.tabIndex = 0;
     nativeProps['aria-label'] = options.ariaLabel;
+  }
+
+  // For grids the first cell is focused and never  the wrapper. The scrolling is handled by grid navigation.
+  // The wrapper receives tabIndex=-1 so that the focusin can be attached.
+  if (options.tableRole === 'grid') {
+    nativeProps.tabIndex = -1;
   }
 
   return nativeProps;

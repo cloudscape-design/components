@@ -17,4 +17,6 @@
 
 // TODO: no tab escape in the initial implementation!
 
+// TODO: move grid navigation to under src/table/table-role
+
 export { useGridNavigation, GridNavigationProps, GridNavigationAPI } from './use-grid-navigation';
