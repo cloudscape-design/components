@@ -177,6 +177,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundNotificationYellow: {
+    description: 'Background color for yellow notifications. For example: yellow badges and warning flash messages.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundPopover: {
     description: 'Background color for the popover container.',
     public: true,

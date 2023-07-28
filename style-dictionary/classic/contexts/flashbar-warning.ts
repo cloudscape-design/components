@@ -4,18 +4,10 @@ import { StyleDictionary } from '../../utils/interfaces';
 import { tokens as parentTokens } from '../colors';
 import merge from 'lodash/merge';
 import { expandColorDictionary } from '../../utils';
-
-const tokens = {
-  colorBorderItemFocused: '{colorGrey100}',
-  colorTextExpandableSectionDefault: '{colorGrey100}',
-  colorTextExpandableSectionHover: '{colorGrey100}',
-  colorTextBodyDefault: '{colorGrey100}',
-  colorTextHeadingSecondary: '{colorGrey100}',
-  colorBorderDividerDefault: '{colorGrey100}',
-};
+import { sharedTokens } from '../../visual-refresh/contexts/flashbar-warning';
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
-  merge({}, parentTokens, tokens)
+  merge({}, parentTokens, sharedTokens)
 );
 
 export { expandedTokens as tokens };

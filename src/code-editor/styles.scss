@@ -97,8 +97,9 @@
   cursor: pointer;
   z-index: 1;
 
-  &--refresh {
-    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$border-active-width} - 2px);
+  &:hover {
+    color: awsui.$color-text-code-editor-tab-button-error;
+    background: awsui.$color-text-status-error;
   }
 
   &::after {
@@ -113,6 +114,22 @@
     opacity: 0;
   }
 
+  &--refresh {
+    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$border-active-width} - 2px);
+  }
+
+  &--warnings {
+    color: awsui.$color-text-status-warning;
+
+    &:hover {
+      background: awsui.$color-text-status-warning;
+    }
+
+    &::after {
+      background: awsui.$color-text-status-warning;
+    }
+  }
+
   &--active::after {
     opacity: 1;
   }
@@ -121,11 +138,6 @@
     @include styles.with-motion {
       transition: opacity awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c;
     }
-  }
-
-  &:hover {
-    color: awsui.$color-text-code-editor-tab-button-error;
-    background: awsui.$color-text-status-error;
   }
 
   &--disabled {
@@ -155,8 +167,7 @@
     vertical-align: middle;
   }
 
-  &--errors,
-  &--warnings {
+  &--errors {
     /* used in test-utils */
   }
 }
