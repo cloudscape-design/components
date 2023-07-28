@@ -14,3 +14,5 @@
 // When focus leaves the cell focus on the next/prev cell
 // The grid has one tab stop - can navigate inside with array keys but not tab
 // Screen-reader user experience is unchanged
+
+export { useGridNavigation, GridNavigationProps, GridNavigationAPI } from './use-grid-navigation';

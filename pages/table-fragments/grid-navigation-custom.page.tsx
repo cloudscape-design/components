@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box, Container, Link } from '~components';
 import styles from './styles.scss';
 import { generateItems, Instance } from '../table/generate-data';
+import { useGridNavigation } from '~components/table/grid-navigation';
 
 const items = generateItems(50);
 const columnDefinitions = [
@@ -17,13 +18,27 @@ const columnDefinitions = [
 ];
 
 export default function Page() {
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  const gridNavigationApi = useGridNavigation({
+    getContainer: () => tableContainerRef.current,
+    rows: items.length,
+    columns: columnDefinitions.length,
+    pageSize: 25,
+  });
+
+  // TODO: use gridNavigationApi.focusCell
+  console.log(gridNavigationApi);
+
+  // TODO: add page buttons to increase/decrease amount of rows and columns
+
   return (
     <Box margin="l">
       <SpaceBetween size="xl">
         <h1>Grid navigation with a custom table</h1>
 
         <Container disableContentPaddings={true}>
-          <div className={styles['custom-table']}>
+          <div ref={tableContainerRef} className={styles['custom-table']}>
             <table className={styles['custom-table-table']} role="grid">
               <thead>
                 <tr>
