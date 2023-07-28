@@ -19,6 +19,7 @@ import { throttle } from '../internal/utils/throttle';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 
 export { FlashbarProps };
 
@@ -311,7 +312,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               isVisualRefresh && styles['visual-refresh'],
               isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
               transitioning && styles['animation-running'],
-              items.length === 2 && styles['short-list']
+              items.length === 2 && styles['short-list'],
+              getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
             )}
             onClick={toggleCollapseExpand}
             ref={notificationBarRef}
