@@ -16,19 +16,27 @@ export interface GridNavigationAPI {
   focusCell: (coordinates: { row: number; column: number }) => void;
 }
 
-export function useGridNavigation({ getContainer, rows, columns, pageSize }: GridNavigationProps): GridNavigationAPI {
+export function useGridNavigation({
+  tableRole,
+  rows,
+  columns,
+  pageSize,
+  getContainer,
+}: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
 
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
   useEffect(
     () => {
-      const container = getContainer();
-      container && model.init(container);
+      if (tableRole === 'grid') {
+        const container = getContainer();
+        container && model.init(container);
+      }
       return () => model.destroy();
     },
     // Assuming getContainer is stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [model]
+    [model, tableRole]
   );
 
   // TODO: is columns/rows actually needed??
@@ -56,16 +64,33 @@ class GridNavigationModel {
   private focusedRow: null | number = null;
   private focusedColumn: null | number = null;
   private focusedElement: null | HTMLElement = null;
+  private focusTrapInside: null | HTMLDivElement = null;
+  private focusTrapAfter: null | HTMLDivElement = null;
 
   public init(container: HTMLElement) {
     this._container = container;
+
     this.container.addEventListener('focusin', this.onFocus);
     this.container.addEventListener('blur', this.onBlur);
+
+    this.focusTrapInside = this.createFocusTrap(this.onFocusInside);
+    this.container.insertBefore(this.focusTrapInside, this.container.firstChild);
+
+    this.focusTrapAfter = this.createFocusTrap(this.onFocusAfter);
+    this.container.append(this.focusTrapAfter);
   }
 
   public destroy() {
     this.container.removeEventListener('focusin', this.onFocus);
     this.container.removeEventListener('blur', this.onBlur);
+
+    if (this.focusTrapInside) {
+      this.focusTrapInside.remove();
+    }
+
+    if (this.focusTrapAfter) {
+      this.focusTrapAfter.remove();
+    }
   }
 
   public update({ rows, columns, pageSize }: { rows: number; columns: number; pageSize: number }) {
@@ -106,4 +131,15 @@ class GridNavigationModel {
   private onBlur() {
     console.log('BLUR WRAPPER');
   }
+
+  private createFocusTrap(onFocus: () => void) {
+    const div = document.createElement('div');
+    div.tabIndex = 0;
+    div.addEventListener('focus', onFocus);
+    return div;
+  }
+
+  private onFocusInside() {}
+
+  private onFocusAfter() {}
 }
