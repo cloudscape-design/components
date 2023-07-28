@@ -8,15 +8,14 @@ import styles from './styles.css.js';
 export default function Background() {
   const {
     breadcrumbs,
-    contentHeader,
-    dynamicOverlapHeight,
+    isDynamicOverlapSet,
     hasNotificationsContent,
     hasStickyBackground,
     isMobile,
     stickyNotifications,
   } = useAppLayoutInternals();
 
-  if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !contentHeader && dynamicOverlapHeight <= 0) {
+  if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !isDynamicOverlapSet) {
     return null;
   }
 
