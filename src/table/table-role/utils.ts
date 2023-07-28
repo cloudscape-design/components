@@ -33,7 +33,7 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
 
 export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
   const targetAriaRowIndex = from.rowIndex + delta.y;
-  const targetRow = delta.y === 0 ? from.rowElement : findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.y);
+  const targetRow = findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.y);
   if (!targetRow) {
     return;
   }
