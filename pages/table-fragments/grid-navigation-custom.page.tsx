@@ -123,7 +123,11 @@ export default function Page() {
               <thead>
                 <tr>
                   {columnDefinitions.map(column => (
-                    <th key={column.key} className={styles['custom-table-cell']} {...getTableColHeaderRoleProps({})}>
+                    <th
+                      key={column.key}
+                      className={styles['custom-table-cell']}
+                      {...getTableColHeaderRoleProps({ tableRole })}
+                    >
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                         <div>{column.label}</div>
                         <Button variant="inline-icon" iconName="angle-down" ariaLabel="Sorting indicator" />

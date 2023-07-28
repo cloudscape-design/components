@@ -57,21 +57,19 @@ class GridNavigationModel {
   private _container: null | HTMLElement = null;
 
   // State
-  private focusedRow: null | number = null;
-  // TODO: use a single focus pointer { row: col: } ?
-  private focusedColumn: null | number = null;
+  private focusedCell: null | { row: number; column: number } = null;
   private focusedElement: null | HTMLElement = null;
 
   public init(container: HTMLElement) {
     this._container = container;
 
-    this.container.addEventListener('focus', this.onFocus);
-    this.container.addEventListener('blur', this.onBlur);
+    this.container.addEventListener('focusin', this.onFocusin);
+    this.container.addEventListener('keydown', this.onKeydown);
   }
 
   public destroy() {
-    this.container.removeEventListener('focus', this.onFocus);
-    this.container.removeEventListener('blur', this.onBlur);
+    this.container.removeEventListener('focusin', this.onFocusin);
+    this.container.removeEventListener('keydown', this.onKeydown);
   }
 
   public update({ rows, columns, pageSize }: { rows: number; columns: number; pageSize: number }) {
@@ -105,11 +103,23 @@ class GridNavigationModel {
     return this._container;
   }
 
-  private onFocus() {
-    console.log('FOCUS ON WRAPPER');
+  private onFocusin() {
+    console.log('FOCUS IN WRAPPER');
+
+    // check target - if cell, update state, listeners, etc.
+    // if not cell - do nothing
   }
 
-  private onBlur() {
-    console.log('BLUR WRAPPER');
+  private onCellFocus() {}
+
+  // TODO: check if blur is triggered upon cell unmounting
+  private onCellBlur() {}
+
+  private onKeydown() {
+    console.log('onkeydown');
   }
+
+  private lockCellFocus() {}
+
+  private unlockCellFocus() {}
 }

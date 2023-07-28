@@ -34,7 +34,7 @@ export function getTableRoleProps(options: { tableRole: TableRole; ariaLabel?: s
 export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScrollable: boolean; ariaLabel?: string }) {
   const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
 
-  // When the table has role="grid" the wrapper is made focusable so that the table has a single TAB stop.
+  // When the table has role="grid" the wrapper is made focusable so that keypress listeners can be attached.
   // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
   if (options.tableRole === 'grid' || options.isScrollable) {
     nativeProps.role = 'region';
@@ -59,10 +59,14 @@ export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: 
   return nativeProps;
 }
 
-export function getTableColHeaderRoleProps(options: { sortingStatus?: SortingStatus }) {
+export function getTableColHeaderRoleProps(options: { tableRole: TableRole; sortingStatus?: SortingStatus }) {
   const nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {};
 
   nativeProps.scope = 'col';
+
+  if (options.tableRole === 'grid') {
+    nativeProps.tabIndex = -1;
+  }
 
   if (options.sortingStatus) {
     nativeProps['aria-sort'] = getAriaSort(options.sortingStatus);
@@ -76,6 +80,10 @@ export function getTableCellRoleProps(options: { tableRole: TableRole; isRowHead
 
   if (options.tableRole === 'grid') {
     nativeProps.role = 'gridcell';
+  }
+
+  if (options.tableRole === 'grid') {
+    nativeProps.tabIndex = -1;
   }
 
   if (options.isRowHeader) {
