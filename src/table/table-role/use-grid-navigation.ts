@@ -5,6 +5,7 @@ import { useEffect, useMemo } from 'react';
 import { findFocusinCell, moveFocusBy } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
+import { containsOrEqual } from '../../internal/utils/dom';
 
 export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
@@ -37,7 +38,9 @@ class GridNavigationModel {
   private _table: null | HTMLTableElement = null;
 
   // State
+  private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
+  private cleanup = () => {};
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -45,12 +48,21 @@ class GridNavigationModel {
     this.table.addEventListener('focusin', this.onFocusin);
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
+
+    const mutationObserver = new MutationObserver(this.onMutation);
+    mutationObserver.observe(table, { childList: true, subtree: true });
+
+    this.cleanup = () => {
+      this.table.removeEventListener('focusin', this.onFocusin);
+      this.table.removeEventListener('focusout', this.onFocusout);
+      this.table.removeEventListener('keydown', this.onKeydown);
+
+      mutationObserver.disconnect();
+    };
   }
 
   public destroy() {
-    this.table.removeEventListener('focusin', this.onFocusin);
-    this.table.removeEventListener('focusout', this.onFocusout);
-    this.table.removeEventListener('keydown', this.onKeydown);
+    this.cleanup();
   }
 
   public update({ pageSize }: { pageSize: number }) {
@@ -82,6 +94,7 @@ class GridNavigationModel {
   };
 
   private onFocusout = () => {
+    this.prevFocusedCell = this.focusedCell;
     this.focusedCell = null;
   };
 
@@ -150,6 +163,22 @@ class GridNavigationModel {
 
       default:
         return;
+    }
+  };
+
+  private onMutation = (mutationRecords: MutationRecord[]) => {
+    if (!this.prevFocusedCell) {
+      return;
+    }
+
+    for (const record of mutationRecords) {
+      if (record.type === 'childList') {
+        for (const removedNode of Array.from(record.removedNodes)) {
+          if (containsOrEqual(removedNode, this.prevFocusedCell.element)) {
+            moveFocusBy(this.table, this.prevFocusedCell, { rowIndex: 0, colIndex: 0 });
+          }
+        }
+      }
     }
   };
 }
