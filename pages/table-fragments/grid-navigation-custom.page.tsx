@@ -5,7 +5,6 @@ import SpaceBetween from '~components/space-between';
 import { Box, Button, ColumnLayout, Container, FormField, Input, Link } from '~components';
 import styles from './styles.scss';
 import { id as generateId, generateItems, Instance } from '../table/generate-data';
-import { useGridNavigation } from '~components/table/grid-navigation';
 import AppContext, { AppContextType } from '../app/app-context';
 import {
   getTableCellRoleProps,
@@ -14,6 +13,7 @@ import {
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
+  useGridNavigation,
 } from '~components/table/table-role';
 
 type PageContext = React.Context<

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { TableRole } from '../table-role';
+export type TableRole = 'table' | 'grid';
 
 export interface GridNavigationProps {
   tableRole: TableRole;

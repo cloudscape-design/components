@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { TableRole, getTableCellRoleProps } from '../table-role/table-role-helper.js';
+import { TableRole, getTableCellRoleProps } from '../table-role';
 
 export interface TableTdElementProps {
   className?: string;
