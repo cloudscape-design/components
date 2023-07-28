@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell } from './utils';
+import { findFocusinCell, moveFocusBy } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
+import { KeyCode } from '../../internal/keycode';
 
 export function useGridNavigation({ tableRole, pageSize, getContainer }: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
@@ -22,9 +23,7 @@ export function useGridNavigation({ tableRole, pageSize, getContainer }: GridNav
     [model, tableRole]
   );
 
-  // TODO: is columns/rows actually needed??
-  // TODO: handle the case when rows and columns stay unchanged by the focused item disappears (e.g. it is replaced by another item)
-  // Notify the model of the props change. The focus might need to move when the focused cell is no longer available.
+  // Notify the model of the props change.
   useEffect(() => {
     model.update({ pageSize });
   }, [model, pageSize]);
@@ -80,15 +79,77 @@ class GridNavigationModel {
       return;
     }
     this.focusedCell = cell;
-
-    console.log('FOCUS IN', cell.rowIndex, cell.colIndex, cell.element);
   };
 
   private onFocusout = () => {
     this.focusedCell = null;
   };
 
-  private onKeydown = () => {
-    console.log('onkeydown');
+  private onKeydown = (event: KeyboardEvent) => {
+    if (!this.focusedCell) {
+      return;
+    }
+
+    const ctrlKey = event.ctrlKey ? 1 : 0;
+    const altKey = event.altKey ? 1 : 0;
+    const shiftKey = event.shiftKey ? 1 : 0;
+    const metaKey = event.metaKey ? 1 : 0;
+    const numModifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
+
+    let key = event.keyCode;
+    if (numModifiersPressed === 1 && event.ctrlKey) {
+      key = -key;
+    } else if (numModifiersPressed) {
+      return;
+    }
+
+    const from = this.focusedCell;
+    const minExtreme = Number.NEGATIVE_INFINITY;
+    const maxExtreme = Number.POSITIVE_INFINITY;
+
+    switch (key) {
+      case KeyCode.up:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: -1, colIndex: 0 });
+
+      case KeyCode.down:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: 1, colIndex: 0 });
+
+      case KeyCode.left:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: -1 });
+
+      case KeyCode.right:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: 1 });
+
+      case KeyCode.pageUp:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: -this.pageSize, colIndex: 0 });
+
+      case KeyCode.pageDown:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: this.pageSize, colIndex: 0 });
+
+      case KeyCode.home:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: minExtreme });
+
+      case KeyCode.end:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: 0, colIndex: maxExtreme });
+
+      case -KeyCode.home:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: minExtreme, colIndex: minExtreme });
+
+      case -KeyCode.end:
+        event.preventDefault();
+        return moveFocusBy(this.container, from, { rowIndex: maxExtreme, colIndex: maxExtreme });
+
+      default:
+        return;
+    }
   };
 }

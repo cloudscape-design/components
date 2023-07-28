@@ -61,7 +61,7 @@ const createColumnDefinitions = ({
 
 export default function Page() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
-  const pageSize = urlParams.pageSize ?? 25;
+  const pageSize = urlParams.pageSize ?? 10;
 
   const [items, setItems] = useState(generateItems(25));
   const columnDefinitions = useMemo(
