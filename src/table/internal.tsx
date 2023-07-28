@@ -395,6 +395,7 @@ const InternalTable = React.forwardRef(
                             stickyState={stickyState}
                             columnId={selectionColumnId}
                             tableRole={tableRole}
+                            colIndex={0}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -455,6 +456,7 @@ const InternalTable = React.forwardRef(
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
                               columnId={column.id ?? colIndex}
+                              colIndex={selectionType !== undefined ? colIndex + 1 : colIndex}
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                               tableRole={tableRole}

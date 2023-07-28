@@ -87,7 +87,9 @@ export default function Page() {
   });
 
   // TODO: use gridNavigationApi.focusCell
-  console.log(gridNavigationApi);
+  if (Math.random() > 1) {
+    console.log(gridNavigationApi);
+  }
 
   // TODO: add page buttons to increase/decrease amount of rows and columns
 
@@ -122,11 +124,11 @@ export default function Page() {
             >
               <thead>
                 <tr>
-                  {columnDefinitions.map(column => (
+                  {columnDefinitions.map((column, colIndex) => (
                     <th
                       key={column.key}
                       className={styles['custom-table-cell']}
-                      {...getTableColHeaderRoleProps({ tableRole })}
+                      {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                     >
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                         <div>{column.label}</div>
@@ -139,11 +141,11 @@ export default function Page() {
               <tbody>
                 {items.map((item, rowIndex) => (
                   <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
-                    {columnDefinitions.map(column => (
+                    {columnDefinitions.map((column, colIndex) => (
                       <td
                         key={column.key}
                         className={styles['custom-table-cell']}
-                        {...getTableCellRoleProps({ tableRole })}
+                        {...getTableCellRoleProps({ tableRole, colIndex })}
                       >
                         {column.render(item)}
                       </td>

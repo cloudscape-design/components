@@ -52,20 +52,25 @@ export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: 
     nativeProps.role = 'row';
   }
 
-  if (options.firstIndex !== undefined) {
-    nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
+  if (options.tableRole === 'grid' || options.firstIndex !== undefined) {
+    nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 1;
   }
 
   return nativeProps;
 }
 
-export function getTableColHeaderRoleProps(options: { tableRole: TableRole; sortingStatus?: SortingStatus }) {
+export function getTableColHeaderRoleProps(options: {
+  tableRole: TableRole;
+  colIndex: number;
+  sortingStatus?: SortingStatus;
+}) {
   const nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {};
 
   nativeProps.scope = 'col';
 
   if (options.tableRole === 'grid') {
     nativeProps.tabIndex = -1;
+    nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
   if (options.sortingStatus) {
@@ -75,15 +80,13 @@ export function getTableColHeaderRoleProps(options: { tableRole: TableRole; sort
   return nativeProps;
 }
 
-export function getTableCellRoleProps(options: { tableRole: TableRole; isRowHeader?: boolean }) {
+export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex: number; isRowHeader?: boolean }) {
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
     nativeProps.role = 'gridcell';
-  }
-
-  if (options.tableRole === 'grid') {
     nativeProps.tabIndex = -1;
+    nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
   if (options.isRowHeader) {

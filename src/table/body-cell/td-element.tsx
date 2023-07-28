@@ -30,6 +30,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   columnId: PropertyKey;
+  colIndex: number;
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
@@ -58,6 +59,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasSelection,
       hasFooter,
       columnId,
+      colIndex,
       stickyState,
       tableRole,
     },
@@ -65,7 +67,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
   ) => {
     const Element = isRowHeader ? 'th' : 'td';
 
-    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader }) };
+    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,

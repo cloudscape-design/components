@@ -103,10 +103,21 @@ class GridNavigationModel {
     return this._container;
   }
 
-  private onFocusin() {
-    console.log('FOCUS IN WRAPPER');
+  private onFocusin(event: FocusEvent) {
+    if (!(event.target instanceof Element)) {
+      return;
+    }
 
-    // check target - if cell, update state, listeners, etc.
+    const closestCell = event.target.closest('td,th');
+    const closestRow = closestCell?.closest('tr');
+
+    if (!closestCell || !closestRow) {
+      return;
+    }
+
+    console.log('FOCUS IN WRAPPER', closestCell, closestRow);
+
+    // check target - if inside cell, update state, listeners, etc.
     // if not cell - do nothing
   }
 
