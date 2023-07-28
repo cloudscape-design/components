@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { FocusedItem } from './interfaces';
+import { FocusedCell } from './interfaces';
 
-export function findFocusinItem(event: FocusEvent): null | FocusedItem {
+export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   if (!(event.target instanceof Element)) {
     return null;
   }
@@ -21,5 +21,5 @@ export function findFocusinItem(event: FocusEvent): null | FocusedItem {
     return null;
   }
 
-  return { rowIndex: isNaN(rowIndex) ? 0 : rowIndex, colIndex, element: closestCell };
+  return { rowIndex: isNaN(rowIndex) ? 0 : rowIndex, colIndex, cellElement: closestCell, element: event.target };
 }

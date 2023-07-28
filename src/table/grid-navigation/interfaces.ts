@@ -15,8 +15,9 @@ export interface GridNavigationAPI {
   focusCell: (coordinates: { rowIndex: number; colIndex: number }) => void;
 }
 
-export interface FocusedItem {
+export interface FocusedCell {
   rowIndex: number;
   colIndex: number;
-  element: HTMLElement;
+  cellElement: HTMLTableCellElement;
+  element: Element;
 }

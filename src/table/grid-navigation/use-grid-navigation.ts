@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinItem } from './utils';
-import { FocusedItem, GridNavigationAPI, GridNavigationProps } from './interfaces';
+import { findFocusinCell } from './utils';
+import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 
 export function useGridNavigation({
   tableRole,
@@ -46,7 +46,7 @@ class GridNavigationModel {
   private _container: null | HTMLElement = null;
 
   // State
-  private focusedItem: null | FocusedItem = null;
+  private focusedCell: null | FocusedCell = null;
 
   public init(container: HTMLElement) {
     this._container = container;
@@ -93,36 +93,29 @@ class GridNavigationModel {
     return this._container;
   }
 
-  private onFocusin(event: FocusEvent) {
-    const item = findFocusinItem(event);
-    if (!item) {
+  // TODO: is this helper still needed?
+  private updateFocusedCell(cell: null | FocusedCell) {
+    if (this.focusedCell?.element === cell?.element) {
       return;
     }
-    this.setFocusedItem(item);
-
-    console.log('FOCUS IN', item.rowIndex, item.colIndex, item.element);
+    this.focusedCell = cell;
   }
 
-  private onFocusout() {
-    console.log('FOCUS OUT');
-    this.setFocusedItem(null);
-  }
+  private onFocusin = (event: FocusEvent) => {
+    const cell = findFocusinCell(event);
+    if (!cell) {
+      return;
+    }
+    this.updateFocusedCell(cell);
 
-  private onKeydown() {
+    console.log('FOCUS IN', cell.rowIndex, cell.colIndex, cell.element);
+  };
+
+  private onFocusout = () => {
+    this.updateFocusedCell(null);
+  };
+
+  private onKeydown = () => {
     console.log('onkeydown');
-  }
-
-  private setFocusedItem(item: null | FocusedItem) {
-    if (
-      this.focusedItem?.rowIndex === item?.rowIndex &&
-      this.focusedItem?.colIndex === item?.colIndex &&
-      this.focusedItem?.element === item?.element
-    ) {
-      return;
-    }
-  }
-
-  private lockCellFocus() {}
-
-  private unlockCellFocus() {}
+  };
 }
