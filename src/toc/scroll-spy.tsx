@@ -55,7 +55,22 @@ export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | 
       if (scrollPos >= document.documentElement.scrollHeight) {
         isLastItem.current = true;
         setActiveSlug(hrefs[hrefs.length - 1]);
+      } else if (activeSlug === hrefs[hrefs.length - 1]) {
+        const lastElement = document.getElementById(hrefs[hrefs.length - 1]);
+        if (lastElement) {
+          const rect = lastElement.getBoundingClientRect();
+          console.log("HERE", rect);
+          if (
+            rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+            activeSlug === hrefs[hrefs.length - 1]
+          ) {
+            setActiveSlug(hrefs[hrefs.length - 2]);
+            isLastItem.current = false;
+          }
+        }
       } else {
+        if ()
+        setActiveSlug(hrefs[hrefs.length - 2]);
         isLastItem.current = false;
       }
     };

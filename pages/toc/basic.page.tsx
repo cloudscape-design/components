@@ -13,24 +13,18 @@ const TextContent = () => {
       <div style={{ padding: '40px' }}>
         <h2 id="section-1">Section 1</h2>
         <TextSample />
-
         <h3 id="section-1-1">Section 1.1</h3>
         <TextSample />
-
         <h4 id="section-1-1-1">Section 1.1.1</h4>
         <TextSample />
-
         <h4 id="section-1-1-2">Section 1.1.2</h4>
         <TextSample />
-
         <h3 id="section-1-2">Section 1.2</h3>
         <TextSample />
-
         <h4 id="section-1-2-1">Section 1.2.1</h4>
         <TextSample />
-
         <h5 id="section-1-2-1-1">Section 1.2.1.1</h5>
-        <TextSample />
+        <p>Hello bois and girls</p>)
       </div>
     </SpaceBetween>
   );
