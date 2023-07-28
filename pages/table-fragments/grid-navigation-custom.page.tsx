@@ -17,9 +17,11 @@ type PageContext = React.Context<
 const createColumnDefinitions = ({
   onDelete,
   onDuplicate,
+  onUpdate,
 }: {
   onDelete: (id: string) => void;
   onDuplicate: (id: string) => void;
+  onUpdate: (id: string) => void;
 }) => [
   {
     key: 'id',
@@ -33,6 +35,7 @@ const createColumnDefinitions = ({
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
         <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={() => onDelete(item.id)} />
         <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={() => onDuplicate(item.id)} />
+        <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={() => onUpdate(item.id)} />
       </div>
     ),
   },
@@ -59,6 +62,8 @@ export default function Page() {
         onDelete: (id: string) => setItems(prev => prev.filter(item => item.id !== id)),
         onDuplicate: (id: string) =>
           setItems(prev => prev.flatMap(item => (item.id !== id ? [item] : [item, { ...item, id: generateId() }]))),
+        onUpdate: (id: string) =>
+          setItems(prev => prev.map(item => (item.id !== id ? item : { ...item, id: generateId() }))),
       }),
     []
   );

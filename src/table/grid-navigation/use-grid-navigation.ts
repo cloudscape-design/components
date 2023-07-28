@@ -29,6 +29,8 @@ export function useGridNavigation({ getContainer, rows, columns, pageSize }: Gri
     [model]
   );
 
+  // TODO: is columns/rows actually needed??
+  // TODO: handle the case when rows and columns stay unchanged by the focused item disappears (e.g. it is replaced by another item)
   // Notify the model of the props change. The focus might need to move when the focused cell is no longer available.
   useEffect(() => {
     model.update({ rows, columns, pageSize });
@@ -36,6 +38,10 @@ export function useGridNavigation({ getContainer, rows, columns, pageSize }: Gri
 
   return model;
 }
+
+// TODO: add TAB traps surrounding table container
+// when the first tab trap is hit -> move the focus to the element after the last tab trap
+// when the last tab trap is hit -> move the focus to the container
 
 class GridNavigationModel {
   // Props
