@@ -7,4 +7,5 @@ export {
   getTableColHeaderRoleProps,
   getTableRoleProps,
   getTableRowRoleProps,
+  getTableWrapperRoleProps,
 } from './table-role-helper';

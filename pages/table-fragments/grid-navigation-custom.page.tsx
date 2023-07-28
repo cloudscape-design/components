@@ -38,7 +38,7 @@ export default function Page() {
         <h1>Grid navigation with a custom table</h1>
 
         <Container disableContentPaddings={true}>
-          <div ref={tableContainerRef} className={styles['custom-table']}>
+          <div ref={tableContainerRef} className={styles['custom-table']} role="region" tabIndex={0}>
             <table className={styles['custom-table-table']} role="grid">
               <thead>
                 <tr>

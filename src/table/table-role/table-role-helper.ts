@@ -16,11 +16,7 @@ const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingStat
 
 export type TableRole = 'table' | 'grid';
 
-export function getTableRoleProps(options: {
-  tableRole: TableRole;
-  ariaLabel?: string;
-  totalItemsCount?: number;
-}): React.TableHTMLAttributes<HTMLTableElement> {
+export function getTableRoleProps(options: { tableRole: TableRole; ariaLabel?: string; totalItemsCount?: number }) {
   const nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {};
 
   // Browsers have weird mechanism to guess whether it's a data table or a layout table.
@@ -35,11 +31,21 @@ export function getTableRoleProps(options: {
   return nativeProps;
 }
 
-export function getTableRowRoleProps(options: {
-  tableRole: TableRole;
-  rowIndex: number;
-  firstIndex?: number;
-}): React.HTMLAttributes<HTMLTableRowElement> {
+export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScrollable: boolean; ariaLabel?: string }) {
+  const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
+
+  // When the table has role="grid" the wrapper is made focusable so that the table has a single TAB stop.
+  // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
+  if (options.tableRole === 'grid' || options.isScrollable) {
+    nativeProps.role = 'region';
+    nativeProps.tabIndex = 0;
+    nativeProps['aria-label'] = options.ariaLabel;
+  }
+
+  return nativeProps;
+}
+
+export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: number; firstIndex?: number }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   if (options.tableRole === 'grid') {
@@ -53,9 +59,7 @@ export function getTableRowRoleProps(options: {
   return nativeProps;
 }
 
-export function getTableColHeaderRoleProps(options: {
-  sortingStatus?: SortingStatus;
-}): React.ThHTMLAttributes<HTMLTableCellElement> {
+export function getTableColHeaderRoleProps(options: { sortingStatus?: SortingStatus }) {
   const nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {};
 
   nativeProps.scope = 'col';
@@ -67,10 +71,7 @@ export function getTableColHeaderRoleProps(options: {
   return nativeProps;
 }
 
-export function getTableCellRoleProps(options: {
-  tableRole: TableRole;
-  isRowHeader?: boolean;
-}): React.TdHTMLAttributes<HTMLTableCellElement> {
+export function getTableCellRoleProps(options: { tableRole: TableRole; isRowHeader?: boolean }) {
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
