@@ -43,6 +43,7 @@ export interface TheadProps {
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
   selectionColumnId: PropertyKey;
+  focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   tableRole: TableRole;
 }
@@ -70,6 +71,7 @@ const Thead = React.forwardRef(
       stuck = false,
       stickyState,
       selectionColumnId,
+      focusedComponent,
       onFocusedComponentChange,
       tableRole,
     }: TheadProps,
@@ -120,6 +122,7 @@ const Thead = React.forwardRef(
                   onFocusDown={event => {
                     onFocusMove!(event.target as HTMLElement, -1, +1);
                   }}
+                  focusedComponent={focusedComponent}
                   onFocusedComponentChange={onFocusedComponentChange}
                   {...getSelectAllProps()}
                   {...(sticky ? { tabIndex: -1 } : {})}
@@ -154,6 +157,7 @@ const Thead = React.forwardRef(
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
                 }}
                 tabIndex={sticky ? -1 : 0}
+                focusedComponent={focusedComponent}
                 onFocusedComponentChange={onFocusedComponentChange}
                 column={column}
                 activeSortingColumn={sortingColumn}

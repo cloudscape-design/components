@@ -2,20 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { TableRole } from '../table-role';
-import { getFocusinCell } from './utils';
-
-export interface GridNavigationProps {
-  tableRole: TableRole;
-  rows: number;
-  columns: number;
-  pageSize: number;
-  getContainer: () => null | HTMLElement;
-}
-
-export interface GridNavigationAPI {
-  focusCell: (coordinates: { rowIndex: number; colIndex: number }) => void;
-}
+import { findFocusinItem } from './utils';
+import { FocusedItem, GridNavigationAPI, GridNavigationProps } from './interfaces';
 
 export function useGridNavigation({
   tableRole,
@@ -58,8 +46,7 @@ class GridNavigationModel {
   private _container: null | HTMLElement = null;
 
   // State
-  private focusedCell: null | { rowIndex: number; colIndex: number } = null;
-  private focusedElement: null | HTMLElement = null;
+  private focusedItem: null | FocusedItem = null;
 
   public init(container: HTMLElement) {
     this._container = container;
@@ -107,33 +94,32 @@ class GridNavigationModel {
   }
 
   private onFocusin(event: FocusEvent) {
-    const cell = getFocusinCell(event);
-    if (!cell) {
+    const item = findFocusinItem(event);
+    if (!item) {
       return;
     }
-    if (cell.rowIndex === this.focusedCell?.rowIndex && cell.colIndex === this.focusedCell?.colIndex) {
-      return;
-    }
-    this.focusedCell = { rowIndex: cell.rowIndex, colIndex: cell.colIndex };
+    this.setFocusedItem(item);
 
-    console.log('FOCUS IN WRAPPER', cell.rowIndex, cell.colIndex, cell.element);
-
-    // check target - if inside cell, update state, listeners, etc.
-    // if not cell - do nothing
+    console.log('FOCUS IN', item.rowIndex, item.colIndex, item.element);
   }
 
   private onFocusout() {
-    console.log('FOCUS OUT WRAPPER', this.focusedCell);
-    this.focusedCell = null;
+    console.log('FOCUS OUT');
+    this.setFocusedItem(null);
   }
-
-  private onCellFocus() {}
-
-  // TODO: check if blur is triggered upon cell unmounting
-  private onCellBlur() {}
 
   private onKeydown() {
     console.log('onkeydown');
+  }
+
+  private setFocusedItem(item: null | FocusedItem) {
+    if (
+      this.focusedItem?.rowIndex === item?.rowIndex &&
+      this.focusedItem?.colIndex === item?.colIndex &&
+      this.focusedItem?.element === item?.element
+    ) {
+      return;
+    }
   }
 
   private lockCellFocus() {}

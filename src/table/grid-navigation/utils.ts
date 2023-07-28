@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export function getFocusinCell(
-  event: FocusEvent
-): null | { rowIndex: number; colIndex: number; element: HTMLTableCellElement } {
+import { FocusedItem } from './interfaces';
+
+export function findFocusinItem(event: FocusEvent): null | FocusedItem {
   if (!(event.target instanceof Element)) {
     return null;
   }

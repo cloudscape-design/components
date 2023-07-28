@@ -19,4 +19,5 @@
 
 // TODO: move grid navigation to under src/table/table-role
 
-export { useGridNavigation, GridNavigationProps, GridNavigationAPI } from './use-grid-navigation';
+export { GridNavigationProps, GridNavigationAPI } from './interfaces';
+export { useGridNavigation } from './use-grid-navigation';
