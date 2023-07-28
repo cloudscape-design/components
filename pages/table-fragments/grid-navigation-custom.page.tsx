@@ -10,10 +10,23 @@ import { useGridNavigation } from '~components/table/grid-navigation';
 const items = generateItems(50);
 const columnDefinitions = [
   { key: 'id', label: 'ID', render: (item: Instance) => item.id },
-  { key: 'state', label: 'State', render: (item: Instance) => item.state },
-  { key: 'imageId', label: 'Image ID', render: (item: Instance) => <Link>{item.imageId}</Link> },
-  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? 'none' },
-  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? 'none') + ':2' },
+  { key: 'state', label: 'State', render: (item: Instance) => <Link>{item.imageId}</Link> },
+  {
+    key: 'imageId',
+    label: 'Image ID',
+    render: (item: Instance) => (
+      <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+        <Link>{item.imageId.slice(0, 3)}</Link>
+        <span>—</span>
+        <Link>{item.imageId.slice(4, 7)}</Link>
+        <span>—</span>
+        <Link>{item.imageId.slice(6, 9)}</Link>
+      </div>
+    ),
+  },
+  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
+  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
+  { key: 'dnsName3', label: 'DNS name 3', render: (item: Instance) => (item.dnsName ?? '?') + ':3' },
   { key: 'type', label: 'Type', render: (item: Instance) => item.type },
 ];
 
@@ -35,9 +48,13 @@ export default function Page() {
   return (
     <Box margin="l">
       <SpaceBetween size="xl">
-        <h1>Grid navigation with a custom table</h1>
+        <h1>Grid navigation with a custom table grid</h1>
 
-        <Container disableContentPaddings={true}>
+        <Container
+          disableContentPaddings={true}
+          header={<Link>Focusable element before grid</Link>}
+          footer={<Link>Focusable element after grid</Link>}
+        >
           <div ref={tableContainerRef} className={styles['custom-table']} role="region" tabIndex={0}>
             <table className={styles['custom-table-table']} role="grid">
               <thead>

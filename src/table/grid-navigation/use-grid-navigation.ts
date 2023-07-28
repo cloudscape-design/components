@@ -91,7 +91,11 @@ class GridNavigationModel {
     return this._container;
   }
 
-  private onFocus() {}
+  private onFocus() {
+    console.log('FOCUS ON WRAPPER');
+  }
 
-  private onBlur() {}
+  private onBlur() {
+    console.log('BLUR WRAPPER');
+  }
 }
