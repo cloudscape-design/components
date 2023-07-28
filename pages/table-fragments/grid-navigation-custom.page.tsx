@@ -7,6 +7,13 @@ import styles from './styles.scss';
 import { id as generateId, generateItems, Instance } from '../table/generate-data';
 import { useGridNavigation } from '~components/table/grid-navigation';
 import AppContext, { AppContextType } from '../app/app-context';
+import {
+  getTableCellRoleProps,
+  getTableColHeaderRoleProps,
+  getTableRoleProps,
+  getTableRowRoleProps,
+  getTableWrapperRoleProps,
+} from '~components/table/table-role';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -70,7 +77,9 @@ export default function Page() {
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
+  const tableRole = 'grid';
   const gridNavigationApi = useGridNavigation({
+    tableRole: 'grid',
     getContainer: () => tableContainerRef.current,
     rows: items.length,
     columns: columnDefinitions.length,
@@ -102,20 +111,38 @@ export default function Page() {
           header={<Link>Focusable element before grid</Link>}
           footer={<Link>Focusable element after grid</Link>}
         >
-          <div ref={tableContainerRef} className={styles['custom-table']} role="region" tabIndex={0}>
-            <table className={styles['custom-table-table']} role="grid">
+          <div
+            ref={tableContainerRef}
+            className={styles['custom-table']}
+            {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}
+          >
+            <table
+              className={styles['custom-table-table']}
+              {...getTableRoleProps({ tableRole, totalItemsCount: items.length })}
+            >
               <thead>
                 <tr>
                   {columnDefinitions.map(column => (
-                    <TableColHeader key={column.key}>{column.label}</TableColHeader>
+                    <th key={column.key} className={styles['custom-table-cell']} {...getTableColHeaderRoleProps({})}>
+                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+                        <div>{column.label}</div>
+                        <Button variant="inline-icon" iconName="angle-down" ariaLabel="Sorting indicator" />
+                      </div>
+                    </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {items.map(item => (
-                  <tr key={item.id}>
+                {items.map((item, rowIndex) => (
+                  <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
                     {columnDefinitions.map(column => (
-                      <TableCell key={column.key}>{column.render(item)}</TableCell>
+                      <td
+                        key={column.key}
+                        className={styles['custom-table-cell']}
+                        {...getTableCellRoleProps({ tableRole })}
+                      >
+                        {column.render(item)}
+                      </td>
                     ))}
                   </tr>
                 ))}
@@ -125,21 +152,5 @@ export default function Page() {
         </Container>
       </SpaceBetween>
     </Box>
-  );
-}
-
-function TableColHeader({ children }: { children: React.ReactNode }) {
-  return (
-    <th className={styles['custom-table-cell']} scope="col">
-      {children}
-    </th>
-  );
-}
-
-function TableCell({ children }: { children: React.ReactNode }) {
-  return (
-    <td className={styles['custom-table-cell']} role="gridcell">
-      {children}
-    </td>
   );
 }

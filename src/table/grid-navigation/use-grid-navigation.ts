@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
+import { TableRole } from '../table-role';
 
 export interface GridNavigationProps {
+  tableRole: TableRole;
   rows: number;
   columns: number;
   pageSize: number;
