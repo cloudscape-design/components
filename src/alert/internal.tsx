@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../button/internal';
 import { IconProps } from '../icon/interfaces';
@@ -37,6 +37,7 @@ export default function InternalAlert({
   header,
   buttonText,
   action,
+  autoFocus,
   onDismiss,
   onButtonClick,
   __internalRootRef = null,
@@ -45,6 +46,7 @@ export default function InternalAlert({
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('alert');
 
+  const focusRef = useRef<HTMLDivElement>(null);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
   const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
@@ -66,6 +68,12 @@ export default function InternalAlert({
     [DATA_ATTR_ANALYTICS_ALERT]: type,
   };
 
+  useEffect(() => {
+    if (autoFocus && visible && focusRef.current) {
+      focusRef.current.focus();
+    }
+  }, [autoFocus, visible, focusRef]);
+
   return (
     <div
       {...baseProps}
@@ -81,15 +89,17 @@ export default function InternalAlert({
     >
       <VisualContext contextName="alert">
         <div className={clsx(styles.alert, styles[`type-${type}`])}>
-          <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
-            <InternalIcon name={typeToIcon[type]} size={size} />
-          </div>
-          <div className={styles.body}>
-            <div className={clsx(styles.message, styles.text)}>
-              {header && <div className={styles.header}>{header}</div>}
-              <div className={styles.content}>{children}</div>
+          <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
+            <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
+              <InternalIcon name={typeToIcon[type]} size={size} />
             </div>
-            {hasAction && <div className={styles.action}>{actionButton}</div>}
+            <div className={styles.body}>
+              <div className={clsx(styles.message, styles.text)}>
+                {header && <div className={styles.header}>{header}</div>}
+                <div className={styles.content}>{children}</div>
+              </div>
+              {hasAction && <div className={styles.action}>{actionButton}</div>}
+            </div>
           </div>
           {dismissible && (
             <div className={styles.dismiss}>

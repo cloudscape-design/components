@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import Alert from '~components/alert';
+import Button from '~components/button';
 import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
@@ -16,6 +17,7 @@ export default function AlertScenario() {
     <I18nProvider messages={[messages]} locale="en">
       <article>
         <h1>Simple alert</h1>
+        <Button onClick={() => setVisible(!visible)}>Toggle visibility</Button>
         <ScreenshotArea>
           <SpaceBetween size="s">
             <div className={styles['alert-container']}>
@@ -27,6 +29,7 @@ export default function AlertScenario() {
                 buttonText="Button text"
                 type="warning"
                 onDismiss={() => setVisible(false)}
+                autoFocus={true}
               >
                 Content
                 <br />

@@ -53,6 +53,13 @@ export interface AlertProps extends BaseComponentProps {
    * Although it is technically possible to insert any content, our UX guidelines only allow you to add a button.
    */
   action?: React.ReactNode;
+
+  /**
+   * Automatically focuses the alert when component is mounted.
+   * Use this when the alert should immediately notify the user of a critical error.
+   */
+  autoFocus?: boolean;
+
   /**
    * Fired when the user clicks the close icon that is displayed
    * when the `dismissible` property is set to `true`.

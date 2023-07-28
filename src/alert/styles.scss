@@ -6,6 +6,7 @@
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/hooks/focus-visible' as focus-visible;
 
 @use './motion';
 
@@ -48,6 +49,17 @@
 
 .action-button {
   /* used in test-utils */
+}
+
+.alert-focus-wrapper {
+  display: flex;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
 }
 
 .text {
