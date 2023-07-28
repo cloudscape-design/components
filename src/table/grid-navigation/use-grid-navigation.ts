@@ -56,7 +56,6 @@ class GridNavigationModel {
 
   public update({ pageSize }: { pageSize: number }) {
     this._pageSize = pageSize;
-    // TODO: validate state
   }
 
   // TODO: implement
