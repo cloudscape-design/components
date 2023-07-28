@@ -15,4 +15,6 @@
 // The grid has one tab stop - can navigate inside with array keys but not tab
 // Screen-reader user experience is unchanged
 
+// TODO: no tab escape in the initial implementation!
+
 export { useGridNavigation, GridNavigationProps, GridNavigationAPI } from './use-grid-navigation';

@@ -49,10 +49,6 @@ export function useGridNavigation({
   return model;
 }
 
-// TODO: add TAB traps surrounding table container
-// when the first tab trap is hit -> move the focus to the element after the last tab trap
-// when the last tab trap is hit -> move the focus to the container
-
 class GridNavigationModel {
   // Props
   private _rows = 0;
@@ -62,35 +58,20 @@ class GridNavigationModel {
 
   // State
   private focusedRow: null | number = null;
+  // TODO: use a single focus pointer { row: col: } ?
   private focusedColumn: null | number = null;
   private focusedElement: null | HTMLElement = null;
-  private focusTrapInside: null | HTMLDivElement = null;
-  private focusTrapAfter: null | HTMLDivElement = null;
 
   public init(container: HTMLElement) {
     this._container = container;
 
-    this.container.addEventListener('focusin', this.onFocus);
+    this.container.addEventListener('focus', this.onFocus);
     this.container.addEventListener('blur', this.onBlur);
-
-    this.focusTrapInside = this.createFocusTrap(this.onFocusInside);
-    this.container.insertBefore(this.focusTrapInside, this.container.firstChild);
-
-    this.focusTrapAfter = this.createFocusTrap(this.onFocusAfter);
-    this.container.append(this.focusTrapAfter);
   }
 
   public destroy() {
-    this.container.removeEventListener('focusin', this.onFocus);
+    this.container.removeEventListener('focus', this.onFocus);
     this.container.removeEventListener('blur', this.onBlur);
-
-    if (this.focusTrapInside) {
-      this.focusTrapInside.remove();
-    }
-
-    if (this.focusTrapAfter) {
-      this.focusTrapAfter.remove();
-    }
   }
 
   public update({ rows, columns, pageSize }: { rows: number; columns: number; pageSize: number }) {
@@ -131,15 +112,4 @@ class GridNavigationModel {
   private onBlur() {
     console.log('BLUR WRAPPER');
   }
-
-  private createFocusTrap(onFocus: () => void) {
-    const div = document.createElement('div');
-    div.tabIndex = 0;
-    div.addEventListener('focus', onFocus);
-    return div;
-  }
-
-  private onFocusInside() {}
-
-  private onFocusAfter() {}
 }
