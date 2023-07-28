@@ -1,28 +1,46 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import SpaceBetween from '~components/space-between';
-import { Box, Container, Link } from '~components';
+import { Box, Button, ColumnLayout, Container, FormField, Input, Link } from '~components';
 import styles from './styles.scss';
-import { generateItems, Instance } from '../table/generate-data';
+import { id as generateId, generateItems, Instance } from '../table/generate-data';
 import { useGridNavigation } from '~components/table/grid-navigation';
+import AppContext, { AppContextType } from '../app/app-context';
 
-const items = generateItems(50);
-const columnDefinitions = [
-  { key: 'id', label: 'ID', render: (item: Instance) => item.id },
-  { key: 'state', label: 'State', render: (item: Instance) => <Link>{item.imageId}</Link> },
+type PageContext = React.Context<
+  AppContextType<{
+    pageSize: number;
+  }>
+>;
+
+const createColumnDefinitions = ({
+  onDelete,
+  onDuplicate,
+}: {
+  onDelete: (id: string) => void;
+  onDuplicate: (id: string) => void;
+}) => [
+  {
+    key: 'id',
+    label: 'ID',
+    render: (item: Instance) => item.id,
+  },
+  {
+    key: 'actions',
+    label: 'Actions',
+    render: (item: Instance) => (
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+        <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={() => onDelete(item.id)} />
+        <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={() => onDuplicate(item.id)} />
+      </div>
+    ),
+  },
+  { key: 'state', label: 'State', render: (item: Instance) => item.state },
   {
     key: 'imageId',
     label: 'Image ID',
-    render: (item: Instance) => (
-      <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
-        <Link>{item.imageId.slice(0, 3)}</Link>
-        <span>—</span>
-        <Link>{item.imageId.slice(4, 7)}</Link>
-        <span>—</span>
-        <Link>{item.imageId.slice(6, 9)}</Link>
-      </div>
-    ),
+    render: (item: Instance) => <Link>{item.imageId}</Link>,
   },
   { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
   { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
@@ -31,13 +49,27 @@ const columnDefinitions = [
 ];
 
 export default function Page() {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const pageSize = urlParams.pageSize ?? 25;
+
+  const [items, setItems] = useState(generateItems(25));
+  const columnDefinitions = useMemo(
+    () =>
+      createColumnDefinitions({
+        onDelete: (id: string) => setItems(prev => prev.filter(item => item.id !== id)),
+        onDuplicate: (id: string) =>
+          setItems(prev => prev.flatMap(item => (item.id !== id ? [item] : [item, { ...item, id: generateId() }]))),
+      }),
+    []
+  );
+
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const gridNavigationApi = useGridNavigation({
     getContainer: () => tableContainerRef.current,
     rows: items.length,
     columns: columnDefinitions.length,
-    pageSize: 25,
+    pageSize,
   });
 
   // TODO: use gridNavigationApi.focusCell
@@ -47,8 +79,18 @@ export default function Page() {
 
   return (
     <Box margin="l">
-      <SpaceBetween size="xl">
+      <SpaceBetween size="l">
         <h1>Grid navigation with a custom table grid</h1>
+
+        <ColumnLayout columns={3}>
+          <FormField label="Page size">
+            <Input
+              type="number"
+              value={pageSize.toString()}
+              onChange={event => setUrlParams({ pageSize: parseInt(event.detail.value) })}
+            />
+          </FormField>
+        </ColumnLayout>
 
         <Container
           disableContentPaddings={true}
