@@ -45,14 +45,22 @@ export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScro
   return nativeProps;
 }
 
+export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
+  const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
+
+  if (options.tableRole === 'grid') {
+    nativeProps['aria-rowindex'] = 1;
+  }
+
+  return nativeProps;
+}
+
 export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: number; firstIndex?: number }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   if (options.tableRole === 'grid') {
-    nativeProps.role = 'row';
-  }
-
-  if (options.tableRole === 'grid' || options.firstIndex !== undefined) {
+    nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 2;
+  } else if (options.firstIndex !== undefined) {
     nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 1;
   }
 
@@ -84,7 +92,6 @@ export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex:
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
-    nativeProps.role = 'gridcell';
     nativeProps.tabIndex = -1;
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }

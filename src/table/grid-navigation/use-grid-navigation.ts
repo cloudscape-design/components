@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo } from 'react';
 import { TableRole } from '../table-role';
+import { getFocusinCell } from './utils';
 
 export interface GridNavigationProps {
   tableRole: TableRole;
@@ -104,18 +105,12 @@ class GridNavigationModel {
   }
 
   private onFocusin(event: FocusEvent) {
-    if (!(event.target instanceof Element)) {
+    const cell = getFocusinCell(event);
+    if (!cell) {
       return;
     }
 
-    const closestCell = event.target.closest('td,th');
-    const closestRow = closestCell?.closest('tr');
-
-    if (!closestCell || !closestRow) {
-      return;
-    }
-
-    console.log('FOCUS IN WRAPPER', closestCell, closestRow);
+    console.log('FOCUS IN WRAPPER', cell.rowIndex, cell.colIndex);
 
     // check target - if inside cell, update state, listeners, etc.
     // if not cell - do nothing

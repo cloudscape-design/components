@@ -10,6 +10,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 import {
   getTableCellRoleProps,
   getTableColHeaderRoleProps,
+  getTableHeaderRowRoleProps,
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
@@ -123,7 +124,7 @@ export default function Page() {
               {...getTableRoleProps({ tableRole, totalItemsCount: items.length })}
             >
               <thead>
-                <tr>
+                <tr {...getTableHeaderRowRoleProps({ tableRole })}>
                   {columnDefinitions.map((column, colIndex) => (
                     <th
                       key={column.key}

@@ -5,6 +5,7 @@ export {
   TableRole,
   getTableCellRoleProps,
   getTableColHeaderRoleProps,
+  getTableHeaderRowRoleProps,
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
