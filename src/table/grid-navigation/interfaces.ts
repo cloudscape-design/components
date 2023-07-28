@@ -5,8 +5,6 @@ import { TableRole } from '../table-role';
 
 export interface GridNavigationProps {
   tableRole: TableRole;
-  rows: number;
-  columns: number;
   pageSize: number;
   getContainer: () => null | HTMLElement;
 }

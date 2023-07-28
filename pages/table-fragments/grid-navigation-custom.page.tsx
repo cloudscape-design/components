@@ -82,8 +82,6 @@ export default function Page() {
   const gridNavigationApi = useGridNavigation({
     tableRole: 'grid',
     getContainer: () => tableContainerRef.current,
-    rows: items.length,
-    columns: columnDefinitions.length,
     pageSize,
   });
 
