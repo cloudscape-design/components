@@ -85,6 +85,7 @@ class GridNavigationModel {
 
   private onFocusin = (event: FocusEvent) => {
     const cell = findFocusinCell(event);
+
     if (!cell) {
       return;
     }

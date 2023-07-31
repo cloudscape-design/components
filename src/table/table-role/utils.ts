@@ -74,11 +74,11 @@ export function updateTableIndices(table: HTMLTableElement) {
   for (let i = 1; i < tableCells.length - 1; i++) {
     tableCells[i].tabIndex = -1;
   }
-  if (firstCell && !getFirstFocusable(firstCell)) {
-    firstCell.tabIndex = 0;
+  if (firstCell) {
+    firstCell.tabIndex = !getFirstFocusable(firstCell) || isWidgetCell(firstCell) ? 0 : -1;
   }
-  if (lastCell && !getFirstFocusable(lastCell)) {
-    lastCell.tabIndex = 0;
+  if (lastCell) {
+    lastCell.tabIndex = !getFirstFocusable(lastCell) || isWidgetCell(lastCell) ? 0 : -1;
   }
 }
 
