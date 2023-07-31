@@ -9,7 +9,7 @@ import customCssProps from '../../internal/generated/custom-css-properties';
  * If a child component utilizes a sticky header the hasStickyBackground property will determine
  * if the background remains in the same vertical position.
  */
-export default function useAppLayoutDynamicOverlap({
+export default function useContentHeaderOverlap({
   contentHeader,
   disableContentHeaderOverlap,
   layoutElement,
@@ -20,12 +20,12 @@ export default function useAppLayoutDynamicOverlap({
 }) {
   const hasContentHeader = !!contentHeader;
 
-  const [isDynamicOverlapSet, setIsDynamicOverlapSet] = useState(hasContentHeader);
+  const [hasContentHeaderOverlap, setHasContentHeaderOverlap] = useState(hasContentHeader);
 
-  const updateDynamicOverlapHeight = useCallback(
+  const updateContentHeaderOverlapHeight = useCallback(
     (height: number) => {
-      const isSet = hasContentHeader || height > 0;
-      setIsDynamicOverlapSet(isSet);
+      const hasOverlap = hasContentHeader || height > 0;
+      setHasContentHeaderOverlap(hasOverlap);
 
       /**
        * React 18 will trigger a paint before the state is correctly updated
@@ -41,7 +41,7 @@ export default function useAppLayoutDynamicOverlap({
       if (!element) {
         return;
       }
-      if (disableContentHeaderOverlap || !isSet || height <= 0) {
+      if (disableContentHeaderOverlap || !hasOverlap || height <= 0) {
         element.style.removeProperty(customCssProps.overlapHeight);
       } else {
         element.style.setProperty(customCssProps.overlapHeight, `${height}px`);
@@ -51,7 +51,7 @@ export default function useAppLayoutDynamicOverlap({
   );
 
   return {
-    isDynamicOverlapSet,
-    updateDynamicOverlapHeight,
+    hasContentHeaderOverlap,
+    updateContentHeaderOverlapHeight,
   };
 }

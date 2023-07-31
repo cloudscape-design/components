@@ -30,7 +30,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import useAppLayoutDynamicOverlap from './use-app-layout-dynamic-overlap';
+import useContentHeaderOverlap from './use-content-header-overlap';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
@@ -52,8 +52,8 @@ interface AppLayoutInternals extends AppLayoutProps {
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
   hasStickyBackground: boolean;
-  isDynamicOverlapDisabled: boolean;
-  isDynamicOverlapSet: boolean;
+  isContentHeaderOverlapDisabled: boolean;
+  hasContentHeaderOverlap: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -482,7 +482,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
-    const { isDynamicOverlapSet, updateDynamicOverlapHeight } = useAppLayoutDynamicOverlap({
+    const { hasContentHeaderOverlap, updateContentHeaderOverlapHeight } = useContentHeaderOverlap({
       contentHeader: props.contentHeader,
       disableContentHeaderOverlap: props.disableContentHeaderOverlap,
       layoutElement,
@@ -611,13 +611,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
           handleToolsClick,
+          hasContentHeaderOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
           hasStickyBackground,
+          isContentHeaderOverlapDisabled: props.disableContentHeaderOverlap || !hasContentHeaderOverlap,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
-          isDynamicOverlapDisabled: props.disableContentHeaderOverlap || !isDynamicOverlapSet,
-          isDynamicOverlapSet,
           isSplitPanelForcedPosition,
           isSplitPanelOpen,
           isToolsOpen,
@@ -662,7 +662,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             setHasStickyBackground,
           }}
         >
-          <DynamicOverlapContext.Provider value={updateDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>
+          <DynamicOverlapContext.Provider value={updateContentHeaderOverlapHeight}>
+            {children}
+          </DynamicOverlapContext.Provider>
         </AppLayoutContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );
