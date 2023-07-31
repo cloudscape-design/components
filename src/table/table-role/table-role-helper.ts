@@ -52,6 +52,7 @@ export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScro
 export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
+  // For grids headers are treated similar to data rows and are indexed accordingly.
   if (options.tableRole === 'grid') {
     nativeProps['aria-rowindex'] = 1;
   }
@@ -62,9 +63,12 @@ export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
 export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: number; firstIndex?: number }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
+  // For grids data cell indices are incremented by 2 to account for the header cells.
   if (options.tableRole === 'grid') {
     nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 2;
-  } else if (options.firstIndex !== undefined) {
+  }
+  // For tables indices are only added when the first index is not 0 (not the first page/frame).
+  else if (options.firstIndex !== undefined) {
     nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 1;
   }
 
@@ -81,7 +85,6 @@ export function getTableColHeaderRoleProps(options: {
   nativeProps.scope = 'col';
 
   if (options.tableRole === 'grid') {
-    nativeProps.tabIndex = -1;
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
@@ -96,7 +99,6 @@ export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex:
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
-    nativeProps.tabIndex = -1;
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
