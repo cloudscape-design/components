@@ -30,7 +30,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import customCssProps from '../../internal/generated/custom-css-properties';
+import useDynamicOverlap from './use-dynamic-overlap';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
@@ -132,17 +132,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
-    const hasContentHeader = !!props.contentHeader;
-    /**
-     * The overlap height has a default set in CSS but can also be dynamically overridden
-     * for content types (such as Table and Wizard) that have variable size content in the overlap.
-     * If a child component utilizes a sticky header the hasStickyBackground property will determine
-     * if the background remains in the same vertical position.
-     */
-    const [isDynamicOverlapSet, setIsDynamicOverlapSet] = useState(hasContentHeader);
-    const [isDynamicOverlapDisabled, setIsDynamicOverlapDisabled] = useState(
-      props.disableContentHeaderOverlap || !hasContentHeader
-    );
     const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
@@ -493,37 +482,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
-    const updateDynamicOverlapHeight = useCallback(
-      (height: number) => {
-        /**
-         * The disableContentHeaderOverlap property is absolute and will always disable the overlap
-         * if it is set to true. If there is no contentHeader then the overlap should be disabled
-         * unless there is a dynamicOverlapHeight. The dynamicOverlapHeight property is set by a
-         * component in the content slot that needs to manually control the overlap height.
-         */
-        const isOverlapSet = hasContentHeader || height > 0;
-        const isOverlapDisabled = props.disableContentHeaderOverlap || !isOverlapSet;
-        setIsDynamicOverlapSet(isOverlapSet);
-        setIsDynamicOverlapDisabled(isOverlapDisabled);
-
-        /**
-         * React 18 will trigger a paint before the state is correctly updated
-         * (see https://github.com/facebook/react/issues/24331).
-         * To work around this, we bypass React state updates and imperatively update the custom property on the DOM.
-         * An alternative would be to use `queueMicrotask` and `flushSync` in the ResizeObserver callback,
-         * but that would have some performance impact as it would delay the render.
-         * Using React state for `isDynamicOverlapSet` and `isDynamicOverlapDisabled` is less problematic
-         * because they will rarely change within the lifecycle of an application.
-         */
-        const element = typeof layoutElement !== 'function' && layoutElement?.current; // Layout component uses RefObject
-        if (isOverlapDisabled || height <= 0) {
-          element?.style.removeProperty(customCssProps.overlapHeight);
-        } else {
-          element?.style.setProperty(customCssProps.overlapHeight, `${height}px`);
-        }
-      },
-      [layoutElement, hasContentHeader, props.disableContentHeaderOverlap]
-    );
+    const { isDynamicOverlapSet, isDynamicOverlapDisabled, updateDynamicOverlapHeight } = useDynamicOverlap({
+      contentHeader: props.contentHeader,
+      disableContentHeaderOverlap: props.disableContentHeaderOverlap,
+      layoutElement,
+    });
 
     useLayoutEffect(
       function handleMainOffsetLeft() {
