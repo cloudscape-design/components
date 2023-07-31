@@ -63,6 +63,27 @@
       outline-style: solid;
       outline-width: 2px;
       outline-offset: -4px;
+
+      &.awsui-cell-readonly {
+        outline-style: dashed;
+      }
+    }
+  }
+
+  &-sorting-header {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    font-weight: bold;
+    margin-left: 2px;
+
+    &:focus {
+      outline: tokens.$color-background-control-checked;
+      outline-style: solid;
+      outline-width: 2px;
+      outline-offset: 2px;
+      z-index: 1;
     }
   }
 }

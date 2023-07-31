@@ -11,6 +11,7 @@ import {
   FormField,
   Header,
   HelpPanel,
+  Icon,
   Input,
   Link,
 } from '~components';
@@ -26,6 +27,7 @@ import {
   getTableWrapperRoleProps,
   useGridNavigation,
 } from '~components/table/table-role';
+import { orderBy } from 'lodash';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -88,6 +90,9 @@ export default function Page() {
     []
   );
 
+  const [sortingKey, setSortingKey] = useState<null | string>(null);
+  const [sortingDirection, setSortingDirection] = useState<1 | -1>(1);
+
   const tableRef = useRef<HTMLTableElement>(null);
 
   const tableRole = 'grid';
@@ -101,6 +106,13 @@ export default function Page() {
   if (Math.random() > 1) {
     console.log(gridNavigationApi);
   }
+
+  const sortedItems = useMemo(() => {
+    if (!sortingKey) {
+      return items;
+    }
+    return orderBy(items, [sortingKey], [sortingDirection === -1 ? 'desc' : 'asc']);
+  }, [items, sortingKey, sortingDirection]);
 
   return (
     <AppLayout
@@ -145,15 +157,28 @@ export default function Page() {
                         {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                       >
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-                          <div>{column.label}</div>
-                          <Button variant="inline-icon" iconName="angle-down" ariaLabel="Sorting indicator" />
+                          <button
+                            className={styles['custom-table-sorting-header']}
+                            onClick={() => {
+                              if (sortingKey !== column.key) {
+                                setSortingKey(column.key);
+                                setSortingDirection(-1);
+                              } else {
+                                setSortingDirection(prev => (prev === 1 ? -1 : 1));
+                              }
+                            }}
+                          >
+                            {column.label}
+                          </button>
+                          {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
+                          {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
                         </div>
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item, rowIndex) => (
+                  {sortedItems.map((item, rowIndex) => (
                     <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
                       {columnDefinitions.map((column, colIndex) => (
                         <td
