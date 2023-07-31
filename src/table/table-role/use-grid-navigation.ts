@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell, moveFocusBy } from './utils';
+import { findFocusinCell, moveFocusBy, moveFocusIn } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { containsOrEqual } from '../../internal/utils/dom';
@@ -41,8 +41,6 @@ class GridNavigationModel {
   private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
   private cleanup = () => {};
-  private firstCell: null | HTMLTableCellElement = null;
-  private lastCell: null | HTMLTableCellElement = null;
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -51,7 +49,7 @@ class GridNavigationModel {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
-    this.initCellFocus();
+    this.updateCellFocus();
 
     const mutationObserver = new MutationObserver(this.onMutation);
     mutationObserver.observe(table, { childList: true, subtree: true });
@@ -60,8 +58,6 @@ class GridNavigationModel {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
-
-      this.cleanupCellFocus();
 
       mutationObserver.disconnect();
     };
@@ -171,6 +167,17 @@ class GridNavigationModel {
         event.preventDefault();
         return moveFocusBy(this.table, from, { y: maxExtreme, x: maxExtreme });
 
+      case KeyCode.enter:
+        if (from.element instanceof HTMLTableCellElement) {
+          event.preventDefault();
+          return moveFocusIn(from);
+        }
+        break;
+
+      case KeyCode.escape:
+        event.preventDefault();
+        return moveFocusBy(this.table, from, { y: 0, x: 0 });
+
       default:
         return;
     }
@@ -191,28 +198,16 @@ class GridNavigationModel {
       }
     }
 
-    const hasAddedNodes = !!mutationRecords.find(record => record.addedNodes.length > 0);
-    if (hasAddedNodes) {
-      this.cleanupCellFocus();
-      this.initCellFocus();
-    }
+    this.updateCellFocus();
   };
 
-  private initCellFocus() {
+  private updateCellFocus() {
     const tableCells = this.table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
 
-    this.firstCell = tableCells[0];
-    this.firstCell.tabIndex = 0;
-
-    this.lastCell = tableCells[tableCells.length - 1];
-    this.lastCell.tabIndex = 0;
-  }
-
-  private cleanupCellFocus() {
-    this.firstCell && (this.firstCell.tabIndex = -1);
-    this.firstCell = null;
-
-    this.lastCell && (this.lastCell.tabIndex = -1);
-    this.lastCell = null;
+    for (let i = 1; i < tableCells.length - 1; i++) {
+      tableCells[i].tabIndex = -1;
+    }
+    tableCells[0].tabIndex = 0;
+    tableCells[tableCells.length - 1].tabIndex = 0;
   }
 }

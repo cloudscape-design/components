@@ -28,7 +28,10 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   let elementIndex = cellFocusables.indexOf(target);
   elementIndex = elementIndex === -1 ? 0 : elementIndex;
 
-  const element = target !== cellElement || cellFocusables.length === 0 ? target : cellFocusables[0];
+  let element = target;
+  if (target === cellElement && cellFocusables.length > 0 && !isWidgetCell(cellElement)) {
+    element = cellFocusables[0];
+  }
 
   return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element };
 }
@@ -41,8 +44,10 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   }
 
   const cellFocusables = getFocusables(from.cellElement);
-  if (delta.x && 0 <= from.elementIndex + delta.x && from.elementIndex + delta.x < cellFocusables.length) {
-    cellFocusables[from.elementIndex + delta.x].focus();
+  const eligibleForElementFocus = delta.x && !isWidgetCell(from.element);
+  const targetElementIndex = from.elementIndex + delta.x;
+  if (eligibleForElementFocus && 0 <= targetElementIndex && targetElementIndex < cellFocusables.length) {
+    cellFocusables[targetElementIndex].focus();
     return;
   }
 
@@ -52,9 +57,18 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
+  if (isWidgetCell(targetCell)) {
+    return targetCell.focus();
+  }
+
   const targetCellFocusables = getFocusables(targetCell);
   const focusTarget = targetCellFocusables[from.elementIndex] ?? targetCellFocusables[0] ?? targetCell;
   focusTarget.focus();
+}
+
+export function moveFocusIn(from: FocusedCell) {
+  const cellFocusables = getFocusables(from.cellElement);
+  cellFocusables[0]?.focus();
 }
 
 function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {
@@ -83,4 +97,8 @@ function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAri
     }
   }
   return targetCell;
+}
+
+function isWidgetCell(cell: HTMLElement) {
+  return cell.getAttribute('data-widget-cell') === 'true';
 }

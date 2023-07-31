@@ -14,6 +14,7 @@ import {
   Icon,
   Input,
   Link,
+  SegmentedControl,
 } from '~components';
 import styles from './styles.scss';
 import { id as generateId, generateItems, Instance } from '../table/generate-data';
@@ -60,11 +61,31 @@ const createColumnDefinitions = ({
       </div>
     ),
   },
-  { key: 'state', label: 'State', render: (item: Instance) => item.state },
+  {
+    key: 'state',
+    label: 'State',
+    render: (item: Instance) => item.state,
+  },
   {
     key: 'imageId',
     label: 'Image ID',
     render: (item: Instance) => <Link>{item.imageId}</Link>,
+  },
+  {
+    key: 'state-toggle',
+    label: 'State toggle',
+    render: (item: Instance) => (
+      <SegmentedControl
+        selectedId={item.state === 'RUNNING' || item.state === 'STOPPING' ? 'On' : 'Off'}
+        onChange={event => alert(`Changed item state to "${event.detail.selectedId}"`)}
+        label="Instance state"
+        options={[
+          { text: 'On', id: 'On' },
+          { text: 'Off', id: 'Off' },
+        ]}
+      />
+    ),
+    isWidget: true,
   },
   { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
   { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
@@ -185,6 +206,7 @@ export default function Page() {
                           key={column.key}
                           className={styles['custom-table-cell']}
                           {...getTableCellRoleProps({ tableRole, colIndex })}
+                          data-widget-cell={column.isWidget}
                         >
                           {column.render(item)}
                         </td>
@@ -239,6 +261,12 @@ function GridNavigationHelpPanel() {
         </li>
         <li>
           <b>Control+End</b> (to the last item in the grid)
+        </li>
+        <li>
+          <b>Enter</b> (to move focus inside widget cell)
+        </li>
+        <li>
+          <b>Escape</b> (to move widget focus back to cell)
         </li>
       </ul>
     </HelpPanel>
