@@ -10,7 +10,7 @@
   "scripts": {
     "quick-build": "gulp quick-build",
     "build": "NODE_ENV=production gulp build",
-    "test": "echo test",
+    "test": "gulp test",
     "test:unit": "gulp test:unit",
     "test:a11y": "gulp test:a11y",
     "test:integ": "gulp test:integ",
