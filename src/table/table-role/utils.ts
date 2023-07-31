@@ -1,17 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getFocusables } from '../../internal/components/focus-lock/utils';
+import { getFirstFocusable, getFocusables } from '../../internal/components/focus-lock/utils';
 import { FocusedCell } from './interfaces';
 
 export function findFocusinCell(event: FocusEvent): null | FocusedCell {
-  const target = event.target;
+  const element = event.target;
 
-  if (!(target instanceof HTMLElement)) {
+  if (!(element instanceof HTMLElement)) {
     return null;
   }
 
-  const cellElement = target.closest('td,th') as null | HTMLTableCellElement;
+  const cellElement = element.closest('td,th') as null | HTMLTableCellElement;
   const rowElement = cellElement?.closest('tr');
 
   if (!cellElement || !rowElement) {
@@ -25,13 +25,8 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   }
 
   const cellFocusables = getFocusables(cellElement);
-  let elementIndex = cellFocusables.indexOf(target);
+  let elementIndex = cellFocusables.indexOf(element);
   elementIndex = elementIndex === -1 ? 0 : elementIndex;
-
-  let element = target;
-  if (target === cellElement && cellFocusables.length > 0 && !isWidgetCell(cellElement)) {
-    element = cellFocusables[0];
-  }
 
   return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element };
 }
@@ -68,8 +63,23 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
 }
 
 export function moveFocusIn(from: FocusedCell) {
-  const cellFocusables = getFocusables(from.cellElement);
-  cellFocusables[0]?.focus();
+  getFirstFocusable(from.cellElement)?.focus();
+}
+
+export function updateTableIndices(table: HTMLTableElement) {
+  const tableCells = table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
+
+  const firstCell = tableCells[0];
+  const lastCell = tableCells[tableCells.length - 1];
+  for (let i = 1; i < tableCells.length - 1; i++) {
+    tableCells[i].tabIndex = -1;
+  }
+  if (firstCell && !getFirstFocusable(firstCell)) {
+    firstCell.tabIndex = 0;
+  }
+  if (lastCell && !getFirstFocusable(lastCell)) {
+    lastCell.tabIndex = 0;
+  }
 }
 
 function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {

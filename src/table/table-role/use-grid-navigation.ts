@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell, moveFocusBy, moveFocusIn } from './utils';
+import { findFocusinCell, moveFocusBy, moveFocusIn, updateTableIndices } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { containsOrEqual } from '../../internal/utils/dom';
-import { getFirstFocusable } from '../../internal/components/focus-lock/utils';
 
 export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
@@ -50,10 +49,11 @@ class GridNavigationModel {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
-    this.updateCellFocus();
-
     const mutationObserver = new MutationObserver(this.onMutation);
     mutationObserver.observe(table, { childList: true, subtree: true });
+
+    // No need to clean this up as no resources are allocated.
+    updateTableIndices(this.table);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -88,11 +88,7 @@ class GridNavigationModel {
     if (!cell) {
       return;
     }
-    if (cell.element === event.target) {
-      this.focusedCell = cell;
-    } else {
-      cell.element.focus();
-    }
+    this.focusedCell = cell;
   };
 
   private onFocusout = () => {
@@ -194,22 +190,6 @@ class GridNavigationModel {
       }
     }
 
-    this.updateCellFocus();
+    updateTableIndices(this.table);
   };
-
-  private updateCellFocus() {
-    const tableCells = this.table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
-
-    const firstCell = tableCells[0];
-    const lastCell = tableCells[tableCells.length - 1];
-    for (let i = 1; i < tableCells.length - 1; i++) {
-      tableCells[i].tabIndex = -1;
-    }
-    if (firstCell && !getFirstFocusable(firstCell)) {
-      firstCell.tabIndex = 0;
-    }
-    if (lastCell && !getFirstFocusable(lastCell)) {
-      lastCell.tabIndex = 0;
-    }
-  }
 }
