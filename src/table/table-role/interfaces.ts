@@ -19,5 +19,5 @@ export interface FocusedCell {
   elementIndex: number;
   rowElement: HTMLTableRowElement;
   cellElement: HTMLTableCellElement;
-  element: Element;
+  element: HTMLElement;
 }

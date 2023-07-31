@@ -41,6 +41,8 @@ class GridNavigationModel {
   private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
   private cleanup = () => {};
+  private firstCell: null | HTMLTableCellElement = null;
+  private lastCell: null | HTMLTableCellElement = null;
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -49,6 +51,8 @@ class GridNavigationModel {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
+    this.initCellFocus();
+
     const mutationObserver = new MutationObserver(this.onMutation);
     mutationObserver.observe(table, { childList: true, subtree: true });
 
@@ -56,6 +60,8 @@ class GridNavigationModel {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
+
+      this.cleanupCellFocus();
 
       mutationObserver.disconnect();
     };
@@ -90,7 +96,11 @@ class GridNavigationModel {
     if (!cell) {
       return;
     }
-    this.focusedCell = cell;
+    if (cell.element === event.target) {
+      this.focusedCell = cell;
+    } else {
+      cell.element.focus();
+    }
   };
 
   private onFocusout = () => {
@@ -180,5 +190,29 @@ class GridNavigationModel {
         }
       }
     }
+
+    const hasAddedNodes = !!mutationRecords.find(record => record.addedNodes.length > 0);
+    if (hasAddedNodes) {
+      this.cleanupCellFocus();
+      this.initCellFocus();
+    }
   };
+
+  private initCellFocus() {
+    const tableCells = this.table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
+
+    this.firstCell = tableCells[0];
+    this.firstCell.tabIndex = 0;
+
+    this.lastCell = tableCells[tableCells.length - 1];
+    this.lastCell.tabIndex = 0;
+  }
+
+  private cleanupCellFocus() {
+    this.firstCell && (this.firstCell.tabIndex = -1);
+    this.firstCell = null;
+
+    this.lastCell && (this.lastCell.tabIndex = -1);
+    this.lastCell = null;
+  }
 }

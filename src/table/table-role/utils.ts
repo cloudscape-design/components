@@ -5,13 +5,13 @@ import { getFocusables } from '../../internal/components/focus-lock/utils';
 import { FocusedCell } from './interfaces';
 
 export function findFocusinCell(event: FocusEvent): null | FocusedCell {
-  const element = event.target;
+  const target = event.target;
 
-  if (!(element instanceof HTMLElement)) {
+  if (!(target instanceof HTMLElement)) {
     return null;
   }
 
-  const cellElement = element.closest('td,th') as null | HTMLTableCellElement;
+  const cellElement = target.closest('td,th') as null | HTMLTableCellElement;
   const rowElement = cellElement?.closest('tr');
 
   if (!cellElement || !rowElement) {
@@ -25,8 +25,10 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   }
 
   const cellFocusables = getFocusables(cellElement);
-  let elementIndex = cellFocusables.indexOf(element);
+  let elementIndex = cellFocusables.indexOf(target);
   elementIndex = elementIndex === -1 ? 0 : elementIndex;
+
+  const element = target !== cellElement || cellFocusables.length === 0 ? target : cellFocusables[0];
 
   return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element };
 }
