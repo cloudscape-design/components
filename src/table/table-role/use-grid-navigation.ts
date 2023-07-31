@@ -6,6 +6,7 @@ import { findFocusinCell, moveFocusBy, moveFocusIn } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { containsOrEqual } from '../../internal/utils/dom';
+import { getFirstFocusable } from '../../internal/components/focus-lock/utils';
 
 export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
@@ -204,10 +205,16 @@ class GridNavigationModel {
   private updateCellFocus() {
     const tableCells = this.table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
 
+    const firstCell = tableCells[0];
+    const lastCell = tableCells[tableCells.length - 1];
     for (let i = 1; i < tableCells.length - 1; i++) {
       tableCells[i].tabIndex = -1;
     }
-    tableCells[0].tabIndex = 0;
-    tableCells[tableCells.length - 1].tabIndex = 0;
+    if (firstCell && !getFirstFocusable(firstCell)) {
+      firstCell.tabIndex = 0;
+    }
+    if (lastCell && !getFirstFocusable(lastCell)) {
+      lastCell.tabIndex = 0;
+    }
   }
 }
