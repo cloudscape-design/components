@@ -117,16 +117,7 @@ export default function Page() {
   const tableRef = useRef<HTMLTableElement>(null);
 
   const tableRole = 'grid';
-  const gridNavigationApi = useGridNavigation({
-    tableRole: 'grid',
-    pageSize,
-    getTable: () => tableRef.current,
-  });
-
-  // TODO: use gridNavigationApi.focusCell
-  if (Math.random() > 1) {
-    console.log(gridNavigationApi);
-  }
+  useGridNavigation({ tableRole, pageSize, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
     if (!sortingKey) {

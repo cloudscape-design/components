@@ -9,9 +9,8 @@ export interface GridNavigationProps {
   getTable: () => null | HTMLTableElement;
 }
 
-export interface GridNavigationAPI {
-  focusCell: (coordinates: { rowIndex: number; colIndex: number }) => void;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface GridNavigationAPI {}
 
 export interface FocusedCell {
   rowIndex: number;

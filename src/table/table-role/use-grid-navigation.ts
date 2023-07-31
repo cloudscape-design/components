@@ -30,7 +30,7 @@ export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigat
     model.update({ pageSize });
   }, [model, pageSize]);
 
-  return model;
+  return {};
 }
 
 class GridNavigationModel {
@@ -71,11 +71,6 @@ class GridNavigationModel {
   public update({ pageSize }: { pageSize: number }) {
     this._pageSize = pageSize;
   }
-
-  // TODO: implement
-  public focusCell = ({ rowIndex, colIndex }: { rowIndex: number; colIndex: number }) => {
-    throw new Error(`focusCell({ rowIndex: ${rowIndex}, colIndex: ${colIndex} }) is not implemented.`);
-  };
 
   private get pageSize() {
     return this._pageSize;
