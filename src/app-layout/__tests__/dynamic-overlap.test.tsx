@@ -54,35 +54,42 @@ describe('Dynamic overlap', () => {
     positiveHeight = true;
   });
 
-  test('sets dynamic overlap when content header is present', () => {
-    const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
-      content: <ComponentWithDynamicOverlap />,
-      contentHeader: 'Content header',
+  describe('sets dynamic overlap', () => {
+    test('when a child component uses the useDynamicOverlap hook with a height higher than 0', () => {
+      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+        content: <ComponentWithDynamicOverlap />,
+      });
+      expect(isDynamicOverlapSet()).toBe('true');
+      expect(isDynamicOverlapDisabled()).toBe('false');
     });
-    expect(isDynamicOverlapSet()).toBe('true');
-    expect(isDynamicOverlapDisabled()).toBe('false');
-  });
 
-  test('sets dynamic overlap when height is higher than 0', () => {
-    const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({ content: <ComponentWithDynamicOverlap /> });
-    expect(isDynamicOverlapSet()).toBe('true');
-    expect(isDynamicOverlapDisabled()).toBe('false');
-  });
-
-  test('does not set dynamic overlap when no content header is present and height is 0', () => {
-    positiveHeight = false;
-    const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({ content: <ComponentWithDynamicOverlap /> });
-    expect(isDynamicOverlapSet()).toBe('false');
-    expect(isDynamicOverlapDisabled()).toBe('true');
-  });
-
-  test('does not set dynamic overlap when the useDynamicOverlap hook is not used', () => {
-    const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
-      content: <ComponentWithoutDynamicOverlap />,
-      disableContentHeaderOverlap: true,
+    test('when content header is present', () => {
+      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+        content: <ComponentWithoutDynamicOverlap />,
+        contentHeader: 'Content header',
+      });
+      expect(isDynamicOverlapSet()).toBe('true');
+      expect(isDynamicOverlapDisabled()).toBe('false');
     });
-    expect(isDynamicOverlapSet()).toBe('false');
-    expect(isDynamicOverlapDisabled()).toBe('true');
+  });
+
+  describe('does not set dynamic overlap', () => {
+    test('when no content header is present and height is 0', () => {
+      positiveHeight = false;
+      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+        content: <ComponentWithDynamicOverlap />,
+      });
+      expect(isDynamicOverlapSet()).toBe('false');
+      expect(isDynamicOverlapDisabled()).toBe('true');
+    });
+
+    test('when no content header is present and no child component uses the useDynamicOverlap hook', () => {
+      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+        content: <ComponentWithoutDynamicOverlap />,
+      });
+      expect(isDynamicOverlapSet()).toBe('false');
+      expect(isDynamicOverlapDisabled()).toBe('true');
+    });
   });
 
   test('disables dynamic overlap when explicitly specified in the app layout props', () => {
@@ -91,14 +98,6 @@ describe('Dynamic overlap', () => {
       disableContentHeaderOverlap: true,
     });
     expect(isDynamicOverlapDisabled()).toBe('true');
-  });
-
-  test('does not disable dynamic overlap if useDynamicOverlap hook is not used but content header is present', () => {
-    const { isDynamicOverlapDisabled } = renderApp({
-      content: <ComponentWithoutDynamicOverlap />,
-      contentHeader: 'Content header',
-    });
-    expect(isDynamicOverlapDisabled()).toBe('false');
   });
 
   test('updates state accordingly when re-rendering', () => {
