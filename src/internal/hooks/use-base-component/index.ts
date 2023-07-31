@@ -15,9 +15,9 @@ export interface InternalBaseComponentProps {
  * attached to the (internal) component's root DOM node. The hook takes care of attaching the metadata to this
  * root DOM node and emits the telemetry for this component.
  */
-export default function useBaseComponent<T = any>(componentName: string) {
+export default function useBaseComponent<T = any>(componentName: string, componentConfiguration?: Record<string, any>) {
   useTelemetry(componentName);
   useFocusVisible();
-  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION);
+  const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, componentConfiguration);
   return { __internalRootRef: elementRef };
 }
