@@ -39,8 +39,9 @@ export function getTableRoleProps(options: { tableRole: TableRole; ariaLabel?: s
 export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScrollable: boolean; ariaLabel?: string }) {
   const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
 
+  // TODO: do not make wrapper focusable for grids once custom navigation is available.
   // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
-  if (options.tableRole === 'table' && options.isScrollable) {
+  if (options.isScrollable) {
     nativeProps.role = 'region';
     nativeProps.tabIndex = 0;
     nativeProps['aria-label'] = options.ariaLabel;

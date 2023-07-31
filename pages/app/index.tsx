@@ -17,6 +17,11 @@ import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
+function isAppLayoutPage(pageId?: string) {
+  const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom'];
+  return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
+}
+
 function App() {
   const {
     mode,
@@ -24,10 +29,9 @@ function App() {
     urlParams: { density, motionDisabled },
   } = useContext(AppContext);
 
-  const isAppLayout =
-    pageId !== undefined && (pageId.indexOf('app-layout') > -1 || pageId.indexOf('content-layout') > -1);
   // AppLayout already contains <main>
   // Also, AppLayout pages should resemble the ConsoleNav 2.0 styles
+  const isAppLayout = isAppLayoutPage(pageId);
   const ContentTag = isAppLayout ? 'div' : 'main';
   const isMacOS = navigator.userAgent.toLowerCase().indexOf('macintosh') > -1;
 

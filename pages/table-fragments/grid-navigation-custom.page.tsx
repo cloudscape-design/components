@@ -29,6 +29,7 @@ import {
   useGridNavigation,
 } from '~components/table/table-role';
 import { orderBy } from 'lodash';
+import appLayoutLabels from '../app-layout/utils/labels';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -128,6 +129,7 @@ export default function Page() {
 
   return (
     <AppLayout
+      ariaLabels={appLayoutLabels}
       contentType="table"
       navigationHide={true}
       toolsOpen={toolsOpen}
