@@ -3,9 +3,7 @@
 import { useContext, useLayoutEffect } from 'react';
 
 import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
-import { useRef, useCallback } from 'react';
-import { useResizeObserver } from '../container-queries';
-import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export interface UseDynamicOverlapProps {
   /**
@@ -23,30 +21,21 @@ export interface UseDynamicOverlapProps {
 export function useDynamicOverlap(props?: UseDynamicOverlapProps) {
   const disabled = props?.disabled ?? false;
   const setDynamicOverlapHeight = useContext(DynamicOverlapContext);
-  const overlapElementRef = useRef(null);
-
-  const getElement = useCallback(() => overlapElementRef.current, [overlapElementRef]);
-  const updateState = useCallback(
-    (entry: ContainerQueryEntry) => {
-      if (!disabled) {
-        setDynamicOverlapHeight(entry.contentBoxHeight);
-      }
-    },
-    [disabled, setDynamicOverlapHeight]
-  );
-
-  useResizeObserver(getElement, updateState);
+  const [overlapHeight, overlapElementRef] = useContainerQuery(rect => rect.contentBoxHeight);
 
   useLayoutEffect(
     function handleDynamicOverlapHeight() {
-      // Set overlap height back to 0 when unmounting
+      if (!disabled) {
+        setDynamicOverlapHeight(overlapHeight ?? 0);
+      }
+
       return () => {
         if (!disabled) {
           setDynamicOverlapHeight(0);
         }
       };
     },
-    [disabled, setDynamicOverlapHeight]
+    [disabled, overlapHeight, setDynamicOverlapHeight]
   );
 
   return overlapElementRef;

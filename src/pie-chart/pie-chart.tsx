@@ -22,6 +22,7 @@ import { nodeBelongs } from '../internal/utils/node-belongs';
 import clsx from 'clsx';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import { nodeContains } from '../internal/utils/dom';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -41,9 +42,6 @@ interface InternalPieChartProps<T extends PieChartProps.Datum>
   onHighlightChange: (segment: null | T) => void;
 
   legendSegment: T | null;
-
-  pinnedSegment: T | null;
-  setPinnedSegment: React.Dispatch<React.SetStateAction<T | null>>;
 
   pieData: PieArcDatum<InternalChartDatum<T>>[];
   dataSum: number;
@@ -76,11 +74,10 @@ export default <T extends PieChartProps.Datum>({
   highlightedSegment,
   onHighlightChange,
   legendSegment,
-  pinnedSegment,
-  setPinnedSegment,
   pieData,
   dataSum,
 }: InternalPieChartProps<T>) => {
+  const [pinnedSegment, setPinnedSegment] = useState<T | null>(null);
   const plotRef = useRef<ChartPlotRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedSegmentRef = useRef<SVGGElement>(null);
@@ -158,6 +155,21 @@ export default <T extends PieChartProps.Datum>({
     onHighlightChange(null);
   }, [onHighlightChange, setTooltipOpen]);
 
+  const checkMouseLeave = (event: React.MouseEvent) => {
+    if (pinnedSegment !== null) {
+      return;
+    }
+
+    if (
+      nodeContains(popoverRef.current, event.relatedTarget) ||
+      nodeContains(focusedSegmentRef.current, event.relatedTarget)
+    ) {
+      return;
+    }
+
+    clearHighlightedSegment();
+  };
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -194,16 +206,7 @@ export default <T extends PieChartProps.Datum>({
     },
     [pinnedSegment, highlightSegment]
   );
-  const onMouseOut = useCallback(
-    (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-      if (pinnedSegment !== null || popoverRef.current?.contains(event.relatedTarget as Node)) {
-        return;
-      }
 
-      clearHighlightedSegment();
-    },
-    [pinnedSegment, clearHighlightedSegment]
-  );
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       const keyCode = event.keyCode;
@@ -283,13 +286,6 @@ export default <T extends PieChartProps.Datum>({
     }
   };
 
-  const onPopoverLeave = (event: React.MouseEvent) => {
-    if (pinnedSegment !== null || focusedSegmentRef.current!.contains(event.relatedTarget as Node)) {
-      return;
-    }
-    clearHighlightedSegment();
-  };
-
   return (
     <div
       className={clsx(styles['chart-container'], fitHeight && styles['chart-container--fit-height'])}
@@ -319,7 +315,7 @@ export default <T extends PieChartProps.Datum>({
           onFocus={onFocus}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
-          onMouseOut={onMouseOut}
+          onMouseOut={checkMouseLeave}
         >
           <Segments
             pieData={pieData}
@@ -331,7 +327,6 @@ export default <T extends PieChartProps.Datum>({
             segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
             onMouseDown={onMouseDown}
             onMouseOver={onMouseOver}
-            onMouseOut={onMouseOut}
           />
           {hasLabels && (
             <Labels
@@ -385,7 +380,7 @@ export default <T extends PieChartProps.Datum>({
           onDismiss={onPopoverDismiss}
           container={plotRef.current?.svg || null}
           size={detailPopoverSize}
-          onMouseLeave={onPopoverLeave}
+          onMouseLeave={checkMouseLeave}
         >
           {tooltipContent}
           {detailPopoverFooterContent && <InternalBox margin={{ top: 's' }}>{detailPopoverFooterContent}</InternalBox>}

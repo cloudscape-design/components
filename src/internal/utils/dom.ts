@@ -103,8 +103,8 @@ export function parseCssVariable(value: string) {
  * @param parent Parent node
  * @param descendant Node that is checked to be a descendant of the parent node
  */
-export function nodeContains(parent: Node | null, descendant: Node | null) {
-  if (!parent || !descendant) {
+export function nodeContains(parent: Node | null, descendant: Node | EventTarget | null) {
+  if (!parent || !descendant || !(descendant instanceof Node)) {
     return false;
   }
 

@@ -18,7 +18,7 @@ const typesToColors: Record<FlashbarProps.Type, string> = {
   info: 'blue',
   'in-progress': 'blue',
   success: 'green',
-  warning: 'blue',
+  warning: 'yellow',
 };
 
 function getColorFromType(type?: FlashbarProps.Type): string {

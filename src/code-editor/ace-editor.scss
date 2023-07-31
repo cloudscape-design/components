@@ -46,7 +46,7 @@
   }
 
   .ace_gutter-cell.ace_warning {
-    @include utils.background-inline-svg($path: './assets/warning.svg', $stroke: 'colorTextStatusError');
+    @include utils.background-inline-svg($path: './assets/warning.svg', $stroke: 'colorTextStatusWarning');
   }
 
   .ace_gutter-cell {
