@@ -6,8 +6,6 @@ import { render, fireEvent } from '@testing-library/react';
 import { useGridNavigation } from '../use-grid-navigation';
 import { KeyCode } from '../../../internal/keycode';
 
-// TODO: test mutation observer logic with integ test
-
 function SimpleTable({ tableRole = 'grid' }: { tableRole?: 'grid' | 'table' }) {
   const tableRef = useRef<HTMLTableElement>(null);
   useGridNavigation({ tableRole, pageSize: 2, getTable: () => tableRef.current });
