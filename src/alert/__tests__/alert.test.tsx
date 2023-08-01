@@ -109,7 +109,7 @@ describe('Alert Component', () => {
       let ref: AlertProps.Ref | null = null;
       render(<Alert header="Important" ref={element => (ref = element)} />);
       ref!.focus();
-      expect(document.activeElement).toHaveTextContent('Important');
+      expect(document.activeElement).toHaveClass(styles['alert-focus-wrapper']);
     });
   });
 
