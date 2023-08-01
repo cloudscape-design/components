@@ -1,55 +1,70 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { CancelableEventHandler } from '../internal/events';
+
 export interface TocProps {
   /**
-   * Specify the table of contents title, displayed above the items.
+   * The title of the table of contents, displayed above the anchor items.
    */
   title?: string;
 
   /**
-   * List of anchors
-   *
-   * */
+   * List of anchors.
+   */
   anchors: TocProps.Anchor[];
 
   /**
-   * The components has two variants:
-   * `default` -  Use this variant in any context.
-   * `expandable` - Use this variant if you'd like to save vertical space
-   * by allowing customers to expand or collapse the component
-   * */
+   * Specifies the active anchor.
+   * For using the component in a controlled pattern, use together with 'disableTracking'.
+   */
+  activeAnchor?: TocProps.Anchor;
+
+  /**
+   * The variant of the component:
+   * 'default' - Use in any context.
+   * 'expandable' - Allows users to expand or collapse the component to save vertical space.
+   */
   variant?: 'default' | 'expandable';
 
   /**
-   * Determines whether the component initially displays in expanded state
-   * (that is, with the items of the table of contents visible).
+   * Determines whether the component initially displays in expanded state.
    * The component operates in an uncontrolled manner even if you provide a value for this property.
-   * Note: this property only works if the `variant` is set to `expandable`.
-   * */
+   * Only applies when the `variant` is set to `expandable`.
+   */
   defaultExpanded?: boolean;
 
   /**
-   * Disable scroll spy
-   * */
+   * Option to disable scroll spy.
+   */
   disableTracking?: boolean;
+
+  /**
+   * Triggered when an anchor link is clicked without any modifier keys.
+   */
+  onFollow?: CancelableEventHandler<TocProps.Anchor>;
+
+  /**
+   * Triggered when an active anchor link changes.
+   */
+  onActiveAnchorChange?: CancelableEventHandler<TocProps.Anchor>;
 }
 
 export namespace TocProps {
   export interface Anchor {
     /**
-     * Text for the anchor item
-     * */
+     * The text for the anchor item.
+     */
     text: string;
 
     /**
-     * The `id` attribute used to specify a unique HTML element
-     * */
+     * The `id` attribute used to specify a unique HTML element.
+     */
     id: string;
 
     /**
-     * Level of nesting
-     * */
+     * The level of nesting.
+     */
     level: number;
   }
 }

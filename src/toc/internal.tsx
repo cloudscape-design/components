@@ -10,18 +10,18 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import useScrollSpy from './scroll-spy.js';
 import InternalExpandableSection from '../expandable-section/internal.js';
 
-const Anchor = ({ href, text, level, isActive }: TocProps.Anchor & { isActive: boolean }) => {
-  checkSafeUrl('SideNavigation', href);
+const Anchor = ({ id, text, level, isActive }: TocProps.Anchor & { isActive: boolean }) => {
+  checkSafeUrl('SideNavigation', id);
 
   return (
-    <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })} key={href}>
+    <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })} key={id}>
       <a
         style={{
           // 2px for compensate for -2 negative margin, so active item borders overlap
           paddingLeft: `${level * 16}px`,
         }}
         className={clsx(styles['anchor-link'], { [styles['anchor-link-active']]: isActive })}
-        href={`#${href}`}
+        href={`#${id}`}
       >
         {text}
       </a>
@@ -29,18 +29,18 @@ const Anchor = ({ href, text, level, isActive }: TocProps.Anchor & { isActive: b
   );
 };
 
-const AnchorList = ({ anchors, activeHref }: { anchors: TocProps.Anchor[]; activeHref?: string }) => {
+const AnchorList = ({ anchors, activeId }: { anchors: TocProps.Anchor[]; activeId?: string }) => {
   return (
     <ul className={styles['anchor-list']}>
       {anchors.map((props, index) => (
-        <Anchor isActive={props.href === activeHref} key={index} {...props} />
+        <Anchor isActive={props.id === activeId} key={index} {...props} />
       ))}
     </ul>
   );
 };
 
 export default function InternalToc({ anchors, variant, ...props }: TocProps) {
-  const [activeHref] = useScrollSpy({ hrefs: anchors.map(anchor => anchor.href) });
+  const [activeId] = useScrollSpy({ hrefs: anchors.map(anchor => anchor.id) });
   // console.log(activeHref);
   // const activeHref = 'section-1';
   return (
@@ -48,14 +48,14 @@ export default function InternalToc({ anchors, variant, ...props }: TocProps) {
       <InternalSpaceBetween direction="vertical" size="s">
         {variant === 'expandable' ? (
           <InternalExpandableSection variant="footer" headerText={props.title}>
-            <AnchorList activeHref={activeHref} anchors={anchors} />
+            <AnchorList activeId={activeId} anchors={anchors} />
           </InternalExpandableSection>
         ) : (
           <>
             <InternalBox color="text-body-secondary" variant="h4">
               {props.title}
             </InternalBox>
-            <AnchorList activeHref={activeHref} anchors={anchors} />
+            <AnchorList activeId={activeId} anchors={anchors} />
           </>
         )}
       </InternalSpaceBetween>

@@ -59,7 +59,6 @@ export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | 
         const lastElement = document.getElementById(hrefs[hrefs.length - 1]);
         if (lastElement) {
           const rect = lastElement.getBoundingClientRect();
-          console.log("HERE", rect);
           if (
             rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
             activeSlug === hrefs[hrefs.length - 1]
@@ -69,7 +68,6 @@ export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | 
           }
         }
       } else {
-        if ()
         setActiveSlug(hrefs[hrefs.length - 2]);
         isLastItem.current = false;
       }
