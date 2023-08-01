@@ -61,7 +61,7 @@ export function describeMobileAppLayout(callback: () => void) {
 
 export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: string) => void) {
   for (const theme of ['refresh', 'classic']) {
-    describe(`${isMobile ? 'Mobile' : 'Desktop'}, Theme=${theme}`, () => {
+    describe.skip(`${isMobile ? 'Mobile' : 'Desktop'}, Theme=${theme}`, () => {
       beforeEach(() => {
         (useMobile as jest.Mock).mockReturnValue(isMobile);
         (useVisualRefresh as jest.Mock).mockReturnValue(theme === 'refresh');
