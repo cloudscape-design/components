@@ -9,7 +9,14 @@ import { TocProps } from './interfaces';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import useScrollSpy from './scroll-spy.js';
 import InternalExpandableSection from '../expandable-section/internal.js';
-
+const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  event.preventDefault();
+  const href = event.currentTarget.getAttribute('href');
+  if (href) {
+    const el = document.getElementById(id);
+    el?.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 const Anchor = ({ id, text, level, isActive }: TocProps.Anchor & { isActive: boolean }) => {
   checkSafeUrl('SideNavigation', id);
 
@@ -20,6 +27,7 @@ const Anchor = ({ id, text, level, isActive }: TocProps.Anchor & { isActive: boo
           // 2px for compensate for -2 negative margin, so active item borders overlap
           paddingLeft: `${level * 16}px`,
         }}
+        onClick={e => navigateToItem(e, id)}
         className={clsx(styles['anchor-link'], { [styles['anchor-link-active']]: isActive })}
         href={`#${id}`}
       >
