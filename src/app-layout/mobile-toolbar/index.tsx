@@ -174,24 +174,25 @@ export function MobileToolbar({
             </span>
           ))}
           {drawers?.items?.length && drawers?.items?.length > 2 && (
-            <InternalButtonDropdown
-              className={clsx(styles['mobile-trigger-with-drawers'])}
-              items={drawers.items.slice(2, drawers.items.length).map(item => ({
-                id: item.id,
-                text: item.ariaLabels?.content || 'Content',
-                iconName: item.trigger.iconName,
-                iconSvg: item.trigger.iconSvg,
-                badge: item.badge,
-              }))}
-              onItemClick={({ detail }) => {
-                drawers.onChange({
-                  activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
-                });
-              }}
-              ariaLabel="Overflow drawer triggers"
-              customTriggerBuilder={getTrigger(overflowItemHasBadge())}
-              expandToViewport={true}
-            />
+            <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
+              <InternalButtonDropdown
+                items={drawers.items.slice(2, drawers.items.length).map(item => ({
+                  id: item.id,
+                  text: item.ariaLabels?.content || 'Content',
+                  iconName: item.trigger.iconName,
+                  iconSvg: item.trigger.iconSvg,
+                  badge: item.badge,
+                }))}
+                onItemClick={({ detail }) => {
+                  drawers.onChange({
+                    activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                  });
+                }}
+                ariaLabel="Overflow drawer triggers"
+                customTriggerBuilder={getTrigger(overflowItemHasBadge())}
+                expandToViewport={true}
+              />
+            </span>
           )}
         </aside>
       )}

@@ -392,7 +392,7 @@ export function MobileTriggers() {
         <InternalButton
           ariaLabel={ariaLabels?.toolsToggle ?? undefined}
           ariaExpanded={isToolsOpen}
-          className={testutilStyles['tools-toggle']}
+          className={clsx(styles['drawers-trigger'], testutilStyles['tools-toggle'])}
           disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName="status-info"
