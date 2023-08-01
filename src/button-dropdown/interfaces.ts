@@ -136,6 +136,7 @@ export namespace ButtonDropdownProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    badge?: boolean;
   }
 
   export interface ItemGroup extends Omit<Item, 'id' | 'text'> {
