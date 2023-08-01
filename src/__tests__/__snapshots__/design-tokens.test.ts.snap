@@ -1815,8 +1815,8 @@ Object {
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#99cbe4",
+            "light": "#0a4a74",
           },
         },
         "color-text-notification-default": Object {
@@ -3907,8 +3907,8 @@ Object {
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#99cbe4",
+            "light": "#0a4a74",
           },
         },
         "color-text-notification-default": Object {
@@ -5999,8 +5999,8 @@ Object {
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#99cbe4",
+            "light": "#0a4a74",
           },
         },
         "color-text-notification-default": Object {
@@ -8091,8 +8091,8 @@ Object {
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#44b9d6",
-            "light": "#44b9d6",
+            "dark": "#99cbe4",
+            "light": "#99cbe4",
           },
         },
         "color-text-notification-default": Object {
@@ -10183,8 +10183,8 @@ Object {
     "color-text-link-hover": Object {
       "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
       "$value": Object {
-        "dark": "#44b9d6",
-        "light": "#0073bb",
+        "dark": "#99cbe4",
+        "light": "#0a4a74",
       },
     },
     "color-text-notification-default": Object {
