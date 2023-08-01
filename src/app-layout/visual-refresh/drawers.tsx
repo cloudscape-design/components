@@ -129,34 +129,39 @@ function ActiveDrawer() {
   );
 }
 
-const DropdownTrigger = (
-  clickHandler: () => void,
-  ref: React.Ref<ButtonProps.Ref>,
-  isDisabled: boolean,
-  isExpanded: boolean,
-  ariaLabel?: string
-) => {
-  return (
-    <InternalButton
-      disabled={isDisabled}
-      onClick={event => {
-        event.preventDefault();
-        clickHandler();
-      }}
-      ref={ref}
-      ariaExpanded={isExpanded}
-      aria-haspopup={true}
-      ariaLabel={ariaLabel}
-      variant="icon"
-      iconSvg={
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
-          <circle color="white" cx="8" cy="2.5" r=".5"></circle>
-          <circle color="white" cx="8" cy="8" r=".5"></circle>
-          <circle color="white" cx="8" cy="13.5" r=".5"></circle>
-        </svg>
-      }
-    />
-  );
+const getTrigger = (hasOverflowBadge: boolean) => {
+  const DropdownTrigger = (
+    clickHandler: () => void,
+    ref: React.Ref<ButtonProps.Ref>,
+    isDisabled: boolean,
+    isExpanded: boolean,
+    ariaLabel?: string
+  ) => {
+    return (
+      <InternalButton
+        disabled={isDisabled}
+        onClick={event => {
+          event.preventDefault();
+          clickHandler();
+        }}
+        ref={ref}
+        ariaExpanded={isExpanded}
+        aria-haspopup={true}
+        ariaLabel={ariaLabel}
+        variant="icon"
+        badge={hasOverflowBadge}
+        badgeColor="red"
+        iconSvg={
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+            <circle color="white" cx="8" cy="2.5" r=".5"></circle>
+            <circle color="white" cx="8" cy="8" r=".5"></circle>
+            <circle color="white" cx="8" cy="13.5" r=".5"></circle>
+          </svg>
+        }
+      />
+    );
+  };
+  return DropdownTrigger;
 };
 
 function useContainerHeight(ref: React.RefObject<HTMLDivElement>) {
@@ -209,12 +214,20 @@ function DesktopTriggers() {
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
-      const itemHeight = 48;
+      const ITEM_HEIGHT = 48;
       const overflowSpot = containerHeight / 1.5;
 
-      const index = Math.floor(overflowSpot / itemHeight).toFixed(0);
+      const index = Math.floor(overflowSpot / ITEM_HEIGHT);
 
-      return parseInt(index);
+      let toolsItem = 0;
+      let splitPanelItem = 0;
+      if (!toolsHide && tools) {
+        toolsItem = 1;
+      }
+      if (hasSplitPanel && splitPanelToggle.displayed) {
+        splitPanelItem = 1;
+      }
+      return index - toolsItem - splitPanelItem;
     }
 
     return 0;
@@ -230,9 +243,7 @@ function DesktopTriggers() {
 
   const overflowItemHasBadge = () => {
     const overflowItems = drawers?.items.slice(getIndexOfOverflowItem(), drawers.items.length);
-    let itemsWithBadges: any = [];
-    itemsWithBadges = overflowItems?.filter(item => item.badge);
-    return itemsWithBadges.length > 0;
+    return overflowItems && overflowItems.filter(item => item.badge).length > 0;
   };
 
   return (
@@ -360,6 +371,11 @@ export function MobileTriggers() {
     return null;
   }
 
+  const overflowItemHasBadge = () => {
+    const overflowItems = drawers?.items.slice(1, drawers.items.length);
+    return overflowItems && overflowItems.filter(item => item.badge).length > 0;
+  };
+
   return (
     <aside
       aria-hidden={hasDrawerViewportOverlay}
@@ -387,7 +403,7 @@ export function MobileTriggers() {
         />
       )}
 
-      {drawers.items.map(item => (
+      {drawers.items.slice(0, 1).map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
@@ -403,6 +419,26 @@ export function MobileTriggers() {
           __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
         />
       ))}
+      {drawers?.items?.length && drawers?.items?.length > 2 && (
+        <InternalButtonDropdown
+          ref={drawersRefs.toggle}
+          className={clsx(styles['drawers-trigger'], overflowItemHasBadge() && styles.badge)}
+          items={drawers.items.slice(1, drawers.items.length).map(item => ({
+            id: item.id,
+            text: item.ariaLabels?.content || 'Content',
+            iconName: item.trigger.iconName,
+            iconSvg: item.trigger.iconSvg,
+            badge: item.badge,
+          }))}
+          onItemClick={({ detail }) => {
+            handleDrawersClick(detail.id);
+          }}
+          ariaLabel="Overflow drawer triggers"
+          variant="icon"
+          customTriggerBuilder={getTrigger(overflowItemHasBadge())}
+          expandToViewport={true}
+        />
+      )}
     </aside>
   );
 }

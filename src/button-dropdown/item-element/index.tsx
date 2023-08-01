@@ -127,7 +127,16 @@ const MenuItemContent = ({ item, disabled }: { item: ButtonDropdownProps.Item; d
   const hasExternal = isLinkItem(item) && item.external;
   return (
     <>
-      {hasIcon && <MenuItemIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />}{' '}
+      {hasIcon && (
+        <MenuItemIcon
+          name={item.iconName}
+          url={item.iconUrl}
+          svg={item.iconSvg}
+          alt={item.iconAlt}
+          badge={item.badge}
+          badgeColor="red"
+        />
+      )}{' '}
       {item.text} {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
     </>
   );

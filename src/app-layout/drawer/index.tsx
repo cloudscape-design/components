@@ -8,6 +8,8 @@ import InternalButtonDropdown from '../../button-dropdown/internal';
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
+import { InternalButton } from '../../button/internal';
+import { ButtonProps } from '../../button/interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -132,6 +134,35 @@ export const Drawer = React.forwardRef(
   }
 );
 
+const getTrigger = (hasOverflowBadge: boolean) => {
+  const DropdownTrigger = (
+    clickHandler: () => void,
+    ref: React.Ref<ButtonProps.Ref>,
+    isDisabled: boolean,
+    isExpanded: boolean,
+    ariaLabel?: string
+  ) => {
+    return (
+      <InternalButton
+        disabled={isDisabled}
+        onClick={event => {
+          event.preventDefault();
+          clickHandler();
+        }}
+        ref={ref}
+        ariaExpanded={isExpanded}
+        aria-haspopup={true}
+        ariaLabel={ariaLabel}
+        variant="icon"
+        iconName="ellipsis"
+        badge={hasOverflowBadge}
+        badgeColor="red"
+      />
+    );
+  };
+  return DropdownTrigger;
+};
+
 export const DrawerTriggersBar = ({
   isMobile,
   topOffset,
@@ -154,6 +185,11 @@ export const DrawerTriggersBar = ({
       return parseInt(index);
     }
     return 0;
+  };
+
+  const overflowItemHasBadge = () => {
+    const overflowItems = drawers?.items.slice(getIndexOfOverflowItem(), drawers.items.length);
+    return overflowItems ? overflowItems.filter(item => item.badge).length > 0 : false;
   };
 
   return (
@@ -218,6 +254,7 @@ export const DrawerTriggersBar = ({
                       text: item.ariaLabels?.content || 'Content',
                       iconName: item.trigger.iconName,
                       iconSvg: item.trigger.iconSvg,
+                      badge: item.badge,
                     }))}
                     onItemClick={({ detail }) => {
                       drawers.onChange({
@@ -225,6 +262,7 @@ export const DrawerTriggersBar = ({
                       });
                     }}
                     ariaLabel="Overflow drawer triggers"
+                    customTriggerBuilder={getTrigger(overflowItemHasBadge())}
                     variant="icon"
                   />
                 </span>
