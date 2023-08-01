@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { FocusEventHandler, useImperativeHandle, useRef } from 'react';
+import React, { FocusEventHandler, useCallback, useImperativeHandle, useRef } from 'react';
 import { CardsForwardRefType, CardsProps } from './interfaces';
 import styles from './styles.css.js';
 import { getCardsPerRow } from './cards-layout-helper';
@@ -17,7 +17,6 @@ import stickyScrolling from '../table/sticky-scrolling';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -25,8 +24,8 @@ import { supportsStickyPosition } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { ScrollbarLabelContext } from '../internal/context/scrollbar-label-context';
 
 export { CardsProps };
 
@@ -66,7 +65,10 @@ const Cards = React.forwardRef(function <T = any>(
 
   const computedVariant = isRefresh ? variant : 'container';
 
-  const headingId = useUniqueId('cards-heading');
+  const headerIdRef = useRef<string | undefined>(undefined);
+  const setHeaderRef = useCallback((id: string) => {
+    headerIdRef.current = id;
+  }, []);
   const isLabelledByHeader = !ariaLabels?.cardsLabel && !!header;
 
   const [columns, measureRef] = useContainerQuery<number>(
@@ -142,9 +144,9 @@ const Cards = React.forwardRef(function <T = any>(
                     styles[`header-variant-${computedVariant}`]
                   )}
                 >
-                  <ScrollbarLabelContext.Provider value={headingId}>
+                  <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
                     <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
-                  </ScrollbarLabelContext.Provider>
+                  </CollectionLabelContext.Provider>
                 </div>
               )
             }
@@ -179,7 +181,7 @@ const Cards = React.forwardRef(function <T = any>(
                   updateShiftToggle={updateShiftToggle}
                   onFocus={onCardFocus}
                   ariaLabel={ariaLabels?.cardsLabel}
-                  ariaLabelledby={isLabelledByHeader ? headingId : undefined}
+                  ariaLabelledby={isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined}
                 />
               )}
             </div>

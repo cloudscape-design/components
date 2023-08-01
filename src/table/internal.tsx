@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -39,8 +39,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getTableRoleProps, getTableRowRoleProps } from './table-role';
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { ScrollbarLabelContext } from '../internal/context/scrollbar-label-context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { CollectionLabelContext } from '../internal/context/collection-label-context';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -161,8 +160,11 @@ const InternalTable = React.forwardRef(
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
     const hasFooter = !!footer || hasFooterPagination;
 
-    const headingId = useUniqueId('table-heading');
+    const headerIdRef = useRef<string | undefined>(undefined);
     const isLabelledByHeader = !ariaLabels?.tableLabel && !!header;
+    const setHeaderRef = useCallback((id: string) => {
+      headerIdRef.current = id;
+    }, []);
 
     const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
     const visibleColumnIdsWithSelection: PropertyKey[] = [];
@@ -257,9 +259,9 @@ const InternalTable = React.forwardRef(
                       ref={toolsHeaderWrapper}
                       className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
                     >
-                      <ScrollbarLabelContext.Provider value={headingId}>
+                      <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
                         <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
-                      </ScrollbarLabelContext.Provider>
+                      </CollectionLabelContext.Provider>
                     </div>
                   </div>
                 )}

@@ -11,7 +11,7 @@ import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { ScrollbarLabelContext } from '../internal/context/scrollbar-label-context';
+import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
 
@@ -36,9 +36,11 @@ export default function InternalHeader({
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
-  const wrapperHeadingId = useContext(ScrollbarLabelContext);
-  const uniqueHeadingId = useUniqueId('heading');
-  const headingId = wrapperHeadingId ? wrapperHeadingId : uniqueHeadingId;
+  const assignHeaderId = useContext(CollectionLabelContext).assignId;
+  const headingId = useUniqueId('heading');
+  if (assignHeaderId !== undefined) {
+    assignHeaderId(headingId);
+  }
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
   const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
