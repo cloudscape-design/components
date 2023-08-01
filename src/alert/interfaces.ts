@@ -6,6 +6,13 @@ import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace AlertProps {
   export type Type = 'success' | 'error' | 'warning' | 'info';
+
+  export interface Ref {
+    /**
+     * Sets focus on the alert content.
+     */
+    focus(): void;
+  }
 }
 
 export interface AlertProps extends BaseComponentProps {
@@ -53,12 +60,6 @@ export interface AlertProps extends BaseComponentProps {
    * Although it is technically possible to insert any content, our UX guidelines only allow you to add a button.
    */
   action?: React.ReactNode;
-
-  /**
-   * Automatically focuses the alert when component is mounted.
-   * Use this when the alert should immediately notify the user of a critical error.
-   */
-  autoFocus?: boolean;
 
   /**
    * Fired when the user clicks the close icon that is displayed

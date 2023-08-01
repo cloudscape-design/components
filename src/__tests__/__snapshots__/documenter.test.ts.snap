@@ -16,16 +16,16 @@ when the \`dismissible\` property is set to \`true\`.",
       "name": "onDismiss",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets focus on the alert content.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Alert",
   "properties": Array [
-    Object {
-      "description": "Automatically focuses the alert when component is mounted.
-Use this when the alert should immediately notify the user of a critical error.",
-      "name": "autoFocus",
-      "optional": true,
-      "type": "boolean",
-    },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -61,7 +61,7 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"info\\"",
+      "defaultValue": "'info'",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
         "name": "AlertProps.Type",

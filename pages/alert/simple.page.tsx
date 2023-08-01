@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
-import Alert from '~components/alert';
+import React, { useEffect, useRef, useState } from 'react';
+import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
 import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -13,6 +13,14 @@ import messages from '~components/i18n/messages/all.en';
 
 export default function AlertScenario() {
   const [visible, setVisible] = useState(true);
+  const alertRef = useRef<AlertProps.Ref>(null);
+
+  useEffect(() => {
+    if (visible) {
+      alertRef.current?.focus();
+    }
+  }, [visible]);
+
   return (
     <I18nProvider messages={[messages]} locale="en">
       <article>
@@ -29,7 +37,7 @@ export default function AlertScenario() {
                 buttonText="Button text"
                 type="warning"
                 onDismiss={() => setVisible(false)}
-                autoFocus={true}
+                ref={alertRef}
               >
                 Content
                 <br />
