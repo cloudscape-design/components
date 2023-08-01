@@ -30,7 +30,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import useContentHeaderOverlap from './use-content-header-overlap';
+import useHeaderOverlap from './use-content-header-overlap';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
@@ -49,11 +49,11 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
   hasDefaultToolsWidth: boolean;
   hasDrawerViewportOverlay: boolean;
+  hasHeaderOverlap: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
   hasStickyBackground: boolean;
-  isContentHeaderOverlapDisabled: boolean;
-  hasContentHeaderOverlap: boolean;
+  isHeaderOverlapDisabled: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -482,7 +482,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
-    const { hasContentHeaderOverlap, updateContentHeaderOverlapHeight } = useContentHeaderOverlap({
+    const { hasHeaderOverlap, updateContentHeaderOverlapHeight } = useHeaderOverlap({
       contentHeader: props.contentHeader,
       disableContentHeaderOverlap: props.disableContentHeaderOverlap,
       layoutElement,
@@ -611,11 +611,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
           handleToolsClick,
-          hasContentHeaderOverlap,
+          hasHeaderOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
           hasStickyBackground,
-          isContentHeaderOverlapDisabled: props.disableContentHeaderOverlap || !hasContentHeaderOverlap,
+          isHeaderOverlapDisabled: props.disableContentHeaderOverlap || !hasHeaderOverlap,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
           isSplitPanelForcedPosition,

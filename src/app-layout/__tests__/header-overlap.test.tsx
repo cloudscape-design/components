@@ -18,25 +18,25 @@ jest.mock('../../../lib/components/internal/hooks/container-queries/utils', () =
   convertResizeObserverEntry: () => ({ contentBoxHeight: positiveHeight ? 800 : 0 }),
 }));
 
-describe('Dynamic overlap', () => {
+describe('Header overlap', () => {
   function ComponentWithDynamicOverlap() {
     const ref = useDynamicOverlap();
-    const { isDynamicOverlapSet, isDynamicOverlapDisabled } = useAppLayoutInternals();
+    const { hasHeaderOverlap, isHeaderOverlapDisabled } = useAppLayoutInternals();
     return (
       <>
         <div ref={ref} />
-        <div data-testid="is-dynamic-overlap-set">{isDynamicOverlapSet.toString()}</div>
-        <div data-testid="is-dynamic-overlap-disabled">{isDynamicOverlapDisabled.toString()}</div>
+        <div data-testid="has-header-overlap">{hasHeaderOverlap.toString()}</div>
+        <div data-testid="is-header-overlap-disabled">{isHeaderOverlapDisabled.toString()}</div>
       </>
     );
   }
 
   function ComponentWithoutDynamicOverlap() {
-    const { isDynamicOverlapSet, isDynamicOverlapDisabled } = useAppLayoutInternals();
+    const { hasHeaderOverlap, isHeaderOverlapDisabled } = useAppLayoutInternals();
     return (
       <>
-        <div data-testid="is-dynamic-overlap-set">{isDynamicOverlapSet.toString()}</div>
-        <div data-testid="is-dynamic-overlap-disabled">{isDynamicOverlapDisabled.toString()}</div>
+        <div data-testid="has-header-overlap">{hasHeaderOverlap.toString()}</div>
+        <div data-testid="is-header-overlap-disabled">{isHeaderOverlapDisabled.toString()}</div>
       </>
     );
   }
@@ -44,8 +44,8 @@ describe('Dynamic overlap', () => {
   function renderApp(appLayoutProps?: AppLayoutProps) {
     const { rerender } = render(<AppLayout {...appLayoutProps} />);
     return {
-      isDynamicOverlapSet: () => screen.getByTestId('is-dynamic-overlap-set').textContent,
-      isDynamicOverlapDisabled: () => screen.getByTestId('is-dynamic-overlap-disabled').textContent,
+      hasHeaderOverlap: () => screen.getByTestId('has-header-overlap').textContent,
+      isOverlapDisabled: () => screen.getByTestId('is-header-overlap-disabled').textContent,
       rerender: (appLayoutProps?: AppLayoutProps) => rerender(<AppLayout {...appLayoutProps} />),
     };
   }
@@ -54,60 +54,60 @@ describe('Dynamic overlap', () => {
     positiveHeight = true;
   });
 
-  describe('sets dynamic overlap', () => {
-    test('when a child component uses the useDynamicOverlap hook with a height higher than 0', () => {
-      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+  describe('applies header overlap', () => {
+    test('when a child component sets the height dynamically with a height higher than 0', () => {
+      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithDynamicOverlap />,
       });
-      expect(isDynamicOverlapSet()).toBe('true');
-      expect(isDynamicOverlapDisabled()).toBe('false');
+      expect(hasHeaderOverlap()).toBe('true');
+      expect(isOverlapDisabled()).toBe('false');
     });
 
     test('when content header is present', () => {
-      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithoutDynamicOverlap />,
         contentHeader: 'Content header',
       });
-      expect(isDynamicOverlapSet()).toBe('true');
-      expect(isDynamicOverlapDisabled()).toBe('false');
+      expect(hasHeaderOverlap()).toBe('true');
+      expect(isOverlapDisabled()).toBe('false');
     });
   });
 
-  describe('does not set dynamic overlap', () => {
+  describe('does not apply header overlap', () => {
     test('when no content header is present and height is 0', () => {
       positiveHeight = false;
-      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithDynamicOverlap />,
       });
-      expect(isDynamicOverlapSet()).toBe('false');
-      expect(isDynamicOverlapDisabled()).toBe('true');
+      expect(hasHeaderOverlap()).toBe('false');
+      expect(isOverlapDisabled()).toBe('true');
     });
 
-    test('when no content header is present and no child component uses the useDynamicOverlap hook', () => {
-      const { isDynamicOverlapSet, isDynamicOverlapDisabled } = renderApp({
+    test('when no content header is present and no child component sets the height dynamically', () => {
+      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithoutDynamicOverlap />,
       });
-      expect(isDynamicOverlapSet()).toBe('false');
-      expect(isDynamicOverlapDisabled()).toBe('true');
+      expect(hasHeaderOverlap()).toBe('false');
+      expect(isOverlapDisabled()).toBe('true');
     });
   });
 
-  test('disables dynamic overlap when explicitly specified in the app layout props', () => {
-    const { isDynamicOverlapDisabled } = renderApp({
+  test('disables header overlap when explicitly specified in the app layout props', () => {
+    const { isOverlapDisabled } = renderApp({
       content: <ComponentWithDynamicOverlap />,
       disableContentHeaderOverlap: true,
     });
-    expect(isDynamicOverlapDisabled()).toBe('true');
+    expect(isOverlapDisabled()).toBe('true');
   });
 
   test('updates state accordingly when re-rendering', () => {
-    const { isDynamicOverlapSet, isDynamicOverlapDisabled, rerender } = renderApp({
+    const { hasHeaderOverlap, isOverlapDisabled, rerender } = renderApp({
       content: <ComponentWithDynamicOverlap />,
     });
-    expect(isDynamicOverlapSet()).toBe('true');
-    expect(isDynamicOverlapDisabled()).toBe('false');
+    expect(hasHeaderOverlap()).toBe('true');
+    expect(isOverlapDisabled()).toBe('false');
     rerender({ content: <ComponentWithoutDynamicOverlap /> });
-    expect(isDynamicOverlapSet()).toBe('false');
-    expect(isDynamicOverlapDisabled()).toBe('true');
+    expect(hasHeaderOverlap()).toBe('false');
+    expect(isOverlapDisabled()).toBe('true');
   });
 });
