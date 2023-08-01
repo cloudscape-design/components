@@ -7,6 +7,7 @@ import InternalButtonDropdown from '../../button-dropdown/internal';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
+import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
 import { InternalButton } from '../../button/internal';
 import { ButtonProps } from '../../button/interfaces';
@@ -134,7 +135,7 @@ export const Drawer = React.forwardRef(
   }
 );
 
-const getTrigger = (hasOverflowBadge: boolean) => {
+const getTrigger = (hasOverflowBadge: boolean, isActive: boolean) => {
   const DropdownTrigger = (
     clickHandler: () => void,
     ref: React.Ref<ButtonProps.Ref>,
@@ -149,6 +150,7 @@ const getTrigger = (hasOverflowBadge: boolean) => {
           event.preventDefault();
           clickHandler();
         }}
+        className={clsx(isActive && buttonDropdownStyles['trigger-active'])}
         ref={ref}
         ariaExpanded={isExpanded}
         aria-haspopup={true}
@@ -262,7 +264,13 @@ export const DrawerTriggersBar = ({
                       });
                     }}
                     ariaLabel="Overflow drawer triggers"
-                    customTriggerBuilder={getTrigger(overflowItemHasBadge())}
+                    customTriggerBuilder={getTrigger(
+                      overflowItemHasBadge(),
+                      drawers.items
+                        .slice(getIndexOfOverflowItem(), drawers.items.length)
+                        .map(item => item.id)
+                        .includes(drawers.activeDrawerId)
+                    )}
                     variant="icon"
                   />
                 </span>

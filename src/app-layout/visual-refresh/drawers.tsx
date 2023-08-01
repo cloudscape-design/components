@@ -11,6 +11,7 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
+import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
@@ -144,6 +145,7 @@ const getTrigger = (hasOverflowBadge: boolean) => {
           event.preventDefault();
           clickHandler();
         }}
+        className={buttonDropdownStyles['trigger-active']}
         ref={ref}
         ariaExpanded={isExpanded}
         aria-haspopup={true}
@@ -151,13 +153,7 @@ const getTrigger = (hasOverflowBadge: boolean) => {
         variant="icon"
         badge={hasOverflowBadge}
         badgeColor="red"
-        iconSvg={
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
-            <circle color="white" cx="8" cy="2.5" r=".5"></circle>
-            <circle color="white" cx="8" cy="8" r=".5"></circle>
-            <circle color="white" cx="8" cy="13.5" r=".5"></circle>
-          </svg>
-        }
+        iconName="ellipsis"
       />
     );
   };
@@ -242,8 +238,8 @@ function DesktopTriggers() {
   }
 
   const overflowItemHasBadge = () => {
-    const overflowItems = drawers?.items.slice(getIndexOfOverflowItem(), drawers.items.length);
-    return overflowItems && overflowItems.filter(item => item.badge).length > 0;
+    const overflowItems = drawers?.items.slice(1, drawers.items.length);
+    return (overflowItems && overflowItems.filter(item => item.badge).length > 0) || false;
   };
 
   return (
@@ -320,7 +316,7 @@ function DesktopTriggers() {
             }}
             ariaLabel="Overflow drawer triggers"
             variant="icon"
-            customTriggerBuilder={DropdownTrigger}
+            customTriggerBuilder={getTrigger(false)}
             expandToViewport={true}
           />
         )}
