@@ -77,19 +77,22 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
 }
 
 export function updateCellFocus(table: HTMLTableElement, cell: FocusedCell) {
-  const tdSelector = `tr[aria-rowindex="${cell.rowIndex}"]>td[aria-colindex="${cell.colIndex}"]`;
-  const thSelector = `tr[aria-rowindex="${cell.rowIndex}"]>th[aria-colindex="${cell.colIndex}"]`;
-  const selector = `${tdSelector},${thSelector}`;
-
-  const matchedCell = table.querySelector(selector) as HTMLTableCellElement;
-  if (matchedCell) {
-    matchedCell.tabIndex = -1;
-    matchedCell.focus();
-    updateTableIndices(table, cell);
+  const targetRow = findTableRowByAriaRowIndex(table, cell.rowIndex);
+  if (!targetRow) {
+    return;
   }
+
+  const targetCell = findTableRowCellByAriaColIndex(targetRow, cell.colIndex);
+  if (!targetCell) {
+    return;
+  }
+
+  targetCell.tabIndex = -1;
+  targetCell.focus();
+  updateTableIndices(table, cell);
 }
 
-function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {
+function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta = 0) {
   let targetRow: null | HTMLTableRowElement = null;
   const rowElements = table.querySelectorAll('tr[aria-rowindex]');
   for (let elementIndex = 0; elementIndex < rowElements.length; elementIndex++) {
@@ -103,7 +106,7 @@ function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex:
   return targetRow;
 }
 
-function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAriaColIndex: number, delta: number) {
+function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAriaColIndex: number, delta = 0) {
   let targetCell: null | HTMLTableCellElement = null;
   const cellElements = tableRow.querySelectorAll('td[aria-colindex],th[aria-colindex]');
   for (let elementIndex = 0; elementIndex < cellElements.length; elementIndex++) {
