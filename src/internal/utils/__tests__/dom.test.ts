@@ -100,6 +100,12 @@ describe('nodeContains', () => {
     expect(nodeContains(null, null)).toBe(false);
   });
 
+  test('returns false if descendant is not a valid node', () => {
+    const div = document.createElement('div');
+    expect(nodeContains(div, window)).toBe(false);
+    expect(nodeContains(div, new EventTarget())).toBe(false);
+  });
+
   const testCases: Record<string, string> = {
     regular: `<div id="parent">
                 <div id="inbetween">
@@ -149,6 +155,8 @@ describe('nodeContains', () => {
           const inbetween = div.querySelector('#inbetween');
           const child = div.querySelector('#child');
 
+          expect(nodeContains(parent, parent)).toBe(true);
+          expect(nodeContains(child, child)).toBe(true);
           expect(nodeContains(parent, child)).toBe(true);
           expect(nodeContains(parent, inbetween)).toBe(true);
           expect(nodeContains(inbetween, child)).toBe(true);

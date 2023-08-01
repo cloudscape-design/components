@@ -87,8 +87,6 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
     }
   );
 
-  const [pinnedSegment, setPinnedSegment] = useState<T | null>(null);
-
   const visibleData = useMemo(
     () => data.filter(d => visibleSegments?.indexOf(d.datum) !== -1),
     [data, visibleSegments]
@@ -212,8 +210,6 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
             onHighlightChange={onHighlightChange}
             highlightedSegment={highlightedSegment}
             legendSegment={legendSegment}
-            pinnedSegment={pinnedSegment}
-            setPinnedSegment={setPinnedSegment}
             detailPopoverSize={detailPopoverSize}
             pieData={pieData}
             dataSum={dataSum}

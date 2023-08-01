@@ -5,7 +5,7 @@ import { tokens as parentTokens } from '../colors';
 import merge from 'lodash/merge';
 import { expandColorDictionary } from '../../utils';
 
-const tokens: StyleDictionary.ColorsDictionary = {
+export const baseTokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalDefault: '{colorGrey100}',
   colorBorderButtonNormalDefault: '{colorGrey100}',
   colorBackgroundButtonNormalDefault: 'transparent',
@@ -19,10 +19,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextExpandableSectionDefault: '{colorGrey100}',
   colorTextExpandableSectionHover: '{colorWhite}',
   colorTextBodyDefault: '{colorGrey100}',
+  colorTextHeadingSecondary: '{colorGrey100}',
+  colorBorderDividerDefault: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
-  merge({}, parentTokens, tokens)
+  merge({}, parentTokens, baseTokens)
 );
 
 export { expandedTokens as tokens };

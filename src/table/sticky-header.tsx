@@ -8,6 +8,7 @@ import Thead, { InteractiveComponent, TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+import { TableRole, getTableRoleProps } from './table-role';
 
 export interface StickyHeaderRef {
   scrollToTop(): void;
@@ -25,6 +26,7 @@ interface StickyHeaderProps {
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
+  tableRole: TableRole;
 }
 
 export default forwardRef(StickyHeader);
@@ -40,6 +42,7 @@ function StickyHeader(
     tableRef,
     tableHasHeader,
     contentDensity,
+    tableRole,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -81,8 +84,8 @@ function StickyHeader(
           styles['table-layout-fixed'],
           contentDensity === 'compact' && getVisualContextClassname('compact-table')
         )}
-        role="table"
         ref={secondaryTableRef}
+        {...getTableRoleProps({ tableRole })}
       >
         <Thead
           ref={secondaryTheadRef}

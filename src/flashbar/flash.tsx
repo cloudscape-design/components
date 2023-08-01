@@ -12,6 +12,7 @@ import { isDevelopment } from '../internal/is-development';
 import { throttle } from '../internal/utils/throttle';
 import LiveRegion from '../internal/components/live-region';
 import { ButtonProps } from '../button/interfaces';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import { sendDismissMetric } from './internal/analytics';
 
@@ -142,7 +143,8 @@ export const Flash = React.forwardRef(
             [styles.exit]: transitionState === 'exit',
             [styles.exiting]: transitionState === 'exiting',
             [styles.exited]: transitionState === 'exited',
-          }
+          },
+          getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar')
         )}
         {...analyticsAttributes}
       >

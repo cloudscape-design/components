@@ -3,7 +3,12 @@
 
 import { useContext } from 'react';
 import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
-import { DATA_ATTR_FUNNEL_INTERACTION_ID, DATA_ATTR_FUNNEL_SUBSTEP, getSubStepAllSelector } from '../selectors';
+import {
+  DATA_ATTR_FUNNEL_INTERACTION_ID,
+  DATA_ATTR_FUNNEL_SUBSTEP,
+  getNameFromSelector,
+  getSubStepAllSelector,
+} from '../selectors';
 import { FunnelMetrics } from '../';
 
 /**
@@ -18,47 +23,109 @@ import { FunnelMetrics } from '../';
  */
 export const useFunnelSubStep = () => {
   const context = useContext(FunnelSubStepContext);
-  const { funnelInteractionId, funnelState } = useFunnel();
+  const { funnelInteractionId, funnelState, latestFocusCleanupFunction } = useFunnel();
   const { stepNumber, stepNameSelector } = useFunnelStep();
 
-  const { subStepId, subStepSelector, subStepNameSelector, subStepRef, isNestedSubStep } = context;
+  const {
+    subStepId,
+    subStepSelector,
+    subStepNameSelector,
+    subStepRef,
+    isNestedSubStep,
+    mousePressed,
+    isFocusedSubStep,
+    focusCleanupFunction,
+  } = context;
 
   if (isNestedSubStep) {
     return context;
   }
 
-  const onFocus = (event: React.FocusEvent<HTMLDivElement>) => {
-    if (
-      funnelInteractionId &&
-      subStepRef.current &&
-      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node))
-    ) {
+  const onFocus = async (event: React.FocusEvent<HTMLDivElement>) => {
+    const element = event.target;
+    // Ignore spurious focus events, such as when the browser window is focused again.
+    await new Promise(r => setTimeout(r, 1));
+    if (document.activeElement !== element) {
+      return;
+    }
+
+    if (isFocusedSubStep.current) {
+      return;
+    }
+    isFocusedSubStep.current = true;
+
+    if (funnelInteractionId && subStepId) {
+      /*
+        If the previously focused substep has provided a cleanup function, we
+        call it here on behalf of the previously focused substep.
+      */
+      latestFocusCleanupFunction.current?.();
+
       FunnelMetrics.funnelSubStepStart({
         funnelInteractionId,
         subStepSelector,
         subStepNameSelector,
+        subStepName: getNameFromSelector(subStepNameSelector),
         stepNumber,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
       });
+
+      /*
+        This cleanup function will be called when the user leaves this substep.
+        The function might be called either:
+
+          - by the next focused substep as `latestFocusCleanupFunction`
+            (through a separate instance of the function we're currently in), or
+
+          - by the same substep as `focusCleanupFunction`
+            (through the `onMouseUp` handler or the `onBlur` handler).
+      */
+      let cleanupFunctionHasBeenRun = false;
+      focusCleanupFunction.current = () => {
+        if (cleanupFunctionHasBeenRun) {
+          return;
+        }
+        cleanupFunctionHasBeenRun = true;
+
+        if (funnelState.current !== 'cancelled') {
+          FunnelMetrics.funnelSubStepComplete({
+            funnelInteractionId,
+            subStepSelector,
+            subStepNameSelector,
+            subStepName: getNameFromSelector(subStepNameSelector),
+            stepNumber,
+            stepNameSelector,
+            subStepAllSelector: getSubStepAllSelector(),
+          });
+        }
+      };
+      latestFocusCleanupFunction.current = focusCleanupFunction.current;
     }
   };
 
   const onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-    if (
-      funnelInteractionId &&
-      subStepRef.current &&
-      !subStepRef.current.contains(event.relatedTarget) &&
-      funnelState.current !== 'cancelled'
-    ) {
-      FunnelMetrics.funnelSubStepComplete({
-        funnelInteractionId,
-        subStepSelector,
-        subStepNameSelector,
-        stepNumber,
-        stepNameSelector,
-        subStepAllSelector: getSubStepAllSelector(),
-      });
+    if (mousePressed.current) {
+      /*
+       Ignore blur events that are caused by mouse interaction, because these events don't
+       always reflect user intention. For example, clicking the label of an interactive form
+       element will briefly blur it.
+       The mouse-caused events are handled in the global `onMouseUp` handler of the substep
+       context instead.
+       */
+      return;
+    }
+
+    if (!subStepRef.current || !subStepRef.current.contains(event.relatedTarget) || !event.relatedTarget) {
+      isFocusedSubStep.current = false;
+
+      if (funnelInteractionId && subStepId && funnelState.current !== 'cancelled') {
+        /*
+         Run this substep's own focus cleanup function if another substep
+         hasn't already done it for us.
+         */
+        focusCleanupFunction.current?.();
+      }
     }
   };
 

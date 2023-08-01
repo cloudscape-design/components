@@ -20,7 +20,6 @@ interface SegmentsProps<T> {
   segmentAriaRoleDescription?: string;
   onMouseDown: (datum: InternalChartDatum<T>) => void;
   onMouseOver: (datum: InternalChartDatum<T>) => void;
-  onMouseOut: (event: React.MouseEvent<SVGElement>) => void;
 }
 
 export default function Segments<T extends PieChartProps.Datum>({
@@ -33,7 +32,6 @@ export default function Segments<T extends PieChartProps.Datum>({
   segmentAriaRoleDescription,
   onMouseDown,
   onMouseOver,
-  onMouseOut,
 }: SegmentsProps<T>) {
   const i18n = useInternalI18n('pie-chart');
 
@@ -68,7 +66,7 @@ export default function Segments<T extends PieChartProps.Datum>({
   }, [highlightedSegment, pieData, arcFactory]);
 
   return (
-    <g onMouseLeave={event => onMouseOut(event)}>
+    <g>
       {pieData.map(datum => {
         const isHighlighted = highlightedSegment === datum.data.datum;
         const isDimmed = highlightedSegment !== null && !isHighlighted;

@@ -5,7 +5,7 @@ import React from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
-import { getAriaSort, getSortingIconName, getSortingStatus, isSorted } from './utils';
+import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
@@ -14,6 +14,7 @@ import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { TableRole, getTableColHeaderRoleProps } from '../table-role';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -38,6 +39,7 @@ interface TableHeaderCellProps<ItemType> {
   cellRef: React.RefCallback<HTMLElement>;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  tableRole: TableRole;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -108,10 +110,9 @@ export function TableHeaderCell<ItemType>({
         },
         stickyStyles.className
       )}
-      aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={{ ...style, ...stickyStyles.style }}
-      scope="col"
       ref={mergedRef}
+      {...getTableColHeaderRoleProps({ sortingStatus })}
     >
       <div
         className={clsx(styles['header-cell-content'], {

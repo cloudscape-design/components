@@ -5,7 +5,7 @@ import { tokens as parentTokens } from '../colors';
 import merge from 'lodash/merge';
 import { expandColorDictionary } from '../../utils';
 
-const tokens: StyleDictionary.ColorsDictionary = {
+export const alertButtonTokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalDefault: {
     light: '{colorGrey600}',
     dark: '{colorGrey300}',
@@ -27,11 +27,15 @@ const tokens: StyleDictionary.ColorsDictionary = {
     light: 'rgba(0, 7, 22, 0.1)',
     dark: 'rgba(255, 255, 255, 0.15)',
   },
+  colorTextLinkButtonNormalDefault: '{colorTextLinkDefault}',
+  colorTextLinkButtonNormalHover: '{colorTextLinkHover}',
+};
+
+const tokens: StyleDictionary.ColorsDictionary = {
+  ...alertButtonTokens,
   colorBorderItemFocused: {
     dark: '{colorGrey100}',
   },
-  colorTextLinkButtonNormalDefault: '{colorTextLinkDefault}',
-  colorTextLinkButtonNormalHover: '{colorTextLinkHover}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(

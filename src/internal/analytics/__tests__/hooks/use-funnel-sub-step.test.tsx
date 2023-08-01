@@ -36,7 +36,13 @@ describe('useFunnelSubStep hook', () => {
 
     const { getByTestId } = render(
       <FunnelContext.Provider
-        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
+        value={
+          {
+            funnelInteractionId,
+            funnelState: { current: 'default' },
+            latestFocusCleanupFunction: { current: undefined },
+          } as Partial<FunnelContextValue> as any
+        }
       >
         <FunnelSubStepContext.Provider
           value={{
@@ -45,6 +51,9 @@ describe('useFunnelSubStep hook', () => {
             subStepNameSelector,
             subStepRef: ref,
             isNestedSubStep: false,
+            isFocusedSubStep: { current: false },
+            focusCleanupFunction: { current: undefined },
+            mousePressed: { current: false },
           }}
         >
           <div ref={ref}>
@@ -58,7 +67,7 @@ describe('useFunnelSubStep hook', () => {
     expect(container).toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP);
   });
 
-  test('calls funnelSubStepStart when the substep is focused in the default phase', () => {
+  test('calls funnelSubStepStart when the substep is focused in the default phase', async () => {
     const ChildComponent = () => {
       const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
       return (
@@ -77,7 +86,13 @@ describe('useFunnelSubStep hook', () => {
 
     const { getByTestId } = render(
       <FunnelContext.Provider
-        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
+        value={
+          {
+            funnelInteractionId,
+            funnelState: { current: 'default' },
+            latestFocusCleanupFunction: { current: undefined },
+          } as Partial<FunnelContextValue> as any
+        }
       >
         <FunnelSubStepContext.Provider
           value={{
@@ -86,6 +101,9 @@ describe('useFunnelSubStep hook', () => {
             subStepNameSelector,
             subStepRef: ref,
             isNestedSubStep: false,
+            isFocusedSubStep: { current: false },
+            focusCleanupFunction: { current: undefined },
+            mousePressed: { current: false },
           }}
         >
           <div ref={ref}>
@@ -97,6 +115,8 @@ describe('useFunnelSubStep hook', () => {
 
     act(() => getByTestId('input').focus());
 
+    await runPendingPromises();
+
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledWith(
       expect.objectContaining({
         subStepSelector,
@@ -106,7 +126,7 @@ describe('useFunnelSubStep hook', () => {
     );
   });
 
-  test('calls funnelSubStepStart when the substep is focused in the validation phase', () => {
+  test('calls funnelSubStepStart when the substep is focused in the validation phase', async () => {
     const ChildComponent = () => {
       const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
       return (
@@ -123,7 +143,13 @@ describe('useFunnelSubStep hook', () => {
 
     const { getByTestId, rerender } = render(
       <FunnelContext.Provider
-        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
+        value={
+          {
+            funnelInteractionId,
+            funnelState: { current: 'default' },
+            latestFocusCleanupFunction: { current: undefined },
+          } as Partial<FunnelContextValue> as any
+        }
       >
         <FunnelSubStepContext.Provider
           value={{
@@ -132,6 +158,9 @@ describe('useFunnelSubStep hook', () => {
             subStepId,
             subStepSelector,
             subStepNameSelector,
+            isFocusedSubStep: { current: false },
+            focusCleanupFunction: { current: undefined },
+            mousePressed: { current: false },
           }}
         >
           <ChildComponent />
@@ -141,7 +170,13 @@ describe('useFunnelSubStep hook', () => {
 
     rerender(
       <FunnelContext.Provider
-        value={{ funnelInteractionId, funnelState: { current: 'validating' } } as Partial<FunnelContextValue> as any}
+        value={
+          {
+            funnelInteractionId,
+            funnelState: { current: 'validating' },
+            latestFocusCleanupFunction: { current: undefined },
+          } as Partial<FunnelContextValue> as any
+        }
       >
         <FunnelSubStepContext.Provider
           value={{
@@ -150,6 +185,9 @@ describe('useFunnelSubStep hook', () => {
             subStepId,
             subStepSelector,
             subStepNameSelector,
+            isFocusedSubStep: { current: false },
+            focusCleanupFunction: { current: undefined },
+            mousePressed: { current: false },
           }}
         >
           <ChildComponent />
@@ -158,6 +196,8 @@ describe('useFunnelSubStep hook', () => {
     );
 
     act(() => getByTestId('input').focus());
+
+    await runPendingPromises();
 
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -168,7 +208,7 @@ describe('useFunnelSubStep hook', () => {
     );
   });
 
-  test('calls funnelSubStepComplete when the substep is blurred', () => {
+  test('calls funnelSubStepComplete when the substep is blurred', async () => {
     const ChildComponent = () => {
       const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
       return (
@@ -186,7 +226,13 @@ describe('useFunnelSubStep hook', () => {
 
     const { getByTestId } = render(
       <FunnelContext.Provider
-        value={{ funnelInteractionId, funnelState: { current: 'default' } } as Partial<FunnelContextValue> as any}
+        value={
+          {
+            funnelInteractionId,
+            funnelState: { current: 'default' },
+            latestFocusCleanupFunction: { current: undefined },
+          } as Partial<FunnelContextValue> as any
+        }
       >
         <FunnelSubStepContext.Provider
           value={{
@@ -195,6 +241,9 @@ describe('useFunnelSubStep hook', () => {
             subStepNameSelector,
             subStepRef: ref,
             isNestedSubStep: false,
+            isFocusedSubStep: { current: false },
+            focusCleanupFunction: { current: undefined },
+            mousePressed: { current: false },
           }}
         >
           <div ref={ref}>
@@ -205,8 +254,12 @@ describe('useFunnelSubStep hook', () => {
     );
 
     const input = getByTestId('input');
+
     input.focus();
+    await runPendingPromises();
+
     input.blur();
+    jest.runAllTimers();
 
     expect(FunnelMetrics.funnelSubStepComplete).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -217,3 +270,8 @@ describe('useFunnelSubStep hook', () => {
     );
   });
 });
+
+const runPendingPromises = async () => {
+  jest.runAllTimers();
+  await Promise.resolve();
+};
