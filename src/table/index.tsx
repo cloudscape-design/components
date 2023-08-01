@@ -12,7 +12,10 @@ const Table = React.forwardRef(
     { items = [], selectedItems = [], variant = 'container', contentDensity = 'comfortable', ...props }: TableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Table');
+    const baseComponentProps = useBaseComponent('Table', {
+      loading: props.loading,
+      selectionType: props.selectionType,
+    });
     return (
       <InternalTable
         items={items}

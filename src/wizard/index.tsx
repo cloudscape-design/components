@@ -11,7 +11,7 @@ import InternalWizard from './internal';
 import { WizardProps } from './interfaces';
 
 function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
-  const baseComponentProps = useBaseComponent('Wizard');
+  const baseComponentProps = useBaseComponent('Wizard', { steps: props.steps, isLoadingNextStep });
   const externalProps = getExternalProps(props);
 
   return (

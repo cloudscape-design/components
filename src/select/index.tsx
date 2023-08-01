@@ -23,6 +23,8 @@ const Select = React.forwardRef(
     const baseComponentProps = useBaseComponent('Select', {
       placeholder: restProps.placeholder,
       disabled: restProps.disabled,
+      options,
+      selectedOption: restProps.selectedOption,
     });
     const externalProps = getExternalProps(restProps);
     return (

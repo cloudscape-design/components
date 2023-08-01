@@ -9,7 +9,7 @@ import InternalToggle from './internal';
 export { ToggleProps };
 
 const Toggle = React.forwardRef<ToggleProps.Ref, ToggleProps>((props, ref) => {
-  const baseComponentProps = useBaseComponent('Toggle');
+  const baseComponentProps = useBaseComponent('Toggle', { disabled: props.disabled, checked: props.checked });
   return <InternalToggle {...props} {...baseComponentProps} ref={ref} />;
 });
 

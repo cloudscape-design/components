@@ -9,7 +9,7 @@ import InternalTiles from './internal';
 export { TilesProps };
 
 const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('Tiles');
+  const baseComponentProps = useBaseComponent('Tiles', { value: props.value, items: props.items });
   return <InternalTiles ref={ref} {...props} {...baseComponentProps} />;
 });
 

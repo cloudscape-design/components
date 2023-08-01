@@ -22,7 +22,7 @@ export default function SideNavigation({
   onChange,
   ...props
 }: SideNavigationProps) {
-  const { __internalRootRef } = useBaseComponent('SideNavigation');
+  const { __internalRootRef } = useBaseComponent('SideNavigation', { items, activeHref });
   const baseProps = getBaseProps(props);
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
 

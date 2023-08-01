@@ -9,7 +9,7 @@ import InternalTokenGroup from './internal';
 export { TokenGroupProps };
 
 export default function TokenGroup({ items = [], alignment = 'horizontal', ...props }: TokenGroupProps) {
-  const baseComponentProps = useBaseComponent('TokenGroup');
+  const baseComponentProps = useBaseComponent('TokenGroup', { items });
   return <InternalTokenGroup items={items} alignment={alignment} {...props} {...baseComponentProps} />;
 }
 

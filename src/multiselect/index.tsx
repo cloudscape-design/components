@@ -21,7 +21,7 @@ const Multiselect = React.forwardRef(
     }: MultiselectProps,
     ref: React.Ref<MultiselectProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Multiselect');
+    const baseComponentProps = useBaseComponent('Multiselect', { selectedOptions, options });
     return (
       <InternalMultiselect
         options={options}

@@ -79,7 +79,7 @@ const PropertyFilter = React.forwardRef(
     }: PropertyFilterProps,
     ref: React.Ref<Ref>
   ) => {
-    const { __internalRootRef } = useBaseComponent('PropertyFilter');
+    const { __internalRootRef } = useBaseComponent('PropertyFilter', { disabled });
     const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
 
     const inputRef = useRef<AutosuggestInputRef>(null);

@@ -9,7 +9,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { CheckboxProps };
 
 const Checkbox = React.forwardRef(({ ...props }: CheckboxProps, ref: React.Ref<CheckboxProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('Checkbox');
+  const baseComponentProps = useBaseComponent('Checkbox', { disabled: props.disabled, checked: props.checked });
   return <InternalCheckbox {...props} {...baseComponentProps} ref={ref} />;
 });
 

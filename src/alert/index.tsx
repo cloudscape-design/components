@@ -12,7 +12,7 @@ import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytic
 export { AlertProps };
 
 export default function Alert({ type = 'info', visible = true, ...props }: AlertProps) {
-  const baseComponentProps = useBaseComponent('Alert');
+  const baseComponentProps = useBaseComponent('Alert', { type, dismissible: props.dismissible, visible });
 
   const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
   const { stepNumber, stepNameSelector } = useFunnelStep();

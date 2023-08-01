@@ -28,7 +28,7 @@ const ButtonDropdown = React.forwardRef(
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('ButtonDropdown');
+    const baseComponentProps = useBaseComponent('ButtonDropdown', { variant, disabled, loading });
     const baseProps = getBaseProps(props);
     return (
       <InternalButtonDropdown

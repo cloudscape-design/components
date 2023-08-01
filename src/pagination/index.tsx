@@ -9,7 +9,12 @@ import InternalPagination from './internal';
 export { PaginationProps };
 
 export default function Pagination(props: PaginationProps) {
-  const baseComponentProps = useBaseComponent('Pagination');
+  const baseComponentProps = useBaseComponent('Pagination', {
+    currentPageIndex: props.currentPageIndex,
+    pagesCount: props.pagesCount,
+    openEnd: props.openEnd,
+    disabled: props.disabled,
+  });
   return <InternalPagination {...props} {...baseComponentProps} />;
 }
 

@@ -57,7 +57,7 @@ const Cards = React.forwardRef(function <T = any>(
   }: CardsProps<T>,
   ref: React.Ref<CardsProps.Ref>
 ) {
-  const { __internalRootRef } = useBaseComponent('Cards');
+  const { __internalRootRef } = useBaseComponent('Cards', { loading, selectedItems, selectionType, items, trackBy });
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
   const isMobile = useMobile();

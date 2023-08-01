@@ -9,7 +9,10 @@ import InternalSegmentedControl from './internal';
 export { SegmentedControlProps };
 
 export default function SegmentedControl(props: SegmentedControlProps) {
-  const baseComponentProps = useBaseComponent('SegmentedControl');
+  const baseComponentProps = useBaseComponent('SegmentedControl', {
+    selectedId: props.selectedId,
+    options: props.options,
+  });
   return <InternalSegmentedControl {...props} {...baseComponentProps} />;
 }
 

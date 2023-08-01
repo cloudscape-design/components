@@ -25,7 +25,7 @@ export function useFlashbar({
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
-  const { __internalRootRef } = useBaseComponent(componentName);
+  const { __internalRootRef } = useBaseComponent(componentName, { items });
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);

@@ -40,7 +40,7 @@ export default function Tabs({
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }
-  const { __internalRootRef } = useBaseComponent('Tabs');
+
   const [idNamespace] = useState(() => nextGeneratedId());
 
   const [activeTabId, setActiveTabId] = useControllable(controlledTabId, onChange, firstEnabledTab(tabs)?.id ?? '', {
@@ -48,6 +48,8 @@ export default function Tabs({
     controlledProp: 'activeTabId',
     changeHandler: 'onChange',
   });
+
+  const { __internalRootRef } = useBaseComponent('Tabs', { tabs, activeTabId });
 
   const baseProps = getBaseProps(rest);
 

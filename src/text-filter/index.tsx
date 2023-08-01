@@ -9,7 +9,7 @@ import InternalTextFilter from './internal';
 export { TextFilterProps };
 
 const TextFilter = React.forwardRef((props: TextFilterProps, ref: React.Ref<TextFilterProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('TextFilter');
+  const baseComponentProps = useBaseComponent('TextFilter', { disabled: props.disabled });
   return <InternalTextFilter {...props} {...baseComponentProps} ref={ref} />;
 });
 

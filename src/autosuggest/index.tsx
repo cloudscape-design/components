@@ -14,7 +14,7 @@ const Autosuggest = React.forwardRef(
     { filteringType = 'auto', statusType = 'finished', disableBrowserAutocorrect = false, ...props }: AutosuggestProps,
     ref: React.Ref<AutosuggestProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Autosuggest');
+    const baseComponentProps = useBaseComponent('Autosuggest', { placeholder: props.placeholder });
     const externalProps = getExternalProps(props);
     return (
       <InternalAutosuggest

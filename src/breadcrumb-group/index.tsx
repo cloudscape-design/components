@@ -12,7 +12,7 @@ export default function BreadcrumbGroup<T extends BreadcrumbGroupProps.Item = Br
   items = [],
   ...props
 }: BreadcrumbGroupProps<T>) {
-  const baseComponentProps = useBaseComponent('BreadcrumbGroup');
+  const baseComponentProps = useBaseComponent('BreadcrumbGroup', { items });
   return <InternalBreadcrumbGroup items={items} {...props} {...baseComponentProps} />;
 }
 

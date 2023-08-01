@@ -8,7 +8,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { StatusIndicatorProps };
 
 export default function StatusIndicator({ type = 'success', wrapText = true, ...props }: StatusIndicatorProps) {
-  const baseComponentProps = useBaseComponent('StatusIndicator');
+  const baseComponentProps = useBaseComponent('StatusIndicator', { type });
   return <InternalStatusIndicator type={type} wrapText={wrapText} {...props} {...baseComponentProps} />;
 }
 

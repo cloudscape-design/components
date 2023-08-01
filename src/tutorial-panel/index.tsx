@@ -22,7 +22,7 @@ export default function TutorialPanel({
   downloadUrl,
   ...restProps
 }: TutorialPanelProps) {
-  const { __internalRootRef } = useBaseComponent('TutorialPanel');
+  const { __internalRootRef } = useBaseComponent('TutorialPanel', { loading });
 
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
