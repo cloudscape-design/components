@@ -130,7 +130,7 @@ function ActiveDrawer() {
   );
 }
 
-const getTrigger = (hasOverflowBadge: boolean) => {
+const getTrigger = (hasOverflowBadge: boolean, isMobile: boolean) => {
   const DropdownTrigger = (
     clickHandler: () => void,
     ref: React.Ref<ButtonProps.Ref>,
@@ -145,7 +145,7 @@ const getTrigger = (hasOverflowBadge: boolean) => {
           event.preventDefault();
           clickHandler();
         }}
-        className={buttonDropdownStyles['trigger-active']}
+        className={clsx(!isMobile && buttonDropdownStyles['trigger-active'])}
         ref={ref}
         ariaExpanded={isExpanded}
         aria-haspopup={true}
@@ -316,7 +316,7 @@ function DesktopTriggers() {
             }}
             ariaLabel="Overflow drawer triggers"
             variant="icon"
-            customTriggerBuilder={getTrigger(false)}
+            customTriggerBuilder={getTrigger(false, isMobile)}
             expandToViewport={true}
           />
         )}
@@ -372,6 +372,11 @@ export function MobileTriggers() {
     return overflowItems && overflowItems.filter(item => item.badge).length > 0;
   };
 
+  const mobileItems = !toolsHide && tools ? drawers.items.slice(0, 1) : drawers.items.slice(0, 2);
+  const hasOverflowMenu = !toolsHide && tools ? drawers?.items?.length > 2 : drawers?.items?.length > 3;
+  const overflowItems =
+    !toolsHide && tools ? drawers.items.slice(1, drawers.items.length) : drawers.items.slice(2, drawers.items.length);
+
   return (
     <aside
       aria-hidden={hasDrawerViewportOverlay}
@@ -399,7 +404,7 @@ export function MobileTriggers() {
         />
       )}
 
-      {drawers.items.slice(0, 1).map(item => (
+      {mobileItems.map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
@@ -408,6 +413,8 @@ export function MobileTriggers() {
           formAction="none"
           iconName={item.trigger.iconName}
           iconSvg={item.trigger.iconSvg}
+          badge={item.badge}
+          badgeColor="red"
           key={item.id}
           onClick={() => handleDrawersClick(item.id)}
           ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
@@ -415,11 +422,11 @@ export function MobileTriggers() {
           __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
         />
       ))}
-      {drawers?.items?.length && drawers?.items?.length > 2 && (
+      {drawers?.items?.length && hasOverflowMenu && (
         <InternalButtonDropdown
           ref={drawersRefs.toggle}
           className={clsx(styles['drawers-trigger'], overflowItemHasBadge() && styles.badge)}
-          items={drawers.items.slice(1, drawers.items.length).map(item => ({
+          items={overflowItems.map(item => ({
             id: item.id,
             text: item.ariaLabels?.content || 'Content',
             iconName: item.trigger.iconName,
@@ -431,7 +438,7 @@ export function MobileTriggers() {
           }}
           ariaLabel="Overflow drawer triggers"
           variant="icon"
-          customTriggerBuilder={getTrigger(overflowItemHasBadge())}
+          customTriggerBuilder={getTrigger(overflowItemHasBadge(), isMobile)}
           expandToViewport={true}
         />
       )}

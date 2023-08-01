@@ -194,6 +194,15 @@ export const DrawerTriggersBar = ({
     return overflowItems ? overflowItems.filter(item => item.badge).length > 0 : false;
   };
 
+  const overflowItemIsActive = () => {
+    if (drawers) {
+      return drawers.items
+        .slice(getIndexOfOverflowItem(), drawers.items.length)
+        .map(item => item.id)
+        .includes(drawers.activeDrawerId);
+    }
+  };
+
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
@@ -240,13 +249,7 @@ export const DrawerTriggersBar = ({
               })}
               {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
                 <span
-                  className={clsx(
-                    styles['drawer-trigger'],
-                    drawers.items
-                      .slice(getIndexOfOverflowItem(), drawers.items.length)
-                      .map(item => item.id)
-                      .includes(drawers.activeDrawerId) && styles['drawer-trigger-active']
-                  )}
+                  className={clsx(styles['drawer-trigger'], overflowItemIsActive() && styles['drawer-trigger-active'])}
                 >
                   <InternalButtonDropdown
                     expandToViewport={true}
@@ -264,13 +267,7 @@ export const DrawerTriggersBar = ({
                       });
                     }}
                     ariaLabel="Overflow drawer triggers"
-                    customTriggerBuilder={getTrigger(
-                      overflowItemHasBadge(),
-                      drawers.items
-                        .slice(getIndexOfOverflowItem(), drawers.items.length)
-                        .map(item => item.id)
-                        .includes(drawers.activeDrawerId)
-                    )}
+                    customTriggerBuilder={getTrigger(overflowItemHasBadge(), overflowItemIsActive())}
                     variant="icon"
                   />
                 </span>

@@ -166,6 +166,7 @@ export function MobileToolbar({
                 className={testutilStyles['drawers-trigger']}
                 iconName={item.trigger.iconName}
                 iconSvg={item.trigger.iconSvg}
+                badge={item.badge}
                 ariaLabel={item.ariaLabels?.triggerButton}
                 onClick={() => drawers.onChange({ activeDrawerId: item.id })}
                 ariaExpanded={drawers.activeDrawerId !== undefined}
