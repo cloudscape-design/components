@@ -30,7 +30,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import useHeaderOverlap from './use-content-header-overlap';
+import useHeaderOverlap from './use-header-overlap';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
