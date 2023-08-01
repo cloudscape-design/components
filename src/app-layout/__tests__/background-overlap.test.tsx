@@ -18,25 +18,25 @@ jest.mock('../../../lib/components/internal/hooks/container-queries/utils', () =
   convertResizeObserverEntry: () => ({ contentBoxHeight: positiveHeight ? 800 : 0 }),
 }));
 
-describe('Header overlap', () => {
+describe('Background overlap', () => {
   function ComponentWithDynamicOverlap() {
     const ref = useDynamicOverlap();
-    const { hasHeaderOverlap, isHeaderOverlapDisabled } = useAppLayoutInternals();
+    const { hasBackgroundOverlap, isBackgroundOverlapDisabled } = useAppLayoutInternals();
     return (
       <>
         <div ref={ref} />
-        <div data-testid="has-header-overlap">{hasHeaderOverlap.toString()}</div>
-        <div data-testid="is-header-overlap-disabled">{isHeaderOverlapDisabled.toString()}</div>
+        <div data-testid="has-background-overlap">{hasBackgroundOverlap.toString()}</div>
+        <div data-testid="is-background-overlap-disabled">{isBackgroundOverlapDisabled.toString()}</div>
       </>
     );
   }
 
   function ComponentWithoutDynamicOverlap() {
-    const { hasHeaderOverlap, isHeaderOverlapDisabled } = useAppLayoutInternals();
+    const { hasBackgroundOverlap, isBackgroundOverlapDisabled } = useAppLayoutInternals();
     return (
       <>
-        <div data-testid="has-header-overlap">{hasHeaderOverlap.toString()}</div>
-        <div data-testid="is-header-overlap-disabled">{isHeaderOverlapDisabled.toString()}</div>
+        <div data-testid="has-background-overlap">{hasBackgroundOverlap.toString()}</div>
+        <div data-testid="is-background-overlap-disabled">{isBackgroundOverlapDisabled.toString()}</div>
       </>
     );
   }
@@ -44,8 +44,8 @@ describe('Header overlap', () => {
   function renderApp(appLayoutProps?: AppLayoutProps) {
     const { rerender } = render(<AppLayout {...appLayoutProps} />);
     return {
-      hasHeaderOverlap: () => screen.getByTestId('has-header-overlap').textContent,
-      isOverlapDisabled: () => screen.getByTestId('is-header-overlap-disabled').textContent,
+      hasBackgroundOverlap: () => screen.getByTestId('has-background-overlap').textContent,
+      isOverlapDisabled: () => screen.getByTestId('is-background-overlap-disabled').textContent,
       rerender: (appLayoutProps?: AppLayoutProps) => rerender(<AppLayout {...appLayoutProps} />),
     };
   }
@@ -54,45 +54,45 @@ describe('Header overlap', () => {
     positiveHeight = true;
   });
 
-  describe('applies header overlap', () => {
+  describe('is applied', () => {
     test('when a child component sets the height dynamically with a height higher than 0', () => {
-      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
+      const { hasBackgroundOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithDynamicOverlap />,
       });
-      expect(hasHeaderOverlap()).toBe('true');
+      expect(hasBackgroundOverlap()).toBe('true');
       expect(isOverlapDisabled()).toBe('false');
     });
 
     test('when content header is present', () => {
-      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
+      const { hasBackgroundOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithoutDynamicOverlap />,
         contentHeader: 'Content header',
       });
-      expect(hasHeaderOverlap()).toBe('true');
+      expect(hasBackgroundOverlap()).toBe('true');
       expect(isOverlapDisabled()).toBe('false');
     });
   });
 
-  describe('does not apply header overlap', () => {
+  describe('is not applied', () => {
     test('when no content header is present and height is 0', () => {
       positiveHeight = false;
-      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
+      const { hasBackgroundOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithDynamicOverlap />,
       });
-      expect(hasHeaderOverlap()).toBe('false');
+      expect(hasBackgroundOverlap()).toBe('false');
       expect(isOverlapDisabled()).toBe('true');
     });
 
     test('when no content header is present and no child component sets the height dynamically', () => {
-      const { hasHeaderOverlap, isOverlapDisabled } = renderApp({
+      const { hasBackgroundOverlap, isOverlapDisabled } = renderApp({
         content: <ComponentWithoutDynamicOverlap />,
       });
-      expect(hasHeaderOverlap()).toBe('false');
+      expect(hasBackgroundOverlap()).toBe('false');
       expect(isOverlapDisabled()).toBe('true');
     });
   });
 
-  test('disables header overlap when explicitly specified in the app layout props', () => {
+  test('is disabled when explicitly specified in the app layout props', () => {
     const { isOverlapDisabled } = renderApp({
       content: <ComponentWithDynamicOverlap />,
       disableContentHeaderOverlap: true,
@@ -100,14 +100,14 @@ describe('Header overlap', () => {
     expect(isOverlapDisabled()).toBe('true');
   });
 
-  test('updates state accordingly when re-rendering', () => {
-    const { hasHeaderOverlap, isOverlapDisabled, rerender } = renderApp({
+  test('is updated accordingly when re-rendering', () => {
+    const { hasBackgroundOverlap, isOverlapDisabled, rerender } = renderApp({
       content: <ComponentWithDynamicOverlap />,
     });
-    expect(hasHeaderOverlap()).toBe('true');
+    expect(hasBackgroundOverlap()).toBe('true');
     expect(isOverlapDisabled()).toBe('false');
     rerender({ content: <ComponentWithoutDynamicOverlap /> });
-    expect(hasHeaderOverlap()).toBe('false');
+    expect(hasBackgroundOverlap()).toBe('false');
     expect(isOverlapDisabled()).toBe('true');
   });
 });

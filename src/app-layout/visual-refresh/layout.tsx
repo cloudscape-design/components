@@ -30,7 +30,7 @@ export default function Layout({ children }: LayoutProps) {
     hasStickyBackground,
     hasOpenDrawer,
     headerHeight,
-    isHeaderOverlapDisabled,
+    isBackgroundOverlapDisabled,
     isMobile,
     isNavigationOpen,
     layoutElement,
@@ -71,7 +71,7 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
-          [styles['is-overlap-disabled']]: isHeaderOverlapDisabled,
+          [styles['is-overlap-disabled']]: isBackgroundOverlapDisabled,
         },
         testutilStyles.root
       )}

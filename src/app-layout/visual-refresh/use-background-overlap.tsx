@@ -9,7 +9,7 @@ import customCssProps from '../../internal/generated/custom-css-properties';
  * If a child component utilizes a sticky header the hasStickyBackground property will determine
  * if the background remains in the same vertical position.
  */
-export default function useHeaderOverlap({
+export default function useBackgroundOverlap({
   contentHeader,
   disableContentHeaderOverlap,
   layoutElement,
@@ -20,12 +20,12 @@ export default function useHeaderOverlap({
 }) {
   const hasContentHeader = !!contentHeader;
 
-  const [hasHeaderOverlap, setHasHeaderOverlap] = useState(hasContentHeader);
+  const [hasBackgroundOverlap, setHasBackgroundOverlap] = useState(hasContentHeader);
 
-  const updateContentHeaderOverlapHeight = useCallback(
+  const updateBackgroundOverlapHeight = useCallback(
     (height: number) => {
       const hasOverlap = hasContentHeader || height > 0;
-      setHasHeaderOverlap(hasOverlap);
+      setHasBackgroundOverlap(hasOverlap);
 
       /**
        * React 18 will trigger a paint before the state is correctly updated
@@ -51,7 +51,7 @@ export default function useHeaderOverlap({
   );
 
   return {
-    hasHeaderOverlap,
-    updateContentHeaderOverlapHeight,
+    hasBackgroundOverlap,
+    updateBackgroundOverlapHeight,
   };
 }

@@ -30,7 +30,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import useHeaderOverlap from './use-header-overlap';
+import useBackgroundOverlap from './use-background-overlap';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
@@ -47,13 +47,13 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (detail: { size: number }) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
+  hasBackgroundOverlap: boolean;
   hasDefaultToolsWidth: boolean;
   hasDrawerViewportOverlay: boolean;
-  hasHeaderOverlap: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
   hasStickyBackground: boolean;
-  isHeaderOverlapDisabled: boolean;
+  isBackgroundOverlapDisabled: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -482,7 +482,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
-    const { hasHeaderOverlap, updateContentHeaderOverlapHeight } = useHeaderOverlap({
+    const { hasBackgroundOverlap, updateBackgroundOverlapHeight } = useBackgroundOverlap({
       contentHeader: props.contentHeader,
       disableContentHeaderOverlap: props.disableContentHeaderOverlap,
       layoutElement,
@@ -611,11 +611,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
           handleToolsClick,
-          hasHeaderOverlap,
+          hasBackgroundOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
           hasStickyBackground,
-          isHeaderOverlapDisabled: props.disableContentHeaderOverlap || !hasHeaderOverlap,
+          isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
           isSplitPanelForcedPosition,
@@ -662,7 +662,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             setHasStickyBackground,
           }}
         >
-          <DynamicOverlapContext.Provider value={updateContentHeaderOverlapHeight}>
+          <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
             {children}
           </DynamicOverlapContext.Provider>
         </AppLayoutContext.Provider>
