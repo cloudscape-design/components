@@ -94,29 +94,32 @@ test('makes cells around focused cell user-focusable', () => {
   allCells[3].focus();
 
   let userFocusableCells = container.querySelectorAll('td[tabIndex="0"],th[tabIndex="0"]');
-  expect(userFocusableCells).toHaveLength(4);
+  expect(userFocusableCells).toHaveLength(5);
   expect(userFocusableCells[0].textContent).toBe('header-1 desc');
   expect(userFocusableCells[1].textContent).toBe('header-3');
-  expect(userFocusableCells[2].textContent).toBe('cell-1-2');
-  expect(userFocusableCells[3].textContent).toBe('action-2-3-1 action-2-3-2');
+  expect(userFocusableCells[2].textContent).toBe('link-1-1');
+  expect(userFocusableCells[3].textContent).toBe('cell-1-2');
+  expect(userFocusableCells[4].textContent).toBe('action-2-3-1 action-2-3-2');
 
   allCells[4].focus();
 
   userFocusableCells = container.querySelectorAll('td[tabIndex="0"],th[tabIndex="0"]');
-  expect(userFocusableCells).toHaveLength(4);
+  expect(userFocusableCells).toHaveLength(5);
   expect(userFocusableCells[0].textContent).toBe('header-1 desc');
   expect(userFocusableCells[1].textContent).toBe('link-1-1');
-  expect(userFocusableCells[2].textContent).toBe('action-1-3-1 action-1-3-2');
-  expect(userFocusableCells[3].textContent).toBe('action-2-3-1 action-2-3-2');
+  expect(userFocusableCells[2].textContent).toBe('cell-1-2');
+  expect(userFocusableCells[3].textContent).toBe('action-1-3-1 action-1-3-2');
+  expect(userFocusableCells[4].textContent).toBe('action-2-3-1 action-2-3-2');
 
   allCells[5].querySelectorAll('button')[1]!.focus();
 
   userFocusableCells = container.querySelectorAll('td[tabIndex="0"],th[tabIndex="0"]');
-  expect(userFocusableCells).toHaveLength(4);
+  expect(userFocusableCells).toHaveLength(5);
   expect(userFocusableCells[0].textContent).toBe('header-1 desc');
   expect(userFocusableCells[1].textContent).toBe('cell-1-2');
-  expect(userFocusableCells[2].textContent).toBe('link-2-1');
-  expect(userFocusableCells[3].textContent).toBe('action-2-3-1 action-2-3-2');
+  expect(userFocusableCells[2].textContent).toBe('action-1-3-1 action-1-3-2');
+  expect(userFocusableCells[3].textContent).toBe('link-2-1');
+  expect(userFocusableCells[4].textContent).toBe('action-2-3-1 action-2-3-2');
 });
 
 test('supports arrow keys navigation when focusing on cell', () => {
@@ -151,67 +154,44 @@ test('supports arrow keys navigation when focusing on cell', () => {
   expect(getActiveElement()).toEqual(['button', 'desc']);
 });
 
-// test('supports key combination navigation', () => {
-//   const { container } = render(<InteractiveTable />);
-//   const table = container.querySelector('table')!;
-//   const focusables = container.querySelectorAll('a,button,*[tabIndex="0"]') as NodeListOf<HTMLElement>;
+test('supports key combination navigation', () => {
+  const { container } = render(<InteractiveTable />);
+  const table = container.querySelector('table')!;
 
-//   focusables[0].focus();
-//   expect(getActiveElement()).toEqual(['button', 'desc']);
+  table.querySelector('th')!.focus();
+  expect(getActiveElement()).toEqual(['th', 'header-1 desc']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-//   expect(getActiveElement()).toEqual(['a', 'link-2-1']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
+  expect(getActiveElement()).toEqual(['td', 'link-2-1']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-//   expect(getActiveElement()).toEqual(['button', 'desc']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
+  expect(getActiveElement()).toEqual(['th', 'header-1 desc']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.end });
-//   expect(getActiveElement()).toEqual(['th', 'header-3']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.end });
+  expect(getActiveElement()).toEqual(['th', 'header-3']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.home });
-//   expect(getActiveElement()).toEqual(['button', 'desc']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.home });
+  expect(getActiveElement()).toEqual(['th', 'header-1 desc']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-//   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
+  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.home, ctrlKey: true });
-//   expect(getActiveElement()).toEqual(['button', 'desc']);
-// });
+  fireEvent.keyDown(table, { keyCode: KeyCode.home, ctrlKey: true });
+  expect(getActiveElement()).toEqual(['th', 'header-1 desc']);
+});
 
-// test('support widget cell navigation', () => {
-//   const { container } = render(<InteractiveTable actionsWidget={true} />);
-//   const table = container.querySelector('table')!;
-//   const focusables = container.querySelectorAll('a,button,*[tabIndex="0"]') as NodeListOf<HTMLElement>;
+test('updates page size', () => {
+  const { container, rerender } = render(<InteractiveTable />);
+  const table = container.querySelector('table')!;
 
-//   focusables[0].focus();
-//   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-//   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-//   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-//   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
+  table.querySelector('th')!.focus();
+  expect(getActiveElement()).toEqual(['th', 'header-1 desc']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.enter });
-//   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
+  expect(getActiveElement()).toEqual(['td', 'link-2-1']);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-//   expect(getActiveElement()).toEqual(['button', 'action-2-3-2']);
+  rerender(<InteractiveTable pageSize={1} />);
 
-//   fireEvent.keyDown(table, { keyCode: KeyCode.escape });
-//   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
-// });
-
-// test('updates page size', () => {
-//   const { container, rerender } = render(<InteractiveTable />);
-//   const table = container.querySelector('table')!;
-//   const focusables = container.querySelectorAll('a,button,*[tabIndex="0"]') as NodeListOf<HTMLElement>;
-
-//   focusables[0].focus();
-//   expect(getActiveElement()).toEqual(['button', 'desc']);
-
-//   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-//   expect(getActiveElement()).toEqual(['a', 'link-2-1']);
-
-//   rerender(<InteractiveTable pageSize={1} />);
-
-//   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-//   expect(getActiveElement()).toEqual(['a', 'link-1-1']);
-// });
+  fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
+  expect(getActiveElement()).toEqual(['td', 'link-1-1']);
+});

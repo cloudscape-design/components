@@ -5,14 +5,14 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 test(
-  'cell action remains focused when row re-renders',
+  'cell remains focused when row re-renders',
   useBrowser({ width: 1800, height: 800 }, async browser => {
     const page = new BasePageObject(browser);
     await browser.url('#/light/table-fragments/grid-navigation-custom');
     await page.waitForVisible('table');
 
     await page.click('button[aria-label="Update item"]');
-    await expect(page.isFocused('button[aria-label="Update item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="2"]>td[aria-colindex="2"]')).resolves.toBe(true);
   })
 );
 
@@ -24,7 +24,7 @@ test(
     await page.waitForVisible('table');
 
     await page.click('button[aria-label="Delete item"]');
-    await expect(page.isFocused('button[aria-label="Delete item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="2"]>td[aria-colindex="2"]')).resolves.toBe(true);
   })
 );
 
