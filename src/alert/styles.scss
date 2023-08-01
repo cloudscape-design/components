@@ -78,7 +78,7 @@
 }
 
 /* stylelint-disable selector-max-type */
-.root.breakpoint-default > div > .alert > .body {
+.root.breakpoint-default > div > .alert > .alert-focus-wrapper > .body {
   display: block;
   & > .action {
     margin-left: awsui.$space-xxs;
@@ -135,7 +135,7 @@ $_text-colors: (
   .type-#{$type} {
     border-color: #{map.get($_border-colors, $type)};
     background-color: #{map.get($_background-colors, $type)};
-    > .icon {
+    > .alert-focus-wrapper > .icon {
       color: #{map.get($_text-colors, $type)};
     }
   }
