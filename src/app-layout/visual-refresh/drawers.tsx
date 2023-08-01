@@ -4,6 +4,8 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
+import { ButtonProps } from '../../button/interfaces';
+import InternalButtonDropdown from '../../button-dropdown/internal';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
@@ -127,6 +129,46 @@ function ActiveDrawer() {
   );
 }
 
+const DropdownTrigger = (
+  clickHandler: () => void,
+  ref: React.Ref<ButtonProps.Ref>,
+  isDisabled: boolean,
+  isExpanded: boolean,
+  ariaLabel?: string
+) => {
+  return (
+    <InternalButton
+      disabled={isDisabled}
+      onClick={event => {
+        event.preventDefault();
+        clickHandler();
+      }}
+      ref={ref}
+      ariaExpanded={isExpanded}
+      aria-haspopup={true}
+      ariaLabel={ariaLabel}
+      variant="icon"
+      iconSvg={
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+          <circle color="white" cx="8" cy="2.5" r=".5"></circle>
+          <circle color="white" cx="8" cy="8" r=".5"></circle>
+          <circle color="white" cx="8" cy="13.5" r=".5"></circle>
+        </svg>
+      }
+    />
+  );
+};
+
+function useContainerHeight(ref: React.RefObject<HTMLDivElement>) {
+  const [height, setHeight] = React.useState(() => (ref.current ? ref.current.clientHeight : 0));
+  React.useEffect(() => {
+    const handler = () => setHeight(ref.current ? ref.current.clientHeight : 0);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, [ref]);
+  return height;
+}
+
 /**
  * The DesktopTriggers will render the trigger buttons for Tools, Drawers, and the
  * SplitPanel in non mobile viewports. Changes to the activeDrawerId need to be
@@ -161,6 +203,23 @@ function DesktopTriggers() {
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
   const previousActiveDrawerId = useRef(activeDrawerId);
 
+  const triggersContainerRef = useRef<HTMLDivElement>(null);
+
+  const containerHeight = useContainerHeight(triggersContainerRef) || triggersContainerRef.current?.clientHeight;
+
+  const getIndexOfOverflowItem = () => {
+    if (containerHeight) {
+      const itemHeight = 48;
+      const overflowSpot = containerHeight / 1.5;
+
+      const index = Math.floor(overflowSpot / itemHeight).toFixed(0);
+
+      return parseInt(index);
+    }
+
+    return 0;
+  };
+
   if (activeDrawerId) {
     previousActiveDrawerId.current = activeDrawerId;
   }
@@ -168,6 +227,13 @@ function DesktopTriggers() {
   if (isMobile) {
     return null;
   }
+
+  const overflowItemHasBadge = () => {
+    const overflowItems = drawers?.items.slice(getIndexOfOverflowItem(), drawers.items.length);
+    let itemsWithBadges: any = [];
+    itemsWithBadges = overflowItems?.filter(item => item.badge);
+    return itemsWithBadges.length > 0;
+  };
 
   return (
     <aside
@@ -180,6 +246,7 @@ function DesktopTriggers() {
         }
       )}
       aria-label={drawers?.ariaLabel}
+      ref={triggersContainerRef}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -201,23 +268,51 @@ function DesktopTriggers() {
           />
         )}
 
-        {drawers?.items.map(item => (
-          <TriggerButton
-            ariaLabel={item.ariaLabels?.triggerButton}
-            className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
-            iconName={item.trigger.iconName}
-            iconSvg={item.trigger.iconSvg}
-            key={item.id}
-            onClick={() => {
-              isToolsOpen && handleToolsClick(!isToolsOpen, true);
-              handleDrawersClick(item.id);
-            }}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-            selected={item.id === activeDrawerId}
-            testId={`awsui-app-layout-trigger-${item.id}`}
-          />
-        ))}
+        {drawers?.items.map((item, index) => {
+          if (index < getIndexOfOverflowItem()) {
+            return (
+              <TriggerButton
+                ariaLabel={item.ariaLabels?.triggerButton}
+                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+                iconName={item.trigger.iconName}
+                iconSvg={item.trigger.iconSvg}
+                key={item.id}
+                onClick={() => {
+                  isToolsOpen && handleToolsClick(!isToolsOpen, true);
+                  handleDrawersClick(item.id);
+                }}
+                ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+                selected={item.id === activeDrawerId}
+                badge={item.badge}
+              />
+            );
+          }
+        })}
 
+        {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
+          <InternalButtonDropdown
+            ref={drawersRefs.toggle}
+            className={clsx(
+              styles['drawers-trigger'],
+              styles.trigger,
+              styles['drawers-trigger-overflow'],
+              overflowItemHasBadge() && styles.badge
+            )}
+            items={drawers.items.slice(getIndexOfOverflowItem(), drawers.items.length).map(item => ({
+              id: item.id,
+              text: item.ariaLabels?.content || 'Content',
+              iconName: item.trigger.iconName,
+              iconSvg: item.trigger.iconSvg,
+            }))}
+            onItemClick={({ detail }) => {
+              handleDrawersClick(detail.id);
+            }}
+            ariaLabel="Overflow drawer triggers"
+            variant="icon"
+            customTriggerBuilder={DropdownTrigger}
+            expandToViewport={true}
+          />
+        )}
         {hasSplitPanel && splitPanelToggle.displayed && (
           <TriggerButton
             ariaLabel={splitPanelToggle.ariaLabel}

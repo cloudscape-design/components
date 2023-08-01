@@ -24,6 +24,8 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
+  badge?: boolean;
+  badgeColor?: 'blue' | 'red';
   __nativeAttributes?: Record<string, any>;
   __iconClass?: string;
   __activated?: boolean;
@@ -55,6 +57,8 @@ export const InternalButton = React.forwardRef(
       ariaDescribedby,
       ariaExpanded,
       fullWidth,
+      badge,
+      badgeColor,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -139,6 +143,8 @@ export const InternalButton = React.forwardRef(
       iconSvg,
       iconAlt,
       variant,
+      badge,
+      badgeColor,
       iconClass: __iconClass,
       iconSize: variant === 'modal-dismiss' ? 'medium' : 'normal',
     };

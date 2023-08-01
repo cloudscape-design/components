@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
+import InternalButtonDropdown from '../../button-dropdown/internal';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -131,47 +132,107 @@ export const Drawer = React.forwardRef(
   }
 );
 
-export function DrawerTriggersBar({
+export const DrawerTriggersBar = ({
   isMobile,
   topOffset,
   bottomOffset,
   drawers,
   contentClassName,
   toggleClassName,
-}: DrawerTriggersBarProps) {
+}: DrawerTriggersBarProps) => {
+  const triggersContainerRef = useRef<HTMLDivElement>(null);
+
+  const containerHeight = triggersContainerRef.current?.clientHeight;
+
+  const getIndexOfOverflowItem = () => {
+    if (containerHeight) {
+      const itemHeight = 38;
+      const overflowSpot = containerHeight / 1.5;
+
+      const index = Math.floor(overflowSpot / itemHeight).toFixed(0);
+
+      return parseInt(index);
+    }
+    return 0;
+  };
+
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
         [styles['drawer-mobile']]: isMobile,
       })}
     >
-      <div style={{ top: topOffset, bottom: bottomOffset }} className={styles['drawer-content']}>
+      <div
+        ref={triggersContainerRef}
+        style={{ top: topOffset, bottom: bottomOffset }}
+        className={clsx(styles['drawer-content'])}
+      >
         {!isMobile && (
           <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers-wrapper'], contentClassName)}>
-            {drawers?.items?.map((item: DrawerItem, index: number) => (
-              <span
-                key={index}
-                className={clsx(
-                  styles['drawer-trigger'],
-                  drawers.activeDrawerId === item.id && styles['drawer-trigger-active']
-                )}
-                onClick={() =>
-                  drawers.onChange({ activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined })
+            <>
+              {drawers?.items?.map((item: DrawerItem, index: number) => {
+                if (index < getIndexOfOverflowItem()) {
+                  return (
+                    <span
+                      key={index}
+                      className={clsx(
+                        styles['drawer-trigger'],
+                        drawers.activeDrawerId === item.id && styles['drawer-trigger-active']
+                      )}
+                      onClick={() =>
+                        drawers.onChange({ activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined })
+                      }
+                    >
+                      <ToggleButton
+                        className={toggleClassName}
+                        key={`drawer-trigger-${index}`}
+                        iconName={item.trigger.iconName}
+                        iconSvg={item.trigger.iconSvg}
+                        ariaLabel={item.ariaLabels?.triggerButton}
+                        onClick={() =>
+                          drawers.onChange({ activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined })
+                        }
+                        ariaExpanded={drawers.activeDrawerId !== undefined}
+                        badge={item.badge}
+                        testId={`awsui-app-layout-trigger-${item.id}`}
+                      />
+                    </span>
+                  );
                 }
-              >
-                <ToggleButton
-                  className={toggleClassName}
-                  iconName={item.trigger.iconName}
-                  iconSvg={item.trigger.iconSvg}
-                  ariaLabel={item.ariaLabels?.triggerButton}
-                  ariaExpanded={drawers.activeDrawerId !== undefined}
-                  testId={`awsui-app-layout-trigger-${item.id}`}
-                />
-              </span>
-            ))}
+              })}
+              {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
+                <span
+                  className={clsx(
+                    styles['drawer-trigger'],
+                    drawers.items
+                      .slice(getIndexOfOverflowItem(), drawers.items.length)
+                      .map(item => item.id)
+                      .includes(drawers.activeDrawerId) && styles['drawer-trigger-active']
+                  )}
+                >
+                  <InternalButtonDropdown
+                    expandToViewport={true}
+                    className={clsx(styles['trigger-overflow'])}
+                    items={drawers.items.slice(getIndexOfOverflowItem(), drawers.items.length).map(item => ({
+                      id: item.id,
+                      text: item.ariaLabels?.content || 'Content',
+                      iconName: item.trigger.iconName,
+                      iconSvg: item.trigger.iconSvg,
+                    }))}
+                    onItemClick={({ detail }) => {
+                      drawers.onChange({
+                        activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                      });
+                    }}
+                    ariaLabel="Overflow drawer triggers"
+                    variant="icon"
+                  />
+                </span>
+              )}
+            </>
           </aside>
         )}
       </div>
     </div>
   );
-}
+};

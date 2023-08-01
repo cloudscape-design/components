@@ -23,6 +23,7 @@ handleSplitPanelMaxWidth function in the context.
   padding: 0 awsui.$space-s;
   pointer-events: auto;
   width: awsui.$space-layout-toggle-diameter;
+  position: relative;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);
@@ -50,5 +51,16 @@ handleSplitPanelMaxWidth function in the context.
     &:active {
       background: awsui.$color-background-layout-toggle-selected-active;
     }
+  }
+
+  &.badge::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 8px;
+    top: 0;
+    right: 0;
+    background-color: awsui.$color-text-status-error;
   }
 }

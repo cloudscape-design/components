@@ -76,6 +76,7 @@ export interface DrawerItem {
   resizable?: boolean;
   defaultSize?: number;
   onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
+  badge?: boolean;
 }
 
 export interface InternalDrawerProps {

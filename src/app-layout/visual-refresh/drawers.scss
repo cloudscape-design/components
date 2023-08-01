@@ -105,6 +105,13 @@
       transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
     }
   }
+
+  > .drawers-trigger-overflow {
+    padding: 0 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .drawers-trigger {
