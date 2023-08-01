@@ -19,6 +19,15 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
 
+const getAriaLabels = (title: string) => {
+  return {
+    closeButton: `${title} close button`,
+    content: `${title}`,
+    triggerButton: `${title} trigger button`,
+    resizeHandle: `${title} resize handle`,
+  };
+};
+
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
@@ -33,12 +42,7 @@ export default function WithDrawers() {
           activeDrawerId: activeDrawerId,
           items: [
             {
-              ariaLabels: {
-                closeButton: 'Security close button',
-                content: 'Security drawer content',
-                triggerButton: 'Security trigger button',
-                resizeHandle: 'Security resize handle',
-              },
+              ariaLabels: getAriaLabels('Security'),
               content: <Security />,
               id: 'security',
               resizable: true,
@@ -53,31 +57,81 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: {
-                closeButton: 'ProHelp close button',
-                content: 'ProHelp drawer content',
-                triggerButton: 'ProHelp trigger button',
-                resizeHandle: 'ProHelp resize handle',
-              },
+              ariaLabels: getAriaLabels('Pro help'),
               content: <ProHelp />,
+              badge: true,
+              defaultSize: 600,
               id: 'pro-help',
               trigger: {
                 iconName: 'contact',
               },
             },
             {
-              ariaLabels: {
-                closeButton: 'Links close button',
-                content: 'Links drawer content',
-                triggerButton: 'Links trigger button',
-                resizeHandle: 'Links resize handle',
-              },
+              ariaLabels: getAriaLabels('Links'),
               resizable: true,
               defaultSize: 500,
               content: <Links />,
               id: 'links',
               trigger: {
                 iconName: 'share',
+              },
+            },
+            {
+              ariaLabels: getAriaLabels('Test 1'),
+              content: <HelpPanel header={<h2>Test 1</h2>}>Test 1.</HelpPanel>,
+              badge: true,
+              id: 'test-1',
+              trigger: {
+                iconName: 'contact',
+              },
+            },
+            {
+              ariaLabels: getAriaLabels('Test 2'),
+              resizable: true,
+              defaultSize: 500,
+              content: <HelpPanel header={<h2>Test 2</h2>}>Test 2.</HelpPanel>,
+              id: 'test-2',
+              trigger: {
+                iconName: 'share',
+              },
+            },
+            {
+              ariaLabels: getAriaLabels('Test 3'),
+              content: <HelpPanel header={<h2>Test 3</h2>}>Test 3.</HelpPanel>,
+              badge: true,
+              id: 'test-3',
+              trigger: {
+                iconName: 'contact',
+              },
+            },
+            {
+              ariaLabels: getAriaLabels('Test 4'),
+              resizable: true,
+              defaultSize: 500,
+              content: <HelpPanel header={<h2>Test 4</h2>}>Test 4.</HelpPanel>,
+              id: 'test-4',
+              trigger: {
+                iconName: 'edit',
+              },
+            },
+            {
+              ariaLabels: getAriaLabels('Test 5'),
+              resizable: true,
+              defaultSize: 500,
+              content: <HelpPanel header={<h2>Test 5</h2>}>Test 5.</HelpPanel>,
+              id: 'test-5',
+              trigger: {
+                iconName: 'add-plus',
+              },
+            },
+            {
+              ariaLabels: getAriaLabels('Test 6'),
+              resizable: true,
+              defaultSize: 500,
+              content: <HelpPanel header={<h2>Test 6</h2>}>Test 6.</HelpPanel>,
+              id: 'test-6',
+              trigger: {
+                iconName: 'call',
               },
             },
           ] as DrawerItem[],

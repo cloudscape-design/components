@@ -4,6 +4,8 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
+import { ButtonProps } from '../../button/interfaces';
+import InternalButtonDropdown from '../../button-dropdown/internal';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
@@ -127,6 +129,16 @@ function ActiveDrawer() {
   );
 }
 
+function useContainerHeight(ref: React.RefObject<HTMLDivElement>) {
+  const [height, setHeight] = React.useState(() => (ref.current ? ref.current.clientHeight : 0));
+  React.useEffect(() => {
+    const handler = () => setHeight(ref.current ? ref.current.clientHeight : 0);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, [ref]);
+  return height;
+}
+
 /**
  * The DesktopTriggers will render the trigger buttons for Tools, Drawers, and the
  * SplitPanel in non mobile viewports. Changes to the activeDrawerId need to be
@@ -158,6 +170,23 @@ function DesktopTriggers() {
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
   const previousActiveDrawerId = useRef(activeDrawerId);
 
+  const triggersContainerRef = useRef<HTMLDivElement>(null);
+
+  const containerHeight = useContainerHeight(triggersContainerRef) || triggersContainerRef.current?.clientHeight;
+
+  const getIndexOfOverflowItem = () => {
+    if (containerHeight) {
+      const itemHeight = 48;
+      const overflowSpot = containerHeight / 1.5;
+
+      const index = Math.floor(overflowSpot / itemHeight).toFixed(0);
+
+      return parseInt(index);
+    }
+
+    return 0;
+  };
+
   if (activeDrawerId) {
     previousActiveDrawerId.current = activeDrawerId;
   }
@@ -177,6 +206,7 @@ function DesktopTriggers() {
         }
       )}
       aria-label={drawersAriaLabel}
+      ref={triggersContainerRef}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -201,6 +231,26 @@ function DesktopTriggers() {
           />
         ))}
 
+        {drawers.map((item, index) => {
+          if (index < getIndexOfOverflowItem()) {
+            return (
+              <TriggerButton
+                ariaLabel={item.ariaLabels?.triggerButton}
+                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+                iconName={item.trigger.iconName}
+                iconSvg={item.trigger.iconSvg}
+                key={item.id}
+                onClick={() => {
+                  isToolsOpen && handleToolsClick(!isToolsOpen, true);
+                  handleDrawersClick(item.id);
+                }}
+                ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+                selected={item.id === activeDrawerId}
+                badge={item.badge}
+              />
+            );
+          }
+        })}
         {hasSplitPanel && splitPanelToggle.displayed && (
           <TriggerButton
             ariaLabel={splitPanelToggle.ariaLabel}

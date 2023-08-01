@@ -15,10 +15,11 @@ export interface TriggerButtonProps {
   testId?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
+  badge?: boolean;
 }
 
 function TriggerButton(
-  { ariaLabel, className, iconName, iconSvg, onClick, testId, selected = false }: TriggerButtonProps,
+  { ariaLabel, className, iconName, iconSvg, onClick, testId, badge, selected = false }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
@@ -30,6 +31,7 @@ function TriggerButton(
         styles.trigger,
         {
           [styles.selected]: selected,
+          [styles.badge]: badge,
         },
         className
       )}
