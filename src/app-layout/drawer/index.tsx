@@ -6,11 +6,18 @@ import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
+<<<<<<< HEAD
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem } from './interfaces';
 import OverflowMenu from './overflow-menu';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 import { splitItems } from './drawers-helpers';
+=======
+import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
+import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
+import { InternalButton } from '../../button/internal';
+import { ButtonProps } from '../../button/interfaces';
+>>>>>>> ccc84290 (fix: Updates trigger styles)
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be

@@ -9,6 +9,7 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
+import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -267,6 +268,10 @@ function DesktopTriggers() {
             onItemClick={({ detail }: any) => {
               handleDrawersClick(detail.id);
             }}
+            ariaLabel="Overflow drawer triggers"
+            variant="icon"
+            customTriggerBuilder={getTrigger(false)}
+            expandToViewport={true}
           />
         )}
         {hasSplitPanel && splitPanelToggle.displayed && (
