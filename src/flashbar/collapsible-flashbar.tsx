@@ -9,7 +9,7 @@ import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
 import styles from './styles.css.js';
-import { counterTypes, getFlashTypeCount, getItemType, getVisibleCollapsedItems, StackableItem } from './utils';
+import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
@@ -174,7 +174,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const countByType = getFlashTypeCount(items);
 
-  const numberOfColorsInStack = new Set(items.map(getItemType)).size;
+  const numberOfColorsInStack = new Set(items.map(getItemColor)).size;
   const maxSlots = Math.max(numberOfColorsInStack, 3);
   const stackDepth = Math.min(maxSlots, items.length);
 
