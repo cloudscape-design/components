@@ -34,7 +34,7 @@ export function getItemType(item: FlashbarProps.MessageDefinition) {
   }
 }
 
-function getItemColor(item: FlashbarProps.MessageDefinition) {
+export function getItemColor(item: FlashbarProps.MessageDefinition) {
   return getColorFromType(getItemType(item));
 }
 
