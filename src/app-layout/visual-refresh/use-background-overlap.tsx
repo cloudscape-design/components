@@ -33,8 +33,6 @@ export default function useBackgroundOverlap({
        * To work around this, we bypass React state updates and imperatively update the custom property on the DOM.
        * An alternative would be to use `queueMicrotask` and `flushSync` in the ResizeObserver callback,
        * but that would have some performance impact as it would delay the render.
-       * Using React state for `isDynamicOverlapSet` and `isDynamicOverlapDisabled` is less problematic
-       * because they will rarely change within the lifecycle of an application.
        */
       // Layout component uses RefObject, we don't expect a RefCallback
       const element = typeof layoutElement !== 'function' && layoutElement?.current;
