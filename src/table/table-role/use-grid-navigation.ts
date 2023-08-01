@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell, moveFocusBy, moveFocusIn, updateTableIndices } from './utils';
+import { findFocusinCell, moveFocusBy, moveFocusIn, updateCellFocus, updateTableIndices } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { containsOrEqual } from '../../internal/utils/dom';
@@ -176,19 +176,16 @@ class GridNavigationModel {
 
   private onMutation = (mutationRecords: MutationRecord[]) => {
     if (!this.prevFocusedCell) {
-      return;
+      return false;
     }
-
     for (const record of mutationRecords) {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {
           if (containsOrEqual(removedNode, this.prevFocusedCell.element)) {
-            moveFocusBy(this.table, this.prevFocusedCell, { y: 0, x: 0 });
+            return updateCellFocus(this.table, this.prevFocusedCell);
           }
         }
       }
     }
-
-    updateTableIndices(this.table, this.focusedCell);
   };
 }

@@ -40,7 +40,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
-  setTimeout(() => targetCell.focus(), 0);
+  targetCell.focus();
 }
 
 export function moveFocusIn(from: FocusedCell) {
@@ -65,11 +65,27 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
   }
 
   const cellIndex = Array.from(tableCells).indexOf(cell.cellElement);
+  if (tableCells[cellIndex]) {
+    tableCells[cellIndex].tabIndex = 0;
+  }
   if (tableCells[cellIndex - 1]) {
     tableCells[cellIndex - 1].tabIndex = 0;
   }
   if (tableCells[cellIndex + 1]) {
     tableCells[cellIndex + 1].tabIndex = 0;
+  }
+}
+
+export function updateCellFocus(table: HTMLTableElement, cell: FocusedCell) {
+  const tdSelector = `tr[aria-rowindex="${cell.rowIndex}"]>td[aria-colindex="${cell.colIndex}"]`;
+  const thSelector = `tr[aria-rowindex="${cell.rowIndex}"]>th[aria-colindex="${cell.colIndex}"]`;
+  const selector = `${tdSelector},${thSelector}`;
+
+  const matchedCell = table.querySelector(selector) as HTMLTableCellElement;
+  if (matchedCell) {
+    matchedCell.tabIndex = -1;
+    matchedCell.focus();
+    updateTableIndices(table, cell);
   }
 }
 
