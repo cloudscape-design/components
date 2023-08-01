@@ -53,7 +53,7 @@ class GridNavigationModel {
     mutationObserver.observe(table, { childList: true, subtree: true });
 
     // No need to clean this up as no resources are allocated.
-    updateTableIndices(this.table);
+    updateTableIndices(this.table, this.focusedCell);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -85,11 +85,11 @@ class GridNavigationModel {
 
   private onFocusin = (event: FocusEvent) => {
     const cell = findFocusinCell(event);
-
     if (!cell) {
       return;
     }
     this.focusedCell = cell;
+    updateTableIndices(this.table, cell);
   };
 
   private onFocusout = () => {
@@ -119,60 +119,58 @@ class GridNavigationModel {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
-    switch (key) {
-      case KeyCode.up:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: -1, x: 0 });
+    if (from.element === from.cellElement) {
+      switch (key) {
+        case KeyCode.up:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: -1, x: 0 });
 
-      case KeyCode.down:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 1, x: 0 });
+        case KeyCode.down:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: 1, x: 0 });
 
-      case KeyCode.left:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: -1 });
+        case KeyCode.left:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: 0, x: -1 });
 
-      case KeyCode.right:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: 1 });
+        case KeyCode.right:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: 0, x: 1 });
 
-      case KeyCode.pageUp:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: -this.pageSize, x: 0 });
+        case KeyCode.pageUp:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: -this.pageSize, x: 0 });
 
-      case KeyCode.pageDown:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: this.pageSize, x: 0 });
+        case KeyCode.pageDown:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: this.pageSize, x: 0 });
 
-      case KeyCode.home:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: minExtreme });
+        case KeyCode.home:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: 0, x: minExtreme });
 
-      case KeyCode.end:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: maxExtreme });
+        case KeyCode.end:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: 0, x: maxExtreme });
 
-      case -KeyCode.home:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: minExtreme, x: minExtreme });
+        case -KeyCode.home:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: minExtreme, x: minExtreme });
 
-      case -KeyCode.end:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: maxExtreme, x: maxExtreme });
+        case -KeyCode.end:
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: maxExtreme, x: maxExtreme });
 
-      case KeyCode.enter:
-        if (from.element instanceof HTMLTableCellElement) {
+        case KeyCode.enter:
           event.preventDefault();
           return moveFocusIn(from);
-        }
-        break;
 
-      case KeyCode.escape:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: 0 });
-
-      default:
-        return;
+        default:
+          return;
+      }
+    } else if (key === KeyCode.escape) {
+      event.preventDefault();
+      return moveFocusBy(this.table, from, { y: 0, x: 0 });
     }
   };
 
@@ -191,6 +189,6 @@ class GridNavigationModel {
       }
     }
 
-    updateTableIndices(this.table);
+    updateTableIndices(this.table, this.focusedCell);
   };
 }

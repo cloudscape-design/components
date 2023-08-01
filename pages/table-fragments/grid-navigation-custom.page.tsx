@@ -86,7 +86,6 @@ const createColumnDefinitions = ({
         ]}
       />
     ),
-    isWidget: true,
   },
   { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
   { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
@@ -199,7 +198,6 @@ export default function Page() {
                           key={column.key}
                           className={styles['custom-table-cell']}
                           {...getTableCellRoleProps({ tableRole, colIndex })}
-                          data-widget-cell={column.isWidget}
                         >
                           {column.render(item)}
                         </td>
@@ -256,10 +254,10 @@ function GridNavigationHelpPanel() {
           <b>Control+End</b> (to the last item in the grid)
         </li>
         <li>
-          <b>Enter</b> (to move focus inside widget cell)
+          <b>Enter</b> (to move focus inside cell)
         </li>
         <li>
-          <b>Escape</b> (to move widget focus back to cell)
+          <b>Escape</b> (to move focus back to cell)
         </li>
       </ul>
     </HelpPanel>

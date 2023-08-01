@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getFirstFocusable, getFocusables } from '../../internal/components/focus-lock/utils';
+import { getFirstFocusable } from '../../internal/components/focus-lock/utils';
 import { FocusedCell } from './interfaces';
 
 export function findFocusinCell(event: FocusEvent): null | FocusedCell {
@@ -24,11 +24,7 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
     return null;
   }
 
-  const cellFocusables = getFocusables(cellElement);
-  let elementIndex = cellFocusables.indexOf(element);
-  elementIndex = elementIndex === -1 ? 0 : elementIndex;
-
-  return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element };
+  return { rowIndex, colIndex, rowElement, cellElement, element };
 }
 
 export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
@@ -38,47 +34,42 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
-  const cellFocusables = getFocusables(from.cellElement);
-  const eligibleForElementFocus = delta.x && !isWidgetCell(from.element);
-  const targetElementIndex = from.elementIndex + delta.x;
-  if (eligibleForElementFocus && 0 <= targetElementIndex && targetElementIndex < cellFocusables.length) {
-    cellFocusables[targetElementIndex].focus();
-    return;
-  }
-
   const targetAriaColIndex = from.colIndex + delta.x;
   const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
   if (!targetCell) {
     return;
   }
 
-  if (isWidgetCell(targetCell)) {
-    return targetCell.focus();
-  }
-
-  const targetCellFocusables = getFocusables(targetCell);
-  const focusIndex = delta.x === 0 ? from.elementIndex : delta.x < 0 ? targetCellFocusables.length - 1 : 0;
-  const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
-  focusTarget.focus();
+  setTimeout(() => targetCell.focus(), 0);
 }
 
 export function moveFocusIn(from: FocusedCell) {
   getFirstFocusable(from.cellElement)?.focus();
 }
 
-export function updateTableIndices(table: HTMLTableElement) {
+export function updateTableIndices(table: HTMLTableElement, cell: null | FocusedCell) {
   const tableCells = table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
 
-  const firstCell = tableCells[0];
-  const lastCell = tableCells[tableCells.length - 1];
   for (let i = 1; i < tableCells.length - 1; i++) {
     tableCells[i].tabIndex = -1;
   }
-  if (firstCell) {
-    firstCell.tabIndex = !getFirstFocusable(firstCell) || isWidgetCell(firstCell) ? 0 : -1;
+  if (tableCells[0]) {
+    tableCells[0].tabIndex = 0;
   }
-  if (lastCell) {
-    lastCell.tabIndex = !getFirstFocusable(lastCell) || isWidgetCell(lastCell) ? 0 : -1;
+  if (tableCells[tableCells.length - 1]) {
+    tableCells[tableCells.length - 1].tabIndex = 0;
+  }
+
+  if (!cell) {
+    return;
+  }
+
+  const cellIndex = Array.from(tableCells).indexOf(cell.cellElement);
+  if (tableCells[cellIndex - 1]) {
+    tableCells[cellIndex - 1].tabIndex = 0;
+  }
+  if (tableCells[cellIndex + 1]) {
+    tableCells[cellIndex + 1].tabIndex = 0;
   }
 }
 
@@ -108,8 +99,4 @@ function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAri
     }
   }
   return targetCell;
-}
-
-function isWidgetCell(cell: HTMLElement) {
-  return cell.getAttribute('data-widget-cell') === 'true';
 }

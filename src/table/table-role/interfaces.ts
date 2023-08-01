@@ -15,7 +15,6 @@ export interface GridNavigationAPI {}
 export interface FocusedCell {
   rowIndex: number;
   colIndex: number;
-  elementIndex: number;
   rowElement: HTMLTableRowElement;
   cellElement: HTMLTableCellElement;
   element: HTMLElement;
