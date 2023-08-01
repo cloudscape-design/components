@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   build:
-    uses: cloudscape-design/.github/.github/workflows/build-lint-test.yml@main
+    uses: cloudscape-design/.github/.github/workflows/build-lint-test.yml@codecov-always
     secrets: inherit
     with:
       artifact-path: lib/static-default
