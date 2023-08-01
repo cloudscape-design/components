@@ -185,6 +185,15 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
 
   const { visibleItems, overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem(), drawers?.activeDrawerId);
 
+  const overflowItemIsActive = () => {
+    if (drawers) {
+      return drawers.items
+        .slice(getIndexOfOverflowItem(), drawers.items.length)
+        .map(item => item.id)
+        .includes(drawers.activeDrawerId);
+    }
+  };
+
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
@@ -222,6 +231,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                   />
                 );
               })}
+<<<<<<< HEAD
               {overflowItems.length > 0 && (
                 <div className={clsx(styles['drawer-trigger'])}>
                   <OverflowMenu
@@ -232,6 +242,30 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                         activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                       });
                     }}
+=======
+              {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
+                <span
+                  className={clsx(styles['drawer-trigger'], overflowItemIsActive() && styles['drawer-trigger-active'])}
+                >
+                  <InternalButtonDropdown
+                    expandToViewport={true}
+                    className={clsx(styles['trigger-overflow'])}
+                    items={drawers.items.slice(getIndexOfOverflowItem(), drawers.items.length).map(item => ({
+                      id: item.id,
+                      text: item.ariaLabels?.content || 'Content',
+                      iconName: item.trigger.iconName,
+                      iconSvg: item.trigger.iconSvg,
+                      badge: item.badge,
+                    }))}
+                    onItemClick={({ detail }) => {
+                      drawers.onChange({
+                        activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                      });
+                    }}
+                    ariaLabel="Overflow drawer triggers"
+                    customTriggerBuilder={getTrigger(overflowItemHasBadge(), overflowItemIsActive())}
+                    variant="icon"
+>>>>>>> c61b3f02 (fix: Adds badge on mobile)
                   />
                 </div>
               )}

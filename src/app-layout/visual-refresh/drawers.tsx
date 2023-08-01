@@ -270,7 +270,7 @@ function DesktopTriggers() {
             }}
             ariaLabel="Overflow drawer triggers"
             variant="icon"
-            customTriggerBuilder={getTrigger(false)}
+            customTriggerBuilder={getTrigger(false, isMobile)}
             expandToViewport={true}
           />
         )}
@@ -318,6 +318,11 @@ export function MobileTriggers() {
   const splitIndex = 2;
 
   const { visibleItems, overflowItems } = splitItems(drawers, splitIndex, activeDrawerId, true);
+
+  const mobileItems = !toolsHide && tools ? drawers.items.slice(0, 1) : drawers.items.slice(0, 2);
+  const hasOverflowMenu = !toolsHide && tools ? drawers?.items?.length > 2 : drawers?.items?.length > 3;
+  const overflowItems =
+    !toolsHide && tools ? drawers.items.slice(1, drawers.items.length) : drawers.items.slice(2, drawers.items.length);
 
   return (
     <aside
