@@ -40,7 +40,6 @@ export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | 
               }
             }
           }
-          console.log('setActiveSlug in IO');
           setActiveSlug(activeSlugTemp);
         },
         {
@@ -50,35 +49,35 @@ export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | 
       );
     }
 
-    const checkScrollBottom = () => {
-      const scrollPos = window.innerHeight + window.scrollY;
-      if (scrollPos >= document.documentElement.scrollHeight) {
-        isLastItem.current = true;
-        setActiveSlug(hrefs[hrefs.length - 1]);
-      } else if (activeSlug === hrefs[hrefs.length - 1]) {
-        const lastElement = document.getElementById(hrefs[hrefs.length - 1]);
-        if (lastElement) {
-          const rect = lastElement.getBoundingClientRect();
-          if (
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-            activeSlug === hrefs[hrefs.length - 1]
-          ) {
-            setActiveSlug(hrefs[hrefs.length - 2]);
-            isLastItem.current = false;
-          }
-        }
-      } else {
-        setActiveSlug(hrefs[hrefs.length - 2]);
-        isLastItem.current = false;
-      }
-    };
+    // const checkScrollBottom = () => {
+    //   const scrollPos = window.innerHeight + window.scrollY;
+    //   if (scrollPos >= document.documentElement.scrollHeight) {
+    //     isLastItem.current = true;
+    //     setActiveSlug(hrefs[hrefs.length - 1]);
+    //   } else if (activeSlug === hrefs[hrefs.length - 1]) {
+    //     const lastElement = document.getElementById(hrefs[hrefs.length - 1]);
+    //     if (lastElement) {
+    //       const rect = lastElement.getBoundingClientRect();
+    //       if (
+    //         rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+    //         activeSlug === hrefs[hrefs.length - 1]
+    //       ) {
+    //         setActiveSlug(hrefs[hrefs.length - 2]);
+    //         isLastItem.current = false;
+    //       }
+    //     }
+    //   } else {
+    //     setActiveSlug(hrefs[hrefs.length - 2]);
+    //     isLastItem.current = false;
+    //   }
+    // };
 
-    window.addEventListener('scroll', checkScrollBottom);
+    // window.addEventListener('scroll', checkScrollBottom);
 
     return () => {
       observerRef.current?.disconnect();
       observerRef.current = null;
-      window.removeEventListener('scroll', checkScrollBottom);
+      //  window.removeEventListener('scroll', checkScrollBottom);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
