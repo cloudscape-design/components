@@ -53,6 +53,7 @@
 
 .alert-focus-wrapper {
   display: flex;
+  flex: 1 1 0%;
 
   &:focus {
     outline: none;
