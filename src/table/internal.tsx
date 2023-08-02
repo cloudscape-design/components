@@ -38,6 +38,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getTableRoleProps, getTableRowRoleProps } from './table-role';
 import { useCellEditing } from './use-cell-editing';
+import { useSelector } from '../area-chart/async-store';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -105,15 +106,15 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
-    const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
+    const cellEditing = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
 
     useImperativeHandle(
       ref,
       () => ({
         scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined),
-        cancelEdit,
+        cancelEdit: () => cellEditing.cancelEdit(),
       }),
-      [cancelEdit]
+      [cellEditing]
     );
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
@@ -226,6 +227,8 @@ const InternalTable = React.forwardRef(
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
+
+    const cellEditingState = useSelector(cellEditing, s => s);
 
     return (
       <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
@@ -391,9 +394,11 @@ const InternalTable = React.forwardRef(
                           </TableTdElement>
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
-                          const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
-                          const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
-                          const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                          const { loading, editingCell, lastSuccessfulEdit } = cellEditingState;
+                          const isEditing = rowIndex === editingCell?.rowIndex && colIndex === editingCell.colIndex;
+                          const successfulEdit =
+                            rowIndex === lastSuccessfulEdit?.rowIndex && colIndex === lastSuccessfulEdit.colIndex;
+                          const isEditable = !!column.editConfig && !loading;
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}
