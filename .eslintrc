@@ -14,46 +14,21 @@
       "jsx": true
     }
   },
-  "plugins": [
-    "unicorn",
-    "react-hooks",
-    "@cloudscape-design/eslint-plugin",
-    "no-unsanitized",
-    "header"
-  ],
+  "plugins": ["unicorn", "react-hooks", "@cloudscape-design/eslint-plugin", "no-unsanitized", "header"],
   "rules": {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/consistent-type-definitions": [
-      "error",
-      "interface"
-    ],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "react/display-name": "off",
     "react/no-danger": "error",
-    "react/no-unstable-nested-components": [
-      "error",
-      {
-        "allowAsProps": true
-      }
-    ],
+    "react/no-unstable-nested-components": ["error", { "allowAsProps": true }],
     "react/prop-types": "off",
-    "react/forbid-component-props": [
-      "warn",
-      {
-        "forbid": [
-          "className",
-          "id"
-        ]
-      }
-    ],
-    "react/jsx-boolean-value": [
-      "error",
-      "always"
-    ],
+    "react/forbid-component-props": ["warn", { "forbid": ["className", "id"] }],
+    "react/jsx-boolean-value": ["error", "always"],
     "@cloudscape-design/ban-files": [
       "error",
       [
@@ -79,9 +54,7 @@
       "error",
       {
         "selector": "typeLike",
-        "format": [
-          "PascalCase"
-        ]
+        "format": ["PascalCase"]
       }
     ],
     "react-hooks/rules-of-hooks": "error",
@@ -89,13 +62,6 @@
       "error",
       {
         "additionalHooks": "(useContainerQuery|useContainerBreakpoints|useEffectOnUpdate)"
-      }
-    ],
-    "react/self-closing-comp": [
-      "error",
-      {
-        "component": true,
-        "html": true
       }
     ],
     "unicorn/filename-case": "error",
@@ -107,10 +73,7 @@
     "header/header": [
       "error",
       "line",
-      [
-        " Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.",
-        " SPDX-License-Identifier: Apache-2.0"
-      ]
+      [" Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.", " SPDX-License-Identifier: Apache-2.0"]
     ],
     "no-warning-comments": "warn"
   },
@@ -124,10 +87,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "*.js",
-        "build-tools/**"
-      ],
+      "files": ["*.js", "build-tools/**"],
       "rules": {
         "@typescript-eslint/no-var-requires": "off"
       },
@@ -138,11 +98,7 @@
       }
     },
     {
-      "files": [
-        "build-tools/jest/**",
-        "**/__tests__/**",
-        "**/__mocks__/**"
-      ],
+      "files": ["build-tools/jest/**", "**/__tests__/**", "**/__mocks__/**"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       },
@@ -156,11 +112,7 @@
       }
     },
     {
-      "files": [
-        "build-tools/integ/**",
-        "**/__integ__/**",
-        "**/__a11y__/**"
-      ],
+      "files": ["build-tools/integ/**", "**/__integ__/**", "**/__a11y__/**"],
       "rules": {
         // useBrowser is not a React hook
         "react-hooks/rules-of-hooks": "off",
@@ -171,18 +123,14 @@
       }
     },
     {
-      "files": [
-        "src/test-utils/**/*.ts"
-      ],
+      "files": ["src/test-utils/**/*.ts"],
       "rules": {
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/no-non-null-assertion": "off"
       }
     },
     {
-      "files": [
-        "pages/**"
-      ],
+      "files": ["pages/**"],
       "globals": {
         "Promise": true
       },
@@ -203,14 +151,8 @@
       }
     },
     {
-      "files": [
-        "src/**"
-      ],
-      "excludedFiles": [
-        "src/**/__tests__/**",
-        "src/**/__integ__/**",
-        "src/**/__a11y__/**"
-      ],
+      "files": ["src/**"],
+      "excludedFiles": ["src/**/__tests__/**", "src/**/__integ__/**", "src/**/__a11y__/**"],
       "rules": {
         "@cloudscape-design/no-implicit-svg-focusable": "error",
         "@cloudscape-design/prefer-live-region": "warn",
@@ -219,17 +161,11 @@
           {
             "patterns": [
               {
-                "group": [
-                  "lodash",
-                  "lodash/*"
-                ],
+                "group": ["lodash", "lodash/*"],
                 "message": "lodash is a commonjs module, which breaks webpack esm optimizations."
               },
               {
-                "group": [
-                  "d3-scale",
-                  "!**/vendor/d3-scale"
-                ],
+                "group": ["d3-scale", "!**/vendor/d3-scale"],
                 "message": "`d3-scale` gets shipped as a bundled dependency. Use `src/internal/vendor/d3-scale` as import source."
               }
             ]
