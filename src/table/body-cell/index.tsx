@@ -10,35 +10,35 @@ import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
-
-const submitHandlerFallback = () => {
-  throw new Error('The function `handleSubmit` is required for editable columns');
-};
+import { CellEditingModel } from '../use-cell-editing';
+import { useSelector } from '../../area-chart/async-store/index.js';
 
 interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
-  isEditing: boolean;
-  successfulEdit?: boolean;
-  onEditStart: () => void;
-  onEditEnd: (cancelled: boolean) => void;
-  submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
+  cellEditing: CellEditingModel<ItemType, unknown>;
 }
 
 function TableCellEditable<ItemType>({
   className,
   item,
   column,
-  isEditing,
-  onEditStart,
-  onEditEnd,
-  submitEdit,
   ariaLabels,
   isVisualRefresh,
-  successfulEdit = false,
+  cellEditing,
+  colIndex,
+  rowIndex,
   ...rest
 }: TableBodyCellProps<ItemType>) {
+  const cellEditingState = useSelector(cellEditing, s => s);
+  const { editingCell, lastSuccessfulEdit } = cellEditingState;
+  const isEditing = rowIndex === editingCell?.rowIndex && colIndex === editingCell?.colIndex;
+  const successfulEdit = rowIndex === lastSuccessfulEdit?.rowIndex && colIndex === lastSuccessfulEdit?.colIndex;
+  const onEditStart = () => cellEditing.startEdit({ rowIndex, colIndex });
+  const onEditEnd = (editCancelled: boolean) => cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled);
+  const onSubmitEdit = cellEditing.submitEdit;
+
   const i18n = useInternalI18n('table');
   const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
@@ -75,6 +75,8 @@ function TableCellEditable<ItemType>({
   return (
     <TableTdElement
       {...rest}
+      rowIndex={rowIndex}
+      colIndex={colIndex}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(
         className,
@@ -97,7 +99,7 @@ function TableCellEditable<ItemType>({
             isFocusMoveNeededRef.current = true;
             onEditEnd(e);
           }}
-          submitEdit={submitEdit ?? submitHandlerFallback}
+          submitEdit={onSubmitEdit}
         />
       ) : (
         <>
@@ -140,7 +142,7 @@ export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
-  if (isEditable || rest.isEditing) {
+  if (isEditable) {
     return <TableCellEditable {...rest} />;
   }
   const { column, item } = rest;

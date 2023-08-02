@@ -38,7 +38,6 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getTableRoleProps, getTableRowRoleProps } from './table-role';
 import { useCellEditing } from './use-cell-editing';
-import { useSelector } from '../area-chart/async-store';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -228,8 +227,6 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
-    const cellEditingState = useSelector(cellEditing, s => s);
-
     return (
       <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
         <InternalContainer
@@ -369,6 +366,8 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
+                            rowIndex={-1}
+                            colIndex={-1}
                             className={clsx(styles['selection-control'])}
                             isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
@@ -394,13 +393,10 @@ const InternalTable = React.forwardRef(
                           </TableTdElement>
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
-                          const { loading, editingCell, lastSuccessfulEdit } = cellEditingState;
-                          const isEditing = rowIndex === editingCell?.rowIndex && colIndex === editingCell.colIndex;
-                          const successfulEdit =
-                            rowIndex === lastSuccessfulEdit?.rowIndex && colIndex === lastSuccessfulEdit.colIndex;
-                          const isEditable = !!column.editConfig && !loading;
                           return (
                             <TableBodyCell
+                              rowIndex={rowIndex}
+                              colIndex={colIndex}
                               key={getColumnKey(column, colIndex)}
                               style={
                                 resizableColumns
@@ -415,20 +411,13 @@ const InternalTable = React.forwardRef(
                               column={column}
                               item={item}
                               wrapLines={wrapLines}
-                              isEditable={isEditable}
-                              isEditing={isEditing}
+                              isEditable={!!column.editConfig}
                               isRowHeader={column.isRowHeader}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              successfulEdit={successfulEdit}
-                              onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
-                              onEditEnd={editCancelled =>
-                                cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
-                              }
-                              submitEdit={cellEditing.submitEdit}
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
@@ -436,6 +425,7 @@ const InternalTable = React.forwardRef(
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                               tableRole={tableRole}
+                              cellEditing={cellEditing}
                             />
                           );
                         })}

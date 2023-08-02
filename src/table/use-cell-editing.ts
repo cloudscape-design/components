@@ -67,7 +67,7 @@ class CellEditingStore<ItemType, ValueType> extends AsyncStore<CellEditingState>
 
   public submitEdit = async (item: ItemType, column: TableProps.ColumnDefinition<ItemType>, newValue: ValueType) => {
     if (!this.onSubmit) {
-      return;
+      throw new Error('The function `handleSubmit` is required for editable columns');
     }
     this.set(prev => ({ ...prev, loading: true }));
     try {

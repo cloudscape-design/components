@@ -9,6 +9,7 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { useStickyColumns } from '~components/table/sticky-columns';
+import { useCellEditing } from '~components/table/use-cell-editing';
 
 const baseColumnDefinition = { cell: () => 'Cell content', header: 'Column header' };
 
@@ -37,6 +38,7 @@ const editPermutations = createPermutations<TableProps.EditConfig<unknown>>([
 
 export default function InlineEditorPermutations() {
   const stickyState = useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 });
+  const cellEditing = useCellEditing({});
   return (
     <>
       <h1>Table inline editor permutations</h1>
@@ -55,19 +57,19 @@ export default function InlineEditorPermutations() {
                     }}
                     item={{}}
                     column={{ ...baseColumnDefinition, editConfig: permutation }}
-                    isEditing={true}
                     isEditable={true}
+                    cellEditing={cellEditing}
                     isFirstRow={false}
                     isLastRow={false}
                     isNextSelected={false}
                     isPrevSelected={false}
                     isSelected={false}
-                    onEditStart={() => {}}
-                    onEditEnd={() => {}}
                     wrapLines={false}
                     columnId="id"
                     stickyState={stickyState}
                     tableRole="grid"
+                    rowIndex={0}
+                    colIndex={0}
                     {...permutation}
                   />
                 </tr>

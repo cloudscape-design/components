@@ -33,6 +33,8 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
+  colIndex: number;
+  rowIndex: number;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
