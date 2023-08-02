@@ -31,8 +31,17 @@
     // such as checkboxes or links
     z-index: 800; // Higher than sticky columns
     &:not(.is-visual-refresh) {
-      margin-top: 0;
+      background-color: awsui.$color-background-container-content;
+      height: 11px;
+      margin-top: calc(-1 * awsui.$border-divider-section-width); // -1px to compensate for border width
       border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+      @include styles.with-motion {
+        transition: height awsui.$motion-duration-slow awsui.$motion-easing-show-quick;
+        transition-delay: awsui.$motion-duration-slow;
+      }
+      &:hover {
+        height: 15px;
+      }
     }
   }
 }
