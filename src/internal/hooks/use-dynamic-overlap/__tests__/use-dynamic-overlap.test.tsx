@@ -6,7 +6,8 @@ import { render, screen } from '@testing-library/react';
 import { useDynamicOverlap } from '../../../../../lib/components/internal/hooks/use-dynamic-overlap';
 import { DynamicOverlapContext } from '../../../../../lib/components/internal/context/dynamic-overlap-context';
 
-jest.mock('../../../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [800, () => {}],
 }));
 

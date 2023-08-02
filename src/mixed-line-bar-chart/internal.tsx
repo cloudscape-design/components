@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -40,11 +40,14 @@ type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   InternalBaseComponentProps;
 
 export default function InternalMixedLineBarChart<T extends number | string | Date>({
+  fitHeight,
   height,
   xScaleType,
   yScaleType,
   xDomain,
   yDomain,
+  xTickFormatter,
+  yTickFormatter,
   highlightedSeries: controlledHighlightedSeries,
   visibleSeries: controlledVisibleSeries,
   series: externalSeries,
@@ -215,6 +218,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
       ref={mergedRef}
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
+      fitHeight={!!fitHeight}
       contentMinHeight={height}
       defaultFilter={
         showFilters && !hideFilter ? (
@@ -246,13 +250,14 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
       chart={
         showChart ? (
           <ChartContainer
+            fitHeight={fitHeight}
             height={height}
             xScaleType={xScaleType}
             yScaleType={yScaleType}
             xDomain={xDomain}
             yDomain={yDomain}
-            xTickFormatter={i18nStrings?.xTickFormatter}
-            yTickFormatter={i18nStrings?.yTickFormatter}
+            xTickFormatter={xTickFormatter ?? i18nStrings?.xTickFormatter}
+            yTickFormatter={yTickFormatter ?? i18nStrings?.yTickFormatter}
             emphasizeBaselineAxis={emphasizeBaselineAxis}
             stackedBars={stackedBars}
             horizontalBars={horizontalBars}

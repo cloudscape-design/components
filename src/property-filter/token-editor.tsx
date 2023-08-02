@@ -307,11 +307,17 @@ export function TokenEditor({
           </div>
 
           <div className={styles['token-editor-actions']}>
-            <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={closePopover}>
+            <InternalButton
+              formAction="none"
+              variant="link"
+              className={styles['token-editor-cancel']}
+              onClick={closePopover}
+            >
               {i18nStrings.cancelActionText}
             </InternalButton>
             <InternalButton
               className={styles['token-editor-submit']}
+              formAction="none"
               onClick={() => {
                 setToken(matchTokenValue(temporaryToken, filteringOptions));
                 closePopover();

@@ -21,6 +21,7 @@ const S3ResourceSelector = React.forwardRef(
   (
     {
       i18nStrings,
+      inputPlaceholder,
       alert,
       resource,
       viewHref,
@@ -94,6 +95,7 @@ const S3ResourceSelector = React.forwardRef(
           ref={inContextRef}
           selectableItemsTypes={selectableItemsTypes}
           i18nStrings={i18nStrings}
+          inputPlaceholder={inputPlaceholder}
           resource={resource}
           viewHref={viewHref}
           invalid={invalid}

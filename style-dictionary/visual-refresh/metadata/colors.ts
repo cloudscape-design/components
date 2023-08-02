@@ -177,6 +177,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundNotificationYellow: {
+    description: 'Background color for yellow notifications. For example: yellow badges and warning flash messages.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundPopover: {
     description: 'Background color for the popover container.',
     public: true,
@@ -506,28 +511,28 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
   },
   colorTextLayoutToggle: {
-    description: 'This is the default color of the app layout toggle.',
+    description: 'The default color of the app layout toggle.',
     public: true,
     themeable: true,
   },
   colorTextLayoutToggleActive: {
-    description: "This is the color of the app layout toggle button when it's active.",
+    description: "The color of the app layout toggle button when it's active.",
     public: true,
     themeable: true,
   },
   colorTextLayoutToggleHover: {
-    description: 'This is the color of the app layout toggle button on hover.',
+    description: 'The color of the app layout toggle button on hover.',
     public: true,
     themeable: true,
   },
   colorTextLayoutToggleSelected: {
-    description: "This is the color of the app layout toggle button when it's selected.",
+    description: "The color of the app layout toggle button when it's selected.",
     public: true,
     themeable: true,
   },
   colorTextLabel: {
     description:
-      "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+      "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
     public: true,
     themeable: true,
   },

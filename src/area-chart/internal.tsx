@@ -30,11 +30,15 @@ type InternalAreaChartProps<T extends AreaChartProps.DataTypes> = SomeRequired<
   InternalBaseComponentProps;
 
 export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
+  fitHeight,
   height,
   xScaleType,
   yScaleType,
   xDomain,
   yDomain,
+  xTickFormatter,
+  yTickFormatter,
+  detailTotalFormatter,
   highlightedSeries: controlledHighlightedSeries,
   visibleSeries: controlledVisibleSeries,
   series: externalSeries,
@@ -91,6 +95,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     controlledOnHighlightChange
   );
   const model = useChartModel({
+    fitHeight,
     externalSeries,
     visibleSeries,
     setVisibleSeries,
@@ -134,6 +139,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
       ref={mergedRef}
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
+      fitHeight={!!fitHeight}
       contentMinHeight={height}
       defaultFilter={
         showFilters && !hideFilter ? (
@@ -171,10 +177,15 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
             detailPopoverFooter={detailPopoverFooter}
             xTitle={xTitle}
             yTitle={yTitle}
+            xTickFormatter={xTickFormatter}
+            yTickFormatter={yTickFormatter}
+            detailTotalFormatter={detailTotalFormatter}
             ariaLabel={ariaLabel}
             ariaLabelledby={ariaLabelledby}
             ariaDescription={ariaDescription}
             i18nStrings={i18nStrings}
+            fitHeight={fitHeight}
+            minHeight={height}
           />
         ) : null
       }

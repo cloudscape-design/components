@@ -12,12 +12,13 @@ export interface TriggerButtonProps {
   className?: string;
   iconName?: IconProps.Name;
   iconSvg?: React.ReactNode;
+  testId?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
 }
 
 function TriggerButton(
-  { ariaLabel, className, iconName, iconSvg, onClick, selected = false }: TriggerButtonProps,
+  { ariaLabel, className, iconName, iconSvg, onClick, testId, selected = false }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
@@ -35,6 +36,7 @@ function TriggerButton(
       onClick={onClick}
       ref={ref as React.Ref<HTMLButtonElement>}
       type="button"
+      data-testid={testId}
     >
       <Icon name={iconName} svg={iconSvg} />
     </button>

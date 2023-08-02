@@ -67,6 +67,7 @@ export default function InlineEditorPermutations() {
                     wrapLines={false}
                     columnId="id"
                     stickyState={stickyState}
+                    tableRole="grid"
                     {...permutation}
                   />
                 </tr>

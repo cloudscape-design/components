@@ -74,8 +74,19 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
   i18nStrings?: CartesianChartProps.I18nStrings<T>;
 
   /**
+   * Function to format the displayed label of an x axis tick.
+   */
+  xTickFormatter?: CartesianChartProps.TickFormatter<T>;
+
+  /**
+   * Function to format the displayed label of a y axis tick.
+   */
+  yTickFormatter?: CartesianChartProps.TickFormatter<number>;
+
+  /**
    * An optional pixel value number that fixes the height of the chart area.
    * If not set explicitly, the component will use a default height that is defined internally.
+   * When used with `fitHeight`, this property defines the minimum height of the chart area.
    */
   height?: number;
 
@@ -176,6 +187,11 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
    * Called when the highlighted series has changed because of user interaction.
    */
   onHighlightChange?: NonCancelableEventHandler<CartesianChartProps.HighlightChangeDetail<Series>>;
+
+  /**
+   * Enable this property to make the chart fit into the available height of the parent container.
+   */
+  fitHeight?: boolean;
 }
 
 export namespace CartesianChartProps {
@@ -224,10 +240,10 @@ export namespace CartesianChartProps {
     /** Name of the ARIA role description of the y axis, e.g. "y axis" */
     yAxisAriaRoleDescription?: string;
 
-    /** Function to format the displayed label of an x axis tick. */
+    /** @deprecated Use `xTickFormatter` on the component instead. */
     xTickFormatter?: TickFormatter<T>;
 
-    /** Function to format the displayed label of a y axis tick. */
+    /** @deprecated Use `yTickFormatter` on the component instead. */
     yTickFormatter?: TickFormatter<number>;
   }
 }

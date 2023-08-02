@@ -8,10 +8,8 @@ import { FlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
-import { getVisualContextClassname } from '../internal/components/visual-context';
-
 import styles from './styles.css.js';
-import { counterTypes, getFlashTypeCount, getVisibleCollapsedItems, StackableItem } from './utils';
+import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
@@ -20,7 +18,8 @@ import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 
 export { FlashbarProps };
 
@@ -175,7 +174,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const countByType = getFlashTypeCount(items);
 
-  const stackDepth = Math.min(3, items.length);
+  const numberOfColorsInStack = new Set(items.map(getItemColor)).size;
+  const maxSlots = Math.max(numberOfColorsInStack, 3);
+  const stackDepth = Math.min(maxSlots, items.length);
 
   const itemsToShow = isFlashbarStackExpanded
     ? items.map((item, index) => ({ ...item, expandedIndex: index }))
@@ -298,8 +299,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         isCollapsible && styles.collapsible,
         items.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
-        isVisualRefresh && styles['visual-refresh'],
-        getVisualContextClassname('flashbar')
+        isVisualRefresh && styles['visual-refresh']
       )}
       ref={mergedRef}
     >
@@ -312,7 +312,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               isVisualRefresh && styles['visual-refresh'],
               isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
               transitioning && styles['animation-running'],
-              items.length === 2 && styles['short-list']
+              items.length === 2 && styles['short-list'],
+              getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
             )}
             onClick={toggleCollapseExpand}
             ref={notificationBarRef}

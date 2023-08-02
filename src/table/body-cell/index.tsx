@@ -8,7 +8,8 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
+import { usePrevious } from '../../internal/hooks/use-previous';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -56,6 +57,21 @@ function TableCellEditable<ItemType>({
   const [hasFocus, setHasFocus] = useState(false);
   const showIcon = hasHover || hasFocus;
 
+  const prevSuccessfulEdit = usePrevious(successfulEdit);
+  const prevHasFocus = usePrevious(hasFocus);
+  const [showSuccessIcon, setShowSuccessIcon] = useState(false);
+
+  useEffect(() => {
+    // Hide the success icon after a successful edit, when cell loses focus.
+    if (successfulEdit && prevSuccessfulEdit && !hasFocus && prevHasFocus) {
+      setShowSuccessIcon(false);
+    }
+    // Show success icon right after a successful edit, when `successfulEdit` switches to true.
+    if (successfulEdit && !prevSuccessfulEdit) {
+      setShowSuccessIcon(true);
+    }
+  }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
+
   return (
     <TableTdElement
       {...rest}
@@ -64,7 +80,7 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
-        successfulEdit && styles['body-cell-has-success'],
+        showSuccessIcon && showIcon && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
@@ -77,6 +93,7 @@ function TableCellEditable<ItemType>({
           column={column}
           item={item}
           onEditEnd={e => {
+            setShowSuccessIcon(false);
             isFocusMoveNeededRef.current = true;
             onEditEnd(e);
           }}
@@ -85,12 +102,17 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
-          {successfulEdit && (
+          {showSuccessIcon && showIcon && (
             <>
               <span
                 className={styles['body-cell-success']}
                 aria-label={ariaLabels?.successfulEditLabel?.(column)}
                 role="img"
+                onMouseDown={e => {
+                  // Prevent the editor's Button blur event to be fired when clicking the success icon.
+                  // This prevents unfocusing the button and triggers the `TableTdElement` onClick event which initiates the edit mode.
+                  e.preventDefault();
+                }}
               >
                 <Icon name="status-positive" variant="success" />
               </span>

@@ -7,7 +7,7 @@ import liveRegionStyles from '../../../lib/components/internal/components/live-r
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
@@ -45,6 +45,14 @@ afterEach(() => {
 });
 
 describe('i18nStrings', () => {
+  test('uses submitButtonText over i18nStrings.submitButton', () => {
+    const [wrapper] = renderDefaultWizard({ submitButtonText: 'Create DB instance' });
+    for (let i = 0; i < DEFAULT_STEPS.length - 1; i++) {
+      wrapper.findPrimaryButton().click();
+    }
+    expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Create DB instance');
+  });
+
   DEFAULT_I18N_SETS.forEach((i18nStrings, index) => {
     test(`match provided i18nStrings, i18nSets[${index}], shown on the wizard component`, () => {
       const [wrapper] = renderWizard({
@@ -82,7 +90,7 @@ describe('i18nStrings', () => {
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
-      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.submitButton);
+      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.submitButton!);
     });
   });
 });
@@ -216,7 +224,7 @@ describe('Primary button', () => {
       if (index < DEFAULT_STEPS.length - 1) {
         expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
       } else {
-        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton);
+        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton!);
       }
       wrapper.findPrimaryButton().click();
     });

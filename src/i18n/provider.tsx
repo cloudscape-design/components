@@ -4,10 +4,12 @@
 import React, { useContext } from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
-
-import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
-import { useTelemetry } from '../internal/hooks/use-telemetry';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { useTelemetry } from '../internal/hooks/use-telemetry';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
+import { getMatchableLocales } from './get-matchable-locales';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;
@@ -109,6 +111,8 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
   );
 }
 
+applyDisplayName(I18nProvider, 'I18nProvider');
+
 function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18nProviderProps.Messages {
   const result: I18nProviderProps.Messages = {};
   for (const messages of sources) {
@@ -133,17 +137,4 @@ function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18n
     }
   }
   return result;
-}
-
-function getMatchableLocales(ietfLanguageTag: string): string[] {
-  const parts = ietfLanguageTag.split('-');
-  if (parts.length === 1) {
-    return [ietfLanguageTag];
-  }
-
-  const localeStrings: string[] = [];
-  for (let i = parts.length; i > 0; i--) {
-    localeStrings.push(parts.slice(0, i).join('-'));
-  }
-  return localeStrings;
 }

@@ -15,7 +15,7 @@ import { AlertProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {

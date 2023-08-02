@@ -8,11 +8,6 @@ const stateToIcon = {
   ascending: 'caret-up-filled',
   descending: 'caret-down-filled',
 } as const;
-const stateToAriaSort = {
-  sortable: 'none',
-  ascending: 'ascending',
-  descending: 'descending',
-} as const;
 
 export const getSortingStatus = (
   sortable: boolean,
@@ -33,7 +28,6 @@ export const getSortingStatus = (
 };
 
 export const getSortingIconName = (sortingState: SortingStatus) => stateToIcon[sortingState];
-export const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingState];
 export const isSorted = <T>(column: TableProps.ColumnDefinition<T>, sortingColumn: TableProps.SortingColumn<T>) =>
   column === sortingColumn ||
   (column.sortingField !== undefined && column.sortingField === sortingColumn.sortingField) ||

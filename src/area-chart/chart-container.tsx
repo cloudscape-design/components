@@ -7,7 +7,7 @@ import ChartPlot from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
 import LeftLabels from '../internal/components/cartesian-chart/left-labels';
-import BottomLabels from '../internal/components/cartesian-chart/bottom-labels';
+import BottomLabels, { useBottomLabels } from '../internal/components/cartesian-chart/bottom-labels';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
 import { AreaChartProps } from './interfaces';
 import { ChartModel } from './model';
@@ -32,6 +32,9 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
     AreaChartProps<T>,
     | 'xTitle'
     | 'yTitle'
+    | 'xTickFormatter'
+    | 'yTickFormatter'
+    | 'detailTotalFormatter'
     | 'detailPopoverSize'
     | 'detailPopoverFooter'
     | 'ariaLabel'
@@ -41,6 +44,8 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   > {
   model: ChartModel<T>;
   autoWidth: (value: number) => void;
+  fitHeight?: boolean;
+  minHeight: number;
 }
 
 export default memo(ChartContainer) as typeof ChartContainer;
@@ -56,19 +61,29 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   ariaLabelledby,
   ariaDescription,
   i18nStrings: {
-    xTickFormatter,
-    yTickFormatter,
-    detailTotalFormatter,
+    xTickFormatter: deprecatedXTickFormatter,
+    yTickFormatter: deprecatedYTickFormatter,
+    detailTotalFormatter: deprecatedDetailTotalFormatter,
     detailTotalLabel,
     chartAriaRoleDescription,
     xAxisAriaRoleDescription,
     yAxisAriaRoleDescription,
     detailPopoverDismissAriaLabel,
   } = {},
+  fitHeight,
+  minHeight,
+  xTickFormatter = deprecatedXTickFormatter,
+  yTickFormatter = deprecatedYTickFormatter,
+  detailTotalFormatter = deprecatedDetailTotalFormatter,
 }: ChartContainerProps<T>) {
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
-  const [bottomLabelsHeight, setBottomLabelsHeight] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
+
+  const bottomLabelsProps = useBottomLabels({
+    ticks: model.computed.xTicks,
+    scale: model.computed.xScale,
+    tickFormatter: xTickFormatter as TickFormatter,
+  });
 
   // Calculate the width of the plot area and tell it to the parent.
   const plotWidth = Math.max(0, containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN);
@@ -100,6 +115,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   return (
     <CartesianChartContainer
       ref={mergedRef}
+      minHeight={minHeight + bottomLabelsProps.height}
+      fitHeight={!!fitHeight}
       leftAxisLabel={<AxisLabel axis="y" position="left" title={yTitle} />}
       leftAxisLabelMeasure={
         <LabelsMeasure
@@ -113,9 +130,9 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
       chartPlot={
         <ChartPlot
           ref={model.refs.plot}
-          width={model.width}
-          height={model.height}
-          offsetBottom={bottomLabelsHeight}
+          width="100%"
+          height={fitHeight ? `calc(100% - ${bottomLabelsProps.height}px)` : model.height}
+          offsetBottom={bottomLabelsProps.height}
           ariaLabel={ariaLabel}
           ariaLabelledby={ariaLabelledby}
           ariaDescription={ariaDescription}
@@ -131,6 +148,17 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           onFocus={model.handlers.onSVGFocus}
           onBlur={model.handlers.onSVGBlur}
         >
+          <line
+            ref={model.refs.plotMeasure}
+            x1="0"
+            x2="0"
+            y1="0"
+            y2="100%"
+            stroke="transparent"
+            strokeWidth={1}
+            style={{ pointerEvents: 'none' }}
+          />
+
           <LeftLabels
             width={model.width}
             height={model.height}
@@ -144,14 +172,12 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           <AreaDataSeries model={model} />
 
           <BottomLabels
+            {...bottomLabelsProps}
             width={model.width}
             height={model.height}
             scale={model.computed.xScale}
-            ticks={model.computed.xTicks}
-            tickFormatter={xTickFormatter as TickFormatter}
             title={xTitle}
             ariaRoleDescription={xAxisAriaRoleDescription}
-            autoHeight={setBottomLabelsHeight}
             offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
             offsetRight={BOTTOM_LABELS_OFFSET}
           />

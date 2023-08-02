@@ -6,8 +6,10 @@ import { AreaChartWrapper } from '../../../lib/components/test-utils/dom';
 import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import popoverStyles from '../../../lib/components/popover/styles.css.js';
+import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
+import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { cloneDeep } from 'lodash';
 import '../../__a11y__/to-validate-a11y';
 
@@ -84,9 +86,29 @@ test('error and recovery texts are assigned', () => {
   expect(wrapper.findStatusContainer()!.getElement()).toHaveTextContent('Ooops! Try again');
 });
 
-test('chart height is assigned', () => {
+test('explicit chart height is assigned', () => {
   const { wrapper } = renderAreaChart(<AreaChart height={333} statusType="finished" series={[areaSeries1]} />);
-  expect(wrapper.findChart()!.getElement()).toHaveAttribute('height', '333');
+  expect(wrapper.findChart()!.getElement().style.height).toContain('333');
+});
+
+test('when fitHeight=true chart height is flexible', () => {
+  const { wrapper } = renderAreaChart(
+    <AreaChart height={333} fitHeight={true} statusType="finished" series={[areaSeries1]} />
+  );
+  expect(wrapper.findChart()!.getElement().style.height).toContain('100%');
+});
+
+test('when fitHeight=false content min height is explicitly set', () => {
+  const { wrapper } = renderAreaChart(<AreaChart height={333} fitHeight={false} series={[]} />);
+  expect(wrapper.findByClassName(chartWrapperStyles.content)?.getElement()).toHaveStyle({ minHeight: '333px' });
+});
+
+test.each([false, true])('when fitHeight=%s plot min-height is explicitly set', fitHeight => {
+  const { wrapper } = renderAreaChart(<AreaChart height={333} fitHeight={fitHeight} series={[areaSeries1]} />);
+  const selector = fitHeight ? cartesianStyles['chart-container-plot-wrapper'] : chartWrapperStyles.content;
+  const chartElement = wrapper.findByClassName(selector)!.getElement();
+  expect(chartElement.style.minHeight).toBeDefined();
+  expect(parseInt(chartElement.style.minHeight)).toBeGreaterThanOrEqual(333);
 });
 
 test('empty text is assigned', () => {
@@ -376,9 +398,23 @@ test('detail total formatter is assigned', () => {
     <AreaChart
       series={[areaSeries1]}
       statusType="finished"
-      i18nStrings={{
-        detailTotalFormatter: (y: number) => `=${y}`,
-      }}
+      i18nStrings={{ detailTotalFormatter: (y: number) => `=${y}` }}
+    />
+  );
+
+  // Show popover for the first data point.
+  wrapper.findApplication()!.focus();
+
+  expect(wrapper.findDetailPopover()!.findContent()!.getElement()).toHaveTextContent('Area Series 13=3');
+});
+
+test('uses detailTotalFormatter over i18nStrings.detailTotalFormatter', () => {
+  const { wrapper } = renderAreaChart(
+    <AreaChart
+      series={[areaSeries1]}
+      statusType="finished"
+      detailTotalFormatter={(y: number) => `=${y}`}
+      i18nStrings={{ detailTotalFormatter: (y: number) => `+${y}` }}
     />
   );
 

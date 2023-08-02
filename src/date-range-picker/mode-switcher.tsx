@@ -5,7 +5,7 @@ import { DateRangePickerProps } from './interfaces';
 import InternalSegmentedControl from '../segmented-control/internal';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 interface ModeSwitcherProps extends Pick<DateRangePickerProps, 'i18nStrings'> {
   mode: 'absolute' | 'relative';

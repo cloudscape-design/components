@@ -7,7 +7,7 @@ import InternalBox from '../../../box/internal';
 import { KeyCode } from '../../keycode';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import styles from './styles.css.js';
-import { useInternalI18n } from '../../i18n/context';
+import { useInternalI18n } from '../../../i18n/context';
 
 export interface ChartLegendItem<T> {
   label: string;

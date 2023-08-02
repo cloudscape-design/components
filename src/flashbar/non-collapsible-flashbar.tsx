@@ -7,11 +7,10 @@ import { FlashbarProps } from './interfaces';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
-import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
 import { useFlashbar } from './common';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export { FlashbarProps };
 
@@ -96,11 +95,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
     return (
       <Flash
         // eslint-disable-next-line react/forbid-component-props
-        className={clsx(
-          getVisualContextClassname('flashbar'),
-          animateFlash && styles['flash-with-motion'],
-          isVisualRefresh && styles['flash-refresh']
-        )}
+        className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}

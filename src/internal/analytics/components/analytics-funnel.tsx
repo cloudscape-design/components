@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   FunnelStepContext,
@@ -9,6 +9,7 @@ import {
   FunnelContextValue,
   FunnelStepContextValue,
   FunnelState,
+  FunnelSubStepContextValue,
 } from '../context/analytics-context';
 import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
@@ -42,6 +43,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
   const funnelState = useRef<FunnelState>('default');
   const errorCount = useRef<number>(0);
   const loadingButtonCount = useRef<number>(0);
+  const latestFocusCleanupFunction = useRef<undefined | (() => void)>(undefined);
 
   // This useEffect hook is run once on component mount to initiate the funnel analytics.
   // It first calls the 'funnelStart' method from FunnelMetrics, providing all necessary details
@@ -84,7 +86,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
         FunnelMetrics.funnelSuccessful({ funnelInteractionId });
       } else {
         FunnelMetrics.funnelCancelled({ funnelInteractionId });
-        funnelState.current === 'cancelled';
+        funnelState.current = 'cancelled';
       }
     };
   }, []);
@@ -146,6 +148,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     funnelState,
     errorCount,
     loadingButtonCount,
+    latestFocusCleanupFunction,
   };
 
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
@@ -155,10 +158,20 @@ type AnalyticsFunnelStepProps = {
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
 } & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
 
-export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
+export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => (
+  /*
+   This wrapper is used to apply a `key` property to the actual (inner) AnalyticsFunnelStep
+   element. This allows us to keep the state and effects separate per step.
+   */
+  <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />
+);
+
+const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
   const { funnelInteractionId, funnelState } = useFunnel();
 
   const funnelStepProps = { [DATA_ATTR_FUNNEL_STEP]: stepNumber };
+
+  const subStepCount = useRef<number>(0);
 
   // This useEffect hook is used to track the start and completion of interaction with the step.
   // On mount, if there is a valid funnel interaction id, it calls the 'funnelStepStart' method from FunnelMetrics
@@ -174,25 +187,28 @@ export const AnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: 
         stepName,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
+        totalSubSteps: subStepCount.current,
       });
     }
 
     return () => {
-      //eslint-disable-next-line react-hooks/exhaustive-deps
-      if (funnelInteractionId && funnelState.current === 'default') {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (funnelInteractionId && funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
           stepNumber,
           stepName,
           stepNameSelector,
           subStepAllSelector: getSubStepAllSelector(),
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          totalSubSteps: subStepCount.current,
         });
       }
     };
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funnelInteractionId, stepNumber, stepNameSelector]);
 
-  const contextValue: FunnelStepContextValue = { funnelInteractionId, stepNumber, stepNameSelector, funnelStepProps };
+  const contextValue: FunnelStepContextValue = { stepNumber, stepNameSelector, funnelStepProps, subStepCount };
   return (
     <FunnelStepContext.Provider value={contextValue}>
       {typeof children === 'function' ? children(contextValue) : children}
@@ -204,25 +220,86 @@ interface AnalyticsFunnelSubStepProps {
 }
 
 export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps) => {
-  const { funnelInteractionId } = useFunnel();
-  const { stepNumber, stepNameSelector } = useFunnelStep();
-
   const subStepId = useUniqueId('substep');
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
+  const subStepRef = useRef<HTMLDivElement | null>(null);
+  const { subStepCount } = useFunnelStep();
+  const mousePressed = useRef<boolean>(false);
+  const isFocusedSubStep = useRef<boolean>(false);
+  const focusCleanupFunction = useRef<undefined | (() => void)>(undefined);
+  const { funnelState, funnelInteractionId } = useFunnel();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
 
-  return (
-    <FunnelSubStepContext.Provider
-      value={{
-        funnelInteractionId,
-        stepNumber,
-        stepNameSelector,
-        subStepSelector,
-        subStepNameSelector,
-        subStepId,
-      }}
-    >
-      {children}
-    </FunnelSubStepContext.Provider>
-  );
+  const newContext: FunnelSubStepContextValue = {
+    subStepSelector,
+    subStepNameSelector,
+    subStepId,
+    subStepRef,
+    mousePressed,
+    isFocusedSubStep,
+    focusCleanupFunction,
+    isNestedSubStep: false,
+  };
+
+  const inheritedContext = { ...useContext(FunnelSubStepContext), isNestedSubStep: true };
+
+  const isNested = Boolean(inheritedContext.subStepId);
+
+  useEffect(() => {
+    if (!isNested) {
+      subStepCount.current++;
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      return () => void subStepCount.current--;
+    }
+  }, [isNested, subStepCount]);
+
+  const context = isNested ? inheritedContext : newContext;
+
+  useEffect(() => {
+    const onMouseDown = () => (mousePressed.current = true);
+
+    const onMouseUp = async () => {
+      mousePressed.current = false;
+
+      if (!isFocusedSubStep.current) {
+        return;
+      }
+
+      /*
+        Some mouse events result in an element being focused. However,
+        this happens only _after_ the onMouseUp event. We yield the
+        event loop here, so that `document.activeElement` has the
+        correct new value.      
+      */
+      await new Promise(r => setTimeout(r, 1));
+
+      if (!subStepRef.current || !subStepRef.current.contains(document.activeElement)) {
+        isFocusedSubStep.current = false;
+
+        /*
+         Run this substep's own focus cleanup function if another substep
+         hasn't already done it for us.
+         */
+        focusCleanupFunction.current?.();
+      }
+    };
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mouseup', onMouseUp);
+    return () => {
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [
+    funnelInteractionId,
+    funnelState,
+    stepNameSelector,
+    stepNumber,
+    subStepNameSelector,
+    subStepSelector,
+    focusCleanupFunction,
+  ]);
+
+  return <FunnelSubStepContext.Provider value={context}>{children}</FunnelSubStepContext.Provider>;
 };

@@ -21,10 +21,13 @@ import useContainerWidth from '../internal/utils/use-container-width';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import { ChartWrapper } from '../internal/components/chart-wrapper';
 import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { getDimensionsBySize } from './utils';
 
 export { PieChartProps };
 
 const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps.Datum>({
+  fitHeight,
   variant = 'pie',
   size = 'medium',
   hideTitles = false,
@@ -83,8 +86,6 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
       changeHandler: 'onFilterChange',
     }
   );
-
-  const [pinnedSegment, setPinnedSegment] = useState<T | null>(null);
 
   const visibleData = useMemo(
     () => data.filter(d => visibleSegments?.indexOf(d.datum) !== -1),
@@ -151,13 +152,20 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const reserveFilterSpace = statusType !== 'finished' && !isNoMatch && (!hideFilter || additionalFilters);
   const hasLabels = !(hideTitles && hideDescriptions);
 
+  const isRefresh = useVisualRefresh();
+  const defaultDimensions = getDimensionsBySize({ size, hasLabels, visualRefresh: isRefresh });
+  const radius = defaultDimensions.outerRadius;
+  const height = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
+
   return (
     <ChartWrapper
       ref={mergedRef}
+      fitHeight={!!fitHeight}
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
-      contentClassName={clsx(styles.content, styles[`content--${size}`], {
+      contentClassName={clsx(styles.content, styles[`content--${defaultDimensions.size}`], {
         [styles['content--without-labels']]: !hasLabels,
+        [styles['content--fit-height']]: fitHeight,
       })}
       defaultFilter={
         showFilters && !hideFilter ? (
@@ -192,6 +200,8 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
             {...props}
             variant={variant}
             size={size}
+            height={height}
+            fitHeight={fitHeight}
             data={externalData}
             width={containerWidth}
             hideTitles={hideTitles}
@@ -200,8 +210,6 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
             onHighlightChange={onHighlightChange}
             highlightedSegment={highlightedSegment}
             legendSegment={legendSegment}
-            pinnedSegment={pinnedSegment}
-            setPinnedSegment={setPinnedSegment}
             detailPopoverSize={detailPopoverSize}
             pieData={pieData}
             dataSum={dataSum}

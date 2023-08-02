@@ -15,11 +15,11 @@ import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 
 import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import {
   DATA_ATTR_FIELD_ERROR,
   DATA_ATTR_FIELD_LABEL,
@@ -93,8 +93,8 @@ export default function InternalFormField({
   const formFieldId = controlId || generatedControlId;
 
   const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
-
-  const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
+  const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
   const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText);
 

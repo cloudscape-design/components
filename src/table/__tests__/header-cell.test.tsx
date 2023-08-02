@@ -9,7 +9,9 @@ import { renderHook } from '../../__tests__/render-hook';
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+
+const tableRole = 'table';
 
 const testItem = {
   test: 'test',
@@ -58,6 +60,7 @@ it('renders a fake focus outline on the sort control', () => {
         stickyState={result.current}
         columnId="id"
         cellRef={() => {}}
+        tableRole={tableRole}
       />
     </TableWrapper>
   );
@@ -82,6 +85,7 @@ it('renders a fake focus outline on the resize control', () => {
         stickyState={result.current}
         columnId="id"
         cellRef={() => {}}
+        tableRole={tableRole}
       />
     </TableWrapper>
   );
@@ -108,6 +112,7 @@ describe('i18n', () => {
             columnId="id"
             isEditable={true}
             cellRef={() => {}}
+            tableRole={tableRole}
           />
         </TableWrapper>
       </TestI18nProvider>

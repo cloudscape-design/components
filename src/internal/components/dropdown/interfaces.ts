@@ -132,16 +132,36 @@ export interface DropdownProps extends ExpandToViewport {
    * Called when focus leaves the trigger or dropdown content.
    */
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * ID for the dropdown content wrapper
+   */
+  dropdownContentId?: string;
+  /**
+   * HTML role for the dropdown content wrapper
+   */
+  dropdownContentRole?: string;
+  /**
+   * Labelledby for the dropdown (required when role="dialog")
+   */
+  ariaLabelledby?: string;
+  /**
+   * Describedby for the dropdown (recommended when role="dialog")
+   */
+  ariaDescribedby?: string;
 }
 
 export interface ExpandToViewport {
   /**
-   * Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
    * [React Portals](https://reactjs.org/docs/portals.html).
-   * If you want the dropdown to ignore the `overflow` CSS property of its parents,
-   * such as in a split view layout, enable this property.
-   * However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-   * in a slight, visible lag when scrolling complex pages.
+   *
+   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
+   * for example inside table and split view layouts.
+   *
+   * However, use discretion. We recommend you don't enable this property unless necessary
+   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
    */
   expandToViewport?: boolean;
 }

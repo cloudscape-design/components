@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { render } from '@testing-library/react';
 import { useResizeObserver } from '../use-resize-observer';
 import { ResizeObserver } from '@juggle/resize-observer';
-import { ContainerQueryEntry } from '..';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 
 function TestComponent({ mapFn = () => '' }: { mapFn?: (entry: ContainerQueryEntry) => string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -37,8 +37,6 @@ test('should call the map function with the content box when the resize observer
     contentBoxHeight: 20,
     borderBoxWidth: 10,
     borderBoxHeight: 20,
-    width: 10,
-    height: 20,
   });
 });
 

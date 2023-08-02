@@ -10,7 +10,6 @@ import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
-import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
@@ -35,6 +34,9 @@ import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './sticky-columns';
 import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { getTableRoleProps, getTableRowRoleProps } from './table-role';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -90,11 +92,12 @@ const InternalTable = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
+    const isMobile = useMobile();
 
-    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
+    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const wrapperRefObject = useRef(null);
 
-    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
+    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const tableRefObject = useRef(null);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
@@ -153,7 +156,7 @@ const InternalTable = React.forwardRef(
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
-    const hasFooterPagination = variant === 'full-page' && !!pagination;
+    const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
     const hasFooter = !!footer || hasFooterPagination;
 
     const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
@@ -175,6 +178,8 @@ const InternalTable = React.forwardRef(
     });
 
     const hasStickyColumns = (stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0;
+    const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
+    const tableRole = hasEditableCells ? 'grid' : 'table';
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -202,6 +207,7 @@ const InternalTable = React.forwardRef(
       stripedRows,
       stickyState,
       selectionColumnId,
+      tableRole,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -269,6 +275,7 @@ const InternalTable = React.forwardRef(
                   onScroll={handleScroll}
                   tableHasHeader={hasHeader}
                   contentDensity={contentDensity}
+                  tableRole={tableRole}
                 />
               )}
             </>
@@ -315,11 +322,7 @@ const InternalTable = React.forwardRef(
                 resizableColumns && styles['table-layout-fixed'],
                 contentDensity === 'compact' && getVisualContextClassname('compact-table')
               )}
-              // Browsers have weird mechanism to guess whether it's a data table or a layout table.
-              // If we state explicitly, they get it always correctly even with low number of rows.
-              role="table"
-              aria-label={ariaLabels?.tableLabel}
-              aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
+              {...getTableRoleProps({ tableRole, totalItemsCount, ariaLabel: ariaLabels?.tableLabel })}
             >
               <Thead
                 ref={theadRef}
@@ -374,7 +377,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                        aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
+                        {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex })}
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
@@ -392,6 +395,7 @@ const InternalTable = React.forwardRef(
                             hasFooter={hasFooter}
                             stickyState={stickyState}
                             columnId={selectionColumnId}
+                            tableRole={tableRole}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -454,6 +458,7 @@ const InternalTable = React.forwardRef(
                               columnId={column.id ?? colIndex}
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
+                              tableRole={tableRole}
                             />
                           );
                         })}

@@ -14,7 +14,7 @@ import { ObjectsTable } from './objects-table';
 import { VersionsTable } from './versions-table';
 import styles from './styles.css.js';
 import { joinObjectPath } from '../utils';
-import { useInternalI18n } from '../../internal/i18n/context';
+import { useInternalI18n } from '../../i18n/context';
 
 export interface S3ModalProps {
   alert: React.ReactNode;

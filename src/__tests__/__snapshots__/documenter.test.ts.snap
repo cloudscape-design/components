@@ -756,6 +756,17 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed values total.",
+      "inlineType": Object {
+        "name": "AreaChartProps.TickFormatter",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "detailTotalFormatter",
+      "optional": true,
+      "type": "AreaChartProps.TickFormatter<number>",
+    },
+    Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
       "i18nTag": true,
       "name": "errorText",
@@ -763,9 +774,16 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -963,6 +981,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -992,6 +1027,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -1164,6 +1216,12 @@ The display of a row is handled by the \`definition\` property.",
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<T>",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the remove button.",
+      "name": "removeButtonAriaLabel",
+      "optional": true,
+      "type": "(item: T) => string",
     },
     Object {
       "description": "Specifies the text that's displayed in the remove button.",
@@ -1514,12 +1572,15 @@ receive focus.",
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -1925,9 +1986,16 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -2132,6 +2200,23 @@ Use \`categorical\` for bar charts.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -2161,6 +2246,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -3064,17 +3166,15 @@ It should be used in buttons that don't have text in order to make them accessib
     },
     Object {
       "defaultValue": "false",
-      "description": "By default, the dropdown height is constrained to fit inside the height of its parent element.
-Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion.
-If you don't need to, we recommend you don't enable this property because there is a known issue with
-the '[aria-owns](https://a11ysupport.io/tech/aria/aria-owns_attribute)' attribute in Safari with VoiceOver that
-prevents VO specific controls (CTRL+OPT+Left/Right) from entering a dropdown on Safari due to its position in the DOM.
-If you don't need to, we also recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -5314,12 +5414,15 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -5584,12 +5687,15 @@ modifying the value. A disabled component cannot receive focus.",
     },
     Object {
       "defaultValue": "false",
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -7637,9 +7743,16 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -7828,6 +7941,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -7857,6 +7987,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -8199,9 +8346,16 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -8407,6 +8561,23 @@ Use \`categorical\` for charts with bars.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -8436,6 +8607,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -8750,12 +8938,15 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -9366,6 +9557,12 @@ Each pair has the following properties:
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "false",
       "description": "Hides the label descriptions next to the chart segments when set to \`true\`.",
       "name": "hideDescriptions",
@@ -9530,7 +9727,8 @@ The function is called with the data object of each segment and is expected to r
     },
     Object {
       "defaultValue": "\\"medium\\"",
-      "description": "Specifies the size of the pie or donut chart.",
+      "description": "Specifies the size of the pie or donut chart.
+When used with \`fitHeight\`, this property defines the minimum size of the chart area.",
       "inlineType": Object {
         "name": "",
         "type": "union",
@@ -10026,15 +10224,25 @@ in order to prevent the user from changing the filtering query.",
       "type": "boolean",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "The label that will be passed down to the Autosuggest \`ariaLabel\` property.
+See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more details.",
+      "name": "filteringAriaLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
@@ -10078,6 +10286,12 @@ const filteringOptions = [
       "name": "filteringOptions",
       "optional": true,
       "type": "ReadonlyArray<PropertyFilterProps.FilteringOption>",
+    },
+    Object {
+      "description": "Placeholder for the filtering input.",
+      "name": "filteringPlaceholder",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "An array of properties by which the data set can be filtered. Each element has the following properties:
@@ -10176,7 +10390,7 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "filteringAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10288,7 +10502,7 @@ operations are communicated to the user in another way.",
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "PropertyFilterProps.I18nStrings",
     },
     Object {
@@ -10926,6 +11140,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "description": "Adds a placeholder to the S3 URI input.",
+      "name": "inputPlaceholder",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Whether the S3 URI input field is in invalid state.",
       "name": "invalid",
       "optional": true,
@@ -11252,12 +11472,15 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -14696,7 +14919,7 @@ Defaults to \`false\`.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
-- \`submitButton\` (string) - The text of the button that enables the user to submit the form.
+- \`submitButton\` (string) - The text of the button that enables the user to submit the form. **Deprecated**, replaced by the \`submitButtonText\` component property.
 - \`optional\` (string) - The text displayed next to the step title and form header title when a step is declared optional.
 - \`nextButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *next* button is in a loading state.
 - \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.",
@@ -14741,7 +14964,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "submitButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -14768,7 +14991,7 @@ Defaults to \`false\`.
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "WizardProps.I18nStrings",
     },
     Object {
@@ -14802,6 +15025,12 @@ Use this if you need to wait for a response from the server before the user can 
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<WizardProps.Step>",
+    },
+    Object {
+      "description": "The text of the button that enables the user to submit the form.",
+      "name": "submitButtonText",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": Array [

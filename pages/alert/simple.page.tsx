@@ -7,8 +7,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
 import styles from './styles.scss';
 
-import { I18nProvider } from '~components/internal/i18n';
-import messages from '~components/i18n/messages/all.all';
+import { I18nProvider } from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 
 export default function AlertScenario() {
   const [visible, setVisible] = useState(true);

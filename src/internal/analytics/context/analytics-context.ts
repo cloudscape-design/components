@@ -3,13 +3,10 @@
 import { MutableRefObject, RefObject, createContext } from 'react';
 import { FunnelType } from '../interfaces';
 
-export interface BaseContextProps {
-  funnelInteractionId: string | undefined;
-}
-
 export type FunnelState = 'default' | 'validating' | 'complete' | 'cancelled';
 
-export interface FunnelContextValue extends BaseContextProps {
+export interface FunnelContextValue {
+  funnelInteractionId: string | undefined;
   funnelType: FunnelType;
   optionalStepNumbers: number[];
   totalFunnelSteps: number;
@@ -21,19 +18,35 @@ export interface FunnelContextValue extends BaseContextProps {
   funnelState: RefObject<FunnelState>;
   errorCount: MutableRefObject<number>;
   loadingButtonCount: MutableRefObject<number>;
+  latestFocusCleanupFunction: MutableRefObject<undefined | (() => void)>;
 }
 
-export interface FunnelStepContextValue extends BaseContextProps {
+export interface FunnelStepContextValue {
   stepNameSelector: string;
   stepNumber: number;
   funnelStepProps?: Record<string, string | number | boolean | undefined>;
+  subStepCount: MutableRefObject<number>;
 }
 
-export interface FunnelSubStepContextValue extends FunnelStepContextValue {
+export interface FunnelSubStepContextValue {
   subStepId: string;
   subStepSelector: string;
   subStepNameSelector: string;
-  stepNumber: number;
+  subStepRef: MutableRefObject<HTMLDivElement | null>;
+  mousePressed: MutableRefObject<boolean>;
+  /**
+   * `isFocusedSubStep` is almost the same as checking if document.activeElement
+   * is a child of the curren substep. However, `isFocusedSubStep` stays true
+   * while the mouse button is pressed down, even though some browsers move the focus
+   * to the body element during that time.
+   */
+  isFocusedSubStep: MutableRefObject<boolean>;
+
+  /**
+   * The focus cleanup function should be run when the user leaves the substep.
+   */
+  focusCleanupFunction: MutableRefObject<undefined | (() => void)>;
+  isNestedSubStep: boolean;
   funnelSubStepProps?: Record<string, string | number | boolean | undefined>;
 }
 
@@ -51,21 +64,22 @@ export const FunnelContext = createContext<FunnelContextValue>({
   funnelState: { current: 'default' },
   errorCount: { current: 0 },
   loadingButtonCount: { current: 0 },
+  latestFocusCleanupFunction: { current: undefined },
 });
 
 export const FunnelStepContext = createContext<FunnelStepContextValue>({
-  funnelInteractionId: undefined,
   stepNameSelector: '',
   stepNumber: 0,
-  funnelStepProps: {},
+  subStepCount: { current: 0 },
 });
 
 export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
-  funnelInteractionId: undefined,
   subStepId: '',
-  stepNumber: 0,
-  stepNameSelector: '',
   subStepSelector: '',
   subStepNameSelector: '',
-  funnelStepProps: {},
+  subStepRef: { current: null },
+  isNestedSubStep: false,
+  mousePressed: { current: false },
+  isFocusedSubStep: { current: false },
+  focusCleanupFunction: { current: undefined },
 });
