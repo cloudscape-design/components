@@ -20,7 +20,10 @@ const Select = React.forwardRef(
     }: SelectProps,
     ref: React.Ref<SelectProps.Ref>
   ) => {
-    const baseComponentProps = useBaseComponent('Select');
+    const baseComponentProps = useBaseComponent('Select', {
+      placeholder: restProps.placeholder,
+      disabled: restProps.disabled,
+    });
     const externalProps = getExternalProps(restProps);
     return (
       <InternalSelect
