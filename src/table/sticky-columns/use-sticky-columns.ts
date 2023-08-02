@@ -20,7 +20,6 @@ import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './ut
 const MINIMUM_SCROLLABLE_SPACE = 148;
 
 export interface StickyColumnsModel {
-  isEnabled: boolean;
   store: StickyColumnsStore;
   style: {
     wrapper?: React.CSSProperties;
@@ -125,7 +124,6 @@ export function useStickyColumns({
   }, []);
 
   return {
-    isEnabled: hasStickyColumns,
     store,
     style: {
       // Provide wrapper styles as props so that a re-render won't cause invalidation.
