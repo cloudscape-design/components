@@ -2,4 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export { StickyColumnsCellState } from './interfaces';
-export { useStickyColumns, useStickyCellStyles, StickyColumnsModel } from './use-sticky-columns';
+export {
+  useStickyColumns,
+  useStickyCellStyles,
+  useStickyWrapperStyles,
+  StickyColumnsModel,
+} from './use-sticky-columns';

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import AsyncStore from '../../area-chart/async-store';
+import AsyncStore, { useSelector } from '../../area-chart/async-store';
 import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { useResizeObserver } from '../../internal/hooks/container-queries';
 import clsx from 'clsx';
@@ -21,9 +21,6 @@ const MINIMUM_SCROLLABLE_SPACE = 148;
 
 export interface StickyColumnsModel {
   store: StickyColumnsStore;
-  style: {
-    wrapper?: React.CSSProperties;
-  };
   refs: {
     table: React.RefCallback<HTMLElement>;
     wrapper: React.RefCallback<HTMLElement>;
@@ -73,31 +70,6 @@ export function useStickyColumns({
     }
   }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns]);
 
-  // Update wrapper styles imperatively to avoid unnecessary re-renders.
-  useEffect(() => {
-    if (!hasStickyColumns) {
-      return;
-    }
-
-    const selector = (state: StickyColumnsState) => state.wrapperState;
-
-    const updateWrapperStyles = (state: StickyColumnsWrapperState, prev: StickyColumnsWrapperState) => {
-      if (isWrapperStatesEqual(state, prev)) {
-        return;
-      }
-
-      if (wrapperRef.current) {
-        wrapperRef.current.style.scrollPaddingLeft = state.scrollPaddingLeft + 'px';
-        wrapperRef.current.style.scrollPaddingRight = state.scrollPaddingRight + 'px';
-      }
-    };
-
-    const unsubscribe = store.subscribe(selector, (newState, prevState) =>
-      updateWrapperStyles(selector(newState), selector(prevState))
-    );
-    return unsubscribe;
-  }, [store, hasStickyColumns]);
-
   const setWrapper = useCallback(
     (node: null | HTMLElement) => {
       if (wrapperRef.current) {
@@ -123,13 +95,56 @@ export function useStickyColumns({
     }
   }, []);
 
-  return {
-    store,
-    style: {
-      // Provide wrapper styles as props so that a re-render won't cause invalidation.
-      wrapper: hasStickyColumns ? { ...store.get().wrapperState } : undefined,
+  return { store, refs: { wrapper: setWrapper, table: setTable, cell: setCell } };
+}
+
+export function useStickyWrapperStyles(stickyColumns: StickyColumnsModel) {
+  const setWrapper = stickyColumns.refs.wrapper;
+  const hasStickyColumns = useSelector(stickyColumns.store, state => state.hasStickyColumns);
+
+  // unsubscribeRef to hold the function to unsubscribe from the store's updates
+  const unsubscribeRef = useRef<null | (() => void)>(null);
+
+  // refCallback updates the wrapper ref and sets up the store subscription
+  const refCallback = useCallback(
+    (wrapperElement: null | HTMLElement) => {
+      if (unsubscribeRef.current) {
+        // Unsubscribe before we do any updates to avoid leaving any subscriptions hanging
+        unsubscribeRef.current();
+      }
+
+      // Update wrapper ref and the store's state to point to the new DOM node
+      setWrapper(wrapperElement);
+
+      // Update wrapper styles imperatively to avoid unnecessary re-renders.
+      const selector = (state: StickyColumnsState) => state.wrapperState;
+
+      const updateWrapperStyles = (state: StickyColumnsWrapperState, prev: StickyColumnsWrapperState) => {
+        if (isWrapperStatesEqual(state, prev)) {
+          return;
+        }
+
+        if (wrapperElement) {
+          wrapperElement.style.scrollPaddingLeft = state.scrollPaddingLeft + 'px';
+          wrapperElement.style.scrollPaddingRight = state.scrollPaddingRight + 'px';
+        }
+      };
+
+      // If the node is not null (i.e., the table wrapper is being mounted or updated, not unmounted),
+      // set up a new subscription to the store's updates
+      if (wrapperElement) {
+        unsubscribeRef.current = stickyColumns.store.subscribe(selector, (newState, prevState) =>
+          updateWrapperStyles(selector(newState), selector(prevState))
+        );
+      }
     },
-    refs: { wrapper: setWrapper, table: setTable, cell: setCell },
+    [setWrapper, stickyColumns.store]
+  );
+
+  return {
+    ref: refCallback,
+    // Provide wrapper styles as props so that a re-render won't cause invalidation.
+    style: hasStickyColumns ? { ...stickyColumns.store.get().wrapperState } : undefined,
   };
 }
 
@@ -163,7 +178,7 @@ export function useStickyCellStyles({
         unsubscribeRef.current();
       }
 
-      // Update cellRef and the store's state to point to the new DOM node
+      // Update cell ref and the store's state to point to the new DOM node
       setCell(columnId, cellElement);
 
       // Update cell styles imperatively to avoid unnecessary re-renders.
@@ -191,12 +206,11 @@ export function useStickyCellStyles({
       // If the node is not null (i.e., the table cell is being mounted or updated, not unmounted),
       // set up a new subscription to the store's updates
       if (cellElement) {
-        unsubscribeRef.current = stickyColumns.store.subscribe(selector, (newState, prevState) => {
-          updateCellStyles(selector(newState), selector(prevState));
-        });
+        unsubscribeRef.current = stickyColumns.store.subscribe(selector, (newState, prevState) =>
+          updateCellStyles(selector(newState), selector(prevState))
+        );
       }
     },
-
     // getClassName is expected to be pure
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [columnId, setCell, stickyColumns.store]
@@ -231,7 +245,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private padLeft = false;
 
   constructor() {
-    super({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
+    super({ hasStickyColumns: false, cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
   }
 
   public updateCellStyles(props: UpdateCellStylesProps) {
@@ -242,6 +256,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       this.updateScroll(props);
       this.updateCellOffsets(props);
       this.set(() => ({
+        hasStickyColumns,
         cellState: this.generateCellStyles(props),
         wrapperState: {
           scrollPaddingLeft: this.cellOffsets.stickyWidthLeft,

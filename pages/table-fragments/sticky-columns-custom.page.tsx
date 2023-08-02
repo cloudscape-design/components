@@ -3,7 +3,12 @@
 import React, { useState } from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box, Checkbox, Container, Link } from '~components';
-import { useStickyColumns, useStickyCellStyles, StickyColumnsModel } from '~components/table/sticky-columns';
+import {
+  useStickyColumns,
+  useStickyCellStyles,
+  useStickyWrapperStyles,
+  StickyColumnsModel,
+} from '~components/table/sticky-columns';
 import styles from './styles.scss';
 import { generateItems, Instance } from '../table/generate-data';
 import clsx from 'clsx';
@@ -26,6 +31,7 @@ export default function Page() {
     stickyColumnsFirst: 1,
     stickyColumnsLast: 1,
   });
+  const stickyWrapperStyles = useStickyWrapperStyles(stickyColumns);
   return (
     <Box margin="l">
       <SpaceBetween size="xl">
@@ -37,9 +43,9 @@ export default function Page() {
 
         <Container disableContentPaddings={true}>
           <div
-            ref={stickyColumns.refs.wrapper}
+            ref={stickyWrapperStyles.ref}
             className={clsx(styles['custom-table'], useWrapperPaddings && styles['use-wrapper-paddings'])}
-            style={stickyColumns.style.wrapper}
+            style={stickyWrapperStyles.style}
           >
             <table
               ref={stickyColumns.refs.table}
