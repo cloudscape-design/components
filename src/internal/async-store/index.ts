@@ -3,6 +3,7 @@
 
 import { useLayoutEffect, useState } from 'react';
 import { usePrevious } from '../hooks/use-previous';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 type Selector<S, R> = (state: S) => R;
 type Listener<S> = (state: S, prevState: S) => any;
@@ -108,7 +109,8 @@ export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Select
 export function useSelector<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>): R {
   const [state, setState] = useState<R>(selector(store.get()));
 
-  useReaction(store, selector, newState => {
+  const stableSelector = useStableCallback(selector);
+  useReaction(store, stableSelector, newState => {
     setState(newState);
   });
 

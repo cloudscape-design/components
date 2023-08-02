@@ -30,10 +30,13 @@ function useStickyColumns(...): StickyColumnsAPI {
   // Creates a stable store instance
   const store = useMemo(() => new StickyColumnsStore(), [])
 
-  // Bind store to the component's lifecycle
+  // Bind store to "stable" handlers
+  store.onStuck = props.onStuck
+
+  // Bind store to prop changes
   useEffect(() => {
-    store.updateCellStyles(...props)
-  }, [store, ...props])
+    store.updateCellStyles(visibleColumns, stickyFirst, stickyLast)
+  }, [store, visibleColumns, stickyFirst, stickyLast])
 
   // Bind store to other stores
   useEffect(() => {
@@ -61,29 +64,29 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
 Not only async stores require no providers, the React binding is made simple, explicit, and separated from the domain logic. The store and its API methods are always stable, the subscriptions are done on-demand: the state update is only issued on the target component when it is necessary unlike React contexts where state updates are unavoidable:
 
 ```
-// The component re-renders whenever state.sticky[columnId] changes
-function DemoStateSubscription({ columnId, stickyColumns }) {
-  const isSticky = useSelector(stickyColumns, state => state.sticky[columnId])
+// The component re-renders only when state.editingCell === cellId condition changes
+function DemoStateSubscription({ cellId, cellEditing }) {
+  const isEditing = useSelector(cellEditing, state => state.editingCell === cellId)
   // ...
 }
 
-// The component re-renders when isActive and state.sticky[columnId] changes
-function DemoCustomSubscription({ isActive, columnId, stickyColumns }) {
-  const [isSticky, setIsSticky] = useState(false)
+// The component subscription is not made when unnecessary
+function DemoCustomSubscription({ isActive, cellId, cellEditing }) {
+  const [isEditing, setIsEditing] = useState(false)
   useEffect(() => {
     if (!isActive) {
       return
     }
-    const unsubscribe = stickyColumns.subscribe(state => state.sticky[columnId], setIsSticky)
+    const unsubscribe = cellEditing.subscribe(state => state.editingCell === cellId, setIsEditing)
     return unsubscribe
-  }, [isActive, stickyColumns, columnId])
+  }, [isActive, cellEditing, columnId])
   // ...
 }
 
 // The component re-renders whenever state changes
-function DemoReactContextSubscription({ isActive, columnId }) {
-  const { isSticky: contextIsSticky } = useContext(StickyColumnsContext)
-  const isSticky = isActive && contextIsSticky
+function DemoReactContextSubscription({ isActive, cellId }) {
+  const { editingCell } = useContext(CellEditingContext)
+  const isEditing = isActive && editingCell === cellId
   // ...
 }
 ```
