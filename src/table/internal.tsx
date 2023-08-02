@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -37,6 +37,7 @@ import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getTableRoleProps, getTableRowRoleProps } from './table-role';
+import { useCellEditing } from './use-cell-editing';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -104,9 +105,14 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
-    const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
-    const [lastSuccessfulEditCell, setLastSuccessfulEditCell] = useState<[number, number] | null>(null);
-    const [currentEditLoading, setCurrentEditLoading] = useState(false);
+    const {
+      currentEditCell,
+      setCurrentEditCell,
+      lastSuccessfulEditCell,
+      setLastSuccessfulEditCell,
+      currentEditLoading,
+      setCurrentEditLoading,
+    } = useCellEditing();
 
     useImperativeHandle(
       ref,
@@ -114,7 +120,7 @@ const InternalTable = React.forwardRef(
         scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined),
         cancelEdit: () => setCurrentEditCell(null),
       }),
-      []
+      [setCurrentEditCell]
     );
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
