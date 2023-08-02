@@ -21,20 +21,21 @@ export function isWrapperStatesEqual(s1: StickyColumnsWrapperState, s2: StickyCo
 }
 
 export function updateCellOffsets(cells: Record<PropertyKey, HTMLElement>, props: StickyColumnsProps): CellOffsets {
+  const totalColumns = props.visibleColumns.length;
+
   const firstColumnsWidths: number[] = [];
-  for (let i = 0; i < Math.min(props.visibleColumns.length, props.stickyColumnsFirst); i++) {
+  for (let i = 0; i < Math.min(totalColumns, props.stickyColumnsFirst); i++) {
     const element = cells[props.visibleColumns[i]];
     const cellWidth = element.getBoundingClientRect().width ?? 0;
     firstColumnsWidths[i] = (firstColumnsWidths[i - 1] ?? 0) + cellWidth;
   }
 
   const lastColumnsWidths: number[] = [];
-  for (let i = Math.min(props.visibleColumns.length, props.stickyColumnsLast) - 1; i >= 0; i--) {
-    const element = cells[props.visibleColumns[i]];
+  for (let i = 0; i < Math.min(totalColumns, props.stickyColumnsLast); i++) {
+    const element = cells[props.visibleColumns[totalColumns - 1 - i]];
     const cellWidth = element.getBoundingClientRect().width ?? 0;
-    lastColumnsWidths[i] = (lastColumnsWidths[i + 1] ?? 0) + cellWidth;
+    lastColumnsWidths[i] = (lastColumnsWidths[i - 1] ?? 0) + cellWidth;
   }
-  lastColumnsWidths.reverse();
 
   const stickyWidthLeft = firstColumnsWidths[props.stickyColumnsFirst - 1] ?? 0;
   const stickyWidthRight = lastColumnsWidths[props.stickyColumnsLast - 1] ?? 0;
@@ -42,7 +43,7 @@ export function updateCellOffsets(cells: Record<PropertyKey, HTMLElement>, props
     (map, columnId, columnIndex) =>
       map.set(columnId, {
         first: firstColumnsWidths[columnIndex - 1] ?? 0,
-        last: lastColumnsWidths[props.visibleColumns.length - 1 - columnIndex - 1] ?? 0,
+        last: lastColumnsWidths[totalColumns - 1 - columnIndex - 1] ?? 0,
       }),
     new Map()
   );
