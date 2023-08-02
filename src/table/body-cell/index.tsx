@@ -29,10 +29,8 @@ function TableCellEditable<ItemType>({
   cellId,
   ...rest
 }: TableBodyCellProps<ItemType> & { cellEditing: CellEditingModel<ItemType, unknown> }) {
-  const cellEditingState = useSelector(cellEditing, s => s);
-  const { editingCell, lastSuccessfulEdit } = cellEditingState;
-  const isEditing = cellId === editingCell;
-  const successfulEdit = cellId === lastSuccessfulEdit;
+  const isEditing = useSelector(cellEditing, state => state.editingCell === cellId);
+  const isLastSuccessfulEdit = useSelector(cellEditing, state => state.lastSuccessfulEdit === cellId);
   const onEditStart = () => cellEditing.startEdit(cellId);
   const onEditEnd = (editCancelled: boolean) => cellEditing.completeEdit(cellId, editCancelled);
   const onSubmitEdit = cellEditing.submitEdit;
@@ -55,20 +53,20 @@ function TableCellEditable<ItemType>({
   const [hasFocus, setHasFocus] = useState(false);
   const showIcon = hasHover || hasFocus;
 
-  const prevSuccessfulEdit = usePrevious(successfulEdit);
+  const prevSuccessfulEdit = usePrevious(isLastSuccessfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
   const [showSuccessIcon, setShowSuccessIcon] = useState(false);
 
   useEffect(() => {
     // Hide the success icon after a successful edit, when cell loses focus.
-    if (successfulEdit && prevSuccessfulEdit && !hasFocus && prevHasFocus) {
+    if (isLastSuccessfulEdit && prevSuccessfulEdit && !hasFocus && prevHasFocus) {
       setShowSuccessIcon(false);
     }
     // Show success icon right after a successful edit, when `successfulEdit` switches to true.
-    if (successfulEdit && !prevSuccessfulEdit) {
+    if (isLastSuccessfulEdit && !prevSuccessfulEdit) {
       setShowSuccessIcon(true);
     }
-  }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
+  }, [hasFocus, isLastSuccessfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
   return (
     <TableTdElement
