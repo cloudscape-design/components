@@ -17,7 +17,6 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   ariaLabels: TableProps['ariaLabels'];
-  cellEditing: CellEditingModel<ItemType, unknown>;
 }
 
 function TableCellEditable<ItemType>({
@@ -27,16 +26,15 @@ function TableCellEditable<ItemType>({
   ariaLabels,
   isVisualRefresh,
   cellEditing,
-  colIndex,
-  rowIndex,
+  cellId,
   ...rest
-}: TableBodyCellProps<ItemType>) {
+}: TableBodyCellProps<ItemType> & { cellEditing: CellEditingModel<ItemType, unknown> }) {
   const cellEditingState = useSelector(cellEditing, s => s);
   const { editingCell, lastSuccessfulEdit } = cellEditingState;
-  const isEditing = rowIndex === editingCell?.rowIndex && colIndex === editingCell?.colIndex;
-  const successfulEdit = rowIndex === lastSuccessfulEdit?.rowIndex && colIndex === lastSuccessfulEdit?.colIndex;
-  const onEditStart = () => cellEditing.startEdit({ rowIndex, colIndex });
-  const onEditEnd = (editCancelled: boolean) => cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled);
+  const isEditing = cellId === editingCell;
+  const successfulEdit = cellId === lastSuccessfulEdit;
+  const onEditStart = () => cellEditing.startEdit(cellId);
+  const onEditEnd = (editCancelled: boolean) => cellEditing.completeEdit(cellId, editCancelled);
   const onSubmitEdit = cellEditing.submitEdit;
 
   const i18n = useInternalI18n('table');
@@ -75,8 +73,7 @@ function TableCellEditable<ItemType>({
   return (
     <TableTdElement
       {...rest}
-      rowIndex={rowIndex}
-      colIndex={colIndex}
+      cellId={cellId}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(
         className,
@@ -139,11 +136,11 @@ function TableCellEditable<ItemType>({
 }
 
 export function TableBodyCell<ItemType>({
-  isEditable,
+  cellEditing,
   ...rest
-}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
-  if (isEditable) {
-    return <TableCellEditable {...rest} />;
+}: TableBodyCellProps<ItemType> & { cellEditing?: CellEditingModel<ItemType, unknown> }) {
+  if (cellEditing) {
+    return <TableCellEditable {...rest} cellEditing={cellEditing} />;
   }
   const { column, item } = rest;
   return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;

@@ -30,11 +30,10 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   columnId: PropertyKey;
+  cellId: PropertyKey;
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
-  colIndex: number;
-  rowIndex: number;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(

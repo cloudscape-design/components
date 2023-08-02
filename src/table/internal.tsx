@@ -347,6 +347,7 @@ const InternalTable = React.forwardRef(
                     const isSelected = !!selectionType && isItemSelected(item);
                     const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                     const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+                    const itemKey = getItemKey(trackBy, item, rowIndex);
                     return (
                       <tr
                         key={getItemKey(trackBy, item, rowIndex)}
@@ -366,8 +367,7 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
-                            rowIndex={-1}
-                            colIndex={-1}
+                            cellId="select-all"
                             className={clsx(styles['selection-control'])}
                             isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
@@ -393,10 +393,10 @@ const InternalTable = React.forwardRef(
                           </TableTdElement>
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
+                          const columnKey = getColumnKey(column, colIndex);
                           return (
                             <TableBodyCell
-                              rowIndex={rowIndex}
-                              colIndex={colIndex}
+                              cellId={`${itemKey}:${columnKey}`}
                               key={getColumnKey(column, colIndex)}
                               style={
                                 resizableColumns
@@ -411,7 +411,7 @@ const InternalTable = React.forwardRef(
                               column={column}
                               item={item}
                               wrapLines={wrapLines}
-                              isEditable={!!column.editConfig}
+                              cellEditing={column.editConfig ? cellEditing : undefined}
                               isRowHeader={column.isRowHeader}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
@@ -425,7 +425,6 @@ const InternalTable = React.forwardRef(
                               stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                               tableRole={tableRole}
-                              cellEditing={cellEditing}
                             />
                           );
                         })}

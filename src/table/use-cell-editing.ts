@@ -6,11 +6,6 @@ import { TableProps } from './interfaces';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
 import AsyncStore from '../area-chart/async-store';
 
-export interface CellId {
-  rowIndex: number;
-  colIndex: number;
-}
-
 interface CellEditingProps<ItemType, ValueType> {
   onCancel?: CancelableEventHandler;
   onSubmit?: TableProps.SubmitEditFunction<ItemType, ValueType>;
@@ -18,14 +13,14 @@ interface CellEditingProps<ItemType, ValueType> {
 
 export interface CellEditingState {
   loading: boolean;
-  editingCell: null | CellId;
-  lastSuccessfulEdit: null | CellId;
+  editingCell: null | PropertyKey;
+  lastSuccessfulEdit: null | PropertyKey;
 }
 
 export interface CellEditingModel<ItemType, ValueType> extends AsyncStore<CellEditingState> {
-  startEdit(cellId: CellId): void;
+  startEdit(cellId: PropertyKey): void;
   cancelEdit(): void;
-  completeEdit(cellId: CellId, editCancelled: boolean): void;
+  completeEdit(cellId: PropertyKey, editCancelled: boolean): void;
   submitEdit(item: ItemType, column: TableProps.ColumnDefinition<ItemType>, newValue: ValueType): Promise<void>;
 }
 
@@ -50,13 +45,13 @@ class CellEditingStore<ItemType, ValueType> extends AsyncStore<CellEditingState>
     super({ loading: false, editingCell: null, lastSuccessfulEdit: null });
   }
 
-  public startEdit = (cellId: CellId) => {
+  public startEdit = (cellId: PropertyKey) => {
     this.set(prev => ({ ...prev, editingCell: cellId, lastSuccessfulEdit: null }));
   };
 
   public cancelEdit = () => this.set(prev => ({ ...prev, editingCell: null }));
 
-  public completeEdit = (cellId: CellId, editCancelled: boolean) => {
+  public completeEdit = (cellId: PropertyKey, editCancelled: boolean) => {
     const eventCancelled = fireCancelableEvent(this.onCancel, {});
     if (!eventCancelled) {
       this.set(prev =>

@@ -57,7 +57,6 @@ export default function InlineEditorPermutations() {
                     }}
                     item={{}}
                     column={{ ...baseColumnDefinition, editConfig: permutation }}
-                    isEditable={true}
                     cellEditing={cellEditing}
                     isFirstRow={false}
                     isLastRow={false}
@@ -65,11 +64,10 @@ export default function InlineEditorPermutations() {
                     isPrevSelected={false}
                     isSelected={false}
                     wrapLines={false}
+                    cellId="row:column"
                     columnId="id"
                     stickyState={stickyState}
                     tableRole="grid"
-                    rowIndex={0}
-                    colIndex={0}
                     {...permutation}
                   />
                 </tr>
