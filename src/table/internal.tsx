@@ -31,7 +31,7 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns, useStickyWrapperStyles } from './sticky-columns';
+import { useStickyColumns } from './sticky-columns';
 import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -176,7 +176,6 @@ const InternalTable = React.forwardRef(
       stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
     });
-    const stickyWrapperStyles = useStickyWrapperStyles(stickyState);
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
     const tableRole = hasEditableCells ? 'grid' : 'table';
@@ -210,7 +209,7 @@ const InternalTable = React.forwardRef(
       tableRole,
     };
 
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyWrapperStyles.ref);
+    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
@@ -308,7 +307,6 @@ const InternalTable = React.forwardRef(
               [styles['has-header']]: hasHeader,
             })}
             onScroll={handleScroll}
-            style={stickyWrapperStyles.style}
             {...wrapperProps}
           >
             {!!renderAriaLive && !!firstIndex && (
