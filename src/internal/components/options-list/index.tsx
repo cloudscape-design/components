@@ -35,6 +35,7 @@ export interface OptionsListProps extends BaseComponentProps {
   onMouseMove?: (itemIndex: number) => void;
   position?: React.CSSProperties['position'];
   role?: 'listbox' | 'list' | 'menu';
+  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   decreaseTopMargin?: boolean;
@@ -66,6 +67,7 @@ const OptionsList = (
     position = 'relative',
     role = 'listbox',
     decreaseTopMargin = false,
+    ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
     ...restProps
@@ -113,6 +115,7 @@ const OptionsList = (
       onBlur={event => fireNonCancelableEvent(onBlur, { relatedTarget: event.relatedTarget })}
       onFocus={() => fireNonCancelableEvent(onFocus)}
       tabIndex={-1}
+      aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
     >
