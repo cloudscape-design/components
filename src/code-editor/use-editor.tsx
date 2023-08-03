@@ -81,3 +81,15 @@ export function useSyncEditorValue(editor: null | Ace.Editor, value: string) {
     editor.session.selection.fromJSON(pos);
   }, [editor, value]);
 }
+
+export function useSyncEditorLanguage(editor: null | Ace.Editor, language: string) {
+  useEffect(() => {
+    editor?.session.setMode(`ace/mode/${language}`);
+  }, [editor, language]);
+}
+
+export function useSyncEditorWrapLines(editor: null | Ace.Editor, wrapLines?: boolean) {
+  useEffect(() => {
+    editor?.session.setUseWrapMode(wrapLines ?? true);
+  }, [editor, wrapLines]);
+}

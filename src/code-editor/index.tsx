@@ -32,7 +32,14 @@ import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useEditor, useSyncEditorSize, useSyncEditorLabels, useSyncEditorValue } from './use-editor';
+import {
+  useEditor,
+  useSyncEditorSize,
+  useSyncEditorLabels,
+  useSyncEditorValue,
+  useSyncEditorLanguage,
+  useSyncEditorWrapLines,
+} from './use-editor';
 
 export { CodeEditorProps };
 
@@ -48,6 +55,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     onEditorContentResize,
     ariaLabel,
     languageLabel: customLanguageLabel,
+    preferences,
+    loading,
+    themes,
     ...rest
   } = props;
   const [editorHeight = 480, setEditorHeight] = useControllable(editorContentHeight, onEditorContentResize, 480, {
@@ -72,7 +82,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const [cursorPosition, setCursorPosition] = useState<Ace.Point>({ row: 0, column: 0 });
   const [isTabFocused, setTabFocused] = useState<boolean>(false);
 
-  const { editorRef, editor } = useEditor(ace, props.loading);
+  const { editorRef, editor } = useEditor(ace, loading);
 
   useForwardFocus(ref, editorRef);
 
@@ -94,9 +104,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   useSyncEditorValue(editor, value);
 
-  useEffect(() => {
-    editor?.session.setMode(`ace/mode/${language}`);
-  }, [editor, language]);
+  useSyncEditorLanguage(editor, language);
+
+  useSyncEditorWrapLines(editor, preferences?.wrapLines);
 
   const mode = useCurrentMode(__internalRootRef);
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
@@ -105,11 +115,11 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
       return;
     }
 
-    const theme: CodeEditorProps.Theme = props.preferences?.theme ?? defaultTheme;
+    const theme: CodeEditorProps.Theme = preferences?.theme ?? defaultTheme;
     editor.setTheme(getAceTheme(theme));
 
-    editor.session.setUseWrapMode(props.preferences?.wrapLines ?? true);
-  }, [editor, defaultTheme, props.preferences]);
+    editor.session.setUseWrapMode(preferences?.wrapLines ?? true);
+  }, [editor, defaultTheme, preferences]);
 
   // Change listeners
   useChangeEffect(editor, props.onChange, props.onDelayedChange);
@@ -190,13 +200,13 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
       className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
       ref={mergedRef}
     >
-      {props.loading && (
+      {loading && (
         <LoadingScreen>
           <LiveRegion visible={true}>{i18n('i18nStrings.loadingState', i18nStrings?.loadingState)}</LiveRegion>
         </LoadingScreen>
       )}
 
-      {!ace && !props.loading && (
+      {!ace && !loading && (
         <ErrorScreen
           recoveryText={i18n('i18nStrings.errorStateRecovery', i18nStrings?.errorStateRecovery)}
           onRecoveryClick={props.onRecoveryClick}
@@ -205,7 +215,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
         </ErrorScreen>
       )}
 
-      {ace && !props.loading && (
+      {ace && !loading && (
         <>
           <ResizableBox
             height={Math.max(editorHeight, 20)}
@@ -271,8 +281,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             <PreferencesModal
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}
-              themes={props.themes}
-              preferences={props.preferences}
+              themes={themes}
+              preferences={preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{
                 header: i18n('i18nStrings.preferencesModalHeader', i18nStrings?.preferencesModalHeader),
