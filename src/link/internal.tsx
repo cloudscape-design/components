@@ -25,6 +25,7 @@ import {
   getNameFromSelector,
   getSubStepAllSelector,
 } from '../internal/analytics/selectors';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
@@ -34,7 +35,7 @@ type InternalLinkProps = InternalBaseComponentProps &
 const InternalLink = React.forwardRef(
   (
     {
-      variant = 'secondary',
+      variant: providedVariant,
       fontSize = 'body-m',
       color = 'normal',
       external = false,
@@ -52,6 +53,8 @@ const InternalLink = React.forwardRef(
   ) => {
     checkSafeUrl('Link', href);
     const isButton = !href;
+    const { defaultVariant } = useContext(LinkDefaultVariantContext);
+    const variant = providedVariant || defaultVariant;
     const specialStyles = ['top-navigation', 'link', 'recovery'];
     const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
