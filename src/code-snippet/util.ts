@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Ace } from 'ace-builds';
 
-import { AceModes } from './ace-modes';
 import { LightThemes, DarkThemes } from './ace-themes';
 import { CodeSnippetProps } from './interfaces';
 import { findUpUntil } from '../internal/utils/dom';
@@ -47,8 +46,4 @@ export function getDefaultTheme(element: HTMLElement): CodeSnippetProps.Theme {
 
 export function getAceTheme(theme: CodeSnippetProps.Theme) {
   return `ace/theme/${theme}`;
-}
-
-export function getLanguageLabel(language: CodeSnippetProps.Language): string {
-  return AceModes.filter((mode: { value: string }) => mode.value === language)[0]?.label || language;
 }

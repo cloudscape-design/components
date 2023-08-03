@@ -72,13 +72,6 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
   themes?: CodeSnippetProps.AvailableThemes;
 
   /**
-   * Called when any of the preferences change.
-   * The event `detail` contains the value of all the preferences as submitted by the user.
-   *
-   */
-  onPreferencesChange: NonCancelableEventHandler<CodeSnippetProps.Preferences>;
-
-  /**
    * Renders the code editor in a loading state.
    */
   loading?: boolean;

@@ -1,82 +1,79 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import Button from '~components/button';
-import CodeEditor, { CodeEditorProps } from '~components/code-editor';
-import SpaceBetween from '~components/space-between';
+import React, { useContext, useEffect, useState } from 'react';
+import CodeSnippet, { CodeSnippetProps } from '~components/code-snippet';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings, themes } from './base-props';
 
-import { buildSample, awsTemplateSample } from '../code-editor/code-samples';
+import { awsTemplateSample } from '../code-editor/code-samples';
+import { Box, Checkbox, Header, Select, SpaceBetween } from '~components';
+import AppContext, { AppContextType } from '../app/app-context';
 
-interface IState {
-  ace: any;
-  value: string;
-  language: CodeEditorProps.Language;
-  preferences?: CodeEditorProps.Preferences;
-  loading: boolean;
-}
+type PageContext = React.Context<
+  AppContextType<{
+    wrapLines: boolean;
+    theme: 'dawn' | 'tomorrow_night_bright';
+  }>
+>;
 
-export default class App extends React.PureComponent<null, IState> {
-  initialValue = 'const pi = 3.14;';
+export default function Page() {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const wrapLines = !!urlParams.wrapLines;
+  const theme = urlParams.theme || 'dawn';
+  const themeOptions = [
+    { value: 'dawn', label: 'Dawn' },
+    { value: 'tomorrow_night_bright', label: 'Tomorrow Night Bright' },
+  ];
+  const selectedOption = themeOptions.find(option => option.value === theme) ?? themeOptions[0];
 
-  constructor(props: null) {
-    super(props);
-    this.state = {
-      ace: undefined,
-      value: this.initialValue,
-      language: 'javascript',
-      preferences: undefined,
-      loading: true,
-    };
-  }
+  const [ace, setAce] = useState<CodeSnippetProps['ace']>();
+  const [loading, setLoading] = useState(true);
 
-  componentDidMount() {
-    this.setState({ loading: true });
-
+  useEffect(() => {
     import('ace-builds').then(ace => {
       ace.config.set('basePath', './ace/');
       ace.config.set('themePath', './ace/');
       ace.config.set('modePath', './ace/');
       ace.config.set('workerPath', './ace/');
       ace.config.set('useStrictCSP', true);
-      this.setState({ ace, loading: false });
+      setAce(ace);
+      setLoading(false);
     });
-  }
+  }, []);
 
-  onPreferencesChange(preferences: CodeEditorProps.Preferences) {
-    this.setState({ preferences });
-  }
+  return (
+    <Box margin="m">
+      <SpaceBetween size="m">
+        <Header>Code snippet demo</Header>
 
-  render() {
-    return (
-      <article>
-        <h1>Code Editor - simple page</h1>
+        <SpaceBetween direction="horizontal" size="m" alignItems="center">
+          <Checkbox checked={wrapLines} onChange={e => setUrlParams({ wrapLines: e.detail.checked })}>
+            Wrap lines
+          </Checkbox>
+
+          <SpaceBetween direction="horizontal" size="s" alignItems="center">
+            <Select
+              id="theme-selector"
+              selectedOption={selectedOption}
+              options={themeOptions}
+              onChange={e => setUrlParams({ theme: e.detail.selectedOption.value as any })}
+            />
+            <label htmlFor="theme-selector">Theme</label>
+          </SpaceBetween>
+        </SpaceBetween>
+
         <ScreenshotArea style={{ maxWidth: 960 }}>
-          <CodeEditor
-            ace={this.state.ace}
-            value={this.state.value}
-            language={this.state.language}
-            onDelayedChange={e => this.setState({ value: e.detail.value })}
-            preferences={this.state.preferences}
-            onPreferencesChange={e => this.onPreferencesChange(e.detail)}
-            loading={this.state.loading}
+          <CodeSnippet
+            ace={ace}
+            value={awsTemplateSample}
+            language="yaml"
+            preferences={{ wrapLines, theme }}
+            loading={loading}
             i18nStrings={i18nStrings}
             themes={themes}
           />
         </ScreenshotArea>
-
-        <SpaceBetween direction="horizontal" size="xs">
-          <Button
-            id="javascript_sample_button"
-            onClick={() => this.setState({ language: 'javascript', value: buildSample })}
-          >
-            JavaScript Sample
-          </Button>
-          <Button onClick={() => this.setState({ language: 'yaml', value: awsTemplateSample })}>YAML Sample</Button>
-          <Button onClick={() => this.setState({ value: this.initialValue })}>Reset value</Button>
-        </SpaceBetween>
-      </article>
-    );
-  }
+      </SpaceBetween>
+    </Box>
+  );
 }
