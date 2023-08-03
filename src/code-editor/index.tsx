@@ -128,7 +128,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     return () => {
       editor?.destroy();
     };
-  }, [ace, editor, __internalRootRef]);
+  }, [ace, editor]);
 
   useEffect(() => {
     if (!editor) {
