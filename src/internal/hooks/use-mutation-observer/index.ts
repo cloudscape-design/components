@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import { useStableEventHandler } from '../use-stable-event-handler';
-import { createSingletonHandler } from '../use-singleton-handler';
+import { createSingletonHandler } from '@cloudscape-design/component-toolkit/internal';
 
 const useMutationSingleton = createSingletonHandler<void>(handler => {
   const observer = new MutationObserver(() => handler());
