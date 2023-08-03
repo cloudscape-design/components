@@ -3,9 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import InternalBox from '../box/internal';
-import InternalSpaceBetween from '../space-between/internal';
-import { TocProps } from './interfaces';
+import InternalBox from '../box/internal.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { AnchorNavigationProps } from './interfaces.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import useScrollSpy from './scroll-spy.js';
 import InternalExpandableSection from '../expandable-section/internal.js';
@@ -17,7 +17,7 @@ const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement>, id: string) 
     el?.scrollIntoView({ behavior: 'smooth' });
   }
 };
-const Anchor = ({ id, text, level, isActive }: TocProps.Anchor & { isActive: boolean }) => {
+const Anchor = ({ id, text, level, isActive }: AnchorNavigationProps.Anchor & { isActive: boolean }) => {
   checkSafeUrl('SideNavigation', id);
 
   return (
@@ -37,7 +37,7 @@ const Anchor = ({ id, text, level, isActive }: TocProps.Anchor & { isActive: boo
   );
 };
 
-const AnchorList = ({ anchors, activeId }: { anchors: TocProps.Anchor[]; activeId?: string }) => {
+const AnchorList = ({ anchors, activeId }: { anchors: AnchorNavigationProps.Anchor[]; activeId?: string }) => {
   return (
     <ul className={styles['anchor-list']}>
       {anchors.map((props, index) => (
@@ -47,7 +47,7 @@ const AnchorList = ({ anchors, activeId }: { anchors: TocProps.Anchor[]; activeI
   );
 };
 
-export default function InternalToc({ anchors, variant, ...props }: TocProps) {
+export default function InternalAnchorNavigation({ anchors, variant, ...props }: AnchorNavigationProps) {
   const [activeId] = useScrollSpy({ hrefs: anchors.map(anchor => anchor.id) });
   // console.log(activeHref);
   // const activeHref = 'section-1';

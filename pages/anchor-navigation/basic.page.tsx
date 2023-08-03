@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Toc from '~components/toc';
+import AnchorNavigation from '~components/anchor-navigation';
 import { TextSample } from './utils';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -39,9 +39,8 @@ export default function SimpleToc() {
           <div className={styles['content-grid']}>
             <TextContent />
             <div>
-              <div className={styles.toc}>
-                <Toc
-                  variant="expandable"
+              <div className={styles['anchor-navigation']}>
+                <AnchorNavigation
                   anchors={[
                     { id: 'section-1', text: 'Section 1', level: 1 },
                     { id: 'section-1-1', text: 'Section 1.1', level: 2 },

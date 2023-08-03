@@ -3,7 +3,7 @@
 
 import { CancelableEventHandler } from '../internal/events';
 
-export interface TocProps {
+export interface AnchorNavigationProps {
   /**
    * The title of the table of contents, displayed above the anchor items.
    */
@@ -12,13 +12,13 @@ export interface TocProps {
   /**
    * List of anchors.
    */
-  anchors: TocProps.Anchor[];
+  anchors: AnchorNavigationProps.Anchor[];
 
   /**
    * Specifies the active anchor.
    * For using the component in a controlled pattern, use together with 'disableTracking'.
    */
-  activeAnchor?: TocProps.Anchor;
+  activeAnchor?: AnchorNavigationProps.Anchor;
 
   /**
    * The variant of the component:
@@ -42,15 +42,15 @@ export interface TocProps {
   /**
    * Triggered when an anchor link is clicked without any modifier keys.
    */
-  onFollow?: CancelableEventHandler<TocProps.Anchor>;
+  onFollow?: CancelableEventHandler<AnchorNavigationProps.Anchor>;
 
   /**
    * Triggered when an active anchor link changes.
    */
-  onActiveAnchorChange?: CancelableEventHandler<TocProps.Anchor>;
+  onActiveAnchorChange?: CancelableEventHandler<AnchorNavigationProps.Anchor>;
 }
 
-export namespace TocProps {
+export namespace AnchorNavigationProps {
   export interface Anchor {
     /**
      * The text for the anchor item.
