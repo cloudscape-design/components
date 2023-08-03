@@ -27,10 +27,9 @@ jest.mock('../../../lib/components/table/sticky-columns', () => ({
 }));
 
 const mockStickyStateModel = {
-  isEnabled: false,
   store: jest.fn(),
   style: {
-    wrapper: '',
+    wrapper: undefined,
   },
   refs: {
     table: jest.fn(),
