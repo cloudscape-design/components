@@ -32,7 +32,7 @@ import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useEditor } from './use-editor';
+import { useEditor, useSyncEditorLabels } from './use-editor';
 
 export { CodeEditorProps };
 
@@ -59,24 +59,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const i18n = useInternalI18n('code-editor');
 
   const { editorRef, editor } = useEditor(ace, props.loading);
-  const mode = useCurrentMode(__internalRootRef);
-  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    const { textarea } = editor.renderer as unknown as { textarea: HTMLTextAreaElement };
-    if (!textarea) {
-      return;
-    }
-    const updateAttribute = (attribute: string, value: string | undefined) =>
-      value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
-    updateAttribute('id', controlId);
-    updateAttribute('aria-label', ariaLabel);
-    updateAttribute('aria-labelledby', ariaLabelledby);
-    updateAttribute('aria-describedby', ariaDescribedby);
-  }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
+  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -126,6 +110,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     editor?.session.setMode(`ace/mode/${language}`);
   }, [editor, language]);
 
+  const mode = useCurrentMode(__internalRootRef);
+  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
   useEffect(() => {
     if (!editor) {
       return;

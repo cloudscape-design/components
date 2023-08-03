@@ -25,3 +25,29 @@ export function useEditor(ace: any, loading?: boolean) {
 
   return { editorRef, editor };
 }
+
+export function useSyncEditorLabels(
+  editor: null | Ace.Editor,
+  {
+    controlId,
+    ariaLabel,
+    ariaLabelledby,
+    ariaDescribedby,
+  }: { controlId?: string; ariaLabel?: string; ariaLabelledby?: string; ariaDescribedby?: string }
+) {
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+    const { textarea } = editor.renderer as unknown as { textarea: HTMLTextAreaElement };
+    if (!textarea) {
+      return;
+    }
+    const updateAttribute = (attribute: string, value: string | undefined) =>
+      value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
+    updateAttribute('id', controlId);
+    updateAttribute('aria-label', ariaLabel);
+    updateAttribute('aria-labelledby', ariaLabelledby);
+    updateAttribute('aria-describedby', ariaDescribedby);
+  }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
+}
