@@ -17,6 +17,11 @@ import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
+interface ExtendedWindow extends Window {
+  AWSC?: any;
+}
+declare const window: ExtendedWindow;
+
 function App() {
   const {
     mode,
@@ -64,6 +69,11 @@ function App() {
     </StrictModeWrapper>
   );
 }
+
+// only for demo, will remove it
+window.AWSC = {
+  isVisualRefresh: localStorage.getItem('isVisualRefresh') === 'true',
+};
 
 const history = createHashHistory();
 const { visualRefresh } = parseQuery(history.location.search);

@@ -5,6 +5,7 @@ import { useComponentMetadata } from '@cloudscape-design/component-toolkit/inter
 import { useTelemetry } from '../use-telemetry';
 import { PACKAGE_VERSION } from '../../environment';
 import useFocusVisible from '../focus-visible';
+import { useVisualRefresh } from '../use-visual-mode';
 
 export interface InternalBaseComponentProps {
   __internalRootRef?: MutableRefObject<any> | null;
@@ -16,6 +17,10 @@ export interface InternalBaseComponentProps {
  * root DOM node and emits the telemetry for this component.
  */
 export default function useBaseComponent<T = any>(componentName: string, componentConfiguration?: Record<string, any>) {
+  const isVisualRefresh = useVisualRefresh();
+  if (isVisualRefresh && typeof document !== 'undefined' && !document.querySelector('.awsui-visual-refresh')) {
+    document.body.classList.add('awsui-visual-refresh');
+  }
   useTelemetry(componentName);
   useFocusVisible();
   const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, componentConfiguration);

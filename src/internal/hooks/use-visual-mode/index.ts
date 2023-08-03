@@ -5,6 +5,11 @@ import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { isDevelopment } from '../../is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+interface ExtendedWindow extends Window {
+  AWSC?: any;
+}
+declare const window: ExtendedWindow;
+
 export const useVisualRefresh = ALWAYS_VISUAL_REFRESH ? () => true : useVisualRefreshDynamic;
 
 // We expect VR is to be set only once and before the application is rendered.
@@ -16,7 +21,10 @@ export function clearVisualRefreshState() {
 }
 
 function detectVisualRefresh() {
-  return typeof document !== 'undefined' && !!document.querySelector('.awsui-visual-refresh');
+  return (
+    (typeof window !== 'undefined' && !!window.AWSC && !!window.AWSC.isVisualRefresh) ||
+    (typeof document !== 'undefined' && !!document.querySelector('.awsui-visual-refresh'))
+  );
 }
 
 export function useVisualRefreshDynamic() {
