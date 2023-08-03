@@ -45,41 +45,41 @@ export default function Page() {
 
   return (
     <Box margin="m">
-      <SpaceBetween size="m">
+      <Box margin={{ bottom: 's' }}>
         <Header>Code snippet demo</Header>
+      </Box>
 
-        <SpaceBetween direction="horizontal" size="m" alignItems="center">
-          <Checkbox checked={showGutter} onChange={e => setUrlParams({ showGutter: e.detail.checked })}>
-            Show gutter
-          </Checkbox>
+      <SpaceBetween direction="horizontal" size="m" alignItems="center">
+        <Checkbox checked={showGutter} onChange={e => setUrlParams({ showGutter: e.detail.checked })}>
+          Show gutter
+        </Checkbox>
 
-          <Checkbox checked={wrapLines} onChange={e => setUrlParams({ wrapLines: e.detail.checked })}>
-            Wrap lines
-          </Checkbox>
+        <Checkbox checked={wrapLines} onChange={e => setUrlParams({ wrapLines: e.detail.checked })}>
+          Wrap lines
+        </Checkbox>
 
-          <SpaceBetween direction="horizontal" size="s" alignItems="center">
-            <Select
-              id="theme-selector"
-              selectedOption={selectedOption}
-              options={themeOptions}
-              onChange={e => setUrlParams({ theme: e.detail.selectedOption.value as any })}
-            />
-            <label htmlFor="theme-selector">Theme</label>
-          </SpaceBetween>
-        </SpaceBetween>
-
-        <ScreenshotArea style={{ maxWidth: 960 }}>
-          <CodeSnippet
-            ace={ace}
-            value={awsTemplateSample}
-            language="yaml"
-            preferences={{ showGutter, wrapLines, theme }}
-            loading={loading}
-            i18nStrings={i18nStrings}
-            themes={themes}
+        <SpaceBetween direction="horizontal" size="s" alignItems="center">
+          <Select
+            id="theme-selector"
+            selectedOption={selectedOption}
+            options={themeOptions}
+            onChange={e => setUrlParams({ theme: e.detail.selectedOption.value as any })}
           />
-        </ScreenshotArea>
+          <label htmlFor="theme-selector">Theme</label>
+        </SpaceBetween>
       </SpaceBetween>
+
+      <ScreenshotArea>
+        <CodeSnippet
+          ace={ace}
+          value={awsTemplateSample}
+          language="yaml"
+          preferences={{ showGutter, wrapLines, theme }}
+          loading={loading}
+          i18nStrings={i18nStrings}
+          themes={themes}
+        />
+      </ScreenshotArea>
     </Box>
   );
 }

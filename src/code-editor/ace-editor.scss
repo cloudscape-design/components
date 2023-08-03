@@ -10,7 +10,8 @@
 
 /* stylelint-disable selector-combinator-disallowed-list, @cloudscape-design/no-implicit-descendant */
 
-.code-editor-refresh :global .ace_editor {
+.code-editor-refresh :global .ace_editor,
+.code-snippet-refresh :global .ace_editor {
   .ace_gutter {
     border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
@@ -19,7 +20,8 @@
   }
 }
 
-.code-editor :global .ace_editor {
+.code-editor :global .ace_editor,
+.code-snippet :global .ace_editor {
   font-family: Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace;
   font-size: 14px;
   line-height: 20px;

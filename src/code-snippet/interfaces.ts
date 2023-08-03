@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Ace } from 'ace-builds';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { AceModes } from '../code-editor/ace-modes';
@@ -14,14 +13,14 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
   ace: any;
 
   /**
-   * Specifies the content that's displayed in the code editor.
+   * Specifies the content that's displayed in the code snippet.
    */
   value: string;
 
   /**
    * Specifies the programming language. You can use any of the programming languages supported by the `ace` object that you provide.
    * Alternatively, this can be used to set a language that is not supported by the default `language` list. Make sure you've added the highlighting support for this language to the Ace instance.
-   * For more info on custom languages, see the [Code editor API](/components/code-editor?tabId=api) page.
+   * For more info on custom languages, see the [Code snippet API](/components/code-snippet?tabId=api) page.
    */
   language: CodeSnippetProps.Language;
 
@@ -31,31 +30,13 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
   languageLabel?: string;
 
   /**
-   * An event handler called when the value changes.
-   * The event `detail` contains the current value of the code editor content.
-   * **Deprecated** Replaced by `onDelayedChange`.
-   */
-  onChange?: NonCancelableEventHandler<CodeSnippetProps.ChangeDetail>;
-
-  /**
-   * An event handler called when the value changes.
-   * The event `detail` contains the current value of the code editor content.
-   * A user interaction can cause multiple change events to be emitted by the Ace editor. They are batched together into a single `onDelayedChange` event to avoid bugs when controlling the `value` field.
-   */
-  onDelayedChange?: NonCancelableEventHandler<CodeSnippetProps.ChangeDetail>;
-
-  /**
-   * Annotations returned from Ace syntax checker after code validation.
-   */
-  onValidate?: NonCancelableEventHandler<CodeSnippetProps.ValidateDetail>;
-
-  /**
    * Specifies the component preferences.
    *
    * If set to `undefined`, the component uses the following default value:
    *
    * ```
    * {
+   *   showGutter: false,
    *   wrapLines: true,
    *   theme: 'dawn'
    * }
@@ -72,13 +53,13 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
   themes?: CodeSnippetProps.AvailableThemes;
 
   /**
-   * Renders the code editor in a loading state.
+   * Renders the code snippet in a loading state.
    */
   loading?: boolean;
 
   /**
    * Called when the user clicks the recovery button in the error state.
-   * Use this to retry loading the code editor or to provide another option for the user to recover from the error.
+   * Use this to retry loading the code snippet or to provide another option for the user to recover from the error.
    */
   onRecoveryClick?: NonCancelableEventHandler<void>;
 
@@ -95,18 +76,7 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
   i18nStrings?: CodeSnippetProps.I18nStrings;
 
   /**
-   * Specifies the height of the code editor document.
-   */
-  editorContentHeight?: number;
-
-  /**
-   * Called when the user resizes the editor by dragging the resize icon.
-   * The event `detail` contains the new height of the editor in pixels.
-   */
-  onEditorContentResize?: NonCancelableEventHandler<CodeSnippetProps.ResizeDetail>;
-
-  /**
-   * Adds `aria-label` to the code editor's textarea element.
+   * Adds `aria-label` to the code snippet's textarea element.
    */
   ariaLabel?: string;
 }
@@ -137,37 +107,7 @@ export namespace CodeSnippetProps {
     loadingState: string;
     errorState: string;
     errorStateRecovery: string;
-
     editorGroupAriaLabel: string;
-    statusBarGroupAriaLabel: string;
-
-    cursorPosition: (row: number, column: number) => string;
-    errorsTab: string;
-    warningsTab: string;
-    preferencesButtonAriaLabel: string;
-    paneCloseButtonAriaLabel: string;
-
-    preferencesModalHeader: string;
-    preferencesModalCancel: string;
-    preferencesModalConfirm: string;
-    preferencesModalWrapLines: string;
-    preferencesModalTheme: string;
-    preferencesModalLightThemes: string;
-    preferencesModalDarkThemes: string;
-
-    preferencesModalThemeFilteringPlaceholder?: string;
-    preferencesModalThemeFilteringAriaLabel?: string;
-    preferencesModalThemeFilteringClearAriaLabel?: string;
-  }
-  export interface ResizeDetail {
-    height: number;
-  }
-  export interface ChangeDetail {
-    value: string;
-  }
-
-  export interface ValidateDetail {
-    annotations: Ace.Annotation[];
   }
 
   export interface Ref {
