@@ -74,14 +74,13 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
   useForwardFocus(ref, codeSnippetRef);
   const isRefresh = useVisualRefresh();
 
-  const lines = value.split('\n').length;
   const showGutter = !!props.preferences?.showGutter;
   useEffect(() => {
     if (!ace || !editor) {
       return;
     }
 
-    setupEditor(ace, editor, { showGutter, lines });
+    setupEditor(ace, editor, { showGutter });
 
     return () => {
       editor?.destroy();
@@ -92,11 +91,6 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
   useEffect(() => {
     editor?.setOption('showGutter', showGutter);
   }, [editor, showGutter]);
-
-  useEffect(() => {
-    editor?.renderer.setOption('minLines', lines);
-    editor?.renderer.setOption('maxLines', lines);
-  }, [editor, lines]);
 
   useEffect(() => {
     if (!editor) {

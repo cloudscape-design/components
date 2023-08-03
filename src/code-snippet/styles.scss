@@ -16,6 +16,8 @@
 }
 
 .snippet {
+  height: 500px;
+
   &:focus {
     @include styles.focus-highlight(3px);
     overflow: visible;
