@@ -11,15 +11,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
-import {
-  getDefaultConfig,
-  getAceTheme,
-  PaneStatus,
-  getLanguageLabel,
-  DEFAULT_DARK_THEME,
-  DEFAULT_LIGHT_THEME,
-  getDefaultTheme,
-} from './util';
+import { getAceTheme, PaneStatus, getLanguageLabel, DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
 import { ResizableBox } from './resizable-box';
@@ -40,11 +32,11 @@ import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useEditor } from './use-editor';
 
 export { CodeEditorProps };
 
 const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditorProps.Ref>) => {
-  const codeEditorRef = useRef<HTMLDivElement>(null);
   const { __internalRootRef } = useBaseComponent('CodeEditor');
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const {
@@ -66,7 +58,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
 
-  const [editor, setEditor] = useState<Ace.Editor>();
+  const { editorRef, editor } = useEditor(ace, props.loading);
   const mode = useCurrentMode(__internalRootRef);
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
 
@@ -94,22 +86,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   const errorsTabRef = useRef<HTMLButtonElement>(null);
   const warningsTabRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const elem = codeEditorRef.current;
-    if (!ace || !elem) {
-      return;
-    }
-    const config = getDefaultConfig(ace);
-    setEditor(
-      ace.edit(elem, {
-        ...config,
-        theme: getAceTheme(getDefaultTheme(elem)),
-      })
-    );
-  }, [ace, props.loading]);
   const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
-  useForwardFocus(ref, codeEditorRef);
+  useForwardFocus(ref, editorRef);
   const isRefresh = useVisualRefresh();
 
   useEffect(() => {
@@ -268,7 +247,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             }}
           >
             <div
-              ref={codeEditorRef}
+              ref={editorRef}
               className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
               onKeyDown={onEditorKeydown}
               tabIndex={0}
