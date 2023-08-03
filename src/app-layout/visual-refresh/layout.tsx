@@ -23,15 +23,14 @@ export default function Layout({ children }: LayoutProps) {
     contentHeader,
     contentType,
     disableBodyScroll,
-    disableContentHeaderOverlap,
     disableContentPaddings,
     drawersTriggerCount,
-    dynamicOverlapHeight,
     footerHeight,
     hasNotificationsContent,
     hasStickyBackground,
     hasOpenDrawer,
     headerHeight,
+    isBackgroundOverlapDisabled,
     isMobile,
     isNavigationOpen,
     layoutElement,
@@ -53,14 +52,6 @@ export default function Layout({ children }: LayoutProps) {
   const hasContentGapLeft = isNavigationOpen || navigationHide;
   const hasContentGapRight = drawersTriggerCount <= 0 || hasOpenDrawer;
 
-  /**
-   * The disableContentHeaderOverlap property is absolute and will always disable the overlap
-   * if it is set to true. If there is no contentHeader then the overlap should be disabled
-   * unless there is a dynamicOverlapHeight. The dynamicOverlapHeight property is set by a
-   * component in the content slot that needs to manually control the overlap height.
-   */
-  const isOverlapDisabled = disableContentHeaderOverlap || (!contentHeader && dynamicOverlapHeight <= 0);
-
   return (
     <main
       className={clsx(
@@ -80,7 +71,7 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
-          [styles['is-overlap-disabled']]: isOverlapDisabled,
+          [styles['is-overlap-disabled']]: isBackgroundOverlapDisabled,
         },
         testutilStyles.root
       )}
@@ -93,8 +84,6 @@ export default function Layout({ children }: LayoutProps) {
         ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
         ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
-        ...(!isOverlapDisabled &&
-          dynamicOverlapHeight > 0 && { [customCssProps.overlapHeight]: `${dynamicOverlapHeight}px` }),
       }}
     >
       {children}
@@ -104,8 +93,8 @@ export default function Layout({ children }: LayoutProps) {
 
 /*
 The Notifications, Breadcrumbs, Header, and Main are all rendered in the center
-column of the grid layout. Any of these could be the first child to render in the 
-content area if the previous siblings do not exist. The grid gap before the first 
+column of the grid layout. Any of these could be the first child to render in the
+content area if the previous siblings do not exist. The grid gap before the first
 child will be different to ensure vertical alignment with the trigger buttons.
 */
 function getContentFirstChild(
