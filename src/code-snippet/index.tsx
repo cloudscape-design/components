@@ -7,12 +7,18 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 import { getBaseProps } from '../internal/base-component';
 import { CodeSnippetProps } from './interfaces';
-import { getDefaultConfig, getAceTheme, DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME, getDefaultTheme } from './util';
+import {
+  getDefaultConfig,
+  getAceTheme,
+  DEFAULT_DARK_THEME,
+  DEFAULT_LIGHT_THEME,
+  getDefaultTheme,
+} from '../code-editor/util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
-import { ResizableBox } from './resizable-box';
-import LoadingScreen from './loading-screen';
-import ErrorScreen from './error-screen';
+import { ResizableBox } from '../code-editor/resizable-box';
+import LoadingScreen from '../code-editor/loading-screen';
+import ErrorScreen from '../code-editor/error-screen';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';

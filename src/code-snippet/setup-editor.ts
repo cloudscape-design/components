@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Ace } from 'ace-builds';
-import { supportsKeyboardAccessibility } from './util';
+import { supportsKeyboardAccessibility } from '../code-editor/util';
 
 export function setupEditor(ace: any, editor: Ace.Editor) {
   ace.config.loadModule('ace/ext/language_tools', function () {

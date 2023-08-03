@@ -7,7 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/hooks/focus-visible' as focus-visible;
-@use './ace-editor';
+@use '../code-editor/ace-editor';
 @use './pane';
 
 .code-editor {
@@ -35,22 +35,4 @@
 .editor-refresh {
   border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
-}
-
-$default-height: 480px;
-.loading-screen,
-.error-screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: $default-height;
-
-  color: awsui.$color-text-body-secondary;
-  background: awsui.$color-background-code-editor-loading;
-  border-radius: awsui.$border-radius-code-editor;
-}
-
-.error-screen {
-  color: awsui.$color-text-status-error;
 }

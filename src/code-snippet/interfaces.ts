@@ -3,8 +3,8 @@
 import { Ace } from 'ace-builds';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
-import { AceModes } from './ace-modes';
-import { DarkThemes, LightThemes } from './ace-themes';
+import { AceModes } from '../code-editor/ace-modes';
+import { DarkThemes, LightThemes } from '../code-editor/ace-themes';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 
 export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlProps {
