@@ -8,7 +8,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 
 export function useChangeEffect(
-  editor?: Ace.Editor,
+  editor: null | Ace.Editor,
   onChange?: NonCancelableEventHandler<CodeEditorProps.ChangeDetail>,
   onDelayedChange?: NonCancelableEventHandler<CodeEditorProps.ChangeDetail>
 ) {

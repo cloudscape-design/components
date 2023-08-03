@@ -12,13 +12,15 @@ import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
 import {
-  getDefaultConfig,
-  getAceTheme,
   PaneStatus,
   getLanguageLabel,
   DEFAULT_DARK_THEME,
   DEFAULT_LIGHT_THEME,
-  getDefaultTheme,
+  useEditorAttributes,
+  useAceEditor,
+  useEditorValue,
+  useEditorLanguage,
+  useEditorPreferences,
 } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
@@ -66,25 +68,12 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
 
-  const [editor, setEditor] = useState<Ace.Editor>();
   const mode = useCurrentMode(__internalRootRef);
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    const { textarea } = editor.renderer as unknown as { textarea: HTMLTextAreaElement };
-    if (!textarea) {
-      return;
-    }
-    const updateAttribute = (attribute: string, value: string | undefined) =>
-      value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
-    updateAttribute('id', controlId);
-    updateAttribute('aria-label', ariaLabel);
-    updateAttribute('aria-labelledby', ariaLabelledby);
-    updateAttribute('aria-describedby', ariaDescribedby);
-  }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
+  const editor = useAceEditor(ace, codeEditorRef, !!props.loading);
+
+  useEditorAttributes(editor, { ariaLabel, ariaDescribedby, ariaLabelledby, controlId });
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -94,19 +83,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   const errorsTabRef = useRef<HTMLButtonElement>(null);
   const warningsTabRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const elem = codeEditorRef.current;
-    if (!ace || !elem) {
-      return;
-    }
-    const config = getDefaultConfig(ace);
-    setEditor(
-      ace.edit(elem, {
-        ...config,
-        theme: getAceTheme(getDefaultTheme(elem)),
-      })
-    );
-  }, [ace, props.loading]);
+
   const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
   useForwardFocus(ref, codeEditorRef);
@@ -130,33 +107,15 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     };
   }, [ace, editor, __internalRootRef]);
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    if (value === editor.getValue()) {
-      return;
-    }
-    // TODO maintain cursor position?
-    const pos = editor.session.selection.toJSON();
-    editor.setValue(value, -1);
-    editor.session.selection.fromJSON(pos);
-  }, [editor, value]);
+  useEditorValue(editor, value);
 
-  useEffect(() => {
-    editor?.session.setMode(`ace/mode/${language}`);
-  }, [editor, language]);
+  useEditorLanguage(editor, language);
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    const theme: CodeEditorProps.Theme = props.preferences?.theme ?? defaultTheme;
-    editor.setTheme(getAceTheme(theme));
-
-    editor.session.setUseWrapMode(props.preferences?.wrapLines ?? true);
-  }, [editor, defaultTheme, props.preferences]);
+  useEditorPreferences(
+    editor,
+    { wrapLines: props.preferences?.wrapLines, theme: props.preferences?.theme },
+    defaultTheme
+  );
 
   // Change listeners
   useChangeEffect(editor, props.onChange, props.onDelayedChange);

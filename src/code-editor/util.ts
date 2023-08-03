@@ -6,6 +6,7 @@ import { AceModes } from './ace-modes';
 import { LightThemes, DarkThemes } from './ace-themes';
 import { CodeEditorProps } from './interfaces';
 import { findUpUntil } from '../internal/utils/dom';
+import { useEffect, useState } from 'react';
 
 export type PaneStatus = 'error' | 'warning' | 'hidden';
 
@@ -51,4 +52,93 @@ export function getAceTheme(theme: CodeEditorProps.Theme) {
 
 export function getLanguageLabel(language: CodeEditorProps.Language): string {
   return AceModes.filter((mode: { value: string }) => mode.value === language)[0]?.label || language;
+}
+
+export function useAceEditor(ace: any, codeSnippetRef: React.RefObject<HTMLElement>, loading: boolean) {
+  const [editor, setEditor] = useState<null | Ace.Editor>(null);
+
+  useEffect(() => {
+    const elem = codeSnippetRef.current;
+    if (!ace || !elem) {
+      return;
+    }
+    const config = getDefaultConfig(ace);
+    setEditor(
+      ace.edit(elem, {
+        ...config,
+        theme: getAceTheme(getDefaultTheme(elem)),
+      })
+    );
+  }, [ace, codeSnippetRef, loading]);
+
+  return editor;
+}
+
+export function useEditorAttributes(
+  editor: null | Ace.Editor,
+  {
+    controlId,
+    ariaLabel,
+    ariaLabelledby,
+    ariaDescribedby,
+  }: {
+    controlId?: string;
+    ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+  }
+) {
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+    const { textarea } = editor.renderer as unknown as { textarea: HTMLTextAreaElement };
+    if (!textarea) {
+      return;
+    }
+    const updateAttribute = (attribute: string, value: string | undefined) =>
+      value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
+    updateAttribute('id', controlId);
+    updateAttribute('aria-label', ariaLabel);
+    updateAttribute('aria-labelledby', ariaLabelledby);
+    updateAttribute('aria-describedby', ariaDescribedby);
+  }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
+}
+
+export function useEditorValue(editor: null | Ace.Editor, value: string) {
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+    if (value === editor.getValue()) {
+      return;
+    }
+    // TODO maintain cursor position?
+    const pos = editor.session.selection.toJSON();
+    editor.setValue(value, -1);
+    editor.session.selection.fromJSON(pos);
+  }, [editor, value]);
+}
+
+export function useEditorLanguage(editor: null | Ace.Editor, language: string) {
+  useEffect(() => {
+    editor?.session.setMode(`ace/mode/${language}`);
+  }, [editor, language]);
+}
+
+export function useEditorPreferences(
+  editor: null | Ace.Editor,
+  preferences: { wrapLines?: boolean; theme?: CodeEditorProps.Theme },
+  defaultTheme: CodeEditorProps.Theme
+) {
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    const theme: CodeEditorProps.Theme = preferences.theme ?? defaultTheme;
+    editor.setTheme(getAceTheme(theme));
+
+    editor.session.setUseWrapMode(preferences.wrapLines ?? true);
+  }, [editor, defaultTheme, preferences.wrapLines, preferences.theme]);
 }

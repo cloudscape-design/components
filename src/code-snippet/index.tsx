@@ -1,17 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState, forwardRef } from 'react';
-import { Ace } from 'ace-builds';
+import React, { useEffect, useRef, forwardRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { CodeSnippetProps } from './interfaces';
 import {
-  getDefaultConfig,
-  getAceTheme,
   DEFAULT_DARK_THEME,
   DEFAULT_LIGHT_THEME,
-  getDefaultTheme,
+  useEditorAttributes,
+  useAceEditor,
+  useEditorValue,
+  useEditorLanguage,
+  useEditorPreferences,
 } from '../code-editor/util';
 import { setupEditor } from './setup-editor';
 import LoadingScreen from '../code-editor/loading-screen';
@@ -38,39 +39,13 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
 
-  const [editor, setEditor] = useState<Ace.Editor>();
   const mode = useCurrentMode(__internalRootRef);
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    const { textarea } = editor.renderer as unknown as { textarea: HTMLTextAreaElement };
-    if (!textarea) {
-      return;
-    }
-    const updateAttribute = (attribute: string, value: string | undefined) =>
-      value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
-    updateAttribute('id', controlId);
-    updateAttribute('aria-label', ariaLabel);
-    updateAttribute('aria-labelledby', ariaLabelledby);
-    updateAttribute('aria-describedby', ariaDescribedby);
-  }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
+  const editor = useAceEditor(ace, codeSnippetRef, !!props.loading);
 
-  useEffect(() => {
-    const elem = codeSnippetRef.current;
-    if (!ace || !elem) {
-      return;
-    }
-    const config = getDefaultConfig(ace);
-    setEditor(
-      ace.edit(elem, {
-        ...config,
-        theme: getAceTheme(getDefaultTheme(elem)),
-      })
-    );
-  }, [ace, props.loading]);
+  useEditorAttributes(editor ?? null, { ariaLabel, ariaDescribedby, ariaLabelledby, controlId });
+
   useForwardFocus(ref, codeSnippetRef);
   const isRefresh = useVisualRefresh();
 
@@ -92,33 +67,15 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
     editor?.setOption('showGutter', showGutter);
   }, [editor, showGutter]);
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    if (value === editor.getValue()) {
-      return;
-    }
-    // TODO maintain cursor position?
-    const pos = editor.session.selection.toJSON();
-    editor.setValue(value, -1);
-    editor.session.selection.fromJSON(pos);
-  }, [editor, value]);
+  useEditorValue(editor, value);
 
-  useEffect(() => {
-    editor?.session.setMode(`ace/mode/${language}`);
-  }, [editor, language]);
+  useEditorLanguage(editor, language);
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    const theme: CodeSnippetProps.Theme = props.preferences?.theme ?? defaultTheme;
-    editor.setTheme(getAceTheme(theme));
-
-    editor.session.setUseWrapMode(props.preferences?.wrapLines ?? true);
-  }, [editor, defaultTheme, props.preferences]);
+  useEditorPreferences(
+    editor,
+    { wrapLines: props.preferences?.wrapLines, theme: props.preferences?.theme },
+    defaultTheme
+  );
 
   return (
     <div
