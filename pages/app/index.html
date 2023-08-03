@@ -19,7 +19,7 @@
       if (location.hash.includes('theming')) {
         csp['style-src'] = "'unsafe-inline' 'self'";
       }
-      if (location.hash.includes('code-editor')) {
+      if (location.hash.includes('code-editor') || location.hash.includes('code-snippet')) {
         csp['worker-src'] = 'blob:'; // ace uses web workers for syntax validation
         csp['img-src'] = 'data:'; // this component contains icons loaded this way
       }
