@@ -32,7 +32,7 @@ import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useEditor, useSyncEditorSize, useSyncEditorLabels } from './use-editor';
+import { useEditor, useSyncEditorSize, useSyncEditorLabels, useSyncEditorValue } from './use-editor';
 
 export { CodeEditorProps };
 
@@ -64,6 +64,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
 
+  const paneId = useUniqueId('code-editor-pane');
+
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
   const [highlightedAnnotation, setHighlightedAnnotation] = useState<Ace.Annotation>();
@@ -73,12 +75,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const { editorRef, editor } = useEditor(ace, props.loading);
 
   useForwardFocus(ref, editorRef);
-
-  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
-
-  const { onResize } = useSyncEditorSize(editor, { width: codeEditorWidth, height: editorContentHeight });
-
-  const paneId = useUniqueId('code-editor-pane');
 
   useEffect(() => {
     if (!ace || !editor) {
@@ -92,18 +88,11 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     };
   }, [ace, editor]);
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    if (value === editor.getValue()) {
-      return;
-    }
-    // TODO maintain cursor position?
-    const pos = editor.session.selection.toJSON();
-    editor.setValue(value, -1);
-    editor.session.selection.fromJSON(pos);
-  }, [editor, value]);
+  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
+
+  const { onResize } = useSyncEditorSize(editor, { width: codeEditorWidth, height: editorContentHeight });
+
+  useSyncEditorValue(editor, value);
 
   useEffect(() => {
     editor?.session.setMode(`ace/mode/${language}`);

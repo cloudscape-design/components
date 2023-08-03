@@ -66,3 +66,18 @@ export function useSyncEditorSize(
 
   return { onResize };
 }
+
+export function useSyncEditorValue(editor: null | Ace.Editor, value: string) {
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+    if (value === editor.getValue()) {
+      return;
+    }
+    // TODO maintain cursor position?
+    const pos = editor.session.selection.toJSON();
+    editor.setValue(value, -1);
+    editor.session.selection.fromJSON(pos);
+  }, [editor, value]);
+}
