@@ -292,6 +292,7 @@ const InternalTable = React.forwardRef(
               [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
+            style={stickyState.style.wrapper}
             onScroll={handleScroll}
             {...wrapperProps}
           >
