@@ -11,7 +11,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
-import { getAceTheme, PaneStatus, getLanguageLabel, DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME } from './util';
+import { DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME, PaneStatus, getLanguageLabel } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
 import { ResizableBox } from './resizable-box';
@@ -39,6 +39,7 @@ import {
   useSyncEditorValue,
   useSyncEditorLanguage,
   useSyncEditorWrapLines,
+  useSyncEditorTheme,
 } from './use-editor';
 
 export { CodeEditorProps };
@@ -65,6 +66,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     changeHandler: 'onEditorContentResize',
     controlledProp: 'editorContentHeight',
   });
+  const mode = useCurrentMode(__internalRootRef);
   const isRefresh = useVisualRefresh();
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
@@ -108,18 +110,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   useSyncEditorWrapLines(editor, preferences?.wrapLines);
 
-  const mode = useCurrentMode(__internalRootRef);
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    const theme: CodeEditorProps.Theme = preferences?.theme ?? defaultTheme;
-    editor.setTheme(getAceTheme(theme));
-
-    editor.session.setUseWrapMode(preferences?.wrapLines ?? true);
-  }, [editor, defaultTheme, preferences]);
+  useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
   // Change listeners
   useChangeEffect(editor, props.onChange, props.onDelayedChange);

@@ -4,6 +4,7 @@
 import { Ace } from 'ace-builds';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
+import { CodeEditorProps } from './interfaces';
 
 export function useEditor(ace: any, loading?: boolean) {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -92,4 +93,10 @@ export function useSyncEditorWrapLines(editor: null | Ace.Editor, wrapLines?: bo
   useEffect(() => {
     editor?.session.setUseWrapMode(wrapLines ?? true);
   }, [editor, wrapLines]);
+}
+
+export function useSyncEditorTheme(editor: null | Ace.Editor, theme: CodeEditorProps.Theme) {
+  useEffect(() => {
+    editor?.setTheme(getAceTheme(theme));
+  }, [editor, theme]);
 }
