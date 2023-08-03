@@ -5,12 +5,9 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/styles/foundation' as foundation;
-@use '../internal/hooks/focus-visible' as focus-visible;
 @use '../code-editor/ace-editor';
-@use './pane';
 
-.code-editor {
+.code-snippet {
   @include styles.styles-reset;
   display: inline-block;
   border: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
@@ -18,7 +15,7 @@
   width: 100%;
 }
 
-.editor {
+.snippet {
   position: absolute;
   top: 0;
   right: 0;
@@ -32,7 +29,7 @@
   }
 }
 
-.editor-refresh {
+.snippet-refresh {
   border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
 }

@@ -128,6 +128,7 @@ export namespace CodeSnippetProps {
   }
 
   export interface Preferences {
+    showGutter: boolean;
     wrapLines: boolean;
     theme: Theme;
   }

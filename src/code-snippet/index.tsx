@@ -90,17 +90,23 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
     editor?.resize();
   }, [editor, editorContentHeight, CodeSnippetWidth]);
 
+  const showGutter = !!props.preferences?.showGutter;
   useEffect(() => {
     if (!ace || !editor) {
       return;
     }
 
-    setupEditor(ace, editor);
+    setupEditor(ace, editor, { showGutter });
 
     return () => {
       editor?.destroy();
     };
-  }, [ace, editor, __internalRootRef]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ace, editor]);
+
+  useEffect(() => {
+    editor?.setOption('showGutter', showGutter);
+  }, [editor, showGutter]);
 
   useEffect(() => {
     if (!editor) {
@@ -137,7 +143,7 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
   return (
     <div
       {...baseProps}
-      className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
+      className={clsx(styles['code-snippet'], baseProps.className, { [styles['code-snippet-refresh']]: isRefresh })}
       ref={mergedRef}
     >
       {props.loading && (
@@ -167,7 +173,7 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
         >
           <div
             ref={CodeSnippetRef}
-            className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
+            className={clsx(styles.snippet, styles.ace, isRefresh && styles['snippet-refresh'])}
             tabIndex={0}
             role="group"
             aria-label={i18n('i18nStrings.editorGroupAriaLabel', i18nStrings?.editorGroupAriaLabel)}

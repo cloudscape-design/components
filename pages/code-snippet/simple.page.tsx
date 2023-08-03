@@ -11,6 +11,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type PageContext = React.Context<
   AppContextType<{
+    showGutter: boolean;
     wrapLines: boolean;
     theme: 'dawn' | 'tomorrow_night_bright';
   }>
@@ -18,6 +19,7 @@ type PageContext = React.Context<
 
 export default function Page() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const showGutter = !!urlParams.showGutter;
   const wrapLines = !!urlParams.wrapLines;
   const theme = urlParams.theme || 'dawn';
   const themeOptions = [
@@ -47,6 +49,10 @@ export default function Page() {
         <Header>Code snippet demo</Header>
 
         <SpaceBetween direction="horizontal" size="m" alignItems="center">
+          <Checkbox checked={showGutter} onChange={e => setUrlParams({ showGutter: e.detail.checked })}>
+            Show gutter
+          </Checkbox>
+
           <Checkbox checked={wrapLines} onChange={e => setUrlParams({ wrapLines: e.detail.checked })}>
             Wrap lines
           </Checkbox>
@@ -67,7 +73,7 @@ export default function Page() {
             ace={ace}
             value={awsTemplateSample}
             language="yaml"
-            preferences={{ wrapLines, theme }}
+            preferences={{ showGutter, wrapLines, theme }}
             loading={loading}
             i18nStrings={i18nStrings}
             themes={themes}
