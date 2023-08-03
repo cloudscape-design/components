@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -15,7 +15,7 @@ import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
-import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
@@ -37,6 +37,7 @@ import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { getTableRoleProps, getTableRowRoleProps } from './table-role';
+import { useCellEditing } from './use-cell-editing';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -104,17 +105,15 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
-    const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
-    const [lastSuccessfulEditCell, setLastSuccessfulEditCell] = useState<[number, number] | null>(null);
-    const [currentEditLoading, setCurrentEditLoading] = useState(false);
+    const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
 
     useImperativeHandle(
       ref,
       () => ({
         scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined),
-        cancelEdit: () => setCurrentEditCell(null),
+        cancelEdit,
       }),
-      []
+      [cancelEdit]
     );
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
@@ -220,19 +219,6 @@ const InternalTable = React.forwardRef(
       : {};
 
     const getMouseDownTarget = useMouseDownTarget();
-    const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
-      if (!submitEdit) {
-        return undefined;
-      }
-      return async (...args: Parameters<typeof submitEdit>) => {
-        setCurrentEditLoading(true);
-        try {
-          await submitEdit(...args);
-        } finally {
-          setCurrentEditLoading(false);
-        }
-      };
-    };
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
@@ -406,13 +392,9 @@ const InternalTable = React.forwardRef(
                           </TableTdElement>
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
-                          const isEditing =
-                            !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
-                          const successfulEdit =
-                            !!lastSuccessfulEditCell &&
-                            lastSuccessfulEditCell[0] === rowIndex &&
-                            lastSuccessfulEditCell[1] === colIndex;
-                          const isEditable = !!column.editConfig && !currentEditLoading;
+                          const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
+                          const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
+                          const isEditable = !!column.editConfig && !cellEditing.isLoading;
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}
@@ -438,20 +420,11 @@ const InternalTable = React.forwardRef(
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
                               successfulEdit={successfulEdit}
-                              onEditStart={() => {
-                                setLastSuccessfulEditCell(null);
-                                setCurrentEditCell([rowIndex, colIndex]);
-                              }}
-                              onEditEnd={editCancelled => {
-                                const eventCancelled = fireCancelableEvent(onEditCancel, {});
-                                if (!eventCancelled) {
-                                  setCurrentEditCell(null);
-                                  if (!editCancelled) {
-                                    setLastSuccessfulEditCell([rowIndex, colIndex]);
-                                  }
-                                }
-                              }}
-                              submitEdit={wrapWithInlineLoadingState(submitEdit)}
+                              onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
+                              onEditEnd={editCancelled =>
+                                cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
+                              }
+                              submitEdit={cellEditing.submitEdit}
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
