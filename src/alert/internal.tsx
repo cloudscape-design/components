@@ -98,9 +98,9 @@ const InternalAlert = React.forwardRef(
                   {header && <div className={styles.header}>{header}</div>}
                   <div className={styles.content}>{children}</div>
                 </div>
-                {hasAction && <div className={styles.action}>{actionButton}</div>}
               </div>
             </div>
+            {hasAction && <div className={styles.action}>{actionButton}</div>}
             {dismissible && (
               <div className={styles.dismiss}>
                 <InternalButton
