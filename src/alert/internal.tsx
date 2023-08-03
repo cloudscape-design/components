@@ -88,19 +88,21 @@ const InternalAlert = React.forwardRef(
         ref={mergedRef}
       >
         <VisualContext contextName="alert">
-          <div className={clsx(styles.alert, styles[`type-${type}`])}>
-            <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-              <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
-                <InternalIcon name={typeToIcon[type]} size={size} />
-              </div>
-              <div className={styles.body}>
-                <div className={clsx(styles.message, styles.text)}>
-                  {header && <div className={styles.header}>{header}</div>}
-                  <div className={styles.content}>{children}</div>
+          <div className={clsx(styles.alert, styles[`type-${type}`], styles[`icon-size-${size}`])}>
+            <div className={styles['alert-mobile-block']}>
+              <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
+                <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
+                  <InternalIcon name={typeToIcon[type]} size={size} />
+                </div>
+                <div className={styles.body}>
+                  <div className={clsx(styles.message, styles.text)}>
+                    {header && <div className={styles.header}>{header}</div>}
+                    <div className={styles.content}>{children}</div>
+                  </div>
                 </div>
               </div>
+              {hasAction && <div className={styles.action}>{actionButton}</div>}
             </div>
-            {hasAction && <div className={styles.action}>{actionButton}</div>}
             {dismissible && (
               <div className={styles.dismiss}>
                 <InternalButton
