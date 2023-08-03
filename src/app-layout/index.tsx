@@ -17,7 +17,6 @@ import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 import { findUpUntil } from '../internal/utils/dom';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
-import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import {
   SplitPanelContextProvider,
@@ -40,7 +39,7 @@ import { togglesConfig } from './toggles';
 import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
 import { isDevelopment } from '../internal/is-development';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../i18n/context';
@@ -390,7 +389,7 @@ const OldAppLayout = React.forwardRef(
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
     }, [setSplitPanelOpen, splitPanelOpen, onSplitPanelToggle, setSplitPanelLastInteraction]);
 
-    const getSplitPanelMaxWidth = useStableEventHandler(() => {
+    const getSplitPanelMaxWidth = useStableCallback(() => {
       if (!mainContentRef.current || !defaults.minContentWidth) {
         return NaN;
       }
@@ -405,7 +404,7 @@ const OldAppLayout = React.forwardRef(
       return Math.max(0, spaceTaken + spaceAvailable);
     });
 
-    const getDrawerMaxWidth = useStableEventHandler(() => {
+    const getDrawerMaxWidth = useStableCallback(() => {
       if (!mainContentRef.current || !defaults.minContentWidth) {
         return NaN;
       }
@@ -422,7 +421,7 @@ const OldAppLayout = React.forwardRef(
       return Math.max(0, spaceTaken + spaceAvailable);
     });
 
-    const getSplitPanelMaxHeight = useStableEventHandler(() => {
+    const getSplitPanelMaxHeight = useStableCallback(() => {
       if (typeof document === 'undefined') {
         return 0; // render the split panel in its minimum possible size
       } else if (disableBodyScroll && legacyScrollRootRef.current) {

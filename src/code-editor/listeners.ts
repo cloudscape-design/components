@@ -5,7 +5,7 @@ import { Ace } from 'ace-builds';
 import { CodeEditorProps } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 export function useChangeEffect(
   editor?: Ace.Editor,
@@ -15,7 +15,7 @@ export function useChangeEffect(
   const debouncedChangeHandler = useDebounceCallback((detail: CodeEditorProps.ChangeDetail) => {
     fireNonCancelableEvent(onDelayedChange, detail);
   }, 0);
-  const handleChange = useStableEventHandler(() => {
+  const handleChange = useStableCallback(() => {
     const changeDetail = { value: editor?.getValue() || '' };
     fireNonCancelableEvent(onChange, changeDetail);
     debouncedChangeHandler(changeDetail);

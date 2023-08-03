@@ -13,8 +13,8 @@ import {
 } from '../../events';
 import { findUpUntil } from '../../utils/dom';
 import styles from './styles.css.js';
-import { useStableEventHandler } from '../../hooks/use-stable-event-handler';
 import { DropdownStatusProps } from '../dropdown-status';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;
@@ -75,7 +75,7 @@ const OptionsList = (
   const baseProps = getBaseProps(restProps);
   const menuRef = useRef<HTMLUListElement>(null);
 
-  const handleScroll = useStableEventHandler(() => {
+  const handleScroll = useStableCallback(() => {
     const scrollContainer = menuRef?.current;
     if (scrollContainer) {
       const bottomEdgePosition = scrollContainer.scrollTop + scrollContainer.clientHeight;

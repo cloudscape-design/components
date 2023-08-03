@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
-import { useStableEventHandler } from '../use-stable-event-handler';
-import { createSingletonHandler } from '@cloudscape-design/component-toolkit/internal';
+import { createSingletonHandler, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 const useMutationSingleton = createSingletonHandler<void>(handler => {
   const observer = new MutationObserver(() => handler());
@@ -19,7 +18,7 @@ export function useMutationObserver(
   elementRef: React.RefObject<HTMLElement>,
   onChange: (element: HTMLElement) => void
 ) {
-  const handler = useStableEventHandler(() => {
+  const handler = useStableCallback(() => {
     if (elementRef.current) {
       onChange(elementRef.current);
     }
