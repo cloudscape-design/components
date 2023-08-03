@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useLayoutEffect, RefObject, useCallback } from 'react';
-import { useResizeObserver } from '../internal/hooks/container-queries/use-resize-observer';
 import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 function syncSizes(from: HTMLElement, to: HTMLElement) {
   const fromCells = Array.prototype.slice.apply(from.children);

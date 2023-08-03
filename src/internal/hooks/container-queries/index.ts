@@ -2,4 +2,3 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export * from './use-container-breakpoints';
-export * from './use-resize-observer';
