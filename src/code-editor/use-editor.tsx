@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Ace } from 'ace-builds';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
 
 export function useEditor(ace: any, loading?: boolean) {
@@ -50,4 +50,19 @@ export function useSyncEditorLabels(
     updateAttribute('aria-labelledby', ariaLabelledby);
     updateAttribute('aria-describedby', ariaDescribedby);
   }, [ariaLabel, ariaDescribedby, ariaLabelledby, controlId, editor]);
+}
+
+export function useSyncEditorSize(
+  editor: null | Ace.Editor,
+  { width, height }: { width?: null | number; height?: null | number }
+) {
+  useEffect(() => {
+    editor?.resize();
+  }, [editor, width, height]);
+
+  const onResize = useCallback(() => {
+    editor?.resize();
+  }, [editor]);
+
+  return { onResize };
 }

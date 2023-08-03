@@ -32,7 +32,7 @@ import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useEditor, useSyncEditorLabels } from './use-editor';
+import { useEditor, useSyncEditorSize, useSyncEditorLabels } from './use-editor';
 
 export { CodeEditorProps };
 
@@ -55,12 +55,14 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     changeHandler: 'onEditorContentResize',
     controlledProp: 'editorContentHeight',
   });
+  const isRefresh = useVisualRefresh();
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
 
-  const { editorRef, editor } = useEditor(ace, props.loading);
-
-  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
+  const errorsTabRef = useRef<HTMLButtonElement>(null);
+  const warningsTabRef = useRef<HTMLButtonElement>(null);
+  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
+  const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -68,16 +70,13 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const [cursorPosition, setCursorPosition] = useState<Ace.Point>({ row: 0, column: 0 });
   const [isTabFocused, setTabFocused] = useState<boolean>(false);
 
-  const errorsTabRef = useRef<HTMLButtonElement>(null);
-  const warningsTabRef = useRef<HTMLButtonElement>(null);
-  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
-  const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
-  useForwardFocus(ref, editorRef);
-  const isRefresh = useVisualRefresh();
+  const { editorRef, editor } = useEditor(ace, props.loading);
 
-  useEffect(() => {
-    editor?.resize();
-  }, [editor, editorContentHeight, codeEditorWidth]);
+  useForwardFocus(ref, editorRef);
+
+  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
+
+  const { onResize } = useSyncEditorSize(editor, { width: codeEditorWidth, height: editorContentHeight });
 
   const paneId = useUniqueId('code-editor-pane');
 
@@ -160,10 +159,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
 
   const onTabFocus = useCallback(() => setTabFocused(true), []);
   const onTabBlur = useCallback(() => setTabFocused(false), []);
-
-  const onResize = useCallback(() => {
-    editor?.resize();
-  }, [editor]);
 
   const onErrorPaneToggle = useCallback(() => {
     setPaneStatus(paneStatus !== 'error' ? 'error' : 'hidden');
