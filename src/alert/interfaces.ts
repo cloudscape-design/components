@@ -6,6 +6,13 @@ import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace AlertProps {
   export type Type = 'success' | 'error' | 'warning' | 'info';
+
+  export interface Ref {
+    /**
+     * Sets focus on the alert content.
+     */
+    focus(): void;
+  }
 }
 
 export interface AlertProps extends BaseComponentProps {
