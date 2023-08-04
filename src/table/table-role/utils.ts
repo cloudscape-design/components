@@ -39,7 +39,8 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   }
 
   const cellFocusables = getFocusables(from.cellElement);
-  const eligibleForElementFocus = delta.x && !isWidgetCell(from.element);
+  const eligibleForElementFocus =
+    delta.x && !isWidgetCell(from.element) && (cellFocusables.length === 1 || from.element !== from.cellElement);
   const targetElementIndex = from.elementIndex + delta.x;
   if (eligibleForElementFocus && 0 <= targetElementIndex && targetElementIndex < cellFocusables.length) {
     cellFocusables[targetElementIndex].focus();
@@ -57,7 +58,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   }
 
   const targetCellFocusables = getFocusables(targetCell);
-  const focusIndex = delta.x === 0 ? from.elementIndex : delta.x < 0 ? targetCellFocusables.length - 1 : 0;
+  const focusIndex = delta.x === 0 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
   focusTarget.focus();
 }
@@ -80,6 +81,10 @@ export function updateTableIndices(table: HTMLTableElement) {
   if (lastCell) {
     lastCell.tabIndex = !getFirstFocusable(lastCell) || isWidgetCell(lastCell) ? 0 : -1;
   }
+}
+
+export function isWidgetCell(cell: HTMLElement) {
+  return cell.getAttribute('data-widget-cell') === 'true';
 }
 
 function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {
@@ -108,8 +113,4 @@ function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAri
     }
   }
   return targetCell;
-}
-
-function isWidgetCell(cell: HTMLElement) {
-  return cell.getAttribute('data-widget-cell') === 'true';
 }

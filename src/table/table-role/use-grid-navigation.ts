@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell, moveFocusBy, moveFocusIn, updateTableIndices } from './utils';
+import { findFocusinCell, isWidgetCell, moveFocusBy, moveFocusIn, updateTableIndices } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { containsOrEqual } from '../../internal/utils/dom';
@@ -119,6 +119,14 @@ class GridNavigationModel {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
+    if (isWidgetCell(from.cellElement) && from.element !== from.cellElement) {
+      if (key === KeyCode.escape) {
+        event.preventDefault();
+        return moveFocusBy(this.table, from, { y: 0, x: 0 });
+      }
+      return;
+    }
+
     switch (key) {
       case KeyCode.up:
         event.preventDefault();
@@ -161,15 +169,11 @@ class GridNavigationModel {
         return moveFocusBy(this.table, from, { y: maxExtreme, x: maxExtreme });
 
       case KeyCode.enter:
-        if (from.element instanceof HTMLTableCellElement) {
+        if (from.element === from.cellElement) {
           event.preventDefault();
           return moveFocusIn(from);
         }
         break;
-
-      case KeyCode.escape:
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: 0 });
 
       default:
         return;
