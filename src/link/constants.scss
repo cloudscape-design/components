@@ -43,8 +43,8 @@ $link-variants: (
     'text-color-hover': awsui.$color-text-link-hover,
     'text-color-active': awsui.$color-text-link-hover,
     'font-weight': awsui.$font-box-value-large-weight,
-    'decoration': none,
-    'decoration-color': transparent,
+    'decoration': underline,
+    'decoration-color': currentColor,
     'decoration-color-hover': currentColor,
   ),
   'top-navigation': (
