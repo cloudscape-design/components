@@ -26,12 +26,32 @@ $edit-button-padding-right: calc(
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 
 .body-cell {
+  position: relative;
+
   box-sizing: border-box;
   padding: $cell-vertical-padding $cell-horizontal-padding $cell-vertical-padding-w-border;
   border-top: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   font-weight: inherit;
+
+  &:focus {
+    outline: none;
+
+    &::before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: calc(100% - 8px);
+      height: calc(100% - 8px);
+      border-radius: 4px;
+      border-style: dashed;
+      border-width: 2px;
+      border-color: awsui.$color-border-item-focused;
+    }
+  }
   &:not(.body-cell-wrap) {
     white-space: nowrap;
     overflow: hidden;

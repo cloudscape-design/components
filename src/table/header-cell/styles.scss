@@ -9,14 +9,32 @@
 
 .header-cell {
   position: relative;
+
   text-align: left;
   box-sizing: border-box;
   border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-heading-s-weight;
-  @include styles.font-smoothing;
   padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+
+  &:focus {
+    outline: none;
+
+    &::before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: calc(100% - 8px);
+      height: calc(100% - 8px);
+      border-radius: 4px;
+      border-style: dashed;
+      border-width: 2px;
+      border-color: awsui.$color-border-item-focused;
+    }
+  }
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
@@ -74,6 +92,7 @@
   &-resizable:not(:last-child):before {
     border-left-color: awsui.$color-border-divider-interactive-default;
   }
+  @include styles.font-smoothing;
 }
 
 .sorting-icon {

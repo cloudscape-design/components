@@ -114,6 +114,8 @@ export function TableHeaderCell<ItemType>({
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      onFocus={() => onFocusedComponentChange?.({ type: 'column', col: colIndex })}
+      onBlur={() => onFocusedComponentChange?.({ type: 'column', col: colIndex })}
     >
       <div
         className={clsx(styles['header-cell-content'], {
@@ -134,8 +136,8 @@ export function TableHeaderCell<ItemType>({
               tabIndex: tabIndex,
               role: 'button',
               onClick: handleClick,
-              onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
-              onBlur: () => onFocusedComponentChange?.(null),
+              // onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
+              // onBlur: () => onFocusedComponentChange?.(null),
             }
           : {})}
       >
