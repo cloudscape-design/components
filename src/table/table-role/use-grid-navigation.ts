@@ -53,7 +53,7 @@ class GridNavigationModel {
     mutationObserver.observe(table, { childList: true, subtree: true });
 
     // No need to clean this up as no resources are allocated.
-    updateTableIndices(this.table);
+    updateTableIndices(this.table, this.focusedCell ?? this.prevFocusedCell);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -90,6 +90,8 @@ class GridNavigationModel {
       return;
     }
     this.focusedCell = cell;
+
+    updateTableIndices(this.table, cell);
   };
 
   private onFocusout = () => {
@@ -195,6 +197,6 @@ class GridNavigationModel {
       }
     }
 
-    updateTableIndices(this.table);
+    updateTableIndices(this.table, this.focusedCell ?? this.prevFocusedCell);
   };
 }
