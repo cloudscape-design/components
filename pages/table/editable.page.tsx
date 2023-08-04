@@ -248,6 +248,7 @@ const Demo = forwardRef(
           }
           errorsMeta = new WeakMap();
         }}
+        selectionType="multi"
         columnDefinitions={columns}
         items={items}
         resizableColumns={true}

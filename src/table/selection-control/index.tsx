@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent } from 'react';
-import { KeyCode } from '../../internal/keycode';
+// import { KeyCode } from '../../internal/keycode';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../radio-group/radio-button';
@@ -26,8 +26,8 @@ export default function SelectionControl({
   selectionType,
   indeterminate = false,
   onShiftToggle,
-  onFocusUp,
-  onFocusDown,
+  // onFocusUp,
+  // onFocusDown,
   name,
   ariaLabel,
 
@@ -58,14 +58,14 @@ export default function SelectionControl({
   const handleKeyDown = (event: KeyboardEvent) => {
     setShiftState(event);
     if (isMultiSelection) {
-      if (event.keyCode === KeyCode.up) {
-        event.preventDefault();
-        onFocusUp && onFocusUp(event);
-      }
-      if (event.keyCode === KeyCode.down) {
-        event.preventDefault();
-        onFocusDown && onFocusDown(event);
-      }
+      // if (event.keyCode === KeyCode.up) {
+      //   event.preventDefault();
+      //   onFocusUp && onFocusUp(event);
+      // }
+      // if (event.keyCode === KeyCode.down) {
+      //   event.preventDefault();
+      //   onFocusDown && onFocusDown(event);
+      // }
     }
   };
 
