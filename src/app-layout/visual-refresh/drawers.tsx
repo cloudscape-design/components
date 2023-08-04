@@ -195,6 +195,8 @@ function DesktopTriggers() {
     splitPanelPosition,
     splitPanelRefs,
     splitPanelToggle,
+    splitPanelReportedHeaderHeight,
+    splitPanelReportedSize,
     tools,
     toolsHide,
     toolsRefs,
@@ -206,12 +208,14 @@ function DesktopTriggers() {
 
   const triggersContainerRef = useRef<HTMLDivElement>(null);
 
+  const splitPanelHeight =
+    isSplitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : splitPanelReportedHeaderHeight;
   const containerHeight = useContainerHeight(triggersContainerRef) || triggersContainerRef.current?.clientHeight;
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
       const ITEM_HEIGHT = 48;
-      const overflowSpot = containerHeight / 1.5;
+      const overflowSpot = activeDrawerId ? containerHeight / 1.5 : (containerHeight - splitPanelHeight) / 1.5;
 
       const index = Math.floor(overflowSpot / ITEM_HEIGHT);
 
@@ -226,7 +230,32 @@ function DesktopTriggers() {
       return index - toolsItem - splitPanelItem;
     }
 
-    return 0;
+    return -1;
+  };
+
+  const overflowItemIsActive = () => {
+    if (drawers && getIndexOfOverflowItem() > 0) {
+      return drawers.items
+        .slice(getIndexOfOverflowItem(), drawers.items.length)
+        .map(item => item.id)
+        .includes(drawers.activeDrawerId);
+    }
+  };
+
+  const getDrawerItems = () => {
+    if (drawers && drawers.items) {
+      const activeIndex = activeDrawerId ? drawers.items.map(item => item.id).indexOf(activeDrawerId) : -1;
+      const lastMainItemIndex = getIndexOfOverflowItem() - 1;
+
+      if (activeIndex && activeIndex > 0 && overflowItemIsActive()) {
+        [drawers.items[lastMainItemIndex], drawers.items[activeIndex]] = [
+          drawers.items[activeIndex],
+          drawers.items[lastMainItemIndex],
+        ];
+      }
+      return drawers.items;
+    }
+    return [];
   };
 
   if (activeDrawerId) {
@@ -238,7 +267,7 @@ function DesktopTriggers() {
   }
 
   const overflowItemHasBadge = () => {
-    const overflowItems = drawers?.items.slice(1, drawers.items.length);
+    const overflowItems = getDrawerItems().slice(1, getDrawerItems().length);
     return (overflowItems && overflowItems.filter(item => item.badge).length > 0) || false;
   };
 
@@ -275,7 +304,7 @@ function DesktopTriggers() {
           />
         )}
 
-        {drawers?.items.map((item, index) => {
+        {getDrawerItems()?.map((item, index) => {
           if (index < getIndexOfOverflowItem()) {
             return (
               <TriggerButton
@@ -296,7 +325,7 @@ function DesktopTriggers() {
           }
         })}
 
-        {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
+        {getDrawerItems() && getDrawerItems().length > getIndexOfOverflowItem() && (
           <InternalButtonDropdown
             ref={drawersRefs.toggle}
             className={clsx(
@@ -305,12 +334,14 @@ function DesktopTriggers() {
               styles['drawers-trigger-overflow'],
               overflowItemHasBadge() && styles.badge
             )}
-            items={drawers.items.slice(getIndexOfOverflowItem(), drawers.items.length).map(item => ({
-              id: item.id,
-              text: item.ariaLabels?.content || 'Content',
-              iconName: item.trigger.iconName,
-              iconSvg: item.trigger.iconSvg,
-            }))}
+            items={getDrawerItems()
+              .slice(getIndexOfOverflowItem(), getDrawerItems().length)
+              .map(item => ({
+                id: item.id,
+                text: item.ariaLabels?.content || 'Content',
+                iconName: item.trigger.iconName,
+                iconSvg: item.trigger.iconSvg,
+              }))}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
             }}
