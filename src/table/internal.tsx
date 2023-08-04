@@ -105,15 +105,15 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
-    const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
+    const cellEditing = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
 
     useImperativeHandle(
       ref,
       () => ({
         scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined),
-        cancelEdit,
+        cancelEdit: () => cellEditing.cancelEdit(),
       }),
-      [cancelEdit]
+      [cellEditing]
     );
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
@@ -348,6 +348,7 @@ const InternalTable = React.forwardRef(
                     const isSelected = !!selectionType && isItemSelected(item);
                     const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                     const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+                    const itemKey = getItemKey(trackBy, item, rowIndex);
                     return (
                       <tr
                         key={getItemKey(trackBy, item, rowIndex)}
@@ -367,6 +368,7 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
+                            cellId="select-all"
                             className={clsx(styles['selection-control'])}
                             isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
@@ -392,11 +394,10 @@ const InternalTable = React.forwardRef(
                           </TableTdElement>
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
-                          const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
-                          const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
-                          const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                          const columnKey = getColumnKey(column, colIndex);
                           return (
                             <TableBodyCell
+                              cellId={`${itemKey}:${columnKey}`}
                               key={getColumnKey(column, colIndex)}
                               style={
                                 resizableColumns
@@ -411,20 +412,13 @@ const InternalTable = React.forwardRef(
                               column={column}
                               item={item}
                               wrapLines={wrapLines}
-                              isEditable={isEditable}
-                              isEditing={isEditing}
+                              cellEditing={column.editConfig ? cellEditing : undefined}
                               isRowHeader={column.isRowHeader}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              successfulEdit={successfulEdit}
-                              onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
-                              onEditEnd={editCancelled =>
-                                cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
-                              }
-                              submitEdit={cellEditing.submitEdit}
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}

@@ -10,19 +10,12 @@ import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
-
-const submitHandlerFallback = () => {
-  throw new Error('The function `handleSubmit` is required for editable columns');
-};
+import { CellEditingModel } from '../use-cell-editing';
+import { useSelector } from '../../area-chart/async-store/index.js';
 
 interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
-  isEditing: boolean;
-  successfulEdit?: boolean;
-  onEditStart: () => void;
-  onEditEnd: (cancelled: boolean) => void;
-  submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
 }
 
@@ -30,15 +23,18 @@ function TableCellEditable<ItemType>({
   className,
   item,
   column,
-  isEditing,
-  onEditStart,
-  onEditEnd,
-  submitEdit,
   ariaLabels,
   isVisualRefresh,
-  successfulEdit = false,
+  cellEditing,
+  cellId,
   ...rest
-}: TableBodyCellProps<ItemType>) {
+}: TableBodyCellProps<ItemType> & { cellEditing: CellEditingModel<ItemType, unknown> }) {
+  const isEditing = useSelector(cellEditing, state => state.editingCell === cellId);
+  const isLastSuccessfulEdit = useSelector(cellEditing, state => state.lastSuccessfulEdit === cellId);
+  const onEditStart = () => cellEditing.startEdit(cellId);
+  const onEditEnd = (editCancelled: boolean) => cellEditing.completeEdit(cellId, editCancelled);
+  const onSubmitEdit = cellEditing.submitEdit;
+
   const i18n = useInternalI18n('table');
   const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
@@ -57,24 +53,25 @@ function TableCellEditable<ItemType>({
   const [hasFocus, setHasFocus] = useState(false);
   const showIcon = hasHover || hasFocus;
 
-  const prevSuccessfulEdit = usePrevious(successfulEdit);
+  const prevSuccessfulEdit = usePrevious(isLastSuccessfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
   const [showSuccessIcon, setShowSuccessIcon] = useState(false);
 
   useEffect(() => {
     // Hide the success icon after a successful edit, when cell loses focus.
-    if (successfulEdit && prevSuccessfulEdit && !hasFocus && prevHasFocus) {
+    if (isLastSuccessfulEdit && prevSuccessfulEdit && !hasFocus && prevHasFocus) {
       setShowSuccessIcon(false);
     }
     // Show success icon right after a successful edit, when `successfulEdit` switches to true.
-    if (successfulEdit && !prevSuccessfulEdit) {
+    if (isLastSuccessfulEdit && !prevSuccessfulEdit) {
       setShowSuccessIcon(true);
     }
-  }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
+  }, [hasFocus, isLastSuccessfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
   return (
     <TableTdElement
       {...rest}
+      cellId={cellId}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(
         className,
@@ -97,7 +94,7 @@ function TableCellEditable<ItemType>({
             isFocusMoveNeededRef.current = true;
             onEditEnd(e);
           }}
-          submitEdit={submitEdit ?? submitHandlerFallback}
+          submitEdit={onSubmitEdit}
         />
       ) : (
         <>
@@ -137,11 +134,11 @@ function TableCellEditable<ItemType>({
 }
 
 export function TableBodyCell<ItemType>({
-  isEditable,
+  cellEditing,
   ...rest
-}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
-  if (isEditable || rest.isEditing) {
-    return <TableCellEditable {...rest} />;
+}: TableBodyCellProps<ItemType> & { cellEditing?: CellEditingModel<ItemType, unknown> }) {
+  if (cellEditing) {
+    return <TableCellEditable {...rest} cellEditing={cellEditing} />;
   }
   const { column, item } = rest;
   return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
