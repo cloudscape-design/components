@@ -46,6 +46,7 @@ $link-variants: (
     'decoration': underline,
     'decoration-color': currentColor,
     'decoration-color-hover': currentColor,
+    'decoration-thickness': 0.3rem,
   ),
   'top-navigation': (
     'text-color-default': awsui.$color-text-interactive-default,
