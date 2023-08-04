@@ -47,7 +47,7 @@
 
 .action {
   white-space: nowrap;
-  margin-left: awsui.$space-s;
+  margin-left: awsui.$space-alert-action-left;
 }
 
 .action-button {
@@ -79,9 +79,6 @@
   }
   &.message {
     margin-right: awsui.$space-alert-message-right;
-    & + .action {
-      margin-left: awsui.$space-alert-action-left;
-    }
   }
 }
 
