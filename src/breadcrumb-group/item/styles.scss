@@ -20,7 +20,7 @@
   }
 
   > .anchor {
-    @include styles.link-default;
+    @include styles.link-inline;
 
     @include focus-visible.when-visible {
       @include styles.link-focus;

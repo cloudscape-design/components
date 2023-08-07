@@ -25,6 +25,7 @@ import { supportsStickyPosition } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 export { CardsProps };
 
@@ -127,59 +128,63 @@ const Cards = React.forwardRef(function <T = any>(
   }
 
   return (
-    <AnalyticsFunnelSubStep>
-      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
-        <InternalContainer
-          header={
-            hasToolsHeader && (
-              <div
-                className={clsx(
-                  styles.header,
-                  isRefresh && styles['header-refresh'],
-                  styles[`header-variant-${computedVariant}`]
-                )}
-              >
-                <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
-              </div>
-            )
-          }
-          footer={hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
-          disableContentPaddings={true}
-          disableHeaderPaddings={computedVariant === 'full-page'}
-          variant={computedVariant === 'container' ? 'cards' : computedVariant}
-          __stickyHeader={stickyHeader}
-          __stickyOffset={stickyHeaderVerticalOffset}
-          __headerRef={headerRef}
-          __headerId={cardsHeaderId}
-          __darkHeader={computedVariant === 'full-page'}
-          __disableFooterDivider={true}
-        >
-          <div className={clsx(hasToolsHeader && styles['has-header'])}>
-            {!!renderAriaLive && !!firstIndex && (
-              <LiveRegion>
-                <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}</span>
-              </LiveRegion>
-            )}
-            {status ?? (
-              <CardsList
-                items={items}
-                cardDefinition={cardDefinition}
-                trackBy={trackBy}
-                selectionType={selectionType}
-                columns={columns}
-                isItemSelected={isItemSelected}
-                getItemSelectionProps={getItemSelectionProps}
-                visibleSections={visibleSections}
-                updateShiftToggle={updateShiftToggle}
-                onFocus={onCardFocus}
-                ariaLabel={ariaLabels?.cardsLabel}
-                ariaLabelledby={ariaLabels?.cardsLabel ? undefined : cardsHeaderId}
-              />
-            )}
-          </div>
-        </InternalContainer>
-      </div>
-    </AnalyticsFunnelSubStep>
+    <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+      <AnalyticsFunnelSubStep>
+        <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
+          <InternalContainer
+            header={
+              hasToolsHeader && (
+                <div
+                  className={clsx(
+                    styles.header,
+                    isRefresh && styles['header-refresh'],
+                    styles[`header-variant-${computedVariant}`]
+                  )}
+                >
+                  <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                </div>
+              )
+            }
+            footer={hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+            disableContentPaddings={true}
+            disableHeaderPaddings={computedVariant === 'full-page'}
+            variant={computedVariant === 'container' ? 'cards' : computedVariant}
+            __stickyHeader={stickyHeader}
+            __stickyOffset={stickyHeaderVerticalOffset}
+            __headerRef={headerRef}
+            __headerId={cardsHeaderId}
+            __darkHeader={computedVariant === 'full-page'}
+            __disableFooterDivider={true}
+          >
+            <div className={clsx(hasToolsHeader && styles['has-header'])}>
+              {!!renderAriaLive && !!firstIndex && (
+                <LiveRegion>
+                  <span>
+                    {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}
+                  </span>
+                </LiveRegion>
+              )}
+              {status ?? (
+                <CardsList
+                  items={items}
+                  cardDefinition={cardDefinition}
+                  trackBy={trackBy}
+                  selectionType={selectionType}
+                  columns={columns}
+                  isItemSelected={isItemSelected}
+                  getItemSelectionProps={getItemSelectionProps}
+                  visibleSections={visibleSections}
+                  updateShiftToggle={updateShiftToggle}
+                  onFocus={onCardFocus}
+                  ariaLabel={ariaLabels?.cardsLabel}
+                  ariaLabelledby={ariaLabels?.cardsLabel ? undefined : cardsHeaderId}
+                />
+              )}
+            </div>
+          </InternalContainer>
+        </div>
+      </AnalyticsFunnelSubStep>
+    </LinkDefaultVariantContext.Provider>
   );
 }) as CardsForwardRefType;
 

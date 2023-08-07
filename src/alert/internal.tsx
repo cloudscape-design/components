@@ -18,6 +18,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../i18n/context';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
@@ -87,36 +88,38 @@ const InternalAlert = React.forwardRef(
         )}
         ref={mergedRef}
       >
-        <VisualContext contextName="alert">
-          <div className={clsx(styles.alert, styles[`type-${type}`], styles[`icon-size-${size}`])}>
-            <div className={styles['alert-mobile-block']}>
-              <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-                <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
-                  <InternalIcon name={typeToIcon[type]} size={size} />
-                </div>
-                <div className={styles.body}>
-                  <div className={clsx(styles.message, styles.text)}>
-                    {header && <div className={styles.header}>{header}</div>}
-                    <div className={styles.content}>{children}</div>
+        <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+          <VisualContext contextName="alert">
+            <div className={clsx(styles.alert, styles[`type-${type}`], styles[`icon-size-${size}`])}>
+              <div className={styles['alert-mobile-block']}>
+                <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
+                  <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
+                    <InternalIcon name={typeToIcon[type]} size={size} />
+                  </div>
+                  <div className={styles.body}>
+                    <div className={clsx(styles.message, styles.text)}>
+                      {header && <div className={styles.header}>{header}</div>}
+                      <div className={styles.content}>{children}</div>
+                    </div>
                   </div>
                 </div>
+                {hasAction && <div className={styles.action}>{actionButton}</div>}
               </div>
-              {hasAction && <div className={styles.action}>{actionButton}</div>}
+              {dismissible && (
+                <div className={styles.dismiss}>
+                  <InternalButton
+                    className={styles['dismiss-button']}
+                    variant="icon"
+                    iconName="close"
+                    formAction="none"
+                    ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
+                    onClick={() => fireNonCancelableEvent(onDismiss)}
+                  />
+                </div>
+              )}
             </div>
-            {dismissible && (
-              <div className={styles.dismiss}>
-                <InternalButton
-                  className={styles['dismiss-button']}
-                  variant="icon"
-                  iconName="close"
-                  formAction="none"
-                  ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
-                  onClick={() => fireNonCancelableEvent(onDismiss)}
-                />
-              </div>
-            )}
-          </div>
-        </VisualContext>
+          </VisualContext>
+        </LinkDefaultVariantContext.Provider>
       </div>
     );
   }
