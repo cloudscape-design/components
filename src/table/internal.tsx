@@ -453,6 +453,7 @@ const InternalTable = React.forwardRef(
               wrapperRef={wrapperRefObject}
               tableRef={tableRefObject}
               onScroll={handleScroll}
+              offsetScrollbar={!!hasStickyColumns}
             />
           </InternalContainer>
         </ColumnWidthsProvider>
