@@ -11,6 +11,7 @@ import {
   resizableDrawer,
   singleDrawer,
   singleDrawerOpen,
+  manyDrawers,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
@@ -25,6 +26,16 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
 }));
+
+const originalClientHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientHeight') || {};
+
+beforeAll(() => {
+  Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 100 });
+});
+
+afterAll(() => {
+  Object.defineProperty(HTMLElement.prototype, 'clientHeight', originalClientHeight);
+});
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
@@ -231,6 +242,12 @@ describeEachThemeAppLayout(false, () => {
 
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-valuenow', '0');
+  });
+
+  test('should render overflow item when expected', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+
+    expect(wrapper.findDrawersTriggers()!).toHaveLength(1);
   });
 });
 

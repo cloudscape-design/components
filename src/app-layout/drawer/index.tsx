@@ -186,11 +186,13 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
   const { visibleItems, overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem(), drawers?.activeDrawerId);
 
   const overflowItemIsActive = () => {
-    if (drawers) {
-      return drawers.items
-        .slice(getIndexOfOverflowItem(), drawers.items.length)
-        .map(item => item.id)
-        .includes(drawers.activeDrawerId);
+    if (drawers && drawers.activeDrawerId) {
+      return (
+        drawers.items
+          .slice(getIndexOfOverflowItem(), drawers.items.length)
+          .map(item => item.id)
+          .indexOf(drawers.activeDrawerId) !== -1
+      );
     }
   };
 
