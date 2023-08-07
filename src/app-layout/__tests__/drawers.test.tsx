@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { describeEachAppLayout, renderComponent, singleDrawer } from './utils';
+import { describeEachAppLayout, renderComponent, singleDrawer, defineClientHeight } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
 }));
+
+defineClientHeight(100);
 
 describeEachAppLayout(() => {
   test(`should not render drawer when it is not defined`, () => {

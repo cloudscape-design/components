@@ -249,9 +249,6 @@ export const DrawerTriggersBar = ({
                         styles['drawer-trigger'],
                         drawers?.activeDrawerId === item.id && styles['drawer-trigger-active']
                       )}
-                      onClick={() => {
-                        drawers?.onChange({ activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined });
-                      }}
                     >
                       <ToggleButton
                         className={toggleClassName}
