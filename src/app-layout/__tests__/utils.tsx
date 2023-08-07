@@ -99,6 +99,18 @@ export function isDrawerClosed(drawer: ElementWrapper) {
   return !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']));
 }
 
+export function defineClientHeight(height: number) {
+  const originalClientHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientHeight') || {};
+
+  beforeAll(() => {
+    Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: height });
+  });
+
+  afterAll(() => {
+    Object.defineProperty(HTMLElement.prototype, 'clientHeight', originalClientHeight);
+  });
+}
+
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   closeButtonAriaLabel: 'Close panel',
   openButtonAriaLabel: 'Open panel',

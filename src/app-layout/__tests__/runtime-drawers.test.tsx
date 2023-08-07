@@ -7,10 +7,13 @@ import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/i
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { defineClientHeight } from './utils';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
 });
+
+defineClientHeight(800);
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

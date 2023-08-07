@@ -12,6 +12,7 @@ import {
   singleDrawer,
   singleDrawerOpen,
   manyDrawers,
+  defineClientHeight,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
@@ -28,15 +29,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [1300, () => {}],
 }));
 
-const originalClientHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientHeight') || {};
-
-beforeAll(() => {
-  Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 100 });
-});
-
-afterAll(() => {
-  Object.defineProperty(HTMLElement.prototype, 'clientHeight', originalClientHeight);
-});
+defineClientHeight(100);
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
