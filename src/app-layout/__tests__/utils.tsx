@@ -133,6 +133,92 @@ export const singleDrawer: Required<InternalDrawerProps> = {
   },
 };
 
+export const manyDrawers: Required<InternalDrawerProps> = {
+  drawers: {
+    ariaLabel: 'Drawers',
+    items: [
+      {
+        ariaLabels: {
+          closeButton: 'Security close button',
+          content: 'Security drawer content',
+          triggerButton: 'Security trigger button',
+          resizeHandle: 'Security resize handle',
+        },
+        content: <span>Security</span>,
+        id: 'security',
+        trigger: {
+          iconName: 'security',
+        },
+      },
+      {
+        ariaLabels: {
+          closeButton: '1 close button',
+          content: '1 drawer content',
+          triggerButton: '1 trigger button',
+          resizeHandle: '1 resize handle',
+        },
+        content: <span>Security</span>,
+        id: 'security-1',
+        trigger: {
+          iconName: 'security',
+        },
+      },
+      {
+        ariaLabels: {
+          closeButton: '2 close button',
+          content: '2 drawer content',
+          triggerButton: '2 trigger button',
+          resizeHandle: '2 resize handle',
+        },
+        content: <span>Security</span>,
+        id: 'security-2',
+        trigger: {
+          iconName: 'security',
+        },
+      },
+      {
+        ariaLabels: {
+          closeButton: '3 close button',
+          content: '3 drawer content',
+          triggerButton: '3 trigger button',
+          resizeHandle: '3 resize handle',
+        },
+        content: <span>Security</span>,
+        id: 'security-3',
+        trigger: {
+          iconName: 'security',
+        },
+      },
+      {
+        ariaLabels: {
+          closeButton: '4 close button',
+          content: '4 drawer content',
+          triggerButton: '4 trigger button',
+          resizeHandle: '4 resize handle',
+        },
+        content: <span>Security</span>,
+        id: 'security-4',
+        trigger: {
+          iconName: 'security',
+        },
+      },
+      {
+        ariaLabels: {
+          closeButton: '5 close button',
+          content: '5 drawer content',
+          triggerButton: '5 trigger button',
+          resizeHandle: '5 resize handle',
+        },
+        content: <span>Security</span>,
+        id: 'security-5',
+        trigger: {
+          iconName: 'security',
+        },
+      },
+    ],
+  },
+};
+
 export const singleDrawerOpen: Required<InternalDrawerProps> = {
   drawers: {
     ariaLabel: 'Drawers',

@@ -215,7 +215,10 @@ function DesktopTriggers() {
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
       const ITEM_HEIGHT = 48;
-      const overflowSpot = activeDrawerId ? containerHeight / 1.5 : (containerHeight - splitPanelHeight) / 1.5;
+      const overflowSpot =
+        activeDrawerId && isSplitPanelOpen
+          ? (containerHeight - splitPanelReportedHeaderHeight) / 1.5
+          : (containerHeight - splitPanelHeight) / 1.5;
 
       const index = Math.floor(overflowSpot / ITEM_HEIGHT);
 
@@ -234,11 +237,13 @@ function DesktopTriggers() {
   };
 
   const overflowItemIsActive = () => {
-    if (drawers && getIndexOfOverflowItem() > 0) {
-      return drawers.items
-        .slice(getIndexOfOverflowItem(), drawers.items.length)
-        .map(item => item.id)
-        .includes(drawers.activeDrawerId);
+    if (drawers && drawers.activeDrawerId && getIndexOfOverflowItem() > -1) {
+      return (
+        drawers.items
+          .slice(getIndexOfOverflowItem(), drawers.items.length)
+          .map(item => item.id)
+          .indexOf(drawers.activeDrawerId) !== -1
+      );
     }
   };
 
@@ -320,6 +325,7 @@ function DesktopTriggers() {
                 ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
                 selected={item.id === activeDrawerId}
                 badge={item.badge}
+                testId={`awsui-app-layout-trigger-${item.id}`}
               />
             );
           }
@@ -341,6 +347,7 @@ function DesktopTriggers() {
                 text: item.ariaLabels?.content || 'Content',
                 iconName: item.trigger.iconName,
                 iconSvg: item.trigger.iconSvg,
+                badge: item.badge,
               }))}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);

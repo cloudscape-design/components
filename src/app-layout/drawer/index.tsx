@@ -195,11 +195,13 @@ export const DrawerTriggersBar = ({
   };
 
   const overflowItemIsActive = () => {
-    if (drawers) {
-      return drawers.items
-        .slice(getIndexOfOverflowItem(), drawers.items.length)
-        .map(item => item.id)
-        .includes(drawers.activeDrawerId);
+    if (drawers && drawers.activeDrawerId) {
+      return (
+        drawers.items
+          .slice(getIndexOfOverflowItem(), drawers.items.length)
+          .map(item => item.id)
+          .indexOf(drawers.activeDrawerId) !== -1
+      );
     }
   };
 
