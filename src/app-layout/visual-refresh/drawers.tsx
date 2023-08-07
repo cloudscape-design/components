@@ -272,7 +272,8 @@ function DesktopTriggers() {
   }
 
   const overflowItemHasBadge = () => {
-    const overflowItems = getDrawerItems().slice(1, getDrawerItems().length);
+    const overflowItems = drawers?.items.slice(getIndexOfOverflowItem(), drawers.items.length);
+
     return (overflowItems && overflowItems.filter(item => item.badge).length > 0) || false;
   };
 

@@ -203,6 +203,7 @@ export const DrawerTriggersBar = ({
           .indexOf(drawers.activeDrawerId) !== -1
       );
     }
+    return false;
   };
 
   const getDrawerItems = () => {
