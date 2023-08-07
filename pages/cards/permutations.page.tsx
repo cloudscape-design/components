@@ -30,7 +30,7 @@ function createSimpleItems(count: number) {
 const cardDefinition: CardsProps.CardDefinition<Item> = {
   header: item =>
     item.number === 2 ? (
-      <Link href="#" fontSize="heading-m">
+      <Link href="#" fontSize="inherit">
         {item.text}
       </Link>
     ) : (
