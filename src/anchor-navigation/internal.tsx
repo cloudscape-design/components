@@ -14,7 +14,7 @@ const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement>, id: string) 
   const href = event.currentTarget.getAttribute('href');
   if (href) {
     const el = document.getElementById(id);
-    el?.scrollIntoView({ behavior: 'smooth' });
+    el?.scrollIntoView();
   }
 };
 const Anchor = ({ id, text, level, isActive }: AnchorNavigationProps.Anchor & { isActive: boolean }) => {

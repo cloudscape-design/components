@@ -30,7 +30,7 @@ const TextContent = () => {
   );
 };
 
-export default function SimpleToc() {
+export default function SimpleAnchorNavigation() {
   return (
     <article>
       <h1>Simple table of contents</h1>
