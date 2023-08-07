@@ -17,6 +17,7 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
@@ -289,6 +290,11 @@ describe('Classic only features', () => {
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()!.getElement().style.width).toBe('500px');
   });
+
+  test('should render badge when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+    expect(wrapper.findDrawersTriggers()[0]!.getElement().children[0]).toHaveClass(iconStyles.badge);
+  });
 });
 
 describe('VR only features', () => {
@@ -303,5 +309,11 @@ describe('VR only features', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
+  });
+
+  test('should render badge when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+
+    expect(wrapper.findDrawersTriggers()[0]!.getElement()).toHaveClass(visualRefreshStyles.badge);
   });
 });

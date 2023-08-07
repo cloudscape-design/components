@@ -194,6 +194,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
           .indexOf(drawers.activeDrawerId) !== -1
       );
     }
+    return false;
   };
 
   const getDrawerItems = () => {

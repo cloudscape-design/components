@@ -145,6 +145,7 @@ export const manyDrawers: Required<InternalDrawerProps> = {
           resizeHandle: 'Security resize handle',
         },
         content: <span>Security</span>,
+        badge: true,
         id: 'security',
         trigger: {
           iconName: 'security',
