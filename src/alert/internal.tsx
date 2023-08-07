@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { InternalButton } from '../button/internal';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
+import SpaceBetween from '../space-between/internal';
 import { getBaseProps } from '../internal/base-component';
 import VisualContext from '../internal/components/visual-context';
 import styles from './styles.css.js';
@@ -19,6 +20,7 @@ import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../i18n/context';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { useDiscoveredAction } from './discovered-action';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
@@ -60,17 +62,21 @@ const InternalAlert = React.forwardRef(
     const isRefresh = useVisualRefresh();
     const size = isRefresh ? 'normal' : header && children ? 'big' : 'normal';
 
-    const actionButton = action || (
-      <InternalButton
-        className={styles['action-button']}
-        onClick={() => fireNonCancelableEvent(onButtonClick)}
-        formAction="none"
-      >
-        {buttonText}
-      </InternalButton>
-    );
+    const { discoveredAction, headerRef, contentRef } = useDiscoveredAction(type);
 
-    const hasAction = Boolean(action || buttonText);
+    const actionButton =
+      action ||
+      (buttonText ? (
+        <InternalButton
+          className={styles['action-button']}
+          onClick={() => fireNonCancelableEvent(onButtonClick)}
+          formAction="none"
+        >
+          {buttonText}
+        </InternalButton>
+      ) : null);
+
+    const hasAction = Boolean(action || buttonText || discoveredAction);
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_ALERT]: type,
     };
@@ -98,12 +104,25 @@ const InternalAlert = React.forwardRef(
                   </div>
                   <div className={styles.body}>
                     <div className={clsx(styles.message, styles.text)}>
-                      {header && <div className={styles.header}>{header}</div>}
-                      <div className={styles.content}>{children}</div>
+                      {header && (
+                        <div className={styles.header} ref={headerRef}>
+                          {header}
+                        </div>
+                      )}
+                      <div className={styles.content} ref={contentRef}>
+                        {children}
+                      </div>
                     </div>
                   </div>
                 </div>
-                {hasAction && <div className={styles.action}>{actionButton}</div>}
+                {hasAction && (
+                  <div className={styles.action}>
+                    <SpaceBetween size="xs" direction="horizontal">
+                      {discoveredAction}
+                      {actionButton}
+                    </SpaceBetween>
+                  </div>
+                )}
               </div>
               {dismissible && (
                 <div className={styles.dismiss}>

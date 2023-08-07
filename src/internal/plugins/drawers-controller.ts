@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { DrawerItem } from '../../app-layout/drawer/interfaces';
+import debounce from '../debounce';
 
 export type DrawerConfig = Omit<DrawerItem, 'content' | 'trigger'> & {
   orderPriority?: number;
@@ -15,16 +16,10 @@ export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void
 export class DrawersController {
   private drawers: Array<DrawerConfig> = [];
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
-  private updateTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  private scheduleUpdate() {
-    if (this.updateTimeout) {
-      clearTimeout(this.updateTimeout);
-    }
-    this.updateTimeout = setTimeout(() => {
-      this.drawersRegistrationListener?.(this.drawers);
-    });
-  }
+  scheduleUpdate = debounce(() => {
+    this.drawersRegistrationListener?.(this.drawers);
+  }, 0);
 
   registerDrawer = (config: DrawerConfig) => {
     this.drawers = this.drawers.concat(config);
@@ -33,7 +28,7 @@ export class DrawersController {
 
   onDrawersRegistered = (listener: DrawersRegistrationListener) => {
     if (this.drawersRegistrationListener !== null) {
-      console.warn('[AwsUi] [runtime plugins] multiple app layout instances detected');
+      console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
     }
     this.drawersRegistrationListener = listener;
     this.scheduleUpdate();

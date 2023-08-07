@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { render, unmountComponentAtNode } from 'react-dom';
 import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
 import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import awsuiPlugins from '~components/internal/plugins';
 
 const longText =
   'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
@@ -25,6 +27,31 @@ const longTextWithLink = (
 );
 
 const allTypes: AlertProps.Type[] = ['info', 'success', 'warning', 'error'];
+
+awsuiPlugins.alert.registerAction({
+  id: 'awsui/alert-test-action',
+  mountContent: (container, context) => {
+    render(
+      <Button
+        iconName="status-info"
+        onClick={() => {
+          alert(
+            [
+              'Content',
+              `Type: ${context.type}`,
+              `Header: ${context.headerRef.current?.textContent}`,
+              `Content: ${context.contentRef.current?.textContent}`,
+            ].join('\n')
+          );
+        }}
+      >
+        Debug
+      </Button>,
+      container
+    );
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<AlertProps>([

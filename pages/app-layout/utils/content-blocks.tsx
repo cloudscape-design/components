@@ -56,6 +56,7 @@ export function Navigation() {
         href: '#',
         text: 'Service name',
       }}
+      onFollow={event => event.preventDefault()}
       items={range(30).map(i => ({ type: 'link', text: `Navigation #${i + 1}`, href: `#item-${i}` }))}
     />
   );
