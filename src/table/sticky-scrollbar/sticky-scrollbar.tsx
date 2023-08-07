@@ -25,7 +25,7 @@ function StickyScrollbar(
   const scrollbarRef = React.useRef<HTMLDivElement>(null);
   const scrollbarContentRef = React.useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(ref, scrollbarRef);
-  console.log({ offsetScrollbar });
+
   /**
    * Use the appropriate AppLayout context (Classic or Visual Refresh) to determine
    * the offsetBottom value to be used in the useStickyScrollbar hook.
