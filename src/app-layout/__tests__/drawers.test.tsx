@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { describeEachAppLayout, renderComponent, singleDrawer, defineClientHeight } from './utils';
+import { describeEachAppLayout, renderComponent, singleDrawer, defineClientHeight, manyDrawers } from './utils';
+import { act, screen } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -34,5 +35,13 @@ describeEachAppLayout(() => {
     const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
 
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+  });
+
+  test('should open active drawer on click of overflow item', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    act(() => screen.getByLabelText('Overflow drawer triggers').click());
+    act(() => screen.getAllByRole('menuitem')[0].click());
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 });
