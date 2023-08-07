@@ -6,9 +6,9 @@ import { render, screen } from '@testing-library/react';
 import { useDynamicOverlap } from '../../../../../lib/components/internal/hooks/use-dynamic-overlap';
 import { DynamicOverlapContext } from '../../../../../lib/components/internal/context/dynamic-overlap-context';
 
-jest.mock('@cloudscape-design/component-toolkit', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit'),
-  useContainerQuery: () => [800, () => {}],
+jest.mock('../../../../../lib/components/internal/hooks/container-queries/utils', () => ({
+  ...jest.requireActual('../../../../../lib/components/internal/hooks/container-queries/utils'),
+  convertResizeObserverEntry: () => ({ contentBoxHeight: 800 }),
 }));
 
 function renderApp(children: React.ReactNode) {

@@ -16,7 +16,14 @@ when the \`dismissible\` property is set to \`true\`.",
       "name": "onDismiss",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets focus on the alert content.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Alert",
   "properties": Array [
     Object {
@@ -54,7 +61,7 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"info\\"",
+      "defaultValue": "'info'",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
         "name": "AlertProps.Type",
@@ -8184,7 +8191,6 @@ For other options see the documentation for <a> tag's
       "type": "string",
     },
     Object {
-      "defaultValue": "'secondary'",
       "description": "Determines the visual style of the link as follows:
 - \`primary\` - Displays the link text with bold styling for sufficient contrast with surrounding text.
     Use this for links where the context doesn't imply interactivity such as
@@ -8192,7 +8198,14 @@ For other options see the documentation for <a> tag's
 - \`secondary\` - Does not provide any additional indicators for interactivity (except for an underline when the user hovers over or focuses the link).
     This can be used in cases where the interactivity is strongly implied by its context,
     such as in a table or a list of external links.
-- \`info\` - Use for \\"info\\" links that link to content in a help panel.",
+- \`info\` - Use for \\"info\\" links that link to content in a help panel.
+The default is \`secondary\`, except inside the following components where it defaults to \`primary\`:
+- Table
+- Cards
+- Alert
+- Popover
+- Help Panel (main \`content\` only)
+",
       "inlineType": Object {
         "name": "LinkProps.Variant",
         "type": "union",
