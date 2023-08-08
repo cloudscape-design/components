@@ -6,7 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { findAllPages } from '../__integ__/utils';
 import A11yPageObject from './a11y-page-object';
 
-type Theme = string;
+type Theme = 'default' | 'visual-refresh';
 type Mode = 'light' | 'dark';
 
 function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>) {
@@ -19,21 +19,19 @@ function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>)
 }
 
 function urlFormatter(inputUrl: string, theme: Theme, mode: Mode) {
-  return `#/${mode}/${inputUrl}?visualRefresh=${theme.indexOf('visual-refresh') !== -1 ? 'true' : 'false'}`;
+  return `#/${mode}/${inputUrl}?visualRefresh=${theme === 'visual-refresh' ? 'true' : 'false'}`;
 }
 
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
   describe(`A11y checks for ${mode} ${theme}`, () => {
     findAllPages().forEach(inputUrl => {
-      const testFunction =
-        [
-          ...skip,
-          'theming/tokens',
-          // this page intentionally has issues to test the helper
-          'undefined-texts',
-        ].indexOf(inputUrl) === -1
-          ? test
-          : test.skip;
+      const skipPages = [
+        ...skip,
+        'theming/tokens',
+        // this page intentionally has issues to test the helper
+        'undefined-texts',
+      ];
+      const testFunction = skipPages.includes(inputUrl) ? test.skip : test;
       const url = urlFormatter(inputUrl, theme, mode);
       testFunction(
         url,
