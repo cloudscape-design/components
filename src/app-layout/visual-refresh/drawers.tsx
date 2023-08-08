@@ -226,14 +226,21 @@ function DesktopTriggers() {
     return -1;
   };
 
+  const splitItems = (items: any[] | undefined) => {
+    let visibleItems = [];
+    let overflowItems = [];
+    if (items) {
+      visibleItems = items.slice(0, getIndexOfOverflowItem());
+      overflowItems = items.slice(getIndexOfOverflowItem(), items.length);
+    }
+    return { visibleItems, overflowItems };
+  };
+
   const overflowItemIsActive = () => {
+    const { overflowItems } = splitItems(drawers?.items);
+
     if (drawers && drawers.activeDrawerId && getIndexOfOverflowItem() > -1) {
-      return (
-        drawers.items
-          .slice(getIndexOfOverflowItem(), drawers.items.length)
-          .map(item => item.id)
-          .indexOf(drawers.activeDrawerId) !== -1
-      );
+      return overflowItems.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
     }
   };
 
@@ -262,10 +269,11 @@ function DesktopTriggers() {
   }
 
   const overflowItemHasBadge = () => {
-    const overflowItems = drawers?.items.slice(getIndexOfOverflowItem(), drawers.items.length);
-
+    const { overflowItems } = splitItems(drawers?.items);
     return (overflowItems && overflowItems.filter(item => item.badge).length > 0) || false;
   };
+
+  const { visibleItems, overflowItems } = splitItems(getDrawerItems());
 
   return (
     <aside
@@ -300,26 +308,24 @@ function DesktopTriggers() {
           />
         )}
 
-        {getDrawerItems()?.map((item, index) => {
-          if (index < getIndexOfOverflowItem()) {
-            return (
-              <TriggerButton
-                ariaLabel={item.ariaLabels?.triggerButton}
-                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
-                iconName={item.trigger.iconName}
-                iconSvg={item.trigger.iconSvg}
-                key={item.id}
-                onClick={() => {
-                  isToolsOpen && handleToolsClick(!isToolsOpen, true);
-                  handleDrawersClick(item.id);
-                }}
-                ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-                selected={item.id === activeDrawerId}
-                badge={item.badge}
-                testId={`awsui-app-layout-trigger-${item.id}`}
-              />
-            );
-          }
+        {visibleItems.map(item => {
+          return (
+            <TriggerButton
+              ariaLabel={item.ariaLabels?.triggerButton}
+              className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+              iconName={item.trigger.iconName}
+              iconSvg={item.trigger.iconSvg}
+              key={item.id}
+              onClick={() => {
+                isToolsOpen && handleToolsClick(!isToolsOpen, true);
+                handleDrawersClick(item.id);
+              }}
+              ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+              selected={item.id === activeDrawerId}
+              badge={item.badge}
+              testId={`awsui-app-layout-trigger-${item.id}`}
+            />
+          );
         })}
 
         {getDrawerItems() && getDrawerItems().length > getIndexOfOverflowItem() && (
@@ -331,15 +337,13 @@ function DesktopTriggers() {
               styles['drawers-trigger-overflow'],
               overflowItemHasBadge() && styles.badge
             )}
-            items={getDrawerItems()
-              .slice(getIndexOfOverflowItem(), getDrawerItems().length)
-              .map(item => ({
-                id: item.id,
-                text: item.ariaLabels?.content || 'Content',
-                iconName: item.trigger.iconName,
-                iconSvg: item.trigger.iconSvg,
-                badge: item.badge,
-              }))}
+            items={overflowItems.map(item => ({
+              id: item.id,
+              text: item.ariaLabels?.content || 'Content',
+              iconName: item.trigger.iconName,
+              iconSvg: item.trigger.iconSvg,
+              badge: item.badge,
+            }))}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
             }}

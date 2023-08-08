@@ -7,11 +7,10 @@ import InternalButtonDropdown from '../../button-dropdown/internal';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
-import { InternalButton } from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
+import { getTrigger } from './overflow-menu';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useCompactMode } from '../../internal/hooks/use-compact-mode';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -136,36 +135,6 @@ export const Drawer = React.forwardRef(
   }
 );
 
-const getTrigger = (hasOverflowBadge: boolean, isActive: boolean) => {
-  const DropdownTrigger = (
-    clickHandler: () => void,
-    ref: React.Ref<ButtonProps.Ref>,
-    isDisabled: boolean,
-    isExpanded: boolean,
-    ariaLabel?: string
-  ) => {
-    return (
-      <InternalButton
-        disabled={isDisabled}
-        onClick={event => {
-          event.preventDefault();
-          clickHandler();
-        }}
-        className={clsx(isActive && buttonDropdownStyles['trigger-active'])}
-        ref={ref}
-        ariaExpanded={isExpanded}
-        aria-haspopup={true}
-        ariaLabel={ariaLabel}
-        variant="icon"
-        iconName="ellipsis"
-        badge={hasOverflowBadge}
-        badgeColor="red"
-      />
-    );
-  };
-  return DropdownTrigger;
-};
-
 export const DrawerTriggersBar = ({
   isMobile,
   topOffset,
@@ -175,32 +144,40 @@ export const DrawerTriggersBar = ({
   toggleClassName,
 }: DrawerTriggersBarProps) => {
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
+  const isCompactMode = useCompactMode();
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
-      const itemHeight = 38;
+      const ITEM_HEIGHT = isCompactMode ? 34 : 38;
       const overflowSpot = containerHeight / 1.5;
 
-      const index = Math.floor(overflowSpot / itemHeight).toFixed(0);
+      const index = Math.floor(overflowSpot / ITEM_HEIGHT);
 
-      return parseInt(index);
+      return index;
     }
     return 0;
   };
 
+  const splitItems = (items: any[] | undefined) => {
+    let visibleItems = [];
+    let overflowItems = [];
+    if (items) {
+      visibleItems = items.slice(0, getIndexOfOverflowItem());
+      overflowItems = items.slice(getIndexOfOverflowItem(), items.length);
+    }
+    return { visibleItems, overflowItems };
+  };
+
   const overflowItemHasBadge = () => {
-    const overflowItems = drawers?.items.slice(getIndexOfOverflowItem(), drawers.items.length);
+    const { overflowItems } = splitItems(drawers?.items);
     return overflowItems ? overflowItems.filter(item => item.badge).length > 0 : false;
   };
 
   const overflowItemIsActive = () => {
+    const { overflowItems } = splitItems(drawers?.items);
+
     if (drawers && drawers.activeDrawerId) {
-      return (
-        drawers.items
-          .slice(getIndexOfOverflowItem(), drawers.items.length)
-          .map(item => item.id)
-          .indexOf(drawers.activeDrawerId) !== -1
-      );
+      return overflowItems.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
     }
     return false;
   };
@@ -225,6 +202,8 @@ export const DrawerTriggersBar = ({
     return [];
   };
 
+  const { visibleItems, overflowItems } = splitItems(getDrawerItems());
+
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
@@ -239,34 +218,32 @@ export const DrawerTriggersBar = ({
         {!isMobile && (
           <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers-wrapper'], contentClassName)}>
             <>
-              {getDrawerItems().map((item: DrawerItem, index: number) => {
-                if (index < getIndexOfOverflowItem()) {
-                  return (
-                    <span
-                      key={index}
-                      className={clsx(
-                        styles['drawer-trigger'],
-                        drawers?.activeDrawerId === item.id && styles['drawer-trigger-active']
-                      )}
-                    >
-                      <ToggleButton
-                        className={toggleClassName}
-                        key={`drawer-trigger-${index}`}
-                        iconName={item.trigger.iconName}
-                        iconSvg={item.trigger.iconSvg}
-                        ariaLabel={item.ariaLabels?.triggerButton}
-                        onClick={() =>
-                          drawers?.onChange({
-                            activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
-                          })
-                        }
-                        ariaExpanded={drawers?.activeDrawerId !== undefined}
-                        badge={item.badge}
-                        testId={`awsui-app-layout-trigger-${item.id}`}
-                      />
-                    </span>
-                  );
-                }
+              {visibleItems.map((item: DrawerItem, index: number) => {
+                return (
+                  <span
+                    key={index}
+                    className={clsx(
+                      styles['drawer-trigger'],
+                      drawers?.activeDrawerId === item.id && styles['drawer-trigger-active']
+                    )}
+                  >
+                    <ToggleButton
+                      className={toggleClassName}
+                      key={`drawer-trigger-${index}`}
+                      iconName={item.trigger.iconName}
+                      iconSvg={item.trigger.iconSvg}
+                      ariaLabel={item.ariaLabels?.triggerButton}
+                      onClick={() =>
+                        drawers?.onChange({
+                          activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
+                        })
+                      }
+                      ariaExpanded={drawers?.activeDrawerId !== undefined}
+                      badge={item.badge}
+                      testId={`awsui-app-layout-trigger-${item.id}`}
+                    />
+                  </span>
+                );
               })}
               {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
                 <span
@@ -274,15 +251,13 @@ export const DrawerTriggersBar = ({
                 >
                   <InternalButtonDropdown
                     expandToViewport={true}
-                    items={getDrawerItems()
-                      .slice(getIndexOfOverflowItem(), getDrawerItems().length)
-                      .map(item => ({
-                        id: item.id,
-                        text: item.ariaLabels?.content || 'Content',
-                        iconName: item.trigger.iconName,
-                        iconSvg: item.trigger.iconSvg,
-                        badge: item.badge,
-                      }))}
+                    items={overflowItems.map(item => ({
+                      id: item.id,
+                      text: item.ariaLabels?.content || 'Content',
+                      iconName: item.trigger.iconName,
+                      iconSvg: item.trigger.iconSvg,
+                      badge: item.badge,
+                    }))}
                     onItemClick={({ detail }) => {
                       drawers.onChange({
                         activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
