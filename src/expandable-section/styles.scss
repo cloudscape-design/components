@@ -110,6 +110,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     padding-right: container.$header-padding-horizontal;
 
     &:not(.wrapper-expanded) {
+      // Equal top and bottom padding so standalone header has vertical symmetry.
       padding-bottom: awsui.$space-container-header-top;
     }
     &.header-deprecated {

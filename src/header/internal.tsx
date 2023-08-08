@@ -55,14 +55,7 @@ export default function InternalHeader({
       ref={__internalRootRef}
     >
       <div className={clsx(styles.main, styles[`main-variant-${variantOverride}`], isRefresh && styles.refresh)}>
-        <div
-          className={clsx(
-            styles.title,
-            styles[`title-variant-${variantOverride}`],
-            isRefresh && styles.refresh,
-            actions && [styles[`has-actions`]]
-          )}
-        >
+        <div className={clsx(styles.title, styles[`title-variant-${variantOverride}`], isRefresh && styles.refresh)}>
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
             <span
               {...{ [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME }}
