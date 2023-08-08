@@ -6,7 +6,7 @@ import { isDevelopment } from '../../is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 interface ExtendedWindow extends Window {
-  AWSC?: any;
+  [key: symbol]: boolean;
 }
 declare const window: ExtendedWindow;
 
@@ -21,14 +21,14 @@ export function clearVisualRefreshState() {
 }
 
 function detectVisualRefresh() {
-  return (
-    (typeof window !== 'undefined' && !!window.AWSC && !!window.AWSC.isVisualRefresh) ||
-    (typeof document !== 'undefined' && !!document.querySelector('.awsui-visual-refresh'))
-  );
+  return typeof document !== 'undefined' && !!document.querySelector('.awsui-visual-refresh');
 }
 
 export function useVisualRefreshDynamic() {
   if (visualRefreshState === undefined) {
+    if (typeof window !== 'undefined' && !!window[Symbol.for('isVisualRefresh')]) {
+      document.body.classList.add('awsui-visual-refresh');
+    }
     visualRefreshState = detectVisualRefresh();
   }
   if (isDevelopment) {
