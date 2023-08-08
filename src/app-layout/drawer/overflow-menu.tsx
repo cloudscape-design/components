@@ -5,8 +5,11 @@ import React from 'react';
 import { ButtonProps } from '../../button/interfaces';
 import { InternalButton } from '../../button/internal';
 import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
+import InternalButtonDropdown from '../../button-dropdown/internal';
+import { ButtonDropdownProps } from '../../button-dropdown/interfaces';
+import { CancelableEventHandler } from '../../internal/events';
 
-export const getTrigger = (hasOverflowBadge: boolean, isActive: boolean) => {
+const getTrigger = (hasOverflowBadge?: boolean, isActive?: boolean) => {
   const DropdownTrigger = (
     clickHandler: () => void,
     ref: React.Ref<ButtonProps.Ref>,
@@ -35,3 +38,34 @@ export const getTrigger = (hasOverflowBadge: boolean, isActive: boolean) => {
   };
   return DropdownTrigger;
 };
+
+interface OverflowMenuProps {
+  drawersRefs?: any;
+  className?: any;
+  overflowItems: any[];
+  onItemClick: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  hasOverflowBadge?: boolean;
+  hasActiveStyles?: boolean;
+}
+
+export default function OverflowMenu(props: OverflowMenuProps) {
+  const { drawersRefs, className, overflowItems, onItemClick, hasOverflowBadge, hasActiveStyles } = props;
+  return (
+    <InternalButtonDropdown
+      ref={drawersRefs ? drawersRefs.toggle : null}
+      className={className}
+      items={overflowItems.map(item => ({
+        id: item.id,
+        text: item.ariaLabels?.content || 'Content',
+        iconName: item.trigger.iconName,
+        iconSvg: item.trigger.iconSvg,
+        badge: item.badge,
+      }))}
+      onItemClick={onItemClick}
+      ariaLabel="Overflow drawer triggers"
+      variant="icon"
+      customTriggerBuilder={getTrigger(hasOverflowBadge, hasActiveStyles)}
+      expandToViewport={true}
+    />
+  );
+}

@@ -4,17 +4,15 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
-import InternalButtonDropdown from '../../button-dropdown/internal';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
-import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import OverflowMenu from '../drawer/overflow-menu';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -130,36 +128,6 @@ function ActiveDrawer() {
     </aside>
   );
 }
-
-const getTrigger = (hasOverflowBadge: boolean, isMobile: boolean) => {
-  const DropdownTrigger = (
-    clickHandler: () => void,
-    ref: React.Ref<ButtonProps.Ref>,
-    isDisabled: boolean,
-    isExpanded: boolean,
-    ariaLabel?: string
-  ) => {
-    return (
-      <InternalButton
-        disabled={isDisabled}
-        onClick={event => {
-          event.preventDefault();
-          clickHandler();
-        }}
-        className={clsx(!isMobile && buttonDropdownStyles['trigger-active'])}
-        ref={ref}
-        ariaExpanded={isExpanded}
-        aria-haspopup={true}
-        ariaLabel={ariaLabel}
-        variant="icon"
-        badge={hasOverflowBadge}
-        badgeColor="red"
-        iconName="ellipsis"
-      />
-    );
-  };
-  return DropdownTrigger;
-};
 
 /**
  * The DesktopTriggers will render the trigger buttons for Tools, Drawers, and the
@@ -329,28 +297,19 @@ function DesktopTriggers() {
         })}
 
         {getDrawerItems() && getDrawerItems().length > getIndexOfOverflowItem() && (
-          <InternalButtonDropdown
-            ref={drawersRefs.toggle}
+          <OverflowMenu
+            drawersRefs={drawersRefs}
             className={clsx(
               styles['drawers-trigger'],
               styles.trigger,
               styles['drawers-trigger-overflow'],
               overflowItemHasBadge() && styles.badge
             )}
-            items={overflowItems.map(item => ({
-              id: item.id,
-              text: item.ariaLabels?.content || 'Content',
-              iconName: item.trigger.iconName,
-              iconSvg: item.trigger.iconSvg,
-              badge: item.badge,
-            }))}
+            overflowItems={overflowItems}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
             }}
-            ariaLabel="Overflow drawer triggers"
-            variant="icon"
-            customTriggerBuilder={getTrigger(false, isMobile)}
-            expandToViewport={true}
+            hasActiveStyles={true}
           />
         )}
         {hasSplitPanel && splitPanelToggle.displayed && (
@@ -456,23 +415,14 @@ export function MobileTriggers() {
         />
       ))}
       {drawers?.items?.length && hasOverflowMenu && (
-        <InternalButtonDropdown
-          ref={drawersRefs.toggle}
+        <OverflowMenu
+          drawersRefs={drawersRefs}
           className={clsx(styles['drawers-trigger'], overflowItemHasBadge() && styles.badge)}
-          items={overflowItems.map(item => ({
-            id: item.id,
-            text: item.ariaLabels?.content || 'Content',
-            iconName: item.trigger.iconName,
-            iconSvg: item.trigger.iconSvg,
-            badge: item.badge,
-          }))}
+          overflowItems={overflowItems}
           onItemClick={({ detail }) => {
             handleDrawersClick(detail.id);
           }}
-          ariaLabel="Overflow drawer triggers"
-          variant="icon"
-          customTriggerBuilder={getTrigger(overflowItemHasBadge(), isMobile)}
-          expandToViewport={true}
+          hasOverflowBadge={overflowItemHasBadge()}
         />
       )}
     </aside>

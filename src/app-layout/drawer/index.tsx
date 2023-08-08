@@ -3,12 +3,11 @@
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
-import InternalButtonDropdown from '../../button-dropdown/internal';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
-import { getTrigger } from './overflow-menu';
+import OverflowMenu from './overflow-menu';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useCompactMode } from '../../internal/hooks/use-compact-mode';
 
@@ -249,23 +248,15 @@ export const DrawerTriggersBar = ({
                 <span
                   className={clsx(styles['drawer-trigger'], overflowItemIsActive() && styles['drawer-trigger-active'])}
                 >
-                  <InternalButtonDropdown
-                    expandToViewport={true}
-                    items={overflowItems.map(item => ({
-                      id: item.id,
-                      text: item.ariaLabels?.content || 'Content',
-                      iconName: item.trigger.iconName,
-                      iconSvg: item.trigger.iconSvg,
-                      badge: item.badge,
-                    }))}
+                  <OverflowMenu
+                    overflowItems={overflowItems}
                     onItemClick={({ detail }) => {
                       drawers.onChange({
                         activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                       });
                     }}
-                    ariaLabel="Overflow drawer triggers"
-                    customTriggerBuilder={getTrigger(overflowItemHasBadge(), overflowItemIsActive())}
-                    variant="icon"
+                    hasOverflowBadge={overflowItemHasBadge()}
+                    hasActiveStyles={overflowItemIsActive()}
                   />
                 </span>
               )}

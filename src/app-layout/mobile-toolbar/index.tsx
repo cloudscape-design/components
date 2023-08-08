@@ -6,8 +6,7 @@ import { ButtonProps } from '../../button/interfaces';
 import { AppLayoutProps } from '../interfaces';
 import { DrawerItem } from '../drawer/interfaces';
 import { ToggleButton, togglesConfig } from '../toggles';
-import InternalButtonDropdown from '../../button-dropdown/internal';
-import { InternalButton } from '../../button/internal';
+import OverflowMenu from '../drawer/overflow-menu';
 import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -66,35 +65,6 @@ interface MobileToolbarProps {
     ariaLabel?: string;
   };
 }
-
-const getTrigger = (hasOverflowBadge: boolean) => {
-  const DropdownTrigger = (
-    clickHandler: () => void,
-    ref: React.Ref<ButtonProps.Ref>,
-    isDisabled: boolean,
-    isExpanded: boolean,
-    ariaLabel?: string
-  ) => {
-    return (
-      <InternalButton
-        disabled={isDisabled}
-        onClick={event => {
-          event.preventDefault();
-          clickHandler();
-        }}
-        ref={ref}
-        ariaExpanded={isExpanded}
-        aria-haspopup={true}
-        ariaLabel={ariaLabel}
-        variant="icon"
-        iconName="ellipsis"
-        badge={hasOverflowBadge}
-        badgeColor="red"
-      />
-    );
-  };
-  return DropdownTrigger;
-};
 
 export function MobileToolbar({
   ariaLabels = {},
@@ -176,22 +146,14 @@ export function MobileToolbar({
           ))}
           {drawers?.items?.length && drawers?.items?.length > 2 && (
             <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
-              <InternalButtonDropdown
-                items={drawers.items.slice(2, drawers.items.length).map(item => ({
-                  id: item.id,
-                  text: item.ariaLabels?.content || 'Content',
-                  iconName: item.trigger.iconName,
-                  iconSvg: item.trigger.iconSvg,
-                  badge: item.badge,
-                }))}
+              <OverflowMenu
+                overflowItems={drawers.items.slice(2, drawers.items.length)}
                 onItemClick={({ detail }) => {
                   drawers.onChange({
                     activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                   });
                 }}
-                ariaLabel="Overflow drawer triggers"
-                customTriggerBuilder={getTrigger(overflowItemHasBadge())}
-                expandToViewport={true}
+                hasOverflowBadge={overflowItemHasBadge()}
               />
             </span>
           )}
