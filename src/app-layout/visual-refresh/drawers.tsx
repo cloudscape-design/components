@@ -14,6 +14,7 @@ import styles from './styles.css.js';
 import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -160,16 +161,6 @@ const getTrigger = (hasOverflowBadge: boolean, isMobile: boolean) => {
   return DropdownTrigger;
 };
 
-function useContainerHeight(ref: React.RefObject<HTMLDivElement>) {
-  const [height, setHeight] = React.useState(() => (ref.current ? ref.current.clientHeight : 0));
-  React.useEffect(() => {
-    const handler = () => setHeight(ref.current ? ref.current.clientHeight : 0);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, [ref]);
-  return height;
-}
-
 /**
  * The DesktopTriggers will render the trigger buttons for Tools, Drawers, and the
  * SplitPanel in non mobile viewports. Changes to the activeDrawerId need to be
@@ -206,11 +197,10 @@ function DesktopTriggers() {
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
   const previousActiveDrawerId = useRef(activeDrawerId);
 
-  const triggersContainerRef = useRef<HTMLDivElement>(null);
-
   const splitPanelHeight =
     isSplitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : splitPanelReportedHeaderHeight;
-  const containerHeight = useContainerHeight(triggersContainerRef) || triggersContainerRef.current?.clientHeight;
+
+  const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {

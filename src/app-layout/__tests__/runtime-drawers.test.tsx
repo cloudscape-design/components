@@ -7,13 +7,15 @@ import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/i
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/drawers-controller';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { defineClientHeight } from './utils';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
 });
 
-defineClientHeight(800);
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [1300, () => {}],
+}));
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

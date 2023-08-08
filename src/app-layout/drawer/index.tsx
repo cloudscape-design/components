@@ -11,6 +11,7 @@ import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
 import { InternalButton } from '../../button/internal';
 import { ButtonProps } from '../../button/interfaces';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -173,9 +174,7 @@ export const DrawerTriggersBar = ({
   contentClassName,
   toggleClassName,
 }: DrawerTriggersBarProps) => {
-  const triggersContainerRef = useRef<HTMLDivElement>(null);
-
-  const containerHeight = triggersContainerRef.current?.clientHeight;
+  const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
@@ -275,7 +274,6 @@ export const DrawerTriggersBar = ({
                 >
                   <InternalButtonDropdown
                     expandToViewport={true}
-                    className={clsx(styles['trigger-overflow'])}
                     items={getDrawerItems()
                       .slice(getIndexOfOverflowItem(), getDrawerItems().length)
                       .map(item => ({

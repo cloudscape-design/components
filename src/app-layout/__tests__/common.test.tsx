@@ -10,11 +10,13 @@ import {
   renderComponent,
   singleDrawer,
   singleDrawerOpen,
-  defineClientHeight,
 } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
-defineClientHeight(100);
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [100, () => {}],
+}));
 
 describeEachAppLayout(() => {
   test('Default state', () => {
