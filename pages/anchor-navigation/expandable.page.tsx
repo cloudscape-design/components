@@ -6,6 +6,7 @@ import { TextSample } from './utils';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './styles.scss';
+import { ExpandableSection } from '~components';
 
 const TextContent = () => {
   return (
@@ -40,19 +41,20 @@ export default function SimpleToc() {
             <TextContent />
             <div>
               <div className={styles['anchor-navigation']}>
-                <AnchorNavigation
-                  variant="expandable"
-                  anchors={[
-                    { id: 'section-1', text: 'Section 1', level: 1 },
-                    { id: 'section-1-1', text: 'Section 1.1', level: 2 },
-                    { id: 'section-1-1-1', text: 'Section 1.1.1', level: 3 },
-                    { id: 'section-1-1-2', text: 'Section 1.1.2', level: 3 },
-                    { id: 'section-1-2', text: 'Section 1.2', level: 2 },
-                    { id: 'section-1-2-1', text: 'Section 1.2.1', level: 3 },
-                    { id: 'section-1-2-1-1', text: 'Section 1.2.1.1', level: 4 },
-                  ]}
-                  title="On this page"
-                />
+                <ExpandableSection variant="navigation" headerText="On this page">
+                  <AnchorNavigation
+                    ariaLabelledby="anchor-nav-heading"
+                    anchors={[
+                      { href: '#section-1', text: 'Section 1', level: 1 },
+                      { href: '#section-1-1', text: 'Section 1.1', level: 2 },
+                      { href: '#section-1-1-1', text: 'Section 1.1.1', level: 3 },
+                      { href: '#section-1-1-2', text: 'Section 1.1.2', level: 3 },
+                      { href: '#section-1-2', text: 'Section 1.2', level: 2 },
+                      { href: '#section-1-2-1', text: 'Section 1.2.1', level: 3 },
+                      { href: '#section-1-2-1-1', text: 'Section 1.2.1.1', level: 4 },
+                    ]}
+                  />
+                </ExpandableSection>
               </div>
             </div>
           </div>

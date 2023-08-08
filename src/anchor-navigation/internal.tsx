@@ -1,14 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import InternalBox from '../box/internal.js';
-import InternalSpaceBetween from '../space-between/internal.js';
 import { AnchorNavigationProps } from './interfaces.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
 import useScrollSpy from './scroll-spy.js';
-import InternalExpandableSection from '../expandable-section/internal.js';
 const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
   event.preventDefault();
   const href = event.currentTarget.getAttribute('href');
@@ -17,19 +14,20 @@ const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement>, id: string) 
     el?.scrollIntoView();
   }
 };
-const Anchor = ({ id, text, level, isActive }: AnchorNavigationProps.Anchor & { isActive: boolean }) => {
-  checkSafeUrl('SideNavigation', id);
+const Anchor = ({ href, text, level, isActive }: AnchorNavigationProps.Anchor & { isActive: boolean }) => {
+  checkSafeUrl('SideNavigation', href);
 
   return (
-    <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })} key={id}>
+    <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })} key={href}>
       <a
         style={{
-          // 2px for compensate for -2 negative margin, so active item borders overlap
+          // 2px for compensate for -2 negative margin, so the active item borders overlaps the border
           paddingLeft: `${level * 16}px`,
         }}
-        onClick={e => navigateToItem(e, id)}
+        onClick={e => navigateToItem(e, href)}
         className={clsx(styles['anchor-link'], { [styles['anchor-link-active']]: isActive })}
-        href={`#${id}`}
+        {...(isActive ? { 'aria-current': true } : {})}
+        href={href}
       >
         {text}
       </a>
@@ -37,36 +35,17 @@ const Anchor = ({ id, text, level, isActive }: AnchorNavigationProps.Anchor & { 
   );
 };
 
-const AnchorList = ({ anchors, activeId }: { anchors: AnchorNavigationProps.Anchor[]; activeId?: string }) => {
-  return (
-    <ul className={styles['anchor-list']}>
-      {anchors.map((props, index) => (
-        <Anchor isActive={props.id === activeId} key={index} {...props} />
-      ))}
-    </ul>
-  );
-};
+export default function InternalAnchorNavigation({ anchors, ariaLabelledby, ...props }: AnchorNavigationProps) {
+  const hrefs = useMemo(() => anchors.map(anchor => anchor.href), [anchors]);
 
-export default function InternalAnchorNavigation({ anchors, variant, ...props }: AnchorNavigationProps) {
-  const [activeId] = useScrollSpy({ hrefs: anchors.map(anchor => anchor.id) });
-  // console.log(activeHref);
-  // const activeHref = 'section-1';
+  const [activeId] = useScrollSpy({ hrefs });
   return (
-    <div className={styles.root}>
-      <InternalSpaceBetween direction="vertical" size="s">
-        {variant === 'expandable' ? (
-          <InternalExpandableSection variant="footer" headerText={props.title}>
-            <AnchorList activeId={activeId} anchors={anchors} />
-          </InternalExpandableSection>
-        ) : (
-          <>
-            <InternalBox color="text-body-secondary" variant="h4">
-              {props.title}
-            </InternalBox>
-            <AnchorList activeId={activeId} anchors={anchors} />
-          </>
-        )}
-      </InternalSpaceBetween>
-    </div>
+    <nav aria-labelledby={ariaLabelledby} className={styles.root} {...props}>
+      <ol className={styles['anchor-list']}>
+        {anchors.map((props, index) => {
+          return <Anchor isActive={props.href === `#${activeId}`} key={index} {...props} />;
+        })}
+      </ol>
+    </nav>
   );
 }

@@ -7,7 +7,7 @@ import InternalAnchorNavigation from './internal';
 
 export { AnchorNavigationProps };
 
-export default function AnchorNavigation({ variant = 'default', ...props }: AnchorNavigationProps) {
-  return <InternalAnchorNavigation variant={variant} {...props} />;
+export default function AnchorNavigation({ ...props }: AnchorNavigationProps) {
+  return <InternalAnchorNavigation {...props} />;
 }
 applyDisplayName(AnchorNavigation, 'Anchor Navigation');

@@ -5,86 +5,52 @@ import { useState, useEffect, useRef } from 'react';
 export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | undefined] {
   const [activeSlug, setActiveSlug] = useState<string | undefined>(undefined);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const isLastItem = useRef<boolean>(false);
 
-  // Only run on mount and unmount
   useEffect(() => {
-    if (!observerRef.current) {
-      observerRef.current = new IntersectionObserver(
-        entries => {
-          console.log({ isLastItem });
-
-          let activeSlugTemp = '';
-          if (isLastItem.current) {
-            activeSlugTemp = hrefs[hrefs.length - 1];
-          } else {
-            let smallestIndexInViewport = Infinity;
-            let largestIndexAboveViewport = -1;
-            for (const entry of entries) {
-              if (entry?.rootBounds) {
-                const slug = entry.target.id;
-                const index = hrefs.indexOf(slug);
-                const aboveHalfViewport =
-                  entry.boundingClientRect.y + entry.boundingClientRect.height <=
-                  entry.rootBounds.y + entry.rootBounds.height;
-                const insideHalfViewport = entry.intersectionRatio > 0;
-
-                if (insideHalfViewport && index < smallestIndexInViewport) {
-                  smallestIndexInViewport = index;
-                  activeSlugTemp = slug;
-                }
-                if (smallestIndexInViewport === Infinity && aboveHalfViewport && index > largestIndexAboveViewport) {
-                  largestIndexAboveViewport = index;
-                  activeSlugTemp = slug;
-                }
-              }
-            }
-          }
-          setActiveSlug(activeSlugTemp);
-        },
-        {
-          rootMargin: '0px 0px -50%',
-          threshold: [0, 1],
-        }
-      );
+    if (observerRef.current) {
+      observerRef.current.disconnect();
     }
 
-    // const checkScrollBottom = () => {
-    //   const scrollPos = window.innerHeight + window.scrollY;
-    //   if (scrollPos >= document.documentElement.scrollHeight) {
-    //     isLastItem.current = true;
-    //     setActiveSlug(hrefs[hrefs.length - 1]);
-    //   } else if (activeSlug === hrefs[hrefs.length - 1]) {
-    //     const lastElement = document.getElementById(hrefs[hrefs.length - 1]);
-    //     if (lastElement) {
-    //       const rect = lastElement.getBoundingClientRect();
-    //       if (
-    //         rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-    //         activeSlug === hrefs[hrefs.length - 1]
-    //       ) {
-    //         setActiveSlug(hrefs[hrefs.length - 2]);
-    //         isLastItem.current = false;
-    //       }
-    //     }
-    //   } else {
-    //     setActiveSlug(hrefs[hrefs.length - 2]);
-    //     isLastItem.current = false;
-    //   }
-    // };
+    observerRef.current = new IntersectionObserver(
+      entries => {
+        let activeSlugTemp;
+        let smallestIndexInViewport = Infinity;
+        let largestIndexAboveViewport = -1;
 
-    // window.addEventListener('scroll', checkScrollBottom);
+        for (const entry of entries) {
+          if (entry?.rootBounds && entry?.boundingClientRect && typeof entry.intersectionRatio === 'number') {
+            const slug = entry.target.id;
+            const index = hrefs.indexOf(`#${slug}`);
+            const aboveHalfViewport =
+              entry.boundingClientRect.y + entry.boundingClientRect.height <=
+              entry.rootBounds.y + entry.rootBounds.height;
+            const insideHalfViewport = entry.intersectionRatio > 0;
 
-    return () => {
-      observerRef.current?.disconnect();
-      observerRef.current = null;
-      //  window.removeEventListener('scroll', checkScrollBottom);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+            // Check if the element is within the viewport and update the active slug if it's the smallest index seen
+            if (insideHalfViewport && index < smallestIndexInViewport) {
+              smallestIndexInViewport = index;
+              activeSlugTemp = slug;
+            }
 
-  // Run whenever hrefs changes
-  useEffect(() => {
-    hrefs.forEach(id => {
+            // If no entry is found within the viewport, find the entry with the largest index above the viewport
+            if (smallestIndexInViewport === Infinity && aboveHalfViewport && index > largestIndexAboveViewport) {
+              largestIndexAboveViewport = index;
+              activeSlugTemp = slug;
+            }
+          }
+        }
+        if (activeSlugTemp !== undefined) {
+          setActiveSlug(activeSlugTemp);
+        }
+      },
+      {
+        rootMargin: '0px 0px -50%',
+        threshold: [0, 1],
+      }
+    );
+
+    hrefs.forEach(href => {
+      const id = href.slice(1);
       const element = document.getElementById(id);
       if (element) {
         observerRef.current?.observe(element);
@@ -92,12 +58,18 @@ export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | 
     });
 
     return () => {
-      hrefs.forEach(id => {
+      hrefs.forEach(href => {
+        const id = href.slice(1);
         const element = document.getElementById(id);
         if (element) {
           observerRef.current?.unobserve(element);
         }
       });
+
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
     };
   }, [hrefs]);
 

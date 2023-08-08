@@ -5,9 +5,14 @@ import { CancelableEventHandler } from '../internal/events';
 
 export interface AnchorNavigationProps {
   /**
-   * The title of the table of contents, displayed above the anchor items.
+   * Adds `aria-labelledby` to the component. If you're using this component within a form field,
+   * don't set this property because the form field component automatically sets it.
+   *
+   * Use this property for identifying the header or title that labels the anchor navigation.
+   *
+   * To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
    */
-  title?: string;
+  ariaLabelledby?: string;
 
   /**
    * List of anchors.
@@ -16,23 +21,9 @@ export interface AnchorNavigationProps {
 
   /**
    * Specifies the active anchor.
-   * For using the component in a controlled pattern, use together with 'disableTracking'.
+   * For using the component in a controlled manner, use together with 'disableTracking'.
    */
   activeAnchor?: AnchorNavigationProps.Anchor;
-
-  /**
-   * The variant of the component:
-   * 'default' - Use in any context.
-   * 'expandable' - Allows users to expand or collapse the component to save vertical space.
-   */
-  variant?: 'default' | 'expandable';
-
-  /**
-   * Determines whether the component initially displays in expanded state.
-   * The component operates in an uncontrolled manner even if you provide a value for this property.
-   * Only applies when the `variant` is set to `expandable`.
-   */
-  defaultExpanded?: boolean;
 
   /**
    * Option to disable scroll spy.
@@ -40,12 +31,12 @@ export interface AnchorNavigationProps {
   disableTracking?: boolean;
 
   /**
-   * Triggered when an anchor link is clicked without any modifier keys.
+   * Fired when an anchor link is clicked without any modifier keys.
    */
   onFollow?: CancelableEventHandler<AnchorNavigationProps.Anchor>;
 
   /**
-   * Triggered when an active anchor link changes.
+   * Fired when an active anchor link changes.
    */
   onActiveAnchorChange?: CancelableEventHandler<AnchorNavigationProps.Anchor>;
 }
@@ -58,9 +49,10 @@ export namespace AnchorNavigationProps {
     text: string;
 
     /**
-     * The `id` attribute used to specify a unique HTML element.
+     * The `id` attribute of the target HTML element to which this anchor refers.
+     * For example: `"#section1.1"`
      */
-    id: string;
+    href: string;
 
     /**
      * The level of nesting.
