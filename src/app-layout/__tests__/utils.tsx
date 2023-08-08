@@ -11,6 +11,7 @@ import styles from '../../../lib/components/app-layout/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import { InternalDrawerProps, DrawerItem } from '../../../lib/components/app-layout/drawer/interfaces';
+import { IconProps } from '../../../lib/components/icon/interfaces';
 
 // Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -99,18 +100,6 @@ export function isDrawerClosed(drawer: ElementWrapper) {
   return !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']));
 }
 
-export function defineClientHeight(height: number) {
-  const originalClientHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientHeight') || {};
-
-  beforeAll(() => {
-    Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: height });
-  });
-
-  afterAll(() => {
-    Object.defineProperty(HTMLElement.prototype, 'clientHeight', originalClientHeight);
-  });
-}
-
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   closeButtonAriaLabel: 'Close panel',
   openButtonAriaLabel: 'Open panel',
@@ -145,6 +134,24 @@ export const singleDrawer: Required<InternalDrawerProps> = {
   },
 };
 
+const getDrawerItem = (id: string, iconName: IconProps.Name) => {
+  return {
+    ariaLabels: {
+      closeButton: `${id} close button`,
+      content: `${id} drawer content`,
+      triggerButton: `${id} trigger button`,
+      resizeHandle: `${id} resize handle`,
+    },
+    content: <span>{id}</span>,
+    id,
+    trigger: {
+      iconName,
+    },
+  };
+};
+
+const manyDrawersArray = [...Array(100).keys()].map(item => item.toString());
+
 export const manyDrawers: Required<InternalDrawerProps> = {
   drawers: {
     ariaLabel: 'Drawers',
@@ -163,71 +170,7 @@ export const manyDrawers: Required<InternalDrawerProps> = {
           iconName: 'security',
         },
       },
-      {
-        ariaLabels: {
-          closeButton: '1 close button',
-          content: '1 drawer content',
-          triggerButton: '1 trigger button',
-          resizeHandle: '1 resize handle',
-        },
-        content: <span>Security</span>,
-        id: 'security-1',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-      {
-        ariaLabels: {
-          closeButton: '2 close button',
-          content: '2 drawer content',
-          triggerButton: '2 trigger button',
-          resizeHandle: '2 resize handle',
-        },
-        content: <span>Security</span>,
-        id: 'security-2',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-      {
-        ariaLabels: {
-          closeButton: '3 close button',
-          content: '3 drawer content',
-          triggerButton: '3 trigger button',
-          resizeHandle: '3 resize handle',
-        },
-        content: <span>Security</span>,
-        id: 'security-3',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-      {
-        ariaLabels: {
-          closeButton: '4 close button',
-          content: '4 drawer content',
-          triggerButton: '4 trigger button',
-          resizeHandle: '4 resize handle',
-        },
-        content: <span>Security</span>,
-        id: 'security-4',
-        trigger: {
-          iconName: 'security',
-        },
-      },
-      {
-        ariaLabels: {
-          closeButton: '5 close button',
-          content: '5 drawer content',
-          triggerButton: '5 trigger button',
-          resizeHandle: '5 resize handle',
-        },
-        content: <span>Security</span>,
-        id: 'security-5',
-        trigger: {
-          iconName: 'security',
-        },
-      },
+      ...manyDrawersArray.map(item => getDrawerItem(item, 'security')),
     ],
   },
 };

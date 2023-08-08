@@ -6,18 +6,10 @@ import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-<<<<<<< HEAD
-import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem } from './interfaces';
-import OverflowMenu from './overflow-menu';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
-import { splitItems } from './drawers-helpers';
-=======
 import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
 import { InternalButton } from '../../button/internal';
 import { ButtonProps } from '../../button/interfaces';
->>>>>>> ccc84290 (fix: Updates trigger styles)
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -235,7 +227,6 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
             className={clsx(styles['drawer-triggers-wrapper'], testutilStyles['drawers-desktop-triggers-container'])}
           >
             <>
-<<<<<<< HEAD
               {visibleItems.map((item: DrawerItem, index: number) => {
                 return (
                   <DrawerTrigger
@@ -254,38 +245,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                     }}
                   />
                 );
-=======
-              {getDrawerItems().map((item: DrawerItem, index: number) => {
-                if (index < getIndexOfOverflowItem()) {
-                  return (
-                    <span
-                      key={index}
-                      className={clsx(
-                        styles['drawer-trigger'],
-                        drawers?.activeDrawerId === item.id && styles['drawer-trigger-active']
-                      )}
-                    >
-                      <ToggleButton
-                        className={toggleClassName}
-                        key={`drawer-trigger-${index}`}
-                        iconName={item.trigger.iconName}
-                        iconSvg={item.trigger.iconSvg}
-                        ariaLabel={item.ariaLabels?.triggerButton}
-                        onClick={() =>
-                          drawers?.onChange({
-                            activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
-                          })
-                        }
-                        ariaExpanded={drawers?.activeDrawerId !== undefined}
-                        badge={item.badge}
-                        testId={`awsui-app-layout-trigger-${item.id}`}
-                      />
-                    </span>
-                  );
-                }
->>>>>>> d2f58527 (feat: Adds swap of active overflow drawer)
               })}
-<<<<<<< HEAD
               {overflowItems.length > 0 && (
                 <div className={clsx(styles['drawer-trigger'])}>
                   <OverflowMenu
@@ -296,32 +256,6 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                         activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                       });
                     }}
-=======
-              {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
-                <span
-                  className={clsx(styles['drawer-trigger'], overflowItemIsActive() && styles['drawer-trigger-active'])}
-                >
-                  <InternalButtonDropdown
-                    expandToViewport={true}
-                    className={clsx(styles['trigger-overflow'])}
-                    items={getDrawerItems()
-                      .slice(getIndexOfOverflowItem(), getDrawerItems().length)
-                      .map(item => ({
-                        id: item.id,
-                        text: item.ariaLabels?.content || 'Content',
-                        iconName: item.trigger.iconName,
-                        iconSvg: item.trigger.iconSvg,
-                        badge: item.badge,
-                      }))}
-                    onItemClick={({ detail }) => {
-                      drawers.onChange({
-                        activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
-                      });
-                    }}
-                    ariaLabel="Overflow drawer triggers"
-                    customTriggerBuilder={getTrigger(overflowItemHasBadge(), overflowItemIsActive())}
-                    variant="icon"
->>>>>>> c61b3f02 (fix: Adds badge on mobile)
                   />
                 </div>
               )}

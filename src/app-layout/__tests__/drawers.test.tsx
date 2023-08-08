@@ -1,15 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { describeEachAppLayout, renderComponent, singleDrawer, defineClientHeight, manyDrawers } from './utils';
-import { act, screen } from '@testing-library/react';
+import { describeEachAppLayout, renderComponent, singleDrawer, manyDrawers } from './utils';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import { render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
 }));
 
-defineClientHeight(100);
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [100, () => {}],
+}));
 
 describeEachAppLayout(() => {
   test(`should not render drawer when it is not defined`, () => {
@@ -38,10 +43,13 @@ describeEachAppLayout(() => {
   });
 
   test('should open active drawer on click of overflow item', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+    const { container } = render(<AppLayout contentType="form" {...manyDrawers} />);
+    const wrapper = createWrapper(container).findAppLayout()!;
+    const buttonDropdown = createWrapper(container).findButtonDropdown();
+
     expect(wrapper.findActiveDrawer()).toBeFalsy();
-    act(() => screen.getByLabelText('Overflow drawer triggers').click());
-    act(() => screen.getAllByRole('menuitem')[0].click());
+    buttonDropdown!.openDropdown();
+    buttonDropdown!.findItemById('5')!.click();
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 });
