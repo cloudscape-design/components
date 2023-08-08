@@ -66,7 +66,6 @@ export default function () {
         <Table
           resizableColumns={true}
           variant="full-page"
-          selectionType="multi"
           stickyHeader={true}
           footer={
             <Box textAlign="center">
