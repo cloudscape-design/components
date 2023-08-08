@@ -108,17 +108,26 @@
   @include styles.text-wrapping;
   color: awsui.$color-text-heading-default;
 
-  &-variant-h1.refresh {
+  &-variant-h1 {
+    font-size: awsui.$font-heading-xl-size;
     // Use padding rather than center align with min height to avoid having extra bottom space when no actions are present.
     // Having top padding always present ensures that all headers of the same variant start at the same height in the container,
     // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
-    padding-top: space-heading-button-diff(awsui.$font-heading-xl-line-height);
+    &.refresh {
+      padding-top: space-heading-button-diff(awsui.$font-heading-xl-line-height);
+    }
   }
-  &-variant-h2.refresh {
-    padding-top: space-heading-button-diff(awsui.$font-heading-l-line-height);
+  &-variant-h2 {
+    font-size: awsui.$font-heading-l-size;
+    &.refresh {
+      padding-top: space-heading-button-diff(awsui.$font-heading-l-line-height);
+    }
   }
-  &-variant-h3.refresh {
-    padding-top: space-heading-button-diff(awsui.$font-heading-m-line-height);
+  &-variant-h3 {
+    font-size: awsui.$font-heading-m-size;
+    &.refresh {
+      padding-top: space-heading-button-diff(awsui.$font-heading-m-line-height);
+    }
   }
   &-variant-h2:not(.refresh),
   &-variant-h3:not(.refresh) {
