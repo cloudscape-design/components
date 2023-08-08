@@ -113,7 +113,7 @@ describe('getDropdownPosition', () => {
   test('adjusts left offset if preferCenter=true', () => {
     const trigger = getSizedElement(100, 50, 300, 100);
     const dropdown = getSizedElement(200, 300);
-    expect(getDropdownPosition(trigger, dropdown, [windowSize], undefined, true)).toEqual({
+    expect(getDropdownPosition(trigger, dropdown, [windowSize], undefined, undefined, true)).toEqual({
       ...defaults,
       width: '200px',
       left: '-50px',
@@ -123,7 +123,7 @@ describe('getDropdownPosition', () => {
   test('does not change offset if preferCenter=true, but it does not fit', () => {
     const trigger = getSizedElement(100, 50, 300, 15);
     const dropdown = getSizedElement(200, 300);
-    expect(getDropdownPosition(trigger, dropdown, [windowSize], undefined, true)).toEqual({
+    expect(getDropdownPosition(trigger, dropdown, [windowSize], undefined, undefined, true)).toEqual({
       ...defaults,
       width: '200px',
     });

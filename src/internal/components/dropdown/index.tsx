@@ -135,10 +135,12 @@ const Dropdown = ({
   stretchWidth = true,
   stretchHeight = false,
   stretchToTriggerWidth = true,
+  stretchBeyondTriggerWidth = false,
   expandToViewport = false,
   preferCenter = false,
   interior = false,
   minWidth,
+  maxWidth,
   scrollable = true,
   loopFocus = expandToViewport,
   onFocus,
@@ -180,7 +182,7 @@ const Dropdown = ({
       verticalContainer.style.maxHeight = position.height;
     }
 
-    if (entireWidth && !expandToViewport) {
+    if (entireWidth && !expandToViewport && !stretchBeyondTriggerWidth) {
       if (stretchToTriggerWidth) {
         target.classList.add(styles['occupy-entire-width']);
       }
@@ -267,6 +269,10 @@ const Dropdown = ({
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
+        if (stretchBeyondTriggerWidth) {
+          // let dropdown width grow according to the content
+          dropdownRef.current.classList.add(styles['expand-dropdown-width']);
+        }
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -278,14 +284,13 @@ const Dropdown = ({
             stretchWidth,
             stretchHeight,
             isMobile,
-            minWidth
+            minWidth,
+            maxWidth
           ),
           dropdownRef.current,
           verticalContainerRef.current
         );
-        if (scrollable) {
-          dropdownRef.current.classList.remove(styles.nowrap);
-        }
+        dropdownRef.current.classList.remove(styles.nowrap, styles['expand-dropdown-width']);
       }
     };
     onDropdownOpen();
