@@ -18,7 +18,7 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { PACKAGE_VERSION } from '../../environment';
 
 import { FunnelMetrics } from '../';
-import { FunnelProps, FunnelStepProps } from '../interfaces';
+import { BaseFunnelProps, FunnelProps, FunnelStepProps } from '../interfaces';
 
 import {
   DATA_ATTR_FUNNEL_STEP,
@@ -44,6 +44,11 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
   const errorCount = useRef<number>(0);
   const loadingButtonCount = useRef<number>(0);
   const latestFocusCleanupFunction = useRef<undefined | (() => void)>(undefined);
+  const funnelComplete = (props: BaseFunnelProps) => {
+    FunnelMetrics.funnelComplete(props);
+    const event = new Event('funnelComplete');
+    document.dispatchEvent(event);
+  };
 
   // This useEffect hook is run once on component mount to initiate the funnel analytics.
   // It first calls the 'funnelStart' method from FunnelMetrics, providing all necessary details
@@ -78,7 +83,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     return () => {
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        funnelComplete({ funnelInteractionId });
         funnelState.current = 'complete';
       }
 
@@ -121,7 +126,7 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
         /*
           If no validation errors are rendered, we treat the funnel as complete.
         */
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        funnelComplete({ funnelInteractionId });
         funnelState.current = 'complete';
       } else {
         funnelState.current = 'default';
