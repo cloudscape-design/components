@@ -13,8 +13,8 @@ The first and last column definitions have two responsibilities.
 If Navigation and/or Tools exist then that will determine the width of
 the first and last columns, respectively, and the content in these drawers
 will create horizontal space from the center column content. However, if the
-navigationHide and/or toolsHide properties have been set then the first
-and last column width will default to the minimum content gap properties to
+navigationHide and/or toolsHide properties have been set then the first and 
+last column width will default to the minimum content gap properties to
 create the necessary visual space around the main content.
 
 The minimum content width property is set to zero and applied under all
@@ -134,8 +134,8 @@ explicitly set in script.
   The offset top value for components with position: sticky (AppBar, Navigation, 
   Notifications, Tools) will be set to the header height value. The offset top value 
   for AppLayout contentMain children with position: sticky will be the combined value 
-  of the header and notifications height in addition to the notifications top margin
-  and some additional vertical space for aesthetics.
+  of the header and notifications height in addition to the notifications top margin and 
+  some additional vertical space for aesthetics.
   */
   &:not(.has-sticky-notifications):not(.has-sticky-background) {
     #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
