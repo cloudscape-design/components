@@ -360,6 +360,6 @@ describeEachThemeAppLayout(true, theme => {
 
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
-    expect(wrapper.findDrawersTriggers()[0]!.getElement().children[0]).toHaveClass(iconStyles.badge);
+    expect(wrapper.findByClassName(iconStyles.badge)!.getElement()).toBeInTheDocument();
   });
 });

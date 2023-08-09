@@ -8,6 +8,8 @@ import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import InternalButtonDropdown from '../../button-dropdown/internal';
 import { ButtonDropdownProps } from '../../button-dropdown/interfaces';
 import { CancelableEventHandler } from '../../internal/events';
+import { DrawerItem } from './interfaces';
+import { DrawerFocusControlRefs } from '../utils/use-drawer-focus-control';
 
 const getTrigger = (hasOverflowBadge?: boolean, isActive?: boolean) => {
   const DropdownTrigger = (
@@ -40,9 +42,9 @@ const getTrigger = (hasOverflowBadge?: boolean, isActive?: boolean) => {
 };
 
 interface OverflowMenuProps {
-  drawersRefs?: any;
+  drawersRefs?: DrawerFocusControlRefs;
   className?: any;
-  overflowItems: any[];
+  overflowItems: DrawerItem[] | undefined;
   onItemClick: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   hasOverflowBadge?: boolean;
   hasActiveStyles?: boolean;
@@ -54,7 +56,7 @@ export default function OverflowMenu(props: OverflowMenuProps) {
     <InternalButtonDropdown
       ref={drawersRefs ? drawersRefs.toggle : null}
       className={className}
-      items={overflowItems.map(item => ({
+      items={overflowItems?.map(item => ({
         id: item.id,
         text: item.ariaLabels?.content || 'Content',
         iconName: item.trigger.iconName,

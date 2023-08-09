@@ -10,6 +10,7 @@ import OverflowMenu from '../drawer/overflow-menu';
 import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import { splitItems } from '../drawer/drawers-helpers';
 
 interface MobileToggleProps {
   className?: string;
@@ -91,10 +92,8 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
 
-  const overflowItemHasBadge = () => {
-    const overflowItems = drawers?.items.slice(1, drawers.items.length);
-    return overflowItems ? overflowItems.filter(item => item.badge).length > 0 : false;
-  };
+  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2);
+  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
 
   return (
     <div
@@ -130,7 +129,7 @@ export function MobileToolbar({
           aria-label={drawers.ariaLabel}
           className={clsx(styles['drawers-container'], testutilStyles['drawers-mobile-triggers-container'])}
         >
-          {drawers.items.slice(0, 2).map((item: DrawerItem, index: number) => (
+          {visibleItems?.map((item: DrawerItem, index: number) => (
             <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])} key={index}>
               <ToggleButton
                 className={testutilStyles['drawers-trigger']}
@@ -147,13 +146,13 @@ export function MobileToolbar({
           {drawers?.items?.length && drawers?.items?.length > 2 && (
             <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
               <OverflowMenu
-                overflowItems={drawers.items.slice(2, drawers.items.length)}
+                overflowItems={overflowItems}
                 onItemClick={({ detail }) => {
                   drawers.onChange({
                     activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                   });
                 }}
-                hasOverflowBadge={overflowItemHasBadge()}
+                hasOverflowBadge={overflowItemHasBadge}
               />
             </span>
           )}

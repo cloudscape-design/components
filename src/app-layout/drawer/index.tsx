@@ -9,7 +9,8 @@ import styles from './styles.css.js';
 import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
 import OverflowMenu from './overflow-menu';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useCompactMode } from '../../internal/hooks/use-compact-mode';
+import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import { splitItems } from './drawers-helpers';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -143,7 +144,7 @@ export const DrawerTriggersBar = ({
   toggleClassName,
 }: DrawerTriggersBarProps) => {
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
-  const isCompactMode = useCompactMode();
+  const isCompactMode = useDensityMode(triggersContainerRef) === 'compact';
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
@@ -157,26 +158,11 @@ export const DrawerTriggersBar = ({
     return 0;
   };
 
-  const splitItems = (items: any[] | undefined) => {
-    let visibleItems = [];
-    let overflowItems = [];
-    if (items) {
-      visibleItems = items.slice(0, getIndexOfOverflowItem());
-      overflowItems = items.slice(getIndexOfOverflowItem(), items.length);
-    }
-    return { visibleItems, overflowItems };
-  };
-
-  const overflowItemHasBadge = () => {
-    const { overflowItems } = splitItems(drawers?.items);
-    return overflowItems ? overflowItems.filter(item => item.badge).length > 0 : false;
-  };
-
   const overflowItemIsActive = () => {
-    const { overflowItems } = splitItems(drawers?.items);
+    const { overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem());
 
     if (drawers && drawers.activeDrawerId) {
-      return overflowItems.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
+      return overflowItems?.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
     }
     return false;
   };
@@ -201,7 +187,8 @@ export const DrawerTriggersBar = ({
     return [];
   };
 
-  const { visibleItems, overflowItems } = splitItems(getDrawerItems());
+  const { visibleItems, overflowItems } = splitItems(getDrawerItems(), getIndexOfOverflowItem());
+  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
 
   return (
     <div
@@ -217,7 +204,7 @@ export const DrawerTriggersBar = ({
         {!isMobile && (
           <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers-wrapper'], contentClassName)}>
             <>
-              {visibleItems.map((item: DrawerItem, index: number) => {
+              {visibleItems?.map((item: DrawerItem, index: number) => {
                 return (
                   <span
                     key={index}
@@ -225,6 +212,11 @@ export const DrawerTriggersBar = ({
                       styles['drawer-trigger'],
                       drawers?.activeDrawerId === item.id && styles['drawer-trigger-active']
                     )}
+                    onClick={() =>
+                      drawers?.onChange({
+                        activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
+                      })
+                    }
                   >
                     <ToggleButton
                       className={toggleClassName}
@@ -232,11 +224,6 @@ export const DrawerTriggersBar = ({
                       iconName={item.trigger.iconName}
                       iconSvg={item.trigger.iconSvg}
                       ariaLabel={item.ariaLabels?.triggerButton}
-                      onClick={() =>
-                        drawers?.onChange({
-                          activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
-                        })
-                      }
                       ariaExpanded={drawers?.activeDrawerId !== undefined}
                       badge={item.badge}
                       testId={`awsui-app-layout-trigger-${item.id}`}
@@ -255,7 +242,7 @@ export const DrawerTriggersBar = ({
                         activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                       });
                     }}
-                    hasOverflowBadge={overflowItemHasBadge()}
+                    hasOverflowBadge={overflowItemHasBadge}
                     hasActiveStyles={overflowItemIsActive()}
                   />
                 </span>

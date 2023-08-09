@@ -13,6 +13,8 @@ import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
+import { DrawerItem } from '../drawer/interfaces';
+import { splitItems } from '../drawer/drawers-helpers';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -73,7 +75,7 @@ function ActiveDrawer() {
     drawerRef,
   } = useAppLayoutInternals();
 
-  const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
+  const activeDrawer = drawers?.items.find((item: DrawerItem) => item.id === activeDrawerId) ?? null;
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -194,27 +196,19 @@ function DesktopTriggers() {
     return -1;
   };
 
-  const splitItems = (items: any[] | undefined) => {
-    let visibleItems = [];
-    let overflowItems = [];
-    if (items) {
-      visibleItems = items.slice(0, getIndexOfOverflowItem());
-      overflowItems = items.slice(getIndexOfOverflowItem(), items.length);
-    }
-    return { visibleItems, overflowItems };
-  };
-
   const overflowItemIsActive = () => {
-    const { overflowItems } = splitItems(drawers?.items);
+    const { overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem());
 
     if (drawers && drawers.activeDrawerId && getIndexOfOverflowItem() > -1) {
-      return overflowItems.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
+      return overflowItems?.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
     }
   };
 
   const getDrawerItems = () => {
     if (drawers && drawers.items) {
-      const activeIndex = activeDrawerId ? drawers.items.map(item => item.id).indexOf(activeDrawerId) : -1;
+      const activeIndex = activeDrawerId
+        ? drawers.items.map((item: DrawerItem) => item.id).indexOf(activeDrawerId)
+        : -1;
       const lastMainItemIndex = getIndexOfOverflowItem() - 1;
 
       if (activeIndex && activeIndex > 0 && overflowItemIsActive()) {
@@ -236,12 +230,8 @@ function DesktopTriggers() {
     return null;
   }
 
-  const overflowItemHasBadge = () => {
-    const { overflowItems } = splitItems(drawers?.items);
-    return (overflowItems && overflowItems.filter(item => item.badge).length > 0) || false;
-  };
-
-  const { visibleItems, overflowItems } = splitItems(getDrawerItems());
+  const { visibleItems, overflowItems } = splitItems(getDrawerItems(), getIndexOfOverflowItem());
+  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
 
   return (
     <aside
@@ -276,7 +266,7 @@ function DesktopTriggers() {
           />
         )}
 
-        {visibleItems.map(item => {
+        {visibleItems?.map(item => {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -296,14 +286,14 @@ function DesktopTriggers() {
           );
         })}
 
-        {getDrawerItems() && getDrawerItems().length > getIndexOfOverflowItem() && (
+        {overflowItems && overflowItems.length > 0 && (
           <OverflowMenu
             drawersRefs={drawersRefs}
             className={clsx(
               styles['drawers-trigger'],
               styles.trigger,
               styles['drawers-trigger-overflow'],
-              overflowItemHasBadge() && styles.badge
+              overflowItemHasBadge && styles.badge
             )}
             overflowItems={overflowItems}
             onItemClick={({ detail }) => {
@@ -350,6 +340,7 @@ export function MobileTriggers() {
   } = useAppLayoutInternals();
 
   const previousActiveDrawerId = useRef(activeDrawerId);
+  const hasTools = !toolsHide && tools;
 
   if (activeDrawerId) {
     previousActiveDrawerId.current = activeDrawerId;
@@ -359,15 +350,10 @@ export function MobileTriggers() {
     return null;
   }
 
-  const overflowItemHasBadge = () => {
-    const overflowItems = drawers?.items.slice(1, drawers.items.length);
-    return overflowItems && overflowItems.filter(item => item.badge).length > 0;
-  };
+  const splitIndex = hasTools ? 1 : 2;
 
-  const mobileItems = !toolsHide && tools ? drawers.items.slice(0, 1) : drawers.items.slice(0, 2);
-  const hasOverflowMenu = !toolsHide && tools ? drawers?.items?.length > 2 : drawers?.items?.length > 3;
-  const overflowItems =
-    !toolsHide && tools ? drawers.items.slice(1, drawers.items.length) : drawers.items.slice(2, drawers.items.length);
+  const { visibleItems, overflowItems } = splitItems(drawers?.items, splitIndex);
+  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
 
   return (
     <aside
@@ -381,7 +367,7 @@ export function MobileTriggers() {
       )}
       aria-label={drawers.ariaLabel}
     >
-      {!toolsHide && tools && (
+      {hasTools && (
         <InternalButton
           ariaLabel={ariaLabels?.toolsToggle ?? undefined}
           ariaExpanded={isToolsOpen}
@@ -396,7 +382,7 @@ export function MobileTriggers() {
         />
       )}
 
-      {mobileItems.map(item => (
+      {visibleItems?.map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
@@ -414,15 +400,15 @@ export function MobileTriggers() {
           __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
         />
       ))}
-      {drawers?.items?.length && hasOverflowMenu && (
+      {overflowItems && overflowItems.length > 0 && (
         <OverflowMenu
           drawersRefs={drawersRefs}
-          className={clsx(styles['drawers-trigger'], overflowItemHasBadge() && styles.badge)}
+          className={clsx(styles['drawers-trigger'], overflowItemHasBadge && styles.badge)}
           overflowItems={overflowItems}
           onItemClick={({ detail }) => {
             handleDrawersClick(detail.id);
           }}
-          hasOverflowBadge={overflowItemHasBadge()}
+          hasOverflowBadge={overflowItemHasBadge}
         />
       )}
     </aside>
