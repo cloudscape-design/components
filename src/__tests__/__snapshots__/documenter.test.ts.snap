@@ -10574,6 +10574,10 @@ it removes options that are not currently in view from the DOM.",
   ],
   "regions": Array [
     Object {
+      "isDefault": false,
+      "name": "additionalActions",
+    },
+    Object {
       "description": "A slot located before the filtering input. Use it if for a Select component if your dataset supports property
 filter queries only after an initial filter is applied.",
       "isDefault": false,

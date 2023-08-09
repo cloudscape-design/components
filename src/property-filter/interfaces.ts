@@ -131,6 +131,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * filter queries only after an initial filter is applied.
    */
   customControl?: React.ReactNode;
+  additionalActions?: React.ReactNode;
   /**
    * Set `asyncProperties` if you need to load `filteringProperties` asynchronousely. This would cause extra `onLoadMore`
    * events to fire calling for more properties.

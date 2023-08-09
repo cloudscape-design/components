@@ -64,6 +64,7 @@ const PropertyFilter = React.forwardRef(
       onLoadItems,
       virtualScroll,
       customControl,
+      additionalActions,
       filteringPlaceholder,
       filteringAriaLabel,
       filteringEmpty,
@@ -388,14 +389,17 @@ const PropertyFilter = React.forwardRef(
                   limitShowMore: i18nStrings.tokenLimitShowMore,
                 }}
                 after={
-                  <InternalButton
-                    formAction="none"
-                    onClick={removeAllTokens}
-                    className={styles['remove-all']}
-                    disabled={disabled}
-                  >
-                    {i18nStrings.clearFiltersText}
-                  </InternalButton>
+                  <>
+                    <InternalButton
+                      formAction="none"
+                      onClick={removeAllTokens}
+                      className={styles['remove-all']}
+                      disabled={disabled}
+                    >
+                      {i18nStrings.clearFiltersText}
+                    </InternalButton>
+                    {additionalActions}
+                  </>
                 }
                 removedItemIndex={removedTokenIndex}
               />
