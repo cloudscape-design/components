@@ -53,6 +53,14 @@ const permutations = createPermutations<ProgressBarProps>([
     description: [undefined, 'description'],
     additionalInfo: [undefined, 'additional info'],
   },
+  {
+    value: [0, 10],
+    maxValue: [10],
+    label: [undefined, 'Label'],
+    description: [undefined, 'description'],
+    additionalInfo: [undefined, 'additional info'],
+    type: ['ratio'],
+  },
 ]);
 
 export default permutations;

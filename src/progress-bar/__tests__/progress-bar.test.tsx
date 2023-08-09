@@ -12,84 +12,106 @@ const standaloneAndKeyvalueVariants: Array<ProgressBarProps.Variant> = ['standal
 const allVariants: Array<ProgressBarProps.Variant> = [...standaloneAndKeyvalueVariants, 'flash'];
 const statuses: Array<ProgressBarProps.Status> = ['success', 'error'];
 
+const types: Array<ProgressBarProps.ContentType> = ['percentage', 'ratio'];
+
 const renderProgressBar = (progressBarProps: ProgressBarProps): ProgressBarWrapper => {
   const { container } = render(<ProgressBar {...progressBarProps} />);
   return createWrapper(container).findProgressBar()!;
 };
 
-const checkPercentage = (wrapper: ProgressBarWrapper, percentage: number) => {
-  expect(wrapper.findPercentageText()!.getElement()).toHaveTextContent(`${percentage}%`);
+const checkPercentage = (wrapper: ProgressBarWrapper, value: number) => {
+  expect(wrapper.findPercentageText()!.getElement()).toHaveTextContent(`${value}%`);
 };
 
-allVariants.forEach(variant => {
-  describe(`Progress bar component ${variant} variant`, () => {
-    describe('Progress value ', () => {
-      test('is 0 if not set', () => {
-        const wrapper = renderProgressBar({ variant });
-        checkPercentage(wrapper, 0);
-      });
+const checkRatio = (wrapper: ProgressBarWrapper, value: number) => {
+  expect(wrapper.findPercentageText()!.getElement()).toHaveTextContent(`${value}/100`);
+};
 
-      test('is displayed correctly for a value between 0-100', () => {
-        const wrapper = renderProgressBar({ variant, value: 26 });
-        checkPercentage(wrapper, 26);
-      });
+const checkExpectedValue = (wrapper: ProgressBarWrapper, type: ProgressBarProps.ContentType, value: number) => {
+  switch (type) {
+    case 'percentage':
+      return checkPercentage(wrapper, value);
+    case 'ratio':
+      return checkRatio(wrapper, value);
+  }
+};
 
-      test('is clamped to 100 when > 100', () => {
-        const wrapper = renderProgressBar({ variant, value: 1312 });
-        checkPercentage(wrapper, 100);
-      });
+types.forEach(type => {
+  describe(`Progress bar component ${type} type`, () => {
+    allVariants.forEach(variant => {
+      describe(`Progress bar component ${variant} variant`, () => {
+        const sharedProps: Partial<ProgressBarProps> = { variant, type };
 
-      test('is clamped to 0 when < 0', () => {
-        const wrapper = renderProgressBar({ variant, value: -10 });
-        checkPercentage(wrapper, 0);
-      });
+        describe('Progress value ', () => {
+          test('is 0 if not set', () => {
+            const wrapper = renderProgressBar({ ...sharedProps });
+            checkExpectedValue(wrapper, type, 0);
+          });
 
-      test('is rounded to ceiling for floating point values > .5', () => {
-        const wrapper = renderProgressBar({ variant, value: 36.6 });
-        checkPercentage(wrapper, 37);
-      });
+          test('is displayed correctly for a value between 0-100', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 26 });
+            checkExpectedValue(wrapper, type, 26);
+          });
 
-      test('is rounded to floor for floating point values < .5', () => {
-        const wrapper = renderProgressBar({ variant, value: 36.4 });
-        checkPercentage(wrapper, 36);
-      });
-      test('sets aria-hidden to percentage container', () => {
-        const wrapper = renderProgressBar({ variant, value: 36 });
-        expect(wrapper.findByClassName(styles['percentage-container'])!.getElement()).toHaveAttribute(
-          'aria-hidden',
-          'true'
-        );
-      });
-    });
-    describe('Result state ', () => {
-      test('is not displayed for value=100 and status="in-progress"', () => {
-        const wrapper = renderProgressBar({ variant, value: 100 });
-        checkPercentage(wrapper, 100);
-        expect(wrapper.findResultText()).toBeNull();
-      });
-      statuses.forEach(status => {
-        describe(`${status} `, () => {
-          test('displays result text correctly', () => {
-            const wrapper = renderProgressBar({ variant, status, resultText: 'result text' });
-            expect(wrapper.findResultText(status)!.getElement()).toHaveTextContent('result text');
+          test('is clamped to 100 when > 100', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 1312 });
+            checkExpectedValue(wrapper, type, 100);
+          });
+
+          test('is clamped to 0 when < 0', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: -10 });
+            checkExpectedValue(wrapper, type, 0);
+          });
+
+          test('is rounded to ceiling for floating point values > .5', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 36.6 });
+            checkExpectedValue(wrapper, type, 37);
+          });
+
+          test('is rounded to floor for floating point values < .5', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 36.4 });
+            checkExpectedValue(wrapper, type, 36);
+          });
+          test('sets aria-hidden to percentage container', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 36 });
+            expect(wrapper.findByClassName(styles['percentage-container'])!.getElement()).toHaveAttribute(
+              'aria-hidden',
+              'true'
+            );
+          });
+        });
+        describe('Result state ', () => {
+          test('is not displayed for value=100 and status="in-progress"', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 100 });
+            checkExpectedValue(wrapper, type, 100);
+            expect(wrapper.findResultText()).toBeNull();
+          });
+          statuses.forEach(status => {
+            describe(`${status} `, () => {
+              test('displays result text correctly', () => {
+                const wrapper = renderProgressBar({ ...sharedProps, status, resultText: 'result text' });
+                expect(wrapper.findResultText(status)!.getElement()).toHaveTextContent('result text');
+              });
+            });
+          });
+        });
+
+        describe('ARIA live region', () => {
+          test('is present in the DOM while in-progress', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 0 });
+            expect(wrapper.find('[aria-live]')).not.toBeNull();
+          });
+
+          test('contains result text', () => {
+            const wrapper = renderProgressBar({ ...sharedProps, value: 100, status: 'success', resultText: 'Result!' });
+            expect(wrapper.find('[aria-live]')!.getElement()).toHaveTextContent('Result!');
           });
         });
       });
     });
-
-    describe('ARIA live region', () => {
-      test('is present in the DOM while in-progress', () => {
-        const wrapper = renderProgressBar({ variant, value: 0 });
-        expect(wrapper.find('[aria-live]')).not.toBeNull();
-      });
-
-      test('contains result text', () => {
-        const wrapper = renderProgressBar({ variant, value: 100, status: 'success', resultText: 'Result!' });
-        expect(wrapper.find('[aria-live]')!.getElement()).toHaveTextContent('Result!');
-      });
-    });
   });
 });
+
 describe('Progress bar component flash variant - Result state', () => {
   test('raises a warning if resultButtonText is set', () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
