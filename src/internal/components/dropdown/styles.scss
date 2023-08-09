@@ -71,8 +71,8 @@
     min-width: 100%;
   }
   &.stretch-beyond-trigger-width {
-    width: 100%;
-    min-width: 465px;
+    width: max-content;
+    max-width: 465px;
   }
   &.hide-upper-border > .dropdown-content-wrapper {
     border-top: none;

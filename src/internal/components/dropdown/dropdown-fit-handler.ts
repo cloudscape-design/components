@@ -131,8 +131,7 @@ export const getDropdownPosition = (
   const availableSpace = getAvailableSpace(trigger, dropdown, overflowParents, stretchWidth, stretchHeight, isMobile);
   const triggerWidth = trigger.getBoundingClientRect().width;
   const minWidth = desiredMinWidth ? Math.min(triggerWidth, desiredMinWidth) : triggerWidth;
-  const maxWidth =
-    stretchBeyondTriggerWidth && desiredMaxWidth ? Math.max(desiredMaxWidth, triggerWidth) : Number.MAX_VALUE;
+  const maxWidth = stretchBeyondTriggerWidth ? Math.max(465, triggerWidth) : Number.MAX_VALUE;
   const requiredWidth = dropdown.getBoundingClientRect().width;
   // dropdown should not be smaller than the trigger
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
