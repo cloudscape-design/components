@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, act } from '@testing-library/react';
 
 import { FunnelMetrics } from '../../../../../lib/components/internal/analytics';
 import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
@@ -32,6 +32,7 @@ describe('AnalyticsFunnel', () => {
         <div>Child Content</div>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     const childElement = getByText('Child Content');
     expect(childElement).toBeInTheDocument();
@@ -56,6 +57,7 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     // Check if the root element has a specific data attribute
     expect(getByTestId('root')).toHaveAttribute(DATA_ATTR_FUNNEL_INTERACTION_ID, expect.any(String));
@@ -63,6 +65,7 @@ describe('AnalyticsFunnel', () => {
 
   test('calls funnelStart when the component renders', () => {
     render(<AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
@@ -85,6 +88,7 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
     await waitFor(() => {
@@ -110,6 +114,7 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent renderError={false} />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
 
@@ -118,8 +123,8 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent renderError={true} />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
-    jest.runAllTimers();
     expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
   });
 
@@ -136,13 +141,14 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
     unmount();
 
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
 
-    jest.runAllTimers();
+    act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
   });
 
@@ -160,6 +166,7 @@ describe('AnalyticsFunnel', () => {
         <Button />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
 
@@ -170,7 +177,7 @@ describe('AnalyticsFunnel', () => {
       </AnalyticsFunnel>
     );
 
-    jest.runOnlyPendingTimers();
+    act(() => void jest.runOnlyPendingTimers());
 
     expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
@@ -203,6 +210,7 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
@@ -224,11 +232,12 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
 
-    jest.runAllTimers();
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
   });
@@ -246,11 +255,12 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
 
     fireEvent.click(getByText('Submit')); // Trigger the button click event
 
-    jest.runAllTimers();
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
 
@@ -272,6 +282,7 @@ describe('AnalyticsFunnel', () => {
         <ChildComponent />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
 
     unmount();
@@ -294,6 +305,7 @@ describe('AnalyticsFunnelStep', () => {
         <div>Child Content</div>
       </AnalyticsFunnelStep>
     );
+    act(() => void jest.runAllTimers());
 
     const childElement = getByText('Child Content');
     expect(childElement).toBeInTheDocument();
@@ -313,6 +325,7 @@ describe('AnalyticsFunnelStep', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith({
@@ -338,10 +351,12 @@ describe('AnalyticsFunnelStep', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
 
     rerender(<AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith({
@@ -364,6 +379,7 @@ describe('AnalyticsFunnelStep', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     unmount();
 
@@ -381,6 +397,7 @@ describe('AnalyticsFunnelStep', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
@@ -403,6 +420,7 @@ describe('AnalyticsFunnelStep', () => {
         Step Content
       </AnalyticsFunnelStep>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepStart).not.toHaveBeenCalled();
   });
@@ -413,6 +431,7 @@ describe('AnalyticsFunnelStep', () => {
         Step Content
       </AnalyticsFunnelStep>
     );
+    act(() => void jest.runAllTimers());
 
     unmount();
     expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
@@ -432,6 +451,7 @@ describe('AnalyticsFunnelSubStep', () => {
         <div>Substep Content</div>
       </AnalyticsFunnelSubStep>
     );
+    act(() => void jest.runAllTimers());
 
     const childElement = getByText('Substep Content');
     expect(childElement).toBeInTheDocument();
@@ -443,6 +463,7 @@ describe('AnalyticsFunnelSubStep', () => {
         <div data-testid="substep-content">Substep Content</div>
       </AnalyticsFunnelSubStep>
     );
+    act(() => void jest.runAllTimers());
 
     fireEvent.focus(getByTestId('substep-content'));
 
@@ -473,6 +494,7 @@ describe('AnalyticsFunnelSubStep', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     getByTestId('input').focus();
 
@@ -512,6 +534,7 @@ describe('AnalyticsFunnelSubStep', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     getByTestId('input').focus();
 
@@ -556,6 +579,7 @@ describe('AnalyticsFunnelSubStep', () => {
         <input data-testid="outside" />
       </>
     );
+    act(() => void jest.runAllTimers());
 
     simulateUserClick(getByTestId('input'));
 

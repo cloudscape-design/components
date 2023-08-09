@@ -20,6 +20,7 @@ import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 describe('FormField Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -33,6 +34,7 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledWith(
@@ -58,6 +60,7 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     rerender(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
@@ -68,6 +71,7 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(2);
   });
@@ -93,10 +97,12 @@ describe('FormField Analytics', () => {
     );
 
     const { rerender } = render(jsx);
+    act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
 
     act(() => funnelNextOrSubmitAttempt!());
     rerender(jsx);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(2);
   });
@@ -130,6 +136,7 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     rerender(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
@@ -140,6 +147,7 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
   });
@@ -154,6 +162,7 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
     jest.clearAllMocks(); // Reset all mock function call counters
@@ -167,6 +176,7 @@ describe('FormField Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
   });

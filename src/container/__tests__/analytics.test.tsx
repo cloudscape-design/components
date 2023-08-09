@@ -35,6 +35,7 @@ describe('Funnel Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(getByTestId('container')).toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP, expect.any(String));
   });
@@ -49,6 +50,7 @@ describe('Funnel Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(0);
 
@@ -74,6 +76,7 @@ describe('Funnel Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
 
@@ -101,6 +104,7 @@ describe('Funnel Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
 
@@ -127,6 +131,7 @@ describe('Funnel Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
 

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 
 import ExpandableSection from '../../../lib/components/expandable-section';
 
@@ -38,6 +38,7 @@ describe('Expandable section funnel analytics', () => {
           </AnalyticsFunnelStep>
         </AnalyticsFunnel>
       );
+      act(() => void jest.runAllTimers());
 
       expect(getByTestId('container')).toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP, expect.any(String));
     });
@@ -52,6 +53,7 @@ describe('Expandable section funnel analytics', () => {
           </AnalyticsFunnelStep>
         </AnalyticsFunnel>
       );
+      act(() => void jest.runAllTimers());
 
       expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(0);
 
@@ -76,6 +78,7 @@ describe('Expandable section funnel analytics', () => {
           </AnalyticsFunnelStep>
         </AnalyticsFunnel>
       );
+      act(() => void jest.runAllTimers());
 
       expect(getByTestId('container')).not.toHaveAttribute(DATA_ATTR_FUNNEL_SUBSTEP, expect.any(String));
     });
@@ -90,6 +93,7 @@ describe('Expandable section funnel analytics', () => {
           </AnalyticsFunnelStep>
         </AnalyticsFunnel>
       );
+      act(() => void jest.runAllTimers());
 
       expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
 
