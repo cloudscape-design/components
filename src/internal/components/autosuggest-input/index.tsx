@@ -8,7 +8,7 @@ import Dropdown from '../dropdown';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import { getBreakpointValue } from '../../breakpoints';
+// import { getBreakpointValue } from '../../breakpoints';
 import InternalInput from '../../../input/internal';
 import {
   BaseChangeDetail,
@@ -255,7 +255,7 @@ const AutosuggestInput = React.forwardRef(
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
           minWidth={dropdownWidth}
-          maxWidth={getBreakpointValue('xxs')}
+          // maxWidth={getBreakpointValue('xxs')}
           stretchWidth={!dropdownWidth}
           stretchBeyondTriggerWidth={true}
           contentKey={dropdownContentKey}

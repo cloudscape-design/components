@@ -125,15 +125,19 @@ export const getDropdownPosition = (
   preferCenter = false,
   stretchWidth = false,
   stretchHeight = false,
-  isMobile?: boolean
+  isMobile?: boolean,
+  stretchBeyondTriggerWidth?: boolean
 ): DropdownPosition => {
   const availableSpace = getAvailableSpace(trigger, dropdown, overflowParents, stretchWidth, stretchHeight, isMobile);
   const triggerWidth = trigger.getBoundingClientRect().width;
   const minWidth = desiredMinWidth ? Math.min(triggerWidth, desiredMinWidth) : triggerWidth;
-  const maxWidth = desiredMaxWidth ? desiredMaxWidth : Number.MAX_VALUE;
+  const maxWidth =
+    stretchBeyondTriggerWidth && desiredMaxWidth ? Math.max(desiredMaxWidth, triggerWidth) : Number.MAX_VALUE;
   const requiredWidth = dropdown.getBoundingClientRect().width;
   // dropdown should not be smaller than the trigger
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
+
+  // console.log({ triggerWidth, minWidth, maxWidth, requiredWidth, idealWidth });
 
   let dropLeft: boolean;
   let left: number | null = null;
@@ -231,7 +235,8 @@ export const calculatePosition = (
   stretchHeight: boolean,
   isMobile: boolean,
   minWidth?: number,
-  maxWidth?: number
+  maxWidth?: number,
+  stretchBeyondTriggerWidth?: boolean
 ): [DropdownPosition, DOMRect] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
@@ -257,7 +262,8 @@ export const calculatePosition = (
         preferCenter,
         stretchWidth,
         stretchHeight,
-        isMobile
+        isMobile,
+        stretchBeyondTriggerWidth
       );
   const triggerBox = triggerElement.getBoundingClientRect();
   return [position, triggerBox];

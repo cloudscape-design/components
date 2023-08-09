@@ -70,6 +70,10 @@
   &.occupy-entire-width {
     min-width: 100%;
   }
+  &.stretch-beyond-trigger-width {
+    width: 100%;
+    min-width: 465px;
+  }
   &.hide-upper-border > .dropdown-content-wrapper {
     border-top: none;
   }
@@ -114,8 +118,4 @@
 
 .stretch-trigger-height {
   height: 100%;
-}
-
-.expand-dropdown-width {
-  width: max-content;
 }

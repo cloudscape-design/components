@@ -52,6 +52,7 @@ interface TransitionContentProps {
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
+  stretchBeyondTriggerWidth?: boolean;
   header?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
@@ -74,6 +75,7 @@ const TransitionContent = ({
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
+  stretchBeyondTriggerWidth,
   header,
   children,
   footer,
@@ -96,6 +98,7 @@ const TransitionContent = ({
         [styles['is-empty']]: !header && !children,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
+        [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
       })}
       ref={contentRef}
       id={id}
@@ -182,7 +185,7 @@ const Dropdown = ({
       verticalContainer.style.maxHeight = position.height;
     }
 
-    if (entireWidth && !expandToViewport && !stretchBeyondTriggerWidth) {
+    if (entireWidth && !expandToViewport) {
       if (stretchToTriggerWidth) {
         target.classList.add(styles['occupy-entire-width']);
       }
@@ -269,10 +272,10 @@ const Dropdown = ({
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
-        if (stretchBeyondTriggerWidth) {
-          // let dropdown width grow according to the content
-          dropdownRef.current.classList.add(styles['expand-dropdown-width']);
-        }
+        // if (stretchBeyondTriggerWidth) {
+        //   // let dropdown width grow according to the content
+        //   dropdownRef.current.classList.add(styles['expand-dropdown-width']);
+        // }
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -285,12 +288,13 @@ const Dropdown = ({
             stretchHeight,
             isMobile,
             minWidth,
-            maxWidth
+            maxWidth,
+            stretchBeyondTriggerWidth
           ),
           dropdownRef.current,
           verticalContainerRef.current
         );
-        dropdownRef.current.classList.remove(styles.nowrap, styles['expand-dropdown-width']);
+        dropdownRef.current.classList.remove(styles.nowrap);
       }
     };
     onDropdownOpen();
@@ -409,6 +413,7 @@ const Dropdown = ({
                 interior={interior}
                 header={header}
                 expandToViewport={expandToViewport}
+                stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
                 footer={footer}
                 onMouseDown={onMouseDown}
                 isRefresh={isRefresh}

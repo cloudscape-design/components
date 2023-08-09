@@ -119,7 +119,7 @@ export interface DropdownProps extends ExpandToViewport {
    */
   minWidth?: number;
   /**
-   * Sets the maximum width of the dropdown (in px)
+   * Sets the maximum width of the dropdown (in px) when it's growing beyond the trigger width.
    */
   maxWidth?: number;
   /**
