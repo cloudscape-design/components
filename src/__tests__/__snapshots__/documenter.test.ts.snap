@@ -6522,6 +6522,7 @@ A flash message object contains the following properties:
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
 * \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
+If not provided, \`i18nStrings.{type}IconAriaLabel\` will be used as a fallback.
 * \`ariaRole\` (string) - For flash messages added after page load, specifies how this message is communicated to assistive
 technology. Use \\"status\\" for status updates or informational content. Use \\"alert\\" for important messages that need the
 user's attention.

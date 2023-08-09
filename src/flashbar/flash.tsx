@@ -68,6 +68,7 @@ export const focusFlashById = throttle(
 export interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
+  i18nStrings?: FlashbarProps.I18nStrings;
 }
 
 export const Flash = React.forwardRef(
@@ -87,6 +88,7 @@ export const Flash = React.forwardRef(
       className,
       transitionState,
       ariaRole,
+      i18nStrings,
       type = 'info',
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -153,7 +155,10 @@ export const Flash = React.forwardRef(
             <div
               className={clsx(styles['flash-icon'], styles['flash-text'])}
               role="img"
-              aria-label={statusIconAriaLabel}
+              aria-label={
+                statusIconAriaLabel ||
+                i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`]
+              }
             >
               {icon}
             </div>
