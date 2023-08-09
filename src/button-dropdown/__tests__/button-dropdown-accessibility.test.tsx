@@ -89,11 +89,30 @@ const items: ButtonDropdownProps.Items = [
       expect(menuElement.getElement()).toHaveAccessibleName('Custom label');
     });
 
-    it('does not label dropdown with icon trigger', () => {
+    it('does not auto-label dropdown with icon trigger', () => {
       const wrapper = renderButtonDropdown({ ...props, variant: 'icon' });
       wrapper.openDropdown();
       const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
       expect(menuElement.getElement()).not.toHaveAttribute('aria-labelledby');
+    });
+    it('passes aria-label to icon trigger', () => {
+      const wrapper = renderButtonDropdown({ ...props, variant: 'icon', ariaLabel: 'Button trigger' });
+      wrapper.openDropdown();
+      const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
+      expect(menuElement.getElement()).toHaveAccessibleName('Button trigger');
+    });
+
+    it('does not auto-label dropdown with inline icon trigger', () => {
+      const wrapper = renderButtonDropdown({ ...props, variant: 'inline-icon' });
+      wrapper.openDropdown();
+      const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
+      expect(menuElement.getElement()).not.toHaveAttribute('aria-labelledby');
+    });
+    it('passes aria-label to inline icon trigger', () => {
+      const wrapper = renderButtonDropdown({ ...props, variant: 'inline-icon', ariaLabel: 'Button trigger' });
+      wrapper.openDropdown();
+      const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
+      expect(menuElement.getElement()).toHaveAccessibleName('Button trigger');
     });
   });
 });
