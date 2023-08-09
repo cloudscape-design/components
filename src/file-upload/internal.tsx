@@ -101,7 +101,9 @@ function InternalFileUpload(
     >
       <InternalBox>
         {isDropzoneVisible ? (
-          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
+          <Dropzone onChange={handleFilesChange} multiple={multiple}>
+            {i18nStrings.dropzoneText(multiple)}
+          </Dropzone>
         ) : (
           <FileInput
             ref={ref}

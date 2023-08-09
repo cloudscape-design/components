@@ -14,9 +14,13 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
   lastModified: 1590962400000,
 });
 
-function createDragEvent(type: string) {
+function createDragEvent(type: string, files = [file1, file2]) {
   const event = new CustomEvent(type, { bubbles: true });
-  (event as any).dataTransfer = { types: ['Files'], files: [file1, file2] };
+  (event as any).dataTransfer = {
+    types: ['Files'],
+    files: type === 'drop' ? files : [],
+    items: files,
+  };
   return event;
 }
 
@@ -69,7 +73,11 @@ describe('File upload dropzone', () => {
   });
 
   test('dropzone is hovered on dragover and un-hovered on dragleave', () => {
-    const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
+    const { container } = render(
+      <Dropzone onChange={jest.fn()} multiple={true}>
+        Drop files here
+      </Dropzone>
+    );
     const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
 
     expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
@@ -85,11 +93,58 @@ describe('File upload dropzone', () => {
 
   test('dropzone fires onChange on drop', () => {
     const onChange = jest.fn();
-    const { container } = render(<Dropzone onChange={onChange}>Drop files here</Dropzone>);
+    const { container } = render(
+      <Dropzone onChange={onChange} multiple={true}>
+        Drop files here
+      </Dropzone>
+    );
     const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
 
     fireEvent(dropzone, createDragEvent('drop'));
 
     expect(onChange).toHaveBeenCalledWith([file1, file2]);
+  });
+
+  describe('dragging on non-multiple zone', () => {
+    test('dropzone is not hovered on dragover of multiple files', () => {
+      const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
+      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
+
+      fireEvent(dropzone, createDragEvent('dragover'));
+
+      expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
+    });
+    test('dropzone is hovered on dragover of single file', () => {
+      const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
+      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
+
+      fireEvent(dropzone, createDragEvent('dragover', [file1]));
+
+      expect(dropzone).toHaveClass(selectors['dropzone-hovered']);
+    });
+
+    test('dropzone fires no onChange on drop of multiple files', () => {
+      const onChange = jest.fn();
+      const { container } = render(<Dropzone onChange={onChange}>Drop files here</Dropzone>);
+      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
+
+      fireEvent(dropzone, createDragEvent('drop'));
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    test('dropzone fires onChange on drop of single file', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Dropzone onChange={onChange} multiple={true}>
+          Drop files here
+        </Dropzone>
+      );
+      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
+
+      fireEvent(dropzone, createDragEvent('drop', [file1]));
+
+      expect(onChange).toHaveBeenCalledWith([file1]);
+    });
   });
 });

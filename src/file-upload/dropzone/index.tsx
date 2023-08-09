@@ -8,6 +8,7 @@ import InternalIcon from '../../icon/internal';
 
 interface DropzoneProps {
   onChange: (files: File[]) => void;
+  multiple?: boolean;
   children: React.ReactNode;
 }
 
@@ -58,15 +59,19 @@ export function useDropzoneVisible() {
   return isDropzoneVisible;
 }
 
-export function Dropzone({ onChange, children }: DropzoneProps) {
+export function Dropzone({ onChange, multiple, children }: DropzoneProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
 
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();
-    setDropzoneHovered(true);
 
     if (event.dataTransfer) {
-      event.dataTransfer.dropEffect = 'copy';
+      if (event.dataTransfer.items.length > 1 && !multiple) {
+        event.dataTransfer.dropEffect = 'none';
+      } else {
+        setDropzoneHovered(true);
+        event.dataTransfer.dropEffect = 'copy';
+      }
     }
   };
 
@@ -83,6 +88,9 @@ export function Dropzone({ onChange, children }: DropzoneProps) {
     event.preventDefault();
     setDropzoneHovered(false);
 
+    if (event.dataTransfer.files.length > 1 && !multiple) {
+      return;
+    }
     onChange(Array.from(event.dataTransfer.files));
   };
 
