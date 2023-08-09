@@ -260,7 +260,12 @@ const InternalTable = React.forwardRef(
                       className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
                     >
                       <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
-                        <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                        <ToolsHeader
+                          header={header}
+                          filter={filter}
+                          pagination={pagination}
+                          preferences={preferences}
+                        />
                       </CollectionLabelContext.Provider>
                     </div>
                   </div>
