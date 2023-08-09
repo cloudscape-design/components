@@ -15,11 +15,13 @@ import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 describe('Form Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
     render(<Form />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
@@ -45,8 +47,24 @@ describe('Form Analytics', () => {
     );
   });
 
+  test('defers to a parent Form if present', () => {
+    render(
+      <Form>
+        <Form>
+          <Form>Content</Form>
+        </Form>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
+  });
+
   test('does not send a funnelStepComplete metric when Form is unmounted', () => {
     const { unmount } = render(<Form />);
+    act(() => void jest.runAllTimers());
 
     unmount();
 
@@ -55,6 +73,7 @@ describe('Form Analytics', () => {
 
   test('sends a funnelCancelled metric when Form is unmounted', () => {
     const { unmount } = render(<Form />);
+    act(() => void jest.runAllTimers());
 
     unmount();
     expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
@@ -68,6 +87,7 @@ describe('Form Analytics', () => {
 
   test('does not send a funnelComplete when the form is unmounted after clicking a non-primary button in the actions slot', () => {
     const { container, unmount } = render(<Form actions={<Button data-testid="cancel">Cancel</Button>} />);
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const cancelButton = formWrapper!.findActions()!.findButton('[data-testid="cancel"]');
 
@@ -91,6 +111,7 @@ describe('Form Analytics', () => {
         </Button>
       </Form>
     );
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const submitButton = formWrapper!.findContent()!.findButton('[data-testid="submit"]');
 
@@ -121,6 +142,7 @@ describe('Form Analytics', () => {
         }
       />
     );
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
 
@@ -162,6 +184,7 @@ describe('Form Analytics', () => {
         <ChildComponent />
       </Form>
     );
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
 
@@ -173,6 +196,7 @@ describe('Form Analytics', () => {
 
   test('sends a funnelError metric when an error is rendered', () => {
     render(<Form errorText="Error" />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelError).toBeCalledTimes(1);
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
@@ -184,9 +208,13 @@ describe('Form Analytics', () => {
 
   test('does not send multiple funnelStart and funnelStepStart metrics when Form is re-rendered', () => {
     const { rerender } = render(<Form />);
+    act(() => void jest.runAllTimers());
     rerender(<Form />);
+    act(() => void jest.runAllTimers());
     rerender(<Form />);
+    act(() => void jest.runAllTimers());
     rerender(<Form />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
