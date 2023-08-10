@@ -4,7 +4,18 @@ import React from 'react';
 
 import { i18nStrings } from '../wizard/common';
 
-import { Box, BreadcrumbGroup, Form, Wizard, WizardProps, Input, Container, Header, SpaceBetween } from '~components';
+import {
+  Box,
+  BreadcrumbGroup,
+  Form,
+  Wizard,
+  WizardProps,
+  Input,
+  Container,
+  Header,
+  SpaceBetween,
+  FormField,
+} from '~components';
 
 export default function WizardPage() {
   const steps: WizardProps.Step[] = [
@@ -45,7 +56,9 @@ export default function WizardPage() {
               <Container header={<Header>Another header</Header>}>
                 <Form>
                   Here is a substep nested inside a substep.
-                  <Input readOnly={true} value="" />
+                  <FormField label="An input field">
+                    <Input readOnly={true} value="" />
+                  </FormField>
                 </Form>
               </Container>
             </Container>
