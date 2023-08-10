@@ -48,10 +48,11 @@ interface OverflowMenuProps {
   onItemClick: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   hasOverflowBadge?: boolean;
   hasActiveStyles?: boolean;
+  ariaLabel?: string;
 }
 
 export default function OverflowMenu(props: OverflowMenuProps) {
-  const { drawersRefs, className, overflowItems, onItemClick, hasOverflowBadge, hasActiveStyles } = props;
+  const { drawersRefs, className, overflowItems, onItemClick, hasOverflowBadge, hasActiveStyles, ariaLabel } = props;
   return (
     <InternalButtonDropdown
       ref={drawersRefs ? drawersRefs.toggle : null}
@@ -64,7 +65,7 @@ export default function OverflowMenu(props: OverflowMenuProps) {
         badge: item.badge,
       }))}
       onItemClick={onItemClick}
-      ariaLabel="Overflow drawer triggers"
+      ariaLabel={ariaLabel}
       variant="icon"
       customTriggerBuilder={getTrigger(hasOverflowBadge, hasActiveStyles)}
       expandToViewport={true}

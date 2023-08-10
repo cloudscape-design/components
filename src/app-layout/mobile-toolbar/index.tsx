@@ -64,6 +64,7 @@ interface MobileToolbarProps {
     activeDrawerId: string | undefined;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
     ariaLabel?: string;
+    overflowAriaLabel?: string;
   };
 }
 
@@ -153,6 +154,7 @@ export function MobileToolbar({
                   });
                 }}
                 hasOverflowBadge={overflowItemHasBadge}
+                ariaLabel={drawers.overflowAriaLabel}
               />
             </span>
           )}

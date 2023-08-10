@@ -594,6 +594,7 @@ const OldAppLayout = React.forwardRef(
                         }
                       },
                       ariaLabel: drawers.ariaLabel,
+                      overflowAriaLabel: drawers.overflowAriaLabel,
                     }
                   : undefined
               }
@@ -805,6 +806,7 @@ const OldAppLayout = React.forwardRef(
                     }
                   },
                   ariaLabel: drawers.ariaLabel,
+                  overflowAriaLabel: drawers.overflowAriaLabel,
                 }}
               />
             )}

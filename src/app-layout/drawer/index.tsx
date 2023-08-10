@@ -244,6 +244,7 @@ export const DrawerTriggersBar = ({
                     }}
                     hasOverflowBadge={overflowItemHasBadge}
                     hasActiveStyles={overflowItemIsActive()}
+                    ariaLabel={drawers.overflowAriaLabel}
                   />
                 </span>
               )}

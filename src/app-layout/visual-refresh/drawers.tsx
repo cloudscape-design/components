@@ -300,6 +300,7 @@ function DesktopTriggers() {
               handleDrawersClick(detail.id);
             }}
             hasActiveStyles={true}
+            ariaLabel={drawers.overflowAriaLabel}
           />
         )}
         {hasSplitPanel && splitPanelToggle.displayed && (
@@ -409,6 +410,7 @@ export function MobileTriggers() {
             handleDrawersClick(detail.id);
           }}
           hasOverflowBadge={overflowItemHasBadge}
+          ariaLabel={drawers.overflowAriaLabel}
         />
       )}
     </aside>

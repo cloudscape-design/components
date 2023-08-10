@@ -55,6 +55,7 @@ export interface DrawerTriggersBarProps {
     activeDrawerId?: string;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
     ariaLabel?: string;
+    overflowAriaLabel?: string;
   };
 }
 
@@ -86,5 +87,6 @@ export interface InternalDrawerProps {
     onChange?: NonCancelableEventHandler<string>;
     onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
     ariaLabel?: string;
+    overflowAriaLabel?: string;
   };
 }
