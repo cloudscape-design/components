@@ -300,7 +300,7 @@ function DesktopTriggers() {
               handleDrawersClick(detail.id);
             }}
             hasActiveStyles={true}
-            ariaLabel={drawers.overflowAriaLabel}
+            ariaLabel={drawers?.overflowAriaLabel}
           />
         )}
         {hasSplitPanel && splitPanelToggle.displayed && (

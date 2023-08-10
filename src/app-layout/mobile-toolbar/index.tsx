@@ -144,7 +144,7 @@ export function MobileToolbar({
               />
             </span>
           ))}
-          {drawers?.items?.length && drawers?.items?.length > 2 && (
+          {overflowItems && overflowItems.length > 0 && (
             <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
               <OverflowMenu
                 overflowItems={overflowItems}

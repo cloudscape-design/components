@@ -40,9 +40,9 @@
 }
 
 .badge-blue::after {
-  background-color: awsui.$color-text-status-info;
+  background-color: awsui.$color-background-notification-blue;
 }
 
 .badge-red::after {
-  background-color: awsui.$color-text-status-error;
+  background-color: awsui.$color-background-notification-red;
 }

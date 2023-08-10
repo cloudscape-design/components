@@ -43,8 +43,8 @@ const getTrigger = (hasOverflowBadge?: boolean, isActive?: boolean) => {
 
 interface OverflowMenuProps {
   drawersRefs?: DrawerFocusControlRefs;
-  className?: any;
-  overflowItems: DrawerItem[] | undefined;
+  className?: string;
+  overflowItems: DrawerItem[];
   onItemClick: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   hasOverflowBadge?: boolean;
   hasActiveStyles?: boolean;
@@ -54,21 +54,22 @@ interface OverflowMenuProps {
 export default function OverflowMenu(props: OverflowMenuProps) {
   const { drawersRefs, className, overflowItems, onItemClick, hasOverflowBadge, hasActiveStyles, ariaLabel } = props;
   return (
-    <InternalButtonDropdown
-      ref={drawersRefs ? drawersRefs.toggle : null}
-      className={className}
-      items={overflowItems?.map(item => ({
-        id: item.id,
-        text: item.ariaLabels?.content || 'Content',
-        iconName: item.trigger.iconName,
-        iconSvg: item.trigger.iconSvg,
-        badge: item.badge,
-      }))}
-      onItemClick={onItemClick}
-      ariaLabel={ariaLabel}
-      variant="icon"
-      customTriggerBuilder={getTrigger(hasOverflowBadge, hasActiveStyles)}
-      expandToViewport={true}
-    />
+    <span className={className}>
+      <InternalButtonDropdown
+        ref={drawersRefs ? drawersRefs.toggle : null}
+        items={overflowItems.map(item => ({
+          id: item.id,
+          text: item.ariaLabels?.content || 'Content',
+          iconName: item.trigger.iconName,
+          iconSvg: item.trigger.iconSvg,
+          badge: item.badge,
+        }))}
+        onItemClick={onItemClick}
+        ariaLabel={ariaLabel}
+        variant="icon"
+        customTriggerBuilder={getTrigger(hasOverflowBadge, hasActiveStyles)}
+        expandToViewport={true}
+      />
+    </span>
   );
 }

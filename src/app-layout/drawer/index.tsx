@@ -143,8 +143,9 @@ export const DrawerTriggersBar = ({
   contentClassName,
   toggleClassName,
 }: DrawerTriggersBarProps) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
-  const isCompactMode = useDensityMode(triggersContainerRef) === 'compact';
+  const isCompactMode = useDensityMode(containerRef) === 'compact';
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
@@ -195,6 +196,7 @@ export const DrawerTriggersBar = ({
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
         [styles['drawer-mobile']]: isMobile,
       })}
+      ref={containerRef}
     >
       <div
         ref={triggersContainerRef}
@@ -231,20 +233,20 @@ export const DrawerTriggersBar = ({
                   </span>
                 );
               })}
-              {drawers?.items?.length && drawers?.items?.length > getIndexOfOverflowItem() && (
+              {overflowItems && overflowItems.length > 0 && (
                 <span
                   className={clsx(styles['drawer-trigger'], overflowItemIsActive() && styles['drawer-trigger-active'])}
                 >
                   <OverflowMenu
                     overflowItems={overflowItems}
                     onItemClick={({ detail }) => {
-                      drawers.onChange({
+                      drawers?.onChange({
                         activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                       });
                     }}
                     hasOverflowBadge={overflowItemHasBadge}
                     hasActiveStyles={overflowItemIsActive()}
-                    ariaLabel={drawers.overflowAriaLabel}
+                    ariaLabel={drawers?.overflowAriaLabel}
                   />
                 </span>
               )}
