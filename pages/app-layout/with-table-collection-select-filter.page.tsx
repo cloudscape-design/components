@@ -45,6 +45,8 @@ export default function () {
   const [usePropertyFilter, setUsePropertyFilter] = useState(true);
   const [customControl, setCustomControl] = useState(true);
   const [customAction, setCustomAction] = useState(true);
+  const [matches, setMatches] = useState(false);
+  const [textfilter, setTextfilter] = useState('');
   const [query, setQuery] = useState<PropertyFilterProps.Query>({ operation: 'and', tokens: [] });
 
   const { items, actions, paginationProps, propertyFilterProps } = useCollection(allItems, {
@@ -99,6 +101,9 @@ export default function () {
                     <Checkbox checked={customAction} onChange={e => setCustomAction(e.detail.checked)}>
                       Custom action
                     </Checkbox>
+                    <Checkbox checked={matches} onChange={e => setMatches(e.detail.checked)}>
+                      Show match count
+                    </Checkbox>
                   </SpaceBetween>
                 }
               >
@@ -127,13 +132,14 @@ export default function () {
                       filteringProperties={filteringProperties}
                       customControl={customControl && <Button>Filter action</Button>}
                       additionalActions={customAction && <Button>Filter action</Button>}
+                      countText={matches ? '11 matches' : undefined}
                     />
                   ) : (
                     <Input
                       data-testid="input-filter"
                       type="search"
-                      value={''}
-                      onChange={() => {}}
+                      value={textfilter}
+                      onChange={e => setTextfilter(e.detail.value)}
                       placeholder="Find instances"
                       clearAriaLabel="clear"
                     />
@@ -163,6 +169,7 @@ export default function () {
                     />
                   </FormField>
                 </div>
+                {matches && !usePropertyFilter && <span style={{ lineHeight: '3rem' }}>11 matches</span>}
               </div>
             }
             columnDefinitions={columnDefinitions.slice(0, 7)}
