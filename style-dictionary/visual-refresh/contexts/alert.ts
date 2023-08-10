@@ -31,15 +31,25 @@ export const alertButtonTokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkButtonNormalHover: '{colorTextLinkHover}',
 };
 
+const alertExpandableSectionTokens: StyleDictionary.ColorsDictionary = {
+  colorBorderDividerDefault: '{colorGrey600}',
+};
+
+const alertExpandableSectionFontTokens: StyleDictionary.TypographyDictionary = {
+  fontExpandableHeadingSize: '14px',
+};
+
 const tokens: StyleDictionary.ColorsDictionary = {
   ...alertButtonTokens,
+  ...alertExpandableSectionTokens,
   colorBorderItemFocused: {
     dark: '{colorGrey100}',
   },
 };
 
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
+export const expandedColorTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
   merge({}, parentTokens, tokens)
 );
+const expandedTypoTokens: StyleDictionary.ExpandedGlobalScopeDictionary = { ...alertExpandableSectionFontTokens };
 
-export default expandedTokens;
+export default merge({}, expandedColorTokens, expandedTypoTokens);
