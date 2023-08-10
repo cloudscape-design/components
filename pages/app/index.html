@@ -7,6 +7,13 @@
     <title>Cloudscape demo pages</title>
 
     <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOMContentLoaded ready");
+        document.body.classList.add('awsui-visual-refresh');
+      });
+    </script>
+
+    <script>
       const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
 
       const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self'" };
@@ -33,7 +40,7 @@
         .join('; ');
 
       document.write('<meta http-equiv="Content-Security-Policy" content="' + cspString + '" />');
-    </script>
+    </script>     
   </head>
 
   <body>

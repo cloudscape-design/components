@@ -16,6 +16,7 @@ export interface InternalBaseComponentProps {
  * root DOM node and emits the telemetry for this component.
  */
 export default function useBaseComponent<T = any>(componentName: string, componentConfiguration?: Record<string, any>) {
+  console.log('start basecomponent');
   useTelemetry(componentName);
   useFocusVisible();
   const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, componentConfiguration);
