@@ -32,14 +32,12 @@ export const alertButtonTokens: StyleDictionary.ColorsDictionary = {
 };
 
 const alertExpandableSectionTokens: StyleDictionary.ColorsDictionary = {
-  colorBorderDividerDefault: '{colorGrey600}',
+  colorBorderDividerDefault: '{colorTextButtonNormalDefault}',
+  colorTextExpandableSectionDefault: '{colorTextButtonNormalDefault}',
+  colorTextExpandableSectionHover: '{colorTextButtonNormalHover}',
 };
 
-const alertExpandableSectionFontTokens: StyleDictionary.TypographyDictionary = {
-  fontExpandableHeadingSize: '14px',
-};
-
-const tokens: StyleDictionary.ColorsDictionary = {
+const colorTokens: StyleDictionary.ColorsDictionary = {
   ...alertButtonTokens,
   ...alertExpandableSectionTokens,
   colorBorderItemFocused: {
@@ -47,9 +45,16 @@ const tokens: StyleDictionary.ColorsDictionary = {
   },
 };
 
-export const expandedColorTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
-  merge({}, parentTokens, tokens)
-);
-const expandedTypoTokens: StyleDictionary.ExpandedGlobalScopeDictionary = { ...alertExpandableSectionFontTokens };
+const alertExpandableSectionFontTokens: StyleDictionary.TypographyDictionary = {
+  fontExpandableHeadingSize: '14px',
+};
 
-export default merge({}, expandedColorTokens, expandedTypoTokens);
+const alertExpandableSectionBorderTokens: StyleDictionary.BordersDictionary = {
+  borderDividerSectionWidth: '1px',
+};
+
+export const expandedColorTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
+  merge({}, parentTokens, colorTokens)
+);
+
+export default { ...expandedColorTokens, ...alertExpandableSectionFontTokens, ...alertExpandableSectionBorderTokens };
