@@ -44,6 +44,8 @@
   // Like styles.text-flex-wrapping, but without overflow: hidden, to prevent headings from being partially cut off.
   word-wrap: break-word;
   max-width: 100%;
+  flex: 50;
+  min-width: 250px;
 
   &.refresh {
     display: flex;
