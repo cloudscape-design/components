@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ExpandableSectionProps } from './interfaces';
-import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
+import React, { KeyboardEventHandler, MouseEventHandler, ReactNode, useRef } from 'react';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
@@ -94,9 +94,31 @@ const ExpandableNavigationHeader = ({
   children,
   icon,
 }: ExpandableNavigationHeaderProps) => {
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   return (
-    <div id={id} className={clsx(className, styles['click-target'])} onClick={onClick}>
+    <div
+      id={id}
+      className={clsx(className, styles['click-target'])}
+      onClick={originalEvent => {
+        console.log('buttonRef.current', buttonRef.current);
+        let clickedOnIcon = false;
+        if (
+          (buttonRef.current && originalEvent.target === buttonRef.current) ||
+          buttonRef.current?.contains(originalEvent.target)
+        ) {
+          clickedOnIcon = true;
+        }
+
+        // Create a new event object
+        const newEvent = {
+          ...originalEvent,
+          clickedOnIcon,
+        };
+        onClick(newEvent);
+      }}
+    >
       <button
+        ref={buttonRef}
         className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}

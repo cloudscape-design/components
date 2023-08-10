@@ -79,17 +79,17 @@ const items: SideNavigationProps.Item[] = [
       {
         type: 'expandable-link-group',
         text: 'Expandable link group',
-        href: '#/exp-link-group-inner',
+        href: '#/light/side-navigation/app-layout/?visualRefresh=false',
         items: [
           {
             type: 'link',
             text: 'Page 11',
-            href: '#/page11',
+            href: '#/light/side-navigation/app-layout/?visualRefresh=false',
           },
           {
             type: 'link',
             text: 'Page 12',
-            href: '#/page12',
+            href: '#/light/side-navigation/app-layout/?visualRefresh=false',
           },
         ],
       },
@@ -101,10 +101,14 @@ const items: SideNavigationProps.Item[] = [
 ];
 
 export default function SideNavigationPage() {
+  const [open, setOpen] = React.useState(true);
+
   return (
     <AppLayout
-      toolsHide={true}
-      navigationOpen={true}
+      navigationOpen={open}
+      onNavigationChange={({ detail }) => {
+        setOpen(detail.open);
+      }}
       contentType="form"
       ariaLabels={{ navigationClose: 'Close' }}
       navigation={

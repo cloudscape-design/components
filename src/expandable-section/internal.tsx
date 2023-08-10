@@ -58,9 +58,12 @@ export default function InternalExpandableSection({
     [onChange, setExpanded]
   );
 
-  const onClick = useCallback(() => {
-    onExpandChange(!expanded);
-  }, [onExpandChange, expanded]);
+  const onClick = useCallback(
+    e => {
+      e.clickedOnIcon && onExpandChange(!expanded);
+    },
+    [onExpandChange, expanded]
+  );
 
   const onKeyUp = useCallback(
     (event: KeyboardEvent<Element>) => {
