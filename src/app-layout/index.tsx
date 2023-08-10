@@ -197,6 +197,14 @@ const OldAppLayout = React.forwardRef(
       }
     };
 
+    useEffect(() => {
+      // We forcely close the navigation on mobile on the initial load
+      if (isMobile) {
+        onNavigationToggle(false);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const navigationVisible = !navigationHide && navigationOpen;
     const toolsVisible = !toolsHide && toolsOpen;
 

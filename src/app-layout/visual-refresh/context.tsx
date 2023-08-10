@@ -176,6 +176,14 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
     );
 
+    useEffect(() => {
+      // We forcely close the navigation on mobile on the initial load
+      if (isMobile) {
+        handleNavigationClick(false);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
 
     const handleNavigationClick = useCallback(
