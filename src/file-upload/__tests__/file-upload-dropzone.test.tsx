@@ -20,13 +20,13 @@ function createDragEvent(type: string, files = [file1, file2]) {
   (event as any).dataTransfer = {
     types: ['Files'],
     files: type === 'drop' ? files : [],
-    items: files,
+    items: files.map(() => ({ kind: 'file' })),
   };
   return event;
 }
 
-function TestDropzoneVisible() {
-  const isDropzoneVisible = useDropzoneVisible();
+function TestDropzoneVisible({ multiple = false }) {
+  const isDropzoneVisible = useDropzoneVisible(multiple);
   return <div>{isDropzoneVisible ? 'visible' : 'hidden'}</div>;
 }
 
@@ -44,13 +44,31 @@ describe('File upload dropzone', () => {
     render(<TestDropzoneVisible />);
     expect(screen.getByText('hidden')).toBeDefined();
 
-    fireEvent(document, createDragEvent('dragover'));
+    fireEvent(document, createDragEvent('dragover', [file1]));
+
+    expect(screen.getByText('visible')).toBeDefined();
+  });
+
+  test('Dropzone does not show if multiple files dragged into non-multiple zone', () => {
+    render(<TestDropzoneVisible />);
+    expect(screen.getByText('hidden')).toBeDefined();
+
+    fireEvent(document, createDragEvent('dragover', [file1, file2]));
+
+    expect(screen.getByText('hidden')).toBeDefined();
+  });
+
+  test('Dropzone shows if multiple files dragged into multiple zone', () => {
+    render(<TestDropzoneVisible multiple={true} />);
+    expect(screen.getByText('hidden')).toBeDefined();
+
+    fireEvent(document, createDragEvent('dragover', [file1, file2]));
 
     expect(screen.getByText('visible')).toBeDefined();
   });
 
   test('Dropzone hides after a delay once global dragleave event is received', async () => {
-    render(<TestDropzoneVisible />);
+    render(<TestDropzoneVisible multiple={true} />);
 
     fireEvent(document, createDragEvent('dragover'));
 
@@ -64,7 +82,7 @@ describe('File upload dropzone', () => {
   });
 
   test('Dropzone hides after a delay once global drop event is received', async () => {
-    render(<TestDropzoneVisible />);
+    render(<TestDropzoneVisible multiple={true} />);
 
     fireEvent(document, createDragEvent('dragover'));
 
@@ -78,9 +96,9 @@ describe('File upload dropzone', () => {
   });
 
   test('dropzone is rendered in component', () => {
-    render(<FileUpload value={[]} i18nStrings={i18nStrings} />);
+    render(<FileUpload value={[]} i18nStrings={i18nStrings} multiple={true} />);
     fireEvent(document, createDragEvent('dragover'));
-    expect(screen.getByText('Drag file to upload')).toBeDefined();
+    expect(screen.getByText('Drag files to upload')).toBeDefined();
   });
 
   test('dropzone renders provided children', () => {
@@ -89,11 +107,7 @@ describe('File upload dropzone', () => {
   });
 
   test('dropzone is hovered on dragover and un-hovered on dragleave', () => {
-    const { container } = render(
-      <Dropzone onChange={jest.fn()} multiple={true}>
-        Drop files here
-      </Dropzone>
-    );
+    const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
     const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
 
     expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
@@ -109,58 +123,11 @@ describe('File upload dropzone', () => {
 
   test('dropzone fires onChange on drop', () => {
     const onChange = jest.fn();
-    const { container } = render(
-      <Dropzone onChange={onChange} multiple={true}>
-        Drop files here
-      </Dropzone>
-    );
+    const { container } = render(<Dropzone onChange={onChange}>Drop files here</Dropzone>);
     const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
 
     fireEvent(dropzone, createDragEvent('drop'));
 
     expect(onChange).toHaveBeenCalledWith([file1, file2]);
-  });
-
-  describe('dragging on non-multiple zone', () => {
-    test('dropzone is not hovered on dragover of multiple files', () => {
-      const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
-      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
-
-      fireEvent(dropzone, createDragEvent('dragover'));
-
-      expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
-    });
-    test('dropzone is hovered on dragover of single file', () => {
-      const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
-      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
-
-      fireEvent(dropzone, createDragEvent('dragover', [file1]));
-
-      expect(dropzone).toHaveClass(selectors['dropzone-hovered']);
-    });
-
-    test('dropzone fires no onChange on drop of multiple files', () => {
-      const onChange = jest.fn();
-      const { container } = render(<Dropzone onChange={onChange}>Drop files here</Dropzone>);
-      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
-
-      fireEvent(dropzone, createDragEvent('drop'));
-
-      expect(onChange).not.toHaveBeenCalled();
-    });
-
-    test('dropzone fires onChange on drop of single file', () => {
-      const onChange = jest.fn();
-      const { container } = render(
-        <Dropzone onChange={onChange} multiple={true}>
-          Drop files here
-        </Dropzone>
-      );
-      const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
-
-      fireEvent(dropzone, createDragEvent('drop', [file1]));
-
-      expect(onChange).toHaveBeenCalledWith([file1]);
-    });
   });
 });

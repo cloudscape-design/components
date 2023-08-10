@@ -80,7 +80,7 @@ function InternalFileUpload(
     }
   };
 
-  const isDropzoneVisible = useDropzoneVisible();
+  const isDropzoneVisible = useDropzoneVisible(multiple);
 
   const formFieldContext = useFormFieldContext(restProps);
   const ariaDescribedBy = joinStrings(
@@ -101,9 +101,7 @@ function InternalFileUpload(
     >
       <InternalBox>
         {isDropzoneVisible ? (
-          <Dropzone onChange={handleFilesChange} multiple={multiple}>
-            {i18nStrings.dropzoneText(multiple)}
-          </Dropzone>
+          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
         ) : (
           <FileInput
             ref={ref}

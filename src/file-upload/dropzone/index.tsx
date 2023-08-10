@@ -8,11 +8,10 @@ import InternalIcon from '../../icon/internal';
 
 interface DropzoneProps {
   onChange: (files: File[]) => void;
-  multiple?: boolean;
   children: React.ReactNode;
 }
 
-export function useDropzoneVisible() {
+export function useDropzoneVisible(multiple: boolean) {
   const [isDropzoneVisible, setDropzoneVisible] = useState(false);
 
   // Registering global drag events listeners.
@@ -24,7 +23,13 @@ export function useDropzoneVisible() {
     const onDocumentDragOver = (event: DragEvent) => {
       event.preventDefault();
 
-      if (event.dataTransfer?.types?.indexOf('Files') !== -1) {
+      let files = 0;
+      for (let item = 0; item < (event.dataTransfer?.items.length || 0); item++) {
+        if (event.dataTransfer?.items[item].kind === 'file') {
+          files++;
+        }
+      }
+      if (files > 0 && (multiple || files === 1)) {
         setDropzoneVisible(true);
         dragTimer && clearTimeout(dragTimer);
       }
@@ -54,24 +59,20 @@ export function useDropzoneVisible() {
       document.removeEventListener('dragleave', onDocumentDragLeave);
       document.removeEventListener('drop', onDocumentDrop);
     };
-  }, []);
+  }, [multiple]);
 
   return isDropzoneVisible;
 }
 
-export function Dropzone({ onChange, multiple, children }: DropzoneProps) {
+export function Dropzone({ onChange, children }: DropzoneProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
 
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();
 
     if (event.dataTransfer) {
-      if (event.dataTransfer.items.length > 1 && !multiple) {
-        event.dataTransfer.dropEffect = 'none';
-      } else {
-        setDropzoneHovered(true);
-        event.dataTransfer.dropEffect = 'copy';
-      }
+      setDropzoneHovered(true);
+      event.dataTransfer.dropEffect = 'copy';
     }
   };
 
@@ -88,9 +89,6 @@ export function Dropzone({ onChange, multiple, children }: DropzoneProps) {
     event.preventDefault();
     setDropzoneHovered(false);
 
-    if (event.dataTransfer.files.length > 1 && !multiple) {
-      return;
-    }
     onChange(Array.from(event.dataTransfer.files));
   };
 
