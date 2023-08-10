@@ -34,7 +34,9 @@ export default function WizardPage() {
               <Container header={<Header>Another header</Header>}>
                 <Form>
                   Here is a substep nested inside a substep.
-                  <Input readOnly={true} value="" />
+                  <FormField label="An input field">
+                    <Input readOnly={true} value="" />
+                  </FormField>
                 </Form>
               </Container>
             </Container>
