@@ -10,10 +10,15 @@ import Button from '~components/button';
 import { I18N_STRINGS } from './shared';
 
 const KEYS = range(15).map(i => `Tag ${i + 1}`);
-const VALUES = range(15).map(i => `Value ${i + 1}`);
+const VALUES = range(15).map(
+  i =>
+    `arn:aws:cloudformation:us-east-1:3850${i % 10}95${
+      (i + 3) % 10
+    }34:stack/apples-to-apples/324534634-234234-66-324235`
+);
 
 async function requestKeys(input: string): Promise<string[]> {
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 500));
   return KEYS.filter(key => key.indexOf(input) !== -1);
 }
 
@@ -21,7 +26,7 @@ async function requestValues(key: string, input: string): Promise<string[]> {
   if (!key) {
     return Promise.reject();
   }
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 500));
   return VALUES.map(value => `${key} - ${value}`).filter(value => value.indexOf(input) !== -1);
 }
 
