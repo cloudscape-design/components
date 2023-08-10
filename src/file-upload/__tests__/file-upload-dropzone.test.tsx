@@ -4,6 +4,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Dropzone, useDropzoneVisible } from '../../../lib/components/file-upload/dropzone';
 import selectors from '../../../lib/components/file-upload/dropzone/styles.selectors.js';
+import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 
 const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
   type: 'text/plain',
@@ -28,6 +29,15 @@ function TestDropzoneVisible() {
   const isDropzoneVisible = useDropzoneVisible();
   return <div>{isDropzoneVisible ? 'visible' : 'hidden'}</div>;
 }
+
+const i18nStrings: FileUploadProps.I18nStrings = {
+  uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
+  dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
+  removeFileAriaLabel: fileIndex => `Remove file ${fileIndex + 1}`,
+  errorIconAriaLabel: 'Error',
+  limitShowFewer: 'Show fewer files',
+  limitShowMore: 'Show more files',
+};
 
 describe('File upload dropzone', () => {
   test('Dropzone becomes visible once global dragover event is received', () => {
@@ -65,6 +75,12 @@ describe('File upload dropzone', () => {
     await waitFor(() => {
       expect(screen.getByText('hidden')).toBeDefined();
     });
+  });
+
+  test('dropzone is rendered in component', () => {
+    render(<FileUpload value={[]} i18nStrings={i18nStrings} />);
+    fireEvent(document, createDragEvent('dragover'));
+    expect(screen.getByText('Drag file to upload')).toBeDefined();
   });
 
   test('dropzone renders provided children', () => {
