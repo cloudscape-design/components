@@ -77,7 +77,7 @@ export default function () {
         splitPanel={
           splitPanelEnabled && (
             <SplitPanel
-              header="Split panel header"
+              header="Split panel header withlongwordthatshouldbesplitinsteadofmakingthepanelscroll"
               i18nStrings={{
                 preferencesTitle: 'Preferences',
                 preferencesPositionLabel: 'Split panel position',
