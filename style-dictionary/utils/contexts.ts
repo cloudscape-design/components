@@ -41,3 +41,11 @@ export const createFlashbarWarningContext = (tokens: TokenCategory<string, Globa
     tokens,
   };
 };
+
+export const createAlertContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'alert',
+    selector: '.awsui-context-alert',
+    tokens,
+  };
+};

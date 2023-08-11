@@ -57,4 +57,10 @@ export const expandedColorTokens: StyleDictionary.ExpandedColorScopeDictionary =
   merge({}, parentTokens, colorTokens)
 );
 
-export default { ...expandedColorTokens, ...alertExpandableSectionFontTokens, ...alertExpandableSectionBorderTokens };
+const expandedTokens = {
+  ...expandedColorTokens,
+  ...alertExpandableSectionFontTokens,
+  ...alertExpandableSectionBorderTokens,
+};
+
+export { expandedTokens as tokens };
