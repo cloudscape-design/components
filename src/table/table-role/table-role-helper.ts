@@ -19,6 +19,7 @@ export type TableRole = 'table' | 'grid';
 export function getTableRoleProps(options: {
   tableRole: TableRole;
   ariaLabel?: string;
+  ariaLabelledBy?: string;
   totalItemsCount?: number;
 }): React.TableHTMLAttributes<HTMLTableElement> {
   const nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {};
@@ -28,6 +29,7 @@ export function getTableRoleProps(options: {
   nativeProps.role = options.tableRole;
 
   nativeProps['aria-label'] = options.ariaLabel;
+  nativeProps['aria-labelledby'] = options.ariaLabelledBy;
 
   // Incrementing the total count by one to account for the header row.
   nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
