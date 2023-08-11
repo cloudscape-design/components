@@ -19,6 +19,9 @@ import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../i18n/context';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { createUseDiscoveredAction } from '../internal/plugins/helpers';
+import { awsuiPluginsInternal } from '../internal/plugins/api';
+import { ActionsWrapper } from './actions-wrapper';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
@@ -28,6 +31,8 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 };
 
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps;
+
+const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
 
 const InternalAlert = React.forwardRef(
   (
@@ -60,17 +65,8 @@ const InternalAlert = React.forwardRef(
     const isRefresh = useVisualRefresh();
     const size = isRefresh ? 'normal' : header && children ? 'big' : 'normal';
 
-    const actionButton = action || (
-      <InternalButton
-        className={styles['action-button']}
-        onClick={() => fireNonCancelableEvent(onButtonClick)}
-        formAction="none"
-      >
-        {buttonText}
-      </InternalButton>
-    );
+    const { discoveredActions, headerRef, contentRef } = useDiscoveredAction(type);
 
-    const hasAction = Boolean(action || buttonText);
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_ALERT]: type,
     };
@@ -98,12 +94,28 @@ const InternalAlert = React.forwardRef(
                   </div>
                   <div className={styles.body}>
                     <div className={clsx(styles.message, styles.text)}>
-                      {header && <div className={styles.header}>{header}</div>}
-                      <div className={styles.content}>{children}</div>
+                      {header && (
+                        <div className={styles.header} ref={headerRef}>
+                          {header}
+                        </div>
+                      )}
+                      <div className={styles.content} ref={contentRef}>
+                        {children}
+                      </div>
                     </div>
                   </div>
                 </div>
-                {hasAction && <div className={styles.action}>{actionButton}</div>}
+                <ActionsWrapper
+                  className={styles.action}
+                  testUtilClasses={{
+                    actionSlot: styles['action-slot'],
+                    actionButton: styles['action-button'],
+                  }}
+                  action={action}
+                  discoveredActions={discoveredActions}
+                  buttonText={buttonText}
+                  onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
+                />
               </div>
               {dismissible && (
                 <div className={styles.dismiss}>

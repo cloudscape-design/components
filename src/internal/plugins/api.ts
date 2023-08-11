@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DrawerConfig, DrawersController, DrawersRegistrationListener } from './drawers-controller';
+import { DrawerConfig, DrawersController, DrawersRegistrationListener } from './controllers/drawers';
+import { ActionButtonsController, ActionConfig, ActionRegistrationListener } from './controllers/action-buttons';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 
@@ -8,11 +9,25 @@ interface AwsuiPluginApiPublic {
   appLayout: {
     registerDrawer(config: DrawerConfig): void;
   };
+  alert: {
+    registerAction(config: ActionConfig): void;
+  };
+  flashbar: {
+    registerAction(config: ActionConfig): void;
+  };
 }
 interface AwsuiPluginApiInternal {
   appLayout: {
     clearRegisteredDrawers(): void;
     onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
+  };
+  alert: {
+    clearRegisteredActions: () => void;
+    onActionRegistered(listener: ActionRegistrationListener): () => void;
+  };
+  flashbar: {
+    clearRegisteredActions: () => void;
+    onActionRegistered(listener: ActionRegistrationListener): () => void;
   };
 }
 
@@ -59,18 +74,34 @@ function loadApi() {
 export const { awsuiPlugins, awsuiPluginsInternal } = loadApi();
 
 function createApi(): AwsuiApi {
-  const drawers = new DrawersController();
+  const appLayoutDrawers = new DrawersController();
+  const alertActions = new ActionButtonsController();
+  const flashbarActions = new ActionButtonsController();
 
   return {
     awsuiPlugins: {
       appLayout: {
-        registerDrawer: drawers.registerDrawer,
+        registerDrawer: appLayoutDrawers.registerDrawer,
+      },
+      alert: {
+        registerAction: alertActions.registerAction,
+      },
+      flashbar: {
+        registerAction: flashbarActions.registerAction,
       },
     },
     awsuiPluginsInternal: {
       appLayout: {
-        clearRegisteredDrawers: drawers.clearRegisteredDrawers,
-        onDrawersRegistered: drawers.onDrawersRegistered,
+        clearRegisteredDrawers: appLayoutDrawers.clearRegisteredDrawers,
+        onDrawersRegistered: appLayoutDrawers.onDrawersRegistered,
+      },
+      alert: {
+        clearRegisteredActions: alertActions.clearRegisteredActions,
+        onActionRegistered: alertActions.onActionRegistered,
+      },
+      flashbar: {
+        clearRegisteredActions: flashbarActions.clearRegisteredActions,
+        onActionRegistered: flashbarActions.onActionRegistered,
       },
     },
   };
