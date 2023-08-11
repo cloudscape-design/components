@@ -230,7 +230,10 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="small-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
+          stickyColumns={{
+            first: parseInt(urlParams.stickyColumnsFirst || '0'),
+            last: parseInt(urlParams.stickyColumnsLast || '0'),
+          }}
           {...urlParams}
           columnDefinitions={columnsConfig}
           selectedItems={selectedItems}
@@ -242,7 +245,10 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="large-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
+          stickyColumns={{
+            first: parseInt(urlParams.stickyColumnsFirst || '0'),
+            last: parseInt(urlParams.stickyColumnsLast || '0'),
+          }}
           {...urlParams}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Large table' }}
           columnDefinitions={COLUMN_DEFINITIONS}
@@ -254,7 +260,10 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="inline-editing-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
+          stickyColumns={{
+            first: parseInt(urlParams.stickyColumnsFirst || '0'),
+            last: parseInt(urlParams.stickyColumnsLast || '0'),
+          }}
           {...urlParams}
           columnDefinitions={[
             {
