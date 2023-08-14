@@ -19,4 +19,5 @@ export interface FocusedCell {
   rowElement: HTMLTableRowElement;
   cellElement: HTMLTableCellElement;
   element: HTMLElement;
+  widget: boolean;
 }

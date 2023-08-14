@@ -32,7 +32,9 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   let elementIndex = cellFocusables.indexOf(element);
   elementIndex = elementIndex === -1 ? 0 : elementIndex;
 
-  return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element };
+  const widget = isWidgetCell(cellElement);
+
+  return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element, widget };
 }
 
 /**
@@ -79,38 +81,44 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   focusTarget.focus();
 }
 
+/**
+ * Moves focus to the first focusable element inside the cell.
+ */
 export function moveFocusIn(from: FocusedCell) {
   getFirstFocusable(from.cellElement)?.focus();
 }
 
-// TODO: optimise: use less computations or a memory-based solution instead
+/**
+ * Ensures exactly one table element is focusable for the entire table to have a single TAB stop.
+ */
 export function updateTableIndices(table: HTMLTableElement, cell: null | FocusedCell) {
   const tableCells = table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
-  for (let i = 0; i < tableCells.length; i++) {
-    tableCells[i].tabIndex = -1;
+
+  for (const cell of Array.from(tableCells)) {
+    cell.tabIndex = -1;
+    cell.setAttribute('data-focusable', 'true');
+  }
+  for (const focusable of getActualFocusables(table)) {
+    focusable.tabIndex = -1;
+    focusable.setAttribute('data-focusable', 'true');
   }
 
-  let setUserFocus = false;
-
-  const targets = [...getActualFocusables(table), ...getFocusables(table), ...Array.from(tableCells)];
-
-  for (const element of targets) {
-    if (element === cell?.element) {
-      element.tabIndex = 0;
-      setUserFocus = true;
-    } else {
-      element.tabIndex = -1;
-      element.setAttribute('data-focusable', 'true');
-    }
+  // Make widget cell and its sub-elements the only focusable elements of the table.
+  if (cell && cell.widget) {
+    cell.element.tabIndex = 0;
+    getFocusables(cell.cellElement).forEach(element => (element.tabIndex = 0));
   }
-  if (!setUserFocus) {
-    if (tableCells[0]) {
-      tableCells[0].tabIndex = 0;
-    }
+  // Make focused cell the only focusable element of the table.
+  else if (cell) {
+    cell.element.tabIndex = 0;
+  }
+  // Make first table cell the only focusable element of the table.
+  else if (tableCells[0]) {
+    tableCells[0].tabIndex = 0;
   }
 }
 
-export function isWidgetCell(cell: HTMLElement) {
+function isWidgetCell(cell: HTMLElement) {
   return cell.getAttribute('data-widget-cell') === 'true';
 }
 
