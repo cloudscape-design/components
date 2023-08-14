@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { CSSProperties, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { getContainingBlock, nodeContains } from '../internal/utils/dom';
+import { getContainingBlock } from '../internal/utils/dom';
 import { BoundingOffset, InternalPosition, Offset, PopoverProps } from './interfaces';
 import { calculatePosition } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */

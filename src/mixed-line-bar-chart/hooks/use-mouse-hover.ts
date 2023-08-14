@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { nodeContains } from '../../internal/utils/dom';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
 import { ScaledBarGroup } from '../make-scaled-bar-groups';
 import { ScaledPoint } from '../make-scaled-series';
