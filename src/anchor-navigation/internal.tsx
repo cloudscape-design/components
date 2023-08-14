@@ -9,8 +9,9 @@ import useScrollSpy from './scroll-spy.js';
 const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
   event.preventDefault();
   const href = event.currentTarget.getAttribute('href');
+  console.log({ href, id });
   if (href) {
-    const el = document.getElementById(id);
+    const el = document.getElementById(id.slice(1));
     el?.scrollIntoView();
   }
 };
