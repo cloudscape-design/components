@@ -67,15 +67,15 @@ $drawer-z-index-mobile: 1001;
   flex-direction: column;
   text-align: center;
   align-items: stretch;
+  & > :not(:first-child) {
+    border-top: 1px solid awsui.$color-border-layout;
+  }
 }
 
 .drawer-trigger {
   padding: constants.$toggle-padding;
   cursor: pointer;
   color: awsui.$color-text-interactive-default;
-  &:not(:first-child) {
-    border-top: 1px solid awsui.$color-border-layout;
-  }
   &:hover {
     color: awsui.$color-text-layout-toggle-hover;
   }

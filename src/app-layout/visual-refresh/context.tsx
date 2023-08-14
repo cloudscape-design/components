@@ -33,7 +33,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawerId?: string | null;
+  activeDrawerId?: string | undefined;
   drawers?: InternalDrawerProps['drawers'];
   drawersRefs: DrawerFocusControlRefs;
   drawerSize: number;
@@ -41,7 +41,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
-  handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
+  handleDrawersClick: (activeDrawerId: string | undefined, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
@@ -412,7 +412,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     const drawers = (props as InternalDrawerProps).drawers;
 
-    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
+    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, undefined, {
       componentName: 'AppLayout',
       controlledProp: 'drawers.activeDrawerId',
       changeHandler: 'onChange',
@@ -439,8 +439,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     });
 
     const handleDrawersClick = useCallback(
-      function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
-        const newActiveDrawerId = id !== activeDrawerId ? id : null;
+      function handleDrawersChange(id: string | undefined, skipFocusControl?: boolean) {
+        const newActiveDrawerId = id !== activeDrawerId ? id : undefined;
 
         setActiveDrawerId(newActiveDrawerId);
         !skipFocusControl && focusDrawersButtons();

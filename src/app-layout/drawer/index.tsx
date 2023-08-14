@@ -135,14 +135,38 @@ export const Drawer = React.forwardRef(
   }
 );
 
-export const DrawerTriggersBar = ({
-  isMobile,
-  topOffset,
-  bottomOffset,
-  drawers,
-  contentClassName,
-  toggleClassName,
-}: DrawerTriggersBarProps) => {
+interface DrawerTriggerProps {
+  testUtilsClassName?: string;
+  ariaLabel: string | undefined;
+  ariaExpanded: boolean;
+  badge: boolean | undefined;
+  itemId?: string;
+  isActive: boolean;
+  trigger: DrawerItem['trigger'];
+  onClick: () => void;
+}
+
+const DrawerTrigger = React.forwardRef(
+  (
+    { testUtilsClassName, ariaLabel, ariaExpanded, badge, itemId, isActive, trigger, onClick }: DrawerTriggerProps,
+    ref: React.Ref<{ focus: () => void }>
+  ) => (
+    <div className={clsx(styles['drawer-trigger'], isActive && styles['drawer-trigger-active'])} onClick={onClick}>
+      <ToggleButton
+        ref={ref}
+        className={testUtilsClassName}
+        iconName={trigger.iconName}
+        iconSvg={trigger.iconSvg}
+        ariaLabel={ariaLabel}
+        ariaExpanded={ariaExpanded}
+        badge={badge}
+        testId={itemId && `awsui-app-layout-trigger-${itemId}`}
+      />
+    </div>
+  )
+);
+
+export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }: DrawerTriggersBarProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
   const isCompactMode = useDensityMode(containerRef) === 'compact';
@@ -159,37 +183,7 @@ export const DrawerTriggersBar = ({
     return 0;
   };
 
-  const overflowItemIsActive = () => {
-    const { overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem());
-
-    if (drawers && drawers.activeDrawerId) {
-      return overflowItems?.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
-    }
-    return false;
-  };
-
-  const getDrawerItems = () => {
-    if (drawers && drawers.items) {
-      const activeIndex = drawers.activeDrawerId && drawers.items.map(item => item.id).indexOf(drawers.activeDrawerId);
-      const lastMainItemIndex = getIndexOfOverflowItem() - 1;
-
-      const activeDrawerItem = drawers.items.find(item => item.id === drawers.activeDrawerId);
-      const lastMainItem = drawers.items.find((item, index) => index === lastMainItemIndex);
-
-      if (activeIndex && overflowItemIsActive() && activeDrawerItem && lastMainItem) {
-        [drawers.items[lastMainItemIndex], drawers.items[activeIndex]] = [
-          drawers.items[activeIndex],
-          drawers.items[lastMainItemIndex],
-        ];
-      }
-
-      return drawers.items;
-    }
-    return [];
-  };
-
-  const { visibleItems, overflowItems } = splitItems(getDrawerItems(), getIndexOfOverflowItem());
-  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
+  const { visibleItems, overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem(), drawers?.activeDrawerId);
 
   return (
     <div
@@ -204,51 +198,51 @@ export const DrawerTriggersBar = ({
         className={clsx(styles['drawer-content'])}
       >
         {!isMobile && (
-          <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers-wrapper'], contentClassName)}>
+          <aside
+            aria-label={drawers?.ariaLabel}
+            className={clsx(styles['drawer-triggers-wrapper'], testutilStyles['drawers-desktop-triggers-container'])}
+          >
             <>
-              {visibleItems?.map((item: DrawerItem, index: number) => {
+              {visibleItems.map((item, index) => {
                 return (
-                  <span
+                  <DrawerTrigger
                     key={index}
-                    className={clsx(
-                      styles['drawer-trigger'],
-                      drawers?.activeDrawerId === item.id && styles['drawer-trigger-active']
-                    )}
-                    onClick={() =>
+                    testUtilsClassName={testutilStyles['drawers-trigger']}
+                    ariaExpanded={drawers?.activeDrawerId !== undefined}
+                    ariaLabel={item.ariaLabels.triggerButton}
+                    trigger={item.trigger}
+                    badge={item.badge}
+                    itemId={item.id}
+                    isActive={drawers?.activeDrawerId === item.id}
+                    onClick={() => {
                       drawers?.onChange({
                         activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
-                      })
-                    }
-                  >
-                    <ToggleButton
-                      className={toggleClassName}
-                      key={`drawer-trigger-${index}`}
-                      iconName={item.trigger.iconName}
-                      iconSvg={item.trigger.iconSvg}
-                      ariaLabel={item.ariaLabels?.triggerButton}
-                      ariaExpanded={drawers?.activeDrawerId !== undefined}
-                      badge={item.badge}
-                      testId={`awsui-app-layout-trigger-${item.id}`}
-                    />
-                  </span>
-                );
-              })}
-              {overflowItems && overflowItems.length > 0 && (
-                <span
-                  className={clsx(styles['drawer-trigger'], overflowItemIsActive() && styles['drawer-trigger-active'])}
-                >
-                  <OverflowMenu
-                    overflowItems={overflowItems}
-                    onItemClick={({ detail }) => {
-                      drawers?.onChange({
-                        activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                       });
                     }}
-                    hasOverflowBadge={overflowItemHasBadge}
-                    hasActiveStyles={overflowItemIsActive()}
-                    ariaLabel={drawers?.overflowAriaLabel}
                   />
-                </span>
+                );
+              })}
+              {overflowItems.length > 0 && (
+                <OverflowMenu
+                  ariaLabel={drawers?.overflowAriaLabel}
+                  items={overflowItems}
+                  customTriggerBuilder={(clickHandler, ref, isDisabled, isExpanded, ariaLabel) => (
+                    <DrawerTrigger
+                      ref={ref}
+                      ariaExpanded={isExpanded}
+                      ariaLabel={ariaLabel}
+                      trigger={{ iconName: 'ellipsis' }}
+                      badge={false}
+                      isActive={false}
+                      onClick={clickHandler}
+                    />
+                  )}
+                  onItemClick={({ detail }) => {
+                    drawers?.onChange({
+                      activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                    });
+                  }}
+                />
               )}
             </>
           </aside>

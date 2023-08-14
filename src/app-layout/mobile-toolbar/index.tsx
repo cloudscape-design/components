@@ -93,8 +93,7 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
 
-  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2);
-  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
+  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId);
 
   return (
     <div
@@ -130,33 +129,41 @@ export function MobileToolbar({
           aria-label={drawers.ariaLabel}
           className={clsx(styles['drawers-container'], testutilStyles['drawers-mobile-triggers-container'])}
         >
-          {visibleItems?.map((item: DrawerItem, index: number) => (
-            <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])} key={index}>
+          {visibleItems.map((item: DrawerItem, index: number) => (
+            <div
+              className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
+              key={index}
+              onClick={() => drawers.onChange({ activeDrawerId: item.id })}
+            >
               <ToggleButton
                 className={testutilStyles['drawers-trigger']}
                 iconName={item.trigger.iconName}
                 iconSvg={item.trigger.iconSvg}
                 badge={item.badge}
                 ariaLabel={item.ariaLabels?.triggerButton}
-                onClick={() => drawers.onChange({ activeDrawerId: item.id })}
                 ariaExpanded={drawers.activeDrawerId !== undefined}
                 testId={`awsui-app-layout-trigger-${item.id}`}
               />
-            </span>
+            </div>
           ))}
-          {overflowItems && overflowItems.length > 0 && (
-            <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
-              <OverflowMenu
-                overflowItems={overflowItems}
-                onItemClick={({ detail }) => {
-                  drawers.onChange({
-                    activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
-                  });
-                }}
-                hasOverflowBadge={overflowItemHasBadge}
-                ariaLabel={drawers.overflowAriaLabel}
-              />
-            </span>
+          {overflowItems.length > 0 && (
+            <OverflowMenu
+              ariaLabel={drawers.overflowAriaLabel}
+              items={overflowItems}
+              customTriggerBuilder={(clickHandler, ref, isDisabled, isExpanded, ariaLabel) => (
+                <div
+                  className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
+                  onClick={clickHandler}
+                >
+                  <ToggleButton ref={ref} iconName="ellipsis" ariaLabel={ariaLabel} ariaExpanded={isExpanded} />
+                </div>
+              )}
+              onItemClick={({ detail }) => {
+                drawers.onChange({
+                  activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                });
+              }}
+            />
           )}
         </aside>
       )}

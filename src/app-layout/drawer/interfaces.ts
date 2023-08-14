@@ -45,8 +45,6 @@ export interface ResizableDrawerProps extends DesktopDrawerProps {
 }
 
 export interface DrawerTriggersBarProps {
-  contentClassName: string;
-  toggleClassName: string;
   topOffset: number | undefined;
   bottomOffset: number | undefined;
   isMobile: boolean;

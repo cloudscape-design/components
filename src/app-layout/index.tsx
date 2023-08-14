@@ -788,8 +788,6 @@ const OldAppLayout = React.forwardRef(
               ))}
             {hasDrawers && (
               <DrawerTriggersBar
-                contentClassName={testutilStyles['drawers-desktop-triggers-container']}
-                toggleClassName={testutilStyles['drawers-trigger']}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}

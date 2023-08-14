@@ -117,7 +117,7 @@ function ActiveDrawer() {
           })}
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
-          onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? null) : handleToolsClick(false))}
+          onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? undefined) : handleToolsClick(false))}
           ref={isToolsOpen ? toolsRefs.close : drawersRefs.close}
           variant="icon"
         />
@@ -196,42 +196,11 @@ function DesktopTriggers() {
     return -1;
   };
 
-  const overflowItemIsActive = () => {
-    const { overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem());
-
-    if (drawers && drawers.activeDrawerId && getIndexOfOverflowItem() > -1) {
-      return overflowItems?.map(item => item.id).indexOf(drawers.activeDrawerId) !== -1;
-    }
-  };
-
-  const getDrawerItems = () => {
-    if (drawers && drawers.items) {
-      const activeIndex = activeDrawerId
-        ? drawers.items.map((item: DrawerItem) => item.id).indexOf(activeDrawerId)
-        : -1;
-      const lastMainItemIndex = getIndexOfOverflowItem() - 1;
-
-      if (activeIndex && activeIndex > 0 && overflowItemIsActive()) {
-        [drawers.items[lastMainItemIndex], drawers.items[activeIndex]] = [
-          drawers.items[activeIndex],
-          drawers.items[lastMainItemIndex],
-        ];
-      }
-      return drawers.items;
-    }
-    return [];
-  };
-
-  if (activeDrawerId) {
-    previousActiveDrawerId.current = activeDrawerId;
-  }
-
   if (isMobile) {
     return null;
   }
 
-  const { visibleItems, overflowItems } = splitItems(getDrawerItems(), getIndexOfOverflowItem());
-  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
+  const { visibleItems, overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem(), activeDrawerId);
 
   return (
     <aside
@@ -258,7 +227,7 @@ function DesktopTriggers() {
             className={clsx(styles['drawers-trigger'], testutilStyles['tools-toggle'])}
             iconName="status-info"
             onClick={() => {
-              activeDrawerId && handleDrawersClick(null, true);
+              activeDrawerId && handleDrawersClick(undefined, true);
               handleToolsClick(!isToolsOpen);
             }}
             ref={toolsRefs.toggle}
@@ -266,7 +235,7 @@ function DesktopTriggers() {
           />
         )}
 
-        {visibleItems?.map(item => {
+        {visibleItems.map(item => {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -286,21 +255,22 @@ function DesktopTriggers() {
           );
         })}
 
-        {overflowItems && overflowItems.length > 0 && (
+        {overflowItems.length > 0 && (
           <OverflowMenu
-            drawersRefs={drawersRefs}
-            className={clsx(
-              styles['drawers-trigger'],
-              styles.trigger,
-              styles['drawers-trigger-overflow'],
-              overflowItemHasBadge && styles.badge
+            items={overflowItems}
+            ariaLabel={drawers?.overflowAriaLabel}
+            customTriggerBuilder={(clickHandler, ref, isDisabled, isExpanded, ariaLabel) => (
+              <TriggerButton
+                ref={ref}
+                ariaLabel={ariaLabel}
+                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+                iconName="ellipsis"
+                onClick={clickHandler}
+              />
             )}
-            overflowItems={overflowItems}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
             }}
-            hasActiveStyles={true}
-            ariaLabel={drawers?.overflowAriaLabel}
           />
         )}
         {hasSplitPanel && splitPanelToggle.displayed && (
@@ -329,7 +299,6 @@ export function MobileTriggers() {
     activeDrawerId,
     ariaLabels,
     drawers,
-    drawersRefs,
     handleDrawersClick,
     handleToolsClick,
     hasDrawerViewportOverlay,
@@ -339,13 +308,7 @@ export function MobileTriggers() {
     toolsHide,
     toolsRefs,
   } = useAppLayoutInternals();
-
-  const previousActiveDrawerId = useRef(activeDrawerId);
   const hasTools = !toolsHide && tools;
-
-  if (activeDrawerId) {
-    previousActiveDrawerId.current = activeDrawerId;
-  }
 
   if (!isMobile || !drawers) {
     return null;
@@ -353,8 +316,7 @@ export function MobileTriggers() {
 
   const splitIndex = hasTools ? 1 : 2;
 
-  const { visibleItems, overflowItems } = splitItems(drawers?.items, splitIndex);
-  const overflowItemHasBadge = !!overflowItems?.find(item => item.badge);
+  const { visibleItems, overflowItems } = splitItems(drawers?.items, splitIndex, activeDrawerId);
 
   return (
     <aside
@@ -383,7 +345,7 @@ export function MobileTriggers() {
         />
       )}
 
-      {visibleItems?.map(item => (
+      {visibleItems.map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
@@ -396,21 +358,31 @@ export function MobileTriggers() {
           badgeColor="red"
           key={item.id}
           onClick={() => handleDrawersClick(item.id)}
-          ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
           variant="icon"
           __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
         />
       ))}
-      {overflowItems && overflowItems.length > 0 && (
+      {overflowItems.length > 0 && (
         <OverflowMenu
-          drawersRefs={drawersRefs}
-          className={clsx(styles['drawers-trigger'], overflowItemHasBadge && styles.badge)}
-          overflowItems={overflowItems}
+          items={overflowItems}
+          ariaLabel={drawers.overflowAriaLabel}
+          customTriggerBuilder={(clickHandler, ref, isDisabled, isExpanded, ariaLabel) => (
+            <InternalButton
+              ref={ref}
+              ariaLabel={ariaLabel}
+              className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+              disabled={hasDrawerViewportOverlay}
+              formAction="none"
+              iconName="ellipsis"
+              badgeColor="red"
+              onClick={clickHandler}
+              variant="icon"
+              __nativeAttributes={{ 'aria-haspopup': true }}
+            />
+          )}
           onItemClick={({ detail }) => {
             handleDrawersClick(detail.id);
           }}
-          hasOverflowBadge={overflowItemHasBadge}
-          ariaLabel={drawers.overflowAriaLabel}
         />
       )}
     </aside>
