@@ -29,6 +29,7 @@ interface ExpandableDefaultHeaderProps {
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
   ariaLabelledBy?: string;
+  disableExpandChangeOnHeaderTextClick?: boolean;
 }
 
 interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps {
@@ -49,6 +50,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headerActions?: ReactNode;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
+  disableExpandChangeOnHeaderTextClick?: boolean;
 }
 
 const ExpandableDeprecatedHeader = ({
@@ -93,30 +95,11 @@ const ExpandableNavigationHeader = ({
   expanded,
   children,
   icon,
+  disableExpandChangeOnHeaderTextClick,
 }: ExpandableNavigationHeaderProps) => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   return (
-    <div
-      id={id}
-      className={clsx(className, styles['click-target'])}
-      onClick={originalEvent => {
-        console.log('buttonRef.current', buttonRef.current);
-        let clickedOnIcon = false;
-        if (
-          (buttonRef.current && originalEvent.target === buttonRef.current) ||
-          buttonRef.current?.contains(originalEvent.target)
-        ) {
-          clickedOnIcon = true;
-        }
-
-        // Create a new event object
-        const newEvent = {
-          ...originalEvent,
-          clickedOnIcon,
-        };
-        onClick(newEvent);
-      }}
-    >
+    <div id={id} className={clsx(className, styles['click-target'])}>
       <button
         ref={buttonRef}
         className={clsx(styles['icon-container'], styles['expand-button'])}
@@ -125,10 +108,11 @@ const ExpandableNavigationHeader = ({
         aria-controls={ariaControls}
         aria-expanded={expanded}
         type="button"
+        onClick={onClick}
       >
         {icon}
       </button>
-      {children}
+      <span onClick={disableExpandChangeOnHeaderTextClick ? () => {} : onClick}> {children}</span>
     </div>
   );
 };
@@ -243,6 +227,7 @@ export const ExpandableSectionHeader = ({
   onKeyUp,
   onKeyDown,
   onClick,
+  disableExpandChangeOnHeaderTextClick,
 }: ExpandableSectionHeaderProps) => {
   const icon = (
     <InternalIcon
@@ -278,6 +263,7 @@ export const ExpandableSectionHeader = ({
       <ExpandableNavigationHeader
         className={clsx(className, wrapperClassName)}
         ariaLabelledBy={ariaLabelledBy}
+        disableExpandChangeOnHeaderTextClick={disableExpandChangeOnHeaderTextClick}
         {...defaultHeaderProps}
       >
         {headerText ?? header}

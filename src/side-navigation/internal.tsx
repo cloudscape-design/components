@@ -411,6 +411,7 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, v
       variant="navigation"
       expanded={userExpanded ?? expanded}
       onChange={onExpandedChange}
+      __disableExpandChangeOnHeaderTextClick={true}
       headerText={
         <Link
           definition={{ type: 'link', href: definition.href, text: definition.text }}

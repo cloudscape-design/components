@@ -18,7 +18,8 @@ import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { variantSupportsDescription } from './utils';
 
-type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
+type InternalExpandableSectionProps = ExpandableSectionProps &
+  InternalBaseComponentProps & { __disableExpandChangeOnHeaderTextClick?: boolean };
 
 export default function InternalExpandableSection({
   expanded: controlledExpanded,
@@ -35,6 +36,7 @@ export default function InternalExpandableSection({
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
+  __disableExpandChangeOnHeaderTextClick = false,
   __internalRootRef,
   ...props
 }: InternalExpandableSectionProps) {
@@ -58,12 +60,9 @@ export default function InternalExpandableSection({
     [onChange, setExpanded]
   );
 
-  const onClick = useCallback(
-    e => {
-      e.clickedOnIcon && onExpandChange(!expanded);
-    },
-    [onExpandChange, expanded]
-  );
+  const onClick = useCallback(() => {
+    onExpandChange(!expanded);
+  }, [onExpandChange, expanded]);
 
   const onKeyUp = useCallback(
     (event: KeyboardEvent<Element>) => {
@@ -116,6 +115,7 @@ export default function InternalExpandableSection({
           headerInfo={headerInfo}
           headerActions={headerActions}
           headingTagOverride={headingTagOverride}
+          disableExpandChangeOnHeaderTextClick={__disableExpandChangeOnHeaderTextClick}
           {...triggerProps}
         />
       }
