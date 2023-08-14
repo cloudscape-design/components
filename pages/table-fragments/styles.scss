@@ -57,13 +57,6 @@
         padding-left: 32px;
       }
     }
-
-    &:focus {
-      outline: tokens.$color-background-control-checked;
-      outline-style: dashed;
-      outline-width: 2px;
-      outline-offset: -4px;
-    }
   }
 
   &-sorting-header {
@@ -73,13 +66,5 @@
     border: none;
     font-weight: bold;
     margin-left: 2px;
-
-    &:focus {
-      outline: tokens.$color-background-control-checked;
-      outline-style: solid;
-      outline-width: 2px;
-      outline-offset: 2px;
-      z-index: 1;
-    }
   }
 }
