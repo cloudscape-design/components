@@ -104,6 +104,10 @@ const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
     /* eslint-disable react-hooks/exhaustive-deps */
     return () => {
       clearTimeout(handle);
+      if (props.funnelType === 'single-page' && wizardCount.current > 0) {
+        return;
+      }
+
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
         FunnelMetrics.funnelComplete({ funnelInteractionId });
@@ -189,11 +193,6 @@ type AnalyticsFunnelStepProps = {
 } & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
 
 export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
-  const parentFunnelProps = useFunnelStep();
-  if (parentFunnelProps.isInStep) {
-    return <>{typeof props.children === 'function' ? props.children(parentFunnelProps) : props.children}</>;
-  }
-
   /*
    This wrapper is used to apply a `key` property to the actual (inner) AnalyticsFunnelStep
    element. This allows us to keep the state and effects separate per step.
@@ -202,7 +201,10 @@ export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
 };
 
 const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
-  const { funnelInteractionId, funnelState } = useFunnel();
+  const { funnelInteractionId, funnelState, funnelType } = useFunnel();
+  const parentStep = useFunnelStep();
+  const parentStepExists = parentStep.isInStep;
+  const parentStepFunnelInteractionId = parentStep.funnelInteractionId;
 
   const funnelStepProps = { [DATA_ATTR_FUNNEL_STEP]: stepNumber };
 
@@ -213,9 +215,16 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
   // to record the beginning of the interaction with the current step.
   // On unmount, it does a similar thing but this time calling 'funnelStepComplete' to record the completion of the interaction.
   useEffect(() => {
+    if (!funnelInteractionId) {
+      return;
+    }
+    if (parentStepExists && parentStepFunnelInteractionId) {
+      return;
+    }
+
     const stepName = getNameFromSelector(stepNameSelector);
 
-    if (funnelInteractionId && funnelState.current === 'default') {
+    if (funnelState.current === 'default') {
       FunnelMetrics.funnelStepStart({
         funnelInteractionId,
         stepNumber,
@@ -228,7 +237,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
 
     return () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (funnelInteractionId && funnelState.current !== 'cancelled') {
+      if (funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
           stepNumber,
@@ -240,8 +249,15 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
         });
       }
     };
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, stepNumber, stepNameSelector]);
+  }, [
+    funnelInteractionId,
+    stepNumber,
+    stepNameSelector,
+    funnelState,
+    parentStepExists,
+    funnelType,
+    parentStepFunnelInteractionId,
+  ]);
 
   const contextValue: FunnelStepContextValue = {
     stepNumber,
@@ -249,10 +265,14 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
     funnelStepProps,
     subStepCount,
     isInStep: true,
+    funnelInteractionId,
   };
+
+  const effectiveContextValue = parentStepExists && parentStepFunnelInteractionId ? parentStep : contextValue;
+
   return (
-    <FunnelStepContext.Provider value={contextValue}>
-      {typeof children === 'function' ? children(contextValue) : children}
+    <FunnelStepContext.Provider value={effectiveContextValue}>
+      {typeof children === 'function' ? children(effectiveContextValue) : children}
     </FunnelStepContext.Provider>
   );
 };

@@ -29,6 +29,7 @@ export interface FunnelStepContextValue {
   funnelStepProps?: Record<string, string | number | boolean | undefined>;
   subStepCount: MutableRefObject<number>;
   isInStep: boolean;
+  funnelInteractionId: string | undefined;
 }
 
 export interface FunnelSubStepContextValue {
@@ -77,6 +78,7 @@ export const FunnelStepContext = createContext<FunnelStepContextValue>({
   stepNumber: 0,
   subStepCount: { current: 0 },
   isInStep: false,
+  funnelInteractionId: undefined,
 });
 
 export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({

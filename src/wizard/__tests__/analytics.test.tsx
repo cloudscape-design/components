@@ -350,5 +350,15 @@ describe('Wizard Analytics', () => {
         theme: expect.any(String),
       })
     );
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepNumber: 1,
+        funnelInteractionId: expect.any(String),
+        stepNameSelector: expect.any(String),
+        subStepAllSelector: expect.any(String),
+      })
+    );
   });
 });
