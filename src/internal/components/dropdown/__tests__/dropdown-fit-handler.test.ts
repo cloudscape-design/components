@@ -216,5 +216,22 @@ describe('getDropdownPosition', () => {
         width: '465px',
       });
     });
+
+    test('will always grow to the width of the trigger if possible', () => {
+      const triggerElement = getSizedElement(700, 50, 300, 15);
+      const dropdownElement = getSizedElement(400, 300);
+
+      expect(
+        getDropdownPosition({
+          triggerElement,
+          dropdownElement,
+          overflowParents: [windowSize],
+          stretchBeyondTriggerWidth: true,
+        })
+      ).toEqual({
+        ...defaults,
+        width: '700px',
+      });
+    });
   });
 });
