@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ExpandableSectionProps } from './interfaces';
-import React, { KeyboardEventHandler, MouseEventHandler, ReactNode, useRef } from 'react';
+import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
@@ -97,11 +97,11 @@ const ExpandableNavigationHeader = ({
   icon,
   disableExpandChangeOnHeaderTextClick,
 }: ExpandableNavigationHeaderProps) => {
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  // By using `disableExpandChangeOnHeaderTextClick`, clicking the header text will not toggle the expandable section.
+  // We use this for the "expandable-link-group" in the side navigation.
   return (
     <div id={id} className={clsx(className, styles['click-target'])}>
       <button
-        ref={buttonRef}
         className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
@@ -112,7 +112,7 @@ const ExpandableNavigationHeader = ({
       >
         {icon}
       </button>
-      <span onClick={disableExpandChangeOnHeaderTextClick ? () => {} : onClick}> {children}</span>
+      <span onClick={disableExpandChangeOnHeaderTextClick ? () => {} : onClick}>{children}</span>
     </div>
   );
 };
