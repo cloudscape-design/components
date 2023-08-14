@@ -39,12 +39,14 @@ export default function ProgressBar({
   const isInFlash = variant === 'flash';
   const isInProgressState = status === 'in-progress';
 
+  const labelText = typeof label === 'string' ? label : '';
   const [assertion, setAssertion] = useState('');
   const throttledAssertion = useMemo(() => {
     return throttle((value: ProgressBarProps['value']) => {
-      setAssertion(`${label ?? ''}: ${value}%`);
+      const assertionText = labelText ? `${labelText}: ${value}%` : `${value}%`;
+      setAssertion(assertionText);
     }, ASSERTION_FREQUENCY);
-  }, [label]);
+  }, [labelText]);
 
   useEffect(() => {
     throttledAssertion(value);

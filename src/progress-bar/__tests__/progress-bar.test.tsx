@@ -190,4 +190,18 @@ describe('Progress updates', () => {
     jest.advanceTimersByTime(6000);
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 2%`);
   });
+  test('Announced progress value can handle a component as a label', () => {
+    jest.useFakeTimers(); // Mock timers
+    const LabelComponent = <>Component</>;
+    const { container, rerender } = render(<ProgressBar label={LabelComponent} value={0} />);
+    const wrapper = createWrapper(container).findProgressBar()!;
+
+    expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`0%`);
+
+    rerender(<ProgressBar label={LabelComponent} value={2} />);
+
+    // 6 seconds passed, live region has a new value
+    jest.advanceTimersByTime(6000);
+    expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`2%`);
+  });
 });
