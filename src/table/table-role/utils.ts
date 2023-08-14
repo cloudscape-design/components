@@ -114,7 +114,8 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
 
   // Make first table cell the only focusable element of the table.
   else if (tableCells[0]) {
-    tableCells[0].tabIndex = 0;
+    const cellFocusables = getFocusables(tableCells[0]);
+    cellFocusables[0] ? (cellFocusables[0].tabIndex = 0) : (tableCells[0].tabIndex = 0);
   }
 }
 
