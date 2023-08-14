@@ -13,7 +13,7 @@ interface Item {
 const ariaLabels: CardsProps<Item>['ariaLabels'] = {
   selectionGroupLabel: 'group label',
   itemSelectionLabel: ({ selectedItems }, item) =>
-    `${item.text} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
+    `${item.text} is ${!selectedItems.includes(item) ? 'not ' : ''}selected`,
 };
 
 function createSimpleItems(count: number) {

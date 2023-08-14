@@ -96,7 +96,8 @@ module.exports = ({
           awsui: {
             test: module =>
               module.resource &&
-              (module.resource.includes(componentsPath) || module.resource.includes(designTokensPath)),
+              (module.resource.includes(componentsPath) || module.resource.includes(designTokensPath)) &&
+              !module.resource.includes(path.resolve(componentsPath, 'i18n/messages')),
             name: 'awsui',
             chunks: 'all',
           },

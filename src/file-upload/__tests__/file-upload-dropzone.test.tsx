@@ -4,6 +4,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Dropzone, useDropzoneVisible } from '../../../lib/components/file-upload/dropzone';
 import selectors from '../../../lib/components/file-upload/dropzone/styles.selectors.js';
+import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 
 const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
   type: 'text/plain',
@@ -14,29 +15,60 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
   lastModified: 1590962400000,
 });
 
-function createDragEvent(type: string) {
+function createDragEvent(type: string, files = [file1, file2]) {
   const event = new CustomEvent(type, { bubbles: true });
-  (event as any).dataTransfer = { types: ['Files'], files: [file1, file2] };
+  (event as any).dataTransfer = {
+    types: ['Files'],
+    files: type === 'drop' ? files : [],
+    items: files.map(() => ({ kind: 'file' })),
+  };
   return event;
 }
 
-function TestDropzoneVisible() {
-  const isDropzoneVisible = useDropzoneVisible();
+function TestDropzoneVisible({ multiple = false }) {
+  const isDropzoneVisible = useDropzoneVisible(multiple);
   return <div>{isDropzoneVisible ? 'visible' : 'hidden'}</div>;
 }
+
+const i18nStrings: FileUploadProps.I18nStrings = {
+  uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
+  dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
+  removeFileAriaLabel: fileIndex => `Remove file ${fileIndex + 1}`,
+  errorIconAriaLabel: 'Error',
+  limitShowFewer: 'Show fewer files',
+  limitShowMore: 'Show more files',
+};
 
 describe('File upload dropzone', () => {
   test('Dropzone becomes visible once global dragover event is received', () => {
     render(<TestDropzoneVisible />);
     expect(screen.getByText('hidden')).toBeDefined();
 
-    fireEvent(document, createDragEvent('dragover'));
+    fireEvent(document, createDragEvent('dragover', [file1]));
+
+    expect(screen.getByText('visible')).toBeDefined();
+  });
+
+  test('Dropzone does not show if multiple files dragged into non-multiple zone', () => {
+    render(<TestDropzoneVisible />);
+    expect(screen.getByText('hidden')).toBeDefined();
+
+    fireEvent(document, createDragEvent('dragover', [file1, file2]));
+
+    expect(screen.getByText('hidden')).toBeDefined();
+  });
+
+  test('Dropzone shows if multiple files dragged into multiple zone', () => {
+    render(<TestDropzoneVisible multiple={true} />);
+    expect(screen.getByText('hidden')).toBeDefined();
+
+    fireEvent(document, createDragEvent('dragover', [file1, file2]));
 
     expect(screen.getByText('visible')).toBeDefined();
   });
 
   test('Dropzone hides after a delay once global dragleave event is received', async () => {
-    render(<TestDropzoneVisible />);
+    render(<TestDropzoneVisible multiple={true} />);
 
     fireEvent(document, createDragEvent('dragover'));
 
@@ -50,7 +82,7 @@ describe('File upload dropzone', () => {
   });
 
   test('Dropzone hides after a delay once global drop event is received', async () => {
-    render(<TestDropzoneVisible />);
+    render(<TestDropzoneVisible multiple={true} />);
 
     fireEvent(document, createDragEvent('dragover'));
 
@@ -61,6 +93,12 @@ describe('File upload dropzone', () => {
     await waitFor(() => {
       expect(screen.getByText('hidden')).toBeDefined();
     });
+  });
+
+  test('dropzone is rendered in component', () => {
+    render(<FileUpload value={[]} i18nStrings={i18nStrings} multiple={true} />);
+    fireEvent(document, createDragEvent('dragover'));
+    expect(screen.getByText('Drag files to upload')).toBeDefined();
   });
 
   test('dropzone renders provided children', () => {

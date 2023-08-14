@@ -30,6 +30,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import useBackgroundOverlap from './use-background-overlap';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId?: string | null;
@@ -40,18 +41,19 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
-  dynamicOverlapHeight: number;
   handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (detail: { size: number }) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
+  hasBackgroundOverlap: boolean;
   hasDefaultToolsWidth: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
   hasStickyBackground: boolean;
+  isBackgroundOverlapDisabled: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -130,13 +132,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
-    /**
-     * The overlap height has a default set in CSS but can also be dynamically overridden
-     * for content types (such as Table and Wizard) that have variable size content in the overlap.
-     * If a child component utilizes a sticky header the hasStickyBackground property will determine
-     * if the background remains in the same vertical position.
-     */
-    const [dynamicOverlapHeight, setDynamicOverlapHeight] = useState(0);
     const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
@@ -487,6 +482,12 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
+    const { hasBackgroundOverlap, updateBackgroundOverlapHeight } = useBackgroundOverlap({
+      contentHeader: props.contentHeader,
+      disableContentHeaderOverlap: props.disableContentHeaderOverlap,
+      layoutElement,
+    });
+
     useLayoutEffect(
       function handleMainOffsetLeft() {
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
@@ -600,7 +601,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawerRef,
           resizeHandle,
           drawersTriggerCount,
-          dynamicOverlapHeight,
           headerHeight,
           footerHeight,
           hasDefaultToolsWidth,
@@ -611,9 +611,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
           handleToolsClick,
+          hasBackgroundOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
           hasStickyBackground,
+          isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
           isSplitPanelForcedPosition,
@@ -660,7 +662,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             setHasStickyBackground,
           }}
         >
-          <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>
+          <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
+            {children}
+          </DynamicOverlapContext.Provider>
         </AppLayoutContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );

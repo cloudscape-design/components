@@ -5,7 +5,7 @@ import { act, render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { DrawerConfig } from '../../../lib/components/internal/plugins/drawers-controller';
+import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 beforeEach(() => {

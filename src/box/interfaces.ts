@@ -102,6 +102,7 @@ export interface BoxProps extends BaseComponentProps {
    * - `text-status-success` - Specifies the color for success text and icons.
    * - `text-status-info` - Specifies the color for info text and icon.
    * - `text-status-inactive` - Specifies the color for inactive and loading text and icons.
+   * - `text-status-warning` - Specifies the color for warning text and icons.
    *
    * Note: If you don't set it, the text color depends on the variant.
    */
@@ -151,7 +152,8 @@ export namespace BoxProps {
     | 'text-status-error'
     | 'text-status-success'
     | 'text-status-info'
-    | 'text-status-inactive';
+    | 'text-status-inactive'
+    | 'text-status-warning';
   export type SpacingSize = 'n' | 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
   export interface Spacing {
     top?: BoxProps.SpacingSize;

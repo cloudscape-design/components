@@ -343,7 +343,7 @@ describe('Flashbar component', () => {
       });
 
       test('icon has an aria-label when statusIconAriaLabel is provided', () => {
-        const iconLabel = 'Warning';
+        const iconLabel = 'Info';
         const wrapper = createFlashbarWrapper(
           <Flashbar
             items={[
@@ -357,11 +357,36 @@ describe('Flashbar component', () => {
           />
         );
 
-        expect(wrapper.findItems()[0].find(`:scope [aria-label]`)?.getElement()).toHaveAttribute(
-          'aria-label',
-          iconLabel
-        );
+        expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(iconLabel);
       });
+
+      test.each([['success'], ['error'], ['info'], ['warning'], ['in-progress']] as FlashbarProps.Type[][])(
+        'icon has aria-label from i18nStrings when no statusIconAriaLabel provided: type %s',
+        type => {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar
+              i18nStrings={{
+                successIconAriaLabel: 'success',
+                errorIconAriaLabel: 'error',
+                infoIconAriaLabel: 'info',
+                warningIconAriaLabel: 'warning',
+                inProgressIconAriaLabel: 'in-progress',
+              }}
+              items={[
+                {
+                  header: 'The header',
+                  content: 'The content',
+                  action: <Button>Click me</Button>,
+                  type: type === 'in-progress' ? 'info' : type,
+                  loading: type === 'in-progress',
+                },
+              ]}
+            />
+          );
+
+          expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(type);
+        }
+      );
 
       describe('Accessibility', () => {
         test('renders items in an unordered list', () => {

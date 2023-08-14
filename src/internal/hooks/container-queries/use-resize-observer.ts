@@ -4,6 +4,7 @@ import { ResizeObserver, ResizeObserverEntry } from '@juggle/resize-observer';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { useStableEventHandler } from '../use-stable-event-handler';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { convertResizeObserverEntry } from './utils';
 
 type ElementReference = (() => Element | null) | React.RefObject<Element>;
 
@@ -57,14 +58,4 @@ export function useResizeObserver(elementRef: ElementReference, onObserve: (entr
       };
     }
   }, [elementRef, stableOnObserve]);
-}
-
-function convertResizeObserverEntry(entry: ResizeObserverEntry): ContainerQueryEntry {
-  return {
-    target: entry.target,
-    contentBoxWidth: entry.contentBoxSize[0].inlineSize,
-    contentBoxHeight: entry.contentBoxSize[0].blockSize,
-    borderBoxWidth: entry.borderBoxSize[0].inlineSize,
-    borderBoxHeight: entry.borderBoxSize[0].blockSize,
-  };
 }

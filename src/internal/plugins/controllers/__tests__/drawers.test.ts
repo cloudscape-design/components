@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DrawerConfig, DrawersController } from '../../../../lib/components/internal/plugins/drawers-controller';
+import { DrawerConfig, DrawersController } from '../../../../../lib/components/internal/plugins/controllers/drawers';
 
 const drawerA = { id: 'drawerA' } as DrawerConfig;
 const drawerB = { id: 'drawerB' } as DrawerConfig;

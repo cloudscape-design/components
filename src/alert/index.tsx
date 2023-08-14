@@ -11,47 +11,50 @@ import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytic
 
 export { AlertProps };
 
-export default function Alert({ type = 'info', visible = true, ...props }: AlertProps) {
-  const baseComponentProps = useBaseComponent('Alert');
+const Alert = React.forwardRef(
+  ({ type = 'info', visible = true, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
+    const baseComponentProps = useBaseComponent('Alert');
 
-  const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
-  const { stepNumber, stepNameSelector } = useFunnelStep();
-  const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
+    const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
+    const { stepNumber, stepNameSelector } = useFunnelStep();
+    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
-  useEffect(() => {
-    if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
-      const stepName = getNameFromSelector(stepNameSelector);
-      const subStepName = getNameFromSelector(subStepNameSelector);
+    useEffect(() => {
+      if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
+        const stepName = getNameFromSelector(stepNameSelector);
+        const subStepName = getNameFromSelector(subStepNameSelector);
 
-      errorCount.current++;
+        errorCount.current++;
 
-      if (subStepSelector) {
-        FunnelMetrics.funnelSubStepError({
-          funnelInteractionId,
-          subStepSelector,
-          subStepName,
-          subStepNameSelector,
-          stepNumber,
-          stepName,
-          stepNameSelector,
-          subStepAllSelector: getSubStepAllSelector(),
-        });
-      } else {
-        FunnelMetrics.funnelError({
-          funnelInteractionId,
-        });
+        if (subStepSelector) {
+          FunnelMetrics.funnelSubStepError({
+            funnelInteractionId,
+            subStepSelector,
+            subStepName,
+            subStepNameSelector,
+            stepNumber,
+            stepName,
+            stepNameSelector,
+            subStepAllSelector: getSubStepAllSelector(),
+          });
+        } else {
+          FunnelMetrics.funnelError({
+            funnelInteractionId,
+          });
+        }
+
+        return () => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          errorCount.current--;
+        };
       }
 
-      return () => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        errorCount.current--;
-      };
-    }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
-
-  return <InternalAlert type={type} visible={visible} {...props} {...baseComponentProps} />;
-}
+    return <InternalAlert type={type} visible={visible} {...props} {...baseComponentProps} ref={ref} />;
+  }
+);
 
 applyDisplayName(Alert, 'Alert');
+export default Alert;

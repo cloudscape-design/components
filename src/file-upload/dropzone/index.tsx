@@ -11,7 +11,7 @@ interface DropzoneProps {
   children: React.ReactNode;
 }
 
-export function useDropzoneVisible() {
+export function useDropzoneVisible(multiple: boolean) {
   const [isDropzoneVisible, setDropzoneVisible] = useState(false);
 
   // Registering global drag events listeners.
@@ -23,7 +23,13 @@ export function useDropzoneVisible() {
     const onDocumentDragOver = (event: DragEvent) => {
       event.preventDefault();
 
-      if (event.dataTransfer?.types?.indexOf('Files') !== -1) {
+      let files = 0;
+      for (let item = 0; item < (event.dataTransfer?.items.length || 0); item++) {
+        if (event.dataTransfer?.items[item].kind === 'file') {
+          files++;
+        }
+      }
+      if (files > 0 && (multiple || files === 1)) {
         setDropzoneVisible(true);
         dragTimer && clearTimeout(dragTimer);
       }
@@ -53,7 +59,7 @@ export function useDropzoneVisible() {
       document.removeEventListener('dragleave', onDocumentDragLeave);
       document.removeEventListener('drop', onDocumentDrop);
     };
-  }, []);
+  }, [multiple]);
 
   return isDropzoneVisible;
 }
@@ -63,9 +69,9 @@ export function Dropzone({ onChange, children }: DropzoneProps) {
 
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();
-    setDropzoneHovered(true);
 
     if (event.dataTransfer) {
+      setDropzoneHovered(true);
       event.dataTransfer.dropEffect = 'copy';
     }
   };

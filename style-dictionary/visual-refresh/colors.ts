@@ -214,7 +214,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkInvertedHover: '{colorWhite}',
   colorTextLinkButtonUnderline: 'transparent',
   colorTextLinkButtonUnderlineHover: 'transparent',
-  colorTextLinkPrimaryUnderline: '{colorTextLinkDefault}',
   colorTextNotificationDefault: '{colorGrey100}',
   colorTextNotificationStackBar: '{colorWhite}',
   colorTextNotificationYellow: '{colorGrey900}',

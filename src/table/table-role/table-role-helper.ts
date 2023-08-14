@@ -16,7 +16,12 @@ const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingStat
 // ARIA role of the table component ("table", "grid", "treegrid") but also roles and other semantic attributes
 // of the child elements. The TableRole helper encapsulates table's semantic structure.
 
-export function getTableRoleProps(options: { tableRole: TableRole; ariaLabel?: string; totalItemsCount?: number }) {
+export function getTableRoleProps(options: {
+  tableRole: TableRole;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+  totalItemsCount?: number;
+}): React.TableHTMLAttributes<HTMLTableElement> {
   const nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {};
 
   // Browsers have weird mechanism to guess whether it's a data table or a layout table.
@@ -24,6 +29,7 @@ export function getTableRoleProps(options: { tableRole: TableRole; ariaLabel?: s
   nativeProps.role = options.tableRole;
 
   nativeProps['aria-label'] = options.ariaLabel;
+  nativeProps['aria-labelledby'] = options.ariaLabelledBy;
 
   // Incrementing the total count by one to account for the header row.
   nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
