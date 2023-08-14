@@ -108,6 +108,7 @@ class GridNavigationModel {
       return;
     }
 
+    const f2Code = 113;
     const ctrlKey = event.ctrlKey ? 1 : 0;
     const altKey = event.altKey ? 1 : 0;
     const shiftKey = event.shiftKey ? 1 : 0;
@@ -127,7 +128,7 @@ class GridNavigationModel {
 
     // When focus is inside widget cell only intercept Escape and F2 commands to move focus back to cell.
     if (from.widget && from.element !== from.cellElement) {
-      if (key === KeyCode.escape || key === KeyCode.f2) {
+      if (key === KeyCode.escape || key === f2Code) {
         event.preventDefault();
         return moveFocusBy(this.table, from, { y: 0, x: 0 });
       }
@@ -189,7 +190,7 @@ class GridNavigationModel {
         }
         break;
 
-      case KeyCode.f2:
+      case f2Code:
         event.preventDefault();
         if (from.element === from.cellElement) {
           return moveFocusIn(from);

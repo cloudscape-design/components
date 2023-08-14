@@ -6,6 +6,8 @@ import { render, fireEvent } from '@testing-library/react';
 import { useGridNavigation } from '../use-grid-navigation';
 import { KeyCode } from '../../../internal/keycode';
 
+const f2Code = 113;
+
 function SimpleTable({ tableRole = 'grid' }: { tableRole?: 'grid' | 'table' }) {
   const tableRef = useRef<HTMLTableElement>(null);
   useGridNavigation({ tableRole, pageSize: 2, getTable: () => tableRef.current });
@@ -158,10 +160,10 @@ test('supports multi-element cell navigation', () => {
   fireEvent.keyDown(table, { keyCode: KeyCode.escape });
   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.f2 });
+  fireEvent.keyDown(table, { keyCode: f2Code });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.f2 });
+  fireEvent.keyDown(table, { keyCode: f2Code });
   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 });
 
@@ -184,10 +186,10 @@ test('supports widget cell navigation', () => {
   fireEvent.keyDown(table, { keyCode: KeyCode.escape });
   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.f2 });
+  fireEvent.keyDown(table, { keyCode: f2Code });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.f2 });
+  fireEvent.keyDown(table, { keyCode: f2Code });
   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 });
 
