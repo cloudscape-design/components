@@ -8,6 +8,25 @@ import { KeyCode } from '../../../internal/keycode';
 
 const f2Code = 113;
 
+const mockObserver = {
+  observe: jest.fn(),
+  disconnect: jest.fn(),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  callback: (mutationRecords: MutationRecord[]) => {},
+};
+const originalMutationObserver = global.MutationObserver;
+
+beforeEach(() => {
+  global.MutationObserver = function MutationObserver(callback: (mutationRecords: MutationRecord[]) => void) {
+    mockObserver.callback = callback;
+    return mockObserver;
+  } as any;
+});
+
+afterEach(() => {
+  global.MutationObserver = originalMutationObserver;
+});
+
 function SimpleTable({ tableRole = 'grid' }: { tableRole?: 'grid' | 'table' }) {
   const tableRef = useRef<HTMLTableElement>(null);
   useGridNavigation({ tableRole, pageSize: 2, getTable: () => tableRef.current });
@@ -140,6 +159,9 @@ test('supports key combination navigation', () => {
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home, ctrlKey: true });
   expect(getActiveElement()).toEqual(['button', 'desc']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.backspace }); // Unsupported key
+  expect(getActiveElement()).toEqual(['button', 'desc']);
 });
 
 test('supports multi-element cell navigation', () => {
@@ -208,4 +230,121 @@ test('updates page size', () => {
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
   expect(getActiveElement()).toEqual(['a', 'link-1-1']);
+});
+
+test('does not throw errors if table is null', () => {
+  function TestComponent() {
+    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => null });
+    return null;
+  }
+  expect(() => render(<TestComponent />)).not.toThrow();
+});
+
+test('keeps first cell focusable if focus inside table but not inside any of the cells', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    return (
+      <table role="grid" ref={tableRef}>
+        <thead>
+          <tr>
+            <th>header-1</th>
+            <th>
+              header-2 <button>action</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>cell-1-1</td>
+            <td>cell-1-2</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+
+  const { container } = render(<TestComponent />);
+  expect(container.querySelector('th')).toHaveAttribute('tabIndex', '0');
+
+  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
+  expect(container.querySelector('th')).toHaveAttribute('tabIndex', '0');
+});
+
+test('ignores keydown when no cell is in focus', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    return (
+      <table role="grid" ref={tableRef}>
+        <thead>
+          <tr aria-rowindex={1}>
+            <th aria-colindex={1}>header-1</th>
+            <th>
+              header-2 <button>action</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr aria-rowindex={2}>
+            <td aria-colindex={1}>cell-1-1</td>
+            <td aria-colindex={2}>cell-1-2</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+
+  const { container } = render(<TestComponent />);
+  const table = container.querySelector('table')!;
+
+  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
+  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
+  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
+  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
+});
+
+test('ignores keydown modifiers other than ctrl are used', () => {
+  const { container } = render(<InteractiveTable />);
+  const table = container.querySelector('table')!;
+
+  const button = (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0];
+  button.focus();
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down, altKey: true });
+  expect(button).toHaveFocus();
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down, shiftKey: true });
+  expect(button).toHaveFocus();
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down, metaKey: true });
+  expect(button).toHaveFocus();
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down, ctrlKey: true });
+  expect(button).toHaveFocus();
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
+  expect(button).not.toHaveFocus();
+});
+
+test('cell is re-focused after it was mutated', () => {
+  const { container } = render(<InteractiveTable />);
+  const row1 = container.querySelectorAll('tr')[1]!;
+  const row2 = container.querySelectorAll('tr')[2]!;
+  const link1 = row1.querySelector('a')!;
+  const link2 = row2.querySelector('a')!;
+
+  link1.focus();
+  row1.remove();
+
+  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
+
+  expect(link2).toHaveFocus();
 });

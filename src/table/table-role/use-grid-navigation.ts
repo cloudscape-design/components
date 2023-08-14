@@ -93,13 +93,13 @@ class GridNavigationModel {
     if (!cell) {
       return;
     }
+    this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
     updateTableIndices(this.table, cell);
   };
 
   private onFocusout = () => {
-    this.prevFocusedCell = this.focusedCell;
     this.focusedCell = null;
   };
 

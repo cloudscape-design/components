@@ -68,13 +68,13 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return focus(targetCell);
   }
 
-  // For zero delta (exiting command) always focus on the cell element.
-  if (delta.x === 0 && delta.y === 0) {
+  // For zero delta (exiting command) and multi-element cell focus cell itself.
+  const targetCellFocusables = getFocusables(targetCell);
+  if (delta.x === 0 && delta.y === 0 && targetCellFocusables.length > 1) {
     return focus(targetCell);
   }
 
   // For non-widget cell focus on the focusable element inside if exactly one is available.
-  const targetCellFocusables = getFocusables(targetCell);
   const focusIndex = delta.x === 0 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
   focus(focusTarget);
