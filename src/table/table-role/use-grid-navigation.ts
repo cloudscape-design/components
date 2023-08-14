@@ -122,7 +122,7 @@ class GridNavigationModel {
     const maxExtreme = Number.POSITIVE_INFINITY;
 
     if (isWidgetCell(from.cellElement) && from.element !== from.cellElement) {
-      if (key === KeyCode.escape) {
+      if (key === KeyCode.escape || key === KeyCode.f2) {
         event.preventDefault();
         return moveFocusBy(this.table, from, { y: 0, x: 0 });
       }
@@ -176,6 +176,21 @@ class GridNavigationModel {
           return moveFocusIn(from);
         }
         break;
+
+      case KeyCode.escape:
+        if (from.element !== from.cellElement) {
+          event.preventDefault();
+          return moveFocusBy(this.table, from, { y: 0, x: 0 });
+        }
+        break;
+
+      case KeyCode.f2:
+        event.preventDefault();
+        if (from.element === from.cellElement) {
+          return moveFocusIn(from);
+        } else {
+          return moveFocusBy(this.table, from, { y: 0, x: 0 });
+        }
 
       default:
         return;

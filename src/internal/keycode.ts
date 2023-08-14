@@ -21,4 +21,5 @@ export enum KeyCode {
   control = 17,
   alt = 18,
   meta = 91,
+  f2 = 113,
 }

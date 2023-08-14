@@ -57,6 +57,10 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return targetCell.focus();
   }
 
+  if (delta.x === 0 && delta.y === 0) {
+    return targetCell.focus();
+  }
+
   const targetCellFocusables = getFocusables(targetCell);
   const focusIndex = delta.x === 0 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
