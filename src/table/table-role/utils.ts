@@ -29,8 +29,7 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   }
 
   const cellFocusables = getFocusables(cellElement);
-  let elementIndex = cellFocusables.indexOf(element);
-  elementIndex = elementIndex === -1 ? 0 : elementIndex;
+  const elementIndex = cellFocusables.indexOf(element);
 
   const widget = isWidgetCell(cellElement);
 
