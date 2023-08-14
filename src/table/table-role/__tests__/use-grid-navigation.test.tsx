@@ -92,7 +92,8 @@ test('updates interactive elements tab indices', () => {
   const { container } = render(<InteractiveTable />);
   const mutedInteractiveElements = container.querySelectorAll('a[tabIndex=-1],button[tabIndex=-1]');
 
-  expect(mutedInteractiveElements).toHaveLength(7);
+  // All elements but the first are muted.
+  expect(mutedInteractiveElements).toHaveLength(6);
 });
 
 test('supports arrow keys navigation', () => {
