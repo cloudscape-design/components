@@ -12,7 +12,7 @@ test(
     await page.waitForVisible('table');
 
     await page.click('button[aria-label="Update item"]');
-    await expect(page.isFocused('button[aria-label="Update item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="2"] > td[aria-colindex="2"]')).resolves.toBe(true);
   })
 );
 
@@ -24,25 +24,37 @@ test(
     await page.waitForVisible('table');
 
     await page.click('button[aria-label="Delete item"]');
-    await expect(page.isFocused('button[aria-label="Delete item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="2"] > td[aria-colindex="2"]')).resolves.toBe(true);
   })
 );
 
 test(
-  'last grid cell remains focusable after new items are added',
+  'table has a single tab stop',
   useBrowser({ width: 1800, height: 800 }, async browser => {
     const page = new BasePageObject(browser);
     await browser.url('#/light/table-fragments/grid-navigation-custom');
     await page.waitForVisible('table');
 
-    const initialLastElementSelector = 'tr[aria-rowindex="26"] > td[aria-colindex="9"]';
+    await page.click('[data-testid="link-before"]');
+    await page.keys('Tab');
+    await expect(page.isFocused('tr[aria-rowindex="1"] > th[aria-colindex="1"]')).resolves.toBe(true);
 
-    await expect(page.getElementAttribute(initialLastElementSelector, 'tabIndex')).resolves.toBe('0');
+    await page.keys('Tab');
+    await expect(page.isFocused('[data-testid="link-after"]')).resolves.toBe(true);
 
-    await page.click('button[aria-label="Duplicate item"]');
-    const newLastElementSelector = 'tr[aria-rowindex="27"] > td[aria-colindex="9"]';
+    await page.keys(['Shift', 'Tab', 'Null']);
+    await expect(page.isFocused('tr[aria-rowindex="1"] > th[aria-colindex="1"]')).resolves.toBe(true);
 
-    await expect(page.getElementAttribute(initialLastElementSelector, 'tabIndex')).resolves.toBe('-1');
-    await expect(page.getElementAttribute(newLastElementSelector, 'tabIndex')).resolves.toBe('0');
+    await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight']);
+    await expect(page.isFocused('tr[aria-rowindex="2"] [aria-label="Duplicate item"]')).resolves.toBe(true);
+
+    await page.keys('Tab');
+    await expect(page.isFocused('[data-testid="link-after"]')).resolves.toBe(true);
+
+    await page.keys(['Shift', 'Tab', 'Null']);
+    await expect(page.isFocused('tr[aria-rowindex="2"] [aria-label="Duplicate item"]')).resolves.toBe(true);
+
+    await page.keys(['Shift', 'Tab', 'Null']);
+    await expect(page.isFocused('[data-testid="link-before"]')).resolves.toBe(true);
   })
 );

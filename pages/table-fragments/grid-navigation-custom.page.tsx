@@ -151,10 +151,16 @@ export default function Page() {
                   </FormField>
                 </ColumnLayout>
 
-                <Link onFollow={() => setToolsOpen(true)}>How to use grid navigation?</Link>
+                <Link onFollow={() => setToolsOpen(true)} data-testid="link-before">
+                  How to use grid navigation?
+                </Link>
               </SpaceBetween>
             }
-            footer={<Link onFollow={() => setToolsOpen(true)}>How to use grid navigation?</Link>}
+            footer={
+              <Link onFollow={() => setToolsOpen(true)} data-testid="link-after">
+                How to use grid navigation?
+              </Link>
+            }
           >
             <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
               <table
