@@ -143,7 +143,6 @@ const Dropdown = ({
   preferCenter = false,
   interior = false,
   minWidth,
-  maxWidth,
   scrollable = true,
   loopFocus = expandToViewport,
   onFocus,
@@ -284,7 +283,6 @@ const Dropdown = ({
             stretchHeight,
             isMobile,
             minWidth,
-            maxWidth,
             stretchBeyondTriggerWidth
           ),
           dropdownRef.current,
