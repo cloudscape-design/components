@@ -42,7 +42,7 @@ const getClosestParentDimensions = (element: HTMLElement): any => {
 
 // By default, most dropdowns should expand their content as necessary, but to a maximum of 465px (the XXS breakpoint).
 // This value was determined by UX but may be subject to change in the future, depending on the feedback.
-const defaultMaxDropdownWidth = getBreakpointValue('xxs');
+export const defaultMaxDropdownWidth = getBreakpointValue('xxs');
 
 export const getAvailableSpace = (
   trigger: HTMLElement,

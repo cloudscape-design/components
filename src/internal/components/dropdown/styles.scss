@@ -72,8 +72,6 @@
   }
   &.stretch-beyond-trigger-width {
     width: max-content;
-    // This maps to the XXS container breakpoint as defined in src/internal/breakpoints.ts
-    max-width: 465px;
   }
   &.hide-upper-border > .dropdown-content-wrapper {
     border-top: none;

@@ -7,7 +7,12 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { fireNonCancelableEvent } from '../../events';
 import { DropdownProps } from './interfaces';
-import { DropdownPosition, InteriorDropdownPosition, calculatePosition } from './dropdown-fit-handler';
+import {
+  DropdownPosition,
+  InteriorDropdownPosition,
+  calculatePosition,
+  defaultMaxDropdownWidth,
+} from './dropdown-fit-handler';
 import { Transition, TransitionStatus } from '../transition';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
@@ -108,6 +113,7 @@ const TransitionContent = ({
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
+      style={stretchBeyondTriggerWidth ? { maxWidth: defaultMaxDropdownWidth } : {}}
       onMouseDown={onMouseDown}
     >
       <div className={clsx(styles['dropdown-content-wrapper'], isRefresh && styles.refresh)}>
