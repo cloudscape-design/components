@@ -4,6 +4,10 @@
 import { getFocusables as getActualFocusables } from '../../internal/components/focus-lock/utils';
 import { FocusedCell } from './interfaces';
 
+/**
+ * Finds focused cell props corresponding the focused element inside the table.
+ * The function relies on ARIA colindex/rowindex attributes being set.
+ */
 export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   const element = event.target;
 
@@ -31,6 +35,10 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element };
 }
 
+/**
+ * Moves table focus in the provided direction. The focus can transition between cells or between
+ * focusable elements within a cell unless the cell is marked as a widget.
+ */
 export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
   const targetAriaRowIndex = from.rowIndex + delta.y;
   const targetRow = findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.y);
@@ -38,6 +46,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
+  // Move focus to the next focusable element within a cell if eligible.
   const cellFocusables = getFocusables(from.cellElement);
   const eligibleForElementFocus =
     delta.x && !isWidgetCell(from.element) && (cellFocusables.length === 1 || from.element !== from.cellElement);
@@ -53,14 +62,17 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
+  // For widget cells always focus on the cell element itself.
   if (isWidgetCell(targetCell)) {
     return targetCell.focus();
   }
 
+  // For zero delta (exiting command) always focus on the cell element.
   if (delta.x === 0 && delta.y === 0) {
     return targetCell.focus();
   }
 
+  // For non-widget cell focus on the focusable element inside if exactly one is available.
   const targetCellFocusables = getFocusables(targetCell);
   const focusIndex = delta.x === 0 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
