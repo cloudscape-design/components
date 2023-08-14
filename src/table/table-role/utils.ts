@@ -103,11 +103,11 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
     focusable.setAttribute('data-focusable', 'true');
   }
 
-  // Make focused cell the only focusable element of the table.
+  // Make focused element the only focusable element of the table.
   if (cell && table.contains(cell.element)) {
     cell.element.tabIndex = 0;
 
-    // For widget cells also include sub-elements to be focusable with Tab/Shift+Tab.
+    // For widget cells also unmute all cell elements to be focusable with Tab/Shift+Tab.
     if (cell.widget) {
       getFocusables(cell.cellElement).forEach(element => (element.tabIndex = 0));
     }
