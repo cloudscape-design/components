@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { getBreakpointValue } from '../../breakpoints';
 import { Dimensions, getOverflowParents, getOverflowParentDimensions } from '../../utils/scrollable-containers';
 import styles from './styles.css.js';
 
@@ -38,6 +39,10 @@ const getClosestParentDimensions = (element: HTMLElement): any => {
 
   return parents.shift();
 };
+
+// By default, most dropdowns should expand their content as necessary, but to a maximum of 465px (the XS breakpoint).
+// This value was determined by UX but may be subject to change in the future, depending on the feedback.
+const defaultMaxDropdownWidth = getBreakpointValue('xs');
 
 export const getAvailableSpace = (
   trigger: HTMLElement,
@@ -128,15 +133,18 @@ export const getDropdownPosition = (
   isMobile?: boolean,
   stretchBeyondTriggerWidth?: boolean
 ): DropdownPosition => {
+  // Determine the space available around the dropdown that it can grow in
   const availableSpace = getAvailableSpace(trigger, dropdown, overflowParents, stretchWidth, stretchHeight, isMobile);
+  // Determine the width of the trigger
   const triggerWidth = trigger.getBoundingClientRect().width;
+  // Minimum width is determined by either an explicit number (desiredMinWidth) or the trigger width
   const minWidth = desiredMinWidth ? Math.min(triggerWidth, desiredMinWidth) : triggerWidth;
-  const maxWidth = stretchBeyondTriggerWidth ? Math.max(465, triggerWidth) : Number.MAX_VALUE;
+  // If stretchBeyondTriggerWidth is true, the maximum width is the XS breakpoint (465px) or the trigger width (if bigger).
+  const maxWidth = stretchBeyondTriggerWidth ? Math.max(defaultMaxDropdownWidth, triggerWidth) : Number.MAX_VALUE;
+  // Determine the actual dropdown width, the size that it "wants" to be
   const requiredWidth = dropdown.getBoundingClientRect().width;
-  // dropdown should not be smaller than the trigger
+  // Try to achieve the required/desired width within the given parameters
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
-
-  // console.log({ triggerWidth, minWidth, maxWidth, requiredWidth, idealWidth });
 
   let dropLeft: boolean;
   let left: number | null = null;

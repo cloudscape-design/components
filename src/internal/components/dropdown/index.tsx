@@ -272,10 +272,6 @@ const Dropdown = ({
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
-        // if (stretchBeyondTriggerWidth) {
-        //   // let dropdown width grow according to the content
-        //   dropdownRef.current.classList.add(styles['expand-dropdown-width']);
-        // }
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -294,7 +290,9 @@ const Dropdown = ({
           dropdownRef.current,
           verticalContainerRef.current
         );
-        dropdownRef.current.classList.remove(styles.nowrap);
+        if (scrollable) {
+          dropdownRef.current.classList.remove(styles.nowrap);
+        }
       }
     };
     onDropdownOpen();

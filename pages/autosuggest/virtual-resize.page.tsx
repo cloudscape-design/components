@@ -39,7 +39,6 @@ export default function AutosuggestPage() {
           ariaLabel={'simple autosuggest'}
           selectedAriaLabel="Selected"
           virtualScroll={true}
-          expandToViewport={false}
         />
       </div>
     </div>
