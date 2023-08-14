@@ -216,9 +216,15 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
   // On unmount, it does a similar thing but this time calling 'funnelStepComplete' to record the completion of the interaction.
   useEffect(() => {
     if (!funnelInteractionId) {
+      // This step is not inside an active funnel.
       return;
     }
     if (parentStepExists && parentStepFunnelInteractionId) {
+      /*
+       This step is inside another step, which already reports events as
+       part of an active funnel (i.e. that step is not a parent of a Wizard).
+       Thus, this current step does not need to report any events.
+       */
       return;
     }
 
@@ -268,6 +274,11 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
     funnelInteractionId,
   };
 
+  /*
+    If this step is inside another step which already reports events as part of an active
+    funnel (i.e. that step is not a parent of a Wizard), the current step becomes invisible
+    in the hierarchy by passing the context of its parent through.
+  */
   const effectiveContextValue = parentStepExists && parentStepFunnelInteractionId ? parentStep : contextValue;
 
   return (
