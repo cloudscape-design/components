@@ -125,6 +125,7 @@ class GridNavigationModel {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
+    // When focus is inside widget cell only intercept Escape and F2 commands to move focus back to cell.
     if (from.widget && from.element !== from.cellElement) {
       if (key === KeyCode.escape || key === KeyCode.f2) {
         event.preventDefault();
@@ -206,6 +207,7 @@ class GridNavigationModel {
       return;
     }
 
+    // When focused cell was un-mounted - re-apply focus to the same location.
     for (const record of mutationRecords) {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {
