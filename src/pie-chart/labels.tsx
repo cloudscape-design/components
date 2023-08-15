@@ -8,8 +8,8 @@ import { PieChartProps } from './interfaces';
 import styles from './styles.css.js';
 import { InternalChartDatum } from './pie-chart';
 import { Dimension, balanceLabelNodes } from './utils';
-import { useResizeObserver } from '../internal/hooks/container-queries';
 import ResponsiveText from './responsive-text';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 export interface LabelsProps<T> {
   pieData: PieArcDatum<InternalChartDatum<T>>[];
