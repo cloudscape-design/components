@@ -13,6 +13,15 @@ export type DrawerConfig = Omit<DrawerItem, 'content' | 'trigger'> & {
 };
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
+export interface DrawersApiPublic {
+  registerDrawer(config: DrawerConfig): void;
+}
+
+export interface DrawersApiInternal {
+  clearRegisteredDrawers(): void;
+  onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
+}
+
 export class DrawersController {
   private drawers: Array<DrawerConfig> = [];
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
@@ -40,4 +49,15 @@ export class DrawersController {
   clearRegisteredDrawers = () => {
     this.drawers = [];
   };
+
+  installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
+    api.registerDrawer ??= this.registerDrawer;
+    return api as DrawersApiPublic;
+  }
+
+  installInternal(internalApi: Partial<DrawersApiInternal> = {}): DrawersApiInternal {
+    internalApi.clearRegisteredDrawers ??= this.clearRegisteredDrawers;
+    internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
+    return internalApi as DrawersApiInternal;
+  }
 }

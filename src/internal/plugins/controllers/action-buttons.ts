@@ -23,6 +23,15 @@ export interface ActionConfig {
 
 export type ActionRegistrationListener = (action: Array<ActionConfig>) => void;
 
+export interface ActionsApiPublic {
+  registerAction(config: ActionConfig): void;
+}
+
+export interface ActionsApiInternal {
+  clearRegisteredActions(): void;
+  onActionRegistered(listener: ActionRegistrationListener): () => void;
+}
+
 export class ActionButtonsController {
   private listeners: Array<ActionRegistrationListener> = [];
   private actions: Array<ActionConfig> = [];
@@ -48,4 +57,15 @@ export class ActionButtonsController {
       this.listeners = this.listeners.filter(item => item !== listener);
     };
   };
+
+  installPublic(api: Partial<ActionsApiPublic> = {}): ActionsApiPublic {
+    api.registerAction ??= this.registerAction;
+    return api as ActionsApiPublic;
+  }
+
+  installInternal(internalApi: Partial<ActionsApiInternal> = {}): ActionsApiInternal {
+    internalApi.clearRegisteredActions ??= this.clearRegisteredActions;
+    internalApi.onActionRegistered ??= this.onActionRegistered;
+    return internalApi as ActionsApiInternal;
+  }
 }
