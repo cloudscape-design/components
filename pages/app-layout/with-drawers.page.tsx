@@ -19,11 +19,11 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
 
-const getAriaLabels = (title: string, badge?: boolean) => {
+const getAriaLabels = (title: string, badge: boolean) => {
   return {
     closeButton: `${title} close button`,
     content: `${title}`,
-    triggerButton: `${title} trigger button ${badge && '(Unread notifications)'}`,
+    triggerButton: `${title} trigger button${badge ? ' (Unread notifications)' : ''}`,
     resizeHandle: `${title} resize handle`,
   };
 };
@@ -42,7 +42,7 @@ export default function WithDrawers() {
           activeDrawerId: activeDrawerId,
           items: [
             {
-              ariaLabels: getAriaLabels('Security'),
+              ariaLabels: getAriaLabels('Security', false),
               content: <Security />,
               id: 'security',
               resizable: true,
@@ -67,7 +67,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Links'),
+              ariaLabels: getAriaLabels('Links', false),
               resizable: true,
               defaultSize: 500,
               content: <Links />,
@@ -86,7 +86,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Test 2'),
+              ariaLabels: getAriaLabels('Test 2', false),
               resizable: true,
               defaultSize: 500,
               content: <HelpPanel header={<h2>Test 2</h2>}>Test 2.</HelpPanel>,
@@ -105,7 +105,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Test 4'),
+              ariaLabels: getAriaLabels('Test 4', false),
               resizable: true,
               defaultSize: 500,
               content: <HelpPanel header={<h2>Test 4</h2>}>Test 4.</HelpPanel>,
@@ -115,7 +115,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Test 5'),
+              ariaLabels: getAriaLabels('Test 5', false),
               resizable: true,
               defaultSize: 500,
               content: <HelpPanel header={<h2>Test 5</h2>}>Test 5.</HelpPanel>,
@@ -125,7 +125,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Test 6'),
+              ariaLabels: getAriaLabels('Test 6', false),
               resizable: true,
               defaultSize: 500,
               content: <HelpPanel header={<h2>Test 6</h2>}>Test 6.</HelpPanel>,
