@@ -39,12 +39,12 @@ export default function ProgressBar({
   const isInFlash = variant === 'flash';
   const isInProgressState = status === 'in-progress';
 
-  const [assertion, setAssertion] = useState('');
+  const [announcedValue, setAnnouncedValue] = useState('');
   const throttledAssertion = useMemo(() => {
     return throttle((value: ProgressBarProps['value']) => {
-      setAssertion(`${label ?? ''}: ${value}%`);
+      setAnnouncedValue(`${value}%`);
     }, ASSERTION_FREQUENCY);
-  }, [label]);
+  }, []);
 
   useEffect(() => {
     throttledAssertion(value);
@@ -72,7 +72,11 @@ export default function ProgressBar({
           {isInProgressState ? (
             <>
               <Progress value={value} labelId={labelId} isInFlash={isInFlash} />
-              <LiveRegion delay={0}>{assertion}</LiveRegion>
+              <LiveRegion delay={0}>
+                {label}
+                {label ? ': ' : null}
+                {announcedValue}
+              </LiveRegion>
             </>
           ) : (
             <ResultState
