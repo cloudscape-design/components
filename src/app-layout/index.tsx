@@ -198,7 +198,7 @@ const OldAppLayout = React.forwardRef(
     };
 
     useEffect(() => {
-      // We forcely close the navigation on mobile on the initial load
+      // To guarantee an optimal UX on mobile, we forcely close the navigation on this viewport
       if (isMobile) {
         onNavigationToggle(false);
       }
