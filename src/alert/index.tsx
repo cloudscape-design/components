@@ -26,21 +26,26 @@ const Alert = React.forwardRef(
 
         errorCount.current++;
 
-        if (subStepSelector) {
-          FunnelMetrics.funnelSubStepError({
-            funnelInteractionId,
-            subStepSelector,
-            subStepName,
-            subStepNameSelector,
-            stepNumber,
-            stepName,
-            stepNameSelector,
-            subStepAllSelector: getSubStepAllSelector(),
-          });
-        } else {
-          FunnelMetrics.funnelError({
-            funnelInteractionId,
-          });
+        // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
+        const errorIsVisible = (baseComponentProps.__internalRootRef.current?.getBoundingClientRect()?.width ?? 0) > 0;
+
+        if (errorIsVisible) {
+          if (subStepSelector) {
+            FunnelMetrics.funnelSubStepError({
+              funnelInteractionId,
+              subStepSelector,
+              subStepName,
+              subStepNameSelector,
+              stepNumber,
+              stepName,
+              stepNameSelector,
+              subStepAllSelector: getSubStepAllSelector(),
+            });
+          } else {
+            FunnelMetrics.funnelError({
+              funnelInteractionId,
+            });
+          }
         }
 
         return () => {
