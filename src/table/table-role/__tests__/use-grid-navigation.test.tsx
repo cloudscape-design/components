@@ -203,9 +203,17 @@ test('supports widget cell navigation', () => {
   fireEvent.keyDown(table, { keyCode: KeyCode.enter });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
 
+  // Enter from within a cell does not move focus.
+  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
+  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
+
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
 
+  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
+  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
+
+  // Escape when not within a cell does not move focus.
   fireEvent.keyDown(table, { keyCode: KeyCode.escape });
   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 
@@ -303,12 +311,6 @@ test('ignores keydown when no cell is in focus', () => {
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
   expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
-  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
-  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
 });
 
 test('ignores keydown modifiers other than ctrl are used', () => {
@@ -340,6 +342,12 @@ test('cell is re-focused after it was mutated', () => {
   const row2 = container.querySelectorAll('tr')[2]!;
   const link1 = row1.querySelector('a')!;
   const link2 = row2.querySelector('a')!;
+
+  expect(document.activeElement!.tagName.toLowerCase()).toBe('body');
+
+  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
+
+  expect(document.activeElement!.tagName.toLowerCase()).toBe('body');
 
   link1.focus();
   row1.remove();
