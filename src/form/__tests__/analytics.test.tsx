@@ -6,6 +6,7 @@ import { act, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Form from '../../../lib/components/form';
+import Modal from '../../../lib/components/modal';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
@@ -83,7 +84,33 @@ describe('Form Analytics', () => {
     );
   });
 
-  test('does not send a funnelComplete when the form is unmounted after clicking a primary button in the children slot', () => {
+  test('does not send a funnelComplete metricv when the form is unmounted after clicking a primary button in a modal', () => {
+    const { container } = render(
+      <Form>
+        <Modal
+          visible={true}
+          footer={
+            <Button data-testid="submit" variant="primary">
+              Submit
+            </Button>
+          }
+        >
+          Modal content
+        </Modal>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+    const submitButton = createWrapper(container.ownerDocument.body).findButton('[data-testid="submit"]');
+
+    act(() => submitButton!.click());
+
+    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+  });
+
+  test('sends a funnelComplete and funnelStepComplete metric when the form is unmounted after clicking a primary button in the children slot', () => {
     const { container, unmount } = render(
       <Form>
         <Button data-testid="submit" variant="primary">
@@ -97,11 +124,22 @@ describe('Form Analytics', () => {
     act(() => submitButton!.click());
     unmount();
 
-    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
-    expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledWith(
+    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
+
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
+      })
+    );
+
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepNumber: 1,
+        funnelInteractionId: expect.any(String),
+        stepNameSelector: expect.any(String),
+        subStepAllSelector: expect.any(String),
       })
     );
   });
@@ -111,7 +149,7 @@ describe('Form Analytics', () => {
    * 1. The submit button is the only primary button in the form
    * 2. The submit button is clicked before the Form is unmounted
    */
-  test('sends a funnelComplete and funnelStepComplete metric when Form is unmounted after clicking a primary button in the actions slot', () => {
+  test('sends a funnelComplete and funnelStepComplete metric when the Form is unmounted after clicking a primary button in the actions slot', () => {
     const { container, unmount } = render(
       <Form
         actions={
