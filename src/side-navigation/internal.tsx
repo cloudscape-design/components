@@ -227,8 +227,6 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
-      // Prevent the click event from toggling outer expandable sections.
-      //  event.stopPropagation();
       if (isPlainLeftClick(event)) {
         fireFollow(definition, event);
       }
