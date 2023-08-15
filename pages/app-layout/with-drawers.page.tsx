@@ -19,11 +19,11 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
 
-const getAriaLabels = (title: string) => {
+const getAriaLabels = (title: string, badge?: boolean) => {
   return {
     closeButton: `${title} close button`,
     content: `${title}`,
-    triggerButton: `${title} trigger button`,
+    triggerButton: `${title} trigger button ${badge && '(Unread notifications)'}`,
     resizeHandle: `${title} resize handle`,
   };
 };
@@ -57,7 +57,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Pro help'),
+              ariaLabels: getAriaLabels('Pro help', true),
               content: <ProHelp />,
               badge: true,
               defaultSize: 600,
@@ -77,7 +77,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Test 1'),
+              ariaLabels: getAriaLabels('Test 1', true),
               content: <HelpPanel header={<h2>Test 1</h2>}>Test 1.</HelpPanel>,
               badge: true,
               id: 'test-1',
@@ -96,7 +96,7 @@ export default function WithDrawers() {
               },
             },
             {
-              ariaLabels: getAriaLabels('Test 3'),
+              ariaLabels: getAriaLabels('Test 3', true),
               content: <HelpPanel header={<h2>Test 3</h2>}>Test 3.</HelpPanel>,
               badge: true,
               id: 'test-3',
