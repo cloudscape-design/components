@@ -41,3 +41,7 @@ export function getMatchingBreakpoint(width: number, breakpointFilter?: readonly
   }
   return 'default';
 }
+
+export function getBreakpointValue(breakpoint: Breakpoint): number {
+  return BREAKPOINT_MAPPING.find(bp => bp[0] === breakpoint)![1];
+}

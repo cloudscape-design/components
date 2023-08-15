@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getMatchingBreakpoint, matchBreakpointMapping } from '../breakpoints';
+import { getMatchingBreakpoint, matchBreakpointMapping, getBreakpointValue } from '../breakpoints';
 
 describe('getMatchingBreakpoint', () => {
   it('returns the correct breakpoint value', () => {
@@ -43,5 +43,22 @@ describe('matchBreakpointMapping', () => {
 
   it('returns null if the object is empty', () => {
     expect(matchBreakpointMapping({}, 'xl')).toBeNull();
+  });
+});
+
+describe('getBreakpointValue', () => {
+  it.each([
+    ['xl', 1840],
+    ['l', 1320],
+    ['m', 1120],
+    ['s', 912],
+    ['xs', 688],
+    ['xxs', 465],
+  ] as const)('returns correct value for %s', (breakpoint, value) => {
+    expect(getBreakpointValue(breakpoint)).toBe(value);
+  });
+
+  it('returns -1 for the default breakpoint', () => {
+    expect(getBreakpointValue('default')).toBe(-1);
   });
 });

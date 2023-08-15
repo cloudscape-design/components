@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { render, screen } from '@testing-library/react';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { useDynamicOverlap } from '../../../lib/components/internal/hooks/use-dynamic-overlap';
 import { useAppLayoutInternals } from '../../../lib/components/app-layout/visual-refresh/context';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode'),
@@ -13,9 +14,14 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
 
 let positiveHeight = true;
 
-jest.mock('../../../lib/components/internal/hooks/container-queries/utils', () => ({
-  ...jest.requireActual('../../../lib/components/internal/hooks/container-queries/utils'),
-  convertResizeObserverEntry: () => ({ contentBoxHeight: positiveHeight ? 800 : 0 }),
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  useResizeObserver: (_getElement: () => null | HTMLElement, onObserve: (entry: ContainerQueryEntry) => void) => {
+    useLayoutEffect(() => {
+      onObserve({ contentBoxHeight: positiveHeight ? 800 : 0 } as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  },
 }));
 
 describe('Background overlap', () => {

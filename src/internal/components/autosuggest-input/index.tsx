@@ -255,6 +255,7 @@ const AutosuggestInput = React.forwardRef(
         <Dropdown
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}
+          stretchBeyondTriggerWidth={true}
           contentKey={dropdownContentKey}
           onFocus={handleFocus}
           onBlur={handleBlur}

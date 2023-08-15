@@ -316,6 +316,7 @@ const InternalMultiselect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
+          stretchBeyondTriggerWidth={true}
         >
           <ListComponent
             listBottom={

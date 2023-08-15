@@ -4,8 +4,8 @@ import { useContext, useLayoutEffect } from 'react';
 
 import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
 import { useRef, useCallback } from 'react';
-import { useResizeObserver } from '../container-queries';
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 export interface UseDynamicOverlapProps {
   /**

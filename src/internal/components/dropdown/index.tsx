@@ -7,7 +7,12 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { fireNonCancelableEvent } from '../../events';
 import { DropdownProps } from './interfaces';
-import { DropdownPosition, InteriorDropdownPosition, calculatePosition } from './dropdown-fit-handler';
+import {
+  DropdownPosition,
+  InteriorDropdownPosition,
+  calculatePosition,
+  defaultMaxDropdownWidth,
+} from './dropdown-fit-handler';
 import { Transition, TransitionStatus } from '../transition';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
@@ -52,6 +57,7 @@ interface TransitionContentProps {
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
+  stretchBeyondTriggerWidth?: boolean;
   header?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
@@ -74,6 +80,7 @@ const TransitionContent = ({
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
+  stretchBeyondTriggerWidth,
   header,
   children,
   footer,
@@ -96,6 +103,7 @@ const TransitionContent = ({
         [styles['is-empty']]: !header && !children,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
+        [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
       })}
       ref={contentRef}
       id={id}
@@ -105,6 +113,7 @@ const TransitionContent = ({
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
+      style={stretchBeyondTriggerWidth ? { maxWidth: defaultMaxDropdownWidth } : {}}
       onMouseDown={onMouseDown}
     >
       <div className={clsx(styles['dropdown-content-wrapper'], isRefresh && styles.refresh)}>
@@ -135,6 +144,7 @@ const Dropdown = ({
   stretchWidth = true,
   stretchHeight = false,
   stretchToTriggerWidth = true,
+  stretchBeyondTriggerWidth = false,
   expandToViewport = false,
   preferCenter = false,
   interior = false,
@@ -278,7 +288,8 @@ const Dropdown = ({
             stretchWidth,
             stretchHeight,
             isMobile,
-            minWidth
+            minWidth,
+            stretchBeyondTriggerWidth
           ),
           dropdownRef.current,
           verticalContainerRef.current
@@ -404,6 +415,7 @@ const Dropdown = ({
                 interior={interior}
                 header={header}
                 expandToViewport={expandToViewport}
+                stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
                 footer={footer}
                 onMouseDown={onMouseDown}
                 isRefresh={isRefresh}

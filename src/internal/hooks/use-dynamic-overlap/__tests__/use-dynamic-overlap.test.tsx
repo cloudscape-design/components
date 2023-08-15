@@ -1,14 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { render, screen } from '@testing-library/react';
-
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useDynamicOverlap } from '../../../../../lib/components/internal/hooks/use-dynamic-overlap';
 import { DynamicOverlapContext } from '../../../../../lib/components/internal/context/dynamic-overlap-context';
 
-jest.mock('../../../../../lib/components/internal/hooks/container-queries/utils', () => ({
-  ...jest.requireActual('../../../../../lib/components/internal/hooks/container-queries/utils'),
-  convertResizeObserverEntry: () => ({ contentBoxHeight: 800 }),
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  useResizeObserver: (_getElement: () => null | HTMLElement, onObserve: (entry: ContainerQueryEntry) => void) => {
+    useLayoutEffect(() => {
+      onObserve({ contentBoxHeight: 800 } as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  },
 }));
 
 function renderApp(children: React.ReactNode) {

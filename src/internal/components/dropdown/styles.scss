@@ -70,6 +70,9 @@
   &.occupy-entire-width {
     min-width: 100%;
   }
+  &.stretch-beyond-trigger-width {
+    width: max-content;
+  }
   &.hide-upper-border > .dropdown-content-wrapper {
     border-top: none;
   }
