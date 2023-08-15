@@ -177,9 +177,17 @@ test('supports multi-element cell navigation', () => {
   fireEvent.keyDown(table, { keyCode: KeyCode.enter });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
 
+  // Pressing enter when inside a cell does not move focus.
+  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
+  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
+
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-2']);
 
+  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
+  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
+
+  // Pressing escape when not inside a cell does not move focus.
   fireEvent.keyDown(table, { keyCode: KeyCode.escape });
   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 
@@ -203,17 +211,9 @@ test('supports widget cell navigation', () => {
   fireEvent.keyDown(table, { keyCode: KeyCode.enter });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
 
-  // Enter from within a cell does not move focus.
-  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
-
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
   expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
-
-  // Escape when not within a cell does not move focus.
   fireEvent.keyDown(table, { keyCode: KeyCode.escape });
   expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
 
@@ -343,11 +343,11 @@ test('cell is re-focused after it was mutated', () => {
   const link1 = row1.querySelector('a')!;
   const link2 = row2.querySelector('a')!;
 
-  expect(document.activeElement!.tagName.toLowerCase()).toBe('body');
+  expect(document.body).toHaveFocus();
 
   mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
 
-  expect(document.activeElement!.tagName.toLowerCase()).toBe('body');
+  expect(document.body).toHaveFocus();
 
   link1.focus();
   row1.remove();
@@ -355,4 +355,89 @@ test('cell is re-focused after it was mutated', () => {
   mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
 
   expect(link2).toHaveFocus();
+});
+
+test('cell navigation works when the table is mutated between commands', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    return (
+      <table role="grid" ref={tableRef}>
+        <thead>
+          <tr aria-rowindex={1}>
+            <th aria-colindex={1}>header-1</th>
+            <th aria-colindex={2}>
+              header-2 <button>action</button>
+            </th>
+            <th aria-colindex={3}>header-3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr aria-rowindex={2}>
+            <td aria-colindex={1}>cell-1-1</td>
+            <td aria-colindex={2}>cell-1-2</td>
+            <td aria-colindex={3}>cell-1-3</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+
+  const { container } = render(<TestComponent />);
+  const table = container.querySelector('table')!;
+
+  const button = (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0];
+  button.focus();
+
+  Array.from(table.querySelectorAll('[aria-colindex="3"]')).forEach(node => node.remove());
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(button).toHaveFocus();
+
+  Array.from(table.querySelectorAll('[aria-rowIndex="2"]')).forEach(node => node.remove());
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(button).toHaveFocus();
+
+  Array.from(table.querySelectorAll('th')).forEach(node => node.remove());
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(document.body).toHaveFocus();
+
+  Array.from(table.querySelectorAll('[aria-rowIndex="1"]')).forEach(node => node.remove());
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(document.body).toHaveFocus();
+});
+
+test('throws no error when focusing on incorrect target', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    return (
+      <table role="grid" ref={tableRef}>
+        <tbody>
+          <button>action</button>
+          <tr aria-rowindex={1}>
+            <td aria-colindex={1}>cell-1-1</td>
+            <td aria-colindex={2}>cell-1-2</td>
+            <td aria-colindex={3}>cell-1-3</td>
+          </tr>
+          <svg>
+            <g tabIndex={0}>graphic</g>
+          </svg>
+        </tbody>
+      </table>
+    );
+  }
+
+  const { container } = render(<TestComponent />);
+  const button = container.querySelector('button')!;
+  const g = container.querySelector('g')!;
+
+  button.focus();
+  expect(button).toHaveFocus();
+
+  g.focus();
+  expect(g).toHaveFocus();
 });
