@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AreaChartProps } from '../interfaces';
 import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { findClosest, circleIndex } from './utils';
 
-import { nodeContains } from '../../internal/utils/dom';
 import { KeyCode } from '../../internal/keycode';
 import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
 import computeChartProps from './compute-chart-props';
