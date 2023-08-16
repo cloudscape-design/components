@@ -27,5 +27,13 @@ export const getSubStepNameSelector = (subStepId: string) =>
 
 export const getFieldSlotSeletor = (id: string | undefined) => (id ? `[id="${id}"]` : undefined);
 
-export const getNameFromSelector = (selector: string | undefined): string | undefined =>
-  selector ? document.querySelector<HTMLElement>(selector)?.innerText : undefined;
+export function getNameFromSelector(selector: string | undefined): string | undefined {
+  const element = selector ? document.querySelector<HTMLElement>(selector) : undefined;
+  if (!element) {
+    return undefined;
+  }
+  const clone = element.cloneNode(true) as HTMLElement;
+  clone.querySelectorAll('button, [role=button]').forEach(e => e.remove());
+
+  return clone.innerText;
+}
