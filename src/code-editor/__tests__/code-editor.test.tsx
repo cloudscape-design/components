@@ -219,7 +219,7 @@ describe('Code editor component', () => {
     const textarea = editorMock.renderer.textarea;
     editorMock.renderer.textarea = null as any;
 
-    expect(renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrowError();
+    expect(() => renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrowError();
 
     editorMock.renderer.textarea = textarea;
 
