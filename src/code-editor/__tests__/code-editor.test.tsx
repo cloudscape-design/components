@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { Ace } from 'ace-builds';
 import { act, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '../../internal/keycode';
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
@@ -161,6 +162,10 @@ describe('Code editor component', () => {
     rerender(<CodeEditor {...defaultProps} value="value-final" />);
 
     expect(editorMock.setValue).toHaveBeenCalledWith('value-final', -1);
+
+    rerender(<CodeEditor {...defaultProps} value="value-final" />);
+
+    expect(editorMock.setValue).toHaveBeenCalledTimes(2);
   });
 
   it('sets value with test-util', () => {
@@ -211,6 +216,13 @@ describe('Code editor component', () => {
   });
 
   it('provides ariaLabel to the underlying textarea', () => {
+    const textarea = editorMock.renderer.textarea;
+    editorMock.renderer.textarea = null as any;
+
+    expect(() => renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrowError();
+
+    editorMock.renderer.textarea = textarea;
+
     renderCodeEditor({ ariaLabel: 'test aria label' });
     expect(editorMock.renderer.textarea).toHaveAttribute('aria-label', 'test aria label');
   });
@@ -617,5 +629,74 @@ describe('Code editor component', () => {
     expect(modal.findContent()!.findSelect()!.findDropdown().find('li:nth-child(2)')!.getElement()).toHaveTextContent(
       'Custom dark themes'
     );
+  });
+
+  test('prevents default on guttermousedown', () => {
+    let callback: (e: any) => void;
+    editorMock.on = jest.fn((name: string, _callback: () => void) => {
+      if (name === 'guttermousedown') {
+        callback = _callback;
+      }
+    });
+
+    renderCodeEditor();
+
+    const event = { stop: jest.fn() };
+    callback!(event);
+
+    expect(event.stop).toHaveBeenCalledTimes(1);
+
+    editorMock.on.mockRestore();
+  });
+
+  test('makes text input focusable when code editor receives focus', () => {
+    let callback: () => void;
+    editorMock.on = jest.fn((name: string, _callback: () => void) => {
+      if (name === 'focus') {
+        callback = _callback;
+      }
+    });
+
+    renderCodeEditor();
+
+    callback!();
+
+    expect(editorMock.textInput.getElement().setAttribute).toHaveBeenCalledWith('tabindex', 0);
+
+    editorMock.on.mockRestore();
+  });
+
+  test('makes text input non-focusable when code editor loses focus', () => {
+    let callback: () => void;
+    editorMock.on = jest.fn((name: string, _callback: () => void) => {
+      if (name === 'blur') {
+        callback = _callback;
+      }
+    });
+
+    renderCodeEditor();
+
+    callback!();
+
+    expect(editorMock.textInput.getElement().setAttribute).toHaveBeenCalledWith('tabindex', -1);
+
+    editorMock.on.mockRestore();
+  });
+
+  test('adds command to focus editor container on Esc keypress', () => {
+    let callback: (editor: Ace.Editor) => void;
+    editorMock.commands.addCommand = jest.fn((command: Ace.Command) => {
+      if (command.name === 'exitCodeEditor' && command.bindKey === 'Esc') {
+        callback = command.exec;
+      }
+    });
+
+    renderCodeEditor();
+
+    callback!(editorMock as any);
+
+    expect(editorMock.container.focus).toHaveBeenCalledTimes(1);
+
+    editorMock.commands.addCommand.mockRestore();
   });
 });
