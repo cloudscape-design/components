@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { useCallback, useState } from 'react';
-import { useResizeObserver } from './use-resize-observer';
 
 /**
  * Conditional resize observer for border box height used in charts.

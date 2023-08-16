@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
-import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers';
 import { findUpUntil } from '../../internal/utils/dom';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
@@ -39,8 +39,8 @@ export function Resizer({
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<HTMLElement>();
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
-  const onFinishStable = useStableEventHandler(onFinish);
-  const onDragStable = useStableEventHandler(onDragMove);
+  const onFinishStable = useStableCallback(onFinish);
+  const onDragStable = useStableCallback(onDragMove);
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
   const [headerCellWidth, setHeaderCellWidth] = useState(0);
 

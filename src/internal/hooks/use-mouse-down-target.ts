@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { createSingletonHandler } from '@cloudscape-design/component-toolkit/internal';
 import { useRef } from 'react';
-import { createSingletonHandler } from './use-singleton-handler';
 
 const useEventListenersSingleton = createSingletonHandler<Node | null>(setTarget => {
   function handleMouseDown(event: MouseEvent) {

@@ -5,7 +5,6 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import Box from '~components/box';
-import Dropdown from '~components/internal/components/dropdown';
 import ItemElement from '~components/button-dropdown/item-element';
 import { ItemProps } from '~components/button-dropdown/interfaces';
 import img from '../icon/custom-icon.png';
@@ -130,6 +129,16 @@ const permutations = createPermutations<ItemProps>([
     highlightItem: [() => {}],
     isKeyboardHighlighted: [true],
   },
+  {
+    item: [{ id: '1', text: 'Option' }],
+    variant: ['icon', 'inline-icon', 'navigation', 'normal', 'primary'],
+    disabled: [false, true],
+    highlighted: [false, true],
+    last: [false, true],
+    hasCategoryHeader: [false],
+    onItemActivate: [() => {}],
+    highlightItem: [() => {}],
+  },
 ]);
 
 export default function () {
@@ -141,9 +150,7 @@ export default function () {
           permutations={permutations}
           render={permutation => (
             <Box margin={{ bottom: 'xxl' }} className={styles['dropdown-permutation']}>
-              <Dropdown trigger={null} open={true}>
-                <div role="menu">{<ItemElement {...permutation} />}</div>
-              </Dropdown>
+              <div role="menu">{<ItemElement {...permutation} />}</div>
             </Box>
           )}
         />

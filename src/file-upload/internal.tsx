@@ -80,7 +80,7 @@ function InternalFileUpload(
     }
   };
 
-  const isDropzoneVisible = useDropzoneVisible();
+  const isDropzoneVisible = useDropzoneVisible(multiple);
 
   const formFieldContext = useFormFieldContext(restProps);
   const ariaDescribedBy = joinStrings(

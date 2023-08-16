@@ -25,11 +25,6 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
   language: CodeSnippetProps.Language;
 
   /**
-   * Specifies a custom label language. If set, it overrides the default language label.
-   */
-  languageLabel?: string;
-
-  /**
    * Specifies the component preferences.
    *
    * If set to `undefined`, the component uses the following default value:
@@ -45,12 +40,6 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
    * You can use any theme provided by Ace.
    */
   preferences?: Partial<CodeSnippetProps.Preferences>;
-
-  /**
-   * List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
-   * least one dark theme. If not set explicitly, it will render all Ace themes available for selection.
-   */
-  themes?: CodeSnippetProps.AvailableThemes;
 
   /**
    * Renders the code snippet in a loading state.

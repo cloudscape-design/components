@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
+import Header from '../../../lib/components/header';
 import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
@@ -181,10 +182,18 @@ describe('Cards', () => {
       expect(wrapper.findHeader()?.getElement()).toHaveTextContent('abcedefg');
     });
 
-    it('maintains logical relationship between header and cards', () => {
+    it('maintains logical relationship between header and cards when header is a string', () => {
       wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} header="abcedefg" />).wrapper;
       const cardsOrderedList = getCard(0).getElement().parentElement;
       expect(cardsOrderedList).toHaveAccessibleName('abcedefg');
+    });
+
+    it('maintains logical relationship between header and cards when header is a component', () => {
+      wrapper = renderCards(
+        <Cards<Item> cardDefinition={{}} items={defaultItems} header={<Header>Cards header</Header>} />
+      ).wrapper;
+      const cardsOrderedList = getCard(0).getElement().parentElement;
+      expect(cardsOrderedList).toHaveAccessibleName('Cards header');
     });
 
     it('allows label to be overridden', () => {

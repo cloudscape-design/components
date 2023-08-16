@@ -239,6 +239,7 @@ const InternalSelect = React.forwardRef(
           }
           open={isOpen}
           stretchTriggerHeight={__inFilteringToken}
+          stretchBeyondTriggerWidth={true}
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}

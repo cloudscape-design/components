@@ -31,6 +31,7 @@
     z-index: 2;
 
     &.variant-icon,
+    &.variant-inline-icon,
     &.variant-normal,
     &.variant-primary {
       background-color: awsui.$color-background-dropdown-item-hover;

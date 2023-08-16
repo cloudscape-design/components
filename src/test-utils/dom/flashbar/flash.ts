@@ -20,7 +20,7 @@ export default class FlashWrapper extends ComponentWrapper {
    * Returns the action slot.
    */
   findAction(): ElementWrapper | null {
-    return this.findByClassName(styles['action-button-wrapper']);
+    return this.findByClassName(styles['action-slot']);
   }
 
   /**

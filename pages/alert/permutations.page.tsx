@@ -3,6 +3,7 @@
 import React from 'react';
 import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
+import ExpandableSection from '~components/expandable-section';
 import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import createPermutations from '../utils/permutations';
@@ -21,6 +22,16 @@ const longTextWithLink = (
     exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
     voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
     culpa qui officia deserunt mollit anim id est laborum.
+  </>
+);
+
+const longTextWithExpandableSection = (
+  <>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    <ExpandableSection headerText="Expand me" defaultExpanded={true}>
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </ExpandableSection>
   </>
 );
 
@@ -62,6 +73,11 @@ const permutations = createPermutations<AlertProps>([
       </Button>,
     ],
     type: allTypes,
+  },
+  {
+    header: ['With expandable section'],
+    children: [longTextWithExpandableSection],
+    type: ['info'],
   },
 ]);
 

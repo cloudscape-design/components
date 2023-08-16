@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { PieArcDatum } from 'd3-shape';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
 import { KeyCode } from '../internal/keycode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -22,7 +23,6 @@ import { nodeBelongs } from '../internal/utils/node-belongs';
 import clsx from 'clsx';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
-import { nodeContains } from '../internal/utils/dom';
 
 export interface InternalChartDatum<T> {
   index: number;

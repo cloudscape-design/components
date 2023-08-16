@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AreaChartProps } from '../interfaces';
 import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { findClosest, circleIndex } from './utils';
 
-import { nodeContains } from '../../internal/utils/dom';
 import { KeyCode } from '../../internal/keycode';
 import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
 import computeChartProps from './compute-chart-props';
 import createSeriesDecorator from './create-series-decorator';
 import InteractionsStore from './interactions-store';
-import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
 import { useReaction } from '../async-store';
 import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
@@ -62,7 +62,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   const hasVisibleSeries = series.length > 0;
   const height = useHeightMeasure(() => plotMeasureRef.current, !fitHeight, [hasVisibleSeries]) ?? explicitHeight;
 
-  const stableSetVisibleSeries = useStableEventHandler(setVisibleSeries);
+  const stableSetVisibleSeries = useStableCallback(setVisibleSeries);
 
   const model = useMemo(() => {
     // Compute scales, ticks and two-dimensional plots.

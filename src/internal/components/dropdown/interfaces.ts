@@ -100,6 +100,11 @@ export interface DropdownProps extends ExpandToViewport {
   stretchToTriggerWidth?: boolean;
 
   /**
+   * Whether the dropdown content can grow beyond the width of the trigger.
+   */
+  stretchBeyondTriggerWidth?: boolean;
+
+  /**
    * Determines that the dropdown should preferably be aligned to the center of the trigger
    * instead of dropping left or right.
    */

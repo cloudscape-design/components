@@ -12,15 +12,7 @@ export function setupEditor(
   setHighlightedAnnotation: React.Dispatch<React.SetStateAction<Ace.Annotation | undefined>>,
   setPaneStatus: React.Dispatch<React.SetStateAction<PaneStatus>>
 ) {
-  ace.config.loadModule('ace/ext/language_tools', function () {
-    editor.setOptions({
-      displayIndentGuides: false,
-      enableSnippets: true,
-      enableBasicAutocompletion: true,
-    });
-  });
-
-  editor.setAutoScrollEditorIntoView(true);
+  setEditorDefaults(ace, editor);
 
   setEditorDefaults(ace, editor);
 
@@ -85,6 +77,16 @@ export function setupEditor(
 }
 
 export function setEditorDefaults(ace: any, editor: Ace.Editor) {
+  ace.config.loadModule('ace/ext/language_tools', function () {
+    editor.setOptions({
+      displayIndentGuides: false,
+      enableSnippets: true,
+      enableBasicAutocompletion: true,
+    });
+  });
+
+  editor.setAutoScrollEditorIntoView(true);
+
   if (!supportsKeyboardAccessibility(ace)) {
     editor.commands.addCommand({
       name: 'exitCodeEditor',

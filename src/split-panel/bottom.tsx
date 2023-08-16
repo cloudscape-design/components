@@ -8,7 +8,7 @@ import { SplitPanelContentProps } from './interfaces';
 import styles from './styles.css.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useResizeObserver } from '../internal/hooks/container-queries';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   state: TransitionStatus;

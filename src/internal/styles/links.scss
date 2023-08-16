@@ -19,6 +19,7 @@
   text-decoration: map.get($variant, 'decoration');
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   text-decoration-color: map.get($variant, 'decoration-color');
+  text-decoration-thickness: map.get($variant, 'decoration-thickness');
 
   @include styles.with-motion {
     transition-property: color, text-decoration;
@@ -44,6 +45,7 @@
     text-decoration: underline;
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     text-decoration-color: map.get($variant, 'decoration-color-hover');
+    text-decoration-thickness: map.get($variant, 'decoration-thickness');
   }
 }
 

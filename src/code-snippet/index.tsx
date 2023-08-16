@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, forwardRef } from 'react';
+
+import React, { useEffect, forwardRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { CodeSnippetProps } from './interfaces';
 import {
-  DEFAULT_DARK_THEME,
-  DEFAULT_LIGHT_THEME,
-  useEditorAttributes,
-  useAceEditor,
-  useEditorValue,
-  useEditorLanguage,
-  useEditorPreferences,
-} from '../code-editor/util';
+  useEditor,
+  useSyncEditorLabels,
+  useSyncEditorValue,
+  useSyncEditorLanguage,
+  useSyncEditorWrapLines,
+  useSyncEditorTheme,
+} from '../code-editor/use-editor';
 import { setupEditor } from './setup-editor';
 import LoadingScreen from '../code-editor/loading-screen';
 import ErrorScreen from '../code-editor/error-screen';
@@ -28,28 +28,26 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
+import { DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME } from '../code-editor/util';
 
 export { CodeSnippetProps };
 
 const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnippetProps.Ref>) => {
-  const codeSnippetRef = useRef<HTMLDivElement>(null);
   const { __internalRootRef } = useBaseComponent('CodeSnippet');
+  const { ace, value, language, i18nStrings, ariaLabel, preferences, loading, onRecoveryClick, ...rest } = props;
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
-  const { ace, value, language, i18nStrings, ariaLabel, ...rest } = props;
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
-
   const mode = useCurrentMode(__internalRootRef);
-  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
 
-  const editor = useAceEditor(ace, codeSnippetRef, !!props.loading);
+  const { editorRef, editor } = useEditor(ace, loading);
 
-  useEditorAttributes(editor ?? null, { ariaLabel, ariaDescribedby, ariaLabelledby, controlId });
+  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
 
-  useForwardFocus(ref, codeSnippetRef);
+  useForwardFocus(ref, editorRef);
   const isRefresh = useVisualRefresh();
 
-  const showGutter = !!props.preferences?.showGutter;
+  const showGutter = !!preferences?.showGutter;
   useEffect(() => {
     if (!ace || !editor) {
       return;
@@ -67,15 +65,14 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
     editor?.setOption('showGutter', showGutter);
   }, [editor, showGutter]);
 
-  useEditorValue(editor, value);
+  useSyncEditorValue(editor, value);
 
-  useEditorLanguage(editor, language);
+  useSyncEditorLanguage(editor, language);
 
-  useEditorPreferences(
-    editor,
-    { wrapLines: props.preferences?.wrapLines, theme: props.preferences?.theme },
-    defaultTheme
-  );
+  useSyncEditorWrapLines(editor, preferences?.wrapLines);
+
+  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
+  useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
   return (
     <div
@@ -83,24 +80,24 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
       className={clsx(styles['code-snippet'], baseProps.className, { [styles['code-snippet-refresh']]: isRefresh })}
       ref={__internalRootRef}
     >
-      {props.loading && (
+      {loading && (
         <LoadingScreen>
           <LiveRegion visible={true}>{i18n('i18nStrings.loadingState', i18nStrings?.loadingState)}</LiveRegion>
         </LoadingScreen>
       )}
 
-      {!ace && !props.loading && (
+      {!ace && !loading && (
         <ErrorScreen
           recoveryText={i18n('i18nStrings.errorStateRecovery', i18nStrings?.errorStateRecovery)}
-          onRecoveryClick={props.onRecoveryClick}
+          onRecoveryClick={onRecoveryClick}
         >
           {i18n('i18nStrings.errorState', i18nStrings?.errorState)}
         </ErrorScreen>
       )}
 
-      {ace && !props.loading && (
+      {ace && !loading && (
         <div
-          ref={codeSnippetRef}
+          ref={editorRef}
           className={clsx(styles.snippet, styles.ace, isRefresh && styles['snippet-refresh'])}
           tabIndex={0}
           role="group"
