@@ -24,7 +24,6 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
-  badge?: boolean;
   __nativeAttributes?: Record<string, any>;
   __iconClass?: string;
   __activated?: boolean;
