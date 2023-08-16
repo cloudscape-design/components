@@ -86,4 +86,5 @@ export interface InternalDrawerProps {
     onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
     ariaLabel?: string;
   };
+  __disableRuntimeDrawers?: boolean;
 }

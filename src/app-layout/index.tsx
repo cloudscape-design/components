@@ -75,8 +75,8 @@ const AppLayout = React.forwardRef(
     const props = { contentType, headerSelector, footerSelector, ...rest, ariaLabels };
 
     const baseProps = getBaseProps(rest);
-    const ownDrawers = (props as any).drawers;
-    const disableRuntimeDrawers = (props as any).__disableRuntimeDrawers;
+    const ownDrawers = (props as InternalDrawerProps).drawers;
+    const disableRuntimeDrawers = (props as InternalDrawerProps).__disableRuntimeDrawers;
     const combinedDrawers = [...runtimeDrawers.before, ...(ownDrawers?.items ?? []), ...runtimeDrawers.after];
     const finalDrawers = combinedDrawers.length > 0 ? { ...ownDrawers, items: combinedDrawers } : ownDrawers;
 

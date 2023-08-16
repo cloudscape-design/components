@@ -71,7 +71,7 @@ function ActiveDrawer() {
     drawerRef,
   } = useAppLayoutInternals();
 
-  const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
+  const activeDrawer = drawers?.items.find(item => item.id === activeDrawerId) ?? null;
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,

@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 
 export function useObservedElement(selector: string) {
   const getElement = useCallback(() => {
-    return document.querySelector(selector);
+    return document.querySelector<Element>(selector);
   }, [selector]);
 
   const [height, setHeight] = useState(0);
