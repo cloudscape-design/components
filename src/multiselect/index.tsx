@@ -17,6 +17,7 @@ const Multiselect = React.forwardRef(
       selectedOptions = [],
       keepOpen = true,
       hideTokens = false,
+      triggerVariant = 'placeholder',
       ...restProps
     }: MultiselectProps,
     ref: React.Ref<MultiselectProps.Ref>
@@ -30,6 +31,7 @@ const Multiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         keepOpen={keepOpen}
         hideTokens={hideTokens}
+        triggerVariant={triggerVariant}
         {...restProps}
         {...baseComponentProps}
         ref={ref}

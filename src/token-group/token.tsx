@@ -9,6 +9,7 @@ import styles from './styles.css.js';
 import { FormFieldError } from '../form-field/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getBaseProps } from '../internal/base-component';
+import { TokenGroupProps } from './interfaces';
 
 interface TokenProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ interface TokenProps {
   disabled?: boolean;
   errorText?: React.ReactNode;
   errorIconAriaLabel?: string;
+  variant?: TokenGroupProps.Variant;
   className?: string;
 }
 
@@ -27,6 +29,7 @@ export function Token({
   dismissLabel,
   onDismiss,
   children,
+  variant = 'default',
   errorText,
   errorIconAriaLabel,
   ...restProps
@@ -45,6 +48,7 @@ export function Token({
       <div
         className={clsx(
           styles['token-box'],
+          styles[`token-box-${variant}`],
           disabled && styles['token-box-disabled'],
           errorText && styles['token-box-error']
         )}

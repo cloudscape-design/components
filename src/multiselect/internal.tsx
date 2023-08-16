@@ -69,6 +69,7 @@ const InternalMultiselect = React.forwardRef(
       onLoadItems,
       onChange,
       virtualScroll,
+      triggerVariant,
       hideTokens = false,
       expandToViewport,
       __internalRootRef = null,
@@ -224,6 +225,8 @@ const InternalMultiselect = React.forwardRef(
         disabled={disabled}
         triggerProps={getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
+        selectedOptions={selectedOptions}
+        triggerVariant={triggerVariant}
         isOpen={isOpen}
         {...formFieldContext}
         controlId={controlId}
@@ -276,7 +279,7 @@ const InternalMultiselect = React.forwardRef(
       }
     };
 
-    const showTokens = !hideTokens && tokens.length > 0;
+    const showTokens = !hideTokens && triggerVariant !== 'tokens' && tokens.length > 0;
     const handleTokenDismiss: TokenGroupProps['onDismiss'] = ({ detail }) => {
       const optionToDeselect = selectedOptions[detail.itemIndex];
       updateSelectedOption(optionToDeselect);
