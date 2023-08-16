@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
+import Select from '~components/select';
+import FormField from '~components/form-field';
 import ScreenshotArea from '../utils/screenshot-area';
 import { allItems, TableItem } from './table.data';
 import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
@@ -71,6 +73,25 @@ const permutations = createPermutations<Partial<PropertyFilterProps>>([
       },
     ],
     tokenLimit: [0, 2],
+  },
+  {
+    query: [
+      { tokens: [], operation: 'and' },
+      {
+        tokens: [
+          { value: '123', operator: ':' },
+          { value: '234', operator: '!:' },
+          { propertyKey: 'instanceid', value: '345', operator: '=' },
+        ],
+        operation: 'and',
+      },
+    ],
+    customControl: [
+      <Select key={0} placeholder="Select a value" options={[]} selectedOption={null} />,
+      <FormField key={1} label="Select a value">
+        <Select placeholder="Select a value" options={[]} selectedOption={null} />
+      </FormField>,
+    ],
   },
 ]);
 
