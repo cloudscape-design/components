@@ -16,7 +16,7 @@
 }
 
 .snippet {
-  height: 500px;
+  min-height: 30px;
 
   &:focus {
     @include styles.focus-highlight(3px);

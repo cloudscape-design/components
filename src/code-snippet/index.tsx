@@ -29,6 +29,8 @@ import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
 import { DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME } from '../code-editor/util';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useAutoHeight } from './util';
 
 export { CodeSnippetProps };
 
@@ -74,11 +76,14 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
   useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
+  const autoHeightRef = useAutoHeight(editor, value, preferences?.wrapLines);
+  const mergedRef = useMergeRefs(__internalRootRef, autoHeightRef);
+
   return (
     <div
       {...baseProps}
       className={clsx(styles['code-snippet'], baseProps.className, { [styles['code-snippet-refresh']]: isRefresh })}
-      ref={__internalRootRef}
+      ref={mergedRef}
     >
       {loading && (
         <LoadingScreen>
