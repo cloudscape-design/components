@@ -30,7 +30,7 @@ import ErrorScreen from './error-screen';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import { isDevelopment, useCurrentMode, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useInternalI18n } from '../i18n/context';
 import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -40,15 +40,15 @@ import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { isAceLike } from './ace-types';
 
 export { CodeEditorProps };
 
 const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditorProps.Ref>) => {
   const codeEditorRef = useRef<HTMLDivElement>(null);
-  const { __internalRootRef } = useBaseComponent('CodeEditor');
+  const { __internalRootRef } = useBaseComponent<HTMLElement>('CodeEditor');
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const {
-    ace,
     value,
     language,
     i18nStrings,
@@ -58,6 +58,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     languageLabel: customLanguageLabel,
     ...rest
   } = props;
+  const ace: unknown = props.ace;
+
   const [editorHeight = 480, setEditorHeight] = useControllable(editorContentHeight, onEditorContentResize, 480, {
     componentName: 'code-editor',
     changeHandler: 'onEditorContentResize',
@@ -99,6 +101,12 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     if (!ace || !elem) {
       return;
     }
+    if (!isAceLike(ace)) {
+      if (isDevelopment) {
+        warnOnce('CodeEditor', 'The `ace` prop is not a valid Ace instance.');
+      }
+      return;
+    }
     const config = getDefaultConfig(ace);
     setEditor(
       ace.edit(elem, {
@@ -119,7 +127,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const paneId = useUniqueId('code-editor-pane');
 
   useEffect(() => {
-    if (!ace || !editor) {
+    if (!ace || !editor || !isAceLike(ace)) {
       return;
     }
 

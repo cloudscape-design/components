@@ -6,6 +6,7 @@ import { AceModes } from './ace-modes';
 import { LightThemes, DarkThemes } from './ace-themes';
 import { CodeEditorProps } from './interfaces';
 import { findUpUntil } from '../internal/utils/dom';
+import { AceObject } from './ace-types';
 
 export type PaneStatus = 'error' | 'warning' | 'hidden';
 
@@ -14,7 +15,7 @@ export const DEFAULT_DARK_THEME: typeof DarkThemes[number]['value'] = 'tomorrow_
 
 const KEYBOARD_ACCESSIBILITY_MIN_ACE_VERSION = [1, 23];
 
-export function supportsKeyboardAccessibility(ace: any): boolean {
+export function supportsKeyboardAccessibility(ace: AceObject): boolean {
   // Split semantic version numbers. We don't need a full semver parser for this.
   const semanticVersion = ace?.version?.split('.').map((part: string) => {
     const parsed = parseInt(part);
@@ -30,7 +31,7 @@ export function supportsKeyboardAccessibility(ace: any): boolean {
   );
 }
 
-export function getDefaultConfig(ace: any): Partial<Ace.EditorOptions> {
+export function getDefaultConfig(ace: AceObject): Partial<Ace.EditorOptions> {
   return {
     behavioursEnabled: true,
     ...(supportsKeyboardAccessibility(ace) ? { enableKeyboardAccessibility: true } : {}),
