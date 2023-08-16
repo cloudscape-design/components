@@ -4,6 +4,7 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 
 import FormField from '../../../lib/components/form-field';
+import ExpandableSection from '../../../lib/components/expandable-section';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { DATA_ATTR_FIELD_LABEL, DATA_ATTR_FIELD_ERROR } from '../../../lib/components/internal/analytics/selectors';
@@ -21,6 +22,19 @@ describe('FormField Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockFunnelMetrics();
+
+    // These numbers were chosen at random
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      width: 300,
+      height: 200,
+      x: 30,
+      y: 50,
+      left: 30,
+      top: 50,
+      bottom: 100,
+      right: 400,
+      toJSON: () => '',
+    });
   });
 
   test('sends funnelSubStepError metric when errorText is present', () => {
@@ -103,6 +117,31 @@ describe('FormField Analytics', () => {
 
   test('does not send a funnelSubStepError metric when outside of a funnel context', () => {
     render(<FormField errorText="Error" />);
+    expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelStepError).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
+  });
+
+  test('does not send a funnelSubStepError metric when hidden', () => {
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      left: 0,
+      top: 0,
+      bottom: 0,
+      right: 0,
+      toJSON: () => '',
+    });
+
+    render(
+      <ExpandableSection expanded={false} onChange={() => {}}>
+        <FormField errorText="Error" />
+      </ExpandableSection>
+    );
+    expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelStepError).not.toHaveBeenCalled();
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
   });
 
