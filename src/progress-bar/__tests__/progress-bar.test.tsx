@@ -190,4 +190,17 @@ describe('Progress updates', () => {
     jest.advanceTimersByTime(6000);
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 2%`);
   });
+
+  test('correctly extracts react node label for announcement', () => {
+    const wrapper = renderProgressBar({
+      label: (
+        <span>
+          Text-<i>optional</i>
+        </span>
+      ),
+      value: 10,
+      status: 'in-progress',
+    });
+    expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe('Text-optional: 10%');
+  });
 });
