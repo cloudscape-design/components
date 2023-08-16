@@ -175,7 +175,6 @@
     },
     {
       "files": [
-        "src/app-layout/**",
         "src/area-chart/**",
         "src/attribute-editor/**",
         "src/autosuggest/**",
