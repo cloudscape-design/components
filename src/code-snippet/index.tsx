@@ -36,7 +36,8 @@ export { CodeSnippetProps };
 
 const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnippetProps.Ref>) => {
   const { __internalRootRef } = useBaseComponent('CodeSnippet');
-  const { ace, value, language, i18nStrings, ariaLabel, preferences, loading, onRecoveryClick, ...rest } = props;
+  const { ace, value, language, i18nStrings, ariaLabel, preferences, loading, onRecoveryClick, fitHeight, ...rest } =
+    props;
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
@@ -76,7 +77,7 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
   useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
-  const autoHeightRef = useAutoHeight(editor, value, preferences?.wrapLines);
+  const autoHeightRef = useAutoHeight(editor, value, preferences?.wrapLines, fitHeight);
   const mergedRef = useMergeRefs(__internalRootRef, autoHeightRef);
 
   return (
@@ -103,7 +104,12 @@ const CodeSnippet = forwardRef((props: CodeSnippetProps, ref: React.Ref<CodeSnip
       {ace && !loading && (
         <div
           ref={editorRef}
-          className={clsx(styles.snippet, styles.ace, isRefresh && styles['snippet-refresh'])}
+          className={clsx(
+            styles.snippet,
+            styles.ace,
+            isRefresh && styles['snippet-refresh'],
+            fitHeight && styles['fit-height']
+          )}
           tabIndex={0}
           role="group"
           aria-label={i18n('i18nStrings.editorGroupAriaLabel', i18nStrings?.editorGroupAriaLabel)}

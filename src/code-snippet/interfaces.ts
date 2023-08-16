@@ -68,6 +68,11 @@ export interface CodeSnippetProps extends BaseComponentProps, FormFieldControlPr
    * Adds `aria-label` to the code snippet's textarea element.
    */
   ariaLabel?: string;
+
+  /**
+   * Enabling this property will make the code snippet to fit into available height.
+   */
+  fitHeight?: boolean;
 }
 
 // Prevents typescript from collapsing a string union type into a string type while still allowing any string.

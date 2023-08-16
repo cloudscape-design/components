@@ -5,7 +5,7 @@ import { Ace } from 'ace-builds';
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { useEffect, useRef } from 'react';
 
-export function useAutoHeight(editor: null | Ace.Editor, value: string, wrapLines?: boolean) {
+export function useAutoHeight(editor: null | Ace.Editor, value: string, wrapLines?: boolean, fitHeight?: boolean) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const updateEditorHeight = useStableCallback(() => {
@@ -14,7 +14,7 @@ export function useAutoHeight(editor: null | Ace.Editor, value: string, wrapLine
     }
     const lineHeight = editor.renderer.lineHeight || 20;
     const scrollbarHeight = wrapLines ? 0 : 15;
-    const newHeight = editor.getSession().getScreenLength() * lineHeight + scrollbarHeight + 'px';
+    const newHeight = fitHeight ? '100%' : editor.getSession().getScreenLength() * lineHeight + scrollbarHeight + 'px';
     if (editor.container.style.height !== newHeight) {
       editor.container.style.height = newHeight;
       editor.resize();

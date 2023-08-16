@@ -9,14 +9,24 @@
 
 .code-snippet {
   @include styles.styles-reset;
+  position: relative;
   display: inline-block;
   border: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   border-radius: awsui.$border-radius-code-editor;
+  height: 100%;
   width: 100%;
 }
 
 .snippet {
+
   min-height: 30px;
+  &.fit-height {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 
   &:focus {
     @include styles.focus-highlight(3px);

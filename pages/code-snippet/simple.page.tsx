@@ -11,6 +11,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type PageContext = React.Context<
   AppContextType<{
+    fitHeight: boolean;
     error: boolean;
     loading: boolean;
     showGutter: boolean;
@@ -45,6 +46,18 @@ export default function Page() {
     });
   }, []);
 
+  const content = (
+    <CodeSnippet
+      ace={urlParams.error ? undefined : ace}
+      value={awsTemplateSample}
+      language="yaml"
+      preferences={{ showGutter, wrapLines, theme }}
+      loading={loading || urlParams.loading}
+      fitHeight={urlParams.fitHeight}
+      i18nStrings={i18nStrings}
+    />
+  );
+
   return (
     <Box margin="m">
       <Box margin={{ bottom: 's' }}>
@@ -68,6 +81,16 @@ export default function Page() {
           Error
         </Checkbox>
 
+        <Checkbox
+          checked={urlParams.fitHeight}
+          onChange={e => {
+            setUrlParams({ fitHeight: e.detail.checked });
+            window.location.reload();
+          }}
+        >
+          Fit height
+        </Checkbox>
+
         <SpaceBetween direction="horizontal" size="s" alignItems="center">
           <Select
             id="theme-selector"
@@ -80,14 +103,21 @@ export default function Page() {
       </SpaceBetween>
 
       <ScreenshotArea>
-        <CodeSnippet
-          ace={urlParams.error ? undefined : ace}
-          value={awsTemplateSample}
-          language="yaml"
-          preferences={{ showGutter, wrapLines, theme }}
-          loading={loading || urlParams.loading}
-          i18nStrings={i18nStrings}
-        />
+        {urlParams.fitHeight ? (
+          <div
+            style={{
+              border: '1px solid black',
+              margin: -8,
+              padding: 8,
+              overflow: 'hidden',
+              height: 500,
+            }}
+          >
+            {content}
+          </div>
+        ) : (
+          content
+        )}
       </ScreenshotArea>
     </Box>
   );
