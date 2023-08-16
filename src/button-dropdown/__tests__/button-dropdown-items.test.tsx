@@ -11,6 +11,7 @@ import { isItemGroup } from '../utils/utils';
 import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
 import categoryStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
 import optionsListStyles from '../../../lib/components/internal/components/options-list/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 
 const renderButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);
@@ -418,6 +419,14 @@ const items: ButtonDropdownProps.Items = [
 
         wrapper.openDropdown();
         expect(wrapper.findItemById('i1')!.findAllByClassName(IconWrapper.rootSelector)).toHaveLength(2);
+      });
+
+      it('should render badge when defined', () => {
+        const items: ButtonDropdownProps['items'] = [{ id: 'i1', text: 'item1', iconName: 'settings', badge: true }];
+        const wrapper = renderButtonDropdown({ ...props, variant: 'icon', items: items });
+
+        wrapper.openDropdown();
+        expect(wrapper.findByClassName(iconStyles.badge)?.getElement()).toBeInTheDocument();
       });
     });
   });

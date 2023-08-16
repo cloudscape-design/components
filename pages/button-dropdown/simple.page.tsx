@@ -226,7 +226,7 @@ export default function ButtonDropdownPage() {
           <ButtonDropdown id="ButtonDropdown9" variant="icon" items={withIconsAndBadges} />
         </div>
         <div className={styles.container}>
-          <ButtonDropdown id="ButtonDropdown9" items={withIconsAndBadges}>
+          <ButtonDropdown id="ButtonDropdown10" items={withIconsAndBadges}>
             With icons and badges
           </ButtonDropdown>
         </div>
