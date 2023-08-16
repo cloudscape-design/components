@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { Key } from 'react';
 import clsx from 'clsx';
 import flattenChildren from 'react-keyed-flatten-children';
 import { InternalColumnLayoutProps } from '../interfaces';
@@ -61,7 +61,7 @@ export default function FlexibleColumnLayout({
       {flattenedChildren.map((child, i) => {
         // If this react child is a primitive value, the key will be undefined
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const key = (child as any).key;
+        const key = (child as Record<'key', Key | undefined>).key;
 
         return (
           <div

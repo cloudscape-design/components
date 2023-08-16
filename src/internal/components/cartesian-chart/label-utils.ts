@@ -23,7 +23,9 @@ export function formatTicks({
   tickFormatter?: (value: any) => string;
 }): FormattedTick[] {
   return ticks.map(tick => {
-    const position = scale.d3Scale(tick as any) ?? NaN;
+    type Scale = ChartScale['d3Scale'] & ((x: ChartDataTypes) => undefined);
+
+    const position = (scale.d3Scale as Scale)(tick) ?? NaN;
     const label = tickFormatter ? tickFormatter(tick as any) : tick.toString();
     const lines = (label + '').split('\n');
     return { position, lines, space: Math.max(...lines.map(getLabelSpace)) };

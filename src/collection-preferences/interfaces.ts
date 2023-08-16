@@ -3,7 +3,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface CollectionPreferencesProps<CustomPreferenceType = any> extends BaseComponentProps {
+export interface CollectionPreferencesProps<CustomPreferenceType = unknown> extends BaseComponentProps {
   /**
    * Specifies the title of the preferences modal dialog. It is also used as an `aria-label` for the trigger button.
    * @i18n
@@ -193,7 +193,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
 }
 
 export namespace CollectionPreferencesProps {
-  export interface Preferences<CustomPreferenceType = any> {
+  export interface Preferences<CustomPreferenceType = unknown> {
     pageSize?: number;
     wrapLines?: boolean;
     stripedRows?: boolean;

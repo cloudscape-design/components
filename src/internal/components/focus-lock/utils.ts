@@ -25,18 +25,20 @@ const tabbables = [
   '[autofocus]',
 ].join(',');
 
-export function getFocusables(container: HTMLElement): HTMLElement[] {
-  return Array.prototype.slice
-    .call(container.querySelectorAll(tabbables))
-    .filter((element: HTMLElement) => element.tabIndex !== -1);
+type FocusableElement = Element & { focus(): void };
+
+export function getFocusables(container: HTMLElement): FocusableElement[] {
+  return Array.from(container.querySelectorAll(tabbables)).filter(
+    element => (!('tabIndex' in element) || element.tabIndex !== -1) && 'focus' in element
+  ) as FocusableElement[];
 }
 
-export function getFirstFocusable(container: HTMLElement): null | HTMLElement {
+export function getFirstFocusable(container: HTMLElement): null | FocusableElement {
   const focusables = getFocusables(container);
   return focusables[0] ?? null;
 }
 
-export function getLastFocusable(container: HTMLElement): null | HTMLElement {
+export function getLastFocusable(container: HTMLElement): null | FocusableElement {
   const focusables = getFocusables(container);
   return focusables[focusables.length - 1] ?? null;
 }

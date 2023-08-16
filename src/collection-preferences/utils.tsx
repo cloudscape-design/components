@@ -51,7 +51,7 @@ export const mergePreferences = (
   ];
   for (const prefName of prefNames) {
     if (newPref[prefName] !== undefined) {
-      newObj[prefName] = newPref[prefName];
+      (newObj as Record<string, unknown>)[prefName] = newPref[prefName];
     }
   }
   return newObj;
@@ -230,7 +230,7 @@ export const StickyColumnsPreference = ({
   );
 };
 
-interface CustomPreferenceProps<T = any> extends Pick<CollectionPreferencesProps<T>, 'customPreference'> {
+interface CustomPreferenceProps<T = unknown> extends Pick<CollectionPreferencesProps<T>, 'customPreference'> {
   onChange: (value: T) => void;
   value: T;
 }

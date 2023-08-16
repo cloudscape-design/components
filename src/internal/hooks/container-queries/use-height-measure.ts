@@ -10,7 +10,7 @@ import { useCallback, useState } from 'react';
 export function useHeightMeasure(
   getMeasure: () => null | HTMLElement | SVGElement,
   skip = false,
-  deps: React.DependencyList = []
+  deps: ReadonlyArray<unknown> = []
 ) {
   const [measuredHeight, setHeight] = useState(0);
   // eslint-disable-next-line react-hooks/exhaustive-deps

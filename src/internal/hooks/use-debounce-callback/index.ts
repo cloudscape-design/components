@@ -3,7 +3,7 @@
 import { useCallback, useRef } from 'react';
 import debounce from '../../debounce';
 
-export function useDebounceCallback<T extends (...args: any[]) => void>(callback: T, delay?: number): T {
+export function useDebounceCallback<T extends (...args: unknown[]) => void>(callback: T, delay?: number): T {
   const callbackRef = useRef<T>();
   callbackRef.current = callback;
 

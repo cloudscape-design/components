@@ -34,7 +34,10 @@ function render<T>(
   itemIndex: number,
   slot: AttributeEditorProps.FieldRenderable<T> | React.ReactNode | undefined
 ) {
-  return typeof slot === 'function' ? slot(item, itemIndex) : slot;
+  if (typeof slot === 'function') {
+    return (slot as AttributeEditorProps.FieldRenderable<T>)(item, itemIndex);
+  }
+  return slot;
 }
 
 const GRID_DEFINITION = [{ colspan: { default: 12, xs: 9 } }];

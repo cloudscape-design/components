@@ -11,7 +11,7 @@ import { supportsStickyPosition } from '../../utils/dom';
  *    <div ref={ref1} onScroll={handleScroll}/>
  *    <div ref={ref2} onScroll={handleScroll}/>
  */
-export function useScrollSync(refs: Array<RefObject<any>>, disabled = !supportsStickyPosition()) {
+export function useScrollSync(refs: Array<RefObject<HTMLElement>>, disabled = !supportsStickyPosition()) {
   const activeElement = useRef<HTMLElement | null>(null);
   const onScroll = (event: React.UIEvent) => {
     const targetElement = event.target as HTMLElement;

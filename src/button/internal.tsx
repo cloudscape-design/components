@@ -121,7 +121,7 @@ export const InternalButton = React.forwardRef(
       ...props,
       ...__nativeAttributes,
       // https://github.com/microsoft/TypeScript/issues/36659
-      ref: useMergeRefs(buttonRef as any, __internalRootRef),
+      ref: useMergeRefs(buttonRef, __internalRootRef),
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,

@@ -11,7 +11,7 @@ const useIdFallback = () => {
   return idRef.current;
 };
 
-const useId: typeof useIdFallback = (React as any).useId ?? useIdFallback;
+const useId: typeof useIdFallback = (React as { useId?: () => string }).useId ?? useIdFallback;
 
 export function useUniqueId(prefix?: string) {
   return `${prefix ? prefix : ''}` + useId();

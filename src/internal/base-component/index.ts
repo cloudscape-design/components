@@ -25,12 +25,13 @@ export interface BaseComponentProps {
   // "Note: If an attribute name is not a valid JS identifier (like a data-* attribute), it is not considered to be an error"
 }
 
-export function getBaseProps(props: BaseComponentProps) {
-  const baseProps: Record<string, any> = {};
+export function getBaseProps(props: Record<string, unknown>) {
+  const baseProps: Record<string, unknown> = {};
+
   Object.keys(props).forEach(prop => {
     if (prop === 'id' || prop === 'className' || prop.match(/^data-/)) {
-      baseProps[prop] = (props as Record<string, any>)[prop];
+      baseProps[prop] = props[prop];
     }
   });
-  return baseProps as BaseComponentProps;
+  return baseProps as BaseComponentProps & Record<`data-${string}`, unknown>;
 }

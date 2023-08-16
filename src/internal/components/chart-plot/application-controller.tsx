@@ -140,7 +140,7 @@ function muteApplication(app: SVGGElement) {
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttributeNames#polyfill
 function getAttributeNames(element: Element) {
   const attributes = element.attributes;
-  const result = new Array(attributes.length);
+  const result = new Array<string>(attributes.length);
   for (let i = 0; i < attributes.length; i++) {
     result[i] = attributes[i].name;
   }

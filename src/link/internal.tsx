@@ -143,7 +143,7 @@ const InternalLink = React.forwardRef(
       ...baseProps,
       // https://github.com/microsoft/TypeScript/issues/36659
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ref: useMergeRefs(linkRef as any, __internalRootRef),
+      ref: useMergeRefs(linkRef, __internalRootRef),
       className: clsx(
         styles.link,
         baseProps.className,

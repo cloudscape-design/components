@@ -21,7 +21,7 @@ export default class FocusTracker {
   }
 
   initialize() {
-    this.currentlyFocused = containsOrEqual(this.node, document.activeElement as any);
+    this.currentlyFocused = document.activeElement ? containsOrEqual(this.node, document.activeElement) : false;
     document.addEventListener('focusin', this.focusInListener);
     document.addEventListener('focusout', this.focusOutListener);
   }

@@ -28,14 +28,16 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth }: LabelsMeasure
   }, [autoWidth, width]);
 
   const labelMapper = (value: ChartDataTypes) => {
-    const scaledValue = scale.d3Scale(value as any);
+    type Scale = ChartScale['d3Scale'] & ((x: ChartDataTypes) => undefined);
+
+    const scaledValue = (scale.d3Scale as Scale)(value);
     if (scaledValue === undefined || !isFinite(scaledValue)) {
       return null;
     }
 
     return (
       <div key={`${value}`} className={styles['labels-left__label']} aria-hidden="true">
-        {tickFormatter ? tickFormatter(value as any) : value.toString()}
+        {tickFormatter ? tickFormatter(value) : value.toString()}
       </div>
     );
   };

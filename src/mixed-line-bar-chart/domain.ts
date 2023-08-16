@@ -99,6 +99,7 @@ export function computeDomainY<T>(
         series: {
           type: 'bar',
           title: 'positive',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           data: positiveData as any,
         },
       },
@@ -108,6 +109,7 @@ export function computeDomainY<T>(
         series: {
           type: 'bar',
           title: 'negative',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           data: negativeData as any,
         },
       },

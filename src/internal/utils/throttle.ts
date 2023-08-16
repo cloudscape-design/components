@@ -47,7 +47,7 @@ export function throttle<F extends (...args: any) => any>(
   }
 
   // Decorated client function with delay mechanism.
-  function throttled(this: any, ...args: any) {
+  function throttled(this: unknown, ...args: unknown[]) {
     if (lastInvokeTime === null) {
       lastInvokeTime = Date.now();
       func.apply(this, args);

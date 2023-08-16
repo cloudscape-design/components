@@ -411,7 +411,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
   if (verticalMarkerX !== null) {
     verticalLineX = verticalMarkerX.scaledX;
   } else if (isGroupNavigation && highlightedGroupIndex !== null) {
-    const x = xAxisProps.scale.d3Scale(barGroups[highlightedGroupIndex].x as any) ?? null;
+    type Scale = ChartScale['d3Scale'] & ((x: ChartDataTypes) => undefined);
+
+    const x = (xAxisProps.scale.d3Scale as Scale)(barGroups[highlightedGroupIndex].x) ?? null;
     if (x !== null) {
       verticalLineX = xOffset + x;
     }

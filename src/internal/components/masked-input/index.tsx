@@ -46,9 +46,8 @@ const MaskedInput = React.forwardRef(
       inputRef,
       autofix,
       disableAutocompleteOnBlur,
-      onChange: (value: string) => !rest.readOnly && fireNonCancelableEvent(onChange, { value }),
-      onKeyDown: (event: CustomEvent) =>
-        !rest.readOnly && onKeyDown && fireCancelableEvent(onKeyDown, event.detail, event),
+      onChange: value => !rest.readOnly && fireNonCancelableEvent(onChange, { value }),
+      onKeyDown: event => !rest.readOnly && onKeyDown && fireCancelableEvent(onKeyDown, event.detail, event),
       onBlur: () => fireNonCancelableEvent(onBlur),
       setPosition: setCursorPosition,
     });

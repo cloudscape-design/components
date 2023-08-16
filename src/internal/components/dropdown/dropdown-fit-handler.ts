@@ -26,7 +26,7 @@ export interface InteriorDropdownPosition extends DropdownPosition {
   top: string;
 }
 
-const getClosestParentDimensions = (element: HTMLElement): any => {
+const getClosestParentDimensions = (element: HTMLElement) => {
   const parents = getOverflowParents(element).map(el => {
     const { height, width, top, left } = el.getBoundingClientRect();
     return {
@@ -213,7 +213,10 @@ export const getInteriorDropdownPosition = (
 ): InteriorDropdownPosition => {
   const availableSpace = getInteriorAvailableSpace(trigger, dropdown, overflowParents, isMobile);
   const { bottom: triggerBottom, top: triggerTop, width: triggerWidth } = trigger.getBoundingClientRect();
-  const { top: parentDropdownTop, height: parentDropdownHeight } = getClosestParentDimensions(trigger);
+  const { top: parentDropdownTop, height: parentDropdownHeight } = getClosestParentDimensions(trigger) ?? {
+    top: 0,
+    height: 0,
+  };
 
   let dropLeft;
 

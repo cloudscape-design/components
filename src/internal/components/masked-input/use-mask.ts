@@ -22,7 +22,7 @@ interface UseMaskHook {
 interface UseMaskProps {
   value: string;
   onChange: (value: string) => void;
-  onKeyDown?: (event: CustomEvent) => void;
+  onKeyDown?: CancelableEventHandler<InputProps.KeyDetail>;
   onBlur?: () => void;
   format: MaskFormat;
   autofix?: boolean;
@@ -74,7 +74,7 @@ const useMask = ({
 
   return {
     value: maskedValue,
-    onKeyDown: (event: CustomEvent) => {
+    onKeyDown: event => {
       const selectionStart = inputRef.current?.selectionStart || 0;
       const selectionEnd = inputRef.current?.selectionEnd || 0;
 
@@ -111,7 +111,10 @@ const useMask = ({
       onBlur && onBlur();
     },
     onPaste: (event: ClipboardEvent) => {
-      const text = (event.clipboardData || (window as any).clipboardData).getData('text');
+      if (!event.clipboardData) {
+        return;
+      }
+      const text = event.clipboardData.getData('text');
 
       const selectionStart = inputRef.current?.selectionStart || 0;
       const selectionEnd = inputRef.current?.selectionEnd || 0;

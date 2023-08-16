@@ -48,7 +48,7 @@ export interface BaseNavigationDetail {
 }
 
 export function createCustomEvent<T>({ cancelable, detail }: CustomEventInit<T>): CustomEvent<T> {
-  return new CustomEventStub(cancelable, detail) as CustomEvent;
+  return new CustomEventStub(cancelable, detail) as CustomEvent<T>;
 }
 
 export function fireNonCancelableEvent<T = null>(handler: NonCancelableEventHandler<T> | undefined, detail?: T) {

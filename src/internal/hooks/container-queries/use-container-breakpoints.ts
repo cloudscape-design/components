@@ -13,7 +13,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
  */
 export function useContainerBreakpoints<T extends readonly Breakpoint[]>(
   triggers?: T
-): [T[number] | 'default' | null, React.Ref<any>] {
+): [T[number] | 'default' | null, React.Ref<unknown>] {
   // triggers.join() gives us a stable value to use for the dependencies argument
   const triggersDep = triggers?.join();
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -4,12 +4,13 @@ import { InternalContainerProps } from '../container/internal';
 import { StickyColumnsCellState } from './sticky-columns';
 import { TableProps } from './interfaces';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import type { Key } from 'react';
 
 export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {
   if (typeof trackBy === 'function') {
     return trackBy(item);
   }
-  return (item as any)[trackBy];
+  return (item as Record<string, Key>)[trackBy];
 };
 
 export const getItemKey = <T>(trackBy: TableProps.TrackBy<T> | undefined, item: T, index: number) => {
