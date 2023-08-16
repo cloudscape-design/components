@@ -73,20 +73,15 @@ const withNestedOptions: ButtonDropdownProps['items'] = [
 
 const withIconsAndBadges: ButtonDropdownProps['items'] = [
   {
-    text: 'Instances',
-    items: [
-      {
-        id: '1',
-        text: 'Destroy',
-        iconName: 'delete-marker',
-        badge: true,
-      },
-      {
-        id: '2',
-        text: 'Restart',
-        iconName: 'refresh',
-      },
-    ],
+    id: '1',
+    text: 'Destroy',
+    iconName: 'delete-marker',
+    badge: true,
+  },
+  {
+    id: '2',
+    text: 'Restart',
+    iconName: 'refresh',
   },
   {
     id: 'id',
@@ -226,6 +221,9 @@ export default function ButtonDropdownPage() {
           <ButtonDropdown id="ButtonDropdown8" expandableGroups={true} items={withDisabledItems}>
             With expandable groups and disabled items
           </ButtonDropdown>
+        </div>
+        <div className={styles.container}>
+          <ButtonDropdown id="ButtonDropdown9" variant="icon" items={withIconsAndBadges} />
         </div>
         <div className={styles.container}>
           <ButtonDropdown id="ButtonDropdown9" items={withIconsAndBadges}>

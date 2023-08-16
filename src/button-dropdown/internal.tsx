@@ -137,6 +137,17 @@ const InternalButtonDropdown = React.forwardRef(
       },
     };
 
+    const triggerHasBadge = () => {
+      const flatItems = items.flatMap(item => {
+        if ('items' in item) {
+          return item.items;
+        }
+        return item;
+      });
+
+      return variant === 'icon' && !!flatItems?.find(item => item.badge);
+    };
+
     let trigger: React.ReactNode = null;
     if (customTriggerBuilder) {
       trigger = (
@@ -197,7 +208,7 @@ const InternalButtonDropdown = React.forwardRef(
     } else {
       trigger = (
         <div className={styles['dropdown-trigger']}>
-          <InternalButton ref={triggerRef} {...baseTriggerProps}>
+          <InternalButton ref={triggerRef} {...baseTriggerProps} badge={triggerHasBadge()}>
             {children}
           </InternalButton>
         </div>
