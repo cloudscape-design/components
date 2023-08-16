@@ -313,7 +313,7 @@ describe('Wizard Analytics', () => {
     );
   });
 
-  test('handles the funnel even if nested inside a single-page funnel', () => {
+  test('sends a "multi-step" funnelStart metric if Wizard is nested in Form (single-page) funnel', () => {
     const steps = [
       {
         title: 'Step 1',
