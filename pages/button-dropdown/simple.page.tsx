@@ -223,7 +223,12 @@ export default function ButtonDropdownPage() {
           </ButtonDropdown>
         </div>
         <div className={styles.container}>
-          <ButtonDropdown id="ButtonDropdown9" variant="icon" items={withIconsAndBadges} />
+          <ButtonDropdown
+            id="ButtonDropdown9"
+            variant="icon"
+            items={withIconsAndBadges}
+            ariaLabel="Icon dropdown with icons and badges"
+          />
         </div>
         <div className={styles.container}>
           <ButtonDropdown id="ButtonDropdown10" items={withIconsAndBadges}>
