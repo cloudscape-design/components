@@ -172,6 +172,43 @@
           }
         ]
       }
+    },
+    {
+      "files": [
+        "src/app-layout/**",
+        "src/area-chart/**",
+        "src/attribute-editor/**",
+        "src/autosuggest/**",
+        "src/button/**",
+        "src/code-editor/**",
+        "src/collection-preferences/**",
+        "src/column-layout/**",
+        "src/date-picker/**",
+        "src/date-range-picker/**",
+        "src/flashbar/**",
+        "src/grid/**",
+        "src/internal/**",
+        "src/link/**",
+        "src/wizard/**"
+      ],
+      "excludedFiles": [
+        "src/**/__tests__/**",
+        "src/**/__integ__/**",
+        "src/**/__a11y__/**",
+        "src/test-utils/**",
+        "src/internal/vendor/**"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unsafe-argument": "error",
+        "@typescript-eslint/no-unsafe-assignment": "error",
+        "@typescript-eslint/no-unsafe-call": "error",
+        "@typescript-eslint/no-unsafe-declaration-merging": "error",
+        "@typescript-eslint/no-unsafe-member-access": "error",
+        "@typescript-eslint/no-unsafe-return": "error"
+      },
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      }
     }
   ]
 }
