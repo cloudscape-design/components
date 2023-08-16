@@ -11,6 +11,8 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type PageContext = React.Context<
   AppContextType<{
+    error: boolean;
+    loading: boolean;
     showGutter: boolean;
     wrapLines: boolean;
     theme: 'dawn' | 'tomorrow_night_bright';
@@ -58,6 +60,14 @@ export default function Page() {
           Wrap lines
         </Checkbox>
 
+        <Checkbox checked={urlParams.loading} onChange={e => setUrlParams({ loading: e.detail.checked })}>
+          Loading
+        </Checkbox>
+
+        <Checkbox checked={urlParams.error} onChange={e => setUrlParams({ error: e.detail.checked })}>
+          Error
+        </Checkbox>
+
         <SpaceBetween direction="horizontal" size="s" alignItems="center">
           <Select
             id="theme-selector"
@@ -71,11 +81,11 @@ export default function Page() {
 
       <ScreenshotArea>
         <CodeSnippet
-          ace={ace}
+          ace={urlParams.error ? undefined : ace}
           value={awsTemplateSample}
           language="yaml"
           preferences={{ showGutter, wrapLines, theme }}
-          loading={loading}
+          loading={loading || urlParams.loading}
           i18nStrings={i18nStrings}
         />
       </ScreenshotArea>
