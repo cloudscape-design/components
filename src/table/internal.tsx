@@ -185,10 +185,6 @@ const InternalTable = React.forwardRef(
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
-    const isFullPageInVisualRefresh = isVisualRefresh && variant === 'full-page';
-    // All Classic variants and the "full-page" VR variant of the table with sticky columns should offset the scrollbar
-    // for it not to overlap interactive elements (such as checkboxes, radio buttons or links in cells)
-    const shouldOffsetStickyScrollbar = hasStickyColumns && (isVisualRefresh ? isFullPageInVisualRefresh : true);
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
     const tableRole = hasEditableCells ? 'grid' : 'table';
@@ -477,7 +473,7 @@ const InternalTable = React.forwardRef(
               wrapperRef={wrapperRefObject}
               tableRef={tableRefObject}
               onScroll={handleScroll}
-              offsetScrollbar={shouldOffsetStickyScrollbar}
+              offsetScrollbar={hasStickyColumns}
             />
           </InternalContainer>
         </ColumnWidthsProvider>
