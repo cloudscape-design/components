@@ -73,7 +73,7 @@ export function computeDomainY<T>(series: readonly AreaChartProps.Series<T>[], s
 
 // For given data, series and scales, compute all points and group them as
 // x:y, x:series and series:x to allow constant time access to the required point or subset.
-export function computePlotPoints<T>(
+export function computePlotPoints<T extends AreaChartProps.DataTypes>(
   series: readonly AreaChartProps.Series<T>[],
   xScale: ChartScale,
   yScale: NumericChartScale
@@ -209,12 +209,14 @@ function getXValues<T>(series: readonly AreaChartProps.Series<T>[]) {
 }
 
 // Returns data that is visible in the given scale.
-function getVisibleData<T>(data: readonly T[], xScale: ChartScale) {
+function getVisibleData<T extends AreaChartProps.DataTypes>(data: readonly T[], xScale: ChartScale) {
   const scaledOffsetX = xScale.isCategorical() ? Math.max(0, xScale.d3Scale.bandwidth() - 1) / 2 : 0;
 
   const visibleData = [];
   for (const x of data) {
-    const scaledX = xScale.d3Scale(x as any);
+    type Scale = ChartScale['d3Scale'] & ((x: T) => undefined);
+
+    const scaledX = (xScale.d3Scale as Scale)(x);
 
     if (scaledX !== undefined) {
       visibleData.push({ x, scaledX: scaledX + scaledOffsetX });

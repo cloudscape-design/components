@@ -5,7 +5,7 @@ import { unstable_batchedUpdates } from 'react-dom';
 import { usePrevious } from '../../internal/hooks/use-previous';
 
 type Selector<S, R> = (state: S) => R;
-type Listener<S> = (state: S, prevState: S) => any;
+type Listener<S> = (state: S, prevState: S) => void;
 
 export interface ReadonlyAsyncStore<S> {
   get(): S;
