@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CodeSnippet, { CodeSnippetProps } from '~components/code-snippet';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings, themes } from './base-props';
+import { i18nStrings } from './base-props';
 
 import { awsTemplateSample } from '../code-editor/code-samples';
 import { Box, Checkbox, Header, Select, SpaceBetween } from '~components';
@@ -77,7 +77,6 @@ export default function Page() {
           preferences={{ showGutter, wrapLines, theme }}
           loading={loading}
           i18nStrings={i18nStrings}
-          themes={themes}
         />
       </ScreenshotArea>
     </Box>
