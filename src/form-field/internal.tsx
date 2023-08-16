@@ -126,18 +126,23 @@ export default function InternalFormField({
 
       errorCount.current++;
 
-      FunnelMetrics.funnelSubStepError({
-        funnelInteractionId,
-        subStepSelector,
-        subStepName,
-        subStepNameSelector,
-        stepNumber,
-        stepName,
-        stepNameSelector,
-        fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
-        fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
-        subStepAllSelector: getSubStepAllSelector(),
-      });
+      // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
+      const errorIsVisible = (__internalRootRef?.current?.getBoundingClientRect()?.width ?? 0) > 0;
+
+      if (errorIsVisible) {
+        FunnelMetrics.funnelSubStepError({
+          funnelInteractionId,
+          subStepSelector,
+          subStepName,
+          subStepNameSelector,
+          stepNumber,
+          stepName,
+          stepNameSelector,
+          fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
+          fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
+          subStepAllSelector: getSubStepAllSelector(),
+        });
+      }
 
       return () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps

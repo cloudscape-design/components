@@ -19,6 +19,19 @@ describe('Alert Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockFunnelMetrics();
+
+    // These numbers were chosen at random
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      width: 300,
+      height: 200,
+      x: 30,
+      y: 50,
+      left: 30,
+      top: 50,
+      bottom: 100,
+      right: 400,
+      toJSON: () => '',
+    });
   });
 
   test('sends funnelSubStepError metric when the alert is placed inside a substep', () => {
