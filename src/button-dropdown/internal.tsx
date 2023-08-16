@@ -119,7 +119,7 @@ const InternalButtonDropdown = React.forwardRef(
           };
 
     const baseTriggerProps: InternalButtonProps = {
-      className: styles['trigger-button'],
+      className: clsx(styles['trigger-button'], styles['test-utils-button-trigger']),
       ...iconProps,
       variant: triggerVariant,
       loading,
@@ -141,7 +141,14 @@ const InternalButtonDropdown = React.forwardRef(
     if (customTriggerBuilder) {
       trigger = (
         <div className={styles['dropdown-trigger']}>
-          {customTriggerBuilder(clickHandler, triggerRef, disabled, isOpen, ariaLabel)}
+          {customTriggerBuilder({
+            testUtilsClass: styles['test-utils-button-trigger'],
+            onClick: clickHandler,
+            triggerRef,
+            ariaLabel,
+            disabled,
+            isOpen,
+          })}
         </div>
       );
     } else if (isMainAction) {

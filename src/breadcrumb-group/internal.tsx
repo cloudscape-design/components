@@ -5,9 +5,8 @@ import styles from './styles.css.js';
 import clsx from 'clsx';
 import InternalIcon from '../icon/internal';
 import InternalButtonDropdown from '../button-dropdown/internal';
-import { LinkItem } from '../button-dropdown/interfaces';
+import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
 import { InternalButton } from '../button/internal';
-import { ButtonProps } from '../button/interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupProps, EllipsisDropdownProps } from './interfaces';
 import { fireCancelableEvent } from '../internal/events';
@@ -22,22 +21,24 @@ import { useInternalI18n } from '../i18n/context';
  */
 const DEFAULT_EXPAND_ARIA_LABEL = 'Show path';
 
-const DropdownTrigger = (
-  clickHandler: () => void,
-  ref: React.Ref<ButtonProps.Ref>,
-  isDisabled: boolean,
-  isExpanded: boolean,
-  ariaLabel?: string
-) => {
+const getDropdownTrigger = ({
+  ariaLabel,
+  triggerRef,
+  disabled,
+  testUtilsClass,
+  isOpen,
+  onClick,
+}: CustomTriggerProps) => {
   return (
     <InternalButton
-      disabled={isDisabled}
+      ref={triggerRef}
+      className={testUtilsClass}
+      disabled={disabled}
       onClick={event => {
         event.preventDefault();
-        clickHandler();
+        onClick();
       }}
-      ref={ref}
-      ariaExpanded={isExpanded}
+      ariaExpanded={isOpen}
       aria-haspopup={true}
       ariaLabel={ariaLabel}
       variant="breadcrumb-group"
@@ -63,7 +64,7 @@ const EllipsisDropdown = ({
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}
-        customTriggerBuilder={DropdownTrigger}
+        customTriggerBuilder={getDropdownTrigger}
       />
       <span className={styles.icon}>
         <InternalIcon name="angle-right" />

@@ -217,13 +217,7 @@ export interface ItemProps {
 }
 
 export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, 'variant'>, InternalBaseComponentProps {
-  customTriggerBuilder?: (
-    clickHandler: () => void,
-    ref: React.Ref<any>,
-    isDisabled: boolean,
-    isExpanded: boolean,
-    ariaLabel?: string
-  ) => React.ReactNode;
+  customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
 
   /**
@@ -241,4 +235,13 @@ export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, '
    * instead of dropping left or right.
    */
   preferCenter?: boolean;
+}
+
+export interface CustomTriggerProps {
+  triggerRef: React.Ref<HTMLElement>;
+  testUtilsClass: string;
+  ariaLabel: string | undefined;
+  disabled: boolean;
+  isOpen: boolean;
+  onClick: () => void;
 }
