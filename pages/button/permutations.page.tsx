@@ -69,6 +69,7 @@ const permutations = createPermutations<ButtonProps>([
     children: ['With custom svg icon'],
     ariaLabel: ['With custom svg icon'],
     variant: ['normal', 'icon', 'inline-icon', 'primary'],
+    badge: [true, false],
   },
   {
     fullWidth: [true],

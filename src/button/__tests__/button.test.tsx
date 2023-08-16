@@ -5,6 +5,7 @@ import { act, render } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 
 function renderWrappedButton(props: ButtonProps = {}) {
@@ -383,6 +384,18 @@ describe('Button Component', () => {
       const formId = 'form-id';
       const wrapper = renderButton({ form: formId });
       expect(wrapper.getElement()).toHaveAttribute('form', formId);
+    });
+  });
+
+  describe('badge property', () => {
+    test('renders badge when provided', () => {
+      const wrapper = renderButton({ iconName: 'settings', badge: true });
+      expect(wrapper.findByClassName(iconStyles.badge)?.getElement()).toBeInTheDocument();
+    });
+
+    test('does not render badge when no icon is provided', () => {
+      const wrapper = renderButton({ badge: true });
+      expect(wrapper.findByClassName(iconStyles.badge)?.getElement()).toBeUndefined();
     });
   });
 

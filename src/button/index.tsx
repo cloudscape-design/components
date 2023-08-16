@@ -35,6 +35,7 @@ const Button = React.forwardRef(
       ariaExpanded,
       fullWidth,
       form,
+      badge,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -51,6 +52,7 @@ const Button = React.forwardRef(
         iconUrl={iconUrl}
         iconSvg={iconSvg}
         iconAlt={iconAlt}
+        badge={badge}
         variant={variant}
         loading={loading}
         loadingText={loadingText}
