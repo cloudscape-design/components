@@ -22,6 +22,7 @@ export default function InternalTokenGroup({
   items,
   onDismiss,
   limit,
+  variant,
   i18nStrings,
   __internalRootRef,
   ...props
@@ -32,29 +33,34 @@ export default function InternalTokenGroup({
 
   const baseProps = getBaseProps(props);
   const hasItems = items.length > 0;
+
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, hasItems && styles['has-items'])}
+      className={clsx(baseProps.className, styles.root, styles[`variant-${variant}`], hasItems && styles['has-items'])}
       ref={__internalRootRef}
     >
       <TokenList
         alignment={alignment}
         items={items}
         limit={limit}
-        renderItem={(item, itemIndex) => (
-          <Token
-            ariaLabel={item.label}
-            dismissLabel={item.dismissLabel}
-            onDismiss={() => {
-              fireNonCancelableEvent(onDismiss, { itemIndex });
-              setRemovedItemIndex(itemIndex);
-            }}
-            disabled={item.disabled}
-          >
-            <Option option={item} isGenericGroup={false} />
-          </Token>
-        )}
+        renderItem={(item, itemIndex) => {
+          const onDismiss = () => {
+            fireNonCancelableEvent(onDismiss, { itemIndex });
+            setRemovedItemIndex(itemIndex);
+          };
+          return (
+            <Token
+              ariaLabel={item.label}
+              dismissLabel={item.dismissLabel}
+              onDismiss={variant !== 'small' ? onDismiss : undefined}
+              disabled={item.disabled}
+              variant={variant}
+            >
+              <Option option={item} isGenericGroup={false} />
+            </Token>
+          );
+        }}
         i18nStrings={i18nStrings}
         removedItemIndex={removedItemIndex}
       />

@@ -5,6 +5,7 @@ import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 import ButtonTrigger from '../../internal/components/button-trigger';
 import { SelectProps } from '../interfaces';
+import { MultiselectProps } from '../../multiselect/interfaces';
 import styles from './styles.css.js';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
@@ -19,8 +20,9 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
   isOpen?: boolean;
-  triggerVariant?: SelectProps.TriggerVariant;
+  triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
   inFilteringToken?: boolean;
+  selectedOptions?: ReadonlyArray<OptionDefinition>;
 }
 
 const Trigger = React.forwardRef(
@@ -32,6 +34,7 @@ const Trigger = React.forwardRef(
       invalid,
       triggerProps,
       selectedOption,
+      selectedOptions,
       triggerVariant,
       inFilteringToken,
       isOpen,
@@ -45,7 +48,29 @@ const Trigger = React.forwardRef(
     const triggerContentId = useUniqueId('trigger-content-');
 
     let triggerContent = null;
-    if (!selectedOption) {
+    if (triggerVariant === 'tokens') {
+      if (selectedOptions?.length) {
+        triggerContent = (
+          <span className={clsx(styles['inline-token-trigger'], disabled && styles['inline-token-trigger--disabled'])}>
+            <span className={styles['inline-token-list']}>
+              {selectedOptions.map(({ label }, i) => (
+                <span key={i}>{label}</span>
+              ))}
+            </span>
+            <span className={styles['inline-token-counter']} id={triggerContentId}>
+              <span className={styles['inline-token-hidden-placeholder']}>{placeholder}</span>
+              <span>({selectedOptions.length})</span>
+            </span>
+          </span>
+        );
+      } else {
+        triggerContent = (
+          <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
+            {placeholder}
+          </span>
+        );
+      }
+    } else if (!selectedOption) {
       triggerContent = (
         <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
           {placeholder}
@@ -72,6 +97,7 @@ const Trigger = React.forwardRef(
         disabled={disabled}
         invalid={invalid}
         inFilteringToken={inFilteringToken}
+        inlineTokens={triggerVariant === 'tokens'}
         ariaDescribedby={ariaDescribedby}
         ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
       >

@@ -40,7 +40,7 @@ export interface MultiselectProps extends BaseSelectProps {
    * The event `detail` contains the current `selectedOptions`.
    */
   onChange?: NonCancelableEventHandler<MultiselectProps.MultiselectChangeDetail>;
-
+  triggerVariant?: MultiselectProps.TriggerVariant;
   /**
    * Automatically focuses the trigger when component is mounted.
    */
@@ -52,6 +52,7 @@ export namespace MultiselectProps {
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
   export type DeselectAriaLabelFunction = (option: Option) => string;
+  export type TriggerVariant = 'placeholder' | 'tokens';
 
   export interface I18nStrings {
     tokenLimitShowFewer?: string;

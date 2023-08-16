@@ -45,6 +45,7 @@ const permutations = createPermutations<MultiselectProps>([
     ],
     deselectAriaLabel: [deselectAriaLabel],
     i18nStrings: [i18nStrings],
+    triggerVariant: [undefined, 'tokens'],
   },
 ]);
 
