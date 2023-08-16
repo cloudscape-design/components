@@ -3,8 +3,8 @@
 
 import React, { useRef } from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { useGridNavigation } from '../use-grid-navigation';
-import { KeyCode } from '../../../internal/keycode';
+import { useGridNavigation } from '../../../../lib/components/table/table-role';
+import { KeyCode } from '../../../../lib/components/internal/keycode';
 
 const f2Code = 113;
 
