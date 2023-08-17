@@ -110,25 +110,45 @@ export default function BarSeries<T extends ChartDataTypes>({
         [styles['series--dimmed']]: dimmed,
       })}
     >
-      {xCoordinates.map(
-        ({ x, y, width, height }, i) =>
-          isFinite(x) &&
-          isFinite(height) && (
-            <rect
-              key={`bar-${i}`}
-              fill={color}
-              x={axis === 'x' ? x : y - height}
-              y={axis === 'x' ? y : x}
-              width={axis === 'x' ? width : height}
-              height={axis === 'x' ? height : width}
-              rx={isRefresh ? '4px' : '0px'}
-              className={clsx(styles.series__rect, {
-                [styles['series--dimmed']]:
-                  highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
-              })}
-            />
-          )
-      )}
+      {xCoordinates.map(({ x, y, width, height }, i) => {
+        if (!isFinite(x) || !isFinite(height)) {
+          return;
+        }
+
+        // Create margins between stacked series but only when series data is not too small.
+        const baseOffset = stackedBarOffsets ? 3 : 0;
+        const isSmall = height < 4;
+        const appliedOffset = isSmall ? 0 : baseOffset;
+
+        const rx = isRefresh ? (isSmall ? '2px' : '4px') : '0px';
+        const className = clsx(styles.series__rect, {
+          [styles['series--dimmed']]: highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
+        });
+
+        return axis === 'x' ? (
+          <rect
+            key={`bar-${i}`}
+            fill={color}
+            x={x + 1}
+            y={y + appliedOffset / 2}
+            width={width - 1}
+            height={height - appliedOffset}
+            rx={rx}
+            className={className}
+          />
+        ) : (
+          <rect
+            key={`bar-${i}`}
+            fill={color}
+            x={y - height + appliedOffset / 2}
+            y={x + 1}
+            width={height - appliedOffset}
+            height={width - 1}
+            rx={rx}
+            className={className}
+          />
+        );
+      })}
     </g>
   );
 }
