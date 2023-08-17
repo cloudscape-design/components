@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import Link, { LinkProps } from '../../../lib/components/link';
 import styles from '../../../lib/components/link/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -21,6 +21,10 @@ function renderLink(props: LinkProps = {}) {
 }
 
 describe('Link component', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
   test('content is rendered correctly', () => {
     const wrapper = renderLink({ href: '#', children: 'I am a link!' });
     expect(wrapper.getElement()).toHaveTextContent('I am a link!');
@@ -237,6 +241,7 @@ describe('Link component', () => {
           <Link href="#" external={true} />
         </AnalyticsFunnel>
       );
+      act(() => void jest.runAllTimers());
       const wrapper = createWrapper(container).findLink()!;
       wrapper.click();
 
@@ -255,6 +260,7 @@ describe('Link component', () => {
           <Link variant="info" />
         </AnalyticsFunnel>
       );
+      act(() => void jest.runAllTimers());
       const wrapper = createWrapper(container).findLink()!;
       wrapper.click();
 
