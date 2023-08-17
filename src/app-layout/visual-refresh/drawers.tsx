@@ -24,7 +24,7 @@ export default function Drawers() {
 
   const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
 
-  if (!drawers) {
+  if (drawers.length === 0) {
     return null;
   }
 
@@ -71,7 +71,7 @@ function ActiveDrawer() {
     drawerRef,
   } = useAppLayoutInternals();
 
-  const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
+  const activeDrawer = drawers.find(item => item.id === activeDrawerId) ?? null;
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -136,8 +136,8 @@ function ActiveDrawer() {
 function DesktopTriggers() {
   const {
     activeDrawerId,
-    ariaLabels,
     drawers,
+    drawersAriaLabel,
     drawersRefs,
     drawersTriggerCount,
     handleDrawersClick,
@@ -152,9 +152,6 @@ function DesktopTriggers() {
     splitPanelPosition,
     splitPanelRefs,
     splitPanelToggle,
-    tools,
-    toolsHide,
-    toolsRefs,
   } = useAppLayoutInternals();
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
@@ -179,7 +176,7 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         }
       )}
-      aria-label={drawers?.ariaLabel}
+      aria-label={drawersAriaLabel}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -187,21 +184,7 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         })}
       >
-        {!toolsHide && tools && (
-          <TriggerButton
-            ariaLabel={ariaLabels?.toolsToggle}
-            className={clsx(styles['drawers-trigger'], testutilStyles['tools-toggle'])}
-            iconName="status-info"
-            onClick={() => {
-              activeDrawerId && handleDrawersClick(null, true);
-              handleToolsClick(!isToolsOpen);
-            }}
-            ref={toolsRefs.toggle}
-            selected={isToolsOpen}
-          />
-        )}
-
-        {drawers?.items.map(item => (
+        {drawers.map(item => (
           <TriggerButton
             ariaLabel={item.ariaLabels?.triggerButton}
             className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
@@ -242,17 +225,12 @@ function DesktopTriggers() {
 export function MobileTriggers() {
   const {
     activeDrawerId,
-    ariaLabels,
     drawers,
+    drawersAriaLabel,
     drawersRefs,
     handleDrawersClick,
-    handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
-    isToolsOpen,
-    tools,
-    toolsHide,
-    toolsRefs,
   } = useAppLayoutInternals();
 
   const previousActiveDrawerId = useRef(activeDrawerId);
@@ -261,7 +239,7 @@ export function MobileTriggers() {
     previousActiveDrawerId.current = activeDrawerId;
   }
 
-  if (!isMobile || !drawers) {
+  if (!isMobile || drawers.length === 0) {
     return null;
   }
 
@@ -275,24 +253,9 @@ export function MobileTriggers() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         }
       )}
-      aria-label={drawers.ariaLabel}
+      aria-label={drawersAriaLabel}
     >
-      {!toolsHide && tools && (
-        <InternalButton
-          ariaLabel={ariaLabels?.toolsToggle ?? undefined}
-          ariaExpanded={isToolsOpen}
-          className={testutilStyles['tools-toggle']}
-          disabled={hasDrawerViewportOverlay}
-          formAction="none"
-          iconName="status-info"
-          onClick={() => handleToolsClick(true)}
-          ref={toolsRefs.toggle}
-          variant="icon"
-          __nativeAttributes={{ 'aria-haspopup': true }}
-        />
-      )}
-
-      {drawers.items.map(item => (
+      {drawers.map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}

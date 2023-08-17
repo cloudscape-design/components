@@ -193,13 +193,6 @@ describeEachThemeAppLayout(false, () => {
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
-  test(`Should fire resize when expected`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
-
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
-  });
-
   test('should change size via keyboard events on slider handle', () => {
     const onResize = jest.fn();
     const drawers: Required<InternalDrawerProps> = {

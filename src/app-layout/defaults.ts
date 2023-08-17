@@ -37,7 +37,7 @@ const defaults: Record<AppLayoutProps.ContentType, AppLayoutState> = {
   },
 };
 
-interface AppLayoutState {
+export interface AppLayoutState {
   navigationOpen?: boolean;
   toolsOpen?: boolean;
   minContentWidth?: number;
