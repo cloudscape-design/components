@@ -147,11 +147,6 @@ export interface ButtonProps extends BaseComponentProps {
    * Sets the button width to be 100% of the parent container width. Button content is centered.
    */
   fullWidth?: boolean;
-
-  /**
-   * Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
-   */
-  badge?: boolean;
 }
 
 export namespace ButtonProps {

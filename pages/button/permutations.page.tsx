@@ -12,7 +12,6 @@ const permutations = createPermutations<ButtonProps>([
     disabled: [false, true],
     loading: [false, true],
     iconName: [undefined, 'settings'],
-    badge: [true, false],
     iconAlign: ['left', 'right'],
     children: [
       'Button',
@@ -38,7 +37,6 @@ const permutations = createPermutations<ButtonProps>([
     iconAlign: ['left', 'right'],
     ariaLabel: ['Standalone'],
     variant: ['icon', 'inline-icon', 'normal'],
-    badge: [true, false],
   },
   {
     iconUrl: [img],
@@ -46,7 +44,6 @@ const permutations = createPermutations<ButtonProps>([
     iconAlign: ['left', 'right'],
     children: ['With custom icon'],
     variant: ['normal'],
-    badge: [true, false],
   },
   {
     children: [
@@ -69,7 +66,6 @@ const permutations = createPermutations<ButtonProps>([
     children: ['With custom svg icon'],
     ariaLabel: ['With custom svg icon'],
     variant: ['normal', 'icon', 'inline-icon', 'primary'],
-    badge: [true, false],
   },
   {
     fullWidth: [true],

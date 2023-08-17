@@ -76,7 +76,6 @@ const withIconsAndBadges: ButtonDropdownProps['items'] = [
     id: '1',
     text: 'Destroy',
     iconName: 'delete-marker',
-    badge: true,
   },
   {
     id: '2',
@@ -92,7 +91,6 @@ const withIconsAndBadges: ButtonDropdownProps['items'] = [
         id: '5',
         text: 'Destroy',
         iconName: 'delete-marker',
-        badge: true,
       },
       {
         id: '9',

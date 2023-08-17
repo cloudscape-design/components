@@ -40,8 +40,6 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
 
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-  
-   * - `badge` (boolean) - (Optional) Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
 
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
@@ -138,7 +136,6 @@ export namespace ButtonDropdownProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    badge?: boolean;
   }
 
   export interface ItemGroup extends Omit<Item, 'id' | 'text'> {
@@ -219,9 +216,24 @@ export interface ItemProps {
   variant?: ItemListProps['variant'];
 }
 
-export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, 'variant'>, InternalBaseComponentProps {
+export interface InternalItem extends ButtonDropdownProps.Item {
+  badge?: boolean;
+}
+
+export interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
+  items: InternalItems;
+}
+
+export type InternalItems = ReadonlyArray<InternalItemOrGroup>;
+
+export type InternalItemOrGroup = InternalItem | InternalItemGroup;
+
+export interface InternalButtonDropdownProps
+  extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
+    InternalBaseComponentProps {
   customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
+  items: ReadonlyArray<InternalItemOrGroup>;
 
   /**
    * Optional text that is displayed as the title at the top of the dropdown.

@@ -52,7 +52,7 @@ const permutations = createPermutations<ItemProps>([
     item: [
       { id: '1', text: 'Option with icon', iconName: 'settings' },
       { id: '1', text: 'Option with custom icon', iconUrl: img, iconAlt: 'letter A' },
-      { id: '1', text: 'Option with badge', iconName: 'notification', badge: true },
+      { id: '1', text: 'Option with badge', iconName: 'notification' },
       {
         id: '1',
         text: 'Option with custom SVG',
