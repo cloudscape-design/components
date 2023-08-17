@@ -145,7 +145,14 @@ const InternalButtonDropdown = React.forwardRef(
         return item;
       });
 
-      return variant === 'icon' && !!flatItems?.find(item => item.badge);
+      return (
+        variant === 'icon' &&
+        !!flatItems?.find(item => {
+          if ('badge' in item) {
+            return item.badge;
+          }
+        })
+      );
     };
 
     let trigger: React.ReactNode = null;

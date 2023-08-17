@@ -2779,12 +2779,6 @@ them accessible. The text will also be added to the \`title\` attribute of the b
       "type": "string",
     },
     Object {
-      "description": "Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.",
-      "name": "badge",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -3238,8 +3232,6 @@ An item which belongs to nested group has the following properties: \`id\`, \`te
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
-
-- \`badge\` (boolean) - (Optional) Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
 
 ",
       "name": "items",
