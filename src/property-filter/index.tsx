@@ -350,7 +350,11 @@ const PropertyFilter = React.forwardRef(
             clearAriaLabel={i18nStrings.clearAriaLabel}
             searchResultsId={showResults ? searchResultsId : undefined}
           />
-          {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
+          {showResults ? (
+            <div className={styles.results}>
+              <SearchResults id={searchResultsId}>{countText}</SearchResults>
+            </div>
+          ) : null}
         </div>
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
