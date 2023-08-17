@@ -129,7 +129,7 @@ export default function BarSeries<T extends ChartDataTypes>({
           <rect
             key={`bar-${i}`}
             fill={color}
-            x={x + 1}
+            x={x + 1 / 2}
             y={y + appliedOffset / 2}
             width={width - 1}
             height={height - appliedOffset}
@@ -141,7 +141,7 @@ export default function BarSeries<T extends ChartDataTypes>({
             key={`bar-${i}`}
             fill={color}
             x={y - height + appliedOffset / 2}
-            y={x + 1}
+            y={x + 1 / 2}
             width={height - appliedOffset}
             height={width - 1}
             rx={rx}
