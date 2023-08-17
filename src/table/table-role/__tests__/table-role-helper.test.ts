@@ -14,9 +14,10 @@ test('non-scrollable table props', () => {
   const tableRole = 'table';
   const ariaLabel = 'table';
   const totalItemsCount = 5;
+  const totalColumnsCount = 4;
 
   const tableWrapper = getTableWrapperRoleProps({ tableRole, ariaLabel, isScrollable: false });
-  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount });
+  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount, totalColumnsCount });
 
   expect(tableWrapper).toEqual({});
   expect(tableProps).toEqual({ role: tableRole, 'aria-label': ariaLabel, 'aria-rowcount': 6 });
@@ -26,9 +27,10 @@ test('scrollable table props', () => {
   const tableRole = 'table';
   const ariaLabel = 'table';
   const totalItemsCount = 5;
+  const totalColumnsCount = 4;
 
   const tableWrapper = getTableWrapperRoleProps({ tableRole, ariaLabel, isScrollable: true });
-  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount });
+  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount, totalColumnsCount });
 
   expect(tableWrapper).toEqual({ role: 'region', 'aria-label': ariaLabel, tabIndex: 0 });
   expect(tableProps).toEqual({ role: tableRole, 'aria-label': ariaLabel, 'aria-rowcount': 6 });
@@ -38,24 +40,38 @@ test('non-scrollable grid props', () => {
   const tableRole = 'grid';
   const ariaLabel = 'table';
   const totalItemsCount = 5;
+  const totalColumnsCount = 4;
 
   const tableWrapper = getTableWrapperRoleProps({ tableRole, ariaLabel, isScrollable: false });
-  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount });
+  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount, totalColumnsCount });
 
   expect(tableWrapper).toEqual({});
-  expect(tableProps).toEqual({ role: tableRole, 'aria-label': ariaLabel, tabIndex: -1, 'aria-rowcount': 6 });
+  expect(tableProps).toEqual({
+    role: tableRole,
+    'aria-label': ariaLabel,
+    tabIndex: -1,
+    'aria-rowcount': 6,
+    'aria-colcount': 4,
+  });
 });
 
 test('scrollable grid props', () => {
   const tableRole = 'grid';
   const ariaLabel = 'table';
   const totalItemsCount = 5;
+  const totalColumnsCount = 4;
 
   const tableWrapper = getTableWrapperRoleProps({ tableRole, ariaLabel, isScrollable: true });
-  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount });
+  const tableProps = getTableRoleProps({ tableRole, ariaLabel, totalItemsCount, totalColumnsCount });
 
   expect(tableWrapper).toEqual({ role: 'region', 'aria-label': ariaLabel, tabIndex: 0 });
-  expect(tableProps).toEqual({ role: tableRole, 'aria-label': ariaLabel, tabIndex: -1, 'aria-rowcount': 6 });
+  expect(tableProps).toEqual({
+    role: tableRole,
+    'aria-label': ariaLabel,
+    tabIndex: -1,
+    'aria-rowcount': 6,
+    'aria-colcount': 4,
+  });
 });
 
 test('table row and cell props', () => {

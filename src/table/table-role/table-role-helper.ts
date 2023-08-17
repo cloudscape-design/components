@@ -21,6 +21,7 @@ export function getTableRoleProps(options: {
   ariaLabel?: string;
   ariaLabelledBy?: string;
   totalItemsCount?: number;
+  totalColumnsCount?: number;
 }): React.TableHTMLAttributes<HTMLTableElement> {
   const nativeProps: React.TableHTMLAttributes<HTMLTableElement> = {};
 
@@ -33,6 +34,10 @@ export function getTableRoleProps(options: {
 
   // Incrementing the total count by one to account for the header row.
   nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
+
+  if (options.tableRole === 'grid') {
+    nativeProps['aria-colcount'] = options.totalColumnsCount;
+  }
 
   // Make table component programmatically focusable to attach focusin/focusout for keyboard navigation.
   if (options.tableRole === 'grid') {
