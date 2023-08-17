@@ -14,7 +14,7 @@ export interface Instance {
   dnsName?: string;
 }
 
-function id() {
+export function id() {
   const id = Math.ceil(pseudoRandom() * Math.pow(16, 8)).toString(16);
   return padStart(id, 8, '0');
 }

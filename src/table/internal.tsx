@@ -36,7 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { getTableRoleProps, getTableRowRoleProps } from './table-role';
+import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } from './table-role';
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
@@ -221,11 +221,11 @@ const InternalTable = React.forwardRef(
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
-    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
-    const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
-    const wrapperProps = isWrapperScrollable
-      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
-      : {};
+    const wrapperProps = getTableWrapperRoleProps({
+      tableRole,
+      isScrollable: !!(tableWidth && containerWidth && tableWidth > containerWidth),
+      ariaLabel: ariaLabels?.tableLabel,
+    });
 
     const getMouseDownTarget = useMouseDownTarget();
 
@@ -406,6 +406,7 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stickyState={stickyState}
                               columnId={selectionColumnId}
+                              colIndex={0}
                               tableRole={tableRole}
                             >
                               <SelectionControl
@@ -454,6 +455,7 @@ const InternalTable = React.forwardRef(
                                 stripedRows={stripedRows}
                                 isEvenRow={isEven}
                                 columnId={column.id ?? colIndex}
+                                colIndex={selectionType !== undefined ? colIndex + 1 : colIndex}
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}

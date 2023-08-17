@@ -61,6 +61,7 @@ const TestComponent = ({ isEditing = false, successfulEdit = false }) => {
             stickyState={result.current}
             successfulEdit={successfulEdit}
             columnId="id"
+            colIndex={0}
             tableRole={tableRole}
           />
         </tr>
@@ -94,6 +95,7 @@ const TestComponent2 = ({ column }: any) => {
             wrapLines={false}
             stickyState={result.current}
             columnId="id"
+            colIndex={0}
             tableRole={tableRole}
           />
         </tr>
