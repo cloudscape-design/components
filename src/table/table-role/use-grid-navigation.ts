@@ -9,7 +9,7 @@ import { containsOrEqual } from '../../internal/utils/dom';
 
 /**
  * Makes table with role="grid" navigable with keyboard commands.
- * See https://www.w3.org/WAI/ARIA/apg/patterns/grid/#keyboardinteraction-settingfocusandnavigatinginsidecells
+ * See https://www.w3.org/WAI/ARIA/apg/patterns/grid
  */
 export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
