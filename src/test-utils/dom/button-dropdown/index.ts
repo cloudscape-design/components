@@ -13,9 +13,9 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles['button-dropdown'];
 
   findNativeButton(): ElementWrapper<HTMLButtonElement> {
-    // ButtonDropdown always has a button
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.findByClassName(styles['dropdown-trigger'])!.find<HTMLButtonElement>(`button.${buttonStyles.button}`)!;
+    return this.findByClassName(styles['dropdown-trigger'])!.findByClassName<HTMLButtonElement>(
+      styles['test-utils-button-trigger']
+    )!;
   }
 
   findMainAction(): null | ButtonWrapper {
