@@ -84,7 +84,7 @@ describe('Form Analytics', () => {
     );
   });
 
-  test('does not send a funnelComplete metricv when the form is unmounted after clicking a primary button in a modal', () => {
+  test('does not send a funnelComplete metric when the form is unmounted after clicking a primary button in a modal', () => {
     const { container } = render(
       <Form>
         <Modal
