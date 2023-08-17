@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
+import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { isItemGroup } from '../utils/utils';
@@ -420,14 +421,28 @@ const items: ButtonDropdownProps.Items = [
         wrapper.openDropdown();
         expect(wrapper.findItemById('i1')!.findAllByClassName(IconWrapper.rootSelector)).toHaveLength(2);
       });
-
-      it('should render badge when defined', () => {
-        const items: ButtonDropdownProps['items'] = [{ id: 'i1', text: 'item1', iconName: 'settings', badge: true }];
-        const wrapper = renderButtonDropdown({ ...props, variant: 'icon', items: items });
-
-        wrapper.openDropdown();
-        expect(wrapper.findByClassName(iconStyles.badge)?.getElement()).toBeInTheDocument();
-      });
     });
+  });
+});
+
+describe('Internal ButtonDropdown badge property', () => {
+  it('should render badge when defined', () => {
+    const items: InternalButtonDropdownProps['items'] = [
+      { id: 'i1', text: 'item1', iconName: 'settings', badge: true },
+    ];
+    const wrapper = renderButtonDropdown({ variant: 'icon', items: items });
+
+    wrapper.openDropdown();
+    expect(wrapper.findByClassName(iconStyles.badge)?.getElement()).toBeInTheDocument();
+  });
+
+  it('should render badge on trigger when item has badge', () => {
+    const items: InternalButtonDropdownProps['items'] = [
+      { id: 'i1', text: 'item1', iconName: 'settings', badge: true },
+    ];
+    const wrapper = renderButtonDropdown({ variant: 'icon', items: items });
+
+    wrapper.openDropdown();
+    expect(wrapper.findAllByClassName(iconStyles.badge)?.map(item => item.getElement())).toHaveLength(2);
   });
 });
