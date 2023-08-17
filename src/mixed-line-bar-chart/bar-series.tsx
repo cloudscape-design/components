@@ -116,8 +116,8 @@ export default function BarSeries<T extends ChartDataTypes>({
         }
 
         // Create margins between stacked series but only when series data is not too small.
-        const baseOffset = stackedBarOffsets ? 2 : 0;
-        const isSmall = height < baseOffset * 2;
+        const baseOffset = stackedBarOffsets ? 3 : 0;
+        const isSmall = height < 4;
         const appliedOffset = isSmall ? 0 : baseOffset;
 
         const rx = isRefresh ? (isSmall ? '2px' : '4px') : '0px';
@@ -129,9 +129,9 @@ export default function BarSeries<T extends ChartDataTypes>({
           <rect
             key={`bar-${i}`}
             fill={color}
-            x={x}
+            x={x + 1}
             y={y + appliedOffset / 2}
-            width={width}
+            width={width - 1}
             height={height - appliedOffset}
             rx={rx}
             className={className}
@@ -141,9 +141,9 @@ export default function BarSeries<T extends ChartDataTypes>({
             key={`bar-${i}`}
             fill={color}
             x={y - height + appliedOffset / 2}
-            y={x}
+            y={x + 1}
             width={height - appliedOffset}
-            height={width}
+            height={width - 1}
             rx={rx}
             className={className}
           />
