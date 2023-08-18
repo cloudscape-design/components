@@ -23,22 +23,25 @@
 .alert {
   @include styles.styles-reset;
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  // display: grid;
-  grid-template-columns: auto auto 1fr;
-
+  display: grid;
+  grid-template-columns: 1fr;
   border-radius: awsui.$border-radius-alert;
   border: awsui.$border-field-width solid;
   padding: awsui.$space-alert-vertical awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
-}
+  column-gap: awsui.$space-s;
 
-.body {
-  display: flex;
-  flex: 1 1 0%;
-  min-width: 0;
+  &.with-dismiss,
+  &.with-action {
+    grid-template-columns: 1fr auto;
+  }
+  &.with-action.with-dismiss {
+    grid-template-columns: 1fr auto auto;
+  }
+  // Below the breakpoint, arrange actions below the content
+  &.breakpoint-default.with-action {
+    grid-template-columns: 1fr auto;
+  }
 }
 
 .header {
@@ -47,7 +50,6 @@
 
 .action {
   white-space: nowrap;
-  margin-left: awsui.$space-alert-action-left;
 }
 
 .action-slot,
@@ -56,8 +58,8 @@
 }
 
 .alert-focus-wrapper {
-  display: flex;
-  flex: 1 1 0%;
+  display: grid;
+  grid-template-columns: min-content auto;
 
   &:focus {
     outline: none;
@@ -67,12 +69,8 @@
   }
 }
 
-.alert-mobile-block {
-  display: flex;
-  flex: 1 1 0%;
-}
-
 .text {
+  min-width: 0;
   padding: awsui.$border-field-width 0; // To account for vertical misalignment due to button borders
   margin: awsui.$space-scaled-xxs awsui.$space-xxs;
   &.icon {
@@ -83,32 +81,23 @@
   }
 }
 
-/* stylelint-disable selector-max-type */
-.root.breakpoint-default > div > .alert {
+.breakpoint-default {
   // Below the breakpoint, arrange actions below the content
-  & > .alert-mobile-block {
-    display: block;
-    & > .action {
-      margin-bottom: awsui.$space-xxs;
-    }
+  > .action {
+    grid-row: 2;
+    margin-bottom: awsui.$space-xxs;
   }
 
   // Indent actions according to the size of the alert icon
-  &.icon-size-medium > .alert-mobile-block > .action {
+  &.icon-size-medium > .action {
     margin-left: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
   }
-  &.icon-size-big > .alert-mobile-block > .action {
+  &.icon-size-big > .action {
     margin-left: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
   }
-  &.icon-size-normal > .alert-mobile-block > .action {
+  &.icon-size-normal > .action {
     margin-left: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
   }
-}
-/* stylelint-enable selector-max-type */
-
-.message {
-  flex: 1 1 0%;
-  min-width: 0;
 }
 
 .content {
@@ -116,17 +105,11 @@
 }
 
 .dismiss {
-  flex: 0 0 auto;
   margin-right: calc(-1 * #{awsui.$space-xxs});
-  margin-left: awsui.$space-s;
 }
 
 .dismiss-button {
   /* used in test-utils */
-}
-
-.icon {
-  flex: 0 0 auto;
 }
 
 $_border-colors: (
@@ -154,7 +137,7 @@ $_text-colors: (
   .type-#{$type} {
     border-color: #{map.get($_border-colors, $type)};
     background-color: #{map.get($_background-colors, $type)};
-    > .alert-mobile-block > .alert-focus-wrapper > .icon {
+    > .alert-focus-wrapper > .icon {
       color: #{map.get($_text-colors, $type)};
     }
   }
