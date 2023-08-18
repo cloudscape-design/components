@@ -68,6 +68,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const Element = isRowHeader ? 'th' : 'td';
 
     nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
+    // TODO: remove this once confirmed with a11y.
+    delete nativeAttributes['aria-colindex'];
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,

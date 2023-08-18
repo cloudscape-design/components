@@ -337,6 +337,8 @@ const InternalTable = React.forwardRef(
                   ariaLabel: ariaLabels?.tableLabel,
                   ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
                 })}
+                // TODO: remove this once confirmed with a11y.
+                aria-colcount={undefined}
               >
                 <Thead
                   ref={theadRef}

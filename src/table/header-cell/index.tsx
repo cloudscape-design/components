@@ -114,6 +114,8 @@ export function TableHeaderCell<ItemType>({
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      // TODO: remove this once confirmed with a11y.
+      aria-colindex={undefined}
     >
       <div
         className={clsx(styles['header-cell-content'], {
