@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { findUpUntil, parseCssVariable, containsOrEqual } from '../../../../lib/components/internal/utils/dom';
+import { findUpUntil, parseCssVariable } from '../../../../lib/components/internal/utils/dom';
 
 describe('findUpUntil', () => {
   test('returns null if there is no match', () => {
@@ -84,32 +84,5 @@ describe('parseCssVariable', () => {
         'rgba(0, 10, 200, 0.5)'
       );
     });
-  });
-});
-
-describe('containsOrEqual', () => {
-  test('returns "true", when the node and the container are the same element', () => {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <div id="container1"></div>
-    `;
-    expect(containsOrEqual(div.querySelector('#container1'), div.querySelector('#container1') as Node)).toBe(true);
-  });
-  test('returns "true", when the node is descendant from the container', () => {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <div id="container1">
-        <div id="node"></div>
-      </div>
-    `;
-    expect(containsOrEqual(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(true);
-  });
-  test('returns "false", when the node is not a child of the container', () => {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <div id="container1"></div>
-      <div id="node"></div>
-    `;
-    expect(containsOrEqual(div.querySelector('#container1'), div.querySelector('#node') as Node)).toBe(false);
   });
 });
