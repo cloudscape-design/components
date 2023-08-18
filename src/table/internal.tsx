@@ -187,7 +187,7 @@ const InternalTable = React.forwardRef(
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid' : 'table';
+    const tableRole = hasEditableCells ? 'grid-no-navigation' : 'table';
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -337,8 +337,6 @@ const InternalTable = React.forwardRef(
                   ariaLabel: ariaLabels?.tableLabel,
                   ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
                 })}
-                // TODO: remove this once confirmed with a11y.
-                aria-colcount={undefined}
               >
                 <Thead
                   ref={theadRef}

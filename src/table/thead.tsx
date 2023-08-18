@@ -116,8 +116,6 @@ const Thead = React.forwardRef(
               ref={stickyStyles.ref}
               scope="col"
               {...getTableColHeaderRoleProps({ tableRole, colIndex: 0 })}
-              // TODO: remove this once confirmed with a11y.
-              aria-colindex={undefined}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
