@@ -42,6 +42,9 @@
   &.breakpoint-default.with-action {
     grid-template-columns: 1fr auto;
   }
+  &.breakpoint-default:not(.with-dismiss) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .header {
