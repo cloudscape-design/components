@@ -67,6 +67,8 @@ const InternalAlert = React.forwardRef(
 
     const { discoveredActions, headerRef, contentRef } = useDiscoveredAction(type);
 
+    const hasAction = Boolean(action || buttonText || discoveredActions.length);
+
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_ALERT]: type,
     };
@@ -76,47 +78,47 @@ const InternalAlert = React.forwardRef(
         {...baseProps}
         {...analyticsAttributes}
         aria-hidden={!visible}
-        className={clsx(
-          styles.root,
-          { [styles.hidden]: !visible },
-          baseProps.className,
-          styles[`breakpoint-${breakpoint}`]
-        )}
+        className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className)}
         ref={mergedRef}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <VisualContext contextName="alert">
-            <div className={clsx(styles.alert, styles[`type-${type}`], styles[`icon-size-${size}`])}>
-              <div className={styles['alert-mobile-block']}>
-                <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-                  <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
-                    <InternalIcon name={typeToIcon[type]} size={size} />
-                  </div>
-                  <div className={styles.body}>
-                    <div className={clsx(styles.message, styles.text)}>
-                      {header && (
-                        <div className={styles.header} ref={headerRef}>
-                          {header}
-                        </div>
-                      )}
-                      <div className={styles.content} ref={contentRef}>
-                        {children}
-                      </div>
+            <div
+              className={clsx(
+                styles.alert,
+                styles[`type-${type}`],
+                styles[`icon-size-${size}`],
+                hasAction && styles['with-action'],
+                dismissible && styles['with-dismiss'],
+                styles[`breakpoint-${breakpoint}`]
+              )}
+            >
+              <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
+                <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
+                  <InternalIcon name={typeToIcon[type]} size={size} />
+                </div>
+                <div className={clsx(styles.message, styles.text)}>
+                  {header && (
+                    <div className={styles.header} ref={headerRef}>
+                      {header}
                     </div>
+                  )}
+                  <div className={styles.content} ref={contentRef}>
+                    {children}
                   </div>
                 </div>
-                <ActionsWrapper
-                  className={styles.action}
-                  testUtilClasses={{
-                    actionSlot: styles['action-slot'],
-                    actionButton: styles['action-button'],
-                  }}
-                  action={action}
-                  discoveredActions={discoveredActions}
-                  buttonText={buttonText}
-                  onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
-                />
               </div>
+              <ActionsWrapper
+                className={styles.action}
+                testUtilClasses={{
+                  actionSlot: styles['action-slot'],
+                  actionButton: styles['action-button'],
+                }}
+                action={action}
+                discoveredActions={discoveredActions}
+                buttonText={buttonText}
+                onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
+              />
               {dismissible && (
                 <div className={styles.dismiss}>
                   <InternalButton
