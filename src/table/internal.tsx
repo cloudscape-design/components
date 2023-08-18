@@ -237,6 +237,8 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
+    const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
+
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
@@ -331,6 +333,7 @@ const InternalTable = React.forwardRef(
                 {...getTableRoleProps({
                   tableRole,
                   totalItemsCount,
+                  totalColumnsCount: totalColumnsCount,
                   ariaLabel: ariaLabels?.tableLabel,
                   ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
                 })}
@@ -345,7 +348,7 @@ const InternalTable = React.forwardRef(
                   {loading || items.length === 0 ? (
                     <tr>
                       <td
-                        colSpan={selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length}
+                        colSpan={totalColumnsCount}
                         className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
                       >
                         <div

@@ -166,7 +166,11 @@ export default function Page() {
               <table
                 ref={tableRef}
                 className={styles['custom-table-table']}
-                {...getTableRoleProps({ tableRole, totalItemsCount: items.length })}
+                {...getTableRoleProps({
+                  tableRole,
+                  totalItemsCount: items.length,
+                  totalColumnsCount: columnDefinitions.length,
+                })}
               >
                 <thead>
                   <tr {...getTableHeaderRowRoleProps({ tableRole })}>
