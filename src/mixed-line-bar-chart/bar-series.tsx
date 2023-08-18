@@ -116,11 +116,12 @@ export default function BarSeries<T extends ChartDataTypes>({
         }
 
         // Create margins between stacked series but only when series data is not too small.
-        const baseOffset = stackedBarOffsets ? 3 : 0;
-        const isSmall = height < 4;
-        const appliedOffset = isSmall ? 0 : baseOffset;
+        const baseHeightOffset = stackedBarOffsets ? 3 : 0;
+        const isSmallBar = height < 4;
+        const heightOffset = isSmallBar ? 0 : baseHeightOffset;
+        const widthOffset = 2;
 
-        const rx = isRefresh ? (isSmall ? '2px' : '4px') : '0px';
+        const rx = isRefresh ? (isSmallBar ? '2px' : '4px') : '0px';
         const className = clsx(styles.series__rect, {
           [styles['series--dimmed']]: highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
         });
@@ -129,10 +130,10 @@ export default function BarSeries<T extends ChartDataTypes>({
           <rect
             key={`bar-${i}`}
             fill={color}
-            x={x + 1}
-            y={y + appliedOffset / 2}
-            width={width - 1}
-            height={height - appliedOffset}
+            x={x + widthOffset / 2}
+            y={y + heightOffset / 2}
+            width={width - widthOffset}
+            height={height - heightOffset}
             rx={rx}
             className={className}
           />
@@ -140,10 +141,10 @@ export default function BarSeries<T extends ChartDataTypes>({
           <rect
             key={`bar-${i}`}
             fill={color}
-            x={y - height + appliedOffset / 2}
-            y={x + 1}
-            width={height - appliedOffset}
-            height={width - 1}
+            x={y - height + heightOffset / 2}
+            y={x + widthOffset / 2}
+            width={height - heightOffset}
+            height={width - widthOffset}
             rx={rx}
             className={className}
           />
