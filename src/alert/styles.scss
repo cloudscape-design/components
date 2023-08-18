@@ -29,7 +29,6 @@
   border: awsui.$border-field-width solid;
   padding: awsui.$space-alert-vertical awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
-  column-gap: awsui.$space-s;
 
   &.with-dismiss,
   &.with-action {
@@ -53,6 +52,7 @@
 
 .action {
   white-space: nowrap;
+  margin-left: awsui.$space-alert-action-left;
 }
 
 .action-slot,
@@ -109,6 +109,7 @@
 
 .dismiss {
   margin-right: calc(-1 * #{awsui.$space-xxs});
+  margin-left: awsui.$space-s;
 }
 
 .dismiss-button {
