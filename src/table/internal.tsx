@@ -14,7 +14,7 @@ import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
-import { focusMarkers, useFocusMove, useSelection } from './use-selection';
+import { focusMarkers, useSelection } from './use-selection';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
@@ -28,7 +28,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
-import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './sticky-columns';
@@ -36,11 +35,12 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } from './table-role';
+import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps, useGridNavigation } from './table-role';
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 
+const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
@@ -120,7 +120,6 @@ const InternalTable = React.forwardRef(
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
-    const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({
@@ -187,7 +186,9 @@ const InternalTable = React.forwardRef(
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid-no-navigation' : 'table';
+    const tableRole = hasEditableCells || !!selectionType ? 'grid-reduced-navigation' : 'table';
+
+    useGridNavigation({ tableRole, pageSize: GRID_NAVIGATION_PAGE_SIZE, getTable: () => tableRefObject.current });
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -201,7 +202,6 @@ const InternalTable = React.forwardRef(
       sortingDisabled,
       sortingDescending,
       onSortingChange,
-      onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
           (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_COLUMN_WIDTH
@@ -231,7 +231,6 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -412,12 +411,7 @@ const InternalTable = React.forwardRef(
                               colIndex={0}
                               tableRole={tableRole}
                             >
-                              <SelectionControl
-                                onFocusDown={moveFocusDown}
-                                onFocusUp={moveFocusUp}
-                                onShiftToggle={updateShiftToggle}
-                                {...getItemSelectionProps(item)}
-                              />
+                              <SelectionControl onShiftToggle={updateShiftToggle} {...getItemSelectionProps(item)} />
                             </TableTdElement>
                           )}
                           {visibleColumnDefinitions.map((column, colIndex) => {
@@ -462,6 +456,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
+                                isWidget={tableRole === 'grid-reduced-navigation'}
                               />
                             );
                           })}

@@ -58,13 +58,13 @@ export default function SelectionControl({
   const handleKeyDown = (event: KeyboardEvent) => {
     setShiftState(event);
     if (isMultiSelection) {
-      if (event.keyCode === KeyCode.up) {
+      if (onFocusUp && event.keyCode === KeyCode.up) {
         event.preventDefault();
-        onFocusUp && onFocusUp(event);
+        onFocusUp(event);
       }
-      if (event.keyCode === KeyCode.down) {
+      if (onFocusDown && event.keyCode === KeyCode.down) {
         event.preventDefault();
-        onFocusDown && onFocusDown(event);
+        onFocusDown(event);
       }
     }
   };

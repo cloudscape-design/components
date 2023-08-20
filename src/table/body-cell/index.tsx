@@ -86,6 +86,7 @@ function TableCellEditable<ItemType>({
       onClick={!isEditing ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
+      isWidget={isEditing}
     >
       {isEditing ? (
         <InlineEditor
