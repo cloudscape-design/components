@@ -202,7 +202,8 @@ const OldAppLayout = React.forwardRef(
       if (isMobile) {
         onNavigationToggle(false);
       }
-    }, [isMobile, onNavigationToggle]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isMobile]);
 
     const navigationVisible = !navigationHide && navigationOpen;
     const toolsVisible = !toolsHide && toolsOpen;

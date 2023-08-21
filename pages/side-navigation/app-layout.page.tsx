@@ -107,6 +107,7 @@ export default function SideNavigationPage() {
     <AppLayout
       navigationOpen={open}
       onNavigationChange={({ detail }) => {
+        console.log('HERE!', detail);
         setOpen(detail.open);
       }}
       contentType="form"

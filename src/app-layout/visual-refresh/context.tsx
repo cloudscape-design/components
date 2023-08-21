@@ -192,7 +192,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       if (isMobile) {
         handleNavigationClick(false);
       }
-    }, [isMobile, handleNavigationClick]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isMobile]);
 
     /**
      * The useControllable hook will set the default value and manage either
