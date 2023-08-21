@@ -187,7 +187,8 @@ const InternalTable = React.forwardRef(
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = externalTableRole ?? (hasEditableCells || !!selectionType ? 'grid-default' : 'table');
+    const tableRole =
+      externalTableRole === 'grid' ? 'grid' : hasEditableCells || !!selectionType ? 'grid-default' : 'table';
 
     useGridNavigation({ tableRole, pageSize: GRID_NAVIGATION_PAGE_SIZE, getTable: () => tableRefObject.current });
 

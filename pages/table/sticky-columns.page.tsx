@@ -21,6 +21,7 @@ type DemoContext = React.Context<
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     stickyColumnsLast: string;
+    tableRole: 'default' | 'table' | 'grid';
   }>
 >;
 
@@ -155,10 +156,13 @@ const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: '
 
 const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
 
+const tableRoleOptions = [{ value: 'default' }, { value: 'table' }, { value: 'grid' }];
+
 export default () => {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [selectedItems, setSelectedItems] = useState<any>([]);
   const { items, collectionProps } = useCollection(tableItems, { pagination: {}, sorting: {} });
+  const tableRole = urlParams.tableRole === 'default' ? undefined : urlParams.tableRole;
   return (
     <ScreenshotArea>
       <h1>Sticky columns</h1>
@@ -225,6 +229,16 @@ export default () => {
               onChange={event => setUrlParams({ stickyColumnsLast: event.detail.selectedOption.value })}
             />
           </FormField>
+
+          <FormField label="Table role">
+            <Select
+              selectedOption={
+                tableRoleOptions.find(option => option.value === urlParams.tableRole) ?? tableRoleOptions[0]
+              }
+              options={tableRoleOptions}
+              onChange={event => setUrlParams({ tableRole: event.detail.selectedOption.value as any })}
+            />
+          </FormField>
         </SpaceBetween>
 
         <Table
@@ -241,6 +255,7 @@ export default () => {
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
           header={<Header>Simple table</Header>}
+          tableRole={tableRole}
         />
         <Table
           {...collectionProps}
@@ -256,6 +271,7 @@ export default () => {
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
           items={items}
           header={<Header>Large table</Header>}
+          tableRole={tableRole}
         />
         <Table
           {...collectionProps}
@@ -312,6 +328,7 @@ export default () => {
           items={items}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Inline editing table' }}
           header={<Header>Large table with inline editing</Header>}
+          tableRole={tableRole}
         />
       </SpaceBetween>
     </ScreenshotArea>
