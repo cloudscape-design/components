@@ -458,7 +458,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
-                                isWidget={tableRole === 'grid-default'}
+                                isWidget={column.isWidget?.(item) ?? tableRole === 'grid-default'}
                               />
                             );
                           })}

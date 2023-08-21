@@ -103,6 +103,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *  *  * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *  *  * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
    *  * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
+   *  * `isWidget` ((item) => boolean) - Specifies that the cell contains interactive elements that conflict with table grid navigation.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
@@ -316,6 +317,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    */
   onEditCancel?: CancelableEventHandler;
 
+  /**
+   * ARIA role for the table component. The tables with row selection or inline editing enabled are automatically assigned role "grid".
+   * When role "grid" is assigned the extended keyboard navigation is used.
+   */
   tableRole?: 'table' | 'grid';
 }
 
@@ -370,6 +375,7 @@ export namespace TableProps {
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
     isRowHeader?: boolean;
+    isWidget?: (item: ItemType) => boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
