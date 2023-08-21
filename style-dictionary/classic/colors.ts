@@ -44,7 +44,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
   colorBackgroundTilesDisabled: { dark: '{colorGrey700}' },
   colorBackgroundToggleCheckedDisabled: { dark: '{colorBlue700}' },
-  colorBorderBadgeIcon: { dark: '{colorGrey700}' },
   colorBorderButtonNormalActive: '{colorBorderButtonNormalDefault}',
   colorBorderButtonNormalDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBorderButtonNormalDisabled: { light: '{colorGrey300}', dark: '{colorGrey650}' },

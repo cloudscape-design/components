@@ -285,7 +285,6 @@ export type ColorsTokenName =
   | 'colorBackgroundTilesDisabled'
   | 'colorBackgroundToggleCheckedDisabled'
   | 'colorBackgroundToggleDefault'
-  | 'colorBorderBadgeIcon'
   | 'colorBorderButtonNormalActive'
   | 'colorBorderButtonNormalDefault'
   | 'colorBorderButtonNormalDisabled'
