@@ -109,7 +109,10 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                stickyStyles.className
+                stickyStyles.className,
+                focusedComponent?.type === 'header' &&
+                  focusedComponent.col === 0 &&
+                  headerCellStyles['header-cell-fake-focus']
               )}
               style={stickyStyles.style}
               ref={stickyStyles.ref}

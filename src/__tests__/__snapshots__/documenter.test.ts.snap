@@ -12614,7 +12614,8 @@ add a meaningful description to the whole selection.
        The \`cellContext\` object contains the following properties:
  *  * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
  *  * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
- * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.",
+ * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.
+ * \`isWidget\` ((item) => boolean) - Specifies that the cell contains interactive elements that conflict with table grid navigation.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
@@ -12838,6 +12839,21 @@ Return a promise to keep loading state while the submit request is in progress."
       "name": "submitEdit",
       "optional": true,
       "type": "TableProps.SubmitEditFunction<T>",
+    },
+    Object {
+      "description": "ARIA role for the table component. The tables with row selection or inline editing enabled are automatically assigned role \\"grid\\".
+When role \\"grid\\" is assigned the extended keyboard navigation is used.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "table",
+          "grid",
+        ],
+      },
+      "name": "tableRole",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Use this property to inform screen readers how many items there are in a table.
