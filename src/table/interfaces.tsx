@@ -315,6 +315,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
+
+  tableRole?: 'table' | 'grid';
 }
 
 export namespace TableProps {

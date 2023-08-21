@@ -89,6 +89,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
+      tableRole: externalTableRole,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -186,7 +187,7 @@ const InternalTable = React.forwardRef(
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
 
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells || !!selectionType ? 'grid-reduced-navigation' : 'table';
+    const tableRole = externalTableRole ?? (hasEditableCells || !!selectionType ? 'grid-default' : 'table');
 
     useGridNavigation({ tableRole, pageSize: GRID_NAVIGATION_PAGE_SIZE, getTable: () => tableRefObject.current });
 
@@ -456,7 +457,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
-                                isWidget={tableRole === 'grid-reduced-navigation'}
+                                isWidget={tableRole === 'grid-default'}
                               />
                             );
                           })}

@@ -27,7 +27,7 @@ export function getTableRoleProps(options: {
 
   // Browsers have weird mechanism to guess whether it's a data table or a layout table.
   // If we state explicitly, they get it always correctly even with low number of rows.
-  nativeProps.role = options.tableRole === 'grid-reduced-navigation' ? 'grid' : options.tableRole;
+  nativeProps.role = options.tableRole === 'grid-default' ? 'grid' : options.tableRole;
 
   nativeProps['aria-label'] = options.ariaLabel;
   nativeProps['aria-labelledby'] = options.ariaLabelledBy;
@@ -35,12 +35,12 @@ export function getTableRoleProps(options: {
   // Incrementing the total count by one to account for the header row.
   nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
 
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-reduced-navigation') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
     nativeProps['aria-colcount'] = options.totalColumnsCount;
   }
 
   // Make table component programmatically focusable to attach focusin/focusout for keyboard navigation.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-reduced-navigation') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
     nativeProps.tabIndex = -1;
   }
 
@@ -51,7 +51,7 @@ export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScro
   const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
 
   // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
-  if (options.isScrollable && options.tableRole !== 'grid' && options.tableRole !== 'grid-reduced-navigation') {
+  if (options.isScrollable && options.tableRole !== 'grid' && options.tableRole !== 'grid-default') {
     nativeProps.role = 'region';
     nativeProps.tabIndex = 0;
     nativeProps['aria-label'] = options.ariaLabel;
@@ -64,7 +64,7 @@ export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // For grids headers are treated similar to data rows and are indexed accordingly.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-reduced-navigation') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
     nativeProps['aria-rowindex'] = 1;
   }
 
@@ -75,7 +75,7 @@ export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: 
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // For grids data cell indices are incremented by 2 to account for the header cells.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-reduced-navigation') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
     nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 2;
   }
   // For tables indices are only added when the first index is not 0 (not the first page/frame).
@@ -95,7 +95,7 @@ export function getTableColHeaderRoleProps(options: {
 
   nativeProps.scope = 'col';
 
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-reduced-navigation') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
@@ -114,7 +114,7 @@ export function getTableCellRoleProps(options: {
 }) {
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> & { 'data-widget-cell'?: boolean } = {};
 
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-reduced-navigation') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 

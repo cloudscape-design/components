@@ -17,7 +17,7 @@ export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigat
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
   useEffect(
     () => {
-      if (tableRole === 'grid' || tableRole === 'grid-reduced-navigation') {
+      if (tableRole === 'grid' || tableRole === 'grid-default') {
         const table = getTable();
         table && model.init(table);
       }

@@ -91,9 +91,9 @@ export function moveFocusIn(from: FocusedCell) {
  * Ensures exactly one table element is focusable for the entire table to have a single TAB stop.
  */
 export function updateTableIndices(table: HTMLTableElement, cell: null | FocusedCell) {
-  const tableCells = table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
+  const tableCells = Array.from(table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
 
-  for (const cell of Array.from(tableCells)) {
+  for (const cell of tableCells) {
     cell.tabIndex = -1;
     cell.setAttribute('data-focusable', 'true');
   }
@@ -106,9 +106,18 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
   if (cell && table.contains(cell.element)) {
     cell.element.tabIndex = 0;
 
-    // For widget cells also unmute all cell elements to be focusable with Tab/Shift+Tab.
+    // For widget cells unmute all cell elements to be focusable with Tab/Shift+Tab.
     if (cell.widget) {
       getFocusables(cell.cellElement).forEach(element => (element.tabIndex = 0));
+    }
+
+    // Make the current and the next cell focusable to allow existing widget cell with Tab/Shift+Tab.
+    if (cell.widget && cell.element !== cell.cellElement) {
+      const cellIndex = tableCells.indexOf(cell.cellElement);
+      if (tableCells[cellIndex + 1]) {
+        cell.cellElement.tabIndex = 0;
+        tableCells[cellIndex + 1].tabIndex = 0;
+      }
     }
   }
 

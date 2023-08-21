@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
@@ -257,32 +256,6 @@ describe('Multi selection', () => {
   test('should not fire the even on disabled row clicks', () => {
     tableWrapper.findRowSelectionArea(2)!.click();
     expect(handleSelectionChange).not.toHaveBeenCalled();
-  });
-  describe('keyboard interaction', () => {
-    test('should move focus over a disabled item', () => {
-      getSelectionInput(tableWrapper, 1)?.keydown(KeyCode.down);
-      expect(getSelectionInput(tableWrapper, 3)?.getElement()).toEqual(document.activeElement);
-      getSelectionInput(tableWrapper, 3)?.keydown(KeyCode.up);
-      expect(getSelectionInput(tableWrapper, 1)?.getElement()).toEqual(document.activeElement);
-    });
-    test('should move focus up from the first item to "select all" cell', () => {
-      getSelectionInput(tableWrapper, 1)?.keydown(KeyCode.up);
-      expect(getSelectAllInput(tableWrapper)?.getElement()).toEqual(document.activeElement);
-    });
-    test('should move focus down from "select all" cell to first item', () => {
-      getSelectAllInput(tableWrapper)?.keydown(KeyCode.down);
-      expect(getSelectionInput(tableWrapper, 1)?.getElement()).toEqual(document.activeElement);
-    });
-    test('should not move focus up from "select all" cell', () => {
-      getSelectAllInput(tableWrapper)?.focus();
-      getSelectAllInput(tableWrapper)?.keydown(KeyCode.up);
-      expect(getSelectAllInput(tableWrapper)?.getElement()).toEqual(document.activeElement);
-    });
-    test('should not move focus down from the last item', () => {
-      getSelectionInput(tableWrapper, 3)?.focus();
-      getSelectionInput(tableWrapper, 3)?.keydown(KeyCode.down);
-      expect(getSelectionInput(tableWrapper, 3)?.getElement()).toEqual(document.activeElement);
-    });
   });
   test('should not remove items that are not currently visible from the `selectedItems` array', () => {
     rerender({ items: items.slice(1) });

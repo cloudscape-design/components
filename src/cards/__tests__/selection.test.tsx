@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper } from '../../../lib/components/test-utils/dom';
 import range from 'lodash/range';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
 interface Item {
   description: string;
@@ -23,6 +24,9 @@ function renderCards(jsx: React.ReactElement) {
   const wrapper = new CardsWrapper(container.querySelector<HTMLElement>(`.${CardsWrapper.rootSelector}`)!);
   return { wrapper, rerender, getByTestId, queryByTestId };
 }
+
+const getSelectionInput = (wrapper: any, cardIndex: number) =>
+  wrapper.findItems()[cardIndex].findSelectionArea()?.find('input');
 
 describe('Cards selection', () => {
   let wrapper: CardsWrapper;
@@ -158,6 +162,27 @@ describe('Cards selection', () => {
         />
       ).wrapper;
       expect(getSelectedCardsText()).toEqual([expected]);
+    });
+  });
+
+  describe('keyboard interaction', () => {
+    test('should move focus over a disabled item', () => {
+      wrapper = renderCards(
+        <Cards<Item> {...props} isItemDisabled={item => item.description === '2'} selectionType="multi" />
+      ).wrapper;
+
+      getSelectionInput(wrapper, 1)?.keydown(KeyCode.down);
+      expect(getSelectionInput(wrapper, 3)?.getElement()).toEqual(document.activeElement);
+      getSelectionInput(wrapper, 3)?.keydown(KeyCode.up);
+      expect(getSelectionInput(wrapper, 1)?.getElement()).toEqual(document.activeElement);
+    });
+
+    test('should not move focus down from the last item', () => {
+      wrapper = renderCards(<Cards<Item> {...props} selectionType="multi" />).wrapper;
+
+      getSelectionInput(wrapper, 4)?.focus();
+      getSelectionInput(wrapper, 4)?.keydown(KeyCode.down);
+      expect(getSelectionInput(wrapper, 4)?.getElement()).toEqual(document.activeElement);
     });
   });
 });
