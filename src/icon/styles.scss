@@ -29,13 +29,21 @@
   @include mixins.make-icon-variants;
 }
 
-.badge::after {
-  content: '';
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 8px;
-  background-color: awsui.$color-text-status-info;
-  top: 2px;
-  right: -2px;
+.badge {
+  /* stylelint-disable-next-line selector-max-type */
+  > svg,
+  > img {
+    clip-path: path('M12 0H0V16H16V4C13.7909 4 12 2.20914 12 0Z');
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 4px;
+    background-color: awsui.$color-background-badge-icon;
+    top: 0px;
+    right: -3px;
+  }
 }
