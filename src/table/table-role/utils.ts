@@ -89,9 +89,17 @@ export function moveFocusIn(from: FocusedCell) {
 }
 
 /**
- * Ensures exactly one table element is focusable for the entire table to have a single TAB stop.
+ * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
  */
 export function updateTableIndices(table: HTMLTableElement, cell: null | FocusedCell) {
+  // Restore default focus behavior and make all cells focusable when focus is inside a widget cell.
+  if (cell && cell.widget && cell.element !== cell.cellElement) {
+    for (const focusable of getFocusables(table)) {
+      focusable.tabIndex = 0;
+    }
+    return;
+  }
+
   const tableCells = Array.from(table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
 
   for (const cell of tableCells) {
@@ -103,27 +111,19 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
     focusable.setAttribute('data-focusable', 'true');
   }
 
-  // Make focused element the only focusable element of the table.
+  // The only focusable element of the table.
+  let focusTarget: undefined | HTMLElement = tableCells[0];
+
   if (cell && table.contains(cell.element)) {
-    cell.element.tabIndex = 0;
-
-    // Make the current and the next cell focusable to allow existing widget cell with Tab/Shift+Tab.
-    if (cell.widget && cell.element !== cell.cellElement) {
-      const cellIndex = tableCells.indexOf(cell.cellElement);
-      if (tableCells[cellIndex + 1]) {
-        cell.cellElement.tabIndex = 0;
-        tableCells[cellIndex + 1].tabIndex = 0;
-      }
-
-      // For widget cells unmute all cell elements to be focusable with Tab/Shift+Tab.
-      getFocusables(cell.cellElement).forEach(element => (element.tabIndex = 0));
-    }
+    focusTarget = cell.element;
+  } else if (tableCells.length > 0) {
+    const cellFocusables = getFocusables(tableCells[0]);
+    const eligibleForElementFocus = !isWidgetCell(tableCells[0]) && cellFocusables.length === 1;
+    focusTarget = eligibleForElementFocus ? cellFocusables[0] : focusTarget;
   }
 
-  // Make first table cell the only focusable element of the table.
-  else if (tableCells[0]) {
-    const cellFocusables = getFocusables(tableCells[0]);
-    !isWidgetCell(tableCells[0]) && cellFocusables[0] ? (cellFocusables[0].tabIndex = 0) : (tableCells[0].tabIndex = 0);
+  if (focusTarget) {
+    focusTarget.tabIndex = 0;
   }
 }
 

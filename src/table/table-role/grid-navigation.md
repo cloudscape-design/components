@@ -49,4 +49,4 @@ Widget cells are those including one or multiple elements that utilize arrow key
 
 Same as for the multi-element cells the focus is not automatically moved inside when a cell is navigated to. The `Enter`, `F2` and `Escape` commands work the same way. The difference is that when the focus is inside a widget cell the navigation commands are not intercepted. Besides, the default focusing behavior is restored so that the elements inside can be navigated with `Tab` and `Shift + Tab` commands.
 
-When the focus is within a widget cell the cell itself and the cell next to it is made focusable so that pressing `Tab` and `Shift + Tab` also restores table navigation by moving the focus to the cell itself or the cell next to it (if available).
+When the focus is within a widget cell all table cells become focusable so that pressing `Tab` and `Shift + Tab` also restores table navigation by moving the focus to the cell itself or the cell next to it (if available).
