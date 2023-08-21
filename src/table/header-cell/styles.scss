@@ -21,6 +21,10 @@
   @include focus-visible.when-visible {
     @include styles.cell-focus;
   }
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
+    @include styles.cell-focus;
+  }
 
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;

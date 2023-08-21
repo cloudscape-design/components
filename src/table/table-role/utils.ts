@@ -107,11 +107,6 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
   if (cell && table.contains(cell.element)) {
     cell.element.tabIndex = 0;
 
-    // For widget cells unmute all cell elements to be focusable with Tab/Shift+Tab.
-    if (cell.widget) {
-      getFocusables(cell.cellElement).forEach(element => (element.tabIndex = 0));
-    }
-
     // Make the current and the next cell focusable to allow existing widget cell with Tab/Shift+Tab.
     if (cell.widget && cell.element !== cell.cellElement) {
       const cellIndex = tableCells.indexOf(cell.cellElement);
@@ -119,6 +114,9 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
         cell.cellElement.tabIndex = 0;
         tableCells[cellIndex + 1].tabIndex = 0;
       }
+
+      // For widget cells unmute all cell elements to be focusable with Tab/Shift+Tab.
+      getFocusables(cell.cellElement).forEach(element => (element.tabIndex = 0));
     }
   }
 

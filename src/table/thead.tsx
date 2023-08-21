@@ -20,7 +20,8 @@ import { getTableColHeaderRoleProps, getTableHeaderRowRoleProps, TableRole } fro
 export type InteractiveComponent =
   | { type: 'selection' }
   | { type: 'column'; col: number }
-  | { type: 'resizer'; col: number };
+  | { type: 'resizer'; col: number }
+  | { type: 'header'; col: number };
 
 export interface TheadProps {
   containerWidth: number | null;
