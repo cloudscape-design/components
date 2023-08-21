@@ -19,7 +19,7 @@
   padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
 
   @include focus-visible.when-visible {
-    @include styles.link-focus;
+    @include styles.cell-focus;
   }
 
   &-sticky {

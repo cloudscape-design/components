@@ -35,7 +35,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   font-weight: inherit;
 
   @include focus-visible.when-visible {
-    @include styles.link-focus;
+    @include styles.cell-focus;
   }
 
   &:not(.body-cell-wrap) {
