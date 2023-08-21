@@ -113,7 +113,7 @@ export function TableHeaderCell<ItemType>({
       )}
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
-      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex, isWidget: !!resizableColumns })}
     >
       <div
         className={clsx(styles['header-cell-content'], {

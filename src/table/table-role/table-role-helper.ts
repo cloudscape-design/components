@@ -27,7 +27,7 @@ export function getTableRoleProps(options: {
 
   // Browsers have weird mechanism to guess whether it's a data table or a layout table.
   // If we state explicitly, they get it always correctly even with low number of rows.
-  nativeProps.role = options.tableRole === 'grid-default' ? 'grid' : options.tableRole;
+  nativeProps.role = isGrid(options) ? 'grid' : 'table';
 
   nativeProps['aria-label'] = options.ariaLabel;
   nativeProps['aria-labelledby'] = options.ariaLabelledBy;
@@ -35,12 +35,12 @@ export function getTableRoleProps(options: {
   // Incrementing the total count by one to account for the header row.
   nativeProps['aria-rowcount'] = options.totalItemsCount ? options.totalItemsCount + 1 : -1;
 
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
+  if (isGrid(options)) {
     nativeProps['aria-colcount'] = options.totalColumnsCount;
   }
 
   // Make table component programmatically focusable to attach focusin/focusout for keyboard navigation.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
+  if (isGrid(options)) {
     nativeProps.tabIndex = -1;
   }
 
@@ -51,7 +51,7 @@ export function getTableWrapperRoleProps(options: { tableRole: TableRole; isScro
   const nativeProps: React.HTMLAttributes<HTMLDivElement> = {};
 
   // When the table is scrollable, the wrapper is made focusable so that keyboard users can scroll it horizontally with arrow keys.
-  if (options.isScrollable && options.tableRole !== 'grid' && options.tableRole !== 'grid-default') {
+  if (options.isScrollable && !isGrid(options)) {
     nativeProps.role = 'region';
     nativeProps.tabIndex = 0;
     nativeProps['aria-label'] = options.ariaLabel;
@@ -64,7 +64,7 @@ export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // For grids headers are treated similar to data rows and are indexed accordingly.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
+  if (isGrid(options)) {
     nativeProps['aria-rowindex'] = 1;
   }
 
@@ -75,7 +75,7 @@ export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: 
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // For grids data cell indices are incremented by 2 to account for the header cells.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
+  if (isGrid(options)) {
     nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 2;
   }
   // For tables indices are only added when the first index is not 0 (not the first page/frame).
@@ -90,17 +90,22 @@ export function getTableColHeaderRoleProps(options: {
   tableRole: TableRole;
   colIndex: number;
   sortingStatus?: SortingStatus;
+  isWidget?: boolean;
 }) {
-  const nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {};
+  const nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> & { 'data-widget-cell'?: boolean } = {};
 
   nativeProps.scope = 'col';
 
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
+  if (isGrid(options)) {
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
   if (options.sortingStatus) {
     nativeProps['aria-sort'] = getAriaSort(options.sortingStatus);
+  }
+
+  if (isGrid(options) && options.isWidget) {
+    nativeProps['data-widget-cell'] = true;
   }
 
   return nativeProps;
@@ -114,7 +119,7 @@ export function getTableCellRoleProps(options: {
 }) {
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> & { 'data-widget-cell'?: boolean } = {};
 
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
+  if (isGrid(options)) {
     nativeProps['aria-colindex'] = options.colIndex + 1;
   }
 
@@ -122,9 +127,13 @@ export function getTableCellRoleProps(options: {
     nativeProps.scope = 'row';
   }
 
-  if (options.isWidget) {
+  if (isGrid(options) && options.isWidget) {
     nativeProps['data-widget-cell'] = true;
   }
 
   return nativeProps;
+}
+
+function isGrid(options: { tableRole: TableRole }) {
+  return options.tableRole === 'grid' || options.tableRole === 'grid-default';
 }
