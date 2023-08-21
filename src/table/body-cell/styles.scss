@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
@@ -32,6 +33,11 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   word-wrap: break-word;
   border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   font-weight: inherit;
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+
   &:not(.body-cell-wrap) {
     white-space: nowrap;
     overflow: hidden;

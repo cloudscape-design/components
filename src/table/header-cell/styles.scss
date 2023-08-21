@@ -17,6 +17,11 @@
   font-weight: awsui.$font-heading-s-weight;
   @include styles.font-smoothing;
   padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }

@@ -75,7 +75,8 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   }
 
   // For non-widget cell focus on the focusable element inside if exactly one is available.
-  const focusIndex = delta.x === 0 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
+  const focusIndex =
+    delta.x === 0 && from.elementIndex !== -1 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
   focus(focusTarget);
 }
