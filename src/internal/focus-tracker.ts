@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { containsOrEqual } from './utils/dom';
+import { nodeBelongs } from './utils/node-belongs';
 
 interface FocusTrackerOptions {
   onFocusEnter: () => void;
@@ -10,18 +10,16 @@ interface FocusTrackerOptions {
 export default class FocusTracker {
   private readonly onFocusLeave: () => void;
   private readonly onFocusEnter: () => void;
-  private readonly viewportId: string;
 
   private currentlyFocused = false;
 
-  constructor(private node: HTMLElement, { onFocusEnter, onFocusLeave }: FocusTrackerOptions, viewportId = '') {
+  constructor(private node: HTMLElement, { onFocusEnter, onFocusLeave }: FocusTrackerOptions) {
     this.onFocusEnter = onFocusEnter;
     this.onFocusLeave = onFocusLeave;
-    this.viewportId = viewportId;
   }
 
   initialize() {
-    this.currentlyFocused = containsOrEqual(this.node, document.activeElement as any);
+    this.currentlyFocused = nodeBelongs(this.node, document.activeElement);
     document.addEventListener('focusin', this.focusInListener);
     document.addEventListener('focusout', this.focusOutListener);
   }
@@ -32,20 +30,15 @@ export default class FocusTracker {
   }
 
   private focusInListener = (event: FocusEvent) => {
-    const focusIsInside = containsOrEqual(this.node, event.target as Node);
+    const focusIsInside = nodeBelongs(this.node, event.target);
     if (!this.currentlyFocused && focusIsInside) {
       this.triggerFocus();
     }
   };
 
   private focusOutListener = (event: FocusEvent) => {
-    const nextFocused = event.relatedTarget as Node;
-    let isNextFocusedInParent = !containsOrEqual(this.node, nextFocused);
-
-    if (this.viewportId) {
-      const viewport = document.getElementById(this.viewportId);
-      isNextFocusedInParent = isNextFocusedInParent && !containsOrEqual(viewport, nextFocused);
-    }
+    const nextFocused = event.relatedTarget;
+    const isNextFocusedInParent = !nodeBelongs(this.node, nextFocused);
     if (this.currentlyFocused && (nextFocused === null || isNextFocusedInParent)) {
       this.triggerBlur();
     }

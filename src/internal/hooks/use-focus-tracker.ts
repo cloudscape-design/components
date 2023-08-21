@@ -9,32 +9,27 @@ interface UseFocusTracker {
     onBlur?: NonCancelableEventHandler<any>;
     onFocus?: NonCancelableEventHandler<any>;
     rootRef: MutableRefObject<HTMLElement | null>;
-    viewportId?: string;
   }): void;
 }
 
-export const useFocusTracker: UseFocusTracker = ({ rootRef, onBlur, onFocus, viewportId }) => {
+export const useFocusTracker: UseFocusTracker = ({ rootRef, onBlur, onFocus }) => {
   const focusTracker = useRef<FocusTracker | null>(null);
 
   useEffect(() => {
     if (!rootRef.current) {
       return;
     }
-    focusTracker.current = new FocusTracker(
-      rootRef.current,
-      {
-        onFocusLeave: () => {
-          fireNonCancelableEvent(onBlur);
-        },
-        onFocusEnter: () => {
-          fireNonCancelableEvent(onFocus);
-        },
+    focusTracker.current = new FocusTracker(rootRef.current, {
+      onFocusLeave: () => {
+        fireNonCancelableEvent(onBlur);
       },
-      viewportId
-    );
+      onFocusEnter: () => {
+        fireNonCancelableEvent(onFocus);
+      },
+    });
     focusTracker.current.initialize();
     return () => {
       focusTracker.current?.destroy();
     };
-  }, [rootRef, onBlur, onFocus, viewportId]);
+  }, [rootRef, onBlur, onFocus]);
 };
