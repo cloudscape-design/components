@@ -112,7 +112,12 @@ const ExpandableNavigationHeader = ({
       >
         {icon}
       </button>
-      <span onClick={disableExpandChangeOnHeaderTextClick ? () => {} : onClick}>{children}</span>
+      <span
+        className={styles['click-target-content']}
+        onClick={disableExpandChangeOnHeaderTextClick ? () => {} : onClick}
+      >
+        {children}
+      </span>
     </div>
   );
 };
