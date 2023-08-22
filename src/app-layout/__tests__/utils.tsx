@@ -75,7 +75,7 @@ export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: 
   }
 }
 
-export function describeEachAppLayout(callback: () => void) {
+export function describeEachAppLayout(callback: (size: 'desktop' | 'mobile') => void) {
   for (const theme of ['refresh', 'classic']) {
     for (const size of ['desktop', 'mobile']) {
       describe(`Theme=${theme}, Size=${size}`, () => {
@@ -87,7 +87,7 @@ export function describeEachAppLayout(callback: () => void) {
           (useMobile as jest.Mock).mockReset();
           (useVisualRefresh as jest.Mock).mockReset();
         });
-        callback();
+        callback(size as 'desktop' | 'mobile');
       });
     }
   }

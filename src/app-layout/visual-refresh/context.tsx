@@ -26,7 +26,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { DrawerItem, InternalDrawerProps } from '../drawer/interfaces';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -178,22 +178,18 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
 
-    const handleNavigationClick = useCallback(
-      function handleNavigationChange(isOpen: boolean) {
-        setIsNavigationOpen(isOpen);
-        focusNavButtons();
-        fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
-      },
-      [props.onNavigationChange, setIsNavigationOpen, focusNavButtons]
-    );
+    const handleNavigationClick = useStableCallback(function handleNavigationChange(isOpen: boolean) {
+      setIsNavigationOpen(isOpen);
+      focusNavButtons();
+      fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
+    });
 
     useEffect(() => {
       // Close navigation drawer on mobile so that the main content is visible
       if (isMobile) {
         handleNavigationClick(false);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isMobile]);
+    }, [isMobile, handleNavigationClick]);
 
     /**
      * The useControllable hook will set the default value and manage either
