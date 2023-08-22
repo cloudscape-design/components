@@ -6,7 +6,7 @@ import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
+import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem } from './interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -50,16 +50,9 @@ export const Drawer = React.forwardRef(
   ) => {
     const openButtonWrapperRef = useRef<HTMLElement | null>(null);
     const { TagName, iconName, getLabels } = togglesConfig[type];
-    const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
+    const { mainLabel, closeLabel, openLabel } = drawersAriaLabels ?? getLabels(ariaLabels);
     const drawerContentWidthOpen = isMobile ? undefined : width;
     const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
-
-    const getDrawersLabels = (labels: DrawerItemAriaLabels = {}) => ({
-      drawerMainLabel: labels?.content,
-      drawerOpenLabel: labels?.triggerButton,
-      drawerCloseLabel: labels?.closeButton,
-    });
-    const { drawerMainLabel, drawerCloseLabel } = getDrawersLabels(drawersAriaLabels);
 
     const regularOpenButton = (
       <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
@@ -113,11 +106,11 @@ export const Drawer = React.forwardRef(
         >
           {!isMobile && regularOpenButton}
           {resizeHandle}
-          <TagName aria-label={drawers ? drawerMainLabel : mainLabel} aria-hidden={!isOpen}>
+          <TagName aria-label={mainLabel} aria-hidden={!isOpen}>
             <CloseButton
               ref={toggleRefs.close}
               className={closeClassName}
-              ariaLabel={drawers ? drawerCloseLabel : closeLabel}
+              ariaLabel={closeLabel}
               onClick={() => {
                 onToggle(false);
                 drawers?.onChange({ activeDrawerId: undefined });

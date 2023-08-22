@@ -27,4 +27,10 @@ describeEachAppLayout(() => {
 
     expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
   });
+
+  test('renderds drawers with the tools', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+  });
 });

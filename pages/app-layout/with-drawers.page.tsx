@@ -17,13 +17,13 @@ import ScreenshotArea from '../utils/screenshot-area';
 import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
 
-type DemoContext = React.Context<AppContextType<{ hasTools: boolean }>>;
+type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
 
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const [hasDrawers, setHasDrawers] = useState(true);
-  const [hideTools, setHideTools] = useState(!urlParams.hasTools);
+  const hasTools = urlParams.hasTools ?? false;
+  const hasDrawers = urlParams.hasDrawers ?? true;
 
   const drawers = !hasDrawers
     ? null
@@ -102,9 +102,8 @@ export default function WithDrawers() {
 
                 <SpaceBetween size="xs">
                   <Toggle
-                    checked={!hideTools}
+                    checked={hasTools}
                     onChange={e => {
-                      setHideTools(!e.detail.checked);
                       setUrlParams({ hasTools: e.detail.checked });
                     }}
                   >
@@ -113,7 +112,7 @@ export default function WithDrawers() {
 
                   <Toggle
                     checked={hasDrawers}
-                    onChange={({ detail }) => setHasDrawers(detail.checked)}
+                    onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
                     data-id="toggle-drawers"
                   >
                     Has Drawers
@@ -145,7 +144,7 @@ export default function WithDrawers() {
           </SplitPanel>
         }
         tools={<Info />}
-        toolsHide={hideTools}
+        toolsHide={!hasTools}
         {...drawers}
       />
     </ScreenshotArea>
