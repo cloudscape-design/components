@@ -66,12 +66,8 @@ const ItemElement = ({
   );
 };
 
-export type InternalItemProps = ButtonDropdownProps.Item & {
-  badge?: boolean;
-};
-
 interface MenuItemProps {
-  item: InternalItemProps;
+  item: ButtonDropdownProps.Item;
   disabled: boolean;
   highlighted: boolean;
 }
@@ -126,20 +122,12 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   );
 }
 
-const MenuItemContent = ({ item, disabled }: { item: InternalItemProps; disabled: boolean }) => {
+const MenuItemContent = ({ item, disabled }: { item: ButtonDropdownProps.Item; disabled: boolean }) => {
   const hasIcon = !!(item.iconName || item.iconUrl || item.iconSvg);
   const hasExternal = isLinkItem(item) && item.external;
   return (
     <>
-      {hasIcon && (
-        <MenuItemIcon
-          name={item.iconName}
-          url={item.iconUrl}
-          svg={item.iconSvg}
-          alt={item.iconAlt}
-          badge={item.badge}
-        />
-      )}{' '}
+      {hasIcon && <MenuItemIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />}{' '}
       {item.text} {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
     </>
   );

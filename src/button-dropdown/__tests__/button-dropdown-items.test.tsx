@@ -4,7 +4,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { isItemGroup } from '../utils/utils';
@@ -12,7 +11,6 @@ import { isItemGroup } from '../utils/utils';
 import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
 import categoryStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
 import optionsListStyles from '../../../lib/components/internal/components/options-list/styles.css.js';
-import iconStyles from '../../../lib/components/icon/styles.css.js';
 
 const renderButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);
@@ -422,27 +420,5 @@ const items: ButtonDropdownProps.Items = [
         expect(wrapper.findItemById('i1')!.findAllByClassName(IconWrapper.rootSelector)).toHaveLength(2);
       });
     });
-  });
-});
-
-describe('Internal ButtonDropdown badge property', () => {
-  it('should render badge when defined', () => {
-    const items: InternalButtonDropdownProps['items'] = [
-      { id: 'i1', text: 'item1', iconName: 'settings', badge: true },
-    ];
-    const wrapper = renderButtonDropdown({ variant: 'icon', items: items });
-
-    wrapper.openDropdown();
-    expect(wrapper.findByClassName(iconStyles.badge)?.getElement()).toBeInTheDocument();
-  });
-
-  it('should render badge on trigger when item has badge', () => {
-    const items: InternalButtonDropdownProps['items'] = [
-      { id: 'i1', text: 'item1', iconName: 'settings', badge: true },
-    ];
-    const wrapper = renderButtonDropdown({ variant: 'icon', items: items });
-
-    wrapper.openDropdown();
-    expect(wrapper.findAllByClassName(iconStyles.badge)?.map(item => item.getElement())).toHaveLength(2);
   });
 });

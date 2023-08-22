@@ -216,24 +216,9 @@ export interface ItemProps {
   variant?: ItemListProps['variant'];
 }
 
-export interface InternalItem extends ButtonDropdownProps.Item {
-  badge?: boolean;
-}
-
-export interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
-  items: InternalItems;
-}
-
-export type InternalItems = ReadonlyArray<InternalItemOrGroup>;
-
-export type InternalItemOrGroup = InternalItem | InternalItemGroup;
-
-export interface InternalButtonDropdownProps
-  extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
-    InternalBaseComponentProps {
+export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, 'variant'>, InternalBaseComponentProps {
   customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
-  items: ReadonlyArray<InternalItemOrGroup>;
 
   /**
    * Optional text that is displayed as the title at the top of the dropdown.
