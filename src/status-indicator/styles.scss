@@ -46,15 +46,15 @@ $_color-overrides: (
 }
 
 .container {
-  word-break: break-all;
-  word-wrap: break-word;
-
   &.display-inline {
+    @include styles.text-wrapping;
     display: inline;
   }
 
   &.display-inline-block {
     display: inline-block;
+    word-wrap: break-word;
+    word-break: break-all;
   }
 }
 

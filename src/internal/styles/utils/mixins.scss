@@ -17,14 +17,8 @@
   // prevents the text wrapping. We need to override the min-width by setting it to "0"
   min-width: 0;
 
-  // IE does not support `word-break: break-word`.
-  // We use `-ms-word-break: break-all` as a compromise for IE.
-  -ms-word-break: break-all;
-
-  // From docs:
-  // > To prevent overflow, an otherwise unbreakable string of characters — like a long word or URL — may be broken at
-  // > any point if there are no otherwise-acceptable break points in the line.
-  // Also, this overrides any usage of `overflow-wrap` (and its alias `word-wrap`). Therefore, such rule is not used.
+  // `word-break: break-word` is deprecated.
+  // But its replacement, `overflow-wrap: anywhere`, is not supported in Safari 14.0 and 15.0.
   word-break: break-word;
 }
 
