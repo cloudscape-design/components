@@ -18,6 +18,7 @@ export interface ButtonIconProps {
   iconSize?: IconProps.Size;
   variant?: string;
   iconClass?: string;
+  badge?: boolean;
 }
 
 function getIconAlign(props: ButtonIconProps) {
@@ -26,7 +27,7 @@ function getIconAlign(props: ButtonIconProps) {
   return standalone ? 'left' : props.iconAlign;
 }
 
-function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, ...props }: ButtonIconProps) {
+function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, badge, ...props }: ButtonIconProps) {
   if (!iconName && !iconUrl && !iconSvg) {
     return null;
   }
@@ -39,6 +40,7 @@ function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, ...props }
       svg={iconSvg}
       alt={iconAlt}
       size={iconSize}
+      badge={badge}
     />
   );
 }
