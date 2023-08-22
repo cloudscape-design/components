@@ -79,17 +79,17 @@ const items: SideNavigationProps.Item[] = [
       {
         type: 'expandable-link-group',
         text: 'Expandable link group',
-        href: '#/light/side-navigation/app-layout/?visualRefresh=false',
+        href: '#/exp-link-group-inner',
         items: [
           {
             type: 'link',
             text: 'Page 11',
-            href: '#/light/side-navigation/app-layout/?visualRefresh=false',
+            href: '#/page11',
           },
           {
             type: 'link',
             text: 'Page 12',
-            href: '#/light/side-navigation/app-layout/?visualRefresh=false',
+            href: '#/page12',
           },
         ],
       },

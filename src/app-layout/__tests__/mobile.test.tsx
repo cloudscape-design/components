@@ -76,7 +76,7 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    // To guarantee an optimal UX on mobile, AppLyout forcely closes the navigation on the first load on mobile
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
   });
 
@@ -91,7 +91,7 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    // To guarantee an optimal UX on mobile, AppLyout forcely closes the navigation on the first load on mobile
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
   });
 
@@ -146,7 +146,7 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    // To guarantee an optimal UX on mobile, AppLyout forcely closes the navigation on the first load on mobile
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
 
     wrapper.findNavigationToggle().click();
@@ -173,7 +173,7 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    // To guarantee an optimal UX on mobile, AppLyout forcely closes the navigation on the first load on mobile
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
 
     wrapper.findNavigationToggle().click();
@@ -195,7 +195,7 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    // To guarantee an optimal UX on mobile, AppLyout forcely closes the navigation on the first load on mobile
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
 
     wrapper.findNavigationToggle().click();
@@ -217,7 +217,7 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    // To guarantee an optimal UX on mobile, AppLyout forcely closes the navigation on the first load on mobile
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
 
     wrapper.findNavigationToggle().click();

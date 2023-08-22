@@ -188,7 +188,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     useEffect(() => {
-      // To guarantee an optimal UX on mobile, we forcely close the navigation on this viewport
+      // Close navigation drawer on mobile so that the main content is visible
       if (isMobile) {
         handleNavigationClick(false);
       }
