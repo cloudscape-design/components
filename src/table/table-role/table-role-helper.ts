@@ -74,13 +74,13 @@ export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
 export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: number; firstIndex?: number }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
-  // For grids data cell indices are incremented by 2 to account for the header cells.
+  // The data cell indices are incremented by 1 to account for the header cells.
   if (isGrid(options)) {
-    nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 2;
+    nativeProps['aria-rowindex'] = (options.firstIndex || 1) + options.rowIndex + 1;
   }
   // For tables indices are only added when the first index is not 0 (not the first page/frame).
-  else if (options.firstIndex !== undefined) {
-    nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 1;
+  else if (options.firstIndex) {
+    nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
   }
 
   return nativeProps;

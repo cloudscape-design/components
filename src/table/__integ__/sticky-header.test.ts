@@ -76,7 +76,7 @@ describe('Sticky header', () => {
     setupTest(async page => {
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       await page.click(tableWrapper.findSelectAllTrigger().find('input').toSelector());
-      await page.keys(['ArrowDown']);
+      await page.keys(['Tab', 'ArrowDown']);
       const { top: scrollTop } = await page.getElementScroll(scrollContainerSelector);
       expect(scrollTop).toBeLessThan(200);
     })
@@ -125,19 +125,17 @@ describe('Sticky header', () => {
       await page.click(togglePaginationSelector);
       await page.click(tableWrapper.findTextFilter().findInput().toSelector());
       // skip preferences toggle and table scrollable region
-      await page.keys(['Tab', 'Tab', 'Tab']);
+      await page.keys(['Tab', 'Tab']);
       // find the hidden table select checkbox
       await expect(page.isFocused(page.findTableHiddenSelectAllTrigger().getElement())).resolves.toBeTruthy();
       // column headers
       for (const column of ['ID', 'Type', 'DNS name', 'Image ID', 'State']) {
-        await page.keys('Tab');
+        await page.keys('ArrowRight');
         await expect(page.getFocusedElementText()).resolves.toBe(column);
       }
-      await page.keys('Tab');
-      // first row selection checkbox
-      await expect(
-        page.isFocused(tableWrapper.findRowSelectionArea(1).find('input').toSelector())
-      ).resolves.toBeTruthy();
+      await page.keys('ArrowDown');
+      // first row state
+      await expect(page.getFocusedElementText()).resolves.toBe('Terminating');
     })
   );
   test(

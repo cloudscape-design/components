@@ -87,6 +87,7 @@ class GridNavigationModel {
     return this._table;
   }
 
+  // TODO: support checkbox click
   private onFocusin = (event: FocusEvent) => {
     const cell = findFocusinCell(event);
 

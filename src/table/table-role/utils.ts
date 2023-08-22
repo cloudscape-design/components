@@ -139,6 +139,7 @@ function getFirstFocusable(element: HTMLElement) {
   return getFocusables(element)[0] as null | HTMLElement;
 }
 
+// TODO: support pagination, when the first row index is not 1
 function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {
   let targetRow: null | HTMLTableRowElement = null;
   const rowElements = table.querySelectorAll('tr[aria-rowindex]');

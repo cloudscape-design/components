@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import range from 'lodash/range';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
@@ -82,8 +81,8 @@ test(
     // Focus element before the table
     await page.click('[data-testid="focus"]');
 
-    // Tab to the first editable column
-    await page.keys(range(11).map(() => 'Tab'));
+    // Navigate to the first editable column
+    await page.keys(['Tab', 'ArrowDown', 'ArrowRight']);
     await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
 
     // Activate with Enter
@@ -98,8 +97,8 @@ test(
     // Focus element before the table
     await page.click('[data-testid="focus"]');
 
-    // Tab to the first editable column
-    await page.keys(range(11).map(() => 'Tab'));
+    // Navigate to the first editable column
+    await page.keys(['Tab', 'ArrowDown', 'ArrowRight']);
     await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
 
     // Activate with Space
