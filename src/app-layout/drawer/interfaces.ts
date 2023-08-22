@@ -20,7 +20,7 @@ export interface DesktopDrawerProps {
   topOffset: number | undefined;
   bottomOffset: number | undefined;
   ariaLabels: AppLayoutProps.Labels | undefined;
-  drawersAriaLabels?: DrawerItemAriaLabels | undefined;
+  drawersAriaLabels?: { mainLabel: string | undefined; closeLabel: string | undefined; openLabel: string | undefined };
   children: React.ReactNode;
   type: keyof typeof togglesConfig;
   isMobile: boolean;

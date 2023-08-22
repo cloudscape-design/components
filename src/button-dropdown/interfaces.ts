@@ -216,15 +216,24 @@ export interface ItemProps {
   variant?: ItemListProps['variant'];
 }
 
-export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, 'variant'>, InternalBaseComponentProps {
-  customTriggerBuilder?: (
-    clickHandler: () => void,
-    ref: React.Ref<any>,
-    isDisabled: boolean,
-    isExpanded: boolean,
-    ariaLabel?: string
-  ) => React.ReactNode;
+export interface InternalItem extends ButtonDropdownProps.Item {
+  badge?: boolean;
+}
+
+export interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
+  items: InternalItems;
+}
+
+export type InternalItems = ReadonlyArray<InternalItemOrGroup>;
+
+export type InternalItemOrGroup = InternalItem | InternalItemGroup;
+
+export interface InternalButtonDropdownProps
+  extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
+    InternalBaseComponentProps {
+  customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
+  items: ReadonlyArray<InternalItemOrGroup>;
 
   /**
    * Optional text that is displayed as the title at the top of the dropdown.
@@ -241,4 +250,13 @@ export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, '
    * instead of dropping left or right.
    */
   preferCenter?: boolean;
+}
+
+export interface CustomTriggerProps {
+  triggerRef: React.Ref<HTMLElement>;
+  testUtilsClass: string;
+  ariaLabel: string | undefined;
+  disabled: boolean;
+  isOpen: boolean;
+  onClick: () => void;
 }

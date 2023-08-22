@@ -15,7 +15,7 @@ import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
-import { getTableColHeaderRoleProps, TableRole } from './table-role';
+import { getTableColHeaderRoleProps, getTableHeaderRowRoleProps, TableRole } from './table-role';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -103,7 +103,7 @@ const Thead = React.forwardRef(
     });
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
-        <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
+        <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1} {...getTableHeaderRowRoleProps({ tableRole })}>
           {selectionType ? (
             <th
               className={clsx(
@@ -115,7 +115,7 @@ const Thead = React.forwardRef(
               style={stickyStyles.style}
               ref={stickyStyles.ref}
               scope="col"
-              {...getTableColHeaderRoleProps({})}
+              {...getTableColHeaderRoleProps({ tableRole, colIndex: 0 })}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
@@ -165,7 +165,7 @@ const Thead = React.forwardRef(
                 sortingDisabled={sortingDisabled}
                 wrapLines={wrapLines}
                 hidden={hidden}
-                colIndex={colIndex}
+                colIndex={selectionType ? colIndex + 1 : colIndex}
                 columnId={columnId}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}

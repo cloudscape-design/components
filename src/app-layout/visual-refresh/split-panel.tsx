@@ -139,7 +139,7 @@ function SplitPanelSide() {
           style={{
             [customCssProps.splitPanelMaxWidth]: `${splitPanelMaxWidth}px`,
             [customCssProps.splitPanelMinWidth]: `${splitPanelMinWidth}px`,
-            [customCssProps.splitPanelReportedHeaderSize]: `${splitPanelReportedSize}px`,
+            [customCssProps.splitPanelReportedSize]: `${splitPanelReportedSize}px`,
           }}
         >
           <div className={clsx(styles['animated-content'])}>{splitPanelPosition === 'side' && splitPanel}</div>

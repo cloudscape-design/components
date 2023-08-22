@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { InternalButton } from '../../../lib/components/button/internal';
 import Button from '../../../lib/components/button';
 import styles from '../../../lib/components/button/styles.css.js';
@@ -33,6 +33,7 @@ test('supports __iconClass property', () => {
 describe('Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
@@ -49,6 +50,7 @@ describe('Analytics', () => {
         <Button iconName="external" href="https://example.com" />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     createWrapper(container).findButton()!.click();
 
     expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalled();
@@ -67,6 +69,7 @@ describe('Analytics', () => {
         <Button target="_blank" data-testid="2" />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     createWrapper(container).findButton('[data-testid="1"]')!.click();
     createWrapper(container).findButton('[data-testid="2"]')!.click();
 
@@ -79,6 +82,7 @@ describe('Analytics', () => {
         <Button target="_blank" href="https://example.com" />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     createWrapper(container).findButton()!.click();
 
     expect(FunnelMetrics.externalLinkInteracted).toHaveBeenCalled();
@@ -96,6 +100,7 @@ describe('Analytics', () => {
         <Button href="https://example.com" />
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
     createWrapper(container).findButton()!.click();
 
     expect(FunnelMetrics.externalLinkInteracted).not.toHaveBeenCalled();

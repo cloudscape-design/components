@@ -56,6 +56,15 @@ describe('Runtime drawers', () => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 
+  test('combines runtime drawers with the tools', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, ariaLabels: { triggerButton: 'Runtime drawer' } });
+    const { wrapper } = await renderComponent(<AppLayout tools="test" ariaLabels={{ toolsToggle: 'Tools' }} />);
+    expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
+      'Tools',
+      'Runtime drawer',
+    ]);
+  });
+
   test('accepts drawers registration after initial rendering', async () => {
     const { wrapper } = await renderComponent(<AppLayout />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);

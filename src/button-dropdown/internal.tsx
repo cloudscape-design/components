@@ -119,7 +119,7 @@ const InternalButtonDropdown = React.forwardRef(
           };
 
     const baseTriggerProps: InternalButtonProps = {
-      className: styles['trigger-button'],
+      className: clsx(styles['trigger-button'], styles['test-utils-button-trigger']),
       ...iconProps,
       variant: triggerVariant,
       loading,
@@ -137,11 +137,36 @@ const InternalButtonDropdown = React.forwardRef(
       },
     };
 
+    const triggerHasBadge = () => {
+      const flatItems = items.flatMap(item => {
+        if ('items' in item) {
+          return item.items;
+        }
+        return item;
+      });
+
+      return (
+        variant === 'icon' &&
+        !!flatItems?.find(item => {
+          if ('badge' in item) {
+            return item.badge;
+          }
+        })
+      );
+    };
+
     let trigger: React.ReactNode = null;
     if (customTriggerBuilder) {
       trigger = (
         <div className={styles['dropdown-trigger']}>
-          {customTriggerBuilder(clickHandler, triggerRef, disabled, isOpen, ariaLabel)}
+          {customTriggerBuilder({
+            testUtilsClass: styles['test-utils-button-trigger'],
+            onClick: clickHandler,
+            triggerRef,
+            ariaLabel,
+            disabled,
+            isOpen,
+          })}
         </div>
       );
     } else if (isMainAction) {
@@ -190,7 +215,7 @@ const InternalButtonDropdown = React.forwardRef(
     } else {
       trigger = (
         <div className={styles['dropdown-trigger']}>
-          <InternalButton ref={triggerRef} {...baseTriggerProps}>
+          <InternalButton ref={triggerRef} {...baseTriggerProps} badge={triggerHasBadge()}>
             {children}
           </InternalButton>
         </div>

@@ -10,12 +10,14 @@ import InternalButtonDropdown from '../../../button-dropdown/internal';
 import InternalIcon from '../../../icon/internal';
 import buttonDropdownStyles from '../../../button-dropdown/styles.css.js';
 import styles from './styles.css.js';
+import { CustomTriggerProps } from '../../../button-dropdown/interfaces';
 
 export { MenuDropdownProps };
 
 export const ButtonTrigger = React.forwardRef(
   (
     {
+      testUtilsClass,
       iconName,
       iconUrl,
       iconAlt,
@@ -36,7 +38,9 @@ export const ButtonTrigger = React.forwardRef(
       <button
         ref={ref}
         type="button"
-        className={clsx(styles.button, styles[`offset-right-${offsetRight}`], { [styles.expanded]: expanded })}
+        className={clsx(styles.button, styles[`offset-right-${offsetRight}`], testUtilsClass, {
+          [styles.expanded]: expanded,
+        })}
         aria-label={ariaLabel}
         aria-expanded={!!expanded}
         aria-haspopup={true}
@@ -74,19 +78,26 @@ const MenuDropdown = ({
   iconAlt,
   iconSvg,
   badge,
-  ariaLabel,
   offsetRight,
   children,
   ...props
 }: MenuDropdownProps) => {
   const baseProps = getBaseProps(props);
 
-  const dropdownTrigger = (clickHandler: () => void, ref: React.Ref<any>, isDisabled: boolean, isExpanded: boolean) => {
+  const dropdownTrigger = ({
+    triggerRef,
+    ariaLabel,
+    isOpen,
+    testUtilsClass,
+    disabled,
+    onClick,
+  }: CustomTriggerProps) => {
     return (
       <ButtonTrigger
-        ref={ref}
-        disabled={isDisabled}
-        expanded={isExpanded}
+        testUtilsClass={testUtilsClass}
+        ref={triggerRef}
+        disabled={disabled}
+        expanded={isOpen}
         iconName={iconName}
         iconUrl={iconUrl}
         iconAlt={iconAlt}
@@ -94,7 +105,7 @@ const MenuDropdown = ({
         badge={badge}
         ariaLabel={ariaLabel}
         offsetRight={offsetRight}
-        onClick={clickHandler}
+        onClick={onClick}
       >
         {children}
       </ButtonTrigger>
