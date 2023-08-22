@@ -48,7 +48,7 @@ describe('Wizard Analytics', () => {
       expect.objectContaining({
         funnelType: 'multi-page',
         totalFunnelSteps: 3, // Length of DEFAULT_STEPS.length,
-        optionalStepNumbers: [1], // DEFAULT_STEPS[1] is optional
+        optionalStepNumbers: [2], // DEFAULT_STEPS[1] is optional
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
@@ -343,7 +343,7 @@ describe('Wizard Analytics', () => {
       expect.objectContaining({
         funnelType: 'multi-page',
         totalFunnelSteps: 3,
-        optionalStepNumbers: [1],
+        optionalStepNumbers: [2],
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
