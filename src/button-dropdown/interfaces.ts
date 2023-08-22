@@ -41,8 +41,6 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
 
-   * - `badge` (boolean) - (Optional) Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
-
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
   /**
@@ -138,7 +136,6 @@ export namespace ButtonDropdownProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
-    badge?: boolean;
   }
 
   export interface ItemGroup extends Omit<Item, 'id' | 'text'> {

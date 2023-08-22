@@ -88,11 +88,6 @@ $dropdown-trigger-icon-offset: 2px;
 }
 .dropdown-trigger {
   display: contents;
-
-  & > .trigger-active,
-  & > .trigger-active:hover {
-    color: awsui.$color-text-layout-toggle-active;
-  }
 }
 
 .test-utils-button-trigger {
