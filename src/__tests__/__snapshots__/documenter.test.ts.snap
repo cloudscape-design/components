@@ -3233,8 +3233,6 @@ An item which belongs to nested group has the following properties: \`id\`, \`te
 
 - \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
-- \`badge\` (boolean) - (Optional) Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
-
 ",
       "name": "items",
       "optional": false,
