@@ -6,6 +6,7 @@ import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useAppLayoutContext } from '../../internal/context/app-layout-context';
 import clsx from 'clsx';
 import styles from './styles.css.js';
+import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 interface StickyScrollbarProps {
@@ -27,6 +28,12 @@ function StickyScrollbar(
   const mergedRef = useMergeRefs(ref, scrollbarRef);
 
   /**
+   * If the height of the scrollbar is 0, we're likely on a platform that uses
+   * overlay scrollbars (e.g. Mac).
+   */
+  const forceOffsetScrollbar = browserScrollbarSize().height === 0;
+
+  /**
    * Use the appropriate AppLayout context (Classic or Visual Refresh) to determine
    * the offsetBottom value to be used in the useStickyScrollbar hook.
    */
@@ -39,7 +46,7 @@ function StickyScrollbar(
       ref={mergedRef}
       className={clsx(
         styles['sticky-scrollbar'],
-        offsetScrollbar && styles['sticky-scrollbar-offset'],
+        (offsetScrollbar || forceOffsetScrollbar) && styles['sticky-scrollbar-offset'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onScroll={onScroll}
