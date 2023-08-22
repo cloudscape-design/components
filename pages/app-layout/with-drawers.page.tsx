@@ -39,6 +39,7 @@ export default function WithDrawers() {
     : {
         drawers: {
           ariaLabel: 'Drawers',
+          overflowAriaLabel: 'Overflow drawers',
           activeDrawerId: activeDrawerId,
           items: [
             {

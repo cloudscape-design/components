@@ -6,10 +6,11 @@ import { ToggleButton, CloseButton, togglesConfig } from '../toggles';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
-import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
-import { InternalButton } from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
+import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem } from './interfaces';
+import OverflowMenu from './overflow-menu';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import { splitItems } from './drawers-helpers';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -177,38 +178,6 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
 
   const { visibleItems, overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem(), drawers?.activeDrawerId);
 
-  const overflowItemIsActive = () => {
-    if (drawers && drawers.activeDrawerId) {
-      return (
-        drawers.items
-          .slice(getIndexOfOverflowItem(), drawers.items.length)
-          .map(item => item.id)
-          .indexOf(drawers.activeDrawerId) !== -1
-      );
-    }
-    return false;
-  };
-
-  const getDrawerItems = () => {
-    if (drawers && drawers.items) {
-      const activeIndex = drawers.activeDrawerId && drawers.items.map(item => item.id).indexOf(drawers.activeDrawerId);
-      const lastMainItemIndex = getIndexOfOverflowItem() - 1;
-
-      const activeDrawerItem = drawers.items.find(item => item.id === drawers.activeDrawerId);
-      const lastMainItem = drawers.items.find((item, index) => index === lastMainItemIndex);
-
-      if (activeIndex && overflowItemIsActive() && activeDrawerItem && lastMainItem) {
-        [drawers.items[lastMainItemIndex], drawers.items[activeIndex]] = [
-          drawers.items[activeIndex],
-          drawers.items[lastMainItemIndex],
-        ];
-      }
-
-      return drawers.items;
-    }
-    return [];
-  };
-
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
@@ -227,7 +196,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
             className={clsx(styles['drawer-triggers-wrapper'], testutilStyles['drawers-desktop-triggers-container'])}
           >
             <>
-              {visibleItems.map((item: DrawerItem, index: number) => {
+              {visibleItems.map((item, index) => {
                 return (
                   <DrawerTrigger
                     key={index}
@@ -249,9 +218,9 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
               {overflowItems.length > 0 && (
                 <div className={clsx(styles['drawer-trigger'])}>
                   <OverflowMenu
-                    ariaLabel="overflow label"
+                    ariaLabel={drawers?.overflowAriaLabel}
                     items={overflowItems}
-                    onItemClick={({ detail }: any) => {
+                    onItemClick={({ detail }) => {
                       drawers?.onChange({
                         activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
                       });

@@ -47,7 +47,7 @@ export const ToggleButton = React.forwardRef(
         aria-haspopup={ariaExpanded ? undefined : true}
         data-testid={testId}
       >
-        <InternalIcon svg={iconSvg} name={iconName} badge={badge} badgeColor="red" />
+        <InternalIcon svg={iconSvg} name={iconName} badge={badge} />
       </button>
     );
   }

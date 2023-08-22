@@ -109,6 +109,7 @@ export function useDrawers(
 
   return {
     ariaLabel: ownDrawers?.ariaLabel,
+    overflowAriaLabel: ownDrawers?.overflowAriaLabel,
     drawers: combinedDrawers,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,

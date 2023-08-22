@@ -505,6 +505,7 @@ const OldAppLayout = React.forwardRef(
                         }
                       },
                       ariaLabel: drawersProps.ariaLabel,
+                      overflowAriaLabel: drawersProps.overflowAriaLabel,
                     }
                   : undefined
               }
@@ -689,8 +690,6 @@ const OldAppLayout = React.forwardRef(
               ))}
             {hasDrawers && (
               <DrawerTriggersBar
-                contentClassName={testutilStyles['drawers-desktop-triggers-container']}
-                toggleClassName={testutilStyles['drawers-trigger']}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}
@@ -706,6 +705,7 @@ const OldAppLayout = React.forwardRef(
                     onActiveDrawerChange(changeDetail.activeDrawerId);
                   },
                   ariaLabel: drawersProps.ariaLabel,
+                  overflowAriaLabel: drawersProps.overflowAriaLabel,
                 }}
               />
             )}

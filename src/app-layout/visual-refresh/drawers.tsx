@@ -9,12 +9,10 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
-import buttonDropdownStyles from '../../button-dropdown/styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
-import { DrawerItem } from '../drawer/interfaces';
 import { splitItems } from '../drawer/drawers-helpers';
 
 /**
@@ -150,6 +148,7 @@ function DesktopTriggers() {
     activeDrawerId,
     drawers,
     drawersAriaLabel,
+    drawersOverflowAriaLabel,
     drawersRefs,
     drawersTriggerCount,
     handleDrawersClick,
@@ -222,7 +221,7 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         })}
       >
-        {visibleItems.map((item: DrawerItem) => {
+        {visibleItems.map(item => {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -245,8 +244,8 @@ function DesktopTriggers() {
         {overflowItems.length > 0 && (
           <OverflowMenu
             items={overflowItems}
-            ariaLabel="overflow label"
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, testUtilsClass }: any) => (
+            ariaLabel={drawersOverflowAriaLabel}
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, testUtilsClass }) => (
               <div className={clsx(styles['trigger-wrapper'])}>
                 <TriggerButton
                   ref={triggerRef}
@@ -265,13 +264,9 @@ function DesktopTriggers() {
                 {overflowMenuHasBadge && <div className={clsx(styles.dot)} />}
               </div>
             )}
-            onItemClick={({ detail }: any) => {
+            onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
             }}
-            ariaLabel="Overflow drawer triggers"
-            variant="icon"
-            customTriggerBuilder={getTrigger(false, isMobile)}
-            expandToViewport={true}
           />
         )}
         {hasSplitPanel && splitPanelToggle.displayed && (
@@ -298,13 +293,15 @@ function DesktopTriggers() {
 export function MobileTriggers() {
   const {
     activeDrawerId,
-    drawersAriaLabel,
     drawers,
+    drawersAriaLabel,
+    drawersOverflowAriaLabel,
     drawersRefs,
     handleDrawersClick,
     hasDrawerViewportOverlay,
     isMobile,
   } = useAppLayoutInternals();
+
   const previousActiveDrawerId = useRef(activeDrawerId);
 
   if (!isMobile || drawers.length === 0) {
@@ -319,11 +316,6 @@ export function MobileTriggers() {
 
   const { visibleItems, overflowItems } = splitItems(drawers, splitIndex, activeDrawerId, true);
 
-  const mobileItems = !toolsHide && tools ? drawers.items.slice(0, 1) : drawers.items.slice(0, 2);
-  const hasOverflowMenu = !toolsHide && tools ? drawers?.items?.length > 2 : drawers?.items?.length > 3;
-  const overflowItems =
-    !toolsHide && tools ? drawers.items.slice(1, drawers.items.length) : drawers.items.slice(2, drawers.items.length);
-
   return (
     <aside
       aria-hidden={hasDrawerViewportOverlay}
@@ -336,7 +328,7 @@ export function MobileTriggers() {
       )}
       aria-label={drawersAriaLabel}
     >
-      {visibleItems.map((item: DrawerItem) => (
+      {visibleItems.map(item => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
@@ -356,8 +348,8 @@ export function MobileTriggers() {
       {overflowItems.length > 0 && (
         <OverflowMenu
           items={overflowItems}
-          ariaLabel="overflow label"
-          onItemClick={({ detail }: any) => {
+          ariaLabel={drawersOverflowAriaLabel}
+          onItemClick={({ detail }) => {
             handleDrawersClick(detail.id);
           }}
         />

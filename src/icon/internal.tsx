@@ -14,7 +14,6 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
     badge?: boolean;
-    badgeColor?: 'blue' | 'red';
   };
 
 function iconSizeMap(height: number | null) {
@@ -44,7 +43,6 @@ const InternalIcon = ({
   alt,
   svg,
   badge,
-  badgeColor = 'blue',
   __internalRootRef = null,
   ...props
 }: InternalIconProps) => {
@@ -62,7 +60,6 @@ const InternalIcon = ({
     styles.icon,
     contextualSize && styles['icon-flex-height'],
     badge && styles.badge,
-    badgeColor && styles[`badge-${badgeColor}`],
     !contextualSize && styles[`size-${iconSize}-mapped-height`],
     styles[`size-${iconSize}`],
     styles[`variant-${variant}`]
