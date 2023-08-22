@@ -137,3 +137,16 @@ test(
     await page.waitForAssertion(() => expect(page.isFocused(cellInputField$)).resolves.toBe(true));
   })
 );
+
+test(
+  'click focusable element outside when editing cancels editing and focuses clicked element',
+  setupTest(async page => {
+    // Edit a cell
+    await page.click(cellEditButton$);
+    await expect(page.isFocused(cellInputField$)).resolves.toBe(true);
+
+    // Click on the input element outside, it should get focused.
+    await page.click('[data-testid="focus"]');
+    await expect(page.isFocused('[data-testid="focus"]')).resolves.toBe(true);
+  })
+);
