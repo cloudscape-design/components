@@ -228,9 +228,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .click-target {
   cursor: pointer;
-  &-content {
-    display: inherit;
-  }
   &:not(.wrapper-container):not(.header-container-button):hover {
     color: awsui.$color-text-expandable-section-hover;
   }

@@ -400,9 +400,6 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, v
     }
   };
 
-  // By using `disableExpandChangeOnHeaderTextClick`, clicking the header text will not toggle the expandable section.
-  const disableExpandChangeOnHeaderTextClick = true;
-
   return (
     <InternalExpandableSection
       className={clsx(
@@ -412,7 +409,6 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, v
       variant="navigation"
       expanded={userExpanded ?? expanded}
       onChange={onExpandedChange}
-      __disableExpandChangeOnHeaderTextClick={disableExpandChangeOnHeaderTextClick}
       headerText={
         <Link
           definition={{ type: 'link', href: definition.href, text: definition.text }}

@@ -18,8 +18,7 @@ import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { variantSupportsDescription } from './utils';
 
-type InternalExpandableSectionProps = ExpandableSectionProps &
-  InternalBaseComponentProps & { __disableExpandChangeOnHeaderTextClick?: boolean };
+type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
 export default function InternalExpandableSection({
   expanded: controlledExpanded,
@@ -36,7 +35,6 @@ export default function InternalExpandableSection({
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
-  __disableExpandChangeOnHeaderTextClick = false,
   __internalRootRef,
   ...props
 }: InternalExpandableSectionProps) {
@@ -115,7 +113,6 @@ export default function InternalExpandableSection({
           headerInfo={headerInfo}
           headerActions={headerActions}
           headingTagOverride={headingTagOverride}
-          disableExpandChangeOnHeaderTextClick={__disableExpandChangeOnHeaderTextClick}
           {...triggerProps}
         />
       }

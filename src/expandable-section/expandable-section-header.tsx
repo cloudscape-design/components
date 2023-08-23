@@ -29,7 +29,6 @@ interface ExpandableDefaultHeaderProps {
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
   ariaLabelledBy?: string;
-  disableExpandChangeOnHeaderTextClick?: boolean;
 }
 
 interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps {
@@ -50,7 +49,6 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headerActions?: ReactNode;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
-  disableExpandChangeOnHeaderTextClick?: boolean;
 }
 
 const ExpandableDeprecatedHeader = ({
@@ -95,10 +93,7 @@ const ExpandableNavigationHeader = ({
   expanded,
   children,
   icon,
-  disableExpandChangeOnHeaderTextClick,
 }: ExpandableNavigationHeaderProps) => {
-  // By using `disableExpandChangeOnHeaderTextClick`, clicking the header text will not toggle the expandable section.
-  // We use this for the "expandable-link-group" in the side navigation.
   return (
     <div id={id} className={clsx(className, styles['click-target'])}>
       <button
@@ -112,12 +107,7 @@ const ExpandableNavigationHeader = ({
       >
         {icon}
       </button>
-      <span
-        className={styles['click-target-content']}
-        onClick={disableExpandChangeOnHeaderTextClick ? () => {} : onClick}
-      >
-        {children}
-      </span>
+      {children}
     </div>
   );
 };
@@ -232,7 +222,6 @@ export const ExpandableSectionHeader = ({
   onKeyUp,
   onKeyDown,
   onClick,
-  disableExpandChangeOnHeaderTextClick,
 }: ExpandableSectionHeaderProps) => {
   const icon = (
     <InternalIcon
@@ -268,7 +257,6 @@ export const ExpandableSectionHeader = ({
       <ExpandableNavigationHeader
         className={clsx(className, wrapperClassName)}
         ariaLabelledBy={ariaLabelledBy}
-        disableExpandChangeOnHeaderTextClick={disableExpandChangeOnHeaderTextClick}
         {...defaultHeaderProps}
       >
         {headerText ?? header}
