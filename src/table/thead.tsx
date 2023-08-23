@@ -34,6 +34,7 @@ export interface TheadProps {
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
   getSelectAllProps: () => SelectionProps;
+  onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   onResizeFinish: (newWidths: Record<string, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
   sticky?: boolean;
@@ -61,6 +62,7 @@ const Thead = React.forwardRef(
       resizableColumns,
       variant,
       wrapLines,
+      onFocusMove,
       onSortingChange,
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
@@ -121,6 +123,11 @@ const Thead = React.forwardRef(
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
+                  onFocusDown={event => {
+                    if (tableRole !== 'grid') {
+                      onFocusMove!(event.target as HTMLElement, -1, +1);
+                    }
+                  }}
                   focusedComponent={focusedComponent}
                   onFocusedComponentChange={onFocusedComponentChange}
                   {...getSelectAllProps()}

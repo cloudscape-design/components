@@ -14,7 +14,7 @@ import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
-import { focusMarkers, useSelection } from './use-selection';
+import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
@@ -39,6 +39,7 @@ import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps, useG
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import useTableFocusNavigation from './use-table-focus-navigation';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -121,6 +122,7 @@ const InternalTable = React.forwardRef(
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
+    const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({
@@ -204,6 +206,7 @@ const InternalTable = React.forwardRef(
       sortingDisabled,
       sortingDescending,
       onSortingChange,
+      onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
           (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_COLUMN_WIDTH
@@ -233,6 +236,7 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length, tableRole);
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -413,7 +417,12 @@ const InternalTable = React.forwardRef(
                               colIndex={0}
                               tableRole={tableRole}
                             >
-                              <SelectionControl onShiftToggle={updateShiftToggle} {...getItemSelectionProps(item)} />
+                              <SelectionControl
+                                onFocusDown={moveFocusDown}
+                                onFocusUp={moveFocusUp}
+                                onShiftToggle={updateShiftToggle}
+                                {...getItemSelectionProps(item)}
+                              />
                             </TableTdElement>
                           )}
                           {visibleColumnDefinitions.map((column, colIndex) => {

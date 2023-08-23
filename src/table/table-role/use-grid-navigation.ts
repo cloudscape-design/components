@@ -17,7 +17,7 @@ export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigat
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
   useEffect(
     () => {
-      if (tableRole === 'grid' || tableRole === 'grid-default') {
+      if (tableRole === 'grid') {
         const table = getTable();
         table && model.init(table);
       }
@@ -87,7 +87,6 @@ class GridNavigationModel {
     return this._table;
   }
 
-  // TODO: support checkbox click
   private onFocusin = (event: FocusEvent) => {
     const cell = findFocusinCell(event);
 
