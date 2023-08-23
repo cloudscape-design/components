@@ -4,6 +4,7 @@ import React from 'react';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import AppLayout from '~components/app-layout';
 import Badge from '~components/badge';
+import labels from '../app-layout/utils/labels';
 
 import logoSmall from './logos/logo-small.svg';
 
@@ -110,7 +111,7 @@ export default function SideNavigationPage() {
         setOpen(detail.open);
       }}
       contentType="form"
-      ariaLabels={{ navigationClose: 'Close' }}
+      ariaLabels={labels}
       navigation={
         <SideNavigation
           activeHref="#/"
