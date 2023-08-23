@@ -12,7 +12,7 @@ export interface TriggerButtonProps {
   className?: string;
   iconName?: IconProps.Name;
   iconSvg?: React.ReactNode;
-  ariaExpanded: boolean;
+  ariaExpanded: boolean | undefined;
   ariaControls?: string;
   testId?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;

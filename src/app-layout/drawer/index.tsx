@@ -66,7 +66,7 @@ export const Drawer = React.forwardRef(
           iconName={iconName}
           ariaLabel={openLabel}
           onClick={() => onToggle(true)}
-          ariaExpanded={false}
+          ariaExpanded={isOpen ? undefined : false}
         />
       </TagName>
     );

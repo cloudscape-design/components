@@ -104,7 +104,6 @@ export default function Tools({ children }: ToolsProps) {
                 <div className={clsx(styles['hide-tools'])}>
                   <InternalButton
                     ariaLabel={ariaLabels?.toolsClose ?? undefined}
-                    ariaExpanded={isToolsOpen}
                     iconName={isMobile ? 'close' : 'angle-right'}
                     onClick={() => handleToolsClick(false)}
                     variant="icon"

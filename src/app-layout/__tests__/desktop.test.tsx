@@ -240,6 +240,12 @@ describeEachThemeAppLayout(false, () => {
 
     expect(wrapper.findDrawersTriggers()!.length).toBeLessThan(100);
   });
+
+  test('Renders aria-controls on toggle', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+
+    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-controls', 'security');
+  });
 });
 
 // In VR we use a custom CSS property so we cannot test the style declaration.

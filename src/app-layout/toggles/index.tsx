@@ -55,7 +55,7 @@ export const ToggleButton = React.forwardRef(
         onClick={onClick}
         disabled={disabled}
         aria-expanded={ariaExpanded}
-        aria-haspopup={ariaExpanded}
+        aria-haspopup={ariaExpanded ? undefined : true}
         aria-controls={ariaControls}
         data-testid={testId}
       >
