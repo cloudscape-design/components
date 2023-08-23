@@ -95,6 +95,7 @@ function ActiveDrawer() {
 
   return (
     <aside
+      id={activeDrawerId}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
@@ -158,6 +159,7 @@ function DesktopTriggers() {
     isSplitPanelOpen,
     isToolsOpen,
     splitPanel,
+    splitPanelControlId,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
@@ -220,12 +222,15 @@ function DesktopTriggers() {
           [styles['has-multiple-triggers']]: hasMultipleTriggers,
           [styles['has-open-drawer']]: hasOpenDrawer,
         })}
+        role="toolbar"
+        aria-orientation="vertical"
       >
         {visibleItems.map(item => {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={item.id === activeDrawerId}
+              ariaControls={item.id}
               className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
@@ -274,6 +279,7 @@ function DesktopTriggers() {
         {hasSplitPanel && splitPanelToggle.displayed && (
           <TriggerButton
             ariaLabel={splitPanelToggle.ariaLabel}
+            ariaControls={splitPanelControlId}
             ariaExpanded={!!isSplitPanelOpen}
             className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
             iconName="view-vertical"

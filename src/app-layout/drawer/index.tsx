@@ -73,6 +73,7 @@ export const Drawer = React.forwardRef(
 
     return (
       <div
+        id={drawers?.activeDrawerId}
         ref={ref}
         className={clsx(styles.drawer, {
           [styles['drawer-closed']]: !isOpen,
@@ -132,6 +133,7 @@ interface DrawerTriggerProps {
   testUtilsClassName?: string;
   ariaLabel: string | undefined;
   ariaExpanded: boolean;
+  ariaControls: string | undefined;
   badge: boolean | undefined;
   itemId?: string;
   isActive: boolean;
@@ -141,7 +143,17 @@ interface DrawerTriggerProps {
 
 const DrawerTrigger = React.forwardRef(
   (
-    { testUtilsClassName, ariaLabel, ariaExpanded, badge, itemId, isActive, trigger, onClick }: DrawerTriggerProps,
+    {
+      testUtilsClassName,
+      ariaLabel,
+      ariaExpanded,
+      ariaControls,
+      badge,
+      itemId,
+      isActive,
+      trigger,
+      onClick,
+    }: DrawerTriggerProps,
     ref: React.Ref<{ focus: () => void }>
   ) => (
     <div className={clsx(styles['drawer-trigger'], isActive && styles['drawer-trigger-active'])} onClick={onClick}>
@@ -152,6 +164,7 @@ const DrawerTrigger = React.forwardRef(
         iconSvg={trigger.iconSvg}
         ariaLabel={ariaLabel}
         ariaExpanded={ariaExpanded}
+        ariaControls={ariaControls}
         badge={badge}
         testId={itemId && `awsui-app-layout-trigger-${itemId}`}
       />
@@ -189,6 +202,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
         ref={triggersContainerRef}
         style={{ top: topOffset, bottom: bottomOffset }}
         className={clsx(styles['drawer-content'])}
+        role="toolbar"
       >
         {!isMobile && (
           <aside
@@ -203,6 +217,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                     testUtilsClassName={testutilStyles['drawers-trigger']}
                     ariaExpanded={drawers?.activeDrawerId === item.id}
                     ariaLabel={item.ariaLabels?.triggerButton}
+                    ariaControls={item.id}
                     trigger={item.trigger}
                     badge={item.badge}
                     itemId={item.id}
