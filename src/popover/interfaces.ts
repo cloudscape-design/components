@@ -29,7 +29,7 @@ export interface PopoverProps extends BaseComponentProps {
   triggerType?: PopoverProps.TriggerType;
 
   /**
-   * Adds an aria-label to the popover's text trigger button.
+   * Adds an aria-label to the text trigger button.
    */
   triggerAriaLabel?: string;
 
