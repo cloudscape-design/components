@@ -37,6 +37,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | undefined;
   drawers: Array<DrawerItem>;
   drawersAriaLabel: string | undefined;
+  drawersOverflowAriaLabel: string | undefined;
   drawersRefs: DrawerFocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
@@ -592,6 +593,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           contentType,
           drawers,
           drawersAriaLabel: drawersProps.ariaLabel,
+          drawersOverflowAriaLabel: drawersProps.overflowAriaLabel,
           drawersRefs,
           drawersMaxWidth,
           drawerSize,

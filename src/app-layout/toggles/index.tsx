@@ -32,7 +32,7 @@ export const togglesConfig = {
 
 export const ToggleButton = React.forwardRef(
   (
-    { className, ariaLabel, ariaExpanded, iconName, iconSvg, disabled, testId, onClick }: AppLayoutButtonProps,
+    { className, ariaLabel, ariaExpanded, iconName, iconSvg, disabled, testId, onClick, badge }: AppLayoutButtonProps,
     ref: React.Ref<{ focus(): void }>
   ) => {
     return (
@@ -47,7 +47,7 @@ export const ToggleButton = React.forwardRef(
         aria-haspopup={ariaExpanded ? undefined : true}
         data-testid={testId}
       >
-        <InternalIcon svg={iconSvg} name={iconName} />
+        <InternalIcon svg={iconSvg} name={iconName} badge={badge} />
       </button>
     );
   }

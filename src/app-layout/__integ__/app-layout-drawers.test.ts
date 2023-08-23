@@ -12,7 +12,7 @@ class AppLayoutDrawersPage extends BasePageObject {
   }
 
   async openThirdPanel() {
-    await this.click(wrapper.findDrawersTriggers().get(3).toSelector());
+    await this.click(wrapper.findDrawerTriggerById('links').toSelector());
   }
 
   async dragResizerTo({ x: targetX, y: targetY }: { x: number; y: number }) {

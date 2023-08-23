@@ -12,4 +12,5 @@ export interface AppLayoutButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   testId?: string;
+  badge?: boolean;
 }

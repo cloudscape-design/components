@@ -12,6 +12,11 @@ beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
 });
 
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [1300, () => {}],
+}));
+
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
