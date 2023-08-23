@@ -135,6 +135,40 @@ test('supports arrow keys navigation', () => {
   expect(getActiveElement()).toEqual(['button', 'desc']);
 });
 
+test('up/down navigation works when first data row index is not 2', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    return (
+      <table role="grid" ref={tableRef}>
+        <thead>
+          <tr aria-rowindex={1}>
+            <th aria-colindex={1}>header-1</th>
+            <th aria-colindex={2}>header-2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr aria-rowindex={5}>
+            <td aria-colindex={1}>cell-1-1</td>
+            <td aria-colindex={2}>cell-1-2</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+  const { container } = render(<TestComponent />);
+  const table = container.querySelector('table')!;
+
+  container.querySelector('th')?.focus();
+  expect(getActiveElement()).toEqual(['th', 'header-1']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['td', 'cell-1-1']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.up });
+  expect(getActiveElement()).toEqual(['th', 'header-1']);
+});
+
 test('supports key combination navigation', () => {
   const { container } = render(<InteractiveTable />);
   const table = container.querySelector('table')!;
