@@ -129,7 +129,7 @@ export function MobileToolbar({
           aria-label={drawers.ariaLabel}
           className={clsx(styles['drawers-container'], testutilStyles['drawers-mobile-triggers-container'])}
         >
-          {visibleItems.map((item: DrawerItem, index: number) => (
+          {visibleItems.map((item, index) => (
             <div
               className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
               key={index}
@@ -141,7 +141,7 @@ export function MobileToolbar({
                 iconSvg={item.trigger.iconSvg}
                 badge={item.badge}
                 ariaLabel={item.ariaLabels?.triggerButton}
-                ariaExpanded={drawers.activeDrawerId !== undefined}
+                ariaExpanded={drawers.activeDrawerId === item.id}
                 testId={`awsui-app-layout-trigger-${item.id}`}
               />
             </div>

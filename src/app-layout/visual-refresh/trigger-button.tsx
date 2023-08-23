@@ -12,6 +12,7 @@ export interface TriggerButtonProps {
   className?: string;
   iconName?: IconProps.Name;
   iconSvg?: React.ReactNode;
+  ariaExpanded: boolean;
   testId?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
@@ -19,13 +20,23 @@ export interface TriggerButtonProps {
 }
 
 function TriggerButton(
-  { ariaLabel, className, iconName, iconSvg, onClick, testId, badge, selected = false }: TriggerButtonProps,
+  {
+    ariaLabel,
+    className,
+    iconName,
+    iconSvg,
+    ariaExpanded,
+    onClick,
+    testId,
+    badge,
+    selected = false,
+  }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
     <div className={clsx(styles['trigger-wrapper'])}>
       <button
-        aria-expanded={false}
+        aria-expanded={ariaExpanded}
         aria-haspopup={true}
         aria-label={ariaLabel}
         className={clsx(

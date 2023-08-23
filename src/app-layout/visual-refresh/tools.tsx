@@ -101,6 +101,7 @@ export default function Tools({ children }: ToolsProps) {
                 <div className={clsx(styles['hide-tools'])}>
                   <InternalButton
                     ariaLabel={ariaLabels?.toolsClose ?? undefined}
+                    ariaExpanded={isToolsOpen}
                     iconName={isMobile ? 'close' : 'angle-right'}
                     onClick={() => handleToolsClick(false)}
                     variant="icon"
@@ -130,6 +131,7 @@ export default function Tools({ children }: ToolsProps) {
               {!toolsHide && (
                 <TriggerButton
                   ariaLabel={ariaLabels?.toolsToggle}
+                  ariaExpanded={isToolsOpen}
                   iconName="status-info"
                   onClick={() => handleToolsClick(!isToolsOpen)}
                   selected={hasSplitPanel && isToolsOpen}
@@ -141,6 +143,7 @@ export default function Tools({ children }: ToolsProps) {
               {hasSplitPanel && splitPanelToggle.displayed && (
                 <TriggerButton
                   ariaLabel={splitPanelToggle.ariaLabel}
+                  ariaExpanded={!!isSplitPanelOpen}
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}

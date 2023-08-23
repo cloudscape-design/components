@@ -225,6 +225,7 @@ function DesktopTriggers() {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
+              ariaExpanded={item.id === activeDrawerId}
               className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
@@ -245,11 +246,12 @@ function DesktopTriggers() {
           <OverflowMenu
             items={overflowItems}
             ariaLabel={drawersOverflowAriaLabel}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, testUtilsClass }) => (
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, testUtilsClass, ariaExpanded }) => (
               <div className={clsx(styles['trigger-wrapper'])}>
                 <TriggerButton
                   ref={triggerRef}
                   ariaLabel={ariaLabel}
+                  ariaExpanded={ariaExpanded}
                   className={clsx(
                     styles['drawers-trigger'],
                     {
@@ -272,6 +274,7 @@ function DesktopTriggers() {
         {hasSplitPanel && splitPanelToggle.displayed && (
           <TriggerButton
             ariaLabel={splitPanelToggle.ariaLabel}
+            ariaExpanded={!!isSplitPanelOpen}
             className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
             iconName="view-vertical"
             onClick={() => handleSplitPanelClick()}

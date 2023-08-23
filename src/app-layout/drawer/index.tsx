@@ -201,7 +201,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                   <DrawerTrigger
                     key={index}
                     testUtilsClassName={testutilStyles['drawers-trigger']}
-                    ariaExpanded={drawers?.activeDrawerId !== undefined}
+                    ariaExpanded={drawers?.activeDrawerId === item.id}
                     ariaLabel={item.ariaLabels?.triggerButton}
                     trigger={item.trigger}
                     badge={item.badge}
