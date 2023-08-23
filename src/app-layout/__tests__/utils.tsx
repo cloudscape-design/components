@@ -76,7 +76,7 @@ export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: 
   }
 }
 
-export function describeEachAppLayout(callback: (size) => void) {
+export function describeEachAppLayout(callback: (size: 'desktop' | 'mobile') => void) {
   for (const theme of ['refresh', 'classic']) {
     for (const size of ['desktop', 'mobile'] as const) {
       describe(`Theme=${theme}, Size=${size}`, () => {
