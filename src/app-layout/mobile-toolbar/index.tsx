@@ -6,9 +6,12 @@ import { ButtonProps } from '../../button/interfaces';
 import { AppLayoutProps } from '../interfaces';
 import { DrawerItem } from '../drawer/interfaces';
 import { ToggleButton, togglesConfig } from '../toggles';
+import OverflowMenu from '../drawer/overflow-menu';
 import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import { splitItems } from '../drawer/drawers-helpers';
+
 interface MobileToggleProps {
   className?: string;
   ariaLabels?: AppLayoutProps.Labels;
@@ -61,6 +64,7 @@ interface MobileToolbarProps {
     activeDrawerId: string | undefined;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
     ariaLabel?: string;
+    overflowAriaLabel?: string;
   };
 }
 
@@ -88,6 +92,9 @@ export function MobileToolbar({
       document.body.classList.remove(styles['block-body-scroll']);
     }
   }, [anyPanelOpen]);
+
+  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId, true);
+
   return (
     <div
       ref={mobileBarRef}
@@ -122,19 +129,36 @@ export function MobileToolbar({
           aria-label={drawers.ariaLabel}
           className={clsx(styles['drawers-container'], testutilStyles['drawers-mobile-triggers-container'])}
         >
-          {drawers.items.map((item: DrawerItem, index: number) => (
-            <span className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])} key={index}>
+          {visibleItems.map((item: DrawerItem, index: number) => (
+            <div
+              className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
+              key={index}
+              onClick={() => drawers.onChange({ activeDrawerId: item.id })}
+            >
               <ToggleButton
                 className={testutilStyles['drawers-trigger']}
                 iconName={item.trigger.iconName}
                 iconSvg={item.trigger.iconSvg}
+                badge={item.badge}
                 ariaLabel={item.ariaLabels?.triggerButton}
-                onClick={() => drawers.onChange({ activeDrawerId: item.id })}
                 ariaExpanded={drawers.activeDrawerId !== undefined}
                 testId={`awsui-app-layout-trigger-${item.id}`}
               />
-            </span>
+            </div>
           ))}
+          {overflowItems.length > 0 && (
+            <div className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
+              <OverflowMenu
+                ariaLabel={drawers.overflowAriaLabel}
+                items={overflowItems}
+                onItemClick={({ detail }) => {
+                  drawers.onChange({
+                    activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                  });
+                }}
+              />
+            </div>
+          )}
         </aside>
       )}
     </div>

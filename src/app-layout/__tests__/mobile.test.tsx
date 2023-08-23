@@ -9,6 +9,7 @@ import {
   renderComponent,
   singleDrawer,
   singleDrawerOpen,
+  manyDrawers,
   splitPanelI18nStrings,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
@@ -16,7 +17,9 @@ import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
+
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 
@@ -353,5 +356,10 @@ describeEachThemeAppLayout(true, theme => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
     expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
     expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
+  });
+
+  test('should render badge when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+    expect(wrapper.findDrawersTriggers()[0]!.getElement().children[0]).toHaveClass(iconStyles.badge);
   });
 });

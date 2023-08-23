@@ -13,6 +13,11 @@ import {
 } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [100, () => {}],
+}));
+
 describeEachAppLayout(() => {
   test('Default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
