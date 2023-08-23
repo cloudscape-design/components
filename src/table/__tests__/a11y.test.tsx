@@ -102,7 +102,7 @@ describe('labels', () => {
       const [headerRow, firstRowInTable] = wrapper.findAll('tr');
       // header row is always index 1
       expect(headerRow!.getElement().getAttribute('aria-rowindex')).toEqual('1');
-      // rows in a table are index + 1  as header row is index 1
+      // rows in a table are index + 1 as header row is index 1
       expect(firstRowInTable!.getElement().getAttribute('aria-rowindex')).toEqual('22');
     });
   });

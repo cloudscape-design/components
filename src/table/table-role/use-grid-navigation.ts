@@ -5,7 +5,7 @@ import { useEffect, useMemo } from 'react';
 import { findFocusinCell, moveFocusBy, moveFocusIn, updateTableIndices } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
-import { containsOrEqual } from '../../internal/utils/dom';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
 /**
  * Makes table with role="grid" navigable with keyboard commands.
@@ -212,7 +212,7 @@ class GridNavigationModel {
     for (const record of mutationRecords) {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {
-          if (containsOrEqual(removedNode, this.prevFocusedCell.element)) {
+          if (removedNode === this.prevFocusedCell.element || nodeContains(removedNode, this.prevFocusedCell.element)) {
             moveFocusBy(this.table, this.prevFocusedCell, { y: 0, x: 0 });
           }
         }

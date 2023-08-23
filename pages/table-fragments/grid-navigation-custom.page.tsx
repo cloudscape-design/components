@@ -208,8 +208,7 @@ export default function Page() {
                         <td
                           key={column.key}
                           className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex })}
-                          data-widget-cell={column.isWidget}
+                          {...getTableCellRoleProps({ tableRole, colIndex, isWidget: column.isWidget })}
                         >
                           {column.render(item)}
                         </td>
