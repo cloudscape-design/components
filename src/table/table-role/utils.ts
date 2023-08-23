@@ -51,7 +51,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   const cellFocusables = getFocusables(from.cellElement);
   const eligibleForElementFocus =
     delta.x && !isWidgetCell(from.element) && (cellFocusables.length === 1 || from.element !== from.cellElement);
-  const targetElementIndex = from.elementIndex + delta.x;
+  const targetElementIndex = from.elementIndex === -1 ? -1 : from.elementIndex + delta.x;
   if (eligibleForElementFocus && 0 <= targetElementIndex && targetElementIndex < cellFocusables.length) {
     focus(cellFocusables[targetElementIndex]);
     return;
@@ -75,7 +75,8 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   }
 
   // For non-widget cell focus on the focusable element inside if exactly one is available.
-  const focusIndex = delta.x === 0 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
+  const focusIndex =
+    delta.x === 0 && from.elementIndex !== -1 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
   focus(focusTarget);
 }
@@ -88,12 +89,20 @@ export function moveFocusIn(from: FocusedCell) {
 }
 
 /**
- * Ensures exactly one table element is focusable for the entire table to have a single TAB stop.
+ * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
  */
-export function updateTableIndices(table: HTMLTableElement, cell: null | FocusedCell) {
-  const tableCells = table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>;
+export function updateTableFocusables(table: HTMLTableElement, cell: null | FocusedCell) {
+  // Restore default focus behavior and make all cells focusable when focus is inside a widget cell.
+  if (cell && cell.widget && cell.element !== cell.cellElement) {
+    for (const focusable of getFocusables(table)) {
+      focusable.tabIndex = 0;
+    }
+    return;
+  }
 
-  for (const cell of Array.from(tableCells)) {
+  const tableCells = Array.from(table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
+
+  for (const cell of tableCells) {
     cell.tabIndex = -1;
     cell.setAttribute('data-focusable', 'true');
   }
@@ -102,20 +111,30 @@ export function updateTableIndices(table: HTMLTableElement, cell: null | Focused
     focusable.setAttribute('data-focusable', 'true');
   }
 
-  // Make focused element the only focusable element of the table.
-  if (cell && table.contains(cell.element)) {
-    cell.element.tabIndex = 0;
+  // The only focusable element of the table.
+  let focusTarget: undefined | HTMLElement = tableCells[0];
 
-    // For widget cells also unmute all cell elements to be focusable with Tab/Shift+Tab.
-    if (cell.widget) {
-      getFocusables(cell.cellElement).forEach(element => (element.tabIndex = 0));
-    }
+  if (cell && table.contains(cell.element)) {
+    focusTarget = cell.element;
+  } else if (tableCells.length > 0) {
+    const cellFocusables = getFocusables(tableCells[0]);
+    const eligibleForElementFocus = !isWidgetCell(tableCells[0]) && cellFocusables.length === 1;
+    focusTarget = eligibleForElementFocus ? cellFocusables[0] : focusTarget;
   }
 
-  // Make first table cell the only focusable element of the table.
-  else if (tableCells[0]) {
-    const cellFocusables = getFocusables(tableCells[0]);
-    cellFocusables[0] ? (cellFocusables[0].tabIndex = 0) : (tableCells[0].tabIndex = 0);
+  if (focusTarget) {
+    focusTarget.tabIndex = 0;
+  }
+}
+
+export function restoreTableFocusables(table: HTMLTableElement) {
+  // Restore default focus behavior and make all cells focusable when focus is inside a widget cell.
+  for (const focusable of getFocusables(table)) {
+    if (focusable instanceof HTMLTableCellElement) {
+      focusable.tabIndex = -1;
+    } else {
+      focusable.tabIndex = 0;
+    }
   }
 }
 

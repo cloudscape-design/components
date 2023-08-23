@@ -15,11 +15,13 @@ import {
   Input,
   Link,
   SegmentedControl,
+  Select,
 } from '~components';
 import styles from './styles.scss';
 import { id as generateId, generateItems, Instance } from '../table/generate-data';
 import AppContext, { AppContextType } from '../app/app-context';
 import {
+  TableRole,
   getTableCellRoleProps,
   getTableColHeaderRoleProps,
   getTableHeaderRowRoleProps,
@@ -34,6 +36,7 @@ import appLayoutLabels from '../app-layout/utils/labels';
 type PageContext = React.Context<
   AppContextType<{
     pageSize: number;
+    tableRole: TableRole;
   }>
 >;
 
@@ -94,10 +97,13 @@ const createColumnDefinitions = ({
   { key: 'type', label: 'Type', render: (item: Instance) => item.type },
 ];
 
+const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
+
 export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const pageSize = urlParams.pageSize ?? 10;
+  const tableRole = urlParams.tableRole ?? 'grid';
 
   const [items, setItems] = useState(generateItems(25));
   const columnDefinitions = useMemo(
@@ -117,7 +123,6 @@ export default function Page() {
 
   const tableRef = useRef<HTMLTableElement>(null);
 
-  const tableRole = 'grid';
   useGridNavigation({ tableRole, pageSize, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
@@ -149,6 +154,14 @@ export default function Page() {
                       onChange={event => setUrlParams({ pageSize: parseInt(event.detail.value) })}
                     />
                   </FormField>
+
+                  <FormField label="Table role">
+                    <Select
+                      options={tableRoleOptions}
+                      selectedOption={tableRoleOptions.find(option => option.value === tableRole) ?? null}
+                      onChange={event => setUrlParams({ tableRole: event.detail.selectedOption.value as TableRole })}
+                    />
+                  </FormField>
                 </ColumnLayout>
 
                 <Link onFollow={() => setToolsOpen(true)} data-testid="link-before">
@@ -178,7 +191,7 @@ export default function Page() {
                       <th
                         key={column.key}
                         className={styles['custom-table-cell']}
-                        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
+                        {...getTableColHeaderRoleProps({ tableRole, colIndex, isWidget: true })}
                       >
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                           <button
