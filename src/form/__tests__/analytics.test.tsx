@@ -7,11 +7,22 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Form from '../../../lib/components/form';
 import Modal from '../../../lib/components/modal';
+import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+
+// JSDom does not support the `textContent` property. For this test, `textContent` is close enough.
+Object.defineProperty(HTMLElement.prototype, 'innerText', {
+  get() {
+    return this.textContent;
+  },
+  set(v) {
+    this.textContent = v;
+  },
+});
 
 describe('Form Analytics', () => {
   beforeEach(() => {
@@ -44,6 +55,27 @@ describe('Form Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+      })
+    );
+  });
+
+  test('includes the current breadcrumb as the step name in the funnelStepStart event', () => {
+    render(
+      <>
+        <BreadcrumbGroup
+          items={[
+            { text: 'Resources', href: '' },
+            { text: 'My creation flow', href: '' },
+          ]}
+        />
+        <Form />
+      </>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepName: 'My creation flow',
       })
     );
   });
