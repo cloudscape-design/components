@@ -13,15 +13,11 @@ interface StickyScrollbarProps {
   wrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
-  offsetScrollbar?: boolean;
 }
 
 export default forwardRef(StickyScrollbar);
 
-function StickyScrollbar(
-  { wrapperRef, tableRef, onScroll, offsetScrollbar }: StickyScrollbarProps,
-  ref: React.Ref<HTMLDivElement>
-) {
+function StickyScrollbar({ wrapperRef, tableRef, onScroll }: StickyScrollbarProps, ref: React.Ref<HTMLDivElement>) {
   const isVisualRefresh = useVisualRefresh();
   const scrollbarRef = React.useRef<HTMLDivElement>(null);
   const scrollbarContentRef = React.useRef<HTMLDivElement>(null);
@@ -31,7 +27,7 @@ function StickyScrollbar(
    * If the height of the scrollbar is 0, we're likely on a platform that uses
    * overlay scrollbars (e.g. Mac).
    */
-  const forceOffsetScrollbar = browserScrollbarSize().height === 0;
+  const offsetScrollbar = browserScrollbarSize().height === 0;
 
   /**
    * Use the appropriate AppLayout context (Classic or Visual Refresh) to determine
@@ -46,7 +42,7 @@ function StickyScrollbar(
       ref={mergedRef}
       className={clsx(
         styles['sticky-scrollbar'],
-        (offsetScrollbar || forceOffsetScrollbar) && styles['sticky-scrollbar-offset'],
+        offsetScrollbar && styles['sticky-scrollbar-offset'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onScroll={onScroll}

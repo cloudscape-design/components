@@ -184,8 +184,6 @@ const InternalTable = React.forwardRef(
       stickyColumnsLast: stickyColumns?.last || 0,
     });
 
-    const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
-
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
     const tableRole = hasEditableCells ? 'grid-no-navigation' : 'table';
 
@@ -478,7 +476,6 @@ const InternalTable = React.forwardRef(
               wrapperRef={wrapperRefObject}
               tableRef={tableRefObject}
               onScroll={handleScroll}
-              offsetScrollbar={hasStickyColumns}
             />
           </InternalContainer>
         </ColumnWidthsProvider>
