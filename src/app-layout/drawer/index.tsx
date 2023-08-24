@@ -133,7 +133,7 @@ interface DrawerTriggerProps {
   testUtilsClassName?: string;
   ariaLabel: string | undefined;
   ariaExpanded: boolean;
-  ariaControls: string | undefined;
+  ariaControls?: string;
   badge: boolean | undefined;
   itemId?: string;
   isActive: boolean;
@@ -203,6 +203,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
         style={{ top: topOffset, bottom: bottomOffset }}
         className={clsx(styles['drawer-content'])}
         role="toolbar"
+        aria-orientation="vertical"
       >
         {!isMobile && (
           <aside
@@ -217,7 +218,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                     testUtilsClassName={testutilStyles['drawers-trigger']}
                     ariaExpanded={drawers?.activeDrawerId === item.id}
                     ariaLabel={item.ariaLabels?.triggerButton}
-                    ariaControls={item.id}
+                    ariaControls={drawers?.activeDrawerId === item.id ? item.id : undefined}
                     trigger={item.trigger}
                     badge={item.badge}
                     itemId={item.id}

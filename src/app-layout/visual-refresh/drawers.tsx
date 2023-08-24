@@ -230,7 +230,7 @@ function DesktopTriggers() {
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={item.id === activeDrawerId}
-              ariaControls={item.id}
+              ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}

@@ -39,7 +39,7 @@ function TriggerButton(
     <div className={clsx(styles['trigger-wrapper'])}>
       <button
         aria-expanded={ariaExpanded}
-        aria-controls={ariaControls ?? undefined}
+        aria-controls={ariaControls}
         aria-haspopup={true}
         aria-label={ariaLabel}
         className={clsx(
