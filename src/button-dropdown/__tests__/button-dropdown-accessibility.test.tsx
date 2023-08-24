@@ -114,6 +114,26 @@ const items: ButtonDropdownProps.Items = [
       const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
       expect(menuElement.getElement()).toHaveAccessibleName('Button trigger');
     });
+
+    it('uses aria-label to label dropdown menu in a button with main action', () => {
+      const wrapper = renderButtonDropdown({
+        ...props,
+        mainAction: { text: 'Main action', ariaLabel: 'Main action aria label' },
+        ariaLabel: 'Actions',
+      });
+      wrapper.openDropdown();
+      const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
+      expect(menuElement.getElement()).toHaveAccessibleName('Actions');
+    });
+    it('does not auto-label dropdown in a button with main action', () => {
+      const wrapper = renderButtonDropdown({
+        ...props,
+        mainAction: { text: 'Main action', ariaLabel: 'Main action aria label' },
+      });
+      wrapper.openDropdown();
+      const menuElement = wrapper.findOpenDropdown()!.find('[role="menu"]')!;
+      expect(menuElement.getElement()).not.toHaveAccessibleName();
+    });
   });
 });
 
