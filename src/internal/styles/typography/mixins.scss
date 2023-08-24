@@ -36,7 +36,7 @@
   font-size: awsui.$font-size-heading-5;
   line-height: awsui.$line-height-heading-5;
   @if $weight {
-    font-weight: awsui.$font-heading-xs-weight;
+    font-weight: awsui.$font-weight-heading-5;
     @include font-smoothing;
   }
 }
@@ -46,7 +46,7 @@
   line-height: awsui.$line-height-heading-4;
   letter-spacing: awsui.$font-heading-s-letter-spacing;
   @if $weight {
-    font-weight: awsui.$font-heading-s-weight;
+    font-weight: awsui.$font-weight-heading-4;
     @include font-smoothing;
   }
 }
@@ -56,7 +56,7 @@
   line-height: awsui.$line-height-heading-3;
   letter-spacing: awsui.$font-heading-m-letter-spacing;
   @if $weight {
-    font-weight: awsui.$font-heading-m-weight;
+    font-weight: awsui.$font-weight-heading-3;
     @include font-smoothing;
   }
 }
@@ -66,7 +66,7 @@
   line-height: awsui.$line-height-heading-2;
   letter-spacing: awsui.$font-heading-l-letter-spacing;
   @if $weight {
-    font-weight: awsui.$font-heading-l-weight;
+    font-weight: awsui.$font-weight-heading-2;
     @include font-smoothing;
   }
 }
@@ -76,7 +76,7 @@
   line-height: awsui.$line-height-heading-1;
   letter-spacing: awsui.$font-heading-xl-letter-spacing;
   @if $weight {
-    font-weight: awsui.$font-heading-xl-weight;
+    font-weight: awsui.$font-weight-heading-1;
     @include font-smoothing;
   }
 }
@@ -106,7 +106,7 @@
 @mixin font-panel-header {
   font-size: awsui.$font-panel-header-size;
   line-height: awsui.$font-panel-header-line-height;
-  font-weight: awsui.$font-heading-l-weight;
+  font-weight: awsui.$font-weight-heading-2;
   @include font-smoothing;
 }
 

@@ -67,7 +67,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-navigation,
   &-container {
     display: flex;
-    font-weight: awsui.$font-heading-s-weight;
+    font-weight: awsui.$font-weight-heading-4;
   }
 
   &-default,
@@ -137,7 +137,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-wrapper,
   &-deprecated {
     display: flex;
-    font-weight: awsui.$font-heading-s-weight;
+    font-weight: awsui.$font-weight-heading-4;
   }
 
   &-wrapper {
