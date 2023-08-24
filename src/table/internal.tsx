@@ -40,6 +40,7 @@ import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } fro
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import { useTableRole } from './table-role/table-role-helper';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -89,6 +90,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
+      tableRole: explicitTableRole,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -186,8 +188,10 @@ const InternalTable = React.forwardRef(
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
 
-    const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid-default' : 'table';
+    // Tables with interactive elements such as inline editing, row selection, or resizable columns are assigned role="grid" by default.
+    const hasInlineEditing = !!submitEdit;
+    const defaultGridRole = hasInlineEditing || hasSelection || resizableColumns || !sortingDisabled;
+    const tableRole = useTableRole({ explicitTableRole, defaultGridRole });
 
     const theadProps: TheadProps = {
       containerWidth,
