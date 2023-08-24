@@ -144,5 +144,9 @@ export function TableBodyCell<ItemType>({
     return <TableCellEditable {...rest} />;
   }
   const { column, item } = rest;
-  return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
+  return (
+    <TableTdElement {...rest} isWidget={column.isWidget?.(rest.item)}>
+      {column.cell(item)}
+    </TableTdElement>
+  );
 }
