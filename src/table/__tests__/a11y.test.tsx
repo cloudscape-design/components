@@ -6,6 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
 import Header from '../../../lib/components/header';
 import { render } from '@testing-library/react';
+import tableStyles from '../../../lib/components/table/styles.css.js';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 interface Item {
@@ -36,22 +37,46 @@ afterAll(() => {
   jest.restoreAllMocks();
 });
 
-describe('roles', () => {
-  test('table has role="table" when no columns are editable', () => {
-    const wrapper = renderTableWrapper({ columnDefinitions: defaultColumns });
+describe('table role', () => {
+  test('table has role="table" when inline editing, sorting, resizable columns, and selection are not used', () => {
+    const wrapper = renderTableWrapper({ sortingDisabled: true });
     expect(wrapper.find('[role="table"]')).not.toBeNull();
-    expect(wrapper.find('[role="grid"]')).toBeNull();
   });
 
-  test('table has role="grid" when at least one defined column is editable', () => {
+  test('table has role="grid" when inline editing is used', () => {
     const wrapper = renderTableWrapper({
-      columnDefinitions: [
-        ...defaultColumns,
-        { header: 'value', cell: item => item.value, editConfig: { editingCell: () => null } },
-      ],
-      visibleColumns: ['id', 'name'],
+      sortingDisabled: true,
+      columnDefinitions: defaultColumns,
+      submitEdit: () => {},
     });
-    expect(wrapper.find('[role="table"]')).toBeNull();
+    expect(wrapper.find('[role="grid"]')).not.toBeNull();
+  });
+
+  test('table has role="grid" when sorting is used', () => {
+    const wrapper = renderTableWrapper();
+    expect(wrapper.find('[role="grid"]')).not.toBeNull();
+  });
+
+  test('table has role="grid" when resizable columns is used', () => {
+    const wrapper = renderTableWrapper({ sortingDisabled: true, resizableColumns: true });
+    expect(wrapper.find('[role="grid"]')).not.toBeNull();
+  });
+
+  test('table has role="grid" when selection is used', () => {
+    const wrapper = renderTableWrapper({ sortingDisabled: true, selectionType: 'single' });
+    expect(wrapper.find('[role="grid"]')).not.toBeNull();
+  });
+
+  test('table role is set only once', () => {
+    const { container, rerender } = render(<Table items={defaultItems} columnDefinitions={defaultColumns} />);
+    expect(container.querySelector('[role="grid"]')).not.toBeNull();
+
+    rerender(<Table items={defaultItems} columnDefinitions={defaultColumns} sortingDisabled={true} />);
+    expect(container.querySelector('[role="grid"]')).not.toBeNull();
+  });
+
+  test('table role grid can be provided via the API', () => {
+    const wrapper = renderTableWrapper({ sortingDisabled: true, tableRole: 'grid' });
     expect(wrapper.find('[role="grid"]')).not.toBeNull();
   });
 });
@@ -59,21 +84,21 @@ describe('roles', () => {
 describe('labels', () => {
   test('not to have aria-label if omitted', () => {
     const wrapper = renderTableWrapper();
-    expect(wrapper.find('[role=table]')!.getElement()).not.toHaveAttribute('aria-label');
+    expect(wrapper.findByClassName(tableStyles.table)!.getElement()).not.toHaveAttribute('aria-label');
   });
 
   test('sets aria-label on table', () => {
     const wrapper = renderTableWrapper({
       ariaLabels: { itemSelectionLabel: () => '', selectionGroupLabel: '', tableLabel },
     });
-    expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-label')).toEqual(tableLabel);
+    expect(wrapper.findByClassName(tableStyles.table)!.getElement().getAttribute('aria-label')).toEqual(tableLabel);
   });
 
   test('automatically labels table with header if provided', () => {
     const wrapper = renderTableWrapper({
       header: <Header counter="(10)">Labelled table</Header>,
     });
-    expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName('Labelled table');
+    expect(wrapper.findByClassName(tableStyles.table)!.getElement()).toHaveAccessibleName('Labelled table');
   });
 
   test('aria-label has priority over auto-labelling', () => {
@@ -81,7 +106,7 @@ describe('labels', () => {
       header: <Header>Labelled table</Header>,
       ariaLabels: { itemSelectionLabel: () => '', selectionGroupLabel: '', tableLabel },
     });
-    expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName(tableLabel);
+    expect(wrapper.findByClassName(tableStyles.table)!.getElement()).toHaveAccessibleName(tableLabel);
   });
 
   describe('rows', () => {
@@ -89,12 +114,12 @@ describe('labels', () => {
       const wrapper = renderTableWrapper({
         totalItemsCount: 300,
       });
-      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('301');
+      expect(wrapper.findByClassName(tableStyles.table)!.getElement().getAttribute('aria-rowcount')).toEqual('301');
     });
 
     test('aria-rowcount should be -1 if totalItemsCount is undefined', () => {
       const wrapper = renderTableWrapper({});
-      expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-rowcount')).toEqual('-1');
+      expect(wrapper.findByClassName(tableStyles.table)!.getElement().getAttribute('aria-rowcount')).toEqual('-1');
     });
 
     test('sets aria-rowindex on table rows', () => {

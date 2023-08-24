@@ -32,7 +32,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
   tableRoot: RefObject<HTMLTableElement>,
   columnDefinitions: Readonly<T[]>,
   numRows: number,
-  tableRole: TableRole
+  tableRole?: TableRole
 ) {
   const focusableColumns = useMemo(() => {
     const cols = columnDefinitions.map(column => !!column.editConfig);
