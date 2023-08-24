@@ -6,25 +6,28 @@ import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useAppLayoutContext } from '../../internal/context/app-layout-context';
 import clsx from 'clsx';
 import styles from './styles.css.js';
+import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 interface StickyScrollbarProps {
   wrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
-  offsetScrollbar?: boolean;
 }
 
 export default forwardRef(StickyScrollbar);
 
-function StickyScrollbar(
-  { wrapperRef, tableRef, onScroll, offsetScrollbar }: StickyScrollbarProps,
-  ref: React.Ref<HTMLDivElement>
-) {
+function StickyScrollbar({ wrapperRef, tableRef, onScroll }: StickyScrollbarProps, ref: React.Ref<HTMLDivElement>) {
   const isVisualRefresh = useVisualRefresh();
   const scrollbarRef = React.useRef<HTMLDivElement>(null);
   const scrollbarContentRef = React.useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(ref, scrollbarRef);
+
+  /**
+   * If the height of the scrollbar is 0, we're likely on a platform that uses
+   * overlay scrollbars (e.g. Mac).
+   */
+  const offsetScrollbar = browserScrollbarSize().height === 0;
 
   /**
    * Use the appropriate AppLayout context (Classic or Visual Refresh) to determine
