@@ -36,12 +36,13 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } from './table-role';
+import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps, useGridNavigation } from './table-role';
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useTableRole } from './table-role/table-role-helper';
 
+const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
@@ -240,6 +241,8 @@ const InternalTable = React.forwardRef(
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
+
+    useGridNavigation({ tableRole, pageSize: GRID_NAVIGATION_PAGE_SIZE, getTable: () => tableRefObject.current });
 
     const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
 

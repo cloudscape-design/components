@@ -231,7 +231,10 @@ export default () => {
                 tableRoleOptions.find(option => option.value === urlParams.tableRole) ?? tableRoleOptions[0]
               }
               options={tableRoleOptions}
-              onChange={event => setUrlParams({ tableRole: event.detail.selectedOption.value as any })}
+              onChange={event => {
+                setUrlParams({ tableRole: event.detail.selectedOption.value as any });
+                window.location.reload();
+              }}
             />
           </FormField>
 
