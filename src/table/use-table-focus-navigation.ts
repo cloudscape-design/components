@@ -4,6 +4,7 @@
 import { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
+import { TableRole } from './table-role';
 
 function iterateTableCells<T extends HTMLElement>(
   table: T,
@@ -24,12 +25,14 @@ function iterateTableCells<T extends HTMLElement>(
  * @param tableRoot - A ref to a table container. Ideally the root element of the table (<table>); tbody is also acceptable.
  * @param columnDefinitions - The column definitions for the table.
  * @param numRows - The number of rows in the table.
+ * @param tableRole - Table role to disable the util when "grid" is used.
  */
 function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>(
   selectionType: TableProps['selectionType'],
   tableRoot: RefObject<HTMLTableElement>,
   columnDefinitions: Readonly<T[]>,
-  numRows: number
+  numRows: number,
+  tableRole: TableRole
 ) {
   const focusableColumns = useMemo(() => {
     const cols = columnDefinitions.map(column => !!column.editConfig);
@@ -131,12 +134,14 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
     if (!tableRoot.current) {
       return;
     }
-
+    if (tableRole === 'grid') {
+      return;
+    }
     const tableElement = tableRoot.current;
     tableRoot.current.addEventListener('keydown', handleArrowKeyEvents);
 
     return () => tableElement && tableElement.removeEventListener('keydown', handleArrowKeyEvents);
-  }, [focusableColumns, handleArrowKeyEvents, tableRoot]);
+  }, [focusableColumns, handleArrowKeyEvents, tableRoot, tableRole]);
 }
 
 export default useTableFocusNavigation;

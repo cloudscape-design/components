@@ -235,7 +235,7 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length, tableRole);
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -417,8 +417,8 @@ const InternalTable = React.forwardRef(
                               tableRole={tableRole}
                             >
                               <SelectionControl
-                                onFocusDown={moveFocusDown}
-                                onFocusUp={moveFocusUp}
+                                onFocusDown={tableRole !== 'grid' ? moveFocusDown : undefined}
+                                onFocusUp={tableRole !== 'grid' ? moveFocusUp : undefined}
                                 onShiftToggle={updateShiftToggle}
                                 {...getItemSelectionProps(item)}
                               />
