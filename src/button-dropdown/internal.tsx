@@ -227,7 +227,7 @@ const InternalButtonDropdown = React.forwardRef(
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
 
-    const shouldLabelWithTrigger = !ariaLabel && variant !== 'icon' && variant !== 'inline-icon';
+    const shouldLabelWithTrigger = !ariaLabel && !mainAction && variant !== 'icon' && variant !== 'inline-icon';
 
     const { loadingButtonCount } = useFunnel();
     useEffect(() => {
