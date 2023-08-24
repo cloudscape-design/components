@@ -12,19 +12,19 @@ $_spinner-sizes: (
     name: 'normal',
     size: 1.2 * styles.$base-size,
     iconSizeMap: awsui.$size-icon-normal,
-    supportedLineHeight: awsui.$font-body-m-line-height,
+    supportedLineHeight: awsui.$line-height-body-m,
   ),
   (
     name: 'big',
     size: 2.4 * styles.$base-size,
     iconSizeMap: awsui.$size-icon-big,
-    supportedLineHeight: awsui.$font-heading-xl-line-height,
+    supportedLineHeight: awsui.$line-height-heading-1,
   ),
   (
     name: 'large',
     size: 3.6 * styles.$base-size,
     iconSizeMap: awsui.$size-icon-large,
-    supportedLineHeight: awsui.$font-display-l-line-height,
+    supportedLineHeight: awsui.$line-height-display-l,
   )
 );
 

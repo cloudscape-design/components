@@ -23,31 +23,31 @@ $_icon-sizes: (
   (
     name: 'small',
     size: awsui.$size-icon-normal,
-    supportedLineHeight: awsui.$font-body-s-line-height,
+    supportedLineHeight: awsui.$line-height-body-s,
     stroke: 2px,
   ),
   (
     name: 'normal',
     size: awsui.$size-icon-normal,
-    supportedLineHeight: awsui.$font-body-m-line-height,
+    supportedLineHeight: awsui.$line-height-body-m,
     stroke: 2px,
   ),
   (
     name: 'medium',
     size: awsui.$size-icon-medium,
-    supportedLineHeight: awsui.$font-heading-l-line-height,
+    supportedLineHeight: awsui.$line-height-heading-2,
     stroke: 2px,
   ),
   (
     name: 'big',
     size: awsui.$size-icon-big,
-    supportedLineHeight: awsui.$font-heading-xl-line-height,
+    supportedLineHeight: awsui.$line-height-heading-1,
     stroke: 2px,
   ),
   (
     name: 'large',
     size: awsui.$size-icon-large,
-    supportedLineHeight: awsui.$font-display-l-line-height,
+    supportedLineHeight: awsui.$line-height-display-l,
     stroke: 1.2px,
   )
 );

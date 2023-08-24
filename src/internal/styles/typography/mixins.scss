@@ -23,18 +23,18 @@
 
 @mixin font-body-s {
   font-size: awsui.$font-body-s-size;
-  line-height: awsui.$font-body-s-line-height;
+  line-height: awsui.$line-height-body-s;
   letter-spacing: awsui.$font-body-s-letter-spacing;
 }
 
 @mixin font-body-m {
   font-size: awsui.$font-body-m-size;
-  line-height: awsui.$font-body-m-line-height;
+  line-height: awsui.$line-height-body-m;
 }
 
 @mixin font-heading-xs($weight: true) {
   font-size: awsui.$font-heading-xs-size;
-  line-height: awsui.$font-heading-xs-line-height;
+  line-height: awsui.$line-height-heading-5;
   @if $weight {
     font-weight: awsui.$font-heading-xs-weight;
     @include font-smoothing;
@@ -43,7 +43,7 @@
 
 @mixin font-heading-s($weight: true) {
   font-size: awsui.$font-heading-s-size;
-  line-height: awsui.$font-heading-s-line-height;
+  line-height: awsui.$line-height-heading-4;
   letter-spacing: awsui.$font-heading-s-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-s-weight;
@@ -53,7 +53,7 @@
 
 @mixin font-heading-m($weight: true) {
   font-size: awsui.$font-heading-m-size;
-  line-height: awsui.$font-heading-m-line-height;
+  line-height: awsui.$line-height-heading-3;
   letter-spacing: awsui.$font-heading-m-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-m-weight;
@@ -63,7 +63,7 @@
 
 @mixin font-heading-l($weight: true) {
   font-size: awsui.$font-heading-l-size;
-  line-height: awsui.$font-heading-l-line-height;
+  line-height: awsui.$line-height-heading-2;
   letter-spacing: awsui.$font-heading-l-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-l-weight;
@@ -73,7 +73,7 @@
 
 @mixin font-heading-xl($weight: true) {
   font-size: awsui.$font-heading-xl-size;
-  line-height: awsui.$font-heading-xl-line-height;
+  line-height: awsui.$line-height-heading-1;
   letter-spacing: awsui.$font-heading-xl-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-xl-weight;
@@ -83,7 +83,7 @@
 
 @mixin font-display-l {
   font-size: awsui.$font-display-l-size;
-  line-height: awsui.$font-display-l-line-height;
+  line-height: awsui.$line-height-display-l;
   letter-spacing: awsui.$font-display-l-letter-spacing;
 }
 
@@ -112,12 +112,12 @@
 
 @mixin font-code-inline {
   font-size: awsui.$font-body-s-size;
-  line-height: awsui.$font-body-m-line-height;
+  line-height: awsui.$line-height-body-m;
 }
 
 @mixin font-code-block {
   font-size: awsui.$font-body-m-size;
-  line-height: awsui.$font-body-m-line-height;
+  line-height: awsui.$line-height-body-m;
 }
 
 @mixin font($font-size) {

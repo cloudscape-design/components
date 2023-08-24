@@ -64,7 +64,7 @@
     right: 0;
     bottom: 0;
     top: 0;
-    min-height: awsui.$font-heading-xs-line-height;
+    min-height: awsui.$line-height-heading-5;
     max-height: calc(100% - #{$gap});
     margin: auto;
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
@@ -132,7 +132,7 @@
 }
 
 .header-cell-text {
-  line-height: awsui.$font-heading-xs-line-height;
+  line-height: awsui.$line-height-heading-5;
 
   padding-top: calc(#{awsui.$space-xxxs} / 2);
   padding-bottom: calc(#{awsui.$space-xxxs} / 2);
