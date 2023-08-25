@@ -547,8 +547,9 @@ const OldAppLayout = React.forwardRef(
           }
         },
         focusToolsClose: () => focusToolsButtons(true),
+        focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
       }),
-      [isMobile, onNavigationToggle, onToolsToggle, focusToolsButtons]
+      [onToolsToggle, isMobile, onNavigationToggle, focusToolsButtons, splitPanelRefs.slider]
     );
 
     const splitPanelBottomOffset =

@@ -359,6 +359,12 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the split panel if it is open.",
+      "name": "focusSplitPanel",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
 after changing the content, for example when clicking on an 'info' link while
 the panel is already open.",
