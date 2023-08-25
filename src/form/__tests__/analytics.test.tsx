@@ -14,7 +14,7 @@ import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-
 
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
-// JSDom does not support the `textContent` property. For this test, `textContent` is close enough.
+// JSDom does not support the `innerText` property. For this test, `textContent` is close enough.
 Object.defineProperty(HTMLElement.prototype, 'innerText', {
   get() {
     return this.textContent;
