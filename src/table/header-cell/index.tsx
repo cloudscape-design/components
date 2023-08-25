@@ -40,6 +40,7 @@ interface TableHeaderCellProps<ItemType> {
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   tableRole: TableRole;
+  isWidget?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -64,6 +65,7 @@ export function TableHeaderCell<ItemType>({
   stickyState,
   cellRef,
   tableRole,
+  isWidget,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -113,7 +115,7 @@ export function TableHeaderCell<ItemType>({
       )}
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
-      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex, isWidget })}
     >
       <div
         className={clsx(styles['header-cell-content'], {

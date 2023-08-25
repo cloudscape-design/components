@@ -101,6 +101,9 @@ const Thead = React.forwardRef(
       columnId: selectionColumnId,
       getClassName: props => getStickyClassNames(cellStyles, props),
     });
+
+    const useWidgetHeaders = resizableColumns || !sortingDisabled;
+
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1} {...getTableHeaderRowRoleProps({ tableRole })}>
@@ -115,7 +118,7 @@ const Thead = React.forwardRef(
               style={stickyStyles.style}
               ref={stickyStyles.ref}
               scope="col"
-              {...getTableColHeaderRoleProps({ tableRole, colIndex: 0 })}
+              {...getTableColHeaderRoleProps({ tableRole, colIndex: 0, isWidget: useWidgetHeaders })}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
@@ -177,6 +180,7 @@ const Thead = React.forwardRef(
                 stickyState={stickyState}
                 cellRef={node => setCell(columnId, node)}
                 tableRole={tableRole}
+                isWidget={useWidgetHeaders}
               />
             );
           })}
