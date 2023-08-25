@@ -170,11 +170,14 @@ const OldAppLayout = React.forwardRef(
       setLastInteraction: setDrawerLastInteraction,
     } = useDrawerFocusControl([activeDrawer?.resizable], toolsOpen || activeDrawer !== undefined, true);
 
-    const onNavigationToggle = useStableCallback((open: boolean) => {
-      setNavigationOpen(open);
-      focusNavButtons();
-      fireNonCancelableEvent(onNavigationChange, { open });
-    });
+    const onNavigationToggle = useCallback(
+      (open: boolean) => {
+        setNavigationOpen(open);
+        focusNavButtons();
+        fireNonCancelableEvent(onNavigationChange, { open });
+      },
+      [setNavigationOpen, onNavigationChange, focusNavButtons]
+    );
     const onToolsToggle = useCallback(
       (open: boolean) => {
         setToolsOpen(open);
@@ -193,13 +196,6 @@ const OldAppLayout = React.forwardRef(
         onNavigationToggle(false);
       }
     };
-
-    useEffect(() => {
-      // Close navigation drawer on mobile so that the main content is visible
-      if (isMobile) {
-        onNavigationToggle(false);
-      }
-    }, [isMobile, onNavigationToggle]);
 
     const navigationVisible = !navigationHide && navigationOpen;
     const toolsVisible = !toolsHide && toolsOpen;
