@@ -16,6 +16,14 @@ describeEachAppLayout(() => {
     expect(isDrawerClosed(wrapper.findTools())).toBe(false);
   });
 
+  test('focuses tools close button', () => {
+    let ref: AppLayoutProps.Ref | null = null;
+    const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} toolsOpen={true} />);
+    expect(isDrawerClosed(wrapper.findTools())).toBe(false);
+    act(() => ref!.focusToolsClose());
+    expect(wrapper.findToolsClose().getElement()).toHaveFocus();
+  });
+
   test('allows to change focus after programmatically opening the drawer', async () => {
     // sample component that reproduces how this functionality should be done in a real app
     function App() {
