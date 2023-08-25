@@ -14,22 +14,30 @@ import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-
 
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 
-// JSDom does not support the `innerText` property. For this test, `textContent` is close enough.
-Object.defineProperty(HTMLElement.prototype, 'innerText', {
-  get() {
-    return this.textContent;
-  },
-  set(v) {
-    this.textContent = v;
-  },
-});
-
 describe('Form Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     mockFunnelMetrics();
   });
+
+  if (!('innerText' in HTMLElement.prototype)) {
+    // JSDom does not support the `innerText` property. For this test, `textContent` is close enough.
+
+    beforeEach(() =>
+      Object.defineProperty(HTMLElement.prototype, 'innerText', {
+        get() {
+          return this.textContent;
+        },
+        set(v) {
+          this.textContent = v;
+        },
+        configurable: true,
+      })
+    );
+
+    afterEach(() => delete (HTMLElement.prototype as Partial<HTMLElement>).innerText);
+  }
 
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
     render(<Form />);
