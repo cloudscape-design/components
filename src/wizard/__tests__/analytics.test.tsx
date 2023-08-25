@@ -8,6 +8,7 @@ import Wizard, { WizardProps } from '../../../lib/components/wizard';
 import Form from '../../../lib/components/form';
 
 import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
+import { getFunnelKeySelector, FUNNEL_KEY_STEP_NAME } from '../../../lib/components/internal/analytics/selectors';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
@@ -360,5 +361,15 @@ describe('Wizard Analytics', () => {
         subStepAllSelector: expect.any(String),
       })
     );
+  });
+
+  test('marks the step title with the correct data attribute', () => {
+    const { container } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+
+    expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 1');
+
+    createWrapper(container).findWizard()!.findPrimaryButton().click();
+
+    expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 2 - optional');
   });
 });
