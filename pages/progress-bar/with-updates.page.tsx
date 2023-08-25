@@ -76,7 +76,11 @@ export default function ProgressBarWithUpdates() {
             status={progressStep10 < 100 ? 'in-progress' : 'success'}
             value={progressStep10}
             variant={'standalone'}
-            label={'Tea'}
+            label={
+              <span>
+                Tea <i>- optional</i>
+              </span>
+            }
             description={'We will make a nice cup of tea ...'}
             additionalInfo={'Take some cookie as a desert'}
             resultText={'Your tea is ready!'}

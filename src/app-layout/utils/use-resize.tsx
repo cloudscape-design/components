@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { fireNonCancelableEvent } from '../../internal/events';
 import clsx from 'clsx';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from './use-pointer-events';
 import { useKeyboardEvents } from './use-keyboard-events';
-import { InternalDrawerProps } from '../drawer/interfaces';
+import { DrawerItem } from '../drawer/interfaces';
 
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -18,48 +17,23 @@ import { DrawerFocusControlRefs } from './use-drawer-focus-control';
 import { SizeControlProps } from './interfaces';
 
 export interface DrawerResizeProps {
-  activeDrawerId?: string | null;
-  drawers: InternalDrawerProps['drawers'];
+  activeDrawer: DrawerItem | undefined;
+  activeDrawerSize: number;
+  onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   drawersRefs: DrawerFocusControlRefs;
   isToolsOpen: boolean;
   drawersMaxWidth: number;
 }
 
-function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResizeProps: DrawerResizeProps) {
-  const { activeDrawerId, drawers, drawersRefs, isToolsOpen, drawersMaxWidth } = drawerResizeProps;
-
-  const activeDrawer = drawers?.items.find(item => item.id === activeDrawerId) ?? null;
-  const drawerItems = useMemo(() => drawers?.items || [], [drawers?.items]);
+function useResize(
+  drawerRefObject: React.RefObject<HTMLDivElement>,
+  { activeDrawer, activeDrawerSize, onActiveDrawerResize, drawersRefs, isToolsOpen, drawersMaxWidth }: DrawerResizeProps
+) {
   const toolsWidth = 290;
-  const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 290 ? activeDrawer?.defaultSize : 290;
+  const MIN_WIDTH = Math.min(activeDrawer?.defaultSize ?? Number.POSITIVE_INFINITY, toolsWidth);
   const [relativeSize, setRelativeSize] = useState(0);
-  const getDrawerItemSizes = useCallback(() => {
-    const sizes: { [id: string]: number } = {};
-    if (!drawerItems) {
-      return {};
-    }
 
-    for (const item of drawerItems) {
-      if (item.defaultSize) {
-        sizes[item.id] = item.defaultSize;
-      }
-    }
-    return sizes;
-  }, [drawerItems]);
-  const [drawerItemSizes, setDrawerItemSizes] = useState(() => getDrawerItemSizes());
-
-  const drawerSize =
-    !activeDrawerId && !isToolsOpen
-      ? 0
-      : activeDrawerId && drawerItemSizes[activeDrawerId]
-      ? drawerItemSizes[activeDrawerId]
-      : toolsWidth;
-
-  useEffect(() => {
-    // Ensure we only set new drawer items by performing a shallow merge
-    // of the latest drawer item sizes, and previous drawer item sizes.
-    setDrawerItemSizes(prev => ({ ...getDrawerItemSizes(), ...prev }));
-  }, [getDrawerItemSizes]);
+  const drawerSize = !activeDrawer && !isToolsOpen ? 0 : activeDrawerSize;
 
   useEffect(() => {
     // effects are called inside out in the components tree
@@ -71,20 +45,13 @@ function useResize(drawerRefObject: React.RefObject<HTMLDivElement>, drawerResiz
     return () => cancelAnimationFrame(handle);
   }, [drawerSize, drawersMaxWidth, MIN_WIDTH]);
 
-  const drawerResize = (resizeDetail: { size: number; id: string }) => {
-    const drawerItem = drawers?.items.find(item => item.id === resizeDetail.id);
-    fireNonCancelableEvent(drawerItem?.onResize, resizeDetail);
-    fireNonCancelableEvent(drawers?.onResize, resizeDetail);
-    setDrawerItemSizes({ ...drawerItemSizes, [resizeDetail.id]: resizeDetail.size });
-  };
-
   const setSidePanelWidth = (width: number) => {
     const maxWidth = drawersMaxWidth;
     const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
     const id = activeDrawer?.id;
 
     if (id && maxWidth >= MIN_WIDTH) {
-      drawerResize({ size, id });
+      onActiveDrawerResize({ size, id });
     }
   };
 

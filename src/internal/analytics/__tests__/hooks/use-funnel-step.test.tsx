@@ -24,6 +24,8 @@ describe('useFunnelStep hook', () => {
           stepNameSelector: 'step_name_selector',
           stepNumber: 0,
           subStepCount: { current: 0 },
+          isInStep: true,
+          funnelInteractionId: 'a placeholder funnel interaction ID',
         }}
       >
         <ChildComponent />

@@ -4,6 +4,7 @@ import { InternalButtonDropdownProps } from '../../../button-dropdown/interfaces
 import { IconProps } from '../../../icon/interfaces';
 
 export interface ButtonTriggerProps {
+  testUtilsClass?: string;
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconAlt?: string;

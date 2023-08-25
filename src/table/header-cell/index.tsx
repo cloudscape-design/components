@@ -63,6 +63,7 @@ export function TableHeaderCell<ItemType>({
   columnId,
   stickyState,
   cellRef,
+  tableRole,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -112,7 +113,7 @@ export function TableHeaderCell<ItemType>({
       )}
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
-      {...getTableColHeaderRoleProps({ sortingStatus })}
+      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
     >
       <div
         className={clsx(styles['header-cell-content'], {

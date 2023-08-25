@@ -34,6 +34,8 @@ describe('useFunnel hook', () => {
           loadingButtonCount: { current: 0 },
           errorCount: { current: 0 },
           latestFocusCleanupFunction: { current: undefined },
+          isInFunnel: true,
+          wizardCount: { current: 0 },
         }}
       >
         <ChildComponent />
@@ -76,6 +78,8 @@ describe('useFunnel hook', () => {
           loadingButtonCount: { current: 0 },
           errorCount: { current: 0 },
           latestFocusCleanupFunction: { current: undefined },
+          isInFunnel: true,
+          wizardCount: { current: 0 },
         }}
       >
         <ChildComponent />

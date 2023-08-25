@@ -19,6 +19,8 @@ export interface FunnelContextValue {
   errorCount: MutableRefObject<number>;
   loadingButtonCount: MutableRefObject<number>;
   latestFocusCleanupFunction: MutableRefObject<undefined | (() => void)>;
+  isInFunnel: boolean;
+  wizardCount: MutableRefObject<number>;
 }
 
 export interface FunnelStepContextValue {
@@ -26,6 +28,8 @@ export interface FunnelStepContextValue {
   stepNumber: number;
   funnelStepProps?: Record<string, string | number | boolean | undefined>;
   subStepCount: MutableRefObject<number>;
+  isInStep: boolean;
+  funnelInteractionId: string | undefined;
 }
 
 export interface FunnelSubStepContextValue {
@@ -65,12 +69,16 @@ export const FunnelContext = createContext<FunnelContextValue>({
   errorCount: { current: 0 },
   loadingButtonCount: { current: 0 },
   latestFocusCleanupFunction: { current: undefined },
+  isInFunnel: false,
+  wizardCount: { current: 0 },
 });
 
 export const FunnelStepContext = createContext<FunnelStepContextValue>({
   stepNameSelector: '',
   stepNumber: 0,
   subStepCount: { current: 0 },
+  isInStep: false,
+  funnelInteractionId: undefined,
 });
 
 export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({

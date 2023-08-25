@@ -25,23 +25,27 @@ import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { InternalDrawerProps } from '../drawer/interfaces';
+import { DrawerItem, InternalDrawerProps } from '../drawer/interfaces';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
+import { useDrawers } from '../utils/use-drawers';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawerId?: string | null;
-  drawers?: InternalDrawerProps['drawers'];
+  activeDrawerId: string | undefined;
+  drawers: Array<DrawerItem>;
+  drawersAriaLabel: string | undefined;
+  drawersOverflowAriaLabel: string | undefined;
   drawersRefs: DrawerFocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
-  handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
+  handleDrawersClick: (activeDrawerId: string | undefined, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
@@ -74,6 +78,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
   footerHeight: number;
+  splitPanelControlId: string;
   splitPanelMaxWidth: number;
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
@@ -83,6 +88,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   splitPanelRefs: SplitPanelFocusControlRefs;
+  toolsControlId: string;
   toolsRefs: FocusControlRefs;
 }
 
@@ -347,6 +353,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       ariaLabel: undefined,
     });
     const splitPanelDisplayed = !!(splitPanelToggle.displayed || isSplitPanelOpen);
+    const splitPanelControlId = useUniqueId('split-panel-');
+    const toolsControlId = useUniqueId('tools-');
 
     const [splitPanelSize, setSplitPanelSize] = useControllable(
       props.splitPanelSize,
@@ -372,68 +380,58 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [props.onSplitPanelPreferencesChange, setSplitPanelPreferences, setSplitPanelLastInteraction]
     );
 
-    /**
-     * The activeDrawerWidth is required in JavaScript to acccurately calculate whether a SplitPanel
-     * in the side position should be forced to the bottom based on available horiziontal space.
-     *
-     * The handleDrawersClick will either open a new drawer or close the currently open drawer by setting
-     * the activeDrawerId value. The active drawer can also be closed if a user clicks the Tools trigger
-     * button. This will skip the focus handling because the focus should be going to the Tools close
-     * button and not one of the drawers trigger buttons.
-     *
-     * The drawersTriggerCount is computed in order to determine whether the triggers should be persistent
-     * in the UI when a drawer is open. The trigger button container is suppressed when a drawer is open
-     * and their is only one trigger button.
-     *
-     * The hasDrawerViewportOverlay property is used to determine if any drawer is obscuring the entire
-     * viewport. This currently applies to Navigation, Tools, and Drawers in mobile viewports.
-     */
-    const drawers = (props as InternalDrawerProps).drawers;
-
-    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
-      componentName: 'AppLayout',
-      controlledProp: 'drawers.activeDrawerId',
-      changeHandler: 'onChange',
-    });
+    const {
+      drawers,
+      activeDrawer,
+      activeDrawerId,
+      onActiveDrawerChange,
+      onActiveDrawerResize,
+      activeDrawerSize,
+      ...drawersProps
+    } = useDrawers(
+      props as InternalDrawerProps,
+      {
+        ariaLabels: props.ariaLabels,
+        toolsHide,
+        toolsOpen: isToolsOpen,
+        tools: props.tools,
+        toolsWidth,
+      },
+      contentTypeDefaults
+    );
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
-
-    const activeDrawer = drawers?.items.find(drawer => drawer.id === activeDrawerId);
 
     const {
       refs: drawersRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], activeDrawerId !== undefined, true);
+    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], true, true);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     const { resizeHandle, drawerSize } = useResize(drawerRef, {
-      activeDrawerId,
-      drawers,
+      onActiveDrawerResize,
+      activeDrawerSize,
+      activeDrawer,
       drawersRefs,
       isToolsOpen,
       drawersMaxWidth,
     });
 
-    const handleDrawersClick = useCallback(
-      function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
-        const newActiveDrawerId = id !== activeDrawerId ? id : null;
+    const handleDrawersClick = (id: string | undefined, skipFocusControl?: boolean) => {
+      const newActiveDrawerId = id !== activeDrawerId ? id : undefined;
 
-        setActiveDrawerId(newActiveDrawerId);
-        !skipFocusControl && focusDrawersButtons();
-        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId!);
-        setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
-      },
-      [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId, setDrawerLastInteraction]
-    );
+      onActiveDrawerChange(newActiveDrawerId);
+
+      !skipFocusControl && focusDrawersButtons();
+      setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
+    };
 
     const drawersTriggerCount =
-      (drawers?.items.length ?? 0) +
-      (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) +
-      (!toolsHide ? 1 : 0);
+      drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
-      activeDrawerId !== null ||
+      activeDrawerId !== undefined ||
       isToolsOpen ||
       (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
@@ -596,6 +594,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           activeDrawerId,
           contentType,
           drawers,
+          drawersAriaLabel: drawersProps.ariaLabel,
+          drawersOverflowAriaLabel: drawersProps.overflowAriaLabel,
           drawersRefs,
           drawersMaxWidth,
           drawerSize,
@@ -639,6 +639,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
           splitPanel,
+          splitPanelControlId,
           splitPanelDisplayed,
           splitPanelMaxWidth,
           splitPanelMinWidth,
@@ -650,6 +651,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelToggle,
           setSplitPanelToggle,
           splitPanelRefs,
+          toolsControlId,
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,

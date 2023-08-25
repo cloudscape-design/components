@@ -23,6 +23,7 @@ handleSplitPanelMaxWidth function in the context.
   padding: 0 awsui.$space-s;
   pointer-events: auto;
   width: awsui.$space-layout-toggle-diameter;
+  position: relative;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);
@@ -51,4 +52,24 @@ handleSplitPanelMaxWidth function in the context.
       background: awsui.$color-background-layout-toggle-selected-active;
     }
   }
+
+  &.badge {
+    clip-path: path(
+      'M38.0215 11.3161C37.1068 11.7545 36.0821 12 35 12C31.134 12 28 8.86599 28 5C28 3.91794 28.2455 2.89322 28.6839 1.97851C26.0575 0.710652 23.1118 0 20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40C31.0457 40 40 31.0457 40 20C40 16.8882 39.2893 13.9425 38.0215 11.3161Z'
+    );
+  }
+}
+
+.trigger-wrapper {
+  position: relative;
+}
+
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 8px;
+  background-color: awsui.$color-background-badge-icon;
+  top: 0;
+  right: 0;
 }

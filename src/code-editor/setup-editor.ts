@@ -12,15 +12,7 @@ export function setupEditor(
   setHighlightedAnnotation: React.Dispatch<React.SetStateAction<Ace.Annotation | undefined>>,
   setPaneStatus: React.Dispatch<React.SetStateAction<PaneStatus>>
 ) {
-  ace.config.loadModule('ace/ext/language_tools', function () {
-    editor.setOptions({
-      displayIndentGuides: false,
-      enableSnippets: true,
-      enableBasicAutocompletion: true,
-    });
-  });
-
-  editor.setAutoScrollEditorIntoView(true);
+  setEditorDefaults(ace, editor);
 
   // To display cursor position in status bar
   editor.session.selection.on('changeCursor', () => {
@@ -34,34 +26,6 @@ export function setupEditor(
       editor.session.setAnnotations(newAnnotations);
     }
     setAnnotations(newAnnotations);
-  });
-
-  if (!supportsKeyboardAccessibility(ace)) {
-    editor.commands.addCommand({
-      name: 'exitCodeEditor',
-      bindKey: 'Esc',
-      exec: () => {
-        editor.container.focus();
-      },
-    });
-  }
-
-  editor.on('focus', () => {
-    (editor as any).textInput.getElement().setAttribute('tabindex', 0);
-  });
-
-  editor.on('blur', () => {
-    (editor as any).textInput.getElement().setAttribute('tabindex', -1);
-  });
-
-  // prevent users to step into editor directly by keyboard
-  (editor as any).textInput.getElement().setAttribute('tabindex', -1);
-
-  editor.commands.removeCommand('showSettingsMenu', false);
-
-  // Prevent default behavior on error/warning icon click
-  editor.on('guttermousedown' as any, (e: any) => {
-    e.stop();
   });
 
   const moveCursorToAnnotation = (a: Ace.Annotation) => {
@@ -102,6 +66,53 @@ export function setupEditor(
     }
   });
 
+  // HACK: Annotations aren't cleared when editor is empty.
+  editor.on('change', () => {
+    if (editor.getValue().length === 0) {
+      editor.session.clearAnnotations();
+    }
+  });
+}
+
+function setEditorDefaults(ace: any, editor: Ace.Editor) {
+  ace.config.loadModule('ace/ext/language_tools', function () {
+    editor.setOptions({
+      displayIndentGuides: false,
+      enableSnippets: true,
+      enableBasicAutocompletion: true,
+    });
+  });
+
+  editor.setAutoScrollEditorIntoView(true);
+
+  if (!supportsKeyboardAccessibility(ace)) {
+    editor.commands.addCommand({
+      name: 'exitCodeEditor',
+      bindKey: 'Esc',
+      exec: () => {
+        editor.container.focus();
+      },
+    });
+  }
+
+  editor.on('focus', () => {
+    (editor as any).textInput.getElement().setAttribute('tabindex', 0);
+  });
+
+  editor.on('blur', () => {
+    (editor as any).textInput.getElement().setAttribute('tabindex', -1);
+  });
+
+  // prevent users to step into editor directly by keyboard
+  (editor as any).textInput.getElement().setAttribute('tabindex', -1);
+
+  editor.commands.removeCommand('showSettingsMenu', false);
+
+  // Prevent default behavior on error/warning icon click
+  editor.on('guttermousedown' as any, (e: any) => {
+    e.stop();
+  });
+
   // HACK: Wrapped lines are highlighted individually. This is seriously the recommended fix.
   // See: https://github.com/ajaxorg/ace/issues/3067
   editor.setHighlightActiveLine(false);
@@ -134,13 +145,6 @@ export function setupEditor(
   };
 
   editor.setHighlightActiveLine(true);
-
-  // HACK: Annotations aren't cleared when editor is empty.
-  editor.on('change', () => {
-    if (editor.getValue().length === 0) {
-      editor.session.clearAnnotations();
-    }
-  });
 
   // HACK: "disable" error tooltips by hiding them as soon as they appear.
   // See https://github.com/ajaxorg/ace/issues/4004

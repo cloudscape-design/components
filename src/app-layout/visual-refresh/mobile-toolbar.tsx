@@ -25,7 +25,7 @@ export default function MobileToolbar() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (!isMobile || (navigationHide && !breadcrumbs && toolsHide && !drawers)) {
+  if (!isMobile || (navigationHide && !breadcrumbs && toolsHide && drawers.length === 0)) {
     return null;
   }
 
@@ -66,7 +66,7 @@ export default function MobileToolbar() {
         <div className={clsx(styles['mobile-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
       )}
 
-      {isMobile && !toolsHide && !drawers && (
+      {isMobile && !toolsHide && drawers.length === 0 && (
         <aside
           aria-hidden={isToolsOpen}
           aria-label={ariaLabels?.tools ?? undefined}

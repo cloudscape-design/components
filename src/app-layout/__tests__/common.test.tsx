@@ -13,6 +13,11 @@ import {
 } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [100, () => {}],
+}));
+
 describeEachAppLayout(() => {
   test('Default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
@@ -143,7 +148,13 @@ describeEachAppLayout(() => {
       });
 
       test('Renders aria-expanded only on toggle', () => {
-        const { wrapper } = renderComponent(<AppLayout />);
+        const props = {
+          [openProp]: false,
+          [handler]: () => {},
+        };
+
+        const { wrapper } = renderComponent(<AppLayout {...props} />);
+
         expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-expanded', 'false');
         expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-haspopup', 'true');
         expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-expanded');
@@ -276,6 +287,7 @@ describeEachAppLayout(() => {
       expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-haspopup', 'true');
       wrapper.findDrawersTriggers()![0].click();
+      expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'true');
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-expanded');
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-haspopup');
     });

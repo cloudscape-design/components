@@ -36,7 +36,7 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { getTableRoleProps, getTableRowRoleProps } from './table-role';
+import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } from './table-role';
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
@@ -185,13 +185,8 @@ const InternalTable = React.forwardRef(
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
-    const isFullPageInVisualRefresh = isVisualRefresh && variant === 'full-page';
-    // All Classic variants and the "full-page" VR variant of the table with sticky columns should offset the scrollbar
-    // for it not to overlap interactive elements (such as checkboxes, radio buttons or links in cells)
-    const shouldOffsetStickyScrollbar = hasStickyColumns && (isVisualRefresh ? isFullPageInVisualRefresh : true);
-
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid' : 'table';
+    const tableRole = hasEditableCells ? 'grid-no-navigation' : 'table';
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -225,11 +220,11 @@ const InternalTable = React.forwardRef(
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
-    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
-    const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
-    const wrapperProps = isWrapperScrollable
-      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
-      : {};
+    const wrapperProps = getTableWrapperRoleProps({
+      tableRole,
+      isScrollable: !!(tableWidth && containerWidth && tableWidth > containerWidth),
+      ariaLabel: ariaLabels?.tableLabel,
+    });
 
     const getMouseDownTarget = useMouseDownTarget();
 
@@ -240,6 +235,8 @@ const InternalTable = React.forwardRef(
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
+
+    const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -335,6 +332,7 @@ const InternalTable = React.forwardRef(
                 {...getTableRoleProps({
                   tableRole,
                   totalItemsCount,
+                  totalColumnsCount: totalColumnsCount,
                   ariaLabel: ariaLabels?.tableLabel,
                   ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
                 })}
@@ -349,7 +347,7 @@ const InternalTable = React.forwardRef(
                   {loading || items.length === 0 ? (
                     <tr>
                       <td
-                        colSpan={selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length}
+                        colSpan={totalColumnsCount}
                         className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
                       >
                         <div
@@ -410,6 +408,7 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stickyState={stickyState}
                               columnId={selectionColumnId}
+                              colIndex={0}
                               tableRole={tableRole}
                             >
                               <SelectionControl
@@ -458,6 +457,7 @@ const InternalTable = React.forwardRef(
                                 stripedRows={stripedRows}
                                 isEvenRow={isEven}
                                 columnId={column.id ?? colIndex}
+                                colIndex={selectionType !== undefined ? colIndex + 1 : colIndex}
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
@@ -477,7 +477,7 @@ const InternalTable = React.forwardRef(
               wrapperRef={wrapperRefObject}
               tableRef={tableRefObject}
               onScroll={handleScroll}
-              offsetScrollbar={shouldOffsetStickyScrollbar}
+              hasStickyColumns={hasStickyColumns}
             />
           </InternalContainer>
         </ColumnWidthsProvider>

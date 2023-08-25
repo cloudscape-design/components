@@ -44,6 +44,7 @@ function InternalPopover(
     children,
     header,
     content,
+    triggerAriaLabel,
 
     renderWithPortal = false,
 
@@ -173,7 +174,7 @@ function InternalPopover(
       }}
     >
       {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId}>
+        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId} aria-label={triggerAriaLabel}>
           <span className={styles['trigger-inner-text']}>{children}</span>
         </button>
       ) : (

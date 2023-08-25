@@ -300,6 +300,7 @@ test('should change split panel position in uncontrolled mode', () => {
   expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
   wrapper.findSplitPanel()!.findPreferencesButton()!.click();
   expect(screen.getByRole('radio', { name: 'Bottom' })).toBeChecked();
+  expect(screen.getByRole('radio', { name: 'Side' })).toBeEnabled();
   screen.getByRole('radio', { name: 'Side' }).click();
   screen.getByRole('button', { name: 'Confirm' }).click();
   expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();

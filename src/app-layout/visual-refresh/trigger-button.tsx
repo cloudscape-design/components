@@ -12,34 +12,53 @@ export interface TriggerButtonProps {
   className?: string;
   iconName?: IconProps.Name;
   iconSvg?: React.ReactNode;
+  ariaExpanded: boolean | undefined;
+  ariaControls?: string;
   testId?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
+  badge?: boolean;
 }
 
 function TriggerButton(
-  { ariaLabel, className, iconName, iconSvg, onClick, testId, selected = false }: TriggerButtonProps,
+  {
+    ariaLabel,
+    className,
+    iconName,
+    iconSvg,
+    ariaExpanded,
+    ariaControls,
+    onClick,
+    testId,
+    badge,
+    selected = false,
+  }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
-    <button
-      aria-expanded={false}
-      aria-haspopup={true}
-      aria-label={ariaLabel}
-      className={clsx(
-        styles.trigger,
-        {
-          [styles.selected]: selected,
-        },
-        className
-      )}
-      onClick={onClick}
-      ref={ref as React.Ref<HTMLButtonElement>}
-      type="button"
-      data-testid={testId}
-    >
-      <Icon name={iconName} svg={iconSvg} />
-    </button>
+    <div className={clsx(styles['trigger-wrapper'])}>
+      <button
+        aria-expanded={ariaExpanded}
+        aria-controls={ariaControls}
+        aria-haspopup={true}
+        aria-label={ariaLabel}
+        className={clsx(
+          styles.trigger,
+          {
+            [styles.selected]: selected,
+            [styles.badge]: badge,
+          },
+          className
+        )}
+        onClick={onClick}
+        ref={ref as React.Ref<HTMLButtonElement>}
+        type="button"
+        data-testid={testId}
+      >
+        <Icon name={iconName} svg={iconSvg} />
+      </button>
+      {badge && <div className={clsx(styles.dot)} />}
+    </div>
   );
 }
 

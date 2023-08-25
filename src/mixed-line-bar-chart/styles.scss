@@ -28,11 +28,6 @@
   opacity: 0.3;
 }
 
-.series--bar > .series__rect {
-  stroke: awsui.$color-background-container-content;
-  stroke-width: 2px;
-}
-
 .series--threshold {
   stroke-dasharray: awsui.$border-line-chart-dash-array;
   stroke-width: awsui.$border-line-chart-width;

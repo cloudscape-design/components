@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { TableRole, getTableCellRoleProps } from '../table-role/table-role-helper.js';
+import { TableRole, getTableCellRoleProps } from '../table-role';
 
 export interface TableTdElementProps {
   className?: string;
@@ -30,6 +30,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   columnId: PropertyKey;
+  colIndex: number;
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
@@ -58,6 +59,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasSelection,
       hasFooter,
       columnId,
+      colIndex,
       stickyState,
       tableRole,
     },
@@ -65,7 +67,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
   ) => {
     const Element = isRowHeader ? 'th' : 'td';
 
-    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader }) };
+    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,

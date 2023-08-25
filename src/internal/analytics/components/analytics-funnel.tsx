@@ -36,13 +36,29 @@ type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
   'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'
 >;
 
-export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
+export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
+  const { isInFunnel } = useFunnel();
+  /*
+   If the current funnel component is a Form (i.e. single-page funnel), it should
+   defer its funnel-handling to a parent Form element, if present.
+   Wizards (i.e. multi-page funnels) always take highest precedence for handling funnels,
+   and do not defer to any other element.
+  */
+  if (isInFunnel && props.funnelType === 'single-page') {
+    return <>{props.children}</>;
+  }
+
+  return <InnerAnalyticsFunnel {...props} />;
+};
+
+const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
   const funnelState = useRef<FunnelState>('default');
   const errorCount = useRef<number>(0);
   const loadingButtonCount = useRef<number>(0);
+  const wizardCount = useRef<number>(0);
   const latestFocusCleanupFunction = useRef<undefined | (() => void)>(undefined);
 
   // This useEffect hook is run once on component mount to initiate the funnel analytics.
@@ -56,26 +72,42 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
   // The eslint-disable is required as we deliberately want this effect to run only once on mount and unmount,
   // hence we do not provide any dependencies.
   useEffect(() => {
-    // Reset the state, in case the component was re-mounted.
-    funnelState.current = 'default';
+    /*
+      We run this effect with a delay, in order to detect whether this funnel contains a Wizard.
+      If it does contain a Wizard, that Wizard should take precedence for handling the funnel, and
+      this current funnel component should do nothing.
+    */
+    const handle = setTimeout(() => {
+      if (props.funnelType === 'single-page' && wizardCount.current > 0) {
+        return;
+      }
 
-    const funnelInteractionId = FunnelMetrics.funnelStart({
-      funnelNameSelector: getFunnelNameSelector(),
-      optionalStepNumbers: props.optionalStepNumbers,
-      funnelType: props.funnelType,
-      totalFunnelSteps: props.totalFunnelSteps,
-      componentVersion: PACKAGE_VERSION,
-      theme: isVisualRefresh ? 'vr' : 'classic',
-      funnelVersion: FUNNEL_VERSION,
-    });
+      // Reset the state, in case the component was re-mounted.
+      funnelState.current = 'default';
 
-    setFunnelInteractionId(funnelInteractionId);
+      const funnelInteractionId = FunnelMetrics.funnelStart({
+        funnelNameSelector: getFunnelNameSelector(),
+        optionalStepNumbers: props.optionalStepNumbers,
+        funnelType: props.funnelType,
+        totalFunnelSteps: props.totalFunnelSteps,
+        componentVersion: PACKAGE_VERSION,
+        theme: isVisualRefresh ? 'vr' : 'classic',
+        funnelVersion: FUNNEL_VERSION,
+      });
+
+      setFunnelInteractionId(funnelInteractionId);
+    }, 1);
 
     /*
       A funnel counts as "successful" if it is unmounted after being "complete".
     */
     /* eslint-disable react-hooks/exhaustive-deps */
     return () => {
+      clearTimeout(handle);
+      if (props.funnelType === 'single-page' && wizardCount.current > 0) {
+        return;
+      }
+
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
         FunnelMetrics.funnelComplete({ funnelInteractionId });
@@ -149,6 +181,8 @@ export const AnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) =>
     errorCount,
     loadingButtonCount,
     latestFocusCleanupFunction,
+    isInFunnel: true,
+    wizardCount,
   };
 
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
@@ -158,16 +192,19 @@ type AnalyticsFunnelStepProps = {
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
 } & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
 
-export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => (
+export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
   /*
    This wrapper is used to apply a `key` property to the actual (inner) AnalyticsFunnelStep
    element. This allows us to keep the state and effects separate per step.
    */
-  <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />
-);
+  return <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />;
+};
 
 const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
-  const { funnelInteractionId, funnelState } = useFunnel();
+  const { funnelInteractionId, funnelState, funnelType } = useFunnel();
+  const parentStep = useFunnelStep();
+  const parentStepExists = parentStep.isInStep;
+  const parentStepFunnelInteractionId = parentStep.funnelInteractionId;
 
   const funnelStepProps = { [DATA_ATTR_FUNNEL_STEP]: stepNumber };
 
@@ -178,9 +215,22 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
   // to record the beginning of the interaction with the current step.
   // On unmount, it does a similar thing but this time calling 'funnelStepComplete' to record the completion of the interaction.
   useEffect(() => {
+    if (!funnelInteractionId) {
+      // This step is not inside an active funnel.
+      return;
+    }
+    if (parentStepExists && parentStepFunnelInteractionId) {
+      /*
+       This step is inside another step, which already reports events as
+       part of an active funnel (i.e. that step is not a parent of a Wizard).
+       Thus, this current step does not need to report any events.
+       */
+      return;
+    }
+
     const stepName = getNameFromSelector(stepNameSelector);
 
-    if (funnelInteractionId && funnelState.current === 'default') {
+    if (funnelState.current === 'default') {
       FunnelMetrics.funnelStepStart({
         funnelInteractionId,
         stepNumber,
@@ -193,7 +243,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
 
     return () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (funnelInteractionId && funnelState.current !== 'cancelled') {
+      if (funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
           funnelInteractionId,
           stepNumber,
@@ -205,13 +255,35 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
         });
       }
     };
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, stepNumber, stepNameSelector]);
+  }, [
+    funnelInteractionId,
+    stepNumber,
+    stepNameSelector,
+    funnelState,
+    parentStepExists,
+    funnelType,
+    parentStepFunnelInteractionId,
+  ]);
 
-  const contextValue: FunnelStepContextValue = { stepNumber, stepNameSelector, funnelStepProps, subStepCount };
+  const contextValue: FunnelStepContextValue = {
+    stepNumber,
+    stepNameSelector,
+    funnelStepProps,
+    subStepCount,
+    isInStep: true,
+    funnelInteractionId,
+  };
+
+  /*
+    If this step is inside another step which already reports events as part of an active
+    funnel (i.e. that step is not a parent of a Wizard), the current step becomes invisible
+    in the hierarchy by passing the context of its parent through.
+  */
+  const effectiveContextValue = parentStepExists && parentStepFunnelInteractionId ? parentStep : contextValue;
+
   return (
-    <FunnelStepContext.Provider value={contextValue}>
-      {typeof children === 'function' ? children(contextValue) : children}
+    <FunnelStepContext.Provider value={effectiveContextValue}>
+      {typeof children === 'function' ? children(effectiveContextValue) : children}
     </FunnelStepContext.Provider>
   );
 };
