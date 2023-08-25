@@ -251,25 +251,16 @@ function DesktopTriggers() {
           <OverflowMenu
             items={overflowItems}
             ariaLabel={drawersOverflowAriaLabel}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, testUtilsClass, ariaExpanded }) => (
-              <div className={clsx(styles['trigger-wrapper'])}>
-                <TriggerButton
-                  ref={triggerRef}
-                  ariaLabel={ariaLabel}
-                  ariaExpanded={ariaExpanded}
-                  className={clsx(
-                    styles['drawers-trigger'],
-                    {
-                      [styles.badge]: overflowMenuHasBadge,
-                    },
-                    testutilStyles['drawers-trigger'],
-                    testUtilsClass
-                  )}
-                  iconName="ellipsis"
-                  onClick={onClick}
-                />
-                {overflowMenuHasBadge && <div className={clsx(styles.dot)} />}
-              </div>
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
+              <TriggerButton
+                ref={triggerRef}
+                ariaLabel={ariaLabel}
+                ariaExpanded={ariaExpanded}
+                badge={overflowMenuHasBadge}
+                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
+                iconName="ellipsis"
+                onClick={onClick}
+              />
             )}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);

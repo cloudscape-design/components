@@ -7,22 +7,61 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/hooks/focus-visible' as focus-visible;
 
+@mixin trigger-selected-styles {
+  background: awsui.$color-background-layout-toggle-selected-default;
+  color: awsui.$color-text-layout-toggle-selected;
+
+  &:hover {
+    background: awsui.$color-background-layout-toggle-selected-hover;
+  }
+  &:active {
+    background: awsui.$color-background-layout-toggle-selected-active;
+  }
+}
+
+@mixin trigger-button-styles {
+  background: awsui.$color-background-layout-toggle-default;
+  border-radius: 50%;
+  height: awsui.$space-layout-toggle-diameter;
+  width: awsui.$space-layout-toggle-diameter;
+
+  &:hover {
+    background: awsui.$color-background-layout-toggle-hover;
+  }
+
+  &:active {
+    background: awsui.$color-background-layout-toggle-active;
+  }
+}
+
+.trigger-badge-wrapper {
+  @include trigger-button-styles();
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  clip-path: path(
+    'M38.0215 11.3161C37.1068 11.7545 36.0821 12 35 12C31.134 12 28 8.86599 28 5C28 3.91794 28.2455 2.89322 28.6839 1.97851C26.0575 0.710652 23.1118 0 20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40C31.0457 40 40 31.0457 40 20C40 16.8882 39.2893 13.9425 38.0215 11.3161Z'
+  );
+}
+
 /*
 Warning! If these design tokens for width change it will adversely impact 
 the calculation used to determine the Split Panel maximum width in the 
 handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
-  background: awsui.$color-background-layout-toggle-default;
+  @include trigger-button-styles();
+
   border: none;
-  border-radius: 50%;
-  box-shadow: awsui.$shadow-panel-toggle;
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
-  height: awsui.$space-layout-toggle-diameter;
   padding: 0 awsui.$space-s;
   pointer-events: auto;
-  width: awsui.$space-layout-toggle-diameter;
   position: relative;
 
   @include focus-visible.when-visible {
@@ -33,35 +72,25 @@ handleSplitPanelMaxWidth function in the context.
     outline: none;
   }
 
-  &:hover {
-    background: awsui.$color-background-layout-toggle-hover;
-  }
-
-  &:active {
-    background: awsui.$color-background-layout-toggle-active;
-  }
-
   &.selected {
-    background: awsui.$color-background-layout-toggle-selected-default;
-    color: awsui.$color-text-layout-toggle-selected;
+    @include trigger-selected-styles();
 
-    &:hover {
-      background: awsui.$color-background-layout-toggle-selected-hover;
-    }
-    &:active {
-      background: awsui.$color-background-layout-toggle-selected-active;
+    > .trigger-badge-wrapper {
+      @include trigger-selected-styles();
     }
   }
 
-  &.badge {
-    clip-path: path(
-      'M38.0215 11.3161C37.1068 11.7545 36.0821 12 35 12C31.134 12 28 8.86599 28 5C28 3.91794 28.2455 2.89322 28.6839 1.97851C26.0575 0.710652 23.1118 0 20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40C31.0457 40 40 31.0457 40 20C40 16.8882 39.2893 13.9425 38.0215 11.3161Z'
-    );
+  &.badge,
+  &.badge:hover,
+  &.badge:active {
+    background: transparent;
   }
 }
 
 .trigger-wrapper {
   position: relative;
+  box-shadow: awsui.$shadow-panel-toggle;
+  border-radius: 50%;
 }
 
 .dot {
