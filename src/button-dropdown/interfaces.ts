@@ -259,4 +259,5 @@ export interface CustomTriggerProps {
   disabled: boolean;
   isOpen: boolean;
   onClick: () => void;
+  ariaExpanded: boolean;
 }

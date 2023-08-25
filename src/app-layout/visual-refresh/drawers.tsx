@@ -95,6 +95,7 @@ function ActiveDrawer() {
 
   return (
     <aside
+      id={activeDrawerId}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
@@ -158,6 +159,7 @@ function DesktopTriggers() {
     isSplitPanelOpen,
     isToolsOpen,
     splitPanel,
+    splitPanelControlId,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
@@ -220,11 +222,15 @@ function DesktopTriggers() {
           [styles['has-multiple-triggers']]: hasMultipleTriggers,
           [styles['has-open-drawer']]: hasOpenDrawer,
         })}
+        role="toolbar"
+        aria-orientation="vertical"
       >
         {visibleItems.map(item => {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
+              ariaExpanded={item.id === activeDrawerId}
+              ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
@@ -245,11 +251,12 @@ function DesktopTriggers() {
           <OverflowMenu
             items={overflowItems}
             ariaLabel={drawersOverflowAriaLabel}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, testUtilsClass }) => (
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, testUtilsClass, ariaExpanded }) => (
               <div className={clsx(styles['trigger-wrapper'])}>
                 <TriggerButton
                   ref={triggerRef}
                   ariaLabel={ariaLabel}
+                  ariaExpanded={ariaExpanded}
                   className={clsx(
                     styles['drawers-trigger'],
                     {
@@ -272,6 +279,8 @@ function DesktopTriggers() {
         {hasSplitPanel && splitPanelToggle.displayed && (
           <TriggerButton
             ariaLabel={splitPanelToggle.ariaLabel}
+            ariaControls={splitPanelControlId}
+            ariaExpanded={!!isSplitPanelOpen}
             className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
             iconName="view-vertical"
             onClick={() => handleSplitPanelClick()}
