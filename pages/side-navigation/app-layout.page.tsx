@@ -4,7 +4,6 @@ import React from 'react';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import AppLayout from '~components/app-layout';
 import Badge from '~components/badge';
-import labels from '../app-layout/utils/labels';
 
 import logoSmall from './logos/logo-small.svg';
 
@@ -102,16 +101,12 @@ const items: SideNavigationProps.Item[] = [
 ];
 
 export default function SideNavigationPage() {
-  const [open, setOpen] = React.useState(true);
-
   return (
     <AppLayout
-      navigationOpen={open}
-      onNavigationChange={({ detail }) => {
-        setOpen(detail.open);
-      }}
+      toolsHide={true}
+      navigationOpen={true}
       contentType="form"
-      ariaLabels={labels}
+      ariaLabels={{ navigationClose: 'Close' }}
       navigation={
         <SideNavigation
           activeHref="#/"

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
 import {
   describeEachThemeAppLayout,
@@ -22,32 +22,11 @@ import testUtilsStyles from '../../../lib/components/app-layout/test-classes/sty
 
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
-import SideNavigation from '../../../lib/components/side-navigation';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
-
-function AppLayoutWithControlledNavigation({
-  initialNavigationOpen,
-  navigation,
-}: {
-  initialNavigationOpen: boolean;
-  navigation: React.ReactNode;
-}) {
-  const [navigationOpen, setNavigationOpen] = useState(initialNavigationOpen);
-
-  return (
-    <AppLayout
-      navigationOpen={navigationOpen}
-      onNavigationChange={({ detail }) => {
-        setNavigationOpen(detail.open);
-      }}
-      navigation={navigation}
-    />
-  );
-}
 
 describeEachThemeAppLayout(true, theme => {
   // In refactored Visual Refresh different styles are used compared to Classic
@@ -65,37 +44,6 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findTools()).toBeTruthy();
     expect(wrapper.findNavigationToggle().getElement()).toBeEnabled();
     expect(wrapper.findToolsToggle().getElement()).toBeEnabled();
-  });
-
-  test('AppLayout with controlled navigation has navigation forcely closed on initial load', () => {
-    const { wrapper } = renderComponent(
-      <AppLayoutWithControlledNavigation
-        initialNavigationOpen={true}
-        navigation={
-          <>
-            <h1>Navigation</h1>
-            <a href="test">Link</a>
-          </>
-        }
-      />
-    );
-    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
-  });
-
-  test('AppLayout with uncontrolled navigation has navigation forcely closed on initial load', () => {
-    const { wrapper } = renderComponent(
-      <AppLayout
-        navigation={
-          <>
-            <h1>Navigation</h1>
-            <a href="test">Link</a>
-          </>
-        }
-      />
-    );
-    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
   });
 
   test('renders open navigation state', () => {
@@ -138,58 +86,30 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('closes navigation when clicking on links', () => {
+    const onNavigationChange = jest.fn();
     const { wrapper } = renderComponent(
-      <AppLayoutWithControlledNavigation
-        initialNavigationOpen={true}
+      <AppLayout
+        navigationOpen={true}
+        onNavigationChange={onNavigationChange}
         navigation={
           <>
             <h1>Navigation</h1>
-            <a href="test">Link</a>
+            <a href="#">Link</a>
           </>
         }
       />
     );
-    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
-
-    wrapper.findNavigationToggle().click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
-
     wrapper.findNavigation().find('a')!.click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
-  });
 
-  test('closes navigation when clicking on a link in the Side Navigation component', () => {
-    const { wrapper } = renderComponent(
-      <AppLayoutWithControlledNavigation
-        initialNavigationOpen={true}
-        navigation={
-          <SideNavigation
-            items={[
-              {
-                type: 'link',
-                text: 'Page 1',
-                href: '#/page1',
-              },
-            ]}
-          />
-        }
-      />
-    );
-    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
-
-    wrapper.findNavigationToggle().click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
-
-    wrapper.findNavigation().find('a')!.click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+    expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
   });
 
   test('does not close navigation when anchor without href was clicked', () => {
+    const onNavigationChange = jest.fn();
     const { wrapper } = renderComponent(
-      <AppLayoutWithControlledNavigation
-        initialNavigationOpen={true}
+      <AppLayout
+        navigationOpen={true}
+        onNavigationChange={onNavigationChange}
         navigation={
           <>
             <h1>Navigation</h1>
@@ -198,36 +118,28 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
-
-    wrapper.findNavigationToggle().click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
-
     wrapper.findNavigation().find('a')!.click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+
+    expect(onNavigationChange).not.toHaveBeenCalled();
   });
 
   test('does not close navigation when other elements were clicked', () => {
+    const onNavigationChange = jest.fn();
     const { wrapper } = renderComponent(
-      <AppLayoutWithControlledNavigation
-        initialNavigationOpen={true}
+      <AppLayout
+        navigationOpen={true}
+        onNavigationChange={onNavigationChange}
         navigation={
           <>
             <h1>Navigation</h1>
-            <a>Link</a>
+            <a href="#">Link</a>
           </>
         }
       />
     );
-    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
-
-    wrapper.findNavigationToggle().click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
-
     wrapper.findNavigation().find('h1')!.click();
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+
+    expect(onNavigationChange).not.toHaveBeenCalled();
   });
 
   test('does not close tools when clicking on any element', () => {
