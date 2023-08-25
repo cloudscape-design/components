@@ -163,6 +163,7 @@ const InternalButtonDropdown = React.forwardRef(
         <div className={styles['dropdown-trigger']}>
           {customTriggerBuilder({
             testUtilsClass: styles['test-utils-button-trigger'],
+            ariaExpanded: canBeOpened && isOpen,
             onClick: clickHandler,
             triggerRef,
             ariaLabel,
