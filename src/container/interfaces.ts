@@ -19,7 +19,7 @@ export interface ContainerProps extends BaseComponentProps {
    * Use this slot to render a media element. Supported element types are 'img', 'video', and 'picture'.
    * You can define different positions and sizes for the media element within the container.
    *
-   * * `content` - Use this slot to render your media element. We support `img`, `video` and `picture` elements.
+   * * `content` - Use this slot to render your media element. We support `img`, `video`, `picture`, and `iframe` elements.
    *
    * * `position` - Defines the media slot's position within the container. Defaults to `top`.
    *
@@ -72,9 +72,7 @@ export interface ContainerProps extends BaseComponentProps {
 export namespace ContainerProps {
   export interface Media {
     /**
-     *
-     * Use this slot to render your media element. We support `img`, `video` and `picture` elements.
-     *
+     * Use this slot to render your media element. We support `img`, `video`, `picture`, and `iframe` elements.
      */
     content: React.ReactNode;
 
