@@ -6,21 +6,21 @@ import { TableProps } from './interfaces';
 import SelectionControl from './selection-control';
 import { focusMarkers, SelectionProps } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { getColumnKey, getStickyClassNames } from './utils';
+import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
-import { getTableColHeaderRoleProps, getTableHeaderRowRoleProps, TableRole } from './table-role';
+import { StickyColumnsModel } from './sticky-columns';
+import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 
 export type InteractiveComponent =
   | { type: 'selection' }
   | { type: 'column'; col: number }
-  | { type: 'resizer'; col: number };
+  | { type: 'resizer'; col: number }
+  | { type: 'header'; col: number };
 
 export interface TheadProps {
   containerWidth: number | null;
@@ -96,46 +96,46 @@ const Thead = React.forwardRef(
 
     const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
 
-    const stickyStyles = useStickyCellStyles({
-      stickyColumns: stickyState,
-      columnId: selectionColumnId,
-      getClassName: props => getStickyClassNames(cellStyles, props),
-    });
-
     const useWidgetHeaders = resizableColumns || !sortingDisabled;
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1} {...getTableHeaderRowRoleProps({ tableRole })}>
           {selectionType ? (
-            <th
-              className={clsx(
-                headerCellClass,
-                selectionCellClass,
-                hidden && headerCellStyles['header-cell-hidden'],
-                stickyStyles.className
-              )}
-              style={stickyStyles.style}
-              ref={stickyStyles.ref}
-              scope="col"
-              {...getTableColHeaderRoleProps({ tableRole, colIndex: 0, isWidget: useWidgetHeaders })}
-            >
-              {selectionType === 'multi' ? (
-                <SelectionControl
-                  onFocusDown={event => {
-                    if (tableRole !== 'grid') {
-                      onFocusMove!(event.target as HTMLElement, -1, +1);
-                    }
-                  }}
-                  focusedComponent={focusedComponent}
-                  onFocusedComponentChange={onFocusedComponentChange}
-                  {...getSelectAllProps()}
-                  {...(sticky ? { tabIndex: -1 } : {})}
-                />
-              ) : (
-                <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
-              )}
-            </th>
+            <TableHeaderCell
+              className={clsx(headerCellClass, selectionCellClass)}
+              hidden={hidden}
+              tableRole={tableRole}
+              colIndex={0}
+              isWidget={useWidgetHeaders}
+              column={{
+                header:
+                  selectionType === 'multi' ? (
+                    <SelectionControl
+                      onFocusDown={event => {
+                        if (tableRole !== 'grid') {
+                          onFocusMove!(event.target as HTMLElement, -1, +1);
+                        }
+                      }}
+                      focusedComponent={focusedComponent}
+                      onFocusedComponentChange={onFocusedComponentChange}
+                      {...getSelectAllProps()}
+                      {...(sticky ? { tabIndex: -1 } : {})}
+                    />
+                  ) : (
+                    <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
+                  ),
+                cell: () => null,
+              }}
+              tabIndex={-1}
+              focusedComponent={focusedComponent}
+              onFocusedComponentChange={onFocusedComponentChange}
+              onClick={() => {}}
+              onResizeFinish={() => {}}
+              updateColumn={() => {}}
+              columnId={selectionColumnId}
+              stickyState={stickyState}
+            ></TableHeaderCell>
           ) : null}
 
           {columnDefinitions.map((column, colIndex) => {

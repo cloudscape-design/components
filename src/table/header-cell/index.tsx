@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
@@ -36,7 +36,7 @@ interface TableHeaderCellProps<ItemType> {
   isEditable?: boolean;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
-  cellRef: React.RefCallback<HTMLElement>;
+  cellRef?: React.RefCallback<HTMLElement>;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   tableRole: TableRole;
@@ -98,6 +98,9 @@ export function TableHeaderCell<ItemType>({
 
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef);
 
+  const focusedSortHandleRef = useRef(false);
+  const focusedResizeHandleRef = useRef(false);
+
   return (
     <th
       className={clsx(
@@ -110,12 +113,22 @@ export function TableHeaderCell<ItemType>({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
+          [styles['header-cell-fake-focus']]: focusedComponent?.type === 'header' && focusedComponent.col === colIndex,
         },
         stickyStyles.className
       )}
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex, isWidget })}
+      onFocus={() => {
+        onFocusedComponentChange?.({
+          type: focusedSortHandleRef.current ? 'column' : focusedResizeHandleRef.current ? 'resizer' : 'header',
+          col: colIndex,
+        });
+        focusedSortHandleRef.current = false;
+        focusedResizeHandleRef.current = false;
+      }}
+      onBlur={() => onFocusedComponentChange?.(null)}
     >
       <div
         className={clsx(styles['header-cell-content'], {
@@ -136,8 +149,7 @@ export function TableHeaderCell<ItemType>({
               tabIndex: tabIndex,
               role: 'button',
               onClick: handleClick,
-              onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
-              onBlur: () => onFocusedComponentChange?.(null),
+              onFocus: () => (focusedSortHandleRef.current = true),
             }
           : {})}
       >
@@ -167,8 +179,7 @@ export function TableHeaderCell<ItemType>({
             onDragMove={newWidth => updateColumn(columnId, newWidth)}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}
-            onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}
-            onBlur={() => onFocusedComponentChange?.(null)}
+            onFocus={() => (focusedResizeHandleRef.current = true)}
             minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           />
         </>
