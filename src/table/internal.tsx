@@ -339,7 +339,7 @@ const InternalTable = React.forwardRef(
                 <Thead
                   ref={theadRef}
                   hidden={stickyHeader}
-                  onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
+                  onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
                   {...theadProps}
                 />
                 <tbody>

@@ -16,11 +16,7 @@ import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { StickyColumnsModel } from './sticky-columns';
 import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 import { TableThElement } from './header-cell/th-element';
-
-export type InteractiveComponent =
-  | { type: 'selection' }
-  | { type: 'column'; col: number }
-  | { type: 'resizer'; col: number };
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 export interface TheadProps {
   containerWidth: number | null;
@@ -43,8 +39,8 @@ export interface TheadProps {
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
   selectionColumnId: PropertyKey;
-  focusedComponent?: InteractiveComponent | null;
-  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  focusedComponent?: null | string;
+  onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
 }
 
@@ -98,7 +94,18 @@ const Thead = React.forwardRef(
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
-        <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1} {...getTableHeaderRowRoleProps({ tableRole })}>
+        <tr
+          {...focusMarkers.all}
+          ref={outerRef}
+          aria-rowindex={1}
+          {...getTableHeaderRowRoleProps({ tableRole })}
+          onFocus={event => {
+            const focusControlElement = findUpUntil(event.target, element => !!element.getAttribute('data-focus-id'));
+            const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
+            onFocusedComponentChange?.(focusId);
+          }}
+          onBlur={() => onFocusedComponentChange?.(null)}
+        >
           {selectionType ? (
             <TableThElement
               className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
@@ -114,7 +121,6 @@ const Thead = React.forwardRef(
                     onFocusMove!(event.target as HTMLElement, -1, +1);
                   }}
                   focusedComponent={focusedComponent}
-                  onFocusedComponentChange={onFocusedComponentChange}
                   {...getSelectAllProps()}
                   {...(sticky ? { tabIndex: -1 } : {})}
                 />
@@ -149,7 +155,6 @@ const Thead = React.forwardRef(
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
-                onFocusedComponentChange={onFocusedComponentChange}
                 column={column}
                 activeSortingColumn={sortingColumn}
                 sortingDescending={sortingDescending}

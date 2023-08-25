@@ -9,7 +9,6 @@ import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { InteractiveComponent } from '../thead';
 import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
@@ -36,8 +35,7 @@ interface TableHeaderCellProps<ItemType> {
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
   cellRef: React.RefCallback<HTMLElement>;
-  focusedComponent?: InteractiveComponent | null;
-  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  focusedComponent?: null | string;
   tableRole: TableRole;
 }
 
@@ -51,7 +49,6 @@ export function TableHeaderCell<ItemType>({
   sortingDisabled,
   wrapLines,
   focusedComponent,
-  onFocusedComponentChange,
   hidden,
   onClick,
   colIndex,
@@ -102,8 +99,9 @@ export function TableHeaderCell<ItemType>({
       tableRole={tableRole}
     >
       <div
+        data-focus-id={`sorting-control-${String(columnId)}`}
         className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]: focusedComponent?.type === 'column' && focusedComponent.col === colIndex,
+          [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
         })}
         aria-label={
           column.ariaLabel
@@ -120,8 +118,6 @@ export function TableHeaderCell<ItemType>({
               tabIndex: tabIndex,
               role: 'button',
               onClick: handleClick,
-              onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
-              onBlur: () => onFocusedComponentChange?.(null),
             }
           : {})}
       >
@@ -147,12 +143,11 @@ export function TableHeaderCell<ItemType>({
         <>
           <Resizer
             tabIndex={tabIndex}
-            showFocusRing={focusedComponent?.type === 'resizer' && focusedComponent.col === colIndex}
+            focusId={`resize-control-${String(columnId)}`}
+            showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
             onDragMove={newWidth => updateColumn(columnId, newWidth)}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}
-            onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}
-            onBlur={() => onFocusedComponentChange?.(null)}
             minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           />
         </>
