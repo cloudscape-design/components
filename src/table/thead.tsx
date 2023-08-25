@@ -6,16 +6,16 @@ import { TableProps } from './interfaces';
 import SelectionControl from './selection-control';
 import { focusMarkers, SelectionProps } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { getColumnKey, getStickyClassNames } from './utils';
+import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { StickyColumnsModel, useStickyCellStyles } from './sticky-columns';
-import { getTableColHeaderRoleProps, getTableHeaderRowRoleProps, TableRole } from './table-role';
+import { StickyColumnsModel } from './sticky-columns';
+import { getTableHeaderRowRoleProps, TableRole } from './table-role';
+import { TableThElement } from './header-cell/th-element';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -96,26 +96,17 @@ const Thead = React.forwardRef(
 
     const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
 
-    const stickyStyles = useStickyCellStyles({
-      stickyColumns: stickyState,
-      columnId: selectionColumnId,
-      getClassName: props => getStickyClassNames(cellStyles, props),
-    });
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1} {...getTableHeaderRowRoleProps({ tableRole })}>
           {selectionType ? (
-            <th
-              className={clsx(
-                headerCellClass,
-                selectionCellClass,
-                hidden && headerCellStyles['header-cell-hidden'],
-                stickyStyles.className
-              )}
-              style={stickyStyles.style}
-              ref={stickyStyles.ref}
-              scope="col"
-              {...getTableColHeaderRoleProps({ tableRole, colIndex: 0 })}
+            <TableThElement
+              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              hidden={hidden}
+              tableRole={tableRole}
+              colIndex={0}
+              columnId={selectionColumnId}
+              stickyState={stickyState}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
@@ -130,7 +121,7 @@ const Thead = React.forwardRef(
               ) : (
                 <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
               )}
-            </th>
+            </TableThElement>
           ) : null}
 
           {columnDefinitions.map((column, colIndex) => {

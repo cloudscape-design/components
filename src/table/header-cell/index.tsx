@@ -10,11 +10,10 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../i18n/context';
-import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { TableRole, getTableColHeaderRoleProps } from '../table-role';
+import { StickyColumnsModel } from '../sticky-columns';
+import { TableRole } from '../table-role';
+import { TableThElement } from './th-element';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -88,32 +87,19 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
-  const stickyStyles = useStickyCellStyles({
-    stickyColumns: stickyState,
-    columnId,
-    getClassName: props => getStickyClassNames(styles, props),
-  });
-
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef);
-
   return (
-    <th
-      className={clsx(
-        className,
-        {
-          [styles['header-cell-resizable']]: !!resizableColumns,
-          [styles['header-cell-sortable']]: sortingStatus,
-          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-          [styles['header-cell-disabled']]: sortingDisabled,
-          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-          [styles['header-cell-descending']]: sortingStatus === 'descending',
-          [styles['header-cell-hidden']]: hidden,
-        },
-        stickyStyles.className
-      )}
-      style={{ ...style, ...stickyStyles.style }}
-      ref={mergedRef}
-      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+    <TableThElement
+      className={className}
+      style={style}
+      cellRef={cellRef}
+      sortingStatus={sortingStatus}
+      sortingDisabled={sortingDisabled}
+      hidden={hidden}
+      colIndex={colIndex}
+      resizableColumns={resizableColumns}
+      columnId={columnId}
+      stickyState={stickyState}
+      tableRole={tableRole}
     >
       <div
         className={clsx(styles['header-cell-content'], {
@@ -171,6 +157,6 @@ export function TableHeaderCell<ItemType>({
           />
         </>
       )}
-    </th>
+    </TableThElement>
   );
 }
