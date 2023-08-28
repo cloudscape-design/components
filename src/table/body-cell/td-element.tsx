@@ -99,6 +99,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stickyStyles.className
         )}
         onClick={onClick}
+        onFocus={event => event.target.scrollIntoView({ block: 'center' })}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         ref={node => {
