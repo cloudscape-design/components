@@ -96,6 +96,7 @@ export function TableHeaderCell<ItemType>({
       hidden={hidden}
       colIndex={colIndex}
       resizableColumns={resizableColumns}
+      focusedComponent={focusedComponent}
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}

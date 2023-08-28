@@ -16,6 +16,7 @@ interface TableThElementProps {
   sortingDisabled?: boolean;
   hidden?: boolean;
   colIndex: number;
+  focusedComponent?: null | string;
   resizableColumns?: boolean;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
@@ -32,6 +33,7 @@ export function TableThElement({
   sortingDisabled,
   hidden,
   colIndex,
+  focusedComponent,
   resizableColumns,
   columnId,
   stickyState,
@@ -50,9 +52,11 @@ export function TableThElement({
 
   return (
     <th
+      data-focus-id={`header-${String(columnId)}`}
       className={clsx(
         className,
         {
+          [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-resizable']]: !!resizableColumns,
           [styles['header-cell-sortable']]: sortingStatus,
           [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',

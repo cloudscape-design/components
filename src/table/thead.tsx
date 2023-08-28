@@ -91,6 +91,7 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
+    const useWidgetHeaders = !sortingDisabled && resizableColumns;
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -112,8 +113,10 @@ const Thead = React.forwardRef(
               hidden={hidden}
               tableRole={tableRole}
               colIndex={0}
+              focusedComponent={focusedComponent}
               columnId={selectionColumnId}
               stickyState={stickyState}
+              isWidget={useWidgetHeaders}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
@@ -171,7 +174,7 @@ const Thead = React.forwardRef(
                 stickyState={stickyState}
                 cellRef={node => setCell(columnId, node)}
                 tableRole={tableRole}
-                isWidget={!sortingDisabled && resizableColumns}
+                isWidget={useWidgetHeaders}
               />
             );
           })}
