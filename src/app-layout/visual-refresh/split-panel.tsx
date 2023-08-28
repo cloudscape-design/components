@@ -120,6 +120,7 @@ function SplitPanelSide() {
     splitPanelMaxWidth,
     splitPanelMinWidth,
     splitPanelReportedSize,
+    splitPanelControlId,
   } = useAppLayoutInternals();
 
   if (!splitPanel) {
@@ -130,6 +131,7 @@ function SplitPanelSide() {
     <Transition in={isSplitPanelOpen ?? false} exit={false}>
       {(state, transitionEventsRef) => (
         <section
+          id={splitPanelControlId}
           aria-hidden={!isSplitPanelOpen || splitPanelPosition === 'bottom' ? true : false}
           className={clsx(styles['split-panel-side'], styles[`position-${splitPanelPosition}`], {
             [styles.animating]: state === 'entering',

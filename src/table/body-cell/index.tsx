@@ -92,10 +92,10 @@ function TableCellEditable<ItemType>({
           ariaLabels={ariaLabels}
           column={column}
           item={item}
-          onEditEnd={e => {
+          onEditEnd={options => {
             setShowSuccessIcon(false);
-            isFocusMoveNeededRef.current = true;
-            onEditEnd(e);
+            isFocusMoveNeededRef.current = options.refocusCell;
+            onEditEnd(options.cancelled);
           }}
           submitEdit={submitEdit ?? submitHandlerFallback}
         />

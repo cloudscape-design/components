@@ -348,7 +348,7 @@ const InternalTable = React.forwardRef(
                 <Thead
                   ref={theadRef}
                   hidden={stickyHeader}
-                  onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
+                  onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
                   {...theadProps}
                 />
                 <tbody>
@@ -485,7 +485,7 @@ const InternalTable = React.forwardRef(
               wrapperRef={wrapperRefObject}
               tableRef={tableRefObject}
               onScroll={handleScroll}
-              offsetScrollbar={hasStickyColumns}
+              hasStickyColumns={hasStickyColumns}
             />
           </InternalContainer>
         </ColumnWidthsProvider>

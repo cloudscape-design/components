@@ -12,6 +12,8 @@ export interface TriggerButtonProps {
   className?: string;
   iconName?: IconProps.Name;
   iconSvg?: React.ReactNode;
+  ariaExpanded: boolean | undefined;
+  ariaControls?: string;
   testId?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
@@ -19,13 +21,25 @@ export interface TriggerButtonProps {
 }
 
 function TriggerButton(
-  { ariaLabel, className, iconName, iconSvg, onClick, testId, badge, selected = false }: TriggerButtonProps,
+  {
+    ariaLabel,
+    className,
+    iconName,
+    iconSvg,
+    ariaExpanded,
+    ariaControls,
+    onClick,
+    testId,
+    badge,
+    selected = false,
+  }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
     <div className={clsx(styles['trigger-wrapper'])}>
       <button
-        aria-expanded={false}
+        aria-expanded={ariaExpanded}
+        aria-controls={ariaControls}
         aria-haspopup={true}
         aria-label={ariaLabel}
         className={clsx(
@@ -41,7 +55,9 @@ function TriggerButton(
         type="button"
         data-testid={testId}
       >
-        <Icon name={iconName} svg={iconSvg} />
+        <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
+          <Icon name={iconName} svg={iconSvg} />
+        </span>
       </button>
       {badge && <div className={clsx(styles.dot)} />}
     </div>

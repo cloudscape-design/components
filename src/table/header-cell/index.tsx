@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import React from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
@@ -9,12 +9,10 @@ import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { InteractiveComponent } from '../thead';
-import { getStickyClassNames } from '../utils';
 import { useInternalI18n } from '../../i18n/context';
-import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { TableRole, getTableColHeaderRoleProps } from '../table-role';
+import { StickyColumnsModel } from '../sticky-columns';
+import { TableRole } from '../table-role';
+import { TableThElement } from './th-element';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -36,9 +34,8 @@ interface TableHeaderCellProps<ItemType> {
   isEditable?: boolean;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
-  cellRef?: React.RefCallback<HTMLElement>;
-  focusedComponent?: InteractiveComponent | null;
-  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  cellRef: React.RefCallback<HTMLElement>;
+  focusedComponent?: null | string;
   tableRole: TableRole;
   isWidget?: boolean;
 }
@@ -53,7 +50,6 @@ export function TableHeaderCell<ItemType>({
   sortingDisabled,
   wrapLines,
   focusedComponent,
-  onFocusedComponentChange,
   hidden,
   onClick,
   colIndex,
@@ -90,49 +86,25 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
-  const stickyStyles = useStickyCellStyles({
-    stickyColumns: stickyState,
-    columnId,
-    getClassName: props => getStickyClassNames(styles, props),
-  });
-
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef);
-
-  const focusedSortHandleRef = useRef(false);
-  const focusedResizeHandleRef = useRef(false);
-
   return (
-    <th
-      className={clsx(
-        className,
-        {
-          [styles['header-cell-resizable']]: !!resizableColumns,
-          [styles['header-cell-sortable']]: sortingStatus,
-          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-          [styles['header-cell-disabled']]: sortingDisabled,
-          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-          [styles['header-cell-descending']]: sortingStatus === 'descending',
-          [styles['header-cell-hidden']]: hidden,
-          [styles['header-cell-fake-focus']]: focusedComponent?.type === 'header' && focusedComponent.col === colIndex,
-        },
-        stickyStyles.className
-      )}
-      style={{ ...style, ...stickyStyles.style }}
-      ref={mergedRef}
-      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex, isWidget })}
-      onFocus={() => {
-        onFocusedComponentChange?.({
-          type: focusedSortHandleRef.current ? 'column' : focusedResizeHandleRef.current ? 'resizer' : 'header',
-          col: colIndex,
-        });
-        focusedSortHandleRef.current = false;
-        focusedResizeHandleRef.current = false;
-      }}
-      onBlur={() => onFocusedComponentChange?.(null)}
+    <TableThElement
+      className={className}
+      style={style}
+      cellRef={cellRef}
+      sortingStatus={sortingStatus}
+      sortingDisabled={sortingDisabled}
+      hidden={hidden}
+      colIndex={colIndex}
+      resizableColumns={resizableColumns}
+      columnId={columnId}
+      stickyState={stickyState}
+      tableRole={tableRole}
+      isWidget={isWidget}
     >
       <div
+        data-focus-id={`sorting-control-${String(columnId)}`}
         className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]: focusedComponent?.type === 'column' && focusedComponent.col === colIndex,
+          [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
         })}
         aria-label={
           column.ariaLabel
@@ -149,7 +121,6 @@ export function TableHeaderCell<ItemType>({
               tabIndex: tabIndex,
               role: 'button',
               onClick: handleClick,
-              onFocus: () => (focusedSortHandleRef.current = true),
             }
           : {})}
       >
@@ -175,15 +146,15 @@ export function TableHeaderCell<ItemType>({
         <>
           <Resizer
             tabIndex={tabIndex}
-            showFocusRing={focusedComponent?.type === 'resizer' && focusedComponent.col === colIndex}
+            focusId={`resize-control-${String(columnId)}`}
+            showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
             onDragMove={newWidth => updateColumn(columnId, newWidth)}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}
-            onFocus={() => (focusedResizeHandleRef.current = true)}
             minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           />
         </>
       )}
-    </th>
+    </TableThElement>
   );
 }
