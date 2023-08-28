@@ -85,7 +85,8 @@
   }
 
   // Hide resize handle when covered by the header cell focus ring.
-  &-fake-focus:before {
+  &-fake-focus:before,
+  &:focus:before {
     opacity: 0;
   }
 }
