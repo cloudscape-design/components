@@ -16,7 +16,7 @@ interface ResizerProps {
   ariaLabelledby?: string;
   minWidth?: number;
   tabIndex?: number;
-
+  focusId?: string;
   showFocusRing?: boolean;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -33,6 +33,7 @@ export function Resizer({
   minWidth = DEFAULT_COLUMN_WIDTH,
   tabIndex,
   showFocusRing,
+  focusId,
   onFocus,
   onBlur,
 }: ResizerProps) {
@@ -171,6 +172,7 @@ export function Resizer({
       aria-valuetext={headerCellWidth.toString()}
       aria-valuemin={minWidth}
       tabIndex={tabIndex}
+      data-focus-id={focusId}
     />
   );
 }
