@@ -112,14 +112,13 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
   }
 
   // The only focusable element of the table.
-  let focusTarget: undefined | HTMLElement = tableCells[0];
+  let focusTarget: undefined | HTMLElement =
+    cell && table.contains(cell.cellElement) ? cell.cellElement : tableCells[0];
 
-  if (cell && table.contains(cell.element)) {
-    focusTarget = cell.element;
-  } else if (tableCells.length > 0) {
-    const cellFocusables = getFocusables(tableCells[0]);
-    const eligibleForElementFocus = !isWidgetCell(tableCells[0]) && cellFocusables.length === 1;
-    focusTarget = eligibleForElementFocus ? cellFocusables[0] : focusTarget;
+  const cellFocusables = getFocusables(focusTarget);
+  const eligibleForElementFocus = !isWidgetCell(focusTarget) && cellFocusables.length === 1;
+  if (eligibleForElementFocus) {
+    focusTarget = cellFocusables[0];
   }
 
   if (focusTarget) {

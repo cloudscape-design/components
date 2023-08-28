@@ -52,7 +52,7 @@ test(
     await expect(page.isFocused('[data-testid="link-after"]')).resolves.toBe(true);
 
     await page.keys(['Shift', 'Tab', 'Null']);
-    await expect(page.isFocused('tr[aria-rowindex="2"] [aria-label="Duplicate item"]')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="2"]')).resolves.toBe(true);
 
     await page.keys(['Shift', 'Tab', 'Null']);
     await expect(page.isFocused('[data-testid="link-before"]')).resolves.toBe(true);
