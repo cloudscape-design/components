@@ -37,15 +37,15 @@ test(
 
     await page.click('[data-testid="link-before"]');
     await page.keys('Tab');
-    await expect(page.isFocused('tr[aria-rowindex="1"] > th[aria-colindex="1"] button')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="1"] > th[aria-colindex="1"]')).resolves.toBe(true);
 
     await page.keys('Tab');
     await expect(page.isFocused('[data-testid="link-after"]')).resolves.toBe(true);
 
     await page.keys(['Shift', 'Tab', 'Null']);
-    await expect(page.isFocused('tr[aria-rowindex="1"] > th[aria-colindex="1"] button')).resolves.toBe(true);
+    await expect(page.isFocused('tr[aria-rowindex="1"] > th[aria-colindex="1"]')).resolves.toBe(true);
 
-    await page.keys(['ArrowRight', 'ArrowDown', 'ArrowRight']);
+    await page.keys(['ArrowRight', 'ArrowDown', 'Enter', 'ArrowRight']);
     await expect(page.isFocused('tr[aria-rowindex="2"] [aria-label="Duplicate item"]')).resolves.toBe(true);
 
     await page.keys('Tab');

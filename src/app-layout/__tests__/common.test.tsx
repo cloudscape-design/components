@@ -160,7 +160,12 @@ describeEachAppLayout(size => {
         });
 
         test('Renders aria-expanded only on toggle', () => {
-          const { wrapper } = renderComponent(<AppLayout />);
+          const props = {
+            [openProp]: false,
+            [handler]: () => {},
+          };
+
+          const { wrapper } = renderComponent(<AppLayout {...props} />);
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-expanded', 'false');
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-haspopup', 'true');
           expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-expanded');
@@ -294,6 +299,7 @@ describeEachAppLayout(size => {
       expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-haspopup', 'true');
       wrapper.findDrawersTriggers()![0].click();
+      expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'true');
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-expanded');
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-haspopup');
     });

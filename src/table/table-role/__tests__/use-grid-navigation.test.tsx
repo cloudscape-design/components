@@ -135,6 +135,40 @@ test('supports arrow keys navigation', () => {
   expect(getActiveElement()).toEqual(['button', 'desc']);
 });
 
+test('up/down navigation works when first data row index is not 2', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    return (
+      <table role="grid" ref={tableRef}>
+        <thead>
+          <tr aria-rowindex={1}>
+            <th aria-colindex={1}>header-1</th>
+            <th aria-colindex={2}>header-2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr aria-rowindex={5}>
+            <td aria-colindex={1}>cell-1-1</td>
+            <td aria-colindex={2}>cell-1-2</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+  const { container } = render(<TestComponent />);
+  const table = container.querySelector('table')!;
+
+  container.querySelector('th')?.focus();
+  expect(getActiveElement()).toEqual(['th', 'header-1']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['td', 'cell-1-1']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.up });
+  expect(getActiveElement()).toEqual(['th', 'header-1']);
+});
+
 test('supports key combination navigation', () => {
   const { container } = render(<InteractiveTable />);
   const table = container.querySelector('table')!;
@@ -440,4 +474,53 @@ test('throws no error when focusing on incorrect target', () => {
 
   g.focus();
   expect(g).toHaveFocus();
+});
+
+test('elements focus is restored if table changes role after being rendered as grid', () => {
+  function TestComponent({ tableRole }: { tableRole: 'table' | 'grid' }) {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ tableRole, pageSize: 2, getTable: () => tableRef.current });
+    return (
+      <table role={tableRole} ref={tableRef}>
+        <tbody>
+          <tr aria-rowindex={1}>
+            <td aria-colindex={1}>
+              <button>action 1</button>
+            </td>
+            <td aria-colindex={2}>
+              <button>action 2</button>
+            </td>
+            <td aria-colindex={3}>
+              <button>action 3</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+
+  const { container, rerender } = render(<TestComponent tableRole="grid" />);
+
+  expect(Array.from(container.querySelectorAll('button')).map(button => button.tabIndex)).toEqual([0, -1, -1]);
+
+  rerender(<TestComponent tableRole="table" />);
+
+  expect(Array.from(container.querySelectorAll('button')).map(button => button.tabIndex)).toEqual([0, 0, 0]);
+});
+
+test('when focus is inside widget cell the cell and the cell next to it are focusable', () => {
+  const { container } = render(<InteractiveTable actionsWidget={true} />);
+  const table = container.querySelector('table')!;
+  const widgetCell = container.querySelector('[aria-rowindex="2"]')!.querySelector('[aria-colindex="3"]')!;
+  const nextCell = container.querySelector('[aria-rowindex="3"]')!.querySelector('[aria-colindex="1"]')!;
+
+  widgetCell.querySelector('button')?.focus();
+
+  expect(widgetCell).toHaveAttribute('tabIndex', '0');
+  expect(nextCell).toHaveAttribute('tabIndex', '0');
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
+
+  expect(widgetCell).toHaveAttribute('tabIndex', '0');
+  expect(nextCell).toHaveAttribute('tabIndex', '-1');
 });
