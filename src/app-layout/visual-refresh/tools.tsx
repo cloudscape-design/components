@@ -37,11 +37,13 @@ export default function Tools({ children }: ToolsProps) {
     isToolsOpen,
     loseToolsFocus,
     splitPanel,
+    splitPanelControlId,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
     splitPanelToggle,
     tools,
+    toolsControlId,
     toolsHide,
     toolsRefs,
     toolsWidth,
@@ -84,6 +86,7 @@ export default function Tools({ children }: ToolsProps) {
 
           {!toolsHide && (
             <aside
+              id={toolsControlId}
               aria-hidden={!isToolsOpen ? true : false}
               aria-label={ariaLabels?.tools ?? undefined}
               className={clsx(
@@ -130,6 +133,8 @@ export default function Tools({ children }: ToolsProps) {
               {!toolsHide && (
                 <TriggerButton
                   ariaLabel={ariaLabels?.toolsToggle}
+                  ariaControls={toolsControlId}
+                  ariaExpanded={isToolsOpen}
                   iconName="status-info"
                   onClick={() => handleToolsClick(!isToolsOpen)}
                   selected={hasSplitPanel && isToolsOpen}
@@ -141,6 +146,8 @@ export default function Tools({ children }: ToolsProps) {
               {hasSplitPanel && splitPanelToggle.displayed && (
                 <TriggerButton
                   ariaLabel={splitPanelToggle.ariaLabel}
+                  ariaControls={splitPanelControlId}
+                  ariaExpanded={!!isSplitPanelOpen}
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}

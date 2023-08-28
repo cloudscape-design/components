@@ -32,6 +32,7 @@ import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | undefined;
@@ -77,6 +78,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
   footerHeight: number;
+  splitPanelControlId: string;
   splitPanelMaxWidth: number;
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
@@ -86,6 +88,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   splitPanelRefs: SplitPanelFocusControlRefs;
+  toolsControlId: string;
   toolsRefs: FocusControlRefs;
 }
 
@@ -376,6 +379,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       ariaLabel: undefined,
     });
     const splitPanelDisplayed = !!(splitPanelToggle.displayed || isSplitPanelOpen);
+    const splitPanelControlId = useUniqueId('split-panel-');
+    const toolsControlId = useUniqueId('tools-');
 
     const [splitPanelSize, setSplitPanelSize] = useControllable(
       props.splitPanelSize,
@@ -637,6 +642,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
           splitPanel,
+          splitPanelControlId,
           splitPanelDisplayed,
           splitPanelMaxWidth,
           splitPanelMinWidth,
@@ -648,6 +654,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelToggle,
           setSplitPanelToggle,
           splitPanelRefs,
+          toolsControlId,
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,

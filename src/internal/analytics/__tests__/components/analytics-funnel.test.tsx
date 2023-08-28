@@ -15,6 +15,7 @@ import Button from '../../../../../lib/components/button';
 import FormField from '../../../../../lib/components/form-field';
 import Container from '../../../../../lib/components/container';
 import Cards from '../../../../../lib/components/cards';
+import Table from '../../../../../lib/components/table';
 import ExpandableSection from '../../../../../lib/components/expandable-section';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
@@ -321,6 +322,7 @@ describe('AnalyticsFunnelStep', () => {
           Step Content
           <Container />
           <Cards items={[]} cardDefinition={{}} />
+          <Table items={[]} columnDefinitions={[]} />
           <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
@@ -333,7 +335,7 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
-      totalSubSteps: 3,
+      totalSubSteps: 4,
     });
   });
 
@@ -347,6 +349,7 @@ describe('AnalyticsFunnelStep', () => {
           Step Content
           <Container />
           <Cards items={[]} cardDefinition={{}} />
+          <Table items={[]} columnDefinitions={[]} />
           <ExpandableSection variant="container" />
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
@@ -364,8 +367,45 @@ describe('AnalyticsFunnelStep', () => {
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
-      totalSubSteps: 3,
+      totalSubSteps: 4,
     });
+  });
+
+  test('treats container-like tables as their own substep', () => {
+    render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
+          <Table items={[]} columnDefinitions={[]} variant="container" />
+          <Table items={[]} columnDefinitions={[]} variant="stacked" />
+          <Table items={[]} columnDefinitions={[]} variant="full-page" />
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        totalSubSteps: 3,
+      })
+    );
+  });
+
+  test('does not treat embedded tables as their own substep', () => {
+    render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
+          <Table items={[]} columnDefinitions={[]} variant="embedded" />
+          <Table items={[]} columnDefinitions={[]} variant="borderless" />
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        totalSubSteps: 0,
+      })
+    );
   });
 
   test('does not call funnelStepComplete when the funnel unmounts without submitting', () => {

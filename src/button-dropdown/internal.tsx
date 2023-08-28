@@ -137,6 +137,8 @@ const InternalButtonDropdown = React.forwardRef(
       },
     };
 
+    const triggerId = useUniqueId('awsui-button-dropdown__trigger');
+
     const triggerHasBadge = () => {
       const flatItems = items.flatMap(item => {
         if ('items' in item) {
@@ -161,6 +163,7 @@ const InternalButtonDropdown = React.forwardRef(
         <div className={styles['dropdown-trigger']}>
           {customTriggerBuilder({
             testUtilsClass: styles['test-utils-button-trigger'],
+            ariaExpanded: canBeOpened && isOpen,
             onClick: clickHandler,
             triggerRef,
             ariaLabel,
@@ -215,7 +218,7 @@ const InternalButtonDropdown = React.forwardRef(
     } else {
       trigger = (
         <div className={styles['dropdown-trigger']}>
-          <InternalButton ref={triggerRef} {...baseTriggerProps} badge={triggerHasBadge()}>
+          <InternalButton ref={triggerRef} id={triggerId} {...baseTriggerProps} badge={triggerHasBadge()}>
             {children}
           </InternalButton>
         </div>
@@ -224,6 +227,8 @@ const InternalButtonDropdown = React.forwardRef(
 
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
+
+    const shouldLabelWithTrigger = !ariaLabel && !mainAction && variant !== 'icon' && variant !== 'inline-icon';
 
     const { loadingButtonCount } = useFunnel();
     useEffect(() => {
@@ -284,7 +289,8 @@ const InternalButtonDropdown = React.forwardRef(
             position="static"
             role="menu"
             decreaseTopMargin={true}
-            ariaLabelledby={hasHeader ? headerId : undefined}
+            ariaLabel={ariaLabel}
+            ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
             statusType="finished"
           >
             <ItemsList
