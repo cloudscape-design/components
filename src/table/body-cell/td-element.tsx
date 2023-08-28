@@ -6,6 +6,7 @@ import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
+import useMouseDownTarget from '../../internal/hooks/use-mouse-down-target.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -79,6 +80,9 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       columnId,
       getClassName: props => getStickyClassNames(styles, props),
     });
+
+    const getMouseDownTarget = useMouseDownTarget();
+
     return (
       <Element
         style={{ ...style, ...stickyStyles.style }}
@@ -99,7 +103,11 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stickyStyles.className
         )}
         onClick={onClick}
-        onFocus={event => event.target.scrollIntoView?.({ block: 'center' })}
+        onFocus={event => {
+          if (!event.currentTarget.contains(getMouseDownTarget())) {
+            event.target.scrollIntoView?.({ block: 'center' });
+          }
+        }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         ref={node => {
