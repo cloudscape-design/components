@@ -22,7 +22,7 @@
     @include styles.cell-focus;
   }
   // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
+  body[data-awsui-focus-visible='true'] &-fake-focus {
     @include styles.cell-focus;
   }
 
@@ -82,6 +82,11 @@
 
   &-resizable:not(:last-child):before {
     border-left-color: awsui.$color-border-divider-interactive-default;
+  }
+
+  // Hide resize handle when covered by the header cell focus ring.
+  &-fake-focus:before {
+    opacity: 0;
   }
 }
 
