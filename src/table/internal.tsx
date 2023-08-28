@@ -40,6 +40,7 @@ import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } fro
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import { useTableRole } from './table-role/table-role-helper';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -185,8 +186,9 @@ const InternalTable = React.forwardRef(
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
-    const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid-default' : 'table';
+    const hasEditableCells = !!submitEdit;
+    const defaultGridRole = hasEditableCells || !!resizableColumns || !sortingDisabled || !!selectionType;
+    const tableRole = useTableRole(defaultGridRole ? 'grid-default' : 'table');
 
     const theadProps: TheadProps = {
       containerWidth,
