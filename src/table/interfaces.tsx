@@ -323,8 +323,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * If there are elements in the content that listen to keyboard input and can collide with the navigation
    * use `columnDefinition.isWidget` to mark the cells with interactive elements as widgets which changes
    * the navigation pattern for those.
-   *
-   * By default, the "grid" role is used for tables with inline editing and "table" role is used for all other tables.
    */
   tableRole?: 'table' | 'grid';
 }

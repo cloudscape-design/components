@@ -50,3 +50,11 @@ Widget cells are those including one or multiple elements that utilize arrow key
 Same as for the multi-element cells the focus is not automatically moved inside when a cell is navigated to. The `Enter`, `F2` and `Escape` commands work the same way. The difference is that when the focus is inside a widget cell the navigation commands are not intercepted. Besides, the default focusing behavior is restored so that the elements inside can be navigated with `Tab` and `Shift + Tab` commands.
 
 When the focus is within a widget cell all table cells become focusable so that pressing `Tab` and `Shift + Tab` also restores table navigation by moving the focus to the cell itself or the cell next to it (if available).
+
+### Integration with Cloudscape table
+
+There are a few specifics when it comes to applying the grid navigation to Cloudscape table:
+
+- When `resizableColumns` is used the header cells are set as widgets so the user needs to press `Enter` / `F2` and `Tab` / `Shift + Tab` / `Escape` / `F2` to enter and exit the header cell to reach the column sorting or resize controls. The sorting and resize controls are iterated over with `Tab` / `Shift + Tab`.
+- Iterating over single-select radios no longer changes the selection: the user needs to press `Space` / `Enter` explicitly.
+- Inline editing cells when activated are set as widgets so that the cell elements can be iterated with `Tab` / `Shift Tab`, The `Tab` / `Shift + Tab` / `Escape` / `F2` can be used for exiting.
