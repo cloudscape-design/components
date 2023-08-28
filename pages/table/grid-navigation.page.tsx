@@ -26,33 +26,7 @@ type DemoContext = React.Context<
   }>
 >;
 
-interface ExtendedInstance extends Instance {
-  name: string;
-  alt: string;
-  description: string;
-}
-
-const alts = ['First', 'Second', 'Third', 'Fourth', '-', 'Sixth', '-', '-', '-', '-'];
-
-const descriptions = [
-  'This is the first item',
-  'This is the second item',
-  '-',
-  'This is the fourth item',
-  'This is the fifth item with a longer description',
-  'This is the sixth item',
-  '-',
-  '-',
-  '-',
-  '-',
-];
-
-const originalTableItems: ExtendedInstance[] = generateItems(50).map((it, index) => ({
-  ...it,
-  name: `Item ${index + 1}`,
-  alt: alts[index],
-  description: descriptions[index],
-}));
+const originalTableItems: Instance[] = generateItems(50);
 
 const typeOptions = [...new Set(originalTableItems.map(item => item.type))].map(type => ({ value: type }));
 
@@ -308,19 +282,6 @@ export default () => {
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
           items={items}
-          ariaLabels={{
-            selectionGroupLabel: 'group label',
-            activateEditLabel: column => `Edit ${column.header}`,
-            cancelEditLabel: column => `Cancel editing ${column.header}`,
-            submitEditLabel: column => `Submit edit ${column.header}`,
-            allItemsSelectionLabel: ({ selectedItems }) =>
-              `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
-            itemSelectionLabel: ({ selectedItems }, item) => {
-              const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
-              return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
-            },
-            tableLabel: 'Demo table',
-          }}
           header={<Header>Simple table</Header>}
           submitEdit={
             urlParams.inlineEditing
