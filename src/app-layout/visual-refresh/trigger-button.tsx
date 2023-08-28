@@ -55,7 +55,9 @@ function TriggerButton(
         type="button"
         data-testid={testId}
       >
-        <Icon name={iconName} svg={iconSvg} />
+        <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
+          <Icon name={iconName} svg={iconSvg} />
+        </span>
       </button>
       {badge && <div className={clsx(styles.dot)} />}
     </div>
