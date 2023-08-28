@@ -160,7 +160,12 @@ describeEachAppLayout(size => {
         });
 
         test('Renders aria-expanded only on toggle', () => {
-          const { wrapper } = renderComponent(<AppLayout />);
+          const props = {
+            [openProp]: false,
+            [handler]: () => {},
+          };
+
+          const { wrapper } = renderComponent(<AppLayout {...props} />);
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-expanded', 'false');
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-haspopup', 'true');
           expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-expanded');
