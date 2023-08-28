@@ -91,7 +91,7 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
-    const useWidgetHeaders = !sortingDisabled && resizableColumns;
+    const useWidgetHeaders = !!resizableColumns;
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
