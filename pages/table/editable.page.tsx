@@ -253,6 +253,7 @@ const Demo = forwardRef(
         resizableColumns={true}
         ariaLabels={ariaLabels}
         stickyHeader={true}
+        tableRole="grid"
       />
     );
   }

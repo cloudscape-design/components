@@ -51,7 +51,7 @@ class GridNavigationModel {
 
     this.table.addEventListener('focusin', this.onFocusin);
     this.table.addEventListener('focusout', this.onFocusout);
-    this.table.addEventListener('keydown', this.onKeydown);
+    this.table.addEventListener('keydown', this.onKeydown, false);
 
     const mutationObserver = new MutationObserver(this.onMutation);
     mutationObserver.observe(table, { childList: true, subtree: true });
@@ -61,7 +61,7 @@ class GridNavigationModel {
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('focusout', this.onFocusout);
-      this.table.removeEventListener('keydown', this.onKeydown);
+      this.table.removeEventListener('keydown', this.onKeydown, false);
 
       mutationObserver.disconnect();
 
@@ -127,8 +127,8 @@ class GridNavigationModel {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
-    // When focus is inside widget cell only intercept Escape and F2 commands to move focus back to cell.
-    if (from.widget && from.element !== from.cellElement) {
+    // When focus is inside dialog cell only intercept Escape and F2 commands to move focus back to cell.
+    if (from.dialog && from.element !== from.cellElement) {
       if (key === KeyCode.escape || key === f2Code) {
         event.preventDefault();
         return moveFocusBy(this.table, from, { y: 0, x: 0 });

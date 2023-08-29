@@ -102,7 +102,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *        The `cellContext` object contains the following properties:
    *  *  * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *  *  * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
-   *  * `isWidget` ((item) => boolean) - Marks the cell as a widget to alter the navigation behavior when "grid" table role is used.
+   *  * `isDialog` ((item) => boolean) - Marks the cell as a dialog to suppress the navigation behavior when "grid" table role is used.
    *  * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
@@ -318,11 +318,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onEditCancel?: CancelableEventHandler;
 
   /**
-   * Use this property to set ARIA role "grid" for tables with interactive elements.
-   * When the "grid" role is set the table will feature advanced keyboard navigation and focus behaviors.
-   * If there are elements in the content that listen to keyboard input and can collide with the navigation
-   * use `columnDefinition.isWidget` to mark the cells with interactive elements as widgets which changes
-   * the navigation pattern for those.
+   * Use this property to set ARIA role "grid" for tables with interactive elements. When the "grid" role is
+   * explicitly set the table activates advanced keyboard navigation and focus behaviors.
+   * When a table includes interactive content that conflicts with the grid navigation the content needs to
+   * employ the dialog pattern only becoming interactive upon pressing `Enter` or `F2` keys.
    */
   tableRole?: 'table' | 'grid';
 }
@@ -378,7 +377,7 @@ export namespace TableProps {
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
     isRowHeader?: boolean;
-    isWidget?(item: ItemType): boolean;
+    isDialog?(item: ItemType): boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 

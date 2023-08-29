@@ -37,7 +37,6 @@ interface TableHeaderCellProps<ItemType> {
   cellRef: React.RefCallback<HTMLElement>;
   focusedComponent?: null | string;
   tableRole: TableRole;
-  isWidget?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -61,7 +60,6 @@ export function TableHeaderCell<ItemType>({
   stickyState,
   cellRef,
   tableRole,
-  isWidget,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -100,7 +98,6 @@ export function TableHeaderCell<ItemType>({
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}
-      isWidget={isWidget}
     >
       <div
         data-focus-id={`sorting-control-${String(columnId)}`}

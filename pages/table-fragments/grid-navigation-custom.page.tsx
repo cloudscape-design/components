@@ -14,7 +14,6 @@ import {
   Icon,
   Input,
   Link,
-  SegmentedControl,
   Select,
 } from '~components';
 import styles from './styles.scss';
@@ -44,10 +43,14 @@ const createColumnDefinitions = ({
   onDelete,
   onDuplicate,
   onUpdate,
+  dialogItem,
+  setDialogItem,
 }: {
   onDelete: (id: string) => void;
   onDuplicate: (id: string) => void;
   onUpdate: (id: string) => void;
+  dialogItem: null | Instance;
+  setDialogItem: (item: null | Instance) => void;
 }) => [
   {
     key: 'id',
@@ -76,26 +79,60 @@ const createColumnDefinitions = ({
     render: (item: Instance) => <Link>{item.imageId}</Link>,
   },
   {
-    key: 'state-toggle',
-    label: 'State toggle',
+    key: 'dnsName',
+    label: 'DNS name',
     render: (item: Instance) => (
-      <SegmentedControl
-        selectedId={item.state === 'RUNNING' || item.state === 'STOPPING' ? 'On' : 'Off'}
-        onChange={event => alert(`Changed item state to "${event.detail.selectedId}"`)}
-        label="Instance state"
-        options={[
-          { text: 'On', id: 'On' },
-          { text: 'Off', id: 'Off' },
-        ]}
+      <DnsNameEditWidget
+        item={item}
+        active={item === dialogItem}
+        setActive={active => setDialogItem(active ? item : null)}
       />
     ),
-    isWidget: true,
+    isDialog: (item: Instance) => item === dialogItem,
   },
-  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
-  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
-  { key: 'dnsName3', label: 'DNS name 3', render: (item: Instance) => (item.dnsName ?? '?') + ':3' },
   { key: 'type', label: 'Type', render: (item: Instance) => item.type },
 ];
+
+function DnsNameEditWidget({
+  item,
+  active,
+  setActive,
+}: {
+  item: Instance;
+  active: boolean;
+  setActive: (active: boolean) => void;
+}) {
+  const [value, setValue] = useState(item.dnsName ?? '');
+  return !active ? (
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label="Edit dns name"
+      onClick={() => setActive(true)}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === 'F2') {
+          setActive(true);
+        }
+      }}
+    >
+      {item.dnsName}
+    </div>
+  ) : (
+    <Input
+      autoFocus={true}
+      value={value}
+      onChange={event => setValue(event.detail.value)}
+      onBlur={() => {
+        setActive(false);
+      }}
+      onKeyDown={event => {
+        if (event.detail.key === 'Enter') {
+          setActive(false);
+        }
+      }}
+    />
+  );
+}
 
 const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
 
@@ -105,6 +142,7 @@ export default function Page() {
   const pageSize = urlParams.pageSize ?? 10;
   const tableRole = urlParams.tableRole ?? 'grid';
 
+  const [dialogItem, setDialogItem] = useState<null | Instance>(null);
   const [items, setItems] = useState(generateItems(25));
   const columnDefinitions = useMemo(
     () =>
@@ -114,8 +152,10 @@ export default function Page() {
           setItems(prev => prev.flatMap(item => (item.id !== id ? [item] : [item, { ...item, id: generateId() }]))),
         onUpdate: (id: string) =>
           setItems(prev => prev.map(item => (item.id !== id ? item : { ...item, id: generateId() }))),
+        dialogItem,
+        setDialogItem,
       }),
-    []
+    [dialogItem]
   );
 
   const [sortingKey, setSortingKey] = useState<null | string>(null);
@@ -191,7 +231,7 @@ export default function Page() {
                       <th
                         key={column.key}
                         className={styles['custom-table-cell']}
-                        {...getTableColHeaderRoleProps({ tableRole, colIndex, isWidget: true })}
+                        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                       >
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                           <button
@@ -221,7 +261,7 @@ export default function Page() {
                         <td
                           key={column.key}
                           className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex, isWidget: column.isWidget })}
+                          {...getTableCellRoleProps({ tableRole, colIndex, isDialog: column.isDialog?.(item) })}
                         >
                           {column.render(item)}
                         </td>
@@ -278,10 +318,13 @@ function GridNavigationHelpPanel() {
           <b>Control+End</b> (to the last item in the grid)
         </li>
         <li>
-          <b>Enter</b> (to move focus inside widget cell)
+          <b>Enter</b> (to move focus inside dialog cell)
         </li>
         <li>
-          <b>Escape</b> (to move widget focus back to cell)
+          <b>Escape</b> (to move focus back to cell)
+        </li>
+        <li>
+          <b>F2</b> (to move focus inside or outside cell)
         </li>
       </ul>
     </HelpPanel>

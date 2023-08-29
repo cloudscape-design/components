@@ -23,7 +23,6 @@ interface TableThElementProps {
   cellRef?: React.RefCallback<HTMLElement>;
   tableRole: TableRole;
   children: React.ReactNode;
-  isWidget?: boolean;
 }
 
 export function TableThElement({
@@ -40,7 +39,6 @@ export function TableThElement({
   cellRef,
   tableRole,
   children,
-  isWidget,
 }: TableThElementProps) {
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
@@ -69,7 +67,7 @@ export function TableThElement({
       )}
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
-      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex, isWidget })}
+      {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
     >
       {children}
     </th>

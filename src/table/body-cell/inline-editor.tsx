@@ -11,6 +11,8 @@ import { Optional } from '../../internal/types';
 import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
 import LiveRegion from '../../internal/components/live-region';
 import { useInternalI18n } from '../../i18n/context';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 // A function that does nothing
 const noop = () => undefined;
@@ -73,20 +75,30 @@ export function InlineEditor<ItemType>({
     }
   }
 
-  function onCancel({ reFocusEditedCell = true } = {}) {
+  const onCancel = useStableCallback(({ reFocusEditedCell = true } = {}) => {
     if (currentEditLoading) {
       return;
     }
     finishEdit({ cancelled: true, refocusCell: reFocusEditedCell });
-  }
+  });
 
-  function handleEscape(event: React.KeyboardEvent): void {
-    if (event.key === 'Escape') {
-      onCancel();
-    }
-  }
-
+  const dialogRef = useRef<HTMLDivElement>(null);
   const clickAwayRef = useClickAway(() => onCancel({ reFocusEditedCell: false }));
+  const mergedRef = useMergeRefs(dialogRef, clickAwayRef);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (dialog) {
+      const handleEscape = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          onCancel();
+          event.stopPropagation();
+        }
+      };
+      dialog.addEventListener('keydown', handleEscape);
+      return () => dialog.removeEventListener('keydown', handleEscape);
+    }
+  }, [onCancel]);
 
   useEffect(() => {
     if (__onRender) {
@@ -106,12 +118,7 @@ export function InlineEditor<ItemType>({
 
   return (
     <FocusLock restoreFocus={true} ref={focusLockRef}>
-      <div
-        role="dialog"
-        ref={clickAwayRef}
-        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-        onKeyDown={handleEscape}
-      >
+      <div role="dialog" ref={mergedRef} aria-label={ariaLabels?.activateEditLabel?.(column, item)}>
         <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
           <FormField
             stretch={true}

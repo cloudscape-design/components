@@ -31,14 +31,14 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   const cellFocusables = getFocusables(cellElement);
   const elementIndex = cellFocusables.indexOf(element);
 
-  const widget = isWidgetCell(cellElement);
+  const dialog = isDialogCell(cellElement);
 
-  return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element, widget };
+  return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element, dialog };
 }
 
 /**
  * Moves table focus in the provided direction. The focus can transition between cells or between
- * focusable elements within a cell unless the cell is marked as a widget.
+ * focusable elements within a cell unless the cell is marked as a dialog.
  */
 export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
   const targetAriaRowIndex = from.rowIndex + delta.y;
@@ -49,8 +49,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
 
   // Move focus to the next focusable element within a cell if eligible.
   const cellFocusables = getFocusables(from.cellElement);
-  const eligibleForElementFocus =
-    delta.x && !isWidgetCell(from.element) && (cellFocusables.length === 1 || from.element !== from.cellElement);
+  const eligibleForElementFocus = delta.x && cellFocusables.length > 0;
   const targetElementIndex = from.elementIndex === -1 ? -1 : from.elementIndex + delta.x;
   if (eligibleForElementFocus && 0 <= targetElementIndex && targetElementIndex < cellFocusables.length) {
     focus(cellFocusables[targetElementIndex]);
@@ -63,20 +62,15 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
-  // For widget cells always focus on the cell element itself.
-  if (isWidgetCell(targetCell)) {
-    return focus(targetCell);
-  }
-
   // For zero delta (exiting command) and multi-element cell focus cell itself.
   const targetCellFocusables = getFocusables(targetCell);
   if (delta.x === 0 && delta.y === 0 && targetCellFocusables.length > 1) {
     return focus(targetCell);
   }
 
-  // For non-widget cell focus on the focusable element inside if exactly one is available.
+  // For non-dialog cell focus on the focusable element inside if exactly one is available.
   const focusIndex =
-    delta.x === 0 && from.elementIndex !== -1 ? from.elementIndex : targetCellFocusables.length === 1 ? 0 : -1;
+    delta.x === 0 && from.elementIndex !== -1 ? from.elementIndex : targetCellFocusables.length > 0 ? 0 : -1;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
   focus(focusTarget);
 }
@@ -92,8 +86,8 @@ export function moveFocusIn(from: FocusedCell) {
  * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
  */
 export function updateTableFocusables(table: HTMLTableElement, cell: null | FocusedCell) {
-  // Restore default focus behavior and make all cells focusable when focus is inside a widget cell.
-  if (cell && cell.widget && cell.element !== cell.cellElement) {
+  // Restore default focus behavior and make all cells focusable when focus is inside a dialog cell.
+  if (cell && cell.dialog && cell.element !== cell.cellElement) {
     for (const focusable of getFocusables(table)) {
       focusable.tabIndex = 0;
     }
@@ -116,8 +110,7 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
     cell && table.contains(cell.cellElement) ? cell.cellElement : tableCells[0];
 
   const cellFocusables = getFocusables(focusTarget);
-  const eligibleForElementFocus = !isWidgetCell(focusTarget) && cellFocusables.length === 1;
-  if (eligibleForElementFocus) {
+  if (cellFocusables.length > 0) {
     focusTarget = cellFocusables[0];
   }
 
@@ -136,8 +129,8 @@ export function restoreTableFocusables(table: HTMLTableElement) {
   }
 }
 
-function isWidgetCell(cell: HTMLElement) {
-  return cell.getAttribute('data-widget-cell') === 'true';
+function isDialogCell(cell: HTMLElement) {
+  return cell.getAttribute('data-dialog-cell') === 'true' || !!cell.querySelector('[role="dialog"]');
 }
 
 function getFocusables(element: HTMLElement) {

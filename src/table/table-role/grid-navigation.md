@@ -43,13 +43,11 @@ All navigation commands continue working when the focus is inside the multi-elem
 
 See: https://www.w3.org/WAI/ARIA/apg/patterns/grid/#gridNav_focus
 
-### Widget cells
+### Dialog cell
 
-Widget cells are those including one or multiple elements that utilize arrow keys interaction model such is segmented control, radio group, slider, etc. The widget cells are not determined automatically and must be explicitly specified.
+The table might include interactive elements such as text inputs, radio groups, etc. Those elements might conflict with the grid navigation as of listening to the same keyboard input. To resolve the conflict a dialog pattern is employed when the content becomes interactive upon pressing `Enter` or `F2`.
 
-Same as for the multi-element cells the focus is not automatically moved inside when a cell is navigated to. The `Enter`, `F2` and `Escape` commands work the same way. The difference is that when the focus is inside a widget cell the navigation commands are not intercepted. Besides, the default focusing behavior is restored so that the elements inside can be navigated with `Tab` and `Shift + Tab` commands.
-
-When the focus is within a widget cell all table cells become focusable so that pressing `Tab` and `Shift + Tab` also restores table navigation by moving the focus to the cell itself or the cell next to it (if available).
+When a cell is marked as a dialog or includes content with ARIA role "dialog" the focus suppression and keyboard interception mechanisms no longer apply for it with an exception of the `Escape` and `F2` key listeners that move the focus back to the cell.
 
 ### Integration with Cloudscape table
 
