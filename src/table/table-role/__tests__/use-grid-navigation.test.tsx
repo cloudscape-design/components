@@ -50,7 +50,7 @@ function SimpleTable({ tableRole = 'grid' }: { tableRole?: 'grid' | 'table' }) {
   );
 }
 
-function InteractiveTable({ actionsWidget = false, pageSize = 2 }: { actionsWidget?: boolean; pageSize?: number }) {
+function InteractiveTable({ actionsDialog = false, pageSize = 2 }: { actionsDialog?: boolean; pageSize?: number }) {
   const tableRef = useRef<HTMLTableElement>(null);
   useGridNavigation({ tableRole: 'grid', pageSize, getTable: () => tableRef.current });
   return (
@@ -70,7 +70,7 @@ function InteractiveTable({ actionsWidget = false, pageSize = 2 }: { actionsWidg
             <a href="#">link-1-1</a>
           </td>
           <td aria-colindex={2}>cell-1-2</td>
-          <td aria-colindex={3} data-widget-cell={actionsWidget}>
+          <td aria-colindex={3} data-widget-cell={actionsDialog}>
             <button>action-1-3-1</button> <button>action-1-3-2</button>
           </td>
         </tr>
@@ -79,7 +79,7 @@ function InteractiveTable({ actionsWidget = false, pageSize = 2 }: { actionsWidg
             <a href="#">link-2-1</a>
           </td>
           <td aria-colindex={2}>cell-2-2</td>
-          <td aria-colindex={3} data-widget-cell={actionsWidget}>
+          <td aria-colindex={3} data-widget-cell={actionsDialog}>
             <button>action-2-3-1</button> <button>action-2-3-2</button>
           </td>
         </tr>
@@ -199,7 +199,7 @@ test('supports key combination navigation', () => {
 });
 
 test('supports multi-element cell navigation', () => {
-  const { container } = render(<InteractiveTable actionsWidget={false} />);
+  const { container } = render(<InteractiveTable actionsDialog={false} />);
   const table = container.querySelector('table')!;
 
   (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
@@ -233,7 +233,7 @@ test('supports multi-element cell navigation', () => {
 });
 
 test('supports widget cell navigation', () => {
-  const { container } = render(<InteractiveTable actionsWidget={true} />);
+  const { container } = render(<InteractiveTable actionsDialog={true} />);
   const table = container.querySelector('table')!;
 
   (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
@@ -509,7 +509,7 @@ test('elements focus is restored if table changes role after being rendered as g
 });
 
 test('when focus is inside widget cell the cell and the cell next to it are focusable', () => {
-  const { container } = render(<InteractiveTable actionsWidget={true} />);
+  const { container } = render(<InteractiveTable actionsDialog={true} />);
   const table = container.querySelector('table')!;
   const widgetCell = container.querySelector('[aria-rowindex="2"]')!.querySelector('[aria-colindex="3"]')!;
   const nextCell = container.querySelector('[aria-rowindex="3"]')!.querySelector('[aria-colindex="1"]')!;

@@ -31,9 +31,7 @@ See: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_general_w
 
 ## Dialog cells
 
-The grid might include interactive elements such as text inputs, radio groups, etc. Such elements can conflict with the grid navigation as of listening to the same keyboard input. To resolve the conflict a dialog pattern is employed when the content becomes interactive upon pressing `Enter` or `F2`.
-
-When the focused element inside of a cell or one of its parents has `role="dialog"` or `awsui-table-suppress-navigation="true"` attributes the focus suppression and keyboard navigation commands no longer apply with an exception of the `Escape` and `F2` keyboard listeners that move the focus back to the cell.
+The grid might include interactive elements such as text inputs, radio groups, etc. Such elements can conflict with the grid navigation as of listening to the same keyboard input. The conflict can be resolved by making the cell elements conditionally interactive - for example when `Enter` or `F2` key is pressed. Once interactive, the element needs to be wrapped with `role="dialog"` or `data-awsui-table-suppress-navigation="true"` for grid navigation focus and keyboard behaviors to be suppressed.
 
 For example, when the input or a button from the example below is focused the grid navigation is suppressed.
 
