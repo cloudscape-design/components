@@ -349,6 +349,13 @@ Object {
             "light": "#99cbe4",
           },
         },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
+          },
+        },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
@@ -2439,6 +2446,13 @@ Object {
           "$value": Object {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-normal-default": Object {
@@ -4533,6 +4547,13 @@ Object {
             "light": "#99cbe4",
           },
         },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
+          },
+        },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
@@ -6623,6 +6644,13 @@ Object {
           "$value": Object {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-normal-default": Object {
@@ -8717,6 +8745,13 @@ Object {
             "light": "#0073bb",
           },
         },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
@@ -10807,6 +10842,13 @@ Object {
       "$value": Object {
         "dark": "#0073bb",
         "light": "#99cbe4",
+      },
+    },
+    "color-border-button-normal-active": Object {
+      "$description": "The border color of normal buttons in active state.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#545b64",
       },
     },
     "color-border-button-normal-default": Object {
@@ -12906,6 +12948,13 @@ Object {
             "light": "#d3e7f9",
           },
         },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#000716",
+          },
+        },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
@@ -14996,6 +15045,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#0972d3",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-normal-default": Object {
@@ -17090,6 +17146,13 @@ Object {
             "light": "#d3e7f9",
           },
         },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
+          },
+        },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
@@ -19180,6 +19243,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#d3e7f9",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-normal-default": Object {
@@ -21274,6 +21344,13 @@ Object {
             "light": "#d3e7f9",
           },
         },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
@@ -23364,6 +23441,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#0972d3",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
           },
         },
         "color-border-button-normal-default": Object {
@@ -25458,6 +25542,13 @@ Object {
             "light": "#0972d3",
           },
         },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
+          },
+        },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
@@ -27548,6 +27639,13 @@ Object {
       "$value": Object {
         "dark": "#0972d3",
         "light": "#d3e7f9",
+      },
+    },
+    "color-border-button-normal-active": Object {
+      "$description": "The border color of normal buttons in active state.",
+      "$value": Object {
+        "dark": "#89bdee",
+        "light": "#033160",
       },
     },
     "color-border-button-normal-default": Object {
