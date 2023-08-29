@@ -257,12 +257,13 @@ test(
     await page.keys(['Tab']);
     // wait for the resizer to attach handler
 
-    // Enter keyboard dragging mode and update column width (to be updated by grow step)
-    await page.keys(['Enter', 'ArrowRight']);
+    await page.keys(['Enter', 'ArrowRight', 'ArrowRight', 'Enter']);
+    await page.assertColumnWidth(1, oldWidth + 10 + 10);
+
+    await page.keys(['Space', 'ArrowLeft', 'Space']);
     await page.assertColumnWidth(1, oldWidth + 10);
 
-    // Exit keyboard dragging mode and attempt column width update (should be the same as before)
-    await page.keys(['Escape', 'ArrowRight']);
+    await page.keys(['Enter', 'ArrowRight', 'Escape']);
     await page.assertColumnWidth(1, oldWidth + 10);
   })
 );
