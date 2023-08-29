@@ -1,52 +1,48 @@
 # Table grid navigation
 
-Tables with interactive elements especially those featuring row selection or inline cell editing are assigned or can be assigned the role "grid" which implies extended keyboard navigation as per https://www.w3.org/WAI/ARIA/apg/patterns/grid.
+Tables with interactive elements require ARIA role "grid" and extended keyboard navigation as per https://www.w3.org/WAI/ARIA/apg/patterns/grid.
 
-## Navigation commands
+## Basic keyboard navigation
+
+The grid cells both text-only or even empty and those with one or multiple interactive elements are navigable. When a cell does not have interactive elements as its content the cell itself receives focus. Otherwise - one of the content elements is focused (can be the first, the last, or even the nth depending on the move direction).
 
 The list of supported navigation commands is:
 
-- `Right Arrow`: Moves focus one cell to the right. If focus is on the right-most cell in the row, focus does not move.
-- `Left Arrow`: Moves focus one cell to the left. If focus is on the left-most cell in the row, focus does not move.
-- `Down Arrow`: Moves focus one cell down. If focus is on the bottom cell in the column, focus does not move.
-- `Up Arrow`: Moves focus one cell up. If focus is on the top cell in the column, focus does not move.
-- `Page Down`: Moves focus down an customer-determined number of rows. If focus is in the last row of the grid, focus does not move.
-- `Page Up`: Moves focus up an customer-determined number of rows. If focus is in the first row of the grid, focus does not move.
-- `Home`: moves focus to the first cell in the row.
-- `End`: moves focus to the last cell in the row.
-- `Control + Home`: moves focus to the first cell in the first row.
-- `Control + End`: moves focus to the last cell in the last row.
+- `Right Arrow`: Moves focus one cell or element to the right. The focus does not move if it is already on the last cell/element in the row.
+- `Left Arrow`: Moves focus one cell to the left. The focus does not move if it is already on the first cell/element in the row.
+- `Down Arrow`: Moves focus one cell down. The focus does not move if it is already on the bottom row. When the focus is on the nth element inside a cell the element index is maintained (when possible) when moving down.
+- `Up Arrow`: Moves focus one cell up. The focus does not move if it is already on the top row. When the focus is on the nth element inside a cell the element index is maintained (when possible) when moving up.
+- `Page Down`: Moves focus down by one page (the page size is set as 10). The focus does not move if it is already on the bottom row. When the focus is on the nth element inside a cell the element index is maintained (when possible) when moving down.
+- `Page Up`: Moves focus up by one page (the page size is set as 10). The focus does not move if it is already on the top row. When the focus is on the nth element inside a cell the element index is maintained (when possible) when moving down.
+- `Home`: moves focus to the first cell or element in the row.
+- `End`: moves focus to the last cell or element in the row.
+- `Control + Home`: moves focus to the first cell or element in the first row.
+- `Control + End`: moves focus to the last cell or element in the last row.
 
-## Focus control
-
-### Single tab stop
+## Single tab stop
 
 The grid is a composite component and has a single tab stop. The actual focused element when the focus moves into the grid is determined as:
 
-- If the grid has not been focused by the user after the component mount the focus moves to the first cell (including the heading row).
+- If the grid has not been focused by the user after the component mount the focus moves to the first cell or element (including the heading row).
 - If the grid has been focused before and the focused element position is still available the focus moves to that position.
 - If the grid has been focused before and the focused element position is no longer available the focus moves to the closest row/column to the one focused before.
 
 See: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_general_within
 
-### Cell and element focus
+## Dialog cells
 
-When a grid cell has a single focusable element inside (a link, a row selection checkbox, an input) that element receives focus when navigating to the containing cell. When a cell has zero or multiple focusable elements - the cell itself receives focus.
+The grid might include interactive elements such as text inputs, radio groups, etc. Such elements can conflict with the grid navigation as of listening to the same keyboard input. To resolve the conflict a dialog pattern is employed when the content becomes interactive upon pressing `Enter` or `F2`.
 
-To access the focusable elements inside a multi-element cell the following keyboard commands are supported:
+When the focused element inside of a cell or one of its parents has `role="dialog"` or `awsui-table-suppress-navigation="true"` attributes the focus suppression and keyboard navigation commands no longer apply with an exception of the `Escape` and `F2` keyboard listeners that move the focus back to the cell.
 
-- `Enter`: when a multi-element cell is in focus places focus to the first focusable element inside. A subsequent `Enter` command is not intercepted.
-- `F2`: when a multi-element cell is in focus places focus to the first focusable element inside. A subsequent `F2` command moves focus back to the cell.
-- `Escape`: when focus is inside the multi-element cell focuses the cell. A subsequent `Escape` command is not intercepted.
+For example, when the input or a button from the example below is focused the grid navigation is suppressed.
 
-All navigation commands continue working when the focus is inside the multi-element cell. Besides, the `Left Arrow` and `Right Arrow` move focus between the cell elements. When using `Down Arrow`, `Up Arrow`, `Page Up` and `Page Down` the element position inside the cell is maintained if possible.
-
-See: https://www.w3.org/WAI/ARIA/apg/patterns/grid/#gridNav_focus
-
-### Widget cells
-
-Widget cells are those including one or multiple elements that utilize arrow keys interaction model such is segmented control, radio group, slider, etc. The widget cells are not determined automatically and must be explicitly specified.
-
-Same as for the multi-element cells the focus is not automatically moved inside when a cell is navigated to. The `Enter`, `F2` and `Escape` commands work the same way. The difference is that when the focus is inside a widget cell the navigation commands are not intercepted. Besides, the default focusing behavior is restored so that the elements inside can be navigated with `Tab` and `Shift + Tab` commands.
-
-When the focus is within a widget cell all table cells become focusable so that pressing `Tab` and `Shift + Tab` also restores table navigation by moving the focus to the cell itself or the cell next to it (if available).
+```html
+<td>
+  <div role="dialog">
+    <input value="editable cell value" />
+    <button>save</button>
+    <button>discard</button>
+  </div>
+</td>
+```
