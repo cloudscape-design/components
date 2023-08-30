@@ -185,7 +185,21 @@ export function Resizer({
 
   const resizerWidthId = useUniqueId();
   const resizerRole = isKeyboardDragging ? 'separator' : 'button';
-  const resizerAriaLabelledby = resizerRole === 'button' ? joinStrings(ariaLabelledby, resizerWidthId) : ariaLabelledby;
+  const headerCellWidthString = headerCellWidth.toFixed(0);
+  const resizerAriaProps =
+    resizerRole === 'button'
+      ? {
+          'aria-labelledby': joinStrings(ariaLabelledby, resizerWidthId),
+          'aria-pressed': false,
+        }
+      : {
+          'aria-labelledby': ariaLabelledby,
+          'aria-orientation': 'vertical' as const,
+          'aria-valuenow': headerCellWidth,
+          // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
+          'aria-valuetext': headerCellWidthString,
+          'aria-valuemin': minWidth,
+        };
 
   return (
     <span>
@@ -220,17 +234,11 @@ export function Resizer({
           }
         }}
         role={resizerRole}
-        aria-pressed={isKeyboardDragging ? undefined : false}
-        aria-orientation="vertical"
-        aria-labelledby={resizerAriaLabelledby}
-        aria-valuenow={headerCellWidth}
-        // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
-        aria-valuetext={headerCellWidth.toString()}
-        aria-valuemin={minWidth}
+        {...resizerAriaProps}
         tabIndex={tabIndex}
         data-focus-id={focusId}
       />
-      <ScreenreaderOnly id={resizerWidthId}>{headerCellWidth.toString()}</ScreenreaderOnly>
+      <ScreenreaderOnly id={resizerWidthId}>{headerCellWidthString}</ScreenreaderOnly>
     </span>
   );
 }
