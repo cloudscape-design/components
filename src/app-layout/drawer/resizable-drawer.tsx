@@ -13,7 +13,6 @@ import testutilStyles from '../test-classes/styles.css.js';
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import { ResizableDrawerProps } from './interfaces';
-import Drawer from '../../internal/components/drawer';
 
 export const ResizableDrawer = ({
   onResize,
@@ -95,7 +94,6 @@ export const ResizableDrawer = ({
       }}
     >
       {children}
-      <Drawer>hello!</Drawer>
     </InternalDrawer>
   );
 };

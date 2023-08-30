@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import React from 'react';
 import { getBaseProps } from '../../base-component';
 import InternalStatusIndicator from '../../../status-indicator/internal';
-import styles from './styles.css.js';
 import { applyDisplayName } from '../../utils/apply-display-name';
 import useBaseComponent from '../../hooks/use-base-component';
+import styles from './styles.css.js';
 import { DrawerProps } from './interfaces';
 import LiveRegion from '../../components/live-region';
 import { useInternalI18n } from '../../../i18n/context';
@@ -30,7 +30,7 @@ export default function Drawer({ header, children, loading, loadingText, ...rest
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
       {header && <div className={clsx(styles.header)}>{header}</div>}
-      <div className={clsx(styles.content)}>{children}</div>
+      <div className={clsx(styles['test-utils-drawer-content'])}>{children}</div>
     </div>
   );
 }
