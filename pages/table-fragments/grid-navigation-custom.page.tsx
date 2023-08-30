@@ -258,7 +258,7 @@ function ItemActionsCell({
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <ButtonDropdown
-          aria-label="Item actions"
+          ariaLabel="Item actions"
           variant="inline-icon"
           items={[
             { id: 'delete', text: 'Delete' },
