@@ -135,7 +135,10 @@ function isDialogElement(target: HTMLElement) {
     if (tagName === 'td' || tagName === 'th') {
       return false;
     }
-    if (current.role === 'dialog' || current.getAttribute('data-awsui-table-suppress-navigation') === 'true') {
+    if (
+      current.getAttribute('role') === 'dialog' ||
+      current.getAttribute('data-awsui-table-suppress-navigation') === 'true'
+    ) {
       return true;
     }
     current = current.parentElement;

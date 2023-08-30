@@ -1,12 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { useGridNavigation } from '../../../../lib/components/table/table-role';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
-
-const f2Code = 113;
 
 const mockObserver = {
   observe: jest.fn(),
@@ -27,397 +25,328 @@ afterEach(() => {
   global.MutationObserver = originalMutationObserver;
 });
 
-function SimpleTable({ tableRole = 'grid' }: { tableRole?: 'grid' | 'table' }) {
+function TestTable<T extends object>({
+  tableRole = 'grid',
+  columns,
+  items,
+  startIndex = 0,
+  pageSize = 2,
+}: {
+  tableRole?: 'grid' | 'table';
+  columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
+  items: T[];
+  startIndex?: number;
+  pageSize?: number;
+}) {
   const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({ tableRole, pageSize: 2, getTable: () => tableRef.current });
+  useGridNavigation({ tableRole, pageSize, getTable: () => tableRef.current });
   return (
     <table role={tableRole} ref={tableRef}>
       <thead>
         <tr aria-rowindex={1}>
-          <th aria-colindex={1}>header-1</th>
-          <th aria-colindex={2}>header-2</th>
-          <th aria-colindex={3}>header-3</th>
+          {columns.map((column, columnIndex) => (
+            <th key={columnIndex} aria-colindex={columnIndex + 1}>
+              {column.header}
+            </th>
+          ))}
         </tr>
       </thead>
       <tbody>
-        <tr aria-rowindex={2}>
-          <td aria-colindex={1}>cell-1-1</td>
-          <td aria-colindex={2}>cell-1-2</td>
-          <td aria-colindex={3}>cell-1-3</td>
-        </tr>
+        {items.map((item, itemIndex) => (
+          <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
+            {columns.map((column, columnIndex) => (
+              <td key={columnIndex} aria-colindex={columnIndex + 1}>
+                {column.cell(item)}
+              </td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
 }
 
-function InteractiveTable({ actionsDialog = false, pageSize = 2 }: { actionsDialog?: boolean; pageSize?: number }) {
-  const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({ tableRole: 'grid', pageSize, getTable: () => tableRef.current });
-  return (
-    <table role="grid" ref={tableRef}>
-      <thead>
-        <tr aria-rowindex={1}>
-          <th aria-colindex={1}>
-            header-1 <button>desc</button>
-          </th>
-          <th aria-colindex={2}>header-2</th>
-          <th aria-colindex={3}>header-3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr aria-rowindex={2}>
-          <td aria-colindex={1}>
-            <a href="#">link-1-1</a>
-          </td>
-          <td aria-colindex={2}>cell-1-2</td>
-          <td aria-colindex={3} data-widget-cell={actionsDialog}>
-            <button>action-1-3-1</button> <button>action-1-3-2</button>
-          </td>
-        </tr>
-        <tr aria-rowindex={3}>
-          <td aria-colindex={1}>
-            <a href="#">link-2-1</a>
-          </td>
-          <td aria-colindex={2}>cell-2-2</td>
-          <td aria-colindex={3} data-widget-cell={actionsDialog}>
-            <button>action-2-3-1</button> <button>action-2-3-2</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+interface Item {
+  id: string;
+  name: string;
+  value: number;
+}
+
+const idColumn = { header: 'ID', cell: (item: Item) => item.id };
+const nameColumn = {
+  header: (
+    <span>
+      Name <button aria-label="Sort by name" />
+    </span>
+  ),
+  cell: (item: Item) => item.name,
+};
+const valueColumn = {
+  header: (
+    <span>
+      Value <button aria-label="Sort by value" />
+    </span>
+  ),
+  cell: (item: Item) => <ValueCell item={item} />,
+};
+const actionsColumn = {
+  header: 'Actions',
+  cell: (item: Item) => (
+    <span>
+      <button aria-label={`Delete item ${item.id}`} />
+      <button aria-label={`Copy item ${item.id}`} />
+    </span>
+  ),
+};
+
+const items: Item[] = [
+  { id: 'id1', name: 'First', value: 1 },
+  { id: 'id2', name: 'Second', value: 2 },
+  { id: 'id3', name: 'Third', value: 3 },
+  { id: 'id4', name: 'Fourth', value: 4 },
+];
+
+function ValueCell({ item }: { item: Item }) {
+  const [active, setActive] = useState(false);
+
+  return !active ? (
+    <span>
+      {item.value ?? 0} <button aria-label={`Edit value ${item.value}`} onClick={() => setActive(true)} />
+    </span>
+  ) : (
+    <span role="dialog">
+      <input value={item.value} autoFocus={true} aria-label="Value input" tabIndex={0} />
+      <button aria-label="Save" onClick={() => setActive(false)} />
+      <button aria-label="Discard" onClick={() => setActive(false)} />
+    </span>
   );
 }
 
 function getActiveElement() {
-  return [document.activeElement?.tagName.toLowerCase(), document.activeElement?.textContent];
+  return [
+    document.activeElement?.tagName.toLowerCase(),
+    document.activeElement?.textContent || document.activeElement?.getAttribute('aria-label'),
+  ];
 }
 
 test('not activated for "table" role', () => {
-  const { container } = render(<SimpleTable tableRole="table" />);
+  const { container } = render(<TestTable tableRole="table" columns={[idColumn, nameColumn]} items={items} />);
   expect(container.querySelectorAll('td[tabIndex],th[tabIndex]')).toHaveLength(0);
 });
 
 test('updates cell tab indices', () => {
-  const { container } = render(<SimpleTable tableRole="grid" />);
-  const focusableCells = container.querySelectorAll('td[tabIndex="-1"],th[tabIndex="-1"]');
+  const { container } = render(<TestTable columns={[idColumn, nameColumn]} items={items} />);
+  const focusableCells = container.querySelectorAll('td[tabIndex="-999"],th[tabIndex="-999"]');
   const userFocusableCells = container.querySelectorAll('td[tabIndex="0"],th[tabIndex="0"]');
 
-  expect(focusableCells).toHaveLength(5);
+  expect(focusableCells).toHaveLength(9);
   expect(userFocusableCells).toHaveLength(1);
-  expect(userFocusableCells[0].textContent).toBe('header-1');
+  expect(userFocusableCells[0].textContent).toBe('ID');
 });
 
 test('updates interactive elements tab indices', () => {
-  const { container } = render(<InteractiveTable />);
-  const mutedInteractiveElements = container.querySelectorAll('a[tabIndex=-1],button[tabIndex=-1]');
+  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
+  const mutedButtons = container.querySelectorAll('button[tabIndex="-999"]');
+  const userFocusableButtons = container.querySelectorAll('button[tabIndex="0"]');
 
-  // All elements but the first are muted.
-  expect(mutedInteractiveElements).toHaveLength(6);
+  // Value header button and value cell buttons are muted.
+  expect(mutedButtons).toHaveLength(1 + 4);
+  expect(userFocusableButtons).toHaveLength(1);
+  expect(userFocusableButtons[0]).toHaveAccessibleName('Sort by name');
 });
 
-test('supports arrow keys navigation', () => {
-  const { container } = render(<InteractiveTable />);
+test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex => {
+  const { container, rerender } = render(
+    <TestTable columns={[idColumn, nameColumn]} items={items} startIndex={startIndex} />
+  );
   const table = container.querySelector('table')!;
 
-  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
-  expect(getActiveElement()).toEqual(['button', 'desc']);
+  container.querySelector('th')!.focus();
+  expect(getActiveElement()).toEqual(['th', 'ID']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['th', 'header-2']);
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['td', 'cell-1-2']);
+  expect(getActiveElement()).toEqual(['td', 'First']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.left });
-  expect(getActiveElement()).toEqual(['a', 'link-1-1']);
+  expect(getActiveElement()).toEqual(['td', 'id1']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.up });
-  expect(getActiveElement()).toEqual(['button', 'desc']);
-});
+  expect(getActiveElement()).toEqual(['th', 'ID']);
 
-test('up/down navigation works when first data row index is not 2', () => {
-  function TestComponent() {
-    const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
-    return (
-      <table role="grid" ref={tableRef}>
-        <thead>
-          <tr aria-rowindex={1}>
-            <th aria-colindex={1}>header-1</th>
-            <th aria-colindex={2}>header-2</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr aria-rowindex={5}>
-            <td aria-colindex={1}>cell-1-1</td>
-            <td aria-colindex={2}>cell-1-2</td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  }
-  const { container } = render(<TestComponent />);
-  const table = container.querySelector('table')!;
+  rerender(<TestTable columns={[idColumn, actionsColumn]} items={items} startIndex={startIndex} />);
 
-  container.querySelector('th')?.focus();
-  expect(getActiveElement()).toEqual(['th', 'header-1']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(getActiveElement()).toEqual(['th', 'Actions']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(getActiveElement()).toEqual(['td', 'cell-1-1']);
+  expect(getActiveElement()).toEqual(['button', 'Delete item id1']);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.up });
-  expect(getActiveElement()).toEqual(['th', 'header-1']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(getActiveElement()).toEqual(['button', 'Copy item id1']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['button', 'Copy item id2']);
 });
 
 test('supports key combination navigation', () => {
-  const { container } = render(<InteractiveTable />);
+  const { container } = render(<TestTable columns={[nameColumn, valueColumn, actionsColumn]} items={items} />);
   const table = container.querySelector('table')!;
 
-  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
-  expect(getActiveElement()).toEqual(['button', 'desc']);
+  container.querySelector('button')!.focus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  expect(getActiveElement()).toEqual(['a', 'link-2-1']);
+  expect(getActiveElement()).toEqual(['td', 'Second']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-  expect(getActiveElement()).toEqual(['button', 'desc']);
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end });
-  expect(getActiveElement()).toEqual(['th', 'header-3']);
+  expect(getActiveElement()).toEqual(['th', 'Actions']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home });
-  expect(getActiveElement()).toEqual(['button', 'desc']);
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
+  expect(getActiveElement()).toEqual(['button', 'Delete item id4']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.home, ctrlKey: true });
-  expect(getActiveElement()).toEqual(['button', 'desc']);
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.backspace }); // Unsupported key
-  expect(getActiveElement()).toEqual(['button', 'desc']);
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 });
 
-test('supports multi-element cell navigation', () => {
-  const { container } = render(<InteractiveTable actionsDialog={false} />);
+test('suspends grid navigation when focusing on dialog element', () => {
+  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
   const table = container.querySelector('table')!;
 
-  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
-  fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
+  (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
+  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['button', 'Edit value 1']);
 
-  // Pressing enter when inside a cell does not move focus.
-  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
+  (document.activeElement as HTMLElement).click();
+  expect(getActiveElement()).toEqual(['input', 'Value input']);
+  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-2']);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
-
-  // Pressing escape when not inside a cell does not move focus.
-  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
-
-  fireEvent.keyDown(table, { keyCode: f2Code });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
-
-  fireEvent.keyDown(table, { keyCode: f2Code });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
-});
-
-test('supports widget cell navigation', () => {
-  const { container } = render(<InteractiveTable actionsDialog={true} />);
-  const table = container.querySelector('table')!;
-
-  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
-  fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.enter });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
-
-  fireEvent.keyDown(table, { keyCode: f2Code });
-  expect(getActiveElement()).toEqual(['button', 'action-2-3-1']);
-
-  fireEvent.keyDown(table, { keyCode: f2Code });
-  expect(getActiveElement()).toEqual(['td', 'action-2-3-1 action-2-3-2']);
+  (container.querySelector('button[aria-label="Save"]') as HTMLElement).click();
+  (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
+  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
 });
 
 test('updates page size', () => {
-  const { container, rerender } = render(<InteractiveTable />);
+  const { container, rerender } = render(<TestTable columns={[idColumn, nameColumn]} items={items} pageSize={3} />);
   const table = container.querySelector('table')!;
 
-  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
-  expect(getActiveElement()).toEqual(['button', 'desc']);
+  container.querySelector('th')!.focus();
+  expect(getActiveElement()).toEqual(['th', 'ID']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageDown });
-  expect(getActiveElement()).toEqual(['a', 'link-2-1']);
+  expect(getActiveElement()).toEqual(['td', 'id3']);
 
-  rerender(<InteractiveTable pageSize={1} />);
+  rerender(<TestTable columns={[idColumn, nameColumn]} items={items} pageSize={1} />);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.pageUp });
-  expect(getActiveElement()).toEqual(['a', 'link-1-1']);
+  expect(getActiveElement()).toEqual(['td', 'id2']);
 });
 
 test('does not throw errors if table is null', () => {
-  function TestComponent() {
+  function TestTable() {
     useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => null });
     return null;
   }
-  expect(() => render(<TestComponent />)).not.toThrow();
+  expect(() => render(<TestTable />)).not.toThrow();
 });
 
-test('keeps first cell focusable if focus inside table but not inside any of the cells', () => {
-  function TestComponent() {
-    const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
-    return (
-      <table role="grid" ref={tableRef}>
-        <thead>
-          <tr>
-            <th>header-1</th>
-            <th>
-              header-2 <button>action</button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>cell-1-1</td>
-            <td>cell-1-2</td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  }
+test('ensures table always has a user-focusable element', () => {
+  const { container } = render(<TestTable columns={[idColumn, valueColumn]} items={items} />);
+  const table = container.querySelector('table')!;
+  const row1 = table.querySelector('tr[aria-rowindex="2"]')!;
+  const sortButton = table.querySelector('button[aria-label="Sort by value"]') as HTMLElement;
+  const editButton = table.querySelector('button[aria-label="Edit value 1"]') as HTMLElement;
 
-  const { container } = render(<TestComponent />);
-  expect(container.querySelector('th')).toHaveAttribute('tabIndex', '0');
+  expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
-  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
-  expect(container.querySelector('th')).toHaveAttribute('tabIndex', '0');
+  sortButton.focus();
+  expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
+
+  sortButton.remove();
+  mockObserver.callback([{ type: 'childList', removedNodes: [sortButton] } as unknown as MutationRecord]);
+  expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
+
+  editButton.focus();
+  expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
+
+  row1.remove();
+  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
+  expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 });
 
-test('ignores keydown when no cell is in focus', () => {
-  function TestComponent() {
-    const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
-    return (
-      <table role="grid" ref={tableRef}>
-        <thead>
-          <tr aria-rowindex={1}>
-            <th aria-colindex={1}>header-1</th>
-            <th>
-              header-2 <button>action</button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr aria-rowindex={2}>
-            <td aria-colindex={1}>cell-1-1</td>
-            <td aria-colindex={2}>cell-1-2</td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  }
-
-  const { container } = render(<TestComponent />);
+test('ignores keydown modifiers other than ctrl', () => {
+  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
   const table = container.querySelector('table')!;
 
-  (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0].focus();
-  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  expect(document.activeElement!.tagName.toLowerCase()).toBe('button');
-});
-
-test('ignores keydown modifiers other than ctrl are used', () => {
-  const { container } = render(<InteractiveTable />);
-  const table = container.querySelector('table')!;
-
-  const button = (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0];
-  button.focus();
+  container.querySelector('button')!.focus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, altKey: true });
-  expect(button).toHaveFocus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, shiftKey: true });
-  expect(button).toHaveFocus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, metaKey: true });
-  expect(button).toHaveFocus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.down, ctrlKey: true });
-  expect(button).toHaveFocus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.end, ctrlKey: true });
-  expect(button).not.toHaveFocus();
+  expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
 });
 
-test('cell is re-focused after it was mutated', () => {
-  const { container } = render(<InteractiveTable />);
-  const row1 = container.querySelectorAll('tr')[1]!;
-  const row2 = container.querySelectorAll('tr')[2]!;
-  const link1 = row1.querySelector('a')!;
-  const link2 = row2.querySelector('a')!;
+test('cell or cell element is re-focused after the focus target got removed', () => {
+  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
+  const table = container.querySelector('table')!;
+  const row1 = table.querySelector('tr[aria-rowindex="2"]')!;
+  const row2 = table.querySelector('tr[aria-rowindex="3"]')!;
+  const row3 = table.querySelector('tr[aria-rowindex="4"]')!;
 
   expect(document.body).toHaveFocus();
 
-  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
-
-  expect(document.body).toHaveFocus();
-
-  link1.focus();
   row1.remove();
-
   mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
 
-  expect(link2).toHaveFocus();
+  expect(document.body).toHaveFocus();
+
+  table.querySelector('button')!.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['td', 'Second']);
+
+  row2.remove();
+  mockObserver.callback([{ type: 'childList', removedNodes: [row2] } as unknown as MutationRecord]);
+
+  expect(getActiveElement()).toEqual(['td', 'Third']);
+
+  table.querySelector('button')!.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(getActiveElement()).toEqual(['button', 'Edit value 3']);
+
+  row3.remove();
+  mockObserver.callback([{ type: 'childList', removedNodes: [row3] } as unknown as MutationRecord]);
+
+  expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
 });
 
 test('cell navigation works when the table is mutated between commands', () => {
-  function TestComponent() {
-    const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
-    return (
-      <table role="grid" ref={tableRef}>
-        <thead>
-          <tr aria-rowindex={1}>
-            <th aria-colindex={1}>header-1</th>
-            <th aria-colindex={2}>
-              header-2 <button>action</button>
-            </th>
-            <th aria-colindex={3}>header-3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr aria-rowindex={2}>
-            <td aria-colindex={1}>cell-1-1</td>
-            <td aria-colindex={2}>cell-1-2</td>
-            <td aria-colindex={3}>cell-1-3</td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  }
-
-  const { container } = render(<TestComponent />);
+  const { container } = render(<TestTable columns={[idColumn, nameColumn, valueColumn]} items={items.slice(0, 1)} />);
   const table = container.querySelector('table')!;
 
   const button = (container.querySelectorAll('button') as NodeListOf<HTMLElement>)[0];
@@ -477,50 +406,12 @@ test('throws no error when focusing on incorrect target', () => {
 });
 
 test('elements focus is restored if table changes role after being rendered as grid', () => {
-  function TestComponent({ tableRole }: { tableRole: 'table' | 'grid' }) {
-    const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ tableRole, pageSize: 2, getTable: () => tableRef.current });
-    return (
-      <table role={tableRole} ref={tableRef}>
-        <tbody>
-          <tr aria-rowindex={1}>
-            <td aria-colindex={1}>
-              <button>action 1</button>
-            </td>
-            <td aria-colindex={2}>
-              <button>action 2</button>
-            </td>
-            <td aria-colindex={3}>
-              <button>action 3</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  }
+  const { container, rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
+  const getTabIndices = () => Array.from(container.querySelectorAll('button')).map(button => button.tabIndex);
 
-  const { container, rerender } = render(<TestComponent tableRole="grid" />);
+  expect(getTabIndices()).toEqual([0, -999, -999, -999, -999]);
 
-  expect(Array.from(container.querySelectorAll('button')).map(button => button.tabIndex)).toEqual([0, -1, -1]);
+  rerender(<TestTable tableRole="table" columns={[idColumn, valueColumn]} items={items} />);
 
-  rerender(<TestComponent tableRole="table" />);
-
-  expect(Array.from(container.querySelectorAll('button')).map(button => button.tabIndex)).toEqual([0, 0, 0]);
-});
-
-test('when focus is inside widget cell the cell and the cell next to it are focusable', () => {
-  const { container } = render(<InteractiveTable actionsDialog={true} />);
-  const table = container.querySelector('table')!;
-  const widgetCell = container.querySelector('[aria-rowindex="2"]')!.querySelector('[aria-colindex="3"]')!;
-  const nextCell = container.querySelector('[aria-rowindex="3"]')!.querySelector('[aria-colindex="1"]')!;
-
-  widgetCell.querySelector('button')?.focus();
-
-  expect(widgetCell).toHaveAttribute('tabIndex', '0');
-  expect(nextCell).toHaveAttribute('tabIndex', '0');
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.escape });
-
-  expect(widgetCell).toHaveAttribute('tabIndex', '0');
-  expect(nextCell).toHaveAttribute('tabIndex', '-1');
+  expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
 });
