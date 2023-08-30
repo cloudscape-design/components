@@ -202,7 +202,7 @@ export function Resizer({
         };
 
   return (
-    <span>
+    <>
       <span
         className={clsx(
           styles.resizer,
@@ -239,7 +239,7 @@ export function Resizer({
         data-focus-id={focusId}
       />
       <ScreenreaderOnly id={resizerWidthId}>{headerCellWidthString}</ScreenreaderOnly>
-    </span>
+    </>
   );
 }
 
