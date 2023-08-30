@@ -9,6 +9,9 @@ import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { joinStrings } from '../../internal/utils/strings';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
@@ -180,47 +183,55 @@ export function Resizer({
     };
   }, [headerCell, isDragging, isKeyboardDragging, onFinishStable, resizerHasFocus, handlers]);
 
+  const resizerWidthId = useUniqueId();
+  const resizerRole = isKeyboardDragging ? 'separator' : 'button';
+  const resizerAriaLabelledby = resizerRole === 'button' ? joinStrings(ariaLabelledby, resizerWidthId) : ariaLabelledby;
+
   return (
-    <span
-      className={clsx(
-        styles.resizer,
-        isDragging && styles['resizer-active'],
-        (resizerHasFocus || showFocusRing) && styles['has-focus']
-      )}
-      onMouseDown={event => {
-        if (event.button !== 0) {
-          return;
-        }
-        event.preventDefault();
-        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-        setIsDragging(true);
-        setHeaderCell(headerCell);
-      }}
-      onFocus={event => {
-        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-        setHeaderCellWidth(headerCell.getBoundingClientRect().width);
-        setResizerHasFocus(true);
-        setHeaderCell(headerCell);
-        onFocus?.();
-      }}
-      onBlur={() => {
-        setResizerHasFocus(false);
-        onBlur?.();
-        if (isKeyboardDragging) {
-          setIsKeyboardDragging(false);
-          handlers?.resetColumnWidth();
-        }
-      }}
-      role="separator"
-      aria-orientation="vertical"
-      aria-labelledby={ariaLabelledby}
-      aria-valuenow={headerCellWidth}
-      // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
-      aria-valuetext={headerCellWidth.toString()}
-      aria-valuemin={minWidth}
-      tabIndex={tabIndex}
-      data-focus-id={focusId}
-    />
+    <span>
+      <span
+        className={clsx(
+          styles.resizer,
+          isDragging && styles['resizer-active'],
+          (resizerHasFocus || showFocusRing) && styles['has-focus']
+        )}
+        onMouseDown={event => {
+          if (event.button !== 0) {
+            return;
+          }
+          event.preventDefault();
+          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+          setIsDragging(true);
+          setHeaderCell(headerCell);
+        }}
+        onFocus={event => {
+          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+          setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+          setResizerHasFocus(true);
+          setHeaderCell(headerCell);
+          onFocus?.();
+        }}
+        onBlur={() => {
+          setResizerHasFocus(false);
+          onBlur?.();
+          if (isKeyboardDragging) {
+            setIsKeyboardDragging(false);
+            handlers?.resetColumnWidth();
+          }
+        }}
+        role={resizerRole}
+        aria-pressed={isKeyboardDragging ? undefined : false}
+        aria-orientation="vertical"
+        aria-labelledby={resizerAriaLabelledby}
+        aria-valuenow={headerCellWidth}
+        // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
+        aria-valuetext={headerCellWidth.toString()}
+        aria-valuemin={minWidth}
+        tabIndex={tabIndex}
+        data-focus-id={focusId}
+      />
+      <ScreenreaderOnly id={resizerWidthId}>{headerCellWidth.toString()}</ScreenreaderOnly>
+    </span>
   );
 }
 
