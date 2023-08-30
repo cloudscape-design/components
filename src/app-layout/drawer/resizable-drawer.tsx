@@ -7,7 +7,7 @@ import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from '../utils/use-pointer-events';
 import { useKeyboardEvents } from '../utils/use-keyboard-events';
 import { SizeControlProps } from '../utils/interfaces';
-import { Drawer as InternalDrawer } from './index';
+import { Drawer } from './index';
 import testutilStyles from '../test-classes/styles.css.js';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
@@ -80,7 +80,7 @@ export const ResizableDrawer = ({
   );
 
   return (
-    <InternalDrawer
+    <Drawer
       {...props}
       ref={drawerRefObject}
       resizeHandle={
@@ -94,6 +94,6 @@ export const ResizableDrawer = ({
       }}
     >
       {children}
-    </InternalDrawer>
+    </Drawer>
   );
 };
