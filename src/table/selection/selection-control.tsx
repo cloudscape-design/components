@@ -8,7 +8,7 @@ import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../radio-group/radio-button';
 
 import styles from './styles.css.js';
-import { SelectionProps } from '../use-selection';
+import { SelectionProps } from './interfaces';
 
 export interface SelectionControlProps extends SelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
@@ -19,7 +19,7 @@ export interface SelectionControlProps extends SelectionProps {
   focusedComponent?: null | string;
 }
 
-export default function SelectionControl({
+export function SelectionControl({
   selectionType,
   indeterminate = false,
   onShiftToggle,
