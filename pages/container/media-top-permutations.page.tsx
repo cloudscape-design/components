@@ -20,7 +20,7 @@ const permutations = createPermutations<ContainerProps.Media>([
       <img key={'image43'} src={image43} alt="placeholder" />,
       <img key={'image916'} src={image916} alt="placeholder" />,
       <img key={'imageVideo'} src={imageVideo} alt="placeholder" />,
-      <iframe key="iframe" srcDoc="<h1>This is an iframe</h1>"></iframe>,
+      <iframe key="iframe" title="iframe" srcDoc="<h1>This is an iframe</h1>"></iframe>,
     ],
     height: ['', 100, 200, 300],
   },
