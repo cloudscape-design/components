@@ -4,8 +4,8 @@
 import React from 'react';
 import { waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { describeEachAppLayout, renderComponent, isDrawerClosed } from './utils';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 describeEachAppLayout(() => {
   test('opens tools drawer', () => {
