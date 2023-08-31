@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import { AppLayout, ColumnLayout, Container, ContentLayout, FormField, Header, Link, Select } from '~components';
+import { ColumnLayout, Container, ContentLayout, FormField, Header, Link, Select } from '~components';
 import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from '~components/table/selection';
 import styles from './styles.scss';
 import { generateItems, Instance } from '../table/generate-data';
 import AppContext, { AppContextType } from '../app/app-context';
-import appLayoutLabels from '../app-layout/utils/labels';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import clsx from 'clsx';
 
@@ -21,7 +20,6 @@ const items = generateItems(25);
 const selectionTypeOptions = [{ value: 'single' }, { value: 'multi' }];
 
 export default function Page() {
-  const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const selectionType = urlParams.selectionType ?? 'single';
 
@@ -82,63 +80,54 @@ export default function Page() {
   ];
 
   return (
-    <AppLayout
-      ariaLabels={appLayoutLabels}
-      contentType="table"
-      navigationHide={true}
-      toolsOpen={toolsOpen}
-      onToolsChange={event => setToolsOpen(event.detail.open)}
-      content={
-        <ContentLayout header={<Header variant="h1">Rows selection with a custom table</Header>}>
-          <Container
-            disableContentPaddings={true}
-            header={
-              <ColumnLayout columns={3}>
-                <FormField label="Table role">
-                  <Select
-                    options={selectionTypeOptions}
-                    selectedOption={selectionTypeOptions.find(option => option.value === selectionType) ?? null}
-                    onChange={event =>
-                      setUrlParams({ selectionType: event.detail.selectedOption.value as 'single' | 'multi' })
-                    }
-                  />
-                </FormField>
-              </ColumnLayout>
-            }
-          >
-            <div className={styles['custom-table']} {...focusMarkers.root}>
-              <table className={styles['custom-table-table']} role="grid">
-                <thead>
-                  <tr>
-                    {columnDefinitions.map(column => (
-                      <th
-                        key={column.key}
-                        className={clsx(
-                          styles['custom-table-cell'],
-                          column.key === 'selection' && styles['custom-table-selection-cell']
-                        )}
-                      >
-                        {column.header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map(item => (
-                    <tr key={item.id}>
-                      {columnDefinitions.map(column => (
-                        <td key={column.key} className={styles['custom-table-cell']} {...focusMarkers.item}>
-                          {column.cell(item)}
-                        </td>
-                      ))}
-                    </tr>
+    <ContentLayout header={<Header variant="h1">Rows selection with a custom table</Header>}>
+      <Container
+        disableContentPaddings={true}
+        header={
+          <ColumnLayout columns={3}>
+            <FormField label="Table role">
+              <Select
+                options={selectionTypeOptions}
+                selectedOption={selectionTypeOptions.find(option => option.value === selectionType) ?? null}
+                onChange={event =>
+                  setUrlParams({ selectionType: event.detail.selectedOption.value as 'single' | 'multi' })
+                }
+              />
+            </FormField>
+          </ColumnLayout>
+        }
+      >
+        <div className={styles['custom-table']} {...focusMarkers.root}>
+          <table className={styles['custom-table-table']} role="grid">
+            <thead>
+              <tr>
+                {columnDefinitions.map(column => (
+                  <th
+                    key={column.key}
+                    className={clsx(
+                      styles['custom-table-cell'],
+                      column.key === 'selection' && styles['custom-table-selection-cell']
+                    )}
+                  >
+                    {column.header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {items.map(item => (
+                <tr key={item.id}>
+                  {columnDefinitions.map(column => (
+                    <td key={column.key} className={styles['custom-table-cell']} {...focusMarkers.item}>
+                      {column.cell(item)}
+                    </td>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          </Container>
-        </ContentLayout>
-      }
-    />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Container>
+    </ContentLayout>
   );
 }
