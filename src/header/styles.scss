@@ -83,13 +83,13 @@
   // Calculate padding so the heading text is better aligned with the buttons.
   // Can't align-items: middle because we want buttons to stay at the top of the container when text wraps to multiple lines.
   &-variant-h1.refresh {
-    padding: calc((#{awsui.$line-height-heading-1} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding: calc((#{awsui.$line-height-heading-xl} - #{awsui.$size-vertical-input}) / 2) 0;
   }
   &-variant-h2.refresh {
-    padding: calc((#{awsui.$line-height-heading-2} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding: calc((#{awsui.$line-height-heading-l} - #{awsui.$size-vertical-input}) / 2) 0;
   }
   &-variant-h3.refresh {
-    padding: calc((#{awsui.$line-height-heading-3} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding: calc((#{awsui.$line-height-heading-m} - #{awsui.$size-vertical-input}) / 2) 0;
   }
 
   &-variant-h1:not(.refresh) {
@@ -109,24 +109,24 @@
   color: awsui.$color-text-heading-default;
 
   &-variant-h1 {
-    font-size: awsui.$font-size-heading-1;
+    font-size: awsui.$font-size-heading-xl;
     // Use padding rather than center align with min height to avoid having extra bottom space when no actions are present.
     // Having top padding always present ensures that all headers of the same variant start at the same height in the container,
     // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
     &.refresh {
-      padding-top: space-heading-button-diff(awsui.$line-height-heading-1);
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-xl);
     }
   }
   &-variant-h2 {
-    font-size: awsui.$font-size-heading-2;
+    font-size: awsui.$font-size-heading-l;
     &.refresh {
-      padding-top: space-heading-button-diff(awsui.$line-height-heading-2);
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-l);
     }
   }
   &-variant-h3 {
-    font-size: awsui.$font-size-heading-3;
+    font-size: awsui.$font-size-heading-m;
     &.refresh {
-      padding-top: space-heading-button-diff(awsui.$line-height-heading-3);
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-m);
     }
   }
   &-variant-h2:not(.refresh),

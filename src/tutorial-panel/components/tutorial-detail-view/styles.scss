@@ -49,7 +49,7 @@
 .congratulation-message {
   display: flex;
   @include styles.font(heading-s);
-  font-weight: awsui.$font-weight-heading-5;
+  font-weight: awsui.$font-weight-heading-xs;
   color: awsui.$color-text-status-success;
 
   &--status {

@@ -35,13 +35,13 @@ $_icon-sizes: (
   (
     name: 'medium',
     size: awsui.$size-icon-medium,
-    supportedLineHeight: awsui.$line-height-heading-2,
+    supportedLineHeight: awsui.$line-height-heading-l,
     stroke: 2px,
   ),
   (
     name: 'big',
     size: awsui.$size-icon-big,
-    supportedLineHeight: awsui.$line-height-heading-1,
+    supportedLineHeight: awsui.$line-height-heading-xl,
     stroke: 2px,
   ),
   (

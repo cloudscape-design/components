@@ -18,7 +18,7 @@ $_spinner-sizes: (
     name: 'big',
     size: 2.4 * styles.$base-size,
     iconSizeMap: awsui.$size-icon-big,
-    supportedLineHeight: awsui.$line-height-heading-1,
+    supportedLineHeight: awsui.$line-height-heading-xl,
   ),
   (
     name: 'large',

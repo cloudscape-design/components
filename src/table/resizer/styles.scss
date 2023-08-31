@@ -42,7 +42,7 @@ $active-separator-width: 2px;
         left: calc(#{$handle-width} / 2 - #{$active-separator-width});
         bottom: 0;
         top: 0;
-        min-height: awsui.$line-height-heading-5;
+        min-height: awsui.$line-height-heading-xs;
         max-height: calc(100% - #{$gap});
         margin: auto;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;

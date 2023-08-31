@@ -14,7 +14,7 @@
   border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
-  font-weight: awsui.$font-weight-heading-4;
+  font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
   padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
   &-sticky {
@@ -64,7 +64,7 @@
     right: 0;
     bottom: 0;
     top: 0;
-    min-height: awsui.$line-height-heading-5;
+    min-height: awsui.$line-height-heading-xs;
     max-height: calc(100% - #{$gap});
     margin: auto;
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
@@ -132,7 +132,7 @@
 }
 
 .header-cell-text {
-  line-height: awsui.$line-height-heading-5;
+  line-height: awsui.$line-height-heading-xs;
 
   padding-top: calc(#{awsui.$space-xxxs} / 2);
   padding-bottom: calc(#{awsui.$space-xxxs} / 2);
