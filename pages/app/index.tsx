@@ -18,7 +18,7 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
 function isAppLayoutPage(pageId?: string) {
-  const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom'];
+  const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom', 'selection-custom'];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }
 
