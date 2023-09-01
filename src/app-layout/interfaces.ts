@@ -218,6 +218,11 @@ export namespace AppLayoutProps {
      * the panel is already open.
      */
     focusToolsClose(): void;
+
+    /**
+     * Focuses the split panel if it is open.
+     */
+    focusSplitPanel(): void;
   }
 
   export interface Labels {
