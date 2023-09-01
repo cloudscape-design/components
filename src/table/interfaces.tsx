@@ -315,6 +315,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
+
+  /**
+   * Experimental custom rows API.
+   */
+  rows?: ReadonlyArray<TableProps.RowType<T>>;
 }
 
 export namespace TableProps {
@@ -454,5 +459,17 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible: boolean;
+  }
+
+  export type RowType<ItemType> = DataRow<ItemType> | LoaderRow;
+
+  export interface DataRow<ItemType> {
+    type: 'data';
+    item: ItemType;
+  }
+
+  export interface LoaderRow {
+    type: 'loader';
+    content: React.ReactNode;
   }
 }
