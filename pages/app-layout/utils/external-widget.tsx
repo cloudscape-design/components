@@ -5,6 +5,8 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import HelpPanel from '~components/help-panel';
 import awsuiPlugins from '~components/internal/plugins';
 
+const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
+
 function Content() {
   useEffect(() => {
     console.log('mounted');
@@ -29,6 +31,8 @@ awsuiPlugins.appLayout.registerDrawer({
       <path d="M4,7V5a4,4,0,0,1,8,0V7" fill="none" stroke="currentColor" stroke-width="2" />
     </svg>`,
   },
+
+  defaultActive: !!searchParams.get('force-default-active'),
 
   resizable: true,
   defaultSize: 320,
