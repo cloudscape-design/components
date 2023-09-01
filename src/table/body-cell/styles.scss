@@ -33,7 +33,7 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   font-weight: inherit;
   &-expand {
-    width: 30px;
+    width: 20px;
   }
   &:not(.body-cell-wrap) {
     white-space: nowrap;

@@ -445,11 +445,13 @@ const InternalTable = React.forwardRef(
                               colIndex={0}
                               tableRole={tableRole}
                             >
-                              <InternalButton
-                                variant="inline-icon"
-                                iconName={treeGrid.getItemExpanded(item) ? 'caret-down-filled' : 'caret-right-filled'}
-                                onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
-                              />
+                              {treeGrid.getItemExpandable(item) && (
+                                <InternalButton
+                                  variant="inline-icon"
+                                  iconName={treeGrid.getItemExpanded(item) ? 'caret-down-filled' : 'caret-right-filled'}
+                                  onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
+                                />
+                              )}
                             </TableTdElement>
                           )}
 
@@ -495,6 +497,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
+                                level={colIndex === 0 ? treeGrid?.getItemLevel(item) ?? 1 : 1}
                               />
                             );
                           })}

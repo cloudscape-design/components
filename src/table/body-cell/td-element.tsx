@@ -34,6 +34,7 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
+  level?: number;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -62,6 +63,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       colIndex,
       stickyState,
       tableRole,
+      level = 1,
     },
     ref
   ) => {
@@ -106,7 +108,14 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         }}
         {...nativeAttributes}
       >
-        {children}
+        {level === 1 ? (
+          children
+        ) : (
+          <span>
+            <span style={{ width: (level - 1) * 24, display: 'inline-block' }} />
+            {children}
+          </span>
+        )}
       </Element>
     );
   }
