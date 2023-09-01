@@ -17,6 +17,7 @@ import { StickyColumnsModel } from './sticky-columns';
 import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 import { TableThElement } from './header-cell/th-element';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+import InternalButton from '../button/internal';
 
 export interface TheadProps {
   containerWidth: number | null;
@@ -42,6 +43,7 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
+  treeGrid?: TableProps.TreeGridProps<any>;
 }
 
 const Thead = React.forwardRef(
@@ -70,6 +72,7 @@ const Thead = React.forwardRef(
       focusedComponent,
       onFocusedComponentChange,
       tableRole,
+      treeGrid,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -127,6 +130,23 @@ const Thead = React.forwardRef(
               ) : (
                 <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
               )}
+            </TableThElement>
+          ) : null}
+
+          {treeGrid ? (
+            <TableThElement
+              className={clsx(
+                headerCellClass,
+                headerCellStyles['header-cell-expand'],
+                hidden && headerCellStyles['header-cell-hidden']
+              )}
+              hidden={hidden}
+              tableRole={tableRole}
+              colIndex={0}
+              columnId={selectionColumnId}
+              stickyState={stickyState}
+            >
+              <InternalButton variant="inline-icon" iconName="caret-right-filled" />
             </TableThElement>
           ) : null}
 

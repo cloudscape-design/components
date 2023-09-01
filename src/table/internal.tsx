@@ -40,6 +40,7 @@ import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } fro
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import InternalButton from '../button/internal';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -89,6 +90,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
+      treeGrid,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -186,7 +188,8 @@ const InternalTable = React.forwardRef(
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid-default' : 'table';
+    // TODO: support tree-grid ARIA role.
+    const tableRole = hasEditableCells || treeGrid ? 'grid-default' : 'table';
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -215,6 +218,7 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
+      treeGrid,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -236,7 +240,9 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
-    const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
+    let totalColumnsCount = visibleColumnDefinitions.length;
+    totalColumnsCount = selectionType ? totalColumnsCount + 1 : totalColumnsCount;
+    totalColumnsCount = treeGrid ? totalColumnsCount + 1 : totalColumnsCount;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -419,6 +425,30 @@ const InternalTable = React.forwardRef(
                               />
                             </TableTdElement>
                           )}
+
+                          {treeGrid !== undefined && (
+                            <TableTdElement
+                              className={clsx(styles['body-cell-expand'])}
+                              isVisualRefresh={isVisualRefresh}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                              wrapLines={true}
+                              isEvenRow={isEven}
+                              stripedRows={stripedRows}
+                              hasSelection={hasSelection}
+                              hasFooter={hasFooter}
+                              stickyState={stickyState}
+                              columnId={selectionColumnId}
+                              colIndex={0}
+                              tableRole={tableRole}
+                            >
+                              <InternalButton variant="inline-icon" iconName="caret-right-filled" />
+                            </TableTdElement>
+                          )}
+
                           {visibleColumnDefinitions.map((column, colIndex) => {
                             const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                             const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });

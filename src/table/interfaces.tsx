@@ -319,12 +319,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Experimental tree-grid API.
    */
-  treeGrid?: {
-    getItemExpandable(item: T): boolean;
-    getItemExpanded(item: T): boolean;
-    getItemLevel(item: T): number;
-    onItemExpandedChange(item: T, expanded: boolean): void;
-  };
+  treeGrid?: TableProps.TreeGridProps<T>;
 }
 
 export namespace TableProps {
@@ -464,5 +459,12 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible: boolean;
+  }
+
+  export interface TreeGridProps<ItemType> {
+    getItemExpandable(item: ItemType): boolean;
+    getItemExpanded(item: ItemType): boolean;
+    getItemLevel(item: ItemType): number;
+    onItemExpandedChange(item: ItemType, expanded: boolean): void;
   }
 }
