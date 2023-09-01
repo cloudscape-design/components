@@ -115,12 +115,13 @@
 }
 
 .cell-loader {
-  text-align: center;
   padding: 0;
   border-bottom: 1px solid awsui.$color-border-divider-default;
   &-content {
+    width: fit-content;
+    position: sticky;
+    left: 0;
     box-sizing: border-box;
-    width: 100%;
     padding: awsui.$space-xs awsui.$space-l;
   }
 }

@@ -378,7 +378,10 @@ const InternalTable = React.forwardRef(
                       if (row.type === 'loader') {
                         return (
                           <tr key={rowIndex}>
-                            <td colSpan={totalColumnsCount} className={styles['cell-loader']}>
+                            <td
+                              colSpan={totalColumnsCount}
+                              className={clsx(styles['cell-loader'], styles['cell-loader-sticky'])}
+                            >
                               <div className={styles['cell-loader-content']}>{row.content}</div>
                             </td>
                           </tr>

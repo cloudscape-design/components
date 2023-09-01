@@ -7,7 +7,7 @@ import Table, { TableProps } from '~components/table';
 import Box from '~components/box';
 import { Instance, generateItems } from './generate-data';
 import { Button, StatusIndicator } from '~components';
-import { columnsConfig } from './shared-configs';
+import { columnsConfig as originalColumnsConfig } from './shared-configs';
 
 const items = generateItems(20);
 
@@ -16,6 +16,16 @@ rows.splice(20, 0, { type: 'loader', content: <StatusIndicator type="info">End o
 rows.splice(15, 0, { type: 'loader', content: <StatusIndicator type="error">Loading error</StatusIndicator> });
 rows.splice(10, 0, { type: 'loader', content: <StatusIndicator type="loading">Loading</StatusIndicator> });
 rows.splice(0, 0, { type: 'loader', content: <Button variant="inline-link">Load more</Button> });
+
+const columnsConfig = originalColumnsConfig.flatMap(column =>
+  column.id !== 'type'
+    ? [column]
+    : [column, column, column, column, column, column, column, column, column, column].map((typeColumn, index) => ({
+        ...typeColumn,
+        id: typeColumn.id! + index,
+        header: typeColumn.header + '-' + (index + 1),
+      }))
+);
 
 export default function LoaderRowPage() {
   return (
