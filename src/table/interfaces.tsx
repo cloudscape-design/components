@@ -315,6 +315,16 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
+
+  /**
+   * Experimental tree-grid API.
+   */
+  treeGrid?: {
+    getItemExpandable(item: T): boolean;
+    getItemExpanded(item: T): boolean;
+    getItemLevel(item: T): number;
+    onItemExpandedChange(item: T, expanded: boolean): void;
+  };
 }
 
 export namespace TableProps {
