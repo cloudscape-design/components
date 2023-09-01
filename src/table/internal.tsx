@@ -445,7 +445,11 @@ const InternalTable = React.forwardRef(
                               colIndex={0}
                               tableRole={tableRole}
                             >
-                              <InternalButton variant="inline-icon" iconName="caret-right-filled" />
+                              <InternalButton
+                                variant="inline-icon"
+                                iconName={treeGrid.getItemExpanded(item) ? 'caret-down-filled' : 'caret-right-filled'}
+                                onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
+                              />
                             </TableTdElement>
                           )}
 
