@@ -17,6 +17,11 @@ import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
+interface ExtendedWindow extends Window {
+  [key: symbol]: (() => boolean) | undefined;
+}
+declare const window: ExtendedWindow;
+
 function isAppLayoutPage(pageId?: string) {
   const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom'];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
@@ -72,9 +77,15 @@ function App() {
 
 const history = createHashHistory();
 const { visualRefresh } = parseQuery(history.location.search);
+const { windowVR } = parseQuery(history.location.search);
 
 // The VR class needs to be set before any React rendering occurs.
-document.body.classList.toggle('awsui-visual-refresh', visualRefresh);
+if (windowVR !== true && windowVR !== false) {
+  window[Symbol.for('isVisualRefresh')] = undefined;
+  document.body.classList.toggle('awsui-visual-refresh', visualRefresh);
+} else {
+  window[Symbol.for('isVisualRefresh')] = () => windowVR;
+}
 
 render(
   <HashRouter>

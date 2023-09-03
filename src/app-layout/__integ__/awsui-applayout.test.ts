@@ -5,6 +5,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
 import { viewports } from './constants';
+import styles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
 const mobileSelector = `.${mobileStyles['mobile-bar']}`;
@@ -32,13 +33,21 @@ class AppLayoutPage extends BasePageObject {
 }
 
 function setupTest(
-  { viewport = viewports.desktop, pageName = 'default', trackResizeObserverErrors = true, visualRefresh = false },
+  {
+    viewport = viewports.desktop,
+    pageName = 'default',
+    trackResizeObserverErrors = true,
+    visualRefresh = false,
+    windowVR = false,
+  },
   testFn: (page: AppLayoutPage) => Promise<void>
 ) {
   return useBrowser(async browser => {
     const page = new AppLayoutPage(browser);
     await page.setWindowSize(viewport);
-    await browser.url(`#/light/app-layout/${pageName}?visualRefresh=${visualRefresh}`);
+    await browser.url(
+      `#/light/app-layout/${pageName}?visualRefresh=${visualRefresh}${windowVR ? '&windowVR=true' : ''}`
+    );
     if (trackResizeObserverErrors) {
       await page.trackResizeObserverErrors();
     }
@@ -175,5 +184,12 @@ test(
     await page.click(wrapper.findNotifications().findFlashbar().findItems().get(1).findDismissButton().toSelector());
     const { height: newHeight } = await page.getBoundingBox(wrapper.findNotifications().toSelector());
     expect(newHeight).toEqual(0);
+  })
+);
+
+test(
+  'render page in VR when window[Symbol.for(`isVisualRefresh`)] returns true',
+  setupTest({ pageName: 'with-table', trackResizeObserverErrors: false, windowVR: true }, async page => {
+    await expect(page.isExisting(wrapper.find(`.${styles.background}`).toSelector())).resolves.toBe(true);
   })
 );

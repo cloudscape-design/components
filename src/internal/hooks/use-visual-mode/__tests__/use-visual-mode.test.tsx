@@ -4,6 +4,12 @@ import React from 'react';
 import { useVisualRefresh, clearVisualRefreshState } from '../index';
 import { render, screen } from '@testing-library/react';
 
+declare global {
+  interface Window {
+    [key: symbol]: (() => boolean) | undefined;
+  }
+}
+
 jest.mock('../../../environment', () => ({ ALWAYS_VISUAL_REFRESH: false }), { virtual: true });
 
 describe('useVisualRefresh', () => {
@@ -37,5 +43,26 @@ describe('useVisualRefresh', () => {
     rerender(<App />);
     expect(console.warn).toHaveBeenCalledWith(expect.stringMatching(/Dynamic visual refresh change detected/));
     expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+  });
+
+  describe('Window Symbol isVisualRefresh ', () => {
+    afterEach(() => {
+      window[Symbol.for('isVisualRefresh')] = undefined;
+    });
+
+    test('should return true when Window Symbol isVisualRefresh is true', () => {
+      window[Symbol.for('isVisualRefresh')] = () => true;
+      render(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
+    });
+
+    test('should not change theme when Window Symbol isVisualRefresh is set later', () => {
+      const { rerender } = render(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+
+      window[Symbol.for('isVisualRefresh')] = () => true;
+      rerender(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+    });
   });
 });
