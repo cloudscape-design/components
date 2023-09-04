@@ -19,25 +19,45 @@
 }
 
 .anchor-item {
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
   @include styles.font-body-m;
+
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
   margin: awsui.$space-scaled-xxs 0;
   margin-left: -2px;
   &-active {
-    border-left: 2px solid awsui.$color-text-accent;
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 2px;
+      background-color: awsui.$color-text-accent;
+      border-radius: awsui.$border-radius-tabs-focus-ring;
+    }
   }
 }
 
 .anchor-link {
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+
   @include styles.font-body-m;
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
   text-decoration: none;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
 
   &:hover {
     color: awsui.$color-text-accent;
@@ -50,10 +70,6 @@
   &:hover,
   &:focus {
     text-decoration: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.link-focus;
   }
 
   &-active {

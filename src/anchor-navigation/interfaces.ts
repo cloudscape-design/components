@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CancelableEventHandler } from '../internal/events';
+import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 
 export interface AnchorNavigationProps {
   /**
-   * Adds `aria-labelledby` to the component. If you're using this component within a form field,
-   * don't set this property because the form field component automatically sets it.
+   * Adds `aria-labelledby` to the component.
    *
    * Use this property for identifying the header or title that labels the anchor navigation.
    *
@@ -20,10 +19,10 @@ export interface AnchorNavigationProps {
   anchors: AnchorNavigationProps.Anchor[];
 
   /**
-   * Specifies the active anchor.
+   * Specifies the active anchor href.
    * For using the component in a controlled manner, use together with 'disableTracking'.
    */
-  activeAnchor?: AnchorNavigationProps.Anchor;
+  activeHref?: string;
 
   /**
    * Option to disable scroll spy.
@@ -38,7 +37,7 @@ export interface AnchorNavigationProps {
   /**
    * Fired when an active anchor link changes.
    */
-  onActiveAnchorChange?: CancelableEventHandler<AnchorNavigationProps.Anchor>;
+  onActiveAnchorChange?: NonCancelableEventHandler<AnchorNavigationProps.Anchor>;
 }
 
 export namespace AnchorNavigationProps {
