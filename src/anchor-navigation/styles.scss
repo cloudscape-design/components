@@ -7,6 +7,9 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/typography/constants.scss' as typography;
 
+$guide-line-width: 2px;
+$guide-line-offset: -2px; // Negative to expand 2px beyond the element
+
 .root {
   @include styles.styles-reset;
 }
@@ -17,16 +20,17 @@
   padding: 0;
   text-indent: 0;
   list-style: none;
+
   &::before {
     content: '';
     background-color: awsui.$color-border-divider-default;
     border-radius: awsui.$border-radius-tabs-focus-ring;
-    bottom: -2px;
-    left: -2px;
+    bottom: $guide-line-offset;
+    left: $guide-line-offset;
     pointer-events: none;
     position: absolute;
-    top: -2px;
-    width: 2px;
+    top: $guide-line-offset;
+    width: $guide-line-width;
   }
 }
 
@@ -40,19 +44,21 @@
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
   margin: awsui.$space-scaled-xxs 0;
-  margin-left: -2px;
+  margin-left: $guide-line-offset; // Align with ::before guide line in .anchor-list
+
   &-active {
     position: relative;
+
     &::before {
       content: '';
       background-color: awsui.$color-text-accent;
       border-radius: awsui.$border-radius-tabs-focus-ring;
-      bottom: -2px;
+      bottom: $guide-line-offset;
       left: 0;
       pointer-events: none;
       position: absolute;
-      top: -2px;
-      width: 2px;
+      top: $guide-line-offset;
+      width: $guide-line-width;
     }
   }
 }
