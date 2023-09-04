@@ -38,7 +38,7 @@
   }
   &-divider {
     height: calc(
-      2 * #{awsui.$border-divider-section-width} + 2 * #{awsui.$space-scaled-xxs} + #{awsui.$font-body-m-line-height}
+      2 * #{awsui.$border-divider-section-width} + 2 * #{awsui.$space-scaled-xxs} + #{awsui.$line-height-body-m}
     ); // replicate the button layout: 2x border, 2x vertical padding, text line-height
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }

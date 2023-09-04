@@ -5,6 +5,7 @@ import debounce from '../../debounce';
 
 export type DrawerConfig = Omit<DrawerItem, 'content' | 'trigger'> & {
   orderPriority?: number;
+  defaultActive?: boolean;
   trigger: {
     iconSvg: string;
   };

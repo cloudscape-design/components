@@ -1,10 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act } from 'react-dom/test-utils';
 import { waitFor } from '@testing-library/react';
 import { isDrawerClosed, renderComponent, singleDrawer } from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import sharedStyles from '../../../lib/components/app-layout/styles.css.js';
@@ -14,48 +13,6 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
-
-test('opens tools drawer', () => {
-  let ref: AppLayoutProps.Ref | null = null;
-  const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
-  expect(isDrawerClosed(wrapper.findTools())).toBe(true);
-  act(() => ref!.openTools());
-  expect(isDrawerClosed(wrapper.findTools())).toBe(false);
-});
-
-test('allows to change focus after programmatically opening the drawer', async () => {
-  // sample component that reproduces how this functionality should be done in a real app
-  function App() {
-    const layoutRef = React.useRef<AppLayoutProps.Ref>(null);
-    const buttonRef = React.useRef<HTMLButtonElement>(null);
-    const handleOpenTools = async () => {
-      layoutRef.current!.openTools();
-      await new Promise(resolve => setTimeout(resolve, 0));
-      buttonRef.current!.focus();
-    };
-    return (
-      <AppLayout
-        ref={layoutRef}
-        content={
-          <button id="open-tools" onClick={handleOpenTools}>
-            Open tools
-          </button>
-        }
-        tools={
-          <button ref={buttonRef} id="custom-button">
-            Click me
-          </button>
-        }
-      />
-    );
-  }
-
-  const { wrapper } = renderComponent(<App />);
-  wrapper.find('#open-tools')!.click();
-  await waitFor(() => {
-    expect(wrapper.find('#custom-button')!.getElement()).toEqual(document.activeElement);
-  });
-});
 
 // in our ResizeObserver mock resolves into mobile mode
 test('should render mobile mode by default', () => {

@@ -212,7 +212,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  colorBorderButtonNormalActive: { description: 'The border color of normal buttons in active state.' },
+  colorBorderButtonNormalActive: {
+    description: 'The border color of normal buttons in active state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
   colorBorderButtonNormalDisabled: {
     description: 'The border color of normal buttons in disabled state.',

@@ -254,28 +254,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     /**
-     * The useImperativeHandle hook in conjunction with the forwardRef function
-     * in the AppLayout component definition expose the following callable
-     * functions to component consumers when they put a ref as a property on
-     * their component implementation.
-     */
-    useImperativeHandle(
-      forwardRef,
-      function createImperativeHandle() {
-        return {
-          closeNavigationIfNecessary: function () {
-            isMobile && handleNavigationClick(false);
-          },
-          openTools: function () {
-            handleToolsClick(true);
-          },
-          focusToolsClose: () => focusToolsButtons(true),
-        };
-      },
-      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons]
-    );
-
-    /**
      * Query the DOM for the header and footer elements based on the selectors provided
      * by the properties and pass the heights to the custom property definitions.
      */
@@ -588,6 +566,29 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         minContentWidth,
         toolsWidth,
       ]
+    );
+
+    /**
+     * The useImperativeHandle hook in conjunction with the forwardRef function
+     * in the AppLayout component definition expose the following callable
+     * functions to component consumers when they put a ref as a property on
+     * their component implementation.
+     */
+    useImperativeHandle(
+      forwardRef,
+      function createImperativeHandle() {
+        return {
+          closeNavigationIfNecessary: function () {
+            isMobile && handleNavigationClick(false);
+          },
+          openTools: function () {
+            handleToolsClick(true);
+          },
+          focusToolsClose: () => focusToolsButtons(true),
+          focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
+        };
+      },
+      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, splitPanelRefs.slider]
     );
 
     return (

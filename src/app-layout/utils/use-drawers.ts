@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { InternalDrawerProps } from '../drawer/interfaces';
 import { AppLayoutState } from '../defaults';
@@ -8,6 +8,7 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
+import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
 import { AppLayoutProps } from '../interfaces';
 import { togglesConfig } from '../toggles';
@@ -46,9 +47,13 @@ function getToolsDrawerItem(props: ToolsProps) {
 
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
+  activeDrawerId: string | undefined,
   onActiveDrawerChange: (id: string | undefined) => void
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({ before: [], after: [] });
+
+  const drawerWasOpenRef = useRef(false);
+  drawerWasOpenRef.current = drawerWasOpenRef.current || !!activeDrawerId;
 
   useEffect(() => {
     if (disableRuntimeDrawers) {
@@ -56,6 +61,12 @@ function useRuntimeDrawers(
     }
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawersRegistered(drawers => {
       setRuntimeDrawers(convertRuntimeDrawers(drawers));
+      if (!drawerWasOpenRef.current) {
+        const defaultActiveDrawer = sortByPriority(drawers).find(drawer => drawer.defaultActive);
+        if (defaultActiveDrawer) {
+          onActiveDrawerChange(defaultActiveDrawer.id);
+        }
+      }
     });
     return () => {
       unsubscribe();
@@ -94,7 +105,7 @@ export function useDrawers(
     fireNonCancelableEvent(ownDrawers?.onChange, newDrawerId);
   });
 
-  const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, onActiveDrawerChange);
+  const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
   const combinedDrawers = [...runtimeDrawers.before, ...(ownDrawers?.items ?? []), ...runtimeDrawers.after];
   if (toolsDrawer && combinedDrawers.length > 0) {
     combinedDrawers.unshift(toolsDrawer);

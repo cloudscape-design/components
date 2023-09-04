@@ -179,7 +179,7 @@
 }
 
 @mixin make-control-size($height, $width: $height) {
-  margin-top: calc((#{awsui.$font-body-m-line-height} - #{$height}) / 2);
+  margin-top: calc((#{awsui.$line-height-body-m} - #{$height}) / 2);
   min-height: $height;
   min-width: $width;
   height: $height;
