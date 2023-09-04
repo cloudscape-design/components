@@ -31,7 +31,7 @@ const Anchor = ({ anchor, fireFollow, isActive }: AnchorProps) => {
       <a
         style={{
           // 2px to offset the negative margin, that makes the guiding border line clickable
-          paddingLeft: `${anchor.level * 16 + 2}px`,
+          paddingLeft: `${anchor.level * 16}px`,
         }}
         onClick={onClick}
         className={clsx(styles['anchor-link'], { [styles['anchor-link-active']]: isActive })}

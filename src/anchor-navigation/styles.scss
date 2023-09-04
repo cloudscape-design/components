@@ -12,11 +12,22 @@
 }
 
 .anchor-list {
-  border-left: 2px solid awsui.$color-border-divider-default;
+  position: relative;
   margin: 0;
   padding: 0;
   text-indent: 0;
   list-style: none;
+  &::before {
+    content: '';
+    background-color: awsui.$color-border-divider-default;
+    border-radius: awsui.$border-radius-tabs-focus-ring;
+    bottom: -2px;
+    left: -2px;
+    pointer-events: none;
+    position: absolute;
+    top: -2px;
+    width: 2px;
+  }
 }
 
 .anchor-item {
@@ -34,13 +45,14 @@
     position: relative;
     &::before {
       content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 2px;
       background-color: awsui.$color-text-accent;
       border-radius: awsui.$border-radius-tabs-focus-ring;
+      bottom: -2px;
+      left: 0;
+      pointer-events: none;
+      position: absolute;
+      top: -2px;
+      width: 2px;
     }
   }
 }
@@ -86,6 +98,5 @@
     font-weight: awsui.$font-wayfinding-link-active-weight;
     @include styles.font-smoothing;
     color: awsui.$color-text-accent;
-    margin-left: -2px;
   }
 }
