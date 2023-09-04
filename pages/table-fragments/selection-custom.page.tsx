@@ -87,6 +87,7 @@ export default function Page() {
           <ColumnLayout columns={3}>
             <FormField label="Table role">
               <Select
+                data-testid="selection-type"
                 options={selectionTypeOptions}
                 selectedOption={selectionTypeOptions.find(option => option.value === selectionType) ?? null}
                 onChange={event =>
@@ -116,8 +117,8 @@ export default function Page() {
               </tr>
             </thead>
             <tbody>
-              {items.map(item => (
-                <tr key={item.id} {...focusMarkers.item}>
+              {items.map((item, index) => (
+                <tr key={item.id} {...focusMarkers.item} data-rowindex={index + 1}>
                   {columnDefinitions.map(column => (
                     <td key={column.key} className={styles['custom-table-cell']}>
                       {column.cell(item)}
