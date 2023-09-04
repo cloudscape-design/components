@@ -48,6 +48,7 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   height: number;
   detailPopoverSize: MixedLineBarChartProps<T>['detailPopoverSize'];
   detailPopoverFooter: MixedLineBarChartProps<T>['detailPopoverFooter'];
+  detailPopoverHeader: MixedLineBarChartProps<T>['detailPopoverHeader'];
 
   xScaleType: ScaleType;
   yScaleType: 'linear' | 'log';
@@ -111,6 +112,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   highlightedGroupIndex,
   setHighlightedGroupIndex,
   detailPopoverFooter,
+  detailPopoverHeader,
   detailPopoverSize = 'medium',
   stackedBars = false,
   horizontalBars = false,
@@ -473,6 +475,11 @@ export default function ChartContainer<T extends ChartDataTypes>({
     [detailPopoverFooter, highlightedX]
   );
 
+  const detailPopoverHeaderContent = useMemo(
+    () => (detailPopoverHeader && highlightedX ? detailPopoverHeader(highlightedX) : null),
+    [detailPopoverHeader, highlightedX]
+  );
+
   const activeAriaLabel = useMemo(
     () =>
       highlightDetails
@@ -632,6 +639,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onDismiss={onPopoverDismiss}
           size={detailPopoverSize}
           footer={detailPopoverFooterContent}
+          header={detailPopoverHeaderContent}
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
         />

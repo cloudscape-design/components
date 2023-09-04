@@ -57,6 +57,12 @@ export namespace MixedLineBarChartProps {
   export interface Datum<T> {
     x: T;
     y: number;
+    details?: ReadonlyArray<{ key: string; value: number }>;
+    detailsOpen?: boolean;
+    link?: {
+      href: string;
+      external?: boolean;
+    };
   }
 
   interface IDataSeries<T> {

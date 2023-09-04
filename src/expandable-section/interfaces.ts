@@ -5,7 +5,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace ExpandableSectionProps {
-  export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked';
+  export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked' | 'compact';
   export interface ChangeDetail {
     expanded: boolean;
   }

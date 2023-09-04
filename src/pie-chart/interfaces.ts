@@ -11,9 +11,15 @@ export interface SeriesInfo {
   markerType: 'line' | 'rectangle';
 }
 
+export interface ChartDetailLink {
+  href: string;
+  external?: boolean;
+}
+
 export interface ChartDetailPair {
   key: string;
   value: string | number;
+  link?: ChartDetailLink;
 }
 
 export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Datum> extends BaseComponentProps {

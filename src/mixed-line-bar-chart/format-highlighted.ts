@@ -59,8 +59,13 @@ function getSeriesDetail<T>(internalSeries: InternalChartSeries<T>, targetX: T):
         return {
           key: series.title,
           value: series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y,
+          link: datum.link,
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
+          details: series.valueFormatter
+            ? datum.details?.map(detail => ({ key: detail.key, value: series.valueFormatter!(detail.value, targetX) }))
+            : datum.details,
+          detailsOpen: datum.detailsOpen,
         };
       }
     }

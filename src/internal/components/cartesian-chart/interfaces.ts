@@ -95,6 +95,7 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
    */
   detailPopoverSize?: 'small' | 'medium' | 'large';
 
+  detailPopoverHeader?: CartesianChartProps.DetailPopoverFooter<T>;
   /**
    * Additional content that is displayed at the bottom of the detail popover.
    */

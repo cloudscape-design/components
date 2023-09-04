@@ -11,6 +11,11 @@
   @include styles.styles-reset;
 }
 
+.inner-list-item {
+  display: flex;
+  justify-content: space-between;
+}
+
 .list {
   display: flex;
   margin: 0;
@@ -20,15 +25,30 @@
 
   > .list-item {
     display: inline-flex;
-    justify-content: space-between;
+    > .key {
+      align-items: flex-start;
+      color: awsui.$color-text-group-label;
+    }
+
+    &:not(.with-details) {
+      justify-content: space-between;
+      > .key {
+        display: inline-flex;
+        margin-right: awsui.$space-xxl;
+      }
+    }
+    &.with-details {
+      > .key {
+        display: flex;
+        width: 100%;
+      }
+    }
   }
 }
 
-.key {
-  display: inline-flex;
-  align-items: flex-start;
-  color: awsui.$color-text-group-label;
-  margin-right: awsui.$space-xxl;
+.value {
+  font-weight: styles.$font-weight-bold;
+  margin-left: awsui.$space-xxl;
 }
 
 .dimmed {
