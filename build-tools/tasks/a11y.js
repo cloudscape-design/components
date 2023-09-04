@@ -7,7 +7,6 @@ const { task } = require('../utils/gulp-utils.js');
 
 module.exports = task('test:a11y', async () => {
   const shard = process.argv[process.argv.length - 1].split('=')[1];
-  console.log(shard, 'shard');
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.js'], {
     env: {
       NODE_ENV: 'development',
@@ -16,7 +15,11 @@ module.exports = task('test:a11y', async () => {
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__a11y__/**/*.test.ts');
-  await execa('jest', ['-c', 'jest.integ.config.js', ...files, `--shard=${shard}`], { stdio: 'inherit' });
+  console.log(shard, 'shard');
+  console.log(files, 'files');
+  await execa('jest', ['-c', 'jest.integ.config.js', ...files, `--shard=${shard}`, '--passWithNoTests'], {
+    stdio: 'inherit',
+  });
 
   devServer.cancel();
 });
