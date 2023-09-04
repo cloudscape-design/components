@@ -15,11 +15,13 @@ module.exports = task('test:a11y', async () => {
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__a11y__/**/*.test.ts');
-  console.log(shard, 'shard');
-  console.log(files, 'files');
-  await execa('jest', ['-c', 'jest.integ.config.js', ...files, `--shard=${shard}`, '--passWithNoTests'], {
-    stdio: 'inherit',
-  });
+  await execa(
+    'jest',
+    ['-c', 'jest.integ.config.js', ...files, `--shard=${shard}`, '--passWithNoTests', '--runInBand'],
+    {
+      stdio: 'inherit',
+    }
+  );
 
   devServer.cancel();
 });
