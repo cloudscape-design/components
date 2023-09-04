@@ -26,6 +26,7 @@
   }
 
   &-cell {
+    position: relative;
     border-left: 1px solid tokens.$color-border-divider-default;
     border-bottom: 1px solid tokens.$color-border-divider-default;
     padding: 8px 16px;
@@ -57,6 +58,10 @@
         padding-left: 32px;
       }
     }
+  }
+
+  &-selection-cell {
+    width: 40px;
   }
 
   &-sorting-header {
