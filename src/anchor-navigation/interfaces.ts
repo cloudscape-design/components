@@ -25,7 +25,7 @@ export interface AnchorNavigationProps {
   activeHref?: string;
 
   /**
-   * Option to disable scroll spy.
+   * Disable scroll spy if set to true.
    */
   disableTracking?: boolean;
 
@@ -54,8 +54,13 @@ export namespace AnchorNavigationProps {
     href: string;
 
     /**
-     * The level of nesting.
+     * Level of nesting of the anchor.
      */
     level: number;
+
+    /**
+     * Additional info to display next to the link, for example: "New" or "Updated"
+     */
+    info?: string;
   }
 }

@@ -39,6 +39,7 @@ const Anchor = ({ anchor, fireFollow, isActive }: AnchorProps) => {
         href={anchor.href}
       >
         {anchor.text}
+        {anchor.info && <span className={styles.info}>{anchor.info}</span>}
       </a>
     </li>
   );

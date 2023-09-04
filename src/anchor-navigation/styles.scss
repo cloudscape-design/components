@@ -5,6 +5,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../internal/hooks/focus-visible' as focus-visible;
+@use '../internal/styles/typography/constants.scss' as typography;
 
 .root {
   @include styles.styles-reset;
@@ -42,6 +43,15 @@
       border-radius: awsui.$border-radius-tabs-focus-ring;
     }
   }
+}
+
+.info {
+  margin-left: awsui.$space-xs;
+  @include styles.font-body-s;
+  @include styles.font-smoothing;
+  font-weight: awsui.$font-button-weight;
+  letter-spacing: typography.$letter-spacing-bold-link;
+  color: awsui.$color-text-link-default;
 }
 
 .anchor-link {

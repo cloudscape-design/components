@@ -32,6 +32,13 @@ const TextContent = () => {
 };
 
 export default function SimpleAnchorNavigation() {
+  const navigateToItem = (id: string) => {
+    if (id) {
+      const el = document.getElementById(id.slice(1));
+      el?.scrollIntoView();
+    }
+  };
+
   return (
     <article>
       <h1>Simple table of contents</h1>
@@ -46,12 +53,16 @@ export default function SimpleAnchorNavigation() {
                 </Header>
                 <AnchorNavigation
                   ariaLabelledby="anchor-nav-heading"
+                  onFollow={e => {
+                    e.preventDefault();
+                    navigateToItem(e.detail.href);
+                  }}
                   anchors={[
                     { href: '#section-1', text: 'Section 1', level: 1 },
-                    { href: '#section-1-1', text: 'Section 1.1', level: 2 },
+                    { href: '#section-1-1', text: 'Section 1.1', level: 2, info: 'Updated' },
                     { href: '#section-1-1-1', text: 'Section 1.1.1', level: 3 },
                     { href: '#section-1-1-2', text: 'Section 1.1.2', level: 3 },
-                    { href: '#section-1-2', text: 'Section 1.2', level: 2 },
+                    { href: '#section-1-2', text: 'Section 1.2', level: 2, info: 'New' },
                     { href: '#section-1-2-1', text: 'Section 1.2.1', level: 3 },
                     { href: '#section-1-2-1-1', text: 'Section 1.2.1.1', level: 4 },
                   ]}
