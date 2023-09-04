@@ -3,8 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { TableProps } from './interfaces';
-import SelectionControl from './selection-control';
-import { focusMarkers, SelectionProps } from './use-selection';
+import { SelectionControl, focusMarkers, SelectionProps } from './selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';

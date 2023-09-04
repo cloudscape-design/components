@@ -22,69 +22,69 @@
 }
 
 @mixin font-body-s {
-  font-size: awsui.$font-body-s-size;
-  line-height: awsui.$font-body-s-line-height;
-  letter-spacing: awsui.$font-body-s-letter-spacing;
+  font-size: awsui.$font-size-body-s;
+  line-height: awsui.$line-height-body-s;
+  letter-spacing: awsui.$letter-spacing-body-s;
 }
 
 @mixin font-body-m {
-  font-size: awsui.$font-body-m-size;
-  line-height: awsui.$font-body-m-line-height;
+  font-size: awsui.$font-size-body-m;
+  line-height: awsui.$line-height-body-m;
 }
 
 @mixin font-heading-xs($weight: true) {
-  font-size: awsui.$font-heading-xs-size;
-  line-height: awsui.$font-heading-xs-line-height;
+  font-size: awsui.$font-size-heading-xs;
+  line-height: awsui.$line-height-heading-xs;
   @if $weight {
-    font-weight: awsui.$font-heading-xs-weight;
+    font-weight: awsui.$font-weight-heading-xs;
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-s($weight: true) {
-  font-size: awsui.$font-heading-s-size;
-  line-height: awsui.$font-heading-s-line-height;
-  letter-spacing: awsui.$font-heading-s-letter-spacing;
+  font-size: awsui.$font-size-heading-s;
+  line-height: awsui.$line-height-heading-s;
+  letter-spacing: awsui.$letter-spacing-heading-s;
   @if $weight {
-    font-weight: awsui.$font-heading-s-weight;
+    font-weight: awsui.$font-weight-heading-s;
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-m($weight: true) {
-  font-size: awsui.$font-heading-m-size;
-  line-height: awsui.$font-heading-m-line-height;
-  letter-spacing: awsui.$font-heading-m-letter-spacing;
+  font-size: awsui.$font-size-heading-m;
+  line-height: awsui.$line-height-heading-m;
+  letter-spacing: awsui.$letter-spacing-heading-m;
   @if $weight {
-    font-weight: awsui.$font-heading-m-weight;
+    font-weight: awsui.$font-weight-heading-m;
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-l($weight: true) {
-  font-size: awsui.$font-heading-l-size;
-  line-height: awsui.$font-heading-l-line-height;
-  letter-spacing: awsui.$font-heading-l-letter-spacing;
+  font-size: awsui.$font-size-heading-l;
+  line-height: awsui.$line-height-heading-l;
+  letter-spacing: awsui.$letter-spacing-heading-l;
   @if $weight {
-    font-weight: awsui.$font-heading-l-weight;
+    font-weight: awsui.$font-weight-heading-l;
     @include font-smoothing;
   }
 }
 
 @mixin font-heading-xl($weight: true) {
-  font-size: awsui.$font-heading-xl-size;
-  line-height: awsui.$font-heading-xl-line-height;
-  letter-spacing: awsui.$font-heading-xl-letter-spacing;
+  font-size: awsui.$font-size-heading-xl;
+  line-height: awsui.$line-height-heading-xl;
+  letter-spacing: awsui.$letter-spacing-heading-xl;
   @if $weight {
-    font-weight: awsui.$font-heading-xl-weight;
+    font-weight: awsui.$font-weight-heading-xl;
     @include font-smoothing;
   }
 }
 
 @mixin font-display-l {
-  font-size: awsui.$font-display-l-size;
-  line-height: awsui.$font-display-l-line-height;
-  letter-spacing: awsui.$font-display-l-letter-spacing;
+  font-size: awsui.$font-size-display-l;
+  line-height: awsui.$line-height-display-l;
+  letter-spacing: awsui.$letter-spacing-display-l;
 }
 
 @mixin font-inherit {
@@ -106,18 +106,18 @@
 @mixin font-panel-header {
   font-size: awsui.$font-panel-header-size;
   line-height: awsui.$font-panel-header-line-height;
-  font-weight: awsui.$font-heading-l-weight;
+  font-weight: awsui.$font-weight-heading-l;
   @include font-smoothing;
 }
 
 @mixin font-code-inline {
-  font-size: awsui.$font-body-s-size;
-  line-height: awsui.$font-body-m-line-height;
+  font-size: awsui.$font-size-body-s;
+  line-height: awsui.$line-height-body-m;
 }
 
 @mixin font-code-block {
-  font-size: awsui.$font-body-m-size;
-  line-height: awsui.$font-body-m-line-height;
+  font-size: awsui.$font-size-body-m;
+  line-height: awsui.$line-height-body-m;
 }
 
 @mixin font($font-size) {
