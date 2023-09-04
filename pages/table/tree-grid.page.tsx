@@ -51,6 +51,13 @@ export default function TableWithTreeGridPage() {
             setExpandedSet(newExpandedSet);
           },
         }}
+        ariaLabels={{
+          selectionGroupLabel: 'group label',
+          allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
+          itemSelectionLabel: ({ selectedItems }, item) =>
+            `${item.id} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
+          tableLabel: 'Items',
+        }}
       />
     </Box>
   );

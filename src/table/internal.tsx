@@ -450,6 +450,7 @@ const InternalTable = React.forwardRef(
                                   variant="inline-icon"
                                   iconName={treeGrid.getItemExpanded(item) ? 'caret-down-filled' : 'caret-right-filled'}
                                   onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
+                                  ariaLabel="row expand"
                                 />
                               )}
                             </TableTdElement>

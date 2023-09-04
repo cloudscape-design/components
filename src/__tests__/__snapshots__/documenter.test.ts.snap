@@ -12878,6 +12878,38 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
       "type": "TableProps.TrackBy<T>",
     },
     Object {
+      "description": "Experimental tree-grid API.",
+      "inlineType": Object {
+        "name": "TableProps.TreeGridProps",
+        "properties": Array [
+          Object {
+            "name": "getItemExpandable",
+            "optional": false,
+            "type": "(item: ItemType) => boolean",
+          },
+          Object {
+            "name": "getItemExpanded",
+            "optional": false,
+            "type": "(item: ItemType) => boolean",
+          },
+          Object {
+            "name": "getItemLevel",
+            "optional": false,
+            "type": "(item: ItemType) => number",
+          },
+          Object {
+            "name": "onItemExpandedChange",
+            "optional": false,
+            "type": "(item: ItemType, expanded: boolean) => void",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "treeGrid",
+      "optional": true,
+      "type": "TableProps.TreeGridProps<T>",
+    },
+    Object {
       "defaultValue": "'container'",
       "description": "Specify a table variant with one of the following:
 * \`container\` - Use this variant to have the table displayed within a container.

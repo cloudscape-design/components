@@ -146,7 +146,7 @@ const Thead = React.forwardRef(
               columnId={selectionColumnId}
               stickyState={stickyState}
             >
-              <InternalButton variant="inline-icon" iconName="caret-right-filled" />
+              <InternalButton variant="inline-icon" iconName="caret-right-filled" ariaLabel="all rows expand" />
             </TableThElement>
           ) : null}
 
