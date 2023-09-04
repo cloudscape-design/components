@@ -96,11 +96,12 @@ export default function Page() {
             </FormField>
           </ColumnLayout>
         }
+        {...focusMarkers.root}
       >
-        <div className={styles['custom-table']} {...focusMarkers.root}>
+        <div className={styles['custom-table']}>
           <table className={styles['custom-table-table']} role="grid">
             <thead>
-              <tr>
+              <tr {...focusMarkers.all}>
                 {columnDefinitions.map(column => (
                   <th
                     key={column.key}
@@ -116,9 +117,9 @@ export default function Page() {
             </thead>
             <tbody>
               {items.map(item => (
-                <tr key={item.id}>
+                <tr key={item.id} {...focusMarkers.item}>
                   {columnDefinitions.map(column => (
-                    <td key={column.key} className={styles['custom-table-cell']} {...focusMarkers.item}>
+                    <td key={column.key} className={styles['custom-table-cell']}>
                       {column.cell(item)}
                     </td>
                   ))}
