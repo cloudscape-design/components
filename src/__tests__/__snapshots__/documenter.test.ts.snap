@@ -12716,6 +12716,12 @@ Requires the properties firstIndex and totalItemsCount to be set correctly.",
       "type": "boolean",
     },
     Object {
+      "description": "Experimental custom rows API.",
+      "name": "rows",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.RowType<T>>",
+    },
+    Object {
       "defaultValue": "[]",
       "description": "List of selected items.",
       "name": "selectedItems",
