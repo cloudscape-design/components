@@ -61,12 +61,16 @@ export const useFunnelSubStep = () => {
       */
       latestFocusCleanupFunction.current?.();
 
+      const subStepName = getNameFromSelector(subStepNameSelector);
+      const stepName = getNameFromSelector(stepNameSelector);
+
       FunnelMetrics.funnelSubStepStart({
         funnelInteractionId,
         subStepSelector,
         subStepNameSelector,
-        subStepName: getNameFromSelector(subStepNameSelector),
+        subStepName,
         stepNumber,
+        stepName,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
       });
@@ -93,8 +97,9 @@ export const useFunnelSubStep = () => {
             funnelInteractionId,
             subStepSelector,
             subStepNameSelector,
-            subStepName: getNameFromSelector(subStepNameSelector),
+            subStepName,
             stepNumber,
+            stepName,
             stepNameSelector,
             subStepAllSelector: getSubStepAllSelector(),
           });
