@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { useLayoutEffect, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
-import { usePrevious } from '../../internal/hooks/use-previous';
+import { usePrevious } from '../hooks/use-previous';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 type Selector<S, R> = (state: S) => R;
 type Listener<S> = (state: S, prevState: S) => any;
@@ -13,6 +14,31 @@ export interface ReadonlyAsyncStore<S> {
   unsubscribe(listener: Listener<any>): void;
 }
 
+/**
+ * Async store utility can be used to distribute component state without using React context.
+ * The state can be represented by an object of any shape. Components can subscribe to state changes
+ * to be notified when the change of the entire state or particular properties occur.
+ *
+ * function WestSideComponent({ store }) {
+ *   const westValue = useSelector(store, state => state.west)
+ *   return <div>{westValue}</div>;
+ * }
+ *
+ * function EastSideComponent({ store }) {
+ *   const eastValue = useSelector(store, state => state.east)
+ *   return <div>{eastValue}</div>;
+ * }
+ *
+ * function SidesComponent() {
+ *   const store = new AsyncStore<{ west: number, east: number }>({ west: 0, east: 0 });
+ *   return (
+ *     <>
+ *       <WestSideComponent store={store} />
+ *       <EastSideComponent store={store} />
+ *     <>
+ *   );
+ * }
+ */
 export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
   _state: S;
   _listeners: [Selector<S, any>, Listener<any>][] = [];
@@ -31,13 +57,11 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
 
     this._state = newState;
 
-    unstable_batchedUpdates(() => {
-      for (const [selector, listener] of this._listeners) {
-        if (selector(prevState) !== selector(newState)) {
-          listener(newState, prevState);
-        }
+    for (const [selector, listener] of this._listeners) {
+      if (selector(prevState) !== selector(newState)) {
+        listener(newState, prevState);
       }
-    });
+    }
   }
 
   subscribe<R>(selector: Selector<S, R>, listener: Listener<S>): () => void {
@@ -58,6 +82,11 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
   }
 }
 
+/**
+ * Triggers an effect when selected state changes.
+ *
+ * useReaction(store, state => state.east, (east) => console.log('east', east));
+ */
 export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>, effect: Listener<R>): void {
   useLayoutEffect(
     () => {
@@ -72,10 +101,16 @@ export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Select
   );
 }
 
+/**
+ * Transforms selected state to React state.
+ *
+ * const eastValue = useSelector(store, state => state.east);
+ */
 export function useSelector<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>): R {
   const [state, setState] = useState<R>(selector(store.get()));
 
-  useReaction(store, selector, newState => {
+  const stableSelector = useStableCallback(selector);
+  useReaction(store, stableSelector, newState => {
     setState(newState);
   });
 

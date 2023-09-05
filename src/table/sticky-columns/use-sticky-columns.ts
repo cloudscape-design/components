@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import AsyncStore from '../../area-chart/async-store';
+import AsyncStore from '../../internal/async-store';
 import clsx from 'clsx';
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import {

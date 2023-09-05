@@ -7,13 +7,13 @@ import { findClosest, circleIndex } from './utils';
 
 import { KeyCode } from '../../internal/keycode';
 import { XDomain, XScaleType, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
+import { useReaction } from '../../internal/async-store';
 import computeChartProps from './compute-chart-props';
 import createSeriesDecorator from './create-series-decorator';
 import InteractionsStore from './interactions-store';
 import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
-import { useReaction } from '../async-store';
 import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 

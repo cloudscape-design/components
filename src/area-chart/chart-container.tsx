@@ -18,7 +18,7 @@ import AreaVerticalMarker from './elements/vertical-marker';
 
 import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
-import { useSelector } from './async-store';
+import { useSelector } from '../internal/async-store';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 
 const DEFAULT_CHART_WIDTH = 500;
