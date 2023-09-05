@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell, moveFocusBy, moveFocusIn, restoreTableFocusables, updateTableFocusables } from './utils';
+import { findFocusinCell, moveFocusBy, restoreTableFocusables, updateTableFocusables } from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
@@ -53,8 +53,8 @@ class GridNavigationModel {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
-    const mutationObserver = new MutationObserver(this.onMutation);
-    mutationObserver.observe(table, { childList: true, subtree: true });
+    const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
+    tableNodesObserver.observe(table, { childList: true, subtree: true });
 
     updateTableFocusables(this.table, this.focusedCell ?? this.prevFocusedCell);
 
@@ -63,7 +63,7 @@ class GridNavigationModel {
       this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
 
-      mutationObserver.disconnect();
+      tableNodesObserver.disconnect();
 
       restoreTableFocusables(this.table);
     };
@@ -94,6 +94,12 @@ class GridNavigationModel {
     if (!cell) {
       return;
     }
+
+    if (cell.element !== event.target) {
+      cell.element.focus();
+      return;
+    }
+
     this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
@@ -109,7 +115,6 @@ class GridNavigationModel {
       return;
     }
 
-    const f2Code = 113;
     const ctrlKey = event.ctrlKey ? 1 : 0;
     const altKey = event.altKey ? 1 : 0;
     const shiftKey = event.shiftKey ? 1 : 0;
@@ -127,12 +132,8 @@ class GridNavigationModel {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
-    // When focus is inside widget cell only intercept Escape and F2 commands to move focus back to cell.
-    if (from.widget && from.element !== from.cellElement) {
-      if (key === KeyCode.escape || key === f2Code) {
-        event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: 0 });
-      }
+    // When focus is inside a dialog do not intercept any keyboard input.
+    if (from.dialog) {
       return;
     }
 
@@ -177,34 +178,12 @@ class GridNavigationModel {
         event.preventDefault();
         return moveFocusBy(this.table, from, { y: maxExtreme, x: maxExtreme });
 
-      case KeyCode.enter:
-        if (from.element === from.cellElement) {
-          event.preventDefault();
-          return moveFocusIn(from);
-        }
-        break;
-
-      case KeyCode.escape:
-        if (from.element !== from.cellElement) {
-          event.preventDefault();
-          return moveFocusBy(this.table, from, { y: 0, x: 0 });
-        }
-        break;
-
-      case f2Code:
-        event.preventDefault();
-        if (from.element === from.cellElement) {
-          return moveFocusIn(from);
-        } else {
-          return moveFocusBy(this.table, from, { y: 0, x: 0 });
-        }
-
       default:
         return;
     }
   };
 
-  private onMutation = (mutationRecords: MutationRecord[]) => {
+  private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
     if (!this.prevFocusedCell) {
       return;
     }
@@ -214,12 +193,11 @@ class GridNavigationModel {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {
           if (removedNode === this.prevFocusedCell.element || nodeContains(removedNode, this.prevFocusedCell.element)) {
+            updateTableFocusables(this.table, this.focusedCell ?? this.prevFocusedCell);
             moveFocusBy(this.table, this.prevFocusedCell, { y: 0, x: 0 });
           }
         }
       }
     }
-
-    updateTableFocusables(this.table, this.focusedCell ?? this.prevFocusedCell);
   };
 }
