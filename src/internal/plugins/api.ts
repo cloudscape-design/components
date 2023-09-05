@@ -1,24 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DrawerConfig, DrawersController, DrawersRegistrationListener } from './drawers-controller';
+import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
+import { ActionsApiInternal, ActionsApiPublic, ActionButtonsController } from './controllers/action-buttons';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 
-interface AwsuiPluginApiPublic {
-  appLayout: {
-    registerDrawer(config: DrawerConfig): void;
-  };
-}
-interface AwsuiPluginApiInternal {
-  appLayout: {
-    clearRegisteredDrawers(): void;
-    onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
-  };
-}
-
 interface AwsuiApi {
-  awsuiPlugins: AwsuiPluginApiPublic;
-  awsuiPluginsInternal: AwsuiPluginApiInternal;
+  awsuiPlugins: {
+    appLayout: DrawersApiPublic;
+    alert: ActionsApiPublic;
+    flashbar: ActionsApiPublic;
+  };
+  awsuiPluginsInternal: {
+    appLayout: DrawersApiInternal;
+    alert: ActionsApiInternal;
+    flashbar: ActionsApiInternal;
+  };
 }
 
 interface WindowWithApi extends Window {
@@ -43,35 +40,35 @@ function findUpApi(currentWindow: WindowWithApi): AwsuiApi | undefined {
   }
 }
 
-function loadApi() {
+export function loadApi() {
   if (typeof window === 'undefined') {
-    return createApi();
+    return installApi({});
   }
   const win = window as unknown as WindowWithApi;
-  const api = findUpApi(win);
-  if (api) {
-    return api;
-  }
-  win[storageKey] = createApi();
+  const existingApi = findUpApi(win);
+  win[storageKey] = installApi(existingApi ?? {});
   return win[storageKey];
 }
 
 export const { awsuiPlugins, awsuiPluginsInternal } = loadApi();
 
-function createApi(): AwsuiApi {
-  const drawers = new DrawersController();
+type DeepPartial<T> = T extends (...args: any) => any ? T : { [P in keyof T]?: DeepPartial<T[P]> };
 
-  return {
-    awsuiPlugins: {
-      appLayout: {
-        registerDrawer: drawers.registerDrawer,
-      },
-    },
-    awsuiPluginsInternal: {
-      appLayout: {
-        clearRegisteredDrawers: drawers.clearRegisteredDrawers,
-        onDrawersRegistered: drawers.onDrawersRegistered,
-      },
-    },
-  };
+function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
+  api.awsuiPlugins ??= {};
+  api.awsuiPluginsInternal ??= {};
+
+  const appLayoutDrawers = new DrawersController();
+  api.awsuiPlugins.appLayout = appLayoutDrawers.installPublic(api.awsuiPlugins.appLayout);
+  api.awsuiPluginsInternal.appLayout = appLayoutDrawers.installInternal(api.awsuiPluginsInternal.appLayout);
+
+  const alertActions = new ActionButtonsController();
+  api.awsuiPlugins.alert = alertActions.installPublic(api.awsuiPlugins.alert);
+  api.awsuiPluginsInternal.alert = alertActions.installInternal(api.awsuiPluginsInternal.alert);
+
+  const flashbarActions = new ActionButtonsController();
+  api.awsuiPlugins.flashbar = flashbarActions.installPublic(api.awsuiPlugins.flashbar);
+  api.awsuiPluginsInternal.flashbar = flashbarActions.installInternal(api.awsuiPluginsInternal.flashbar);
+
+  return api as AwsuiApi;
 }

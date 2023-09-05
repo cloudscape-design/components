@@ -105,6 +105,12 @@ describe('Alert Component', () => {
       wrapper.findDismissButton()!.click();
       expect(onDismissSpy).toHaveBeenCalled();
     });
+    it('can be focused through the API', () => {
+      let ref: AlertProps.Ref | null = null;
+      render(<Alert header="Important" ref={element => (ref = element)} />);
+      ref!.focus();
+      expect(document.activeElement).toHaveClass(styles['alert-focus-wrapper']);
+    });
   });
 
   it('renders `action` content', () => {

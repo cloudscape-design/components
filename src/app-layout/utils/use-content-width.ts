@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { useCallback, useEffect, useState } from 'react';
-import { useResizeObserver } from '../../internal/hooks/container-queries';
 
 export default function useAppLayoutOffsets(element: HTMLDivElement | null): { left: number; right: number } {
   const [offsets, setOffsets] = useState({ left: 0, right: 0 });

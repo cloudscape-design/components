@@ -277,6 +277,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     key={getItemId(item)}
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
+                    i18nStrings={iconAriaLabels}
                     {...item}
                   />
                 )}

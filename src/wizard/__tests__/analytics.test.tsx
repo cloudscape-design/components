@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
+import Form from '../../../lib/components/form';
 
 import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
+import { getFunnelKeySelector, FUNNEL_KEY_STEP_NAME } from '../../../lib/components/internal/analytics/selectors';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
@@ -19,6 +21,8 @@ function mockFunnelMetrics() {
     funnelComplete: jest.fn(),
     funnelSuccessful: jest.fn(),
     funnelCancelled: jest.fn(),
+    funnelChange: jest.fn(),
+    funnelStepChange: jest.fn(),
     funnelStepStart: jest.fn(),
     funnelStepComplete: jest.fn(),
     funnelStepNavigation: jest.fn(),
@@ -34,18 +38,20 @@ function mockFunnelMetrics() {
 describe('Wizard Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
   test('calls funnelStart when the component is mounted', () => {
     render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelType: 'multi-page',
         totalFunnelSteps: 3, // Length of DEFAULT_STEPS.length,
-        optionalStepNumbers: [1], // DEFAULT_STEPS[1] is optional
+        optionalStepNumbers: [2], // DEFAULT_STEPS[1] is optional
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
@@ -56,6 +62,7 @@ describe('Wizard Analytics', () => {
 
   test('calls funnelStepStart when a step is mounted', () => {
     render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
 
     // Step 1 is started
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
@@ -71,6 +78,8 @@ describe('Wizard Analytics', () => {
 
   test('navigating to the next step will call funnelStepComplete and funnelStepNavigation', () => {
     const { container } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     wizardWrapper!.findPrimaryButton().click(); // Click the primary button to navigate to the next step
@@ -99,6 +108,8 @@ describe('Wizard Analytics', () => {
 
   test('calls funnelStepStart when navigating to the next step', () => {
     const { container } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     // Clear initial funnelStepStart call from render
@@ -135,6 +146,8 @@ describe('Wizard Analytics', () => {
         i18nStrings={DEFAULT_I18N_SETS[0]}
       />
     );
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     expect(getByTestId('submission-attempt').textContent).toBe('0');
@@ -152,6 +165,8 @@ describe('Wizard Analytics', () => {
         i18nStrings={DEFAULT_I18N_SETS[0]}
       />
     );
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     expect(getByTestId('submission-attempt').textContent).toBe('0');
@@ -164,6 +179,8 @@ describe('Wizard Analytics', () => {
     const { container } = render(
       <Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} allowSkipTo={true} />
     );
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     // Clear initial funnelStepStart call from render
@@ -195,6 +212,8 @@ describe('Wizard Analytics', () => {
 
   test('navigating to the previous step will call funnelStepComplete and funnelStepNavigation', () => {
     const { container } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     // Navigate to Step 2
@@ -225,9 +244,14 @@ describe('Wizard Analytics', () => {
 
   test('does not send multiple funnelStart or funnelStepStart metrics on rerenders', () => {
     const { rerender } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
     rerender(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
     rerender(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
     rerender(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toBeCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toBeCalledTimes(1);
@@ -235,6 +259,8 @@ describe('Wizard Analytics', () => {
 
   test('sends a funnelComplete metric clicking the submit button', () => {
     const { unmount, container } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     wizardWrapper!.findPrimaryButton().click(); // Step 1 -> Step 2
@@ -254,6 +280,8 @@ describe('Wizard Analytics', () => {
 
   test('sends a funnelCancelled metric clicking the cancel button', () => {
     const { unmount, container } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
     const wizardWrapper = createWrapper(container).findWizard();
 
     wizardWrapper!.findCancelButton().click();
@@ -278,6 +306,7 @@ describe('Wizard Analytics', () => {
     ];
 
     render(<Wizard steps={steps} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelError).toBeCalledTimes(1);
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
@@ -285,5 +314,64 @@ describe('Wizard Analytics', () => {
         funnelInteractionId: expect.any(String),
       })
     );
+  });
+
+  test('sends a "multi-step" funnelStart metric if Wizard is nested in Form (single-page) funnel', () => {
+    const steps = [
+      {
+        title: 'Step 1',
+        content: <Form>Content 1</Form>,
+      },
+      {
+        title: 'Step 2',
+        content: 'Content 2',
+        isOptional: true,
+      },
+      {
+        title: 'Step 3',
+        content: 'Content 3',
+      },
+    ] as ReadonlyArray<WizardProps.Step>;
+    render(
+      <Form>
+        <Form>
+          <Wizard steps={steps} i18nStrings={DEFAULT_I18N_SETS[0]} />
+        </Form>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        funnelType: 'multi-page',
+        totalFunnelSteps: 3,
+        optionalStepNumbers: [2],
+        funnelNameSelector: expect.any(String),
+        funnelVersion: expect.any(String),
+        componentVersion: expect.any(String),
+        theme: expect.any(String),
+      })
+    );
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepNumber: 1,
+        funnelInteractionId: expect.any(String),
+        stepNameSelector: expect.any(String),
+        subStepAllSelector: expect.any(String),
+      })
+    );
+  });
+
+  test('marks the step title with the correct data attribute', () => {
+    const { container } = render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+
+    expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 1');
+
+    createWrapper(container).findWizard()!.findPrimaryButton().click();
+
+    expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 2 - optional');
   });
 });

@@ -77,7 +77,7 @@ const DatePicker = React.forwardRef(
     const calendarDescriptionId = useUniqueId('calendar-description-');
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
-    useFocusTracker({ rootRef, onBlur, onFocus, viewportId: expandToViewport ? dropdownId : '' });
+    useFocusTracker({ rootRef, onBlur, onFocus });
 
     const onDropdownCloseHandler = useCallback(() => setIsDropDownOpen(false), [setIsDropDownOpen]);
 

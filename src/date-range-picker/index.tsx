@@ -129,7 +129,7 @@ const DateRangePicker = React.forwardRef(
     const rootRef = useRef<HTMLDivElement>(null);
     const dropdownId = useUniqueId('date-range-picker-dropdown');
 
-    useFocusTracker({ rootRef, onBlur, onFocus, viewportId: expandToViewport ? dropdownId : '' });
+    useFocusTracker({ rootRef, onBlur, onFocus });
 
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 

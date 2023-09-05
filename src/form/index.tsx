@@ -25,17 +25,9 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
   };
 
   return (
-    <InternalForm
-      variant={variant}
-      actions={
-        actions && (
-          <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>{actions}</ButtonContext.Provider>
-        )
-      }
-      {...props}
-      {...funnelProps}
-      {...funnelStepProps}
-    />
+    <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
+      <InternalForm variant={variant} actions={actions} {...props} {...funnelProps} {...funnelStepProps} />
+    </ButtonContext.Provider>
   );
 };
 

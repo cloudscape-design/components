@@ -301,6 +301,31 @@ describe('Collapsible Flashbar', () => {
         expect(innerCounter!.querySelector(`[title="${ariaLabel}"]`)).toBeTruthy();
       }
     });
+
+    test.each([['success'], ['error'], ['info'], ['warning'], ['in-progress']] as FlashbarProps.Type[][])(
+      'item icon has aria-label from i18nStrings when no statusIconAriaLabel provided: type %s',
+      type => {
+        const wrapper = renderFlashbar({
+          i18nStrings: {
+            successIconAriaLabel: 'success',
+            errorIconAriaLabel: 'error',
+            infoIconAriaLabel: 'info',
+            warningIconAriaLabel: 'warning',
+            inProgressIconAriaLabel: 'in-progress',
+          },
+          items: [
+            {
+              header: 'The header',
+              content: 'The content',
+              type: type === 'in-progress' ? 'info' : type,
+              loading: type === 'in-progress',
+            },
+          ],
+        });
+
+        expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(type);
+      }
+    );
   });
 
   describe('Sticky', () => {

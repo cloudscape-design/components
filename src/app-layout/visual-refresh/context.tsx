@@ -25,33 +25,39 @@ import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { InternalDrawerProps } from '../drawer/interfaces';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { DrawerItem, InternalDrawerProps } from '../drawer/interfaces';
+import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import useBackgroundOverlap from './use-background-overlap';
+import { useDrawers } from '../utils/use-drawers';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawerId?: string | null;
-  drawers?: InternalDrawerProps['drawers'];
+  activeDrawerId: string | undefined;
+  drawers: Array<DrawerItem>;
+  drawersAriaLabel: string | undefined;
+  drawersOverflowAriaLabel: string | undefined;
   drawersRefs: DrawerFocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
-  dynamicOverlapHeight: number;
-  handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
+  handleDrawersClick: (activeDrawerId: string | undefined, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (detail: { size: number }) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
+  hasBackgroundOverlap: boolean;
   hasDefaultToolsWidth: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
   hasOpenDrawer?: boolean;
   hasStickyBackground: boolean;
+  isBackgroundOverlapDisabled: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -72,6 +78,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
   footerHeight: number;
+  splitPanelControlId: string;
   splitPanelMaxWidth: number;
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
@@ -81,6 +88,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   splitPanelRefs: SplitPanelFocusControlRefs;
+  toolsControlId: string;
   toolsRefs: FocusControlRefs;
 }
 
@@ -130,13 +138,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
-    /**
-     * The overlap height has a default set in CSS but can also be dynamically overridden
-     * for content types (such as Table and Wizard) that have variable size content in the overlap.
-     * If a child component utilizes a sticky header the hasStickyBackground property will determine
-     * if the background remains in the same vertical position.
-     */
-    const [dynamicOverlapHeight, setDynamicOverlapHeight] = useState(0);
     const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
@@ -181,14 +182,18 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
 
-    const handleNavigationClick = useCallback(
-      function handleNavigationChange(isOpen: boolean) {
-        setIsNavigationOpen(isOpen);
-        focusNavButtons();
-        fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
-      },
-      [props.onNavigationChange, setIsNavigationOpen, focusNavButtons]
-    );
+    const handleNavigationClick = useStableCallback(function handleNavigationChange(isOpen: boolean) {
+      setIsNavigationOpen(isOpen);
+      focusNavButtons();
+      fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
+    });
+
+    useEffect(() => {
+      // Close navigation drawer on mobile so that the main content is visible
+      if (isMobile) {
+        handleNavigationClick(false);
+      }
+    }, [isMobile, handleNavigationClick]);
 
     /**
      * The useControllable hook will set the default value and manage either
@@ -246,28 +251,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         };
       },
       [isMobile, isNavigationOpen, isToolsOpen]
-    );
-
-    /**
-     * The useImperativeHandle hook in conjunction with the forwardRef function
-     * in the AppLayout component definition expose the following callable
-     * functions to component consumers when they put a ref as a property on
-     * their component implementation.
-     */
-    useImperativeHandle(
-      forwardRef,
-      function createImperativeHandle() {
-        return {
-          closeNavigationIfNecessary: function () {
-            isMobile && handleNavigationClick(false);
-          },
-          openTools: function () {
-            handleToolsClick(true);
-          },
-          focusToolsClose: () => focusToolsButtons(true),
-        };
-      },
-      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons]
     );
 
     /**
@@ -374,6 +357,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       ariaLabel: undefined,
     });
     const splitPanelDisplayed = !!(splitPanelToggle.displayed || isSplitPanelOpen);
+    const splitPanelControlId = useUniqueId('split-panel-');
+    const toolsControlId = useUniqueId('tools-');
 
     const [splitPanelSize, setSplitPanelSize] = useControllable(
       props.splitPanelSize,
@@ -399,68 +384,58 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [props.onSplitPanelPreferencesChange, setSplitPanelPreferences, setSplitPanelLastInteraction]
     );
 
-    /**
-     * The activeDrawerWidth is required in JavaScript to acccurately calculate whether a SplitPanel
-     * in the side position should be forced to the bottom based on available horiziontal space.
-     *
-     * The handleDrawersClick will either open a new drawer or close the currently open drawer by setting
-     * the activeDrawerId value. The active drawer can also be closed if a user clicks the Tools trigger
-     * button. This will skip the focus handling because the focus should be going to the Tools close
-     * button and not one of the drawers trigger buttons.
-     *
-     * The drawersTriggerCount is computed in order to determine whether the triggers should be persistent
-     * in the UI when a drawer is open. The trigger button container is suppressed when a drawer is open
-     * and their is only one trigger button.
-     *
-     * The hasDrawerViewportOverlay property is used to determine if any drawer is obscuring the entire
-     * viewport. This currently applies to Navigation, Tools, and Drawers in mobile viewports.
-     */
-    const drawers = (props as InternalDrawerProps).drawers;
-
-    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
-      componentName: 'AppLayout',
-      controlledProp: 'drawers.activeDrawerId',
-      changeHandler: 'onChange',
-    });
+    const {
+      drawers,
+      activeDrawer,
+      activeDrawerId,
+      onActiveDrawerChange,
+      onActiveDrawerResize,
+      activeDrawerSize,
+      ...drawersProps
+    } = useDrawers(
+      props as InternalDrawerProps,
+      {
+        ariaLabels: props.ariaLabels,
+        toolsHide,
+        toolsOpen: isToolsOpen,
+        tools: props.tools,
+        toolsWidth,
+      },
+      contentTypeDefaults
+    );
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
-
-    const activeDrawer = drawers?.items.find(drawer => drawer.id === activeDrawerId);
 
     const {
       refs: drawersRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], activeDrawerId !== undefined, true);
+    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], true, true);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     const { resizeHandle, drawerSize } = useResize(drawerRef, {
-      activeDrawerId,
-      drawers,
+      onActiveDrawerResize,
+      activeDrawerSize,
+      activeDrawer,
       drawersRefs,
       isToolsOpen,
       drawersMaxWidth,
     });
 
-    const handleDrawersClick = useCallback(
-      function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
-        const newActiveDrawerId = id !== activeDrawerId ? id : null;
+    const handleDrawersClick = (id: string | undefined, skipFocusControl?: boolean) => {
+      const newActiveDrawerId = id !== activeDrawerId ? id : undefined;
 
-        setActiveDrawerId(newActiveDrawerId);
-        !skipFocusControl && focusDrawersButtons();
-        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId!);
-        setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
-      },
-      [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId, setDrawerLastInteraction]
-    );
+      onActiveDrawerChange(newActiveDrawerId);
+
+      !skipFocusControl && focusDrawersButtons();
+      setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
+    };
 
     const drawersTriggerCount =
-      (drawers?.items.length ?? 0) +
-      (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) +
-      (!toolsHide ? 1 : 0);
+      drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
-      activeDrawerId !== null ||
+      activeDrawerId !== undefined ||
       isToolsOpen ||
       (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
@@ -486,6 +461,12 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
+
+    const { hasBackgroundOverlap, updateBackgroundOverlapHeight } = useBackgroundOverlap({
+      contentHeader: props.contentHeader,
+      disableContentHeaderOverlap: props.disableContentHeaderOverlap,
+      layoutElement,
+    });
 
     useLayoutEffect(
       function handleMainOffsetLeft() {
@@ -587,6 +568,29 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       ]
     );
 
+    /**
+     * The useImperativeHandle hook in conjunction with the forwardRef function
+     * in the AppLayout component definition expose the following callable
+     * functions to component consumers when they put a ref as a property on
+     * their component implementation.
+     */
+    useImperativeHandle(
+      forwardRef,
+      function createImperativeHandle() {
+        return {
+          closeNavigationIfNecessary: function () {
+            isMobile && handleNavigationClick(false);
+          },
+          openTools: function () {
+            handleToolsClick(true);
+          },
+          focusToolsClose: () => focusToolsButtons(true),
+          focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
+        };
+      },
+      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, splitPanelRefs.slider]
+    );
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
@@ -594,13 +598,14 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           activeDrawerId,
           contentType,
           drawers,
+          drawersAriaLabel: drawersProps.ariaLabel,
+          drawersOverflowAriaLabel: drawersProps.overflowAriaLabel,
           drawersRefs,
           drawersMaxWidth,
           drawerSize,
           drawerRef,
           resizeHandle,
           drawersTriggerCount,
-          dynamicOverlapHeight,
           headerHeight,
           footerHeight,
           hasDefaultToolsWidth,
@@ -611,9 +616,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
           handleToolsClick,
+          hasBackgroundOverlap,
           hasNotificationsContent,
           hasOpenDrawer,
           hasStickyBackground,
+          isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
           isSplitPanelForcedPosition,
@@ -636,6 +643,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
           splitPanel,
+          splitPanelControlId,
           splitPanelDisplayed,
           splitPanelMaxWidth,
           splitPanelMinWidth,
@@ -647,6 +655,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelToggle,
           setSplitPanelToggle,
           splitPanelRefs,
+          toolsControlId,
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,
@@ -660,7 +669,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             setHasStickyBackground,
           }}
         >
-          <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>
+          <DynamicOverlapContext.Provider value={updateBackgroundOverlapHeight}>
+            {children}
+          </DynamicOverlapContext.Provider>
         </AppLayoutContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );

@@ -32,7 +32,7 @@ function createMockTable(
   return { wrapper, table, cells };
 }
 
-test('isEnabled is false, wrapper styles is empty and wrapper listener is not attached when feature is off', () => {
+test('wrapper styles is empty and wrapper listener is not attached when feature is off', () => {
   const tableWrapper = document.createElement('div');
   const addTableWrapperOnScrollSpy = jest.spyOn(tableWrapper, 'addEventListener');
   const { result } = renderHook(() =>
@@ -40,12 +40,11 @@ test('isEnabled is false, wrapper styles is empty and wrapper listener is not at
   );
   result.current.refs.wrapper(tableWrapper);
 
-  expect(result.current.isEnabled).toBe(false);
   expect(result.current.style.wrapper).not.toBeDefined();
   expect(addTableWrapperOnScrollSpy).not.toHaveBeenCalled();
 });
 
-test('isEnabled is true, wrapper styles is not empty and wrapper listener is attached when feature is on', () => {
+test('wrapper styles is not empty and wrapper listener is attached when feature is on', () => {
   const tableWrapper = document.createElement('div');
   const addTableWrapperOnScrollSpy = jest.spyOn(tableWrapper, 'addEventListener');
   const { result } = renderHook(() =>
@@ -53,7 +52,6 @@ test('isEnabled is true, wrapper styles is not empty and wrapper listener is att
   );
   result.current.refs.wrapper(tableWrapper);
 
-  expect(result.current.isEnabled).toBe(true);
   expect(result.current.style.wrapper).toEqual({ scrollPaddingLeft: 0, scrollPaddingRight: 0 });
   expect(addTableWrapperOnScrollSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
 });

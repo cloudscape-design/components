@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   AppLayout,
   ContentLayout,
@@ -14,11 +14,15 @@ import {
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import './utils/external-widget';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const [hasDrawers, setHasDrawers] = useState(true);
-  const [hasTools, setHasTools] = useState(false);
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const hasTools = urlParams.hasTools ?? false;
+  const hasDrawers = urlParams.hasDrawers ?? true;
   const [isToolsOpen, setIsToolsOpen] = useState(false);
 
   const [widths, setWidths] = useState<{ [id: string]: number }>({
@@ -72,11 +76,11 @@ export default function WithDrawers() {
               </Header>
 
               <SpaceBetween size="xs">
-                <Toggle checked={hasTools} onChange={({ detail }) => setHasTools(detail.checked)}>
+                <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
                   Use Tools
                 </Toggle>
 
-                <Toggle checked={hasDrawers} onChange={({ detail }) => setHasDrawers(detail.checked)}>
+                <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
                   Use Drawers
                 </Toggle>
               </SpaceBetween>

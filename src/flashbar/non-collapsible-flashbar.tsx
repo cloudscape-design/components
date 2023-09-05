@@ -22,6 +22,13 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
 
   const i18n = useInternalI18n('flashbar');
   const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
+  const iconAriaLabels = {
+    errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+    inProgressIconAriaLabel: i18n('i18nStrings.inProgressIconAriaLabel', i18nStrings?.inProgressIconAriaLabel),
+    infoIconAriaLabel: i18n('i18nStrings.infoIconAriaLabel', i18nStrings?.infoIconAriaLabel),
+    successIconAriaLabel: i18n('i18nStrings.successIconAriaLabel', i18nStrings?.successIconAriaLabel),
+    warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+  };
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being
@@ -99,6 +106,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}
+        i18nStrings={iconAriaLabels}
         {...item}
       />
     );

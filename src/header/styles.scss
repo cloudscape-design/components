@@ -6,6 +6,10 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
+@function space-heading-button-diff($heading-height) {
+  @return calc((#{awsui.$size-vertical-input} - #{$heading-height}) / 2);
+}
+
 .root {
   @include styles.styles-reset();
   cursor: inherit;
@@ -44,7 +48,7 @@
   &.refresh {
     display: flex;
     flex-direction: column;
-    // Can't use justify-content: center because it won't align with configurable dashboard handle icon
+    // Can't use justify-content: center because it won't align with configurable dashboard fixed handle icon
   }
 
   &-variant-h1 {
@@ -79,13 +83,13 @@
   // Calculate padding so the heading text is better aligned with the buttons.
   // Can't align-items: middle because we want buttons to stay at the top of the container when text wraps to multiple lines.
   &-variant-h1.refresh {
-    padding: calc((#{awsui.$font-heading-xl-line-height} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding: calc((#{awsui.$line-height-heading-xl} - #{awsui.$size-vertical-input}) / 2) 0;
   }
   &-variant-h2.refresh {
-    padding: calc((#{awsui.$font-heading-l-line-height} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding: calc((#{awsui.$line-height-heading-l} - #{awsui.$size-vertical-input}) / 2) 0;
   }
   &-variant-h3.refresh {
-    padding: calc((#{awsui.$font-heading-m-line-height} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding: calc((#{awsui.$line-height-heading-m} - #{awsui.$size-vertical-input}) / 2) 0;
   }
 
   &-variant-h1:not(.refresh) {
@@ -105,23 +109,24 @@
   color: awsui.$color-text-heading-default;
 
   &-variant-h1 {
-    font-size: awsui.$font-heading-xl-size;
-    // Use padding rather than center align so that all headers of the same size start at the same height in the container,
+    font-size: awsui.$font-size-heading-xl;
+    // Use padding rather than center align with min height to avoid having extra bottom space when no actions are present.
+    // Having top padding always present ensures that all headers of the same variant start at the same height in the container,
     // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
     &.refresh {
-      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-xl-line-height}) / 2);
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-xl);
     }
   }
   &-variant-h2 {
-    font-size: awsui.$font-heading-l-size;
+    font-size: awsui.$font-size-heading-l;
     &.refresh {
-      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-l-line-height}) / 2);
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-l);
     }
   }
   &-variant-h3 {
-    font-size: awsui.$font-heading-m-size;
+    font-size: awsui.$font-size-heading-m;
     &.refresh {
-      padding-top: calc((#{awsui.$size-vertical-input} - #{awsui.$font-heading-m-line-height}) / 2);
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-m);
     }
   }
   &-variant-h2:not(.refresh),

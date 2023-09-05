@@ -1,26 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
-import { DrawerConfig as RuntimeDrawerConfig } from '../internal/plugins/drawers-controller';
+import React from 'react';
+import { DrawerConfig as RuntimeDrawerConfig } from '../internal/plugins/controllers/drawers';
+import { RuntimeContentWrapper } from '../internal/plugins/helpers';
 import { DrawerItem } from './drawer/interfaces';
-
-interface RuntimeContentWrapperProps {
-  mountContent: RuntimeDrawerConfig['mountContent'];
-  unmountContent: RuntimeDrawerConfig['unmountContent'];
-}
-
-function RuntimeContentWrapper({ mountContent, unmountContent }: RuntimeContentWrapperProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = ref.current!;
-    mountContent(container);
-    return () => unmountContent(container);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return <div ref={ref}></div>;
-}
+import { sortByPriority } from '../internal/plugins/helpers/utils';
 
 export interface DrawersLayout {
   before: Array<DrawerItem>;
@@ -40,14 +24,9 @@ export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): Draw
       <RuntimeContentWrapper key={runtimeDrawer.id} mountContent={mountContent} unmountContent={unmountContent} />
     ),
   }));
-  converted.sort((a, b) => {
-    if (b.orderPriority !== a.orderPriority) {
-      return Math.sign((b.orderPriority ?? 0) - (a.orderPriority ?? 0));
-    }
-    return b.id < a.id ? 1 : -1;
-  });
+  const sorted = sortByPriority(converted);
   return {
-    before: converted.filter(item => (item.orderPriority ?? 0) > 0),
-    after: converted.filter(item => (item.orderPriority ?? 0) <= 0),
+    before: sorted.filter(item => (item.orderPriority ?? 0) > 0),
+    after: sorted.filter(item => (item.orderPriority ?? 0) <= 0),
   };
 }

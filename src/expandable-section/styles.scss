@@ -11,7 +11,7 @@
 
 $icon-width-normal: awsui.$size-icon-normal;
 $icon-width-medium: awsui.$size-icon-medium;
-$icon-margin-left: '(#{awsui.$font-body-m-line-height} - #{$icon-width-normal}) / -2';
+$icon-margin-left: '(#{awsui.$line-height-body-m} - #{$icon-width-normal}) / -2';
 $icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
 $icon-margin-right-medium: awsui.$space-xs;
 
@@ -52,7 +52,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   box-sizing: border-box;
   border: none;
   width: 100%;
-  line-height: awsui.$font-body-m-line-height;
+  line-height: awsui.$line-height-body-m;
   text-align: left;
 
   &-default,
@@ -67,7 +67,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-navigation,
   &-container {
     display: flex;
-    font-weight: awsui.$font-heading-s-weight;
+    font-weight: awsui.$font-weight-heading-s;
   }
 
   &-default,
@@ -76,7 +76,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     color: awsui.$color-text-expandable-section-default;
     @include styles.font-smoothing;
     font-size: awsui.$font-expandable-heading-size;
-    letter-spacing: awsui.$font-heading-s-letter-spacing;
+    letter-spacing: awsui.$letter-spacing-heading-s;
   }
 
   &-default {
@@ -109,6 +109,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     padding-bottom: awsui.$space-container-header-bottom;
     padding-right: container.$header-padding-horizontal;
 
+    &:not(.wrapper-expanded) {
+      // Equal top and bottom padding so standalone header has vertical symmetry.
+      padding-bottom: awsui.$space-container-header-top;
+    }
     &.header-deprecated {
       padding-left: container.$header-padding-horizontal;
     }
@@ -133,7 +137,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-wrapper,
   &-deprecated {
     display: flex;
-    font-weight: awsui.$font-heading-s-weight;
+    font-weight: awsui.$font-weight-heading-s;
   }
 
   &-wrapper {

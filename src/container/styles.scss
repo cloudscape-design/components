@@ -149,7 +149,7 @@
 
   &-dynamic-height.header-stuck {
     // to prevent the block from changing its height when variant dynamically changes
-    margin-bottom: calc(#{awsui.$font-heading-xl-line-height} - #{awsui.$font-heading-l-line-height});
+    margin-bottom: calc(#{awsui.$line-height-heading-xl} - #{awsui.$line-height-heading-l});
   }
 
   &:not(:empty) {
@@ -159,7 +159,7 @@
   &.with-paddings {
     padding: shared.$header-padding;
     &.header-variant-cards {
-      padding: awsui.$space-scaled-s awsui.$space-container-horizontal;
+      padding: awsui.$space-container-header-top awsui.$space-container-horizontal;
     }
   }
 

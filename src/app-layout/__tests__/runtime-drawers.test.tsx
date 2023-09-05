@@ -5,12 +5,18 @@ import { act, render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { DrawerConfig } from '../../../lib/components/internal/plugins/drawers-controller';
+import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { singleDrawer } from './utils';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
 });
+
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [1300, () => {}],
+}));
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -56,12 +62,119 @@ describe('Runtime drawers', () => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 
+  test('combines runtime drawers with the tools', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, ariaLabels: { triggerButton: 'Runtime drawer' } });
+    const { wrapper } = await renderComponent(<AppLayout tools="test" ariaLabels={{ toolsToggle: 'Tools' }} />);
+    expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
+      'Tools',
+      'Runtime drawer',
+    ]);
+  });
+
   test('accepts drawers registration after initial rendering', async () => {
     const { wrapper } = await renderComponent(<AppLayout />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     await delay();
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+  });
+
+  test('opens registered drawer when defaultActive is set', async () => {
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
+    await delay();
+    expect(wrapper.findActiveDrawer()!.getElement()).toBeInTheDocument();
+  });
+
+  test('updates active drawer if multiple are registered', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'first',
+      mountContent: container => (container.textContent = 'first drawer content'),
+    });
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'second',
+      defaultActive: true,
+      mountContent: container => (container.textContent = 'second drawer content'),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('second drawer content');
+  });
+
+  test('only the first defaultActive drawer gets open', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'first',
+      defaultActive: true,
+      mountContent: container => (container.textContent = 'first drawer content'),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'second',
+      defaultActive: true,
+      mountContent: container => (container.textContent = 'second drawer content'),
+    });
+    await delay();
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
+  });
+
+  test('opens default active drawer if it loaded late', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'first',
+      mountContent: container => (container.textContent = 'first drawer content'),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'second',
+      defaultActive: true,
+      mountContent: container => (container.textContent = 'second drawer content'),
+    });
+    await delay();
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('second drawer content');
+  });
+
+  test('updates active drawer id in controlled mode', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      mountContent: container => (container.textContent = 'runtime drawer content'),
+      defaultActive: true,
+    });
+    const onChange = jest.fn();
+    const drawers: Required<InternalDrawerProps> = {
+      drawers: {
+        ...singleDrawer.drawers,
+        onChange: event => onChange(event.detail),
+      },
+    };
+    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...drawers} />);
+    expect(onChange).toHaveBeenCalledWith(drawerDefaults.id);
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+  });
+
+  test('does not override other active drawers', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'first',
+      mountContent: container => (container.textContent = 'first drawer content'),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    wrapper.findDrawersTriggers()[0].click();
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'first',
+      defaultActive: true,
+      mountContent: container => (container.textContent = 'second drawer content'),
+    });
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
   });
 
   test('propagates iconSvg as html content', async () => {

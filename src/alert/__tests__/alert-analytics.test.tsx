@@ -18,7 +18,21 @@ import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 describe('Alert Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
+
+    // These numbers were chosen at random
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      width: 300,
+      height: 200,
+      x: 30,
+      y: 50,
+      left: 30,
+      top: 50,
+      bottom: 100,
+      right: 400,
+      toJSON: () => '',
+    });
   });
 
   test('sends funnelSubStepError metric when the alert is placed inside a substep', () => {
@@ -31,6 +45,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelError).not.toHaveBeenCalled();
 
@@ -54,6 +69,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
 
@@ -77,6 +93,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
     expect(FunnelMetrics.funnelError).not.toHaveBeenCalled();
@@ -95,6 +112,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
     expect(FunnelMetrics.funnelError).not.toHaveBeenCalled();
@@ -121,10 +139,12 @@ describe('Alert Analytics', () => {
     );
 
     const { rerender } = render(jsx);
+    act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
 
     act(() => funnelNextOrSubmitAttempt!());
     rerender(jsx);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(2);
   });
@@ -145,6 +165,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     rerender(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
@@ -155,6 +176,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelError).not.toHaveBeenCalled();
@@ -168,6 +190,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     rerender(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
@@ -176,6 +199,7 @@ describe('Alert Analytics', () => {
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();

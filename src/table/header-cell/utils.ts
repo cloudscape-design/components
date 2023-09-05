@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { TableProps } from '../interfaces';
 
-type SortingStatus = 'sortable' | 'ascending' | 'descending';
+export type SortingStatus = 'sortable' | 'ascending' | 'descending';
 const stateToIcon = {
   sortable: 'caret-down',
   ascending: 'caret-up-filled',

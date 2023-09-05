@@ -6,6 +6,8 @@ import { act, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Form from '../../../lib/components/form';
+import Modal from '../../../lib/components/modal';
+import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
@@ -15,11 +17,31 @@ import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
 describe('Form Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     mockFunnelMetrics();
   });
 
+  if (!('innerText' in HTMLElement.prototype)) {
+    // JSDom does not support the `innerText` property. For this test, `textContent` is close enough.
+
+    beforeEach(() =>
+      Object.defineProperty(HTMLElement.prototype, 'innerText', {
+        get() {
+          return this.textContent;
+        },
+        set(v) {
+          this.textContent = v;
+        },
+        configurable: true,
+      })
+    );
+
+    afterEach(() => delete (HTMLElement.prototype as Partial<HTMLElement>).innerText);
+  }
+
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
     render(<Form />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
@@ -45,8 +67,45 @@ describe('Form Analytics', () => {
     );
   });
 
+  test('includes the current breadcrumb as the step name in the funnelStepStart event', () => {
+    render(
+      <>
+        <BreadcrumbGroup
+          items={[
+            { text: 'Resources', href: '' },
+            { text: 'My creation flow', href: '' },
+          ]}
+        />
+        <Form />
+      </>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepName: 'My creation flow',
+      })
+    );
+  });
+
+  test('defers to a parent Form if present', () => {
+    render(
+      <Form>
+        <Form>
+          <Form>Content</Form>
+        </Form>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
+  });
+
   test('does not send a funnelStepComplete metric when Form is unmounted', () => {
     const { unmount } = render(<Form />);
+    act(() => void jest.runAllTimers());
 
     unmount();
 
@@ -55,6 +114,7 @@ describe('Form Analytics', () => {
 
   test('sends a funnelCancelled metric when Form is unmounted', () => {
     const { unmount } = render(<Form />);
+    act(() => void jest.runAllTimers());
 
     unmount();
     expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
@@ -68,6 +128,7 @@ describe('Form Analytics', () => {
 
   test('does not send a funnelComplete when the form is unmounted after clicking a non-primary button in the actions slot', () => {
     const { container, unmount } = render(<Form actions={<Button data-testid="cancel">Cancel</Button>} />);
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const cancelButton = formWrapper!.findActions()!.findButton('[data-testid="cancel"]');
 
@@ -83,7 +144,33 @@ describe('Form Analytics', () => {
     );
   });
 
-  test('does not send a funnelComplete when the form is unmounted after clicking a primary button in the children slot', () => {
+  test('does not send a funnelComplete metric when the form is unmounted after clicking a primary button in a modal', () => {
+    const { container } = render(
+      <Form>
+        <Modal
+          visible={true}
+          footer={
+            <Button data-testid="submit" variant="primary">
+              Submit
+            </Button>
+          }
+        >
+          Modal content
+        </Modal>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+    const submitButton = createWrapper(container.ownerDocument.body).findButton('[data-testid="submit"]');
+
+    act(() => submitButton!.click());
+
+    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelStepComplete).not.toHaveBeenCalled();
+    expect(FunnelMetrics.funnelSuccessful).not.toHaveBeenCalled();
+  });
+
+  test('sends a funnelComplete and funnelStepComplete metric when the form is unmounted after clicking a primary button in the children slot', () => {
     const { container, unmount } = render(
       <Form>
         <Button data-testid="submit" variant="primary">
@@ -91,17 +178,29 @@ describe('Form Analytics', () => {
         </Button>
       </Form>
     );
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const submitButton = formWrapper!.findContent()!.findButton('[data-testid="submit"]');
 
     act(() => submitButton!.click());
     unmount();
 
-    expect(FunnelMetrics.funnelComplete).not.toHaveBeenCalled();
-    expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledWith(
+    expect(FunnelMetrics.funnelCancelled).not.toHaveBeenCalled();
+
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
+      })
+    );
+
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepComplete).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepNumber: 1,
+        funnelInteractionId: expect.any(String),
+        stepNameSelector: expect.any(String),
+        subStepAllSelector: expect.any(String),
       })
     );
   });
@@ -111,7 +210,7 @@ describe('Form Analytics', () => {
    * 1. The submit button is the only primary button in the form
    * 2. The submit button is clicked before the Form is unmounted
    */
-  test('sends a funnelComplete and funnelStepComplete metric when Form is unmounted after clicking a primary button in the actions slot', () => {
+  test('sends a funnelComplete and funnelStepComplete metric when the Form is unmounted after clicking a primary button in the actions slot', () => {
     const { container, unmount } = render(
       <Form
         actions={
@@ -121,6 +220,7 @@ describe('Form Analytics', () => {
         }
       />
     );
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
 
@@ -162,6 +262,7 @@ describe('Form Analytics', () => {
         <ChildComponent />
       </Form>
     );
+    act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
 
@@ -173,6 +274,7 @@ describe('Form Analytics', () => {
 
   test('sends a funnelError metric when an error is rendered', () => {
     render(<Form errorText="Error" />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelError).toBeCalledTimes(1);
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
@@ -184,9 +286,13 @@ describe('Form Analytics', () => {
 
   test('does not send multiple funnelStart and funnelStepStart metrics when Form is re-rendered', () => {
     const { rerender } = render(<Form />);
+    act(() => void jest.runAllTimers());
     rerender(<Form />);
+    act(() => void jest.runAllTimers());
     rerender(<Form />);
+    act(() => void jest.runAllTimers());
     rerender(<Form />);
+    act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);

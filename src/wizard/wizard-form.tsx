@@ -11,6 +11,7 @@ import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -79,7 +80,12 @@ export default function WizardForm({
                 description={description}
                 info={info}
               >
-                <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef}>
+                <span
+                  {...{ [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_STEP_NAME }}
+                  className={styles['form-header-component-wrapper']}
+                  tabIndex={-1}
+                  ref={stepHeaderRef}
+                >
                   {title}
                   {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
                 </span>

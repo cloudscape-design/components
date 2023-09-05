@@ -12,7 +12,7 @@
 
 .search-field {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   // The xs breakpoint, minus the table tools container padding
   max-width: calc(#{styles.$breakpoint-x-small} - 2 * #{awsui.$space-l});
 }
@@ -88,6 +88,13 @@
 
 .input {
   flex: 1;
+}
+
+.results {
+  // Align with the filter input's vertical padding and border sizes.
+  padding: calc(#{styles.$control-padding-vertical} + #{styles.$control-border-width});
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .token-trigger {

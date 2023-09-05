@@ -22,7 +22,6 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __disableFooterPaddings?: boolean;
   __hiddenContent?: boolean;
   __headerRef?: React.RefObject<HTMLDivElement>;
-  __headerId?: string;
   __darkHeader?: boolean;
   __disableStickyMobile?: boolean;
   /**
@@ -51,7 +50,6 @@ export default function InternalContainer({
   __disableFooterPaddings = false,
   __hiddenContent = false,
   __headerRef,
-  __headerId,
   __darkHeader = false,
   __disableStickyMobile = true,
   ...restProps
@@ -77,7 +75,6 @@ export default function InternalContainer({
 
   const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
-  const headerIdProp = __headerId ? { id: __headerId } : {};
 
   /**
    * The visual refresh AppLayout component needs to know if a child component
@@ -139,7 +136,6 @@ export default function InternalContainer({
                 [styles['with-hidden-content']]: !children || __hiddenContent,
                 [styles['header-with-media']]: hasMedia,
               })}
-              {...headerIdProp}
               {...stickyStyles}
               ref={headerMergedRef}
             >

@@ -7,6 +7,7 @@ import {
   createCompactTableContext,
   createFlashbarContext,
   createFlashbarWarningContext,
+  createAlertContext,
 } from '../utils/contexts';
 
 const modes = [
@@ -42,6 +43,8 @@ export function buildClassicOpenSource(builder: ThemeBuilder) {
   builder.addContext(createFlashbarContext(require('./contexts/flashbar').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createFlashbarWarningContext(require('./contexts/flashbar-warning').tokens));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createAlertContext(require('./contexts/alert').tokens));
 
   return builder.build();
 }

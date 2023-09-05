@@ -173,6 +173,7 @@ function Tutorial({
                       externalIconAriaLabel={i18nStrings.labelLearnMoreExternalIcon}
                       ariaLabel={i18nStrings.labelLearnMoreLink}
                       external={true}
+                      variant="primary"
                     >
                       {i18nStrings.learnMoreLinkText}
                     </InternalLink>

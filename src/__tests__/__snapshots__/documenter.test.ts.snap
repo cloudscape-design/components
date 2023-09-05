@@ -16,7 +16,14 @@ when the \`dismissible\` property is set to \`true\`.",
       "name": "onDismiss",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets focus on the alert content.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Alert",
   "properties": Array [
     Object {
@@ -54,7 +61,7 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"info\\"",
+      "defaultValue": "'info'",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
         "name": "AlertProps.Type",
@@ -348,6 +355,12 @@ Object {
       "description": "Manually closes the navigation drawer if it is necessary for the current
 viewport size.",
       "name": "closeNavigationIfNecessary",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Focuses the split panel if it is open.",
+      "name": "focusSplitPanel",
       "parameters": Array [],
       "returnType": "void",
     },
@@ -2316,6 +2329,7 @@ Object {
 - \`text-status-success\` - Specifies the color for success text and icons.
 - \`text-status-info\` - Specifies the color for info text and icon.
 - \`text-status-inactive\` - Specifies the color for inactive and loading text and icons.
+- \`text-status-warning\` - Specifies the color for warning text and icons.
 
 Note: If you don't set it, the text color depends on the variant.
 ",
@@ -2330,6 +2344,7 @@ Note: If you don't set it, the text color depends on the variant.
           "text-status-success",
           "text-status-info",
           "text-status-inactive",
+          "text-status-warning",
         ],
       },
       "name": "color",
@@ -3580,7 +3595,7 @@ add a meaningful description to the whole selection.",
     Object {
       "description": " Defines what to display in each card. It has the following properties:
  * \`header\` ((item) => ReactNode) - Responsible for displaying the card header. You receive the current item as an argument.
-     Use \`fontSize=\\"heading-m\\"\` on [link](/components/link/) components inside card header.
+     Use \`fontSize=\\"inherit\\"\` on [link](/components/link/) components inside card header.
  * \`sections\` (array) - Responsible for displaying the card content. Cards can have many sections in their
    body. Each entry in the array is responsible for displaying a section. An entry has the following properties:
    * \`id\`: (string) - A unique identifier for the section. The property is used as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -6515,6 +6530,7 @@ A flash message object contains the following properties:
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
 * \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
+If not provided, \`i18nStrings.{type}IconAriaLabel\` will be used as a fallback.
 * \`ariaRole\` (string) - For flash messages added after page load, specifies how this message is communicated to assistive
 technology. Use \\"status\\" for status updates or informational content. Use \\"alert\\" for important messages that need the
 user's attention.
@@ -8184,7 +8200,6 @@ For other options see the documentation for <a> tag's
       "type": "string",
     },
     Object {
-      "defaultValue": "'secondary'",
       "description": "Determines the visual style of the link as follows:
 - \`primary\` - Displays the link text with bold styling for sufficient contrast with surrounding text.
     Use this for links where the context doesn't imply interactivity such as
@@ -8192,7 +8207,14 @@ For other options see the documentation for <a> tag's
 - \`secondary\` - Does not provide any additional indicators for interactivity (except for an underline when the user hovers over or focuses the link).
     This can be used in cases where the interactivity is strongly implied by its context,
     such as in a table or a list of external links.
-- \`info\` - Use for \\"info\\" links that link to content in a help panel.",
+- \`info\` - Use for \\"info\\" links that link to content in a help panel.
+The default is \`secondary\`, except inside the following components where it defaults to \`primary\`:
+- Table
+- Cards
+- Alert
+- Popover
+- Help Panel (main \`content\` only)
+",
       "inlineType": Object {
         "name": "LinkProps.Variant",
         "type": "union",
@@ -9903,6 +9925,12 @@ Note: Using popover rendered with portal within a Modal is not supported.
         ],
       },
       "name": "size",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-label to the text trigger button.",
+      "name": "triggerAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -12478,12 +12506,12 @@ scroll parent scrolls to reveal the first row of the table.",
 * \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
 * \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
                                    It is prefixed to \`itemSelectionLabel\` and \`allItemsSelectionLabel\` when they are set.
-* \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
-                          to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 You can use the first argument of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
 items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
+* \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
+                          to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 * \`activateEditLabel\` (EditableColumnDefinition, Item) => string -
                      Specifies an alternative text for the edit button in editable cells.
 * \`cancelEditLabel\` (EditableColumnDefinition) => string -

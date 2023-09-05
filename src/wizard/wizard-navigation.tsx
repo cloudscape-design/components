@@ -206,6 +206,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
               evt.preventDefault();
               status === Statuses.Visited ? onStepClick(index) : onSkipToClick(index);
             }}
+            variant="primary"
           >
             {step.title}
           </InternalLink>

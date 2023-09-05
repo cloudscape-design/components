@@ -18,6 +18,7 @@ export interface FunnelStartProps {
   funnelNameSelector: string;
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
+  stepConfiguration?: StepConfiguration[];
   funnelType: FunnelType;
   funnelVersion: string;
   componentVersion: string;
@@ -40,6 +41,7 @@ export interface FunnelStepProps extends BaseFunnelProps {
 
 export interface FunnelStepStartProps extends FunnelStepProps {
   totalSubSteps?: number;
+  subStepConfiguration?: SubStepConfiguration[];
 }
 export interface FunnelStepCompleteProps extends FunnelStepProps {
   totalSubSteps?: number;
@@ -75,6 +77,30 @@ export interface FunnelLinkInteractionProps extends FunnelSubStepProps {
   elementSelector: string;
 }
 
+export interface FunnelChangeProps extends BaseFunnelProps {
+  stepConfiguration: StepConfiguration[];
+}
+
+export interface FunnelStepChangeProps extends BaseFunnelProps {
+  stepNumber: number;
+  stepName?: string;
+  stepNameSelector?: string;
+  subStepAllSelector?: string;
+  totalSubSteps?: number;
+  subStepConfiguration?: SubStepConfiguration[];
+}
+
+export interface StepConfiguration {
+  number: number;
+  name: string;
+  isOptional: boolean;
+}
+
+export interface SubStepConfiguration {
+  number: number;
+  name: string;
+}
+
 // Define the interface using the method type
 export interface IFunnelMetrics {
   funnelStart: FunnelStartMethod;
@@ -82,13 +108,18 @@ export interface IFunnelMetrics {
   funnelComplete: FunnelMethod<BaseFunnelProps>;
   funnelSuccessful: FunnelMethod<BaseFunnelProps>;
   funnelCancelled: FunnelMethod<BaseFunnelProps>;
+  funnelChange: FunnelMethod<FunnelChangeProps>;
+
   funnelStepStart: FunnelMethod<FunnelStepStartProps>;
   funnelStepComplete: FunnelMethod<FunnelStepCompleteProps>;
   funnelStepNavigation: FunnelMethod<FunnelStepNavigationProps>;
   funnelStepError: FunnelMethod<FunnelStepErrorProps>;
+  funnelStepChange: FunnelMethod<FunnelStepChangeProps>;
+
   funnelSubStepStart: FunnelMethod<FunnelSubStepProps>;
   funnelSubStepComplete: FunnelMethod<FunnelSubStepProps>;
   funnelSubStepError: FunnelMethod<OptionalFunnelSubStepErrorProps>;
+
   helpPanelInteracted: FunnelMethod<FunnelLinkInteractionProps>;
   externalLinkInteracted: FunnelMethod<FunnelLinkInteractionProps>;
 }

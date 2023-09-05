@@ -21,6 +21,7 @@ import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes'
 import { useInternalI18n } from '../i18n/context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -43,6 +44,7 @@ function InternalPopover(
     children,
     header,
     content,
+    triggerAriaLabel,
 
     renderWithPortal = false,
 
@@ -141,15 +143,17 @@ function InternalPopover(
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
         >
-          <PopoverBody
-            dismissButton={dismissButton}
-            dismissAriaLabel={dismissAriaLabel}
-            header={header}
-            onDismiss={onDismiss}
-            overflowVisible="both"
-          >
-            {content}
-          </PopoverBody>
+          <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+            <PopoverBody
+              dismissButton={dismissButton}
+              dismissAriaLabel={dismissAriaLabel}
+              header={header}
+              onDismiss={onDismiss}
+              overflowVisible="both"
+            >
+              {content}
+            </PopoverBody>
+          </LinkDefaultVariantContext.Provider>
         </PopoverContainer>
       )}
     </div>
@@ -170,7 +174,7 @@ function InternalPopover(
       }}
     >
       {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId}>
+        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId} aria-label={triggerAriaLabel}>
           <span className={styles['trigger-inner-text']}>{children}</span>
         </button>
       ) : (

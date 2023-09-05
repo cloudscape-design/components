@@ -14,6 +14,7 @@ export const DATA_ATTR_ANALYTICS_ALERT = 'data-analytics-alert';
 export const DATA_ATTR_ANALYTICS_FLASHBAR = 'data-analytics-flashbar';
 
 export const FUNNEL_KEY_FUNNEL_NAME = 'funnel-name';
+export const FUNNEL_KEY_STEP_NAME = 'step-name';
 export const FUNNEL_KEY_SUBSTEP_NAME = 'substep-name';
 
 export const getFunnelNameSelector = () => `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_FUNNEL_NAME}"]`;

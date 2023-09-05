@@ -10,7 +10,7 @@ describe('Keyboard navigation', () => {
 
     const element = wrapper.findEditor()!.getElement();
 
-    editorMock.container = element; // to pass `e.target === editor.container` check
+    editorMock.container = element as any; // to pass `e.target === editor.container` check
 
     fireEvent.keyDown(element, { keyCode: KeyCode.enter });
 
