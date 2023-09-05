@@ -1,10 +1,10 @@
 # Table grid navigation
 
-Tables with interactive elements require ARIA role "grid" and extended keyboard navigation as per https://www.w3.org/WAI/ARIA/apg/patterns/grid.
+Grid navigation is a keyboard navigation mechanism as per [Grid pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid) recommended for tables having interactive elements such as resize handles, selection controls, or resource links.
 
 ## Basic keyboard navigation
 
-The grid cells both text-only or even empty and those with one or multiple interactive elements are navigable. When a cell does not have interactive elements as its content the cell itself receives focus. Otherwise - one of the content elements is focused (can be the first, the last, or even the nth depending on the move direction).
+The grid cells are navigable no matter if they have zero, one, or multiple focusable elements in the content. When there are no focusable elements in a cell the cell itself receives focus. Otherwise - one of the content elements is focused (can be the first, the last, or even the nth depending on the move direction).
 
 The list of supported navigation commands is:
 
