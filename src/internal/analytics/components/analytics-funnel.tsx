@@ -30,7 +30,7 @@ import {
 } from '../selectors';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 
-export const FUNNEL_VERSION = '1.0';
+export const FUNNEL_VERSION = '1.1';
 
 type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
   FunnelProps,
