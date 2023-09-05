@@ -27,17 +27,17 @@ const Anchor = ({ anchor, fireFollow, isActive }: AnchorProps) => {
   );
 
   return (
-    <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })}>
+    <li className={clsx(styles['anchor-item'], { [styles['anchor-item--active']]: isActive })}>
       <a
         onClick={onClick}
-        className={clsx(styles['anchor-link'], { [styles['anchor-link-active']]: isActive })}
+        className={clsx(styles['anchor-link'], { [styles['anchor-link--active']]: isActive })}
         {...(isActive ? { 'aria-current': true } : {})}
         href={anchor.href}
       >
         <span className={styles['anchor-link-text']} style={{ paddingLeft: `${anchor.level * 16 + 2}px` }}>
           {anchor.text}
         </span>
-        {anchor.info && <span className={styles.info}>{anchor.info}</span>}
+        {anchor.info && <span className={styles['anchor-link-info']}>{anchor.info}</span>}
       </a>
     </li>
   );

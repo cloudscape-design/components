@@ -15,11 +15,11 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
 }
 
 .anchor-list {
-  position: relative;
+  list-style: none;
   margin: 0;
   padding: 0;
+  position: relative;
   text-indent: 0;
-  list-style: none;
 
   &::before {
     content: '';
@@ -44,7 +44,7 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   font-weight: styles.$font-weight-normal;
   margin: awsui.$space-scaled-xxs 0;
 
-  &-active {
+  &--active {
     position: relative;
 
     &::before {
@@ -60,15 +60,6 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   }
 }
 
-.info {
-  margin-left: awsui.$space-xs;
-  @include styles.font-body-s;
-  @include styles.font-smoothing;
-  font-weight: awsui.$font-button-weight;
-  letter-spacing: typography.$letter-spacing-bold-link;
-  color: awsui.$color-text-link-default;
-}
-
 .anchor-link {
   @include styles.with-motion {
     transition: awsui.$motion-duration-slow;
@@ -80,12 +71,13 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   }
 
   @include styles.font-body-m;
+
+  align-items: baseline;
   color: awsui.$color-text-body-secondary;
-  font-weight: styles.$font-weight-normal;
-  text-decoration: none;
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  font-weight: styles.$font-weight-normal;
+  text-decoration: none;
 
   &:hover {
     color: awsui.$color-text-accent;
@@ -100,13 +92,22 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
     text-decoration: none;
   }
 
-  &-text {
-    display: block;
-  }
-
-  &-active {
+  &--active {
     font-weight: awsui.$font-wayfinding-link-active-weight;
     @include styles.font-smoothing;
     color: awsui.$color-text-accent;
   }
+}
+
+.anchor-link-text {
+  display: block;
+}
+
+.anchor-link-info {
+  margin-left: awsui.$space-xs;
+  @include styles.font-body-s;
+  @include styles.font-smoothing;
+  font-weight: awsui.$font-button-weight;
+  letter-spacing: typography.$letter-spacing-bold-link;
+  color: awsui.$color-text-link-default;
 }
