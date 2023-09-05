@@ -13,8 +13,9 @@ interface AnchorProps {
   anchor: AnchorNavigationProps.Anchor;
   fireFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
   isActive: boolean;
+  index: number;
 }
-const Anchor = ({ anchor, fireFollow, isActive }: AnchorProps) => {
+const Anchor = ({ anchor, fireFollow, isActive, index }: AnchorProps) => {
   checkSafeUrl('SideNavigation', anchor.href);
 
   const onClick = useCallback(
@@ -27,7 +28,10 @@ const Anchor = ({ anchor, fireFollow, isActive }: AnchorProps) => {
   );
 
   return (
-    <li className={clsx(styles['anchor-item'], { [styles['anchor-item--active']]: isActive })}>
+    <li
+      data-itemid={`anchor-item-${index}`}
+      className={clsx(styles['anchor-item'], { [styles['anchor-item--active']]: isActive })}
+    >
       <a
         onClick={onClick}
         className={clsx(styles['anchor-link'], { [styles['anchor-link--active']]: isActive })}
@@ -80,6 +84,7 @@ export default function InternalAnchorNavigation({
               fireFollow={onFollowHandler}
               isActive={anchor.href === `#${activeId}`}
               key={index}
+              index={index}
               anchor={anchor}
             />
           );
