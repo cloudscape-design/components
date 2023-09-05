@@ -60,7 +60,12 @@ export default function SimpleAnchorNavigation() {
                   anchors={[
                     { href: '#section-1', text: 'Section 1', level: 1 },
                     { href: '#section-1-1', text: 'Section 1.1', level: 2, info: 'Updated' },
-                    { href: '#section-1-1-1', text: 'Section 1.1.1', level: 3 },
+                    {
+                      href: '#section-1-1-1',
+                      text: 'What if this is a really long title? This is what we need to test',
+                      level: 3,
+                      info: 'This is a really long info',
+                    },
                     { href: '#section-1-1-2', text: 'Section 1.1.2', level: 3 },
                     { href: '#section-1-2', text: 'Section 1.2', level: 2, info: 'New' },
                     { href: '#section-1-2-1', text: 'Section 1.2.1', level: 3 },

@@ -29,16 +29,14 @@ const Anchor = ({ anchor, fireFollow, isActive }: AnchorProps) => {
   return (
     <li className={clsx(styles['anchor-item'], { [styles['anchor-item-active']]: isActive })}>
       <a
-        style={{
-          // 2px to offset the negative margin, that makes the guiding border line clickable
-          paddingLeft: `${anchor.level * 16}px`,
-        }}
         onClick={onClick}
         className={clsx(styles['anchor-link'], { [styles['anchor-link-active']]: isActive })}
         {...(isActive ? { 'aria-current': true } : {})}
         href={anchor.href}
       >
-        {anchor.text}
+        <span className={styles['anchor-link-text']} style={{ paddingLeft: `${anchor.level * 16 + 2}px` }}>
+          {anchor.text}
+        </span>
         {anchor.info && <span className={styles.info}>{anchor.info}</span>}
       </a>
     </li>

@@ -26,7 +26,6 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
     background-color: awsui.$color-border-divider-default;
     border-radius: awsui.$border-radius-tabs-focus-ring;
     bottom: $guide-line-offset;
-    left: $guide-line-offset;
     pointer-events: none;
     position: absolute;
     top: $guide-line-offset;
@@ -44,7 +43,6 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
   margin: awsui.$space-scaled-xxs 0;
-  margin-left: $guide-line-offset; // Align with ::before guide line in .anchor-list
 
   &-active {
     position: relative;
@@ -54,7 +52,6 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
       background-color: awsui.$color-text-accent;
       border-radius: awsui.$border-radius-tabs-focus-ring;
       bottom: $guide-line-offset;
-      left: 0;
       pointer-events: none;
       position: absolute;
       top: $guide-line-offset;
@@ -86,6 +83,9 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
   text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
 
   &:hover {
     color: awsui.$color-text-accent;
@@ -98,6 +98,10 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   &:hover,
   &:focus {
     text-decoration: none;
+  }
+
+  &-text {
+    display: block;
   }
 
   &-active {
