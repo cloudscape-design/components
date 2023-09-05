@@ -43,6 +43,9 @@ describe('Wizard Analytics', () => {
     jest.useFakeTimers();
     mockFunnelMetrics();
   });
+  afterEach(() => {
+    act(() => void jest.runAllTimers());
+  });
 
   test('calls funnelStart when the component is mounted', () => {
     render(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);

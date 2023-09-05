@@ -187,7 +187,7 @@ export default function InternalWizard({
 }
 
 /**
- * This hook observes the step configuration and events the `funnelChange` event when the steps change.
+ * This hook observes the step configuration and emits the `funnelChange` event when the steps change.
  */
 function useFunnelChangeEvent(funnelInteractionId: string | undefined, steps: WizardProps['steps']) {
   const listenForStepChanges = useRef(false);
