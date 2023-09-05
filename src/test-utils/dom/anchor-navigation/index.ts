@@ -33,7 +33,7 @@ export class AnchorItemWrapper extends ElementWrapper {
   }
 
   findInfo(): ElementWrapper | null {
-    return this.findByClassName(styles['anchor-info']);
+    return this.findByClassName(styles['anchor-link-info']);
   }
 
   @usesDom

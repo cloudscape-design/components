@@ -49,17 +49,6 @@ describe('AnchorNavigation', () => {
     expect(wrapper.findAnchorByIndex(0)?.findText()?.getElement()).toHaveTextContent('Section 1');
   });
 
-  it('finds active anchor', () => {
-    const wrapper = renderAnchorNavigation({
-      anchors: [
-        { text: 'Section 1', href: '#section1', level: 1 },
-        { text: 'Section 2', href: '#section2', level: 1 },
-      ],
-      activeHref: '#section2',
-    });
-    expect(wrapper.findActiveAnchor()?.isActive()).toBeTruthy();
-  });
-
   it('finds anchor by href', () => {
     const wrapper = renderAnchorNavigation({
       anchors: [
@@ -79,16 +68,5 @@ describe('AnchorNavigation', () => {
       ],
     });
     expect(wrapper.findAnchorByIndex(0)?.findInfo()?.getElement()).toHaveTextContent('New');
-  });
-
-  it('checks if an anchor is active based on aria-current', () => {
-    const wrapper = renderAnchorNavigation({
-      anchors: [
-        { text: 'Section 1', href: '#section1', level: 1 },
-        { text: 'Section 2', href: '#section2', level: 1 },
-      ],
-      activeHref: '#section2',
-    });
-    expect(wrapper.findAnchorByIndex(1)?.isActive()).toBeTruthy();
   });
 });

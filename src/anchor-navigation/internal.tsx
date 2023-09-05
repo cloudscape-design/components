@@ -52,6 +52,7 @@ export default function InternalAnchorNavigation({
   ariaLabelledby,
   onFollow,
   onActiveAnchorChange,
+  //activehref,
   ...props
 }: AnchorNavigationProps) {
   const hrefs = useMemo(() => anchors.map(anchor => anchor.href), [anchors]);
@@ -70,7 +71,7 @@ export default function InternalAnchorNavigation({
   });
 
   const [activeId] = useScrollSpy({ hrefs });
-
+  // const activeId = activehref;
   useEffect(() => {
     onActiveAnchorChangeHandler(memoizedAnchors.find(anchor => anchor.href === '#' + activeId));
   }, [onActiveAnchorChangeHandler, memoizedAnchors, activeId]);
