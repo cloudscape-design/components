@@ -20,7 +20,7 @@ export default function WizardPage() {
           onFollow={e => e.preventDefault()}
         />
 
-        <Form>
+        <Form header={<Header variant="h1">A form with dynamic substeps</Header>}>
           <SpaceBetween size="l">
             <SpaceBetween direction="horizontal" size="xs">
               <Button onClick={() => setContainerCount(c => c + 1)}>Increase substep count</Button>
