@@ -1,77 +1,86 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useState, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-export default function useScrollSpy({ hrefs }: { hrefs: string[] }): [string | undefined] {
-  const [activeSlug, setActiveSlug] = useState<string | undefined>(undefined);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+export default function useScrollSpy({
+  hrefs,
+}: {
+  hrefs: string[];
+}): [
+  string | undefined,
+  React.Dispatch<React.SetStateAction<string | undefined>>,
+  React.Dispatch<React.SetStateAction<boolean>>
+] {
+  const [currentHref, setCurrentHref] = useState<string>();
+  const [scrollY, setScrollY] = useState(window.pageYOffset);
+  const [disableTracking, setDisableTracking] = useState(false);
+
+  // Value, in pixels, accounting for some padding in the scroll spy logic
+  const EXTRA_OFFSET = 200;
+
+  // Scroll event handler
+  const updateScroll = useCallback(() => {
+    setScrollY(window.pageYOffset);
+  }, []);
+
+  // Get the bounding rectangle of an element by href
+  const getRectByHref = useCallback(href => {
+    const element = document.getElementById(href.slice(1));
+    return element?.getBoundingClientRect();
+  }, []);
+
+  // Check if we're scrolled to the bottom of the page
+  const isPageBottom = useCallback(() => {
+    return scrollY === document.body.scrollHeight - window.innerHeight;
+  }, [scrollY]);
+
+  // Find the href for which the element is within the viewport plus EXTRA_OFFSET
+  const findHrefInView = useCallback(() => {
+    return hrefs.find(href => {
+      const rect = getRectByHref(href);
+      return rect && rect.bottom <= window.innerHeight && rect.bottom - EXTRA_OFFSET >= 0;
+    });
+  }, [getRectByHref, hrefs]);
+
+  // Find the last href where its element is above or within the viewport
+  const findLastHrefInView = useCallback(() => {
+    return hrefs
+      .slice()
+      .reverse()
+      .find(href => {
+        const rect = getRectByHref(href);
+        return rect && rect.bottom <= window.innerHeight;
+      });
+  }, [getRectByHref, hrefs]);
 
   useEffect(() => {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
+    window.addEventListener('scroll', updateScroll, {
+      capture: false,
+      passive: true,
+    });
+    return () => {
+      window.removeEventListener('scroll', updateScroll);
+    };
+  }, [updateScroll, scrollY]);
+
+  useEffect(() => {
+    if (disableTracking) {
+      return;
     }
 
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        let activeSlugTemp;
-        let smallestIndexInViewport = Infinity;
-        let largestIndexAboveViewport = -1;
+    // Main logic to get the new active href
+    let newCurrentHref;
 
-        for (const entry of entries) {
-          if (entry?.rootBounds && entry?.boundingClientRect && typeof entry.intersectionRatio === 'number') {
-            const slug = entry.target.id;
-            const index = hrefs.indexOf(`#${slug}`);
-            const aboveHalfViewport =
-              entry.boundingClientRect.y + entry.boundingClientRect.height <=
-              entry.rootBounds.y + entry.rootBounds.height;
-            const insideHalfViewport = entry.intersectionRatio > 0;
+    if (isPageBottom()) {
+      newCurrentHref = hrefs[hrefs.length - 1];
+    } else {
+      newCurrentHref = findHrefInView() || (scrollY > 0 ? findLastHrefInView() : undefined);
+    }
 
-            // Check if the element is within the viewport and update the active slug if it's the smallest index seen
-            if (insideHalfViewport && index < smallestIndexInViewport) {
-              smallestIndexInViewport = index;
-              activeSlugTemp = slug;
-            }
+    if (newCurrentHref !== undefined) {
+      setCurrentHref(newCurrentHref);
+    }
+  }, [findHrefInView, findLastHrefInView, isPageBottom, scrollY, hrefs, EXTRA_OFFSET, disableTracking]);
 
-            // If no entry is found within the viewport, find the entry with the largest index above the viewport
-            if (smallestIndexInViewport === Infinity && aboveHalfViewport && index > largestIndexAboveViewport) {
-              largestIndexAboveViewport = index;
-              activeSlugTemp = slug;
-            }
-          }
-        }
-        if (activeSlugTemp !== undefined) {
-          setActiveSlug(activeSlugTemp);
-        }
-      },
-      {
-        rootMargin: '0px 0px -50%',
-        threshold: [0, 1],
-      }
-    );
-
-    hrefs.forEach(href => {
-      const id = href.slice(1);
-      const element = document.getElementById(id);
-      if (element) {
-        observerRef.current?.observe(element);
-      }
-    });
-
-    return () => {
-      hrefs.forEach(href => {
-        const id = href.slice(1);
-        const element = document.getElementById(id);
-        if (element) {
-          observerRef.current?.unobserve(element);
-        }
-      });
-
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-        observerRef.current = null;
-      }
-    };
-  }, [hrefs]);
-
-  return [activeSlug];
+  return [currentHref, setCurrentHref, setDisableTracking];
 }

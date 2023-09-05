@@ -3,10 +3,10 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import { AnchorNavigationProps } from './interfaces.js';
-import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import { AnchorNavigationProps } from './interfaces';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import useScrollSpy from './scroll-spy.js';
-import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index.js';
+import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 interface AnchorProps {
@@ -52,7 +52,8 @@ export default function InternalAnchorNavigation({
   ariaLabelledby,
   onFollow,
   onActiveAnchorChange,
-  //activehref,
+  disableTracking = false,
+  activehref = '',
   ...props
 }: AnchorNavigationProps) {
   const hrefs = useMemo(() => anchors.map(anchor => anchor.href), [anchors]);
@@ -66,15 +67,24 @@ export default function InternalAnchorNavigation({
   );
 
   const onActiveAnchorChangeHandler = useStableCallback((newActiveAnchor: AnchorNavigationProps.Anchor | undefined) => {
-    // setActiveDrawerId(newDrawerId);
     fireNonCancelableEvent(onActiveAnchorChange, newActiveAnchor);
   });
 
-  const [activeId] = useScrollSpy({ hrefs });
-  // const activeId = activehref;
+  const [activeHref, setActiveHref, setDisableTracking] = useScrollSpy({ hrefs });
+
   useEffect(() => {
-    onActiveAnchorChangeHandler(memoizedAnchors.find(anchor => anchor.href === '#' + activeId));
-  }, [onActiveAnchorChangeHandler, memoizedAnchors, activeId]);
+    setDisableTracking(disableTracking);
+
+    if (activehref) {
+      setActiveHref(activehref);
+    }
+  }, [setDisableTracking, setActiveHref, disableTracking, activehref]);
+
+  useEffect(() => {
+    if (activeHref) {
+      onActiveAnchorChangeHandler(memoizedAnchors.find(anchor => anchor.href === activeHref));
+    }
+  }, [onActiveAnchorChangeHandler, memoizedAnchors, activeHref]);
 
   return (
     <nav aria-labelledby={ariaLabelledby} className={styles.root} {...props}>
@@ -83,7 +93,7 @@ export default function InternalAnchorNavigation({
           return (
             <Anchor
               fireFollow={onFollowHandler}
-              isActive={anchor.href === `#${activeId}`}
+              isActive={anchor.href === activeHref}
               key={index}
               index={index}
               anchor={anchor}
