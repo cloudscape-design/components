@@ -48,7 +48,7 @@ The store encapsulates all state transitions and effects and can be tested in is
 
 ## Binding
 
-The store needs to be bound to the React properties, state, and/or other stores. It might ot might not need to have initialization, properties sync, and cleanup methods. For example:
+The store needs to be bound to the React properties, state, and/or other stores. It might or might not need to have initialization, properties sync, and cleanup methods. For example:
 
 ```typescript
 // The store binding hook.
@@ -104,7 +104,7 @@ From `ReadonlyAsyncStore` the model inherits `get`, `subscribe` and `unsubscribe
 function Table({ ... }: TableProps) {
   // Create store model and pass it to the required components.
   const columnWidths = useColumnWidths({ visibleColumns, resizableColumns });
-  const thead = <Thead columnWidths={columnWidths} {...}></Thead>
+  const thead = <Thead columnWidths={columnWidths} {...}></Thead>;
   // ...
 }
 
@@ -186,7 +186,7 @@ The reactive state is meant to trigger component renders when updated but the sa
 function DemoInstanceStateRead({ modelGreen, modelRed, ... }: Props) {
   function onMouseMove(event: MouseEvent) {
     if (modelGreen.get().active && modelRed.get().active) {
-      throw new Error('Invariant violation: only one model is allowed to be active at a time.')
+      throw new Error('Invariant violation: only one model is allowed to be active at a time.');
     }
     if (modelGreen.get().active) {
       modelGreen.updateMousePosition(event.clientX, event.clientY);
