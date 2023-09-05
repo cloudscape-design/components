@@ -201,11 +201,6 @@ export function useStickyCellStyles({
     [columnId, setCell, stickyColumns.store]
   );
 
-  // Subscriptions created in the refCallback must be cancelled when the component un-mounts.
-  useEffect(() => {
-    return () => unsubscribeRef.current?.();
-  }, []);
-
   // Provide cell styles as props so that a re-render won't cause invalidation.
   const cellStyles = stickyColumns.store.get().cellState[columnId];
   return {

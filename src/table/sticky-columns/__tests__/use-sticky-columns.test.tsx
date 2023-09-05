@@ -241,9 +241,9 @@ test('performs styles cleanup', () => {
   expect(elements.cells[0]).not.toHaveClass('sticky-cell');
 });
 
-test('cell subscriptions are cleaned up on ref change and un-mount', () => {
+test('cell subscriptions are cleaned up on ref change', () => {
   const unsubscribe = jest.fn();
-  const subscribe = jest.fn().mockImplementation(() => unsubscribe);
+  const subscribe = jest.fn(() => unsubscribe);
   const stickyColumns = {
     store: {
       get: () => ({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } }),
@@ -253,9 +253,7 @@ test('cell subscriptions are cleaned up on ref change and un-mount', () => {
     style: { wrapper: {} },
     refs: { table: () => {}, wrapper: () => {}, cell: () => {} },
   };
-  const { result, unmount } = renderHook(() =>
-    useStickyCellStyles({ stickyColumns, columnId: '1', getClassName: () => ({}) })
-  );
+  const { result } = renderHook(() => useStickyCellStyles({ stickyColumns, columnId: '1', getClassName: () => ({}) }));
 
   result.current.ref(document.createElement('td'));
 
@@ -267,7 +265,7 @@ test('cell subscriptions are cleaned up on ref change and un-mount', () => {
   expect(subscribe).toHaveBeenCalledTimes(2);
   expect(unsubscribe).toHaveBeenCalledTimes(1);
 
-  unmount();
+  result.current.ref(null);
 
   expect(subscribe).toHaveBeenCalledTimes(2);
   expect(unsubscribe).toHaveBeenCalledTimes(2);
