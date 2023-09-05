@@ -4,7 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import styles from '../../../table/styles.selectors.js';
 import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
 import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
-import selectionStyles from '../../../table/selection-control/styles.selectors.js';
+import selectionStyles from '../../../table/selection/styles.selectors.js';
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
 import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';

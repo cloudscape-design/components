@@ -15,7 +15,10 @@ export function nodeBelongs(container: Node | null, target: Node | EventTarget |
   if (!(target instanceof Node)) {
     return false;
   }
-  const portal = findUpUntil(target as HTMLElement, node => !!node.dataset.awsuiReferrerId);
+  const portal = findUpUntil(
+    target as HTMLElement,
+    node => node instanceof HTMLElement && !!node.dataset.awsuiReferrerId
+  );
   const referrer = portal instanceof HTMLElement ? document.getElementById(portal.dataset.awsuiReferrerId ?? '') : null;
   return referrer ? nodeContains(container, referrer) : nodeContains(container, target);
 }

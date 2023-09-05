@@ -1,93 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { KeyboardEvent, useState } from 'react';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { findUpUntil } from '../internal/utils/dom';
-import { TableProps } from './interfaces';
-import { getTrackableValue } from './utils';
-import selectionStyles from './selection-control/styles.css.js';
-import { joinStrings } from '../internal/utils/strings';
-
-export interface SelectionProps {
-  name: string;
-  disabled: boolean;
-  selectionType: 'single' | 'multi';
-  indeterminate?: boolean;
-  checked: boolean;
-  onChange: () => void;
-  ariaLabel?: string;
-}
-
-const SELECTION_ITEM = 'selection-item';
-const SELECTION_ROOT = 'selection-root';
-
-function findSelectionControlByIndex(rootContainer: HTMLElement, index: number) {
-  if (index === -1) {
-    // find "select all" checkbox
-    return rootContainer.querySelector<HTMLInputElement>(
-      `[data-${SELECTION_ITEM}="all"] .${selectionStyles.root} input`
-    );
-  }
-  return rootContainer.querySelectorAll<HTMLInputElement>(
-    `[data-${SELECTION_ITEM}="item"] .${selectionStyles.root} input`
-  )[index];
-}
-
-function findRootContainer(element: HTMLElement) {
-  return findUpUntil(element, node => node.dataset.selectionRoot === 'true')!;
-}
-
-export function useFocusMove(selectionType: TableProps['selectionType'], totalItems: number) {
-  if (selectionType !== 'multi') {
-    return {};
-  }
-  function moveFocus(sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) {
-    let index = fromIndex;
-    const rootContainer = findRootContainer(sourceElement);
-
-    while (index >= -1 && index < totalItems) {
-      index += direction;
-      const control = findSelectionControlByIndex(rootContainer, index);
-      if (control && !control.disabled) {
-        control.focus();
-        break;
-      }
-    }
-  }
-  const [moveFocusDown, moveFocusUp] = ([1, -1] as const).map(direction => {
-    return (event: KeyboardEvent) => {
-      const target = event.currentTarget as HTMLElement;
-      const itemNode = findUpUntil(target, node => node.dataset.selectionItem === 'item')!;
-      const fromIndex = Array.prototype.indexOf.call(itemNode.parentElement!.children, itemNode);
-      moveFocus(target, fromIndex, direction);
-    };
-  });
-  return {
-    moveFocusDown,
-    moveFocusUp,
-    moveFocus,
-  };
-}
-
-// A set, that compares items by their "trackables" (the results of applying `trackBy` to them)
-class ItemSet<T> {
-  constructor(trackBy: TableProps.TrackBy<T> | undefined, items: ReadonlyArray<T>) {
-    this.trackBy = trackBy;
-    items.forEach(this.put);
-  }
-  private trackBy: TableProps.TrackBy<T> | undefined;
-  private map: Map<unknown, T> = new Map();
-  put = (item: T) => this.map.set.call(this.map, getTrackableValue(this.trackBy, item), item);
-  has = (item: T) => this.map.has.call(this.map, getTrackableValue(this.trackBy, item));
-  forEach = this.map.forEach.bind(this.map);
-}
-
-export const focusMarkers = {
-  item: { ['data-' + SELECTION_ITEM]: 'item' },
-  all: { ['data-' + SELECTION_ITEM]: 'all' },
-  root: { ['data-' + SELECTION_ROOT]: 'true' },
-};
+import { useState } from 'react';
+import { fireNonCancelableEvent } from '../../internal/events';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { TableProps } from '../interfaces';
+import { getTrackableValue } from '../utils';
+import { joinStrings } from '../../internal/utils/strings';
+import { SelectionProps } from './interfaces';
+import { ItemSet } from './utils';
 
 export function useSelection<T>({
   items,
