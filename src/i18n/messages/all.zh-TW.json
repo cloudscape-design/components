@@ -115,7 +115,7 @@
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
   "drawer": {
-    "loadingText": "載入內容"
+    "i18nStrings.loadingText": "載入內容"
   },
   "flashbar": {
     "i18nStrings.ariaLabel": "通知",

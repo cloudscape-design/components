@@ -115,7 +115,7 @@
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
   "drawer": {
-    "loadingText": "コンテンツのロード中"
+    "i18nStrings.loadingText": "コンテンツのロード中"
   },
   "flashbar": {
     "i18nStrings.ariaLabel": "通知",

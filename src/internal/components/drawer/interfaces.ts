@@ -23,8 +23,15 @@ export interface DrawerProps extends BaseComponentProps {
   loading?: boolean;
 
   /**
-   * Specifies the text that's displayed when the drawer is in a loading state.
+   * An object containing all the necessary localized strings required by the component.
    * @i18n
+   */
+  i18nStrings?: I18nStrings;
+}
+
+export interface I18nStrings {
+  /**
+    Specifies the text that's displayed when the panel is in a loading state.
    */
   loadingText?: string;
 }

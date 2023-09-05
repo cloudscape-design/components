@@ -167,7 +167,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.warningIconAriaLabel": never;
   }
   "drawer": {
-    "loadingText": never;
+    "i18nStrings.loadingText": never;
   }
   "form": {
     "errorIconAriaLabel": never;

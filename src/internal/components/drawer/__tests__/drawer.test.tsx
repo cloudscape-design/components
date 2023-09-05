@@ -29,7 +29,9 @@ test('renders header if it is provided', () => {
 });
 
 test('renders loading state', () => {
-  const { wrapper, header, content } = renderDrawer(<Drawer loading={true} loadingText="Loading content" />);
+  const { wrapper, header, content } = renderDrawer(
+    <Drawer loading={true} i18nStrings={{ loadingText: 'Loading content' }} />
+  );
   expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Loading content');
   expect(header).toBeNull();
   expect(content).toBeNull();
@@ -38,7 +40,7 @@ test('renders loading state', () => {
 describe('i18n', () => {
   test('supports providing loadingText from i18n provider', () => {
     const { container } = render(
-      <TestI18nProvider messages={{ drawer: { loadingText: 'Custom loading text' } }}>
+      <TestI18nProvider messages={{ drawer: { 'i18nStrings.loadingText': 'Custom loading text' } }}>
         <Drawer loading={true} />
       </TestI18nProvider>
     );

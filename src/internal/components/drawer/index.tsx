@@ -9,7 +9,7 @@ import { DrawerProps } from './interfaces';
 import LiveRegion from '../../components/live-region';
 import { useInternalI18n } from '../../../i18n/context';
 
-export default function Drawer({ header, children, loading, loadingText, ...restProps }: DrawerProps) {
+export default function Drawer({ header, children, loading, i18nStrings, ...restProps }: DrawerProps) {
   const baseProps = getBaseProps(restProps);
   const i18n = useInternalI18n('drawer');
   const containerProps = {
@@ -19,7 +19,7 @@ export default function Drawer({ header, children, loading, loadingText, ...rest
   return loading ? (
     <div {...containerProps}>
       <InternalStatusIndicator type="loading">
-        <LiveRegion visible={true}>{i18n('loadingText', loadingText)}</LiveRegion>
+        <LiveRegion visible={true}>{i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}</LiveRegion>
       </InternalStatusIndicator>
     </div>
   ) : (

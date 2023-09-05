@@ -115,7 +115,7 @@
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
   "drawer": {
-    "loadingText": "콘텐츠 로드 중"
+    "i18nStrings.loadingText": "콘텐츠 로드 중"
   },
   "flashbar": {
     "i18nStrings.ariaLabel": "알림",

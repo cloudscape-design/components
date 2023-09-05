@@ -116,7 +116,7 @@
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}s}}"
   },
   "drawer": {
-    "loadingText": "Loading content"
+    "i18nStrings.loadingText": "Loading content"
   },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notifications",
