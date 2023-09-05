@@ -1,6 +1,6 @@
 # Async store
 
-The async store is a pattern and a simple publish/subscribe mechanism to organize reactive state together and encapsulate the related getters, setters, and effects. The pattern is abstract, React-agnostic, and is optimized for performance. A UI component can make use of multiple async stores.
+The async store is a pattern and a simple publish/subscribe utility to organize reactive state together and encapsulate the related getters, setters, and effects. The pattern is abstract, React-agnostic, and is optimized for performance. A UI component can make use of multiple async stores.
 
 The pattern consists of the three main elements: Store, Model, and React binding.
 
@@ -9,10 +9,12 @@ The pattern consists of the three main elements: Store, Model, and React binding
 The store defines the reactive state structure and all related getters, setters, and effects. For example:
 
 ```typescript
+// A store implementation to encapsulate the particular behavior,
+// in this case - the resizable table columns.
 class ColumnWidthsStore extends AsyncStore<ColumnWidthsState> {
   // Internal, non-reactive state to hold references, caches, observers, etc.
   private cells: Record<PropertyKey, HTMLElement> = {};
-  private lastVisible: null | (PropertyKey | undefined)[] = null;
+  private lastVisible: null | PropertyKey[] = null;
 
   // The reactive state initialization.
   constructor() {
