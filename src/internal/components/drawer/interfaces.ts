@@ -18,12 +18,12 @@ export interface DrawerProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * Renders the panel in a loading state. We recommend that you also set a `loadingText`.
+   * Renders the drawer in a loading state. We recommend that you also set a `loadingText`.
    */
   loading?: boolean;
 
   /**
-   * Specifies the text that's displayed when the panel is in a loading state.
+   * Specifies the text that's displayed when the drawer is in a loading state.
    * @i18n
    */
   loadingText?: string;

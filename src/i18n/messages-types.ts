@@ -156,9 +156,6 @@ export interface I18nFormatArgTypes {
       "unit": string | number;
     }
   }
-  "drawer": {
-    "loadingText": never;
-  }
   "flashbar": {
     "i18nStrings.ariaLabel": never;
     "i18nStrings.errorIconAriaLabel": never;

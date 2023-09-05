@@ -29,8 +29,10 @@ test('renders header if it is provided', () => {
 });
 
 test('renders loading state', () => {
-  const { container } = render(<Drawer loading={true} loadingText="Loading content" />);
-  expect(createWrapper(container).findStatusIndicator()!.getElement()).toHaveTextContent('Loading content');
+  const { wrapper, header, content } = renderDrawer(<Drawer loading={true} loadingText="Loading content" />);
+  expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Loading content');
+  expect(header).toBeNull();
+  expect(content).toBeNull();
 });
 
 describe('i18n', () => {
