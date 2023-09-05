@@ -6,6 +6,8 @@ import { act, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
 import Form from '../../../lib/components/form';
+import Container from '../../../lib/components/container';
+import Header from '../../../lib/components/header';
 
 import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
 import { getFunnelKeySelector, FUNNEL_KEY_STEP_NAME } from '../../../lib/components/internal/analytics/selectors';
@@ -373,5 +375,131 @@ describe('Wizard Analytics', () => {
     createWrapper(container).findWizard()!.findPrimaryButton().click();
 
     expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 2 - optional');
+  });
+
+  test('send a funnelStepChange event when the substeps change', () => {
+    const { rerender } = render(
+      <Wizard
+        steps={[
+          {
+            title: 'Step 1',
+            content: (
+              <>
+                <Container header={<Header>Substep 1</Header>}></Container>
+                <Container header={<Header>Substep 2</Header>}></Container>
+                <Container header={<Header>Substep 3</Header>}></Container>
+              </>
+            ),
+          },
+        ]}
+        activeStepIndex={0}
+        onNavigate={() => {}}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStepChange).not.toHaveBeenCalled();
+
+    rerender(
+      <Wizard
+        steps={[
+          {
+            title: 'Step 1',
+            content: (
+              <>
+                <Container header={<Header>Substep 1</Header>}></Container>
+                <Container header={<Header>Substep 3</Header>}></Container>
+              </>
+            ),
+          },
+        ]}
+        activeStepIndex={0}
+        onNavigate={() => {}}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenCalledTimes(1);
+
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        subStepConfiguration: [
+          { name: 'Substep 1', number: 1 },
+          { name: 'Substep 3', number: 2 },
+        ],
+      })
+    );
+
+    rerender(
+      <Wizard
+        steps={[
+          {
+            title: 'Step 1',
+            content: (
+              <>
+                <Container header={<Header>Substep 0</Header>}></Container>
+                <Container header={<Header>Substep 1</Header>}></Container>
+                <Container header={<Header>Substep 2</Header>}></Container>
+                <Container header={<Header>Substep 3</Header>}></Container>
+                <Container header={<Header>Substep 4</Header>}></Container>
+              </>
+            ),
+          },
+        ]}
+        activeStepIndex={0}
+        onNavigate={() => {}}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenCalledTimes(2);
+
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        subStepConfiguration: [
+          { name: 'Substep 0', number: 1 },
+          { name: 'Substep 1', number: 2 },
+          { name: 'Substep 2', number: 3 },
+          { name: 'Substep 3', number: 4 },
+          { name: 'Substep 4', number: 5 },
+        ],
+      })
+    );
+  });
+
+  test('does not send a funnelStepChange event when navigating to another step', () => {
+    const steps = [
+      {
+        title: 'Step 1 with three containers',
+        content: (
+          <>
+            <Container header={<Header>Substep 1</Header>}></Container>
+            <Container header={<Header>Substep 2</Header>}></Container>
+            <Container header={<Header>Substep 3</Header>}></Container>
+          </>
+        ),
+      },
+      // The second step has a different amount of substeps than the previous one,
+      // but that should not be counted as a funnelStepChange event.
+      {
+        title: 'Step 2 with two containers',
+        content: (
+          <>
+            <Container header={<Header>Substep 1</Header>}></Container>
+            <Container header={<Header>Substep 2</Header>}></Container>
+          </>
+        ),
+      },
+    ];
+
+    const { rerender } = render(
+      <Wizard steps={steps} activeStepIndex={0} onNavigate={() => {}} i18nStrings={DEFAULT_I18N_SETS[0]} />
+    );
+    act(() => void jest.runAllTimers());
+
+    rerender(<Wizard steps={steps} activeStepIndex={1} onNavigate={() => {}} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepChange).not.toHaveBeenCalled();
   });
 });

@@ -83,11 +83,11 @@ export interface FunnelChangeProps extends BaseFunnelProps {
 
 export interface FunnelStepChangeProps extends BaseFunnelProps {
   stepNumber: number;
-  stepName?: string;
-  stepNameSelector?: string;
-  subStepAllSelector?: string;
-  totalSubSteps?: number;
-  subStepConfiguration?: SubStepConfiguration[];
+  stepName: string;
+  stepNameSelector: string;
+  subStepAllSelector: string;
+  totalSubSteps: number;
+  subStepConfiguration: SubStepConfiguration[];
 }
 
 export interface StepConfiguration {

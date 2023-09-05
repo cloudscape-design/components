@@ -30,6 +30,8 @@ export interface FunnelStepContextValue {
   subStepCount: MutableRefObject<number>;
   isInStep: boolean;
   funnelInteractionId: string | undefined;
+  /** This function is called when the list of substeps in this step changes.  */
+  onStepChange: () => void;
 }
 
 export interface FunnelSubStepContextValue {
@@ -79,6 +81,7 @@ export const FunnelStepContext = createContext<FunnelStepContextValue>({
   subStepCount: { current: 0 },
   isInStep: false,
   funnelInteractionId: undefined,
+  onStepChange: () => {},
 });
 
 export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
