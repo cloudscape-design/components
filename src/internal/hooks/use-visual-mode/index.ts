@@ -5,8 +5,9 @@ import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { isDevelopment } from '../../is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
 interface ExtendedWindow extends Window {
-  [key: symbol]: (() => boolean) | undefined;
+  [awsuiVisualRefreshFlag]?: () => boolean;
 }
 declare const window: ExtendedWindow;
 
@@ -26,10 +27,11 @@ function detectVisualRefresh() {
 
 export function useVisualRefreshDynamic() {
   if (visualRefreshState === undefined) {
-    if (typeof window !== 'undefined' && window[Symbol.for('isVisualRefresh')]?.()) {
-      document.body.classList.add('awsui-visual-refresh');
-    }
     visualRefreshState = detectVisualRefresh();
+    if (!visualRefreshState && typeof window !== 'undefined' && window[awsuiVisualRefreshFlag]?.()) {
+      document.body.classList.add('awsui-visual-refresh');
+      visualRefreshState = true;
+    }
   }
   if (isDevelopment) {
     const newVisualRefreshState = detectVisualRefresh();
