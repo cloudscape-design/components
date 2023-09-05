@@ -21,6 +21,8 @@ function mockFunnelMetrics() {
     funnelComplete: jest.fn(),
     funnelSuccessful: jest.fn(),
     funnelCancelled: jest.fn(),
+    funnelChange: jest.fn(),
+    funnelStepChange: jest.fn(),
     funnelStepStart: jest.fn(),
     funnelStepComplete: jest.fn(),
     funnelStepNavigation: jest.fn(),
