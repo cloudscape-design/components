@@ -6,6 +6,7 @@ import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -74,6 +75,9 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       columnId,
       getClassName: props => getStickyClassNames(styles, props),
     });
+
+    const mergedRef = useMergeRefs(stickyStyles.ref, ref);
+
     return (
       <Element
         style={{ ...style, ...stickyStyles.style }}
@@ -96,12 +100,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        ref={node => {
-          stickyStyles.ref(node);
-          if (node && ref) {
-            (ref as React.MutableRefObject<HTMLTableCellElement>).current = node;
-          }
-        }}
+        ref={mergedRef}
         {...nativeAttributes}
       >
         {children}
