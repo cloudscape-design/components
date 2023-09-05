@@ -227,7 +227,7 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
       return;
     }
 
-    const subSteps = Array.from(document.querySelectorAll(getSubStepAllSelector())) as HTMLElement[];
+    const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
 
     const subStepConfiguration = subSteps.map((substep, index) => {
       const name = substep.querySelector(getSubStepNameSelector())?.textContent ?? '';
