@@ -34,6 +34,18 @@ export default function ThemeSwitcher() {
         </select>
       </label>
       <label>
+        Direction
+        <select onChange={event => setUrlParams({ direction: event.target.value })}>
+          <option value="ltr" selected={urlParams.direction === 'ltr'}>
+            Left-to-Right
+          </option>
+
+          <option value={'rtl'} selected={urlParams.direction === 'rtl'}>
+            Right-to-Left
+          </option>
+        </select>
+      </label>
+      <label>
         <input {...vrSwitchProps} />
         Visual refresh
       </label>

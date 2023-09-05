@@ -8,10 +8,10 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 interface AppUrlParams {
   density: Density;
+  direction: string;
   visualRefresh: boolean;
   motionDisabled: boolean;
 }
-
 export interface AppContextType<T = unknown> {
   mode: Mode;
   pageId?: string;
@@ -25,6 +25,7 @@ const appContextDefaults: AppContextType = {
   pageId: undefined,
   urlParams: {
     density: Density.Comfortable,
+    direction: 'ltr',
     visualRefresh: THEME === 'default',
     motionDisabled: false,
   },
@@ -66,6 +67,8 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   const match = useRouteMatch<{ theme: string; mode: Mode; pageId: string }>('/:mode(light|dark)/:pageId*');
   const { mode, pageId } = match ? match.params : { mode: undefined, pageId: undefined };
   const urlParams = parseQuery(location.search) as AppUrlParams;
+
+  document.querySelector('html')?.setAttribute('dir', urlParams.direction);
 
   function setUrlParams(newParams: Partial<AppUrlParams>) {
     const pathname = [mode, pageId].filter(segment => !!segment).join('/') + '/';
