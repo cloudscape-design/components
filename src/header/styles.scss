@@ -31,6 +31,11 @@
     }
   }
 
+  &-no-actions:not(.root-has-description):not(.refresh) {
+    // Make sure the header is just as high without actions
+    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$space-scaled-xxxs});
+  }
+
   &-no-actions.refresh {
     &.root-variant-h2,
     &.root-variant-h3 {
@@ -61,6 +66,7 @@
   justify-content: space-between;
   width: 100%;
   flex-wrap: wrap;
+  column-gap: awsui.$space-xs;
 
   &.no-wrap {
     flex-wrap: nowrap;
@@ -68,7 +74,7 @@
 
   &.refresh {
     // Can't use justify-content: center because it won't align with configurable dashboard fixed handle icon
-    row-gap: awsui.$space-scaled-xxs;
+    row-gap: awsui.$space-static-xxs;
   }
 
   &-variant-h1 {
@@ -140,7 +146,6 @@
   &-variant-h2:not(.refresh),
   &-variant-h3:not(.refresh) {
     padding-top: awsui.$space-scaled-xs;
-    padding-bottom: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
   }
 }
 
