@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
@@ -11,6 +11,7 @@ import { useCollection } from '@cloudscape-design/collection-hooks';
 import { Box, Button, Checkbox, FormField, Pagination, RadioGroup, Select, StatusIndicator } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import { columnLabel, stateToStatusIndicator } from './shared-configs';
+import styles from './styles.scss';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -18,7 +19,6 @@ type DemoContext = React.Context<
     stickyHeader: boolean;
     columnSorting: boolean;
     inlineEditing: boolean;
-    controlWidget: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     stickyColumnsLast: string;
@@ -127,30 +127,20 @@ export default () => {
       id: 'control',
       header: 'Control',
       cell: item => (
-        <RadioGroup
-          items={[
-            {
-              value: 'on',
-              label: 'On',
-            },
-            {
-              value: 'off',
-              label: 'Off',
-            },
-          ]}
-          onChange={({ detail }) =>
+        <ControlCell
+          value={item.state === 'STOPPED' || item.state === 'STOPPING' ? 'off' : 'on'}
+          onChange={value =>
             setTableItems(items =>
               items.map(tableItem =>
                 tableItem.id === item.id
                   ? {
                       ...tableItem,
-                      state: detail.value === 'on' ? 'PENDING' : 'STOPPING',
+                      state: value === 'on' ? 'PENDING' : 'STOPPING',
                     }
                   : tableItem
               )
             )
           }
-          value={item.state === 'STOPPED' || item.state === 'STOPPING' ? 'off' : 'on'}
         />
       ),
     },
@@ -198,13 +188,6 @@ export default () => {
               onChange={event => setUrlParams({ inlineEditing: event.detail.checked })}
             >
               Inline editing
-            </Checkbox>
-
-            <Checkbox
-              checked={urlParams.controlWidget}
-              onChange={event => setUrlParams({ controlWidget: event.detail.checked })}
-            >
-              Control widget
             </Checkbox>
           </FormField>
 
@@ -295,3 +278,49 @@ export default () => {
     </Box>
   );
 };
+
+function ControlCell({ value, onChange }: { value: 'on' | 'off'; onChange: (value: 'on' | 'off') => void }) {
+  const [active, setActive] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  if (!active) {
+    return (
+      <button className={styles['status-trigger-button']} onClick={() => setActive(true)}>
+        <StatusIndicator type={value === 'on' ? 'success' : 'stopped'}>{value}</StatusIndicator>
+      </button>
+    );
+  }
+
+  return (
+    <span
+      ref={dialogRef}
+      role="dialog"
+      aria-label="Set control value dialog"
+      onBlur={event => {
+        if (!dialogRef.current?.contains(event.target)) {
+          setActive(false);
+        }
+      }}
+      onKeyDown={event => {
+        if (event.key === 'Escape' || event.key === 'F2' || event.key === 'Enter') {
+          setActive(false);
+        }
+      }}
+    >
+      <RadioGroup
+        items={[
+          {
+            value: 'on',
+            label: 'On',
+          },
+          {
+            value: 'off',
+            label: 'Off',
+          },
+        ]}
+        onChange={({ detail }) => onChange(detail.value as 'on' | 'off')}
+        value={value}
+      />
+    </span>
+  );
+}

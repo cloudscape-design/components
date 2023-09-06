@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell, moveFocusBy, restoreTableFocusables, updateTableFocusables } from './utils';
+import {
+  defaultSuppressNavigation,
+  findFocusinCell,
+  moveFocusBy,
+  restoreTableFocusables,
+  updateTableFocusables,
+} from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
@@ -65,7 +71,7 @@ class GridNavigationModel {
     const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
     tableNodesObserver.observe(table, { childList: true, subtree: true });
 
-    updateTableFocusables(this.table, this.focusedCell ?? this.prevFocusedCell);
+    updateTableFocusables(this.table, null, false);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -86,6 +92,10 @@ class GridNavigationModel {
     this._pageSize = pageSize;
   }
 
+  private suppressNavigation(focusedElement: HTMLElement): boolean {
+    return defaultSuppressNavigation(focusedElement) ?? this._suppressNavigation?.(focusedElement) ?? false;
+  }
+
   private get pageSize() {
     return this._pageSize;
   }
@@ -98,7 +108,7 @@ class GridNavigationModel {
   }
 
   private onFocusin = (event: FocusEvent) => {
-    const cell = findFocusinCell(event, this._suppressNavigation);
+    const cell = findFocusinCell(event);
 
     if (!cell) {
       return;
@@ -112,7 +122,7 @@ class GridNavigationModel {
     this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
-    updateTableFocusables(this.table, cell);
+    updateTableFocusables(this.table, cell, this.suppressNavigation(cell.element));
   };
 
   private onFocusout = () => {
@@ -142,7 +152,7 @@ class GridNavigationModel {
     const maxExtreme = Number.POSITIVE_INFINITY;
 
     // When navigation is suppressed no keys are intercepted.
-    if (from.suppressNavigation) {
+    if (this.suppressNavigation(from.element)) {
       return;
     }
 
@@ -202,7 +212,8 @@ class GridNavigationModel {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {
           if (removedNode === this.prevFocusedCell.element || nodeContains(removedNode, this.prevFocusedCell.element)) {
-            updateTableFocusables(this.table, this.focusedCell ?? this.prevFocusedCell);
+            const cell = this.focusedCell ?? this.prevFocusedCell;
+            updateTableFocusables(this.table, cell, this.suppressNavigation(cell.element));
             moveFocusBy(this.table, this.prevFocusedCell, { y: 0, x: 0 });
           }
         }
