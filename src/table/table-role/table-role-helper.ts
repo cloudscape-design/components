@@ -135,13 +135,8 @@ export function getTableColHeaderRoleProps(options: {
   return nativeProps;
 }
 
-export function getTableCellRoleProps(options: {
-  tableRole: TableRole;
-  colIndex: number;
-  isRowHeader?: boolean;
-  isDialog?: boolean;
-}) {
-  const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> & { 'data-dialog-cell'?: boolean } = {};
+export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex: number; isRowHeader?: boolean }) {
+  const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
     nativeProps['aria-colindex'] = options.colIndex + 1;
@@ -149,10 +144,6 @@ export function getTableCellRoleProps(options: {
 
   if (options.isRowHeader) {
     nativeProps.scope = 'row';
-  }
-
-  if (options.tableRole === 'grid' && options.isDialog) {
-    nativeProps['data-dialog-cell'] = true;
   }
 
   return nativeProps;

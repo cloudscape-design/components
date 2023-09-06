@@ -5,6 +5,7 @@ import SpaceBetween from '~components/space-between';
 import {
   AppLayout,
   Button,
+  ButtonDropdown,
   ColumnLayout,
   Container,
   ContentLayout,
@@ -36,21 +37,22 @@ type PageContext = React.Context<
   AppContextType<{
     pageSize: number;
     tableRole: TableRole;
+    actionsMode: ActionsMode;
   }>
 >;
+
+type ActionsMode = 'dropdown' | 'inline';
 
 const createColumnDefinitions = ({
   onDelete,
   onDuplicate,
   onUpdate,
-  dialogItem,
-  setDialogItem,
+  actionsMode,
 }: {
   onDelete: (id: string) => void;
   onDuplicate: (id: string) => void;
   onUpdate: (id: string) => void;
-  dialogItem: null | Instance;
-  setDialogItem: (item: null | Instance) => void;
+  actionsMode: ActionsMode;
 }) => [
   {
     key: 'id',
@@ -61,11 +63,12 @@ const createColumnDefinitions = ({
     key: 'actions',
     label: 'Actions',
     render: (item: Instance) => (
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-        <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={() => onDelete(item.id)} />
-        <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={() => onDuplicate(item.id)} />
-        <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={() => onUpdate(item.id)} />
-      </div>
+      <ItemActionsCell
+        mode={actionsMode}
+        onDelete={() => onDelete(item.id)}
+        onDuplicate={() => onDuplicate(item.id)}
+        onUpdate={() => onUpdate(item.id)}
+      />
     ),
   },
   {
@@ -78,71 +81,24 @@ const createColumnDefinitions = ({
     label: 'Image ID',
     render: (item: Instance) => <Link>{item.imageId}</Link>,
   },
-  {
-    key: 'dnsName',
-    label: 'DNS name',
-    render: (item: Instance) => (
-      <DnsNameEditWidget
-        item={item}
-        active={item === dialogItem}
-        setActive={active => setDialogItem(active ? item : null)}
-      />
-    ),
-    isDialog: (item: Instance) => item === dialogItem,
-  },
+  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => <DnsEditCell item={item} /> },
   { key: 'type', label: 'Type', render: (item: Instance) => item.type },
 ];
 
-function DnsNameEditWidget({
-  item,
-  active,
-  setActive,
-}: {
-  item: Instance;
-  active: boolean;
-  setActive: (active: boolean) => void;
-}) {
-  const [value, setValue] = useState(item.dnsName ?? '');
-  return !active ? (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label="Edit dns name"
-      onClick={() => setActive(true)}
-      onKeyDown={event => {
-        if (event.key === 'Enter' || event.key === 'F2') {
-          setActive(true);
-        }
-      }}
-    >
-      {item.dnsName}
-    </div>
-  ) : (
-    <Input
-      autoFocus={true}
-      value={value}
-      onChange={event => setValue(event.detail.value)}
-      onBlur={() => {
-        setActive(false);
-      }}
-      onKeyDown={event => {
-        if (event.detail.key === 'Enter') {
-          setActive(false);
-        }
-      }}
-    />
-  );
-}
-
 const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
+
+const actionsModeOptions = [
+  { value: 'dropdown', label: 'Dropdown' },
+  { value: 'inline', label: 'Inline (anti-pattern)' },
+];
 
 export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const pageSize = urlParams.pageSize ?? 10;
   const tableRole = urlParams.tableRole ?? 'grid';
+  const actionsMode = urlParams.actionsMode ?? 'dropdown';
 
-  const [dialogItem, setDialogItem] = useState<null | Instance>(null);
   const [items, setItems] = useState(generateItems(25));
   const columnDefinitions = useMemo(
     () =>
@@ -152,10 +108,9 @@ export default function Page() {
           setItems(prev => prev.flatMap(item => (item.id !== id ? [item] : [item, { ...item, id: generateId() }]))),
         onUpdate: (id: string) =>
           setItems(prev => prev.map(item => (item.id !== id ? item : { ...item, id: generateId() }))),
-        dialogItem,
-        setDialogItem,
+        actionsMode,
       }),
-    [dialogItem]
+    [actionsMode]
   );
 
   const [sortingKey, setSortingKey] = useState<null | string>(null);
@@ -200,6 +155,16 @@ export default function Page() {
                       options={tableRoleOptions}
                       selectedOption={tableRoleOptions.find(option => option.value === tableRole) ?? null}
                       onChange={event => setUrlParams({ tableRole: event.detail.selectedOption.value as TableRole })}
+                    />
+                  </FormField>
+
+                  <FormField label="Actions mode">
+                    <Select
+                      options={actionsModeOptions}
+                      selectedOption={actionsModeOptions.find(option => option.value === actionsMode) ?? null}
+                      onChange={event =>
+                        setUrlParams({ actionsMode: event.detail.selectedOption.value as ActionsMode })
+                      }
                     />
                   </FormField>
                 </ColumnLayout>
@@ -261,7 +226,7 @@ export default function Page() {
                         <td
                           key={column.key}
                           className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex, isDialog: column.isDialog?.(item) })}
+                          {...getTableCellRoleProps({ tableRole, colIndex })}
                         >
                           {column.render(item)}
                         </td>
@@ -275,6 +240,94 @@ export default function Page() {
         </ContentLayout>
       }
     />
+  );
+}
+
+function ItemActionsCell({
+  onDelete,
+  onDuplicate,
+  onUpdate,
+  mode,
+}: {
+  onDelete: () => void;
+  onDuplicate: () => void;
+  onUpdate: () => void;
+  mode: ActionsMode;
+}) {
+  if (mode === 'dropdown') {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <ButtonDropdown
+          ariaLabel="Item actions"
+          variant="inline-icon"
+          items={[
+            { id: 'delete', text: 'Delete' },
+            { id: 'duplicate', text: 'Duplicate' },
+            { id: 'update', text: 'Update' },
+          ]}
+          onItemClick={event => {
+            switch (event.detail.id) {
+              case 'delete':
+                return onDelete();
+              case 'duplicate':
+                return onDuplicate();
+              case 'update':
+                return onUpdate();
+            }
+          }}
+          expandToViewport={true}
+        />
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+      <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={onDelete} />
+      <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={onDuplicate} />
+      <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={onUpdate} />
+    </div>
+  );
+}
+
+function DnsEditCell({ item }: { item: Instance }) {
+  const [active, setActive] = useState(false);
+  const [value, setValue] = useState(item.dnsName ?? '');
+  const dialogRef = useRef<HTMLDivElement>(null);
+  return !active ? (
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label="Edit DNS name"
+      onClick={() => setActive(true)}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === 'F2') {
+          setActive(true);
+        }
+      }}
+    >
+      {item.dnsName}
+    </div>
+  ) : (
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-label="Edit DND name"
+      onBlur={event => {
+        if (!dialogRef.current!.contains(event.relatedTarget)) {
+          setActive(false);
+        }
+      }}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
+          setActive(false);
+        }
+      }}
+      style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
+    >
+      <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
+      <Button iconName="check" onClick={() => setActive(false)} />
+      <Button iconName="close" onClick={() => setActive(false)} />
+    </div>
   );
 }
 
@@ -316,15 +369,6 @@ function GridNavigationHelpPanel() {
         </li>
         <li>
           <b>Control+End</b> (to the last item in the grid)
-        </li>
-        <li>
-          <b>Enter</b> (to move focus inside dialog cell)
-        </li>
-        <li>
-          <b>Escape</b> (to move focus back to cell)
-        </li>
-        <li>
-          <b>F2</b> (to move focus inside or outside cell)
         </li>
       </ul>
     </HelpPanel>

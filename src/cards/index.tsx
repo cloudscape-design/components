@@ -8,8 +8,13 @@ import { getCardsPerRow } from './cards-layout-helper';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from '../table/tools-header';
 import { getItemKey } from '../table/utils';
-import { focusMarkers, useFocusMove, useSelection } from '../table/use-selection';
-import SelectionControl, { SelectionControlProps } from '../table/selection-control';
+import {
+  SelectionControl,
+  SelectionControlProps,
+  focusMarkers,
+  useSelectionFocusMove,
+  useSelection,
+} from '../table/selection';
 import InternalContainer from '../container/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -219,7 +224,7 @@ const CardsList = <T,>({
 }) => {
   const selectable = !!selectionType;
 
-  const { moveFocusDown, moveFocusUp } = useFocusMove(selectionType, items.length);
+  const { moveFocusDown, moveFocusUp } = useSelectionFocusMove(selectionType, items.length);
 
   let visibleSectionsDefinition = cardDefinition.sections || [];
   visibleSectionsDefinition = visibleSections

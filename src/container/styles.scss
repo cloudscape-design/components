@@ -149,7 +149,7 @@
 
   &-dynamic-height.header-stuck {
     // to prevent the block from changing its height when variant dynamically changes
-    margin-bottom: calc(#{awsui.$font-heading-xl-line-height} - #{awsui.$font-heading-l-line-height});
+    margin-bottom: calc(#{awsui.$line-height-heading-xl} - #{awsui.$line-height-heading-l});
   }
 
   &:not(:empty) {

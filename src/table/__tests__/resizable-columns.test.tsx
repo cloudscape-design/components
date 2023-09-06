@@ -7,6 +7,7 @@ import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/
 import Table, { TableProps } from '../../../lib/components/table';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import { fireMousedown, fireMouseup, fireMouseMove, fakeBoundingClientRect } from './utils/resize-actions';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
   browserScrollbarSize: () => ({ width: 20, height: 20 }),
@@ -291,4 +292,76 @@ test('should not trigger if the previous and the current widths are the same', (
   fireMouseup(150);
 
   expect(onChange).toHaveBeenCalledTimes(0);
+});
+
+describe('resize with keyboard', () => {
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = 150;
+      }
+      return rect;
+    };
+  });
+
+  afterEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
+
+  test('ignores arrow keys before entering the dragging mode', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.right);
+    columnResizerWrapper.keydown(KeyCode.enter);
+
+    expect(onChange).toHaveBeenCalledTimes(0);
+  });
+
+  test.each([KeyCode.space, KeyCode.enter])('activates and commits resize with [%s] key code', keyCode => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(keyCode);
+    columnResizerWrapper.keydown(KeyCode.left);
+    columnResizerWrapper.keydown(keyCode);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [140, 300] });
+  });
+
+  test.each([KeyCode.escape])('discards resize with [%s] key code', keyCode => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.right);
+    columnResizerWrapper.keydown(keyCode);
+    columnResizerWrapper.keydown(KeyCode.enter);
+
+    expect(onChange).toHaveBeenCalledTimes(0);
+  });
+
+  test('discards resize on blur', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.right);
+    wrapper.findColumnResizer(2)!.focus();
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.enter);
+
+    expect(onChange).toHaveBeenCalledTimes(0);
+  });
 });

@@ -95,16 +95,3 @@ export function parseCssVariable(value: string) {
   const match = expr.body.match(cssVariableExpression);
   return match ? match[1] : value;
 }
-
-/**
- * Checks whether the given node is a descendant of a container.
- * @deprecated use nodeContains from component-toolkit
- * @param container Container node
- * @param node Node that is checked to be a descendant of the container
- */
-export function containsOrEqual(container: Node | null, node: Node): boolean {
-  if (container === null) {
-    return false;
-  }
-  return container === node || container.contains(node);
-}

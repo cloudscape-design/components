@@ -4,41 +4,50 @@
 import { getFocusables as getActualFocusables } from '../../internal/components/focus-lock/utils';
 import { FocusedCell } from './interfaces';
 
+// For the grid to have a single Tab stop all interactive element indices are updated to be -999.
+// The elements having tab index -999 are eligible for keyboard navigation but not for Tab navigation.
+const PSEUDO_FOCUSABLE_TAB_INDEX = -999;
+
 /**
  * Finds focused cell props corresponding the focused element inside the table.
  * The function relies on ARIA colindex/rowindex attributes being set.
  */
 export function findFocusinCell(event: FocusEvent): null | FocusedCell {
-  const element = event.target;
-
-  if (!(element instanceof HTMLElement)) {
+  if (!(event.target instanceof HTMLElement)) {
     return null;
   }
 
-  const cellElement = element.closest('td,th') as null | HTMLTableCellElement;
-  const rowElement = cellElement?.closest('tr');
+  function focusOnElement(element: HTMLElement): null | FocusedCell {
+    const cellElement = element.closest('td,th') as null | HTMLTableCellElement;
+    const rowElement = cellElement?.closest('tr');
 
-  if (!cellElement || !rowElement) {
-    return null;
+    if (!cellElement || !rowElement) {
+      return null;
+    }
+
+    const colIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '');
+    const rowIndex = parseInt(rowElement.getAttribute('aria-rowindex') ?? '');
+    if (isNaN(colIndex) || isNaN(rowIndex)) {
+      return null;
+    }
+
+    const cellFocusables = getFocusables(cellElement);
+    const elementIndex = cellFocusables.indexOf(element);
+    const dialog = isDialogElement(element);
+
+    // Focusing on the cell is not eligible when it contains focusable targets.
+    if (cellFocusables.length > 0 && elementIndex === -1) {
+      return focusOnElement(cellFocusables[0]);
+    }
+
+    return { rowIndex, colIndex, rowElement, cellElement, element, elementIndex, dialog };
   }
 
-  const colIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '');
-  const rowIndex = parseInt(rowElement.getAttribute('aria-rowindex') ?? '');
-  if (isNaN(colIndex) || isNaN(rowIndex)) {
-    return null;
-  }
-
-  const cellFocusables = getFocusables(cellElement);
-  const elementIndex = cellFocusables.indexOf(element);
-
-  const dialog = isDialogCell(cellElement);
-
-  return { rowIndex, colIndex, elementIndex, rowElement, cellElement, element, dialog };
+  return focusOnElement(event.target);
 }
 
 /**
- * Moves table focus in the provided direction. The focus can transition between cells or between
- * focusable elements within a cell unless the cell is marked as a dialog.
+ * Moves table focus in the provided direction. The focus can transition between cells or interactive elements inside cells.
  */
 export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
   const targetAriaRowIndex = from.rowIndex + delta.y;
@@ -47,7 +56,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
-  // Move focus to the next focusable element within a cell if eligible.
+  // Move focus to the next interactive cell content element if eligible.
   const cellFocusables = getFocusables(from.cellElement);
   const eligibleForElementFocus = delta.x && cellFocusables.length > 0;
   const targetElementIndex = from.elementIndex === -1 ? -1 : from.elementIndex + delta.x;
@@ -56,38 +65,27 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
     return;
   }
 
+  // Find next cell target to focus on.
   const targetAriaColIndex = from.colIndex + delta.x;
   const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
   if (!targetCell) {
     return;
   }
 
-  // For zero delta (exiting command) and multi-element cell focus cell itself.
+  // Focus on cell interactive content element if available or on the cell itself otherwise.
   const targetCellFocusables = getFocusables(targetCell);
-  if (delta.x === 0 && delta.y === 0 && targetCellFocusables.length > 1) {
-    return focus(targetCell);
-  }
-
-  // For non-dialog cell focus on the focusable element inside if exactly one is available.
-  const focusIndex =
-    delta.x === 0 && from.elementIndex !== -1 ? from.elementIndex : targetCellFocusables.length > 0 ? 0 : -1;
+  const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
   focus(focusTarget);
-}
-
-/**
- * Moves focus to the first focusable element inside the cell.
- */
-export function moveFocusIn(from: FocusedCell) {
-  focus(getFirstFocusable(from.cellElement));
 }
 
 /**
  * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
  */
 export function updateTableFocusables(table: HTMLTableElement, cell: null | FocusedCell) {
-  // Restore default focus behavior and make all cells focusable when focus is inside a dialog cell.
-  if (cell && cell.dialog && cell.element !== cell.cellElement) {
+  // Restore default focus behavior and make all cells focusable when focus in on a dialog element.
+  // This allows existing the dialog cell with Tab or Shift+Tab.
+  if (cell && cell.dialog) {
     for (const focusable of getFocusables(table)) {
       focusable.tabIndex = 0;
     }
@@ -97,23 +95,21 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
   const tableCells = Array.from(table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
 
   for (const cell of tableCells) {
-    cell.tabIndex = -1;
-    cell.setAttribute('data-focusable', 'true');
+    cell.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
   }
   for (const focusable of getActualFocusables(table)) {
-    focusable.tabIndex = -1;
-    focusable.setAttribute('data-focusable', 'true');
+    focusable.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
   }
 
   // The only focusable element of the table.
   let focusTarget: undefined | HTMLElement =
     cell && table.contains(cell.cellElement) ? cell.cellElement : tableCells[0];
 
-  const cellFocusables = getFocusables(focusTarget);
-  if (cellFocusables.length > 0) {
-    focusTarget = cellFocusables[0];
+  if (cell && table.contains(cell.element)) {
+    focusTarget = cell.element;
+  } else if (tableCells.length > 0) {
+    focusTarget = getFocusables(tableCells[0])[0] ?? focusTarget;
   }
-
   if (focusTarget) {
     focusTarget.tabIndex = 0;
   }
@@ -129,16 +125,32 @@ export function restoreTableFocusables(table: HTMLTableElement) {
   }
 }
 
-function isDialogCell(cell: HTMLElement) {
-  return cell.getAttribute('data-dialog-cell') === 'true' || !!cell.querySelector('[role="dialog"]');
+/**
+ * Returns true if the target element or one of its parents is a dialog or is marked with data-awsui-table-suppress-navigation.
+ * For dialog cells when in focus the tab indices are not overridden and keyboard events are not intercepted.
+ */
+function isDialogElement(target: HTMLElement) {
+  let current: null | HTMLElement = target;
+  while (current) {
+    const tagName = current.tagName.toLowerCase();
+    if (tagName === 'td' || tagName === 'th') {
+      return false;
+    }
+    if (
+      current.getAttribute('role') === 'dialog' ||
+      current.getAttribute('data-awsui-table-suppress-navigation') === 'true'
+    ) {
+      return true;
+    }
+    current = current.parentElement;
+  }
+  return false;
 }
 
 function getFocusables(element: HTMLElement) {
-  return Array.from(element.querySelectorAll('[data-focusable="true"]')) as HTMLElement[];
-}
-
-function getFirstFocusable(element: HTMLElement) {
-  return getFocusables(element)[0] as null | HTMLElement;
+  return Array.from(
+    element.querySelectorAll(`[tabIndex="0"],[tabIndex="${PSEUDO_FOCUSABLE_TAB_INDEX}"]`)
+  ) as HTMLElement[];
 }
 
 function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {

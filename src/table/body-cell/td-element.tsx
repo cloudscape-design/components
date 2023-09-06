@@ -7,6 +7,7 @@ import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole, getTableCellRoleProps } from '../table-role';
 import useMouseDownTarget from '../../internal/hooks/use-mouse-down-target.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -82,6 +83,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     });
 
     const getMouseDownTarget = useMouseDownTarget();
+    const mergedRef = useMergeRefs(stickyStyles.ref, ref);
 
     return (
       <Element
@@ -110,14 +112,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        ref={node => {
-          if (node) {
-            stickyStyles.ref(node);
-            if (ref) {
-              (ref as React.MutableRefObject<HTMLTableCellElement>).current = node;
-            }
-          }
-        }}
+        ref={mergedRef}
         {...nativeAttributes}
       >
         {children}

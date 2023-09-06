@@ -64,7 +64,7 @@ test('styles update when sticky column properties change', () => {
   });
   createMockTable(result.current, 500, 500, 100, 200, 300);
 
-  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles');
+  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles' as any);
 
   expect(updateCellStylesSpy).not.toHaveBeenCalled();
 
@@ -89,7 +89,7 @@ test('styles update when wrapper scrolls', () => {
   );
   result.current.refs.wrapper(tableWrapper);
   result.current.refs.table(table);
-  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles');
+  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles' as any);
 
   expect(updateCellStylesSpy).not.toHaveBeenCalled();
 
@@ -239,6 +239,36 @@ test('performs styles cleanup', () => {
   rerender({ visibleColumns, stickyColumnsFirst: 0, stickyColumnsLast: 0 });
 
   expect(elements.cells[0]).not.toHaveClass('sticky-cell');
+});
+
+test('cell subscriptions are cleaned up on ref change', () => {
+  const unsubscribe = jest.fn();
+  const subscribe = jest.fn(() => unsubscribe);
+  const stickyColumns = {
+    store: {
+      get: () => ({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } }),
+      subscribe,
+      unsubscribe: () => {},
+    },
+    style: { wrapper: {} },
+    refs: { table: () => {}, wrapper: () => {}, cell: () => {} },
+  };
+  const { result } = renderHook(() => useStickyCellStyles({ stickyColumns, columnId: '1', getClassName: () => ({}) }));
+
+  result.current.ref(document.createElement('td'));
+
+  expect(subscribe).toHaveBeenCalledTimes(1);
+  expect(unsubscribe).toHaveBeenCalledTimes(0);
+
+  result.current.ref(document.createElement('td'));
+
+  expect(subscribe).toHaveBeenCalledTimes(2);
+  expect(unsubscribe).toHaveBeenCalledTimes(1);
+
+  result.current.ref(null);
+
+  expect(subscribe).toHaveBeenCalledTimes(2);
+  expect(unsubscribe).toHaveBeenCalledTimes(2);
 });
 
 describe('getStickyClassNames helper', () => {

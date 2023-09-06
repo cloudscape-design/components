@@ -14,6 +14,17 @@ const testItem = {
   test: 'testData',
 };
 
+const stickyCellRef = jest.fn();
+
+jest.mock('../../../lib/components/table/sticky-columns', () => ({
+  ...jest.requireActual('../../../lib/components/table/sticky-columns'),
+  useStickyCellStyles: () => ({ ref: stickyCellRef }),
+}));
+
+afterEach(() => {
+  stickyCellRef.mockReset();
+});
+
 const column: TableProps.ColumnDefinition<typeof testItem> = {
   id: 'test',
   header: 'Test',
@@ -150,6 +161,16 @@ describe('TableBodyCell', () => {
       },
     };
     render(<TestComponent2 column={col} />);
+  });
+
+  it('should call sticky columns ref on mount and unmount', () => {
+    const { unmount } = render(<TestComponent />);
+
+    expect(stickyCellRef).toHaveBeenCalledWith(expect.any(HTMLTableCellElement));
+
+    unmount();
+
+    expect(stickyCellRef).toHaveBeenCalledWith(null);
   });
 
   describe('success icon behaviour', () => {
