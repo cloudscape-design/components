@@ -1876,12 +1876,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -3975,12 +4059,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -6074,12 +6242,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -8173,12 +8425,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -10272,12 +10608,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -12371,12 +12791,96 @@ Object {
       },
     },
     "font-family-base": Object {
-      "$description": "The default font family that will be applied globally to the product interface. ",
+      "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": Object {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+    },
+    "font-size-body-m": Object {
+      "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+      "$value": "14px",
+    },
+    "font-size-body-s": Object {
+      "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+      "$value": "12px",
+    },
+    "font-size-display-l": Object {
+      "$description": "The default font size for large display text.",
+      "$value": "44px",
+    },
+    "font-size-heading-l": Object {
+      "$description": "The default font size for h2s.",
+      "$value": "18px",
+    },
+    "font-size-heading-m": Object {
+      "$description": "The default font size for h3s.",
+      "$value": "18px",
+    },
+    "font-size-heading-s": Object {
+      "$description": "The default font size for h4s.",
+      "$value": "16px",
+    },
+    "font-size-heading-xl": Object {
+      "$description": "The default font size for h1s.",
+      "$value": "28px",
+    },
+    "font-size-heading-xs": Object {
+      "$description": "The default font size for h5s.",
+      "$value": "16px",
+    },
+    "font-weight-heading-l": Object {
+      "$description": "The default font weight for h2s.",
+      "$value": "700",
+    },
+    "font-weight-heading-m": Object {
+      "$description": "The default font weight for h3s.",
+      "$value": "400",
+    },
+    "font-weight-heading-s": Object {
+      "$description": "The default font weight for h4s.",
+      "$value": "700",
+    },
+    "font-weight-heading-xl": Object {
+      "$description": "The default font weight for h1s.",
+      "$value": "400",
+    },
+    "font-weight-heading-xs": Object {
+      "$description": "The default font weight for h5s.",
+      "$value": "400",
+    },
+    "line-height-body-m": Object {
+      "$description": "The default line height for regular body text.",
+      "$value": "22px",
+    },
+    "line-height-body-s": Object {
+      "$description": "The default line height for small body text.",
+      "$value": "16px",
+    },
+    "line-height-display-l": Object {
+      "$description": "The default line height for large display text.",
+      "$value": "56px",
+    },
+    "line-height-heading-l": Object {
+      "$description": "The default line height for h2s.",
+      "$value": "22px",
+    },
+    "line-height-heading-m": Object {
+      "$description": "The default line height for h3s.",
+      "$value": "22px",
+    },
+    "line-height-heading-s": Object {
+      "$description": "The default line height for h4s.",
+      "$value": "20px",
+    },
+    "line-height-heading-xl": Object {
+      "$description": "The default line height for h1s.",
+      "$value": "36px",
+    },
+    "line-height-heading-xs": Object {
+      "$description": "The default line height for h5s.",
+      "$value": "20px",
     },
     "motion-duration-complex": Object {
       "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -14475,12 +14979,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -16574,12 +17162,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -18673,12 +19345,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -20772,12 +21528,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -22871,12 +23711,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -24970,12 +25894,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -27069,12 +28077,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -29168,12 +30260,96 @@ Object {
       },
     },
     "font-family-base": Object {
-      "$description": "The default font family that will be applied globally to the product interface. ",
+      "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": Object {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+    },
+    "font-size-body-m": Object {
+      "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+      "$value": "14px",
+    },
+    "font-size-body-s": Object {
+      "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+      "$value": "12px",
+    },
+    "font-size-display-l": Object {
+      "$description": "The default font size for large display text.",
+      "$value": "42px",
+    },
+    "font-size-heading-l": Object {
+      "$description": "The default font size for h2s.",
+      "$value": "20px",
+    },
+    "font-size-heading-m": Object {
+      "$description": "The default font size for h3s.",
+      "$value": "18px",
+    },
+    "font-size-heading-s": Object {
+      "$description": "The default font size for h4s.",
+      "$value": "16px",
+    },
+    "font-size-heading-xl": Object {
+      "$description": "The default font size for h1s.",
+      "$value": "24px",
+    },
+    "font-size-heading-xs": Object {
+      "$description": "The default font size for h5s.",
+      "$value": "14px",
+    },
+    "font-weight-heading-l": Object {
+      "$description": "The default font weight for h2s.",
+      "$value": "700",
+    },
+    "font-weight-heading-m": Object {
+      "$description": "The default font weight for h3s.",
+      "$value": "700",
+    },
+    "font-weight-heading-s": Object {
+      "$description": "The default font weight for h4s.",
+      "$value": "700",
+    },
+    "font-weight-heading-xl": Object {
+      "$description": "The default font weight for h1s.",
+      "$value": "700",
+    },
+    "font-weight-heading-xs": Object {
+      "$description": "The default font weight for h5s.",
+      "$value": "700",
+    },
+    "line-height-body-m": Object {
+      "$description": "The default line height for regular body text.",
+      "$value": "20px",
+    },
+    "line-height-body-s": Object {
+      "$description": "The default line height for small body text.",
+      "$value": "16px",
+    },
+    "line-height-display-l": Object {
+      "$description": "The default line height for large display text.",
+      "$value": "48px",
+    },
+    "line-height-heading-l": Object {
+      "$description": "The default line height for h2s.",
+      "$value": "24px",
+    },
+    "line-height-heading-m": Object {
+      "$description": "The default line height for h3s.",
+      "$value": "22px",
+    },
+    "line-height-heading-s": Object {
+      "$description": "The default line height for h4s.",
+      "$value": "20px",
+    },
+    "line-height-heading-xl": Object {
+      "$description": "The default line height for h1s.",
+      "$value": "30px",
+    },
+    "line-height-heading-xs": Object {
+      "$description": "The default line height for h5s.",
+      "$value": "18px",
     },
     "motion-duration-complex": Object {
       "$description": "The duration for drawing more attention or accommodating for more complexity.",

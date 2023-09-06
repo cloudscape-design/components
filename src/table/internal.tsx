@@ -11,10 +11,9 @@ import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { supportsStickyPosition } from '../internal/utils/dom';
-import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
-import { focusMarkers, useFocusMove, useSelection } from './use-selection';
+import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from './selection';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
@@ -120,7 +119,7 @@ const InternalTable = React.forwardRef(
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
-    const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
+    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({

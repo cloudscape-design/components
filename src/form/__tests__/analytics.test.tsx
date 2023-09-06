@@ -13,6 +13,8 @@ import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+import Container from '../../../lib/components/container';
+import Header from '../../../lib/components/header';
 
 describe('Form Analytics', () => {
   beforeEach(() => {
@@ -296,5 +298,59 @@ describe('Form Analytics', () => {
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
+  });
+
+  test('send a funnelStepChange event when the substeps change', () => {
+    const { rerender } = render(
+      <Form>
+        <Container header={<Header>Substep 1</Header>}></Container>
+        <Container header={<Header>Substep 2</Header>}></Container>
+        <Container header={<Header>Substep 3</Header>}></Container>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStepChange).not.toHaveBeenCalled();
+
+    rerender(
+      <Form>
+        <Container header={<Header>Substep 1</Header>}></Container>
+        <Container header={<Header>Substep 3</Header>}></Container>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenCalledTimes(1);
+
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        subStepConfiguration: [
+          { name: 'Substep 1', number: 1 },
+          { name: 'Substep 3', number: 2 },
+        ],
+      })
+    );
+
+    rerender(
+      <Form>
+        <Container header={<Header>Substep 0</Header>}></Container>
+        <Container header={<Header>Substep 1</Header>}></Container>
+        <Container header={<Header>Substep 2</Header>}></Container>
+        <Container header={<Header>Substep 3</Header>}></Container>
+        <Container header={<Header>Substep 4</Header>}></Container>
+      </Form>
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenCalledTimes(2);
+
+    expect(FunnelMetrics.funnelStepChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        subStepConfiguration: [
+          { name: 'Substep 0', number: 1 },
+          { name: 'Substep 1', number: 2 },
+          { name: 'Substep 2', number: 3 },
+          { name: 'Substep 3', number: 4 },
+          { name: 'Substep 4', number: 5 },
+        ],
+      })
+    );
   });
 });

@@ -17,8 +17,8 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
 import { PACKAGE_VERSION } from '../../environment';
 
-import { FunnelMetrics } from '../';
-import { FunnelProps, FunnelStepProps } from '../interfaces';
+import { FunnelMetrics } from '../index';
+import { FunnelProps, FunnelStepProps, SubStepConfiguration } from '../interfaces';
 
 import {
   DATA_ATTR_FUNNEL_STEP,
@@ -28,6 +28,7 @@ import {
   getSubStepNameSelector,
   getSubStepSelector,
 } from '../selectors';
+import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 
 export const FUNNEL_VERSION = '1.0';
 
@@ -200,6 +201,48 @@ export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
   return <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />;
 };
 
+function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration[]) => void) {
+  /*
+   Chosen so that it's hopefully shorter than a user interaction, but gives enough time for the
+   amount of containers to stabilise.
+  */
+  const SUBSTEP_CHANGE_DEBOUNCE = 50;
+
+  const listenForSubStepChanges = useRef(false);
+  useEffect(() => {
+    // We prevent emitting the event on the first render.
+    const handle = setTimeout(() => (listenForSubStepChanges.current = true), SUBSTEP_CHANGE_DEBOUNCE);
+
+    return () => {
+      clearTimeout(handle);
+      listenForSubStepChanges.current = false;
+    };
+  }, []);
+
+  /* We debounce this handler, so that multiple containers can change at once without causing 
+  too many events. */
+  const stepChangeCallback = useDebounceCallback(() => {
+    // We don't want to emit the event after the component has been unmounted.
+    if (!listenForSubStepChanges.current) {
+      return;
+    }
+
+    const subSteps = Array.from(document.querySelectorAll(getSubStepAllSelector())) as HTMLElement[];
+
+    const subStepConfiguration = subSteps.map((substep, index) => {
+      const name = substep.querySelector(getSubStepNameSelector())?.textContent ?? '';
+      return {
+        name,
+        number: index + 1,
+      };
+    });
+
+    handler(subStepConfiguration);
+  }, SUBSTEP_CHANGE_DEBOUNCE);
+
+  return stepChangeCallback;
+}
+
 const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
   const { funnelInteractionId, funnelState, funnelType } = useFunnel();
   const parentStep = useFunnelStep();
@@ -209,6 +252,23 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
   const funnelStepProps = { [DATA_ATTR_FUNNEL_STEP]: stepNumber };
 
   const subStepCount = useRef<number>(0);
+
+  const onStepChange = useStepChangeListener(subStepConfiguration => {
+    if (!funnelInteractionId) {
+      return;
+    }
+    const stepName = getNameFromSelector(stepNameSelector) ?? '';
+
+    FunnelMetrics.funnelStepChange({
+      funnelInteractionId,
+      stepNumber,
+      stepName,
+      stepNameSelector,
+      subStepAllSelector: getSubStepAllSelector(),
+      totalSubSteps: subStepCount.current,
+      subStepConfiguration,
+    });
+  });
 
   // This useEffect hook is used to track the start and completion of interaction with the step.
   // On mount, if there is a valid funnel interaction id, it calls the 'funnelStepStart' method from FunnelMetrics
@@ -272,6 +332,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
     subStepCount,
     isInStep: true,
     funnelInteractionId,
+    onStepChange,
   };
 
   /*
@@ -296,7 +357,7 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   const subStepSelector = getSubStepSelector(subStepId);
   const subStepNameSelector = getSubStepNameSelector(subStepId);
   const subStepRef = useRef<HTMLDivElement | null>(null);
-  const { subStepCount } = useFunnelStep();
+  const { subStepCount, onStepChange } = useFunnelStep();
   const mousePressed = useRef<boolean>(false);
   const isFocusedSubStep = useRef<boolean>(false);
   const focusCleanupFunction = useRef<undefined | (() => void)>(undefined);
@@ -321,11 +382,15 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   useEffect(() => {
     if (!isNested) {
       subStepCount.current++;
+      onStepChange();
 
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      return () => void subStepCount.current--;
+      return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        subStepCount.current--;
+        onStepChange();
+      };
     }
-  }, [isNested, subStepCount]);
+  }, [isNested, subStepCount, onStepChange]);
 
   const context = isNested ? inheritedContext : newContext;
 

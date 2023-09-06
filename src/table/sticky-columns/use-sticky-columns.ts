@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import AsyncStore from '../../area-chart/async-store';
+import AsyncStore, { ReadonlyAsyncStore } from '../../area-chart/async-store';
 import clsx from 'clsx';
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import {
@@ -19,7 +19,7 @@ import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './ut
 const MINIMUM_SCROLLABLE_SPACE = 148;
 
 export interface StickyColumnsModel {
-  store: StickyColumnsStore;
+  store: ReadonlyAsyncStore<StickyColumnsState>;
   style: {
     wrapper?: React.CSSProperties;
   };

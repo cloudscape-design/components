@@ -256,7 +256,14 @@ test(
     const oldWidth = await page.getColumnWidth(1);
     await page.keys(['Tab']);
     // wait for the resizer to attach handler
-    await page.keys(['ArrowRight']);
+
+    await page.keys(['Enter', 'ArrowRight', 'ArrowRight', 'Enter']);
+    await page.assertColumnWidth(1, oldWidth + 10 + 10);
+
+    await page.keys(['Space', 'ArrowLeft', 'Space']);
+    await page.assertColumnWidth(1, oldWidth + 10);
+
+    await page.keys(['Enter', 'ArrowRight', 'Escape']);
     await page.assertColumnWidth(1, oldWidth + 10);
   })
 );
