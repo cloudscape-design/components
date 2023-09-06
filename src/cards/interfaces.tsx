@@ -242,6 +242,8 @@ export namespace CardsProps {
 
   export interface AriaLabels<T> {
     itemSelectionLabel: (data: CardsProps.SelectionState<T>, row: T) => string;
+    /** @deprecated Has no effect. */
+    selectionGroupLabel?: string;
     cardsLabel?: string;
   }
 

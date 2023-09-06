@@ -41,7 +41,6 @@ export default () => {
     filtering: {},
   });
   const ariaLabels: CardsProps.AriaLabels<Item> = {
-    selectionGroupLabel: 'group label',
     itemSelectionLabel: ({ selectedItems }, item) =>
       `${item.name} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
   };

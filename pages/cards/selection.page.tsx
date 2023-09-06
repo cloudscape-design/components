@@ -11,7 +11,6 @@ interface Item {
 }
 
 const ariaLabels: CardsProps<Item>['ariaLabels'] = {
-  selectionGroupLabel: 'group label',
   itemSelectionLabel: ({ selectedItems }, item) =>
     `${item.text} is ${!selectedItems.includes(item) ? 'not ' : ''}selected`,
 };

@@ -65,7 +65,6 @@ export default () => {
             },
           ]}
           ariaLabels={{
-            selectionGroupLabel: 'group label',
             itemSelectionLabel: ({ selectedItems }, item) =>
               `${item.name} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
           }}
