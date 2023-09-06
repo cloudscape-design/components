@@ -51,6 +51,17 @@ export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
 
   return <InnerAnalyticsFunnel {...props} />;
 };
+export const CREATION_EDIT_FLOW_DONE_EVENT_NAME = 'cloudscape-creation-edit-flow-done';
+
+const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
+  FunnelMetrics.funnelCancelled({ funnelInteractionId });
+  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+};
+
+const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
+  FunnelMetrics.funnelComplete({ funnelInteractionId });
+  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+};
 
 const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
@@ -116,14 +127,14 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        onFunnelComplete({ funnelInteractionId });
         funnelState.current = 'complete';
       }
 
       if (funnelState.current === 'complete') {
         FunnelMetrics.funnelSuccessful({ funnelInteractionId });
       } else {
-        FunnelMetrics.funnelCancelled({ funnelInteractionId });
+        onFunnelCancelled({ funnelInteractionId });
         funnelState.current = 'cancelled';
       }
     };
@@ -159,7 +170,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
         /*
           If no validation errors are rendered, we treat the funnel as complete.
         */
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        onFunnelComplete({ funnelInteractionId });
         funnelState.current = 'complete';
       } else {
         funnelState.current = 'default';
