@@ -9,6 +9,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 import logoSmall from './logos/logo-small.svg';
 import logoLarge from './logos/logo-large.svg';
+import logoTall from './logos/logo-tall.svg';
 
 const permutations = createPermutations<SideNavigationProps>([
   {
@@ -185,6 +186,13 @@ const permutations = createPermutations<SideNavigationProps>([
         logo: { src: logoSmall, alt: 'logo' },
       },
       { href: '#/', logo: { src: logoLarge, alt: 'logo' } },
+      { text: 'Console Name', href: '#/', logo: { src: logoTall, alt: 'logo' } },
+      {
+        text: 'A very very very very very very very very very very very very long console Name',
+        href: '#/',
+        logo: { src: logoTall, alt: 'logo' },
+      },
+      { href: '#/', logo: { src: logoTall, alt: 'logo' } },
     ],
   },
   {
