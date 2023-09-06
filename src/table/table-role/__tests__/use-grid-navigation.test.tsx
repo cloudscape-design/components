@@ -31,15 +31,17 @@ function TestTable<T extends object>({
   items,
   startIndex = 0,
   pageSize = 2,
+  isSuppressed,
 }: {
   tableRole?: 'grid' | 'table';
   columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
   items: T[];
   startIndex?: number;
   pageSize?: number;
+  isSuppressed?: (focusedElement: HTMLElement) => boolean;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({ active: tableRole === 'grid', pageSize, getTable: () => tableRef.current });
+  useGridNavigation({ active: tableRole === 'grid', isSuppressed, pageSize, getTable: () => tableRef.current });
   return (
     <table role={tableRole} ref={tableRef}>
       <thead>
@@ -220,7 +222,7 @@ test('supports key combination navigation', () => {
   expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 });
 
-test('suspends grid navigation when focusing on dialog element', () => {
+test('suppresses grid navigation when focusing on dialog element', () => {
   const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
   const table = container.querySelector('table')!;
 
@@ -417,13 +419,29 @@ test('elements focus is restored if table changes role after being rendered as g
 });
 
 test('grid navigation is suppressed by `isSuppressed` callback', () => {
-  throw new Error('Not implemented');
-});
+  const { container } = render(
+    <TestTable
+      columns={[nameColumn, valueColumn]}
+      items={items}
+      isSuppressed={focusedElement => focusedElement.getAttribute('aria-label') === 'Sort by value!'}
+    />
+  );
+  const table = container.querySelector('table')!;
 
-test('grid navigation is suppressed if already focused element requires suppression', () => {
-  throw new Error('Not implemented');
-});
+  (container.querySelector('button[aria-label="Sort by name"]') as HTMLElement).focus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+  expect(container.querySelectorAll('button[tabIndex="-999"]').length).toBeGreaterThan(0);
 
-test('focus automatically moves to the dynamically added interactive element in a cell', () => {
-  throw new Error('Not implemented');
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
+  expect(container.querySelectorAll('button[tabIndex="-999"]').length).toBeGreaterThan(0);
+
+  const sortByValueButton = container.querySelector('button[aria-label="Sort by value"]')!;
+  sortByValueButton.setAttribute('aria-label', 'Sort by value!');
+  mockObserver.callback([{ type: 'childList', removedNodes: [sortByValueButton] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [sortByValueButton] } as unknown as MutationRecord]);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.left });
+  expect(getActiveElement()).toEqual(['button', 'Sort by value!']);
+  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 });

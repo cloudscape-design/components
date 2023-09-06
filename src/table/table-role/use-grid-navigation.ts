@@ -102,7 +102,7 @@ class GridNavigationModel {
   }
 
   private isSuppressed(focusedElement: HTMLElement): boolean {
-    return defaultIsSuppressed(focusedElement) ?? this._isSuppressed(focusedElement);
+    return defaultIsSuppressed(focusedElement) || this._isSuppressed(focusedElement);
   }
 
   private onFocusin = (event: FocusEvent) => {
