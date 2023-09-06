@@ -2870,6 +2870,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
         "type": "union",
         "values": Array [
           "add-plus",
+          "anchor-link",
           "angle-left-double",
           "angle-left",
           "angle-right-double",
@@ -7085,6 +7086,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
         "type": "union",
         "values": Array [
           "add-plus",
+          "anchor-link",
           "angle-left-double",
           "angle-left",
           "angle-right-double",
