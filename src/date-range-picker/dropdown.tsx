@@ -16,7 +16,8 @@ import Calendar from './calendar';
 import { DateRangePickerProps } from './interfaces';
 import ModeSwitcher from './mode-switcher';
 import RelativeRangePicker from './relative-range';
-import { getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
+import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
+import { normalizeTimeOffset } from './time-offset';
 
 import styles from './styles.css.js';
 
@@ -24,27 +25,26 @@ export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true 
 
 export interface DateRangePickerDropdownProps
   extends Pick<
-    Required<DateRangePickerProps>,
-    | 'locale'
-    | 'isDateEnabled'
-    | 'dateDisabledReason'
-    | 'isValidRange'
-    | 'value'
-    | 'relativeOptions'
-    | 'showClearButton'
-    | 'dateOnly'
-    | 'timeInputFormat'
-    | 'rangeSelectorMode'
-  > {
+      Required<DateRangePickerProps>,
+      | 'locale'
+      | 'isDateEnabled'
+      | 'dateDisabledReason'
+      | 'isValidRange'
+      | 'value'
+      | 'relativeOptions'
+      | 'showClearButton'
+      | 'dateOnly'
+      | 'timeInputFormat'
+      | 'rangeSelectorMode'
+    >,
+    Pick<
+      DateRangePickerProps,
+      'startOfWeek' | 'getTimeOffset' | 'timeOffset' | 'ariaLabelledby' | 'ariaDescribedby' | 'i18nStrings'
+    > {
   onClear: () => void;
   onApply: (value: null | DateRangePickerProps.Value) => DateRangePickerProps.ValidationResult;
-  startOfWeek: number | undefined;
   onDropdownClose: () => void;
   isSingleGrid: boolean;
-  i18nStrings?: DateRangePickerProps.I18nStrings;
-
-  ariaLabelledby?: string;
-  ariaDescribedby?: string;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
 }
 
@@ -57,6 +57,8 @@ export function DateRangePickerDropdown({
   value,
   onClear: clearValue,
   onApply: applyValue,
+  getTimeOffset,
+  timeOffset,
   onDropdownClose,
   relativeOptions,
   showClearButton,
@@ -119,8 +121,11 @@ export function DateRangePickerDropdown({
     if (applyClicked) {
       const visibleRange =
         rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange);
-
-      const newValidationResult = isValidRange(visibleRange);
+      const formattedRange = formatValue(visibleRange, {
+        dateOnly,
+        timeOffset: normalizeTimeOffset(visibleRange, getTimeOffset, timeOffset),
+      });
+      const newValidationResult = isValidRange(formattedRange);
       setValidationResult(newValidationResult || VALID_RANGE);
     }
   }, [
@@ -130,6 +135,9 @@ export function DateRangePickerDropdown({
     selectedRelativeRange,
     selectedAbsoluteRange,
     setValidationResult,
+    dateOnly,
+    getTimeOffset,
+    timeOffset,
   ]);
 
   useEffect(() => scrollableContainerRef.current?.focus(), [scrollableContainerRef]);

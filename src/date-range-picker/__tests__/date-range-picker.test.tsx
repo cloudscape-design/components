@@ -383,6 +383,25 @@ describe('Date range picker', () => {
     });
   });
 
+  test('calls isValidRange without time part when dateOnly is enabled', () => {
+    const isValidRange = jest.fn().mockReturnValue({ valid: false, errorMessage: 'Error' });
+    const { wrapper } = renderDateRangePicker({ ...defaultProps, dateOnly: true, isValidRange });
+    act(() => wrapper.openDropdown());
+    changeMode(wrapper, 'absolute');
+    // When endDate hasn't been selected
+    act(() => wrapper.findDropdown()!.findDateAt('left', 3, 4).click());
+    act(() => wrapper.findDropdown()!.findApplyButton().click());
+    expect(isValidRange).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'absolute', startDate: '2023-08-16', endDate: '' })
+    );
+    // When full range has been selected
+    act(() => wrapper.findDropdown()!.findDateAt('right', 3, 4).click());
+    act(() => wrapper.findDropdown()!.findApplyButton().click());
+    expect(isValidRange).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'absolute', startDate: '2023-08-16', endDate: '2023-09-13' })
+    );
+  });
+
   describe('i18n', () => {
     test('supports using mode selector and modal footer props from i18n provider', () => {
       const { container } = render(
