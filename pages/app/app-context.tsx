@@ -8,7 +8,7 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 interface AppUrlParams {
   density: Density;
-  direction: string;
+  direction: 'ltr' | 'rtl';
   visualRefresh: boolean;
   motionDisabled: boolean;
 }
