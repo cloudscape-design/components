@@ -35,10 +35,12 @@ export default function ThemeSwitcher() {
       </label>
       <label>
         Direction
-        <select onChange={event => setUrlParams({ direction: event.target.value })} defaultValue={urlParams.direction}>
+        <select
+          onChange={event => setUrlParams({ direction: event.target.value as 'rtl' | 'ltr' })}
+          defaultValue={urlParams.direction}
+        >
           <option value="ltr">Left-to-Right</option>
-
-          <option value={'rtl'}>Right-to-Left</option>
+          <option value="rtl">Right-to-Left</option>
         </select>
       </label>
       <label>
