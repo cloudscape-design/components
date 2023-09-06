@@ -439,7 +439,6 @@ test('grid navigation is suppressed by `isSuppressed` callback', () => {
   const sortByValueButton = container.querySelector('button[aria-label="Sort by value"]')!;
   sortByValueButton.setAttribute('aria-label', 'Sort by value!');
   mockObserver.callback([{ type: 'childList', removedNodes: [sortByValueButton] } as unknown as MutationRecord]);
-  mockObserver.callback([{ type: 'childList', addedNodes: [sortByValueButton] } as unknown as MutationRecord]);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.left });
   expect(getActiveElement()).toEqual(['button', 'Sort by value!']);
