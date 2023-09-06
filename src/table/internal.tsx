@@ -90,7 +90,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
-      tableRole: explicitTableRole,
+      keyboardNavigation,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -191,7 +191,7 @@ const InternalTable = React.forwardRef(
     // Tables with interactive elements such as inline editing, row selection, or resizable columns are assigned role="grid" by default.
     const hasInlineEditing = !!submitEdit;
     const defaultGridRole = hasInlineEditing || hasSelection || resizableColumns || !sortingDisabled;
-    const tableRole = useTableRole({ explicitTableRole, defaultGridRole });
+    const tableRole = useTableRole({ keyboardNavigation: !!keyboardNavigation, defaultGridRole });
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -241,7 +241,14 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
-    useGridNavigation({ tableRole, pageSize: GRID_NAVIGATION_PAGE_SIZE, getTable: () => tableRefObject.current });
+    const keyboardNavigationStable = tableRole === 'grid';
+    const suppressNavigation = typeof keyboardNavigation === 'function' ? keyboardNavigation : undefined;
+    useGridNavigation({
+      keyboardNavigation: keyboardNavigationStable,
+      suppressNavigation,
+      pageSize: GRID_NAVIGATION_PAGE_SIZE,
+      getTable: () => tableRefObject.current,
+    });
 
     const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
 

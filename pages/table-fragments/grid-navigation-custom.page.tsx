@@ -118,7 +118,7 @@ export default function Page() {
 
   const tableRef = useRef<HTMLTableElement>(null);
 
-  useGridNavigation({ tableRole, pageSize, getTable: () => tableRef.current });
+  useGridNavigation({ keyboardNavigation: true, pageSize, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
     if (!sortingKey) {

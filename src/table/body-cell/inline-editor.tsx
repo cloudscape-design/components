@@ -117,7 +117,7 @@ export function InlineEditor<ItemType>({
   } = column.editConfig!;
 
   return (
-    <FocusLock restoreFocus={true} ref={focusLockRef}>
+    <FocusLock autoFocus={true} restoreFocus={true} ref={focusLockRef}>
       <div role="dialog" ref={mergedRef} aria-label={ariaLabels?.activateEditLabel?.(column, item)}>
         <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
           <FormField

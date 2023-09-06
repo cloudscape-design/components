@@ -317,12 +317,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onEditCancel?: CancelableEventHandler;
 
   /**
-   * Use this property to set ARIA role "grid" for tables with interactive elements. When the "grid" role is
-   * explicitly set the table activates advanced keyboard navigation and focus behaviors.
-   * When a table includes interactive content that conflicts with the grid navigation the content needs to
-   * employ the dialog pattern only becoming interactive upon pressing `Enter` or `F2` keys.
+   * Use this property to activate advanced keyboard navigation and focusing behaviors.
+   * When `keyboardNavigation=true` the table cells become navigable with arrow keys and
+   * the entire table has a single Tab stop.
+   * Use callback variant of the property when it is necessary to suppress the navigation conditionally.
+   * See the usage guidelines for more details.
    */
-  tableRole?: 'table' | 'grid';
+  keyboardNavigation?: TableProps.KeyboardNavigation;
 }
 
 export namespace TableProps {
@@ -463,4 +464,6 @@ export namespace TableProps {
     id: string;
     visible: boolean;
   }
+
+  export type KeyboardNavigation = boolean | ((focusedElement: Element) => boolean);
 }

@@ -199,6 +199,7 @@ export function Resizer({
           // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
           'aria-valuetext': headerCellWidthString,
           'aria-valuemin': minWidth,
+          'data-awsui-table-suppress-navigation': true,
         };
 
   return (

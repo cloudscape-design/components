@@ -86,8 +86,6 @@ function TableCellEditable<ItemType>({
       onClick={!isEditing ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
-      // TODO: move this to the inline-editor itself?
-      isDialog={isEditing}
     >
       {isEditing ? (
         <InlineEditor

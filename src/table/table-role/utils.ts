@@ -12,7 +12,10 @@ const PSEUDO_FOCUSABLE_TAB_INDEX = -999;
  * Finds focused cell props corresponding the focused element inside the table.
  * The function relies on ARIA colindex/rowindex attributes being set.
  */
-export function findFocusinCell(event: FocusEvent): null | FocusedCell {
+export function findFocusinCell(
+  event: FocusEvent,
+  customSuppressNavigation?: (focusedElement: HTMLElement) => boolean
+): null | FocusedCell {
   if (!(event.target instanceof HTMLElement)) {
     return null;
   }
@@ -33,14 +36,14 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
 
     const cellFocusables = getFocusables(cellElement);
     const elementIndex = cellFocusables.indexOf(element);
-    const dialog = isDialogElement(element);
+    const suppressNavigation = shouldSuppressNavigation(element) ?? customSuppressNavigation?.(element);
 
     // Focusing on the cell is not eligible when it contains focusable targets.
     if (cellFocusables.length > 0 && elementIndex === -1) {
       return focusOnElement(cellFocusables[0]);
     }
 
-    return { rowIndex, colIndex, rowElement, cellElement, element, elementIndex, dialog };
+    return { rowIndex, colIndex, rowElement, cellElement, element, elementIndex, suppressNavigation };
   }
 
   return focusOnElement(event.target);
@@ -83,9 +86,9 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
  * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
  */
 export function updateTableFocusables(table: HTMLTableElement, cell: null | FocusedCell) {
-  // Restore default focus behavior and make all cells focusable when focus in on a dialog element.
+  // Restore default focus behavior and make all cells focusable when navigation is suppressed.
   // This allows existing the dialog cell with Tab or Shift+Tab.
-  if (cell && cell.dialog) {
+  if (cell && cell.suppressNavigation) {
     for (const focusable of getFocusables(table)) {
       focusable.tabIndex = 0;
     }
@@ -129,7 +132,7 @@ export function restoreTableFocusables(table: HTMLTableElement) {
  * Returns true if the target element or one of its parents is a dialog or is marked with data-awsui-table-suppress-navigation.
  * For dialog cells when in focus the tab indices are not overridden and keyboard events are not intercepted.
  */
-function isDialogElement(target: HTMLElement) {
+function shouldSuppressNavigation(target: HTMLElement) {
   let current: null | HTMLElement = target;
   while (current) {
     const tagName = current.tagName.toLowerCase();

@@ -22,7 +22,7 @@ type DemoContext = React.Context<
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     stickyColumnsLast: string;
-    tableRole: 'default' | 'table' | 'grid';
+    keyboardNavigation: boolean;
   }>
 >;
 
@@ -34,8 +34,6 @@ const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: '
 
 const stickyColumnsOptions = [{ value: '0' }, { value: '1' }, { value: '2' }, { value: '3' }];
 
-const tableRoleOptions = [{ value: 'default' }, { value: 'table' }, { value: 'grid' }];
-
 export default () => {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [tableItems, setTableItems] = useState(originalTableItems);
@@ -44,7 +42,7 @@ export default () => {
     pagination: { pageSize: 25 },
     sorting: {},
   });
-  const tableRole = urlParams.tableRole === 'default' ? undefined : urlParams.tableRole;
+  const keyboardNavigation = urlParams.keyboardNavigation ?? true;
 
   const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
     {
@@ -165,6 +163,16 @@ export default () => {
         <SpaceBetween direction="horizontal" size="m">
           <FormField label="Table flags">
             <Checkbox
+              checked={keyboardNavigation}
+              onChange={event => {
+                setUrlParams({ keyboardNavigation: event.detail.checked });
+                window.location.reload();
+              }}
+            >
+              Keyboard navigation
+            </Checkbox>
+
+            <Checkbox
               checked={urlParams.resizableColumns}
               onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
             >
@@ -239,19 +247,6 @@ export default () => {
             />
           </FormField>
 
-          <FormField label="Table role">
-            <Select
-              selectedOption={
-                tableRoleOptions.find(option => option.value === urlParams.tableRole) ?? tableRoleOptions[0]
-              }
-              options={tableRoleOptions}
-              onChange={event => {
-                setUrlParams({ tableRole: event.detail.selectedOption.value as any });
-                window.location.reload();
-              }}
-            />
-          </FormField>
-
           <FormField label="Page">
             <Pagination
               {...paginationProps}
@@ -273,7 +268,7 @@ export default () => {
             last: parseInt(urlParams.stickyColumnsLast || '0'),
           }}
           {...urlParams}
-          tableRole={tableRole}
+          keyboardNavigation={keyboardNavigation}
           sortingDisabled={!urlParams.columnSorting}
           columnDefinitions={columnDefinitions.map(def =>
             urlParams.inlineEditing ? def : { ...def, editConfig: undefined }

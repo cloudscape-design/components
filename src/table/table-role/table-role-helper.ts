@@ -19,10 +19,10 @@ const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingStat
 
 // Ensures the table role is assigned once and never changes over time.
 export function useTableRole({
-  explicitTableRole,
+  keyboardNavigation,
   defaultGridRole,
 }: {
-  explicitTableRole?: 'table' | 'grid';
+  keyboardNavigation?: boolean;
   defaultGridRole: boolean;
 }): TableRole {
   const tableRoleRef = useRef<null | TableRole>(null);
@@ -31,7 +31,7 @@ export function useTableRole({
     return tableRoleRef.current;
   }
 
-  if (explicitTableRole === 'grid') {
+  if (keyboardNavigation) {
     tableRoleRef.current = 'grid';
     return 'grid';
   }
