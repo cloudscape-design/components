@@ -10,7 +10,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 const autosuggest = createWrapper().findAutosuggest();
 
 // Necessary scrolling to reach the bottom.
-const SCROLL_PAGE_HEIGHT = 500;
+const SCROLL_PAGE_HEIGHT = 450;
 
 function setup(
   opts: { virtualScrolling?: boolean; expandToViewport?: boolean },
@@ -18,7 +18,7 @@ function setup(
 ) {
   return useBrowser(async browser => {
     const page = new AsyncDropdownComponentPage(browser, autosuggest, opts.expandToViewport);
-    await page.setWindowSize({ width: 800, height: 300 });
+    await page.setWindowSize({ width: 800, height: 400 });
     await browser.url('/#/light/autosuggest/async');
     await page.waitForVisible(autosuggest.findNativeInput().toSelector());
     if (opts.virtualScrolling) {
@@ -138,7 +138,7 @@ describe.each([true, false])('Async autosuggest scrolling (with virtualScrolling
     'the bottom of the dropdown lines up with the highlighted option, when going down the list',
     setup({ virtualScrolling }, async page => {
       await page.respondWith(0, true);
-      await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown']);
+      await page.keys(['ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowDown']);
       const { bottom: optionBottom } = await page.getHighlightedPosition();
       const { bottom: dropdownBottom } = await page.getDropdownPosition();
       // a small give for borders and negative margins

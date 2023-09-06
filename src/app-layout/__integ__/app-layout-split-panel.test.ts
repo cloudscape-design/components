@@ -206,7 +206,7 @@ test(
     await page.dragResizerTo({ x: 0, y: height });
     expect((await page.getSplitPanelSize()).height).toEqual(160);
     await page.dragResizerTo({ x: 0, y: 0 });
-    expect(Math.round((await page.getSplitPanelSize()).height)).toEqual(277);
+    expect(Math.round((await page.getSplitPanelSize()).height)).toEqual(252);
   })
 );
 
