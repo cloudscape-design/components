@@ -9,47 +9,10 @@ import useScrollSpy from './scroll-spy.js';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-interface AnchorProps {
-  anchor: AnchorNavigationProps.Anchor;
-  fireFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
-  isActive: boolean;
-  index: number;
-}
-const Anchor = ({ anchor, fireFollow, isActive, index }: AnchorProps) => {
-  checkSafeUrl('SideNavigation', anchor.href);
-
-  const onClick = useCallback(
-    (event: React.MouseEvent) => {
-      if (isPlainLeftClick(event)) {
-        fireFollow(anchor, event);
-      }
-    },
-    [fireFollow, anchor]
-  );
-
-  return (
-    <li
-      data-itemid={`anchor-item-${index}`}
-      className={clsx(styles['anchor-item'], { [styles['anchor-item--active']]: isActive })}
-    >
-      <a
-        onClick={onClick}
-        className={clsx(styles['anchor-link'], { [styles['anchor-link--active']]: isActive })}
-        {...(isActive ? { 'aria-current': true } : {})}
-        href={anchor.href}
-      >
-        <span className={styles['anchor-link-text']} style={{ paddingLeft: `${anchor.level * 16 + 2}px` }}>
-          {anchor.text}
-        </span>
-        {anchor.info && <span className={styles['anchor-link-info']}>{anchor.info}</span>}
-      </a>
-    </li>
-  );
-};
-
 export default function InternalAnchorNavigation({
   anchors,
   ariaLabelledby,
+  className,
   onFollow,
   onActiveAnchorChange,
   disableTracking = false,
@@ -87,7 +50,7 @@ export default function InternalAnchorNavigation({
   }, [onActiveAnchorChangeHandler, memoizedAnchors, activeHref]);
 
   return (
-    <nav aria-labelledby={ariaLabelledby} className={styles.root} {...props}>
+    <nav aria-labelledby={ariaLabelledby} className={clsx(className, styles.root)} {...props}>
       <ol className={styles['anchor-list']}>
         {anchors.map((anchor, index) => {
           return (
@@ -104,3 +67,42 @@ export default function InternalAnchorNavigation({
     </nav>
   );
 }
+
+interface AnchorProps {
+  anchor: AnchorNavigationProps.Anchor;
+  fireFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
+  isActive: boolean;
+  index: number;
+}
+
+const Anchor = ({ anchor, fireFollow, isActive, index }: AnchorProps) => {
+  checkSafeUrl('SideNavigation', anchor.href);
+
+  const onClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (isPlainLeftClick(event)) {
+        fireFollow(anchor, event);
+      }
+    },
+    [fireFollow, anchor]
+  );
+
+  return (
+    <li
+      data-itemid={`anchor-item-${index}`}
+      className={clsx(styles['anchor-item'], { [styles['anchor-item--active']]: isActive })}
+    >
+      <a
+        onClick={onClick}
+        className={clsx(styles['anchor-link'], { [styles['anchor-link--active']]: isActive })}
+        {...(isActive ? { 'aria-current': true } : {})}
+        href={anchor.href}
+      >
+        <span className={styles['anchor-link-text']} style={{ paddingLeft: `${anchor.level * 16 + 2}px` }}>
+          {anchor.text}
+        </span>
+        {anchor.info && <span className={styles['anchor-link-info']}>{anchor.info}</span>}
+      </a>
+    </li>
+  );
+};

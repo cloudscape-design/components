@@ -10,4 +10,4 @@ export { AnchorNavigationProps };
 export default function AnchorNavigation({ ...props }: AnchorNavigationProps) {
   return <InternalAnchorNavigation {...props} />;
 }
-applyDisplayName(AnchorNavigation, 'Anchor Navigation');
+applyDisplayName(AnchorNavigation, 'AnchorNavigation');

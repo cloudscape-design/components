@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback, useEffect, useState } from 'react';
 
+const isBrowser = typeof window !== 'undefined';
+
 export default function useScrollSpy({
   hrefs,
 }: {
@@ -12,7 +14,7 @@ export default function useScrollSpy({
   React.Dispatch<React.SetStateAction<boolean>>
 ] {
   const [currentHref, setCurrentHref] = useState<string>();
-  const [scrollY, setScrollY] = useState(window.pageYOffset);
+  const [scrollY, setScrollY] = useState(isBrowser ? window.pageYOffset : 0);
   const [disableTracking, setDisableTracking] = useState(false);
 
   // Value, in pixels, accounting for some padding in the scroll spy logic
@@ -20,7 +22,9 @@ export default function useScrollSpy({
 
   // Scroll event handler
   const updateScroll = useCallback(() => {
-    setScrollY(window.pageYOffset);
+    if (isBrowser) {
+      setScrollY(window.pageYOffset);
+    }
   }, []);
 
   // Get the bounding rectangle of an element by href
@@ -54,17 +58,20 @@ export default function useScrollSpy({
   }, [getRectByHref, hrefs]);
 
   useEffect(() => {
-    window.addEventListener('scroll', updateScroll, {
-      capture: false,
-      passive: true,
-    });
-    return () => {
-      window.removeEventListener('scroll', updateScroll);
-    };
+    if (isBrowser) {
+      window.addEventListener('scroll', updateScroll, {
+        capture: false,
+        passive: true,
+      });
+
+      return () => {
+        window.removeEventListener('scroll', updateScroll);
+      };
+    }
   }, [updateScroll, scrollY]);
 
   useEffect(() => {
-    if (disableTracking) {
+    if (disableTracking || !isBrowser) {
       return;
     }
 

@@ -59,7 +59,7 @@ export namespace AnchorNavigationProps {
     level: number;
 
     /**
-     * Additional info to display next to the link, for example: "New" or "Updated"
+     * Additional information to display next to the link, for example: "New" or "Updated"
      */
     info?: string;
   }
