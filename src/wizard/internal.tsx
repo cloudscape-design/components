@@ -194,7 +194,7 @@ function useFunnelChangeEvent(funnelInteractionId: string | undefined, steps: Wi
 
   useEffect(() => {
     // We prevent emitting the event before the funnel has stabilised.
-    const handle = setTimeout(() => (listenForStepChanges.current = true), 50);
+    const handle = setTimeout(() => (listenForStepChanges.current = true), 0);
 
     return () => {
       clearTimeout(handle);
