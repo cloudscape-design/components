@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BaseComponentProps } from '../internal/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 
-export interface AnchorNavigationProps {
+export interface AnchorNavigationProps extends BaseComponentProps {
   /**
    * Adds `aria-labelledby` to the component.
    *

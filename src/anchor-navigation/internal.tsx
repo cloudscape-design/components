@@ -12,7 +12,6 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 export default function InternalAnchorNavigation({
   anchors,
   ariaLabelledby,
-  className,
   onFollow,
   onActiveAnchorChange,
   disableTracking = false,
@@ -50,7 +49,7 @@ export default function InternalAnchorNavigation({
   }, [onActiveAnchorChangeHandler, memoizedAnchors, activeHref]);
 
   return (
-    <nav aria-labelledby={ariaLabelledby} className={clsx(className, styles.root)} {...props}>
+    <nav aria-labelledby={ariaLabelledby} className={clsx(props.className, styles.root)} {...props}>
       <ol className={styles['anchor-list']}>
         {anchors.map((anchor, index) => {
           return (
