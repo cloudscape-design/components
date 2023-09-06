@@ -15,10 +15,12 @@ import {
   Icon,
   Input,
   Link,
+  RadioGroup,
   Select,
+  StatusIndicator,
 } from '~components';
 import styles from './styles.scss';
-import { id as generateId, generateItems, Instance } from '../table/generate-data';
+import { id as generateId, generateItems, Instance, InstanceState } from '../table/generate-data';
 import AppContext, { AppContextType } from '../app/app-context';
 import {
   TableRole,
@@ -32,6 +34,7 @@ import {
 } from '~components/table/table-role';
 import { orderBy } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
+import { stateToStatusIndicator } from '../table/shared-configs';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -42,48 +45,6 @@ type PageContext = React.Context<
 >;
 
 type ActionsMode = 'dropdown' | 'inline';
-
-const createColumnDefinitions = ({
-  onDelete,
-  onDuplicate,
-  onUpdate,
-  actionsMode,
-}: {
-  onDelete: (id: string) => void;
-  onDuplicate: (id: string) => void;
-  onUpdate: (id: string) => void;
-  actionsMode: ActionsMode;
-}) => [
-  {
-    key: 'id',
-    label: 'ID',
-    render: (item: Instance) => item.id,
-  },
-  {
-    key: 'actions',
-    label: 'Actions',
-    render: (item: Instance) => (
-      <ItemActionsCell
-        mode={actionsMode}
-        onDelete={() => onDelete(item.id)}
-        onDuplicate={() => onDuplicate(item.id)}
-        onUpdate={() => onUpdate(item.id)}
-      />
-    ),
-  },
-  {
-    key: 'state',
-    label: 'State',
-    render: (item: Instance) => item.state,
-  },
-  {
-    key: 'imageId',
-    label: 'Image ID',
-    render: (item: Instance) => <Link>{item.imageId}</Link>,
-  },
-  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => <DnsEditCell item={item} /> },
-  { key: 'type', label: 'Type', render: (item: Instance) => item.type },
-];
 
 const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
 
@@ -100,18 +61,55 @@ export default function Page() {
   const actionsMode = urlParams.actionsMode ?? 'dropdown';
 
   const [items, setItems] = useState(generateItems(25));
-  const columnDefinitions = useMemo(
-    () =>
-      createColumnDefinitions({
-        onDelete: (id: string) => setItems(prev => prev.filter(item => item.id !== id)),
-        onDuplicate: (id: string) =>
-          setItems(prev => prev.flatMap(item => (item.id !== id ? [item] : [item, { ...item, id: generateId() }]))),
-        onUpdate: (id: string) =>
-          setItems(prev => prev.map(item => (item.id !== id ? item : { ...item, id: generateId() }))),
-        actionsMode,
-      }),
-    [actionsMode]
-  );
+
+  const columnDefinitions = [
+    {
+      key: 'id',
+      label: 'ID',
+      render: (item: Instance) => item.id,
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      render: (item: Instance) => (
+        <ItemActionsCell
+          mode={actionsMode}
+          onDelete={() => setItems(prev => prev.filter(prevItem => prevItem.id !== item.id))}
+          onDuplicate={() =>
+            setItems(prev =>
+              prev.flatMap(prevItem =>
+                prevItem.id !== item.id ? [prevItem] : [prevItem, { ...prevItem, id: generateId() }]
+              )
+            )
+          }
+          onUpdate={() =>
+            setItems(prev =>
+              prev.map(prevItem => (prevItem.id !== item.id ? prevItem : { ...prevItem, id: generateId() }))
+            )
+          }
+        />
+      ),
+    },
+    {
+      key: 'state',
+      label: 'State',
+      render: (item: Instance) => (
+        <EditableStateCell
+          value={item.state}
+          onChange={value =>
+            setItems(prev => prev.map(prevItem => (prevItem.id === item.id ? { ...prevItem, state: value } : prevItem)))
+          }
+        />
+      ),
+    },
+    {
+      key: 'imageId',
+      label: 'Image ID',
+      render: (item: Instance) => <Link>{item.imageId}</Link>,
+    },
+    { key: 'dnsName', label: 'DNS name', render: (item: Instance) => <DnsEditCell item={item} /> },
+    { key: 'type', label: 'Type', render: (item: Instance) => item.type },
+  ];
 
   const [sortingKey, setSortingKey] = useState<null | string>(null);
   const [sortingDirection, setSortingDirection] = useState<1 | -1>(1);
@@ -327,6 +325,63 @@ function DnsEditCell({ item }: { item: Instance }) {
       <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
       <Button iconName="check" onClick={() => setActive(false)} />
       <Button iconName="close" onClick={() => setActive(false)} />
+    </div>
+  );
+}
+
+function EditableStateCell({ value, onChange }: { value: InstanceState; onChange: (value: InstanceState) => void }) {
+  const [active, setActive] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  if (!active) {
+    return value === 'TERMINATED' ? (
+      <StatusIndicator {...stateToStatusIndicator[value]} />
+    ) : (
+      <button className={styles['status-trigger-button']} onClick={() => setActive(true)}>
+        <StatusIndicator {...stateToStatusIndicator[value]} />
+      </button>
+    );
+  }
+
+  return (
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-label="Set control value dialog"
+      onBlur={event => {
+        if (!dialogRef.current?.contains(event.relatedTarget)) {
+          setActive(false);
+        }
+      }}
+      onKeyDown={event => {
+        if (event.key === 'Escape' || event.key === 'F2' || event.key === ' ') {
+          event.preventDefault();
+          setActive(false);
+        }
+      }}
+    >
+      <RadioGroup
+        items={[
+          {
+            value: 'RUNNING',
+            label: 'Start',
+          },
+          {
+            value: 'PENDING',
+            label: 'Suspend',
+          },
+          {
+            value: 'STOPPING',
+            label: 'Stop',
+          },
+          {
+            value: 'TERMINATING',
+            label: 'Terminate',
+          },
+        ]}
+        onChange={({ detail }) => onChange(detail.value as InstanceState)}
+        value={value}
+      />
     </div>
   );
 }
