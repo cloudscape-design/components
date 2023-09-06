@@ -4,6 +4,12 @@ import React from 'react';
 import { useVisualRefresh, clearVisualRefreshState } from '../index';
 import { render, screen } from '@testing-library/react';
 
+const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
+interface ExtendedWindow extends Window {
+  [awsuiVisualRefreshFlag]?: () => boolean;
+}
+declare const window: ExtendedWindow;
+
 jest.mock('../../../environment', () => ({ ALWAYS_VISUAL_REFRESH: false }), { virtual: true });
 
 describe('useVisualRefresh', () => {
@@ -37,5 +43,39 @@ describe('useVisualRefresh', () => {
     rerender(<App />);
     expect(console.warn).toHaveBeenCalledWith(expect.stringMatching(/Dynamic visual refresh change detected/));
     expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+  });
+
+  describe('Window Symbol awsui-visual-refresh-flag', () => {
+    afterEach(() => {
+      window[awsuiVisualRefreshFlag] = undefined;
+    });
+
+    test('should return true when Window Symbol awsui-visual-refresh-flag returns true', () => {
+      window[awsuiVisualRefreshFlag] = () => true;
+      render(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
+    });
+
+    test('should return false when Window Symbol awsui-visual-refresh-flag returns false', () => {
+      window[awsuiVisualRefreshFlag] = () => false;
+      render(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+    });
+
+    test('should not change theme when Window Symbol awsui-visual-refresh-flag is set later', () => {
+      const { rerender } = render(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+
+      window[awsuiVisualRefreshFlag] = () => true;
+      rerender(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+    });
+
+    test('should return true when Window Symbol awsui-visual-refresh-flag returns false but class name is present', () => {
+      document.body.classList.add('awsui-visual-refresh');
+      window[awsuiVisualRefreshFlag] = () => false;
+      render(<App />);
+      expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
+    });
   });
 });

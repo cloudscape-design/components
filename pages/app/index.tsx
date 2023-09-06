@@ -17,6 +17,12 @@ import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
+const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
+interface ExtendedWindow extends Window {
+  [awsuiVisualRefreshFlag]?: () => boolean;
+}
+declare const window: ExtendedWindow;
+
 function isAppLayoutPage(pageId?: string) {
   const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom'];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
@@ -74,7 +80,7 @@ const history = createHashHistory();
 const { visualRefresh } = parseQuery(history.location.search);
 
 // The VR class needs to be set before any React rendering occurs.
-document.body.classList.toggle('awsui-visual-refresh', visualRefresh);
+window[awsuiVisualRefreshFlag] = () => visualRefresh;
 
 render(
   <HashRouter>

@@ -5,6 +5,12 @@ import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { isDevelopment } from '../../is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
+interface ExtendedWindow extends Window {
+  [awsuiVisualRefreshFlag]?: () => boolean;
+}
+declare const window: ExtendedWindow;
+
 export const useVisualRefresh = ALWAYS_VISUAL_REFRESH ? () => true : useVisualRefreshDynamic;
 
 // We expect VR is to be set only once and before the application is rendered.
@@ -22,6 +28,10 @@ function detectVisualRefresh() {
 export function useVisualRefreshDynamic() {
   if (visualRefreshState === undefined) {
     visualRefreshState = detectVisualRefresh();
+    if (!visualRefreshState && typeof window !== 'undefined' && window[awsuiVisualRefreshFlag]?.()) {
+      document.body.classList.add('awsui-visual-refresh');
+      visualRefreshState = true;
+    }
   }
   if (isDevelopment) {
     const newVisualRefreshState = detectVisualRefresh();
