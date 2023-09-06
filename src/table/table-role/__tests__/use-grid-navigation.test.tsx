@@ -39,7 +39,7 @@ function TestTable<T extends object>({
   pageSize?: number;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({ tableRole, pageSize, getTable: () => tableRef.current });
+  useGridNavigation({ active: tableRole === 'grid', pageSize, getTable: () => tableRef.current });
   return (
     <table role={tableRole} ref={tableRef}>
       <thead>
@@ -258,7 +258,7 @@ test('updates page size', () => {
 
 test('does not throw errors if table is null', () => {
   function TestTable() {
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => null });
+    useGridNavigation({ active: true, pageSize: 2, getTable: () => null });
     return null;
   }
   expect(() => render(<TestTable />)).not.toThrow();
@@ -376,7 +376,7 @@ test('cell navigation works when the table is mutated between commands', () => {
 test('throws no error when focusing on incorrect target', () => {
   function TestComponent() {
     const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    useGridNavigation({ active: true, pageSize: 2, getTable: () => tableRef.current });
     return (
       <table role="grid" ref={tableRef}>
         <tbody>
@@ -414,4 +414,16 @@ test('elements focus is restored if table changes role after being rendered as g
   rerender(<TestTable tableRole="table" columns={[idColumn, valueColumn]} items={items} />);
 
   expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
+});
+
+test('grid navigation is suppressed by `isSuppressed` callback', () => {
+  throw new Error('Not implemented');
+});
+
+test('grid navigation is suppressed if already focused element requires suppression', () => {
+  throw new Error('Not implemented');
+});
+
+test('focus automatically moves to the dynamically added interactive element in a cell', () => {
+  throw new Error('Not implemented');
 });

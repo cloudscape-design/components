@@ -16,7 +16,7 @@ import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 /**
- * Makes table with role="grid" navigable with keyboard commands.
+ * Makes table navigable with keyboard commands.
  * See https://www.w3.org/WAI/ARIA/apg/patterns/grid
  */
 export function useGridNavigation({
