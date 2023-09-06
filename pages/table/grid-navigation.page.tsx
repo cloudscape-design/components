@@ -128,7 +128,6 @@ export default () => {
     {
       id: 'control',
       header: 'Control',
-      isDialog: () => !!urlParams.controlWidget,
       cell: item => (
         <RadioGroup
           items={[

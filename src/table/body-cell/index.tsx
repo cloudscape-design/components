@@ -86,6 +86,7 @@ function TableCellEditable<ItemType>({
       onClick={!isEditing ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
+      // TODO: move this to the inline-editor itself?
       isDialog={isEditing}
     >
       {isEditing ? (
@@ -145,9 +146,5 @@ export function TableBodyCell<ItemType>({
     return <TableCellEditable {...rest} />;
   }
   const { column, item } = rest;
-  return (
-    <TableTdElement {...rest} isDialog={column.isDialog?.(rest.item)}>
-      {column.cell(item)}
-    </TableTdElement>
-  );
+  return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
 }

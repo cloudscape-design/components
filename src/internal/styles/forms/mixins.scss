@@ -21,6 +21,7 @@
   box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
 }
 
+// TODO: implement the same as inline editing cells to have bigger offset from cell edges
 @mixin cell-focus {
   // For classic
   outline: thin dotted;

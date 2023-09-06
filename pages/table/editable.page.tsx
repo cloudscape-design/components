@@ -253,7 +253,7 @@ const Demo = forwardRef(
         resizableColumns={true}
         ariaLabels={ariaLabels}
         stickyHeader={true}
-        tableRole="grid"
+        // TODO: conditional table role, tests for default and grid role
       />
     );
   }

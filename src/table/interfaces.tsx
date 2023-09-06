@@ -102,7 +102,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *        The `cellContext` object contains the following properties:
    *  *  * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *  *  * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
-   *  * `isDialog` ((item) => boolean) - Marks the cell as a dialog to suppress the navigation behavior when "grid" table role is used.
    *  * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
@@ -377,7 +376,6 @@ export namespace TableProps {
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
     isRowHeader?: boolean;
-    isDialog?(item: ItemType): boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
