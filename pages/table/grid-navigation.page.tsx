@@ -292,17 +292,17 @@ function ControlCell({ value, onChange }: { value: 'on' | 'off'; onChange: (valu
   }
 
   return (
-    <span
+    <div
       ref={dialogRef}
       role="dialog"
       aria-label="Set control value dialog"
       onBlur={event => {
-        if (!dialogRef.current?.contains(event.target)) {
+        if (!dialogRef.current?.contains(event.relatedTarget)) {
           setActive(false);
         }
       }}
       onKeyDown={event => {
-        if (event.key === 'Escape' || event.key === 'F2' || event.key === 'Enter') {
+        if (event.key === 'Escape' || event.key === 'F2' || event.key === ' ') {
           setActive(false);
         }
       }}
@@ -321,6 +321,6 @@ function ControlCell({ value, onChange }: { value: 'on' | 'off'; onChange: (valu
         onChange={({ detail }) => onChange(detail.value as 'on' | 'off')}
         value={value}
       />
-    </span>
+    </div>
   );
 }

@@ -122,7 +122,10 @@ class GridNavigationModel {
     this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
-    updateTableFocusables(this.table, cell, this.suppressNavigation(cell.element));
+    const updated = updateTableFocusables(this.table, cell, this.suppressNavigation(cell.element));
+    if (updated) {
+      updated.focus();
+    }
   };
 
   private onFocusout = () => {

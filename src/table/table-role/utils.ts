@@ -81,14 +81,18 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
 /**
  * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
  */
-export function updateTableFocusables(table: HTMLTableElement, cell: null | FocusedCell, suppressNavigation: boolean) {
+export function updateTableFocusables(
+  table: HTMLTableElement,
+  cell: null | FocusedCell,
+  suppressNavigation: boolean
+): null | HTMLElement {
   // Restore default focus behavior and make all cells focusable when navigation is suppressed.
   // This allows existing the dialog cell with Tab or Shift+Tab.
   if (cell && suppressNavigation) {
     for (const focusable of getFocusables(table)) {
       focusable.tabIndex = 0;
     }
-    return;
+    return null;
   }
 
   const tableCells = Array.from(table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
@@ -112,6 +116,12 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
   if (focusTarget) {
     focusTarget.tabIndex = 0;
   }
+
+  if (!!cell && cell.element === cell.cellElement && getFocusables(cell.cellElement).length > 0) {
+    return getFocusables(cell.cellElement)[0];
+  }
+
+  return null;
 }
 
 export function restoreTableFocusables(table: HTMLTableElement) {
