@@ -2,31 +2,42 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useMemo } from 'react';
-import { findFocusinCell, moveFocusBy, restoreTableFocusables, updateTableFocusables } from './utils';
+import {
+  defaultIsSuppressed,
+  findFocusinCell,
+  moveFocusBy,
+  restoreTableFocusables,
+  updateTableFocusables,
+  getFocusables,
+} from './utils';
 import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 /**
  * Makes table with role="grid" navigable with keyboard commands.
  * See https://www.w3.org/WAI/ARIA/apg/patterns/grid
  */
-export function useGridNavigation({ tableRole, pageSize, getTable }: GridNavigationProps): GridNavigationAPI {
+export function useGridNavigation({
+  active,
+  pageSize,
+  getTable,
+  isSuppressed,
+}: GridNavigationProps): GridNavigationAPI {
   const model = useMemo(() => new GridNavigationModel(), []);
 
+  const getTableStable = useStableCallback(getTable);
+  const isSuppressedStable = useStableCallback((element: HTMLElement) => isSuppressed?.(element) ?? false);
+
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
-  useEffect(
-    () => {
-      if (tableRole === 'grid') {
-        const table = getTable();
-        table && model.init(table);
-      }
-      return () => model.destroy();
-    },
-    // Assuming getTable is stable.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [model, tableRole]
-  );
+  useEffect(() => {
+    if (active) {
+      const table = getTableStable();
+      table && model.init(table, isSuppressedStable);
+    }
+    return () => model.destroy();
+  }, [model, active, getTableStable, isSuppressedStable]);
 
   // Notify the model of the props change.
   useEffect(() => {
@@ -40,14 +51,16 @@ class GridNavigationModel {
   // Props
   private _pageSize = 0;
   private _table: null | HTMLTableElement = null;
+  private _isSuppressed: (focusedElement: HTMLElement) => boolean = () => false;
 
   // State
   private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
   private cleanup = () => {};
 
-  public init(table: HTMLTableElement) {
+  public init(table: HTMLTableElement, isSuppressed: (focusedElement: HTMLElement) => boolean) {
     this._table = table;
+    this._isSuppressed = isSuppressed;
 
     this.table.addEventListener('focusin', this.onFocusin);
     this.table.addEventListener('focusout', this.onFocusout);
@@ -56,7 +69,7 @@ class GridNavigationModel {
     const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
     tableNodesObserver.observe(table, { childList: true, subtree: true });
 
-    updateTableFocusables(this.table, this.focusedCell ?? this.prevFocusedCell);
+    updateTableFocusables(this.table, null, false);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -88,22 +101,25 @@ class GridNavigationModel {
     return this._table;
   }
 
+  private isSuppressed(focusedElement: HTMLElement): boolean {
+    return defaultIsSuppressed(focusedElement) ?? this._isSuppressed(focusedElement);
+  }
+
   private onFocusin = (event: FocusEvent) => {
     const cell = findFocusinCell(event);
-
     if (!cell) {
-      return;
-    }
-
-    if (cell.element !== event.target) {
-      cell.element.focus();
       return;
     }
 
     this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
-    updateTableFocusables(this.table, cell);
+    updateTableFocusables(this.table, cell, this.isSuppressed(cell.element));
+
+    // Focusing on cell is not eligible when cell contains focusable elements in the content.
+    if (cell.element === cell.cellElement) {
+      getFocusables(cell.cellElement)[0]?.focus();
+    }
   };
 
   private onFocusout = () => {
@@ -132,8 +148,8 @@ class GridNavigationModel {
     const minExtreme = Number.NEGATIVE_INFINITY;
     const maxExtreme = Number.POSITIVE_INFINITY;
 
-    // When focus is inside a dialog do not intercept any keyboard input.
-    if (from.dialog) {
+    // Do not intercept any keys when the navigation is suppressed.
+    if (this.isSuppressed(from.element)) {
       return;
     }
 
@@ -193,7 +209,8 @@ class GridNavigationModel {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {
           if (removedNode === this.prevFocusedCell.element || nodeContains(removedNode, this.prevFocusedCell.element)) {
-            updateTableFocusables(this.table, this.focusedCell ?? this.prevFocusedCell);
+            const cell = this.focusedCell ?? this.prevFocusedCell;
+            updateTableFocusables(this.table, cell, this.isSuppressed(cell.element));
             moveFocusBy(this.table, this.prevFocusedCell, { y: 0, x: 0 });
           }
         }
