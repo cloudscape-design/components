@@ -25,7 +25,7 @@ module.exports = task('test:a11y', async () => {
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__a11y__/**/*.test.ts');
-  const commands = ['-c', 'jest.integ.config.js', ...files, `--shard=${shard}`, '--passWithNoTests'];
+  const commands = ['-c', 'jest.integ.config.js', ...files];
   if (shard) {
     commands.push(`--shard=${shard}`);
   }
