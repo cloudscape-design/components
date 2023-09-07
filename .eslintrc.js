@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+const isCI = process.env.CI;
+
 module.exports = {
   parser: '@typescript-eslint/parser',
   extends: [
@@ -30,7 +32,7 @@ module.exports = {
     'react/no-danger': 'error',
     'react/no-unstable-nested-components': ['error', { allowAsProps: true }],
     'react/prop-types': 'off',
-    'react/forbid-component-props': ['warn', { forbid: ['className', 'id'] }],
+    'react/forbid-component-props': isCI ? 'off' : ['warn', { forbid: ['className', 'id'] }],
     'react/jsx-boolean-value': ['error', 'always'],
     '@cloudscape-design/ban-files': [
       'error',
