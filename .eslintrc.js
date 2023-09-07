@@ -181,7 +181,7 @@ module.exports = {
       },
     },
     {
-      files: ['none'],
+      files: ['src/attribute-editor/**'],
       excludedFiles: [
         'src/**/__tests__/**',
         'src/**/__integ__/**',
