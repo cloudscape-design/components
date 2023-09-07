@@ -3,8 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { InternalDrawerProps } from '../drawer/interfaces';
-import { AppLayoutState } from '../defaults';
-import { useMobile } from '../../internal/hooks/use-mobile';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
@@ -82,16 +80,14 @@ export function useDrawers(
     drawers: ownDrawers,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: InternalDrawerProps & { __disableRuntimeDrawers?: boolean },
-  toolsProps: ToolsProps,
-  defaults: AppLayoutState
+  toolsProps: ToolsProps
 ) {
-  const isMobile = useMobile();
   const toolsDrawer = getToolsDrawerItem(toolsProps);
 
   const [activeDrawerId, setActiveDrawerId] = useControllable(
     ownDrawers?.activeDrawerId,
     ownDrawers?.onChange,
-    !isMobile && !toolsProps.toolsHide && toolsProps.toolsOpen && defaults.toolsOpen ? TOOLS_DRAWER_ID : undefined,
+    !toolsProps.toolsHide && toolsProps.toolsOpen ? TOOLS_DRAWER_ID : undefined,
     {
       componentName: 'AppLayout',
       controlledProp: 'activeDrawerId',

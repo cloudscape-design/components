@@ -4,6 +4,7 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
+import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -80,12 +81,24 @@ describe('Runtime drawers', () => {
   });
 
   test('opens registered drawer when defaultActive is set', async () => {
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     expect(wrapper.findActiveDrawer()).toBeFalsy();
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     await delay();
     expect(wrapper.findActiveDrawer()!.getElement()).toBeInTheDocument();
+  });
+
+  test('does not open defaultActive drawer if the tools are already open', async () => {
+    const { wrapper } = await renderComponent(
+      <AppLayout toolsOpen={true} tools="Tools content" ariaLabels={{ toolsToggle: 'tools toggle' }} />
+    );
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
+    await delay();
+    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-expanded', 'true');
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Tools content');
   });
 
   test('updates active drawer if multiple are registered', async () => {

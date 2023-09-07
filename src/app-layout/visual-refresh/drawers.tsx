@@ -14,6 +14,7 @@ import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
 import { splitItems } from '../drawer/drawers-helpers';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -53,12 +54,6 @@ export default function Drawers() {
   );
 }
 
-/**
- * The ActiveDrawer component will render either the drawer content that corresponds
- * to the activeDrawerId or the Tools content if it exists and isToolsOpen is true.
- * The aria labels, click handling, and focus handling will be updated dynamically
- * based on the active drawer or tools content.
- */
 function ActiveDrawer() {
   const {
     activeDrawerId,
@@ -70,9 +65,7 @@ function ActiveDrawer() {
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
-    isToolsOpen,
     navigationHide,
-    tools,
     toolsRefs,
     loseDrawersFocus,
     resizeHandle,
@@ -88,8 +81,9 @@ function ActiveDrawer() {
     content: activeDrawerId ? activeDrawer?.ariaLabels?.content : ariaLabels?.tools,
   };
 
-  const isHidden = !activeDrawerId && !isToolsOpen;
+  const isHidden = !activeDrawerId;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
+  const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
 
   const size = Math.min(drawersMaxWidth, drawerSize);
 
@@ -99,10 +93,10 @@ function ActiveDrawer() {
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
-        [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
+        [styles['is-drawer-open']]: activeDrawerId,
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
-        [testutilStyles.tools]: isToolsOpen,
+        [testutilStyles.tools]: isToolsDrawer,
       })}
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
@@ -120,20 +114,17 @@ function ActiveDrawer() {
           ariaLabel={computedAriaLabels.closeButton}
           className={clsx({
             [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-            [testutilStyles['tools-close']]: isToolsOpen,
+            [testutilStyles['tools-close']]: isToolsDrawer,
           })}
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
           onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? null) : handleToolsClick(false))}
-          ref={isToolsOpen ? toolsRefs.close : drawersRefs.close}
+          ref={isToolsDrawer ? toolsRefs.close : drawersRefs.close}
           variant="icon"
         />
       </div>
 
-      <div className={styles['drawer-content']}>
-        {activeDrawerId && activeDrawer?.content}
-        {isToolsOpen && tools}
-      </div>
+      <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
     </aside>
   );
 }
