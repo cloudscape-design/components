@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { useRef } from 'react';
 import { TableRole } from './interfaces';
 
 type SortingStatus = 'sortable' | 'ascending' | 'descending';
@@ -15,6 +16,23 @@ const getAriaSort = (sortingState: SortingStatus) => stateToAriaSort[sortingStat
 // Depending on its content the table can have different semantic representation which includes the
 // ARIA role of the table component ("table", "grid", "treegrid") but also roles and other semantic attributes
 // of the child elements. The TableRole helper encapsulates table's semantic structure.
+
+// Ensures the table role is assigned once and never changes over time.
+export function useTableRole(tableRole: 'grid-default' | 'table'): TableRole {
+  const tableRoleRef = useRef<null | TableRole>(null);
+
+  if (tableRoleRef.current) {
+    return tableRoleRef.current;
+  }
+
+  if (tableRole === 'grid-default') {
+    tableRoleRef.current = 'grid-default';
+    return 'grid-default';
+  }
+
+  tableRoleRef.current = 'table';
+  return 'table';
+}
 
 export function getTableRoleProps(options: {
   tableRole: TableRole;
