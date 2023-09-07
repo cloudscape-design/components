@@ -115,6 +115,126 @@ An \`onButtonClick\` event is fired when the user clicks it.",
 }
 `;
 
+exports[`Documenter definition for anchor-navigation matches the snapshot: anchor-navigation 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Fired when an active anchor link changes.",
+      "detailInlineType": Object {
+        "name": "AnchorNavigationProps.Anchor",
+        "properties": Array [
+          Object {
+            "name": "href",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "info",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "level",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "AnchorNavigationProps.Anchor",
+      "name": "onActiveAnchorChange",
+    },
+    Object {
+      "cancelable": true,
+      "description": "Fired when an anchor link is clicked without any modifier keys.",
+      "detailInlineType": Object {
+        "name": "AnchorNavigationProps.Anchor",
+        "properties": Array [
+          Object {
+            "name": "href",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "info",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "level",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "AnchorNavigationProps.Anchor",
+      "name": "onFollow",
+    },
+  ],
+  "functions": Array [],
+  "name": "AnchorNavigation",
+  "properties": Array [
+    Object {
+      "description": "Specifies the active anchor href.
+For using the component in a controlled manner, use together with 'disableTracking'.",
+      "name": "activeHref",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "List of anchors.",
+      "name": "anchors",
+      "optional": false,
+      "type": "Array<AnchorNavigationProps.Anchor>",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component.
+Use this property for identifying the header or title that labels the anchor navigation.
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Disable scroll spy if set to true.",
+      "name": "disableTracking",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for annotation-context matches the snapshot: annotation-context 1`] = `
 Object {
   "events": Array [

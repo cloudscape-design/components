@@ -15,7 +15,7 @@ export default function InternalAnchorNavigation({
   onFollow,
   onActiveAnchorChange,
   disableTracking = false,
-  activehref = '',
+  activeHref = '',
   ...props
 }: AnchorNavigationProps) {
   const hrefs = useMemo(() => anchors.map(anchor => anchor.href), [anchors]);
@@ -32,21 +32,21 @@ export default function InternalAnchorNavigation({
     fireNonCancelableEvent(onActiveAnchorChange, newActiveAnchor);
   });
 
-  const [activeHref, setActiveHref, setDisableTracking] = useScrollSpy({ hrefs });
+  const [currentActiveHref, setCurrentActiveHref, setDisableTracking] = useScrollSpy({ hrefs });
 
   useEffect(() => {
     setDisableTracking(disableTracking);
 
-    if (activehref) {
-      setActiveHref(activehref);
+    if (activeHref) {
+      setCurrentActiveHref(activeHref);
     }
-  }, [setDisableTracking, setActiveHref, disableTracking, activehref]);
+  }, [setDisableTracking, setCurrentActiveHref, disableTracking, activeHref]);
 
   useEffect(() => {
-    if (activeHref) {
-      onActiveAnchorChangeHandler(memoizedAnchors.find(anchor => anchor.href === activeHref));
+    if (currentActiveHref) {
+      onActiveAnchorChangeHandler(memoizedAnchors.find(anchor => anchor.href === currentActiveHref));
     }
-  }, [onActiveAnchorChangeHandler, memoizedAnchors, activeHref]);
+  }, [onActiveAnchorChangeHandler, memoizedAnchors, currentActiveHref]);
 
   return (
     <nav aria-labelledby={ariaLabelledby} className={clsx(props.className, styles.root)} {...props}>
@@ -55,7 +55,7 @@ export default function InternalAnchorNavigation({
           return (
             <Anchor
               fireFollow={onFollowHandler}
-              isActive={anchor.href === activeHref}
+              isActive={anchor.href === currentActiveHref}
               key={index}
               index={index}
               anchor={anchor}

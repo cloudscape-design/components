@@ -23,7 +23,7 @@ export interface AnchorNavigationProps extends BaseComponentProps {
    * Specifies the active anchor href.
    * For using the component in a controlled manner, use together with 'disableTracking'.
    */
-  activehref?: string;
+  activeHref?: string;
 
   /**
    * Disable scroll spy if set to true.
