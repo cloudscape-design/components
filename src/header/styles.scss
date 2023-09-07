@@ -71,11 +71,6 @@
 
   &.no-wrap {
     flex-wrap: nowrap;
-
-    &:not(.refresh) {
-      // Additional padding to make it the same height as a header with wrapping
-      padding-bottom: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
-    }
   }
 
   &.refresh {
@@ -152,6 +147,11 @@
   &-variant-h2:not(.refresh),
   &-variant-h3:not(.refresh) {
     padding-top: awsui.$space-scaled-xs;
+  }
+
+  .no-wrap > &:not(.refresh) {
+    // Additional padding to make it the same height as a header with wrapping
+    padding-bottom: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
   }
 }
 
