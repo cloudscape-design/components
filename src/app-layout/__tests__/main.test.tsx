@@ -96,7 +96,7 @@ describe('drawers', () => {
       },
     };
 
-    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...drawers} />);
+    const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} contentType="form" {...drawers} />);
 
     expect(findElement(wrapper)).toBeNull();
     findToggle(wrapper).click();

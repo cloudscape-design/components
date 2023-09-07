@@ -22,8 +22,7 @@ interface ToolsProps {
 }
 
 function getToolsDrawerItem(props: ToolsProps) {
-  // TODO: remove props.tools check, because it is incompatible with no-drawers behavior
-  if (props.toolsHide || !props.tools) {
+  if (props.toolsHide) {
     return null;
   }
   const { iconName, getLabels } = togglesConfig.tools;

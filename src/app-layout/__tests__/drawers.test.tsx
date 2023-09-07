@@ -19,13 +19,13 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 
 describeEachAppLayout(() => {
   test(`should not render drawer when it is not defined`, () => {
-    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-    expect(wrapper.findDrawersTriggers()!).toHaveLength(1);
+    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
   });
 
-  test('should not render drawers if drawer items are empty', () => {
+  test('should not apply drawers treatment to the tools if the drawers array is empty', () => {
     const emptyDrawerItems = {
       drawers: {
         ariaLabel: 'Drawers',
@@ -34,7 +34,14 @@ describeEachAppLayout(() => {
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...emptyDrawerItems} />);
 
-    expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper.findToolsToggle()).toBeTruthy();
+  });
+
+  test('should apply drawers treatment to the tools if at least one other drawer is provided', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+    expect(wrapper.findToolsToggle()).toBeTruthy();
   });
 
   test('renders drawers with the tools', () => {
