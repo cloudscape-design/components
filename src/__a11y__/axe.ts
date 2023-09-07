@@ -29,6 +29,9 @@ export const spec: Axe.Spec = {
   rules: [
     // Skip the empty table header rule which fails for the single selection table header
     { id: 'empty-table-header', enabled: false },
+    // Skip the rule which enforces that axe is included in all iframes, which fails on
+    // very basic iframes on media container tests
+    { id: 'frame-tested', enabled: false },
   ],
 };
 
