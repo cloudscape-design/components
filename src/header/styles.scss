@@ -67,9 +67,15 @@
   width: 100%;
   flex-wrap: wrap;
   column-gap: awsui.$space-xs;
+  row-gap: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
 
   &.no-wrap {
     flex-wrap: nowrap;
+
+    &:not(.refresh) {
+      // Additional padding to make it the same height as a header with wrapping
+      padding-bottom: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
+    }
   }
 
   &.refresh {
