@@ -3560,7 +3560,6 @@ scroll parent up to reveal the first card or row of cards.",
     Object {
       "description": "Adds labels to the selection components (checkboxes and radio buttons) as follows:
 * \`itemSelectionLabel\` ((SelectionState, Item) => string) - Determines the label for an item.
-* \`selectionGroupLabel\` (string) - Specifies the label for the group selection control.
 * \`cardsLabel\` (string) - Provides alternative text for the cards list.
                            By default the contents of the \`header\` are used.
 You can use the first arguments of type \`SelectionState\` to access the current selection
@@ -3583,7 +3582,7 @@ add a meaningful description to the whole selection.",
           },
           Object {
             "name": "selectionGroupLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
