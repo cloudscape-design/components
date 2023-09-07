@@ -161,7 +161,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2, 3, 4, 5, 6]
     needs:
       - buildComponents
     steps:
