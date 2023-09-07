@@ -18,6 +18,9 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 /**
  * Makes table navigable with keyboard commands.
  * See https://www.w3.org/WAI/ARIA/apg/patterns/grid
+ *
+ * The hook attaches the GridNavigationModel helper when active=true.
+ * See GridNavigationModel for more details.
  */
 export function useGridNavigation({ active, pageSize, getTable, isSuppressed }: GridNavigationProps) {
   const model = useMemo(() => new GridNavigationModel(), []);
@@ -40,6 +43,19 @@ export function useGridNavigation({ active, pageSize, getTable, isSuppressed }: 
   }, [model, pageSize]);
 }
 
+/**
+ * This helper encapsulates the grid navigation behaviors which are:
+ * 1. Responding to keyboard commands and moving the focus accordingly;
+ * 2. Muting table interactive elements for only one to be user-focusable at a time;
+ * 3. Suppressing the above behaviors when focusing an element inside a dialog or when instructed by the isSuppressed callback.
+ *
+ * All behaviors are attached upon initialization and are re-evaluated with every focusin, focusout, and keydown events,
+ * and also when a node removal inside the table is observed to ensure consistency at any given moment.
+ *
+ * When the navigation is suppressed the keyboard commands are no longer intercepted and all table interactive elements are made
+ * user-focusable to unblock the Tab navigation. The suppression should only be used for interactive elements inside the table that would
+ * otherwise conflict with the navigation. Once the interactive element is deactivated or lose focus the table navigation becomes active again.
+ */
 class GridNavigationModel {
   // Props
   private _pageSize = 0;
