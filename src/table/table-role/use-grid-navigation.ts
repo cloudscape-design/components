@@ -10,7 +10,7 @@ import {
   updateTableFocusables,
   getFocusables,
 } from './utils';
-import { FocusedCell, GridNavigationAPI, GridNavigationProps } from './interfaces';
+import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
@@ -19,12 +19,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
  * Makes table navigable with keyboard commands.
  * See https://www.w3.org/WAI/ARIA/apg/patterns/grid
  */
-export function useGridNavigation({
-  active,
-  pageSize,
-  getTable,
-  isSuppressed,
-}: GridNavigationProps): GridNavigationAPI {
+export function useGridNavigation({ active, pageSize, getTable, isSuppressed }: GridNavigationProps) {
   const model = useMemo(() => new GridNavigationModel(), []);
 
   const getTableStable = useStableCallback(getTable);
@@ -43,8 +38,6 @@ export function useGridNavigation({
   useEffect(() => {
     model.update({ pageSize });
   }, [model, pageSize]);
-
-  return {};
 }
 
 class GridNavigationModel {
