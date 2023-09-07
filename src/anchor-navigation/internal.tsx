@@ -8,6 +8,8 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import useScrollSpy from './scroll-spy.js';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
 
 export default function InternalAnchorNavigation({
   anchors,
@@ -16,8 +18,11 @@ export default function InternalAnchorNavigation({
   onActiveAnchorChange,
   disableTracking = false,
   activeHref = '',
+  __internalRootRef = null,
   ...props
-}: AnchorNavigationProps) {
+}: AnchorNavigationProps & InternalBaseComponentProps) {
+  const baseProps = getBaseProps(props);
+
   const hrefs = useMemo(() => anchors.map(anchor => anchor.href), [anchors]);
   const memoizedAnchors = useMemo(() => anchors, [anchors]);
 
@@ -49,7 +54,12 @@ export default function InternalAnchorNavigation({
   }, [onActiveAnchorChangeHandler, memoizedAnchors, currentActiveHref]);
 
   return (
-    <nav aria-labelledby={ariaLabelledby} className={clsx(props.className, styles.root)} {...props}>
+    <nav
+      {...baseProps}
+      ref={__internalRootRef}
+      aria-labelledby={ariaLabelledby}
+      className={clsx(baseProps.className, styles.root)}
+    >
       <ol className={styles['anchor-list']}>
         {anchors.map((anchor, index) => {
           return (
