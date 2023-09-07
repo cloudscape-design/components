@@ -116,7 +116,8 @@ class GridNavigationModel {
 
     updateTableFocusables(this.table, cell, this.isSuppressed(cell.element));
 
-    // Focusing on cell is not eligible when cell contains focusable elements in the content.
+    // Focusing on cell is not eligible when it contains focusable elements in the content.
+    // If content focusables are available - move the focus to the first one.
     if (cell.element === cell.cellElement) {
       getFocusables(cell.cellElement)[0]?.focus();
     }
@@ -200,11 +201,14 @@ class GridNavigationModel {
   };
 
   private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
+    // When focused cell is un-mounted the focusout event handler removes this.cell,
+    // while this.prevFocusedCell is retained until the next focusin event.
     if (!this.prevFocusedCell) {
       return;
     }
 
-    // When focused cell was un-mounted - re-apply focus to the same location.
+    // The lost focus in an unmount event is reapplied to the table using the previous cell position.
+    // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
     for (const record of mutationRecords) {
       if (record.type === 'childList') {
         for (const removedNode of Array.from(record.removedNodes)) {

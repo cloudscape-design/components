@@ -10,7 +10,7 @@ const PSEUDO_FOCUSABLE_TAB_INDEX = -999;
 
 /**
  * Finds focused cell props corresponding the focused element inside the table.
- * The function relies on ARIA colindex/rowindex attributes being set.
+ * The function relies on ARIA colindex/rowindex attributes being correctly applied.
  */
 export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   if (!(event.target instanceof HTMLElement)) {
@@ -41,29 +41,29 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
  * Moves table focus in the provided direction. The focus can transition between cells or interactive elements inside cells.
  */
 export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: { y: number; x: number }) {
+  // Find next row to move focus into (can be null if the top/bottom is reached).
   const targetAriaRowIndex = from.rowIndex + delta.y;
   const targetRow = findTableRowByAriaRowIndex(table, targetAriaRowIndex, delta.y);
   if (!targetRow) {
     return;
   }
 
-  // Move focus to the next interactive cell content element if eligible.
+  // Move focus to the next interactive cell content element if available.
   const cellFocusables = getFocusables(from.cellElement);
-  const eligibleForElementFocus = delta.x && cellFocusables.length > 0;
-  const targetElementIndex = from.elementIndex === -1 ? -1 : from.elementIndex + delta.x;
-  if (eligibleForElementFocus && 0 <= targetElementIndex && targetElementIndex < cellFocusables.length) {
-    focus(cellFocusables[targetElementIndex]);
+  const nextElementIndex = from.elementIndex + delta.x;
+  if (delta.x && from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length) {
+    focus(cellFocusables[nextElementIndex]);
     return;
   }
 
-  // Find next cell target to focus on.
+  // Find next cell to focus or move focus into (can be null if the left/right edge is reached).
   const targetAriaColIndex = from.colIndex + delta.x;
   const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
   if (!targetCell) {
     return;
   }
 
-  // Focus on cell interactive content element if available or on the cell itself otherwise.
+  // Move focus on the cell interactive content or the cell itself.
   const targetCellFocusables = getFocusables(targetCell);
   const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
@@ -74,7 +74,9 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
  * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
  */
 export function updateTableFocusables(table: HTMLTableElement, cell: null | FocusedCell, suppressed: boolean) {
-  // Restore default focus behavior and make all cells focusable when navigation is suppressed.
+  // When grid navigation is suppressed all interactive elements and all cells focus is unmuted to unblock Tab navigation.
+  // Leaving the interactive widget using Tab navigation moves the focus to the current or adjacent cell and un-suppresses
+  // the navigation when implemented correctly.
   if (cell && suppressed) {
     for (const focusable of getFocusables(table)) {
       focusable.tabIndex = 0;
@@ -84,6 +86,7 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
 
   const tableCells = Array.from(table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
 
+  // Assigning pseudo-focusable tab index to all cells and all interactive elements makes them focusable with grid navigation.
   for (const cell of tableCells) {
     cell.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
   }
@@ -91,19 +94,22 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
     focusable.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
   }
 
-  // The only focusable element of the table.
-  let focusTarget: undefined | HTMLElement = tableCells[0];
+  // A single element of the table is made user-focusable.
+  // It defaults to the first interactive element of the first cell or the first cell itself otherwise.
+  let focusTarget: undefined | HTMLElement = (tableCells[0] && getFocusables(tableCells[0])[0]) ?? tableCells[0];
 
+  // When a navigation-focused element is present in the table it is used for user-navigation instead.
   if (cell && table.contains(cell.element)) {
     focusTarget = cell.element;
-  } else if (tableCells.length > 0) {
-    focusTarget = getFocusables(tableCells[0])[0] ?? focusTarget;
   }
+
   if (focusTarget) {
     focusTarget.tabIndex = 0;
   }
 }
 
+// This cleanup code ensures all cells are no longer focusable but the interactive elements are.
+// Currently there are no used cases for it as we don't expect the navigation to be used conditionally.
 export function restoreTableFocusables(table: HTMLTableElement) {
   for (const focusable of getFocusables(table)) {
     if (focusable instanceof HTMLTableCellElement) {
@@ -115,12 +121,13 @@ export function restoreTableFocusables(table: HTMLTableElement) {
 }
 
 /**
- * Returns true if the target element or one of its parents is a dialog or is marked with data-awsui-table-suppress-navigation.
- * For dialog cells when in focus the tab indices are not overridden and keyboard events are not intercepted.
+ * Returns true if the target element or one of its parents is a dialog or is marked with data-awsui-table-suppress-navigation attribute.
+ * This is used to suppress navigation for interactive content without a need to use a custom suppression check.
  */
 export function defaultIsSuppressed(target: HTMLElement) {
   let current: null | HTMLElement = target;
   while (current) {
+    // Stop checking for parents upon reaching the cell element as the function only aims at the cell content.
     const tagName = current.tagName.toLowerCase();
     if (tagName === 'td' || tagName === 'th') {
       return false;
@@ -136,12 +143,18 @@ export function defaultIsSuppressed(target: HTMLElement) {
   return false;
 }
 
+/**
+ * Returns actually focusable or pseudo-focusable elements to find navigation targets.
+ */
 export function getFocusables(element: HTMLElement) {
   return Array.from(
     element.querySelectorAll(`[tabIndex="0"],[tabIndex="${PSEUDO_FOCUSABLE_TAB_INDEX}"]`)
   ) as HTMLElement[];
 }
 
+/**
+ * Finds the closest row to the targetAriaRowIndex+delta in the direction of delta.
+ */
 function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex: number, delta: number) {
   let targetRow: null | HTMLTableRowElement = null;
   const rowElements = Array.from(table.querySelectorAll('tr[aria-rowindex]'));
@@ -165,6 +178,9 @@ function findTableRowByAriaRowIndex(table: HTMLTableElement, targetAriaRowIndex:
   return targetRow;
 }
 
+/**
+ * Finds the closest column to the targetAriaColIndex+delta in the direction of delta.
+ */
 function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAriaColIndex: number, delta: number) {
   let targetCell: null | HTMLTableCellElement = null;
   const cellElements = Array.from(tableRow.querySelectorAll('td[aria-colindex],th[aria-colindex]'));
