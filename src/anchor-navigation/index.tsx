@@ -8,7 +8,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { AnchorNavigationProps };
 
-export default function AnchorNavigation({ ...props }: AnchorNavigationProps) {
+export default function AnchorNavigation(props: AnchorNavigationProps) {
   const baseComponentProps = useBaseComponent('AnchorNavigation');
   return <InternalAnchorNavigation {...props} {...baseComponentProps} />;
 }
