@@ -29,9 +29,7 @@
     position: sticky;
   }
 }
-span {
-  scroll-margin-top: 50px;
-}
+
 .highlightBorder {
   border: 1px solid red;
 }
@@ -66,19 +64,6 @@ span {
   min-width: 30rem;
   max-width: 80rem;
   height: 150rem;
-}
-
-.help-panel {
-  &-header {
-    padding-left: 24px;
-    padding-right: 24px;
-    padding-top: 16px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid awsui.$color-border-divider-default;
-  }
-  &-content {
-    padding: 24px;
-  }
 }
 
 @media (max-width: 703px) {
