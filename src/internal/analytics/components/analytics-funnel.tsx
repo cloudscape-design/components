@@ -30,7 +30,7 @@ import {
 } from '../selectors';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 
-export const FUNNEL_VERSION = '1.0';
+export const FUNNEL_VERSION = '1.1';
 
 type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
   FunnelProps,
@@ -227,7 +227,7 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
       return;
     }
 
-    const subSteps = Array.from(document.querySelectorAll(getSubStepAllSelector())) as HTMLElement[];
+    const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
 
     const subStepConfiguration = subSteps.map((substep, index) => {
       const name = substep.querySelector(getSubStepNameSelector())?.textContent ?? '';
