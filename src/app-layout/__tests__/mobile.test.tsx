@@ -436,18 +436,21 @@ describeEachThemeAppLayout(true, theme => {
 
   test('Does not add a label to the toggle and landmark when they are not defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
     expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
   });
 
   test('Adds labels to toggle button and landmark when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
     expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
 
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
-    expect(wrapper.findDrawersTriggers()[0]!.getElement().children[0]).toHaveClass(iconStyles.badge);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
   });
 });

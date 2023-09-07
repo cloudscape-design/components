@@ -18,7 +18,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 
 describeEachAppLayout(() => {
   test(`should not render drawer when it is not defined`, () => {
-    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
     expect(wrapper.findDrawersTriggers()!).toHaveLength(1);
     rerender(<AppLayout />);
     expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
@@ -31,13 +31,13 @@ describeEachAppLayout(() => {
         items: [],
       },
     };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...emptyDrawerItems} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...emptyDrawerItems} />);
 
     expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
   });
 
-  test('renderds drawers with the tools', () => {
-    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+  test('renders drawers with the tools', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
 
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });

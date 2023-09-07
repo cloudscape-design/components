@@ -6,6 +6,7 @@ import AppLayout from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
+import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { singleDrawer } from './utils';
 
@@ -47,19 +48,22 @@ describe('Runtime drawers', () => {
   test('runtime drawers integration can be dynamically enabled and disabled', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper, rerender } = await renderComponent(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+    // the 2nd trigger is for tools
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
     rerender(<AppLayout {...({ __disableRuntimeDrawers: true } as any)} />);
     await delay();
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     rerender(<AppLayout />);
     await delay();
-    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+    // the 2nd trigger is for tools
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
   test('renders drawers via runtime config', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper } = await renderComponent(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+    // the 2nd trigger is for tools
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
   test('combines runtime drawers with the tools', async () => {
@@ -72,7 +76,7 @@ describe('Runtime drawers', () => {
   });
 
   test('accepts drawers registration after initial rendering', async () => {
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     await delay();
@@ -80,11 +84,23 @@ describe('Runtime drawers', () => {
   });
 
   test('opens registered drawer when defaultActive is set', async () => {
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     expect(wrapper.findActiveDrawer()).toBeFalsy();
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     await delay();
+    expect(wrapper.findActiveDrawer()!.getElement()).toBeInTheDocument();
+  });
+
+  test('does not open defaultActive drawer if the tools are already open', async () => {
+    const { wrapper } = await renderComponent(
+      <AppLayout toolsOpen={true} ariaLabels={{ toolsToggle: 'tools toggle' }} />
+    );
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
+    await delay();
+    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-label', 'tools toggle');
     expect(wrapper.findActiveDrawer()!.getElement()).toBeInTheDocument();
   });
 
@@ -100,7 +116,7 @@ describe('Runtime drawers', () => {
       defaultActive: true,
       mountContent: container => (container.textContent = 'second drawer content'),
     });
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('second drawer content');
   });
 
@@ -111,7 +127,7 @@ describe('Runtime drawers', () => {
       defaultActive: true,
       mountContent: container => (container.textContent = 'first drawer content'),
     });
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
@@ -166,7 +182,7 @@ describe('Runtime drawers', () => {
       mountContent: container => (container.textContent = 'first drawer content'),
     });
     const { wrapper } = await renderComponent(<AppLayout />);
-    wrapper.findDrawersTriggers()[0].click();
+    wrapper.findDrawerTriggerById('first')!.click();
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
@@ -193,16 +209,16 @@ describe('Runtime drawers', () => {
       trigger: { iconName: `<rect data-testid="custom-icon" />` },
     });
     const { wrapper } = await renderComponent(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()[0].find('svg')).toBeFalsy();
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.find('svg')).toBeFalsy();
   });
 
   test('persists drawer config between mounts/unmounts', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper, rerender } = await renderComponent(<AppLayout key="first" />);
-    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
     rerender(<AppLayout key="second" />);
     await delay();
-    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
   test('drawer content lifecycle', async () => {
@@ -215,7 +231,7 @@ describe('Runtime drawers', () => {
     });
     const { wrapper } = await renderComponent(<AppLayout />);
     expect(mountContent).toHaveBeenCalledTimes(0);
-    wrapper.findDrawersTriggers()[0].click();
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
     expect(mountContent).toHaveBeenCalledTimes(1);
     expect(unmountContent).toHaveBeenCalledTimes(0);
     wrapper.findActiveDrawerCloseButton()!.click();
@@ -235,9 +251,9 @@ describe('Runtime drawers', () => {
       mountContent: container => (container.textContent = 'second drawer content'),
     });
     const { wrapper } = await renderComponent(<AppLayout />);
-    wrapper.findDrawersTriggers()[0].click();
+    wrapper.findDrawerTriggerById('first')!.click();
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
-    wrapper.findDrawersTriggers()[1].click();
+    wrapper.findDrawerTriggerById('second')!.click();
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('second drawer content');
   });
 
@@ -246,8 +262,9 @@ describe('Runtime drawers', () => {
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, id: 'bbb', ariaLabels: { triggerButton: 'bbb' } });
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, id: 'aaa', ariaLabels: { triggerButton: 'aaa' } });
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, id: 'ccc', ariaLabels: { triggerButton: 'ccc' } });
-      const { wrapper } = await renderComponent(<AppLayout />);
+      const { wrapper } = await renderComponent(<AppLayout ariaLabels={{ toolsToggle: 'tools toggle' }} />);
       expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
+        'tools toggle',
         'aaa',
         'bbb',
         'ccc',
@@ -269,8 +286,9 @@ describe('Runtime drawers', () => {
         ariaLabels: { triggerButton: 'ccc' },
         orderPriority: 10,
       });
-      const { wrapper } = await renderComponent(<AppLayout />);
+      const { wrapper } = await renderComponent(<AppLayout ariaLabels={{ toolsToggle: 'tools toggle' }} />);
       expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
+        'tools toggle',
         'ccc',
         'aaa',
         'bbb',
@@ -297,8 +315,11 @@ describe('Runtime drawers', () => {
           items: [{ id: 'ddd', trigger: {}, content: null, ariaLabels: { triggerButton: 'ddd' } }],
         },
       };
-      const { wrapper } = await renderComponent(<AppLayout {...(drawers as any)} />);
+      const { wrapper } = await renderComponent(
+        <AppLayout {...(drawers as any)} ariaLabels={{ toolsToggle: 'tools toggle' }} />
+      );
       expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
+        'tools toggle',
         'bbb',
         'ddd',
         'aaa',
