@@ -109,7 +109,7 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
 }
 
 // This cleanup code ensures all cells are no longer focusable but the interactive elements are.
-// Currently there are no used cases for it as we don't expect the navigation to be used conditionally.
+// Currently there are no use cases for it as we don't expect the navigation to be used conditionally.
 export function restoreTableFocusables(table: HTMLTableElement) {
   for (const focusable of getFocusables(table)) {
     if (focusable instanceof HTMLTableCellElement) {
