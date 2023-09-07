@@ -289,8 +289,8 @@ Object {
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -324,8 +324,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
@@ -457,7 +457,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -1864,7 +1864,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -2472,8 +2472,8 @@ Object {
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -2507,8 +2507,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
@@ -2640,7 +2640,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -4047,7 +4047,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -4655,8 +4655,8 @@ Object {
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -4690,8 +4690,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
@@ -4823,7 +4823,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -6230,7 +6230,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -6838,8 +6838,8 @@ Object {
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -6873,8 +6873,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
@@ -7006,7 +7006,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -8413,7 +8413,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
+            "dark": "#ffe019",
             "light": "#906806",
           },
         },
@@ -9021,8 +9021,8 @@ Object {
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -9056,8 +9056,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#1d1906",
+            "dark": "#291b00",
+            "light": "#291b00",
           },
         },
         "color-background-toggle-checked-disabled": Object {
@@ -9189,8 +9189,8 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -10596,8 +10596,8 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -11204,8 +11204,8 @@ Object {
     "color-background-notification-yellow": Object {
       "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
       "$value": Object {
-        "dark": "#fcea00",
-        "light": "#fcea00",
+        "dark": "#fef571",
+        "light": "#fef571",
       },
     },
     "color-background-popover": Object {
@@ -11239,8 +11239,8 @@ Object {
     "color-background-status-warning": Object {
       "$description": "The background color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#1d1906",
-        "light": "#ffffdb",
+        "dark": "#291b00",
+        "light": "#fffee5",
       },
     },
     "color-background-toggle-checked-disabled": Object {
@@ -11372,7 +11372,7 @@ Object {
     "color-border-status-warning": Object {
       "$description": "The border color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#fada00",
+        "dark": "#ffe019",
         "light": "#906806",
       },
     },
@@ -12779,7 +12779,7 @@ Object {
     "color-text-status-warning": Object {
       "$description": "The color of warning icons.",
       "$value": Object {
-        "dark": "#fada00",
+        "dark": "#ffe019",
         "light": "#906806",
       },
     },
@@ -13203,8 +13203,8 @@ Object {
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#002457",
+            "dark": "#0099ff",
+            "light": "#002b66",
           },
         },
         "color-background-button-primary-default": Object {
@@ -13225,7 +13225,7 @@ Object {
           "$description": "The background color of primary buttons in hover state.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-background-cell-shaded": Object {
@@ -13252,8 +13252,8 @@ Object {
         "color-background-control-checked": Object {
           "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-control-default": Object {
@@ -13281,7 +13281,7 @@ Object {
           "$description": "The background color of text that matches a user's query. For example: the background of text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#2e3c4e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-hover": Object {
@@ -13294,8 +13294,8 @@ Object {
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-default": Object {
@@ -13316,7 +13316,7 @@ Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
             "dark": "#141f2e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-layout-main": Object {
@@ -13350,50 +13350,50 @@ Object {
         "color-background-layout-toggle-selected-active": Object {
           "$description": "The background color of the app layout toggle button when it's selected and active.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-default": Object {
           "$description": "The default background color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-hover": Object {
           "$description": "The background color of the app layout toggle button on hover when it's selected.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0052bd",
+            "light": "#004a9e",
           },
         },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-background-notification-green": Object {
           "$description": "Background color for green notifications. For example: green badges and success flash messages.",
           "$value": Object {
-            "dark": "#008a00",
-            "light": "#008a00",
+            "dark": "#00752b",
+            "light": "#00752b",
           },
         },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
-            "dark": "#e00000",
-            "light": "#e00000",
+            "dark": "#db0000",
+            "light": "#db0000",
           },
         },
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -13406,35 +13406,35 @@ Object {
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#3d0000",
+            "dark": "#1f0000",
             "light": "#fff5f5",
           },
         },
         "color-background-status-info": Object {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#00193d",
-            "light": "#f0faff",
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-status-success": Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#042504",
+            "dark": "#001401",
             "light": "#f1fff0",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
-            "dark": "#002457",
+            "dark": "#002b66",
             "light": "#b8e7ff",
           },
         },
@@ -13448,7 +13448,7 @@ Object {
         "color-board-placeholder-hover": Object {
           "$description": "The color of board placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
@@ -13456,7 +13456,7 @@ Object {
           "$description": "The border color of normal buttons in active state.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-border-button-normal-default": Object {
@@ -13477,7 +13477,7 @@ Object {
           "$description": "The border color of normal buttons in hover state.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -13526,42 +13526,42 @@ Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-border-item-selected": Object {
           "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-border-status-info": Object {
           "$description": "The border color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-success": Object {
           "$description": "The border color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -14548,14 +14548,14 @@ Object {
           "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-charts-threshold-negative": Object {
           "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-charts-threshold-neutral": Object {
@@ -14568,8 +14568,8 @@ Object {
         "color-charts-threshold-positive": Object {
           "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-charts-yellow-1000": Object {
@@ -14652,14 +14652,14 @@ Object {
         "color-drag-placeholder-hover": Object {
           "$description": "The color of drag placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -14673,15 +14673,15 @@ Object {
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-body-secondary": Object {
@@ -14709,7 +14709,7 @@ Object {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-button-normal-default": Object {
@@ -14723,27 +14723,27 @@ Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -14758,14 +14758,14 @@ Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-text-dropdown-item-highlighted": Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-empty": Object {
@@ -14779,7 +14779,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-form-secondary": Object {
@@ -14800,7 +14800,7 @@ Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-heading-secondary": Object {
@@ -14842,7 +14842,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-default": Object {
@@ -14863,7 +14863,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -14884,7 +14884,7 @@ Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-layout-toggle": Object {
@@ -14904,29 +14904,29 @@ Object {
         "color-text-layout-toggle-hover": Object {
           "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-link-default": Object {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-text-notification-default": Object {
@@ -14939,8 +14939,8 @@ Object {
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-text-status-inactive": Object {
@@ -14953,29 +14953,29 @@ Object {
         "color-text-status-info": Object {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-status-success": Object {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-text-top-navigation-title": Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "font-family-base": Object {
@@ -15386,8 +15386,8 @@ Object {
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-button-primary-default": Object {
@@ -15435,8 +15435,8 @@ Object {
         "color-background-control-checked": Object {
           "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-control-default": Object {
@@ -15477,8 +15477,8 @@ Object {
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-default": Object {
@@ -15533,15 +15533,15 @@ Object {
         "color-background-layout-toggle-selected-active": Object {
           "$description": "The background color of the app layout toggle button when it's selected and active.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-layout-toggle-selected-default": Object {
           "$description": "The default background color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-layout-toggle-selected-hover": Object {
@@ -15554,29 +15554,29 @@ Object {
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-background-notification-green": Object {
           "$description": "Background color for green notifications. For example: green badges and success flash messages.",
           "$value": Object {
-            "dark": "#008a00",
-            "light": "#008a00",
+            "dark": "#00752b",
+            "light": "#00752b",
           },
         },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
-            "dark": "#e00000",
-            "light": "#e00000",
+            "dark": "#db0000",
+            "light": "#db0000",
           },
         },
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -15589,36 +15589,36 @@ Object {
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#3d0000",
-            "light": "#3d0000",
+            "dark": "#1f0000",
+            "light": "#1f0000",
           },
         },
         "color-background-status-info": Object {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#00193d",
-            "light": "#00193d",
+            "dark": "#001129",
+            "light": "#001129",
           },
         },
         "color-background-status-success": Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#042504",
-            "light": "#042504",
+            "dark": "#001401",
+            "light": "#001401",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#1d1906",
+            "dark": "#291b00",
+            "light": "#291b00",
           },
         },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
-            "dark": "#002457",
-            "light": "#002457",
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": Object {
@@ -15631,8 +15631,8 @@ Object {
         "color-board-placeholder-hover": Object {
           "$description": "The color of board placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-border-button-normal-active": Object {
@@ -15715,36 +15715,36 @@ Object {
         "color-border-item-selected": Object {
           "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#ff8f8f",
+            "dark": "#ff6161",
+            "light": "#ff6161",
           },
         },
         "color-border-status-info": Object {
           "$description": "The border color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-status-success": Object {
           "$description": "The border color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#00c220",
+            "dark": "#29ad32",
+            "light": "#29ad32",
           },
         },
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -16731,14 +16731,14 @@ Object {
           "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-charts-threshold-negative": Object {
           "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-charts-threshold-neutral": Object {
@@ -16751,8 +16751,8 @@ Object {
         "color-charts-threshold-positive": Object {
           "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-charts-yellow-1000": Object {
@@ -16835,15 +16835,15 @@ Object {
         "color-drag-placeholder-hover": Object {
           "$description": "The color of drag placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-foreground-control-disabled": Object {
@@ -16856,8 +16856,8 @@ Object {
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-body-default": Object {
@@ -16912,22 +16912,22 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-counter": Object {
@@ -17087,22 +17087,22 @@ Object {
         "color-text-layout-toggle-hover": Object {
           "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-link-default": Object {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-link-hover": Object {
@@ -17122,8 +17122,8 @@ Object {
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#ff8f8f",
+            "dark": "#ff6161",
+            "light": "#ff6161",
           },
         },
         "color-text-status-inactive": Object {
@@ -17136,22 +17136,22 @@ Object {
         "color-text-status-info": Object {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-status-success": Object {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#00c220",
+            "dark": "#29ad32",
+            "light": "#29ad32",
           },
         },
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -17563,21 +17563,21 @@ Object {
           "$description": "The background color of normal buttons in hover state.",
           "$value": Object {
             "dark": "#141f2e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#002457",
+            "dark": "#0099ff",
+            "light": "#002b66",
           },
         },
         "color-background-button-primary-default": Object {
           "$description": "The default background color of primary buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-button-primary-disabled": Object {
@@ -17591,7 +17591,7 @@ Object {
           "$description": "The background color of primary buttons in hover state.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-background-cell-shaded": Object {
@@ -17618,8 +17618,8 @@ Object {
         "color-background-control-checked": Object {
           "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-control-default": Object {
@@ -17647,7 +17647,7 @@ Object {
           "$description": "The background color of text that matches a user's query. For example: the background of text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#2e3c4e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-hover": Object {
@@ -17660,8 +17660,8 @@ Object {
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-default": Object {
@@ -17682,7 +17682,7 @@ Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
             "dark": "#141f2e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-layout-main": Object {
@@ -17716,50 +17716,50 @@ Object {
         "color-background-layout-toggle-selected-active": Object {
           "$description": "The background color of the app layout toggle button when it's selected and active.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-default": Object {
           "$description": "The default background color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-hover": Object {
           "$description": "The background color of the app layout toggle button on hover when it's selected.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0052bd",
+            "light": "#004a9e",
           },
         },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-background-notification-green": Object {
           "$description": "Background color for green notifications. For example: green badges and success flash messages.",
           "$value": Object {
-            "dark": "#008a00",
-            "light": "#008a00",
+            "dark": "#00752b",
+            "light": "#00752b",
           },
         },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
-            "dark": "#e00000",
-            "light": "#e00000",
+            "dark": "#db0000",
+            "light": "#db0000",
           },
         },
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -17772,35 +17772,35 @@ Object {
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#3d0000",
+            "dark": "#1f0000",
             "light": "#fff5f5",
           },
         },
         "color-background-status-info": Object {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#00193d",
-            "light": "#f0faff",
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-status-success": Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#042504",
+            "dark": "#001401",
             "light": "#f1fff0",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
-            "dark": "#002457",
+            "dark": "#002b66",
             "light": "#b8e7ff",
           },
         },
@@ -17814,7 +17814,7 @@ Object {
         "color-board-placeholder-hover": Object {
           "$description": "The color of board placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
@@ -17822,14 +17822,14 @@ Object {
           "$description": "The border color of normal buttons in active state.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-button-normal-disabled": Object {
@@ -17843,7 +17843,7 @@ Object {
           "$description": "The border color of normal buttons in hover state.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -17891,43 +17891,43 @@ Object {
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-item-selected": Object {
           "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-border-status-info": Object {
           "$description": "The border color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-success": Object {
           "$description": "The border color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -18914,14 +18914,14 @@ Object {
           "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-charts-threshold-negative": Object {
           "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-charts-threshold-neutral": Object {
@@ -18934,8 +18934,8 @@ Object {
         "color-charts-threshold-positive": Object {
           "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-charts-yellow-1000": Object {
@@ -19018,14 +19018,14 @@ Object {
         "color-drag-placeholder-hover": Object {
           "$description": "The color of drag placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -19039,15 +19039,15 @@ Object {
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-body-secondary": Object {
@@ -19075,41 +19075,41 @@ Object {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-text-button-normal-default": Object {
           "$description": "The default text color of normal buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -19124,14 +19124,14 @@ Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-text-dropdown-item-highlighted": Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-empty": Object {
@@ -19145,7 +19145,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-form-secondary": Object {
@@ -19166,7 +19166,7 @@ Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-heading-secondary": Object {
@@ -19208,7 +19208,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-default": Object {
@@ -19229,7 +19229,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -19250,7 +19250,7 @@ Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-layout-toggle": Object {
@@ -19270,29 +19270,29 @@ Object {
         "color-text-layout-toggle-hover": Object {
           "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-link-default": Object {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-text-notification-default": Object {
@@ -19305,8 +19305,8 @@ Object {
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-text-status-inactive": Object {
@@ -19319,29 +19319,29 @@ Object {
         "color-text-status-info": Object {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-status-success": Object {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-text-top-navigation-title": Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "font-family-base": Object {
@@ -19752,8 +19752,8 @@ Object {
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#002457",
+            "dark": "#0099ff",
+            "light": "#002b66",
           },
         },
         "color-background-button-primary-default": Object {
@@ -19801,8 +19801,8 @@ Object {
         "color-background-control-checked": Object {
           "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-control-default": Object {
@@ -19830,7 +19830,7 @@ Object {
           "$description": "The background color of text that matches a user's query. For example: the background of text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#2e3c4e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-hover": Object {
@@ -19843,8 +19843,8 @@ Object {
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-default": Object {
@@ -19865,7 +19865,7 @@ Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
             "dark": "#141f2e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-layout-main": Object {
@@ -19899,50 +19899,50 @@ Object {
         "color-background-layout-toggle-selected-active": Object {
           "$description": "The background color of the app layout toggle button when it's selected and active.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-default": Object {
           "$description": "The default background color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-hover": Object {
           "$description": "The background color of the app layout toggle button on hover when it's selected.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0052bd",
+            "light": "#004a9e",
           },
         },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-background-notification-green": Object {
           "$description": "Background color for green notifications. For example: green badges and success flash messages.",
           "$value": Object {
-            "dark": "#008a00",
-            "light": "#008a00",
+            "dark": "#00752b",
+            "light": "#00752b",
           },
         },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
-            "dark": "#e00000",
-            "light": "#e00000",
+            "dark": "#db0000",
+            "light": "#db0000",
           },
         },
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -19955,35 +19955,35 @@ Object {
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#3d0000",
+            "dark": "#1f0000",
             "light": "#fff5f5",
           },
         },
         "color-background-status-info": Object {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#00193d",
-            "light": "#f0faff",
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-status-success": Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#042504",
+            "dark": "#001401",
             "light": "#f1fff0",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
-            "dark": "#002457",
+            "dark": "#002b66",
             "light": "#b8e7ff",
           },
         },
@@ -19997,7 +19997,7 @@ Object {
         "color-board-placeholder-hover": Object {
           "$description": "The color of board placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
@@ -20081,36 +20081,36 @@ Object {
         "color-border-item-selected": Object {
           "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-border-status-info": Object {
           "$description": "The border color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-success": Object {
           "$description": "The border color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -21097,14 +21097,14 @@ Object {
           "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-charts-threshold-negative": Object {
           "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-charts-threshold-neutral": Object {
@@ -21117,8 +21117,8 @@ Object {
         "color-charts-threshold-positive": Object {
           "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-charts-yellow-1000": Object {
@@ -21201,14 +21201,14 @@ Object {
         "color-drag-placeholder-hover": Object {
           "$description": "The color of drag placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -21222,8 +21222,8 @@ Object {
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-body-default": Object {
@@ -21278,21 +21278,21 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -21307,14 +21307,14 @@ Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-text-dropdown-item-highlighted": Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-empty": Object {
@@ -21328,7 +21328,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-form-secondary": Object {
@@ -21349,7 +21349,7 @@ Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-heading-secondary": Object {
@@ -21391,7 +21391,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-default": Object {
@@ -21412,7 +21412,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -21433,7 +21433,7 @@ Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-layout-toggle": Object {
@@ -21453,29 +21453,29 @@ Object {
         "color-text-layout-toggle-hover": Object {
           "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-link-default": Object {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-text-notification-default": Object {
@@ -21488,8 +21488,8 @@ Object {
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-text-status-inactive": Object {
@@ -21502,29 +21502,29 @@ Object {
         "color-text-status-info": Object {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-status-success": Object {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-text-top-navigation-title": Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "font-family-base": Object {
@@ -21935,8 +21935,8 @@ Object {
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#002457",
+            "dark": "#0099ff",
+            "light": "#002b66",
           },
         },
         "color-background-button-primary-default": Object {
@@ -21956,8 +21956,8 @@ Object {
         "color-background-button-primary-hover": Object {
           "$description": "The background color of primary buttons in hover state.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-cell-shaded": Object {
@@ -21984,8 +21984,8 @@ Object {
         "color-background-control-checked": Object {
           "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-control-default": Object {
@@ -22013,7 +22013,7 @@ Object {
           "$description": "The background color of text that matches a user's query. For example: the background of text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#2e3c4e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-dropdown-item-hover": Object {
@@ -22026,8 +22026,8 @@ Object {
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-default": Object {
@@ -22048,7 +22048,7 @@ Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
             "dark": "#141f2e",
-            "light": "#f0faff",
+            "light": "#f0fbff",
           },
         },
         "color-background-layout-main": Object {
@@ -22082,50 +22082,50 @@ Object {
         "color-background-layout-toggle-selected-active": Object {
           "$description": "The background color of the app layout toggle button when it's selected and active.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-default": Object {
           "$description": "The default background color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-background-layout-toggle-selected-hover": Object {
           "$description": "The background color of the app layout toggle button on hover when it's selected.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0052bd",
+            "light": "#004a9e",
           },
         },
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-background-notification-green": Object {
           "$description": "Background color for green notifications. For example: green badges and success flash messages.",
           "$value": Object {
-            "dark": "#008a00",
-            "light": "#008a00",
+            "dark": "#00752b",
+            "light": "#00752b",
           },
         },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
-            "dark": "#e00000",
-            "light": "#e00000",
+            "dark": "#db0000",
+            "light": "#db0000",
           },
         },
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -22138,35 +22138,35 @@ Object {
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#3d0000",
+            "dark": "#1f0000",
             "light": "#fff5f5",
           },
         },
         "color-background-status-info": Object {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#00193d",
-            "light": "#f0faff",
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-status-success": Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#042504",
+            "dark": "#001401",
             "light": "#f1fff0",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#ffffdb",
+            "dark": "#291b00",
+            "light": "#fffee5",
           },
         },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
-            "dark": "#002457",
+            "dark": "#002b66",
             "light": "#b8e7ff",
           },
         },
@@ -22180,15 +22180,15 @@ Object {
         "color-board-placeholder-hover": Object {
           "$description": "The color of board placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
         "color-border-button-normal-active": Object {
           "$description": "The border color of normal buttons in active state.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-border-button-normal-default": Object {
@@ -22208,8 +22208,8 @@ Object {
         "color-border-button-normal-hover": Object {
           "$description": "The border color of normal buttons in hover state.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -22236,8 +22236,8 @@ Object {
         "color-border-divider-default": Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -22257,43 +22257,43 @@ Object {
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-border-item-selected": Object {
           "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-border-status-info": Object {
           "$description": "The border color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-border-status-success": Object {
           "$description": "The border color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -23280,14 +23280,14 @@ Object {
           "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-charts-threshold-negative": Object {
           "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-charts-threshold-neutral": Object {
@@ -23300,8 +23300,8 @@ Object {
         "color-charts-threshold-positive": Object {
           "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-charts-yellow-1000": Object {
@@ -23384,14 +23384,14 @@ Object {
         "color-drag-placeholder-hover": Object {
           "$description": "The color of drag placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
+            "dark": "#006edb",
             "light": "#d1f1ff",
           },
         },
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -23405,15 +23405,15 @@ Object {
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-body-secondary": Object {
@@ -23440,8 +23440,8 @@ Object {
         "color-text-button-normal-active": Object {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-normal-default": Object {
@@ -23454,28 +23454,28 @@ Object {
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
@@ -23490,14 +23490,14 @@ Object {
           "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-text-dropdown-item-highlighted": Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-empty": Object {
@@ -23511,7 +23511,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-form-secondary": Object {
@@ -23532,14 +23532,14 @@ Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#e2e8ee",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-home-header-default": Object {
@@ -23574,7 +23574,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-default": Object {
@@ -23595,7 +23595,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -23608,15 +23608,15 @@ Object {
         "color-text-interactive-inverted-hover": Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#d5dde7",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "color-text-layout-toggle": Object {
@@ -23636,43 +23636,43 @@ Object {
         "color-text-layout-toggle-hover": Object {
           "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#000916",
+            "dark": "#091120",
             "light": "#ffffff",
           },
         },
         "color-text-link-default": Object {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-link-hover": Object {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#002457",
+            "light": "#002b66",
           },
         },
         "color-text-notification-default": Object {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-text-status-inactive": Object {
@@ -23685,29 +23685,29 @@ Object {
         "color-text-status-info": Object {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0073e5",
+            "dark": "#0099ff",
+            "light": "#006edb",
           },
         },
         "color-text-status-success": Object {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#855200",
+            "dark": "#ffe019",
+            "light": "#855900",
           },
         },
         "color-text-top-navigation-title": Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#fcfcfd",
-            "light": "#000916",
+            "light": "#091120",
           },
         },
         "font-family-base": Object {
@@ -24097,15 +24097,15 @@ Object {
         "color-background-button-normal-default": Object {
           "$description": "The default background color of normal buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-button-normal-disabled": Object {
           "$description": "The background color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-button-normal-hover": Object {
@@ -24118,15 +24118,15 @@ Object {
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-button-primary-default": Object {
           "$description": "The default background color of primary buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-button-primary-disabled": Object {
@@ -24167,15 +24167,15 @@ Object {
         "color-background-control-checked": Object {
           "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-control-default": Object {
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-control-disabled": Object {
@@ -24209,15 +24209,15 @@ Object {
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-default": Object {
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-disabled": Object {
@@ -24237,8 +24237,8 @@ Object {
         "color-background-layout-main": Object {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-layout-toggle-active": Object {
@@ -24265,15 +24265,15 @@ Object {
         "color-background-layout-toggle-selected-active": Object {
           "$description": "The background color of the app layout toggle button when it's selected and active.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-layout-toggle-selected-default": Object {
           "$description": "The default background color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-layout-toggle-selected-hover": Object {
@@ -24286,29 +24286,29 @@ Object {
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-background-notification-green": Object {
           "$description": "Background color for green notifications. For example: green badges and success flash messages.",
           "$value": Object {
-            "dark": "#008a00",
-            "light": "#008a00",
+            "dark": "#00752b",
+            "light": "#00752b",
           },
         },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
-            "dark": "#e00000",
-            "light": "#e00000",
+            "dark": "#db0000",
+            "light": "#db0000",
           },
         },
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -24321,36 +24321,36 @@ Object {
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#3d0000",
-            "light": "#3d0000",
+            "dark": "#1f0000",
+            "light": "#1f0000",
           },
         },
         "color-background-status-info": Object {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#00193d",
-            "light": "#00193d",
+            "dark": "#001129",
+            "light": "#001129",
           },
         },
         "color-background-status-success": Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#042504",
-            "light": "#042504",
+            "dark": "#001401",
+            "light": "#001401",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#1d1906",
+            "dark": "#291b00",
+            "light": "#291b00",
           },
         },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
-            "dark": "#002457",
-            "light": "#002457",
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": Object {
@@ -24363,8 +24363,8 @@ Object {
         "color-board-placeholder-hover": Object {
           "$description": "The color of board placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-border-button-normal-active": Object {
@@ -24377,8 +24377,8 @@ Object {
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-button-normal-disabled": Object {
@@ -24440,43 +24440,43 @@ Object {
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-item-selected": Object {
           "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#ff8f8f",
+            "dark": "#ff6161",
+            "light": "#ff6161",
           },
         },
         "color-border-status-info": Object {
           "$description": "The border color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-status-success": Object {
           "$description": "The border color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#00c220",
+            "dark": "#29ad32",
+            "light": "#29ad32",
           },
         },
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -25463,14 +25463,14 @@ Object {
           "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-charts-threshold-negative": Object {
           "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-charts-threshold-neutral": Object {
@@ -25483,8 +25483,8 @@ Object {
         "color-charts-threshold-positive": Object {
           "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-charts-yellow-1000": Object {
@@ -25567,15 +25567,15 @@ Object {
         "color-drag-placeholder-hover": Object {
           "$description": "The color of drag placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-foreground-control-disabled": Object {
@@ -25588,8 +25588,8 @@ Object {
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-body-default": Object {
@@ -25630,8 +25630,8 @@ Object {
         "color-text-button-normal-default": Object {
           "$description": "The default text color of normal buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -25644,22 +25644,22 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-counter": Object {
@@ -25819,22 +25819,22 @@ Object {
         "color-text-layout-toggle-hover": Object {
           "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-link-default": Object {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-link-hover": Object {
@@ -25854,8 +25854,8 @@ Object {
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#ff8f8f",
+            "dark": "#ff6161",
+            "light": "#ff6161",
           },
         },
         "color-text-status-inactive": Object {
@@ -25868,22 +25868,22 @@ Object {
         "color-text-status-info": Object {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-status-success": Object {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#00c220",
+            "dark": "#29ad32",
+            "light": "#29ad32",
           },
         },
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -26301,15 +26301,15 @@ Object {
         "color-background-button-primary-active": Object {
           "$description": "The background color of primary buttons in active state.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-button-primary-default": Object {
           "$description": "The default background color of primary buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-button-primary-disabled": Object {
@@ -26350,8 +26350,8 @@ Object {
         "color-background-control-checked": Object {
           "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-control-default": Object {
@@ -26392,8 +26392,8 @@ Object {
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-background-input-default": Object {
@@ -26448,15 +26448,15 @@ Object {
         "color-background-layout-toggle-selected-active": Object {
           "$description": "The background color of the app layout toggle button when it's selected and active.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-layout-toggle-selected-default": Object {
           "$description": "The default background color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-background-layout-toggle-selected-hover": Object {
@@ -26469,29 +26469,29 @@ Object {
         "color-background-notification-blue": Object {
           "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-background-notification-green": Object {
           "$description": "Background color for green notifications. For example: green badges and success flash messages.",
           "$value": Object {
-            "dark": "#008a00",
-            "light": "#008a00",
+            "dark": "#00752b",
+            "light": "#00752b",
           },
         },
         "color-background-notification-red": Object {
           "$description": "Background color for red notifications. For example: red badges and error flash messages.",
           "$value": Object {
-            "dark": "#e00000",
-            "light": "#e00000",
+            "dark": "#db0000",
+            "light": "#db0000",
           },
         },
         "color-background-notification-yellow": Object {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": Object {
-            "dark": "#fcea00",
-            "light": "#fcea00",
+            "dark": "#fef571",
+            "light": "#fef571",
           },
         },
         "color-background-popover": Object {
@@ -26504,36 +26504,36 @@ Object {
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#3d0000",
-            "light": "#3d0000",
+            "dark": "#1f0000",
+            "light": "#1f0000",
           },
         },
         "color-background-status-info": Object {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#00193d",
-            "light": "#00193d",
+            "dark": "#001129",
+            "light": "#001129",
           },
         },
         "color-background-status-success": Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#042504",
-            "light": "#042504",
+            "dark": "#001401",
+            "light": "#001401",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1d1906",
-            "light": "#1d1906",
+            "dark": "#291b00",
+            "light": "#291b00",
           },
         },
         "color-background-toggle-checked-disabled": Object {
           "$description": "The background color of checked toggles in disabled state.",
           "$value": Object {
-            "dark": "#002457",
-            "light": "#002457",
+            "dark": "#002b66",
+            "light": "#002b66",
           },
         },
         "color-board-placeholder-active": Object {
@@ -26546,8 +26546,8 @@ Object {
         "color-board-placeholder-hover": Object {
           "$description": "The color of board placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-border-button-normal-active": Object {
@@ -26560,8 +26560,8 @@ Object {
         "color-border-button-normal-default": Object {
           "$description": "The border color of normal buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-button-normal-disabled": Object {
@@ -26623,43 +26623,43 @@ Object {
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-item-selected": Object {
           "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#ff8f8f",
+            "dark": "#ff6161",
+            "light": "#ff6161",
           },
         },
         "color-border-status-info": Object {
           "$description": "The border color of an informational item. For example: information alerts.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-border-status-success": Object {
           "$description": "The border color of an item in success state. For example: success alerts.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#00c220",
+            "dark": "#29ad32",
+            "light": "#29ad32",
           },
         },
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-charts-blue-1-1000": Object {
@@ -27646,14 +27646,14 @@ Object {
           "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
           "$value": Object {
             "dark": "#75cfff",
-            "light": "#0073e5",
+            "light": "#006edb",
           },
         },
         "color-charts-threshold-negative": Object {
           "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#e00000",
+            "dark": "#ff6161",
+            "light": "#db0000",
           },
         },
         "color-charts-threshold-neutral": Object {
@@ -27666,8 +27666,8 @@ Object {
         "color-charts-threshold-positive": Object {
           "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#008a00",
+            "dark": "#29ad32",
+            "light": "#00752b",
           },
         },
         "color-charts-yellow-1000": Object {
@@ -27750,15 +27750,15 @@ Object {
         "color-drag-placeholder-hover": Object {
           "$description": "The color of drag placeholder in hovered state.",
           "$value": Object {
-            "dark": "#0073e5",
-            "light": "#0073e5",
+            "dark": "#006edb",
+            "light": "#006edb",
           },
         },
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-foreground-control-disabled": Object {
@@ -27771,8 +27771,8 @@ Object {
         "color-text-accent": Object {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-body-default": Object {
@@ -27813,8 +27813,8 @@ Object {
         "color-text-button-normal-default": Object {
           "$description": "The default text color of normal buttons.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -27827,22 +27827,22 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-counter": Object {
@@ -28002,22 +28002,22 @@ Object {
         "color-text-layout-toggle-hover": Object {
           "$description": "The color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#000916",
-            "light": "#000916",
+            "dark": "#091120",
+            "light": "#091120",
           },
         },
         "color-text-link-default": Object {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-link-hover": Object {
@@ -28037,8 +28037,8 @@ Object {
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
-            "dark": "#ff8f8f",
-            "light": "#ff8f8f",
+            "dark": "#ff6161",
+            "light": "#ff6161",
           },
         },
         "color-text-status-inactive": Object {
@@ -28051,22 +28051,22 @@ Object {
         "color-text-status-info": Object {
           "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
           "$value": Object {
-            "dark": "#0096fa",
-            "light": "#0096fa",
+            "dark": "#0099ff",
+            "light": "#0099ff",
           },
         },
         "color-text-status-success": Object {
           "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
           "$value": Object {
-            "dark": "#00c220",
-            "light": "#00c220",
+            "dark": "#29ad32",
+            "light": "#29ad32",
           },
         },
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#fada00",
-            "light": "#fada00",
+            "dark": "#ffe019",
+            "light": "#ffe019",
           },
         },
         "color-text-top-navigation-title": Object {
@@ -28478,21 +28478,21 @@ Object {
       "$description": "The background color of normal buttons in hover state.",
       "$value": Object {
         "dark": "#141f2e",
-        "light": "#f0faff",
+        "light": "#f0fbff",
       },
     },
     "color-background-button-primary-active": Object {
       "$description": "The background color of primary buttons in active state.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#002457",
+        "dark": "#0099ff",
+        "light": "#002b66",
       },
     },
     "color-background-button-primary-default": Object {
       "$description": "The default background color of primary buttons.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-background-button-primary-disabled": Object {
@@ -28506,7 +28506,7 @@ Object {
       "$description": "The background color of primary buttons in hover state.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#002457",
+        "light": "#002b66",
       },
     },
     "color-background-cell-shaded": Object {
@@ -28533,8 +28533,8 @@ Object {
     "color-background-control-checked": Object {
       "$description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-background-control-default": Object {
@@ -28562,7 +28562,7 @@ Object {
       "$description": "The background color of text that matches a user's query. For example: the background of text matching a query entered into a table filter, select, multiselect, or autosuggest.",
       "$value": Object {
         "dark": "#2e3c4e",
-        "light": "#f0faff",
+        "light": "#f0fbff",
       },
     },
     "color-background-dropdown-item-hover": Object {
@@ -28575,8 +28575,8 @@ Object {
     "color-background-home-header": Object {
       "$description": "The background color of the home header, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#000916",
-        "light": "#000916",
+        "dark": "#091120",
+        "light": "#091120",
       },
     },
     "color-background-input-default": Object {
@@ -28597,7 +28597,7 @@ Object {
       "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
       "$value": Object {
         "dark": "#141f2e",
-        "light": "#f0faff",
+        "light": "#f0fbff",
       },
     },
     "color-background-layout-main": Object {
@@ -28631,50 +28631,50 @@ Object {
     "color-background-layout-toggle-selected-active": Object {
       "$description": "The background color of the app layout toggle button when it's selected and active.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-background-layout-toggle-selected-default": Object {
       "$description": "The default background color of the app layout toggle button when it's selected.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-background-layout-toggle-selected-hover": Object {
       "$description": "The background color of the app layout toggle button on hover when it's selected.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#0052bd",
+        "light": "#004a9e",
       },
     },
     "color-background-notification-blue": Object {
       "$description": "Background color for blue notifications. For example: blue badges and info flash messages.",
       "$value": Object {
-        "dark": "#0073e5",
-        "light": "#0073e5",
+        "dark": "#006edb",
+        "light": "#006edb",
       },
     },
     "color-background-notification-green": Object {
       "$description": "Background color for green notifications. For example: green badges and success flash messages.",
       "$value": Object {
-        "dark": "#008a00",
-        "light": "#008a00",
+        "dark": "#00752b",
+        "light": "#00752b",
       },
     },
     "color-background-notification-red": Object {
       "$description": "Background color for red notifications. For example: red badges and error flash messages.",
       "$value": Object {
-        "dark": "#e00000",
-        "light": "#e00000",
+        "dark": "#db0000",
+        "light": "#db0000",
       },
     },
     "color-background-notification-yellow": Object {
       "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
       "$value": Object {
-        "dark": "#fcea00",
-        "light": "#fcea00",
+        "dark": "#fef571",
+        "light": "#fef571",
       },
     },
     "color-background-popover": Object {
@@ -28687,35 +28687,35 @@ Object {
     "color-background-status-error": Object {
       "$description": "The background color of an item in error state. For example: error alerts.",
       "$value": Object {
-        "dark": "#3d0000",
+        "dark": "#1f0000",
         "light": "#fff5f5",
       },
     },
     "color-background-status-info": Object {
       "$description": "The background color of an informational item. For example: information alerts.",
       "$value": Object {
-        "dark": "#00193d",
-        "light": "#f0faff",
+        "dark": "#001129",
+        "light": "#f0fbff",
       },
     },
     "color-background-status-success": Object {
       "$description": "The background color of an item in success state. For example: success alerts.",
       "$value": Object {
-        "dark": "#042504",
+        "dark": "#001401",
         "light": "#f1fff0",
       },
     },
     "color-background-status-warning": Object {
       "$description": "The background color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#1d1906",
-        "light": "#ffffdb",
+        "dark": "#291b00",
+        "light": "#fffee5",
       },
     },
     "color-background-toggle-checked-disabled": Object {
       "$description": "The background color of checked toggles in disabled state.",
       "$value": Object {
-        "dark": "#002457",
+        "dark": "#002b66",
         "light": "#b8e7ff",
       },
     },
@@ -28729,7 +28729,7 @@ Object {
     "color-board-placeholder-hover": Object {
       "$description": "The color of board placeholder in hovered state.",
       "$value": Object {
-        "dark": "#0073e5",
+        "dark": "#006edb",
         "light": "#d1f1ff",
       },
     },
@@ -28737,14 +28737,14 @@ Object {
       "$description": "The border color of normal buttons in active state.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#002457",
+        "light": "#002b66",
       },
     },
     "color-border-button-normal-default": Object {
       "$description": "The border color of normal buttons.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-border-button-normal-disabled": Object {
@@ -28758,7 +28758,7 @@ Object {
       "$description": "The border color of normal buttons in hover state.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#002457",
+        "light": "#002b66",
       },
     },
     "color-border-button-primary-disabled": Object {
@@ -28806,43 +28806,43 @@ Object {
     "color-border-item-focused": Object {
       "$description": "The color of focus states. For example: the focus ring around interactive elements.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-border-item-selected": Object {
       "$description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-border-status-error": Object {
       "$description": "The border color of an item in error state. For example: error alerts.",
       "$value": Object {
-        "dark": "#ff8f8f",
-        "light": "#e00000",
+        "dark": "#ff6161",
+        "light": "#db0000",
       },
     },
     "color-border-status-info": Object {
       "$description": "The border color of an informational item. For example: information alerts.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-border-status-success": Object {
       "$description": "The border color of an item in success state. For example: success alerts.",
       "$value": Object {
-        "dark": "#00c220",
-        "light": "#008a00",
+        "dark": "#29ad32",
+        "light": "#00752b",
       },
     },
     "color-border-status-warning": Object {
       "$description": "The border color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#fada00",
-        "light": "#855200",
+        "dark": "#ffe019",
+        "light": "#855900",
       },
     },
     "color-charts-blue-1-1000": Object {
@@ -29829,14 +29829,14 @@ Object {
       "$description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#0073e5",
+        "light": "#006edb",
       },
     },
     "color-charts-threshold-negative": Object {
       "$description": "The color to represent a threshold with a negative outcome. For example: A maximum limit",
       "$value": Object {
-        "dark": "#ff8f8f",
-        "light": "#e00000",
+        "dark": "#ff6161",
+        "light": "#db0000",
       },
     },
     "color-charts-threshold-neutral": Object {
@@ -29849,8 +29849,8 @@ Object {
     "color-charts-threshold-positive": Object {
       "$description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate",
       "$value": Object {
-        "dark": "#00c220",
-        "light": "#008a00",
+        "dark": "#29ad32",
+        "light": "#00752b",
       },
     },
     "color-charts-yellow-1000": Object {
@@ -29933,14 +29933,14 @@ Object {
     "color-drag-placeholder-hover": Object {
       "$description": "The color of drag placeholder in hovered state.",
       "$value": Object {
-        "dark": "#0073e5",
+        "dark": "#006edb",
         "light": "#d1f1ff",
       },
     },
     "color-foreground-control-default": Object {
       "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
       "$value": Object {
-        "dark": "#000916",
+        "dark": "#091120",
         "light": "#ffffff",
       },
     },
@@ -29954,15 +29954,15 @@ Object {
     "color-text-accent": Object {
       "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
         "dark": "#d5dde7",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "color-text-body-secondary": Object {
@@ -29990,41 +29990,41 @@ Object {
       "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#002457",
+        "light": "#002b66",
       },
     },
     "color-text-button-normal-default": Object {
       "$description": "The default text color of normal buttons.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-text-button-normal-hover": Object {
       "$description": "The hover text color of normal buttons.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#002457",
+        "light": "#002b66",
       },
     },
     "color-text-button-primary-active": Object {
       "$description": "The active text color of primary buttons.",
       "$value": Object {
-        "dark": "#000916",
+        "dark": "#091120",
         "light": "#ffffff",
       },
     },
     "color-text-button-primary-default": Object {
       "$description": "The default text color of primary buttons.",
       "$value": Object {
-        "dark": "#000916",
+        "dark": "#091120",
         "light": "#ffffff",
       },
     },
     "color-text-button-primary-hover": Object {
       "$description": "The hover text color of primary buttons.",
       "$value": Object {
-        "dark": "#000916",
+        "dark": "#091120",
         "light": "#ffffff",
       },
     },
@@ -30039,14 +30039,14 @@ Object {
       "$description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#0073e5",
+        "light": "#006edb",
       },
     },
     "color-text-dropdown-item-highlighted": Object {
       "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
       "$value": Object {
         "dark": "#e2e8ee",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "color-text-empty": Object {
@@ -30060,7 +30060,7 @@ Object {
       "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
       "$value": Object {
         "dark": "#d5dde7",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "color-text-form-secondary": Object {
@@ -30081,7 +30081,7 @@ Object {
       "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
       "$value": Object {
         "dark": "#e2e8ee",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "color-text-heading-secondary": Object {
@@ -30123,7 +30123,7 @@ Object {
       "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
       "$value": Object {
         "dark": "#fcfcfd",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "color-text-interactive-default": Object {
@@ -30144,7 +30144,7 @@ Object {
       "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
       "$value": Object {
         "dark": "#fcfcfd",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "color-text-interactive-inverted-default": Object {
@@ -30165,7 +30165,7 @@ Object {
       "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
       "$value": Object {
         "dark": "#d5dde7",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "color-text-layout-toggle": Object {
@@ -30185,29 +30185,29 @@ Object {
     "color-text-layout-toggle-hover": Object {
       "$description": "The color of the app layout toggle button on hover.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-text-layout-toggle-selected": Object {
       "$description": "The color of the app layout toggle button when it's selected.",
       "$value": Object {
-        "dark": "#000916",
+        "dark": "#091120",
         "light": "#ffffff",
       },
     },
     "color-text-link-default": Object {
       "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-text-link-hover": Object {
       "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
       "$value": Object {
         "dark": "#75cfff",
-        "light": "#002457",
+        "light": "#002b66",
       },
     },
     "color-text-notification-default": Object {
@@ -30220,8 +30220,8 @@ Object {
     "color-text-status-error": Object {
       "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
       "$value": Object {
-        "dark": "#ff8f8f",
-        "light": "#e00000",
+        "dark": "#ff6161",
+        "light": "#db0000",
       },
     },
     "color-text-status-inactive": Object {
@@ -30234,29 +30234,29 @@ Object {
     "color-text-status-info": Object {
       "$description": "The color of info text and icons. For example: info status indicators and info alert icon.",
       "$value": Object {
-        "dark": "#0096fa",
-        "light": "#0073e5",
+        "dark": "#0099ff",
+        "light": "#006edb",
       },
     },
     "color-text-status-success": Object {
       "$description": "The color of success text and icons. For example: success status indicators and success alert icon.",
       "$value": Object {
-        "dark": "#00c220",
-        "light": "#008a00",
+        "dark": "#29ad32",
+        "light": "#00752b",
       },
     },
     "color-text-status-warning": Object {
       "$description": "The color of warning icons.",
       "$value": Object {
-        "dark": "#fada00",
-        "light": "#855200",
+        "dark": "#ffe019",
+        "light": "#855900",
       },
     },
     "color-text-top-navigation-title": Object {
       "$description": "The color of the title in the top navigation.",
       "$value": Object {
         "dark": "#fcfcfd",
-        "light": "#000916",
+        "light": "#091120",
       },
     },
     "font-family-base": Object {
