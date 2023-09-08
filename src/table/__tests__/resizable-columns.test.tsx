@@ -365,3 +365,10 @@ describe('resize with keyboard', () => {
     expect(onChange).toHaveBeenCalledTimes(0);
   });
 });
+
+test('resizable columns headers have expected text content', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+  expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
+  expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
+});
