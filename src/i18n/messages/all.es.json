@@ -114,6 +114,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {Último {amount} {unit}} other {Últimos {amount} {unit}}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "Cargando contenido"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notificaciones",
     "i18nStrings.errorIconAriaLabel": "Error",
