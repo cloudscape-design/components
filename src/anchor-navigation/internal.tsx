@@ -25,7 +25,6 @@ export default function InternalAnchorNavigation({
   const baseProps = getBaseProps(props);
 
   const hrefs = useMemo(() => anchors.map(anchor => anchor.href), [anchors]);
-  const memoizedAnchors = useMemo(() => anchors, [anchors]);
 
   const onFollowHandler = useCallback(
     (anchor: AnchorNavigationProps.Anchor, sourceEvent: React.SyntheticEvent | Event) => {
@@ -50,9 +49,9 @@ export default function InternalAnchorNavigation({
 
   useEffect(() => {
     if (currentActiveHref) {
-      onActiveHrefChangeHandler(memoizedAnchors.find(anchor => anchor.href === currentActiveHref));
+      onActiveHrefChangeHandler(anchors.find(anchor => anchor.href === currentActiveHref));
     }
-  }, [onActiveHrefChangeHandler, memoizedAnchors, currentActiveHref]);
+  }, [onActiveHrefChangeHandler, anchors, currentActiveHref]);
 
   return (
     <nav
@@ -65,7 +64,7 @@ export default function InternalAnchorNavigation({
         {anchors.map((anchor, index) => {
           return (
             <Anchor
-              fireFollow={onFollowHandler}
+              onFollow={onFollowHandler}
               isActive={anchor.href === currentActiveHref}
               key={index}
               index={index}
@@ -80,21 +79,21 @@ export default function InternalAnchorNavigation({
 
 interface AnchorProps {
   anchor: AnchorNavigationProps.Anchor;
-  fireFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
+  onFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
   isActive: boolean;
   index: number;
 }
 
-const Anchor = ({ anchor, fireFollow, isActive, index }: AnchorProps) => {
+const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
   checkSafeUrl('SideNavigation', anchor.href);
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       if (isPlainLeftClick(event)) {
-        fireFollow(anchor, event);
+        onFollow(anchor, event);
       }
     },
-    [fireFollow, anchor]
+    [onFollow, anchor]
   );
 
   return (
