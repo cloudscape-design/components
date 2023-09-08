@@ -45,8 +45,8 @@ function getToolsDrawerItem(props: ToolsProps) {
 
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
-  activeDrawerId: string | undefined,
-  onActiveDrawerChange: (id: string | undefined) => void
+  activeDrawerId: string | null | undefined,
+  onActiveDrawerChange: (id: string | null) => void
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({ before: [], after: [] });
 
@@ -80,43 +80,55 @@ export function useDrawers(
     drawers: ownDrawers,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: InternalDrawerProps & { __disableRuntimeDrawers?: boolean },
-  toolsProps: ToolsProps
+  toolsProps: ToolsProps,
+  {
+    publicDrawers,
+    activeDrawerId: publicActiveDrawerId,
+    onDrawerChange: publicOnDrawerChange,
+    ariaLabels,
+  }: AppLayoutProps
 ) {
   const toolsDrawer = getToolsDrawerItem(toolsProps);
 
   const [activeDrawerId, setActiveDrawerId] = useControllable(
-    ownDrawers?.activeDrawerId,
-    ownDrawers?.onChange,
+    publicActiveDrawerId ?? ownDrawers?.activeDrawerId,
+    publicOnDrawerChange ?? ownDrawers?.onChange,
     !toolsProps.toolsHide && toolsProps.toolsOpen ? TOOLS_DRAWER_ID : undefined,
     {
       componentName: 'AppLayout',
       controlledProp: 'activeDrawerId',
-      changeHandler: 'onChange',
+      changeHandler: 'onDrawerChange',
     }
   );
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
 
-  const onActiveDrawerChange = useStableCallback((newDrawerId: string | undefined) => {
+  const onActiveDrawerChange = useStableCallback((newDrawerId: string | null) => {
     setActiveDrawerId(newDrawerId);
-    fireNonCancelableEvent(ownDrawers?.onChange, newDrawerId);
+    publicDrawers
+      ? fireNonCancelableEvent(publicOnDrawerChange, { activeDrawerId: newDrawerId })
+      : fireNonCancelableEvent(ownDrawers?.onChange, newDrawerId);
   });
 
   const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
-  const combinedDrawers = [...runtimeDrawers.before, ...(ownDrawers?.items ?? []), ...runtimeDrawers.after];
+  const combinedDrawers = [
+    ...runtimeDrawers.before,
+    ...(publicDrawers ?? ownDrawers?.items ?? []),
+    ...runtimeDrawers.after,
+  ];
   if (toolsDrawer && combinedDrawers.length > 0) {
     combinedDrawers.unshift(toolsDrawer);
   }
   const activeDrawer = combinedDrawers.find(drawer => drawer.id === activeDrawerId);
-  const activeDrawerIdResolved = activeDrawer?.id; // only defined when corresponding drawer exists
+  const activeDrawerIdResolved = activeDrawer?.id || null; // only defined when corresponding drawer exists
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
-    fireNonCancelableEvent(ownDrawers?.onResize, { id, size });
+    fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
   }
 
   return {
-    ariaLabel: ownDrawers?.ariaLabel,
-    overflowAriaLabel: ownDrawers?.overflowAriaLabel,
+    ariaLabel: ariaLabels?.drawers ?? ownDrawers?.ariaLabel,
+    overflowAriaLabel: ariaLabels?.drawersOverflow ?? ownDrawers?.overflowAriaLabel,
     drawers: combinedDrawers,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,

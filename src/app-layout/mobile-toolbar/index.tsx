@@ -60,9 +60,9 @@ interface MobileToolbarProps {
   onNavigationOpen: () => void;
   onToolsOpen: () => void;
   drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    items: Array<DrawerItem | AppLayoutProps.Drawer>;
+    activeDrawerId: string | null;
+    onChange: (changeDetail: { activeDrawerId: string | null }) => void;
     ariaLabel?: string;
     overflowAriaLabel?: string;
   };
@@ -137,8 +137,8 @@ export function MobileToolbar({
             >
               <ToggleButton
                 className={testutilStyles['drawers-trigger']}
-                iconName={item.trigger.iconName}
-                iconSvg={item.trigger.iconSvg}
+                iconName={'iconName' in item.trigger ? item.trigger.iconName : undefined}
+                iconSvg={'iconSvg' in item.trigger ? item.trigger.iconSvg : undefined}
                 badge={item.badge}
                 ariaLabel={item.ariaLabels?.triggerButton}
                 ariaExpanded={drawers.activeDrawerId === item.id}
@@ -153,7 +153,7 @@ export function MobileToolbar({
                 items={overflowItems}
                 onItemClick={({ detail }) => {
                   drawers.onChange({
-                    activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                    activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : null,
                   });
                 }}
               />

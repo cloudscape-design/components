@@ -3,6 +3,7 @@
 import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { IconProps } from '../icon/interfaces';
 
 export interface AppLayoutProps extends BaseComponentProps {
   /**
@@ -10,6 +11,31 @@ export interface AppLayoutProps extends BaseComponentProps {
    * Individual properties will always take precedence over the default coming from the content type.
    */
   contentType?: AppLayoutProps.ContentType;
+
+  /**
+   * Drawers property.
+ 
+   * Each Drawer is an item in the drawers wrapper with the following properties:
+   * * id (string) - the id of the drawer.
+   * * content (React.ReactNode) - the content in the drawer.
+   * * trigger (DrawerTrigger) - the button that opens and closes the active drawer. 
+   * * ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer.
+   * * badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+   * * resizable (boolean) - if the drawer is resizable or not.
+   * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
+   * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+   */
+  publicDrawers?: Array<AppLayoutProps.Drawer>;
+
+  /**
+   * The active drawer id.
+   */
+  activeDrawerId?: string | null;
+
+  /**
+   * Fired when the active drawer is toggled.
+   */
+  onDrawerChange?: NonCancelableEventHandler<AppLayoutProps.DrawerChangeDetail>;
 
   /**
    * If `true`, disables outer paddings for the content slot.
@@ -225,6 +251,32 @@ export namespace AppLayoutProps {
     focusSplitPanel(): void;
   }
 
+  export interface Drawer {
+    id: string;
+    content: React.ReactNode;
+    trigger: DrawerIconName | DrawerIconSvg;
+    ariaLabels: DrawerAriaLabels;
+    badge?: boolean;
+    resizable?: boolean;
+    defaultSize?: number;
+    onResize?: NonCancelableEventHandler<{ size: number }>;
+  }
+
+  export interface DrawerAriaLabels {
+    drawerName: string;
+    closeButton?: string;
+    triggerButton?: string;
+    resizeHandle?: string;
+  }
+
+  export interface DrawerIconName {
+    iconName: IconProps.Name;
+  }
+
+  export interface DrawerIconSvg {
+    iconSvg: React.ReactNode;
+  }
+
   export interface Labels {
     notifications?: string;
 
@@ -235,6 +287,13 @@ export namespace AppLayoutProps {
     tools?: string;
     toolsToggle?: string;
     toolsClose?: string;
+
+    drawers?: string;
+    drawersOverflow?: string;
+  }
+
+  export interface DrawerChangeDetail {
+    activeDrawerId: string | null;
   }
 
   export interface ChangeDetail {

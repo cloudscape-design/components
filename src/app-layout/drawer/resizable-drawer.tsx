@@ -79,6 +79,18 @@ export const ResizableDrawer = ({
     </div>
   );
 
+  const getMainLabel = () => {
+    if (activeDrawer) {
+      if ('drawerName' in activeDrawer.ariaLabels) {
+        return activeDrawer.ariaLabels.drawerName;
+      }
+      if ('content' in activeDrawer.ariaLabels) {
+        return activeDrawer.ariaLabels.content;
+      }
+    }
+    return undefined;
+  };
+
   return (
     <Drawer
       {...props}
@@ -89,7 +101,7 @@ export const ResizableDrawer = ({
       }
       drawersAriaLabels={{
         openLabel: activeDrawer?.ariaLabels?.triggerButton,
-        mainLabel: activeDrawer?.ariaLabels?.content,
+        mainLabel: getMainLabel(),
         closeLabel: activeDrawer?.ariaLabels?.closeButton,
       }}
     >

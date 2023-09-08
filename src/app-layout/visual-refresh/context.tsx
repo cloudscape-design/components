@@ -35,8 +35,8 @@ import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawerId: string | undefined;
-  drawers: Array<DrawerItem>;
+  activeDrawerId: string | null;
+  drawers: Array<DrawerItem | AppLayoutProps.Drawer>;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersRefs: DrawerFocusControlRefs;
@@ -45,7 +45,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
-  handleDrawersClick: (activeDrawerId: string | undefined, skipFocusControl?: boolean) => void;
+  handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
@@ -392,13 +392,24 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(props as InternalDrawerProps, {
-      ariaLabels: props.ariaLabels,
-      toolsHide,
-      toolsOpen: isToolsOpen,
-      tools: props.tools,
-      toolsWidth,
-    });
+    } = useDrawers(
+      props as InternalDrawerProps,
+      {
+        ariaLabels: props.ariaLabels,
+        toolsHide,
+        toolsOpen: isToolsOpen,
+        tools: props.tools,
+        toolsWidth,
+      },
+      {
+        publicDrawers: props.publicDrawers,
+        onDrawerChange: props.onDrawerChange,
+        activeDrawerId: props.activeDrawerId,
+        ariaLabels: props.ariaLabels,
+      }
+    );
+
+    console.log(props);
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
@@ -419,8 +430,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawersMaxWidth,
     });
 
-    const handleDrawersClick = (id: string | undefined, skipFocusControl?: boolean) => {
-      const newActiveDrawerId = id !== activeDrawerId ? id : undefined;
+    const handleDrawersClick = (id: string | null, skipFocusControl?: boolean) => {
+      const newActiveDrawerId = id !== activeDrawerId ? id : null;
 
       onActiveDrawerChange(newActiveDrawerId);
 
@@ -431,7 +442,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const drawersTriggerCount =
       drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
-      activeDrawerId !== undefined ||
+      activeDrawerId !== null ||
       (!toolsHide && isToolsOpen) ||
       (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =

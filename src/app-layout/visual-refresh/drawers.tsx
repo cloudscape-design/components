@@ -78,7 +78,14 @@ function ActiveDrawer() {
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
-    content: activeDrawerId ? activeDrawer?.ariaLabels?.content : ariaLabels?.tools,
+    content:
+      activeDrawerId && activeDrawer && 'content' in activeDrawer.ariaLabels
+        ? activeDrawer?.ariaLabels?.content
+        : ariaLabels?.tools,
+    drawerName:
+      activeDrawerId && activeDrawer && 'drawerName' in activeDrawer.ariaLabels
+        ? activeDrawer?.ariaLabels.drawerName
+        : ariaLabels?.tools,
   };
 
   const isHidden = !activeDrawerId;
@@ -89,7 +96,7 @@ function ActiveDrawer() {
 
   return (
     <aside
-      id={activeDrawerId}
+      id={activeDrawerId ?? undefined}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
@@ -223,8 +230,8 @@ function DesktopTriggers() {
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
+              iconName={'iconName' in item.trigger ? item.trigger.iconName : undefined}
+              iconSvg={'iconSvg' in item.trigger ? item.trigger.iconSvg : undefined}
               key={item.id}
               onClick={() => {
                 isToolsOpen && handleToolsClick(!isToolsOpen, true);
@@ -327,8 +334,8 @@ export function MobileTriggers() {
           disabled={hasDrawerViewportOverlay}
           ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
           formAction="none"
-          iconName={item.trigger.iconName}
-          iconSvg={item.trigger.iconSvg}
+          iconName={'iconName' in item.trigger ? item.trigger.iconName : undefined}
+          iconSvg={'iconSvg' in item.trigger ? item.trigger.iconSvg : undefined}
           badge={item.badge}
           key={item.id}
           onClick={() => handleDrawersClick(item.id)}

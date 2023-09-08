@@ -73,7 +73,7 @@ export const Drawer = React.forwardRef(
 
     return (
       <div
-        id={drawers?.activeDrawerId}
+        id={drawers?.activeDrawerId ?? undefined}
         ref={ref}
         className={clsx(styles.drawer, {
           [styles['drawer-closed']]: !isOpen,
@@ -118,7 +118,7 @@ export const Drawer = React.forwardRef(
               ariaLabel={closeLabel}
               onClick={() => {
                 onToggle(false);
-                drawers?.onChange({ activeDrawerId: undefined });
+                drawers?.onChange({ activeDrawerId: null });
               }}
             />
             {children}
@@ -225,7 +225,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                     isActive={drawers?.activeDrawerId === item.id}
                     onClick={() => {
                       drawers?.onChange({
-                        activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
+                        activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : null,
                       });
                     }}
                   />
@@ -238,7 +238,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                     items={overflowItems}
                     onItemClick={({ detail }) => {
                       drawers?.onChange({
-                        activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
+                        activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : null,
                       });
                     }}
                   />

@@ -116,6 +116,23 @@ export default function WithDrawers() {
       toolsOpen={isToolsOpen}
       toolsHide={!hasTools}
       {...drawers}
+      publicDrawers={[
+        {
+          ariaLabels: {
+            drawerName: 'pro-help',
+            closeButton: 'pro-help close',
+            triggerButton: 'pro-help trigger',
+            resizeHandle: 'pro-help resize',
+          },
+          content: <ProHelp />,
+          badge: true,
+          defaultSize: 600,
+          id: 'pro-help',
+          trigger: {
+            iconName: 'contact',
+          },
+        },
+      ]}
     />
   );
 }

@@ -29,15 +29,15 @@ export interface DesktopDrawerProps {
   onClick?: (event: React.MouseEvent) => void;
   onLoseFocus?: (event: React.FocusEvent) => void;
   drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    items: Array<DrawerItem | AppLayoutProps.Drawer>;
+    activeDrawerId: string | null;
+    onChange: (changeDetail: { activeDrawerId: string | null }) => void;
   };
   resizeHandle?: React.ReactNode;
 }
 
 export interface ResizableDrawerProps extends DesktopDrawerProps {
-  activeDrawer?: DrawerItem;
+  activeDrawer?: DrawerItem | AppLayoutProps.Drawer;
   onResize: (resizeDetail: { size: number; id: string }) => void;
   size: number;
   getMaxWidth: () => number;
@@ -49,9 +49,9 @@ export interface DrawerTriggersBarProps {
   bottomOffset: number | undefined;
   isMobile: boolean;
   drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId?: string;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    items: Array<DrawerItem | AppLayoutProps.Drawer>;
+    activeDrawerId: string | null;
+    onChange: (changeDetail: { activeDrawerId: string | null }) => void;
     ariaLabel?: string;
     overflowAriaLabel?: string;
   };
@@ -81,8 +81,8 @@ export interface DrawerItem {
 export interface InternalDrawerProps {
   drawers?: {
     items: Array<DrawerItem>;
-    activeDrawerId?: string;
-    onChange?: NonCancelableEventHandler<string>;
+    activeDrawerId?: string | null;
+    onChange?: NonCancelableEventHandler<string | null>;
     onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
     ariaLabel?: string;
     overflowAriaLabel?: string;
