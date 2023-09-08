@@ -25,7 +25,7 @@ const TextContent = () => {
         <h4 id="section-1-2-1">Section 1.2.1</h4>
         <TextSample />
         <h5 id="section-1-2-1-1">Section 1.2.1.1</h5>
-        <TextSample />
+        Small text
       </div>
     </SpaceBetween>
   );
