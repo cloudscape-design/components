@@ -296,12 +296,14 @@ test('ensures new interactive table elements are muted', () => {
   const { container, rerender } = render(<TestTable columns={[idColumn, valueColumn]} items={items.slice(0, 3)} />);
 
   expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(11);
+  expect(container.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   rerender(<TestTable columns={[idColumn, valueColumn]} items={items} />);
   const lastRow = container.querySelector('[aria-rowindex="5"]')!;
   mockObserver.callback([{ type: 'childList', addedNodes: [lastRow], removedNodes: [] } as unknown as MutationRecord]);
 
   expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(14);
+  expect(container.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 });
 
 test('ignores keydown modifiers other than ctrl', () => {

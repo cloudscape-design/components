@@ -217,21 +217,19 @@ class GridNavigationHelper {
     const cell = this.focusedCell ?? this.prevFocusedCell;
     const cellSuppressed = cell ? this.isSuppressed(cell.element) : false;
 
-    for (const record of mutationRecords) {
-      if (record.type === 'childList') {
-        // The focus needs to be muted for the newly added nodes.
-        for (const addedNode of Array.from(record.addedNodes)) {
-          if (addedNode instanceof HTMLElement) {
-            muteElementFocusables(addedNode, cellSuppressed);
-          }
-        }
+    // Update table elements focus if new nodes were added.
+    if (mutationRecords.some(record => record.addedNodes.length > 0)) {
+      muteElementFocusables(this.table, cellSuppressed);
+      ensureSingleFocusable(this.table, cell);
+    }
 
-        // The lost focus in an unmount event is reapplied to the table using the previous cell position.
-        // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
-        if (cell) {
+    if (cell) {
+      for (const record of mutationRecords) {
+        if (record.type === 'childList') {
+          // The lost focus in an unmount event is reapplied to the table using the previous cell position.
+          // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
           for (const removedNode of Array.from(record.removedNodes)) {
             if (removedNode === cell.element || nodeContains(removedNode, cell.element)) {
-              muteElementFocusables(this.table, cellSuppressed);
               ensureSingleFocusable(this.table, cell);
               moveFocusBy(this.table, cell, { y: 0, x: 0 });
             }
