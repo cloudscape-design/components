@@ -30,7 +30,6 @@ module.exports = {
     'react/no-danger': 'error',
     'react/no-unstable-nested-components': ['error', { allowAsProps: true }],
     'react/prop-types': 'off',
-    'react/forbid-component-props': ['warn', { forbid: ['className', 'id'] }],
     'react/jsx-boolean-value': ['error', 'always'],
     '@cloudscape-design/ban-files': [
       'error',
