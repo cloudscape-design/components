@@ -19,11 +19,11 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
  * Makes table navigable with keyboard commands.
  * See https://www.w3.org/WAI/ARIA/apg/patterns/grid
  *
- * The hook attaches the GridNavigationModel helper when active=true.
- * See GridNavigationModel for more details.
+ * The hook attaches the GridNavigationHelper helper when active=true.
+ * See GridNavigationHelper for more details.
  */
 export function useGridNavigation({ active, pageSize, getTable, isSuppressed }: GridNavigationProps) {
-  const model = useMemo(() => new GridNavigationModel(), []);
+  const gridNavigation = useMemo(() => new GridNavigationHelper(), []);
 
   const getTableStable = useStableCallback(getTable);
   const isSuppressedStable = useStableCallback((element: HTMLElement) => isSuppressed?.(element) ?? false);
@@ -32,15 +32,15 @@ export function useGridNavigation({ active, pageSize, getTable, isSuppressed }: 
   useEffect(() => {
     if (active) {
       const table = getTableStable();
-      table && model.init(table, isSuppressedStable);
+      table && gridNavigation.init(table, isSuppressedStable);
     }
-    return () => model.destroy();
-  }, [model, active, getTableStable, isSuppressedStable]);
+    return () => gridNavigation.cleanup();
+  }, [active, gridNavigation, getTableStable, isSuppressedStable]);
 
   // Notify the model of the props change.
   useEffect(() => {
-    model.update({ pageSize });
-  }, [model, pageSize]);
+    gridNavigation.update({ pageSize });
+  }, [gridNavigation, pageSize]);
 }
 
 /**
@@ -56,7 +56,7 @@ export function useGridNavigation({ active, pageSize, getTable, isSuppressed }: 
  * user-focusable to unblock the Tab navigation. The suppression should only be used for interactive elements inside the table that would
  * otherwise conflict with the navigation. Once the interactive element is deactivated or lose focus the table navigation becomes active again.
  */
-class GridNavigationModel {
+class GridNavigationHelper {
   // Props
   private _pageSize = 0;
   private _table: null | HTMLTableElement = null;
@@ -65,7 +65,6 @@ class GridNavigationModel {
   // State
   private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
-  private cleanup = () => {};
 
   public init(table: HTMLTableElement, isSuppressed: (focusedElement: HTMLElement) => boolean) {
     this._table = table;
@@ -91,8 +90,8 @@ class GridNavigationModel {
     };
   }
 
-  public destroy() {
-    this.cleanup();
+  public cleanup() {
+    // Do nothing before initialized.
   }
 
   public update({ pageSize }: { pageSize: number }) {
@@ -105,7 +104,7 @@ class GridNavigationModel {
 
   private get table(): HTMLTableElement {
     if (!this._table) {
-      throw new Error('Invariant violation: GridNavigationModel is used before initialization.');
+      throw new Error('Invariant violation: GridNavigationHelper is used before initialization.');
     }
     return this._table;
   }
