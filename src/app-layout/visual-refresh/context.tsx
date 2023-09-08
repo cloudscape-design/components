@@ -392,17 +392,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(
-      props as InternalDrawerProps,
-      {
-        ariaLabels: props.ariaLabels,
-        toolsHide,
-        toolsOpen: isToolsOpen,
-        tools: props.tools,
-        toolsWidth,
-      },
-      contentTypeDefaults
-    );
+    } = useDrawers(props as InternalDrawerProps, {
+      ariaLabels: props.ariaLabels,
+      toolsHide,
+      toolsOpen: isToolsOpen,
+      tools: props.tools,
+      toolsWidth,
+    });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
@@ -435,9 +431,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const drawersTriggerCount =
       drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
-      activeDrawerId !== undefined ||
-      isToolsOpen ||
-      (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
+      activeDrawerId !== undefined || (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
       isMobile && (!!activeDrawerId || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
 

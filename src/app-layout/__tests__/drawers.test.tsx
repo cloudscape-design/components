@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { describeEachAppLayout, renderComponent, singleDrawer, manyDrawers } from './utils';
+import { describeEachAppLayout, renderComponent, singleDrawer, manyDrawers, singleDrawerOpen } from './utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import { render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
+import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
@@ -36,10 +37,26 @@ describeEachAppLayout(() => {
     expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
   });
 
-  test('renderds drawers with the tools', () => {
+  test('renders drawers with the tools', () => {
     const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
 
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+  });
+
+  test('should respect toolsOpen property when merging into drawers', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Tools content" toolsOpen={true} {...singleDrawer} />);
+
+    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-expanded', 'true');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-expanded', 'false');
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Tools content');
+  });
+
+  test('activeDrawerId has priority over toolsOpen', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Tools content" toolsOpen={true} {...singleDrawerOpen} />);
+
+    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-expanded', 'false');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-expanded', 'true');
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
   });
 
   test('should open active drawer on click of overflow item', () => {
