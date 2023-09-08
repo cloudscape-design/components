@@ -7,6 +7,7 @@ import { FocusedCell } from './interfaces';
 // For the grid to have a single Tab stop all interactive element indices are updated to be -999.
 // The elements having tab index -999 are eligible for keyboard navigation but not for Tab navigation.
 const PSEUDO_FOCUSABLE_TAB_INDEX = -999;
+const FOCUSABLES_SELECTOR = `[tabIndex="0"],[tabIndex="${PSEUDO_FOCUSABLE_TAB_INDEX}"]`;
 
 /**
  * Finds focused cell props corresponding the focused element inside the table.
@@ -71,32 +72,14 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
 }
 
 /**
- * Overrides focusability of the table elements to make focus targets controllable with keyboard commands.
+ * Makes the cell element, the first interactive element or the first cell of the table user-focusable.
  */
-export function updateTableFocusables(table: HTMLTableElement, cell: null | FocusedCell, suppressed: boolean) {
-  // When grid navigation is suppressed all interactive elements and all cells focus is unmuted to unblock Tab navigation.
-  // Leaving the interactive widget using Tab navigation moves the focus to the current or adjacent cell and un-suppresses
-  // the navigation when implemented correctly.
-  if (cell && suppressed) {
-    for (const focusable of getFocusables(table)) {
-      focusable.tabIndex = 0;
-    }
-    return;
-  }
-
-  const tableCells = Array.from(table.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
-
-  // Assigning pseudo-focusable tab index to all cells and all interactive elements makes them focusable with grid navigation.
-  for (const cell of tableCells) {
-    cell.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
-  }
-  for (const focusable of getActualFocusables(table)) {
-    focusable.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
-  }
+export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCell) {
+  const firstTableCell = table.querySelector('td,th') as null | HTMLTableCellElement;
 
   // A single element of the table is made user-focusable.
   // It defaults to the first interactive element of the first cell or the first cell itself otherwise.
-  let focusTarget: undefined | HTMLElement = (tableCells[0] && getFocusables(tableCells[0])[0]) ?? tableCells[0];
+  let focusTarget: null | HTMLElement = (firstTableCell && getFocusables(firstTableCell)[0]) ?? firstTableCell;
 
   // When a navigation-focused element is present in the table it is used for user-navigation instead.
   if (cell && table.contains(cell.element)) {
@@ -108,10 +91,41 @@ export function updateTableFocusables(table: HTMLTableElement, cell: null | Focu
   }
 }
 
-// This cleanup code ensures all cells are no longer focusable but the interactive elements are.
-// Currently there are no use cases for it as we don't expect the navigation to be used conditionally.
-export function restoreTableFocusables(table: HTMLTableElement) {
-  for (const focusable of getFocusables(table)) {
+/**
+ * Makes all element focusable children pseudo-focusable unless the grid navigation is suppressed.
+ */
+export function muteElementFocusables(element: HTMLElement, suppressed: boolean) {
+  // When grid navigation is suppressed all interactive elements and all cells focus is unmuted to unblock Tab navigation.
+  // Leaving the interactive widget using Tab navigation moves the focus to the current or adjacent cell and un-suppresses
+  // the navigation when implemented correctly.
+  if (suppressed) {
+    for (const focusable of getFocusables(element)) {
+      focusable.tabIndex = 0;
+    }
+    return;
+  }
+
+  const tableCells = queryTableCells(element);
+
+  // Assigning pseudo-focusable tab index to all cells and all interactive elements makes them focusable with grid navigation.
+  for (const cell of tableCells) {
+    if (cell !== document.activeElement) {
+      cell.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
+    }
+  }
+  for (const focusable of getActualFocusables(element)) {
+    if (focusable !== document.activeElement) {
+      focusable.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
+    }
+  }
+}
+
+/**
+ * This cleanup code ensures all cells are no longer focusable but the interactive elements are.
+ * Currently there are no use cases for it as we don't expect the navigation to be used conditionally.
+ */
+export function restoreElementFocusables(element: HTMLTableElement) {
+  for (const focusable of getFocusables(element)) {
     if (focusable instanceof HTMLTableCellElement) {
       focusable.tabIndex = -1;
     } else {
@@ -147,9 +161,11 @@ export function defaultIsSuppressed(target: HTMLElement) {
  * Returns actually focusable or pseudo-focusable elements to find navigation targets.
  */
 export function getFocusables(element: HTMLElement) {
-  return Array.from(
-    element.querySelectorAll(`[tabIndex="0"],[tabIndex="${PSEUDO_FOCUSABLE_TAB_INDEX}"]`)
-  ) as HTMLElement[];
+  return Array.from(element.querySelectorAll(FOCUSABLES_SELECTOR)) as HTMLElement[];
+}
+
+export function getFirstFocusable(element: HTMLElement) {
+  return element.querySelector(FOCUSABLES_SELECTOR) as null | HTMLElement;
 }
 
 /**
@@ -209,4 +225,13 @@ function focus(element: null | HTMLElement) {
     element.tabIndex = 0;
     element.focus();
   }
+}
+
+function queryTableCells(element: HTMLElement) {
+  const tableCells = Array.from(element.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
+  if (element instanceof HTMLTableCellElement) {
+    tableCells.push(element);
+  }
+
+  return tableCells;
 }

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import SpaceBetween from '~components/space-between';
 import {
   AppLayout,
@@ -61,6 +61,12 @@ export default function Page() {
   const actionsMode = urlParams.actionsMode ?? 'dropdown';
 
   const [items, setItems] = useState(generateItems(25));
+
+  useEffect(() => {
+    setInterval(() => {
+      setItems(prev => [...prev, ...generateItems(1)]);
+    }, 10000);
+  }, []);
 
   const columnDefinitions = [
     {

@@ -279,15 +279,29 @@ test('ensures table always has a user-focusable element', () => {
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   sortButton.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [sortButton] } as unknown as MutationRecord]);
+  mockObserver.callback([
+    { type: 'childList', addedNodes: [], removedNodes: [sortButton] } as unknown as MutationRecord,
+  ]);
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   editButton.focus();
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   row1.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row1] } as unknown as MutationRecord]);
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
+});
+
+test('ensures new interactive table elements are muted', () => {
+  const { container, rerender } = render(<TestTable columns={[idColumn, valueColumn]} items={items.slice(0, 3)} />);
+
+  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(11);
+
+  rerender(<TestTable columns={[idColumn, valueColumn]} items={items} />);
+  const lastRow = container.querySelector('[aria-rowindex="5"]')!;
+  mockObserver.callback([{ type: 'childList', addedNodes: [lastRow], removedNodes: [] } as unknown as MutationRecord]);
+
+  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(14);
 });
 
 test('ignores keydown modifiers other than ctrl', () => {
@@ -323,7 +337,7 @@ test('cell or cell element is re-focused after the focus target got removed', ()
   expect(document.body).toHaveFocus();
 
   row1.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row1] } as unknown as MutationRecord]);
 
   expect(document.body).toHaveFocus();
 
@@ -332,7 +346,7 @@ test('cell or cell element is re-focused after the focus target got removed', ()
   expect(getActiveElement()).toEqual(['td', 'Second']);
 
   row2.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row2] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row2] } as unknown as MutationRecord]);
 
   expect(getActiveElement()).toEqual(['td', 'Third']);
 
@@ -342,7 +356,7 @@ test('cell or cell element is re-focused after the focus target got removed', ()
   expect(getActiveElement()).toEqual(['button', 'Edit value 3']);
 
   row3.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row3] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row3] } as unknown as MutationRecord]);
 
   expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
 });
@@ -430,17 +444,16 @@ test('grid navigation is suppressed by `isSuppressed` callback', () => {
 
   (container.querySelector('button[aria-label="Sort by name"]') as HTMLElement).focus();
   expect(getActiveElement()).toEqual(['button', 'Sort by name']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]').length).toBeGreaterThan(0);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.right });
   expect(getActiveElement()).toEqual(['button', 'Sort by value']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]').length).toBeGreaterThan(0);
 
   const sortByValueButton = container.querySelector('button[aria-label="Sort by value"]')!;
   sortByValueButton.setAttribute('aria-label', 'Sort by value!');
-  mockObserver.callback([{ type: 'childList', removedNodes: [sortByValueButton] } as unknown as MutationRecord]);
+  mockObserver.callback([
+    { type: 'childList', addedNodes: [sortByValueButton], removedNodes: [] } as unknown as MutationRecord,
+  ]);
 
   fireEvent.keyDown(table, { keyCode: KeyCode.left });
   expect(getActiveElement()).toEqual(['button', 'Sort by value!']);
-  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 });

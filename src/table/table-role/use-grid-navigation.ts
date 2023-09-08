@@ -6,9 +6,10 @@ import {
   defaultIsSuppressed,
   findFocusinCell,
   moveFocusBy,
-  restoreTableFocusables,
-  updateTableFocusables,
-  getFocusables,
+  muteElementFocusables,
+  restoreElementFocusables,
+  ensureSingleFocusable,
+  getFirstFocusable,
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
@@ -77,7 +78,8 @@ class GridNavigationHelper {
     const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
     tableNodesObserver.observe(table, { childList: true, subtree: true });
 
-    updateTableFocusables(this.table, null, false);
+    muteElementFocusables(this.table, false);
+    ensureSingleFocusable(this.table, null);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -86,7 +88,7 @@ class GridNavigationHelper {
 
       tableNodesObserver.disconnect();
 
-      restoreTableFocusables(this.table);
+      restoreElementFocusables(this.table);
     };
   }
 
@@ -122,12 +124,13 @@ class GridNavigationHelper {
     this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
-    updateTableFocusables(this.table, cell, this.isSuppressed(cell.element));
+    muteElementFocusables(this.table, this.isSuppressed(cell.element));
+    ensureSingleFocusable(this.table, cell);
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
     if (cell.element === cell.cellElement) {
-      getFocusables(cell.cellElement)[0]?.focus();
+      getFirstFocusable(cell.cellElement)?.focus();
     }
   };
 
@@ -211,19 +214,27 @@ class GridNavigationHelper {
   private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
     // When focused cell is un-mounted the focusout event handler removes this.cell,
     // while this.prevFocusedCell is retained until the next focusin event.
-    if (!this.prevFocusedCell) {
-      return;
-    }
+    const cell = this.focusedCell ?? this.prevFocusedCell;
+    const cellSuppressed = cell ? this.isSuppressed(cell.element) : false;
 
-    // The lost focus in an unmount event is reapplied to the table using the previous cell position.
-    // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
     for (const record of mutationRecords) {
       if (record.type === 'childList') {
-        for (const removedNode of Array.from(record.removedNodes)) {
-          if (removedNode === this.prevFocusedCell.element || nodeContains(removedNode, this.prevFocusedCell.element)) {
-            const cell = this.focusedCell ?? this.prevFocusedCell;
-            updateTableFocusables(this.table, cell, this.isSuppressed(cell.element));
-            moveFocusBy(this.table, this.prevFocusedCell, { y: 0, x: 0 });
+        // The focus needs to be muted for the newly added nodes.
+        for (const addedNode of Array.from(record.addedNodes)) {
+          if (addedNode instanceof HTMLElement) {
+            muteElementFocusables(addedNode, cellSuppressed);
+          }
+        }
+
+        // The lost focus in an unmount event is reapplied to the table using the previous cell position.
+        // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
+        if (cell) {
+          for (const removedNode of Array.from(record.removedNodes)) {
+            if (removedNode === cell.element || nodeContains(removedNode, cell.element)) {
+              muteElementFocusables(this.table, cellSuppressed);
+              ensureSingleFocusable(this.table, cell);
+              moveFocusBy(this.table, cell, { y: 0, x: 0 });
+            }
           }
         }
       }
