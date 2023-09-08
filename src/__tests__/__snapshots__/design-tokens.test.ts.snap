@@ -300,6 +300,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -431,6 +459,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -1831,6 +1887,27 @@ Object {
           "$value": Object {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": Object {
@@ -2483,6 +2560,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -2614,6 +2719,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -4014,6 +4147,27 @@ Object {
           "$value": Object {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": Object {
@@ -4666,6 +4820,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -4797,6 +4979,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -6197,6 +6407,27 @@ Object {
           "$value": Object {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": Object {
@@ -6849,6 +7080,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -6980,6 +7239,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -8380,6 +8667,27 @@ Object {
           "$value": Object {
             "dark": "#16191f",
             "light": "#16191f",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-text-status-error": Object {
@@ -9032,6 +9340,34 @@ Object {
             "light": "#21252c",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -9163,6 +9499,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#00a1c9",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-status-error": Object {
@@ -10565,6 +10929,27 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -11215,6 +11600,34 @@ Object {
         "light": "#ffffff",
       },
     },
+    "color-background-segment-active": Object {
+      "$description": "The background color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-segment-default": Object {
+      "$description": "The background color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-disabled": Object {
+      "$description": "The background color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-hover": Object {
+      "$description": "The background color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
     "color-background-status-error": Object {
       "$description": "The background color of an item in error state. For example: error alerts.",
       "$value": Object {
@@ -11346,6 +11759,34 @@ Object {
       "$value": Object {
         "dark": "#00a1c9",
         "light": "#0073bb",
+      },
+    },
+    "color-border-segment-active": Object {
+      "$description": "The border color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#16191f",
+      },
+    },
+    "color-border-segment-default": Object {
+      "$description": "The border color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#687078",
+      },
+    },
+    "color-border-segment-disabled": Object {
+      "$description": "The border color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#414750",
+        "light": "#d5dbdb",
+      },
+    },
+    "color-border-segment-hover": Object {
+      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#16191f",
       },
     },
     "color-border-status-error": Object {
@@ -12748,6 +13189,27 @@ Object {
         "light": "#fafafa",
       },
     },
+    "color-text-segment-active": Object {
+      "$description": "The text color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#1a2029",
+        "light": "#ffffff",
+      },
+    },
+    "color-text-segment-default": Object {
+      "$description": "The text color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d5dbdb",
+        "light": "#545b64",
+      },
+    },
+    "color-text-segment-hover": Object {
+      "$description": "The text color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
     "color-text-status-error": Object {
       "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
       "$value": Object {
@@ -13403,6 +13865,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -13534,6 +14024,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -14934,6 +15452,27 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-text-status-error": Object {
@@ -15586,6 +16125,34 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -15717,6 +16284,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-status-error": Object {
@@ -17117,6 +17712,27 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-text-status-error": Object {
@@ -17769,6 +18385,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -17900,6 +18544,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -19300,6 +19972,27 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-text-status-error": Object {
@@ -19952,6 +20645,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -20083,6 +20804,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -21483,6 +22232,27 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-text-status-error": Object {
@@ -22135,6 +22905,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -22266,6 +23064,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -23666,6 +24492,27 @@ Object {
           "$value": Object {
             "dark": "#000716",
             "light": "#000716",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
           },
         },
         "color-text-status-error": Object {
@@ -24318,6 +25165,34 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -24449,6 +25324,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-status-error": Object {
@@ -25849,6 +26752,27 @@ Object {
           "$value": Object {
             "dark": "#fbfbfb",
             "light": "#fbfbfb",
+          },
+        },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
           },
         },
         "color-text-status-error": Object {
@@ -26501,6 +27425,34 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -26632,6 +27584,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-status-error": Object {
@@ -28034,6 +29014,27 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -28684,6 +29685,34 @@ Object {
         "light": "#ffffff",
       },
     },
+    "color-background-segment-active": Object {
+      "$description": "The background color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#539fe5",
+        "light": "#0972d3",
+      },
+    },
+    "color-background-segment-default": Object {
+      "$description": "The background color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#0f1b2a",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-disabled": Object {
+      "$description": "The background color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#0f1b2a",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-hover": Object {
+      "$description": "The background color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#0f1b2a",
+        "light": "#ffffff",
+      },
+    },
     "color-background-status-error": Object {
       "$description": "The background color of an item in error state. For example: error alerts.",
       "$value": Object {
@@ -28815,6 +29844,34 @@ Object {
       "$value": Object {
         "dark": "#539fe5",
         "light": "#0972d3",
+      },
+    },
+    "color-border-segment-active": Object {
+      "$description": "The border color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-border-segment-default": Object {
+      "$description": "The border color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-border-segment-disabled": Object {
+      "$description": "The border color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-border-segment-hover": Object {
+      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
       },
     },
     "color-border-status-error": Object {
@@ -30215,6 +31272,27 @@ Object {
       "$value": Object {
         "dark": "#fbfbfb",
         "light": "#fbfbfb",
+      },
+    },
+    "color-text-segment-active": Object {
+      "$description": "The text color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#000716",
+        "light": "#ffffff",
+      },
+    },
+    "color-text-segment-default": Object {
+      "$description": "The text color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-text-segment-hover": Object {
+      "$description": "The text color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#539fe5",
+        "light": "#0972d3",
       },
     },
     "color-text-status-error": Object {
