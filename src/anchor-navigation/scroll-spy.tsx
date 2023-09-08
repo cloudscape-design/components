@@ -15,7 +15,10 @@ export default function useScrollSpy({
 }): [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>] {
   const [currentHref, setCurrentHref] = useState<string>();
 
-  const lastAnchorElementExists = useMemo(() => !!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)), [hrefs]);
+  const lastAnchorElementExists = useMemo(
+    () => isBrowser && !!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)),
+    [hrefs]
+  );
 
   // Get the bounding rectangle of an element by href
   const getRectByHref = useCallback(href => {
@@ -30,7 +33,6 @@ export default function useScrollSpy({
 
   // Find the href for which the element is within the viewport
   const findHrefInView = useCallback(() => {
-    console.log('Here');
     return hrefs.find(href => {
       const rect = getRectByHref(href);
       return rect && rect.bottom <= window.innerHeight && rect.bottom - scrollSpyOffset >= 0;

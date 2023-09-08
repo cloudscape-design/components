@@ -148,7 +148,7 @@ Object {
         "type": "object",
       },
       "detailType": "AnchorNavigationProps.Anchor",
-      "name": "onActiveAnchorChange",
+      "name": "onActiveHrefChange",
     },
     Object {
       "cancelable": true,
@@ -218,7 +218,7 @@ To use it correctly, define an ID for the element you want to use as label and s
     },
     Object {
       "description": "Disable scroll spy if set to true.",
-      "name": "disableTracking",
+      "name": "disableScrollSpy",
       "optional": true,
       "type": "boolean",
     },
@@ -228,6 +228,16 @@ To use it correctly, define an ID for the element you want to use as label and s
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "defaultValue": "0",
+      "description": "Specifies the height (in pixels) to be considered as an offset when activating anchors.
+This is useful when you have a fixed or sticky header that might overlap with the content when you scroll.
+Defaults to 0.
+",
+      "name": "scrollSpyOffset",
+      "optional": true,
+      "type": "number",
     },
   ],
   "regions": Array [],
