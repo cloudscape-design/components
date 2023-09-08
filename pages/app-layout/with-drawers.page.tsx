@@ -17,7 +17,13 @@ import ScreenshotArea from '../utils/screenshot-area';
 import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
 
-type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
+type DemoContext = React.Context<
+  AppContextType<{
+    hasTools: boolean | undefined;
+    hasBetaDrawers: boolean | undefined;
+    hasPublicDrawers: boolean | undefined;
+  }>
+>;
 
 const getAriaLabels = (title: string, badge: boolean) => {
   return {
@@ -31,10 +37,14 @@ const getAriaLabels = (title: string, badge: boolean) => {
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
+  const [activePublicDrawerId, setActivePublicDrawerId] = useState<string | null>('pro-help');
   const hasTools = urlParams.hasTools ?? false;
-  const hasDrawers = urlParams.hasDrawers ?? true;
+  const hasBetaDrawers = urlParams.hasBetaDrawers ?? false;
+  const hasPublicDrawers = urlParams.hasPublicDrawers ?? true;
 
-  const drawers = !hasDrawers
+  const drawerLabels = { drawers: 'Drawers', drawersOverflow: 'Drawers overflow' };
+
+  const betaDrawers = !hasBetaDrawers
     ? null
     : {
         drawers: {
@@ -145,7 +155,7 @@ export default function WithDrawers() {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
-        ariaLabels={appLayoutLabels}
+        ariaLabels={Object.assign(appLayoutLabels, drawerLabels)}
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
@@ -166,11 +176,19 @@ export default function WithDrawers() {
                   </Toggle>
 
                   <Toggle
-                    checked={hasDrawers}
-                    onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
+                    checked={hasBetaDrawers}
+                    onChange={({ detail }) => setUrlParams({ hasBetaDrawers: detail.checked })}
                     data-id="toggle-drawers"
                   >
-                    Has Drawers
+                    Has Beta Drawers
+                  </Toggle>
+
+                  <Toggle
+                    checked={hasPublicDrawers}
+                    onChange={({ detail }) => setUrlParams({ hasPublicDrawers: detail.checked })}
+                    data-id="toggle-public-drawers"
+                  >
+                    Has Public Drawers
                   </Toggle>
                 </SpaceBetween>
               </SpaceBetween>
@@ -200,7 +218,40 @@ export default function WithDrawers() {
         }
         tools={<Info />}
         toolsHide={!hasTools}
-        {...drawers}
+        {...betaDrawers}
+        activeDrawerId={!hasPublicDrawers ? undefined : activePublicDrawerId}
+        onDrawerChange={
+          !hasPublicDrawers
+            ? undefined
+            : ({ detail }) => {
+                setActivePublicDrawerId(detail.activeDrawerId);
+              }
+        }
+        publicDrawers={
+          !hasPublicDrawers
+            ? undefined
+            : [
+                {
+                  ariaLabels: {
+                    drawerName: 'pro-help',
+                    closeButton: 'pro-help close',
+                    triggerButton: 'pro-help trigger',
+                    resizeHandle: 'pro-help resize',
+                  },
+                  content: <ProHelp />,
+                  badge: true,
+                  defaultSize: 600,
+                  onResize: ({ detail }) => {
+                    console.log('size is now', detail.size);
+                  },
+                  resizable: true,
+                  id: 'pro-help',
+                  trigger: {
+                    iconName: 'contact',
+                  },
+                },
+              ]
+        }
       />
     </ScreenshotArea>
   );

@@ -115,6 +115,9 @@ const OldAppLayout = React.forwardRef(
       onSplitPanelToggle,
       onNavigationChange,
       onToolsChange,
+      publicDrawers,
+      onDrawerChange: publicOnDrawerChange,
+      activeDrawerId: publicActiveDrawerId,
       ...props
     }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
@@ -154,7 +157,16 @@ const OldAppLayout = React.forwardRef(
       onActiveDrawerChange,
       onActiveDrawerResize,
       ...drawersProps
-    } = useDrawers(props as InternalDrawerProps, { ariaLabels, tools, toolsOpen, toolsHide, toolsWidth });
+    } = useDrawers(
+      props as InternalDrawerProps,
+      { ariaLabels, tools, toolsOpen, toolsHide, toolsWidth },
+      {
+        publicDrawers,
+        onDrawerChange: publicOnDrawerChange,
+        activeDrawerId: publicActiveDrawerId,
+        ariaLabels,
+      }
+    );
     const hasDrawers = drawers.length > 0;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
@@ -162,13 +174,13 @@ const OldAppLayout = React.forwardRef(
       refs: toolsRefs,
       setFocus: focusToolsButtons,
       loseFocus: loseToolsFocus,
-    } = useFocusControl(toolsOpen || activeDrawer !== undefined, true);
+    } = useFocusControl(toolsOpen || activeDrawer !== null, true);
     const {
       refs: drawerRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawer?.resizable], toolsOpen || activeDrawer !== undefined, true);
+    } = useDrawerFocusControl([activeDrawer?.resizable], toolsOpen || activeDrawer !== null, true);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
       setNavigationOpen(open);
@@ -655,7 +667,7 @@ const OldAppLayout = React.forwardRef(
                   topOffset={headerHeight}
                   isMobile={isMobile}
                   onToggle={onToolsToggle}
-                  isOpen={toolsOpen || activeDrawerId !== undefined}
+                  isOpen={toolsOpen || activeDrawerId !== null}
                   toggleRefs={toolsRefs}
                   type="tools"
                   onLoseFocus={loseDrawersFocus}
