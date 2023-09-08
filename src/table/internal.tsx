@@ -39,6 +39,7 @@ import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } fro
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -101,6 +102,10 @@ const InternalTable = React.forwardRef(
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const tableRefObject = useRef(null);
+
+    // Used to render table's ARIA description nodes into.
+    const descriptionRef = useRef<HTMLSpanElement>(null);
+    const getDescriptionRoot = useCallback(() => descriptionRef.current, []);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
@@ -214,6 +219,7 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
+      getDescriptionRoot,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -471,6 +477,7 @@ const InternalTable = React.forwardRef(
               </table>
               {resizableColumns && <ResizeTracker />}
             </div>
+
             <StickyScrollbar
               ref={scrollbarRef}
               wrapperRef={wrapperRefObject}
@@ -478,6 +485,10 @@ const InternalTable = React.forwardRef(
               onScroll={handleScroll}
               hasStickyColumns={hasStickyColumns}
             />
+
+            <ScreenreaderOnly>
+              <span ref={descriptionRef}></span>
+            </ScreenreaderOnly>
           </InternalContainer>
         </ColumnWidthsProvider>
       </LinkDefaultVariantContext.Provider>

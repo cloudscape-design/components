@@ -9,7 +9,6 @@ import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { joinStrings } from '../../internal/utils/strings';
 import Portal from '../../internal/components/portal';
@@ -24,6 +23,7 @@ interface ResizerProps {
   showFocusRing?: boolean;
   onFocus?: () => void;
   onBlur?: () => void;
+  getDescriptionRoot?: () => null | HTMLElement;
 }
 
 const AUTO_GROW_START_TIME = 10;
@@ -40,6 +40,7 @@ export function Resizer({
   focusId,
   onFocus,
   onBlur,
+  getDescriptionRoot,
 }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
@@ -239,8 +240,8 @@ export function Resizer({
         tabIndex={tabIndex}
         data-focus-id={focusId}
       />
-      <Portal>
-        <ScreenreaderOnly id={resizerWidthId}>{headerCellWidthString}</ScreenreaderOnly>
+      <Portal container={getDescriptionRoot?.()}>
+        <span id={resizerWidthId}>{headerCellWidthString}</span>
       </Portal>
     </>
   );
