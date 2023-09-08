@@ -4,19 +4,16 @@ const execa = require('execa');
 const glob = require('glob');
 const waitOn = require('wait-on');
 const { task } = require('../utils/gulp-utils.js');
-const { last } = require('lodash');
+const { parseArgs } = require('node:util');
 
-function extractCurrentRunningShard() {
-  const lastArg = last(process.argv);
-
-  if (lastArg) {
-    return lastArg.split('=')[1];
-  }
-  console.warn('No jest shard provided, could be running in local dev mode');
-  return null;
-}
 module.exports = task('test:a11y', async () => {
-  const shard = extractCurrentRunningShard();
+  const args = process.argv;
+  const options = {
+    shard: {
+      type: 'string',
+    },
+  };
+  const shard = parseArgs({ args, options }).values.shard;
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.js'], {
     env: {
       NODE_ENV: 'development',
