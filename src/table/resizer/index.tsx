@@ -12,6 +12,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { joinStrings } from '../../internal/utils/strings';
+import Portal from '../../internal/components/portal';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
@@ -238,7 +239,9 @@ export function Resizer({
         tabIndex={tabIndex}
         data-focus-id={focusId}
       />
-      <ScreenreaderOnly id={resizerWidthId}>{headerCellWidthString}</ScreenreaderOnly>
+      <Portal>
+        <ScreenreaderOnly id={resizerWidthId}>{headerCellWidthString}</ScreenreaderOnly>
+      </Portal>
     </>
   );
 }
