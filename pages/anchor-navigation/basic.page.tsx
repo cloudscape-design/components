@@ -31,7 +31,7 @@ const TextContent = () => {
   );
 };
 
-export default function SimpleAnchorNavigation() {
+export default function BasicAnchorNavigation() {
   const navigateToItem = (id: string) => {
     if (id) {
       const el = document.getElementById(id.slice(1));
@@ -52,7 +52,6 @@ export default function SimpleAnchorNavigation() {
                 </Header>
                 <AnchorNavigation
                   ariaLabelledby="anchor-nav-heading"
-                  onActiveAnchorChange={e => console.log(e)}
                   onFollow={e => {
                     e.preventDefault();
                     navigateToItem(e.detail.href);

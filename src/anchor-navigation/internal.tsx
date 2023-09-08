@@ -15,10 +15,11 @@ export default function InternalAnchorNavigation({
   anchors,
   ariaLabelledby,
   onFollow,
-  onActiveAnchorChange,
-  disableTracking = false,
+  onActiveHrefChange,
+  disableScrollSpy = false,
   activeHref = '',
   __internalRootRef = null,
+  scrollSpyOffset = 0,
   ...props
 }: AnchorNavigationProps & InternalBaseComponentProps) {
   const baseProps = getBaseProps(props);
@@ -33,25 +34,25 @@ export default function InternalAnchorNavigation({
     [onFollow]
   );
 
-  const onActiveAnchorChangeHandler = useStableCallback((newActiveAnchor: AnchorNavigationProps.Anchor | undefined) => {
-    fireNonCancelableEvent(onActiveAnchorChange, newActiveAnchor);
+  const onActiveHrefChangeHandler = useStableCallback((newActiveAnchor: AnchorNavigationProps.Anchor | undefined) => {
+    fireNonCancelableEvent(onActiveHrefChange, newActiveAnchor);
   });
 
-  const [currentActiveHref, setCurrentActiveHref, setDisableTracking] = useScrollSpy({ hrefs });
+  const [currentActiveHref, setCurrentActiveHref, setDisableScrollSpy] = useScrollSpy({ hrefs, scrollSpyOffset });
 
   useEffect(() => {
-    setDisableTracking(disableTracking);
+    setDisableScrollSpy(disableScrollSpy);
 
     if (activeHref) {
       setCurrentActiveHref(activeHref);
     }
-  }, [setDisableTracking, setCurrentActiveHref, disableTracking, activeHref]);
+  }, [setDisableScrollSpy, setCurrentActiveHref, disableScrollSpy, activeHref]);
 
   useEffect(() => {
     if (currentActiveHref) {
-      onActiveAnchorChangeHandler(memoizedAnchors.find(anchor => anchor.href === currentActiveHref));
+      onActiveHrefChangeHandler(memoizedAnchors.find(anchor => anchor.href === currentActiveHref));
     }
-  }, [onActiveAnchorChangeHandler, memoizedAnchors, currentActiveHref]);
+  }, [onActiveHrefChangeHandler, memoizedAnchors, currentActiveHref]);
 
   return (
     <nav

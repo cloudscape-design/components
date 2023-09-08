@@ -28,7 +28,15 @@ export interface AnchorNavigationProps extends BaseComponentProps {
   /**
    * Disable scroll spy if set to true.
    */
-  disableTracking?: boolean;
+  disableScrollSpy?: boolean;
+
+  /**
+   * Specifies the height (in pixels) to be considered as an offset when activating anchors.
+   * This is useful when you have a fixed or sticky header that might overlap with the content when you scroll.
+   *
+   * Defaults to 0.
+   */
+  scrollSpyOffset?: number;
 
   /**
    * Fired when an anchor link is clicked without any modifier keys.
@@ -38,7 +46,7 @@ export interface AnchorNavigationProps extends BaseComponentProps {
   /**
    * Fired when an active anchor link changes.
    */
-  onActiveAnchorChange?: NonCancelableEventHandler<AnchorNavigationProps.Anchor>;
+  onActiveHrefChange?: NonCancelableEventHandler<AnchorNavigationProps.Anchor>;
 }
 
 export namespace AnchorNavigationProps {

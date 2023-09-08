@@ -6,8 +6,10 @@ const isBrowser = typeof window !== 'undefined';
 
 export default function useScrollSpy({
   hrefs,
+  scrollSpyOffset,
 }: {
   hrefs: string[];
+  scrollSpyOffset: number;
 }): [
   string | undefined,
   React.Dispatch<React.SetStateAction<string | undefined>>,
@@ -16,9 +18,6 @@ export default function useScrollSpy({
   const [currentHref, setCurrentHref] = useState<string>();
   const [scrollY, setScrollY] = useState(isBrowser ? window.pageYOffset : 0);
   const [disableTracking, setDisableTracking] = useState(false);
-
-  // Value, in pixels, accounting for some padding in the scroll spy logic
-  const EXTRA_OFFSET = 200;
 
   // Scroll event handler
   const updateScroll = useCallback(() => {
@@ -44,9 +43,9 @@ export default function useScrollSpy({
   const findHrefInView = useCallback(() => {
     return hrefs.find(href => {
       const rect = getRectByHref(href);
-      return rect && rect.bottom <= window.innerHeight && rect.bottom - EXTRA_OFFSET >= 0;
+      return rect && rect.bottom <= window.innerHeight && rect.bottom - scrollSpyOffset >= 0;
     });
-  }, [getRectByHref, hrefs]);
+  }, [getRectByHref, scrollSpyOffset, hrefs]);
 
   // Find the last href where its element is above or within the viewport
   const findLastHrefInView = useCallback(() => {
@@ -70,7 +69,7 @@ export default function useScrollSpy({
         window.removeEventListener('scroll', updateScroll);
       };
     }
-  }, [updateScroll, scrollY]);
+  }, [updateScroll]);
 
   useEffect(() => {
     if (disableTracking || !isBrowser) {
@@ -89,7 +88,7 @@ export default function useScrollSpy({
     if (newCurrentHref !== undefined) {
       setCurrentHref(newCurrentHref);
     }
-  }, [findHrefInView, findLastHrefInView, isPageBottom, scrollY, hrefs, EXTRA_OFFSET, disableTracking]);
+  }, [findHrefInView, findLastHrefInView, isPageBottom, scrollY, hrefs, disableTracking]);
 
   return [currentHref, setCurrentHref, setDisableTracking];
 }

@@ -31,7 +31,13 @@ const TextContent = () => {
   );
 };
 
-export default function SimpleToc() {
+export default function ExpandableAnchorNavigation() {
+  const navigateToItem = (id: string) => {
+    if (id) {
+      const el = document.getElementById(id.slice(1));
+      el?.scrollIntoView();
+    }
+  };
   return (
     <article>
       <h1>Simple table of contents</h1>
@@ -41,9 +47,13 @@ export default function SimpleToc() {
             <TextContent />
             <div>
               <div className={styles['anchor-navigation']}>
-                <ExpandableSection variant="navigation" headerText="On this page">
+                <ExpandableSection variant="footer" headerText="On this page">
                   <AnchorNavigation
                     ariaLabelledby="anchor-nav-heading"
+                    onFollow={e => {
+                      e.preventDefault();
+                      navigateToItem(e.detail.href);
+                    }}
                     anchors={[
                       { href: '#section-1', text: 'Section 1', level: 1 },
                       { href: '#section-1-1', text: 'Section 1.1', level: 2 },
