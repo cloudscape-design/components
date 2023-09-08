@@ -1,30 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const isBrowser = typeof window !== 'undefined';
 
 export default function useScrollSpy({
   hrefs,
   scrollSpyOffset,
+  disableScrollSpy = false,
 }: {
   hrefs: string[];
   scrollSpyOffset: number;
-}): [
-  string | undefined,
-  React.Dispatch<React.SetStateAction<string | undefined>>,
-  React.Dispatch<React.SetStateAction<boolean>>
-] {
+  disableScrollSpy?: boolean;
+}): [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>] {
   const [currentHref, setCurrentHref] = useState<string>();
-  const [scrollY, setScrollY] = useState(isBrowser ? window.pageYOffset : 0);
-  const [disableTracking, setDisableTracking] = useState(false);
 
-  // Scroll event handler
-  const updateScroll = useCallback(() => {
-    if (isBrowser) {
-      setScrollY(window.pageYOffset);
-    }
-  }, []);
+  const lastAnchorElementExists = useMemo(() => !!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)), [hrefs]);
 
   // Get the bounding rectangle of an element by href
   const getRectByHref = useCallback(href => {
@@ -34,13 +25,12 @@ export default function useScrollSpy({
 
   // Check if we're scrolled to the bottom of the page
   const isPageBottom = useCallback(() => {
-    const lastAnchorId = hrefs[hrefs.length - 1]?.slice(1);
-    const lastAnchorElementExists = document.getElementById(lastAnchorId);
-    return !!lastAnchorElementExists && scrollY >= Math.floor(document.body.scrollHeight - window.innerHeight);
-  }, [scrollY, hrefs]);
+    return lastAnchorElementExists && window.scrollY >= Math.floor(document.body.scrollHeight - window.innerHeight);
+  }, [lastAnchorElementExists]);
 
-  // Find the href for which the element is within the viewport plus EXTRA_OFFSET
+  // Find the href for which the element is within the viewport
   const findHrefInView = useCallback(() => {
+    console.log('Here');
     return hrefs.find(href => {
       const rect = getRectByHref(href);
       return rect && rect.bottom <= window.innerHeight && rect.bottom - scrollSpyOffset >= 0;
@@ -58,37 +48,30 @@ export default function useScrollSpy({
       });
   }, [getRectByHref, hrefs]);
 
-  useEffect(() => {
-    if (isBrowser) {
-      window.addEventListener('scroll', updateScroll, {
-        capture: false,
-        passive: true,
-      });
-
-      return () => {
-        window.removeEventListener('scroll', updateScroll);
-      };
-    }
-  }, [updateScroll]);
-
-  useEffect(() => {
-    if (disableTracking || !isBrowser) {
+  // Scroll event handler
+  const handleScroll = useCallback(() => {
+    if (disableScrollSpy || !isBrowser) {
       return;
     }
 
-    // Main logic to get the new active href
-    let newCurrentHref;
+    const scrollY = window.scrollY;
 
     if (isPageBottom()) {
-      newCurrentHref = hrefs[hrefs.length - 1];
+      setCurrentHref(hrefs[hrefs.length - 1]);
     } else {
-      newCurrentHref = findHrefInView() || (scrollY > 0 ? findLastHrefInView() : undefined);
+      setCurrentHref(findHrefInView() || (scrollY > 0 ? findLastHrefInView() : undefined));
     }
+  }, [disableScrollSpy, isPageBottom, findHrefInView, findLastHrefInView, hrefs]);
 
-    if (newCurrentHref !== undefined) {
-      setCurrentHref(newCurrentHref);
+  useEffect(() => {
+    if (isBrowser) {
+      handleScroll();
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
     }
-  }, [findHrefInView, findLastHrefInView, isPageBottom, scrollY, hrefs, disableTracking]);
+  }, [handleScroll]);
 
-  return [currentHref, setCurrentHref, setDisableTracking];
+  return [currentHref, setCurrentHref];
 }

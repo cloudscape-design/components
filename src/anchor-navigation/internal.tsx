@@ -37,15 +37,17 @@ export default function InternalAnchorNavigation({
     fireNonCancelableEvent(onActiveHrefChange, newActiveAnchor);
   });
 
-  const [currentActiveHref, setCurrentActiveHref, setDisableScrollSpy] = useScrollSpy({ hrefs, scrollSpyOffset });
+  const [currentActiveHref, setCurrentActiveHref] = useScrollSpy({
+    hrefs,
+    scrollSpyOffset,
+    disableScrollSpy,
+  });
 
   useEffect(() => {
-    setDisableScrollSpy(disableScrollSpy);
-
     if (activeHref) {
       setCurrentActiveHref(activeHref);
     }
-  }, [setDisableScrollSpy, setCurrentActiveHref, disableScrollSpy, activeHref]);
+  }, [setCurrentActiveHref, activeHref]);
 
   useEffect(() => {
     if (currentActiveHref) {
