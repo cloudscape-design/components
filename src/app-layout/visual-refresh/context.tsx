@@ -431,7 +431,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const drawersTriggerCount =
       drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
-      activeDrawerId !== undefined || (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
+      activeDrawerId !== undefined ||
+      (!toolsHide && isToolsOpen) ||
+      (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
       isMobile && (!!activeDrawerId || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
 
