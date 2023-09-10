@@ -120,7 +120,10 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
-      "description": "Fired when an active anchor link changes.",
+      "description": "Fired when an active anchor link changes.
+Note: This event is triggered both by the component's internal scroll-spy logic,
+or when the 'activeHref' prop is manually updated.
+",
       "detailInlineType": Object {
         "name": "AnchorNavigationProps.Anchor",
         "properties": Array [
@@ -187,8 +190,8 @@ Object {
   "name": "AnchorNavigation",
   "properties": Array [
     Object {
-      "description": "Specifies the active anchor href.
-For using the component in a controlled manner, use together with 'disableTracking'.",
+      "description": "Specifies the active anchor href. When set, the component will operate in a
+controlled manner, and internal scroll-spy will be disabled.",
       "name": "activeHref",
       "optional": true,
       "type": "string",
@@ -202,8 +205,7 @@ For using the component in a controlled manner, use together with 'disableTracki
     Object {
       "description": "Adds \`aria-labelledby\` to the component.
 Use this property for identifying the header or title that labels the anchor navigation.
-
-To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+To use it correctly, define an ID for the element either as label, and set the property to that ID.
 ",
       "name": "ariaLabelledby",
       "optional": true,
@@ -217,12 +219,6 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Disable scroll spy if set to true.",
-      "name": "disableScrollSpy",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -232,7 +228,7 @@ To use it correctly, define an ID for the element you want to use as label and s
     Object {
       "defaultValue": "0",
       "description": "Specifies the height (in pixels) to be considered as an offset when activating anchors.
-This is useful when you have a fixed or sticky header that might overlap with the content when you scroll.
+This is useful when you have a fixed or sticky header that might overlap with the content as you scroll.
 Defaults to 0.
 ",
       "name": "scrollSpyOffset",
