@@ -7,13 +7,12 @@ const { task } = require('../utils/gulp-utils.js');
 const { parseArgs } = require('node:util');
 
 module.exports = task('test:a11y', async () => {
-  const args = process.argv;
   const options = {
     shard: {
       type: 'string',
     },
   };
-  const shard = parseArgs({ args, options }).values.shard;
+  const shard = parseArgs({ options, strict: false }).values.shard;
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.js'], {
     env: {
       NODE_ENV: 'development',
