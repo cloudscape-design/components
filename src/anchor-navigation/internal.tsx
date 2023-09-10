@@ -16,7 +16,6 @@ export default function InternalAnchorNavigation({
   ariaLabelledby,
   onFollow,
   onActiveHrefChange,
-  disableScrollSpy = false,
   activeHref = '',
   __internalRootRef = null,
   scrollSpyOffset = 0,
@@ -37,17 +36,11 @@ export default function InternalAnchorNavigation({
     fireNonCancelableEvent(onActiveHrefChange, newActiveAnchor);
   });
 
-  const [currentActiveHref, setCurrentActiveHref] = useScrollSpy({
+  const currentActiveHref = useScrollSpy({
     hrefs,
     scrollSpyOffset,
-    disableScrollSpy,
+    activeHref,
   });
-
-  useEffect(() => {
-    if (activeHref) {
-      setCurrentActiveHref(activeHref);
-    }
-  }, [setCurrentActiveHref, activeHref]);
 
   useEffect(() => {
     if (currentActiveHref) {

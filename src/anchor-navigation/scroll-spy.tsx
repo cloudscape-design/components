@@ -7,13 +7,13 @@ const isBrowser = typeof window !== 'undefined';
 export default function useScrollSpy({
   hrefs,
   scrollSpyOffset,
-  disableScrollSpy = false,
+  activeHref,
 }: {
   hrefs: string[];
   scrollSpyOffset: number;
-  disableScrollSpy?: boolean;
-}): [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>] {
-  const [currentHref, setCurrentHref] = useState<string>();
+  activeHref?: string;
+}): string | undefined {
+  const [currentHref, setCurrentHref] = useState<string | undefined>(activeHref);
 
   const lastAnchorElementExists = useMemo(
     () => isBrowser && !!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)),
@@ -52,7 +52,7 @@ export default function useScrollSpy({
 
   // Scroll event handler
   const handleScroll = useCallback(() => {
-    if (disableScrollSpy || !isBrowser) {
+    if (activeHref || !isBrowser) {
       return;
     }
 
@@ -63,7 +63,7 @@ export default function useScrollSpy({
     } else {
       setCurrentHref(findHrefInView() || (scrollY > 0 ? findLastHrefInView() : undefined));
     }
-  }, [disableScrollSpy, isPageBottom, findHrefInView, findLastHrefInView, hrefs]);
+  }, [activeHref, isPageBottom, findHrefInView, findLastHrefInView, hrefs]);
 
   useEffect(() => {
     if (isBrowser) {
@@ -75,5 +75,5 @@ export default function useScrollSpy({
     }
   }, [handleScroll]);
 
-  return [currentHref, setCurrentHref];
+  return currentHref;
 }

@@ -9,8 +9,7 @@ export interface AnchorNavigationProps extends BaseComponentProps {
    * Adds `aria-labelledby` to the component.
    *
    * Use this property for identifying the header or title that labels the anchor navigation.
-   *
-   * To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+   * To use it correctly, define an ID for the element either as label, and set the property to that ID.
    */
   ariaLabelledby?: string;
 
@@ -20,19 +19,14 @@ export interface AnchorNavigationProps extends BaseComponentProps {
   anchors: AnchorNavigationProps.Anchor[];
 
   /**
-   * Specifies the active anchor href.
-   * For using the component in a controlled manner, use together with 'disableTracking'.
+   * Specifies the active anchor href. When set, the component will operate in a
+   * controlled manner, and internal scroll-spy will be disabled.
    */
   activeHref?: string;
 
   /**
-   * Disable scroll spy if set to true.
-   */
-  disableScrollSpy?: boolean;
-
-  /**
    * Specifies the height (in pixels) to be considered as an offset when activating anchors.
-   * This is useful when you have a fixed or sticky header that might overlap with the content when you scroll.
+   * This is useful when you have a fixed or sticky header that might overlap with the content as you scroll.
    *
    * Defaults to 0.
    */
@@ -45,6 +39,9 @@ export interface AnchorNavigationProps extends BaseComponentProps {
 
   /**
    * Fired when an active anchor link changes.
+   *
+   * Note: This event is triggered both by the component's internal scroll-spy logic,
+   * or when the 'activeHref' prop is manually updated.
    */
   onActiveHrefChange?: NonCancelableEventHandler<AnchorNavigationProps.Anchor>;
 }
@@ -57,7 +54,7 @@ export namespace AnchorNavigationProps {
     text: string;
 
     /**
-     * The `id` attribute of the target HTML element to which this anchor refers.
+     * The `id` attribute of the target HTML element that the anchor refers to.
      * For example: `"#section1.1"`
      */
     href: string;
@@ -68,7 +65,7 @@ export namespace AnchorNavigationProps {
     level: number;
 
     /**
-     * Additional information to display next to the link, for example: "New" or "Updated"
+     * Additional information to display next to the link, for example: "New" or "Updated".
      */
     info?: string;
   }
