@@ -57,9 +57,7 @@ const InternalMultiselect = React.forwardRef(
       loadingText,
       finishedText,
       errorText,
-      recoveryText,
       noMatch,
-      selectedAriaLabel,
       renderHighlightedAriaLive,
       selectedOptions = [],
       deselectAriaLabel,
@@ -84,6 +82,11 @@ const InternalMultiselect = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
     const i18n = useInternalI18n('multiselect');
+
+    const i18nCommon = useInternalI18n('select');
+    const recoveryText = i18nCommon('recoveryText', restProps.recoveryText);
+    const errorIconAriaLabel = i18nCommon('errorIconAriaLabel', restProps.errorIconAriaLabel);
+    const selectedAriaLabel = i18nCommon('selectedAriaLabel', restProps.selectedAriaLabel);
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
@@ -199,7 +202,8 @@ const InternalMultiselect = React.forwardRef(
       isFiltered,
       filteringResultsText: filteredText,
       onRecoveryClick: handleRecoveryClick,
-      errorIconAriaLabel: restProps.errorIconAriaLabel,
+      errorIconAriaLabel: errorIconAriaLabel,
+      hasRecoveryCallback: !!onLoadItems,
     });
 
     const filter = (

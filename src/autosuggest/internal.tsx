@@ -44,7 +44,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     options,
     filteringType = 'auto',
     statusType = 'finished',
-    recoveryText,
     placeholder,
     clearAriaLabel,
     name,
@@ -81,6 +80,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const i18n = useInternalI18n('autosuggest');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+  const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
   if (!enteredTextLabel) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
@@ -179,6 +179,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     errorIconAriaLabel,
     onRecoveryClick: handleRecoveryClick,
     filteringResultsText: filteredText,
+    hasRecoveryCallback: !!onLoadItems,
   });
 
   return (
