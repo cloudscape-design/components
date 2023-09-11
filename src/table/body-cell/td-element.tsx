@@ -63,7 +63,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       colIndex,
       stickyState,
       tableRole,
-      level = 1,
+      level,
     },
     ref
   ) => {
@@ -93,6 +93,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
+          level && styles[`body-cell-expand-level-${level}`],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -108,14 +109,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         }}
         {...nativeAttributes}
       >
-        {level === 1 ? (
-          children
-        ) : (
-          <span>
-            <span style={{ width: (level - 1) * 24, display: 'inline-block' }} />
-            {children}
-          </span>
-        )}
+        {children}
       </Element>
     );
   }

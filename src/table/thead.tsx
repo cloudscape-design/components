@@ -17,7 +17,6 @@ import { StickyColumnsModel } from './sticky-columns';
 import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 import { TableThElement } from './header-cell/th-element';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
-import InternalButton from '../button/internal';
 
 export interface TheadProps {
   containerWidth: number | null;
@@ -44,6 +43,7 @@ export interface TheadProps {
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
   treeGrid?: TableProps.TreeGridProps<any>;
+  maxLevel?: number;
 }
 
 const Thead = React.forwardRef(
@@ -73,6 +73,7 @@ const Thead = React.forwardRef(
       onFocusedComponentChange,
       tableRole,
       treeGrid,
+      maxLevel,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -145,8 +146,9 @@ const Thead = React.forwardRef(
               colIndex={0}
               columnId={selectionColumnId}
               stickyState={stickyState}
+              maxLevel={maxLevel}
             >
-              <InternalButton variant="inline-icon" iconName="caret-right-filled" ariaLabel="all rows expand" />
+              {null}
             </TableThElement>
           ) : null}
 

@@ -22,6 +22,7 @@ interface TableThElementProps {
   cellRef?: React.RefCallback<HTMLElement>;
   tableRole: TableRole;
   children: React.ReactNode;
+  maxLevel?: number;
 }
 
 export function TableThElement({
@@ -37,6 +38,7 @@ export function TableThElement({
   cellRef,
   tableRole,
   children,
+  maxLevel,
 }: TableThElementProps) {
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
@@ -58,6 +60,7 @@ export function TableThElement({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
+          [styles[`header-cell-expand-max-level-${maxLevel}`]]: maxLevel,
         },
         stickyStyles.className
       )}

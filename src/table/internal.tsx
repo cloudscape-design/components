@@ -191,6 +191,25 @@ const InternalTable = React.forwardRef(
     // TODO: support tree-grid ARIA role.
     const tableRole = hasEditableCells || treeGrid ? 'grid-default' : 'table';
 
+    // TODO: validate tree structure when obtaining level
+    const getItemLevel = (item: T): number => {
+      if (!treeGrid) {
+        return 1;
+      }
+
+      const parents: T[] = [];
+
+      let parent = treeGrid.getItemParent(item);
+      while (parent !== null) {
+        parents.push(parent);
+        parent = treeGrid.getItemParent(parent);
+      }
+
+      return parents.length + 1;
+    };
+
+    const maxLevel = Math.max(...items.map(getItemLevel));
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -219,6 +238,7 @@ const InternalTable = React.forwardRef(
       selectionColumnId,
       tableRole,
       treeGrid,
+      maxLevel,
     };
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
@@ -243,23 +263,6 @@ const InternalTable = React.forwardRef(
     let totalColumnsCount = visibleColumnDefinitions.length;
     totalColumnsCount = selectionType ? totalColumnsCount + 1 : totalColumnsCount;
     totalColumnsCount = treeGrid ? totalColumnsCount + 1 : totalColumnsCount;
-
-    // TODO: validate tree structure when obtaining level
-    const getItemLevel = (item: T): number => {
-      if (!treeGrid) {
-        return 0;
-      }
-
-      const parents: T[] = [];
-
-      let parent = treeGrid.getItemParent(item);
-      while (parent !== null) {
-        parents.push(parent);
-        parent = treeGrid.getItemParent(parent);
-      }
-
-      return parents.length;
-    };
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -445,7 +448,6 @@ const InternalTable = React.forwardRef(
 
                           {treeGrid !== undefined && (
                             <TableTdElement
-                              className={clsx(styles['body-cell-expand'])}
                               isVisualRefresh={isVisualRefresh}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
@@ -461,13 +463,29 @@ const InternalTable = React.forwardRef(
                               columnId={selectionColumnId}
                               colIndex={0}
                               tableRole={tableRole}
+                              level={getItemLevel(item)}
                             >
-                              {treeGrid.getItemExpandable(item) && (
+                              {treeGrid.getItemExpandable(item) ? (
                                 <InternalButton
                                   variant="inline-icon"
                                   iconName={treeGrid.getItemExpanded(item) ? 'caret-down-filled' : 'caret-right-filled'}
                                   onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
                                   ariaLabel="row expand"
+                                />
+                              ) : (
+                                <InternalButton
+                                  variant="inline-icon"
+                                  disabled={true}
+                                  iconSvg={
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 16 16"
+                                      focusable="false"
+                                      aria-hidden="true"
+                                    >
+                                      <circle cx="8" cy="8" r="2" fill="currentColor" />
+                                    </svg>
+                                  }
                                 />
                               )}
                             </TableTdElement>
@@ -516,7 +534,6 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
-                                level={colIndex === 0 ? getItemLevel(item) + 1 : 1}
                               />
                             );
                           })}

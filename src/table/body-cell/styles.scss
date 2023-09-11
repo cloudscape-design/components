@@ -32,8 +32,17 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   word-wrap: break-word;
   border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   font-weight: inherit;
-  &-expand {
-    width: 20px;
+  &-expand-level-1 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  &-expand-level-2 {
+    padding-left: 20px;
+    padding-right: 0;
+  }
+  &-expand-level-3 {
+    padding-left: 40px;
+    padding-right: 0;
   }
   &:not(.body-cell-wrap) {
     white-space: nowrap;
