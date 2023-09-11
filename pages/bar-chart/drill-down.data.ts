@@ -285,26 +285,7 @@ export const dailySeriesByService: Record<string, BarDataSeries<string>> = {
       {
         x: '2023-5-17',
         y: 493,
-        link: { href: '#/light/mixed-line-bar-chart/bills/?' + window.location.href.split('?')[1], external: true },
-        details: [
-          {
-            key: 'FEJIHWPCAEHW',
-            value: 10,
-          },
-          {
-            key: 'LKMSQWOCAWOP',
-            value: 60,
-          },
-          {
-            key: 'OQWRIJXCKJVN',
-            value: 1100,
-          },
-          {
-            key: 'SPFOAIEWJFAS',
-            value: 130,
-          },
-        ],
-        detailsOpen: true,
+        link: { href: '#/light/bar-chart/bills/?' + window.location.href.split('?')[1], external: true },
       },
       { x: '2023-5-18', y: 84 },
       { x: '2023-5-19', y: 81 },
