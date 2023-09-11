@@ -122,7 +122,7 @@ Object {
       "cancelable": false,
       "description": "Fired when an active anchor link changes.
 Note: This event is triggered both by the component's internal scroll-spy logic,
-or when the 'activeHref' prop is manually updated.
+or when the \`activeHref\` prop is manually updated.
 ",
       "detailInlineType": Object {
         "name": "AnchorNavigationProps.Anchor",
@@ -197,7 +197,14 @@ controlled manner, and internal scroll-spy will be disabled.",
       "type": "string",
     },
     Object {
-      "description": "List of anchors.",
+      "description": "List of anchors. Each anchor object has the following properties:
+* \`text\` (string) - The text for the anchor item.
+* \`href\` (string) - The \`id\` attribute of the target HTML element that the anchor refers to.
+For example: \`\\"#section1.1\\"\`
+* \`level\` (number) - Level of nesting of the anchor.
+* \`info\` (string) - Additional information to display next to the link, for example: \\"New\\" or \\"Updated\\".
+
+",
       "name": "anchors",
       "optional": false,
       "type": "Array<AnchorNavigationProps.Anchor>",

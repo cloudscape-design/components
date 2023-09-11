@@ -14,7 +14,14 @@ export interface AnchorNavigationProps extends BaseComponentProps {
   ariaLabelledby?: string;
 
   /**
-   * List of anchors.
+   * List of anchors. Each anchor object has the following properties:
+   *
+   * * `text` (string) - The text for the anchor item.
+   * * `href` (string) - The `id` attribute of the target HTML element that the anchor refers to.
+   * For example: `"#section1.1"`
+   * * `level` (number) - Level of nesting of the anchor.
+   * * `info` (string) - Additional information to display next to the link, for example: "New" or "Updated".
+   *
    */
   anchors: AnchorNavigationProps.Anchor[];
 
@@ -41,7 +48,7 @@ export interface AnchorNavigationProps extends BaseComponentProps {
    * Fired when an active anchor link changes.
    *
    * Note: This event is triggered both by the component's internal scroll-spy logic,
-   * or when the 'activeHref' prop is manually updated.
+   * or when the `activeHref` prop is manually updated.
    */
   onActiveHrefChange?: NonCancelableEventHandler<AnchorNavigationProps.Anchor>;
 }

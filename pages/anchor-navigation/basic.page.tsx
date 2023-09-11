@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import AnchorNavigation from '~components/anchor-navigation';
-import { TextSample } from './utils';
+import { TextSample, navigateToItem } from './utils';
 import SpaceBetween from '~components/space-between';
 import Header from '~components/header';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -32,15 +32,9 @@ const TextContent = () => {
 };
 
 export default function BasicAnchorNavigation() {
-  const navigateToItem = (id: string) => {
-    if (id) {
-      const el = document.getElementById(id.slice(1));
-      el?.scrollIntoView();
-    }
-  };
   return (
     <article>
-      <h1>Simple table of contents</h1>
+      <h1>Anchor navigation</h1>
       <ScreenshotArea>
         <SpaceBetween size="l">
           <div className={styles['content-grid']}>

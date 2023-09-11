@@ -2,6 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+export const navigateToItem = (id: string) => {
+  if (id) {
+    const el = document.getElementById(id.slice(1));
+    el?.scrollIntoView();
+  }
+};
+
 export const TextSample = () => (
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet arcu dapibus, pellentesque ipsum eget,
