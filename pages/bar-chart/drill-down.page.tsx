@@ -24,6 +24,7 @@ import MultiSelect from '~components/multiselect';
 import {
   dailyMaySeries,
   dailySeriesByService,
+  days,
   dollarFormatter,
   monthlySeries,
   monthlySeriesByService,
@@ -49,8 +50,8 @@ export default function () {
 
   const [dateRange, setDateRange] = useState<DateRangePickerProps.Value | null>({
     type: 'absolute',
-    startDate: new Date(months[0]).toISOString(),
-    endDate: new Date(months[months.length - 1]).toISOString(),
+    startDate: months[0] + '-01',
+    endDate: months[months.length - 1] + '-31',
   });
   const [granularity, setGranularity] = useState<SelectProps.Option>(granularityOptions.monthly);
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
@@ -80,7 +81,7 @@ export default function () {
           ...entry,
           data: entry.data.filter(
             entry =>
-              Date.parse(entry.x) >= Date.parse(dateRange.startDate) - 7200000 &&
+              Date.parse(entry.x) >= Date.parse(dateRange.startDate) &&
               Date.parse(entry.x) <= Date.parse(dateRange.endDate)
           ),
         }))
@@ -97,13 +98,7 @@ export default function () {
   );
 
   const xDomain = useMemo(() => {
-    const year = 2023,
-      month = 4;
-    return granularity.value === 'monthly'
-      ? months
-      : Array(new Date(year, month + 1, 0).getDate())
-          .fill(0)
-          .map((item, index) => `${year}-${month + 1}-${index + 1}`);
+    return granularity.value === 'monthly' ? months : days;
   }, [granularity.value]);
 
   return messages ? (
@@ -310,8 +305,8 @@ export default function () {
                                   setGranularity(granularityOptions.daily);
                                   setDateRange({
                                     type: 'absolute',
-                                    startDate: new Date(months[8]).toISOString(),
-                                    endDate: new Date(Date.parse(months[9]) - 1).toISOString(),
+                                    startDate: months[8] + '-01',
+                                    endDate: months[8] + '-31',
                                   });
                                 }
                               }}
