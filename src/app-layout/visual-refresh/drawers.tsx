@@ -222,7 +222,11 @@ function DesktopTriggers() {
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
-              className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+              className={clsx(
+                styles['drawers-trigger'],
+                testutilStyles['drawers-trigger'],
+                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+              )}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
@@ -323,7 +327,11 @@ export function MobileTriggers() {
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
-          className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+          className={clsx(
+            styles['drawers-trigger'],
+            testutilStyles['drawers-trigger'],
+            item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+          )}
           disabled={hasDrawerViewportOverlay}
           ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
           formAction="none"
