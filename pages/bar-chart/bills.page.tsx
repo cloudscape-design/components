@@ -104,7 +104,24 @@ export default function () {
                 cell: () => date,
               },
             ]}
-            items={(dataSet.details || []).map(item => ({ accountId: item.key, cost: item.value }))}
+            items={[
+              {
+                accountId: 'FEJIHWPCAEHW',
+                cost: 10,
+              },
+              {
+                accountId: 'LKMSQWOCAWOP',
+                cost: 60,
+              },
+              {
+                accountId: 'OQWRIJXCKJVN',
+                cost: 1100,
+              },
+              {
+                accountId: 'SPFOAIEWJFAS',
+                cost: 130,
+              },
+            ]}
             filter={
               <>
                 <TextFilter filteringPlaceholder="Find resources" filteringText="" />
