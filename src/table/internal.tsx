@@ -244,6 +244,23 @@ const InternalTable = React.forwardRef(
     totalColumnsCount = selectionType ? totalColumnsCount + 1 : totalColumnsCount;
     totalColumnsCount = treeGrid ? totalColumnsCount + 1 : totalColumnsCount;
 
+    // TODO: validate tree structure when obtaining level
+    const getItemLevel = (item: T): number => {
+      if (!treeGrid) {
+        return 0;
+      }
+
+      const parents: T[] = [];
+
+      let parent = treeGrid.getItemParent(item);
+      while (parent !== null) {
+        parents.push(parent);
+        parent = treeGrid.getItemParent(parent);
+      }
+
+      return parents.length;
+    };
+
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
@@ -460,6 +477,7 @@ const InternalTable = React.forwardRef(
                             const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                             const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
                             const isEditable = !!column.editConfig && !cellEditing.isLoading;
+
                             return (
                               <TableBodyCell
                                 key={getColumnKey(column, colIndex)}
@@ -498,7 +516,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
-                                level={colIndex === 0 ? treeGrid?.getItemLevel(item) ?? 1 : 1}
+                                level={colIndex === 0 ? getItemLevel(item) + 1 : 1}
                               />
                             );
                           })}

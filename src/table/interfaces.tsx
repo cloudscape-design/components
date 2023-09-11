@@ -462,9 +462,9 @@ export namespace TableProps {
   }
 
   export interface TreeGridProps<ItemType> {
+    getItemParent(item: ItemType): null | ItemType;
     getItemExpandable(item: ItemType): boolean;
     getItemExpanded(item: ItemType): boolean;
-    getItemLevel(item: ItemType): number;
     onItemExpandedChange(item: ItemType, expanded: boolean): void;
   }
 }
