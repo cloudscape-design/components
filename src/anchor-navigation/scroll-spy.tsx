@@ -28,7 +28,10 @@ export default function useScrollSpy({
 
   // Check if we're scrolled to the bottom of the page
   const isPageBottom = useCallback(() => {
-    return lastAnchorElementExists && window.scrollY >= Math.floor(document.body.scrollHeight - window.innerHeight);
+    return (
+      lastAnchorElementExists &&
+      Math.ceil(window.scrollY) >= Math.floor(document.body.scrollHeight - window.innerHeight)
+    );
   }, [lastAnchorElementExists]);
 
   // Find the href for which the element is within the viewport
