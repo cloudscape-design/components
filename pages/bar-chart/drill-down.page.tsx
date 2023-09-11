@@ -80,7 +80,8 @@ export default function () {
           ...entry,
           data: entry.data.filter(
             entry =>
-              new Date(entry.x) >= new Date(dateRange.startDate) && new Date(entry.x) <= new Date(dateRange.endDate)
+              Date.parse(entry.x) >= Date.parse(dateRange.startDate) - 7200000 &&
+              Date.parse(entry.x) <= Date.parse(dateRange.endDate)
           ),
         }))
       : filteredByService;
