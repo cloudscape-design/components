@@ -253,7 +253,7 @@ export default function () {
                   xDomain={xDomain}
                   i18nStrings={{
                     xTickFormatter: e =>
-                      granularity.value === 'months'
+                      granularity.value === 'monthly'
                         ? new Date(e).toLocaleDateString('en-US', {
                             month: 'short',
                             year: 'numeric',
