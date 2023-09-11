@@ -20,7 +20,7 @@
 
   &.refresh,
   &:not(.root-no-actions) {
-    row-gap: awsui.$space-xxs;
+    row-gap: awsui.$space-scaled-xxs;
   }
 
   &-no-actions,
@@ -33,7 +33,7 @@
 
   &-no-actions:not(.root-has-description):not(.refresh) {
     // Make sure the header is just as high without actions
-    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$space-scaled-xxxs});
+    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$space-xxxs});
   }
 
   &-no-actions.refresh {
@@ -75,7 +75,7 @@
 
   &.refresh {
     // Can't use justify-content: center because it won't align with configurable dashboard fixed handle icon
-    row-gap: awsui.$space-static-xxs;
+    row-gap: awsui.$space-xxs;
   }
 
   &-variant-h1 {
