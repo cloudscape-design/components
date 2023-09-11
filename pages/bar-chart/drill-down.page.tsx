@@ -45,14 +45,16 @@ const serviceOptions = Object.entries(monthlySeriesByService).map(([key, value])
   label: value.title,
 }));
 
+const initialDateRange: DateRangePickerProps.Value = {
+  type: 'absolute',
+  startDate: months[0] + '-01',
+  endDate: months[months.length - 1] + '-31',
+};
+
 export default function () {
   const currentPath = window.location.hash;
 
-  const [dateRange, setDateRange] = useState<DateRangePickerProps.Value | null>({
-    type: 'absolute',
-    startDate: months[0] + '-01',
-    endDate: months[months.length - 1] + '-31',
-  });
+  const [dateRange, setDateRange] = useState<DateRangePickerProps.Value | null>(initialDateRange);
   const [granularity, setGranularity] = useState<SelectProps.Option>(granularityOptions.monthly);
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
   const [services, setServices] = useState<ReadonlyArray<SelectProps.Option>>([]);
@@ -184,7 +186,12 @@ export default function () {
                     <Select
                       selectedOption={granularity}
                       options={[granularityOptions.daily, granularityOptions.monthly]}
-                      onChange={({ detail }) => setGranularity(detail.selectedOption)}
+                      onChange={({ detail }) => {
+                        setGranularity(detail.selectedOption);
+                        if (detail.selectedOption.value === 'monthly') {
+                          setDateRange(initialDateRange);
+                        }
+                      }}
                     />
                   </FormField>
                 </SpaceBetween>
