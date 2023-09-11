@@ -269,7 +269,7 @@ export const dailySeriesByService: Record<string, BarDataSeries<string>> = {
   athena: getDailyData('athena'),
   securityHub: getDailyData('securityHub'),
   lambda: {
-    title: 'All accounts',
+    title: serviceNames.lambda,
     type: 'bar',
     data: [
       { x: '2023-05-02', y: 22 },
@@ -288,6 +288,7 @@ export const dailySeriesByService: Record<string, BarDataSeries<string>> = {
         x: '2023-05-17',
         y: 493,
         link: { href: '#/light/bar-chart/bills/?' + window.location.href.split('?')[1], external: true },
+        key: 'All accounts',
       },
       { x: '2023-05-18', y: 84 },
       { x: '2023-05-19', y: 81 },

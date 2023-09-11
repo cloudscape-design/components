@@ -57,7 +57,7 @@ function getSeriesDetail<T>(internalSeries: InternalChartSeries<T>, targetX: T):
     for (const datum of series.data) {
       if (matchesX(targetX, datum.x)) {
         return {
-          key: series.title,
+          key: datum.key || series.title,
           value: series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y,
           link: datum.link,
           color,

@@ -63,6 +63,7 @@ export namespace MixedLineBarChartProps {
       href: string;
       external?: boolean;
     };
+    key?: string;
   }
 
   interface IDataSeries<T> {
