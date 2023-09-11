@@ -23,7 +23,7 @@ const TextContent = () => {
         <h3 id="section-1-2">Section 1.2</h3>
         <TextSample />
         <h4 id="section-1-2-1">Section 1.2.1</h4>
-        <TextSample />
+        Small text
         <h5 id="section-1-2-1-1">Section 1.2.1.1</h5>
         Small text
       </div>

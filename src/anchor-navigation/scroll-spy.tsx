@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -15,10 +15,13 @@ export default function useScrollSpy({
 }): string | undefined {
   const [currentHref, setCurrentHref] = useState<string | undefined>(activeHref);
 
-  const lastAnchorElementExists = useMemo(
-    () => isBrowser && !!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)),
-    [hrefs]
-  );
+  const [lastAnchorElementExists, setLastAnchorElementExists] = useState(false);
+
+  useEffect(() => {
+    if (isBrowser) {
+      setLastAnchorElementExists(!!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)));
+    }
+  }, [hrefs]);
 
   // Get the bounding rectangle of an element by href
   const getRectByHref = useCallback(href => {
@@ -28,10 +31,7 @@ export default function useScrollSpy({
 
   // Check if we're scrolled to the bottom of the page
   const isPageBottom = useCallback(() => {
-    return (
-      lastAnchorElementExists &&
-      Math.ceil(window.scrollY) >= Math.floor(document.body.scrollHeight - window.innerHeight)
-    );
+    return lastAnchorElementExists && window.scrollY >= Math.floor(document.body.scrollHeight - window.innerHeight);
   }, [lastAnchorElementExists]);
 
   // Find the href for which the element is within the viewport
