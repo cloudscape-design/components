@@ -67,9 +67,10 @@ export default function () {
 
   const appliedFilters = services.length ? 1 : 0;
 
+  const allSeries = granularity.value === 'monthly' ? monthlySeries : dailyMaySeries;
+
   const filteredSeries = useMemo(() => {
     const allSeriesByService = granularity.value === 'monthly' ? monthlySeriesByService : dailySeriesByService;
-    const allSeries = granularity.value === 'monthly' ? monthlySeries : dailyMaySeries;
     const filteredByService = services.length ? [] : [...allSeries];
     if (services.length) {
       for (const service of services) {
@@ -78,17 +79,8 @@ export default function () {
         }
       }
     }
-    return dateRange?.type === 'absolute'
-      ? filteredByService.map(entry => ({
-          ...entry,
-          data: entry.data.filter(
-            entry =>
-              Date.parse(entry.x) >= Date.parse(dateRange.startDate) &&
-              Date.parse(entry.x) <= Date.parse(dateRange.endDate)
-          ),
-        }))
-      : filteredByService;
-  }, [dateRange, granularity.value, services]);
+    return filteredByService;
+  }, [allSeries, granularity.value, services]);
 
   const totalCost = useMemo(
     () => dollarFormatter(granularity.value === 'monthly' ? 26375.19 : 2200),
@@ -249,7 +241,9 @@ export default function () {
                   hideFilter={true}
                   stackedBars={true}
                   emphasizeBaselineAxis={true}
-                  series={filteredSeries}
+                  series={allSeries}
+                  visibleSeries={filteredSeries}
+                  onFilterChange={({ detail }) => console.log(detail.visibleSeries)}
                   xDomain={xDomain}
                   i18nStrings={{
                     xTickFormatter: e =>
