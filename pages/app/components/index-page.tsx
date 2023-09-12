@@ -53,8 +53,8 @@ const dailyServiceOptions = Object.entries(dailySeriesByService).map(([key, valu
 
 const initialDateRange: DateRangePickerProps.Value = {
   type: 'absolute',
-  startDate: months[0] + '-01',
-  endDate: months[months.length - 1] + '-31',
+  startDate: months[0],
+  endDate: months[months.length - 1],
 };
 
 export default function () {
@@ -313,8 +313,8 @@ export default function () {
                                   setGranularity(granularityOptions.daily);
                                   setDateRange({
                                     type: 'absolute',
-                                    startDate: months[8] + '-01',
-                                    endDate: months[8] + '-31',
+                                    startDate: '2023-05-01T00:00',
+                                    endDate: '2023-05-31T00:00',
                                   });
                                   setSplitPanelOpen(true);
                                 }
