@@ -62,11 +62,12 @@ export default function () {
 
   const [dateRange, setDateRange] = useState<DateRangePickerProps.Value | null>(initialDateRange);
   const [granularity, setGranularity] = useState<SelectProps.Option>(granularityOptions.monthly);
-  const [splitPanelOpen, setSplitPanelOpen] = useState(true);
+  const [splitPanelOpen, setSplitPanelOpen] = useState(false);
   const [services, setServices] = useState<ReadonlyArray<SelectProps.Option>>([]);
   const [selectedService, setSelectedService] = useState<SelectProps.Option | null>(null);
   const [splitPanelSize, setSplitPanelSize] = useState(400);
   const [messages, setMessages] = useState<ReadonlyArray<I18nProviderProps.Messages> | null>(null);
+
   useEffect(() => {
     importMessages(LOCALE).then(setMessages);
   }, []);
@@ -315,6 +316,7 @@ export default function () {
                                     startDate: months[8] + '-01',
                                     endDate: months[8] + '-31',
                                   });
+                                  setSplitPanelOpen(true);
                                 }
                               }}
                             >
