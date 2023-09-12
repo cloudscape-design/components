@@ -20,7 +20,7 @@ export interface AnchorNavigationProps extends BaseComponentProps {
    * * `href` (string) - The `id` attribute of the target HTML element that the anchor refers to.
    * For example: `"#section1.1"`
    * * `level` (number) - Level of nesting of the anchor.
-   * * `info` (string) - Additional information to display next to the link, for example: "New" or "Updated".
+   * * `info` (string | undefined) - Additional information to display next to the link, for example: "New" or "Updated".
    *
    */
   anchors: AnchorNavigationProps.Anchor[];
@@ -61,8 +61,7 @@ export namespace AnchorNavigationProps {
     text: string;
 
     /**
-     * The `id` attribute of the target HTML element that the anchor refers to.
-     * For example: `"#section1.1"`
+     * The `href` of the anchor. For example: `"#section1.1"`".
      */
     href: string;
 

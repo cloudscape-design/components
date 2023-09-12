@@ -7,7 +7,6 @@ import { AnchorNavigationProps } from './interfaces';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import useScrollSpy from './scroll-spy.js';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
-import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { getBaseProps } from '../internal/base-component/index.js';
 
@@ -32,10 +31,6 @@ export default function InternalAnchorNavigation({
     [onFollow]
   );
 
-  const onActiveHrefChangeHandler = useStableCallback((newActiveAnchor: AnchorNavigationProps.Anchor | undefined) => {
-    fireNonCancelableEvent(onActiveHrefChange, newActiveAnchor);
-  });
-
   const currentActiveHref = useScrollSpy({
     hrefs,
     scrollSpyOffset,
@@ -44,9 +39,10 @@ export default function InternalAnchorNavigation({
 
   useEffect(() => {
     if (currentActiveHref) {
-      onActiveHrefChangeHandler(anchors.find(anchor => anchor.href === currentActiveHref));
+      const newActiveAnchor = anchors.find(anchor => anchor.href === currentActiveHref);
+      fireNonCancelableEvent(onActiveHrefChange, newActiveAnchor);
     }
-  }, [onActiveHrefChangeHandler, anchors, currentActiveHref]);
+  }, [onActiveHrefChange, anchors, currentActiveHref]);
 
   return (
     <nav
