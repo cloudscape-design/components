@@ -753,6 +753,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverHeader",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -1964,6 +1980,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
         "type": "function",
       },
       "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverHeader",
       "optional": true,
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
@@ -6172,6 +6204,7 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
           "container",
           "navigation",
           "stacked",
+          "compact",
         ],
       },
       "name": "variant",
@@ -7730,6 +7763,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverHeader",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -8335,6 +8384,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
         "type": "function",
       },
       "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverHeader",
       "optional": true,
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
