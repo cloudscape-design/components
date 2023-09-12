@@ -109,8 +109,8 @@ export default function () {
         breadcrumbs={
           <BreadCrumbGroup
             items={[
-              { text: 'AWS Cost Management', href: '#' },
-              { text: 'Cost Explorer', href: '#' },
+              { text: 'AWS Cost Management', href: currentPath },
+              { text: 'Cost Explorer', href: currentPath },
               { text: 'Monthly costs by linked account', href: '' },
             ]}
           />
