@@ -49,7 +49,7 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                     variant="compact"
                     headerText={key}
                     defaultExpanded={detailsOpen}
-                    headerActions={<Value value={value} link={link} />}
+                    headerActions={<Value value={value} link={link} expandable={true} />}
                   >
                     {details.map(({ key, value }) => (
                       <div key={key} className={styles['inner-list-item']}>
@@ -76,10 +76,10 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
   );
 }
 
-function Value({ value, link }: { value: string | number; link?: ChartDetailLink }) {
+function Value({ value, link, expandable }: { value: string | number; link?: ChartDetailLink; expandable?: boolean }) {
   return (
     <InternalBox textAlign="right">
-      <span className={styles.value}>
+      <span className={clsx(styles.value, expandable && styles['expandable-value'], link && styles['value-link'])}>
         {link ? (
           <Link href={link.href} external={link.external}>
             {value}
