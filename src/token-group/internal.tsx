@@ -45,15 +45,17 @@ export default function InternalTokenGroup({
         items={items}
         limit={limit}
         renderItem={(item, itemIndex) => {
-          const onDismiss = () => {
-            fireNonCancelableEvent(onDismiss, { itemIndex });
-            setRemovedItemIndex(itemIndex);
-          };
           return (
             <Token
               ariaLabel={item.label}
               dismissLabel={item.dismissLabel}
-              onDismiss={variant !== 'small' ? onDismiss : undefined}
+              onDismiss={() => {
+                if (variant === 'small') {
+                  return;
+                }
+                fireNonCancelableEvent(onDismiss, { itemIndex });
+                setRemovedItemIndex(itemIndex);
+              }}
               disabled={item.disabled}
               variant={variant}
             >

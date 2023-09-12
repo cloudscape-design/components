@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.token {
+  display: flex;
+  background: awsui.$color-background-item-selected;
+  border: 1px solid awsui.$color-border-item-selected;
+  border-radius: awsui.$border-radius-token;
+
+  padding: awsui.$space-scaled-xxs;
+  text-wrap: nowrap;
+}
+
+.token-group {
+  // Dont do this. Talk to the Cloudscape team
+  margin-top: calc(#{awsui.$space-scaled-xs} * -1);
+}
+
+.inline-token-editor {
+  display: flex;
+  align-items: flex-start;
+  gap: awsui.$space-scaled-s;
+}
+
+.rule-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.multisuggest-tokens {
+  display: flex;
+}

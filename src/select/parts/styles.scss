@@ -62,6 +62,7 @@ $checkbox-size: awsui.$size-control;
 .inline-token-trigger {
   display: flex;
   flex-wrap: nowrap;
+  column-gap: awsui.$space-xxs;
   width: 100%;
 }
 
@@ -72,6 +73,7 @@ $checkbox-size: awsui.$size-control;
   width: 100%;
   overflow-x: hidden;
 
+  /* stylelint-disable-next-line selector-max-type */
   > span {
     border: awsui.$border-field-width solid awsui.$color-border-item-selected;
     padding: 0 awsui.$space-xxs;
@@ -90,6 +92,7 @@ $checkbox-size: awsui.$size-control;
 
 .inline-token-counter {
   position: relative;
+  white-space: nowrap;
 
   &::before {
     display: block;
@@ -102,6 +105,7 @@ $checkbox-size: awsui.$size-control;
   }
 }
 .inline-token-trigger--disabled {
+  /* stylelint-disable-next-line selector-max-type */
   > .inline-token-list > span {
     border-color: awsui.$color-border-control-disabled;
     background-color: awsui.$color-background-container-content;
