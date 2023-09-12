@@ -6,7 +6,7 @@ import BreadCrumbGroup from '~components/breadcrumb-group';
 import Header from '~components/header';
 import Link from '~components/link';
 import SideNavigation from '~components/side-navigation';
-import labels from '../app-layout/utils/labels';
+import labels from './app-layout/utils/labels';
 import React from 'react';
 import SpaceBetween from '~components/space-between';
 import Table from '~components/table';

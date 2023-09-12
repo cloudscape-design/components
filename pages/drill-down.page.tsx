@@ -10,7 +10,7 @@ import Link from '~components/link';
 import Box from '~components/box';
 import SideNavigation from '~components/side-navigation';
 import BarChart from '~components/bar-chart';
-import labels from '../app-layout/utils/labels';
+import labels from './app-layout/utils/labels';
 import React from 'react';
 import SpaceBetween from '~components/space-between';
 import SplitPanel from '~components/split-panel';
