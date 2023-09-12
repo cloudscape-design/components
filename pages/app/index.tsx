@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { Suspense, useContext, useEffect } from 'react';
 import { render } from 'react-dom';
-import { HashRouter, Redirect } from 'react-router-dom';
-import { createHashHistory } from 'history';
-import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
+import { HashRouter } from 'react-router-dom';
+import { applyDensity, disableMotion } from '@cloudscape-design/global-styles';
 
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
@@ -14,13 +13,7 @@ import styles from './styles.scss';
 import PageView from './components/page-view';
 import IndexPage from './components/index-page';
 import StrictModeWrapper from './components/strict-mode-wrapper';
-import AppContext, { AppContextProvider, parseQuery } from './app-context';
-
-const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
-interface ExtendedWindow extends Window {
-  [awsuiVisualRefreshFlag]?: () => boolean;
-}
-declare const window: ExtendedWindow;
+import AppContext, { AppContextProvider } from './app-context';
 
 function isAppLayoutPage(pageId?: string) {
   const appLayoutPages = ['app-layout', 'content-layout', 'grid-navigation-custom'];
@@ -29,7 +22,6 @@ function isAppLayoutPage(pageId?: string) {
 
 function App() {
   const {
-    mode,
     pageId,
     urlParams: { density, motionDisabled },
   } = useContext(AppContext);
@@ -39,10 +31,6 @@ function App() {
   const isAppLayout = isAppLayoutPage(pageId);
   const ContentTag = isAppLayout ? 'div' : 'main';
   const isMacOS = navigator.userAgent.toLowerCase().indexOf('macintosh') > -1;
-
-  useEffect(() => {
-    applyMode(mode ?? null);
-  }, [mode]);
 
   useEffect(() => {
     applyDensity(density ?? null);
@@ -60,9 +48,6 @@ function App() {
     }
   }, [isMacOS]);
 
-  if (!mode) {
-    return <Redirect to="/light/" />;
-  }
   return (
     <StrictModeWrapper pageId={pageId}>
       <Suspense fallback={<span>Loading...</span>}>
@@ -71,12 +56,6 @@ function App() {
     </StrictModeWrapper>
   );
 }
-
-const history = createHashHistory();
-const { visualRefresh } = parseQuery(history.location.search);
-
-// The VR class needs to be set before any React rendering occurs.
-window[awsuiVisualRefreshFlag] = () => visualRefresh;
 
 render(
   <HashRouter>

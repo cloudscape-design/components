@@ -17,7 +17,6 @@ export interface AppContextType<T = unknown> {
   pageId?: string;
   urlParams: AppUrlParams & T;
   setUrlParams: (newParams: Partial<AppUrlParams & T>) => void;
-  setMode: (newMode: Mode) => void;
 }
 
 const appContextDefaults: AppContextType = {
@@ -28,7 +27,6 @@ const appContextDefaults: AppContextType = {
     visualRefresh: THEME === 'default',
     motionDisabled: false,
   },
-  setMode: () => {},
   setUrlParams: () => {},
 };
 
@@ -63,7 +61,7 @@ function formatQuery(params: AppUrlParams) {
 export function AppContextProvider({ children }: { children: React.ReactNode }) {
   const history = useHistory();
   const location = useLocation();
-  const match = useRouteMatch<{ theme: string; mode: Mode; pageId: string }>('/:mode(light|dark)/:pageId*');
+  const match = useRouteMatch<{ theme: string; mode: Mode; pageId: string }>('/:pageId*');
   const { mode, pageId } = match ? match.params : { mode: undefined, pageId: undefined };
   const urlParams = parseQuery(location.search) as AppUrlParams;
 
@@ -72,13 +70,8 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     history.replace(`/${pathname}${formatQuery({ ...urlParams, ...newParams })}`);
   }
 
-  function updateMode(newMode: Mode) {
-    const pathname = [newMode, pageId].filter(segment => !!segment).join('/') + '/';
-    history.replace('/' + pathname + location.search + location.hash);
-  }
-
   return (
-    <AppContext.Provider value={{ mode: mode!, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode }}>
+    <AppContext.Provider value={{ mode: mode!, pageId, urlParams, setUrlParams: setUrlParams }}>
       {children}
     </AppContext.Provider>
   );

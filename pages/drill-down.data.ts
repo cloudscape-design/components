@@ -290,7 +290,7 @@ export const dailySeriesByService: Record<string, BarDataSeries<string>> = {
       {
         x: '2023-05-17',
         y: 493,
-        link: { href: '#/light/bills/?' + window.location.href.split('?')[1], external: true },
+        link: { href: '#/bills', external: true },
         key: 'All accounts',
       },
       { x: '2023-05-18', y: 84 },
