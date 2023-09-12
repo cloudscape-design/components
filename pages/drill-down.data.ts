@@ -253,6 +253,7 @@ function getDailyData(serviceId: ServiceId): BarDataSeries<string> {
     title: serviceNames[serviceId],
     type: 'bar',
     data: getBaseDailySampleData(monthlySeriesByService[serviceId].data.find(({ x }) => x === months[8])?.y || 100),
+    valueFormatter: dollarFormatter,
   };
 }
 
