@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -25,6 +25,7 @@ import WizardNavigation from './wizard-navigation';
 import { WizardProps } from './interfaces';
 
 import styles from './styles.css.js';
+import { useFunnelChangeEvent } from './analytics';
 
 type InternalWizardProps = WizardProps & InternalBaseComponentProps;
 
@@ -184,46 +185,4 @@ export default function InternalWizard({
       </div>
     </div>
   );
-}
-
-/**
- * This hook observes the step configuration and emits the `funnelChange` event when the steps change.
- */
-function useFunnelChangeEvent(funnelInteractionId: string | undefined, steps: WizardProps['steps']) {
-  const listenForStepChanges = useRef(false);
-
-  useEffect(() => {
-    // We prevent emitting the event before the funnel has stabilised.
-    const handle = setTimeout(() => (listenForStepChanges.current = true), 0);
-
-    return () => {
-      clearTimeout(handle);
-      listenForStepChanges.current = false;
-    };
-  }, [funnelInteractionId]);
-
-  const stepTitles = steps.map(step => step.title).join();
-  useEffect(() => {
-    if (!funnelInteractionId || !listenForStepChanges.current) {
-      return;
-    }
-
-    FunnelMetrics.funnelChange({
-      funnelInteractionId,
-      stepConfiguration: getStepConfiguration(steps),
-    });
-
-    // This dependency array does not include `steps`, because `steps` is not stable across renders.
-    // We use `stepTitles` as a stable proxy.
-    //
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, stepTitles]);
-}
-
-export function getStepConfiguration(steps: WizardProps['steps']) {
-  return steps.map((step, index) => ({
-    name: step.title,
-    number: index + 1,
-    isOptional: step.isOptional ?? false,
-  }));
 }

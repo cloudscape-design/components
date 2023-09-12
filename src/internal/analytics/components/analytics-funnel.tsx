@@ -210,7 +210,7 @@ function getSubStepConfiguration() {
   const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
 
   const subStepConfiguration = subSteps.map((substep, index) => {
-    const name = substep.querySelector(getSubStepNameSelector())?.textContent ?? '';
+    const name = substep.querySelector<HTMLElement>(getSubStepNameSelector())?.innerText ?? '';
     return {
       name,
       number: index + 1,

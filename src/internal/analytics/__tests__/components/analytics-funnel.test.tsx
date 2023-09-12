@@ -18,7 +18,7 @@ import Cards from '../../../../../lib/components/cards';
 import Table from '../../../../../lib/components/table';
 import ExpandableSection from '../../../../../lib/components/expandable-section';
 
-import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
+import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText } from '../mocks';
 
 describe('AnalyticsFunnel', () => {
   beforeEach(() => {
@@ -300,6 +300,8 @@ describe('AnalyticsFunnelStep', () => {
     mockFunnelMetrics();
   });
 
+  mockInnerText();
+
   test('renders children components', () => {
     const { getByText } = render(
       <AnalyticsFunnelStep stepNumber={1} stepNameSelector=".step-name-selector">
@@ -317,22 +319,26 @@ describe('AnalyticsFunnelStep', () => {
     const stepNameSelector = '.step-name-selector';
 
     render(
-      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-        <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
-          Step Content
-          <Container />
-          <Cards items={[]} cardDefinition={{}} />
-          <Table items={[]} columnDefinitions={[]} />
-          <ExpandableSection variant="container" />
-        </AnalyticsFunnelStep>
-      </AnalyticsFunnel>
+      <>
+        <div className="step-name-selector">My funnel step</div>
+
+        <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+          <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
+            Step Content
+            <Container />
+            <Cards items={[]} cardDefinition={{}} />
+            <Table items={[]} columnDefinitions={[]} />
+            <ExpandableSection variant="container" />
+          </AnalyticsFunnelStep>
+        </AnalyticsFunnel>
+      </>
     );
     act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith({
       funnelInteractionId: mockedFunnelInteractionId,
-      stepName: undefined,
+      stepName: 'My funnel step',
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),

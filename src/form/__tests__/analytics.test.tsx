@@ -12,7 +12,7 @@ import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
-import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
 import Container from '../../../lib/components/container';
 import Header from '../../../lib/components/header';
 
@@ -23,23 +23,7 @@ describe('Form Analytics', () => {
     mockFunnelMetrics();
   });
 
-  if (!('innerText' in HTMLElement.prototype)) {
-    // JSDom does not support the `innerText` property. For this test, `textContent` is close enough.
-
-    beforeEach(() =>
-      Object.defineProperty(HTMLElement.prototype, 'innerText', {
-        get() {
-          return this.textContent;
-        },
-        set(v) {
-          this.textContent = v;
-        },
-        configurable: true,
-      })
-    );
-
-    afterEach(() => delete (HTMLElement.prototype as Partial<HTMLElement>).innerText);
-  }
+  mockInnerText();
 
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
     render(
