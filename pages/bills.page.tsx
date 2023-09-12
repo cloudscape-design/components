@@ -115,11 +115,11 @@ export default function () {
               },
               {
                 accountId: 'OQWRIJXCKJVN',
-                cost: 1100,
+                cost: 393,
               },
               {
                 accountId: 'SPFOAIEWJFAS',
-                cost: 130,
+                cost: 30,
               },
             ]}
             filter={
