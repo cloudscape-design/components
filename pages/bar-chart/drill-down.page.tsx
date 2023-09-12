@@ -28,7 +28,9 @@ import {
   dollarFormatter,
   monthlySeries,
   monthlySeriesByService,
+  monthlyServices,
   months,
+  serviceNames,
 } from './drill-down.data';
 import { I18nProvider, I18nProviderProps, importMessages } from '~components/i18n';
 import styles from './drill-down.scss';
@@ -40,7 +42,11 @@ const granularityOptions = {
   daily: { value: 'daily', label: 'Daily' },
 };
 
-const serviceOptions = Object.entries(monthlySeriesByService).map(([key, value]) => ({
+const monthlyServiceOptions = [
+  ...monthlyServices.map(serviceId => ({ value: serviceId, label: serviceNames[serviceId] })),
+  { value: 'other', label: 'Other' },
+];
+const dailyServiceOptions = Object.entries(dailySeriesByService).map(([key, value]) => ({
   value: key,
   label: value.title,
 }));
@@ -197,7 +203,7 @@ export default function () {
               <FormField label="Service" info={<Link onFollow={() => setServices([])}>Clear</Link>}>
                 <MultiSelect
                   selectedOptions={services}
-                  options={serviceOptions}
+                  options={granularity.value === 'monthly' ? monthlyServiceOptions : dailyServiceOptions}
                   onChange={({ detail }) => setServices(detail.selectedOptions)}
                   placeholder={'Services included' + (services.length ? ` (${services.length})` : '')}
                 />
@@ -296,7 +302,7 @@ export default function () {
                           <SpaceBetween direction="vertical" size="xs">
                             <Select
                               selectedOption={selectedService}
-                              options={serviceOptions}
+                              options={dailyServiceOptions}
                               onChange={({ detail }) => setSelectedService(detail.selectedOption)}
                             />
                             <Button

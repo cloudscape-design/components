@@ -34,7 +34,7 @@ export type ServiceId =
   | 'lambda'
   | 'securityHub';
 
-export const serviceNames: Record<ServiceId, string> = {
+export const serviceNames: Record<string, string> = {
   rds: 'Relational Database Service',
   neptune: 'Neptune',
   quickSight: 'QuickSight',
@@ -142,18 +142,7 @@ export const monthlySeriesByService: Record<string, BarDataSeries<string>> = {
     data: months.map(month => ({ x: month, y: 30 })),
     valueFormatter: dollarFormatter,
   },
-};
-
-export const monthlySeries: ReadonlyArray<BarDataSeries<string>> = [
-  monthlySeriesByService.rds,
-  monthlySeriesByService.neptune,
-  monthlySeriesByService.quickSight,
-  monthlySeriesByService.s3,
-  monthlySeriesByService.dax,
-  monthlySeriesByService.ecs,
-  monthlySeriesByService.openSearch,
-  monthlySeriesByService.kms,
-  {
+  other: {
     title: 'Other',
     type: 'bar',
     data: [
@@ -170,20 +159,20 @@ export const monthlySeries: ReadonlyArray<BarDataSeries<string>> = [
         y: 2300,
         details: [
           {
-            key: monthlySeriesByService.dynamoDb.title,
-            value: monthlySeriesByService.dynamoDb.data[8].y,
+            key: serviceNames.dynamoDb,
+            value: 10,
           },
           {
-            key: monthlySeriesByService.athena.title,
-            value: monthlySeriesByService.athena.data[8].y,
+            key: serviceNames.athena,
+            value: 60,
           },
           {
-            key: monthlySeriesByService.lambda.title,
-            value: monthlySeriesByService.lambda.data[8].y,
+            key: serviceNames.lambda,
+            value: 2200,
           },
           {
-            key: monthlySeriesByService.securityHub.title,
-            value: monthlySeriesByService.securityHub.data[8].y,
+            key: serviceNames.securityHub,
+            value: 30,
           },
         ],
       },
@@ -193,6 +182,20 @@ export const monthlySeries: ReadonlyArray<BarDataSeries<string>> = [
     ],
     valueFormatter: dollarFormatter,
   },
+};
+
+export const monthlyServices = ['rds', 'neptune', 'quickSight', 's3', 'dax', 'ecs', 'openSearch', 'kms'];
+
+export const monthlySeries: ReadonlyArray<BarDataSeries<string>> = [
+  monthlySeriesByService.rds,
+  monthlySeriesByService.neptune,
+  monthlySeriesByService.quickSight,
+  monthlySeriesByService.s3,
+  monthlySeriesByService.dax,
+  monthlySeriesByService.ecs,
+  monthlySeriesByService.openSearch,
+  monthlySeriesByService.kms,
+  monthlySeriesByService.other,
 ];
 
 const sampleYear = 2023,
@@ -312,4 +315,8 @@ export const dailyMaySeries = [
   dailySeriesByService.openSearch,
   dailySeriesByService.kms,
   dailySeriesByService.lambda,
+  dailySeriesByService.cloudWatch,
+  dailySeriesByService.dynamoDb,
+  dailySeriesByService.athena,
+  dailySeriesByService.securityHub,
 ];
