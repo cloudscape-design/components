@@ -18,7 +18,7 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { PACKAGE_VERSION } from '../../environment';
 
 import { FunnelMetrics } from '../index';
-import { FunnelProps, FunnelStepProps, SubStepConfiguration } from '../interfaces';
+import { FunnelProps, FunnelStepProps, StepConfiguration, SubStepConfiguration } from '../interfaces';
 
 import {
   DATA_ATTR_FUNNEL_STEP,
@@ -30,9 +30,9 @@ import {
 } from '../selectors';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 
-export const FUNNEL_VERSION = '1.1';
+export const FUNNEL_VERSION = '1.2';
 
-type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
+type AnalyticsFunnelProps = { children?: React.ReactNode; stepConfiguration?: StepConfiguration[] } & Pick<
   FunnelProps,
   'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'
 >;
@@ -52,7 +52,7 @@ export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
   return <InnerAnalyticsFunnel {...props} />;
 };
 
-const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
+const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
@@ -86,6 +86,10 @@ const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
       // Reset the state, in case the component was re-mounted.
       funnelState.current = 'default';
 
+      const singleStepFlowStepConfiguration = [
+        { number: 1, isOptional: false, name: getNameFromSelector(getFunnelNameSelector()) ?? '' },
+      ];
+
       const funnelInteractionId = FunnelMetrics.funnelStart({
         funnelNameSelector: getFunnelNameSelector(),
         optionalStepNumbers: props.optionalStepNumbers,
@@ -94,6 +98,7 @@ const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
         componentVersion: PACKAGE_VERSION,
         theme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
+        stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
       });
 
       setFunnelInteractionId(funnelInteractionId);
@@ -201,6 +206,19 @@ export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
   return <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />;
 };
 
+function getSubStepConfiguration() {
+  const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
+
+  const subStepConfiguration = subSteps.map((substep, index) => {
+    const name = substep.querySelector<HTMLElement>(getSubStepNameSelector())?.innerText.trim() ?? '';
+    return {
+      name,
+      number: index + 1,
+    };
+  });
+  return subStepConfiguration;
+}
+
 function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration[]) => void) {
   /*
    Chosen so that it's hopefully shorter than a user interaction, but gives enough time for the
@@ -227,17 +245,7 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
       return;
     }
 
-    const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
-
-    const subStepConfiguration = subSteps.map((substep, index) => {
-      const name = substep.querySelector(getSubStepNameSelector())?.textContent ?? '';
-      return {
-        name,
-        number: index + 1,
-      };
-    });
-
-    handler(subStepConfiguration);
+    handler(getSubStepConfiguration());
   }, SUBSTEP_CHANGE_DEBOUNCE);
 
   return stepChangeCallback;
@@ -298,6 +306,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
         totalSubSteps: subStepCount.current,
+        subStepConfiguration: getSubStepConfiguration(),
       });
     }
 

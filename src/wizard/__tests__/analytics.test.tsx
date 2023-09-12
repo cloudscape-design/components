@@ -14,6 +14,7 @@ import { getFunnelKeySelector, FUNNEL_KEY_STEP_NAME } from '../../../lib/compone
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 
 const mockedFunnelInteractionId = 'mocked-funnel-id';
 function mockFunnelMetrics() {
@@ -36,6 +37,8 @@ function mockFunnelMetrics() {
     externalLinkInteracted: jest.fn(),
   });
 }
+
+mockInnerText();
 
 describe('Wizard Analytics', () => {
   beforeEach(() => {
@@ -61,6 +64,11 @@ describe('Wizard Analytics', () => {
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         theme: expect.any(String),
+        stepConfiguration: [
+          { isOptional: false, name: 'Step 1', number: 1 },
+          { isOptional: true, name: 'Step 2', number: 2 },
+          { isOptional: false, name: 'Step 3', number: 3 },
+        ],
       })
     );
   });
@@ -77,6 +85,10 @@ describe('Wizard Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+        subStepConfiguration: [
+          { name: 'Step 1, substep one', number: 1 },
+          { name: 'Step 1, substep two', number: 2 },
+        ],
       })
     );
   });
@@ -325,7 +337,12 @@ describe('Wizard Analytics', () => {
     const steps = [
       {
         title: 'Step 1',
-        content: <Form>Content 1</Form>,
+        content: (
+          <Form>
+            <Container header={<Header>Step 1, substep one</Header>}></Container>
+            <Container header={<Header>Step 1, substep two</Header>}></Container>
+          </Form>
+        ),
       },
       {
         title: 'Step 2',
@@ -356,6 +373,11 @@ describe('Wizard Analytics', () => {
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         theme: expect.any(String),
+        stepConfiguration: [
+          { isOptional: false, name: 'Step 1', number: 1 },
+          { isOptional: true, name: 'Step 2', number: 2 },
+          { isOptional: false, name: 'Step 3', number: 3 },
+        ],
       })
     );
 
@@ -366,6 +388,10 @@ describe('Wizard Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+        subStepConfiguration: [
+          { name: 'Step 1, substep one', number: 1 },
+          { name: 'Step 1, substep two', number: 2 },
+        ],
       })
     );
   });
