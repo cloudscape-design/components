@@ -16,14 +16,14 @@ import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tes
 import Container from '../../../lib/components/container';
 import Header from '../../../lib/components/header';
 
+mockInnerText();
+
 describe('Form Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     mockFunnelMetrics();
   });
-
-  mockInnerText();
 
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
     render(

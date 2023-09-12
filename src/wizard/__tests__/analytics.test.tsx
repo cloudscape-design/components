@@ -14,6 +14,7 @@ import { getFunnelKeySelector, FUNNEL_KEY_STEP_NAME } from '../../../lib/compone
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 
 const mockedFunnelInteractionId = 'mocked-funnel-id';
 function mockFunnelMetrics() {
@@ -36,6 +37,8 @@ function mockFunnelMetrics() {
     externalLinkInteracted: jest.fn(),
   });
 }
+
+mockInnerText();
 
 describe('Wizard Analytics', () => {
   beforeEach(() => {
