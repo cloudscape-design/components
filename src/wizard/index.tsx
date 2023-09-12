@@ -7,7 +7,8 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 import { AnalyticsFunnel } from '../internal/analytics/components/analytics-funnel';
 
-import InternalWizard, { getStepConfiguration } from './internal';
+import InternalWizard from './internal';
+import { getStepConfiguration } from './analytics';
 import { WizardProps } from './interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 
