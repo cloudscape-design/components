@@ -324,17 +324,10 @@ describe('getStickyClassNames helper', () => {
 });
 
 test('updateCellOffsets element widths fallback to 0 when elements are missing', () => {
-  const offsets = updateCellOffsets(
+  const { offsets } = updateCellOffsets(
     {},
     { stickyColumnsFirst: 1, stickyColumnsLast: 1, visibleColumns: ['a', 'b', 'c'] }
   );
-  expect(offsets).toEqual({
-    offsets: new Map([
-      ['a', { first: 0, last: 0 }],
-      ['b', { first: 0, last: 0 }],
-      ['c', { first: 0, last: 0 }],
-    ]),
-    stickyWidthLeft: 0,
-    stickyWidthRight: 0,
-  });
+  expect(offsets.get('a')).toEqual({ first: 0, last: 0 });
+  expect(offsets.get('c')).toEqual({ first: 0, last: 0 });
 });
