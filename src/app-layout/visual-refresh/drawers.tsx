@@ -118,7 +118,10 @@ function ActiveDrawer() {
           })}
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
-          onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? null) : handleToolsClick(false))}
+          onClick={() => {
+            handleDrawersClick(activeDrawerId ?? undefined);
+            handleToolsClick(false);
+          }}
           ref={isToolsDrawer ? toolsRefs.close : drawersRefs.close}
           variant="icon"
         />
@@ -195,6 +198,15 @@ function DesktopTriggers() {
   const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
+  function handleItemClick(itemId: string | undefined) {
+    if (itemId === TOOLS_DRAWER_ID) {
+      handleToolsClick(!isToolsOpen, true);
+    } else {
+      handleToolsClick(false, true);
+    }
+    handleDrawersClick(itemId);
+  }
+
   return (
     <aside
       className={clsx(
@@ -230,10 +242,7 @@ function DesktopTriggers() {
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
-              onClick={() => {
-                isToolsOpen && handleToolsClick(!isToolsOpen, true);
-                handleDrawersClick(item.id);
-              }}
+              onClick={() => handleItemClick(item.id)}
               ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
@@ -258,7 +267,7 @@ function DesktopTriggers() {
               />
             )}
             onItemClick={({ detail }) => {
-              handleDrawersClick(detail.id);
+              handleItemClick(detail.id);
             }}
           />
         )}
@@ -292,6 +301,8 @@ export function MobileTriggers() {
     drawersAriaLabel,
     drawersOverflowAriaLabel,
     drawersRefs,
+    isToolsOpen,
+    handleToolsClick,
     handleDrawersClick,
     hasDrawerViewportOverlay,
     isMobile,
@@ -310,6 +321,15 @@ export function MobileTriggers() {
   const splitIndex = 2;
 
   const { visibleItems, overflowItems } = splitItems(drawers, splitIndex, activeDrawerId, true);
+
+  function handleItemClick(itemId: string | undefined) {
+    if (itemId === TOOLS_DRAWER_ID) {
+      handleToolsClick(!isToolsOpen, true);
+    } else {
+      handleToolsClick(false, true);
+    }
+    handleDrawersClick(itemId);
+  }
 
   return (
     <aside
@@ -339,7 +359,7 @@ export function MobileTriggers() {
           iconSvg={item.trigger.iconSvg}
           badge={item.badge}
           key={item.id}
-          onClick={() => handleDrawersClick(item.id)}
+          onClick={() => handleItemClick(item.id)}
           variant="icon"
           __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
         />
@@ -349,7 +369,7 @@ export function MobileTriggers() {
           items={overflowItems}
           ariaLabel={drawersOverflowAriaLabel}
           onItemClick={({ detail }) => {
-            handleDrawersClick(detail.id);
+            handleItemClick(detail.id);
           }}
         />
       )}

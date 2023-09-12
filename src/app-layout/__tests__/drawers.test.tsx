@@ -17,7 +17,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout(() => {
+describeEachAppLayout(size => {
   test(`should not render drawer when it is not defined`, () => {
     const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
@@ -50,13 +50,60 @@ describeEachAppLayout(() => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
-  test('should respect toolsOpen property when merging into drawers', () => {
+  // this behavior is no longer supported for compatibility with runtime API
+  test.skip('should respect toolsOpen property when merging into drawers', () => {
     const { wrapper } = renderComponent(<AppLayout tools="Tools content" toolsOpen={true} {...singleDrawer} />);
 
     expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-expanded', 'true');
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-expanded', 'false');
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Tools content');
   });
+
+  test('should fire tools change event when closing tools panel while drawers are present', () => {
+    const onToolsChange = jest.fn();
+    const { wrapper } = renderComponent(
+      <AppLayout tools="Tools content" onToolsChange={event => onToolsChange(event.detail)} {...singleDrawer} />
+    );
+
+    wrapper.findToolsToggle().click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+
+    onToolsChange.mockClear();
+    wrapper.findToolsClose().click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+  });
+
+  // drawers render full screen on mobile sizes, switching open drawers does not work there
+  if (size === 'desktop') {
+    test('should fire tools close event when switching from tools to another drawer', () => {
+      const onToolsChange = jest.fn();
+      const { wrapper } = renderComponent(
+        <AppLayout
+          tools="Tools content"
+          toolsOpen={true}
+          onToolsChange={event => onToolsChange(event.detail)}
+          {...singleDrawer}
+        />
+      );
+
+      wrapper.findDrawerTriggerById('security')!.click();
+      expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+    });
+
+    test('should fire tools open event when switching from another drawer to tools', () => {
+      const onToolsChange = jest.fn();
+      const { wrapper } = renderComponent(
+        <AppLayout
+          tools="Tools content"
+          toolsOpen={false}
+          onToolsChange={event => onToolsChange(event.detail)}
+          {...singleDrawerOpen}
+        />
+      );
+      wrapper.findToolsToggle().click();
+      expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+    });
+  }
 
   test('activeDrawerId has priority over toolsOpen', () => {
     const { wrapper } = renderComponent(<AppLayout tools="Tools content" toolsOpen={true} {...singleDrawerOpen} />);

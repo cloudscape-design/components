@@ -8,7 +8,7 @@ import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-dr
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { singleDrawer } from './utils';
+import { describeEachAppLayout, singleDrawer } from './utils';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -34,11 +34,11 @@ const drawerDefaults: DrawerConfig = {
   id: 'test',
   ariaLabels: {},
   trigger: { iconSvg: '' },
-  mountContent: () => {},
+  mountContent: container => (container.textContent = 'runtime drawer content'),
   unmountContent: () => {},
 };
 
-describe('Runtime drawers', () => {
+describeEachAppLayout(() => {
   test('does not render runtime drawers when it is explicitly disabled', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper } = await renderComponent(<AppLayout {...({ __disableRuntimeDrawers: true } as any)} />);
@@ -104,6 +104,66 @@ describe('Runtime drawers', () => {
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Tools content');
   });
 
+  test('allows controlled toolsOpen when runtime drawers exist', async () => {
+    const onToolsChange = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper, rerender } = await renderComponent(
+      <AppLayout tools="Tools content" toolsOpen={false} onToolsChange={event => onToolsChange(event.detail)} />
+    );
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+    expect(wrapper.findTools()).toBeFalsy();
+    expect(onToolsChange).not.toHaveBeenCalled();
+
+    rerender(<AppLayout tools="Tools content" toolsOpen={true} onToolsChange={event => onToolsChange(event.detail)} />);
+    expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
+
+    wrapper.findToolsClose().click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+  });
+
+  test('allows closing tools in controlled mode when runtime drawers exist', async () => {
+    const onToolsChange = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(
+      <AppLayout tools="Tools content" toolsOpen={true} onToolsChange={event => onToolsChange(event.detail)} />
+    );
+    wrapper.findToolsClose().click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+  });
+
+  test('allows controlled toolsOpen when another drawer is open', async () => {
+    const onToolsChange = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper, rerender } = await renderComponent(
+      <AppLayout tools="Tools content" toolsOpen={false} onToolsChange={event => onToolsChange(event.detail)} />
+    );
+
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+
+    onToolsChange.mockClear();
+    rerender(<AppLayout tools="Tools content" toolsOpen={true} onToolsChange={event => onToolsChange(event.detail)} />);
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Tools content');
+    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.getElement()).toHaveAttribute('aria-expanded', 'true');
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).toHaveAttribute('aria-expanded', 'false');
+    expect(onToolsChange).not.toHaveBeenCalled();
+  });
+
+  test('allows switching drawers when toolsOpen is controlled', async () => {
+    const onToolsChange = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(
+      <AppLayout tools="Tools content" toolsOpen={false} onToolsChange={event => onToolsChange(event.detail)} />
+    );
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+    wrapper.findToolsToggle().click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+  });
+
   test('updates active drawer if multiple are registered', async () => {
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
@@ -158,11 +218,7 @@ describe('Runtime drawers', () => {
   });
 
   test('updates active drawer id in controlled mode', async () => {
-    awsuiPlugins.appLayout.registerDrawer({
-      ...drawerDefaults,
-      mountContent: container => (container.textContent = 'runtime drawer content'),
-      defaultActive: true,
-    });
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     const onChange = jest.fn();
     const drawers: Required<InternalDrawerProps> = {
       drawers: {
