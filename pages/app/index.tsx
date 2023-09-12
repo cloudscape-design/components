@@ -13,7 +13,6 @@ import styles from './styles.scss';
 
 import PageView from './components/page-view';
 import IndexPage from './components/index-page';
-import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
@@ -67,10 +66,7 @@ function App() {
   return (
     <StrictModeWrapper pageId={pageId}>
       <Suspense fallback={<span>Loading...</span>}>
-        <ContentTag>
-          <Header sticky={isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1} />
-          {pageId ? <PageView pageId={pageId} /> : <IndexPage />}
-        </ContentTag>
+        <ContentTag>{pageId ? <PageView pageId={pageId} /> : <IndexPage />}</ContentTag>
       </Suspense>
     </StrictModeWrapper>
   );
