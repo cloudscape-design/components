@@ -203,9 +203,18 @@ export function Resizer({
           'aria-valuemin': minWidth,
         };
 
+  const resizerRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (resizerRef.current) {
+      const headerCell = findHeaderCell(resizerRef.current);
+      setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+    }
+  }, []);
+
   return (
     <>
       <span
+        ref={resizerRef}
         className={clsx(
           styles.resizer,
           isDragging && styles['resizer-active'],
@@ -216,13 +225,11 @@ export function Resizer({
             return;
           }
           event.preventDefault();
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+          const headerCell = findHeaderCell(event.currentTarget);
           setIsDragging(true);
           setHeaderCell(headerCell);
         }}
-        onFocus={event => {
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-          setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+        onFocus={() => {
           setResizerHasFocus(true);
           setHeaderCell(headerCell);
           onFocus?.();
@@ -249,4 +256,8 @@ export function Resizer({
 
 export function ResizeTracker() {
   return <span className={styles.tracker} />;
+}
+
+function findHeaderCell(from: HTMLElement) {
+  return findUpUntil(from, element => element.tagName.toLowerCase() === 'th')!;
 }
