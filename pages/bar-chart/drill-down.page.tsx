@@ -118,9 +118,9 @@ export default function () {
         navigation={
           <SideNavigation
             activeHref={currentPath}
-            header={{ text: 'AWS Cost Management', href: '#' }}
+            header={{ text: 'AWS Cost Management', href: currentPath }}
             items={[
-              { type: 'link', text: 'Home', href: '#' },
+              { type: 'link', text: 'Home', href: currentPath },
               {
                 type: 'link',
                 text: 'Cost Explorer',

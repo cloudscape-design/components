@@ -25,7 +25,7 @@ export default function () {
       content: (
         <>
           You can now customize the level of content density for the Bills page.{' '}
-          <Link href="#" color="inverted">
+          <Link href={currentPath} color="inverted">
             Open density settings
           </Link>
         </>
@@ -48,7 +48,7 @@ export default function () {
       breadcrumbs={
         <BreadCrumbGroup
           items={[
-            { text: 'AWS Billing', href: '#' },
+            { text: 'AWS Billing', href: currentPath },
             { text: 'Bills', href: '' },
           ]}
         />
@@ -56,9 +56,9 @@ export default function () {
       navigation={
         <SideNavigation
           activeHref={currentPath}
-          header={{ text: 'Home', href: '#' }}
+          header={{ text: 'Home', href: currentPath }}
           items={[
-            { type: 'link', text: 'Home', href: '#' },
+            { type: 'link', text: 'Home', href: currentPath },
             {
               type: 'section',
               text: 'Bills',
@@ -86,7 +86,7 @@ export default function () {
               {
                 id: 'accountId',
                 header: 'Account Id',
-                cell: ({ accountId }) => <Link href="#">{accountId}</Link>,
+                cell: ({ accountId }) => <Link href={currentPath}>{accountId}</Link>,
               },
               {
                 id: 'serviceName',
