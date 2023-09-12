@@ -42,7 +42,15 @@ describe('Form Analytics', () => {
   }
 
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
-    render(<Form />);
+    render(
+      <>
+        <BreadcrumbGroup items={[{ text: 'My funnel', href: '' }]} />
+        <Form>
+          <Container header={<Header>Substep one</Header>}></Container>
+          <Container header={<Header>Substep two</Header>}></Container>
+        </Form>
+      </>
+    );
     act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
@@ -55,6 +63,7 @@ describe('Form Analytics', () => {
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         theme: expect.any(String),
+        stepConfiguration: [{ isOptional: false, name: 'My funnel', number: 1 }],
       })
     );
 
@@ -65,6 +74,10 @@ describe('Form Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+        subStepConfiguration: [
+          { name: 'Substep one', number: 1 },
+          { name: 'Substep two', number: 2 },
+        ],
       })
     );
   });

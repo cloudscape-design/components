@@ -332,10 +332,29 @@ describe('AnalyticsFunnelStep', () => {
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith({
       funnelInteractionId: mockedFunnelInteractionId,
+      stepName: undefined,
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
       totalSubSteps: 4,
+      subStepConfiguration: [
+        {
+          name: '',
+          number: 1,
+        },
+        {
+          name: '',
+          number: 2,
+        },
+        {
+          name: '',
+          number: 3,
+        },
+        {
+          name: '',
+          number: 4,
+        },
+      ],
     });
   });
 

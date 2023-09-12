@@ -208,15 +208,9 @@ function useFunnelChangeEvent(funnelInteractionId: string | undefined, steps: Wi
       return;
     }
 
-    const stepConfiguration = steps.map((step, index) => ({
-      name: step.title,
-      number: index + 1,
-      isOptional: step.isOptional ?? false,
-    }));
-
     FunnelMetrics.funnelChange({
       funnelInteractionId,
-      stepConfiguration,
+      stepConfiguration: getStepConfiguration(steps),
     });
 
     // This dependency array does not include `steps`, because `steps` is not stable across renders.
@@ -224,4 +218,12 @@ function useFunnelChangeEvent(funnelInteractionId: string | undefined, steps: Wi
     //
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [funnelInteractionId, stepTitles]);
+}
+
+export function getStepConfiguration(steps: WizardProps['steps']) {
+  return steps.map((step, index) => ({
+    name: step.title,
+    number: index + 1,
+    isOptional: step.isOptional ?? false,
+  }));
 }
