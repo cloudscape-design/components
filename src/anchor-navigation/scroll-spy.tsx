@@ -14,43 +14,36 @@ export default function useScrollSpy({
   activeHref?: string;
 }): string | undefined {
   const [currentHref, setCurrentHref] = useState<string | undefined>(activeHref);
-
-  const [lastAnchorElementExists, setLastAnchorElementExists] = useState(false);
+  const [lastAnchorExists, setLastAnchorExists] = useState(false);
 
   useEffect(() => {
-    if (isBrowser) {
-      setLastAnchorElementExists(!!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)));
-    }
+    setLastAnchorExists(isBrowser && !!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)));
   }, [hrefs]);
 
   // Get the bounding rectangle of an element by href
   const getRectByHref = useCallback(href => {
-    const element = document.getElementById(href.slice(1));
-    return element?.getBoundingClientRect();
+    return document.getElementById(href.slice(1))?.getBoundingClientRect();
   }, []);
 
   // Check if we're scrolled to the bottom of the page
   const isPageBottom = useCallback(() => {
-    return lastAnchorElementExists && window.scrollY >= Math.floor(document.body.scrollHeight - window.innerHeight);
-  }, [lastAnchorElementExists]);
+    return lastAnchorExists && window.scrollY >= Math.floor(document.body.scrollHeight - window.innerHeight);
+  }, [lastAnchorExists]);
 
   // Find the href for which the element is within the viewport
   const findHrefInView = useCallback(() => {
     return hrefs.find(href => {
       const rect = getRectByHref(href);
-      return rect && rect.bottom <= window.innerHeight && rect.bottom - scrollSpyOffset >= 0;
+      return rect && rect.bottom <= window.innerHeight && rect.top >= scrollSpyOffset;
     });
   }, [getRectByHref, scrollSpyOffset, hrefs]);
 
   // Find the last href where its element is above or within the viewport
   const findLastHrefInView = useCallback(() => {
-    return hrefs
-      .slice()
-      .reverse()
-      .find(href => {
-        const rect = getRectByHref(href);
-        return rect && rect.bottom <= window.innerHeight;
-      });
+    return [...hrefs].reverse().find(href => {
+      const rect = getRectByHref(href);
+      return rect && rect.bottom <= window.innerHeight;
+    });
   }, [getRectByHref, hrefs]);
 
   // Scroll event handler
@@ -59,9 +52,9 @@ export default function useScrollSpy({
       return;
     }
 
-    const scrollY = window.scrollY;
+    const { scrollY } = window;
 
-    if (isPageBottom()) {
+    if (document.body.scrollHeight > window.innerHeight && isPageBottom()) {
       setCurrentHref(hrefs[hrefs.length - 1]);
     } else {
       setCurrentHref(findHrefInView() || (scrollY > 0 ? findLastHrefInView() : undefined));
