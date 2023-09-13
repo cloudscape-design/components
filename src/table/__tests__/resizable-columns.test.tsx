@@ -366,9 +366,35 @@ describe('resize with keyboard', () => {
   });
 });
 
-test('resizable columns headers have expected text content', () => {
-  const { wrapper } = renderTable(<Table {...defaultProps} />);
+describe('column header content', () => {
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = 150;
+      }
+      return rect;
+    };
+  });
 
-  expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
-  expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
+  afterEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
+
+  test('resizable columns headers have expected text content', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+    expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
+    expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
+  });
+
+  test('resize handles have expected accessible names', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const getResizeHandle = (columnIndex: number) =>
+      wrapper.findColumnHeaders()[columnIndex].findByClassName(resizerStyles.resizer)!.getElement();
+
+    expect(getResizeHandle(0)).toHaveAccessibleName('Id 150');
+    expect(getResizeHandle(1)).toHaveAccessibleName('Description 150');
+  });
 });

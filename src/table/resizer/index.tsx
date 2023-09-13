@@ -203,9 +203,19 @@ export function Resizer({
           'aria-valuemin': minWidth,
         };
 
+  // Read header width after mounting for it to be available in the element's ARIA label before it gets focused.
+  const resizerRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (resizerRef.current) {
+      const headerCell = findUpUntil(resizerRef.current, element => element.tagName.toLowerCase() === 'th')!;
+      setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+    }
+  }, []);
+
   return (
     <>
       <span
+        ref={resizerRef}
         className={clsx(
           styles.resizer,
           isDragging && styles['resizer-active'],
