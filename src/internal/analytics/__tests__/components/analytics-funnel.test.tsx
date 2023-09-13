@@ -17,6 +17,8 @@ import FormField from '../../../../../lib/components/form-field';
 import Container from '../../../../../lib/components/container';
 import Cards from '../../../../../lib/components/cards';
 import Table from '../../../../../lib/components/table';
+import Header from '../../../../../lib/components/header';
+import Modal from '../../../../../lib/components/modal';
 import ExpandableSection from '../../../../../lib/components/expandable-section';
 
 import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText } from '../mocks';
@@ -326,10 +328,11 @@ describe('AnalyticsFunnelStep', () => {
         <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
           <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
             Step Content
-            <Container />
-            <Cards items={[]} cardDefinition={{}} />
-            <Table items={[]} columnDefinitions={[]} />
-            <ExpandableSection variant="container" />
+            <Container header={<Header>Container</Header>} />
+            <Cards header={<Header>Cards</Header>} items={[]} cardDefinition={{}} />
+            <Table header={<Header>Table</Header>} items={[]} columnDefinitions={[]} />
+            <ExpandableSection headerText="ExpandableSection" variant="container" />
+            <Modal visible={true}></Modal>
           </AnalyticsFunnelStep>
         </AnalyticsFunnel>
       </>
@@ -346,19 +349,19 @@ describe('AnalyticsFunnelStep', () => {
       totalSubSteps: 4,
       subStepConfiguration: [
         {
-          name: '',
+          name: 'Container',
           number: 1,
         },
         {
-          name: '',
+          name: 'Cards',
           number: 2,
         },
         {
-          name: '',
+          name: 'Table',
           number: 3,
         },
         {
-          name: '',
+          name: 'ExpandableSection',
           number: 4,
         },
       ],
@@ -422,6 +425,23 @@ describe('AnalyticsFunnelStep', () => {
         <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
           <Table items={[]} columnDefinitions={[]} variant="embedded" />
           <Table items={[]} columnDefinitions={[]} variant="borderless" />
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        totalSubSteps: 0,
+      })
+    );
+  });
+
+  test('does not treat Modals as their own substep', () => {
+    render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
+          <Modal visible={true}></Modal>
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );

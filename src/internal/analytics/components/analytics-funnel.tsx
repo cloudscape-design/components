@@ -29,6 +29,7 @@ import {
   getSubStepSelector,
 } from '../selectors';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 export const FUNNEL_VERSION = '1.2';
 
@@ -369,7 +370,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
   );
 };
 interface AnalyticsFunnelSubStepProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode | ((props: FunnelSubStepContextValue) => React.ReactNode);
 }
 
 export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps) => {
@@ -415,6 +416,10 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   const context = isNested ? inheritedContext : newContext;
 
   useEffect(() => {
+    if (isNested || !subStepRef.current) {
+      return;
+    }
+
     const onMouseDown = () => (mousePressed.current = true);
 
     const onMouseUp = async () => {
@@ -432,7 +437,7 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
       */
       await new Promise(r => setTimeout(r, 1));
 
-      if (!subStepRef.current || !subStepRef.current.contains(document.activeElement)) {
+      if (!subStepRef.current || !document.activeElement || !nodeBelongs(subStepRef.current, document.activeElement)) {
         isFocusedSubStep.current = false;
 
         /*
@@ -456,7 +461,13 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
     subStepNameSelector,
     subStepSelector,
     focusCleanupFunction,
+    isNested,
+    subStepRef,
   ]);
 
-  return <FunnelSubStepContext.Provider value={context}>{children}</FunnelSubStepContext.Provider>;
+  return (
+    <FunnelSubStepContext.Provider value={context}>
+      {typeof children === 'function' ? children(context) : children}
+    </FunnelSubStepContext.Provider>
+  );
 };
