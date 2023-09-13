@@ -667,7 +667,7 @@ describe('AnalyticsFunnelSubStep', () => {
   });
 });
 
-describe('emit cloudscape-creation-flow-done event', () => {
+describe('emit awsui-creation-flow-done event', () => {
   const doneSpy = jest.fn();
 
   beforeEach(() => {
@@ -681,7 +681,7 @@ describe('emit cloudscape-creation-flow-done event', () => {
     document.removeEventListener(CREATION_EDIT_FLOW_DONE_EVENT_NAME, doneSpy);
   });
 
-  test('emit cloudscape-creation-flow-done event when funnelComplete', async () => {
+  test('emit awsui-creation-flow-done event when funnelComplete', async () => {
     const ChildComponent = () => {
       const { funnelSubmit } = useFunnel();
       return <button onClick={funnelSubmit}>Submit</button>;
@@ -698,7 +698,7 @@ describe('emit cloudscape-creation-flow-done event', () => {
     });
   });
 
-  test('emit cloudscape-creation-flow-done event when funnelCancelled', () => {
+  test('emit awsui-creation-flow-done event when funnelCancelled', () => {
     const { unmount } = render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />
     );
