@@ -9,6 +9,7 @@ import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
+  CREATION_EDIT_FLOW_DONE_EVENT_NAME,
 } from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
 import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
 import Button from '../../../../../lib/components/button';
@@ -663,6 +664,47 @@ describe('AnalyticsFunnelSubStep', () => {
       subStepSelector: expect.any(String),
       subStepNameSelector: expect.any(String),
     });
+  });
+});
+
+describe('emit cloudscape-creation-flow-done event', () => {
+  const doneSpy = jest.fn();
+
+  beforeEach(() => {
+    document.addEventListener(CREATION_EDIT_FLOW_DONE_EVENT_NAME, doneSpy);
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+    mockFunnelMetrics();
+  });
+
+  afterEach(() => {
+    document.removeEventListener(CREATION_EDIT_FLOW_DONE_EVENT_NAME, doneSpy);
+  });
+
+  test('emit cloudscape-creation-flow-done event when funnelComplete', async () => {
+    const ChildComponent = () => {
+      const { funnelSubmit } = useFunnel();
+      return <button onClick={funnelSubmit}>Submit</button>;
+    };
+    const { getByText } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+    fireEvent.click(getByText('Submit'));
+    await waitFor(() => {
+      expect(doneSpy).toHaveBeenCalled();
+    });
+  });
+
+  test('emit cloudscape-creation-flow-done event when funnelCancelled', () => {
+    const { unmount } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />
+    );
+    act(() => void jest.runAllTimers());
+    unmount();
+    expect(doneSpy).toHaveBeenCalled();
   });
 });
 
