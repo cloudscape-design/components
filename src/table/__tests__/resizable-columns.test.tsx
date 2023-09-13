@@ -366,16 +366,42 @@ describe('resize with keyboard', () => {
   });
 });
 
-test('resizable columns headers have expected text content', () => {
-  const { wrapper } = renderTable(<Table {...defaultProps} />);
+describe('column header roles', () => {
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = 150;
+      }
+      return rect;
+    };
+  });
 
-  expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
-  expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
-});
+  afterEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
 
-test('resizable columns headers can be asserted with getByRole', () => {
-  renderTable(<Table {...defaultProps} />);
+  test('resizable columns headers have expected text content', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
 
-  expect(screen.getByRole('columnheader', { name: 'Id' }));
-  expect(screen.getByRole('columnheader', { name: 'Description' }));
+    expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
+    expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
+  });
+
+  test('resizable columns headers can be asserted with getByRole', () => {
+    renderTable(<Table {...defaultProps} />);
+
+    expect(screen.getByRole('columnheader', { name: 'Id' }));
+    expect(screen.getByRole('columnheader', { name: 'Description' }));
+  });
+
+  test('column resizers have expected accessible description', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const findResizer = (columnIndex: number) =>
+      wrapper.findColumnHeaders()[columnIndex].findByClassName(resizerStyles.resizer)!.getElement();
+
+    expect(findResizer(0)).toHaveAccessibleDescription('150');
+    expect(findResizer(1)).toHaveAccessibleDescription('150');
+  });
 });
