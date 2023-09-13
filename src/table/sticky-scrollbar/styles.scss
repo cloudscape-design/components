@@ -37,10 +37,6 @@
       margin-top: calc(-1 * awsui.$border-divider-section-width); // -1px to compensate for border width
       border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     }
-
-    &.is-visual-refresh {
-      margin-top: -5px;
-    }
   }
 }
 
