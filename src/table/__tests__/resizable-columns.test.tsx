@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import times from 'lodash/times';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
@@ -371,4 +371,11 @@ test('resizable columns headers have expected text content', () => {
 
   expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
   expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
+});
+
+test('resizable columns headers can be asserted with getByRole', () => {
+  renderTable(<Table {...defaultProps} />);
+
+  expect(screen.getByRole('columnheader', { name: 'Id' }));
+  expect(screen.getByRole('columnheader', { name: 'Description' }));
 });
