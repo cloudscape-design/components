@@ -112,7 +112,7 @@ export default function StatusIndicator({
           role={iconAriaLabel ? 'img' : undefined}
         >
           {typeToIcon(__size)[type]}
-          &nbsp;
+          {__display === 'inline' && <>&nbsp;</>}
         </span>
         {children}
       </span>

@@ -23,7 +23,7 @@ function renderComponent(props: DropdownStatusPropsExtended) {
   const wrapper = createWrapper(container!);
   return {
     getStickyState: () => getByTestId('sticky-state').textContent,
-    getContent: () => getByTestId('content').textContent,
+    getContent: () => getByTestId('content').textContent?.trim(),
     getIcon: () => wrapper.findStatusIndicator()!.findByClassName(statusIconStyles.icon)!.getElement(),
   };
 }

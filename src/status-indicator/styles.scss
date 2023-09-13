@@ -41,20 +41,24 @@ $_color-overrides: (
   }
 }
 
-.icon {
-  white-space: nowrap;
-}
-
 .container {
   &.display-inline {
     @include styles.text-wrapping;
     display: inline;
+
+    > .icon {
+      white-space: nowrap;
+    }
   }
 
   &.display-inline-block {
     display: inline-block;
     word-wrap: break-word;
     word-break: break-all;
+
+    > .icon {
+      padding-right: awsui.$space-xxs;
+    }
   }
 }
 
