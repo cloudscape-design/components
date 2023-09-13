@@ -10,7 +10,6 @@ import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { joinStrings } from '../../internal/utils/strings';
 import Portal from '../../internal/components/portal';
 
 interface ResizerProps {
@@ -185,14 +184,15 @@ export function Resizer({
     };
   }, [headerCell, isDragging, isKeyboardDragging, onFinishStable, resizerHasFocus, handlers]);
 
-  const resizerWidthId = useUniqueId();
+  const resizerDescriptionId = useUniqueId();
   const resizerRole = isKeyboardDragging ? 'separator' : 'button';
   const headerCellWidthString = headerCellWidth.toFixed(0);
   const resizerAriaProps =
     resizerRole === 'button'
       ? {
-          'aria-labelledby': joinStrings(ariaLabelledby, resizerWidthId),
+          'aria-labelledby': ariaLabelledby,
           'aria-pressed': false,
+          'aria-describedby': resizerDescriptionId,
         }
       : {
           'aria-labelledby': ariaLabelledby,
@@ -203,9 +203,19 @@ export function Resizer({
           'aria-valuemin': minWidth,
         };
 
+  // Setting header width after mounting to be available for resizer description.
+  const resizerRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (resizerRef.current) {
+      const headerCell = findUpUntil(resizerRef.current, element => element.tagName.toLowerCase() === 'th')!;
+      setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+    }
+  }, []);
+
   return (
     <>
       <span
+        ref={resizerRef}
         className={clsx(
           styles.resizer,
           isDragging && styles['resizer-active'],
@@ -241,7 +251,7 @@ export function Resizer({
         data-focus-id={focusId}
       />
       <Portal container={getDescriptionRoot?.()}>
-        <span id={resizerWidthId}>{headerCellWidthString}</span>
+        <span id={resizerDescriptionId}>{headerCellWidthString}</span>
       </Portal>
     </>
   );
