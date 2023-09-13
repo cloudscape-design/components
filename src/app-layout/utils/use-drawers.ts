@@ -86,7 +86,7 @@ export function useDrawers(
   const [activeDrawerId, setActiveDrawerId] = useControllable(
     ownDrawers?.activeDrawerId,
     ownDrawers?.onChange,
-    !toolsProps.toolsHide && toolsProps.toolsOpen ? TOOLS_DRAWER_ID : undefined,
+    undefined,
     {
       componentName: 'AppLayout',
       controlledProp: 'activeDrawerId',
@@ -105,8 +105,12 @@ export function useDrawers(
   if (toolsDrawer && combinedDrawers.length > 0) {
     combinedDrawers.unshift(toolsDrawer);
   }
-  const activeDrawer = combinedDrawers.find(drawer => drawer.id === activeDrawerId);
-  const activeDrawerIdResolved = activeDrawer?.id; // only defined when corresponding drawer exists
+  // support toolsOpen in runtime-drawers-only mode
+  let activeDrawerIdResolved =
+    toolsProps.toolsOpen && (ownDrawers?.items ?? []).length === 0 ? TOOLS_DRAWER_ID : activeDrawerId;
+  const activeDrawer = combinedDrawers.find(drawer => drawer.id === activeDrawerIdResolved);
+  // ensure that id is only defined when the drawer exists
+  activeDrawerIdResolved = activeDrawer?.id;
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));

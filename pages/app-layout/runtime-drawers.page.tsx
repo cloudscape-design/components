@@ -6,6 +6,7 @@ import {
   ContentLayout,
   Header,
   HelpPanel,
+  Link,
   NonCancelableCustomEvent,
   SpaceBetween,
   SplitPanel,
@@ -71,7 +72,15 @@ export default function WithDrawers() {
         <ContentLayout
           header={
             <SpaceBetween size="m">
-              <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
+              <Header
+                variant="h1"
+                description="Sometimes you need custom drawers to get the job done."
+                info={
+                  <Link variant="info" onFollow={() => setIsToolsOpen(true)}>
+                    Info
+                  </Link>
+                }
+              >
                 Testing Custom Drawers!
               </Header>
 
