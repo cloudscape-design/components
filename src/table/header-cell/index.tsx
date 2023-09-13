@@ -37,7 +37,6 @@ interface TableHeaderCellProps<ItemType> {
   cellRef: React.RefCallback<HTMLElement>;
   focusedComponent?: null | string;
   tableRole: TableRole;
-  getDescriptionRoot?: () => null | HTMLElement;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -61,7 +60,6 @@ export function TableHeaderCell<ItemType>({
   stickyState,
   cellRef,
   tableRole,
-  getDescriptionRoot,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -150,7 +148,6 @@ export function TableHeaderCell<ItemType>({
           onFinish={onResizeFinish}
           ariaLabelledby={headerId}
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
-          getDescriptionRoot={getDescriptionRoot}
         />
       )}
     </TableThElement>

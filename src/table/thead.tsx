@@ -41,7 +41,6 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
-  getDescriptionRoot?: () => null | HTMLElement;
 }
 
 const Thead = React.forwardRef(
@@ -70,7 +69,6 @@ const Thead = React.forwardRef(
       focusedComponent,
       onFocusedComponentChange,
       tableRole,
-      getDescriptionRoot,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -172,7 +170,6 @@ const Thead = React.forwardRef(
                 stickyState={stickyState}
                 cellRef={node => setCell(columnId, node)}
                 tableRole={tableRole}
-                getDescriptionRoot={getDescriptionRoot}
               />
             );
           })}
