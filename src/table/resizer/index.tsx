@@ -9,8 +9,6 @@ import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import Portal from '../../internal/components/portal';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
@@ -22,7 +20,6 @@ interface ResizerProps {
   showFocusRing?: boolean;
   onFocus?: () => void;
   onBlur?: () => void;
-  getDescriptionRoot?: () => null | HTMLElement;
 }
 
 const AUTO_GROW_START_TIME = 10;
@@ -39,7 +36,6 @@ export function Resizer({
   focusId,
   onFocus,
   onBlur,
-  getDescriptionRoot,
 }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<null | HTMLElement>(null);
@@ -162,7 +158,6 @@ export function Resizer({
     };
   }, [headerCell, isDragging, onFinishStable, resizerHasFocus, handlers]);
 
-  const resizerWidthId = useUniqueId();
   const headerCellWidthString = headerCellWidth.toFixed(0);
   const resizerAriaProps = {
     role: 'separator',
@@ -216,9 +211,6 @@ export function Resizer({
         tabIndex={tabIndex}
         data-focus-id={focusId}
       />
-      <Portal container={getDescriptionRoot?.()}>
-        <span id={resizerWidthId}>{headerCellWidthString}</span>
-      </Portal>
     </>
   );
 }
