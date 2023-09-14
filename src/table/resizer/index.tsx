@@ -9,6 +9,7 @@ import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import LiveRegion from '../../internal/components/live-region';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
@@ -37,6 +38,7 @@ export function Resizer({
   onFocus,
   onBlur,
 }: ResizerProps) {
+  const resizerRef = useRef<HTMLButtonElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<null | HTMLElement>(null);
@@ -44,7 +46,7 @@ export function Resizer({
   const onFinishStable = useStableCallback(onFinish);
   const onDragStable = useStableCallback(onDragMove);
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
-  const [headerCellWidth, setHeaderCellWidth] = useState(0);
+  const [liveAnnouncement, setLiveAnnouncement] = useState('');
   const originalHeaderCellWidthRef = useRef(0);
 
   const handlers = useMemo(() => {
@@ -66,17 +68,25 @@ export function Resizer({
       trackerElement.style.left = newOffset - scrollParentLeft - 1 + 'px';
     };
 
+    const announceColumnWidth = (newWidth?: number) => {
+      const announcedWidth = newWidth ?? headerCell.getBoundingClientRect().width;
+      setLiveAnnouncement(announcedWidth.toFixed(0));
+    };
+
     const updateColumnWidth = (newWidth: number) => {
       const { right, width } = headerCell.getBoundingClientRect();
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       updateTrackerPosition(right + updatedWidth - width);
-      setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
+      if (isKeyboardDragging) {
+        announceColumnWidth(newWidth);
+      }
     };
 
     const resetColumnWidth = () => {
       updateColumnWidth(originalHeaderCellWidthRef.current);
+      announceColumnWidth(originalHeaderCellWidthRef.current);
     };
 
     const resizeColumn = (offset: number) => {
@@ -129,8 +139,16 @@ export function Resizer({
       }
     };
 
-    return { updateTrackerPosition, updateColumnWidth, resetColumnWidth, onMouseMove, onMouseUp, onKeyDown };
-  }, [headerCell, minWidth, onDragStable, onFinishStable]);
+    return {
+      updateTrackerPosition,
+      announceColumnWidth,
+      updateColumnWidth,
+      resetColumnWidth,
+      onMouseMove,
+      onMouseUp,
+      onKeyDown,
+    };
+  }, [headerCell, minWidth, isKeyboardDragging, onDragStable, onFinishStable]);
 
   useEffect(() => {
     if ((!isDragging && !resizerHasFocus) || !headerCell || !handlers) {
@@ -162,84 +180,67 @@ export function Resizer({
       document.removeEventListener('mouseup', handlers.onMouseUp);
       headerCell.removeEventListener('keydown', handlers.onKeyDown);
     };
-  }, [headerCell, isDragging, isKeyboardDragging, onFinishStable, resizerHasFocus, handlers]);
-
-  const headerCellWidthString = headerCellWidth.toFixed(0);
-  const resizerRole = isKeyboardDragging ? 'separator' : 'button';
-  const resizerAriaProps =
-    resizerRole === 'button'
-      ? {
-          role: 'button',
-          'aria-labelledby': ariaLabelledby,
-          'aria-roledescription': 'Resize handle',
-        }
-      : {
-          role: 'separator',
-          'aria-labelledby': ariaLabelledby,
-          'aria-roledescription': 'Resize handle',
-          'aria-orientation': 'vertical' as const,
-          'aria-valuenow': Math.round(headerCellWidth),
-          // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
-          'aria-valuetext': headerCellWidthString,
-          'aria-valuemin': minWidth,
-        };
-
-  // Read header width and text content after mounting for it to be available in the element's ARIA label before it gets focused.
-  const resizerRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    if (resizerRef.current) {
-      const headerCell = findUpUntil(resizerRef.current, element => element.tagName.toLowerCase() === 'th')!;
-      setHeaderCellWidth(headerCell.getBoundingClientRect().width);
-    }
-  }, []);
+  }, [headerCell, isDragging, isKeyboardDragging, resizerHasFocus, handlers]);
 
   return (
-    <button
-      ref={resizerRef}
-      className={clsx(
-        styles.resizer,
-        isDragging && styles['resizer-active'],
-        (resizerHasFocus || showFocusRing) && styles['has-focus']
-      )}
-      onMouseDown={event => {
-        if (event.button !== 0) {
-          return;
-        }
-        event.preventDefault();
-        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-        setIsDragging(true);
-        setHeaderCell(headerCell);
-      }}
-      onClick={() => {
-        // Prevents mousemove handler from interfering when activated with VO+Space.
-        setIsDragging(false);
+    <>
+      <button
+        ref={resizerRef}
+        aria-labelledby={ariaLabelledby}
+        aria-roledescription="Resize handle"
+        className={clsx(
+          styles.resizer,
+          isDragging && styles['resizer-active'],
+          (resizerHasFocus || showFocusRing) && styles['has-focus']
+        )}
+        onMouseDown={event => {
+          if (event.button !== 0) {
+            return;
+          }
+          event.preventDefault();
+          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+          setIsDragging(true);
+          setHeaderCell(headerCell);
+        }}
+        onClick={() => {
+          if (!headerCell) {
+            return;
+          }
 
-        if (isKeyboardDragging) {
-          setIsKeyboardDragging(false);
-          onFinishStable();
-        } else {
-          setIsKeyboardDragging(true);
-        }
-      }}
-      onFocus={event => {
-        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-        setHeaderCellWidth(headerCell.getBoundingClientRect().width);
-        setResizerHasFocus(true);
-        setHeaderCell(headerCell);
-        onFocus?.();
-      }}
-      onBlur={() => {
-        setResizerHasFocus(false);
-        onBlur?.();
-        if (isKeyboardDragging) {
-          setIsKeyboardDragging(false);
-          handlers?.resetColumnWidth();
-        }
-      }}
-      {...resizerAriaProps}
-      tabIndex={tabIndex}
-      data-focus-id={focusId}
-    />
+          // Prevents mousemove handler from interfering when activated with VO+Space.
+          setIsDragging(false);
+
+          // Start resize
+          if (!isKeyboardDragging) {
+            setIsKeyboardDragging(true);
+            handlers?.announceColumnWidth();
+          }
+          // Commit resize
+          else {
+            setIsKeyboardDragging(false);
+            handlers?.announceColumnWidth();
+            onFinishStable();
+          }
+        }}
+        onFocus={event => {
+          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+          setResizerHasFocus(true);
+          setHeaderCell(headerCell);
+          onFocus?.();
+        }}
+        onBlur={() => {
+          setResizerHasFocus(false);
+          onBlur?.();
+          if (isKeyboardDragging) {
+            setIsKeyboardDragging(false);
+            handlers?.resetColumnWidth();
+          }
+        }}
+        tabIndex={tabIndex}
+        data-focus-id={focusId}
+      />
+      <LiveRegion>{liveAnnouncement}</LiveRegion>
+    </>
   );
 }
 
