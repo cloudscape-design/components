@@ -194,9 +194,10 @@ const Dropdown = ({
       if (stretchToTriggerWidth) {
         target.classList.add(styles['occupy-entire-width']);
       }
-    } else {
-      target.style.width = position.width;
     }
+
+    target.style.width = position.width;
+
     // Using styles for main dropdown to adjust its position as preferred alternative
     if (position.dropUp && !interior) {
       target.classList.add(styles['dropdown-drop-up']);
