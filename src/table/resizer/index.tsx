@@ -123,7 +123,6 @@ export function Resizer({
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      // Update width
       if (event.keyCode === KeyCode.left) {
         event.preventDefault();
         updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
@@ -202,10 +201,6 @@ export function Resizer({
           setHeaderCell(headerCell);
         }}
         onClick={() => {
-          if (!headerCell) {
-            return;
-          }
-
           // Prevents mousemove handler from interfering when activated with VO+Space.
           setIsDragging(false);
 
@@ -230,6 +225,8 @@ export function Resizer({
         onBlur={() => {
           setResizerHasFocus(false);
           onBlur?.();
+
+          // Discard keyboard resize if active
           if (isKeyboardDragging) {
             setIsKeyboardDragging(false);
             handlers?.resetColumnWidth();
