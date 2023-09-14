@@ -20,6 +20,7 @@ export interface DropdownPosition {
   dropUp: boolean;
   dropLeft: boolean;
   left: string;
+  overflows: boolean;
 }
 export interface InteriorDropdownPosition extends DropdownPosition {
   bottom: string;
@@ -165,6 +166,7 @@ export const getDropdownPosition = ({
   let dropLeft: boolean;
   let left: number | null = null;
   let width = idealWidth;
+  let overflows = false;
 
   //1. Can it be positioned with ideal width to the right?
   if (idealWidth <= availableSpace.right) {
@@ -176,6 +178,7 @@ export const getDropdownPosition = ({
   } else {
     dropLeft = availableSpace.left > availableSpace.right;
     width = Math.max(availableSpace.left, availableSpace.right, minWidth);
+    overflows = true;
   }
 
   if (preferCenter) {
@@ -202,6 +205,7 @@ export const getDropdownPosition = ({
     left: left === null ? 'auto' : `${left}px`,
     height: `${croppedHeight}px`,
     width: `${width}px`,
+    overflows,
   };
 };
 
@@ -216,6 +220,7 @@ export const getInteriorDropdownPosition = (
   const { top: parentDropdownTop, height: parentDropdownHeight } = getClosestParentDimensions(trigger);
 
   let dropLeft;
+  let overflows = false;
 
   let width = dropdown.getBoundingClientRect().width;
   const top = triggerTop - parentDropdownTop;
@@ -226,6 +231,7 @@ export const getInteriorDropdownPosition = (
   } else {
     dropLeft = availableSpace.left > availableSpace.right;
     width = Math.max(availableSpace.left, availableSpace.right);
+    overflows = true;
   }
 
   const left = dropLeft ? 0 - width : triggerWidth;
@@ -244,6 +250,7 @@ export const getInteriorDropdownPosition = (
     top: `${top}px`,
     bottom: `${bottom}px`,
     left: `${left}px`,
+    overflows,
   };
 };
 

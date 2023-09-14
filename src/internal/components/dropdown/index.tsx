@@ -190,13 +190,18 @@ const Dropdown = ({
       verticalContainer.style.maxHeight = position.height;
     }
 
-    if (entireWidth && !expandToViewport) {
-      if (stretchToTriggerWidth) {
-        target.classList.add(styles['occupy-entire-width']);
+    if (position.overflows) {
+      target.classList.remove(styles['stretch-beyond-trigger-width']);
+      target.style.removeProperty('maxWidth');
+    } else {
+      if (entireWidth && !expandToViewport) {
+        if (stretchToTriggerWidth) {
+          target.classList.add(styles['occupy-entire-width']);
+        }
+      } else {
+        target.style.width = position.width;
       }
     }
-
-    target.style.width = position.width;
 
     // Using styles for main dropdown to adjust its position as preferred alternative
     if (position.dropUp && !interior) {
