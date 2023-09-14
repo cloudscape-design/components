@@ -6,6 +6,7 @@ import { ButtonDropdownProps } from '~components/button-dropdown';
 import { SelectProps } from '~components/select';
 import { isQueryEqual } from './utils';
 import { DeleteFilterSetModal, SaveFilterSetModal, UpdateFilterSetModal } from './modals';
+import { FlashbarProps } from '~components/flashbar';
 
 export interface FilterSet {
   name: string;
@@ -20,6 +21,8 @@ export interface UseFilterSetsProps {
   filteringProperties?: readonly PropertyFilterProps.FilteringProperty[];
   updateFilters: (query: PropertyFilterProps.Query) => void;
   updateSavedFilterSets: (newFilterSets: FilterSet[]) => void;
+  showNotification?: (notification: FlashbarProps.MessageDefinition) => void;
+  saveAsURL?: (query: PropertyFilterProps.Query) => void;
 }
 
 export interface UseFilterSetsResult {
@@ -39,6 +42,8 @@ export function useFilterSets({
   filteringProperties,
   updateFilters,
   updateSavedFilterSets,
+  showNotification,
+  saveAsURL,
 }: UseFilterSetsProps): UseFilterSetsResult {
   // Represents the last selected *saved* filter set
   const [currentFilterSet, setCurrentFilterSet] = useState<FilterSet | null>(null);
@@ -120,6 +125,7 @@ export function useFilterSets({
       { id: 'new', text: 'Save as new filter set' },
       { id: 'update', text: 'Update current filter set', disabled: !hasUnsavedChanges || !currentFilterSet },
       { id: 'delete', text: 'Delete current filter set', disabled: hasUnsavedChanges || !currentFilterSet },
+      ...(saveAsURL ? [{ id: 'url', text: 'Copy filters as URL' }] : []),
     ],
     onItemClick: ({ detail: { id } }) => setFilterSetAction(id as FilterAction),
   };
@@ -140,6 +146,16 @@ export function useFilterSets({
             return;
           }
 
+          // Emit flashbar notification
+          showNotification?.({
+            content: `Successfully updated "${currentFilterSet.name}"`,
+            type: 'success',
+            statusIconAriaLabel: 'Success',
+            dismissible: true,
+            dismissLabel: 'Dismiss message',
+            id: `saved-filter-updated-${currentFilterSet.name}`,
+          });
+
           // Update query and rebuild the list of filter sets
           currentFilterSet.query = query;
           updateSavedFilterSets([...filterSets]);
@@ -159,6 +175,16 @@ export function useFilterSets({
         }}
         onSubmit={() => {
           setFilterSetAction(null);
+
+          // Emit flashbar notification
+          showNotification?.({
+            content: `Successfully deleted "${currentFilterSet.name}"`,
+            type: 'success',
+            statusIconAriaLabel: 'Success',
+            dismissible: true,
+            dismissLabel: 'Dismiss message',
+            id: `saved-filter-deleted-${currentFilterSet.name}`,
+          });
 
           // Remove the filter set from the list
           const filterIndex = filterSets.indexOf(currentFilterSet);
@@ -182,6 +208,16 @@ export function useFilterSets({
         }}
         onSubmit={({ name, description }) => {
           setFilterSetAction(null);
+
+          // Emit flashbar notification
+          showNotification?.({
+            content: `Successfully saved "${name}"`,
+            type: 'success',
+            statusIconAriaLabel: 'Success',
+            dismissible: true,
+            dismissLabel: 'Dismiss message',
+            id: `saved-filter-saved-${name}`,
+          });
 
           // Create new filter set
           const newFilterSet: FilterSet = {

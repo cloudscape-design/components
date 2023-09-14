@@ -12,10 +12,14 @@ import FormField from '~components/form-field';
 import Select from '~components/select';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
-import ScreenshotArea from '../utils/screenshot-area';
 import { allItems, TableItem } from '../property-filter/table.data';
 import { columnDefinitions, filteringProperties } from '../property-filter/common-props';
 import { FilterSet, useFilterSets } from './use-filter-sets';
+// import AppContext, { AppContextType } from '../app/app-context';
+import AppLayout from '~components/app-layout';
+import Flashbar, { FlashbarProps } from '~components/flashbar';
+
+// type SavedFiltersContext = React.Context<AppContextType<{ filters: string }>>;
 
 const defaultFilterSets: FilterSet[] = [
   {
@@ -34,7 +38,19 @@ const defaultFilterSets: FilterSet[] = [
   },
 ];
 
+// const parseUrlFilters = (urlFilters: string): PropertyFilterProps.Token[] => {
+//   if (!urlFilters) {
+//     return [];
+//   }
+//   return JSON.parse(urlFilters) as PropertyFilterProps.Token[];
+// };
+
 export default function () {
+  //   const { urlParams, setUrlParams } = useContext(AppContext as SavedFiltersContext);
+  //   const urlFilters = parseUrlFilters(urlParams.filters ?? '');
+
+  const [flashNotifications, setFlashNotifications] = useState<FlashbarProps.MessageDefinition[]>([]);
+
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
       empty: 'empty',
@@ -64,38 +80,62 @@ export default function () {
     filterSets: savedFilterSets,
     query: propertyFilterProps.query,
     filteringProperties: propertyFilterProps.filteringProperties,
-    updateFilters: query => actions.setPropertyFiltering(query),
+    updateFilters: query => {
+      actions.setPropertyFiltering(query);
+    },
     updateSavedFilterSets: newFilterSets => {
       setSavedFilterSets(newFilterSets);
 
       // Sync with your back-end here
     },
+    showNotification: notification => {
+      setFlashNotifications([
+        ...flashNotifications,
+        {
+          ...notification,
+          onDismiss: () => {
+            setFlashNotifications(currentNotifications =>
+              currentNotifications.filter(item => item.id !== notification.id)
+            );
+          },
+        },
+      ]);
+    },
+    // saveAsURL: query => {
+    //   setUrlParams({ filters: JSON.stringify(query.tokens) });
+    // },
   });
 
   return (
-    <ScreenshotArea disableAnimations={true}>
-      <I18nProvider messages={[messages]} locale="en">
-        <Table<TableItem>
-          header={<Header headingTagOverride={'h1'}>Instances</Header>}
-          items={items}
-          {...collectionProps}
-          filter={
-            <PropertyFilter
-              {...propertyFilterProps}
-              filteringPlaceholder="Find resources"
-              countText={`${items.length} matches`}
-              customControl={
-                <FormField label="Saved filter sets">
-                  <Select {...selectProps} />
-                </FormField>
+    <I18nProvider messages={[messages]} locale="en">
+      <AppLayout
+        contentType="table"
+        notifications={<Flashbar stackItems={true} items={flashNotifications} />}
+        content={
+          <>
+            <Table<TableItem>
+              header={<Header headingTagOverride={'h1'}>Instances</Header>}
+              items={items}
+              {...collectionProps}
+              filter={
+                <PropertyFilter
+                  {...propertyFilterProps}
+                  filteringPlaceholder="Find resources"
+                  countText={`${items.length} matches`}
+                  customControl={
+                    <FormField label="Saved filter sets">
+                      <Select {...selectProps} />
+                    </FormField>
+                  }
+                  customFilterActions={<ButtonDropdown {...buttonDropdownProps} />}
+                />
               }
-              customFilterActions={<ButtonDropdown {...buttonDropdownProps} />}
+              columnDefinitions={columnDefinitions}
             />
-          }
-          columnDefinitions={columnDefinitions}
-        />
-        {actionModal}
-      </I18nProvider>
-    </ScreenshotArea>
+            {actionModal}
+          </>
+        }
+      />
+    </I18nProvider>
   );
 }
