@@ -114,37 +114,23 @@ export function Resizer({
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (isKeyboardDragging) {
-        // update width
-        if (event.keyCode === KeyCode.left) {
-          event.preventDefault();
-          updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
-        }
-        if (event.keyCode === KeyCode.right) {
-          event.preventDefault();
-          updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
-        }
-        // Exit keyboard dragging mode
-        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
-          event.preventDefault();
-          setIsKeyboardDragging(false);
-          onFinishStable();
-        }
-        if (event.keyCode === KeyCode.escape) {
-          setIsKeyboardDragging(false);
-          resetColumnWidth();
-        }
-      } else {
-        // Enter keyboard dragging mode
-        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
-          event.preventDefault();
-          setIsKeyboardDragging(true);
-        }
+      // Update width
+      if (event.keyCode === KeyCode.left) {
+        event.preventDefault();
+        updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
+      }
+      if (event.keyCode === KeyCode.right) {
+        event.preventDefault();
+        updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
+      }
+      if (event.keyCode === KeyCode.escape) {
+        setIsKeyboardDragging(false);
+        resetColumnWidth();
       }
     };
 
     return { updateTrackerPosition, updateColumnWidth, resetColumnWidth, onMouseMove, onMouseUp, onKeyDown };
-  }, [headerCell, isKeyboardDragging, minWidth, onDragStable, onFinishStable]);
+  }, [headerCell, minWidth, onDragStable, onFinishStable]);
 
   useEffect(() => {
     if ((!isDragging && !resizerHasFocus) || !headerCell || !handlers) {
@@ -162,10 +148,10 @@ export function Resizer({
     }
     if (resizerHasFocus) {
       document.body.classList.add(styles['resize-active-with-focus']);
-      headerCell.addEventListener('keydown', handlers.onKeyDown);
     }
     if (isKeyboardDragging) {
       document.body.classList.add(styles['resize-active']);
+      headerCell.addEventListener('keydown', handlers.onKeyDown);
     }
 
     return () => {
@@ -199,7 +185,7 @@ export function Resizer({
         };
 
   // Read header width and text content after mounting for it to be available in the element's ARIA label before it gets focused.
-  const resizerRef = useRef<HTMLSpanElement>(null);
+  const resizerRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (resizerRef.current) {
       const headerCell = findUpUntil(resizerRef.current, element => element.tagName.toLowerCase() === 'th')!;
@@ -208,7 +194,7 @@ export function Resizer({
   }, []);
 
   return (
-    <span
+    <button
       ref={resizerRef}
       className={clsx(
         styles.resizer,
@@ -223,6 +209,17 @@ export function Resizer({
         const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
         setIsDragging(true);
         setHeaderCell(headerCell);
+      }}
+      onClick={() => {
+        // Prevents mousemove handler from interfering when activated with VO+Space.
+        setIsDragging(false);
+
+        if (isKeyboardDragging) {
+          setIsKeyboardDragging(false);
+          onFinishStable();
+        } else {
+          setIsKeyboardDragging(true);
+        }
       }}
       onFocus={event => {
         const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
