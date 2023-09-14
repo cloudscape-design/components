@@ -119,7 +119,7 @@ export function useFilterSets({
     items: [
       { id: 'new', text: 'Save as new filter set' },
       { id: 'update', text: 'Update current filter set', disabled: !hasUnsavedChanges || !currentFilterSet },
-      { id: 'delete', text: 'Delete current filter set', disabled: !currentFilterSet },
+      { id: 'delete', text: 'Delete current filter set', disabled: hasUnsavedChanges || !currentFilterSet },
     ],
     onItemClick: ({ detail: { id } }) => setFilterSetAction(id as FilterAction),
   };
@@ -168,6 +168,7 @@ export function useFilterSets({
           // Reset filters
           setSelectedFilterSetValue(null);
           setHasUnsavedChanges(false);
+          updateFilters({ operation: 'and', tokens: [] });
         }}
       />
     );
