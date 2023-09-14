@@ -14,6 +14,7 @@ const defaults = {
   height: '605px',
   left: 'auto',
   width: '100px',
+  overflows: false,
 };
 
 function getSizedElement(width: number, height: number, top = 0, left = 0) {
@@ -49,6 +50,7 @@ describe('getDropdownPosition', () => {
     const dropdown = getSizedElement(600, 400);
     expect(getDropdownPosition({ triggerBox, dropdownElement: dropdown, overflowParents: [windowSize] })).toEqual({
       ...defaults,
+      overflows: true,
       dropLeft: true,
       width: '550px',
     });
