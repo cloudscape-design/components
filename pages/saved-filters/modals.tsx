@@ -14,10 +14,12 @@ import Alert from '~components/alert';
 
 export function SaveFilterSetModal({
   query,
+  filteringProperties,
   onCancel,
   onSubmit,
 }: {
   query: PropertyFilterProps.Query;
+  filteringProperties?: readonly PropertyFilterProps.FilteringProperty[];
   onCancel: () => void;
   onSubmit: (formData: { name: string; description?: string }) => void;
 }) {
@@ -58,13 +60,13 @@ export function SaveFilterSetModal({
     >
       <SpaceBetween size="m">
         <Box variant="span">Save this custom filter set to easily reproduce this view again later.</Box>
-        <FormField label="Saved filter set name">
+        <FormField label="Filter set name">
           <Input value={nameValue} onChange={({ detail }) => setNameValue(detail.value)} />
         </FormField>
         <FormField
           label={
             <span>
-              Saved filter set description <i>- optional</i>
+              Filter set description <i>- optional</i>
             </span>
           }
         >
@@ -72,7 +74,7 @@ export function SaveFilterSetModal({
         </FormField>
         <div>
           <Box variant="awsui-key-label">Filter values</Box>
-          <div>{queryToString(query)}</div>
+          <div>{queryToString(query, filteringProperties)}</div>
         </div>
       </SpaceBetween>
     </Modal>
@@ -82,11 +84,13 @@ export function SaveFilterSetModal({
 export function UpdateFilterSetModal({
   filterSet,
   newQuery,
+  filteringProperties,
   onCancel,
   onSubmit,
 }: {
   filterSet: FilterSet;
   newQuery: PropertyFilterProps.Query;
+  filteringProperties?: readonly PropertyFilterProps.FilteringProperty[];
   onCancel: () => void;
   onSubmit: () => void;
 }) {
@@ -104,7 +108,7 @@ export function UpdateFilterSetModal({
 
   return (
     <Modal
-      header="Update the saved filter set"
+      header="Update filter set"
       visible={visible}
       onDismiss={onDismiss}
       footer={
@@ -132,20 +136,20 @@ export function UpdateFilterSetModal({
           Proceeding with this action will change the saved filter set with the updated configuration.
         </Alert>
         <div>
-          <Box variant="awsui-key-label">Saved filter set name</Box>
+          <Box variant="awsui-key-label">Filter set name</Box>
           <div>{filterSet.name}</div>
         </div>
         <div>
-          <Box variant="awsui-key-label">Saved filter set description</Box>
+          <Box variant="awsui-key-label">Filter set description</Box>
           <div>{filterSet.description ?? '-'}</div>
         </div>
         <div>
           <Box variant="awsui-key-label">Current filter values</Box>
-          <div>{queryToString(filterSet.query)}</div>
+          <div>{queryToString(filterSet.query, filteringProperties)}</div>
         </div>
         <div>
           <Box variant="awsui-key-label">New filter values</Box>
-          <div>{queryToString(newQuery)}</div>
+          <div>{queryToString(newQuery, filteringProperties)}</div>
         </div>
       </SpaceBetween>
     </Modal>
@@ -154,10 +158,12 @@ export function UpdateFilterSetModal({
 
 export function DeleteFilterSetModal({
   filterSet,
+  filteringProperties,
   onCancel,
   onSubmit,
 }: {
   filterSet: FilterSet;
+  filteringProperties?: readonly PropertyFilterProps.FilteringProperty[];
   onCancel: () => void;
   onSubmit: () => void;
 }) {
@@ -175,7 +181,7 @@ export function DeleteFilterSetModal({
 
   return (
     <Modal
-      header="Delete the saved filter set"
+      header="Delete filter set"
       visible={visible}
       onDismiss={onDismiss}
       footer={
@@ -203,16 +209,16 @@ export function DeleteFilterSetModal({
           Proceeding with this action will delete the saved filter set with the updated configuration.
         </Alert>
         <div>
-          <Box variant="awsui-key-label">Saved filter set name</Box>
+          <Box variant="awsui-key-label">Filter set name</Box>
           <div>{filterSet.name}</div>
         </div>
         <div>
-          <Box variant="awsui-key-label">Saved filter set description</Box>
+          <Box variant="awsui-key-label">Filter set description</Box>
           <div>{filterSet.description ?? '-'}</div>
         </div>
         <div>
           <Box variant="awsui-key-label">Filter values</Box>
-          <div>{queryToString(filterSet.query)}</div>
+          <div>{queryToString(filterSet.query, filteringProperties)}</div>
         </div>
       </SpaceBetween>
     </Modal>

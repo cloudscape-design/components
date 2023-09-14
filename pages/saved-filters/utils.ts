@@ -16,12 +16,32 @@ export function isQueryEqual(queryA: PropertyFilterProps.Query, queryB: Property
   );
 }
 
-export function queryToString(query: PropertyFilterProps.Query): string {
-  // TODO: Use proper labeling
+export function queryToString(
+  query: PropertyFilterProps.Query,
+  filteringProperties?: readonly PropertyFilterProps.FilteringProperty[]
+): string {
   return query.tokens
     .map(({ operator, value, propertyKey }) => {
       if (propertyKey) {
-        return `${propertyKey} ${operator} ${value}`;
+        const property = filteringProperties?.find(({ key }) => key === propertyKey);
+        const keyLabel = property?.propertyLabel ?? propertyKey;
+
+        let valueLabel = value;
+
+        // See if there is a custom value formatter defined for this property and operator
+        if (property && property.operators) {
+          property.operators.forEach(propertyOperator => {
+            if (
+              typeof propertyOperator !== 'string' &&
+              propertyOperator.operator === operator &&
+              propertyOperator.format
+            ) {
+              valueLabel = propertyOperator.format(value);
+            }
+          });
+        }
+
+        return `${keyLabel} ${operator} ${valueLabel}`;
       }
       return value;
     })

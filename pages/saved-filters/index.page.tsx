@@ -63,6 +63,7 @@ export default function () {
   const { buttonDropdownProps, selectProps, actionModal } = useFilterSets({
     filterSets: savedFilterSets,
     query: propertyFilterProps.query,
+    filteringProperties: propertyFilterProps.filteringProperties,
     updateFilters: query => actions.setPropertyFiltering(query),
     updateSavedFilterSets: newFilterSets => {
       setSavedFilterSets(newFilterSets);
