@@ -86,7 +86,6 @@ export function Resizer({
 
     const resetColumnWidth = () => {
       updateColumnWidth(originalHeaderCellWidthRef.current);
-      announceColumnWidth(originalHeaderCellWidthRef.current);
     };
 
     const resizeColumn = (offset: number) => {
@@ -239,7 +238,7 @@ export function Resizer({
         tabIndex={tabIndex}
         data-focus-id={focusId}
       />
-      <LiveRegion>{liveAnnouncement}</LiveRegion>
+      <LiveRegion assertive={true}>{liveAnnouncement}</LiveRegion>
     </>
   );
 }
