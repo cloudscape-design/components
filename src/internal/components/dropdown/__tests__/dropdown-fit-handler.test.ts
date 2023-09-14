@@ -27,19 +27,17 @@ function getSizedElement(width: number, height: number, top = 0, left = 0) {
 
 describe('getDropdownPosition', () => {
   test('prefers dropping down by default', () => {
-    const trigger = getSizedElement(100, 50, 300, 100);
+    const triggerBox = getSizedElement(100, 50, 300, 100).getBoundingClientRect();
     const dropdown = getSizedElement(100, 300);
-    expect(
-      getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
-    ).toEqual(defaults);
+    expect(getDropdownPosition({ triggerBox, dropdownElement: dropdown, overflowParents: [windowSize] })).toEqual(
+      defaults
+    );
   });
 
   test('drops up if space above is not enough', () => {
-    const trigger = getSizedElement(100, 50, 900, 100);
+    const triggerBox = getSizedElement(100, 50, 900, 100).getBoundingClientRect();
     const dropdown = getSizedElement(100, 300);
-    expect(
-      getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
-    ).toEqual({
+    expect(getDropdownPosition({ triggerBox, dropdownElement: dropdown, overflowParents: [windowSize] })).toEqual({
       ...defaults,
       dropUp: true,
       height: '853px',
@@ -47,11 +45,9 @@ describe('getDropdownPosition', () => {
   });
 
   test('drops left if dropdown is too wide', () => {
-    const trigger = getSizedElement(100, 50, 300, 500);
+    const triggerBox = getSizedElement(100, 50, 300, 500).getBoundingClientRect();
     const dropdown = getSizedElement(600, 400);
-    expect(
-      getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
-    ).toEqual({
+    expect(getDropdownPosition({ triggerBox, dropdownElement: dropdown, overflowParents: [windowSize] })).toEqual({
       ...defaults,
       dropLeft: true,
       width: '550px',
@@ -59,22 +55,20 @@ describe('getDropdownPosition', () => {
   });
 
   test('falls back to central position when there is not enough space from both sides', () => {
-    const trigger = getSizedElement(900, 50, 300, 50);
+    const triggerBox = getSizedElement(900, 50, 300, 50).getBoundingClientRect();
     const dropdown = getSizedElement(900, 400);
-    expect(
-      getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
-    ).toEqual({
+    expect(getDropdownPosition({ triggerBox, dropdownElement: dropdown, overflowParents: [windowSize] })).toEqual({
       ...defaults,
       width: '900px',
     });
   });
 
   test('supports dropdown minWidth override', () => {
-    const trigger = getSizedElement(500, 50, 300, 100);
+    const triggerBox = getSizedElement(500, 50, 300, 100).getBoundingClientRect();
     const dropdown = getSizedElement(200, 400);
     expect(
       getDropdownPosition({
-        triggerElement: trigger,
+        triggerBox,
         dropdownElement: dropdown,
         overflowParents: [windowSize],
         minWidth: 300,
@@ -86,11 +80,11 @@ describe('getDropdownPosition', () => {
   });
 
   test('dropdown can grow beyond the minWidth', () => {
-    const trigger = getSizedElement(500, 50, 300, 100);
+    const triggerBox = getSizedElement(500, 50, 300, 100).getBoundingClientRect();
     const dropdown = getSizedElement(600, 400);
     expect(
       getDropdownPosition({
-        triggerElement: trigger,
+        triggerBox,
         dropdownElement: dropdown,
         overflowParents: [windowSize],
         minWidth: 300,
@@ -102,11 +96,11 @@ describe('getDropdownPosition', () => {
   });
 
   test('minWidth cannot be more than trigger width', () => {
-    const trigger = getSizedElement(200, 50, 300, 100);
+    const triggerBox = getSizedElement(200, 50, 300, 100).getBoundingClientRect();
     const dropdown = getSizedElement(100, 400);
     expect(
       getDropdownPosition({
-        triggerElement: trigger,
+        triggerBox,
         dropdownElement: dropdown,
         overflowParents: [windowSize],
         minWidth: 300,
@@ -118,27 +112,25 @@ describe('getDropdownPosition', () => {
   });
 
   test('dropdown matches trigger width when trigger sticks to the right screen edge', () => {
-    const trigger = getSizedElement(100, 50, 300, windowSize.width - 110);
+    const triggerBox = getSizedElement(100, 50, 300, windowSize.width - 110).getBoundingClientRect();
     const dropdown = getSizedElement(100, 400);
 
-    expect(
-      getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
-    ).toEqual({
+    expect(getDropdownPosition({ triggerBox, dropdownElement: dropdown, overflowParents: [windowSize] })).toEqual({
       ...defaults,
       dropLeft: true, // TODO: this value is incorrect, should be fixed, see AWSUI-16369 for details
     });
   });
 
   test('takes parent overflow elements when they are found', () => {
-    const trigger = getSizedElement(100, 50, 300, 100);
+    const triggerBox = getSizedElement(100, 50, 300, 100).getBoundingClientRect();
     const dropdown = getSizedElement(100, 300);
-    expect(
-      getDropdownPosition({ triggerElement: trigger, dropdownElement: dropdown, overflowParents: [windowSize] })
-    ).toEqual(defaults);
+    expect(getDropdownPosition({ triggerBox, dropdownElement: dropdown, overflowParents: [windowSize] })).toEqual(
+      defaults
+    );
     const scrollableContainer = { top: 100, left: 0, height: 400, width: 400 };
     expect(
       getDropdownPosition({
-        triggerElement: trigger,
+        triggerBox,
         dropdownElement: dropdown,
         overflowParents: [windowSize, scrollableContainer],
       })
@@ -150,11 +142,11 @@ describe('getDropdownPosition', () => {
   });
 
   test('adjusts left offset if preferCenter=true', () => {
-    const trigger = getSizedElement(100, 50, 300, 100);
+    const triggerBox = getSizedElement(100, 50, 300, 100).getBoundingClientRect();
     const dropdown = getSizedElement(200, 300);
     expect(
       getDropdownPosition({
-        triggerElement: trigger,
+        triggerBox,
         dropdownElement: dropdown,
         overflowParents: [windowSize],
         preferCenter: true,
@@ -167,11 +159,11 @@ describe('getDropdownPosition', () => {
   });
 
   test('does not change offset if preferCenter=true, but it does not fit', () => {
-    const trigger = getSizedElement(100, 50, 300, 15);
+    const triggerBox = getSizedElement(100, 50, 300, 15).getBoundingClientRect();
     const dropdown = getSizedElement(200, 300);
     expect(
       getDropdownPosition({
-        triggerElement: trigger,
+        triggerBox,
         dropdownElement: dropdown,
         overflowParents: [windowSize],
         preferCenter: true,
@@ -184,12 +176,12 @@ describe('getDropdownPosition', () => {
 
   describe('with stretchBeyondTriggerWidth=true', () => {
     test('can expand beyond trigger width', () => {
-      const triggerElement = getSizedElement(100, 50, 300, 15);
+      const triggerBox = getSizedElement(100, 50, 300, 15).getBoundingClientRect();
       const dropdownElement = getSizedElement(200, 300);
 
       expect(
         getDropdownPosition({
-          triggerElement,
+          triggerBox,
           dropdownElement,
           overflowParents: [windowSize],
           stretchBeyondTriggerWidth: true,
@@ -201,12 +193,12 @@ describe('getDropdownPosition', () => {
     });
 
     test('cannot expand beyond the XXS breakpoint', () => {
-      const triggerElement = getSizedElement(100, 50, 300, 15);
+      const triggerBox = getSizedElement(100, 50, 300, 15).getBoundingClientRect();
       const dropdownElement = getSizedElement(1000, 300);
 
       expect(
         getDropdownPosition({
-          triggerElement,
+          triggerBox,
           dropdownElement,
           overflowParents: [windowSize],
           stretchBeyondTriggerWidth: true,
@@ -218,12 +210,12 @@ describe('getDropdownPosition', () => {
     });
 
     test('will always grow to the width of the trigger if possible', () => {
-      const triggerElement = getSizedElement(700, 50, 300, 15);
+      const triggerBox = getSizedElement(700, 50, 300, 15).getBoundingClientRect();
       const dropdownElement = getSizedElement(400, 300);
 
       expect(
         getDropdownPosition({
-          triggerElement,
+          triggerBox,
           dropdownElement,
           overflowParents: [windowSize],
           stretchBeyondTriggerWidth: true,
