@@ -181,62 +181,61 @@ export function Resizer({
   }, [headerCell, isDragging, isKeyboardDragging, resizerHasFocus, handlers]);
 
   return (
-    <>
-      <button
-        ref={resizerRef}
-        aria-labelledby={ariaLabelledby}
-        aria-roledescription="Resize handle"
-        className={clsx(
-          styles.resizer,
-          isDragging && styles['resizer-active'],
-          (resizerHasFocus || showFocusRing) && styles['has-focus']
-        )}
-        onMouseDown={event => {
-          if (event.button !== 0) {
-            return;
-          }
-          event.preventDefault();
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-          setIsDragging(true);
-          setHeaderCell(headerCell);
-        }}
-        onClick={() => {
-          // Prevents mousemove handler from interfering when activated with VO+Space.
-          setIsDragging(false);
+    <button
+      ref={resizerRef}
+      aria-labelledby={ariaLabelledby}
+      aria-roledescription="Resize handle"
+      className={clsx(
+        styles.resizer,
+        isDragging && styles['resizer-active'],
+        (resizerHasFocus || showFocusRing) && styles['has-focus']
+      )}
+      onMouseDown={event => {
+        if (event.button !== 0) {
+          return;
+        }
+        event.preventDefault();
+        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+        setIsDragging(true);
+        setHeaderCell(headerCell);
+      }}
+      onClick={() => {
+        // Prevents mousemove handler from interfering when activated with VO+Space.
+        setIsDragging(false);
 
-          // Start resize
-          if (!isKeyboardDragging) {
-            setIsKeyboardDragging(true);
-            handlers?.announceColumnWidth();
-          }
-          // Commit resize
-          else {
-            setIsKeyboardDragging(false);
-            handlers?.announceColumnWidth();
-            onFinishStable();
-          }
-        }}
-        onFocus={event => {
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-          setResizerHasFocus(true);
-          setHeaderCell(headerCell);
-          onFocus?.();
-        }}
-        onBlur={() => {
-          setResizerHasFocus(false);
-          onBlur?.();
+        // Start resize
+        if (!isKeyboardDragging) {
+          setIsKeyboardDragging(true);
+          handlers?.announceColumnWidth();
+        }
+        // Commit resize
+        else {
+          setIsKeyboardDragging(false);
+          handlers?.announceColumnWidth();
+          onFinishStable();
+        }
+      }}
+      onFocus={event => {
+        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+        setResizerHasFocus(true);
+        setHeaderCell(headerCell);
+        onFocus?.();
+      }}
+      onBlur={() => {
+        setResizerHasFocus(false);
+        onBlur?.();
 
-          // Discard keyboard resize if active
-          if (isKeyboardDragging) {
-            setIsKeyboardDragging(false);
-            handlers?.resetColumnWidth();
-          }
-        }}
-        tabIndex={tabIndex}
-        data-focus-id={focusId}
-      />
+        // Discard keyboard resize if active
+        if (isKeyboardDragging) {
+          setIsKeyboardDragging(false);
+          handlers?.resetColumnWidth();
+        }
+      }}
+      tabIndex={tabIndex}
+      data-focus-id={focusId}
+    >
       <LiveRegion assertive={true}>{liveAnnouncement}</LiveRegion>
-    </>
+    </button>
   );
 }
 

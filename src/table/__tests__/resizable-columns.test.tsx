@@ -317,35 +317,42 @@ describe('resize with keyboard', () => {
 
     columnResizerWrapper.focus();
     columnResizerWrapper.keydown(KeyCode.right);
-    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.click();
 
     expect(onChange).toHaveBeenCalledTimes(0);
   });
 
-  test.each([KeyCode.space, KeyCode.enter])('activates and commits resize with [%s] key code', keyCode => {
+  test('activates and commits resize with resizer click', () => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
 
     columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(keyCode);
+    columnResizerWrapper.click();
     columnResizerWrapper.keydown(KeyCode.left);
-    columnResizerWrapper.keydown(keyCode);
+    expect(columnResizerWrapper.getElement()).toHaveTextContent('140');
+
+    columnResizerWrapper.click();
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith({ widths: [140, 300] });
   });
 
-  test.each([KeyCode.escape])('discards resize with [%s] key code', keyCode => {
+  test('discards resize with escape', () => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
 
     columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.click();
+
     columnResizerWrapper.keydown(KeyCode.right);
-    columnResizerWrapper.keydown(keyCode);
-    columnResizerWrapper.keydown(KeyCode.enter);
+    expect(columnResizerWrapper.getElement()).toHaveTextContent('160');
+
+    columnResizerWrapper.keydown(KeyCode.escape);
+    expect(columnResizerWrapper.getElement()).toHaveTextContent('150');
+
+    columnResizerWrapper.click();
 
     expect(onChange).toHaveBeenCalledTimes(0);
   });
@@ -356,11 +363,16 @@ describe('resize with keyboard', () => {
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
 
     columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.click();
+
     columnResizerWrapper.keydown(KeyCode.right);
+    expect(columnResizerWrapper.getElement()).toHaveTextContent('160');
+
     wrapper.findColumnResizer(2)!.focus();
+    expect(columnResizerWrapper.getElement()).toHaveTextContent('150');
+
     columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.click();
 
     expect(onChange).toHaveBeenCalledTimes(0);
   });
