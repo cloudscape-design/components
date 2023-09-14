@@ -38,6 +38,7 @@ export function Resizer({
   onBlur,
 }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<null | HTMLElement>(null);
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
   const onFinishStable = useStableCallback(onFinish);
@@ -113,20 +114,37 @@ export function Resizer({
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.keyCode === KeyCode.left) {
-        event.preventDefault();
-        updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
-        setTimeout(() => onFinishStable(), 0);
-      }
-      if (event.keyCode === KeyCode.right) {
-        event.preventDefault();
-        updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
-        setTimeout(() => onFinishStable(), 0);
+      if (isKeyboardDragging) {
+        // update width
+        if (event.keyCode === KeyCode.left) {
+          event.preventDefault();
+          updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
+        }
+        if (event.keyCode === KeyCode.right) {
+          event.preventDefault();
+          updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
+        }
+        // Exit keyboard dragging mode
+        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
+          event.preventDefault();
+          setIsKeyboardDragging(false);
+          onFinishStable();
+        }
+        if (event.keyCode === KeyCode.escape) {
+          setIsKeyboardDragging(false);
+          resetColumnWidth();
+        }
+      } else {
+        // Enter keyboard dragging mode
+        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
+          event.preventDefault();
+          setIsKeyboardDragging(true);
+        }
       }
     };
 
     return { updateTrackerPosition, updateColumnWidth, resetColumnWidth, onMouseMove, onMouseUp, onKeyDown };
-  }, [headerCell, minWidth, onDragStable, onFinishStable]);
+  }, [headerCell, isKeyboardDragging, minWidth, onDragStable, onFinishStable]);
 
   useEffect(() => {
     if ((!isDragging && !resizerHasFocus) || !headerCell || !handlers) {
@@ -143,9 +161,11 @@ export function Resizer({
       document.addEventListener('mouseup', handlers.onMouseUp);
     }
     if (resizerHasFocus) {
-      document.body.classList.add(styles['resize-active']);
       document.body.classList.add(styles['resize-active-with-focus']);
       headerCell.addEventListener('keydown', handlers.onKeyDown);
+    }
+    if (isKeyboardDragging) {
+      document.body.classList.add(styles['resize-active']);
     }
 
     return () => {
@@ -156,20 +176,29 @@ export function Resizer({
       document.removeEventListener('mouseup', handlers.onMouseUp);
       headerCell.removeEventListener('keydown', handlers.onKeyDown);
     };
-  }, [headerCell, isDragging, onFinishStable, resizerHasFocus, handlers]);
+  }, [headerCell, isDragging, isKeyboardDragging, onFinishStable, resizerHasFocus, handlers]);
 
   const headerCellWidthString = headerCellWidth.toFixed(0);
-  const resizerAriaProps = {
-    role: 'separator',
-    'aria-labelledby': ariaLabelledby,
-    'aria-orientation': 'vertical' as const,
-    'aria-valuenow': headerCellWidth,
-    // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
-    'aria-valuetext': headerCellWidthString,
-    'aria-valuemin': minWidth,
-  };
+  const resizerRole = isKeyboardDragging ? 'separator' : 'button';
+  const resizerAriaProps =
+    resizerRole === 'button'
+      ? {
+          role: 'button',
+          'aria-labelledby': ariaLabelledby,
+          'aria-roledescription': 'Resize handle',
+        }
+      : {
+          role: 'separator',
+          'aria-labelledby': ariaLabelledby,
+          'aria-roledescription': 'Resize handle',
+          'aria-orientation': 'vertical' as const,
+          'aria-valuenow': Math.round(headerCellWidth),
+          // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
+          'aria-valuetext': headerCellWidthString,
+          'aria-valuemin': minWidth,
+        };
 
-  // Read header width after mounting for it to be available in the element's ARIA label before it gets focused.
+  // Read header width and text content after mounting for it to be available in the element's ARIA label before it gets focused.
   const resizerRef = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     if (resizerRef.current) {
@@ -179,39 +208,41 @@ export function Resizer({
   }, []);
 
   return (
-    <>
-      <span
-        ref={resizerRef}
-        className={clsx(
-          styles.resizer,
-          isDragging && styles['resizer-active'],
-          (resizerHasFocus || showFocusRing) && styles['has-focus']
-        )}
-        onMouseDown={event => {
-          if (event.button !== 0) {
-            return;
-          }
-          event.preventDefault();
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-          setIsDragging(true);
-          setHeaderCell(headerCell);
-        }}
-        onFocus={event => {
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-          setHeaderCellWidth(headerCell.getBoundingClientRect().width);
-          setResizerHasFocus(true);
-          setHeaderCell(headerCell);
-          onFocus?.();
-        }}
-        onBlur={() => {
-          setResizerHasFocus(false);
-          onBlur?.();
-        }}
-        {...resizerAriaProps}
-        tabIndex={tabIndex}
-        data-focus-id={focusId}
-      />
-    </>
+    <span
+      ref={resizerRef}
+      className={clsx(
+        styles.resizer,
+        isDragging && styles['resizer-active'],
+        (resizerHasFocus || showFocusRing) && styles['has-focus']
+      )}
+      onMouseDown={event => {
+        if (event.button !== 0) {
+          return;
+        }
+        event.preventDefault();
+        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+        setIsDragging(true);
+        setHeaderCell(headerCell);
+      }}
+      onFocus={event => {
+        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+        setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+        setResizerHasFocus(true);
+        setHeaderCell(headerCell);
+        onFocus?.();
+      }}
+      onBlur={() => {
+        setResizerHasFocus(false);
+        onBlur?.();
+        if (isKeyboardDragging) {
+          setIsKeyboardDragging(false);
+          handlers?.resetColumnWidth();
+        }
+      }}
+      {...resizerAriaProps}
+      tabIndex={tabIndex}
+      data-focus-id={focusId}
+    />
   );
 }
 
