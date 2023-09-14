@@ -9,16 +9,16 @@ import PropertyFilter, { PropertyFilterProps } from '~components/property-filter
 import AppContext, { AppContextType } from '../app/app-context';
 import SpaceBetween from '~components/space-between';
 import ColumnLayout from '~components/column-layout';
-import FormField from '~components/form-field';
 import { range } from 'lodash';
 import { i18nStrings as propertyFilterI18n } from '../property-filter/common-props';
 
 type DemoContext = React.Context<
   AppContextType<{
     component: string;
-    width: string;
+    triggerWidth: string;
     virtualScroll: boolean;
     expandToViewport: boolean;
+    containerWidth: string;
   }>
 >;
 
@@ -54,40 +54,55 @@ function SettingsForm() {
 
   return (
     <ColumnLayout columns={4}>
-      <FormField label="Component">
+      <label>
+        Component{' '}
         <select
-          value={componentOptions.find(option => option.value === urlParams.component)?.value}
+          value={componentOptions.find(option => option.value === urlParams.component)?.value || ''}
           onChange={event => setUrlParams({ component: event.target.value })}
         >
+          <option value="" disabled={true}>
+            Select a component
+          </option>
           {componentOptions.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
           ))}
         </select>
-      </FormField>
-      <FormField label="Width">
+      </label>
+      <label>
+        Trigger width{' '}
         <input
           placeholder={'example: 300px'}
-          value={urlParams.width}
-          onChange={event => setUrlParams({ width: event.target.value })}
+          value={urlParams.triggerWidth || ''}
+          onChange={event => setUrlParams({ triggerWidth: event.target.value })}
         />
-      </FormField>
-      <FormField label="ExpandToViewport">
+      </label>
+      <label>
+        Container width{' '}
+        <input
+          placeholder={'example: 500px'}
+          value={urlParams.containerWidth || ''}
+          onChange={event => setUrlParams({ containerWidth: event.target.value })}
+        />
+      </label>
+      <label>
         <input
           type="checkbox"
           checked={urlParams.expandToViewport}
           onChange={event => setUrlParams({ expandToViewport: event.target.checked })}
-        />
-      </FormField>
+        />{' '}
+        expandToViewport
+      </label>
       {['autosuggest', 'multiselect', 'property-filter', 'select'].includes(urlParams.component) && (
-        <FormField label="virtualScroll">
+        <label>
           <input
             type="checkbox"
             checked={urlParams.virtualScroll}
             onChange={event => setUrlParams({ virtualScroll: event.target.checked })}
-          />
-        </FormField>
+          />{' '}
+          virtualScroll
+        </label>
       )}
     </ColumnLayout>
   );
@@ -215,24 +230,28 @@ function CustomPropertyFilter({
 export default function () {
   const { urlParams } = useContext(AppContext as DemoContext);
 
-  const { component, width, virtualScroll, expandToViewport } = urlParams;
+  const { component, triggerWidth, virtualScroll, expandToViewport, containerWidth } = urlParams;
   return (
     <article>
       <h1>Dropdown width</h1>
       <SpaceBetween size="l">
         <SettingsForm />
-        <div style={{ width }}>
-          {component === 'autosuggest' && (
-            <CustomAutosuggest virtualScroll={virtualScroll} expandToViewport={expandToViewport} />
-          )}
-          {component === 'button-dropdown' && <CustomButtonDropdown expandToViewport={expandToViewport} />}
-          {component === 'multiselect' && (
-            <CustomMultiSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
-          )}
-          {component === 'property-filter' && (
-            <CustomPropertyFilter expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
-          )}
-          {component === 'select' && <CustomSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />}
+        <div style={{ width: containerWidth, height: '300px', overflow: 'hidden', border: `1px solid blue` }}>
+          <div style={{ width: triggerWidth }}>
+            {component === 'autosuggest' && (
+              <CustomAutosuggest virtualScroll={virtualScroll} expandToViewport={expandToViewport} />
+            )}
+            {component === 'button-dropdown' && <CustomButtonDropdown expandToViewport={expandToViewport} />}
+            {component === 'multiselect' && (
+              <CustomMultiSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
+            )}
+            {component === 'property-filter' && (
+              <CustomPropertyFilter expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
+            )}
+            {component === 'select' && (
+              <CustomSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
+            )}
+          </div>
         </div>
       </SpaceBetween>
     </article>
