@@ -209,7 +209,6 @@ export function Resizer({
         setIsDragging(false);
         setResizerHasFocus(true);
         setIsKeyboardDragging(true);
-        // resizerSeparatorRef.current?.focus();
       }}
       onFocus={event => {
         const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
