@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useContext, useEffect, useRef, useState } from 'react';
 
 import {
   FunnelStepContext,
@@ -33,10 +33,15 @@ import { nodeBelongs } from '../../utils/node-belongs';
 
 export const FUNNEL_VERSION = '1.2';
 
-type AnalyticsFunnelProps = { children?: React.ReactNode; stepConfiguration?: StepConfiguration[] } & Pick<
-  FunnelProps,
-  'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'
->;
+type AnalyticsFunnelProps = {
+  children?: React.ReactNode;
+  stepConfiguration?: StepConfiguration[];
+  /**
+   * This ref is used to determine the current `document` of the events. It is not important
+   * on which exact element the ref is placed, as long as it's in the same document as the funnel.
+   */
+  elementRef: RefObject<HTMLElement>;
+} & Pick<FunnelProps, 'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'>;
 
 export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
   const { isInFunnel } = useFunnel();
@@ -54,17 +59,17 @@ export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
 };
 export const CREATION_EDIT_FLOW_DONE_EVENT_NAME = 'awsui-creation-edit-flow-done';
 
-const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
-  FunnelMetrics.funnelCancelled({ funnelInteractionId });
+const onFunnelCancelled = (props: Parameters<typeof FunnelMetrics['funnelCancelled']>[0]) => {
+  FunnelMetrics.funnelCancelled(props);
   document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
 };
 
-const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
-  FunnelMetrics.funnelComplete({ funnelInteractionId });
+const onFunnelComplete = (props: Parameters<typeof FunnelMetrics['funnelComplete']>[0]) => {
+  FunnelMetrics.funnelComplete(props);
   document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
 };
 
-const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
+const InnerAnalyticsFunnel = ({ children, stepConfiguration, elementRef, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
@@ -85,6 +90,8 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
   // The eslint-disable is required as we deliberately want this effect to run only once on mount and unmount,
   // hence we do not provide any dependencies.
   useEffect(() => {
+    const currentDocument = elementRef.current?.ownerDocument;
+
     /*
       We run this effect with a delay, in order to detect whether this funnel contains a Wizard.
       If it does contain a Wizard, that Wizard should take precedence for handling the funnel, and
@@ -111,6 +118,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
         theme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
+        currentDocument,
       });
 
       setFunnelInteractionId(funnelInteractionId);
@@ -128,14 +136,14 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
-        onFunnelComplete({ funnelInteractionId });
+        onFunnelComplete({ funnelInteractionId, currentDocument });
         funnelState.current = 'complete';
       }
 
       if (funnelState.current === 'complete') {
-        FunnelMetrics.funnelSuccessful({ funnelInteractionId });
+        FunnelMetrics.funnelSuccessful({ funnelInteractionId, currentDocument });
       } else {
-        onFunnelCancelled({ funnelInteractionId });
+        onFunnelCancelled({ funnelInteractionId, currentDocument });
         funnelState.current = 'cancelled';
       }
     };
@@ -171,7 +179,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
         /*
           If no validation errors are rendered, we treat the funnel as complete.
         */
-        onFunnelComplete({ funnelInteractionId });
+        onFunnelComplete({ funnelInteractionId, currentDocument: elementRef.current?.ownerDocument });
         funnelState.current = 'complete';
       } else {
         funnelState.current = 'default';
@@ -208,6 +216,11 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 
 type AnalyticsFunnelStepProps = {
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
+  /**
+   * This ref is used to determine the current `document` of the events. It is not important
+   * on which exact element the ref is placed, as long as it's in the same document as the funnel.
+   */
+  elementRef: RefObject<HTMLElement>;
 } & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
 
 export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
@@ -263,7 +276,7 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
   return stepChangeCallback;
 }
 
-const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
+const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector, elementRef }: AnalyticsFunnelStepProps) => {
   const { funnelInteractionId, funnelState, funnelType } = useFunnel();
   const parentStep = useFunnelStep();
   const parentStepExists = parentStep.isInStep;
@@ -287,6 +300,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
       subStepAllSelector: getSubStepAllSelector(),
       totalSubSteps: subStepCount.current,
       subStepConfiguration,
+      currentDocument: elementRef.current?.ownerDocument,
     });
   });
 
@@ -307,6 +321,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
        */
       return;
     }
+    const currentDocument = elementRef.current?.ownerDocument;
 
     const stepName = getNameFromSelector(stepNameSelector);
 
@@ -319,6 +334,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
         subStepAllSelector: getSubStepAllSelector(),
         totalSubSteps: subStepCount.current,
         subStepConfiguration: getSubStepConfiguration(),
+        currentDocument,
       });
     }
 
@@ -333,6 +349,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
           subStepAllSelector: getSubStepAllSelector(),
           // eslint-disable-next-line react-hooks/exhaustive-deps
           totalSubSteps: subStepCount.current,
+          currentDocument,
         });
       }
     };
@@ -344,6 +361,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
     parentStepExists,
     funnelType,
     parentStepFunnelInteractionId,
+    elementRef,
   ]);
 
   const contextValue: FunnelStepContextValue = {

@@ -102,6 +102,7 @@ export const InternalButton = React.forwardRef(
             subStepNameSelector,
             elementSelector: getFunnelValueSelector(uniqueId),
             subStepAllSelector: getSubStepAllSelector(),
+            currentDocument: buttonRef.current?.ownerDocument,
           });
         }
       }

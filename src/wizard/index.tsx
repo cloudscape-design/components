@@ -13,7 +13,7 @@ import { WizardProps } from './interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 
 function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
-  const baseComponentProps = useBaseComponent('Wizard');
+  const baseComponentProps = useBaseComponent<HTMLDivElement>('Wizard');
   const { wizardCount } = useFunnel();
   const externalProps = getExternalProps(props);
 
@@ -31,6 +31,7 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
         .filter(step => step !== -1)}
       totalFunnelSteps={props.steps.length}
       stepConfiguration={getStepConfiguration(props.steps)}
+      elementRef={baseComponentProps.__internalRootRef}
     >
       <InternalWizard
         isLoadingNextStep={isLoadingNextStep}

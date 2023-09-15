@@ -15,7 +15,7 @@ import { useInternalI18n } from '../i18n/context';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { FunnelMetrics } from '../internal/analytics';
 
-type InternalFormProps = FormProps & InternalBaseComponentProps;
+export type InternalFormProps = FormProps & InternalBaseComponentProps<HTMLDivElement>;
 
 export default function InternalForm({
   children,
@@ -37,13 +37,16 @@ export default function InternalForm({
   useEffect(() => {
     if (funnelInteractionId && errorText) {
       errorCount.current++;
-      FunnelMetrics.funnelError({ funnelInteractionId });
+      FunnelMetrics.funnelError({
+        funnelInteractionId,
+        currentDocument: __internalRootRef?.current?.ownerDocument,
+      });
       return () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         errorCount.current--;
       };
     }
-  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
+  }, [funnelInteractionId, errorText, submissionAttempt, errorCount, __internalRootRef]);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>

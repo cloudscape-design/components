@@ -27,7 +27,7 @@ import { WizardProps } from './interfaces';
 import styles from './styles.css.js';
 import { useFunnelChangeEvent } from './analytics';
 
-type InternalWizardProps = WizardProps & InternalBaseComponentProps;
+type InternalWizardProps = WizardProps & InternalBaseComponentProps<HTMLDivElement>;
 
 export default function InternalWizard({
   steps,
@@ -76,6 +76,7 @@ export default function InternalWizard({
         stepNameSelector,
         destinationStepNumber: requestedStepIndex + 1,
         subStepAllSelector: getSubStepAllSelector(),
+        currentDocument: __internalRootRef?.current?.ownerDocument,
       });
     }
 
@@ -100,7 +101,7 @@ export default function InternalWizard({
     }
   };
 
-  useFunnelChangeEvent(funnelInteractionId, steps);
+  useFunnelChangeEvent(funnelInteractionId, steps, __internalRootRef ?? undefined);
 
   const i18n = useInternalI18n('wizard');
   const skipToButtonLabel = i18n(

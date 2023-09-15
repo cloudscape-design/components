@@ -32,11 +32,20 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
 };
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
-  const baseComponentProps = useBaseComponent('Form');
+  const baseComponentProps = useBaseComponent<HTMLDivElement>('Form');
 
   return (
-    <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-      <AnalyticsFunnelStep stepNumber={1} stepNameSelector={getFunnelNameSelector()}>
+    <AnalyticsFunnel
+      funnelType="single-page"
+      optionalStepNumbers={[]}
+      totalFunnelSteps={1}
+      elementRef={baseComponentProps.__internalRootRef}
+    >
+      <AnalyticsFunnelStep
+        stepNumber={1}
+        stepNameSelector={getFunnelNameSelector()}
+        elementRef={baseComponentProps.__internalRootRef}
+      >
         <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
       </AnalyticsFunnelStep>
     </AnalyticsFunnel>

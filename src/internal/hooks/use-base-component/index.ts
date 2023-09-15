@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { MutableRefObject } from 'react';
+import { RefObject } from 'react';
 import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
 import { useTelemetry } from '../use-telemetry';
 import { PACKAGE_VERSION } from '../../environment';
 import useFocusVisible from '../focus-visible';
 
-export interface InternalBaseComponentProps {
-  __internalRootRef?: MutableRefObject<any> | null;
+export interface InternalBaseComponentProps<T = any> {
+  __internalRootRef?: RefObject<T> | null;
 }
 
 /**

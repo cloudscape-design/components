@@ -74,6 +74,7 @@ export const useFunnelSubStep = () => {
         stepName,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
+        currentDocument: subStepRef.current?.ownerDocument,
       });
 
       /*
@@ -103,6 +104,7 @@ export const useFunnelSubStep = () => {
             stepName,
             stepNameSelector,
             subStepAllSelector: getSubStepAllSelector(),
+            currentDocument: subStepRef.current?.ownerDocument,
           });
         }
       };

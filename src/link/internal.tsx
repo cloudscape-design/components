@@ -68,6 +68,8 @@ const InternalLink = React.forwardRef(
 
     const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
+    const linkRef = useRef<HTMLElement>(null);
+
     const { funnelInteractionId } = useFunnel();
     const { stepNumber, stepNameSelector } = useFunnelStep();
     const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
@@ -87,6 +89,7 @@ const InternalLink = React.forwardRef(
           subStepNameSelector,
           elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),
+          currentDocument: linkRef.current?.ownerDocument,
         });
       } else if (external) {
         const stepName = getNameFromSelector(stepNameSelector);
@@ -102,6 +105,7 @@ const InternalLink = React.forwardRef(
           subStepNameSelector,
           elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),
+          currentDocument: linkRef.current?.ownerDocument,
         });
       }
     };
@@ -131,7 +135,6 @@ const InternalLink = React.forwardRef(
       }
     };
 
-    const linkRef = useRef<HTMLElement>(null);
     const isVisualRefresh = useVisualRefresh();
     useForwardFocus(ref, linkRef);
 

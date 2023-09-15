@@ -6,6 +6,7 @@ export type FunnelType = 'single-page' | 'multi-page';
 // Common properties for all funnels
 export interface BaseFunnelProps {
   funnelInteractionId: string;
+  currentDocument: Document | undefined;
 }
 
 export interface FunnelProps extends BaseFunnelProps {
@@ -23,6 +24,7 @@ export interface FunnelStartProps {
   funnelVersion: string;
   componentVersion: string;
   theme: string;
+  currentDocument: Document | undefined;
 }
 
 // A function type for a generic funnel method

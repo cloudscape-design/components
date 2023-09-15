@@ -67,6 +67,7 @@ export default function WizardForm({
       <AnalyticsFunnelStep
         stepNameSelector={`.${styles['form-header-component-wrapper']}`}
         stepNumber={activeStepIndex + 1}
+        elementRef={stepHeaderRef}
       >
         {({ funnelStepProps }) => (
           <>

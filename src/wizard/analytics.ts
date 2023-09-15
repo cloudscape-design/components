@@ -1,11 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, RefObject } from 'react';
 import { FunnelMetrics } from '../internal/analytics';
 import { WizardProps } from './interfaces';
 
-export function useFunnelChangeEvent(funnelInteractionId: string | undefined, steps: WizardProps['steps']) {
+export function useFunnelChangeEvent(
+  funnelInteractionId: string | undefined,
+  steps: WizardProps['steps'],
+  elementRef?: RefObject<HTMLElement>
+) {
   const listenForStepChanges = useRef(false);
 
   useEffect(() => {
@@ -27,6 +31,7 @@ export function useFunnelChangeEvent(funnelInteractionId: string | undefined, st
     FunnelMetrics.funnelChange({
       funnelInteractionId,
       stepConfiguration: getStepConfiguration(steps),
+      currentDocument: elementRef?.current?.ownerDocument,
     });
 
     // This dependency array does not include `steps`, because `steps` is not stable across renders.

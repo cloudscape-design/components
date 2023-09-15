@@ -141,6 +141,7 @@ export default function InternalFormField({
           fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
           fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
           subStepAllSelector: getSubStepAllSelector(),
+          currentDocument: __internalRootRef?.current?.ownerDocument,
         });
       }
 
