@@ -44,7 +44,6 @@ export function Resizer({
   const onDragStable = useStableCallback(onDragMove);
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
   const [headerCellWidth, setHeaderCellWidth] = useState(0);
-  const originalHeaderCellWidthRef = useRef(0);
 
   const handlers = useMemo(() => {
     if (!headerCell) {
@@ -72,10 +71,6 @@ export function Resizer({
       setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
-    };
-
-    const resetColumnWidth = () => {
-      updateColumnWidth(originalHeaderCellWidthRef.current);
     };
 
     const resizeColumn = (offset: number) => {
@@ -125,15 +120,13 @@ export function Resizer({
       }
     };
 
-    return { updateTrackerPosition, updateColumnWidth, resetColumnWidth, onMouseMove, onMouseUp, onKeyDown };
+    return { updateTrackerPosition, updateColumnWidth, onMouseMove, onMouseUp, onKeyDown };
   }, [headerCell, minWidth, onDragStable, onFinishStable]);
 
   useEffect(() => {
     if ((!isDragging && !resizerHasFocus) || !headerCell || !handlers) {
       return;
     }
-
-    originalHeaderCellWidthRef.current = headerCell.getBoundingClientRect().width;
 
     handlers.updateTrackerPosition(headerCell.getBoundingClientRect().right);
 
@@ -163,7 +156,7 @@ export function Resizer({
     role: 'separator',
     'aria-labelledby': ariaLabelledby,
     'aria-orientation': 'vertical' as const,
-    'aria-valuenow': headerCellWidth,
+    'aria-valuenow': Math.round(headerCellWidth),
     // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
     'aria-valuetext': headerCellWidthString,
     'aria-valuemin': minWidth,
@@ -195,6 +188,10 @@ export function Resizer({
           const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
           setIsDragging(true);
           setHeaderCell(headerCell);
+        }}
+        onClick={() => {
+          // Prevents dragging mode activation for VO+Space click.
+          setIsDragging(false);
         }}
         onFocus={event => {
           const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
