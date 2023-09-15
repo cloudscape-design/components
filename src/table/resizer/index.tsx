@@ -11,15 +11,13 @@ import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 interface ResizerProps {
-  onDragMove: (newWidth: number) => void;
-  onFinish: () => void;
+  onWidthUpdate: (newWidth: number) => void;
+  onWidthUpdateCommit: () => void;
   ariaLabelledby?: string;
   minWidth?: number;
   tabIndex?: number;
   focusId?: string;
   showFocusRing?: boolean;
-  onFocus?: () => void;
-  onBlur?: () => void;
 }
 
 const AUTO_GROW_START_TIME = 10;
@@ -27,21 +25,20 @@ const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
 export function Resizer({
-  onDragMove,
-  onFinish,
+  onWidthUpdate,
+  onWidthUpdateCommit,
   ariaLabelledby,
   minWidth = DEFAULT_COLUMN_WIDTH,
   tabIndex,
   showFocusRing,
   focusId,
-  onFocus,
-  onBlur,
 }: ResizerProps) {
+  onWidthUpdate = useStableCallback(onWidthUpdate);
+  onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
+
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<null | HTMLElement>(null);
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
-  const onFinishStable = useStableCallback(onFinish);
-  const onDragStable = useStableCallback(onDragMove);
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
   const [headerCellWidth, setHeaderCellWidth] = useState(0);
 
@@ -70,7 +67,7 @@ export function Resizer({
       updateTrackerPosition(right + updatedWidth - width);
       setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
-      onDragStable(newWidth);
+      onWidthUpdate(newWidth);
     };
 
     const resizeColumn = (offset: number) => {
@@ -103,7 +100,7 @@ export function Resizer({
     const onMouseUp = (event: MouseEvent) => {
       resizeColumn(event.pageX);
       setIsDragging(false);
-      onFinishStable();
+      onWidthUpdateCommit();
       clearTimeout(autoGrowTimeout.current);
     };
 
@@ -111,17 +108,17 @@ export function Resizer({
       if (event.keyCode === KeyCode.left) {
         event.preventDefault();
         updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
-        setTimeout(() => onFinishStable(), 0);
+        setTimeout(() => onWidthUpdateCommit(), 0);
       }
       if (event.keyCode === KeyCode.right) {
         event.preventDefault();
         updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
-        setTimeout(() => onFinishStable(), 0);
+        setTimeout(() => onWidthUpdateCommit(), 0);
       }
     };
 
     return { updateTrackerPosition, updateColumnWidth, onMouseMove, onMouseUp, onKeyDown };
-  }, [headerCell, minWidth, onDragStable, onFinishStable]);
+  }, [headerCell, minWidth, onWidthUpdate, onWidthUpdateCommit]);
 
   useEffect(() => {
     if ((!isDragging && !resizerHasFocus) || !headerCell || !handlers) {
@@ -149,7 +146,7 @@ export function Resizer({
       document.removeEventListener('mouseup', handlers.onMouseUp);
       headerCell.removeEventListener('keydown', handlers.onKeyDown);
     };
-  }, [headerCell, isDragging, onFinishStable, resizerHasFocus, handlers]);
+  }, [headerCell, isDragging, onWidthUpdateCommit, resizerHasFocus, handlers]);
 
   const headerCellWidthString = headerCellWidth.toFixed(0);
   const resizerAriaProps = {
@@ -198,11 +195,9 @@ export function Resizer({
           setHeaderCellWidth(headerCell.getBoundingClientRect().width);
           setResizerHasFocus(true);
           setHeaderCell(headerCell);
-          onFocus?.();
         }}
         onBlur={() => {
           setResizerHasFocus(false);
-          onBlur?.();
         }}
         {...resizerAriaProps}
         tabIndex={tabIndex}
