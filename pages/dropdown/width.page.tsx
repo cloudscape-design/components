@@ -4,13 +4,9 @@ import React, { useContext, useState } from 'react';
 import Select, { SelectProps } from '~components/select';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import Autosuggest from '~components/autosuggest';
-import ButtonDropdown from '~components/button-dropdown';
-import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import AppContext, { AppContextType } from '../app/app-context';
 import SpaceBetween from '~components/space-between';
 import ColumnLayout from '~components/column-layout';
-import { range } from 'lodash';
-import { i18nStrings as propertyFilterI18n } from '../property-filter/common-props';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -30,10 +26,6 @@ const componentOptions: ReadonlyArray<SelectProps.Option> = [
   {
     value: 'autosuggest',
     label: 'Autosuggest',
-  },
-  {
-    value: 'button-dropdown',
-    label: 'Button dropdown',
   },
   {
     value: 'multiselect',
@@ -125,27 +117,6 @@ function CustomAutosuggest({ expandToViewport, virtualScroll }: { expandToViewpo
   );
 }
 
-function CustomButtonDropdown({ expandToViewport }: { expandToViewport: boolean }) {
-  return (
-    <ButtonDropdown
-      expandToViewport={expandToViewport}
-      expandableGroups={true}
-      items={[
-        {
-          id: 'category1',
-          text: longOptionText,
-        },
-        {
-          id: 'category2',
-          text: shortOptionText,
-        },
-      ]}
-    >
-      Open dropdown
-    </ButtonDropdown>
-  );
-}
-
 function CustomMultiSelect({ expandToViewport, virtualScroll }: { expandToViewport: boolean; virtualScroll: boolean }) {
   const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<MultiselectProps.Option>>([]);
   return (
@@ -188,45 +159,6 @@ function CustomSelect({ expandToViewport, virtualScroll }: { expandToViewport: b
   );
 }
 
-function CustomPropertyFilter({
-  expandToViewport,
-  virtualScroll,
-}: {
-  expandToViewport: boolean;
-  virtualScroll: boolean;
-}) {
-  const [query, setQuery] = useState<PropertyFilterProps['query']>({
-    tokens: [{ operator: ':', value: '1' } as const],
-    operation: 'and',
-  });
-
-  return (
-    <PropertyFilter
-      query={query}
-      onChange={e => setQuery(e.detail)}
-      filteringProperties={[
-        {
-          key: 'property',
-          operators: ['=', '!=', '>', '<', '<=', '>='],
-          propertyLabel: longOptionText,
-          groupValuesLabel: `Label values`,
-        },
-      ]}
-      filteringOptions={range(100).map(value => ({
-        propertyKey: 'property',
-        value: value + '',
-      }))}
-      filteringLoadingText={'loading text'}
-      filteringErrorText={'error text'}
-      filteringRecoveryText={'recovery text'}
-      filteringFinishedText={'finished text'}
-      i18nStrings={propertyFilterI18n}
-      expandToViewport={expandToViewport}
-      virtualScroll={virtualScroll}
-    />
-  );
-}
-
 export default function () {
   const { urlParams } = useContext(AppContext as DemoContext);
 
@@ -241,12 +173,8 @@ export default function () {
             {component === 'autosuggest' && (
               <CustomAutosuggest virtualScroll={virtualScroll} expandToViewport={expandToViewport} />
             )}
-            {component === 'button-dropdown' && <CustomButtonDropdown expandToViewport={expandToViewport} />}
             {component === 'multiselect' && (
               <CustomMultiSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
-            )}
-            {component === 'property-filter' && (
-              <CustomPropertyFilter expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
             )}
             {component === 'select' && (
               <CustomSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
