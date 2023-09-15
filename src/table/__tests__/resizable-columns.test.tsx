@@ -322,7 +322,7 @@ describe('resize with keyboard', () => {
     expect(onChange).toHaveBeenCalledTimes(0);
   });
 
-  test.each([KeyCode.space, KeyCode.enter])('activates and commits resize with [%s] key code', keyCode => {
+  test.each([KeyCode.space, KeyCode.enter])('activates and commits keyboard resize with keyCode="%s"', keyCode => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
@@ -336,7 +336,21 @@ describe('resize with keyboard', () => {
     expect(onChange).toHaveBeenCalledWith({ widths: [140, 300] });
   });
 
-  test.each([KeyCode.escape])('discards resize with [%s] key code', keyCode => {
+  test('activates keyboard resize with click', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.click();
+    columnResizerWrapper.keydown(KeyCode.right);
+    columnResizerWrapper.keydown(KeyCode.enter);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+  });
+
+  test.each([KeyCode.escape])('discards resize with escape', keyCode => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
@@ -364,6 +378,8 @@ describe('resize with keyboard', () => {
 
     expect(onChange).toHaveBeenCalledTimes(0);
   });
+
+  // TODO: add tests for aria-roledescription content
 });
 
 describe('column header content', () => {
