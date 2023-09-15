@@ -1,18 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
 import { Resizer } from '../resizer';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -82,13 +82,17 @@ export function TableHeaderCell<ItemType>({
     }
   };
 
-  const headerId = useUniqueId('table-header-');
+  const headerCellRef = useRef<HTMLElement>(null);
+  const mergedCellRef = useMergeRefs(headerCellRef, cellRef);
+  const getHeaderCell = () => headerCellRef.current;
+  const headerContentRef = useRef<HTMLDivElement>(null);
+  const getHeaderContent = () => headerContentRef.current;
 
   return (
     <TableThElement
       className={className}
       style={style}
-      cellRef={cellRef}
+      cellRef={mergedCellRef}
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}
       hidden={hidden}
@@ -121,7 +125,10 @@ export function TableHeaderCell<ItemType>({
             }
           : {})}
       >
-        <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
+        <div
+          ref={headerContentRef}
+          className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])}
+        >
           {column.header}
           {isEditable ? (
             <span
@@ -146,7 +153,8 @@ export function TableHeaderCell<ItemType>({
           showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
           onDragMove={newWidth => updateColumn(columnId, newWidth)}
           onFinish={onResizeFinish}
-          ariaLabelledby={headerId}
+          getHeaderCell={getHeaderCell}
+          getHeaderContent={getHeaderContent}
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
         />
       )}

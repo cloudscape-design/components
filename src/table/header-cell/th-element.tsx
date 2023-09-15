@@ -19,7 +19,7 @@ interface TableThElementProps {
   resizableColumns?: boolean;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
-  cellRef?: React.RefCallback<HTMLElement>;
+  cellRef?: React.Ref<HTMLElement>;
   tableRole: TableRole;
   children: React.ReactNode;
 }

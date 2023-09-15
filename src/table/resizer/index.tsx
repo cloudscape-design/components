@@ -14,7 +14,8 @@ import LiveRegion from '../../internal/components/live-region';
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
   onFinish: () => void;
-  ariaLabelledby?: string;
+  getHeaderCell: () => null | HTMLElement;
+  getHeaderContent: () => null | HTMLElement;
   minWidth?: number;
   tabIndex?: number;
   focusId?: string;
@@ -30,7 +31,8 @@ const AUTO_GROW_INCREMENT = 5;
 export function Resizer({
   onDragMove,
   onFinish,
-  ariaLabelledby,
+  getHeaderCell,
+  getHeaderContent,
   minWidth = DEFAULT_COLUMN_WIDTH,
   tabIndex,
   showFocusRing,
@@ -41,13 +43,28 @@ export function Resizer({
   const resizerRef = useRef<HTMLButtonElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
-  const [headerCell, setHeaderCell] = useState<null | HTMLElement>(null);
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
   const onFinishStable = useStableCallback(onFinish);
   const onDragStable = useStableCallback(onDragMove);
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
-  const [liveAnnouncement, setLiveAnnouncement] = useState('');
+  const [headerCell, setHeaderCell] = useState<null | HTMLElement>(null);
+  const [headerText, setHeaderText] = useState('');
+  const [headerWidth, setHeaderWidth] = useState(0);
+  const [headerWidthAnnouncement, setHeaderWidthAnnouncement] = useState('');
   const originalHeaderCellWidthRef = useRef(0);
+
+  const headerLabel = isKeyboardDragging
+    ? headerWidth.toFixed(0)
+    : `Resize handle for ${headerText}, ${headerWidth.toFixed(0)}`;
+
+  const updateHeaderPropsStable = useStableCallback((width?: number) => {
+    setHeaderText(getHeaderContent()!.textContent ?? '');
+    setHeaderWidth(width ?? getHeaderCell()!.getBoundingClientRect().width);
+  });
+  const updateHeaderWidthAnnouncementStable = useStableCallback((width?: number) => {
+    const announcedWidth = width ?? getHeaderCell()!.getBoundingClientRect().width;
+    setHeaderWidthAnnouncement(announcedWidth.toFixed(0));
+  });
 
   const handlers = useMemo(() => {
     if (!headerCell) {
@@ -68,20 +85,12 @@ export function Resizer({
       trackerElement.style.left = newOffset - scrollParentLeft - 1 + 'px';
     };
 
-    const announceColumnWidth = (newWidth?: number) => {
-      const announcedWidth = newWidth ?? headerCell.getBoundingClientRect().width;
-      setLiveAnnouncement(announcedWidth.toFixed(0));
-    };
-
     const updateColumnWidth = (newWidth: number) => {
       const { right, width } = headerCell.getBoundingClientRect();
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       updateTrackerPosition(right + updatedWidth - width);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
-      if (isKeyboardDragging) {
-        announceColumnWidth(newWidth);
-      }
     };
 
     const resetColumnWidth = () => {
@@ -125,13 +134,19 @@ export function Resizer({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.keyCode === KeyCode.left) {
         event.preventDefault();
-        updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
+        const newWidth = headerCell.getBoundingClientRect().width - 10;
+        updateColumnWidth(newWidth);
+        updateHeaderWidthAnnouncementStable(newWidth);
       }
       if (event.keyCode === KeyCode.right) {
         event.preventDefault();
-        updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
+        const newWidth = headerCell.getBoundingClientRect().width + 10;
+        updateColumnWidth(newWidth);
+        updateHeaderWidthAnnouncementStable(newWidth);
       }
       if (event.keyCode === KeyCode.escape) {
+        setHeaderWidthAnnouncement('');
+        updateHeaderPropsStable(originalHeaderCellWidthRef.current);
         setIsKeyboardDragging(false);
         resetColumnWidth();
       }
@@ -139,14 +154,20 @@ export function Resizer({
 
     return {
       updateTrackerPosition,
-      announceColumnWidth,
       updateColumnWidth,
       resetColumnWidth,
       onMouseMove,
       onMouseUp,
       onKeyDown,
     };
-  }, [headerCell, minWidth, isKeyboardDragging, onDragStable, onFinishStable]);
+  }, [
+    headerCell,
+    minWidth,
+    onDragStable,
+    onFinishStable,
+    updateHeaderPropsStable,
+    updateHeaderWidthAnnouncementStable,
+  ]);
 
   useEffect(() => {
     if ((!isDragging && !resizerHasFocus) || !headerCell || !handlers) {
@@ -180,62 +201,68 @@ export function Resizer({
     };
   }, [headerCell, isDragging, isKeyboardDragging, resizerHasFocus, handlers]);
 
+  useEffect(() => {
+    updateHeaderPropsStable();
+  }, [updateHeaderPropsStable]);
+
   return (
-    <button
-      ref={resizerRef}
-      aria-labelledby={ariaLabelledby}
-      aria-roledescription="Resize handle"
-      className={clsx(
-        styles.resizer,
-        isDragging && styles['resizer-active'],
-        (resizerHasFocus || showFocusRing) && styles['has-focus']
-      )}
-      onMouseDown={event => {
-        if (event.button !== 0) {
-          return;
-        }
-        event.preventDefault();
-        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-        setIsDragging(true);
-        setHeaderCell(headerCell);
-      }}
-      onClick={() => {
-        // Prevents mousemove handler from interfering when activated with VO+Space.
-        setIsDragging(false);
+    <>
+      <button
+        ref={resizerRef}
+        aria-pressed={isKeyboardDragging}
+        aria-label={headerLabel}
+        className={clsx(
+          styles.resizer,
+          isDragging && styles['resizer-active'],
+          (resizerHasFocus || showFocusRing) && styles['has-focus']
+        )}
+        onMouseDown={event => {
+          if (event.button !== 0) {
+            return;
+          }
+          event.preventDefault();
+          setIsDragging(true);
+          setHeaderCell(getHeaderCell()!);
+        }}
+        onClick={() => {
+          // Prevents mousemove handler from interfering when activated with VO+Space.
+          setIsDragging(false);
 
-        // Start resize
-        if (!isKeyboardDragging) {
-          setIsKeyboardDragging(true);
-          handlers?.announceColumnWidth();
-        }
-        // Commit resize
-        else {
-          setIsKeyboardDragging(false);
-          handlers?.announceColumnWidth();
-          onFinishStable();
-        }
-      }}
-      onFocus={event => {
-        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-        setResizerHasFocus(true);
-        setHeaderCell(headerCell);
-        onFocus?.();
-      }}
-      onBlur={() => {
-        setResizerHasFocus(false);
-        onBlur?.();
+          // Start resize
+          if (!isKeyboardDragging) {
+            updateHeaderWidthAnnouncementStable();
+            setIsKeyboardDragging(true);
+          }
+          // Commit resize
+          else {
+            setHeaderWidthAnnouncement('');
+            updateHeaderPropsStable();
+            setIsKeyboardDragging(false);
+            onFinishStable();
+          }
+        }}
+        onFocus={() => {
+          setResizerHasFocus(true);
+          setHeaderCell(getHeaderCell()!);
+          onFocus?.();
+        }}
+        onBlur={() => {
+          setResizerHasFocus(false);
+          onBlur?.();
 
-        // Discard keyboard resize if active
-        if (isKeyboardDragging) {
-          setIsKeyboardDragging(false);
-          handlers?.resetColumnWidth();
-        }
-      }}
-      tabIndex={tabIndex}
-      data-focus-id={focusId}
-    >
-      <LiveRegion assertive={true}>{liveAnnouncement}</LiveRegion>
-    </button>
+          // Discard keyboard resize if active
+          if (isKeyboardDragging) {
+            updateHeaderWidthAnnouncementStable(originalHeaderCellWidthRef.current);
+            updateHeaderPropsStable(originalHeaderCellWidthRef.current);
+            setIsKeyboardDragging(false);
+            handlers?.resetColumnWidth();
+          }
+        }}
+        tabIndex={tabIndex}
+        data-focus-id={focusId}
+      />
+      <LiveRegion assertive={true}>{headerWidthAnnouncement}</LiveRegion>
+    </>
   );
 }
 
