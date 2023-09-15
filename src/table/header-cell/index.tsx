@@ -28,8 +28,6 @@ interface TableHeaderCellProps<ItemType> {
   onResizeFinish: () => void;
   colIndex: number;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
   columnId: PropertyKey;

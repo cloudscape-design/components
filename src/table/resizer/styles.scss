@@ -16,6 +16,9 @@ $handle-width: awsui.$space-l;
 $active-separator-width: 2px;
 
 .resizer {
+  border: none;
+  background: none;
+
   bottom: 0;
   cursor: col-resize;
   position: absolute;
@@ -23,6 +26,10 @@ $active-separator-width: 2px;
   top: 0;
   width: $handle-width;
   z-index: 10;
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     pointer-events: none;
@@ -58,6 +65,7 @@ $active-separator-width: 2px;
       box-shadow: inset 0 0 0 2px awsui.$color-border-item-focused;
     }
   }
+  @include styles.styles-reset;
 }
 
 .tracker {
