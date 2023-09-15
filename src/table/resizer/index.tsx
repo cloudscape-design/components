@@ -10,7 +10,6 @@ import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { joinStrings } from '../../internal/utils/strings';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
@@ -229,8 +228,8 @@ export function Resizer({
             setResizerHasFocus(false);
           }
         }}
-        aria-roledescription="resize handle"
-        aria-labelledby={joinStrings(ariaLabelledby, separatorId)}
+        aria-roledescription={`resize handle ${headerCellWidth.toFixed(0)}`}
+        aria-labelledby={ariaLabelledby}
         tabIndex={tabIndex}
         data-focus-id={focusId}
       />
