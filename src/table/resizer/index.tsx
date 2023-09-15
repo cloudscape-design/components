@@ -49,7 +49,9 @@ export function Resizer({
       const width = resizerDom.current.headerWidth;
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       resizerDom.current.updateTrackerPosition(right + updatedWidth - width);
-      setHeaderCellWidth(newWidth);
+      if (newWidth >= minWidth) {
+        setHeaderCellWidth(newWidth);
+      }
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onWidthUpdate(newWidth);
     };
