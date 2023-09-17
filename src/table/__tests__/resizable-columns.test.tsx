@@ -295,12 +295,14 @@ test('should not trigger if the previous and the current widths are the same', (
 });
 
 describe('resize with keyboard', () => {
+  let mockWidth = 150;
+
   const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
   beforeEach(() => {
     HTMLElement.prototype.getBoundingClientRect = function () {
       const rect = originalBoundingClientRect.apply(this);
       if (this.tagName === 'TH') {
-        rect.width = 150;
+        rect.width = mockWidth;
       }
       return rect;
     };
@@ -310,7 +312,7 @@ describe('resize with keyboard', () => {
     HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
   });
 
-  test('resizes columns with keyboard to the lect', async () => {
+  test('resizes columns with keyboard', async () => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
@@ -329,6 +331,19 @@ describe('resize with keyboard', () => {
       expect(onChange).toHaveBeenCalledTimes(2);
       expect(onChange).toHaveBeenCalledWith({ widths: [150 + 10, 300] });
     });
+  });
+
+  test('cannot resize below minsize', () => {
+    mockWidth = 80;
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.left);
+
+    expect(onChange).toHaveBeenCalledTimes(0);
+    expect(columnResizerWrapper.getElement()!).toHaveAttribute('aria-valuenow', '80');
   });
 });
 

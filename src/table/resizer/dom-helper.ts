@@ -44,55 +44,19 @@ export class ResizerDomHelper {
     }
   }
 
-  get header(): null | HTMLElement {
-    return this._header;
+  get header(): HTMLElement {
+    return this._header!;
   }
 
-  get headerWidth(): number {
-    return this._header?.getBoundingClientRect().width ?? 0;
+  get table(): HTMLElement {
+    return this._table!;
   }
 
-  get headerLeft(): number {
-    return this._header?.getBoundingClientRect().left ?? 0;
+  get tracker(): HTMLElement {
+    return this._tracker!;
   }
 
-  get headerRight(): number {
-    return this._header?.getBoundingClientRect().right ?? 0;
+  get scrollParent(): HTMLElement {
+    return this._scrollParent!;
   }
-
-  get leftEdge(): number {
-    return this._scrollParent?.getBoundingClientRect().left ?? 0;
-  }
-
-  get rightEdge(): number {
-    return this._scrollParent?.getBoundingClientRect().right ?? 0;
-  }
-
-  incrementScroll = (value: number) => {
-    if (this._scrollParent) {
-      this._scrollParent.scrollLeft += value;
-    }
-  };
-
-  updateTrackerPosition = (newOffset: number) => {
-    if (this._table && this._header && this._tracker) {
-      const { left: scrollParentLeft } = this._table.getBoundingClientRect();
-      this._tracker.style.top = this._header.getBoundingClientRect().height + 'px';
-      // minus one pixel to offset the cell border
-      this._tracker.style.left = newOffset - scrollParentLeft - 1 + 'px';
-    }
-  };
-
-  setResizeActiveStyle = () => {
-    document.body.classList.add(styles['resize-active']);
-  };
-
-  setResizerWithFocusStyle = () => {
-    document.body.classList.add(styles['resize-active-with-focus']);
-  };
-
-  removeStyles = () => {
-    document.body.classList.remove(styles['resize-active']);
-    document.body.classList.remove(styles['resize-active-with-focus']);
-  };
 }
