@@ -313,6 +313,7 @@ describe('resize with keyboard', () => {
   });
 
   test('resizes columns with keyboard', async () => {
+    mockWidth = 150;
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;

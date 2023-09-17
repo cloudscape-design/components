@@ -44,6 +44,8 @@ export function Resizer({
   useEffect(() => setHeaderCellWidth(resizerDom.current.header.getBoundingClientRect().width), []);
 
   const handlers = useMemo(() => {
+    const { left: leftEdge, right: rightEdge } = resizerDom.current.scrollParent.getBoundingClientRect();
+
     const updateTrackerPosition = (newOffset: number) => {
       const { left: scrollParentLeft } = resizerDom.current.table.getBoundingClientRect();
       resizerDom.current.tracker.style.top = resizerDom.current.header.getBoundingClientRect().height + 'px';
@@ -52,8 +54,7 @@ export function Resizer({
     };
 
     const updateColumnWidth = (newWidth: number) => {
-      const right = resizerDom.current.header.getBoundingClientRect().right;
-      const width = resizerDom.current.header.getBoundingClientRect().width;
+      const { right, width } = resizerDom.current.header.getBoundingClientRect();
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       updateTrackerPosition(right + updatedWidth - width);
       if (newWidth >= minWidth) {
@@ -64,24 +65,26 @@ export function Resizer({
     };
 
     const resizeColumn = (offset: number) => {
-      if (offset > resizerDom.current.scrollParent.getBoundingClientRect().left) {
-        const newWidth = offset - resizerDom.current.header.getBoundingClientRect().left;
+      if (offset > leftEdge) {
+        const cellLeft = resizerDom.current.header.getBoundingClientRect().left;
+        const newWidth = offset - cellLeft;
         // callbacks must be the last calls in the handler, because they may cause an extra update
         updateColumnWidth(newWidth);
       }
     };
 
     const onAutoGrow = () => {
+      const { width } = resizerDom.current.header.getBoundingClientRect();
       autoGrowTimeout.current = setTimeout(onAutoGrow, AUTO_GROW_INTERVAL);
       // callbacks must be the last calls in the handler, because they may cause an extra update
-      updateColumnWidth(resizerDom.current.header.getBoundingClientRect().width + AUTO_GROW_INCREMENT);
+      updateColumnWidth(width + AUTO_GROW_INCREMENT);
       resizerDom.current.scrollParent.scrollLeft += AUTO_GROW_INCREMENT;
     };
 
     const onMouseMove = (event: MouseEvent) => {
       clearTimeout(autoGrowTimeout.current);
       const offset = event.pageX;
-      if (offset > resizerDom.current.scrollParent.getBoundingClientRect().right) {
+      if (offset > rightEdge) {
         autoGrowTimeout.current = setTimeout(onAutoGrow, AUTO_GROW_START_TIME);
       } else {
         resizeColumn(offset);
