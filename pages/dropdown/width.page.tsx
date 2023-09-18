@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Select, { SelectProps } from '~components/select';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import Autosuggest from '~components/autosuggest';
@@ -12,6 +12,7 @@ type DemoContext = React.Context<
   AppContextType<{
     component: string;
     triggerWidth: string;
+    asyncLoading?: boolean;
     virtualScroll: boolean;
     expandToViewport: boolean;
     containerWidth: string;
@@ -79,6 +80,14 @@ function SettingsForm() {
         />
       </label>
       <label>
+        Async loading{' '}
+        <input
+          type="checkbox"
+          checked={urlParams.asyncLoading}
+          onChange={event => setUrlParams({ asyncLoading: event.target.checked })}
+        />
+      </label>
+      <label>
         <input
           type="checkbox"
           checked={urlParams.expandToViewport}
@@ -100,69 +109,113 @@ function SettingsForm() {
   );
 }
 
-function CustomAutosuggest({ expandToViewport, virtualScroll }: { expandToViewport: boolean; virtualScroll: boolean }) {
+interface CommonProps {
+  expandToViewport: boolean;
+  loading?: boolean;
+  onOpen: () => void;
+  virtualScroll: boolean;
+}
+
+function CustomAutosuggest({ expandToViewport, loading, onOpen, virtualScroll }: CommonProps) {
   const [value, setValue] = useState('');
   return (
     <Autosuggest
       value={value}
       onChange={e => setValue(e.detail.value)}
-      options={[
-        { value: longOptionText, tags: ['tag1', 'tag2'], filteringTags: ['bla', 'opt'], description: 'description1' },
-        { value: shortOptionText, labelTag: 'This is a label tag' },
-      ]}
+      options={
+        loading
+          ? []
+          : [
+              {
+                value: longOptionText,
+                tags: ['tag1', 'tag2'],
+                filteringTags: ['bla', 'opt'],
+                description: 'description1',
+              },
+              { value: shortOptionText, labelTag: 'This is a label tag' },
+            ]
+      }
       ariaLabel="simple autosuggest"
       virtualScroll={virtualScroll}
       expandToViewport={expandToViewport}
+      loadingText="Loading options"
+      placeholder="Choose an option"
+      statusType={loading ? 'loading' : undefined}
+      onFocus={onOpen}
     />
   );
 }
 
-function CustomMultiSelect({ expandToViewport, virtualScroll }: { expandToViewport: boolean; virtualScroll: boolean }) {
+function CustomMultiSelect({ expandToViewport, loading, onOpen, virtualScroll }: CommonProps) {
   const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<MultiselectProps.Option>>([]);
   return (
     <Multiselect
       expandToViewport={expandToViewport}
       virtualScroll={virtualScroll}
-      options={[
-        { value: 'first', label: longOptionText },
-        {
-          value: 'second',
-          label: shortOptionText,
-        },
-      ]}
+      options={
+        loading
+          ? []
+          : [
+              { value: 'first', label: longOptionText },
+              {
+                value: 'second',
+                label: shortOptionText,
+              },
+            ]
+      }
       selectedOptions={selectedOptions}
       onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
+      loadingText="Loading options"
+      placeholder="Choose an option"
+      statusType={loading ? 'loading' : undefined}
+      onFocus={onOpen}
     />
   );
 }
 
-function CustomSelect({ expandToViewport, virtualScroll }: { expandToViewport: boolean; virtualScroll: boolean }) {
+function CustomSelect({ expandToViewport, loading, onOpen, virtualScroll }: CommonProps) {
   const [selectedOption, setSelectedOption] = useState<SelectProps['selectedOption']>(null);
+
   return (
     <Select
       selectedOption={selectedOption}
-      options={[
-        {
-          value: longOptionText,
-          tags: ['tag1', 'tag2'],
-          filteringTags: ['bla', 'opt'],
-          description: 'description1',
-        },
-        { value: shortOptionText },
-      ]}
+      options={
+        loading
+          ? []
+          : [
+              {
+                value: longOptionText,
+                tags: ['tag1', 'tag2'],
+                filteringTags: ['bla', 'opt'],
+                description: 'description1',
+              },
+              { value: shortOptionText },
+            ]
+      }
       onChange={event => setSelectedOption(event.detail.selectedOption)}
       ariaLabel={'simple select'}
       filteringType={'auto'}
       virtualScroll={virtualScroll}
       expandToViewport={expandToViewport}
+      loadingText="Loading options"
+      placeholder="Choose an option"
+      statusType={loading ? 'loading' : undefined}
+      onFocus={onOpen}
     />
   );
 }
 
 export default function () {
   const { urlParams } = useContext(AppContext as DemoContext);
-
-  const { component, triggerWidth, virtualScroll, expandToViewport, containerWidth } = urlParams;
+  const { asyncLoading, component, triggerWidth, virtualScroll, expandToViewport, containerWidth } = urlParams;
+  const [loading, setLoading] = useState(asyncLoading);
+  const onOpen = () => {
+    setLoading(asyncLoading);
+    if (asyncLoading) {
+      setTimeout(() => setLoading(false), 500);
+    }
+  };
+  useEffect(onOpen, [asyncLoading]);
   return (
     <article>
       <h1>Dropdown width</h1>
@@ -171,13 +224,28 @@ export default function () {
         <div style={{ width: containerWidth, height: '300px', overflow: 'hidden', border: `1px solid blue` }}>
           <div style={{ width: triggerWidth }}>
             {component === 'autosuggest' && (
-              <CustomAutosuggest virtualScroll={virtualScroll} expandToViewport={expandToViewport} />
+              <CustomAutosuggest
+                virtualScroll={virtualScroll}
+                expandToViewport={expandToViewport}
+                loading={loading}
+                onOpen={onOpen}
+              />
             )}
             {component === 'multiselect' && (
-              <CustomMultiSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
+              <CustomMultiSelect
+                expandToViewport={expandToViewport}
+                virtualScroll={virtualScroll}
+                loading={loading}
+                onOpen={onOpen}
+              />
             )}
             {component === 'select' && (
-              <CustomSelect expandToViewport={expandToViewport} virtualScroll={virtualScroll} />
+              <CustomSelect
+                expandToViewport={expandToViewport}
+                virtualScroll={virtualScroll}
+                loading={loading}
+                onOpen={onOpen}
+              />
             )}
           </div>
         </div>
