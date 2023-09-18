@@ -42,21 +42,19 @@ function setupTest(
     componentId,
     triggerWidth,
     expandToViewport,
-    virtualScroll,
     asyncLoading = false,
   }: {
     pageWidth: number;
     componentId: ComponentId;
     triggerWidth: number;
     expandToViewport: boolean;
-    virtualScroll: boolean;
     asyncLoading?: boolean;
   },
   testFn: (page: DropdownPageObject) => Promise<void>
 ) {
   return useBrowser({ width: pageWidth, height: 1000 }, async browser => {
     await browser.url(
-      `#/light/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&width=${triggerWidth}px&virtualScroll=${virtualScroll}&asyncLoading=${asyncLoading}`
+      `#/light/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&width=${triggerWidth}px&asyncLoading=${asyncLoading}`
     );
     const page = new DropdownPageObject(browser);
     await page.waitForVisible(page.getWrapperAndTrigger(componentId).wrapper.toSelector());
@@ -105,7 +103,6 @@ function testForAllCases(
           expandToViewport,
           pageWidth,
           triggerWidth,
-          virtualScroll: false,
         },
         page => testFn({ page, componentId: componentId as ComponentId, expandToViewport })
       )()
@@ -138,7 +135,7 @@ describe('Dropdown width', () => {
       expect(dropdownBox.left + dropdownBox.width).toBeLessThanOrEqual(pageWidth);
     });
   });
-  describe('updates its width between re-renders', () => {
+  describe('updates between re-renders', () => {
     const pageWidth = 350;
     testForAllCases(
       { pageWidth, triggerWidth, asyncLoading: true },
