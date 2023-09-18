@@ -4,17 +4,16 @@ import clsx from 'clsx';
 import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import InternalContainer from '../container/internal';
+import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { supportsStickyPosition } from '../internal/utils/dom';
-import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
-import { focusMarkers, useFocusMove, useSelection } from './use-selection';
+import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from './selection';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
@@ -40,12 +39,30 @@ import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } fro
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
-  InternalBaseComponentProps;
+  InternalBaseComponentProps & {
+    __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
+    __subStepRef?: InternalContainerProps['__subStepRef'];
+  };
+
+export const InternalTableAsSubstep = React.forwardRef(
+  <T,>(props: InternalTableProps<T>, ref: React.Ref<TableProps.Ref>) => {
+    const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+
+    const tableProps: InternalTableProps<T> = {
+      ...props,
+      __subStepRef: subStepRef,
+      __funnelSubStepProps: funnelSubStepProps,
+    };
+
+    return <InternalTable {...tableProps} ref={ref} />;
+  }
+) as TableForwardRefType;
 
 const InternalTable = React.forwardRef(
   <T,>(
@@ -89,6 +106,8 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
+      __funnelSubStepProps,
+      __subStepRef,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -120,7 +139,7 @@ const InternalTable = React.forwardRef(
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
-    const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
+    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({
@@ -185,9 +204,8 @@ const InternalTable = React.forwardRef(
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
-
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid-no-navigation' : 'table';
+    const tableRole = hasEditableCells ? 'grid-default' : 'table';
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -246,6 +264,8 @@ const InternalTable = React.forwardRef(
             {...baseProps}
             __internalRootRef={__internalRootRef}
             className={clsx(baseProps.className, styles.root)}
+            __funnelSubStepProps={__funnelSubStepProps}
+            __subStepRef={__subStepRef}
             header={
               <>
                 {hasHeader && (
@@ -341,7 +361,7 @@ const InternalTable = React.forwardRef(
                 <Thead
                   ref={theadRef}
                   hidden={stickyHeader}
-                  onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
+                  onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
                   {...theadProps}
                 />
                 <tbody>
@@ -473,12 +493,13 @@ const InternalTable = React.forwardRef(
               </table>
               {resizableColumns && <ResizeTracker />}
             </div>
+
             <StickyScrollbar
               ref={scrollbarRef}
               wrapperRef={wrapperRefObject}
               tableRef={tableRefObject}
               onScroll={handleScroll}
-              offsetScrollbar={hasStickyColumns}
+              hasStickyColumns={hasStickyColumns}
             />
           </InternalContainer>
         </ColumnWidthsProvider>

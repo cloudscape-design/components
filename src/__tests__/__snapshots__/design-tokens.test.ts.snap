@@ -300,6 +300,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -347,6 +375,13 @@ Object {
           "$value": Object {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-normal-default": Object {
@@ -424,6 +459,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -1826,6 +1889,27 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -1869,12 +1953,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -2392,6 +2560,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -2439,6 +2635,13 @@ Object {
           "$value": Object {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-normal-default": Object {
@@ -2516,6 +2719,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -3918,6 +4149,27 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -3961,12 +4213,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -4484,6 +4820,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -4531,6 +4895,13 @@ Object {
           "$value": Object {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-normal-default": Object {
@@ -4608,6 +4979,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -6010,6 +6409,27 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -6053,12 +6473,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -6576,6 +7080,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -6623,6 +7155,13 @@ Object {
           "$value": Object {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-border-button-normal-default": Object {
@@ -6700,6 +7239,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#687078",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#16191f",
           },
         },
         "color-border-status-error": Object {
@@ -8102,6 +8669,27 @@ Object {
             "light": "#16191f",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -8145,12 +8733,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -8668,6 +9340,34 @@ Object {
             "light": "#21252c",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -8715,6 +9415,13 @@ Object {
           "$value": Object {
             "dark": "#0073bb",
             "light": "#0073bb",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-border-button-normal-default": Object {
@@ -8792,6 +9499,34 @@ Object {
           "$value": Object {
             "dark": "#00a1c9",
             "light": "#00a1c9",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#879596",
+            "light": "#879596",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-status-error": Object {
@@ -10194,6 +10929,27 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -10237,12 +10993,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "44px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "18px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "28px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "16px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "400",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "400",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "22px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "56px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "22px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "36px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "20px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -10760,6 +11600,34 @@ Object {
         "light": "#ffffff",
       },
     },
+    "color-background-segment-active": Object {
+      "$description": "The background color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-segment-default": Object {
+      "$description": "The background color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-disabled": Object {
+      "$description": "The background color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-hover": Object {
+      "$description": "The background color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
     "color-background-status-error": Object {
       "$description": "The background color of an item in error state. For example: error alerts.",
       "$value": Object {
@@ -10807,6 +11675,13 @@ Object {
       "$value": Object {
         "dark": "#0073bb",
         "light": "#99cbe4",
+      },
+    },
+    "color-border-button-normal-active": Object {
+      "$description": "The border color of normal buttons in active state.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#545b64",
       },
     },
     "color-border-button-normal-default": Object {
@@ -10884,6 +11759,34 @@ Object {
       "$value": Object {
         "dark": "#00a1c9",
         "light": "#0073bb",
+      },
+    },
+    "color-border-segment-active": Object {
+      "$description": "The border color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#16191f",
+      },
+    },
+    "color-border-segment-default": Object {
+      "$description": "The border color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#879596",
+        "light": "#687078",
+      },
+    },
+    "color-border-segment-disabled": Object {
+      "$description": "The border color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#414750",
+        "light": "#d5dbdb",
+      },
+    },
+    "color-border-segment-hover": Object {
+      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#ffffff",
+        "light": "#16191f",
       },
     },
     "color-border-status-error": Object {
@@ -12286,6 +13189,27 @@ Object {
         "light": "#fafafa",
       },
     },
+    "color-text-segment-active": Object {
+      "$description": "The text color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#1a2029",
+        "light": "#ffffff",
+      },
+    },
+    "color-text-segment-default": Object {
+      "$description": "The text color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d5dbdb",
+        "light": "#545b64",
+      },
+    },
+    "color-text-segment-hover": Object {
+      "$description": "The text color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
     "color-text-status-error": Object {
       "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
       "$value": Object {
@@ -12329,12 +13253,96 @@ Object {
       },
     },
     "font-family-base": Object {
-      "$description": "The default font family that will be applied globally to the product interface. ",
+      "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": Object {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+    },
+    "font-size-body-m": Object {
+      "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+      "$value": "14px",
+    },
+    "font-size-body-s": Object {
+      "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+      "$value": "12px",
+    },
+    "font-size-display-l": Object {
+      "$description": "The default font size for large display text.",
+      "$value": "44px",
+    },
+    "font-size-heading-l": Object {
+      "$description": "The default font size for h2s.",
+      "$value": "18px",
+    },
+    "font-size-heading-m": Object {
+      "$description": "The default font size for h3s.",
+      "$value": "18px",
+    },
+    "font-size-heading-s": Object {
+      "$description": "The default font size for h4s.",
+      "$value": "16px",
+    },
+    "font-size-heading-xl": Object {
+      "$description": "The default font size for h1s.",
+      "$value": "28px",
+    },
+    "font-size-heading-xs": Object {
+      "$description": "The default font size for h5s.",
+      "$value": "16px",
+    },
+    "font-weight-heading-l": Object {
+      "$description": "The default font weight for h2s.",
+      "$value": "700",
+    },
+    "font-weight-heading-m": Object {
+      "$description": "The default font weight for h3s.",
+      "$value": "400",
+    },
+    "font-weight-heading-s": Object {
+      "$description": "The default font weight for h4s.",
+      "$value": "700",
+    },
+    "font-weight-heading-xl": Object {
+      "$description": "The default font weight for h1s.",
+      "$value": "400",
+    },
+    "font-weight-heading-xs": Object {
+      "$description": "The default font weight for h5s.",
+      "$value": "400",
+    },
+    "line-height-body-m": Object {
+      "$description": "The default line height for regular body text.",
+      "$value": "22px",
+    },
+    "line-height-body-s": Object {
+      "$description": "The default line height for small body text.",
+      "$value": "16px",
+    },
+    "line-height-display-l": Object {
+      "$description": "The default line height for large display text.",
+      "$value": "56px",
+    },
+    "line-height-heading-l": Object {
+      "$description": "The default line height for h2s.",
+      "$value": "22px",
+    },
+    "line-height-heading-m": Object {
+      "$description": "The default line height for h3s.",
+      "$value": "22px",
+    },
+    "line-height-heading-s": Object {
+      "$description": "The default line height for h4s.",
+      "$value": "20px",
+    },
+    "line-height-heading-xl": Object {
+      "$description": "The default line height for h1s.",
+      "$value": "36px",
+    },
+    "line-height-heading-xs": Object {
+      "$description": "The default line height for h5s.",
+      "$value": "20px",
     },
     "motion-duration-complex": Object {
       "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -12857,6 +13865,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -12904,6 +13940,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#d3e7f9",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#000716",
           },
         },
         "color-border-button-normal-default": Object {
@@ -12981,6 +14024,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -14383,6 +15454,27 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -14426,12 +15518,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -14949,6 +16125,34 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -14996,6 +16200,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#0972d3",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-normal-default": Object {
@@ -15073,6 +16284,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-status-error": Object {
@@ -16475,6 +17714,27 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -16518,12 +17778,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -17041,6 +18385,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -17088,6 +18460,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#d3e7f9",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#033160",
           },
         },
         "color-border-button-normal-default": Object {
@@ -17165,6 +18544,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -18567,6 +19974,27 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -18610,12 +20038,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -19133,6 +20645,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -19180,6 +20720,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#d3e7f9",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-normal-default": Object {
@@ -19257,6 +20804,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -20659,6 +22234,27 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -20702,12 +22298,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -21225,6 +22905,34 @@ Object {
             "light": "#ffffff",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -21272,6 +22980,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#d3e7f9",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
           },
         },
         "color-border-button-normal-default": Object {
@@ -21349,6 +23064,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#0972d3",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
           },
         },
         "color-border-status-error": Object {
@@ -22751,6 +24494,27 @@ Object {
             "light": "#000716",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#0972d3",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -22794,12 +24558,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -23317,6 +25165,34 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -23364,6 +25240,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#0972d3",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
           },
         },
         "color-border-button-normal-default": Object {
@@ -23441,6 +25324,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-status-error": Object {
@@ -24843,6 +26754,27 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -24886,12 +26818,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -25409,6 +27425,34 @@ Object {
             "light": "#192534",
           },
         },
+        "color-background-segment-active": Object {
+          "$description": "The background color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
+        "color-background-segment-default": Object {
+          "$description": "The background color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
+        "color-background-segment-disabled": Object {
+          "$description": "The background color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
+        "color-background-segment-hover": Object {
+          "$description": "The background color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#0f1b2a",
+            "light": "#0f1b2a",
+          },
+        },
         "color-background-status-error": Object {
           "$description": "The background color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -25456,6 +27500,13 @@ Object {
           "$value": Object {
             "dark": "#0972d3",
             "light": "#0972d3",
+          },
+        },
+        "color-border-button-normal-active": Object {
+          "$description": "The border color of normal buttons in active state.",
+          "$value": Object {
+            "dark": "#89bdee",
+            "light": "#89bdee",
           },
         },
         "color-border-button-normal-default": Object {
@@ -25533,6 +27584,34 @@ Object {
           "$value": Object {
             "dark": "#539fe5",
             "light": "#539fe5",
+          },
+        },
+        "color-border-segment-active": Object {
+          "$description": "The border color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-default": Object {
+          "$description": "The border color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-disabled": Object {
+          "$description": "The border color of disabled segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-segment-hover": Object {
+          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-border-status-error": Object {
@@ -26935,6 +29014,27 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-text-segment-active": Object {
+          "$description": "The text color of the active segment in a segmented control.",
+          "$value": Object {
+            "dark": "#000716",
+            "light": "#000716",
+          },
+        },
+        "color-text-segment-default": Object {
+          "$description": "The text color of inactive segments in a segmented control.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-text-segment-hover": Object {
+          "$description": "The text color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#539fe5",
+            "light": "#539fe5",
+          },
+        },
         "color-text-status-error": Object {
           "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
           "$value": Object {
@@ -26978,12 +29078,96 @@ Object {
           },
         },
         "font-family-base": Object {
-          "$description": "The default font family that will be applied globally to the product interface. ",
+          "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": Object {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+        },
+        "font-size-body-m": Object {
+          "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+          "$value": "14px",
+        },
+        "font-size-body-s": Object {
+          "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+          "$value": "12px",
+        },
+        "font-size-display-l": Object {
+          "$description": "The default font size for large display text.",
+          "$value": "42px",
+        },
+        "font-size-heading-l": Object {
+          "$description": "The default font size for h2s.",
+          "$value": "20px",
+        },
+        "font-size-heading-m": Object {
+          "$description": "The default font size for h3s.",
+          "$value": "18px",
+        },
+        "font-size-heading-s": Object {
+          "$description": "The default font size for h4s.",
+          "$value": "16px",
+        },
+        "font-size-heading-xl": Object {
+          "$description": "The default font size for h1s.",
+          "$value": "24px",
+        },
+        "font-size-heading-xs": Object {
+          "$description": "The default font size for h5s.",
+          "$value": "14px",
+        },
+        "font-weight-heading-l": Object {
+          "$description": "The default font weight for h2s.",
+          "$value": "700",
+        },
+        "font-weight-heading-m": Object {
+          "$description": "The default font weight for h3s.",
+          "$value": "700",
+        },
+        "font-weight-heading-s": Object {
+          "$description": "The default font weight for h4s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xl": Object {
+          "$description": "The default font weight for h1s.",
+          "$value": "700",
+        },
+        "font-weight-heading-xs": Object {
+          "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "line-height-body-m": Object {
+          "$description": "The default line height for regular body text.",
+          "$value": "20px",
+        },
+        "line-height-body-s": Object {
+          "$description": "The default line height for small body text.",
+          "$value": "16px",
+        },
+        "line-height-display-l": Object {
+          "$description": "The default line height for large display text.",
+          "$value": "48px",
+        },
+        "line-height-heading-l": Object {
+          "$description": "The default line height for h2s.",
+          "$value": "24px",
+        },
+        "line-height-heading-m": Object {
+          "$description": "The default line height for h3s.",
+          "$value": "22px",
+        },
+        "line-height-heading-s": Object {
+          "$description": "The default line height for h4s.",
+          "$value": "20px",
+        },
+        "line-height-heading-xl": Object {
+          "$description": "The default line height for h1s.",
+          "$value": "30px",
+        },
+        "line-height-heading-xs": Object {
+          "$description": "The default line height for h5s.",
+          "$value": "18px",
         },
         "motion-duration-complex": Object {
           "$description": "The duration for drawing more attention or accommodating for more complexity.",
@@ -27501,6 +29685,34 @@ Object {
         "light": "#ffffff",
       },
     },
+    "color-background-segment-active": Object {
+      "$description": "The background color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#539fe5",
+        "light": "#0972d3",
+      },
+    },
+    "color-background-segment-default": Object {
+      "$description": "The background color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#0f1b2a",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-disabled": Object {
+      "$description": "The background color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#0f1b2a",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-segment-hover": Object {
+      "$description": "The background color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#0f1b2a",
+        "light": "#ffffff",
+      },
+    },
     "color-background-status-error": Object {
       "$description": "The background color of an item in error state. For example: error alerts.",
       "$value": Object {
@@ -27548,6 +29760,13 @@ Object {
       "$value": Object {
         "dark": "#0972d3",
         "light": "#d3e7f9",
+      },
+    },
+    "color-border-button-normal-active": Object {
+      "$description": "The border color of normal buttons in active state.",
+      "$value": Object {
+        "dark": "#89bdee",
+        "light": "#033160",
       },
     },
     "color-border-button-normal-default": Object {
@@ -27625,6 +29844,34 @@ Object {
       "$value": Object {
         "dark": "#539fe5",
         "light": "#0972d3",
+      },
+    },
+    "color-border-segment-active": Object {
+      "$description": "The border color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-border-segment-default": Object {
+      "$description": "The border color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-border-segment-disabled": Object {
+      "$description": "The border color of disabled segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-border-segment-hover": Object {
+      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
       },
     },
     "color-border-status-error": Object {
@@ -29027,6 +31274,27 @@ Object {
         "light": "#fbfbfb",
       },
     },
+    "color-text-segment-active": Object {
+      "$description": "The text color of the active segment in a segmented control.",
+      "$value": Object {
+        "dark": "#000716",
+        "light": "#ffffff",
+      },
+    },
+    "color-text-segment-default": Object {
+      "$description": "The text color of inactive segments in a segmented control.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-text-segment-hover": Object {
+      "$description": "The text color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#539fe5",
+        "light": "#0972d3",
+      },
+    },
     "color-text-status-error": Object {
       "$description": "The color of error text and icons. For example: form field error text and error status indicators.",
       "$value": Object {
@@ -29070,12 +31338,96 @@ Object {
       },
     },
     "font-family-base": Object {
-      "$description": "The default font family that will be applied globally to the product interface. ",
+      "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": Object {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+    },
+    "font-size-body-m": Object {
+      "$description": "The default font size for regular body text. For example, <p> tags in text content, or button text.",
+      "$value": "14px",
+    },
+    "font-size-body-s": Object {
+      "$description": "The default font size for small body text. For example, form field descriptions, or badge text.",
+      "$value": "12px",
+    },
+    "font-size-display-l": Object {
+      "$description": "The default font size for large display text.",
+      "$value": "42px",
+    },
+    "font-size-heading-l": Object {
+      "$description": "The default font size for h2s.",
+      "$value": "20px",
+    },
+    "font-size-heading-m": Object {
+      "$description": "The default font size for h3s.",
+      "$value": "18px",
+    },
+    "font-size-heading-s": Object {
+      "$description": "The default font size for h4s.",
+      "$value": "16px",
+    },
+    "font-size-heading-xl": Object {
+      "$description": "The default font size for h1s.",
+      "$value": "24px",
+    },
+    "font-size-heading-xs": Object {
+      "$description": "The default font size for h5s.",
+      "$value": "14px",
+    },
+    "font-weight-heading-l": Object {
+      "$description": "The default font weight for h2s.",
+      "$value": "700",
+    },
+    "font-weight-heading-m": Object {
+      "$description": "The default font weight for h3s.",
+      "$value": "700",
+    },
+    "font-weight-heading-s": Object {
+      "$description": "The default font weight for h4s.",
+      "$value": "700",
+    },
+    "font-weight-heading-xl": Object {
+      "$description": "The default font weight for h1s.",
+      "$value": "700",
+    },
+    "font-weight-heading-xs": Object {
+      "$description": "The default font weight for h5s.",
+      "$value": "700",
+    },
+    "line-height-body-m": Object {
+      "$description": "The default line height for regular body text.",
+      "$value": "20px",
+    },
+    "line-height-body-s": Object {
+      "$description": "The default line height for small body text.",
+      "$value": "16px",
+    },
+    "line-height-display-l": Object {
+      "$description": "The default line height for large display text.",
+      "$value": "48px",
+    },
+    "line-height-heading-l": Object {
+      "$description": "The default line height for h2s.",
+      "$value": "24px",
+    },
+    "line-height-heading-m": Object {
+      "$description": "The default line height for h3s.",
+      "$value": "22px",
+    },
+    "line-height-heading-s": Object {
+      "$description": "The default line height for h4s.",
+      "$value": "20px",
+    },
+    "line-height-heading-xl": Object {
+      "$description": "The default line height for h1s.",
+      "$value": "30px",
+    },
+    "line-height-heading-xs": Object {
+      "$description": "The default line height for h5s.",
+      "$value": "18px",
     },
     "motion-duration-complex": Object {
       "$description": "The duration for drawing more attention or accommodating for more complexity.",

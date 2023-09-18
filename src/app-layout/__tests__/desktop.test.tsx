@@ -11,11 +11,13 @@ import {
   resizableDrawer,
   singleDrawer,
   singleDrawerOpen,
+  manyDrawers,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
@@ -179,7 +181,7 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test(`should toggle drawer on click`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => wrapper.findDrawersTriggers()![0].click());
@@ -189,14 +191,7 @@ describeEachThemeAppLayout(false, () => {
   test(`Moves focus to slider when opened`, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
-  });
-
-  test(`Should fire resize when expected`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
-
-    act(() => wrapper.findDrawersTriggers()![0].click());
+    wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
@@ -236,8 +231,21 @@ describeEachThemeAppLayout(false, () => {
   test('should read relative size on resize handle', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
-    act(() => wrapper.findDrawersTriggers()![0].click());
+    wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-valuenow', '0');
+  });
+
+  test('should render overflow item when expected', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+
+    expect(wrapper.findDrawersTriggers()!.length).toBeLessThan(100);
+  });
+
+  test('Renders aria-controls on toggle only when active', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-controls');
+    wrapper.findDrawerTriggerById('security')!.click();
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-controls', 'security');
   });
 });
 
@@ -279,6 +287,12 @@ describe('Classic only features', () => {
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()!.getElement().style.width).toBe('500px');
   });
+
+  test('should render badge when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+
+    expect(wrapper.findByClassName(iconStyles.badge)!.getElement()).toBeInTheDocument();
+  });
 });
 
 describe('VR only features', () => {
@@ -293,5 +307,11 @@ describe('VR only features', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
+  });
+
+  test('should render badge when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+
+    expect(wrapper.findByClassName(visualRefreshStyles.badge)!.getElement()).toBeInTheDocument();
   });
 });

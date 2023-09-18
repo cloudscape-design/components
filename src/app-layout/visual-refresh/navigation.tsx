@@ -75,6 +75,7 @@ export default function Navigation() {
             >
               <TriggerButton
                 ariaLabel={ariaLabels?.navigationToggle}
+                ariaExpanded={isNavigationOpen ? undefined : false}
                 iconName="menu"
                 className={testutilStyles['navigation-toggle']}
                 onClick={() => handleNavigationClick(true)}

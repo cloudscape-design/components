@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
 import { WizardProps } from '../interfaces';
+import Container from '../../../lib/components/container';
+import Header from '../../../lib/components/header';
 
 export const DEFAULT_I18N_SETS = [
   {
@@ -33,15 +36,30 @@ export const DEFAULT_I18N_SETS = [
 export const DEFAULT_STEPS = [
   {
     title: 'Step 1',
-    content: 'Content 1',
+    content: (
+      <>
+        <Container header={<Header>Step 1, substep one</Header>}></Container>
+        <Container header={<Header>Step 1, substep two</Header>}></Container>
+      </>
+    ),
   },
   {
     title: 'Step 2',
-    content: 'Content 2',
+    content: (
+      <>
+        <Container header={<Header>Step 2, substep one</Header>}></Container>
+        <Container header={<Header>Step 2, substep two</Header>}></Container>
+      </>
+    ),
     isOptional: true,
   },
   {
     title: 'Step 3',
-    content: 'Content 3',
+    content: (
+      <>
+        <Container header={<Header>Step 3, substep one</Header>}></Container>
+        <Container header={<Header>Step 3, substep two</Header>}></Container>
+      </>
+    ),
   },
 ] as ReadonlyArray<WizardProps.Step>;

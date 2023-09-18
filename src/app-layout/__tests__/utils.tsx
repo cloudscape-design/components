@@ -11,6 +11,7 @@ import styles from '../../../lib/components/app-layout/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import { InternalDrawerProps, DrawerItem } from '../../../lib/components/app-layout/drawer/interfaces';
+import { IconProps } from '../../../lib/components/icon/interfaces';
 
 // Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -75,9 +76,9 @@ export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: 
   }
 }
 
-export function describeEachAppLayout(callback: () => void) {
+export function describeEachAppLayout(callback: (size: 'desktop' | 'mobile') => void) {
   for (const theme of ['refresh', 'classic']) {
-    for (const size of ['desktop', 'mobile']) {
+    for (const size of ['desktop', 'mobile'] as const) {
       describe(`Theme=${theme}, Size=${size}`, () => {
         beforeEach(() => {
           (useMobile as jest.Mock).mockReturnValue(size === 'mobile');
@@ -87,7 +88,7 @@ export function describeEachAppLayout(callback: () => void) {
           (useMobile as jest.Mock).mockReset();
           (useVisualRefresh as jest.Mock).mockReset();
         });
-        callback();
+        callback(size);
       });
     }
   }
@@ -129,6 +130,47 @@ export const singleDrawer: Required<InternalDrawerProps> = {
           iconName: 'security',
         },
       },
+    ],
+  },
+};
+
+const getDrawerItem = (id: string, iconName: IconProps.Name) => {
+  return {
+    ariaLabels: {
+      closeButton: `${id} close button`,
+      content: `${id} drawer content`,
+      triggerButton: `${id} trigger button`,
+      resizeHandle: `${id} resize handle`,
+    },
+    content: <span>{id}</span>,
+    id,
+    trigger: {
+      iconName,
+    },
+  };
+};
+
+const manyDrawersArray = [...Array(100).keys()].map(item => item.toString());
+
+export const manyDrawers: Required<InternalDrawerProps> = {
+  drawers: {
+    ariaLabel: 'Drawers',
+    items: [
+      {
+        ariaLabels: {
+          closeButton: 'Security close button',
+          content: 'Security drawer content',
+          triggerButton: 'Security trigger button',
+          resizeHandle: 'Security resize handle',
+        },
+        content: <span>Security</span>,
+        badge: true,
+        id: 'security',
+        trigger: {
+          iconName: 'security',
+        },
+      },
+      ...manyDrawersArray.map(item => getDrawerItem(item, 'security')),
     ],
   },
 };

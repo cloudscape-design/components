@@ -95,7 +95,7 @@ const ExpandableNavigationHeader = ({
   icon,
 }: ExpandableNavigationHeaderProps) => {
   return (
-    <div id={id} className={clsx(className, styles['click-target'])} onClick={onClick}>
+    <div id={id} className={clsx(className, styles['click-target'])}>
       <button
         className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
@@ -103,6 +103,7 @@ const ExpandableNavigationHeader = ({
         aria-controls={ariaControls}
         aria-expanded={expanded}
         type="button"
+        onClick={onClick}
       >
         {icon}
       </button>

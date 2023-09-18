@@ -26,9 +26,10 @@ function renderPopover(props: PopoverProps) {
 
 describe('Slots', () => {
   it('renders text trigger correctly', () => {
-    const wrapper = renderPopover({ children: 'Trigger' });
+    const wrapper = renderPopover({ children: 'Trigger', triggerAriaLabel: 'Test aria label' });
     expect(wrapper.findTrigger().getElement().tagName).toBe('BUTTON');
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Trigger');
+    expect(wrapper.findTrigger().getElement()).toHaveAccessibleName('Test aria label');
   });
 
   it('renders custom trigger correctly', () => {

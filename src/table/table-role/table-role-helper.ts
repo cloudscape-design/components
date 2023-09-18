@@ -27,7 +27,7 @@ export function getTableRoleProps(options: {
 
   // Browsers have weird mechanism to guess whether it's a data table or a layout table.
   // If we state explicitly, they get it always correctly even with low number of rows.
-  nativeProps.role = options.tableRole === 'grid-no-navigation' ? 'grid' : options.tableRole;
+  nativeProps.role = options.tableRole === 'grid-default' ? 'grid' : options.tableRole;
 
   nativeProps['aria-label'] = options.ariaLabel;
   nativeProps['aria-labelledby'] = options.ariaLabelledBy;
@@ -64,7 +64,7 @@ export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
   // For grids headers are treated similar to data rows and are indexed accordingly.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-no-navigation') {
+  if (options.tableRole === 'grid' || options.tableRole === 'grid-default') {
     nativeProps['aria-rowindex'] = 1;
   }
 
@@ -74,13 +74,13 @@ export function getTableHeaderRowRoleProps(options: { tableRole: TableRole }) {
 export function getTableRowRoleProps(options: { tableRole: TableRole; rowIndex: number; firstIndex?: number }) {
   const nativeProps: React.HTMLAttributes<HTMLTableRowElement> = {};
 
-  // For grids data cell indices are incremented by 2 to account for the header cells.
-  if (options.tableRole === 'grid' || options.tableRole === 'grid-no-navigation') {
-    nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 2;
+  // The data cell indices are incremented by 1 to account for the header cells.
+  if (options.tableRole === 'grid') {
+    nativeProps['aria-rowindex'] = (options.firstIndex || 1) + options.rowIndex + 1;
   }
   // For tables indices are only added when the first index is not 0 (not the first page/frame).
   else if (options.firstIndex !== undefined) {
-    nativeProps['aria-rowindex'] = (options.firstIndex ?? 0) + options.rowIndex + 1;
+    nativeProps['aria-rowindex'] = options.firstIndex + options.rowIndex + 1;
   }
 
   return nativeProps;

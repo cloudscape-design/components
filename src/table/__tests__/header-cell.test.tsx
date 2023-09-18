@@ -49,11 +49,10 @@ it('renders a fake focus outline on the sort control', () => {
   const { container } = render(
     <TableWrapper>
       <TableHeaderCell<typeof testItem>
-        focusedComponent={{ type: 'column', col: 0 }}
+        focusedComponent="sorting-control-id"
         column={column}
         colIndex={0}
         tabIndex={0}
-        onFocusedComponentChange={() => {}}
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
@@ -73,12 +72,11 @@ it('renders a fake focus outline on the resize control', () => {
   const { container } = render(
     <TableWrapper>
       <TableHeaderCell<typeof testItem>
-        focusedComponent={{ type: 'resizer', col: 0 }}
+        focusedComponent="resize-control-id"
         column={column}
         colIndex={0}
         tabIndex={0}
         resizableColumns={true}
-        onFocusedComponentChange={() => {}}
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
@@ -104,7 +102,6 @@ describe('i18n', () => {
             colIndex={0}
             tabIndex={0}
             resizableColumns={true}
-            onFocusedComponentChange={() => {}}
             updateColumn={() => {}}
             onClick={() => {}}
             onResizeFinish={() => {}}

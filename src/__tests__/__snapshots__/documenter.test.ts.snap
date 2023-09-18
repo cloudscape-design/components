@@ -359,6 +359,12 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the split panel if it is open.",
+      "name": "focusSplitPanel",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
 after changing the content, for example when clicking on an 'info' link while
 the panel is already open.",
@@ -2864,6 +2870,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
         "type": "union",
         "values": Array [
           "add-plus",
+          "anchor-link",
           "angle-left-double",
           "angle-left",
           "angle-right-double",
@@ -5007,7 +5014,7 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
     Object {
       "description": "Use this slot to render a media element. Supported element types are 'img', 'video', and 'picture'.
 You can define different positions and sizes for the media element within the container.
-* \`content\` - Use this slot to render your media element. We support \`img\`, \`video\` and \`picture\` elements.
+* \`content\` - Use this slot to render your media element. We support \`img\`, \`video\`, \`picture\`, and \`iframe\` elements.
 
 * \`position\` - Defines the media slot's position within the container. Defaults to \`top\`.
 
@@ -7079,6 +7086,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
         "type": "union",
         "values": Array [
           "add-plus",
+          "anchor-link",
           "angle-left-double",
           "angle-left",
           "angle-right-double",
@@ -9919,6 +9927,12 @@ Note: Using popover rendered with portal within a Modal is not supported.
         ],
       },
       "name": "size",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an aria-label to the text trigger button.",
+      "name": "triggerAriaLabel",
       "optional": true,
       "type": "string",
     },

@@ -8,6 +8,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { AnalyticsFunnel } from '../internal/analytics/components/analytics-funnel';
 
 import InternalWizard from './internal';
+import { getStepConfiguration } from './analytics';
 import { WizardProps } from './interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 
@@ -25,8 +26,11 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
   return (
     <AnalyticsFunnel
       funnelType="multi-page"
-      optionalStepNumbers={props.steps.map((step, index) => (step.isOptional ? index : -1)).filter(step => step !== -1)}
+      optionalStepNumbers={props.steps
+        .map((step, index) => (step.isOptional ? index + 1 : -1))
+        .filter(step => step !== -1)}
       totalFunnelSteps={props.steps.length}
+      stepConfiguration={getStepConfiguration(props.steps)}
     >
       <InternalWizard
         isLoadingNextStep={isLoadingNextStep}

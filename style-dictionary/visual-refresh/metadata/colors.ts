@@ -187,6 +187,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundSegmentActive: {
+    description: 'The background color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentDefault: {
+    description: 'The background color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentDisabled: {
+    description: 'The background color of disabled segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentHover: {
+    description: 'The background color of inactive segments in a segmented control on hover.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundStatusError: {
     description: 'The background color of an item in error state. For example: error alerts.',
     public: true,
@@ -212,7 +232,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  colorBorderButtonNormalActive: { description: 'The border color of normal buttons in active state.' },
+  colorBorderButtonNormalActive: {
+    description: 'The border color of normal buttons in active state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
   colorBorderButtonNormalDisabled: {
     description: 'The border color of normal buttons in disabled state.',
@@ -272,6 +296,26 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBorderItemSelected: {
     description:
       'The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentActive: {
+    description: 'The border color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentDefault: {
+    description: 'The border color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentDisabled: {
+    description: 'The border color of disabled segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentHover: {
+    description: 'The border color of inactive segments in a segmented control on hover.',
     public: true,
     themeable: true,
   },
@@ -550,6 +594,21 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextNotificationDefault: {
     description: 'Default text color for notifications. For example: the text on badges and flashes.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentActive: {
+    description: 'The text color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentDefault: {
+    description: 'The text color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentHover: {
+    description: 'The text color of inactive segments in a segmented control on hover.',
     public: true,
     themeable: true,
   },

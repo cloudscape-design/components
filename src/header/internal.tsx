@@ -54,16 +54,22 @@ export default function InternalHeader({
         styles[`root-variant-${variantOverride}`],
         isRefresh && styles.refresh,
         !actions && [styles[`root-no-actions`]],
-        description && [styles[`root-has-description`]],
-        __disableActionsWrapping && [styles['root-no-wrap']]
+        description && [styles[`root-has-description`]]
       )}
       ref={__internalRootRef}
     >
-      <div className={clsx(styles.main, styles[`main-variant-${variantOverride}`], isRefresh && styles.refresh)}>
+      <div
+        className={clsx(
+          styles.main,
+          styles[`main-variant-${variantOverride}`],
+          isRefresh && styles.refresh,
+          __disableActionsWrapping && [styles['no-wrap']]
+        )}
+      >
         <div className={clsx(styles.title, styles[`title-variant-${variantOverride}`], isRefresh && styles.refresh)}>
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
             <span
-              {...{ [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME }}
+              {...(HeadingTag === 'h2' ? { [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME } : {})}
               className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}
               id={headingId}
             >
@@ -75,15 +81,15 @@ export default function InternalHeader({
             {info && <span className={styles.info}>{info}</span>}
           </InfoLinkLabelContext.Provider>
         </div>
-        <Description variantOverride={variantOverride}>{description}</Description>
+        {actions && (
+          <div
+            className={clsx(styles.actions, styles[`actions-variant-${variantOverride}`], isRefresh && styles.refresh)}
+          >
+            {actions}
+          </div>
+        )}
       </div>
-      {actions && (
-        <div
-          className={clsx(styles.actions, styles[`actions-variant-${variantOverride}`], isRefresh && styles.refresh)}
-        >
-          {actions}
-        </div>
-      )}
+      <Description variantOverride={variantOverride}>{description}</Description>
     </div>
   );
 }

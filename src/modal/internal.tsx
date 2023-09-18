@@ -29,10 +29,14 @@ import { ButtonContext } from '../internal/context/button-context';
 type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
 
 export default function InternalModal({ modalRoot, ...rest }: InternalModalProps) {
+  const referrerId = useUniqueId('modal');
+
   return (
-    <Portal container={modalRoot}>
-      <InnerModal {...rest} />
-    </Portal>
+    <div id={referrerId}>
+      <Portal container={modalRoot}>
+        <InnerModal {...rest} referrerId={referrerId} />
+      </Portal>
+    </div>
   );
 }
 
@@ -47,8 +51,9 @@ function InnerModal({
   disableContentPaddings,
   onDismiss,
   __internalRootRef = null,
+  referrerId,
   ...rest
-}: InternalModalProps) {
+}: InternalModalProps & { referrerId: string }) {
   const instanceUniqueId = useUniqueId();
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
@@ -128,6 +133,7 @@ function InnerModal({
           onClick={onOverlayClick}
           ref={mergedRef}
           style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
+          data-awsui-referrer-id={referrerId}
         >
           <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
             <div

@@ -49,6 +49,7 @@
       column-gap: awsui.$space-xs;
       grid-template-columns: awsui.$space-l 1fr;
       grid-template-rows: repeat(2, auto);
+      padding: 0;
 
       > hr {
         background-color: awsui.$color-border-divider-default;
@@ -60,7 +61,7 @@
 
       > .number {
         color: awsui.$color-text-small;
-        font-size: awsui.$font-body-s-size;
+        font-size: awsui.$font-size-body-s;
         grid-column: 2;
         grid-row: 1;
       }
@@ -70,7 +71,7 @@
         column-gap: awsui.$space-xs;
         cursor: pointer;
         display: grid;
-        font-size: awsui.$font-body-m-size;
+        font-size: awsui.$font-size-body-m;
         grid-column: 1 / span 2;
         grid-row: 2;
         grid-template-columns: awsui.$space-l 1fr;

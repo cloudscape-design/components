@@ -85,6 +85,10 @@
   }
 }
 
+.drawers-mobile-triggers-container {
+  display: flex;
+}
+
 .drawers-trigger-content {
   align-items: center;
   display: flex;
@@ -105,12 +109,20 @@
       transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
     }
   }
+
+  > .drawers-trigger-overflow {
+    padding: 0 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .drawers-trigger {
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     width: constants.$sidebar-size-closed;
-    text-align: right;
+    display: flex;
+    justify-content: center;
   }
 }
 

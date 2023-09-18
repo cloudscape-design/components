@@ -14,6 +14,7 @@ export const DATA_ATTR_ANALYTICS_ALERT = 'data-analytics-alert';
 export const DATA_ATTR_ANALYTICS_FLASHBAR = 'data-analytics-flashbar';
 
 export const FUNNEL_KEY_FUNNEL_NAME = 'funnel-name';
+export const FUNNEL_KEY_STEP_NAME = 'step-name';
 export const FUNNEL_KEY_SUBSTEP_NAME = 'substep-name';
 
 export const getFunnelNameSelector = () => `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_FUNNEL_NAME}"]`;
@@ -22,10 +23,10 @@ export const getFunnelValueSelector = (value: string) => `[${DATA_ATTR_FUNNEL_VA
 
 export const getSubStepAllSelector = () => `[${DATA_ATTR_FUNNEL_SUBSTEP}]`;
 export const getSubStepSelector = (subStepId: string) => `[${DATA_ATTR_FUNNEL_SUBSTEP}="${subStepId}"]`;
-export const getSubStepNameSelector = (subStepId: string) =>
-  [`${getSubStepSelector(subStepId)}`, `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_SUBSTEP_NAME}"]`].join(' ');
+export const getSubStepNameSelector = (subStepId?: string) =>
+  [subStepId ? getSubStepSelector(subStepId) : '', `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_SUBSTEP_NAME}"]`].join(' ');
 
 export const getFieldSlotSeletor = (id: string | undefined) => (id ? `[id="${id}"]` : undefined);
 
 export const getNameFromSelector = (selector: string | undefined): string | undefined =>
-  selector ? document.querySelector<HTMLElement>(selector)?.innerText : undefined;
+  selector ? document.querySelector<HTMLElement>(selector)?.innerText?.trim() : undefined;

@@ -8,8 +8,7 @@ import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../radio-group/radio-button';
 
 import styles from './styles.css.js';
-import { InteractiveComponent } from '../thead';
-import { SelectionProps } from '../use-selection';
+import { SelectionProps } from './interfaces';
 
 export interface SelectionControlProps extends SelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
@@ -17,12 +16,10 @@ export interface SelectionControlProps extends SelectionProps {
   onFocusDown?: KeyboardEventHandler;
   ariaLabel?: string;
   tabIndex?: -1;
-
-  focusedComponent?: InteractiveComponent | null;
-  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  focusedComponent?: null | string;
 }
 
-export default function SelectionControl({
+export function SelectionControl({
   selectionType,
   indeterminate = false,
   onShiftToggle,
@@ -30,9 +27,7 @@ export default function SelectionControl({
   onFocusDown,
   name,
   ariaLabel,
-
   focusedComponent,
-  onFocusedComponentChange,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -79,10 +74,9 @@ export default function SelectionControl({
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
-      showOutline={focusedComponent?.type === 'selection'}
-      onFocus={() => onFocusedComponentChange?.({ type: 'selection' })}
-      onBlur={() => onFocusedComponentChange?.(null)}
+      showOutline={focusedComponent === 'selection-control'}
       controlId={controlId}
+      data-focus-id="selection-control"
       indeterminate={indeterminate}
     />
   ) : (
@@ -104,7 +98,7 @@ export default function SelectionControl({
       >
         {selector}
       </label>
-      {/* HACK: IE11 collapses td's height to 0, if it contains only an absouletely positioned label */}
+      {/* HACK: IE11 collapses td's height to 0, if it contains only an absolutely positioned label */}
       <span className={clsx(styles.stud)} aria-hidden={true}>
         &nbsp;
       </span>
