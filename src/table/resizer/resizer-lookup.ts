@@ -3,7 +3,7 @@
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import tableStyles from '../styles.css.js';
-import styles from './styles.css.js';
+import resizerStyles from './styles.css.js';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers.js';
 
 export function getResizerElements(resizerElement: null | HTMLElement) {
@@ -27,7 +27,7 @@ export function getResizerElements(resizerElement: null | HTMLElement) {
   }
 
   // tracker is rendered inside table wrapper to align with its size
-  const tracker = tableRoot.querySelector<HTMLElement>(`.${styles.tracker}`);
+  const tracker = tableRoot.querySelector<HTMLElement>(`.${resizerStyles.tracker}`);
   if (!tracker) {
     return null;
   }
