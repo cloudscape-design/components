@@ -22,6 +22,7 @@ import { useMobile } from '../../hooks/use-mobile';
 import TabTrap from '../tab-trap/index.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import { useUniqueId } from '../../hooks/use-unique-id/index.js';
+import customCssProps from '../../generated/custom-css-properties';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -114,7 +115,9 @@ const TransitionContent = ({
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
-      style={stretchBeyondTriggerWidth ? { maxWidth: defaultMaxDropdownWidth } : {}}
+      style={
+        stretchBeyondTriggerWidth ? { [customCssProps.dropdownDefaultMaxWidth]: `${defaultMaxDropdownWidth}px` } : {}
+      }
       onMouseDown={onMouseDown}
     >
       <div className={clsx(styles['dropdown-content-wrapper'], isRefresh && styles.refresh)}>
@@ -337,7 +340,6 @@ const Dropdown = ({
         })
       ) {
         dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
-        dropdownRef.current.style.removeProperty('maxWidth');
       }
     }
   });
