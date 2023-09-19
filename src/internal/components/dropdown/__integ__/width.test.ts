@@ -54,7 +54,7 @@ function setupTest(
 ) {
   return useBrowser({ width: pageWidth, height: 1000 }, async browser => {
     await browser.url(
-      `#/light/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&width=${triggerWidth}px&asyncLoading=${asyncLoading}`
+      `#/light/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&triggerWidth=${triggerWidth}px&asyncLoading=${asyncLoading}`
     );
     const page = new DropdownPageObject(browser);
     await page.waitForVisible(page.getWrapperAndTrigger(componentId).wrapper.toSelector());
@@ -136,7 +136,7 @@ describe('Dropdown width', () => {
     });
   });
   describe('updates between re-renders', () => {
-    const pageWidth = 350;
+    const pageWidth = 500;
     testForAllCases(
       { pageWidth, triggerWidth, asyncLoading: true },
       async ({ page, componentId, expandToViewport }) => {
@@ -145,12 +145,13 @@ describe('Dropdown width', () => {
           page,
           expandToViewport,
         });
-        expect(dropdownBox.left + dropdownBox.width).toBeLessThanOrEqual(pageWidth);
+        const oldWidth = dropdownBox.width;
         await expect(page.getText(dropdownSelector)).resolves.toContain('Loading');
         await page.waitUntil(async () => (await page.getText(dropdownSelector)).includes('A very'), {
           timeout: 1000,
         });
-        expect(dropdownBox.left + dropdownBox.width).toBeLessThanOrEqual(pageWidth);
+        const newWidth = (await page.getBoundingBox(dropdownSelector)).width;
+        expect(newWidth).toBeGreaterThan(oldWidth);
       }
     );
   });
