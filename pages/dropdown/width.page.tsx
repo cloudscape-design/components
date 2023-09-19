@@ -36,10 +36,6 @@ const componentOptions: ReadonlyArray<SelectProps.Option> = [
     value: 'select',
     label: 'Select',
   },
-  {
-    value: 'property-filter',
-    label: 'Property filter',
-  },
 ];
 
 function SettingsForm() {
@@ -95,16 +91,14 @@ function SettingsForm() {
         />{' '}
         expandToViewport
       </label>
-      {['autosuggest', 'multiselect', 'property-filter', 'select'].includes(urlParams.component) && (
-        <label>
-          <input
-            type="checkbox"
-            checked={urlParams.virtualScroll}
-            onChange={event => setUrlParams({ virtualScroll: event.target.checked })}
-          />{' '}
-          virtualScroll
-        </label>
-      )}
+      <label>
+        <input
+          type="checkbox"
+          checked={urlParams.virtualScroll}
+          onChange={event => setUrlParams({ virtualScroll: event.target.checked })}
+        />{' '}
+        virtualScroll
+      </label>
     </ColumnLayout>
   );
 }
