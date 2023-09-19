@@ -12,8 +12,7 @@ import {
   InteriorDropdownPosition,
   calculatePosition,
   defaultMaxDropdownWidth,
-  getDropdownPosition,
-  getInteriorDropdownPosition,
+  hasEnoughSpaceToStretchBeyondTriggerWidth,
 } from './dropdown-fit-handler';
 import { Transition, TransitionStatus } from '../transition';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
@@ -23,7 +22,6 @@ import { useMobile } from '../../hooks/use-mobile';
 import TabTrap from '../tab-trap/index.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import { useUniqueId } from '../../hooks/use-unique-id/index.js';
-import { getOverflowParentDimensions } from '../../utils/scrollable-containers';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -327,26 +325,17 @@ const Dropdown = ({
   // if that is going to cause the dropdown to be cropped because of overflow
   useLayoutEffect(() => {
     if (stretchBeyondTriggerWidth && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-      const overflowParents = getOverflowParentDimensions(
-        dropdownRef.current,
-        interior,
-        expandToViewport,
-        stretchHeight
-      );
-      const { overflows } = interior
-        ? getInteriorDropdownPosition(triggerRef.current, dropdownRef.current, overflowParents, isMobile)
-        : getDropdownPosition({
-            triggerElement: triggerRef.current,
-            dropdownElement: dropdownRef.current,
-            overflowParents,
-            minWidth,
-            preferCenter,
-            stretchWidth,
-            stretchHeight,
-            isMobile,
-            stretchBeyondTriggerWidth,
-          });
-      if (overflows) {
+      if (
+        !hasEnoughSpaceToStretchBeyondTriggerWidth({
+          triggerElement: triggerRef.current,
+          dropdownElement: dropdownRef.current,
+          desiredMinWidth: minWidth,
+          expandToViewport,
+          stretchWidth,
+          stretchHeight,
+          isMobile,
+        })
+      ) {
         dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
         dropdownRef.current.style.removeProperty('maxWidth');
       }
