@@ -1,21 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '~components/header';
-import Table, { TableProps } from '~components/table';
+import Table from '~components/table';
 import Box from '~components/box';
-import { Instance, generateItems } from './generate-data';
-import { Button, StatusIndicator } from '~components';
+import { generateItems } from './generate-data';
 import { columnsConfig as originalColumnsConfig } from './shared-configs';
 
-const items = generateItems(20);
-
-const rows: TableProps.RowType<Instance>[] = items.map(item => ({ type: 'data', item }));
-rows.splice(20, 0, { type: 'loader', content: <StatusIndicator type="info">End of results</StatusIndicator> });
-rows.splice(15, 0, { type: 'loader', content: <StatusIndicator type="error">Loading error</StatusIndicator> });
-rows.splice(10, 0, { type: 'loader', content: <StatusIndicator type="loading">Loading</StatusIndicator> });
-rows.splice(0, 0, { type: 'loader', content: <Button variant="inline-link">Load more</Button> });
+const items = generateItems(50);
 
 const columnsConfig = originalColumnsConfig.flatMap(column =>
   column.id !== 'type'
@@ -27,22 +20,46 @@ const columnsConfig = originalColumnsConfig.flatMap(column =>
       }))
 );
 
-export default function LoaderRowPage() {
+export default function InContextLoaderPage() {
+  const [loading, setLoading] = useState(false);
+  const [loadedItems, setLoadedItems] = useState(items.slice(0, 20));
+
+  useEffect(() => {
+    if (loading) {
+      const timeoutId = setTimeout(() => {
+        setLoading(false);
+        setLoadedItems(prev => items.slice(0, prev.length + 20));
+      }, 1000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [loading]);
+
   return (
     <Box padding="s">
       <Table
         selectionType="multi"
         header={<Header headingTagOverride="h1">Table with loader rows</Header>}
         columnDefinitions={columnsConfig}
-        items={items}
+        items={loadedItems}
         variant="container"
-        rows={rows}
         ariaLabels={{
           selectionGroupLabel: 'group label',
           allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
           itemSelectionLabel: ({ selectedItems }, item) =>
             `${item.id} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
           tableLabel: 'Items',
+        }}
+        inContextLoader={{
+          state: loading ? 'loading' : loadedItems.length === items.length ? 'empty' : 'pending',
+          loadingText: 'Loading more items',
+          loadMoreText: 'Load more items',
+          emptyText: 'No more items available',
+          onLoadMore: () => {
+            setLoading(true);
+          },
         }}
       />
     </Box>

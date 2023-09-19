@@ -317,9 +317,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onEditCancel?: CancelableEventHandler;
 
   /**
-   * Experimental custom rows API.
+   * Experimental in-context loader API.
    */
-  rows?: ReadonlyArray<TableProps.RowType<T>>;
+  inContextLoader?: TableProps.InContextLoaderProps;
 }
 
 export namespace TableProps {
@@ -461,15 +461,11 @@ export namespace TableProps {
     visible: boolean;
   }
 
-  export type RowType<ItemType> = DataRow<ItemType> | LoaderRow;
-
-  export interface DataRow<ItemType> {
-    type: 'data';
-    item: ItemType;
-  }
-
-  export interface LoaderRow {
-    type: 'loader';
-    content: React.ReactNode;
+  export interface InContextLoaderProps {
+    state: 'empty' | 'pending' | 'loading';
+    loadingText: string;
+    emptyText: string;
+    loadMoreText: string;
+    onLoadMore: CancelableEventHandler;
   }
 }

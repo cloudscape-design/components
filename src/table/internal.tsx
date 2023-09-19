@@ -40,6 +40,9 @@ import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import InternalBox from '../box/internal';
+import InternalSpinner from '../spinner/internal';
+import InternalButton from '../button/internal';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -106,13 +109,14 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
-      rows,
+      inContextLoader,
       __funnelSubStepProps,
       __subStepRef,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
+    const loaderRows = inContextLoader ? 1 : 0;
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
@@ -140,10 +144,7 @@ const InternalTable = React.forwardRef(
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
-    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(
-      selectionType,
-      rows?.length ?? items.length
-    );
+    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length + loaderRows);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({
@@ -253,7 +254,7 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, rows?.length ?? items.length);
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items.length + loaderRows);
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -346,7 +347,7 @@ const InternalTable = React.forwardRef(
                     {renderAriaLive({
                       totalItemsCount,
                       firstIndex,
-                      lastIndex: firstIndex + (rows?.length ?? items.length) - 1,
+                      lastIndex: firstIndex + items.length + loaderRows - 1,
                     })}
                   </span>
                 </LiveRegion>
@@ -373,7 +374,7 @@ const InternalTable = React.forwardRef(
                   {...theadProps}
                 />
                 <tbody>
-                  {loading || (rows || items).length === 0 ? (
+                  {loading || items.length === 0 ? (
                     <tr>
                       <td
                         colSpan={totalColumnsCount}
@@ -397,31 +398,17 @@ const InternalTable = React.forwardRef(
                       </td>
                     </tr>
                   ) : (
-                    (rows || items.map(item => ({ type: 'data', item }))).map((row, rowIndex) => {
-                      // TODO: solve trackBy for custom rows
-                      if (row.type === 'loader') {
-                        return (
-                          <tr key={rowIndex}>
-                            <td
-                              colSpan={totalColumnsCount}
-                              className={clsx(styles['cell-loader'], styles['cell-loader-sticky'])}
-                            >
-                              <div className={styles['cell-loader-content']}>{row.content}</div>
-                            </td>
-                          </tr>
-                        );
-                      }
-
+                    items.map((item, rowIndex) => {
                       const firstVisible = rowIndex === 0;
                       const lastVisible = rowIndex === items.length - 1;
                       const isEven = rowIndex % 2 === 0;
-                      const isSelected = !!selectionType && isItemSelected(row.item);
+                      const isSelected = !!selectionType && isItemSelected(item);
                       const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                       const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
 
                       return (
                         <tr
-                          key={getItemKey(trackBy, row.item, rowIndex)}
+                          key={getItemKey(trackBy, item, rowIndex)}
                           className={clsx(styles.row, isSelected && styles['row-selected'])}
                           onFocus={({ currentTarget }) => {
                             // When an element inside table row receives focus we want to adjust the scroll.
@@ -432,10 +419,8 @@ const InternalTable = React.forwardRef(
                             }
                           }}
                           {...focusMarkers.item}
-                          onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
-                          onContextMenu={
-                            onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
-                          }
+                          onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
+                          onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
                           {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex })}
                         >
                           {selectionType !== undefined && (
@@ -461,7 +446,7 @@ const InternalTable = React.forwardRef(
                                 onFocusDown={moveFocusDown}
                                 onFocusUp={moveFocusUp}
                                 onShiftToggle={updateShiftToggle}
-                                {...getItemSelectionProps(row.item)}
+                                {...getItemSelectionProps(item)}
                               />
                             </TableTdElement>
                           )}
@@ -483,7 +468,7 @@ const InternalTable = React.forwardRef(
                                 }
                                 ariaLabels={ariaLabels}
                                 column={column}
-                                item={row.item}
+                                item={item}
                                 wrapLines={wrapLines}
                                 isEditable={isEditable}
                                 isEditing={isEditing}
@@ -514,6 +499,19 @@ const InternalTable = React.forwardRef(
                       );
                     })
                   )}
+
+                  {inContextLoader ? (
+                    <tr>
+                      <td
+                        colSpan={totalColumnsCount}
+                        className={clsx(styles['cell-loader'], styles['cell-loader-sticky'])}
+                      >
+                        <div className={styles['cell-loader-content']}>
+                          <InContextLoader {...inContextLoader} />
+                        </div>
+                      </td>
+                    </tr>
+                  ) : null}
                 </tbody>
               </table>
               {resizableColumns && <ResizeTracker />}
@@ -532,5 +530,27 @@ const InternalTable = React.forwardRef(
     );
   }
 ) as TableForwardRefType;
+
+function InContextLoader({ state, emptyText, loadingText, loadMoreText, onLoadMore }: TableProps.InContextLoaderProps) {
+  if (state === 'empty') {
+    return <InternalBox color="text-body-secondary">{emptyText}</InternalBox>;
+  }
+  if (state === 'loading') {
+    return (
+      <>
+        <InternalSpinner />
+        <LiveRegion>{loadingText}</LiveRegion>
+      </>
+    );
+  }
+  if (state === 'pending') {
+    return (
+      <InternalButton variant="inline-link" onClick={onLoadMore}>
+        {loadMoreText}
+      </InternalButton>
+    );
+  }
+  throw new Error('Invariant violation: unsupported in-context loader state');
+}
 
 export default InternalTable;
