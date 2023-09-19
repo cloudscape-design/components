@@ -15,7 +15,7 @@ import {
   useSelectionFocusMove,
   useSelection,
 } from '../table/selection';
-import InternalContainer from '../container/internal';
+import { InternalContainerAsSubstep } from '../container/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import stickyScrolling from '../table/sticky-scrolling';
@@ -139,7 +139,7 @@ const Cards = React.forwardRef(function <T = any>(
     <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
       <AnalyticsFunnelSubStep>
         <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
-          <InternalContainer
+          <InternalContainerAsSubstep
             header={
               hasToolsHeader && (
                 <div
@@ -190,7 +190,7 @@ const Cards = React.forwardRef(function <T = any>(
                 />
               )}
             </div>
-          </InternalContainer>
+          </InternalContainerAsSubstep>
         </div>
       </AnalyticsFunnelSubStep>
     </LinkDefaultVariantContext.Provider>

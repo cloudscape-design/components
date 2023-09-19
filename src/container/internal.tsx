@@ -31,6 +31,14 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
    * * `full-page` – Only for internal use in table, cards and other components
    */
   variant?: ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards';
+
+  __funnelSubStepProps?: ReturnType<typeof useFunnelSubStep>['funnelSubStepProps'];
+  __subStepRef?: ReturnType<typeof useFunnelSubStep>['subStepRef'];
+}
+
+export function InternalContainerAsSubstep(props: InternalContainerProps) {
+  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+  return <InternalContainer {...props} __subStepRef={subStepRef} __funnelSubStepProps={funnelSubStepProps} />;
 }
 
 export default function InternalContainer({
@@ -52,6 +60,8 @@ export default function InternalContainer({
   __headerRef,
   __darkHeader = false,
   __disableStickyMobile = true,
+  __funnelSubStepProps,
+  __subStepRef,
   ...restProps
 }: InternalContainerProps) {
   const isMobile = useMobile();
@@ -68,12 +78,11 @@ export default function InternalContainer({
   );
   const { setHasStickyBackground } = useAppLayoutContext();
   const isRefresh = useVisualRefresh();
-  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
-  const mergedRef = useMergeRefs(rootRef, subStepRef, __internalRootRef);
+  const mergedRef = useMergeRefs(rootRef, __subStepRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
 
   /**
@@ -104,7 +113,7 @@ export default function InternalContainer({
   return (
     <div
       {...baseProps}
-      {...funnelSubStepProps}
+      {...__funnelSubStepProps}
       className={clsx(
         baseProps.className,
         styles.root,
