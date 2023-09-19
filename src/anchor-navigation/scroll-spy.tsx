@@ -17,6 +17,10 @@ export default function useScrollSpy({
   const [lastAnchorExists, setLastAnchorExists] = useState(false);
 
   useEffect(() => {
+    setCurrentHref(activeHref);
+  }, [activeHref]);
+
+  useEffect(() => {
     setLastAnchorExists(isBrowser && !!document.getElementById(hrefs[hrefs.length - 1]?.slice(1)));
   }, [hrefs]);
 

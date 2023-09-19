@@ -84,4 +84,38 @@ describe('AnchorNavigation', () => {
       detail: { text: 'Section 1', href: '#section1', level: 1 },
     });
   });
+
+  it('calls onActiveHrefChange when a new anchor is active', () => {
+    const onActiveHrefChange = jest.fn();
+
+    const props = {
+      anchors: [
+        { text: 'Section 1', href: '#section1', level: 1 },
+        { text: 'Section 2', href: '#section2', level: 1 },
+      ],
+      onActiveHrefChange,
+    };
+
+    const { rerender } = render(<AnchorNavigation {...props} activeHref="#section1" />);
+
+    expect(onActiveHrefChange).toHaveBeenCalledTimes(1);
+
+    expect(onActiveHrefChange).toHaveBeenCalledWith({
+      cancelBubble: false,
+      cancelable: false,
+      defaultPrevented: false,
+      detail: { text: 'Section 1', href: '#section1', level: 1 },
+    });
+
+    rerender(<AnchorNavigation {...props} activeHref="#section2" />);
+
+    expect(onActiveHrefChange).toHaveBeenCalledTimes(2);
+
+    expect(onActiveHrefChange).toHaveBeenLastCalledWith({
+      cancelBubble: false,
+      cancelable: false,
+      defaultPrevented: false,
+      detail: { text: 'Section 2', href: '#section2', level: 1 },
+    });
+  });
 });
