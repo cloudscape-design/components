@@ -189,7 +189,7 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
     stretchHeight,
     isMobile,
   });
-  return idealWidth <= availableSpace.left && idealWidth <= availableSpace.right;
+  return idealWidth <= availableSpace.left || idealWidth <= availableSpace.right;
 };
 
 export const getDropdownPosition = ({
