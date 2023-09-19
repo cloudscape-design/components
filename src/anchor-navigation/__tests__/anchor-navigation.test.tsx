@@ -4,6 +4,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import AnchorNavigation, { AnchorNavigationProps } from '../../../lib/components/anchor-navigation';
 import { AnchorNavigationWrapper } from '../../../lib/components/test-utils/dom';
+import testUtilStyles from '../../../lib/components/anchor-navigation/test-classes/styles.css.js';
 
 function renderAnchorNavigation(props: AnchorNavigationProps) {
   const { container } = render(<AnchorNavigation {...props} />);
@@ -13,7 +14,8 @@ function renderAnchorNavigation(props: AnchorNavigationProps) {
 describe('AnchorNavigation', () => {
   it('renders the anchor navigation list', () => {
     const wrapper = renderAnchorNavigation({ anchors: [] });
-    expect(wrapper.findAnchorNavigation()).toBeTruthy();
+    expect(wrapper.find(`.${testUtilStyles.root}`))!.toBeTruthy();
+    expect(wrapper.findAnchorNavigationList()).toBeTruthy();
   });
 
   it('finds multiple anchors', () => {
@@ -34,7 +36,7 @@ describe('AnchorNavigation', () => {
         { text: 'Section 2', href: '#section2', level: 1 },
       ],
     });
-    expect(wrapper.findAnchorByIndex(0)?.findText()?.getElement()).toHaveTextContent('Section 1');
+    expect(wrapper.findAnchorByIndex(0)!.findText()!.getElement()).toHaveTextContent('Section 1');
   });
 
   it('finds anchor by href', () => {
@@ -45,7 +47,7 @@ describe('AnchorNavigation', () => {
       ],
     });
     const anchor = wrapper.findAnchorByHref('#section2');
-    expect(anchor?.getElement()).toHaveAttribute('href', '#section2');
+    expect(anchor!.getElement()).toHaveAttribute('href', '#section2');
   });
 
   it('finds anchor info', () => {
@@ -55,6 +57,32 @@ describe('AnchorNavigation', () => {
         { text: 'Section 2', href: '#section2', level: 1, info: 'Updated' },
       ],
     });
-    expect(wrapper.findAnchorByIndex(0)?.findInfo()?.getElement()).toHaveTextContent('New');
+    expect(wrapper.findAnchorByIndex(0)!.findInfo()!.getElement()).toHaveTextContent('New');
+  });
+
+  it('applies aria-labelledby correctly', () => {
+    const wrapper = renderAnchorNavigation({
+      anchors: [],
+      ariaLabelledby: 'some-id',
+    });
+
+    expect(wrapper.find(`.${testUtilStyles.root}`)!.getElement()).toHaveAttribute('aria-labelledby', 'some-id');
+  });
+
+  it('calls onFollow when an anchor is clicked', () => {
+    const onFollow = jest.fn();
+
+    const wrapper = renderAnchorNavigation({
+      anchors: [{ text: 'Section 1', href: '#section1', level: 1 }],
+      onFollow,
+    });
+    wrapper.findAnchorByHref('#section1')?.getElement().click();
+    expect(onFollow).toHaveBeenCalledTimes(1);
+    expect(onFollow).toHaveBeenCalledWith({
+      cancelBubble: false,
+      cancelable: true,
+      defaultPrevented: false,
+      detail: { text: 'Section 1', href: '#section1', level: 1 },
+    });
   });
 });

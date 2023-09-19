@@ -6,7 +6,7 @@ import testUtilStyles from '../../../anchor-navigation/test-classes/styles.selec
 export default class AnchorNavigationWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;
 
-  findAnchorNavigation(): ElementWrapper<HTMLOListElement> | null {
+  findAnchorNavigationList(): ElementWrapper<HTMLOListElement> | null {
     return this.findByClassName(testUtilStyles['anchor-list']);
   }
 

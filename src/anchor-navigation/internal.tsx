@@ -50,7 +50,7 @@ export default function InternalAnchorNavigation({
       {...baseProps}
       ref={__internalRootRef}
       aria-labelledby={ariaLabelledby}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, testUtilsStyles.root)}
     >
       <ol className={clsx(styles['anchor-list'], testUtilsStyles['anchor-list'])}>
         {anchors.map((anchor, index) => {
