@@ -17,7 +17,9 @@ export default class AnchorNavigationWrapper extends ComponentWrapper {
   findAnchors(): Array<AnchorItemWrapper> {
     return this.findAll('li').map(wrapper => new AnchorItemWrapper(wrapper.getElement()));
   }
-
+  /*
+   * @param index 1-based index of the anchor item
+   */
   findAnchorByIndex(index: number): AnchorItemWrapper | null {
     return this.findComponent(`[data-itemid="anchor-item-${index}"]`, AnchorItemWrapper);
   }

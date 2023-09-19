@@ -35,7 +35,7 @@ describe('AnchorNavigation', () => {
         { text: 'Section 2', href: '#section2', level: 1 },
       ],
     });
-    expect(wrapper.findAnchorByIndex(0)!.findText()!.getElement()).toHaveTextContent('Section 1');
+    expect(wrapper.findAnchorByIndex(1)!.findText()!.getElement()).toHaveTextContent('Section 1');
   });
 
   it('finds anchor by href', () => {
@@ -56,7 +56,7 @@ describe('AnchorNavigation', () => {
         { text: 'Section 2', href: '#section2', level: 1, info: 'Updated' },
       ],
     });
-    expect(wrapper.findAnchorByIndex(0)!.findInfo()!.getElement()).toHaveTextContent('New');
+    expect(wrapper.findAnchorByIndex(1)!.findInfo()!.getElement()).toHaveTextContent('New');
   });
 
   it('applies aria-labelledby correctly', () => {

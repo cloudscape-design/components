@@ -90,7 +90,7 @@ const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
 
   return (
     <li
-      data-itemid={`anchor-item-${index}`}
+      data-itemid={`anchor-item-${index + 1}`}
       className={clsx(styles['anchor-item'], {
         [(styles['anchor-item--active'], testUtilsStyles['anchor-item--active'])]: isActive,
       })}
