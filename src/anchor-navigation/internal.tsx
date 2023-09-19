@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
+import testUtilsStyles from './test-classes/styles.css.js';
 import { AnchorNavigationProps } from './interfaces';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import useScrollSpy from './scroll-spy.js';
@@ -51,7 +52,7 @@ export default function InternalAnchorNavigation({
       aria-labelledby={ariaLabelledby}
       className={clsx(baseProps.className, styles.root)}
     >
-      <ol className={styles['anchor-list']}>
+      <ol className={clsx(styles['anchor-list'], testUtilsStyles['anchor-list'])}>
         {anchors.map((anchor, index) => {
           return (
             <Anchor
@@ -90,18 +91,27 @@ const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
   return (
     <li
       data-itemid={`anchor-item-${index}`}
-      className={clsx(styles['anchor-item'], { [styles['anchor-item--active']]: isActive })}
+      className={clsx(styles['anchor-item'], {
+        [(styles['anchor-item--active'], testUtilsStyles['anchor-item--active'])]: isActive,
+      })}
     >
       <a
         onClick={onClick}
-        className={clsx(styles['anchor-link'], { [styles['anchor-link--active']]: isActive })}
+        className={clsx(styles['anchor-link'], testUtilsStyles['anchor-link'], {
+          [styles['anchor-link--active']]: isActive,
+        })}
         {...(isActive ? { 'aria-current': true } : {})}
         href={anchor.href}
       >
-        <span className={styles['anchor-link-text']} style={{ paddingLeft: `${anchor.level * 16 + 2}px` }}>
+        <span
+          className={clsx(styles['anchor-link-text'], testUtilsStyles['link-text'])}
+          style={{ paddingLeft: `${anchor.level * 16 + 2}px` }}
+        >
           {anchor.text}
         </span>
-        {anchor.info && <span className={styles['anchor-link-info']}>{anchor.info}</span>}
+        {anchor.info && (
+          <span className={clsx(styles['anchor-link-info'], testUtilsStyles['link-info'])}>{anchor.info}</span>
+        )}
       </a>
     </li>
   );

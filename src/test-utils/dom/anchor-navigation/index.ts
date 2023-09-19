@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import styles from '../../../anchor-navigation/styles.selectors.js';
+import testUtilStyles from '../../../anchor-navigation/test-classes/styles.selectors.js';
 
 export default class AnchorNavigationWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.root;
+  static rootSelector: string = testUtilStyles.root;
 
   findAnchorNavigation(): ElementWrapper<HTMLOListElement> | null {
-    return this.findByClassName(styles['anchor-list']);
+    return this.findByClassName(testUtilStyles['anchor-list']);
   }
 
   findAnchors(): Array<AnchorItemWrapper> {
@@ -19,21 +19,21 @@ export default class AnchorNavigationWrapper extends ComponentWrapper {
   }
 
   findActiveAnchor(): AnchorItemWrapper | null {
-    return this.findComponent(styles['anchor-item--active'], AnchorItemWrapper);
+    return this.findComponent(testUtilStyles['anchor-item--active'], AnchorItemWrapper);
   }
 
   findAnchorByHref(href: string): ElementWrapper<HTMLAnchorElement> | null {
-    return this.find(`.${styles['anchor-link']}[href="${href}"]`);
+    return this.find(`.${testUtilStyles.link}[href="${href}"]`);
   }
 }
 
 export class AnchorItemWrapper extends ElementWrapper {
   findText(): ElementWrapper | null {
-    return this.findByClassName(styles['anchor-link-text']);
+    return this.findByClassName(testUtilStyles['link-text']);
   }
 
   findInfo(): ElementWrapper | null {
-    return this.findByClassName(styles['anchor-link-info']);
+    return this.findByClassName(testUtilStyles['link-info']);
   }
 
   @usesDom
