@@ -5,6 +5,7 @@ import SpaceBetween from '~components/space-between';
 import {
   AppLayout,
   Button,
+  ButtonDropdown,
   ColumnLayout,
   Container,
   ContentLayout,
@@ -14,7 +15,6 @@ import {
   Icon,
   Input,
   Link,
-  SegmentedControl,
   Select,
 } from '~components';
 import styles from './styles.scss';
@@ -37,17 +37,22 @@ type PageContext = React.Context<
   AppContextType<{
     pageSize: number;
     tableRole: TableRole;
+    actionsMode: ActionsMode;
   }>
 >;
+
+type ActionsMode = 'dropdown' | 'inline';
 
 const createColumnDefinitions = ({
   onDelete,
   onDuplicate,
   onUpdate,
+  actionsMode,
 }: {
   onDelete: (id: string) => void;
   onDuplicate: (id: string) => void;
   onUpdate: (id: string) => void;
+  actionsMode: ActionsMode;
 }) => [
   {
     key: 'id',
@@ -58,11 +63,12 @@ const createColumnDefinitions = ({
     key: 'actions',
     label: 'Actions',
     render: (item: Instance) => (
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-        <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={() => onDelete(item.id)} />
-        <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={() => onDuplicate(item.id)} />
-        <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={() => onUpdate(item.id)} />
-      </div>
+      <ItemActionsCell
+        mode={actionsMode}
+        onDelete={() => onDelete(item.id)}
+        onDuplicate={() => onDuplicate(item.id)}
+        onUpdate={() => onUpdate(item.id)}
+      />
     ),
   },
   {
@@ -75,35 +81,23 @@ const createColumnDefinitions = ({
     label: 'Image ID',
     render: (item: Instance) => <Link>{item.imageId}</Link>,
   },
-  {
-    key: 'state-toggle',
-    label: 'State toggle',
-    render: (item: Instance) => (
-      <SegmentedControl
-        selectedId={item.state === 'RUNNING' || item.state === 'STOPPING' ? 'On' : 'Off'}
-        onChange={event => alert(`Changed item state to "${event.detail.selectedId}"`)}
-        label="Instance state"
-        options={[
-          { text: 'On', id: 'On' },
-          { text: 'Off', id: 'Off' },
-        ]}
-      />
-    ),
-    isWidget: true,
-  },
-  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
-  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
-  { key: 'dnsName3', label: 'DNS name 3', render: (item: Instance) => (item.dnsName ?? '?') + ':3' },
+  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => <DnsEditCell item={item} /> },
   { key: 'type', label: 'Type', render: (item: Instance) => item.type },
 ];
 
 const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
+
+const actionsModeOptions = [
+  { value: 'dropdown', label: 'Dropdown' },
+  { value: 'inline', label: 'Inline (anti-pattern)' },
+];
 
 export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const pageSize = urlParams.pageSize ?? 10;
   const tableRole = urlParams.tableRole ?? 'grid';
+  const actionsMode = urlParams.actionsMode ?? 'dropdown';
 
   const [items, setItems] = useState(generateItems(25));
   const columnDefinitions = useMemo(
@@ -114,8 +108,9 @@ export default function Page() {
           setItems(prev => prev.flatMap(item => (item.id !== id ? [item] : [item, { ...item, id: generateId() }]))),
         onUpdate: (id: string) =>
           setItems(prev => prev.map(item => (item.id !== id ? item : { ...item, id: generateId() }))),
+        actionsMode,
       }),
-    []
+    [actionsMode]
   );
 
   const [sortingKey, setSortingKey] = useState<null | string>(null);
@@ -162,6 +157,16 @@ export default function Page() {
                       onChange={event => setUrlParams({ tableRole: event.detail.selectedOption.value as TableRole })}
                     />
                   </FormField>
+
+                  <FormField label="Actions mode">
+                    <Select
+                      options={actionsModeOptions}
+                      selectedOption={actionsModeOptions.find(option => option.value === actionsMode) ?? null}
+                      onChange={event =>
+                        setUrlParams({ actionsMode: event.detail.selectedOption.value as ActionsMode })
+                      }
+                    />
+                  </FormField>
                 </ColumnLayout>
 
                 <Link onFollow={() => setToolsOpen(true)} data-testid="link-before">
@@ -191,7 +196,7 @@ export default function Page() {
                       <th
                         key={column.key}
                         className={styles['custom-table-cell']}
-                        {...getTableColHeaderRoleProps({ tableRole, colIndex, isWidget: true })}
+                        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                       >
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                           <button
@@ -221,7 +226,7 @@ export default function Page() {
                         <td
                           key={column.key}
                           className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex, isWidget: column.isWidget })}
+                          {...getTableCellRoleProps({ tableRole, colIndex })}
                         >
                           {column.render(item)}
                         </td>
@@ -235,6 +240,94 @@ export default function Page() {
         </ContentLayout>
       }
     />
+  );
+}
+
+function ItemActionsCell({
+  onDelete,
+  onDuplicate,
+  onUpdate,
+  mode,
+}: {
+  onDelete: () => void;
+  onDuplicate: () => void;
+  onUpdate: () => void;
+  mode: ActionsMode;
+}) {
+  if (mode === 'dropdown') {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <ButtonDropdown
+          ariaLabel="Item actions"
+          variant="inline-icon"
+          items={[
+            { id: 'delete', text: 'Delete' },
+            { id: 'duplicate', text: 'Duplicate' },
+            { id: 'update', text: 'Update' },
+          ]}
+          onItemClick={event => {
+            switch (event.detail.id) {
+              case 'delete':
+                return onDelete();
+              case 'duplicate':
+                return onDuplicate();
+              case 'update':
+                return onUpdate();
+            }
+          }}
+          expandToViewport={true}
+        />
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+      <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={onDelete} />
+      <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={onDuplicate} />
+      <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={onUpdate} />
+    </div>
+  );
+}
+
+function DnsEditCell({ item }: { item: Instance }) {
+  const [active, setActive] = useState(false);
+  const [value, setValue] = useState(item.dnsName ?? '');
+  const dialogRef = useRef<HTMLDivElement>(null);
+  return !active ? (
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label="Edit DNS name"
+      onClick={() => setActive(true)}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === 'F2') {
+          setActive(true);
+        }
+      }}
+    >
+      {item.dnsName}
+    </div>
+  ) : (
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-label="Edit DND name"
+      onBlur={event => {
+        if (!dialogRef.current!.contains(event.relatedTarget)) {
+          setActive(false);
+        }
+      }}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
+          setActive(false);
+        }
+      }}
+      style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
+    >
+      <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
+      <Button iconName="check" onClick={() => setActive(false)} />
+      <Button iconName="close" onClick={() => setActive(false)} />
+    </div>
   );
 }
 
@@ -276,12 +369,6 @@ function GridNavigationHelpPanel() {
         </li>
         <li>
           <b>Control+End</b> (to the last item in the grid)
-        </li>
-        <li>
-          <b>Enter</b> (to move focus inside widget cell)
-        </li>
-        <li>
-          <b>Escape</b> (to move widget focus back to cell)
         </li>
       </ul>
     </HelpPanel>

@@ -772,7 +772,7 @@ describe('Filter', () => {
 
   describe('Dropdown', () => {
     const openDropdown = (wrapper: MixedLineBarChartWrapper) => {
-      wrapper.findDefaultFilter()?.openDropdown();
+      wrapper.findDefaultFilter()!.openDropdown();
       return wrapper.findDefaultFilter()!.findDropdown()!;
     };
 
@@ -803,6 +803,17 @@ describe('Filter', () => {
       expect(dropdownWrapper.findOptions()).toHaveLength(defaultData.length);
       expect(dropdownWrapper.findSelectedOptions()).toHaveLength(1);
       expect(dropdownWrapper.findSelectedOptions()[0].getElement()).toHaveTextContent(defaultData[1].title);
+    });
+
+    test('allows filtering segments', () => {
+      const { wrapper } = renderMixedChart(<MixedLineBarChart series={defaultData} />);
+
+      expect(wrapper.findSeries()).toHaveLength(2);
+
+      wrapper.findDefaultFilter()!.openDropdown();
+      wrapper.findDefaultFilter()!.selectOption(1);
+      wrapper.findDefaultFilter()!.closeDropdown();
+      expect(wrapper.findSeries()).toHaveLength(1);
     });
   });
 });

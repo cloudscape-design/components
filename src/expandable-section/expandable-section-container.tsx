@@ -1,17 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import InternalContainer from '../container/internal';
+import InternalContainer, { InternalContainerProps } from '../container/internal';
 import React from 'react';
 import { ExpandableSectionProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
+export interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   className?: string;
   header: React.ReactNode;
   children?: React.ReactNode;
   variant: ExpandableSectionProps.Variant;
   expanded: boolean | undefined;
   disableContentPaddings: boolean | undefined;
+  __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
+  __subStepRef?: InternalContainerProps['__subStepRef'];
 }
 
 export const ExpandableSectionContainer = ({
@@ -22,6 +24,8 @@ export const ExpandableSectionContainer = ({
   expanded,
   disableContentPaddings,
   __internalRootRef,
+  __funnelSubStepProps,
+  __subStepRef,
   ...rest
 }: ExpandableSectionContainerProps) => {
   if (variant === 'container' || variant === 'stacked') {
@@ -35,6 +39,8 @@ export const ExpandableSectionContainer = ({
         disableHeaderPaddings={true}
         __hiddenContent={!expanded}
         __internalRootRef={__internalRootRef}
+        __funnelSubStepProps={__funnelSubStepProps}
+        __subStepRef={__subStepRef}
       >
         {children}
       </InternalContainer>

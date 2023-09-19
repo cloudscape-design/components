@@ -254,28 +254,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     /**
-     * The useImperativeHandle hook in conjunction with the forwardRef function
-     * in the AppLayout component definition expose the following callable
-     * functions to component consumers when they put a ref as a property on
-     * their component implementation.
-     */
-    useImperativeHandle(
-      forwardRef,
-      function createImperativeHandle() {
-        return {
-          closeNavigationIfNecessary: function () {
-            isMobile && handleNavigationClick(false);
-          },
-          openTools: function () {
-            handleToolsClick(true);
-          },
-          focusToolsClose: () => focusToolsButtons(true),
-        };
-      },
-      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons]
-    );
-
-    /**
      * Query the DOM for the header and footer elements based on the selectors provided
      * by the properties and pass the heights to the custom property definitions.
      */
@@ -414,17 +392,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(
-      props as InternalDrawerProps,
-      {
-        ariaLabels: props.ariaLabels,
-        toolsHide,
-        toolsOpen: isToolsOpen,
-        tools: props.tools,
-        toolsWidth,
-      },
-      contentTypeDefaults
-    );
+    } = useDrawers(props as InternalDrawerProps, {
+      ariaLabels: props.ariaLabels,
+      toolsHide,
+      toolsOpen: isToolsOpen,
+      tools: props.tools,
+      toolsWidth,
+    });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 
@@ -458,7 +432,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
       activeDrawerId !== undefined ||
-      isToolsOpen ||
+      (!toolsHide && isToolsOpen) ||
       (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
       isMobile && (!!activeDrawerId || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
@@ -588,6 +562,29 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         minContentWidth,
         toolsWidth,
       ]
+    );
+
+    /**
+     * The useImperativeHandle hook in conjunction with the forwardRef function
+     * in the AppLayout component definition expose the following callable
+     * functions to component consumers when they put a ref as a property on
+     * their component implementation.
+     */
+    useImperativeHandle(
+      forwardRef,
+      function createImperativeHandle() {
+        return {
+          closeNavigationIfNecessary: function () {
+            isMobile && handleNavigationClick(false);
+          },
+          openTools: function () {
+            handleToolsClick(true);
+          },
+          focusToolsClose: () => focusToolsButtons(true),
+          focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
+        };
+      },
+      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, splitPanelRefs.slider]
     );
 
     return (

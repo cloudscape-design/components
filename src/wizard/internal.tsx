@@ -25,6 +25,7 @@ import WizardNavigation from './wizard-navigation';
 import { WizardProps } from './interfaces';
 
 import styles from './styles.css.js';
+import { useFunnelChangeEvent } from './analytics';
 
 type InternalWizardProps = WizardProps & InternalBaseComponentProps;
 
@@ -98,6 +99,8 @@ export default function InternalWizard({
       navigationEvent(actualActiveStepIndex + 1, 'next');
     }
   };
+
+  useFunnelChangeEvent(funnelInteractionId, steps);
 
   const i18n = useInternalI18n('wizard');
   const skipToButtonLabel = i18n(

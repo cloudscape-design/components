@@ -30,6 +30,7 @@
   &--has-logo {
     > .header-link-text {
       font-weight: styles.$font-weight-normal;
+      align-self: center;
     }
   }
 }

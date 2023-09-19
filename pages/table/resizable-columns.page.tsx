@@ -14,6 +14,12 @@ import Table, { TableProps } from '~components/table';
 import { NonCancelableCustomEvent } from '~components/interfaces';
 import ScreenshotArea from '../utils/screenshot-area';
 
+declare global {
+  interface Window {
+    __columnWidths: readonly number[];
+  }
+}
+
 interface Item {
   id: number;
   text: string;
@@ -100,6 +106,7 @@ export default function App() {
   const [sorting, setSorting] = useState<TableProps.SortingState<any>>();
 
   function handleWidthChange(event: NonCancelableCustomEvent<TableProps.ColumnWidthsChangeDetail>) {
+    window.__columnWidths = event.detail.widths;
     const widths = zipObject(
       columnDisplay.map(column => column.id!),
       event.detail.widths

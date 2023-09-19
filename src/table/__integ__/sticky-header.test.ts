@@ -4,7 +4,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import styles from '../../../lib/components/table/styles.selectors.js';
-import selectionStyles from '../../../lib/components/table/selection-control/styles.selectors.js';
+import selectionStyles from '../../../lib/components/table/selection/styles.selectors.js';
 
 const tableWrapper = createWrapper().findTable();
 const tableScrollWrapper = tableWrapper.findByClassName(styles.wrapper);

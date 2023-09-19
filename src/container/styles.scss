@@ -98,6 +98,13 @@
     object-position: center;
   }
 
+  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   &-top {
     max-height: 66%;
     border-top-left-radius: awsui.$border-radius-container;
@@ -149,7 +156,7 @@
 
   &-dynamic-height.header-stuck {
     // to prevent the block from changing its height when variant dynamically changes
-    margin-bottom: calc(#{awsui.$font-heading-xl-line-height} - #{awsui.$font-heading-l-line-height});
+    margin-bottom: calc(#{awsui.$line-height-heading-xl} - #{awsui.$line-height-heading-l});
   }
 
   &:not(:empty) {

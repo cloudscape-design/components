@@ -154,7 +154,7 @@ const OldAppLayout = React.forwardRef(
       onActiveDrawerChange,
       onActiveDrawerResize,
       ...drawersProps
-    } = useDrawers(props as InternalDrawerProps, { ariaLabels, tools, toolsOpen, toolsHide, toolsWidth }, defaults);
+    } = useDrawers(props as InternalDrawerProps, { ariaLabels, tools, toolsOpen, toolsHide, toolsWidth });
     const hasDrawers = drawers.length > 0;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
@@ -464,8 +464,9 @@ const OldAppLayout = React.forwardRef(
           }
         },
         focusToolsClose: () => focusToolsButtons(true),
+        focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
       }),
-      [isMobile, onNavigationToggle, onToolsToggle, focusToolsButtons]
+      [onToolsToggle, isMobile, onNavigationToggle, focusToolsButtons, splitPanelRefs.slider]
     );
 
     const splitPanelBottomOffset =
@@ -638,7 +639,9 @@ const OldAppLayout = React.forwardRef(
               (hasDrawers ? (
                 <ResizableDrawer
                   contentClassName={
-                    activeDrawerId === TOOLS_DRAWER_ID ? testutilStyles.tools : testutilStyles['active-drawer']
+                    activeDrawerId === TOOLS_DRAWER_ID
+                      ? clsx(testutilStyles.tools, testutilStyles['active-drawer'])
+                      : testutilStyles['active-drawer']
                   }
                   toggleClassName={testutilStyles['tools-toggle']}
                   closeClassName={
