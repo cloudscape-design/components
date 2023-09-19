@@ -45,7 +45,7 @@ describe('AnchorNavigation', () => {
         { text: 'Section 2', href: '#section2', level: 1 },
       ],
     });
-    const anchor = wrapper.findAnchorByHref('#section2');
+    const anchor = wrapper.findAnchorLinkByHref('#section2');
     expect(anchor!.getElement()).toHaveAttribute('href', '#section2');
   });
 
@@ -75,7 +75,7 @@ describe('AnchorNavigation', () => {
       anchors: [{ text: 'Section 1', href: '#section1', level: 1 }],
       onFollow,
     });
-    wrapper.findAnchorByHref('#section1')?.getElement().click();
+    wrapper.findAnchorLinkByHref('#section1')?.getElement().click();
     expect(onFollow).toHaveBeenCalledTimes(1);
     expect(onFollow).toHaveBeenCalledWith({
       cancelBubble: false,

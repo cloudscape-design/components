@@ -26,12 +26,16 @@ export default class AnchorNavigationWrapper extends ComponentWrapper {
     return this.findComponent(testUtilStyles['anchor-item--active'], AnchorItemWrapper);
   }
 
-  findAnchorByHref(href: string): ElementWrapper<HTMLAnchorElement> | null {
+  findAnchorLinkByHref(href: string): ElementWrapper<HTMLAnchorElement> | null {
     return this.find(`.${testUtilStyles.link}[href="${href}"]`);
   }
 }
 
 export class AnchorItemWrapper extends ElementWrapper {
+  findLink(): ElementWrapper<HTMLAnchorElement> | null {
+    return this.findByClassName(testUtilStyles.link);
+  }
+
   findText(): ElementWrapper | null {
     return this.findByClassName(testUtilStyles['link-text']);
   }
