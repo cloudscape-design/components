@@ -4,7 +4,6 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import AnchorNavigation, { AnchorNavigationProps } from '../../../lib/components/anchor-navigation';
 import { AnchorNavigationWrapper } from '../../../lib/components/test-utils/dom';
-import testUtilStyles from '../../../lib/components/anchor-navigation/test-classes/styles.css.js';
 
 function renderAnchorNavigation(props: AnchorNavigationProps) {
   const { container } = render(<AnchorNavigation {...props} />);
@@ -14,7 +13,7 @@ function renderAnchorNavigation(props: AnchorNavigationProps) {
 describe('AnchorNavigation', () => {
   it('renders the anchor navigation list', () => {
     const wrapper = renderAnchorNavigation({ anchors: [] });
-    expect(wrapper.find(`.${testUtilStyles.root}`))!.toBeTruthy();
+    expect(wrapper.findAnchorNavigation()).toBeTruthy();
     expect(wrapper.findAnchorNavigationList()).toBeTruthy();
   });
 
@@ -66,7 +65,7 @@ describe('AnchorNavigation', () => {
       ariaLabelledby: 'some-id',
     });
 
-    expect(wrapper.find(`.${testUtilStyles.root}`)!.getElement()).toHaveAttribute('aria-labelledby', 'some-id');
+    expect(wrapper.findAnchorNavigation()!.getElement()).toHaveAttribute('aria-labelledby', 'some-id');
   });
 
   it('calls onFollow when an anchor is clicked', () => {
