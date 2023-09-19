@@ -10,19 +10,7 @@ function renderAnchorNavigation(props: AnchorNavigationProps) {
   return new AnchorNavigationWrapper(container);
 }
 
-const mockObserve = jest.fn();
-
-const mockIntersectionObserver = jest.fn(() => ({
-  observe: mockObserve,
-  disconnect: jest.fn(),
-}));
-
 describe('AnchorNavigation', () => {
-  beforeEach(() => {
-    window.IntersectionObserver = mockIntersectionObserver;
-    jest.clearAllMocks();
-  });
-
   it('renders the anchor navigation list', () => {
     const wrapper = renderAnchorNavigation({ anchors: [] });
     expect(wrapper.findAnchorNavigation()).toBeTruthy();

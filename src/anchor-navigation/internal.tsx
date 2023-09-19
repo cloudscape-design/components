@@ -97,7 +97,7 @@ const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
     >
       <a
         onClick={onClick}
-        className={clsx(styles['anchor-link'], testUtilsStyles['anchor-link'], {
+        className={clsx(styles['anchor-link'], testUtilsStyles.link, {
           [styles['anchor-link--active']]: isActive,
         })}
         {...(isActive ? { 'aria-current': true } : {})}
