@@ -142,13 +142,12 @@ export function Resizer({
           resetHeaderWidth();
           resizerToggleRef.current?.focus();
         }
-      } else {
-        // Enter keyboard dragging mode
-        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
-          event.preventDefault();
-          setIsKeyboardDragging(true);
-          resizerSeparatorRef.current?.focus();
-        }
+      }
+      // Enter keyboard dragging mode
+      else if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
+        event.preventDefault();
+        setIsKeyboardDragging(true);
+        resizerSeparatorRef.current?.focus();
       }
     };
 
@@ -221,7 +220,7 @@ export function Resizer({
         tabIndex={-1}
         aria-hidden={!isKeyboardDragging}
         aria-orientation="vertical"
-        aria-valuenow={Math.round(headerCellWidth)}
+        aria-valuenow={headerCellWidth}
         // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
         aria-valuetext={headerCellWidth.toFixed(0)}
         aria-valuemin={minWidth}
