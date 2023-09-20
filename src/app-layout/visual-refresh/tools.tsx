@@ -4,9 +4,9 @@ import React from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../../button/internal';
 import { useAppLayoutInternals } from './context';
-import TriggerButton from './trigger-button';
+//import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
-import splitPanelStyles from '../../split-panel/styles.css.js';
+//import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -28,7 +28,7 @@ export default function Tools({ children }: ToolsProps) {
     ariaLabels,
     disableBodyScroll,
     drawers,
-    handleSplitPanelClick,
+    //handleSplitPanelClick,
     handleToolsClick,
     hasDefaultToolsWidth,
     hasDrawerViewportOverlay,
@@ -37,11 +37,11 @@ export default function Tools({ children }: ToolsProps) {
     isToolsOpen,
     loseToolsFocus,
     splitPanel,
-    splitPanelControlId,
+    //splitPanelControlId,
     splitPanelDisplayed,
     splitPanelPosition,
-    splitPanelRefs,
-    splitPanelToggle,
+    //splitPanelRefs,
+    //splitPanelToggle,
     tools,
     toolsControlId,
     toolsHide,
@@ -50,7 +50,7 @@ export default function Tools({ children }: ToolsProps) {
   } = useAppLayoutInternals();
 
   const hasSplitPanel = !!splitPanel && getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
-  const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
+  //const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
@@ -118,7 +118,7 @@ export default function Tools({ children }: ToolsProps) {
             </aside>
           )}
 
-          {!isMobile && (
+          {/* {!isMobile && (
             <aside
               aria-hidden={!hasToolsForm ? true : false}
               aria-label={ariaLabels?.tools ?? undefined}
@@ -156,7 +156,7 @@ export default function Tools({ children }: ToolsProps) {
                 />
               )}
             </aside>
-          )}
+          )} */}
         </div>
       )}
     </Transition>
@@ -194,34 +194,34 @@ function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: s
  * In large viewports, however the Tools form and its corresponding buttons
  * should be present in the UI under the below circumstances.
  */
-function getToolsFormStatus(
-  hasSplitPanel: boolean,
-  isMobile: boolean,
-  isSplitPanelOpen?: boolean,
-  isToolsOpen?: boolean,
-  toolsHide?: boolean
-) {
-  let hasToolsForm = false;
+// function getToolsFormStatus(
+//   hasSplitPanel: boolean,
+//   isMobile: boolean,
+//   isSplitPanelOpen?: boolean,
+//   isToolsOpen?: boolean,
+//   toolsHide?: boolean
+// ) {
+//   let hasToolsForm = false;
 
-  if (!isMobile) {
-    // Both the Split Panel and Tools button are needed
-    if (hasSplitPanel && !toolsHide) {
-      hasToolsForm = true;
-    }
+//   if (!isMobile) {
+//     // Both the Split Panel and Tools button are needed
+//     if (hasSplitPanel && !toolsHide) {
+//       hasToolsForm = true;
+//     }
 
-    // The Split Panel button is needed
-    if (hasSplitPanel && !isSplitPanelOpen && toolsHide) {
-      hasToolsForm = true;
-    }
+//     // The Split Panel button is needed
+//     if (hasSplitPanel && !isSplitPanelOpen && toolsHide) {
+//       hasToolsForm = true;
+//     }
 
-    // The Tools button is needed
-    if (!hasSplitPanel && !toolsHide && !isToolsOpen) {
-      hasToolsForm = true;
-    }
-  }
+//     // The Tools button is needed
+//     if (!hasSplitPanel && !toolsHide && !isToolsOpen) {
+//       hasToolsForm = true;
+//     }
+//   }
 
-  return hasToolsForm;
-}
+//   return hasToolsForm;
+// }
 
 /**
  * Under two scenarios the Tools form that contains the triggers

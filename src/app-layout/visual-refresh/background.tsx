@@ -20,7 +20,7 @@ export default function Background() {
   }
 
   return (
-    <div className={clsx(styles.background, 'awsui-context-content-header')}>
+    <div className={clsx(styles.background)}>
       <div className={styles['scrolling-background']} />
 
       {!isMobile && hasStickyBackground && (

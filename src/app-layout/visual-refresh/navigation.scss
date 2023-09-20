@@ -87,7 +87,9 @@ nav.show-navigation {
 
 nav.navigation {
   background-color: awsui.$color-background-container-content;
-  box-shadow: awsui.$shadow-panel;
+  //box-shadow: awsui.$shadow-panel;
+  box-shadow: none;
+  border-right: solid 2px awsui.$color-border-divider-default;
   bottom: 0;
   height: 100%;
   overflow-x: hidden;

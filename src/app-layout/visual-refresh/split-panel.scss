@@ -121,7 +121,9 @@ section.split-panel-side {
   be persistent in the DOM when closed.
   */
   &.is-split-panel-open.position-side {
-    box-shadow: awsui.$shadow-panel;
+    //box-shadow: awsui.$shadow-panel;
+    box-shadow: none;
+    border-left: solid 2px awsui.$color-border-divider-default;
     max-width: var(#{custom-props.$splitPanelMaxWidth}, 280px);
     min-width: var(#{custom-props.$splitPanelMinWidth}, 280px);
     &.animating {

@@ -20,7 +20,9 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
-    box-shadow: awsui.$shadow-panel;
+    //box-shadow: awsui.$shadow-panel;
+    box-shadow: none;
+    border-left: solid 2px awsui.$color-border-divider-default;
   }
 
   @include styles.with-motion {

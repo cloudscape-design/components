@@ -6,6 +6,10 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
+$selected-item-background: awsui.$color-background-status-info;
+//$selected-item-border: #539FE5;
+$selected-item-border: awsui.$color-border-item-selected;
+
 // Outer borders of adjacent cells overlap and we want selected option border
 // to take precedence over the other ones, hence negative margins and z-indices
 .selectable-item {
@@ -64,7 +68,10 @@
   }
 
   &.selected {
-    background-color: awsui.$color-background-dropdown-item-selected;
+    //background-color: awsui.$color-background-dropdown-item-selected;
+    background-color: $selected-item-background;
+    border-color: $selected-item-border;
+    z-index: 1000;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
       border-bottom-left-radius: 0;

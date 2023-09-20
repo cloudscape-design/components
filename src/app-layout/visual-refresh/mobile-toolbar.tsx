@@ -25,7 +25,7 @@ export default function MobileToolbar() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (!isMobile || (navigationHide && !breadcrumbs && toolsHide && drawers.length === 0)) {
+  if (navigationHide && !breadcrumbs && toolsHide && drawers.length === 0) {
     return null;
   }
 
@@ -38,8 +38,8 @@ export default function MobileToolbar() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
           [testutilStyles['mobile-bar']]: isMobile,
         },
-        testutilStyles['mobile-bar'],
-        'awsui-context-content-header'
+        testutilStyles['mobile-bar']
+        //'awsui-context-content-header'
       )}
     >
       {!navigationHide && (
