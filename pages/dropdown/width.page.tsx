@@ -107,10 +107,11 @@ interface CommonProps {
   expandToViewport: boolean;
   loading?: boolean;
   onOpen: () => void;
+  onClose: () => void;
   virtualScroll: boolean;
 }
 
-function CustomAutosuggest({ expandToViewport, loading, onOpen, virtualScroll }: CommonProps) {
+function CustomAutosuggest({ expandToViewport, loading, onOpen, onClose, virtualScroll }: CommonProps) {
   const [value, setValue] = useState('');
   return (
     <Autosuggest
@@ -136,11 +137,12 @@ function CustomAutosuggest({ expandToViewport, loading, onOpen, virtualScroll }:
       placeholder="Choose an option"
       statusType={loading ? 'loading' : undefined}
       onFocus={onOpen}
+      onBlur={onClose}
     />
   );
 }
 
-function CustomMultiSelect({ expandToViewport, loading, onOpen, virtualScroll }: CommonProps) {
+function CustomMultiSelect({ expandToViewport, loading, onOpen, onClose, virtualScroll }: CommonProps) {
   const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<MultiselectProps.Option>>([]);
   return (
     <Multiselect
@@ -163,11 +165,12 @@ function CustomMultiSelect({ expandToViewport, loading, onOpen, virtualScroll }:
       placeholder="Choose an option"
       statusType={loading ? 'loading' : undefined}
       onFocus={onOpen}
+      onBlur={onClose}
     />
   );
 }
 
-function CustomSelect({ expandToViewport, loading, onOpen, virtualScroll }: CommonProps) {
+function CustomSelect({ expandToViewport, loading, onOpen, onClose, virtualScroll }: CommonProps) {
   const [selectedOption, setSelectedOption] = useState<SelectProps['selectedOption']>(null);
 
   return (
@@ -195,6 +198,7 @@ function CustomSelect({ expandToViewport, loading, onOpen, virtualScroll }: Comm
       placeholder="Choose an option"
       statusType={loading ? 'loading' : undefined}
       onFocus={onOpen}
+      onBlur={onClose}
     />
   );
 }
@@ -204,11 +208,12 @@ export default function () {
   const { asyncLoading, component, triggerWidth, virtualScroll, expandToViewport, containerWidth } = urlParams;
   const [loading, setLoading] = useState(asyncLoading);
   const onOpen = () => {
-    setLoading(asyncLoading);
     if (asyncLoading) {
+      setLoading(true);
       setTimeout(() => setLoading(false), 500);
     }
   };
+  const onClose = () => setLoading(false);
   useEffect(onOpen, [asyncLoading]);
   return (
     <article>
@@ -223,6 +228,7 @@ export default function () {
                 expandToViewport={expandToViewport}
                 loading={loading}
                 onOpen={onOpen}
+                onClose={onClose}
               />
             )}
             {component === 'multiselect' && (
@@ -231,6 +237,7 @@ export default function () {
                 virtualScroll={virtualScroll}
                 loading={loading}
                 onOpen={onOpen}
+                onClose={onClose}
               />
             )}
             {component === 'select' && (
@@ -239,6 +246,7 @@ export default function () {
                 virtualScroll={virtualScroll}
                 loading={loading}
                 onOpen={onOpen}
+                onClose={onClose}
               />
             )}
           </div>
