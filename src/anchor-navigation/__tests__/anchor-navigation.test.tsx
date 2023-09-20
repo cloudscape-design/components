@@ -93,6 +93,7 @@ describe('AnchorNavigation', () => {
       ],
       activeHref: '#section2',
     });
+    expect(wrapper.findActiveAnchor()!.findText()?.getElement()).toHaveTextContent('Section 2');
     expect(wrapper.findAnchorByIndex(1)!.isActive()).toBe(false);
     expect(wrapper.findAnchorByIndex(2)!.isActive()).toBe(true);
   });
