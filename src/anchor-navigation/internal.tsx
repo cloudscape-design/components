@@ -6,7 +6,7 @@ import styles from './styles.css.js';
 import testUtilsStyles from './test-classes/styles.css.js';
 import { AnchorNavigationProps } from './interfaces';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import useScrollSpy from './scroll-spy.js';
+import useScrollSpy from './use-scroll-spy.js';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { getBaseProps } from '../internal/base-component/index.js';

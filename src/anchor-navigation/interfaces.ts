@@ -22,6 +22,7 @@ export interface AnchorNavigationProps extends BaseComponentProps {
    * * `level` (number) - Level of nesting of the anchor.
    * * `info` (string | undefined) - Additional information to display next to the link, for example: "New" or "Updated".
    *
+   * Note: The list of anchors should be sorted in the order they appear on the page.
    */
   anchors: AnchorNavigationProps.Anchor[];
 
