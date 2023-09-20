@@ -75,7 +75,7 @@ describe('AnchorNavigation', () => {
       anchors: [{ text: 'Section 1', href: '#section1', level: 1 }],
       onFollow,
     });
-    wrapper.findAnchorLinkByHref('#section1')?.getElement().click();
+    wrapper.findAnchorByIndex(1)?.findLink()!.getElement().click();
     expect(onFollow).toHaveBeenCalledTimes(1);
     expect(onFollow).toHaveBeenCalledWith({
       cancelBubble: false,
@@ -83,6 +83,18 @@ describe('AnchorNavigation', () => {
       defaultPrevented: false,
       detail: { text: 'Section 1', href: '#section1', level: 1 },
     });
+  });
+
+  it('activeHref sets the right item as active', () => {
+    const wrapper = renderAnchorNavigation({
+      anchors: [
+        { text: 'Section 1', href: '#section1', level: 1 },
+        { text: 'Section 2', href: '#section2', level: 1 },
+      ],
+      activeHref: '#section2',
+    });
+    expect(wrapper.findAnchorByIndex(1)!.isActive()).toBe(false);
+    expect(wrapper.findAnchorByIndex(2)!.isActive()).toBe(true);
   });
 
   it('calls onActiveHrefChange when a new anchor is active', () => {

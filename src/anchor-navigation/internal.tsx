@@ -88,29 +88,28 @@ const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
     [onFollow, anchor]
   );
 
+  const activeItemClasses = clsx(styles['anchor-item--active'], testUtilsStyles['anchor-item--active']);
+
   return (
-    <li
-      data-itemid={`anchor-item-${index + 1}`}
-      className={clsx(styles['anchor-item'], {
-        [(styles['anchor-item--active'], testUtilsStyles['anchor-item--active'])]: isActive,
-      })}
-    >
+    <li data-itemid={`anchor-item-${index + 1}`} className={clsx(styles['anchor-item'], isActive && activeItemClasses)}>
       <a
         onClick={onClick}
-        className={clsx(styles['anchor-link'], testUtilsStyles.link, {
-          [styles['anchor-link--active']]: isActive,
-        })}
+        className={clsx(
+          styles['anchor-link'],
+          testUtilsStyles['anchor-link'],
+          isActive && styles['anchor-link--active']
+        )}
         {...(isActive ? { 'aria-current': true } : {})}
         href={anchor.href}
       >
         <span
-          className={clsx(styles['anchor-link-text'], testUtilsStyles['link-text'])}
+          className={clsx(styles['anchor-link-text'], testUtilsStyles['anchor-link-text'])}
           style={{ paddingLeft: `${anchor.level * 16 + 2}px` }}
         >
           {anchor.text}
         </span>
         {anchor.info && (
-          <span className={clsx(styles['anchor-link-info'], testUtilsStyles['link-info'])}>{anchor.info}</span>
+          <span className={clsx(styles['anchor-link-info'], testUtilsStyles['anchor-link-info'])}>{anchor.info}</span>
         )}
       </a>
     </li>

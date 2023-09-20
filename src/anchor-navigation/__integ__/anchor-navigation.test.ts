@@ -25,17 +25,10 @@ describe('AnchorNavigation', () => {
   }
 
   test(
-    'AnchorNavigation is defined',
-    setupTest(async () => {
-      return expect(await wrapper).toBeTruthy();
-    })
-  );
-
-  test(
     'the first anchor item is active on initial render',
     setupTest(async page => {
-      const firstAnchor = wrapper.findAnchorByIndex(0).findLink();
-      return expect(await page.getElementAttribute(firstAnchor.toSelector(), 'aria-current')).toBe('true');
+      const firstAnchorLink = wrapper.findAnchorByIndex(1).findLink();
+      return expect(await page.getElementAttribute(firstAnchorLink.toSelector(), 'aria-current')).toBe('true');
     })
   );
 
@@ -50,7 +43,7 @@ describe('AnchorNavigation', () => {
     'clicking in a anchor link makes the respective anchor item active',
     setupTest(async page => {
       // Get element position in page
-      const targetAnchorLink = await wrapper.findAnchorLinkByHref('#section-1-1-1');
+      const targetAnchorLink = wrapper.findAnchorLinkByHref('#section-1-1-1');
       expect(await page.getElementAttribute(targetAnchorLink.toSelector(), 'aria-current')).toBeNull;
       await page.click(targetAnchorLink.toSelector());
       await page.waitForVisible('#section-1-1-1');
@@ -64,7 +57,7 @@ describe('AnchorNavigation', () => {
       const sectionSelector = '#section-1-2';
       await page.windowScrollTo({ top: await page.getElementYPosition(sectionSelector) });
       await page.waitForVisible(sectionSelector);
-      const targetAnchorLink = await wrapper.findAnchorLinkByHref(sectionSelector);
+      const targetAnchorLink = wrapper.findActiveAnchor().findLink();
       return expect(await page.getElementAttribute(targetAnchorLink.toSelector(), 'aria-current')).toBe('true');
     })
   );
@@ -72,7 +65,7 @@ describe('AnchorNavigation', () => {
   test(
     'scrolling to the end of the page makes the last anchor item active',
     setupTest(async page => {
-      const lastAnchorLink = await wrapper.findAnchorLinkByHref('#section-1-2-1-1');
+      const lastAnchorLink = wrapper.findAnchorLinkByHref('#section-1-2-1-1');
       await page.windowScrollTo({ top: 99999 }); // Very high value to ensure we are scrolled to the end
       return expect(await page.getElementAttribute(lastAnchorLink.toSelector(), 'aria-current')).toBe('true');
     })

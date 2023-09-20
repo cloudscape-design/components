@@ -25,29 +25,29 @@ export default class AnchorNavigationWrapper extends ComponentWrapper {
   }
 
   findActiveAnchor(): AnchorItemWrapper | null {
-    return this.findComponent(testUtilStyles['anchor-item--active'], AnchorItemWrapper);
+    return this.findComponent(`.${testUtilStyles['anchor-item--active']}`, AnchorItemWrapper);
   }
 
   findAnchorLinkByHref(href: string): ElementWrapper<HTMLAnchorElement> | null {
-    return this.find(`.${testUtilStyles.link}[href="${href}"]`);
+    return this.find(`.${testUtilStyles['anchor-link']}[href="${href}"]`);
   }
 }
 
 export class AnchorItemWrapper extends ElementWrapper {
   findLink(): ElementWrapper<HTMLAnchorElement> | null {
-    return this.findByClassName(testUtilStyles.link);
+    return this.findByClassName(testUtilStyles['anchor-link']);
   }
 
   findText(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles['link-text']);
+    return this.findByClassName(testUtilStyles['anchor-link-text']);
   }
 
   findInfo(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles['link-info']);
+    return this.findByClassName(testUtilStyles['anchor-link-info']);
   }
 
   @usesDom
   isActive(): boolean {
-    return this.getElement().getAttribute('aria-current') === 'true';
+    return this.findByClassName(testUtilStyles['anchor-link'])?.getElement().getAttribute('aria-current') === 'true';
   }
 }
