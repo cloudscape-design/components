@@ -135,7 +135,7 @@ describe('Dropdown width', () => {
       expect(dropdownBox.left + dropdownBox.width).toBeLessThanOrEqual(pageWidth);
     });
   });
-  describe('updates between re-renders', () => {
+  describe('keeps not overflowing the viewport after re-rendering wider', () => {
     const pageWidth = 500;
     testForAllCases(
       { pageWidth, triggerWidth, asyncLoading: true },
@@ -145,13 +145,13 @@ describe('Dropdown width', () => {
           page,
           expandToViewport,
         });
-        const oldWidth = dropdownBox.width;
+        expect(dropdownBox.left + dropdownBox.width).toBeLessThanOrEqual(pageWidth);
         await expect(page.getText(dropdownSelector)).resolves.toContain('Loading');
         await page.waitUntil(async () => (await page.getText(dropdownSelector)).includes('A very'), {
           timeout: 1000,
         });
-        const newWidth = (await page.getBoundingBox(dropdownSelector)).width;
-        expect(newWidth).toBeGreaterThan(oldWidth);
+        const newBox = await page.getBoundingBox(dropdownSelector);
+        expect(newBox.left + newBox.width).toBeLessThanOrEqual(pageWidth);
       }
     );
   });
