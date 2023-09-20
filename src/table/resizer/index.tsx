@@ -1,19 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getOverflowParents } from '../../internal/utils/scrollable-containers';
-import { findUpUntil } from '../../internal/utils/dom';
-import tableStyles from '../styles.css.js';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 
 interface ResizerProps {
-  onDragMove: (newWidth: number) => void;
-  onFinish: () => void;
+  onWidthUpdate: (newWidth: number) => void;
+  onWidthUpdateCommit: () => void;
   ariaLabelledby?: string;
   minWidth?: number;
   tabIndex?: number;
@@ -26,59 +24,69 @@ const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
 export function Resizer({
-  onDragMove,
-  onFinish,
+  onWidthUpdate,
+  onWidthUpdateCommit,
   ariaLabelledby,
   minWidth = DEFAULT_COLUMN_WIDTH,
   tabIndex,
   showFocusRing,
   focusId,
 }: ResizerProps) {
+  onWidthUpdate = useStableCallback(onWidthUpdate);
+  onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
+
+  const separatorId = useUniqueId();
+  const resizerToggleRef = useRef<HTMLButtonElement>(null);
+  const resizerSeparatorRef = useRef<HTMLSpanElement>(null);
+
   const [isDragging, setIsDragging] = useState(false);
   const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
-  const [headerCell, setHeaderCell] = useState<null | HTMLElement>(null);
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
-  const onFinishStable = useStableCallback(onFinish);
-  const onDragStable = useStableCallback(onDragMove);
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
   const [headerCellWidth, setHeaderCellWidth] = useState(0);
-  const originalHeaderCellWidthRef = useRef(0);
+  const originalHeaderCellWidth = useRef(0);
 
-  const handlers = useMemo(() => {
-    if (!headerCell) {
-      return null;
+  const resetHeaderWidth = useCallback(() => {
+    onWidthUpdate(originalHeaderCellWidth.current);
+    setHeaderCellWidth(originalHeaderCellWidth.current);
+  }, [onWidthUpdate]);
+
+  // Read header width after mounting for it to be available in the element's ARIA label before it gets focused.
+  useEffect(() => {
+    setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
+  }, []);
+
+  useEffect(() => {
+    const elements = getResizerElements(resizerToggleRef.current);
+    if ((!isDragging && !resizerHasFocus) || !elements) {
+      return;
     }
 
-    const rootElement = findUpUntil(headerCell, element => element.className.indexOf(tableStyles.root) > -1)!;
-    const tableElement = rootElement.querySelector<HTMLElement>(`table`)!;
-    // tracker is rendered inside table wrapper to align with its size
-    const trackerElement = rootElement.querySelector<HTMLElement>(`.${styles.tracker}`)!;
-    const scrollParent = getOverflowParents(headerCell)[0];
-    const { left: leftEdge, right: rightEdge } = scrollParent.getBoundingClientRect();
+    originalHeaderCellWidth.current = elements.header.getBoundingClientRect().width;
+
+    const { left: leftEdge, right: rightEdge } = elements.scrollParent.getBoundingClientRect();
 
     const updateTrackerPosition = (newOffset: number) => {
-      const { left: scrollParentLeft } = tableElement.getBoundingClientRect();
-      trackerElement.style.top = headerCell.getBoundingClientRect().height + 'px';
+      const { left: scrollParentLeft } = elements.table.getBoundingClientRect();
+      elements.tracker.style.top = elements.header.getBoundingClientRect().height + 'px';
       // minus one pixel to offset the cell border
-      trackerElement.style.left = newOffset - scrollParentLeft - 1 + 'px';
+      elements.tracker.style.left = newOffset - scrollParentLeft - 1 + 'px';
     };
 
     const updateColumnWidth = (newWidth: number) => {
-      const { right, width } = headerCell.getBoundingClientRect();
+      const { right, width } = elements.header.getBoundingClientRect();
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       updateTrackerPosition(right + updatedWidth - width);
-      setHeaderCellWidth(newWidth);
+      if (newWidth >= minWidth) {
+        setHeaderCellWidth(newWidth);
+      }
       // callbacks must be the last calls in the handler, because they may cause an extra update
-      onDragStable(newWidth);
-    };
-
-    const resetColumnWidth = () => {
-      updateColumnWidth(originalHeaderCellWidthRef.current);
+      onWidthUpdate(newWidth);
     };
 
     const resizeColumn = (offset: number) => {
       if (offset > leftEdge) {
-        const cellLeft = headerCell.getBoundingClientRect().left;
+        const cellLeft = elements.header.getBoundingClientRect().left;
         const newWidth = offset - cellLeft;
         // callbacks must be the last calls in the handler, because they may cause an extra update
         updateColumnWidth(newWidth);
@@ -86,11 +94,11 @@ export function Resizer({
     };
 
     const onAutoGrow = () => {
-      const width = headerCell.getBoundingClientRect().width;
+      const width = elements.header.getBoundingClientRect().width;
       autoGrowTimeout.current = setTimeout(onAutoGrow, AUTO_GROW_INTERVAL);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       updateColumnWidth(width + AUTO_GROW_INCREMENT);
-      scrollParent.scrollLeft += AUTO_GROW_INCREMENT;
+      elements.scrollParent.scrollLeft += AUTO_GROW_INCREMENT;
     };
 
     const onMouseMove = (event: MouseEvent) => {
@@ -106,7 +114,7 @@ export function Resizer({
     const onMouseUp = (event: MouseEvent) => {
       resizeColumn(event.pageX);
       setIsDragging(false);
-      onFinishStable();
+      onWidthUpdateCommit();
       clearTimeout(autoGrowTimeout.current);
     };
 
@@ -115,23 +123,23 @@ export function Resizer({
         // Update width
         if (event.keyCode === KeyCode.left) {
           event.preventDefault();
-          updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
+          updateColumnWidth(elements.header.getBoundingClientRect().width - 10);
         }
         if (event.keyCode === KeyCode.right) {
           event.preventDefault();
-          updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
+          updateColumnWidth(elements.header.getBoundingClientRect().width + 10);
         }
         // Exit keyboard dragging mode
         if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
           event.preventDefault();
           setIsKeyboardDragging(false);
-          onFinishStable();
+          onWidthUpdateCommit();
           resizerToggleRef.current?.focus();
         }
         if (event.keyCode === KeyCode.escape) {
           event.preventDefault();
           setIsKeyboardDragging(false);
-          resetColumnWidth();
+          resetHeaderWidth();
           resizerToggleRef.current?.focus();
         }
       } else {
@@ -144,26 +152,16 @@ export function Resizer({
       }
     };
 
-    return { updateTrackerPosition, updateColumnWidth, resetColumnWidth, onMouseMove, onMouseUp, onKeyDown };
-  }, [headerCell, isKeyboardDragging, minWidth, onDragStable, onFinishStable]);
-
-  useEffect(() => {
-    if ((!isDragging && !resizerHasFocus) || !headerCell || !handlers) {
-      return;
-    }
-
-    originalHeaderCellWidthRef.current = headerCell.getBoundingClientRect().width;
-
-    handlers.updateTrackerPosition(headerCell.getBoundingClientRect().right);
+    updateTrackerPosition(elements.header.getBoundingClientRect().right);
 
     if (isDragging) {
       document.body.classList.add(styles['resize-active']);
-      document.addEventListener('mousemove', handlers.onMouseMove);
-      document.addEventListener('mouseup', handlers.onMouseUp);
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
     }
     if (resizerHasFocus) {
       document.body.classList.add(styles['resize-active-with-focus']);
-      headerCell.addEventListener('keydown', handlers.onKeyDown);
+      elements.header.addEventListener('keydown', onKeyDown);
     }
     if (isKeyboardDragging) {
       document.body.classList.add(styles['resize-active']);
@@ -173,24 +171,11 @@ export function Resizer({
       clearTimeout(autoGrowTimeout.current);
       document.body.classList.remove(styles['resize-active']);
       document.body.classList.remove(styles['resize-active-with-focus']);
-      document.removeEventListener('mousemove', handlers.onMouseMove);
-      document.removeEventListener('mouseup', handlers.onMouseUp);
-      headerCell.removeEventListener('keydown', handlers.onKeyDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      elements.header.removeEventListener('keydown', onKeyDown);
     };
-  }, [headerCell, isDragging, isKeyboardDragging, onFinishStable, resizerHasFocus, handlers]);
-
-  const resizerToggleRef = useRef<HTMLButtonElement>(null);
-  const resizerSeparatorRef = useRef<HTMLSpanElement>(null);
-
-  // Read header width and text content after mounting for it to be available in the element's ARIA label before it gets focused.
-  useEffect(() => {
-    if (resizerToggleRef.current) {
-      const headerCell = findUpUntil(resizerToggleRef.current, element => element.tagName.toLowerCase() === 'th')!;
-      setHeaderCellWidth(headerCell.getBoundingClientRect().width);
-    }
-  }, []);
-
-  const separatorId = useUniqueId();
+  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit, resetHeaderWidth]);
 
   return (
     <>
@@ -206,9 +191,7 @@ export function Resizer({
             return;
           }
           event.preventDefault();
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
           setIsDragging(true);
-          setHeaderCell(headerCell);
         }}
         onClick={() => {
           // Prevent mouse drag activation and activate keyboard dragging for VO+Space click.
@@ -217,11 +200,9 @@ export function Resizer({
           setIsKeyboardDragging(true);
           resizerSeparatorRef.current?.focus();
         }}
-        onFocus={event => {
-          const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
-          setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+        onFocus={() => {
+          setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
           setResizerHasFocus(true);
-          setHeaderCell(headerCell);
         }}
         onBlur={event => {
           if (event.relatedTarget !== resizerSeparatorRef.current) {
@@ -249,7 +230,7 @@ export function Resizer({
           setResizerHasFocus(false);
           if (isKeyboardDragging) {
             setIsKeyboardDragging(false);
-            handlers?.resetColumnWidth();
+            resetHeaderWidth();
           }
         }}
       />

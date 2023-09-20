@@ -295,18 +295,21 @@ test('should not trigger if the previous and the current widths are the same', (
 });
 
 describe('resize with keyboard', () => {
+  let mockWidth = 150;
+
   const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
   beforeEach(() => {
     HTMLElement.prototype.getBoundingClientRect = function () {
       const rect = originalBoundingClientRect.apply(this);
       if (this.tagName === 'TH') {
-        rect.width = 150;
+        rect.width = mockWidth;
       }
       return rect;
     };
   });
 
   afterEach(() => {
+    mockWidth = 150;
     HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
   });
 
@@ -379,7 +382,18 @@ describe('resize with keyboard', () => {
     expect(onChange).toHaveBeenCalledTimes(0);
   });
 
-  // TODO: add tests for aria-roledescription content
+  test('prevents resizing to below the min-width', () => {
+    mockWidth = 80;
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+    const columnResizerSeparatorWrapper = wrapper.findColumnHeaders()[0].find('[role="separator"]')!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.left);
+
+    expect(columnResizerSeparatorWrapper.getElement()).toHaveAttribute('aria-valuenow', '80');
+  });
 });
 
 describe('column header content', () => {
