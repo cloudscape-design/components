@@ -45,6 +45,9 @@ explicitly set in script.
   #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
   #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
+  #{custom-props.$navigationWidth}: 280px;
+  #{custom-props.$drawerSize}: 0px;
+  #{custom-props.$drawerContainerWidth}: auto;
   background-color: awsui.$color-background-layout-main;
   color: awsui.$color-text-body-default;
   display: grid;
@@ -60,11 +63,11 @@ explicitly set in script.
     '. . main . .'
     '. . main . .';
   grid-template-columns:
-    min-content
+    minmax(min-content, var(#{custom-props.$navigationWidth}))
     minmax(var(#{custom-props.$contentGapLeft}), 1fr)
     minmax(var(#{custom-props.$defaultMinContentWidth}), var(#{custom-props.$defaultMaxContentWidth}))
     minmax(var(#{custom-props.$contentGapRight}), 1fr)
-    min-content;
+    minmax(min-content, var(#{custom-props.$drawerContainerWidth}));
   grid-template-rows:
     auto // mobileToolbar template area
     var(#{custom-props.$notificationsGap})
@@ -78,6 +81,17 @@ explicitly set in script.
     var(#{custom-props.$mainTemplateRows}); // main template area
   min-height: var(#{custom-props.$contentHeight});
   position: relative;
+
+  // drawersContainerWidth
+  &:not(.has-multiple-triggers).has-open-drawer {
+    #{custom-props.$drawerContainerWidth}: var(#{custom-props.$drawerSize});
+  }
+
+  &.has-multiple-triggers.has-open-drawer {
+    #{custom-props.$drawerContainerWidth}: calc(
+      (awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter + var(#{custom-props.$drawerSize})
+    );
+  }
 
   /*
   Add unified max-width for AppLayout content based on breakpoints. Only use the max content 
@@ -112,6 +126,10 @@ explicitly set in script.
   // Override the dark header overlap height property if disableContentHeaderOverlap is true.
   &.is-overlap-disabled {
     #{custom-props.$overlapHeight}: 0;
+  }
+
+  @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
+    #{custom-props.$navigationWidth}: 320px;
   }
 
   /*

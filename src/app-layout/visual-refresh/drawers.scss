@@ -127,7 +127,6 @@
 }
 
 .drawer {
-  #{custom-props.$drawerSize}: 290px;
   background-color: awsui.$color-background-container-content;
   border-color: transparent;
   display: grid;
@@ -171,6 +170,11 @@
     border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     opacity: 1;
     width: var(#{custom-props.$drawerSize});
+
+    @include styles.with-motion {
+      transition: awsui.$motion-duration-refresh-only-fast;
+      transition-property: border-color, opacity, width;
+    }
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {

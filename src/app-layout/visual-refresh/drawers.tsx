@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 import clsx from 'clsx';
-import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
 import SplitPanel from './split-panel';
 import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
-import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
@@ -69,8 +67,6 @@ function ActiveDrawer() {
     toolsRefs,
     loseDrawersFocus,
     resizeHandle,
-    drawerSize,
-    drawersMaxWidth,
     drawerRef,
   } = useAppLayoutInternals();
 
@@ -85,22 +81,17 @@ function ActiveDrawer() {
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
 
-  const size = Math.min(drawersMaxWidth, drawerSize);
-
   return (
     <aside
       id={activeDrawerId}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, sharedStyles['with-motion'], {
+      className={clsx(styles.drawer, {
         [styles['is-drawer-open']]: activeDrawerId,
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
       })}
-      style={{
-        ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
-      }}
       ref={drawerRef}
       onBlur={e => {
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {

@@ -43,6 +43,9 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
+    drawerSize,
+    drawersMaxWidth,
+    activeDrawerId,
   } = useAppLayoutInternals();
 
   // Determine the first content child so the gap will vertically align with the trigger buttons
@@ -51,6 +54,10 @@ export default function Layout({ children }: LayoutProps) {
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = isNavigationOpen || navigationHide;
   const hasContentGapRight = drawersTriggerCount <= 0 || hasOpenDrawer;
+  const size = Math.min(drawersMaxWidth, drawerSize);
+  const hasMultipleTriggers = drawersTriggerCount > 1;
+
+  console.log(activeDrawerId);
 
   return (
     <main
@@ -72,6 +79,8 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
           [styles['is-overlap-disabled']]: isBackgroundOverlapDisabled,
+          [styles['has-multiple-triggers']]: hasMultipleTriggers,
+          [styles['has-open-drawer']]: activeDrawerId !== undefined,
         },
         testutilStyles.root
       )}
@@ -84,6 +93,7 @@ export default function Layout({ children }: LayoutProps) {
         ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
         ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
+        ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
       }}
     >
       {children}
