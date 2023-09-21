@@ -202,6 +202,12 @@
   font-size: inherit;
   @include styles.info-link-spacing();
 
+  // Both children (.heading-text and .counter) override user-select to text.
+  // This provides a similar effect to `user-select: contain`, by restricting
+  // double-click selection to inside .heading-text without letting it spill
+  // out into .counter or .info
+  user-select: none;
+
   &-variant-h1 {
     @include styles.font(heading-xl);
   }
@@ -214,7 +220,8 @@
 }
 
 .heading-text {
-  /* used in test-utils */
+  user-select: text;
+
   &-variant-h1 {
     @include styles.font-heading-xl;
   }
@@ -227,6 +234,8 @@
 }
 
 .counter {
+  user-select: text;
+
   color: awsui.$color-text-counter;
   font-weight: styles.$font-weight-normal;
 }
