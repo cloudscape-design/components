@@ -17,12 +17,17 @@ export const getOverflowParents = (element: HTMLElement): HTMLElement[] => {
   return parents;
 };
 
-export const getOverflowParentDimensions = (
-  element: HTMLElement,
+export const getOverflowParentDimensions = ({
+  element,
   excludeClosestParent = false,
   expandToViewport = false,
-  canExpandOutsideViewport = false
-): Dimensions[] => {
+  canExpandOutsideViewport = false,
+}: {
+  element: HTMLElement;
+  excludeClosestParent: boolean;
+  expandToViewport: boolean;
+  canExpandOutsideViewport: boolean;
+}): Dimensions[] => {
   const parents = expandToViewport
     ? []
     : getOverflowParents(element).map(el => {
