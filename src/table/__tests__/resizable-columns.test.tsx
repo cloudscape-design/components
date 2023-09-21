@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import times from 'lodash/times';
-import { render } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
@@ -295,73 +295,80 @@ test('should not trigger if the previous and the current widths are the same', (
 });
 
 describe('resize with keyboard', () => {
+  let mockWidth = 150;
+
   const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
   beforeEach(() => {
     HTMLElement.prototype.getBoundingClientRect = function () {
       const rect = originalBoundingClientRect.apply(this);
       if (this.tagName === 'TH') {
-        rect.width = 150;
+        rect.width = mockWidth;
       }
       return rect;
     };
   });
 
   afterEach(() => {
+    mockWidth = 150;
     HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
   });
 
-  test('ignores arrow keys before entering the dragging mode', () => {
+  test('resizes columns with keyboard to the lect', async () => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
 
     columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.right);
-    columnResizerWrapper.keydown(KeyCode.enter);
-
-    expect(onChange).toHaveBeenCalledTimes(0);
-  });
-
-  test.each([KeyCode.space, KeyCode.enter])('activates and commits resize with [%s] key code', keyCode => {
-    const onChange = jest.fn();
-    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
-    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
-
-    columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(keyCode);
     columnResizerWrapper.keydown(KeyCode.left);
-    columnResizerWrapper.keydown(keyCode);
 
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith({ widths: [140, 300] });
+    await waitFor(() => {
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith({ widths: [150 - 10, 300] });
+    });
+
+    columnResizerWrapper.keydown(KeyCode.right);
+
+    await waitFor(() => {
+      expect(onChange).toHaveBeenCalledTimes(2);
+      expect(onChange).toHaveBeenCalledWith({ widths: [150 + 10, 300] });
+    });
   });
 
-  test.each([KeyCode.escape])('discards resize with [%s] key code', keyCode => {
+  test('cannot resize below minsize', () => {
+    mockWidth = 80;
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
 
     columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.enter);
-    columnResizerWrapper.keydown(KeyCode.right);
-    columnResizerWrapper.keydown(keyCode);
-    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.left);
 
     expect(onChange).toHaveBeenCalledTimes(0);
+    expect(columnResizerWrapper.getElement()!).toHaveAttribute('aria-valuenow', '80');
+  });
+});
+
+describe('column header content', () => {
+  test('resizable columns headers have expected text content', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+    expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
+    expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
   });
 
-  test('discards resize on blur', () => {
-    const onChange = jest.fn();
-    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
-    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+  test('resizable columns can be queries with columnheader role', () => {
+    renderTable(<Table {...defaultProps} />);
 
-    columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.enter);
-    columnResizerWrapper.keydown(KeyCode.right);
-    wrapper.findColumnResizer(2)!.focus();
-    columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.enter);
+    expect(screen.getByRole('columnheader', { name: 'Id' }));
+    expect(screen.getByRole('columnheader', { name: 'Description' }));
+  });
 
-    expect(onChange).toHaveBeenCalledTimes(0);
+  test('resize handles have expected accessible names', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const getResizeHandle = (columnIndex: number) =>
+      wrapper.findColumnHeaders()[columnIndex].findByClassName(resizerStyles.resizer)!.getElement();
+
+    expect(getResizeHandle(0)).toHaveAccessibleName('Id');
+    expect(getResizeHandle(1)).toHaveAccessibleName('Description');
   });
 });

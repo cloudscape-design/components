@@ -29,4 +29,4 @@ export const getSubStepNameSelector = (subStepId?: string) =>
 export const getFieldSlotSeletor = (id: string | undefined) => (id ? `[id="${id}"]` : undefined);
 
 export const getNameFromSelector = (selector: string | undefined): string | undefined =>
-  selector ? document.querySelector<HTMLElement>(selector)?.innerText : undefined;
+  selector ? document.querySelector<HTMLElement>(selector)?.innerText?.trim() : undefined;

@@ -18,7 +18,7 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { PACKAGE_VERSION } from '../../environment';
 
 import { FunnelMetrics } from '../index';
-import { FunnelProps, FunnelStepProps, SubStepConfiguration } from '../interfaces';
+import { FunnelProps, FunnelStepProps, StepConfiguration, SubStepConfiguration } from '../interfaces';
 
 import {
   DATA_ATTR_FUNNEL_STEP,
@@ -29,10 +29,11 @@ import {
   getSubStepSelector,
 } from '../selectors';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
+import { nodeBelongs } from '../../utils/node-belongs';
 
-export const FUNNEL_VERSION = '1.0';
+export const FUNNEL_VERSION = '1.2';
 
-type AnalyticsFunnelProps = { children?: React.ReactNode } & Pick<
+type AnalyticsFunnelProps = { children?: React.ReactNode; stepConfiguration?: StepConfiguration[] } & Pick<
   FunnelProps,
   'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'
 >;
@@ -51,8 +52,19 @@ export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
 
   return <InnerAnalyticsFunnel {...props} />;
 };
+export const CREATION_EDIT_FLOW_DONE_EVENT_NAME = 'awsui-creation-edit-flow-done';
 
-const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
+const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
+  FunnelMetrics.funnelCancelled({ funnelInteractionId });
+  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+};
+
+const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
+  FunnelMetrics.funnelComplete({ funnelInteractionId });
+  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+};
+
+const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
@@ -86,6 +98,10 @@ const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
       // Reset the state, in case the component was re-mounted.
       funnelState.current = 'default';
 
+      const singleStepFlowStepConfiguration = [
+        { number: 1, isOptional: false, name: getNameFromSelector(getFunnelNameSelector()) ?? '' },
+      ];
+
       const funnelInteractionId = FunnelMetrics.funnelStart({
         funnelNameSelector: getFunnelNameSelector(),
         optionalStepNumbers: props.optionalStepNumbers,
@@ -94,6 +110,7 @@ const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
         componentVersion: PACKAGE_VERSION,
         theme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
+        stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
       });
 
       setFunnelInteractionId(funnelInteractionId);
@@ -111,14 +128,14 @@ const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
 
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        onFunnelComplete({ funnelInteractionId });
         funnelState.current = 'complete';
       }
 
       if (funnelState.current === 'complete') {
         FunnelMetrics.funnelSuccessful({ funnelInteractionId });
       } else {
-        FunnelMetrics.funnelCancelled({ funnelInteractionId });
+        onFunnelCancelled({ funnelInteractionId });
         funnelState.current = 'cancelled';
       }
     };
@@ -154,7 +171,7 @@ const InnerAnalyticsFunnel = ({ children, ...props }: AnalyticsFunnelProps) => {
         /*
           If no validation errors are rendered, we treat the funnel as complete.
         */
-        FunnelMetrics.funnelComplete({ funnelInteractionId });
+        onFunnelComplete({ funnelInteractionId });
         funnelState.current = 'complete';
       } else {
         funnelState.current = 'default';
@@ -201,6 +218,19 @@ export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
   return <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />;
 };
 
+function getSubStepConfiguration() {
+  const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
+
+  const subStepConfiguration = subSteps.map((substep, index) => {
+    const name = substep.querySelector<HTMLElement>(getSubStepNameSelector())?.innerText?.trim() ?? '';
+    return {
+      name,
+      number: index + 1,
+    };
+  });
+  return subStepConfiguration;
+}
+
 function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration[]) => void) {
   /*
    Chosen so that it's hopefully shorter than a user interaction, but gives enough time for the
@@ -227,17 +257,7 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
       return;
     }
 
-    const subSteps = Array.from(document.querySelectorAll(getSubStepAllSelector())) as HTMLElement[];
-
-    const subStepConfiguration = subSteps.map((substep, index) => {
-      const name = substep.querySelector(getSubStepNameSelector())?.textContent ?? '';
-      return {
-        name,
-        number: index + 1,
-      };
-    });
-
-    handler(subStepConfiguration);
+    handler(getSubStepConfiguration());
   }, SUBSTEP_CHANGE_DEBOUNCE);
 
   return stepChangeCallback;
@@ -298,6 +318,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
         totalSubSteps: subStepCount.current,
+        subStepConfiguration: getSubStepConfiguration(),
       });
     }
 
@@ -349,7 +370,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
   );
 };
 interface AnalyticsFunnelSubStepProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode | ((props: FunnelSubStepContextValue) => React.ReactNode);
 }
 
 export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps) => {
@@ -395,6 +416,10 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
   const context = isNested ? inheritedContext : newContext;
 
   useEffect(() => {
+    if (isNested || !subStepRef.current) {
+      return;
+    }
+
     const onMouseDown = () => (mousePressed.current = true);
 
     const onMouseUp = async () => {
@@ -412,7 +437,7 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
       */
       await new Promise(r => setTimeout(r, 1));
 
-      if (!subStepRef.current || !subStepRef.current.contains(document.activeElement)) {
+      if (!subStepRef.current || !document.activeElement || !nodeBelongs(subStepRef.current, document.activeElement)) {
         isFocusedSubStep.current = false;
 
         /*
@@ -436,7 +461,13 @@ export const AnalyticsFunnelSubStep = ({ children }: AnalyticsFunnelSubStepProps
     subStepNameSelector,
     subStepSelector,
     focusCleanupFunction,
+    isNested,
+    subStepRef,
   ]);
 
-  return <FunnelSubStepContext.Provider value={context}>{children}</FunnelSubStepContext.Provider>;
+  return (
+    <FunnelSubStepContext.Provider value={context}>
+      {typeof children === 'function' ? children(context) : children}
+    </FunnelSubStepContext.Provider>
+  );
 };

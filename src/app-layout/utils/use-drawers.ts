@@ -3,8 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { InternalDrawerProps } from '../drawer/interfaces';
-import { AppLayoutState } from '../defaults';
-import { useMobile } from '../../internal/hooks/use-mobile';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
@@ -24,8 +22,7 @@ interface ToolsProps {
 }
 
 function getToolsDrawerItem(props: ToolsProps) {
-  // TODO: remove props.tools check, because it is incompatible with no-drawers behavior
-  if (props.toolsHide || !props.tools) {
+  if (props.toolsHide) {
     return null;
   }
   const { iconName, getLabels } = togglesConfig.tools;
@@ -82,16 +79,14 @@ export function useDrawers(
     drawers: ownDrawers,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: InternalDrawerProps & { __disableRuntimeDrawers?: boolean },
-  toolsProps: ToolsProps,
-  defaults: AppLayoutState
+  toolsProps: ToolsProps
 ) {
-  const isMobile = useMobile();
   const toolsDrawer = getToolsDrawerItem(toolsProps);
 
   const [activeDrawerId, setActiveDrawerId] = useControllable(
     ownDrawers?.activeDrawerId,
     ownDrawers?.onChange,
-    !isMobile && !toolsProps.toolsHide && toolsProps.toolsOpen && defaults.toolsOpen ? TOOLS_DRAWER_ID : undefined,
+    undefined,
     {
       componentName: 'AppLayout',
       controlledProp: 'activeDrawerId',
@@ -110,8 +105,12 @@ export function useDrawers(
   if (toolsDrawer && combinedDrawers.length > 0) {
     combinedDrawers.unshift(toolsDrawer);
   }
-  const activeDrawer = combinedDrawers.find(drawer => drawer.id === activeDrawerId);
-  const activeDrawerIdResolved = activeDrawer?.id; // only defined when corresponding drawer exists
+  // support toolsOpen in runtime-drawers-only mode
+  let activeDrawerIdResolved =
+    toolsProps.toolsOpen && (ownDrawers?.items ?? []).length === 0 ? TOOLS_DRAWER_ID : activeDrawerId;
+  const activeDrawer = combinedDrawers.find(drawer => drawer.id === activeDrawerIdResolved);
+  // ensure that id is only defined when the drawer exists
+  activeDrawerIdResolved = activeDrawer?.id;
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));

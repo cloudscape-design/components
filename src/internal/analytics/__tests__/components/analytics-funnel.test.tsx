@@ -9,6 +9,7 @@ import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
+  CREATION_EDIT_FLOW_DONE_EVENT_NAME,
 } from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
 import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
 import Button from '../../../../../lib/components/button';
@@ -16,9 +17,11 @@ import FormField from '../../../../../lib/components/form-field';
 import Container from '../../../../../lib/components/container';
 import Cards from '../../../../../lib/components/cards';
 import Table from '../../../../../lib/components/table';
+import Header from '../../../../../lib/components/header';
+import Modal from '../../../../../lib/components/modal';
 import ExpandableSection from '../../../../../lib/components/expandable-section';
 
-import { mockedFunnelInteractionId, mockFunnelMetrics } from '../mocks';
+import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText } from '../mocks';
 
 describe('AnalyticsFunnel', () => {
   beforeEach(() => {
@@ -300,6 +303,8 @@ describe('AnalyticsFunnelStep', () => {
     mockFunnelMetrics();
   });
 
+  mockInnerText();
+
   test('renders children components', () => {
     const { getByText } = render(
       <AnalyticsFunnelStep stepNumber={1} stepNameSelector=".step-name-selector">
@@ -317,25 +322,49 @@ describe('AnalyticsFunnelStep', () => {
     const stepNameSelector = '.step-name-selector';
 
     render(
-      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-        <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
-          Step Content
-          <Container />
-          <Cards items={[]} cardDefinition={{}} />
-          <Table items={[]} columnDefinitions={[]} />
-          <ExpandableSection variant="container" />
-        </AnalyticsFunnelStep>
-      </AnalyticsFunnel>
+      <>
+        <div className="step-name-selector">My funnel step</div>
+
+        <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+          <AnalyticsFunnelStep stepNumber={stepNumber} stepNameSelector={stepNameSelector}>
+            Step Content
+            <Container header={<Header>Container</Header>} />
+            <Cards header={<Header>Cards</Header>} items={[]} cardDefinition={{}} />
+            <Table header={<Header>Table</Header>} items={[]} columnDefinitions={[]} />
+            <ExpandableSection headerText="ExpandableSection" variant="container" />
+            <Modal visible={true}></Modal>
+          </AnalyticsFunnelStep>
+        </AnalyticsFunnel>
+      </>
     );
     act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith({
       funnelInteractionId: mockedFunnelInteractionId,
+      stepName: 'My funnel step',
       stepNumber,
       stepNameSelector,
       subStepAllSelector: expect.any(String),
       totalSubSteps: 4,
+      subStepConfiguration: [
+        {
+          name: 'Container',
+          number: 1,
+        },
+        {
+          name: 'Cards',
+          number: 2,
+        },
+        {
+          name: 'Table',
+          number: 3,
+        },
+        {
+          name: 'ExpandableSection',
+          number: 4,
+        },
+      ],
     });
   });
 
@@ -396,6 +425,23 @@ describe('AnalyticsFunnelStep', () => {
         <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
           <Table items={[]} columnDefinitions={[]} variant="embedded" />
           <Table items={[]} columnDefinitions={[]} variant="borderless" />
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        totalSubSteps: 0,
+      })
+    );
+  });
+
+  test('does not treat Modals as their own substep', () => {
+    render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
+          <Modal visible={true}></Modal>
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>
     );
@@ -638,6 +684,47 @@ describe('AnalyticsFunnelSubStep', () => {
       subStepSelector: expect.any(String),
       subStepNameSelector: expect.any(String),
     });
+  });
+});
+
+describe('emit awsui-creation-flow-done event', () => {
+  const doneSpy = jest.fn();
+
+  beforeEach(() => {
+    document.addEventListener(CREATION_EDIT_FLOW_DONE_EVENT_NAME, doneSpy);
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+    mockFunnelMetrics();
+  });
+
+  afterEach(() => {
+    document.removeEventListener(CREATION_EDIT_FLOW_DONE_EVENT_NAME, doneSpy);
+  });
+
+  test('emit awsui-creation-flow-done event when funnelComplete', async () => {
+    const ChildComponent = () => {
+      const { funnelSubmit } = useFunnel();
+      return <button onClick={funnelSubmit}>Submit</button>;
+    };
+    const { getByText } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={3}>
+        <ChildComponent />
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+    fireEvent.click(getByText('Submit'));
+    await waitFor(() => {
+      expect(doneSpy).toHaveBeenCalled();
+    });
+  });
+
+  test('emit awsui-creation-flow-done event when funnelCancelled', () => {
+    const { unmount } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1} />
+    );
+    act(() => void jest.runAllTimers());
+    unmount();
+    expect(doneSpy).toHaveBeenCalled();
   });
 });
 

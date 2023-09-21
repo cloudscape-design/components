@@ -6,6 +6,7 @@ import {
   StickyColumnsModel,
   useStickyCellStyles,
 } from '../../../../lib/components/table/sticky-columns';
+import { updateCellOffsets } from '../../../../lib/components/table/sticky-columns/utils';
 import { getStickyClassNames } from '../../../../lib/components/table/utils';
 import { renderHook } from '../../../__tests__/render-hook';
 
@@ -320,4 +321,13 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-last-right': true,
     });
   });
+});
+
+test('updateCellOffsets element widths fallback to 0 when elements are missing', () => {
+  const { offsets } = updateCellOffsets(
+    {},
+    { stickyColumnsFirst: 1, stickyColumnsLast: 1, visibleColumns: ['a', 'b', 'c'] }
+  );
+  expect(offsets.get('a')).toEqual({ first: 0, last: 0 });
+  expect(offsets.get('c')).toEqual({ first: 0, last: 0 });
 });

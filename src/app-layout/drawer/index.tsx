@@ -11,6 +11,7 @@ import OverflowMenu from './overflow-menu';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 import { splitItems } from './drawers-helpers';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -215,7 +216,11 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                 return (
                   <DrawerTrigger
                     key={index}
-                    testUtilsClassName={testutilStyles['drawers-trigger']}
+                    testUtilsClassName={
+                      item.id === TOOLS_DRAWER_ID
+                        ? clsx(testutilStyles['drawers-trigger'], testutilStyles['tools-toggle'])
+                        : testutilStyles['drawers-trigger']
+                    }
                     ariaExpanded={drawers?.activeDrawerId === item.id}
                     ariaLabel={item.ariaLabels?.triggerButton}
                     ariaControls={drawers?.activeDrawerId === item.id ? item.id : undefined}

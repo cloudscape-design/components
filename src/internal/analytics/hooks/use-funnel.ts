@@ -10,6 +10,7 @@ import {
   getSubStepAllSelector,
 } from '../selectors';
 import { FunnelMetrics } from '../';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 /**
  * Custom React Hook to manage and interact with FunnelSubStep.
@@ -121,7 +122,7 @@ export const useFunnelSubStep = () => {
       return;
     }
 
-    if (!subStepRef.current || !subStepRef.current.contains(event.relatedTarget) || !event.relatedTarget) {
+    if (!subStepRef.current || !event.relatedTarget || !nodeBelongs(subStepRef.current, event.relatedTarget)) {
       isFocusedSubStep.current = false;
 
       if (funnelInteractionId && subStepId && funnelState.current !== 'cancelled') {
