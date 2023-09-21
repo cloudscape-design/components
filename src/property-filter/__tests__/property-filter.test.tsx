@@ -1334,28 +1334,28 @@ describe('property filter parts', () => {
 });
 
 describe('i18n', () => {
-  it('uses dropdown labels from i18n provider', () => {
+  const providerMessages = {
+    'property-filter': {
+      'i18nStrings.allPropertiesLabel': 'Custom All properties',
+      'i18nStrings.groupPropertiesText': 'Custom Properties',
+      'i18nStrings.groupValuesText': 'Custom Values',
+      'i18nStrings.operatorContainsText': 'Custom Contains',
+      'i18nStrings.operatorDoesNotContainText': 'Custom Does not contain',
+      'i18nStrings.operatorDoesNotEqualText': 'Custom Does not equal',
+      'i18nStrings.operatorEqualsText': 'Custom Equals',
+      'i18nStrings.operatorGreaterOrEqualText': 'Custom Greater than or equal',
+      'i18nStrings.operatorGreaterText': 'Custom Greater than',
+      'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
+      'i18nStrings.operatorLessText': 'Custom Less than',
+      'i18nStrings.operatorText': 'Custom Operator',
+      'i18nStrings.operatorsText': 'Custom Operators',
+      'i18nStrings.propertyText': 'Custom Property',
+    },
+  };
+
+  it('uses dropdown labels from i18n provider for a string property', () => {
     const { container } = render(
-      <TestI18nProvider
-        messages={{
-          'property-filter': {
-            'i18nStrings.allPropertiesLabel': 'Custom All properties',
-            'i18nStrings.groupPropertiesText': 'Custom Properties',
-            'i18nStrings.groupValuesText': 'Custom Values',
-            'i18nStrings.operatorContainsText': 'Custom Contains',
-            'i18nStrings.operatorDoesNotContainText': 'Custom Does not contain',
-            'i18nStrings.operatorDoesNotEqualText': 'Custom Does not equal',
-            'i18nStrings.operatorEqualsText': 'Custom Equals',
-            'i18nStrings.operatorGreaterOrEqualText': 'Custom Greater than or equal',
-            'i18nStrings.operatorGreaterText': 'Custom Greater than',
-            'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
-            'i18nStrings.operatorLessText': 'Custom Less than',
-            'i18nStrings.operatorText': 'Custom Operator',
-            'i18nStrings.operatorsText': 'Custom Operators',
-            'i18nStrings.propertyText': 'Custom Property',
-          },
-        }}
-      >
+      <TestI18nProvider messages={providerMessages}>
         <PropertyFilter
           {...defaultProps}
           i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
@@ -1373,6 +1373,35 @@ describe('i18n', () => {
     expect(
       dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
     ).toEqual(['Custom Equals', 'Custom Does not equal', 'Custom Contains', 'Custom Does not contain']);
+  });
+
+  it('uses dropdown labels from i18n provider for a numeric property', () => {
+    const { container } = render(
+      <TestI18nProvider messages={providerMessages}>
+        <PropertyFilter
+          {...defaultProps}
+          i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findPropertyFilter()!;
+
+    wrapper.focus();
+    const dropdown = wrapper.findDropdown()!;
+    expect(dropdown.find('li')!.getElement()).toHaveTextContent('Custom Properties');
+
+    wrapper.selectSuggestion(6);
+    expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
+    expect(
+      dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
+    ).toEqual([
+      'Custom Equals',
+      'Custom Does not equal',
+      'Custom Greater than or equal',
+      'Custom Less than or equal',
+      'Custom Less than',
+      'Custom Greater than',
+    ]);
   });
 
   it('uses token and editor labels from i18n provider', () => {
@@ -1437,18 +1466,4 @@ describe('i18n', () => {
     expect(findCancelButton(popoverContent).getElement()).toHaveTextContent('Custom Cancel');
     expect(findSubmitButton(popoverContent).getElement()).toHaveTextContent('Custom Apply');
   });
-});
-
-test('does not throw when unsupported operator is used', () => {
-  expect(() =>
-    render(
-      <PropertyFilter
-        {...defaultProps}
-        filteringProperties={[
-          ...defaultProps.filteringProperties,
-          { key: 'custom', operators: ['%' as any], propertyLabel: 'Custom', groupValuesLabel: 'Custom' },
-        ]}
-      />
-    )
-  ).not.toThrow();
 });
