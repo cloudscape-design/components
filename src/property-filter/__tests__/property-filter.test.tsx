@@ -1438,3 +1438,17 @@ describe('i18n', () => {
     expect(findSubmitButton(popoverContent).getElement()).toHaveTextContent('Custom Apply');
   });
 });
+
+test('does not throw when unsupported operator is used', () => {
+  expect(() =>
+    render(
+      <PropertyFilter
+        {...defaultProps}
+        filteringProperties={[
+          ...defaultProps.filteringProperties,
+          { key: 'custom', operators: ['%' as any], propertyLabel: 'Custom', groupValuesLabel: 'Custom' },
+        ]}
+      />
+    )
+  ).not.toThrow();
+});
