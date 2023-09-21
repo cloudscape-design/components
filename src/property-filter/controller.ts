@@ -325,15 +325,24 @@ export const getAutosuggestOptions = (
 };
 
 export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
-  const mapping: { [K in ComparisonOperator]: string | undefined } = {
-    ['<']: i18nStrings.operatorLessText,
-    ['<=']: i18nStrings.operatorLessOrEqualText,
-    ['>']: i18nStrings.operatorGreaterText,
-    ['>=']: i18nStrings.operatorGreaterOrEqualText,
-    [':']: i18nStrings.operatorContainsText,
-    ['!:']: i18nStrings.operatorDoesNotContainText,
-    ['=']: i18nStrings.operatorEqualsText,
-    ['!=']: i18nStrings.operatorDoesNotEqualText,
-  };
-  return mapping[operator];
+  switch (operator) {
+    case '<':
+      return i18nStrings.operatorLessText;
+    case '<=':
+      return i18nStrings.operatorLessOrEqualText;
+    case '>':
+      return i18nStrings.operatorGreaterText;
+    case '>=':
+      return i18nStrings.operatorGreaterOrEqualText;
+    case ':':
+      return i18nStrings.operatorContainsText;
+    case '!:':
+      return i18nStrings.operatorDoesNotContainText;
+    case '=':
+      return i18nStrings.operatorEqualsText;
+    case '!=':
+      return i18nStrings.operatorDoesNotEqualText;
+    default:
+      return '';
+  }
 };

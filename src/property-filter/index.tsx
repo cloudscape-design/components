@@ -35,19 +35,33 @@ import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../i18n/context';
 import TokenList from '../internal/components/token-list';
 import { SearchResults } from '../text-filter/search-results';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export { PropertyFilterProps };
 
-const OPERATOR_I18N_MAPPING: Record<PropertyFilterOperator, string> = {
-  '=': 'equals',
-  '!=': 'not_equals',
-  '>': 'greater_than',
-  '>=': 'greater_than_equal',
-  '<': 'less_than',
-  '<=': 'less_than_equal',
-  ':': 'contains',
-  '!:': 'not_contains',
-};
+function getOperatorI18nString(operator: PropertyFilterOperator): string {
+  switch (operator) {
+    case '=':
+      return 'equals';
+    case '!=':
+      return 'not_equals';
+    case '>':
+      return 'greater_than';
+    case '>=':
+      return 'greater_than_equal';
+    case '<':
+      return 'less_than';
+    case '<=':
+      return 'less_than_equal';
+    case ':':
+      return 'contains';
+    case '!:':
+      return 'not_contains';
+    default:
+      warnOnce('PropertyFilter', 'Unsupported operator');
+      return operator;
+  }
+}
 
 const PropertyFilter = React.forwardRef(
   (
@@ -125,7 +139,7 @@ const PropertyFilter = React.forwardRef(
         rest.i18nStrings?.removeTokenButtonAriaLabel,
         format => token =>
           format({
-            token__operator: OPERATOR_I18N_MAPPING[token.operator],
+            token__operator: getOperatorI18nString(token.operator),
             token__propertyKey: token.propertyKey ?? '',
             token__value: token.value,
           })
