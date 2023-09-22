@@ -353,7 +353,7 @@ describe('resize with keyboard', () => {
     expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
   });
 
-  test.each([KeyCode.escape])('discards resize with escape', keyCode => {
+  test('submits resize with escape', () => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
@@ -361,13 +361,13 @@ describe('resize with keyboard', () => {
     columnResizerWrapper.focus();
     columnResizerWrapper.keydown(KeyCode.enter);
     columnResizerWrapper.keydown(KeyCode.right);
-    columnResizerWrapper.keydown(keyCode);
-    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.escape);
 
-    expect(onChange).toHaveBeenCalledTimes(0);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
   });
 
-  test('discards resize on blur', () => {
+  test('submits resize on blur', () => {
     const onChange = jest.fn();
     const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
     const columnResizerWrapper = wrapper.findColumnResizer(1)!;
@@ -376,10 +376,9 @@ describe('resize with keyboard', () => {
     columnResizerWrapper.keydown(KeyCode.enter);
     columnResizerWrapper.keydown(KeyCode.right);
     wrapper.findColumnResizer(2)!.focus();
-    columnResizerWrapper.focus();
-    columnResizerWrapper.keydown(KeyCode.enter);
 
-    expect(onChange).toHaveBeenCalledTimes(0);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
   });
 
   test('prevents resizing to below the min-width', () => {

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
@@ -44,12 +44,6 @@ export function Resizer({
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
   const [headerCellWidth, setHeaderCellWidth] = useState(0);
-  const originalHeaderCellWidth = useRef(0);
-
-  const resetHeaderWidth = useCallback(() => {
-    onWidthUpdate(originalHeaderCellWidth.current);
-    setHeaderCellWidth(originalHeaderCellWidth.current);
-  }, [onWidthUpdate]);
 
   // Read header width after mounting for it to be available in the element's ARIA label before it gets focused.
   useEffect(() => {
@@ -61,8 +55,6 @@ export function Resizer({
     if ((!isDragging && !resizerHasFocus) || !elements) {
       return;
     }
-
-    originalHeaderCellWidth.current = elements.header.getBoundingClientRect().width;
 
     const { left: leftEdge, right: rightEdge } = elements.scrollParent.getBoundingClientRect();
 
@@ -130,16 +122,10 @@ export function Resizer({
           updateColumnWidth(elements.header.getBoundingClientRect().width + 10);
         }
         // Exit keyboard dragging mode
-        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
+        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space || event.keyCode === KeyCode.escape) {
           event.preventDefault();
           setIsKeyboardDragging(false);
           onWidthUpdateCommit();
-          resizerToggleRef.current?.focus();
-        }
-        if (event.keyCode === KeyCode.escape) {
-          event.preventDefault();
-          setIsKeyboardDragging(false);
-          resetHeaderWidth();
           resizerToggleRef.current?.focus();
         }
       }
@@ -174,7 +160,7 @@ export function Resizer({
       document.removeEventListener('mouseup', onMouseUp);
       elements.header.removeEventListener('keydown', onKeyDown);
     };
-  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit, resetHeaderWidth]);
+  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
   return (
     <>
@@ -208,7 +194,8 @@ export function Resizer({
             setResizerHasFocus(false);
           }
         }}
-        aria-roledescription={`resize handle ${headerCellWidth.toFixed(0)}`}
+        // TODO: move to the new API
+        aria-roledescription="resize button"
         aria-labelledby={ariaLabelledby}
         tabIndex={tabIndex}
         data-focus-id={focusId}
@@ -225,11 +212,13 @@ export function Resizer({
         aria-valuetext={headerCellWidth.toFixed(0)}
         aria-valuemin={minWidth}
         data-focus-id={focusId}
-        onBlur={() => {
+        onBlur={event => {
           setResizerHasFocus(false);
           if (isKeyboardDragging) {
             setIsKeyboardDragging(false);
-            resetHeaderWidth();
+          }
+          if (event.relatedTarget !== resizerToggleRef.current) {
+            onWidthUpdateCommit();
           }
         }}
       />

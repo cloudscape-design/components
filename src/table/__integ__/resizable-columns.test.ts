@@ -277,7 +277,7 @@ test(
     await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
 
     await page.keys(['Enter', 'ArrowRight', 'Escape']);
-    await page.assertColumnWidth(1, originalWidth + 10);
-    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
+    await page.assertColumnWidth(1, originalWidth + 20);
+    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
   })
 );
