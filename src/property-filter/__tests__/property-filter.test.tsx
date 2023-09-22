@@ -88,6 +88,7 @@ const filteringOptions: readonly FilteringOption[] = [
 ];
 
 const defaultProps: PropertyFilterProps = {
+  filteringEmpty: 'Empty',
   filteringProperties,
   filteringOptions,
   filteringPlaceholder: 'Search',
@@ -1002,17 +1003,41 @@ describe('property filter parts', () => {
   });
 
   describe('dropdown states', () => {
-    it('when free text filtering is allowed and no property is matched dropdown is visible but aria-expanded is false', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: false });
+    it('when free text filtering is allowed and no property is matched the dropdown is visible but aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: false,
+        filteringProperties: [],
+      });
       wrapper.setInputValue('free-text');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Use: "free-text"');
     });
-    it('when free text filtering is not allowed and no property is matched dropdown is not shown and aria-expanded is false', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: true });
+    it('when free text filtering is not allowed and no property is matched the dropdown is not shown and aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: true,
+        filteringProperties: [],
+      });
       wrapper.setInputValue('free-text');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+    });
+    it('when free text filtering is allowed and no properties available the filtering-empty is shown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: false,
+        filteringProperties: [],
+      });
+      wrapper.focus();
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'true');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Empty');
+    });
+    it('when free text filtering is not allowed and no properties available the filtering-empty is shown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: true,
+        filteringProperties: [],
+      });
+      wrapper.focus();
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'true');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Empty');
     });
   });
 
