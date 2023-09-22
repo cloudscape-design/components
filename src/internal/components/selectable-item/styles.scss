@@ -60,6 +60,7 @@ $selected-item-border: awsui.$color-border-item-selected;
     z-index: 2;
     background-color: awsui.$color-background-dropdown-item-hover;
     border-color: awsui.$color-border-dropdown-item-hover;
+    //border-color: awsui.$color-border-segment-active;
     &.disabled {
       color: awsui.$color-text-dropdown-item-dimmed;
       border-color: awsui.$color-border-dropdown-item-dimmed-hover;
@@ -71,7 +72,7 @@ $selected-item-border: awsui.$color-border-item-selected;
     //background-color: awsui.$color-background-dropdown-item-selected;
     background-color: $selected-item-background;
     border-color: $selected-item-border;
-    z-index: 1000;
+    z-index: 3;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
       border-bottom-left-radius: 0;
@@ -85,8 +86,11 @@ $selected-item-border: awsui.$color-border-item-selected;
   }
 
   &.highlighted.is-keyboard {
-    border-color: awsui.$color-border-item-focused;
-    box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
+    //border-color: awsui.$color-border-item-focused;
+    border-color: awsui.$color-border-segment-active;
+    //box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
+    //box-shadow: inset 0 0 0 2px red;
+    z-index: 4;
   }
 
   &.parent {
