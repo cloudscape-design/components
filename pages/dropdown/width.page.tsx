@@ -209,11 +209,10 @@ export default function () {
   const [loading, setLoading] = useState(asyncLoading);
   const onOpen = () => {
     if (asyncLoading) {
-      setLoading(true);
       setTimeout(() => setLoading(false), 500);
     }
   };
-  const onClose = () => setLoading(false);
+  const onClose = () => setLoading(asyncLoading);
   useEffect(onOpen, [asyncLoading]);
   return (
     <article>
