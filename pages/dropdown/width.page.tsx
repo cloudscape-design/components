@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Select, { SelectProps } from '~components/select';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import Autosuggest from '~components/autosuggest';
@@ -213,8 +213,7 @@ export default function () {
       setTimeout(() => setLoading(false), 500);
     }
   };
-  const onClose = () => setLoading(false);
-  useEffect(onOpen, [asyncLoading]);
+  const onClose = () => setLoading(asyncLoading);
   return (
     <article>
       <h1>Dropdown width</h1>
