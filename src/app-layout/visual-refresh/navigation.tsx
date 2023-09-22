@@ -57,6 +57,7 @@ export default function Navigation() {
         <div
           className={clsx(styles['navigation-container'], {
             [styles['disable-body-scroll']]: disableBodyScroll,
+            [styles['is-navigation-open']]: isNavigationOpen,
             [styles.unfocusable]: isUnfocusable,
             [testutilStyles['drawer-closed']]: !isNavigationOpen,
           })}

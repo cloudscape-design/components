@@ -8,7 +8,6 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .navigation-container {
-  #{custom-props.$navigationWidth}: 280px;
   display: flex;
   grid-column: 1;
   grid-row: 1 / span 10;
@@ -29,11 +28,22 @@
   */
   pointer-events: none;
 
+  &.is-navigation-open {
+    width: var(#{custom-props.$navigationWidth});
+  }
+
+  &:not(.is-navigation-open) {
+    width: auto;
+  }
+  #{custom-props.$navigationWidth}: 280px;
+
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     #{custom-props.$navigationWidth}: 320px;
   }
 
+  // The Navigation drawer will take up the entire viewport on mobile
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$navigationWidth}: 100vw;
     left: 0;
     position: fixed;
     z-index: 1001;
@@ -102,12 +112,12 @@ nav.navigation {
   @keyframes openNavigation {
     from {
       opacity: 0;
-      width: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+      transform: translateX(calc(-1 * var(#{custom-props.$navigationWidth})));
     }
 
     to {
       opacity: 1;
-      width: var(#{custom-props.$navigationWidth});
+      transform: translateX(0);
     }
   }
 
@@ -134,11 +144,6 @@ nav.navigation {
   */
   > .animated-content {
     width: var(#{custom-props.$navigationWidth});
-  }
-
-  // The Navigation drawer will take up the entire viewport on mobile
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    #{custom-props.$navigationWidth}: 100vw;
   }
 }
 

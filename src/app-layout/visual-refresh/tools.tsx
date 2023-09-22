@@ -68,6 +68,7 @@ export default function Tools({ children }: ToolsProps) {
         <div
           className={clsx(styles['tools-container'], {
             [styles['disable-body-scroll']]: disableBodyScroll,
+            [styles['is-tools-open']]: isToolsOpen,
             [styles.unfocusable]: isUnfocusable,
             [testutilStyles['drawer-closed']]: !isToolsOpen,
           })}

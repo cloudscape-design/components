@@ -29,11 +29,18 @@ viewport size and state of the Tools drawer.
   grid-row: 1 / span 10;
   height: var(#{custom-props.$contentHeight});
   max-width: var(#{custom-props.$toolsMaxWidth});
+  pointer-events: none;
   position: sticky;
   top: var(#{custom-props.$offsetTop});
   z-index: 830;
 
-  pointer-events: none;
+  &:not(.is-tools-open) {
+    width: auto;
+  }
+
+  &.is-tools-open {
+    width: var(#{custom-props.$toolsWidth});
+  }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     #{custom-props.$toolsWidth}: 360px;
@@ -76,12 +83,12 @@ viewport size and state of the Tools drawer.
   @keyframes openTools {
     from {
       opacity: var(#{custom-props.$toolsAnimationStartingOpacity}, 0);
-      width: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+      transform: translateX(var(#{custom-props.$toolsWidth}));
     }
 
     to {
       opacity: 1;
-      width: var(#{custom-props.$toolsWidth});
+      transform: translateX(0);
     }
   }
 
