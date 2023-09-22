@@ -9,19 +9,23 @@
 
 section.mobile-toolbar {
   align-items: center;
-  background-color: awsui.$color-background-home-header;
-  border-bottom: 1px solid awsui.$color-border-divider-default;
-  box-shadow: awsui.$shadow-panel-toggle;
+  //background-color: awsui.$color-background-home-header;
+  border-bottom: 2px solid awsui.$color-border-divider-default;
+  //box-shadow: awsui.$shadow-panel-toggle;
   box-sizing: border-box;
-  height: var(#{custom-props.$mobileBarHeight});
+  //height: var(#{custom-props.$mobileBarHeight});
   display: grid;
   grid-area: mobileToolbar;
-  grid-column: 1 / span 5;
+  grid-column: 2 / span 3;
   grid-template-columns: auto minmax(0, 1fr) auto;
   padding: 0 awsui.$space-m;
   position: sticky;
   top: var(#{custom-props.$offsetTop});
   z-index: 1000;
+
+  // Custom CSS
+  height: 48px;
+  background-color: awsui.$color-foreground-control-default;
 
   > .mobile-toolbar-nav {
     grid-column: 1;
@@ -30,11 +34,12 @@ section.mobile-toolbar {
 
   > .mobile-toolbar-breadcrumbs {
     grid-column: 2;
-    background-color: awsui.$color-background-layout-main;
+    //background-color: awsui.$color-background-layout-main;
+    background-color: awsui.$color-foreground-control-default;
   }
 
   > .mobile-toolbar-tools {
-    grid-column: 3;
+    grid-column: 2;
     margin-left: awsui.$space-m;
   }
 }

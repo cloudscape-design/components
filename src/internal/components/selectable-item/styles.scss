@@ -6,6 +6,10 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
+$selected-item-background: awsui.$color-background-status-info;
+//$selected-item-border: #539FE5;
+$selected-item-border: awsui.$color-border-item-selected;
+
 // Outer borders of adjacent cells overlap and we want selected option border
 // to take precedence over the other ones, hence negative margins and z-indices
 .selectable-item {
@@ -56,6 +60,7 @@
     z-index: 2;
     background-color: awsui.$color-background-dropdown-item-hover;
     border-color: awsui.$color-border-dropdown-item-hover;
+    //border-color: awsui.$color-border-segment-active;
     &.disabled {
       color: awsui.$color-text-dropdown-item-dimmed;
       border-color: awsui.$color-border-dropdown-item-dimmed-hover;
@@ -64,7 +69,10 @@
   }
 
   &.selected {
-    background-color: awsui.$color-background-dropdown-item-selected;
+    //background-color: awsui.$color-background-dropdown-item-selected;
+    background-color: $selected-item-background;
+    border-color: $selected-item-border;
+    z-index: 3;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
       border-bottom-left-radius: 0;
@@ -78,8 +86,11 @@
   }
 
   &.highlighted.is-keyboard {
-    border-color: awsui.$color-border-item-focused;
-    box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
+    //border-color: awsui.$color-border-item-focused;
+    border-color: awsui.$color-border-segment-active;
+    //box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
+    //box-shadow: inset 0 0 0 2px red;
+    z-index: 4;
   }
 
   &.parent {

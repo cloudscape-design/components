@@ -20,8 +20,8 @@ export default function Header() {
           [styles['has-breadcrumbs']]: breadcrumbs,
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles.unfocusable]: hasDrawerViewportOverlay,
-        },
-        'awsui-context-content-header'
+        }
+        //'awsui-context-content-header'
       )}
     >
       {contentHeader}

@@ -4,7 +4,6 @@ import React from 'react';
 import { AppLayoutInternalsProvider } from './context';
 import { AppLayoutProps } from '../interfaces';
 import Background from './background';
-import Breadcrumbs from './breadcrumbs';
 import Drawers from './drawers';
 import Header from './header';
 import Layout from './layout';
@@ -30,8 +29,6 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
           <MobileToolbar />
 
           <Notifications />
-
-          <Breadcrumbs />
 
           <Header />
 
