@@ -31,15 +31,17 @@ function TestTable<T extends object>({
   items,
   startIndex = 0,
   pageSize = 2,
+  isSuppressed,
 }: {
   tableRole?: 'grid' | 'table';
   columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
   items: T[];
   startIndex?: number;
   pageSize?: number;
+  isSuppressed?: (focusedElement: HTMLElement) => boolean;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({ tableRole, pageSize, getTable: () => tableRef.current });
+  useGridNavigation({ active: tableRole === 'grid', isSuppressed, pageSize, getTable: () => tableRef.current });
   return (
     <table role={tableRole} ref={tableRef}>
       <thead>
@@ -220,7 +222,7 @@ test('supports key combination navigation', () => {
   expect(getActiveElement()).toEqual(['button', 'Sort by name']);
 });
 
-test('suspends grid navigation when focusing on dialog element', () => {
+test('suppresses grid navigation when focusing on dialog element', () => {
   const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
   const table = container.querySelector('table')!;
 
@@ -258,7 +260,7 @@ test('updates page size', () => {
 
 test('does not throw errors if table is null', () => {
   function TestTable() {
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => null });
+    useGridNavigation({ active: true, pageSize: 2, getTable: () => null });
     return null;
   }
   expect(() => render(<TestTable />)).not.toThrow();
@@ -277,15 +279,31 @@ test('ensures table always has a user-focusable element', () => {
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   sortButton.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [sortButton] } as unknown as MutationRecord]);
+  mockObserver.callback([
+    { type: 'childList', addedNodes: [], removedNodes: [sortButton] } as unknown as MutationRecord,
+  ]);
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   editButton.focus();
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   row1.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row1] } as unknown as MutationRecord]);
   expect(table.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
+});
+
+test('ensures new interactive table elements are muted', () => {
+  const { container, rerender } = render(<TestTable columns={[idColumn, valueColumn]} items={items.slice(0, 3)} />);
+
+  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(11);
+  expect(container.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
+
+  rerender(<TestTable columns={[idColumn, valueColumn]} items={items} />);
+  const lastRow = container.querySelector('[aria-rowindex="5"]')!;
+  mockObserver.callback([{ type: 'childList', addedNodes: [lastRow], removedNodes: [] } as unknown as MutationRecord]);
+
+  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(14);
+  expect(container.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 });
 
 test('ignores keydown modifiers other than ctrl', () => {
@@ -321,7 +339,7 @@ test('cell or cell element is re-focused after the focus target got removed', ()
   expect(document.body).toHaveFocus();
 
   row1.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row1] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row1] } as unknown as MutationRecord]);
 
   expect(document.body).toHaveFocus();
 
@@ -330,7 +348,7 @@ test('cell or cell element is re-focused after the focus target got removed', ()
   expect(getActiveElement()).toEqual(['td', 'Second']);
 
   row2.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row2] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row2] } as unknown as MutationRecord]);
 
   expect(getActiveElement()).toEqual(['td', 'Third']);
 
@@ -340,7 +358,7 @@ test('cell or cell element is re-focused after the focus target got removed', ()
   expect(getActiveElement()).toEqual(['button', 'Edit value 3']);
 
   row3.remove();
-  mockObserver.callback([{ type: 'childList', removedNodes: [row3] } as unknown as MutationRecord]);
+  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row3] } as unknown as MutationRecord]);
 
   expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
 });
@@ -376,7 +394,7 @@ test('cell navigation works when the table is mutated between commands', () => {
 test('throws no error when focusing on incorrect target', () => {
   function TestComponent() {
     const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ tableRole: 'grid', pageSize: 2, getTable: () => tableRef.current });
+    useGridNavigation({ active: true, pageSize: 2, getTable: () => tableRef.current });
     return (
       <table role="grid" ref={tableRef}>
         <tbody>
@@ -414,4 +432,30 @@ test('elements focus is restored if table changes role after being rendered as g
   rerender(<TestTable tableRole="table" columns={[idColumn, valueColumn]} items={items} />);
 
   expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
+});
+
+test('grid navigation is suppressed by `isSuppressed` callback', () => {
+  const { container } = render(
+    <TestTable
+      columns={[nameColumn, valueColumn]}
+      items={items}
+      isSuppressed={focusedElement => focusedElement.getAttribute('aria-label') === 'Sort by value!'}
+    />
+  );
+  const table = container.querySelector('table')!;
+
+  (container.querySelector('button[aria-label="Sort by name"]') as HTMLElement).focus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
+
+  const sortByValueButton = container.querySelector('button[aria-label="Sort by value"]')!;
+  sortByValueButton.setAttribute('aria-label', 'Sort by value!');
+  mockObserver.callback([
+    { type: 'childList', addedNodes: [sortByValueButton], removedNodes: [] } as unknown as MutationRecord,
+  ]);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.left });
+  expect(getActiveElement()).toEqual(['button', 'Sort by value!']);
 });
