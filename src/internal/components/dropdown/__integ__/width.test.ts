@@ -148,7 +148,7 @@ describe('Dropdown width', () => {
         expect(dropdownBox.left + dropdownBox.width).toBeLessThanOrEqual(pageWidth);
         await expect(page.getText(dropdownSelector)).resolves.toContain('Loading');
         await page.waitUntil(async () => (await page.getText(dropdownSelector)).includes('A very'), {
-          timeout: 2000,
+          timeout: 1000,
         });
         const newBox = await page.getBoundingBox(dropdownSelector);
         expect(newBox.left + newBox.width).toBeLessThanOrEqual(pageWidth);
