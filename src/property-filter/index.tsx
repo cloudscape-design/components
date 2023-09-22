@@ -35,7 +35,6 @@ import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../i18n/context';
 import TokenList from '../internal/components/token-list';
 import { SearchResults } from '../text-filter/search-results';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export { PropertyFilterProps };
 
@@ -57,8 +56,11 @@ function getOperatorI18nString(operator: PropertyFilterOperator): string {
       return 'contains';
     case '!:':
       return 'not_contains';
+
+    // The line is ignored from coverage because it is not reachable.
+    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
+    /* istanbul ignore next */
     default:
-      warnOnce('PropertyFilter', 'Unsupported operator');
       return operator;
   }
 }

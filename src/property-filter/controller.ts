@@ -342,6 +342,10 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
       return i18nStrings.operatorEqualsText;
     case '!=':
       return i18nStrings.operatorDoesNotEqualText;
+
+    // The line is ignored from coverage because it is not reachable.
+    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
+    /* istanbul ignore next */
     default:
       return '';
   }
