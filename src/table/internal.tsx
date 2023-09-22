@@ -220,13 +220,16 @@ const InternalTable = React.forwardRef(
       sortingDescending,
       onSortingChange,
       onFocusMove: moveFocus,
-      onResizeFinish(newWidth) {
+      onResizeFinish(columnId, newWidth) {
         const widthsDetail = columnDefinitions.map(
           (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_COLUMN_WIDTH
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
-          fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
+          fireNonCancelableEvent(onColumnWidthsChange, {
+            widths: widthsDetail,
+            resizedColumn: { id: columnId, width: newWidth[columnId] },
+          });
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,

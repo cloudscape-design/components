@@ -76,7 +76,7 @@ test('should auto-grow the column width when the cursor moves out of table bound
   tick();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '160px' });
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+  expect(onChange).toHaveBeenCalledWith({ widths: [160, 300], resizedColumn: { id: 'id', width: 160 } });
 });
 
 test('should cancel auto-grow when the cursor returns back into the container', () => {

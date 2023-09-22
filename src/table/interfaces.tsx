@@ -226,8 +226,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
   visibleColumns?: ReadonlyArray<string>;
 
   /**
-   * Fired when the user resizes a table column. The event detail contains an array of column widths in pixels,
-   * including the hidden via preferences columns. Use this event to persist the column widths.
+   * Fired when the user resizes a table column.
+   * The event detail include:
+   * * `widths` - an array of column widths in pixels including the hidden via preferences columns.
+   * * `resizedColumn` - the id and the width of the column resized by the user.
+   *
+   * Use this event to persist the column widths.
    */
   onColumnWidthsChange?: NonCancelableEventHandler<TableProps.ColumnWidthsChangeDetail>;
 
@@ -424,6 +428,7 @@ export namespace TableProps {
 
   export interface ColumnWidthsChangeDetail {
     widths: ReadonlyArray<number>;
+    resizedColumn: { id: string; width: number };
   }
 
   export interface LiveAnnouncement {

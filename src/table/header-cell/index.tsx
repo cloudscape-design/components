@@ -25,7 +25,7 @@ interface TableHeaderCellProps<ItemType> {
   wrapLines?: boolean;
   hidden?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
-  onResizeFinish: () => void;
+  onResizeFinish: (columnId: PropertyKey) => void;
   colIndex: number;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   resizableColumns?: boolean;
@@ -143,7 +143,7 @@ export function TableHeaderCell<ItemType>({
           focusId={`resize-control-${String(columnId)}`}
           showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
           onWidthUpdate={newWidth => updateColumn(columnId, newWidth)}
-          onWidthUpdateCommit={onResizeFinish}
+          onWidthUpdateCommit={() => onResizeFinish(columnId)}
           ariaLabelledby={headerId}
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
         />

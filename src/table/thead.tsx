@@ -29,7 +29,7 @@ export interface TheadProps {
   resizableColumns: boolean | undefined;
   getSelectAllProps: () => SelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
-  onResizeFinish: (newWidths: Record<string, number>) => void;
+  onResizeFinish: (columnId: string, newWidths: Record<string, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
   sticky?: boolean;
   hidden?: boolean;
@@ -163,7 +163,7 @@ const Thead = React.forwardRef(
                 colIndex={selectionType ? colIndex + 1 : colIndex}
                 columnId={columnId}
                 updateColumn={updateColumn}
-                onResizeFinish={() => onResizeFinish(columnWidths)}
+                onResizeFinish={columnId => onResizeFinish(columnId.toString(), columnWidths)}
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}

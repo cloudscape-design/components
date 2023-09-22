@@ -231,7 +231,7 @@ test('should trigger the columnWidthsChange event after a column is resized', ()
   fireMouseup(100);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300] });
+  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300], resizedColumn: { id: 'id', width: 100 } });
 });
 
 test('should provide the value for the last column when it was not defined', () => {
@@ -247,7 +247,7 @@ test('should provide the value for the last column when it was not defined', () 
   fireMouseup(100);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300, 120] });
+  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300, 120], resizedColumn: { id: 'id', width: 100 } });
 });
 
 test('should include hidden columns into the event detail', () => {
@@ -268,7 +268,7 @@ test('should include hidden columns into the event detail', () => {
   fireMouseup(140);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [150, 300, 120, 140] });
+  expect(onChange).toHaveBeenCalledWith({ widths: [150, 300, 120, 140], resizedColumn: { id: 'last', width: 140 } });
 });
 
 test('should update the value for the last column when it is resized', () => {
@@ -280,7 +280,7 @@ test('should update the value for the last column when it is resized', () => {
   fireMouseup(400);
 
   expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith({ widths: [150, 400] });
+  expect(onChange).toHaveBeenCalledWith({ widths: [150, 400], resizedColumn: { id: 'description', width: 400 } });
 });
 
 test('should not trigger if the previous and the current widths are the same', () => {
@@ -323,14 +323,14 @@ describe('resize with keyboard', () => {
 
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith({ widths: [150 - 10, 300] });
+      expect(onChange).toHaveBeenCalledWith({ widths: [150 - 10, 300], resizedColumn: { id: 'id', width: 150 - 10 } });
     });
 
     columnResizerWrapper.keydown(KeyCode.right);
 
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledTimes(2);
-      expect(onChange).toHaveBeenCalledWith({ widths: [150 + 10, 300] });
+      expect(onChange).toHaveBeenCalledWith({ widths: [150 + 10, 300], resizedColumn: { id: 'id', width: 150 + 10 } });
     });
   });
 
