@@ -1423,8 +1423,16 @@ describe('i18n', () => {
             'i18nStrings.tokenLimitShowFewer': 'Custom Show fewer',
             'i18nStrings.tokenLimitShowMore': 'Custom Show more',
             'i18nStrings.valueText': 'Custom Value',
-            'i18nStrings.removeTokenButtonAriaLabel':
-              '{token__operator, select, equals {Remove filter, {token__propertyKey} Custom equals {token__value}} not_equals {Remove filter, {token__propertyKey} Custom does not equal {token__value}} other {}}',
+            'i18nStrings.removeTokenButtonAriaLabel': `{token__operator, select, 
+              equals {Remove filter, {token__propertyKey} Custom equals {token__value}}
+              not_equals {Remove filter, {token__propertyKey} Custom does not equal {token__value}}
+              greater_than {Remove filter, {token__propertyKey} Custom greater than {token__value}}
+              greater_than_equal {Remove filter, {token__propertyKey} Custom greater than or equals {token__value}}
+              less_than {Remove filter, {token__propertyKey} Custom less than {token__value}}
+              less_than_equal {Remove filter, {token__propertyKey} Custom less than or equals {token__value}}
+              contains {Remove filter, {token__propertyKey} Custom contains {token__value}}
+              not_contains {Remove filter, {token__propertyKey} Custom does not contain {token__value}}
+              other {}}`,
           },
         }}
       >
@@ -1436,6 +1444,12 @@ describe('i18n', () => {
             tokens: [
               { propertyKey: 'string', operator: '=', value: 'value1' },
               { propertyKey: 'string', operator: '!=', value: 'value2' },
+              { propertyKey: 'string', operator: ':', value: 'value3' },
+              { propertyKey: 'string', operator: '!:', value: 'value4' },
+              { propertyKey: 'range', operator: '>', value: '1' },
+              { propertyKey: 'range', operator: '<', value: '2' },
+              { propertyKey: 'range', operator: '>=', value: '3' },
+              { propertyKey: 'range', operator: '<=', value: '4' },
             ],
           }}
           i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
@@ -1443,15 +1457,20 @@ describe('i18n', () => {
       </TestI18nProvider>
     );
     const wrapper = createWrapper(container).findPropertyFilter()!;
-    console.log(wrapper.getElement().innerHTML);
     expect(wrapper.findRemoveAllButton()!.getElement()).toHaveTextContent('Custom Clear filters');
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show more');
     wrapper.findTokenToggle()!.click();
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show fewer');
 
-    expect(wrapper.findTokens()[0].findRemoveButton().getElement()).toHaveAccessibleName(
-      'Remove filter, string Custom equals value1'
-    );
+    const getRemoveButton = (index: number) => wrapper.findTokens()[index].findRemoveButton().getElement();
+    expect(getRemoveButton(0)).toHaveAccessibleName('Remove filter, string Custom equals value1');
+    expect(getRemoveButton(1)).toHaveAccessibleName('Remove filter, string Custom does not equal value2');
+    expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, string Custom contains value3');
+    expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom does not contain value4');
+    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
+    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom less than 2');
+    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
+    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
 
     const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
     tokenOperation.openDropdown();
