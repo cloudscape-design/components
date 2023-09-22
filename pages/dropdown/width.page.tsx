@@ -209,6 +209,7 @@ export default function () {
   const [loading, setLoading] = useState(asyncLoading);
   const onOpen = () => {
     if (asyncLoading) {
+      setLoading(true);
       setTimeout(() => setLoading(false), 500);
     }
   };
