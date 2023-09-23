@@ -115,8 +115,9 @@ export const defaultDetails =
  */
 export const balanceLabelNodes = (
   nodes: NodeListOf<SVGGElement>,
-  markers: Array<{ endY: number }>,
-  leftSide: boolean
+  markers: Array<{ endY: number; endX: number }>,
+  leftSide: boolean,
+  radius: number
 ) => {
   const MARGIN = 10;
 
@@ -163,23 +164,70 @@ export const balanceLabelNodes = (
     node.setAttribute('transform', '');
 
     // Calculate how much the current node is overlapping with the previous one.
-    const offset = previousBBox.y + previousBBox.height + MARGIN - box.y;
+    const yOffset = previousBBox.y + previousBBox.height + MARGIN - box.y;
 
-    if (offset > 0) {
+    if (yOffset > 0) {
+      const xOffset = computeXOffset(box, yOffset, radius) * (leftSide ? -1 : 1);
       // Move the label down.
-      node.setAttribute('transform', `translate(0 ${offset})`);
+      node.setAttribute('transform', `translate(${xOffset} ${yOffset})`);
 
       // Adjust the attached line accordingly.
       const lineNode = node.parentNode?.querySelector(`.${styles['label-line']}`);
       if (lineNode) {
-        const { endY } = marker;
-        lineNode.setAttribute('y2', '' + (endY + offset));
+        const { endY, endX } = marker;
+        lineNode.setAttribute('y2', '' + (endY + yOffset));
+        lineNode.setAttribute('x2', '' + (endX + xOffset));
       }
 
       // Update the position accordingly to inform the next label
-      box.y += offset;
+      box.y += yOffset;
+      box.x += xOffset;
     }
 
     previousBBox = box;
   }
+};
+
+const squareDistance = (edge: Array<number>): number => Math.pow(edge[0], 2) + Math.pow(edge[1], 2);
+
+const computeXOffset = (box: { x: number; y: number; height: number }, yOffset: number, radius: number): number => {
+  const edges = [
+    [box.x, box.y + yOffset],
+    [box.x, box.y + box.height + yOffset],
+  ];
+  const closestEdge = squareDistance(edges[0]) < squareDistance(edges[1]) ? edges[0] : edges[1];
+
+  if (squareDistance(closestEdge) < Math.pow(radius, 2)) {
+    return Math.sqrt(Math.pow(radius, 2) - Math.pow(closestEdge[1], 2)) - Math.abs(closestEdge[0]);
+  }
+  return 0;
+};
+
+export const computeSmartAngle = (startAngle: number, endAngle: number, optimize = false): number => {
+  if (!optimize || endAngle - startAngle < Math.PI / 20) {
+    return startAngle + (endAngle - startAngle) / 2;
+  }
+  const paddedStartAngle = startAngle + Math.PI / 40;
+  const paddedEndAngle = endAngle - Math.PI / 40;
+  if (paddedStartAngle < 0 && paddedEndAngle > 0) {
+    return 0;
+  }
+  if (paddedStartAngle < Math.PI && paddedEndAngle > Math.PI) {
+    return Math.PI;
+  }
+
+  const endAngleMinDistance = Math.min(
+    paddedEndAngle,
+    Math.abs(Math.PI - paddedEndAngle),
+    2 * Math.PI - paddedEndAngle
+  );
+  const startAngleMinDistance = Math.min(
+    paddedStartAngle,
+    Math.abs(Math.PI - paddedStartAngle),
+    2 * Math.PI - paddedStartAngle
+  );
+  if (endAngleMinDistance < startAngleMinDistance) {
+    return paddedEndAngle;
+  }
+  return paddedStartAngle;
 };

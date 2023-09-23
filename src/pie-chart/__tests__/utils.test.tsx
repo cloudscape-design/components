@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import {
   balanceLabelNodes,
+  computeSmartAngle,
   getDimensionsBySize,
   dimensionsBySize,
   refreshDimensionsBySize,
@@ -32,7 +33,7 @@ const testCases = [
         </g>
       </>
     ),
-    markers: [{ endY: 120 }],
+    markers: [{ endY: 120, endX: -125 }],
   },
   {
     title: 'two equal segments',
@@ -52,7 +53,10 @@ const testCases = [
         </g>
       </>
     ),
-    markers: [{ endY: 0 }, { endY: 0 }],
+    markers: [
+      { endY: 0, endX: 125 },
+      { endY: 0, endX: -125 },
+    ],
   },
   {
     title: 'heavy overlap on the right side',
@@ -98,13 +102,13 @@ const testCases = [
       </>
     ),
     markers: [
-      { endY: -119 },
-      { endY: -117 },
-      { endY: -113 },
-      { endY: -108 },
-      { endY: -100 },
-      { endY: -92 },
-      { endY: 111 },
+      { endY: -119, endX: 125 },
+      { endY: -117, endX: 125 },
+      { endY: -113, endX: 125 },
+      { endY: -108, endX: 125 },
+      { endY: -100, endX: 125 },
+      { endY: -92, endX: 125 },
+      { endY: 111, endX: -125 },
     ],
   },
   {
@@ -151,13 +155,13 @@ const testCases = [
       </>
     ),
     markers: [
-      { endY: 111 },
-      { endY: -92 },
-      { endY: -100 },
-      { endY: -108 },
-      { endY: -114 },
-      { endY: -118 },
-      { endY: -120 },
+      { endY: 111, endX: 125 },
+      { endY: -92, endX: -125 },
+      { endY: -100, endX: -125 },
+      { endY: -108, endX: -125 },
+      { endY: -114, endX: -125 },
+      { endY: -118, endX: -125 },
+      { endY: -120, endX: -125 },
     ],
   },
   {
@@ -204,13 +208,13 @@ const testCases = [
       </>
     ),
     markers: [
-      { endY: -120 },
-      { endY: -118 },
-      { endY: -109 },
-      { endY: 120 },
-      { endY: -109 },
-      { endY: -118 },
-      { endY: -120 },
+      { endY: -120, endX: 125 },
+      { endY: -118, endX: 125 },
+      { endY: -109, endX: 125 },
+      { endY: 120, endX: 125 },
+      { endY: -109, endX: -125 },
+      { endY: -118, endX: -125 },
+      { endY: -120, endX: -125 },
     ],
   },
   {
@@ -246,7 +250,83 @@ const testCases = [
         </g>
       </>
     ),
-    markers: [{ endY: 45 }, { endY: 45 }, { endY: -45 }, { endY: -113 }, { endY: -119 }],
+    markers: [
+      { endY: 45, endX: 125 },
+      { endY: 45, endX: -125 },
+      { endY: -45, endX: -125 },
+      { endY: -113, endX: -125 },
+      { endY: -119, endX: -125 },
+    ],
+  },
+  {
+    title: 'does not change xOffset if no vertical overlap',
+    width: 600,
+    height: 300,
+    nodes: (
+      <>
+        <g data-x="20" data-y="-50">
+          <text x="20" y="-50">
+            Segment 1
+          </text>
+        </g>
+        <g data-x="20" data-y="-20">
+          <text x="20" y="-20">
+            Segment 2
+          </text>
+        </g>
+        <g data-x="-20" data-y="50">
+          <text x="-20" y="50">
+            Segment 3
+          </text>
+        </g>
+        <g data-x="-20" data-y="20">
+          <text x="-20" y="20">
+            Segment 4
+          </text>
+        </g>
+      </>
+    ),
+    markers: [
+      { endY: -50, endX: 20 },
+      { endY: -20, endX: 20 },
+      { endY: 50, endX: -20 },
+      { endY: 20, endX: -20 },
+    ],
+  },
+  {
+    title: 'changes xOffset if vertical overlap',
+    width: 600,
+    height: 300,
+    nodes: (
+      <>
+        <g data-x="20" data-y="-50">
+          <text x="20" y="-50">
+            Segment 1
+          </text>
+        </g>
+        <g data-x="20" data-y="-49">
+          <text x="20" y="-49">
+            Segment 2
+          </text>
+        </g>
+        <g data-x="-20" data-y="21">
+          <text x="-20" y="21">
+            Segment 3
+          </text>
+        </g>
+        <g data-x="-20" data-y="20">
+          <text x="-20" y="20">
+            Segment 4
+          </text>
+        </g>
+      </>
+    ),
+    markers: [
+      { endY: -50, endX: 20 },
+      { endY: -49, endX: 20 },
+      { endY: 21, endX: -20 },
+      { endY: 20, endX: -20 },
+    ],
   },
 ];
 
@@ -284,8 +364,8 @@ describe('balanceLabelNodes', () => {
       );
 
       const labels = container.querySelectorAll<SVGGElement>('.labels g');
-      balanceLabelNodes(labels, markers, false);
-      balanceLabelNodes(labels, markers, true);
+      balanceLabelNodes(labels, markers, false, 100);
+      balanceLabelNodes(labels, markers, true, 100);
 
       expect(labels).toMatchSnapshot();
     });
@@ -316,5 +396,50 @@ describe.each([false, true])('getDimensionsBySize visualRefresh=%s', visualRefre
   ])('matches size correctly for height=$0 and hasLabels=true', (height, matchedSize) => {
     const dimensions = getDimensionsBySize({ size: height, hasLabels: true, visualRefresh });
     expect(dimensions.size).toBe(matchedSize);
+  });
+});
+
+describe('computeSmartAngle', () => {
+  const pi = Math.PI;
+  test('returns mid angle if optimization is disabled', () => {
+    expect(computeSmartAngle(0, pi / 100)).toEqual(pi / 200);
+    expect(computeSmartAngle(-1.5, 1)).toEqual(-0.25);
+    expect(computeSmartAngle(2, 4)).toEqual(3);
+    expect(computeSmartAngle(0, pi / 2)).toEqual(pi / 4);
+  });
+  test('returns mid angle if segment is too small', () => {
+    const startAngle = 0;
+    const endAngle = pi / 100;
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi / 200);
+  });
+  test('returns 0 if segment contains 0 angle', () => {
+    const startAngle = -1.5;
+    const endAngle = 1;
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(0);
+  });
+  test('returns PI if segment contains PI angle', () => {
+    const startAngle = 2;
+    const endAngle = 4;
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi);
+  });
+  test('returns padded start angle if closest to 0', () => {
+    const startAngle = 0;
+    const endAngle = pi / 2;
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi / 40);
+  });
+  test('returns padded start angle if closest to PI', () => {
+    const startAngle = pi;
+    const endAngle = (3 * pi) / 2;
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi + pi / 40);
+  });
+  test('returns padded end angle if closest to 2*PI', () => {
+    const startAngle = (3 * pi) / 2;
+    const endAngle = 2 * pi;
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(2 * pi - pi / 40);
+  });
+  test('returns padded end angle if closest to PI', () => {
+    const startAngle = pi / 2;
+    const endAngle = pi;
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi - pi / 40);
   });
 });
