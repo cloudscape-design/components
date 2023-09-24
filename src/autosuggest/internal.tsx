@@ -181,6 +181,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filteringResultsText: filteredText,
   });
 
+  const shouldRenderDropdownContent = !isEmpty || dropdownStatus.content;
+
   return (
     <AutosuggestInput
       {...restProps}
@@ -208,25 +210,27 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null}
       dropdownContent={
-        <AutosuggestOptionsList
-          statusType={statusType}
-          autosuggestItemsState={autosuggestItemsState}
-          autosuggestItemsHandlers={autosuggestItemsHandlers}
-          highlightedOptionId={highlightedOptionId}
-          highlightText={value}
-          listId={listId}
-          controlId={controlId}
-          enteredTextLabel={enteredTextLabel}
-          handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
-          hasDropdownStatus={dropdownStatus.content !== null}
-          virtualScroll={virtualScroll}
-          selectedAriaLabel={selectedAriaLabel}
-          renderHighlightedAriaLive={renderHighlightedAriaLive}
-          listBottom={
-            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
-          }
-          ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
-        />
+        shouldRenderDropdownContent && (
+          <AutosuggestOptionsList
+            statusType={statusType}
+            autosuggestItemsState={autosuggestItemsState}
+            autosuggestItemsHandlers={autosuggestItemsHandlers}
+            highlightedOptionId={highlightedOptionId}
+            highlightText={value}
+            listId={listId}
+            controlId={controlId}
+            enteredTextLabel={enteredTextLabel}
+            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
+            hasDropdownStatus={dropdownStatus.content !== null}
+            virtualScroll={virtualScroll}
+            selectedAriaLabel={selectedAriaLabel}
+            renderHighlightedAriaLive={renderHighlightedAriaLive}
+            listBottom={
+              !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
+            }
+            ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
+          />
+        )
       }
       dropdownFooter={
         dropdownStatus.isSticky ? (
