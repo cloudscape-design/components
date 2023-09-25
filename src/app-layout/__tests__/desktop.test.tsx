@@ -293,6 +293,20 @@ describe('Classic only features', () => {
 
     expect(wrapper.findByClassName(iconStyles.badge)!.getElement()).toBeInTheDocument();
   });
+
+  test(`should toggle single drawer on click of container`, () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
+    act(() => wrapper.findDrawersDesktopTriggersContainer()!.click());
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+    act(() => wrapper.findDrawersDesktopTriggersContainer()!.click());
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+
+  test(`should not toggle many drawers on click of container`, () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...manyDrawers} />);
+    act(() => wrapper.findDrawersDesktopTriggersContainer()!.click());
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
 });
 
 describe('VR only features', () => {
