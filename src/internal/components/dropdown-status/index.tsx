@@ -29,7 +29,7 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * Determines if retry button should be rendered
    * in case recoveryText was automatically provided by i18n.
    */
-  hasRecoveryCallback: boolean;
+  hasRecoveryCallback?: boolean;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
@@ -70,7 +70,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
   isFiltered,
   noMatch,
   onRecoveryClick,
-  hasRecoveryCallback,
+  hasRecoveryCallback = false,
   errorIconAriaLabel,
 }) => {
   const previousStatusType = usePrevious(statusType);
