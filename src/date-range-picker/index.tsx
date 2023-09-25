@@ -243,7 +243,7 @@ const DateRangePicker = React.forwardRef(
           }}
           disabled={disabled}
           readOnly={readOnly}
-          ariaHasPopup="true"
+          ariaHasPopup="dialog"
         >
           <span className={styles['trigger-flexbox']}>
             <span className={styles['icon-wrapper']}>
