@@ -11,7 +11,6 @@ import {
   JoinOperation,
   ParsedText,
   Query,
-  SupportedOperator,
   Token,
 } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
@@ -325,7 +324,7 @@ export const getAutosuggestOptions = (
   }
 };
 
-export const operatorToDescription = (operator: SupportedOperator, i18nStrings: I18nStrings) => {
+export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
   switch (operator) {
     case '<':
       return i18nStrings.operatorLessText;

@@ -21,7 +21,6 @@ import {
   InternalFilteringOption,
   FilteringProperty,
   ExtendedOperator,
-  SupportedOperator,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -39,7 +38,7 @@ import { SearchResults } from '../text-filter/search-results';
 
 export { PropertyFilterProps };
 
-function getOperatorI18nString(operator: SupportedOperator): string {
+function getOperatorI18nString(operator: ComparisonOperator): string {
   switch (operator) {
     case '=':
       return 'equals';
