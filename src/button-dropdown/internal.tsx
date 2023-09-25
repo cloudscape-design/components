@@ -55,11 +55,11 @@ const InternalButtonDropdown = React.forwardRef(
     }
 
     if (isDevelopment) {
-      if (mainAction && variant !== 'primary') {
-        warnOnce('ButtonDropdown', 'Main action is only supported for "primary" component variant.');
+      if (mainAction && variant !== 'primary' && variant !== 'normal') {
+        warnOnce('ButtonDropdown', 'Main action is only supported for "primary" and "normal" component variant.');
       }
     }
-    const isMainAction = mainAction && variant === 'primary';
+    const isMainAction = mainAction && (variant === 'primary' || variant === 'normal');
     const isVisualRefresh = useVisualRefresh();
 
     const {
@@ -197,7 +197,7 @@ const InternalButtonDropdown = React.forwardRef(
               {...mainActionProps}
               {...mainActionIconProps}
               className={styles['trigger-button']}
-              variant="primary"
+              variant={variant}
               ariaLabel={mainActionAriaLabel}
               formAction="none"
             >
