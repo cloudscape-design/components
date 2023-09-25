@@ -57,6 +57,11 @@ function getOperatorI18nString(operator: SupportedOperator): string {
       return 'contains';
     case '!:':
       return 'not_contains';
+    // The line is ignored from coverage because it is not reachable.
+    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
+    /* istanbul ignore next */
+    default:
+      return operator;
   }
 }
 
