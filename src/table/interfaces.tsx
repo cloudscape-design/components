@@ -227,7 +227,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Fired when the user resizes a table column.
-   * The event detail include:
+   * The event detail includes:
    * * `widths` - an array of column widths in pixels including the hidden via preferences columns.
    * * `resizedColumn` - the id and the width of the column resized by the user.
    *

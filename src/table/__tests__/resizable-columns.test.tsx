@@ -5,6 +5,7 @@ import times from 'lodash/times';
 import { render, screen, waitFor } from '@testing-library/react';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
+import { KEYBOARD_RESIZE_STEP } from '../../../lib/components/table/resizer';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import { fireMousedown, fireMouseup, fireMouseMove, fakeBoundingClientRect } from './utils/resize-actions';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
@@ -323,14 +324,20 @@ describe('resize with keyboard', () => {
 
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith({ widths: [150 - 10, 300], resizedColumn: { id: 'id', width: 150 - 10 } });
+      expect(onChange).toHaveBeenCalledWith({
+        widths: [150 - KEYBOARD_RESIZE_STEP, 300],
+        resizedColumn: { id: 'id', width: 150 - KEYBOARD_RESIZE_STEP },
+      });
     });
 
     columnResizerWrapper.keydown(KeyCode.right);
 
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledTimes(2);
-      expect(onChange).toHaveBeenCalledWith({ widths: [150 + 10, 300], resizedColumn: { id: 'id', width: 150 + 10 } });
+      expect(onChange).toHaveBeenCalledWith({
+        widths: [150 + KEYBOARD_RESIZE_STEP, 300],
+        resizedColumn: { id: 'id', width: 150 + KEYBOARD_RESIZE_STEP },
+      });
     });
   });
 

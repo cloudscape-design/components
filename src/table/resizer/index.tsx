@@ -22,6 +22,8 @@ const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
+export const KEYBOARD_RESIZE_STEP = 10;
+
 export function Resizer({
   onWidthUpdate,
   onWidthUpdateCommit,
@@ -108,12 +110,12 @@ export function Resizer({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.keyCode === KeyCode.left) {
         event.preventDefault();
-        updateColumnWidth(elements.header.getBoundingClientRect().width - 10);
+        updateColumnWidth(elements.header.getBoundingClientRect().width - KEYBOARD_RESIZE_STEP);
         setTimeout(() => onWidthUpdateCommit(), 0);
       }
       if (event.keyCode === KeyCode.right) {
         event.preventDefault();
-        updateColumnWidth(elements.header.getBoundingClientRect().width + 10);
+        updateColumnWidth(elements.header.getBoundingClientRect().width + KEYBOARD_RESIZE_STEP);
         setTimeout(() => onWidthUpdateCommit(), 0);
       }
     };
