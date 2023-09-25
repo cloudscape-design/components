@@ -16,7 +16,7 @@ import { useRowEvents } from './use-row-events';
 import { SelectionControl, focusMarkers, useSelectionFocusMove, useSelection } from './selection';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
-import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { ColumnWidthDefinition, ColumnWidthsProvider } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
@@ -222,7 +222,7 @@ const InternalTable = React.forwardRef(
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
-          (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_COLUMN_WIDTH
+          (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number)
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
