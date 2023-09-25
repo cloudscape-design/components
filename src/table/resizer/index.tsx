@@ -17,6 +17,7 @@ interface ResizerProps {
   tabIndex?: number;
   focusId?: string;
   showFocusRing?: boolean;
+  roleDescription?: string;
 }
 
 const AUTO_GROW_START_TIME = 10;
@@ -31,6 +32,7 @@ export function Resizer({
   tabIndex,
   showFocusRing,
   focusId,
+  roleDescription,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
@@ -194,8 +196,7 @@ export function Resizer({
             setResizerHasFocus(false);
           }
         }}
-        // TODO: move to the new API
-        aria-roledescription="resize button"
+        aria-roledescription={roleDescription}
         aria-labelledby={ariaLabelledby}
         tabIndex={tabIndex}
         data-focus-id={focusId}

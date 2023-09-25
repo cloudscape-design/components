@@ -31,6 +31,9 @@ const defaultProps: TableProps<Item> = {
     { id: 'description', header: 'Description', cell: item => item.description, width: 300 },
   ],
   items: times(20, index => ({ id: index + 1, description: 'Description' })),
+  ariaLabels: {
+    resizerRoleDescription: 'resize button',
+  },
 };
 
 function renderTable(jsx: React.ReactElement) {
@@ -417,5 +420,14 @@ describe('column header content', () => {
 
     expect(getResizeHandle(0)).toHaveAccessibleName('Id');
     expect(getResizeHandle(1)).toHaveAccessibleName('Description');
+  });
+
+  test('resize handles have aria-roledescription', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const getResizeHandle = (columnIndex: number) =>
+      wrapper.findColumnHeaders()[columnIndex].findByClassName(resizerStyles.resizer)!.getElement();
+
+    expect(getResizeHandle(0)).toHaveAttribute('aria-roledescription', 'resize button');
+    expect(getResizeHandle(1)).toHaveAttribute('aria-roledescription', 'resize button');
   });
 });

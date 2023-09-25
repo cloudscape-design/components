@@ -263,6 +263,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Resize split panel"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "resize button",
     "ariaLabels.submittingEditText": "Submitting edit",
     "ariaLabels.successfulEditLabel": "Edit successful",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",

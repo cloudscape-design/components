@@ -35,6 +35,7 @@ export interface TheadProps {
   hidden?: boolean;
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
+  resizerRoleDescription?: string;
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
   selectionColumnId: PropertyKey;
@@ -69,6 +70,7 @@ const Thead = React.forwardRef(
       focusedComponent,
       onFocusedComponentChange,
       tableRole,
+      resizerRoleDescription,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -170,6 +172,7 @@ const Thead = React.forwardRef(
                 stickyState={stickyState}
                 cellRef={node => setCell(columnId, node)}
                 tableRole={tableRole}
+                resizerRoleDescription={resizerRoleDescription}
               />
             );
           })}
