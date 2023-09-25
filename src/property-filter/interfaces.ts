@@ -289,6 +289,8 @@ export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
 
+export type SupportedOperator = '<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=';
+
 export interface InternalFilteringProperty<TokenValue = any> {
   propertyKey: string;
   propertyLabel: string;

@@ -11,6 +11,7 @@ import {
   JoinOperation,
   ParsedText,
   Query,
+  SupportedOperator,
   Token,
 } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
@@ -324,7 +325,7 @@ export const getAutosuggestOptions = (
   }
 };
 
-export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
+export const operatorToDescription = (operator: SupportedOperator, i18nStrings: I18nStrings) => {
   switch (operator) {
     case '<':
       return i18nStrings.operatorLessText;
@@ -342,11 +343,5 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
       return i18nStrings.operatorEqualsText;
     case '!=':
       return i18nStrings.operatorDoesNotEqualText;
-
-    // The line is ignored from coverage because it is not reachable.
-    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
-    /* istanbul ignore next */
-    default:
-      return '';
   }
 };

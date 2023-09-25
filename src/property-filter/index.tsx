@@ -21,6 +21,7 @@ import {
   InternalFilteringOption,
   FilteringProperty,
   ExtendedOperator,
+  SupportedOperator,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -38,7 +39,7 @@ import { SearchResults } from '../text-filter/search-results';
 
 export { PropertyFilterProps };
 
-function getOperatorI18nString(operator: PropertyFilterOperator): string {
+function getOperatorI18nString(operator: SupportedOperator): string {
   switch (operator) {
     case '=':
       return 'equals';
@@ -56,12 +57,6 @@ function getOperatorI18nString(operator: PropertyFilterOperator): string {
       return 'contains';
     case '!:':
       return 'not_contains';
-
-    // The line is ignored from coverage because it is not reachable.
-    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
-    /* istanbul ignore next */
-    default:
-      return operator;
   }
 }
 
