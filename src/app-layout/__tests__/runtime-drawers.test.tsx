@@ -180,6 +180,30 @@ describeEachAppLayout(size => {
       expect(onToolsChange).toHaveBeenCalledWith({ open: false });
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
 
+      onToolsChange.mockReset();
+      wrapper.findToolsToggle().click();
+      expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+    });
+
+    test('should fire tools close event when switching from tools to another drawer', async () => {
+      awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+      const onToolsChange = jest.fn();
+      const { wrapper } = await renderComponent(
+        <AppLayout tools="Tools content" toolsOpen={true} onToolsChange={event => onToolsChange(event.detail)} />
+      );
+
+      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+      expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+    });
+
+    test('should fire tools open event when switching from another drawer to tools', async () => {
+      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
+      const onToolsChange = jest.fn();
+      const { wrapper } = await renderComponent(
+        <AppLayout tools="Tools content" toolsOpen={false} onToolsChange={event => onToolsChange(event.detail)} />
+      );
+      expect(wrapper.findActiveDrawer()!.getElement()).toBeInTheDocument();
+
       wrapper.findToolsToggle().click();
       expect(onToolsChange).toHaveBeenCalledWith({ open: true });
     });
@@ -356,7 +380,7 @@ describeEachAppLayout(size => {
       ]);
     });
 
-    test('allows mixing static and runtime drawers', async () => {
+    test('ignores tools when drawers are present', async () => {
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, id: 'aaa', ariaLabels: { triggerButton: 'aaa' } });
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
@@ -379,12 +403,26 @@ describeEachAppLayout(size => {
         <AppLayout {...(drawers as any)} ariaLabels={{ toolsToggle: 'tools toggle' }} />
       );
       expect(wrapper.findDrawersTriggers().map(trigger => trigger.getElement().getAttribute('aria-label'))).toEqual([
-        'tools toggle',
         'bbb',
         'ddd',
         'aaa',
         'ccc',
       ]);
     });
+  });
+
+  test('should fire tools change event when closing tools panel while drawers are present', async () => {
+    const onToolsChange = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(
+      <AppLayout tools="Tools content" onToolsChange={event => onToolsChange(event.detail)} />
+    );
+
+    wrapper.findToolsToggle().click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+
+    onToolsChange.mockClear();
+    wrapper.findToolsClose().click();
+    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
   });
 });

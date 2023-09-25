@@ -137,11 +137,10 @@ export function MobileToolbar({
               onClick={() => drawers.onChange({ activeDrawerId: item.id })}
             >
               <ToggleButton
-                className={
-                  item.id === TOOLS_DRAWER_ID
-                    ? clsx(testutilStyles['drawers-trigger'], testutilStyles['tools-toggle'])
-                    : testutilStyles['drawers-trigger']
-                }
+                className={clsx(
+                  testutilStyles['drawers-trigger'],
+                  item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                )}
                 iconName={item.trigger.iconName}
                 iconSvg={item.trigger.iconSvg}
                 badge={item.badge}

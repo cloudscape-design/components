@@ -55,10 +55,10 @@ export default function Tools({ children }: ToolsProps) {
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
   /**
-   * If the drawers property is defined the Tools and SplitPanel will be mounted and rendered
+   * If the drawers property is defined the SplitPanel will be mounted and rendered
    * by the Drawers component.
    */
-  if ((toolsHide && !hasSplitPanel) || drawers.length > 0) {
+  if ((toolsHide && !hasSplitPanel) || drawers) {
     return null;
   }
 
