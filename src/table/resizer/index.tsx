@@ -196,6 +196,9 @@ export function Resizer({
             setResizerHasFocus(false);
           }
         }}
+        // Using a custom role-description to make the element's purpose better clear.
+        // The role-description must include the word "button" to imply the interaction model.
+        // See https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription
         aria-roledescription={roleDescription}
         aria-labelledby={ariaLabelledby}
         tabIndex={tabIndex}
