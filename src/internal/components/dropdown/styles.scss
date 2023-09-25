@@ -50,6 +50,11 @@
     }
 
     border-bottom: none;
+
+    // Don't show dropdown border when there's no dropdown content
+    &.is-empty::after {
+      display: none;
+    }
   }
 
   &-drop-up {
@@ -98,23 +103,12 @@
       overflow: scroll;
     }
   }
-  // Don't show dropdown border when there's no dropdown content
-  &.is-empty::after {
-    display: none;
-  }
 }
 
 .dropdown-content {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-// Child flex wrapper used because when combining an absolute position
-// and flexbox, IE11 will incorrectly size the container according to its parent
-// and not its content.
-.ie11-wrapper {
-  display: flex;
 }
 
 .stretch-trigger-height {

@@ -102,7 +102,6 @@ const TransitionContent = ({
         [styles['with-limited-width']]: !stretchWidth,
         [styles['hide-upper-border']]: stretchWidth,
         [styles.interior]: interior,
-        [styles['is-empty']]: !header && !children,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
         [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
@@ -120,15 +119,19 @@ const TransitionContent = ({
       }
       onMouseDown={onMouseDown}
     >
-      <div className={clsx(styles['dropdown-content-wrapper'], isRefresh && styles.refresh)}>
-        <div className={styles['ie11-wrapper']}>
-          <div ref={verticalContainerRef} className={styles['dropdown-content']}>
-            <DropdownContextProvider position={position}>
-              {header}
-              {children}
-              {footer}
-            </DropdownContextProvider>
-          </div>
+      <div
+        className={clsx(
+          styles['dropdown-content-wrapper'],
+          !header && !children && styles['is-empty'],
+          isRefresh && styles.refresh
+        )}
+      >
+        <div ref={verticalContainerRef} className={styles['dropdown-content']}>
+          <DropdownContextProvider position={position}>
+            {header}
+            {children}
+            {footer}
+          </DropdownContextProvider>
         </div>
       </div>
     </div>
