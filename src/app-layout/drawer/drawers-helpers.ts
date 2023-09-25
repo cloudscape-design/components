@@ -4,20 +4,14 @@
 export function splitItems<T extends { id: string }>(
   maybeItems: Array<T> | undefined,
   splitIndex: number,
-  activeId: string | null | undefined,
-  isMobile = false
+  activeId: string | undefined
 ) {
   const items = maybeItems ?? [];
-  let visibleItems = items.slice(0, splitIndex);
-  let overflowItems = items.slice(splitIndex, items.length);
+  const visibleItems = items.slice(0, splitIndex);
+  const overflowItems = items.slice(splitIndex);
 
   if (overflowItems.length === 1) {
-    visibleItems = items.slice(0, splitIndex + 1);
-    overflowItems = [];
-  }
-
-  if (isMobile && items.length === 3) {
-    splitIndex = splitIndex + 1;
+    return { visibleItems: items, overflowItems: [] };
   }
 
   if (activeId && overflowItems.length > 0 && visibleItems.length > 0) {
