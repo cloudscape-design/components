@@ -112,6 +112,11 @@ function SplitPanelBottom() {
  * but instead a direct child of the Tools component. The width constraints
  * for this position are computed in the Tools component.
  */
+
+/**
+ * This component has no opening animations because it causes lots of rerenders that makes the component lag. *
+ */
+
 function SplitPanelSide() {
   const {
     isSplitPanelOpen,
@@ -119,7 +124,6 @@ function SplitPanelSide() {
     splitPanelPosition,
     splitPanelMaxWidth,
     splitPanelMinWidth,
-    splitPanelReportedSize,
     splitPanelControlId,
   } = useAppLayoutInternals();
 
@@ -128,26 +132,19 @@ function SplitPanelSide() {
   }
 
   return (
-    <Transition in={isSplitPanelOpen ?? false} exit={false}>
-      {(state, transitionEventsRef) => (
-        <section
-          id={splitPanelControlId}
-          aria-hidden={!isSplitPanelOpen || splitPanelPosition === 'bottom' ? true : false}
-          className={clsx(styles['split-panel-side'], styles[`position-${splitPanelPosition}`], {
-            [styles.animating]: state === 'entering',
-            [styles['is-split-panel-open']]: isSplitPanelOpen,
-          })}
-          ref={transitionEventsRef}
-          style={{
-            [customCssProps.splitPanelMaxWidth]: `${splitPanelMaxWidth}px`,
-            [customCssProps.splitPanelMinWidth]: `${splitPanelMinWidth}px`,
-            [customCssProps.splitPanelReportedSize]: `${splitPanelReportedSize}px`,
-          }}
-        >
-          <div className={clsx(styles['animated-content'])}>{splitPanelPosition === 'side' && splitPanel}</div>
-        </section>
-      )}
-    </Transition>
+    <section
+      id={splitPanelControlId}
+      aria-hidden={!isSplitPanelOpen || splitPanelPosition === 'bottom' ? true : false}
+      className={clsx(styles['split-panel-side'], styles[`position-${splitPanelPosition}`], {
+        [styles['is-split-panel-open']]: isSplitPanelOpen,
+      })}
+      style={{
+        [customCssProps.splitPanelMaxWidth]: `${splitPanelMaxWidth}px`,
+        [customCssProps.splitPanelMinWidth]: `${splitPanelMinWidth}px`,
+      }}
+    >
+      {splitPanelPosition === 'side' && splitPanel}
+    </section>
   );
 }
 
