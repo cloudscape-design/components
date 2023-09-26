@@ -99,7 +99,7 @@ export function MobileToolbar({
   return (
     <div
       ref={mobileBarRef}
-      className={clsx(styles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
+      className={clsx(styles['mobile-bar'], testutilStyles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
       style={{ top: topOffset }}
     >
       {!navigationHide && (

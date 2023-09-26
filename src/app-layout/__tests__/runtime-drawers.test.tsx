@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
+import { describeEachAppLayout, singleDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, singleDrawer } from './utils';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -38,7 +38,7 @@ const drawerDefaults: DrawerConfig = {
   unmountContent: () => {},
 };
 
-describeEachAppLayout(() => {
+describeEachAppLayout(size => {
   test('does not render runtime drawers when it is explicitly disabled', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper } = await renderComponent(<AppLayout {...({ __disableRuntimeDrawers: true } as any)} />);
@@ -150,18 +150,39 @@ describeEachAppLayout(() => {
     expect(onToolsChange).not.toHaveBeenCalled();
   });
 
-  test('allows switching drawers when toolsOpen is controlled', async () => {
-    const onToolsChange = jest.fn();
-    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
-    const { wrapper } = await renderComponent(
-      <AppLayout tools="Tools content" toolsOpen={false} onToolsChange={event => onToolsChange(event.detail)} />
-    );
-    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
-    expect(onToolsChange).toHaveBeenCalledWith({ open: false });
-    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+  // skipping these on mobile, because drawers toggles are hidden when mobile mode is used
+  (size === 'desktop' ? describe : describe.skip)('switching drawers', () => {
+    test('drawer content updates when switching active drawers', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'first',
+        mountContent: container => (container.textContent = 'first drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'second',
+        mountContent: container => (container.textContent = 'second drawer content'),
+      });
+      const { wrapper } = await renderComponent(<AppLayout />);
+      wrapper.findDrawerTriggerById('first')!.click();
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
+      wrapper.findDrawerTriggerById('second')!.click();
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('second drawer content');
+    });
 
-    wrapper.findToolsToggle().click();
-    expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+    test('allows switching drawers when toolsOpen is controlled', async () => {
+      const onToolsChange = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+      const { wrapper } = await renderComponent(
+        <AppLayout tools="Tools content" toolsOpen={false} onToolsChange={event => onToolsChange(event.detail)} />
+      );
+      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+      expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+      wrapper.findToolsToggle().click();
+      expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+    });
   });
 
   test('updates active drawer if multiple are registered', async () => {
@@ -295,25 +316,8 @@ describeEachAppLayout(() => {
     expect(unmountContent).toHaveBeenCalledTimes(1);
   });
 
-  test('drawer content updates when switching active drawers', async () => {
-    awsuiPlugins.appLayout.registerDrawer({
-      ...drawerDefaults,
-      id: 'first',
-      mountContent: container => (container.textContent = 'first drawer content'),
-    });
-    awsuiPlugins.appLayout.registerDrawer({
-      ...drawerDefaults,
-      id: 'second',
-      mountContent: container => (container.textContent = 'second drawer content'),
-    });
-    const { wrapper } = await renderComponent(<AppLayout />);
-    wrapper.findDrawerTriggerById('first')!.click();
-    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('first drawer content');
-    wrapper.findDrawerTriggerById('second')!.click();
-    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('second drawer content');
-  });
-
-  describe('ordering', () => {
+  // skip these tests on mobile mode, because triggers will overflow
+  (size === 'desktop' ? describe : describe.skip)('ordering', () => {
     test('renders multiple drawers in alphabetical order by default', async () => {
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, id: 'bbb', ariaLabels: { triggerButton: 'bbb' } });
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, id: 'aaa', ariaLabels: { triggerButton: 'aaa' } });
