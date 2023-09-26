@@ -394,6 +394,9 @@ const OldAppLayout = React.forwardRef(
 
       if (hasDrawers) {
         if (activeDrawer) {
+          if (drawers.length === 1) {
+            return activeDrawerSize;
+          }
           if (!isResizeInvalid && activeDrawerSize) {
             return activeDrawerSize + closedDrawerWidth;
           }
