@@ -37,6 +37,11 @@
       margin-top: calc(-1 * awsui.$border-divider-section-width); // -1px to compensate for border width
       border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     }
+
+    &.is-visual-refresh {
+      // Needed to avoid sticky scrollbar overlapping with interactive elements in VR compact mode
+      margin-top: -5px;
+    }
   }
 }
 
