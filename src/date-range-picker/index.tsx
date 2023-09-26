@@ -16,7 +16,7 @@ import Dropdown from '../internal/components/dropdown';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
 import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
 import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -274,28 +274,31 @@ const DateRangePicker = React.forwardRef(
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
         >
-          {isDropDownOpen && (
-            <DateRangePickerDropdown
-              startOfWeek={startOfWeek}
-              locale={normalizedLocale}
-              isSingleGrid={isSingleGrid}
-              onDropdownClose={() => closeDropdown(true)}
-              value={value}
-              showClearButton={showClearButton}
-              isDateEnabled={isDateEnabled}
-              i18nStrings={i18nStrings}
-              onClear={onClear}
-              onApply={onApply}
-              relativeOptions={relativeOptions}
-              isValidRange={isValidRange}
-              dateOnly={dateOnly}
-              timeInputFormat={timeInputFormat}
-              rangeSelectorMode={rangeSelectorMode}
-              ariaLabelledby={ariaLabelledby}
-              ariaDescribedby={ariaDescribedby}
-              customAbsoluteRangeControl={customAbsoluteRangeControl}
-            />
-          )}
+          {/* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */}
+          <FormFieldContext.Provider value={{}}>
+            {isDropDownOpen && (
+              <DateRangePickerDropdown
+                startOfWeek={startOfWeek}
+                locale={normalizedLocale}
+                isSingleGrid={isSingleGrid}
+                onDropdownClose={() => closeDropdown(true)}
+                value={value}
+                showClearButton={showClearButton}
+                isDateEnabled={isDateEnabled}
+                i18nStrings={i18nStrings}
+                onClear={onClear}
+                onApply={onApply}
+                relativeOptions={relativeOptions}
+                isValidRange={isValidRange}
+                dateOnly={dateOnly}
+                timeInputFormat={timeInputFormat}
+                rangeSelectorMode={rangeSelectorMode}
+                ariaLabelledby={ariaLabelledby}
+                ariaDescribedby={ariaDescribedby}
+                customAbsoluteRangeControl={customAbsoluteRangeControl}
+              />
+            )}
+          </FormFieldContext.Provider>
         </Dropdown>
       </div>
     );

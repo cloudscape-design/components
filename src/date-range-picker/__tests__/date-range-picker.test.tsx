@@ -5,6 +5,7 @@ import { act, render } from '@testing-library/react';
 import Mockdate from 'mockdate';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
+import FormField from '../../../lib/components/form-field';
 import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { i18nStrings } from './i18n-strings';
@@ -82,6 +83,44 @@ describe('Date range picker', () => {
     test('controlId', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, controlId: 'test' });
       expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
+    });
+
+    test('does not pass through form field context to dropdown elements', () => {
+      const { container } = render(
+        <FormField label="Label">
+          <DateRangePicker {...defaultProps} />
+        </FormField>
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      act(() => wrapper.openDropdown());
+      const dropdown = wrapper.findDropdown()!;
+
+      expect(dropdown.findRelativeRangeRadioGroup()!.getElement()).toHaveAccessibleName(
+        i18nStrings.relativeRangeSelectionHeading
+      );
+
+      dropdown.findRelativeRangeRadioGroup()?.findButtons().at(-1)!.findNativeInput().click();
+      expect(dropdown.findCustomRelativeRangeDuration()!.findNativeInput().getElement()).toHaveAccessibleName(
+        i18nStrings.customRelativeRangeDurationLabel
+      );
+      expect(dropdown.findCustomRelativeRangeUnit()!.findTrigger().getElement()).toHaveAccessibleName(
+        [i18nStrings.customRelativeRangeUnitLabel, 'minutes'].join(' ')
+      );
+
+      changeMode(wrapper, 'absolute');
+
+      expect(dropdown.findStartDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.startDateLabel
+      );
+      expect(dropdown.findStartTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.startTimeLabel
+      );
+      expect(dropdown.findEndDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.endDateLabel
+      );
+      expect(dropdown.findEndTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.endTimeLabel
+      );
     });
   });
 
