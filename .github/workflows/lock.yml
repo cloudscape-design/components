@@ -1,0 +1,20 @@
+name: Lock threads
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  discussions: write
+
+jobs:
+  lock-discussion:
+    secrets: inherit
+    uses: cloudscape-design/actions/.github/workflows/lock.yml@lock-discussion
+    with:
+      repository: 'components'
