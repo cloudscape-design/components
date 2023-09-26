@@ -157,6 +157,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       ...props,
       isEmpty,
       onRecoveryClick: handleRecoveryClick,
+      hasRecoveryCallback: !!onLoadItems,
     });
 
     let content = null;

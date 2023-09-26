@@ -54,7 +54,6 @@ const InternalSelect = React.forwardRef(
       loadingText,
       finishedText,
       errorText,
-      recoveryText,
       noMatch,
       triggerVariant = 'label',
       renderHighlightedAriaLive,
@@ -78,6 +77,7 @@ const InternalSelect = React.forwardRef(
     const i18n = useInternalI18n('select');
     const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
     const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+    const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
@@ -192,6 +192,7 @@ const InternalSelect = React.forwardRef(
       filteringResultsText: filteredText,
       errorIconAriaLabel,
       onRecoveryClick: handleRecoveryClick,
+      hasRecoveryCallback: !!onLoadItems,
     });
 
     const menuProps = {
