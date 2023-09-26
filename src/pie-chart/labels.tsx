@@ -78,7 +78,7 @@ export default <T extends PieChartProps.Datum>({
   containerRef,
 }: LabelsProps<T>) => {
   const containerBoundaries = useElementBoundaries(containerRef);
-  const optimizeLabels =
+  const shouldOptimizeLabels =
     containerBoundaries.right - containerBoundaries.left - (dimensions.outerRadius + dimensions.innerLabelPadding) * 2 <
     300;
   const markers = useMemo(() => {
@@ -95,16 +95,17 @@ export default <T extends PieChartProps.Datum>({
 
     return pieData.map((datum, i) => {
       const labelDatum = pieData[i];
-      const smartAngle = computeSmartAngle(labelDatum.startAngle, labelDatum.endAngle, optimizeLabels);
+      const smartAngle = computeSmartAngle(labelDatum.startAngle, labelDatum.endAngle, shouldOptimizeLabels);
 
       // Make the marker line longer if the segment is closer to the top or bottom of the chart
-      arcMarkerBreak.outerRadius(radius + 20 * (0.5 * Math.cos(2 * smartAngle) + 0.5));
-      arcMarkerBreak.innerRadius(radius + 20 * (0.5 * Math.cos(2 * smartAngle) + 0.5));
+      const lineExtension = 0.5 * Math.cos(2 * smartAngle) + 0.5;
+      arcMarkerBreak.outerRadius(radius + 20 * lineExtension);
+      arcMarkerBreak.innerRadius(radius + 20 * lineExtension);
       const [startX, startY] = arcMarkerStart.centroid({ ...datum, startAngle: smartAngle, endAngle: smartAngle });
       const [breakX, breakY] = arcMarkerBreak.centroid({ ...datum, startAngle: smartAngle, endAngle: smartAngle });
 
       const rightSide = smartAngle < Math.PI;
-      const endX = optimizeLabels ? breakX + 20 * (rightSide ? 1 : -1) : (radius + 20) * (rightSide ? 1 : -1);
+      const endX = shouldOptimizeLabels ? breakX + 20 * (rightSide ? 1 : -1) : (radius + 20) * (rightSide ? 1 : -1);
       const textX = endX + 5 * (rightSide ? 1 : -1);
 
       return {
@@ -120,7 +121,7 @@ export default <T extends PieChartProps.Datum>({
         datum,
       };
     });
-  }, [pieData, dimensions, optimizeLabels]);
+  }, [pieData, dimensions, shouldOptimizeLabels]);
 
   const rootRef = useRef<SVGGElement>(null);
 

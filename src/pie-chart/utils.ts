@@ -16,6 +16,7 @@ export interface Dimension {
 const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
 const defaultPadding = 12; // = space-s
 const smallPadding = 8; // = space-xs
+export const minLabelLineAngularPadding = Math.PI / 10;
 
 export const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
@@ -188,14 +189,12 @@ export const balanceLabelNodes = (
   }
 };
 
-const squareDistance = (edge: Array<number>): number => Math.pow(edge[0], 2) + Math.pow(edge[1], 2);
+const squareDistance = (edge: [number, number]): number => Math.pow(edge[0], 2) + Math.pow(edge[1], 2);
 
 const computeXOffset = (box: { x: number; y: number; height: number }, yOffset: number, radius: number): number => {
-  const edges = [
-    [box.x, box.y + yOffset],
-    [box.x, box.y + box.height + yOffset],
-  ];
-  const closestEdge = squareDistance(edges[0]) < squareDistance(edges[1]) ? edges[0] : edges[1];
+  const upperEdge: [number, number] = [box.x, box.y + yOffset];
+  const lowerEdge: [number, number] = [box.x, box.y + box.height + yOffset];
+  const closestEdge = squareDistance(upperEdge) < squareDistance(lowerEdge) ? upperEdge : lowerEdge;
 
   if (squareDistance(closestEdge) < Math.pow(radius, 2)) {
     return Math.sqrt(Math.pow(radius, 2) - Math.pow(closestEdge[1], 2)) - Math.abs(closestEdge[0]);
@@ -204,11 +203,11 @@ const computeXOffset = (box: { x: number; y: number; height: number }, yOffset: 
 };
 
 export const computeSmartAngle = (startAngle: number, endAngle: number, optimize = false): number => {
-  if (!optimize || endAngle - startAngle < Math.PI / 20) {
-    return startAngle + (endAngle - startAngle) / 2;
+  if (!optimize || endAngle - startAngle < 2 * minLabelLineAngularPadding) {
+    return (endAngle + startAngle) / 2;
   }
-  const paddedStartAngle = startAngle + Math.PI / 40;
-  const paddedEndAngle = endAngle - Math.PI / 40;
+  const paddedStartAngle = startAngle + minLabelLineAngularPadding;
+  const paddedEndAngle = endAngle - minLabelLineAngularPadding;
   if (paddedStartAngle < 0 && paddedEndAngle > 0) {
     return 0;
   }

@@ -8,6 +8,7 @@ import {
   computeSmartAngle,
   getDimensionsBySize,
   dimensionsBySize,
+  minLabelLineAngularPadding,
   refreshDimensionsBySize,
 } from '../../../lib/components/pie-chart/utils';
 
@@ -408,9 +409,9 @@ describe('computeSmartAngle', () => {
     expect(computeSmartAngle(0, pi / 2)).toEqual(pi / 4);
   });
   test('returns mid angle if segment is too small', () => {
-    const startAngle = 0;
-    const endAngle = pi / 100;
-    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi / 200);
+    expect(computeSmartAngle(0, pi / 100, true)).toEqual(pi / 200);
+    expect(computeSmartAngle(0, 2 * minLabelLineAngularPadding, true)).toEqual(minLabelLineAngularPadding);
+    expect(computeSmartAngle(1, 1, true)).toEqual(1);
   });
   test('returns 0 if segment contains 0 angle', () => {
     const startAngle = -1.5;
@@ -425,21 +426,21 @@ describe('computeSmartAngle', () => {
   test('returns padded start angle if closest to 0', () => {
     const startAngle = 0;
     const endAngle = pi / 2;
-    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi / 40);
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(minLabelLineAngularPadding);
   });
   test('returns padded start angle if closest to PI', () => {
     const startAngle = pi;
     const endAngle = (3 * pi) / 2;
-    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi + pi / 40);
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi + minLabelLineAngularPadding);
   });
   test('returns padded end angle if closest to 2*PI', () => {
     const startAngle = (3 * pi) / 2;
     const endAngle = 2 * pi;
-    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(2 * pi - pi / 40);
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(2 * pi - minLabelLineAngularPadding);
   });
   test('returns padded end angle if closest to PI', () => {
     const startAngle = pi / 2;
     const endAngle = pi;
-    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi - pi / 40);
+    expect(computeSmartAngle(startAngle, endAngle, true)).toEqual(pi - minLabelLineAngularPadding);
   });
 });
