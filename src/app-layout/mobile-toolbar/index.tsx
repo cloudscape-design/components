@@ -126,10 +126,7 @@ export function MobileToolbar({
         />
       )}
       {drawers && (
-        <aside
-          aria-label={drawers.ariaLabel}
-          className={clsx(styles['drawers-container'], testutilStyles['drawers-mobile-triggers-container'])}
-        >
+        <aside aria-label={drawers.ariaLabel} className={clsx(styles['drawers-container'])}>
           {visibleItems.map((item, index) => (
             <div
               className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}

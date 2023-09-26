@@ -216,10 +216,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
         }}
       >
         {!isMobile && (
-          <aside
-            aria-label={drawers?.ariaLabel}
-            className={clsx(styles['drawer-triggers-wrapper'], testutilStyles['drawers-desktop-triggers-container'])}
-          >
+          <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers-wrapper'])}>
             <>
               {visibleItems.map((item, index) => {
                 return (

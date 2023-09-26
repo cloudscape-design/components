@@ -199,14 +199,10 @@ function DesktopTriggers() {
 
   return (
     <aside
-      className={clsx(
-        styles['drawers-desktop-triggers-container'],
-        testutilStyles['drawers-desktop-triggers-container'],
-        {
-          [styles['has-multiple-triggers']]: hasMultipleTriggers,
-          [styles['has-open-drawer']]: hasOpenDrawer,
-        }
-      )}
+      className={clsx(styles['drawers-desktop-triggers-container'], {
+        [styles['has-multiple-triggers']]: hasMultipleTriggers,
+        [styles['has-open-drawer']]: hasOpenDrawer,
+      })}
       aria-label={drawersAriaLabel}
       ref={triggersContainerRef}
     >
@@ -310,13 +306,9 @@ export function MobileTriggers() {
   return (
     <aside
       aria-hidden={hasDrawerViewportOverlay}
-      className={clsx(
-        styles['drawers-mobile-triggers-container'],
-        testutilStyles['drawers-mobile-triggers-container'],
-        {
-          [styles.unfocusable]: hasDrawerViewportOverlay,
-        }
-      )}
+      className={clsx(styles['drawers-mobile-triggers-container'], {
+        [styles.unfocusable]: hasDrawerViewportOverlay,
+      })}
       aria-label={drawersAriaLabel}
     >
       {visibleItems.map(item => (
