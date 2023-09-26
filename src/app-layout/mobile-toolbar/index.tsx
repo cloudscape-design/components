@@ -94,7 +94,7 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
 
-  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId, true);
+  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId);
 
   return (
     <div

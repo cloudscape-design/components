@@ -320,7 +320,7 @@ export function MobileTriggers() {
 
   const splitIndex = 2;
 
-  const { visibleItems, overflowItems } = splitItems(drawers, splitIndex, activeDrawerId, true);
+  const { visibleItems, overflowItems } = splitItems(drawers, splitIndex, activeDrawerId);
 
   function handleItemClick(itemId: string | undefined) {
     if (itemId === TOOLS_DRAWER_ID) {
