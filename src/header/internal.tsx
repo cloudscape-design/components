@@ -77,9 +77,13 @@ export default function InternalHeader({
             </span>
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>
-          <InfoLinkLabelContext.Provider value={headingId}>
-            {info && <span className={styles.info}>{info}</span>}
-          </InfoLinkLabelContext.Provider>
+          {info && (
+            <InfoLinkLabelContext.Provider value={headingId}>
+              {/* Exists to create a space between heading text and info so that a double-click selection on the last word of the heading doesn't also include info */}
+              <span className={styles['virtual-space']}> &nbsp;</span>
+              <span className={styles.info}>{info}</span>
+            </InfoLinkLabelContext.Provider>
+          )}
         </div>
         {actions && (
           <div
