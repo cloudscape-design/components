@@ -192,7 +192,7 @@ describeEachThemeAppLayout(false, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
     wrapper.findDrawerTriggerById('security')!.click();
-    expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
+    expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveFocus();
   });
 
   test('should change size via keyboard events on slider handle', () => {
@@ -205,7 +205,7 @@ describeEachThemeAppLayout(false, () => {
       },
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawers} />);
-    wrapper.findDrawersSlider()!.keydown(KeyCode.left);
+    wrapper.findActiveDrawerResizeHandle()!.keydown(KeyCode.left);
 
     expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
   });
@@ -226,10 +226,10 @@ describeEachThemeAppLayout(false, () => {
       },
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
-    wrapper.findDrawersSlider()!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    wrapper.findActiveDrawerResizeHandle()!.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
     const resizeEvent = new MouseEvent('pointermove', { bubbles: true });
-    wrapper.findDrawersSlider()!.fireEvent(resizeEvent);
-    wrapper.findDrawersSlider()!.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
+    wrapper.findActiveDrawerResizeHandle()!.fireEvent(resizeEvent);
+    wrapper.findActiveDrawerResizeHandle()!.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
 
     expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
     expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
@@ -239,7 +239,7 @@ describeEachThemeAppLayout(false, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
     wrapper.findDrawerTriggerById('security')!.click();
-    expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-valuenow', '0');
+    expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute('aria-valuenow', '0');
   });
 
   test('should render overflow item when expected', () => {
