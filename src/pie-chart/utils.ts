@@ -16,7 +16,7 @@ export interface Dimension {
 const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
 const defaultPadding = 12; // = space-s
 const smallPadding = 8; // = space-xs
-export const minLabelLineAngularPadding = Math.PI / 10;
+export const minLabelLineAngularPadding = Math.PI / 20;
 
 export const dimensionsBySize: Record<NonNullable<PieChartProps['size']>, Dimension> = {
   small: {
