@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { ButtonDropdown } from '~components';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import Select from '~components/select';
 import FormField from '~components/form-field';
@@ -92,6 +93,20 @@ const permutations = createPermutations<Partial<PropertyFilterProps>>([
         <Select placeholder="Select a value" options={[]} selectedOption={null} />
       </FormField>,
     ],
+  },
+  {
+    query: [
+      { tokens: [], operation: 'and' },
+      {
+        tokens: [
+          { value: '123', operator: ':' },
+          { value: '234', operator: '!:' },
+          { propertyKey: 'instanceid', value: '345', operator: '=' },
+        ],
+        operation: 'and',
+      },
+    ],
+    customFilterActions: [<ButtonDropdown key={0} mainAction={{ text: 'Clear filters' }} items={[]} />],
   },
 ]);
 

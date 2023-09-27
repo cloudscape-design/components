@@ -34,4 +34,18 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
   findRemoveAllButton(): ElementWrapper | null {
     return this.findByClassName(styles['remove-all']);
   }
+
+  /**
+   * Returns the element containing the `customControl` slot.
+   */
+  findCustomControl(): ElementWrapper | null {
+    return this.findByClassName(styles['custom-control']);
+  }
+
+  /**
+   * Returns the element containing the `customFilterActions` slot.
+   */
+  findCustomFilterActions(): ElementWrapper | null {
+    return this.findByClassName(styles['custom-filter-actions']);
+  }
 }
