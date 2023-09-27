@@ -92,11 +92,12 @@ function ActiveDrawer() {
       id={activeDrawerId}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, sharedStyles['with-motion'], {
+      className={clsx(styles.drawer, {
         [styles['is-drawer-open']]: activeDrawerId,
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
+        [sharedStyles['with-motion']]: activeDrawerId,
       })}
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
