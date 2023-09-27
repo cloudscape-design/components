@@ -11,13 +11,20 @@ import {
   SplitPanel,
   Toggle,
 } from '~components';
+import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
 
-type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
+type DemoContext = React.Context<
+  AppContextType<{
+    hasTools: boolean | undefined;
+    hasDrawers: boolean | undefined;
+    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+  }>
+>;
 
 const getAriaLabels = (title: string, badge: boolean) => {
   return {
@@ -179,6 +186,13 @@ export default function WithDrawers() {
             <Containers />
           </ContentLayout>
         }
+        splitPanelPreferences={{
+          position: urlParams.splitPanelPosition,
+        }}
+        onSplitPanelPreferencesChange={event => {
+          const { position } = event.detail;
+          setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
+        }}
         splitPanel={
           <SplitPanel
             header="Split panel header"
