@@ -132,6 +132,11 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    */
   customControl?: React.ReactNode;
   /**
+   * A slot that replaces the standard "Clear filter" button.
+   * When using this slot, make sure to still provide a mechanism to clear all filters.
+   */
+  customFilterActions?: React.ReactNode;
+  /**
    * Set `asyncProperties` if you need to load `filteringProperties` asynchronousely. This would cause extra `onLoadMore`
    * events to fire calling for more properties.
    */

@@ -1343,6 +1343,22 @@ describe('property filter parts', () => {
     });
   });
 
+  describe('custom element slots', () => {
+    test('can define a customControl element', () => {
+      const { propertyFilterWrapper } = renderComponent({ customControl: <div>Custom</div> });
+      expect(propertyFilterWrapper.findCustomControl()?.getElement()).toHaveTextContent('Custom');
+    });
+
+    test('can define a customFilterAction that replaces the clear filters button', () => {
+      const { propertyFilterWrapper } = renderComponent({
+        customFilterActions: <div>Custom actions</div>,
+        query: { tokens: [{ value: 'free text', operator: '=' }], operation: 'and' },
+      });
+      expect(propertyFilterWrapper.findRemoveAllButton()).toBeNull();
+      expect(propertyFilterWrapper.findCustomFilterActions()?.getElement()).toHaveTextContent('Custom actions');
+    });
+  });
+
   test('property filter input can be found with autosuggest selector', () => {
     const { container } = renderComponent();
     expect(createWrapper(container).findAutosuggest()!.getElement()).not.toBe(null);
