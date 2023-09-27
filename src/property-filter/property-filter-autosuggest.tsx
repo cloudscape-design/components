@@ -211,7 +211,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}
         dropdownFooter={
-          dropdownStatus.isSticky ? (
+          dropdownStatus.isSticky && dropdownStatus.content ? (
             <DropdownFooter
               content={dropdownStatus.content}
               hasItems={autosuggestItemsState.items.length >= 1}

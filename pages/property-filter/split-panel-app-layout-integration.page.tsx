@@ -90,6 +90,7 @@ export default function () {
                 countText={`${items.length} matches`}
                 i18nStrings={i18nStrings}
                 expandToViewport={true}
+                filteringEmpty="No properties"
               />
             }
             columnDefinitions={columnDefinitions.slice(0, 2)}
