@@ -106,7 +106,9 @@ const permutations = createPermutations<Partial<PropertyFilterProps>>([
         operation: 'and',
       },
     ],
-    customFilterActions: [<ButtonDropdown key={0} mainAction={{ text: 'Clear filters' }} items={[]} />],
+    customFilterActions: [
+      <ButtonDropdown key={0} mainAction={{ text: 'Clear filters' }} items={[]} ariaLabel="Filter actions" />,
+    ],
   },
 ]);
 
