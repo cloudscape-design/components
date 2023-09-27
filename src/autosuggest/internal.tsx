@@ -234,7 +234,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         )
       }
       dropdownFooter={
-        dropdownStatus.isSticky ? (
+        dropdownStatus.isSticky && dropdownStatus.content ? (
           <DropdownFooter
             id={footerControlId}
             content={dropdownStatus.content}
