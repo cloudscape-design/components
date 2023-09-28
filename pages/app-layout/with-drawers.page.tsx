@@ -20,7 +20,6 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type DemoContext = React.Context<
   AppContextType<{
-    hasTools: boolean | undefined;
     hasDrawers: boolean | undefined;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
@@ -38,7 +37,6 @@ const getAriaLabels = (title: string, badge: boolean) => {
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const hasTools = urlParams.hasTools ?? false;
   const hasDrawers = urlParams.hasDrawers ?? true;
 
   const drawers = !hasDrawers
@@ -164,15 +162,6 @@ export default function WithDrawers() {
 
                 <SpaceBetween size="xs">
                   <Toggle
-                    checked={hasTools}
-                    onChange={e => {
-                      setUrlParams({ hasTools: e.detail.checked });
-                    }}
-                  >
-                    Has Tools
-                  </Toggle>
-
-                  <Toggle
                     checked={hasDrawers}
                     onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
                     data-id="toggle-drawers"
@@ -212,16 +201,10 @@ export default function WithDrawers() {
             This is the Split Panel!
           </SplitPanel>
         }
-        tools={<Info />}
-        toolsHide={!hasTools}
         {...drawers}
       />
     </ScreenshotArea>
   );
-}
-
-function Info() {
-  return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
 }
 
 function Security() {
