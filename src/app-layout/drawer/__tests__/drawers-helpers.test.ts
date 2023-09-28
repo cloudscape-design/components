@@ -41,10 +41,3 @@ test('moves single overflow item into visible items', () => {
     overflowItems: [],
   });
 });
-
-test('when mobile and items length is 3, adds one to split index', () => {
-  expect(splitItems([{ id: '1' }, { id: '2' }, { id: '3' }], 2, undefined, true)).toEqual({
-    visibleItems: [{ id: '1' }, { id: '2' }, { id: '3' }],
-    overflowItems: [],
-  });
-});

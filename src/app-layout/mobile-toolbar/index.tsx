@@ -11,6 +11,7 @@ import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { splitItems } from '../drawer/drawers-helpers';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 interface MobileToggleProps {
   className?: string;
@@ -93,12 +94,12 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
 
-  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId, true);
+  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId);
 
   return (
     <div
       ref={mobileBarRef}
-      className={clsx(styles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
+      className={clsx(styles['mobile-bar'], testutilStyles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
       style={{ top: topOffset }}
     >
       {!navigationHide && (
@@ -136,7 +137,11 @@ export function MobileToolbar({
               onClick={() => drawers.onChange({ activeDrawerId: item.id })}
             >
               <ToggleButton
-                className={testutilStyles['drawers-trigger']}
+                className={
+                  item.id === TOOLS_DRAWER_ID
+                    ? clsx(testutilStyles['drawers-trigger'], testutilStyles['tools-toggle'])
+                    : testutilStyles['drawers-trigger']
+                }
                 iconName={item.trigger.iconName}
                 iconSvg={item.trigger.iconSvg}
                 badge={item.badge}

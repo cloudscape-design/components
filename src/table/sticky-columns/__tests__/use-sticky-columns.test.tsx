@@ -6,6 +6,7 @@ import {
   StickyColumnsModel,
   useStickyCellStyles,
 } from '../../../../lib/components/table/sticky-columns';
+import { updateCellOffsets } from '../../../../lib/components/table/sticky-columns/utils';
 import { getStickyClassNames } from '../../../../lib/components/table/utils';
 import { renderHook } from '../../../__tests__/render-hook';
 
@@ -64,7 +65,7 @@ test('styles update when sticky column properties change', () => {
   });
   createMockTable(result.current, 500, 500, 100, 200, 300);
 
-  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles');
+  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles' as any);
 
   expect(updateCellStylesSpy).not.toHaveBeenCalled();
 
@@ -89,7 +90,7 @@ test('styles update when wrapper scrolls', () => {
   );
   result.current.refs.wrapper(tableWrapper);
   result.current.refs.table(table);
-  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles');
+  const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles' as any);
 
   expect(updateCellStylesSpy).not.toHaveBeenCalled();
 
@@ -241,6 +242,36 @@ test('performs styles cleanup', () => {
   expect(elements.cells[0]).not.toHaveClass('sticky-cell');
 });
 
+test('cell subscriptions are cleaned up on ref change', () => {
+  const unsubscribe = jest.fn();
+  const subscribe = jest.fn(() => unsubscribe);
+  const stickyColumns = {
+    store: {
+      get: () => ({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } }),
+      subscribe,
+      unsubscribe: () => {},
+    },
+    style: { wrapper: {} },
+    refs: { table: () => {}, wrapper: () => {}, cell: () => {} },
+  };
+  const { result } = renderHook(() => useStickyCellStyles({ stickyColumns, columnId: '1', getClassName: () => ({}) }));
+
+  result.current.ref(document.createElement('td'));
+
+  expect(subscribe).toHaveBeenCalledTimes(1);
+  expect(unsubscribe).toHaveBeenCalledTimes(0);
+
+  result.current.ref(document.createElement('td'));
+
+  expect(subscribe).toHaveBeenCalledTimes(2);
+  expect(unsubscribe).toHaveBeenCalledTimes(1);
+
+  result.current.ref(null);
+
+  expect(subscribe).toHaveBeenCalledTimes(2);
+  expect(unsubscribe).toHaveBeenCalledTimes(2);
+});
+
 describe('getStickyClassNames helper', () => {
   const styles = {
     'sticky-cell': 'sticky-cell',
@@ -290,4 +321,13 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-last-right': true,
     });
   });
+});
+
+test('updateCellOffsets element widths fallback to 0 when elements are missing', () => {
+  const { offsets } = updateCellOffsets(
+    {},
+    { stickyColumnsFirst: 1, stickyColumnsLast: 1, visibleColumns: ['a', 'b', 'c'] }
+  );
+  expect(offsets.get('a')).toEqual({ first: 0, last: 0 });
+  expect(offsets.get('c')).toEqual({ first: 0, last: 0 });
 });

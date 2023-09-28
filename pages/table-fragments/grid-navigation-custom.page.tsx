@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import SpaceBetween from '~components/space-between';
 import {
   AppLayout,
   Button,
+  ButtonDropdown,
   ColumnLayout,
   Container,
   ContentLayout,
@@ -14,11 +15,12 @@ import {
   Icon,
   Input,
   Link,
-  SegmentedControl,
+  RadioGroup,
   Select,
+  StatusIndicator,
 } from '~components';
 import styles from './styles.scss';
-import { id as generateId, generateItems, Instance } from '../table/generate-data';
+import { id as generateId, generateItems, Instance, InstanceState } from '../table/generate-data';
 import AppContext, { AppContextType } from '../app/app-context';
 import {
   TableRole,
@@ -32,98 +34,95 @@ import {
 } from '~components/table/table-role';
 import { orderBy } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
+import { stateToStatusIndicator } from '../table/shared-configs';
 
 type PageContext = React.Context<
   AppContextType<{
     pageSize: number;
     tableRole: TableRole;
+    actionsMode: ActionsMode;
   }>
 >;
 
-const createColumnDefinitions = ({
-  onDelete,
-  onDuplicate,
-  onUpdate,
-}: {
-  onDelete: (id: string) => void;
-  onDuplicate: (id: string) => void;
-  onUpdate: (id: string) => void;
-}) => [
-  {
-    key: 'id',
-    label: 'ID',
-    render: (item: Instance) => item.id,
-  },
-  {
-    key: 'actions',
-    label: 'Actions',
-    render: (item: Instance) => (
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-        <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={() => onDelete(item.id)} />
-        <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={() => onDuplicate(item.id)} />
-        <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={() => onUpdate(item.id)} />
-      </div>
-    ),
-  },
-  {
-    key: 'state',
-    label: 'State',
-    render: (item: Instance) => item.state,
-  },
-  {
-    key: 'imageId',
-    label: 'Image ID',
-    render: (item: Instance) => <Link>{item.imageId}</Link>,
-  },
-  {
-    key: 'state-toggle',
-    label: 'State toggle',
-    render: (item: Instance) => (
-      <SegmentedControl
-        selectedId={item.state === 'RUNNING' || item.state === 'STOPPING' ? 'On' : 'Off'}
-        onChange={event => alert(`Changed item state to "${event.detail.selectedId}"`)}
-        label="Instance state"
-        options={[
-          { text: 'On', id: 'On' },
-          { text: 'Off', id: 'Off' },
-        ]}
-      />
-    ),
-    isWidget: true,
-  },
-  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
-  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
-  { key: 'dnsName3', label: 'DNS name 3', render: (item: Instance) => (item.dnsName ?? '?') + ':3' },
-  { key: 'type', label: 'Type', render: (item: Instance) => item.type },
-];
+type ActionsMode = 'dropdown' | 'inline';
 
 const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
+
+const actionsModeOptions = [
+  { value: 'dropdown', label: 'Dropdown' },
+  { value: 'inline', label: 'Inline (anti-pattern)' },
+];
 
 export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
   const pageSize = urlParams.pageSize ?? 10;
   const tableRole = urlParams.tableRole ?? 'grid';
+  const actionsMode = urlParams.actionsMode ?? 'dropdown';
 
   const [items, setItems] = useState(generateItems(25));
-  const columnDefinitions = useMemo(
-    () =>
-      createColumnDefinitions({
-        onDelete: (id: string) => setItems(prev => prev.filter(item => item.id !== id)),
-        onDuplicate: (id: string) =>
-          setItems(prev => prev.flatMap(item => (item.id !== id ? [item] : [item, { ...item, id: generateId() }]))),
-        onUpdate: (id: string) =>
-          setItems(prev => prev.map(item => (item.id !== id ? item : { ...item, id: generateId() }))),
-      }),
-    []
-  );
+
+  useEffect(() => {
+    setInterval(() => {
+      setItems(prev => [...prev, ...generateItems(1)]);
+    }, 10000);
+  }, []);
+
+  const columnDefinitions = [
+    {
+      key: 'id',
+      label: 'ID',
+      render: (item: Instance) => item.id,
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      render: (item: Instance) => (
+        <ItemActionsCell
+          mode={actionsMode}
+          onDelete={() => setItems(prev => prev.filter(prevItem => prevItem.id !== item.id))}
+          onDuplicate={() =>
+            setItems(prev =>
+              prev.flatMap(prevItem =>
+                prevItem.id !== item.id ? [prevItem] : [prevItem, { ...prevItem, id: generateId() }]
+              )
+            )
+          }
+          onUpdate={() =>
+            setItems(prev =>
+              prev.map(prevItem => (prevItem.id !== item.id ? prevItem : { ...prevItem, id: generateId() }))
+            )
+          }
+        />
+      ),
+    },
+    {
+      key: 'state',
+      label: 'State',
+      render: (item: Instance) => (
+        <EditableStateCell
+          value={item.state}
+          onChange={value =>
+            setItems(prev => prev.map(prevItem => (prevItem.id === item.id ? { ...prevItem, state: value } : prevItem)))
+          }
+        />
+      ),
+    },
+    {
+      key: 'imageId',
+      label: 'Image ID',
+      render: (item: Instance) => <Link>{item.imageId}</Link>,
+    },
+    { key: 'dnsName', label: 'DNS name', render: (item: Instance) => <DnsEditCell item={item} /> },
+    { key: 'type', label: 'Type', render: (item: Instance) => item.type },
+  ];
 
   const [sortingKey, setSortingKey] = useState<null | string>(null);
   const [sortingDirection, setSortingDirection] = useState<1 | -1>(1);
 
   const tableRef = useRef<HTMLTableElement>(null);
 
-  useGridNavigation({ tableRole, pageSize, getTable: () => tableRef.current });
+  useGridNavigation({ active: tableRole === 'grid', pageSize, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
     if (!sortingKey) {
@@ -162,6 +161,16 @@ export default function Page() {
                       onChange={event => setUrlParams({ tableRole: event.detail.selectedOption.value as TableRole })}
                     />
                   </FormField>
+
+                  <FormField label="Actions mode">
+                    <Select
+                      options={actionsModeOptions}
+                      selectedOption={actionsModeOptions.find(option => option.value === actionsMode) ?? null}
+                      onChange={event =>
+                        setUrlParams({ actionsMode: event.detail.selectedOption.value as ActionsMode })
+                      }
+                    />
+                  </FormField>
                 </ColumnLayout>
 
                 <Link onFollow={() => setToolsOpen(true)} data-testid="link-before">
@@ -191,7 +200,7 @@ export default function Page() {
                       <th
                         key={column.key}
                         className={styles['custom-table-cell']}
-                        {...getTableColHeaderRoleProps({ tableRole, colIndex, isWidget: true })}
+                        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                       >
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                           <button
@@ -221,7 +230,7 @@ export default function Page() {
                         <td
                           key={column.key}
                           className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex, isWidget: column.isWidget })}
+                          {...getTableCellRoleProps({ tableRole, colIndex })}
                         >
                           {column.render(item)}
                         </td>
@@ -235,6 +244,151 @@ export default function Page() {
         </ContentLayout>
       }
     />
+  );
+}
+
+function ItemActionsCell({
+  onDelete,
+  onDuplicate,
+  onUpdate,
+  mode,
+}: {
+  onDelete: () => void;
+  onDuplicate: () => void;
+  onUpdate: () => void;
+  mode: ActionsMode;
+}) {
+  if (mode === 'dropdown') {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <ButtonDropdown
+          ariaLabel="Item actions"
+          variant="inline-icon"
+          items={[
+            { id: 'delete', text: 'Delete' },
+            { id: 'duplicate', text: 'Duplicate' },
+            { id: 'update', text: 'Update' },
+          ]}
+          onItemClick={event => {
+            switch (event.detail.id) {
+              case 'delete':
+                return onDelete();
+              case 'duplicate':
+                return onDuplicate();
+              case 'update':
+                return onUpdate();
+            }
+          }}
+          expandToViewport={true}
+        />
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+      <Button variant="inline-icon" iconName="remove" ariaLabel="Delete item" onClick={onDelete} />
+      <Button variant="inline-icon" iconName="copy" ariaLabel="Duplicate item" onClick={onDuplicate} />
+      <Button variant="inline-icon" iconName="refresh" ariaLabel="Update item" onClick={onUpdate} />
+    </div>
+  );
+}
+
+function DnsEditCell({ item }: { item: Instance }) {
+  const [active, setActive] = useState(false);
+  const [value, setValue] = useState(item.dnsName ?? '');
+  const dialogRef = useRef<HTMLDivElement>(null);
+  return !active ? (
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label="Edit DNS name"
+      onClick={() => setActive(true)}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === 'F2') {
+          setActive(true);
+        }
+      }}
+    >
+      {item.dnsName}
+    </div>
+  ) : (
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-label="Edit DND name"
+      onBlur={event => {
+        if (!dialogRef.current!.contains(event.relatedTarget)) {
+          setActive(false);
+        }
+      }}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
+          setActive(false);
+        }
+      }}
+      style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
+    >
+      <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
+      <Button iconName="check" onClick={() => setActive(false)} />
+      <Button iconName="close" onClick={() => setActive(false)} />
+    </div>
+  );
+}
+
+function EditableStateCell({ value, onChange }: { value: InstanceState; onChange: (value: InstanceState) => void }) {
+  const [active, setActive] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  if (!active) {
+    return value === 'TERMINATED' ? (
+      <StatusIndicator {...stateToStatusIndicator[value]} />
+    ) : (
+      <button className={styles['status-trigger-button']} onClick={() => setActive(true)}>
+        <StatusIndicator {...stateToStatusIndicator[value]} />
+      </button>
+    );
+  }
+
+  return (
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-label="Set control value dialog"
+      onBlur={event => {
+        if (!dialogRef.current?.contains(event.relatedTarget)) {
+          setActive(false);
+        }
+      }}
+      onKeyDown={event => {
+        if (event.key === 'Escape' || event.key === 'F2' || event.key === ' ') {
+          event.preventDefault();
+          setActive(false);
+        }
+      }}
+    >
+      <RadioGroup
+        items={[
+          {
+            value: 'RUNNING',
+            label: 'Start',
+          },
+          {
+            value: 'PENDING',
+            label: 'Suspend',
+          },
+          {
+            value: 'STOPPING',
+            label: 'Stop',
+          },
+          {
+            value: 'TERMINATING',
+            label: 'Terminate',
+          },
+        ]}
+        onChange={({ detail }) => onChange(detail.value as InstanceState)}
+        value={value}
+      />
+    </div>
   );
 }
 
@@ -276,12 +430,6 @@ function GridNavigationHelpPanel() {
         </li>
         <li>
           <b>Control+End</b> (to the last item in the grid)
-        </li>
-        <li>
-          <b>Enter</b> (to move focus inside widget cell)
-        </li>
-        <li>
-          <b>Escape</b> (to move widget focus back to cell)
         </li>
       </ul>
     </HelpPanel>

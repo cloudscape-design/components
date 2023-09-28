@@ -25,7 +25,7 @@ jobs:
       - run: npm install --force
       - run: npm run build
       - run: npm run test:unit
-      
+
   integTest:
     name: Components integ tests
     runs-on: ubuntu-latest
@@ -42,6 +42,9 @@ jobs:
   a11yTest:
     name: Components a11y tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 16
@@ -50,7 +53,7 @@ jobs:
           node-version: 16
       - run: npm install --force
       - run: npm run build
-      - run: npm run test:a11y
+      - run: npm run test:a11y -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
   release:
     concurrency: release-${{ github.ref }}

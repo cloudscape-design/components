@@ -26,6 +26,7 @@
   }
 
   &-cell {
+    position: relative;
     border-left: 1px solid tokens.$color-border-divider-default;
     border-bottom: 1px solid tokens.$color-border-divider-default;
     padding: 8px 16px;
@@ -59,6 +60,10 @@
     }
   }
 
+  &-selection-cell {
+    width: 40px;
+  }
+
   &-sorting-header {
     padding: 0;
     margin: 0;
@@ -67,4 +72,13 @@
     font-weight: bold;
     margin-left: 2px;
   }
+}
+
+.status-trigger-button {
+  background-color: initial;
+  border: 0;
+  border-bottom: 1px dashed;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
 }

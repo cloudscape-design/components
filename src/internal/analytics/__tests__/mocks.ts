@@ -11,6 +11,8 @@ export function mockFunnelMetrics() {
     funnelComplete: jest.fn(),
     funnelSuccessful: jest.fn(),
     funnelCancelled: jest.fn(),
+    funnelChange: jest.fn(),
+    funnelStepChange: jest.fn(),
     funnelStepStart: jest.fn(),
     funnelStepComplete: jest.fn(),
     funnelStepNavigation: jest.fn(),
@@ -21,4 +23,24 @@ export function mockFunnelMetrics() {
     helpPanelInteracted: jest.fn(),
     externalLinkInteracted: jest.fn(),
   });
+}
+
+export function mockInnerText() {
+  if (!('innerText' in HTMLElement.prototype)) {
+    // JSDom does not support the `innerText` property. For tests, `textContent` is usually close enough.
+
+    beforeEach(() =>
+      Object.defineProperty(HTMLElement.prototype, 'innerText', {
+        get() {
+          return this.textContent;
+        },
+        set(v) {
+          this.textContent = v;
+        },
+        configurable: true,
+      })
+    );
+
+    afterEach(() => delete (HTMLElement.prototype as Partial<HTMLElement>).innerText);
+  }
 }

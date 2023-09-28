@@ -6,12 +6,15 @@ import { act, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
 import Form from '../../../lib/components/form';
+import Container from '../../../lib/components/container';
+import Header from '../../../lib/components/header';
 
 import { FunnelMetrics, setFunnelMetrics } from '../../../lib/components/internal/analytics';
 import { getFunnelKeySelector, FUNNEL_KEY_STEP_NAME } from '../../../lib/components/internal/analytics/selectors';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 
 const mockedFunnelInteractionId = 'mocked-funnel-id';
 function mockFunnelMetrics() {
@@ -21,6 +24,8 @@ function mockFunnelMetrics() {
     funnelComplete: jest.fn(),
     funnelSuccessful: jest.fn(),
     funnelCancelled: jest.fn(),
+    funnelChange: jest.fn(),
+    funnelStepChange: jest.fn(),
     funnelStepStart: jest.fn(),
     funnelStepComplete: jest.fn(),
     funnelStepNavigation: jest.fn(),
@@ -33,11 +38,16 @@ function mockFunnelMetrics() {
   });
 }
 
+mockInnerText();
+
 describe('Wizard Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     mockFunnelMetrics();
+  });
+  afterEach(() => {
+    act(() => void jest.runAllTimers());
   });
 
   test('calls funnelStart when the component is mounted', () => {
@@ -54,6 +64,11 @@ describe('Wizard Analytics', () => {
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         theme: expect.any(String),
+        stepConfiguration: [
+          { isOptional: false, name: 'Step 1', number: 1 },
+          { isOptional: true, name: 'Step 2', number: 2 },
+          { isOptional: false, name: 'Step 3', number: 3 },
+        ],
       })
     );
   });
@@ -70,6 +85,10 @@ describe('Wizard Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+        subStepConfiguration: [
+          { name: 'Step 1, substep one', number: 1 },
+          { name: 'Step 1, substep two', number: 2 },
+        ],
       })
     );
   });
@@ -318,7 +337,12 @@ describe('Wizard Analytics', () => {
     const steps = [
       {
         title: 'Step 1',
-        content: <Form>Content 1</Form>,
+        content: (
+          <Form>
+            <Container header={<Header>Step 1, substep one</Header>}></Container>
+            <Container header={<Header>Step 1, substep two</Header>}></Container>
+          </Form>
+        ),
       },
       {
         title: 'Step 2',
@@ -349,6 +373,11 @@ describe('Wizard Analytics', () => {
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         theme: expect.any(String),
+        stepConfiguration: [
+          { isOptional: false, name: 'Step 1', number: 1 },
+          { isOptional: true, name: 'Step 2', number: 2 },
+          { isOptional: false, name: 'Step 3', number: 3 },
+        ],
       })
     );
 
@@ -359,6 +388,10 @@ describe('Wizard Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+        subStepConfiguration: [
+          { name: 'Step 1, substep one', number: 1 },
+          { name: 'Step 1, substep two', number: 2 },
+        ],
       })
     );
   });
@@ -371,5 +404,206 @@ describe('Wizard Analytics', () => {
     createWrapper(container).findWizard()!.findPrimaryButton().click();
 
     expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 2 - optional');
+  });
+
+  describe('funnelStepChange', () => {
+    test('sends a funnelStepChange event when the substeps change', () => {
+      const { rerender } = render(
+        <Wizard
+          steps={[
+            {
+              title: 'Step 1',
+              content: (
+                <>
+                  <Container header={<Header>Substep 1</Header>}></Container>
+                  <Container header={<Header>Substep 2</Header>}></Container>
+                  <Container header={<Header>Substep 3</Header>}></Container>
+                </>
+              ),
+            },
+          ]}
+          activeStepIndex={0}
+          onNavigate={() => {}}
+          i18nStrings={DEFAULT_I18N_SETS[0]}
+        />
+      );
+      act(() => void jest.runAllTimers());
+      expect(FunnelMetrics.funnelStepChange).not.toHaveBeenCalled();
+
+      rerender(
+        <Wizard
+          steps={[
+            {
+              title: 'Step 1',
+              content: (
+                <>
+                  <Container header={<Header>Substep 1</Header>}></Container>
+                  <Container header={<Header>Substep 3</Header>}></Container>
+                </>
+              ),
+            },
+          ]}
+          activeStepIndex={0}
+          onNavigate={() => {}}
+          i18nStrings={DEFAULT_I18N_SETS[0]}
+        />
+      );
+      act(() => void jest.runAllTimers());
+      expect(FunnelMetrics.funnelStepChange).toHaveBeenCalledTimes(1);
+
+      expect(FunnelMetrics.funnelStepChange).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          subStepConfiguration: [
+            { name: 'Substep 1', number: 1 },
+            { name: 'Substep 3', number: 2 },
+          ],
+        })
+      );
+
+      rerender(
+        <Wizard
+          steps={[
+            {
+              title: 'Step 1',
+              content: (
+                <>
+                  <Container header={<Header>Substep 0</Header>}></Container>
+                  <Container header={<Header>Substep 1</Header>}></Container>
+                  <Container header={<Header>Substep 2</Header>}></Container>
+                  <Container header={<Header>Substep 3</Header>}></Container>
+                  <Container header={<Header>Substep 4</Header>}></Container>
+                </>
+              ),
+            },
+          ]}
+          activeStepIndex={0}
+          onNavigate={() => {}}
+          i18nStrings={DEFAULT_I18N_SETS[0]}
+        />
+      );
+      act(() => void jest.runAllTimers());
+      expect(FunnelMetrics.funnelStepChange).toHaveBeenCalledTimes(2);
+
+      expect(FunnelMetrics.funnelStepChange).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          subStepConfiguration: [
+            { name: 'Substep 0', number: 1 },
+            { name: 'Substep 1', number: 2 },
+            { name: 'Substep 2', number: 3 },
+            { name: 'Substep 3', number: 4 },
+            { name: 'Substep 4', number: 5 },
+          ],
+        })
+      );
+    });
+
+    test('does not send a funnelStepChange event when navigating to another step', () => {
+      const steps = [
+        {
+          title: 'Step 1 with three containers',
+          content: (
+            <>
+              <Container header={<Header>Substep 1</Header>}></Container>
+              <Container header={<Header>Substep 2</Header>}></Container>
+              <Container header={<Header>Substep 3</Header>}></Container>
+            </>
+          ),
+        },
+        // The second step has a different amount of substeps than the previous one,
+        // but that should not be counted as a funnelStepChange event.
+        {
+          title: 'Step 2 with two containers',
+          content: (
+            <>
+              <Container header={<Header>Substep 1</Header>}></Container>
+              <Container header={<Header>Substep 2</Header>}></Container>
+            </>
+          ),
+        },
+      ];
+
+      const { rerender } = render(
+        <Wizard steps={steps} activeStepIndex={0} onNavigate={() => {}} i18nStrings={DEFAULT_I18N_SETS[0]} />
+      );
+      act(() => void jest.runAllTimers());
+
+      rerender(<Wizard steps={steps} activeStepIndex={1} onNavigate={() => {}} i18nStrings={DEFAULT_I18N_SETS[0]} />);
+      act(() => void jest.runAllTimers());
+
+      expect(FunnelMetrics.funnelStepChange).not.toHaveBeenCalled();
+    });
+  });
+
+  test('sends a funnelChange event when the steps change', () => {
+    const { rerender } = render(
+      <Wizard
+        steps={[
+          {
+            title: 'Select resource',
+            content: <></>,
+          },
+          {
+            title: 'Select type',
+            content: <></>,
+          },
+        ]}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelChange).not.toHaveBeenCalled();
+
+    rerender(
+      <Wizard
+        steps={[
+          {
+            title: 'Select resource',
+            content: <></>,
+          },
+        ]}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelChange).toHaveBeenCalledTimes(1);
+
+    expect(FunnelMetrics.funnelChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        stepConfiguration: [{ name: 'Select resource', number: 1, isOptional: false }],
+      })
+    );
+
+    rerender(
+      <Wizard
+        steps={[
+          {
+            title: 'Select resource',
+            content: <></>,
+          },
+          {
+            title: 'Select type',
+            content: <></>,
+            isOptional: true,
+          },
+          {
+            title: 'Select configuration',
+            content: <></>,
+          },
+        ]}
+        i18nStrings={DEFAULT_I18N_SETS[0]}
+      />
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelChange).toHaveBeenCalledTimes(2);
+
+    expect(FunnelMetrics.funnelChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        stepConfiguration: [
+          { name: 'Select resource', number: 1, isOptional: false },
+          { name: 'Select type', number: 2, isOptional: true },
+          { name: 'Select configuration', number: 3, isOptional: false },
+        ],
+      })
+    );
   });
 });

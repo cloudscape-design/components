@@ -21,10 +21,10 @@
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
     box-shadow: awsui.$shadow-panel;
-  }
 
-  @include styles.with-motion {
-    transition: background-color awsui.$motion-duration-refresh-only-fast;
+    @include styles.with-motion {
+      transition: background-color awsui.$motion-duration-refresh-only-fast;
+    }
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -156,7 +156,7 @@
 
   > .drawer-slider {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 1 / span 3;
     height: 100%;
     display: flex;
     align-items: center;

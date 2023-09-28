@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+import AppLayout from '../../../lib/components/app-layout';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
@@ -34,30 +35,13 @@ export function renderComponent(jsx: React.ReactElement) {
   const wrapper = createWrapper(container).findAppLayout()!;
 
   const isUsingGridLayout = wrapper.getElement().classList.contains(visualRefreshStyles.layout);
+  const isUsingMobile = !!wrapper.findByClassName(testutilStyles['mobile-bar']);
 
   const contentElement = isUsingGridLayout
     ? wrapper.getElement()
     : wrapper.findByClassName(styles['layout-wrapper'])!.getElement();
 
-  return { wrapper, rerender, isUsingGridLayout, contentElement, container };
-}
-
-export function describeDesktopAppLayout(callback: () => void) {
-  describe('Desktop', () => {
-    beforeEach(() => {
-      (useMobile as jest.Mock).mockReturnValue(false);
-    });
-    callback();
-  });
-}
-
-export function describeMobileAppLayout(callback: () => void) {
-  describe('Mobile', () => {
-    beforeEach(() => {
-      (useMobile as jest.Mock).mockReturnValue(true);
-    });
-    callback();
-  });
+  return { wrapper, rerender, isUsingGridLayout, isUsingMobile, contentElement, container };
 }
 
 export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: string) => void) {
@@ -70,6 +54,11 @@ export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: 
       afterEach(() => {
         (useMobile as jest.Mock).mockReset();
         (useVisualRefresh as jest.Mock).mockReset();
+      });
+      test('mocks applied correctly', () => {
+        const { isUsingGridLayout, isUsingMobile } = renderComponent(<AppLayout />);
+        expect(isUsingGridLayout).toEqual(theme === 'refresh');
+        expect(isUsingMobile).toEqual(isMobile);
       });
       callback(theme);
     });
@@ -87,6 +76,11 @@ export function describeEachAppLayout(callback: (size: 'desktop' | 'mobile') => 
         afterEach(() => {
           (useMobile as jest.Mock).mockReset();
           (useVisualRefresh as jest.Mock).mockReset();
+        });
+        test('mocks applied correctly', () => {
+          const { isUsingGridLayout, isUsingMobile } = renderComponent(<AppLayout />);
+          expect(isUsingGridLayout).toEqual(theme === 'refresh');
+          expect(isUsingMobile).toEqual(size === 'mobile');
         });
         callback(size);
       });

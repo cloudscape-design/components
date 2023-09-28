@@ -14,6 +14,7 @@ import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
 import { splitItems } from '../drawer/drawers-helpers';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -53,12 +54,6 @@ export default function Drawers() {
   );
 }
 
-/**
- * The ActiveDrawer component will render either the drawer content that corresponds
- * to the activeDrawerId or the Tools content if it exists and isToolsOpen is true.
- * The aria labels, click handling, and focus handling will be updated dynamically
- * based on the active drawer or tools content.
- */
 function ActiveDrawer() {
   const {
     activeDrawerId,
@@ -70,9 +65,7 @@ function ActiveDrawer() {
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
-    isToolsOpen,
     navigationHide,
-    tools,
     toolsRefs,
     loseDrawersFocus,
     resizeHandle,
@@ -88,8 +81,9 @@ function ActiveDrawer() {
     content: activeDrawerId ? activeDrawer?.ariaLabels?.content : ariaLabels?.tools,
   };
 
-  const isHidden = !activeDrawerId && !isToolsOpen;
+  const isHidden = !activeDrawerId;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
+  const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
 
   const size = Math.min(drawersMaxWidth, drawerSize);
 
@@ -98,11 +92,12 @@ function ActiveDrawer() {
       id={activeDrawerId}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, sharedStyles['with-motion'], {
-        [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
+      className={clsx(styles.drawer, {
+        [styles['is-drawer-open']]: activeDrawerId,
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
-        [testutilStyles.tools]: isToolsOpen,
+        [testutilStyles.tools]: isToolsDrawer,
+        [sharedStyles['with-motion']]: activeDrawerId,
       })}
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
@@ -120,20 +115,20 @@ function ActiveDrawer() {
           ariaLabel={computedAriaLabels.closeButton}
           className={clsx({
             [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-            [testutilStyles['tools-close']]: isToolsOpen,
+            [testutilStyles['tools-close']]: isToolsDrawer,
           })}
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
-          onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? null) : handleToolsClick(false))}
-          ref={isToolsOpen ? toolsRefs.close : drawersRefs.close}
+          onClick={() => {
+            handleDrawersClick(activeDrawerId ?? undefined);
+            handleToolsClick(false);
+          }}
+          ref={isToolsDrawer ? toolsRefs.close : drawersRefs.close}
           variant="icon"
         />
       </div>
 
-      <div className={styles['drawer-content']}>
-        {activeDrawerId && activeDrawer?.content}
-        {isToolsOpen && tools}
-      </div>
+      <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
     </aside>
   );
 }
@@ -204,6 +199,15 @@ function DesktopTriggers() {
   const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
+  function handleItemClick(itemId: string | undefined) {
+    if (itemId === TOOLS_DRAWER_ID) {
+      handleToolsClick(!isToolsOpen, true);
+    } else {
+      handleToolsClick(false, true);
+    }
+    handleDrawersClick(itemId);
+  }
+
   return (
     <aside
       className={clsx(
@@ -231,14 +235,15 @@ function DesktopTriggers() {
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
-              className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+              className={clsx(
+                styles['drawers-trigger'],
+                testutilStyles['drawers-trigger'],
+                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+              )}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
-              onClick={() => {
-                isToolsOpen && handleToolsClick(!isToolsOpen, true);
-                handleDrawersClick(item.id);
-              }}
+              onClick={() => handleItemClick(item.id)}
               ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
@@ -263,7 +268,7 @@ function DesktopTriggers() {
               />
             )}
             onItemClick={({ detail }) => {
-              handleDrawersClick(detail.id);
+              handleItemClick(detail.id);
             }}
           />
         )}
@@ -297,6 +302,8 @@ export function MobileTriggers() {
     drawersAriaLabel,
     drawersOverflowAriaLabel,
     drawersRefs,
+    isToolsOpen,
+    handleToolsClick,
     handleDrawersClick,
     hasDrawerViewportOverlay,
     isMobile,
@@ -314,7 +321,16 @@ export function MobileTriggers() {
 
   const splitIndex = 2;
 
-  const { visibleItems, overflowItems } = splitItems(drawers, splitIndex, activeDrawerId, true);
+  const { visibleItems, overflowItems } = splitItems(drawers, splitIndex, activeDrawerId);
+
+  function handleItemClick(itemId: string | undefined) {
+    if (itemId === TOOLS_DRAWER_ID) {
+      handleToolsClick(!isToolsOpen, true);
+    } else {
+      handleToolsClick(false, true);
+    }
+    handleDrawersClick(itemId);
+  }
 
   return (
     <aside
@@ -332,7 +348,11 @@ export function MobileTriggers() {
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
-          className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+          className={clsx(
+            styles['drawers-trigger'],
+            testutilStyles['drawers-trigger'],
+            item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+          )}
           disabled={hasDrawerViewportOverlay}
           ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
           formAction="none"
@@ -340,7 +360,7 @@ export function MobileTriggers() {
           iconSvg={item.trigger.iconSvg}
           badge={item.badge}
           key={item.id}
-          onClick={() => handleDrawersClick(item.id)}
+          onClick={() => handleItemClick(item.id)}
           variant="icon"
           __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
         />
@@ -350,7 +370,7 @@ export function MobileTriggers() {
           items={overflowItems}
           ariaLabel={drawersOverflowAriaLabel}
           onItemClick={({ detail }) => {
-            handleDrawersClick(detail.id);
+            handleItemClick(detail.id);
           }}
         />
       )}

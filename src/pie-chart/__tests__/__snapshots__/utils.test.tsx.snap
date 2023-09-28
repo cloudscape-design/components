@@ -1,5 +1,111 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`balanceLabelNodes changes xOffset if vertical overlap 1`] = `
+NodeList [
+  <g
+    data-x="20"
+    data-y="-50"
+    transform=""
+  >
+    <text
+      x="20"
+      y="-50"
+    >
+      Segment 1
+    </text>
+  </g>,
+  <g
+    data-x="20"
+    data-y="-49"
+    transform="translate(79.67948635501689 25)"
+  >
+    <text
+      x="20"
+      y="-49"
+    >
+      Segment 2
+    </text>
+  </g>,
+  <g
+    data-x="-20"
+    data-y="21"
+    transform="translate(-68.79189152169245 25)"
+  >
+    <text
+      x="-20"
+      y="21"
+    >
+      Segment 3
+    </text>
+  </g>,
+  <g
+    data-x="-20"
+    data-y="20"
+    transform=""
+  >
+    <text
+      x="-20"
+      y="20"
+    >
+      Segment 4
+    </text>
+  </g>,
+]
+`;
+
+exports[`balanceLabelNodes does not change xOffset if no vertical overlap 1`] = `
+NodeList [
+  <g
+    data-x="20"
+    data-y="-50"
+    transform=""
+  >
+    <text
+      x="20"
+      y="-50"
+    >
+      Segment 1
+    </text>
+  </g>,
+  <g
+    data-x="20"
+    data-y="-20"
+    transform=""
+  >
+    <text
+      x="20"
+      y="-20"
+    >
+      Segment 2
+    </text>
+  </g>,
+  <g
+    data-x="-20"
+    data-y="50"
+    transform=""
+  >
+    <text
+      x="-20"
+      y="50"
+    >
+      Segment 3
+    </text>
+  </g>,
+  <g
+    data-x="-20"
+    data-y="20"
+    transform=""
+  >
+    <text
+      x="-20"
+      y="20"
+    >
+      Segment 4
+    </text>
+  </g>,
+]
+`;
+
 exports[`balanceLabelNodes empty 1`] = `NodeList []`;
 
 exports[`balanceLabelNodes heavy overlap on both sides 1`] = `

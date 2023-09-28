@@ -154,7 +154,7 @@ const OldAppLayout = React.forwardRef(
       onActiveDrawerChange,
       onActiveDrawerResize,
       ...drawersProps
-    } = useDrawers(props as InternalDrawerProps, { ariaLabels, tools, toolsOpen, toolsHide, toolsWidth }, defaults);
+    } = useDrawers(props as InternalDrawerProps, { ariaLabels, tools, toolsOpen, toolsHide, toolsWidth });
     const hasDrawers = drawers.length > 0;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
@@ -394,6 +394,9 @@ const OldAppLayout = React.forwardRef(
 
       if (hasDrawers) {
         if (activeDrawer) {
+          if (drawers.length === 1) {
+            return activeDrawerSize;
+          }
           if (!isResizeInvalid && activeDrawerSize) {
             return activeDrawerSize + closedDrawerWidth;
           }
@@ -639,7 +642,9 @@ const OldAppLayout = React.forwardRef(
               (hasDrawers ? (
                 <ResizableDrawer
                   contentClassName={
-                    activeDrawerId === TOOLS_DRAWER_ID ? testutilStyles.tools : testutilStyles['active-drawer']
+                    activeDrawerId === TOOLS_DRAWER_ID
+                      ? clsx(testutilStyles.tools, testutilStyles['active-drawer'])
+                      : testutilStyles['active-drawer']
                   }
                   toggleClassName={testutilStyles['tools-toggle']}
                   closeClassName={

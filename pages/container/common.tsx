@@ -1,12 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
+import { useState } from 'react';
 import { ContainerProps } from '~components/container';
 import Container from '~components/container';
 import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Button from '~components/button';
+
+let nextIframeIndex = 0;
+export const PermutationIframe = () => {
+  const [iframeIndex] = useState(() => nextIframeIndex++);
+  return <iframe title={`iframe ${iframeIndex}`} srcDoc="<h1>This is an iframe</h1>"></iframe>;
+};
 
 export const PermutationContainer = ({ permutation }: { permutation: ContainerProps.Media }) => {
   return (

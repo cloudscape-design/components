@@ -31,7 +31,7 @@ describeEachAppLayout(size => {
     expect(wrapper.findContentRegion()).toBeTruthy();
     expect(wrapper.findNotifications()).toBeFalsy();
     expect(wrapper.findBreadcrumbs()).toBeFalsy();
-    expect(wrapper.findDrawersTriggers()![0]).toBeFalsy();
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
@@ -255,7 +255,7 @@ describeEachAppLayout(size => {
       };
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
 
-      wrapper.findDrawersTriggers()![0].click();
+      wrapper.findDrawerTriggerById('security')!.click();
 
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
     });
@@ -271,7 +271,7 @@ describeEachAppLayout(size => {
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
 
       // Chrome bubbles up events from specific elements inside <button>s.
-      wrapper.findDrawersTriggers()![0]!.find('span')!.click();
+      wrapper.findDrawerTriggerById('security')!.find('span')!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
     });
@@ -296,10 +296,12 @@ describeEachAppLayout(size => {
     test('Renders aria-expanded only on toggle', () => {
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
 
-      expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'false');
-      expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-haspopup', 'true');
-      wrapper.findDrawersTriggers()![0].click();
-      expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'true');
+      const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+      expect(drawerTrigger.getElement()).toHaveAttribute('aria-expanded', 'false');
+      expect(drawerTrigger.getElement()).toHaveAttribute('aria-haspopup', 'true');
+
+      drawerTrigger.click();
+      expect(drawerTrigger.getElement()).toHaveAttribute('aria-expanded', 'true');
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-expanded');
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-haspopup');
     });
@@ -331,7 +333,7 @@ describeEachAppLayout(size => {
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
       expect(wrapper.findActiveDrawer()).toBeNull();
 
-      act(() => wrapper.findDrawersTriggers()![0].click());
+      wrapper.findDrawerTriggerById('security')!.find('span')!.click();
       expect(wrapper.findActiveDrawer()).not.toBeNull();
 
       act(() => wrapper.findActiveDrawerCloseButton()!.click());

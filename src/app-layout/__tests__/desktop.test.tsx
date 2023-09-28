@@ -181,7 +181,7 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test(`should toggle drawer on click`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()).toBeTruthy();
     act(() => wrapper.findDrawersTriggers()![0].click());
@@ -191,7 +191,7 @@ describeEachThemeAppLayout(false, () => {
   test(`Moves focus to slider when opened`, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
-    act(() => wrapper.findDrawersTriggers()![0].click());
+    wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
@@ -231,7 +231,7 @@ describeEachThemeAppLayout(false, () => {
   test('should read relative size on resize handle', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
-    act(() => wrapper.findDrawersTriggers()![0].click());
+    wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-valuenow', '0');
   });
 
@@ -243,9 +243,9 @@ describeEachThemeAppLayout(false, () => {
 
   test('Renders aria-controls on toggle only when active', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-controls');
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-controls', 'security');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-controls');
+    wrapper.findDrawerTriggerById('security')!.click();
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-controls', 'security');
   });
 });
 
@@ -292,6 +292,20 @@ describe('Classic only features', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
 
     expect(wrapper.findByClassName(iconStyles.badge)!.getElement()).toBeInTheDocument();
+  });
+
+  test(`should toggle single drawer on click of container`, () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
+    act(() => wrapper.findDrawersDesktopTriggersContainer()!.click());
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+    act(() => wrapper.findDrawersDesktopTriggersContainer()!.click());
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+
+  test(`should not toggle many drawers on click of container`, () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...manyDrawers} />);
+    act(() => wrapper.findDrawersDesktopTriggersContainer()!.click());
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 });
 

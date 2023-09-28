@@ -11,6 +11,7 @@ import OverflowMenu from './overflow-menu';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 import { splitItems } from './drawers-helpers';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -195,15 +196,24 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
         [styles['drawer-mobile']]: isMobile,
+        [styles.hide]: drawers?.items.length === 1 && drawers.activeDrawerId !== undefined,
       })}
       ref={containerRef}
     >
       <div
         ref={triggersContainerRef}
         style={{ top: topOffset, bottom: bottomOffset }}
-        className={clsx(styles['drawer-content'])}
+        className={clsx(styles['drawer-content'], {
+          [styles['drawer-content-clickable']]: drawers?.items.length === 1,
+        })}
         role="toolbar"
         aria-orientation="vertical"
+        onClick={() => {
+          drawers?.items.length === 1 &&
+            drawers?.onChange({
+              activeDrawerId: drawers.items[0].id !== drawers.activeDrawerId ? drawers.items[0].id : undefined,
+            });
+        }}
       >
         {!isMobile && (
           <aside
@@ -215,7 +225,11 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                 return (
                   <DrawerTrigger
                     key={index}
-                    testUtilsClassName={testutilStyles['drawers-trigger']}
+                    testUtilsClassName={
+                      item.id === TOOLS_DRAWER_ID
+                        ? clsx(testutilStyles['drawers-trigger'], testutilStyles['tools-toggle'])
+                        : testutilStyles['drawers-trigger']
+                    }
                     ariaExpanded={drawers?.activeDrawerId === item.id}
                     ariaLabel={item.ariaLabels?.triggerButton}
                     ariaControls={drawers?.activeDrawerId === item.id ? item.id : undefined}
@@ -224,9 +238,10 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                     itemId={item.id}
                     isActive={drawers?.activeDrawerId === item.id}
                     onClick={() => {
-                      drawers?.onChange({
-                        activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
-                      });
+                      drawers?.items.length !== 1 &&
+                        drawers?.onChange({
+                          activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
+                        });
                     }}
                   />
                 );

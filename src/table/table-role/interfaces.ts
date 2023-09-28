@@ -4,13 +4,11 @@
 export type TableRole = 'table' | 'grid' | 'grid-default';
 
 export interface GridNavigationProps {
-  tableRole: TableRole;
+  active: boolean;
   pageSize: number;
   getTable: () => null | HTMLTableElement;
+  isSuppressed?: (focusedElement: HTMLElement) => void;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface GridNavigationAPI {}
 
 export interface FocusedCell {
   rowIndex: number;
@@ -19,5 +17,4 @@ export interface FocusedCell {
   rowElement: HTMLTableRowElement;
   cellElement: HTMLTableCellElement;
   element: HTMLElement;
-  widget: boolean;
 }

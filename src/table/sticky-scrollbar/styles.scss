@@ -39,6 +39,7 @@
     }
 
     &.is-visual-refresh {
+      // Needed to avoid sticky scrollbar overlapping with interactive elements in VR compact mode
       margin-top: -5px;
     }
   }

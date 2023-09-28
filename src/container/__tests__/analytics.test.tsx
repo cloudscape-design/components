@@ -4,6 +4,7 @@ import React from 'react';
 import { render, act } from '@testing-library/react';
 
 import Container from '../../../lib/components/container';
+import Modal from '../../../lib/components/modal';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors';
@@ -100,6 +101,34 @@ describe('Funnel Analytics', () => {
             <Container>
               <input data-testid="input-two" />
             </Container>
+          </Container>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelSubStepStart).not.toHaveBeenCalled();
+
+    getByTestId('input-one').focus();
+    getByTestId('input-two').focus();
+    getByTestId('input-one').focus();
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelSubStepComplete).not.toHaveBeenCalled();
+  });
+
+  test('Modal containers do not send their own events', async () => {
+    const { getByTestId } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
+          <Container>
+            <input data-testid="input-one" />
+
+            <Modal visible={true}>
+              <input data-testid="input-two" />
+            </Modal>
           </Container>
         </AnalyticsFunnelStep>
       </AnalyticsFunnel>

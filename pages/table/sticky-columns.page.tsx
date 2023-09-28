@@ -15,6 +15,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type DemoContext = React.Context<
   AppContextType<{
+    loading: boolean;
     resizableColumns: boolean;
     stickyHeader: boolean;
     sortingDisabled: boolean;
@@ -165,6 +166,10 @@ export default () => {
       <SpaceBetween size="xl">
         <SpaceBetween direction="horizontal" size="m">
           <FormField label="Table flags">
+            <Checkbox checked={urlParams.loading} onChange={event => setUrlParams({ loading: event.detail.checked })}>
+              Loading
+            </Checkbox>
+
             <Checkbox
               checked={urlParams.resizableColumns}
               onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}

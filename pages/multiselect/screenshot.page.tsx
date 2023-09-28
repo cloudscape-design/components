@@ -55,6 +55,7 @@ export default function () {
           finishedText="End of all results"
           errorText="verylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspaces"
           recoveryText="Retry"
+          onLoadItems={() => {}}
           statusType={showError ? 'error' : 'finished'}
           onChange={event => setSelected(event.detail.selectedOptions)}
           i18nStrings={i18nStrings}
