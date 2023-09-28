@@ -11,7 +11,7 @@ import {
   FunnelState,
   FunnelSubStepContextValue,
 } from '../context/analytics-context';
-import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
+import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
@@ -31,11 +31,11 @@ import {
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { nodeBelongs } from '../../utils/node-belongs';
 
-export const FUNNEL_VERSION = '1.2';
+export const FUNNEL_VERSION = '1.3';
 
 type AnalyticsFunnelProps = { children?: React.ReactNode; stepConfiguration?: StepConfiguration[] } & Pick<
   FunnelProps,
-  'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'
+  'funnelNameSelector' | 'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'
 >;
 
 export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
@@ -68,6 +68,8 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
+  const inheritedFunnelNameSelector = useFunnelNameSelector();
+  const funnelNameSelector = props.funnelNameSelector || inheritedFunnelNameSelector || getFunnelNameSelector();
   const funnelState = useRef<FunnelState>('default');
   const errorCount = useRef<number>(0);
   const loadingButtonCount = useRef<number>(0);
@@ -99,11 +101,11 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
       funnelState.current = 'default';
 
       const singleStepFlowStepConfiguration = [
-        { number: 1, isOptional: false, name: getNameFromSelector(getFunnelNameSelector()) ?? '' },
+        { number: 1, isOptional: false, name: getNameFromSelector(funnelNameSelector) ?? '' },
       ];
 
       const funnelInteractionId = FunnelMetrics.funnelStart({
-        funnelNameSelector: getFunnelNameSelector(),
+        funnelNameSelector: funnelNameSelector,
         optionalStepNumbers: props.optionalStepNumbers,
         funnelType: props.funnelType,
         totalFunnelSteps: props.totalFunnelSteps,

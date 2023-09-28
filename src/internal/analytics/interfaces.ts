@@ -12,6 +12,7 @@ export interface FunnelProps extends BaseFunnelProps {
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
   funnelType: FunnelType;
+  funnelNameSelector?: string;
 }
 
 export interface FunnelStartProps {

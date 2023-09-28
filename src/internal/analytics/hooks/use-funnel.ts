@@ -2,7 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useContext } from 'react';
-import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
+import {
+  FunnelContext,
+  FunnelNameSelectorContext,
+  FunnelStepContext,
+  FunnelSubStepContext,
+} from '../context/analytics-context';
 import {
   DATA_ATTR_FUNNEL_INTERACTION_ID,
   DATA_ATTR_FUNNEL_SUBSTEP,
@@ -175,4 +180,9 @@ export const useFunnel = () => {
     : {};
 
   return { funnelProps, ...context };
+};
+
+export const useFunnelNameSelector = () => {
+  const context = useContext(FunnelNameSelectorContext);
+  return context;
 };
