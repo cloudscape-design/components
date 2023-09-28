@@ -360,6 +360,8 @@ export namespace TableProps {
      * Determines the display of a cell's content when inline edit is active.
      */
     editingCell(item: T, ctx: TableProps.CellContext<any>): React.ReactNode;
+
+    isDisabled?: (item: T) => boolean | string;
   }
 
   export type ColumnDefinition<ItemType> = {

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../../icon/internal';
+import Popover from '../../popover/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
@@ -46,6 +47,8 @@ function TableCellEditable<ItemType>({
   };
   const isFocusMoveNeededRef = useRef(false);
 
+  const editDisabledReason = column.editConfig?.isDisabled?.(item) ?? false;
+
   useEffect(() => {
     if (!isEditing && editActivateRef.current && isFocusMoveNeededRef.current) {
       isFocusMoveNeededRef.current = false;
@@ -60,6 +63,8 @@ function TableCellEditable<ItemType>({
   const prevSuccessfulEdit = usePrevious(successfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
   const [showSuccessIcon, setShowSuccessIcon] = useState(false);
+
+  console.log({ editDisabledReason, showIcon });
 
   useEffect(() => {
     // Hide the success icon after a successful edit, when cell loses focus.
@@ -87,7 +92,24 @@ function TableCellEditable<ItemType>({
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
-      {isEditing ? (
+      {editDisabledReason ? (
+        <>
+          {column.cell(item)}
+          <button
+            className={styles['body-cell-editor']}
+            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+            ref={editActivateRef}
+            onFocus={() => setHasFocus(true)}
+            onBlur={() => setHasFocus(false)}
+          >
+            {showIcon && (
+              <Popover content="You cannot edit this!">
+                <Icon name="lock-private" variant="normal" />
+              </Popover>
+            )}
+          </button>
+        </>
+      ) : isEditing ? (
         <InlineEditor
           ariaLabels={ariaLabels}
           column={column}

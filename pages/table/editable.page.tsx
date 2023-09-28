@@ -110,6 +110,9 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
           />
         );
       },
+      isDisabled(item) {
+        return item.Origin.includes('browserstack');
+      },
     },
     cell: item => item.Origin,
   },
