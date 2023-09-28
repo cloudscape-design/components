@@ -154,8 +154,15 @@ const OldAppLayout = React.forwardRef(
       onActiveDrawerChange,
       onActiveDrawerResize,
       ...drawersProps
-    } = useDrawers(props as InternalDrawerProps, { ariaLabels, tools, toolsOpen, toolsHide, toolsWidth });
-    const hasDrawers = drawers.length > 0;
+    } = useDrawers(props as InternalDrawerProps, {
+      ariaLabels,
+      tools,
+      toolsOpen,
+      toolsHide,
+      toolsWidth,
+      onToolsChange,
+    });
+    const hasDrawers = !!drawers;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
     const {
@@ -248,7 +255,11 @@ const OldAppLayout = React.forwardRef(
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
 
     const getEffectiveToolsWidth = () => {
-      if (toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') && drawers.length === 0) {
+      if (
+        toolsHide &&
+        (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') &&
+        (!drawers || drawers.length === 0)
+      ) {
         return 0;
       }
 
@@ -403,7 +414,7 @@ const OldAppLayout = React.forwardRef(
 
           return toolsWidth + closedDrawerWidth;
         }
-        return closedDrawerWidth;
+        return drawers.length > 0 ? closedDrawerWidth : 0;
       }
 
       if (!toolsHide && toolsOpen) {
@@ -507,7 +518,7 @@ const OldAppLayout = React.forwardRef(
                       onChange: changeDetail => {
                         onActiveDrawerChange(changeDetail.activeDrawerId);
                         if (changeDetail.activeDrawerId !== activeDrawerId) {
-                          onToolsToggle(changeDetail.activeDrawerId === TOOLS_DRAWER_ID);
+                          focusToolsButtons();
                           focusDrawersButtons();
                           setDrawerLastInteraction({ type: 'open' });
                         }
@@ -638,67 +649,68 @@ const OldAppLayout = React.forwardRef(
               </SideSplitPanelDrawer>
             )}
 
-            {((hasDrawers && activeDrawerId) || (!hasDrawers && !toolsHide)) &&
-              (hasDrawers ? (
-                <ResizableDrawer
-                  contentClassName={
-                    activeDrawerId === TOOLS_DRAWER_ID
-                      ? clsx(testutilStyles.tools, testutilStyles['active-drawer'])
-                      : testutilStyles['active-drawer']
-                  }
-                  toggleClassName={testutilStyles['tools-toggle']}
-                  closeClassName={
-                    activeDrawerId === TOOLS_DRAWER_ID
-                      ? testutilStyles['tools-close']
-                      : testutilStyles['active-drawer-close-button']
-                  }
-                  ariaLabels={ariaLabels}
-                  width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
-                  bottomOffset={footerHeight}
-                  topOffset={headerHeight}
-                  isMobile={isMobile}
-                  onToggle={onToolsToggle}
-                  isOpen={toolsOpen || activeDrawerId !== undefined}
-                  toggleRefs={toolsRefs}
-                  type="tools"
-                  onLoseFocus={loseDrawersFocus}
-                  activeDrawer={activeDrawer}
-                  drawers={{
-                    items: drawers,
-                    activeDrawerId: activeDrawerId,
-                    onChange: changeDetail => {
-                      onToolsToggle(false);
-                      setDrawerLastInteraction({ type: 'close' });
-                      onActiveDrawerChange(changeDetail.activeDrawerId);
-                    },
-                  }}
-                  size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
-                  onResize={changeDetail => onActiveDrawerResize(changeDetail)}
-                  refs={drawerRefs}
-                  getMaxWidth={getDrawerMaxWidth}
-                >
-                  {activeDrawer?.content}
-                </ResizableDrawer>
-              ) : (
-                <Drawer
-                  contentClassName={testutilStyles.tools}
-                  toggleClassName={testutilStyles['tools-toggle']}
-                  closeClassName={testutilStyles['tools-close']}
-                  ariaLabels={ariaLabels}
-                  width={effectiveToolsWidth}
-                  bottomOffset={footerHeight}
-                  topOffset={headerHeight}
-                  isMobile={isMobile}
-                  onToggle={onToolsToggle}
-                  isOpen={toolsOpen}
-                  toggleRefs={toolsRefs}
-                  type="tools"
-                  onLoseFocus={loseToolsFocus}
-                >
-                  {tools}
-                </Drawer>
-              ))}
-            {hasDrawers && (
+            {hasDrawers
+              ? activeDrawerId && (
+                  <ResizableDrawer
+                    contentClassName={clsx(
+                      testutilStyles['active-drawer'],
+                      activeDrawerId === TOOLS_DRAWER_ID && testutilStyles.tools
+                    )}
+                    toggleClassName={testutilStyles['tools-toggle']}
+                    closeClassName={clsx(
+                      testutilStyles['active-drawer-close-button'],
+                      activeDrawerId === TOOLS_DRAWER_ID && testutilStyles['tools-close']
+                    )}
+                    ariaLabels={ariaLabels}
+                    width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+                    bottomOffset={footerHeight}
+                    topOffset={headerHeight}
+                    isMobile={isMobile}
+                    onToggle={() => {
+                      /*noop in this mode*/
+                    }}
+                    isOpen={true}
+                    toggleRefs={toolsRefs}
+                    type="tools"
+                    onLoseFocus={loseDrawersFocus}
+                    activeDrawer={activeDrawer}
+                    drawers={{
+                      items: drawers,
+                      activeDrawerId: activeDrawerId,
+                      onChange: changeDetail => {
+                        focusToolsButtons();
+                        setDrawerLastInteraction({ type: 'close' });
+                        onActiveDrawerChange(changeDetail.activeDrawerId);
+                      },
+                    }}
+                    size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+                    onResize={changeDetail => onActiveDrawerResize(changeDetail)}
+                    refs={drawerRefs}
+                    getMaxWidth={getDrawerMaxWidth}
+                  >
+                    {activeDrawer?.content}
+                  </ResizableDrawer>
+                )
+              : !toolsHide && (
+                  <Drawer
+                    contentClassName={testutilStyles.tools}
+                    toggleClassName={testutilStyles['tools-toggle']}
+                    closeClassName={testutilStyles['tools-close']}
+                    ariaLabels={ariaLabels}
+                    width={effectiveToolsWidth}
+                    bottomOffset={footerHeight}
+                    topOffset={headerHeight}
+                    isMobile={isMobile}
+                    onToggle={onToolsToggle}
+                    isOpen={toolsOpen}
+                    toggleRefs={toolsRefs}
+                    type="tools"
+                    onLoseFocus={loseToolsFocus}
+                  >
+                    {tools}
+                  </Drawer>
+                )}
+            {hasDrawers && drawers.length > 0 && (
               <DrawerTriggersBar
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
@@ -708,7 +720,7 @@ const OldAppLayout = React.forwardRef(
                   activeDrawerId: activeDrawerId,
                   onChange: changeDetail => {
                     if (activeDrawerId !== changeDetail.activeDrawerId) {
-                      onToolsToggle(changeDetail.activeDrawerId === TOOLS_DRAWER_ID);
+                      focusToolsButtons();
                       focusDrawersButtons();
                       setDrawerLastInteraction({ type: 'open' });
                     }

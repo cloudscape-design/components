@@ -36,7 +36,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | undefined;
-  drawers: Array<DrawerItem>;
+  drawers: Array<DrawerItem> | null;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersRefs: DrawerFocusControlRefs;
@@ -398,6 +398,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       toolsOpen: isToolsOpen,
       tools: props.tools,
       toolsWidth,
+      onToolsChange: props.onToolsChange,
     });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
@@ -428,8 +429,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
     };
 
-    const drawersTriggerCount =
-      drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
+    let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
+    if (splitPanelDisplayed && splitPanelPosition === 'side') {
+      drawersTriggerCount++;
+    }
     const hasOpenDrawer =
       activeDrawerId !== undefined ||
       (!toolsHide && isToolsOpen) ||

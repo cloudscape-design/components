@@ -110,7 +110,7 @@ export const Drawer = React.forwardRef(
           style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
           className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName)}
         >
-          {!isMobile && regularOpenButton}
+          {!isMobile && !drawers && regularOpenButton}
           {resizeHandle}
           <TagName aria-label={mainLabel} aria-hidden={!isOpen}>
             <CloseButton
@@ -225,11 +225,10 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                 return (
                   <DrawerTrigger
                     key={index}
-                    testUtilsClassName={
-                      item.id === TOOLS_DRAWER_ID
-                        ? clsx(testutilStyles['drawers-trigger'], testutilStyles['tools-toggle'])
-                        : testutilStyles['drawers-trigger']
-                    }
+                    testUtilsClassName={clsx(
+                      testutilStyles['drawers-trigger'],
+                      item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                    )}
                     ariaExpanded={drawers?.activeDrawerId === item.id}
                     ariaLabel={item.ariaLabels?.triggerButton}
                     ariaControls={drawers?.activeDrawerId === item.id ? item.id : undefined}
