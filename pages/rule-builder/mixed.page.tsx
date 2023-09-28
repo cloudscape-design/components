@@ -50,7 +50,8 @@ function AccountMultiselect() {
         placeholder="Select applicable values"
         options={accountOptions}
         selectedOptions={accountValues}
-        triggerVariant="tokens"
+        ariaLabel={`${accountValues.length} accounts selected`}
+        {...{ inlineTokens: true }}
         filteringType="auto"
         onChange={({ detail }) => {
           setAccountValues([...detail.selectedOptions]);

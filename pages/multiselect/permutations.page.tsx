@@ -29,7 +29,7 @@ const options: MultiselectProps.Options = [
 const _getGroupOptions = (option: OptionDefinition | OptionGroup) => ('options' in option ? option.options : [option]);
 const _getFirstChild = (option: OptionDefinition | OptionGroup) => ('options' in option ? option.options[0] : option);
 
-const permutations = createPermutations<MultiselectProps>([
+const permutations = createPermutations<MultiselectProps & { inlineTokens?: boolean }>([
   {
     placeholder: ['Select an item'],
     disabled: [false, true],
@@ -45,7 +45,7 @@ const permutations = createPermutations<MultiselectProps>([
     ],
     deselectAriaLabel: [deselectAriaLabel],
     i18nStrings: [i18nStrings],
-    triggerVariant: [undefined, 'tokens'],
+    inlineTokens: [undefined, true],
   },
 ]);
 

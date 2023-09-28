@@ -13,6 +13,7 @@ import Option from '../../internal/components/option';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SelectTriggerProps } from '../utils/use-select';
 import { joinStrings } from '../../internal/utils/strings';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 export interface TriggerProps extends FormFieldValidationControlProps {
   placeholder: string | undefined;
@@ -43,15 +44,24 @@ const Trigger = React.forwardRef(
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
+    const isVisualRefresh = useVisualRefresh();
     const generatedId = useUniqueId();
     const id = controlId ?? generatedId;
     const triggerContentId = useUniqueId('trigger-content-');
+
+    let ariaLabelledbyIds = joinStrings(ariaLabelledby, triggerContentId);
 
     let triggerContent = null;
     if (triggerVariant === 'tokens') {
       if (selectedOptions?.length) {
         triggerContent = (
-          <span className={clsx(styles['inline-token-trigger'], disabled && styles['inline-token-trigger--disabled'])}>
+          <span
+            className={clsx(
+              styles['inline-token-trigger'],
+              disabled && styles['inline-token-trigger--disabled'],
+              isVisualRefresh && styles['visual-refresh']
+            )}
+          >
             <span className={styles['inline-token-list']}>
               {selectedOptions.map(({ label }, i) => (
                 <span key={i}>{label}</span>
@@ -63,6 +73,7 @@ const Trigger = React.forwardRef(
             </span>
           </span>
         );
+        ariaLabelledbyIds = ariaLabelledby;
       } else {
         triggerContent = (
           <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
@@ -99,7 +110,7 @@ const Trigger = React.forwardRef(
         inFilteringToken={inFilteringToken}
         inlineTokens={triggerVariant === 'tokens'}
         ariaDescribedby={ariaDescribedby}
-        ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
+        ariaLabelledby={ariaLabelledbyIds}
       >
         {triggerContent}
       </ButtonTrigger>

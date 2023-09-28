@@ -17,12 +17,15 @@ const Multiselect = React.forwardRef(
       selectedOptions = [],
       keepOpen = true,
       hideTokens = false,
-      triggerVariant = 'placeholder',
       ...restProps
     }: MultiselectProps,
     ref: React.Ref<MultiselectProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Multiselect');
+
+    // Private API for inline tokens
+    const inlineTokens = Boolean((restProps as any).inlineTokens);
+
     return (
       <InternalMultiselect
         options={options}
@@ -31,7 +34,7 @@ const Multiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         keepOpen={keepOpen}
         hideTokens={hideTokens}
-        triggerVariant={triggerVariant}
+        inlineTokens={inlineTokens}
         {...restProps}
         {...baseComponentProps}
         ref={ref}

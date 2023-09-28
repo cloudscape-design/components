@@ -135,7 +135,7 @@ export default function MultiselectPage() {
             selectedOptions={selectedOptions1}
             deselectAriaLabel={deselectAriaLabel}
             i18nStrings={i18nStrings}
-            triggerVariant="tokens"
+            {...{ inlineTokens: true }}
             onChange={event => {
               setSelectedOptions1(event.detail.selectedOptions);
             }}

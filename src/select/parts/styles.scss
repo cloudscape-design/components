@@ -79,11 +79,15 @@ $checkbox-size: awsui.$size-control;
     padding: 0 awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
     border-radius: awsui.$border-radius-token;
-    // border-radius: 6px;
     color: awsui.$color-text-body-default;
     min-width: max-content;
     line-height: 18px;
   }
+}
+
+/* stylelint-disable-next-line selector-max-type */
+.visual-refresh > .inline-token-list > span {
+  border-radius: awsui.$border-radius-badge;
 }
 
 .inline-token-hidden-placeholder {
