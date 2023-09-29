@@ -149,6 +149,42 @@ export default function RuleBuilderDemo() {
             </SpaceBetween>
           </div>
         </Container>
+        <Container>
+          <SpaceBetween size="l">
+            <FormField label="Empty state (unchanged)">
+              <Multiselect
+                {...{ inlineTokens: true }}
+                placeholder="Select applicable values"
+                options={accountOptions}
+                selectedOptions={[]}
+                filteringType="auto"
+                onChange={() => {}}
+              />
+            </FormField>
+
+            <FormField label="One option selected">
+              <Multiselect
+                {...{ inlineTokens: true }}
+                placeholder="Select applicable values"
+                options={accountOptions}
+                selectedOptions={[accountOptions[1]]}
+                filteringType="auto"
+                onChange={() => {}}
+              />
+            </FormField>
+
+            <FormField label="Many options selected">
+              <Multiselect
+                {...{ inlineTokens: true }}
+                placeholder="Select applicable values"
+                options={accountOptions}
+                selectedOptions={accountOptions}
+                filteringType="auto"
+                onChange={() => {}}
+              />
+            </FormField>
+          </SpaceBetween>
+        </Container>
       </Box>
     </>
   );
