@@ -4,7 +4,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
@@ -92,6 +92,18 @@ export function isDrawerClosed(drawer: ElementWrapper) {
   // The visibility class name we are attaching to the wrapping element,
   // however the test-util points to the inner element, which has the scrollbar
   return !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']));
+}
+
+export function findActiveDrawerLandmark(wrapper: AppLayoutWrapper) {
+  const drawer = wrapper.findActiveDrawer();
+  if (!drawer) {
+    return null;
+  }
+  // <aside> tag is rendered differently in classic and refresh designs
+  if (drawer.getElement().tagName === 'ASIDE') {
+    return drawer;
+  }
+  return drawer.find('aside');
 }
 
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {

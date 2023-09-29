@@ -112,6 +112,7 @@ export function useDrawers(
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
+    fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
     fireNonCancelableEvent(ownDrawers?.onResize, { id, size });
   }
 

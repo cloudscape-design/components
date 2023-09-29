@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import { describeEachAppLayout, singleDrawer } from './utils';
+import { describeEachAppLayout, findActiveDrawerLandmark, singleDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
@@ -73,6 +73,53 @@ describeEachAppLayout(size => {
       'Tools',
       'Runtime drawer',
     ]);
+  });
+
+  test('renders all provided aria-labels', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      ariaLabels: {
+        triggerButton: 'drawer trigger',
+        content: 'drawer content',
+        resizeHandle: 'drawer resize',
+        closeButton: 'drawer close',
+      },
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'drawer trigger'
+    );
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(findActiveDrawerLandmark(wrapper)!.getElement()).toHaveAttribute('aria-label', 'drawer content');
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'drawer close');
+  });
+
+  test('renders resize handle when config is enabled', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      id: 'test-resizable',
+      resizable: true,
+      ariaLabels: {
+        triggerButton: 'drawer trigger',
+        content: 'drawer content',
+        resizeHandle: 'drawer resize',
+        closeButton: 'drawer close',
+      },
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(wrapper.findDrawersSlider()).toBeFalsy();
+
+    wrapper.findDrawerTriggerById('test-resizable')!.click();
+    if (size === 'desktop') {
+      expect(wrapper.findDrawersSlider()).toBeTruthy();
+      expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-label', 'drawer resize');
+    } else {
+      expect(wrapper.findDrawersSlider()).toBeFalsy();
+    }
   });
 
   test('accepts drawers registration after initial rendering', async () => {
