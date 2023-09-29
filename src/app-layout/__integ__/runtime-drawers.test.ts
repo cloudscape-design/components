@@ -52,5 +52,29 @@ for (const visualRefresh of [true, false]) {
         await expect(page.isDisplayed(toolsContentSelector)).resolves.toBe(false);
       })
     );
+
+    test(
+      'renders according to defaultSize property',
+      setupTest(async page => {
+        await page.click(wrapper.findDrawerTriggerById('security').toSelector());
+        // using `clientWidth` to neglect possible border width set on this element
+        const width = await page.getElementProperty(wrapper.findActiveDrawer().toSelector(), 'clientWidth');
+        expect(width).toEqual(320);
+      })
+    );
+
+    test(
+      'should call resize handler',
+      setupTest(async page => {
+        // close navigation panel to give drawer more room to resize
+        await page.click(wrapper.findNavigationClose().toSelector());
+        await page.click(wrapper.findDrawerTriggerById('security').toSelector());
+
+        await expect(page.getText('[data-testid="current-size"]')).resolves.toEqual('resized: false');
+
+        await page.dragAndDrop(wrapper.findDrawersSlider().toSelector(), -200);
+        await expect(page.getText('[data-testid="current-size"]')).resolves.toEqual('resized: true');
+      })
+    );
   });
 }

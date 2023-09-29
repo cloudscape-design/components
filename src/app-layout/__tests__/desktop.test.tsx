@@ -212,11 +212,17 @@ describeEachThemeAppLayout(false, () => {
 
   test('should change size via mouse pointer on slider handle', () => {
     const onResize = jest.fn();
+    const onDrawerItemResize = jest.fn();
     const drawersOpen: Required<InternalDrawerProps> = {
       drawers: {
         onResize: ({ detail }) => onResize(detail),
         activeDrawerId: 'security',
-        items: resizableDrawer.drawers.items,
+        items: [
+          {
+            ...resizableDrawer.drawers.items[0],
+            onResize: event => onDrawerItemResize(event.detail),
+          },
+        ],
       },
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
@@ -226,6 +232,7 @@ describeEachThemeAppLayout(false, () => {
     wrapper.findDrawersSlider()!.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
 
     expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
+    expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
   });
 
   test('should read relative size on resize handle', () => {

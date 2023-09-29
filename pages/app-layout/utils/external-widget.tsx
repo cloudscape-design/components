@@ -1,19 +1,29 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import HelpPanel from '~components/help-panel';
 import awsuiPlugins from '~components/internal/plugins';
 
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
 
-function Content() {
+const Content = React.forwardRef((props, ref) => {
+  const [resized, setResized] = useState(false);
+
+  useImperativeHandle(ref, () => setResized);
+
   useEffect(() => {
     console.log('mounted');
     return () => console.log('unmounted');
   }, []);
-  return <HelpPanel header={<h2>Security</h2>}>I am runtime drawer</HelpPanel>;
-}
+  return (
+    <HelpPanel header={<h2>Security</h2>}>
+      I am runtime drawer, <span data-testid="current-size">resized: {`${resized}`}</span>
+    </HelpPanel>
+  );
+});
+
+const setSizeRef = React.createRef<(resized: boolean) => void>();
 
 awsuiPlugins.appLayout.registerDrawer({
   id: 'security',
@@ -37,12 +47,13 @@ awsuiPlugins.appLayout.registerDrawer({
   resizable: true,
   defaultSize: 320,
 
-  onResize: newSize => {
-    console.log('resize', newSize);
+  onResize: event => {
+    setSizeRef.current?.(true);
+    console.log('resize', event.detail);
   },
 
   mountContent: container => {
-    ReactDOM.render(<Content />, container);
+    ReactDOM.render(<Content ref={setSizeRef} />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
