@@ -74,6 +74,11 @@ export interface LinkProps extends BaseComponentProps {
   ariaLabel?: string;
 
   /**
+   * Adds a title to the HTML element.
+   */
+  title?: React.HTMLAttributes<HTMLAnchorElement>['title'];
+
+  /**
    * Adds an aria-label to the external icon.
    * @i18n
    */
