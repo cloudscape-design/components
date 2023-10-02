@@ -166,6 +166,10 @@
   padding-bottom: awsui.$space-scaled-2x-xxs;
 }
 
+.virtual-space {
+  @include styles.awsui-util-hide;
+}
+
 .info {
   // Space 's' used as it's the smallest value that works in all browsers
   padding-right: awsui.$space-s;
