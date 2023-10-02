@@ -40,6 +40,7 @@ export interface MultiselectProps extends BaseSelectProps {
    * The event `detail` contains the current `selectedOptions`.
    */
   onChange?: NonCancelableEventHandler<MultiselectProps.MultiselectChangeDetail>;
+
   /**
    * Automatically focuses the trigger when component is mounted.
    */

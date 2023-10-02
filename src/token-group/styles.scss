@@ -11,7 +11,7 @@
 .root {
   @include styles.styles-reset;
 
-  &.has-items:not(.variant-small) {
+  &.has-items {
     padding-top: awsui.$space-xs;
   }
 }
@@ -82,8 +82,4 @@
       color: awsui.$color-text-button-inline-icon-disabled;
     }
   }
-}
-
-.token-box-small {
-  padding: 0 awsui.$space-xxs;
 }

@@ -22,7 +22,6 @@ export default function InternalTokenGroup({
   items,
   onDismiss,
   limit,
-  variant,
   i18nStrings,
   __internalRootRef,
   ...props
@@ -37,7 +36,7 @@ export default function InternalTokenGroup({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, styles[`variant-${variant}`], hasItems && styles['has-items'])}
+      className={clsx(baseProps.className, styles.root, hasItems && styles['has-items'])}
       ref={__internalRootRef}
     >
       <TokenList
@@ -50,14 +49,10 @@ export default function InternalTokenGroup({
               ariaLabel={item.label}
               dismissLabel={item.dismissLabel}
               onDismiss={() => {
-                if (variant === 'small') {
-                  return;
-                }
                 fireNonCancelableEvent(onDismiss, { itemIndex });
                 setRemovedItemIndex(itemIndex);
               }}
               disabled={item.disabled}
-              variant={variant}
             >
               <Option option={item} isGenericGroup={false} />
             </Token>

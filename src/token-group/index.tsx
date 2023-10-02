@@ -8,16 +8,9 @@ import InternalTokenGroup from './internal';
 
 export { TokenGroupProps };
 
-export default function TokenGroup({
-  items = [],
-  alignment = 'horizontal',
-  variant = 'default',
-  ...props
-}: TokenGroupProps) {
+export default function TokenGroup({ items = [], alignment = 'horizontal', ...props }: TokenGroupProps) {
   const baseComponentProps = useBaseComponent('TokenGroup');
-  return (
-    <InternalTokenGroup items={items} alignment={alignment} variant={variant} {...props} {...baseComponentProps} />
-  );
+  return <InternalTokenGroup items={items} alignment={alignment} {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(TokenGroup, 'TokenGroup');

@@ -22,8 +22,6 @@ export interface TokenGroupProps extends BaseComponentProps {
    */
   alignment?: TokenGroupProps.Alignment;
 
-  variant?: TokenGroupProps.Variant;
-
   /**
    *
    * An array of objects representing token items. Each token has the following properties:
