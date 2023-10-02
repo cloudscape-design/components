@@ -32,7 +32,6 @@ export default function InternalTokenGroup({
 
   const baseProps = getBaseProps(props);
   const hasItems = items.length > 0;
-
   return (
     <div
       {...baseProps}
