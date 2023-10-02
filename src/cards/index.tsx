@@ -26,7 +26,6 @@ import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { supportsStickyPosition } from '../internal/utils/dom';
-import { useInternalI18n } from '../i18n/context';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
@@ -84,7 +83,6 @@ const Cards = React.forwardRef(function <T = any>(
   const mergedRef = useMergeRefs(measureRef, refObject, __internalRootRef);
   const getMouseDownTarget = useMouseDownTarget();
 
-  const i18n = useInternalI18n('cards');
   const { isItemSelected, getItemSelectionProps, updateShiftToggle } = useSelection({
     items,
     trackBy,
@@ -94,7 +92,6 @@ const Cards = React.forwardRef(function <T = any>(
     onSelectionChange,
     ariaLabels: {
       itemSelectionLabel: ariaLabels?.itemSelectionLabel,
-      selectionGroupLabel: i18n('ariaLabels.selectionGroupLabel', ariaLabels?.selectionGroupLabel),
     },
   });
   const hasToolsHeader = header || filter || pagination || preferences;
