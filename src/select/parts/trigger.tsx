@@ -64,7 +64,9 @@ const Trigger = React.forwardRef(
           >
             <span className={styles['inline-token-list']}>
               {selectedOptions.map(({ label }, i) => (
-                <span key={i}>{label}</span>
+                <span key={i} className={styles['inline-token']}>
+                  {label}
+                </span>
               ))}
             </span>
             <span className={styles['inline-token-counter']} id={triggerContentId}>

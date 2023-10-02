@@ -69,24 +69,29 @@ $checkbox-size: awsui.$size-control;
 .inline-token-list {
   display: flex;
   flex-wrap: nowrap;
+  align-items: center;
   gap: awsui.$space-xxs;
   width: 100%;
   overflow-x: hidden;
 
-  /* stylelint-disable-next-line selector-max-type */
-  > span {
+  // Fade out any overflow tokens
+  mask-image: linear-gradient(270deg, transparent, white 20px, white);
+
+  > .inline-token {
+    display: flex;
+    align-items: center;
+    min-width: max-content;
+    height: 18px;
+
     border: awsui.$border-field-width solid awsui.$color-border-item-selected;
     padding: 0 awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
     border-radius: awsui.$border-radius-token;
     color: awsui.$color-text-body-default;
-    min-width: max-content;
-    line-height: 18px;
   }
 }
 
-/* stylelint-disable-next-line selector-max-type */
-.visual-refresh > .inline-token-list > span {
+.visual-refresh > .inline-token-list > .inline-token {
   border-radius: awsui.$border-radius-badge;
 }
 
@@ -95,28 +100,12 @@ $checkbox-size: awsui.$size-control;
 }
 
 .inline-token-counter {
-  position: relative;
   white-space: nowrap;
-
-  &::before {
-    display: block;
-    position: absolute;
-    content: '';
-    width: 20px;
-    height: 100%;
-    right: 100%;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0), 20%, awsui.$color-background-input-default);
-  }
 }
 .inline-token-trigger--disabled {
-  /* stylelint-disable-next-line selector-max-type */
-  > .inline-token-list > span {
+  > .inline-token-list > .inline-token {
     border-color: awsui.$color-border-control-disabled;
     background-color: awsui.$color-background-container-content;
     color: awsui.$color-text-disabled;
-  }
-
-  > .inline-token-counter::before {
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0), 20%, awsui.$color-background-input-disabled);
   }
 }

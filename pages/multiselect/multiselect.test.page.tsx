@@ -118,6 +118,7 @@ export default function MultiselectPage() {
   const [selectedOptions4, setSelectedOptions4] = React.useState<MultiselectProps.Options>(_selectedOptions1);
   const [selectedOptions5, setSelectedOptions5] = React.useState<MultiselectProps.Options>(_selectedOptions2);
   const [selectedOptions6, setSelectedOptions6] = React.useState<MultiselectProps.Options>(_selectedOptions1);
+  const [selectedOptions7, setSelectedOptions7] = React.useState<MultiselectProps.Options>(_selectedOptions1);
 
   return (
     <article>
@@ -135,7 +136,6 @@ export default function MultiselectPage() {
             selectedOptions={selectedOptions1}
             deselectAriaLabel={deselectAriaLabel}
             i18nStrings={i18nStrings}
-            {...{ inlineTokens: true }}
             onChange={event => {
               setSelectedOptions1(event.detail.selectedOptions);
             }}
@@ -227,6 +227,25 @@ export default function MultiselectPage() {
               setSelectedOptions6(event.detail.selectedOptions);
             }}
           />
+        </Box>
+
+        <Box padding="s">
+          <Box variant="h1">Test: Inline tokens</Box>
+          <div style={{ width: 200 }}>
+            <Multiselect
+              {...{ inlineTokens: true }}
+              statusType="pending"
+              filteringType="none"
+              options={options1}
+              placeholder={'Choose option'}
+              selectedOptions={selectedOptions7}
+              i18nStrings={i18nStrings}
+              ariaLabel={`${selectedOptions7.length} accounts selected`}
+              onChange={event => {
+                setSelectedOptions7(event.detail.selectedOptions);
+              }}
+            />
+          </div>
         </Box>
       </Box>
     </article>
