@@ -72,7 +72,7 @@ for (const visualRefresh of [true, false]) {
 
         await expect(page.getText('[data-testid="current-size"]')).resolves.toEqual('resized: false');
 
-        await page.dragAndDrop(wrapper.findDrawersSlider().toSelector(), -200);
+        await page.dragAndDrop(wrapper.findActiveDrawerResizeHandle().toSelector(), -200);
         await expect(page.getText('[data-testid="current-size"]')).resolves.toEqual('resized: true');
       })
     );
