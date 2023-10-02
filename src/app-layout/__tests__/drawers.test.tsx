@@ -83,14 +83,17 @@ describeEachAppLayout(size => {
     const { wrapper } = await renderComponent(<AppLayout contentType="form" {...drawers} />);
 
     wrapper.findDrawerTriggerById('security')!.click();
-    expect(wrapper.findDrawersSlider()).toBeFalsy();
+    expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
 
     wrapper.findDrawerTriggerById('security-resizable')!.click();
     if (size === 'desktop') {
-      expect(wrapper.findDrawersSlider()).toBeTruthy();
-      expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-label', 'Security resize handle');
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeTruthy();
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Security resize handle'
+      );
     } else {
-      expect(wrapper.findDrawersSlider()).toBeFalsy();
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
     }
   });
 });

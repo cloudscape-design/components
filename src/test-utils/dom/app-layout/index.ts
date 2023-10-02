@@ -55,14 +55,6 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button']);
   }
 
-  findDrawersDesktopTriggersContainer(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles['drawers-desktop-triggers-container']);
-  }
-
-  findDrawersMobileTriggersContainer(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles['drawers-mobile-triggers-container']);
-  }
-
   findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
     return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
@@ -71,7 +63,7 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
   }
 
-  findDrawersSlider(): ElementWrapper | null {
+  findActiveDrawerResizeHandle(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['drawers-slider']);
   }
 }

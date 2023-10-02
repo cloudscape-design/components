@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act } from 'react-dom/test-utils';
+import { screen } from '@testing-library/react';
 import {
   describeEachThemeAppLayout,
   drawerWithoutLabels,
@@ -16,6 +17,7 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/app-layout/styles.css.js';
+import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
@@ -52,6 +54,10 @@ function AppLayoutWithControlledNavigation({
 describeEachThemeAppLayout(true, theme => {
   // In refactored Visual Refresh different styles are used compared to Classic
   const mobileBarClassName = theme === 'refresh' ? testUtilsStyles['mobile-bar'] : toolbarStyles['mobile-bar'];
+  const drawerBarClassName =
+    theme === 'refresh'
+      ? visualRefreshRefactoredStyles['drawers-mobile-triggers-container']
+      : drawersMobileStyles['drawers-container'];
   const blockBodyScrollClassName =
     theme === 'refresh' ? visualRefreshRefactoredStyles['block-body-scroll'] : toolbarStyles['block-body-scroll'];
   const unfocusableClassName = theme === 'refresh' ? visualRefreshRefactoredStyles.unfocusable : styles.unfocusable;
@@ -419,25 +425,10 @@ describeEachThemeAppLayout(true, theme => {
     });
   });
 
-  test('should render drawers mobile triggers container', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-
-    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
-    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
-  });
-
   test('should render an active drawer', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
 
-    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
-    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
     expect(wrapper.findActiveDrawer()).toBeTruthy();
-  });
-
-  test('Does not add a label to the toggle and landmark when they are not defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
-    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
   });
 
   test('Adds labels to toggle button and landmark when defined', () => {
@@ -446,11 +437,18 @@ describeEachThemeAppLayout(true, theme => {
       'aria-label',
       'Security trigger button'
     );
-    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
+    expect(screen.getByLabelText('Drawers')).not.toBeNull();
   });
 
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
+  });
+
+  test('Does not add a label to the toggle and landmark when they are not defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
+    const findDrawersToolbar = () => wrapper.findByClassName(drawerBarClassName);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
+    expect(findDrawersToolbar()!.getElement()).not.toHaveAttribute('aria-label');
   });
 });

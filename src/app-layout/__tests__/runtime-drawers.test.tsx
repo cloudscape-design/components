@@ -111,14 +111,14 @@ describeEachAppLayout(size => {
     const { wrapper } = await renderComponent(<AppLayout />);
 
     wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
-    expect(wrapper.findDrawersSlider()).toBeFalsy();
+    expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
 
     wrapper.findDrawerTriggerById('test-resizable')!.click();
     if (size === 'desktop') {
-      expect(wrapper.findDrawersSlider()).toBeTruthy();
-      expect(wrapper.findDrawersSlider()!.getElement()).toHaveAttribute('aria-label', 'drawer resize');
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeTruthy();
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute('aria-label', 'drawer resize');
     } else {
-      expect(wrapper.findDrawersSlider()).toBeFalsy();
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
     }
   });
 

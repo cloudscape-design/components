@@ -16,7 +16,7 @@ class AppLayoutDrawersPage extends BasePageObject {
   }
 
   async dragResizerTo({ x: targetX, y: targetY }: { x: number; y: number }) {
-    const resizerSelector = wrapper.findDrawersSlider().toSelector();
+    const resizerSelector = wrapper.findActiveDrawerResizeHandle().toSelector();
     const resizerBox = await this.getBoundingBox(resizerSelector);
     await this.browser.performActions([
       {
@@ -61,7 +61,7 @@ for (const visualRefresh of [true, false]) {
       setupTest({ visualRefresh }, async page => {
         await page.openPanel();
         await page.keys(['Enter']);
-        await expect(page.isFocused(wrapper.findDrawersSlider().toSelector())).resolves.toBe(true);
+        await expect(page.isFocused(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(true);
 
         const { width } = await page.getDrawerSize();
         await page.keys(['ArrowLeft']);
@@ -74,10 +74,10 @@ for (const visualRefresh of [true, false]) {
       'hides the resize handle on mobile',
       setupTest({ visualRefresh }, async page => {
         await page.openPanel();
-        await expect(page.isExisting(wrapper.findDrawersSlider().toSelector())).resolves.toBe(true);
+        await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(true);
 
         await page.setWindowSize(viewports.mobile);
-        await expect(page.isExisting(wrapper.findDrawersSlider().toSelector())).resolves.toBe(false);
+        await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(false);
       })
     );
 
