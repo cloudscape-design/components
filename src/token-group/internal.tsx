@@ -43,21 +43,19 @@ export default function InternalTokenGroup({
         alignment={alignment}
         items={items}
         limit={limit}
-        renderItem={(item, itemIndex) => {
-          return (
-            <Token
-              ariaLabel={item.label}
-              dismissLabel={item.dismissLabel}
-              onDismiss={() => {
-                fireNonCancelableEvent(onDismiss, { itemIndex });
-                setRemovedItemIndex(itemIndex);
-              }}
-              disabled={item.disabled}
-            >
-              <Option option={item} isGenericGroup={false} />
-            </Token>
-          );
-        }}
+        renderItem={(item, itemIndex) => (
+          <Token
+            ariaLabel={item.label}
+            dismissLabel={item.dismissLabel}
+            onDismiss={() => {
+              fireNonCancelableEvent(onDismiss, { itemIndex });
+              setRemovedItemIndex(itemIndex);
+            }}
+            disabled={item.disabled}
+          >
+            <Option option={item} isGenericGroup={false} />
+          </Token>
+        )}
         i18nStrings={i18nStrings}
         removedItemIndex={removedItemIndex}
       />

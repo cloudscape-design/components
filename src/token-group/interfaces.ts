@@ -47,8 +47,6 @@ export interface TokenGroupProps extends BaseComponentProps {
 
 export namespace TokenGroupProps {
   export type Alignment = 'horizontal' | 'vertical';
-  export type Variant = 'default' | 'small';
-
   export interface Item {
     label?: string;
     disabled?: boolean;
