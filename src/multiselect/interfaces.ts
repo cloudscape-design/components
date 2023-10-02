@@ -52,6 +52,7 @@ export namespace MultiselectProps {
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
   export type DeselectAriaLabelFunction = (option: Option) => string;
+  export type TriggerVariant = 'placeholder' | 'tokens';
 
   export interface I18nStrings {
     tokenLimitShowFewer?: string;

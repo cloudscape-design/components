@@ -37,7 +37,7 @@ import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { joinStrings } from '../internal/utils/strings';
 import { useInternalI18n } from '../i18n/context';
 
-type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps;
+type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps & { inlineTokens?: boolean };
 
 const InternalMultiselect = React.forwardRef(
   (
@@ -69,6 +69,7 @@ const InternalMultiselect = React.forwardRef(
       onLoadItems,
       onChange,
       virtualScroll,
+      inlineTokens = false,
       hideTokens = false,
       expandToViewport,
       __internalRootRef = null,
@@ -224,6 +225,8 @@ const InternalMultiselect = React.forwardRef(
         disabled={disabled}
         triggerProps={getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
+        selectedOptions={selectedOptions}
+        triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
         isOpen={isOpen}
         {...formFieldContext}
         controlId={controlId}
@@ -276,7 +279,7 @@ const InternalMultiselect = React.forwardRef(
       }
     };
 
-    const showTokens = !hideTokens && tokens.length > 0;
+    const showTokens = !hideTokens && !inlineTokens && tokens.length > 0;
     const handleTokenDismiss: TokenGroupProps['onDismiss'] = ({ detail }) => {
       const optionToDeselect = selectedOptions[detail.itemIndex];
       updateSelectedOption(optionToDeselect);

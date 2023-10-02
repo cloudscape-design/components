@@ -497,3 +497,55 @@ test('Trigger receives focus when autofocus is true', () => {
   const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={groupOptions} autoFocus={true} />);
   expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
 });
+
+describe('With inline tokens (private API)', () => {
+  it('can render inline tokens', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect {...{ inlineTokens: true }} options={defaultOptions} selectedOptions={[defaultOptions[0]]} />
+    );
+
+    // Trigger contains token labels and the number of selected items
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('(1)');
+
+    // Default tokens below the trigger are not displayed
+    expect(wrapper.findTokens()).toHaveLength(0);
+  });
+
+  it('shows placeholder when no items are selected', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect {...{ inlineTokens: true }} selectedOptions={[]} placeholder="Choose something" />
+    );
+
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Choose something');
+  });
+
+  it('does not display features like tags in the inline tokens', () => {
+    const extendedOptions = [
+      { value: '1', label: 'First', description: 'description', tags: ['tag'], labelTag: 'label' },
+    ];
+    const { wrapper } = renderMultiselect(
+      <Multiselect {...{ inlineTokens: true }} options={extendedOptions} selectedOptions={[extendedOptions[0]]} />
+    );
+
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('description');
+    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('tag');
+    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('label');
+  });
+
+  it('shows multiple selected options inline', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        {...{ inlineTokens: true }}
+        options={defaultOptions}
+        selectedOptions={[defaultOptions[0], defaultOptions[1], defaultOptions[2]]}
+      />
+    );
+
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Second');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Third');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('(3)');
+  });
+});

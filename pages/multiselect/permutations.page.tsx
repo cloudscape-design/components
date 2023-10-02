@@ -24,12 +24,16 @@ const options: MultiselectProps.Options = [
       { value: 'seventh', label: 'Complex With big icon icon', description: 'Very big option', iconName: 'heart' },
     ],
   },
+  { value: 'more1', label: 'More options with very long texts 1' },
+  { value: 'more2', label: 'More options with very long texts 2' },
+  { value: 'more3', label: 'More options with very long texts 3' },
+  { value: 'more4', label: 'More options with very long texts 4' },
 ];
 
 const _getGroupOptions = (option: OptionDefinition | OptionGroup) => ('options' in option ? option.options : [option]);
 const _getFirstChild = (option: OptionDefinition | OptionGroup) => ('options' in option ? option.options[0] : option);
 
-const permutations = createPermutations<MultiselectProps>([
+const permutations = createPermutations<MultiselectProps & { inlineTokens?: boolean }>([
   {
     placeholder: ['Select an item'],
     disabled: [false, true],
@@ -45,6 +49,27 @@ const permutations = createPermutations<MultiselectProps>([
     ],
     deselectAriaLabel: [deselectAriaLabel],
     i18nStrings: [i18nStrings],
+    inlineTokens: [undefined, true],
+  },
+  // Inline tokens with many selected options
+  {
+    placeholder: ['Select an item'],
+    disabled: [false, true],
+    options: [options],
+    selectedOptions: [
+      [
+        options[0],
+        options[1],
+        options[2],
+        ..._getGroupOptions(options[4]),
+        options[5],
+        options[6],
+        options[7],
+        options[8],
+      ],
+    ],
+    i18nStrings: [i18nStrings],
+    inlineTokens: [true],
   },
 ]);
 
