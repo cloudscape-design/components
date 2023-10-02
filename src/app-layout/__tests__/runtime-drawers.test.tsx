@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act, render } from '@testing-library/react';
-import { describeEachAppLayout, findActiveDrawerLandmark, singleDrawer } from './utils';
+import {
+  describeEachAppLayout,
+  findActiveDrawerLandmark,
+  getActiveDrawerWidth,
+  isDrawerTriggerWithBadge,
+  singleDrawer,
+} from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
@@ -122,6 +128,29 @@ describeEachAppLayout(size => {
     }
   });
 
+  test('supports badge property', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      badge: true,
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(isDrawerTriggerWithBadge(wrapper, TOOLS_DRAWER_ID)).toEqual(false);
+    expect(isDrawerTriggerWithBadge(wrapper, drawerDefaults.id)).toEqual(true);
+  });
+
+  test('supports defaultSize property', async () => {
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      defaultSize: 400,
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    wrapper.findToolsToggle()!.click();
+    // always full-screen on mobile
+    expect(getActiveDrawerWidth(wrapper)).toEqual(size === 'desktop' ? '290px' : '');
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(getActiveDrawerWidth(wrapper)).toEqual(size === 'desktop' ? '400px' : '');
+  });
+
   test('accepts drawers registration after initial rendering', async () => {
     const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
@@ -141,7 +170,12 @@ describeEachAppLayout(size => {
 
   test('does not open defaultActive drawer if the tools are already open', async () => {
     const { wrapper } = await renderComponent(
-      <AppLayout toolsOpen={true} tools="Tools content" ariaLabels={{ toolsToggle: 'tools toggle' }} />
+      <AppLayout
+        toolsOpen={true}
+        tools="Tools content"
+        ariaLabels={{ toolsToggle: 'tools toggle' }}
+        onToolsChange={() => {}}
+      />
     );
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     expect(wrapper.findActiveDrawer()).toBeFalsy();
