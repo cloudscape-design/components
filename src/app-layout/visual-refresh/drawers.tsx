@@ -14,7 +14,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
 import { splitItems } from '../drawer/drawers-helpers';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-
+import { TriggerButtonWithRefs, MobileTriggerButtonWithRefs } from './trigger-buttons-with-refs';
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
  * render if the drawers are defined, and it will take over the mounting of and
@@ -134,6 +134,10 @@ function ActiveDrawer() {
 }
 
 /**
+ * This is needed due to merging refs for focus management.
+ */
+
+/**
  * The DesktopTriggers will render the trigger buttons for Tools, Drawers, and the
  * SplitPanel in non mobile viewports. Changes to the activeDrawerId need to be
  * tracked by the previousActiveDrawerId property in order to appropriately apply
@@ -196,6 +200,7 @@ function DesktopTriggers() {
 
   const { visibleItems, overflowItems } = splitItems(drawers ?? undefined, getIndexOfOverflowItem(), activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
+  const [openedFromOverflow, setOpenedFromOverflow] = React.useState(false);
 
   return (
     <aside
@@ -228,8 +233,10 @@ function DesktopTriggers() {
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
-              onClick={() => handleDrawersClick(item.id)}
-              ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+              onClick={() => {
+                handleDrawersClick(item.id), setOpenedFromOverflow(false);
+              }}
+              ref={item.id === previousActiveDrawerId.current && !openedFromOverflow ? drawersRefs.toggle : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
@@ -242,18 +249,20 @@ function DesktopTriggers() {
             items={overflowItems}
             ariaLabel={drawersOverflowAriaLabel}
             customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
-              <TriggerButton
-                ref={triggerRef}
+              <TriggerButtonWithRefs
+                onClick={onClick}
+                triggerRef={triggerRef}
                 ariaLabel={ariaLabel}
                 ariaExpanded={ariaExpanded}
-                badge={overflowMenuHasBadge}
-                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
-                iconName="ellipsis"
-                onClick={onClick}
+                testUtilsClass={testUtilsClass}
+                overflowMenuHasBadge={overflowMenuHasBadge}
+                openedFromOverflow={openedFromOverflow}
+                drawersRefs={drawersRefs}
               />
             )}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
+              setOpenedFromOverflow(true);
             }}
           />
         )}
@@ -292,6 +301,7 @@ export function MobileTriggers() {
   } = useAppLayoutInternals();
 
   const previousActiveDrawerId = useRef(activeDrawerId);
+  const [openedFromOverflow, setOpenedFromOverflow] = React.useState(false);
 
   if (!drawers) {
     return null;
@@ -302,6 +312,7 @@ export function MobileTriggers() {
   }
 
   const { visibleItems, overflowItems } = splitItems(drawers, 2, activeDrawerId);
+  const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
     <aside aria-hidden={hasDrawerViewportOverlay} aria-label={drawersAriaLabel}>
@@ -322,13 +333,15 @@ export function MobileTriggers() {
               item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
             )}
             disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+            ref={item.id === previousActiveDrawerId.current && !openedFromOverflow ? drawersRefs.toggle : undefined}
             formAction="none"
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
             badge={item.badge}
             key={item.id}
-            onClick={() => handleDrawersClick(item.id)}
+            onClick={() => {
+              handleDrawersClick(item.id), setOpenedFromOverflow(false);
+            }}
             variant="icon"
             __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
           />
@@ -337,7 +350,23 @@ export function MobileTriggers() {
           <OverflowMenu
             items={overflowItems}
             ariaLabel={drawersOverflowAriaLabel}
-            onItemClick={({ detail }) => handleDrawersClick(detail.id)}
+            onItemClick={({ detail }) => {
+              handleDrawersClick(detail.id), setOpenedFromOverflow(true);
+            }}
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
+              return (
+                <MobileTriggerButtonWithRefs
+                  onClick={onClick}
+                  triggerRef={triggerRef}
+                  ariaLabel={ariaLabel}
+                  ariaExpanded={ariaExpanded}
+                  testUtilsClass={testUtilsClass}
+                  overflowMenuHasBadge={overflowMenuHasBadge}
+                  openedFromOverflow={openedFromOverflow}
+                  drawersRefs={drawersRefs}
+                />
+              );
+            }}
           />
         )}
       </div>
