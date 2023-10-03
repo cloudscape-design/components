@@ -101,6 +101,8 @@ export function MobileToolbar({
       ref={mobileBarRef}
       className={clsx(styles['mobile-bar'], testutilStyles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
       style={{ top: topOffset }}
+      role="toolbar"
+      aria-orientation="horizontal"
     >
       {!navigationHide && (
         <MobileToggle

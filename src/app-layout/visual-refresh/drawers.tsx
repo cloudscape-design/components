@@ -9,7 +9,6 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
-import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
@@ -98,7 +97,7 @@ function ActiveDrawer() {
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
-        [sharedStyles['with-motion']]: activeDrawerId,
+        [styles['with-motion']]: activeDrawerId,
       })}
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
@@ -305,41 +304,43 @@ export function MobileTriggers() {
   const { visibleItems, overflowItems } = splitItems(drawers, 2, activeDrawerId);
 
   return (
-    <aside
-      aria-hidden={hasDrawerViewportOverlay}
-      className={clsx(styles['drawers-mobile-triggers-container'], {
-        [styles.unfocusable]: hasDrawerViewportOverlay,
-      })}
-      aria-label={drawersAriaLabel}
-    >
-      {visibleItems.map(item => (
-        <InternalButton
-          ariaExpanded={item.id === activeDrawerId}
-          ariaLabel={item.ariaLabels?.triggerButton}
-          className={clsx(
-            styles['drawers-trigger'],
-            testutilStyles['drawers-trigger'],
-            item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-          )}
-          disabled={hasDrawerViewportOverlay}
-          ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-          formAction="none"
-          iconName={item.trigger.iconName}
-          iconSvg={item.trigger.iconSvg}
-          badge={item.badge}
-          key={item.id}
-          onClick={() => handleDrawersClick(item.id)}
-          variant="icon"
-          __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
-        />
-      ))}
-      {overflowItems.length > 0 && (
-        <OverflowMenu
-          items={overflowItems}
-          ariaLabel={drawersOverflowAriaLabel}
-          onItemClick={({ detail }) => handleDrawersClick(detail.id)}
-        />
-      )}
+    <aside aria-hidden={hasDrawerViewportOverlay} aria-label={drawersAriaLabel}>
+      <div
+        role="toolbar"
+        aria-orientation="horizontal"
+        className={clsx(styles['drawers-mobile-triggers-container'], {
+          [styles.unfocusable]: hasDrawerViewportOverlay,
+        })}
+      >
+        {visibleItems.map(item => (
+          <InternalButton
+            ariaExpanded={item.id === activeDrawerId}
+            ariaLabel={item.ariaLabels?.triggerButton}
+            className={clsx(
+              styles['drawers-trigger'],
+              testutilStyles['drawers-trigger'],
+              item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+            )}
+            disabled={hasDrawerViewportOverlay}
+            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+            formAction="none"
+            iconName={item.trigger.iconName}
+            iconSvg={item.trigger.iconSvg}
+            badge={item.badge}
+            key={item.id}
+            onClick={() => handleDrawersClick(item.id)}
+            variant="icon"
+            __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
+          />
+        ))}
+        {overflowItems.length > 0 && (
+          <OverflowMenu
+            items={overflowItems}
+            ariaLabel={drawersOverflowAriaLabel}
+            onItemClick={({ detail }) => handleDrawersClick(detail.id)}
+          />
+        )}
+      </div>
     </aside>
   );
 }
