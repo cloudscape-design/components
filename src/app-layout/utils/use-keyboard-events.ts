@@ -3,6 +3,7 @@
 import React from 'react';
 import { KeyCode } from '../../internal/keycode';
 import { SizeControlProps } from './interfaces';
+import styles from '../styles.css.js';
 
 const KEYBOARD_SINGLE_STEP_SIZE = 10;
 const KEYBOARD_MULTIPLE_STEPS_SIZE = 60;
@@ -45,6 +46,12 @@ export const useKeyboardEvents = ({
       // don't need the exact max size as it's constrained in the set size function
       maxSize = window.innerHeight;
     }
+
+    if (!panelRef || !panelRef.current) {
+      return;
+    }
+
+    panelRef.current.classList.remove(styles['with-motion']);
 
     const primaryGrowKey = position === 'bottom' ? KeyCode.up : KeyCode.left;
     const primaryShrinkKey = position === 'bottom' ? KeyCode.down : KeyCode.right;
