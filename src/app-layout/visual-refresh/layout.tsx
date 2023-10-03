@@ -43,7 +43,7 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
-    hasDrawerViewportOverlay,
+    activeDrawerId,
   } = useAppLayoutInternals();
 
   // Determine the first content child so the gap will vertically align with the trigger buttons
@@ -61,7 +61,7 @@ export default function Layout({ children }: LayoutProps) {
         styles[`content-type-${contentType}`],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
-          [styles['disable-body-scroll']]: disableBodyScroll || hasDrawerViewportOverlay,
+          [styles['disable-body-scroll']]: disableBodyScroll || !!activeDrawerId,
           [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
           [styles['disable-content-paddings']]: disableContentPaddings,
           [styles['has-breadcrumbs']]: breadcrumbs && !isMobile,
