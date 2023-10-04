@@ -164,23 +164,6 @@ export default function Tools({ children }: ToolsProps) {
 }
 
 /**
- * Determine the default state of the Tools component. Mobile viewports should be
- * closed by default under all circumstances. If the toolsOpen prop has not been
- * set then it should be closed as well. Otherwise, default to the toolsOpen prop.
- */
-export function getToolsDefaultState(isMobile: boolean, stateFromProps?: boolean) {
-  let isToolsOpen;
-
-  if (isMobile || stateFromProps === undefined) {
-    isToolsOpen = false;
-  } else {
-    isToolsOpen = stateFromProps;
-  }
-
-  return isToolsOpen;
-}
-
-/**
  * This simple function returns the presence of the split panel as a child of the
  * Tools component. It must exist and be in side position.
  */
