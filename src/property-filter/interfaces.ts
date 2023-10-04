@@ -303,8 +303,15 @@ export interface InternalFilteringProperty<TokenValue = any> {
   defaultOperator: PropertyFilterOperator;
   getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
   getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
-  // Original property to be used in callbacks.
+  // Original property used in callbacks.
   externalProperty: PropertyFilterProperty;
+}
+
+export interface FilteringSettings<TokenValue = any> {
+  properties: readonly InternalFilteringProperty<TokenValue>[];
+  options: readonly InternalFilteringOption[];
+  getProperty(propertyKey: string): null | InternalFilteringProperty<TokenValue>;
+  getPropertyOptions(propertyKey: string): readonly InternalFilteringOption[];
 }
 
 export interface InternalFilteringOption {

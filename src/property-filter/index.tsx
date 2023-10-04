@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useImperativeHandle } from 'react';
+import React, { useRef, useState, useImperativeHandle, useMemo } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
@@ -21,6 +21,7 @@ import {
   InternalFilteringOption,
   FilteringProperty,
   ExtendedOperator,
+  FilteringSettings,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -158,46 +159,58 @@ const PropertyFilter = React.forwardRef(
     );
     const [filteringText, setFilteringText] = useState<string>('');
 
-    const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
-      const extendedOperators = (property.operators ?? []).reduce(
-        (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
-        new Map<PropertyFilterOperator, null | ExtendedOperator<any>>()
-      );
+    const filteringSettings: FilteringSettings = useMemo(() => {
+      const propertyByKey = filteringProperties.reduce((acc, property) => {
+        const extendedOperators = (property?.operators ?? []).reduce(
+          (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
+          new Map<PropertyFilterOperator, null | ExtendedOperator<any>>()
+        );
+        acc.set(property.key, {
+          propertyKey: property.key,
+          propertyLabel: property?.propertyLabel ?? '',
+          groupValuesLabel: property?.groupValuesLabel ?? '',
+          propertyGroup: property?.group,
+          operators: (property?.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
+          defaultOperator: property?.defaultOperator ?? '=',
+          getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
+          getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
+          externalProperty: property,
+        });
+        return acc;
+      }, new Map<string, InternalFilteringProperty>());
+      const getProperty = (propertyKey: string): null | InternalFilteringProperty =>
+        propertyByKey.get(propertyKey) ?? null;
+
+      const options: readonly InternalFilteringOption[] = filteringOptions.map(option => {
+        const formatter = getProperty(option.propertyKey)?.getValueFormatter();
+        return {
+          propertyKey: option.propertyKey,
+          value: option.value,
+          label: formatter ? formatter(option.value) : option.label ?? option.value ?? '',
+        };
+      });
+      const optionsByProperty = options.reduce((acc, option) => {
+        const propertyOptions = acc.get(option.propertyKey) ?? [];
+        propertyOptions.push(option);
+        acc.set(option.propertyKey, propertyOptions);
+        return acc;
+      }, new Map<string, InternalFilteringOption[]>());
+      const getPropertyOptions = (propertyKey: string): readonly InternalFilteringOption[] =>
+        optionsByProperty.get(propertyKey) ?? [];
+
       return {
-        propertyKey: property.key,
-        propertyLabel: property.propertyLabel ?? '',
-        groupValuesLabel: property.groupValuesLabel ?? '',
-        propertyGroup: property.group,
-        operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
-        defaultOperator: property.defaultOperator ?? '=',
-        getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
-        getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
-        externalProperty: property,
+        properties: [...propertyByKey.values()],
+        options,
+        getProperty,
+        getPropertyOptions,
       };
-    });
+    }, [filteringProperties, filteringOptions]);
 
-    const propertyByKey = new Map(internalFilteringProperties.map(p => [p.propertyKey, p]));
-
-    const internalFilteringOptions: readonly InternalFilteringOption[] = filteringOptions.map(option => {
-      const formatter = propertyByKey.get(option.propertyKey)?.getValueFormatter();
-      return {
-        propertyKey: option.propertyKey,
-        value: option.value,
-        label: formatter ? formatter(option.value) : option.label ?? option.value ?? '',
-      };
-    });
-
-    const parsedText = parseText(filteringText, internalFilteringProperties, disableFreeTextFiltering);
-    const autosuggestOptions = getAutosuggestOptions(
-      parsedText,
-      internalFilteringOptions,
-      internalFilteringProperties,
-      customGroupsText,
-      i18nStrings
-    );
+    const parsedText = parseText(filteringText, filteringSettings, disableFreeTextFiltering);
+    const autosuggestOptions = getAutosuggestOptions(parsedText, filteringSettings, customGroupsText, i18nStrings);
 
     const createToken = (currentText: string) => {
-      const parsedText = parseText(currentText, internalFilteringProperties, disableFreeTextFiltering);
+      const parsedText = parseText(currentText, filteringSettings, disableFreeTextFiltering);
       let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
@@ -207,7 +220,7 @@ const PropertyFilter = React.forwardRef(
               operator: parsedText.operator,
               value: parsedText.value,
             },
-            internalFilteringOptions
+            filteringSettings.options
           );
           break;
         }
@@ -296,14 +309,14 @@ const PropertyFilter = React.forwardRef(
       // stop dropdown from closing
       event.preventDefault();
 
-      const parsedText = parseText(value, internalFilteringProperties, disableFreeTextFiltering);
+      const parsedText = parseText(value, filteringSettings, disableFreeTextFiltering);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
 
       // Insert operator automatically if only one operator is defined for the given property.
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
         if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
-          loadMoreDetail.filteringProperty = parsedText.property.externalProperty;
+          loadMoreDetail.filteringProperty = parsedText.property.externalProperty ?? undefined;
           loadMoreDetail.filteringOperator = operators[0];
           loadMoreDetail.filteringText = '';
           setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
@@ -390,8 +403,7 @@ const PropertyFilter = React.forwardRef(
                     }}
                     setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
                     setOperation={setOperation}
-                    filteringOptions={internalFilteringOptions}
-                    filteringProperties={internalFilteringProperties}
+                    filteringSettings={filteringSettings}
                     asyncProps={asyncProps}
                     onLoadItems={onLoadItems}
                     i18nStrings={i18nStrings}

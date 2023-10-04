@@ -4,6 +4,7 @@
 import {
   FilteringOption,
   FilteringProperty,
+  FilteringSettings,
   InternalFilteringOption,
   InternalFilteringProperty,
   Token,
@@ -65,4 +66,20 @@ export function toInternalOptions(options: FilteringOption[]): InternalFiltering
     value: option.value,
     label: option.label ?? option.value ?? '',
   }));
+}
+
+export function makeFilteringSettings(
+  filteringProperties: InternalFilteringProperty[],
+  filteringOptions: InternalFilteringOption[]
+): FilteringSettings {
+  const propertyKeyToValue = filteringProperties.reduce(
+    (acc, p) => acc.set(p.propertyKey, p),
+    new Map<string, InternalFilteringProperty>()
+  );
+  return {
+    properties: [...propertyKeyToValue.values()],
+    options: filteringOptions,
+    getProperty: (key: string) => propertyKeyToValue.get(key)!,
+    getPropertyOptions: (key: string) => filteringOptions.filter(o => o.propertyKey === key),
+  };
 }

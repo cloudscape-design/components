@@ -4,9 +4,9 @@
 import {
   ComparisonOperator,
   ExtendedOperatorForm,
+  FilteringSettings,
   GroupText,
   I18nStrings,
-  InternalFilteringOption,
   InternalFilteringProperty,
   JoinOperation,
   ParsedText,
@@ -15,14 +15,7 @@ import {
 } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import {
-  getPropertyByKey,
-  matchFilteringProperty,
-  matchOperator,
-  matchOperatorPrefix,
-  trimFirstSpace,
-  trimStart,
-} from './utils';
+import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
@@ -81,7 +74,7 @@ export const getAllowedOperators = (property: InternalFilteringProperty): Compar
  */
 export const parseText = (
   filteringText: string,
-  filteringProperties: readonly InternalFilteringProperty[] = [],
+  filteringSettings: FilteringSettings,
   disableFreeTextFiltering: boolean
 ): ParsedText => {
   const negatedGlobalQuery = /^(!:|!)(.*)/.exec(filteringText);
@@ -93,7 +86,7 @@ export const parseText = (
     };
   }
 
-  const property = matchFilteringProperty(filteringProperties, filteringText);
+  const property = matchFilteringProperty(filteringSettings, filteringText);
   if (!property) {
     return {
       step: 'free-text',
@@ -127,21 +120,13 @@ export const parseText = (
   };
 };
 
-export const getPropertyOptions = (
-  filteringProperty: InternalFilteringProperty,
-  filteringOptions: readonly InternalFilteringOption[]
-) => {
-  return filteringOptions.filter(option => option.propertyKey === filteringProperty.propertyKey);
-};
-
 interface OptionGroup<T> {
   label: string;
   options: T[];
 }
 
 export const getAllValueSuggestions = (
-  filteringOptions: readonly InternalFilteringOption[],
-  filteringProperties: readonly InternalFilteringProperty[],
+  filteringSettings: FilteringSettings,
   operator: ComparisonOperator | undefined = '=',
   i18nStrings: I18nStrings,
   customGroupsText: readonly GroupText[]
@@ -151,8 +136,8 @@ export const getAllValueSuggestions = (
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<AutosuggestProps.Option> } = {};
-  filteringOptions.forEach(filteringOption => {
-    const property = getPropertyByKey(filteringProperties, filteringOption.propertyKey);
+  filteringSettings.options.forEach(filteringOption => {
+    const property = filteringSettings.getProperty(filteringOption.propertyKey);
     // given option refers to a non-existent filtering property
     if (!property) {
       return;
@@ -182,13 +167,13 @@ export const getAllValueSuggestions = (
 };
 
 export function createPropertiesCompatibilityMap(
-  filteringProperties: readonly InternalFilteringProperty[]
+  filteringSettings: FilteringSettings
 ): (propertyA: string, propertyB: string) => boolean {
   const lookup: {
     [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | null }[];
   } = {};
 
-  for (const property of filteringProperties) {
+  for (const property of filteringSettings.properties) {
     lookup[property.propertyKey] = (property.operators || [])
       .map(operator => ({ operator, form: property.getValueFormRenderer(operator) }))
       .sort((a, b) => a.operator.localeCompare(b.operator));
@@ -217,7 +202,7 @@ const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteri
 });
 
 export function getPropertySuggestions<T>(
-  filteringProperties: readonly InternalFilteringProperty[],
+  filteringSettings: FilteringSettings,
   customGroupsText: readonly GroupText[],
   i18nStrings: I18nStrings,
   filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
@@ -228,7 +213,7 @@ export function getPropertySuggestions<T>(
   };
   const customGroups: { [K in string]: OptionGroup<T> } = {};
 
-  filteringProperties.forEach(filteringProperty => {
+  filteringSettings.properties.forEach(filteringProperty => {
     const { propertyGroup } = filteringProperty;
     let optionsGroup = defaultGroup;
     if (propertyGroup) {
@@ -250,15 +235,14 @@ export function getPropertySuggestions<T>(
 
 export const getAutosuggestOptions = (
   parsedText: ParsedText,
-  filteringOptions: readonly InternalFilteringOption[],
-  filteringProperties: readonly InternalFilteringProperty[],
+  filteringSettings: FilteringSettings,
   customGroupsText: readonly GroupText[],
   i18nStrings: I18nStrings
 ) => {
   switch (parsedText.step) {
     case 'property': {
       const { propertyLabel, groupValuesLabel } = parsedText.property;
-      const options = getPropertyOptions(parsedText.property, filteringOptions);
+      const options = filteringSettings.getPropertyOptions(parsedText.property.propertyKey);
       return {
         filterText: parsedText.value,
         options: [
@@ -278,7 +262,7 @@ export const getAutosuggestOptions = (
         filterText: parsedText.property.propertyLabel + ' ' + parsedText.operatorPrefix,
         options: [
           ...getPropertySuggestions(
-            filteringProperties,
+            filteringSettings,
             customGroupsText,
             i18nStrings,
             filteringPropertyToAutosuggestOption
@@ -303,20 +287,14 @@ export const getAutosuggestOptions = (
         options: [
           ...(needsPropertySuggestions
             ? getPropertySuggestions(
-                filteringProperties,
+                filteringSettings,
                 customGroupsText,
                 i18nStrings,
                 filteringPropertyToAutosuggestOption
               )
             : []),
           ...(needsValueSuggestions
-            ? getAllValueSuggestions(
-                filteringOptions,
-                filteringProperties,
-                parsedText.operator,
-                i18nStrings,
-                customGroupsText
-              )
+            ? getAllValueSuggestions(filteringSettings, parsedText.operator, i18nStrings, customGroupsText)
             : []),
         ],
       };

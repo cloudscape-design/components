@@ -1,17 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, InternalFilteringOption, InternalFilteringProperty, Token } from './interfaces';
+import {
+  ComparisonOperator,
+  FilteringSettings,
+  InternalFilteringOption,
+  InternalFilteringProperty,
+  Token,
+} from './interfaces';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
-  filteringProperties: readonly InternalFilteringProperty[],
+  filteringSettings: FilteringSettings,
   filteringText: string
 ): null | InternalFilteringProperty {
   let maxLength = 0;
   let matchedProperty: null | InternalFilteringProperty = null;
 
-  for (const property of filteringProperties) {
+  for (const property of filteringSettings.properties) {
     if (
       (property.propertyLabel.length >= maxLength && startsWith(filteringText, property.propertyLabel)) ||
       (property.propertyLabel.length > maxLength &&
@@ -84,18 +90,13 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
   return bestMatch;
 }
 
-export function getPropertyByKey(filteringProperties: readonly InternalFilteringProperty[], key: string) {
-  const propertyMap = new Map(filteringProperties.map(prop => [prop.propertyKey, prop]));
-  return propertyMap.get(key) as InternalFilteringProperty | undefined;
-}
-
-export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
-  const property = token.propertyKey ? getPropertyByKey(filteringProperties, token.propertyKey) : undefined;
+export function getFormattedToken(filteringSettings: FilteringSettings, token: Token) {
+  const property = token.propertyKey ? filteringSettings.getProperty(token.propertyKey) : undefined;
   const valueFormatter = property?.getValueFormatter(token.operator);
   const propertyLabel = property && property.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
-  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
+  return { property: propertyLabel ?? '', operator: token.operator, value: tokenValue, label };
 }
 
 export function trimStart(source: string): string {

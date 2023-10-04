@@ -3,7 +3,7 @@
 
 import { ComparisonOperator, FilteringProperty, GroupText, InternalFilteringProperty, ParsedText } from '../interfaces';
 import { parseText, getAllowedOperators, getAutosuggestOptions } from '../controller';
-import { i18nStrings, toInternalOptions, toInternalProperties } from './common';
+import { i18nStrings, makeFilteringSettings, toInternalOptions, toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([
   {
@@ -63,6 +63,8 @@ const filteringOptions = toInternalOptions([
   { propertyKey: 'default-operator', value: 'value' },
   { propertyKey: 'custom-default', value: 'value' },
 ]);
+
+const filteringSettings = makeFilteringSettings(filteringProperties, filteringOptions);
 
 describe('getAllowedOperators', () => {
   type TestCase = [string, InternalFilteringProperty, ComparisonOperator[]];
@@ -178,7 +180,7 @@ describe('parseText', () => {
     ],
   ];
   test.each<TestCase>(cases)('%s', (__description, input, disableFreeTextFiltering, expected) => {
-    expect(parseText(input, filteringProperties, disableFreeTextFiltering)).toEqual(expected);
+    expect(parseText(input, filteringSettings, disableFreeTextFiltering)).toEqual(expected);
   });
 });
 
@@ -237,13 +239,7 @@ describe('getAutosuggestOptions', () => {
       filterText: '',
       options: expectedPropertySuggestions,
     };
-    const actual = getAutosuggestOptions(
-      parsedText,
-      filteringOptions,
-      filteringProperties,
-      customGroupText,
-      i18nStrings
-    );
+    const actual = getAutosuggestOptions(parsedText, filteringSettings, customGroupText, i18nStrings);
     // Every property suggestion has `keepOpenOnSelect` set on it
     // Default group and custom groups are labeled with corresponding labels
     // Custom group goes after the default group
@@ -258,13 +254,7 @@ describe('getAutosuggestOptions', () => {
       filterText: 'text',
       options: [...expectedPropertySuggestions, ...expectedValueSuggestions],
     };
-    const actual = getAutosuggestOptions(
-      parsedText,
-      filteringOptions,
-      filteringProperties,
-      customGroupText,
-      i18nStrings
-    );
+    const actual = getAutosuggestOptions(parsedText, filteringSettings, customGroupText, i18nStrings);
     // Every value suggestion has a `__labelPrefix` of the format `${propertyLabel} =`
     // Default values group and custom values groups are labeled with corresponding labels
     // Custom values group goes after the default group, disregarding the order in the `filteringOptions`
@@ -283,13 +273,7 @@ describe('getAutosuggestOptions', () => {
       filterText: 'string !',
       options: [...expectedPropertySuggestions, ...expectedOperatorSuggestions],
     };
-    const actual = getAutosuggestOptions(
-      parsedText,
-      filteringOptions,
-      filteringProperties,
-      customGroupText,
-      i18nStrings
-    );
+    const actual = getAutosuggestOptions(parsedText, filteringSettings, customGroupText, i18nStrings);
     // Operator suggestions go after the property suggestions
     // Every operator suggestion has `keepOpenOnSelect` set on it
     // Operator suggestions and their group label are taken form the i18nStrings object
@@ -315,13 +299,7 @@ describe('getAutosuggestOptions', () => {
         },
       ],
     };
-    const actual = getAutosuggestOptions(
-      parsedText,
-      filteringOptions,
-      filteringProperties,
-      customGroupText,
-      i18nStrings
-    );
+    const actual = getAutosuggestOptions(parsedText, filteringSettings, customGroupText, i18nStrings);
     // `filterText` should match `label` property of value suggestions for autosuggest filtering to work
     expect(actual).toEqual(expected);
   });
@@ -345,13 +323,7 @@ describe('getAutosuggestOptions', () => {
         },
       ],
     };
-    const actual = getAutosuggestOptions(
-      parsedText,
-      filteringOptions,
-      filteringProperties,
-      customGroupText,
-      i18nStrings
-    );
+    const actual = getAutosuggestOptions(parsedText, filteringSettings, customGroupText, i18nStrings);
     expect(actual).toEqual(expected);
   });
 });

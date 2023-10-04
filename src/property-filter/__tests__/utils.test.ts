@@ -3,7 +3,7 @@
 
 import { ComparisonOperator, Token } from '../interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, matchTokenValue } from '../utils';
-import { toInternalOptions, toInternalProperties } from './common';
+import { makeFilteringSettings, toInternalOptions, toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([
   {
@@ -22,25 +22,27 @@ const filteringProperties = toInternalProperties([
 
 const operators: ComparisonOperator[] = ['!:', ':', 'contains', 'does not contain'] as any;
 
+const filteringSettings = makeFilteringSettings(filteringProperties, []);
+
 describe('matchFilteringProperty', () => {
   test('should match property by label when filtering text equals to it', () => {
-    const property = matchFilteringProperty(filteringProperties, 'Average latency');
+    const property = matchFilteringProperty(filteringSettings, 'Average latency');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should match property by label ignoring case', () => {
-    const property = matchFilteringProperty(filteringProperties, 'average Latency');
+    const property = matchFilteringProperty(filteringSettings, 'average Latency');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should match property by label when filtering text has trailing space', () => {
-    const property = matchFilteringProperty(filteringProperties, 'Average latency ');
+    const property = matchFilteringProperty(filteringSettings, 'Average latency ');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should match property by label when filtering text has trailing symbol', () => {
-    const property = matchFilteringProperty(filteringProperties, 'Average latencyX');
+    const property = matchFilteringProperty(filteringSettings, 'Average latencyX');
     expect(property).toBe(filteringProperties[1]);
   });
   test('should not match property by label when filtering text has leading space', () => {
-    const property = matchFilteringProperty(filteringProperties, ' Average latency');
+    const property = matchFilteringProperty(filteringSettings, ' Average latency');
     expect(property).toBe(null);
   });
   test('should prefer an exact match to non-exact', () => {
@@ -48,7 +50,7 @@ describe('matchFilteringProperty', () => {
       { key: 'Test', propertyLabel: 'Test', groupValuesLabel: '' },
       { key: 'test', propertyLabel: 'test', groupValuesLabel: '' },
     ]);
-    const property = matchFilteringProperty(properties, 'test');
+    const property = matchFilteringProperty(makeFilteringSettings(properties, []), 'test');
     expect(property).toBe(properties[1]);
   });
   test('should prefer an exact match to non-exact (with operator)', () => {
@@ -56,7 +58,7 @@ describe('matchFilteringProperty', () => {
       { key: 'Test', propertyLabel: 'Test', groupValuesLabel: '' },
       { key: 'test', propertyLabel: 'test', groupValuesLabel: '' },
     ]);
-    const property = matchFilteringProperty(properties, 'test =');
+    const property = matchFilteringProperty(makeFilteringSettings(properties, []), 'test =');
     expect(property).toBe(properties[1]);
   });
 });

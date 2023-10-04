@@ -3,10 +3,9 @@
 import React from 'react';
 import {
   ComparisonOperator,
+  FilteringSettings,
   GroupText,
   I18nStrings,
-  InternalFilteringOption,
-  InternalFilteringProperty,
   JoinOperation,
   LoadItemsDetail,
   Token,
@@ -26,8 +25,7 @@ interface TokenProps {
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
-  filteringOptions: readonly InternalFilteringOption[];
-  filteringProperties: readonly InternalFilteringProperty[];
+  filteringSettings: FilteringSettings;
   first?: boolean;
   hideOperations?: boolean;
   i18nStrings: I18nStrings;
@@ -46,8 +44,7 @@ export const TokenButton = ({
   removeToken,
   setToken,
   setOperation,
-  filteringOptions,
-  filteringProperties,
+  filteringSettings,
   asyncProps,
   onLoadItems,
   i18nStrings,
@@ -58,7 +55,7 @@ export const TokenButton = ({
   disableFreeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const formattedToken = getFormattedToken(filteringProperties, token);
+  const formattedToken = getFormattedToken(filteringSettings, token);
   return (
     <FilteringToken
       ariaLabel={formattedToken.label}
@@ -79,8 +76,7 @@ export const TokenButton = ({
             <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
           </span>
         }
-        filteringOptions={filteringOptions}
-        filteringProperties={filteringProperties}
+        filteringSettings={filteringSettings}
         token={token}
         asyncProps={asyncProps}
         onLoadItems={onLoadItems}
