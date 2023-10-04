@@ -265,6 +265,11 @@ export namespace DateRangePickerProps {
     ariaDescribedby?: string;
 
     /**
+     * Adds an `aria-label` to the mode selection group.
+     */
+    modeSelectionAriaLabel?: string;
+
+    /**
      * Segment title of the relative range selection mode
      */
     relativeModeTitle?: string;

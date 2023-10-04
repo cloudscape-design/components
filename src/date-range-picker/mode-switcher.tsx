@@ -19,6 +19,7 @@ export default function ModeSwitcher({ i18nStrings, mode, onChange }: ModeSwitch
     <InternalSegmentedControl
       className={styles['mode-switch']}
       selectedId={mode}
+      label={i18nStrings?.modeSelectionAriaLabel}
       options={[
         { id: 'relative', text: i18n('i18nStrings.relativeModeTitle', i18nStrings?.relativeModeTitle) },
         { id: 'absolute', text: i18n('i18nStrings.absoluteModeTitle', i18nStrings?.absoluteModeTitle) },

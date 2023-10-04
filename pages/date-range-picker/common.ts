@@ -21,6 +21,7 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   formatRelativeRange: formatRelativeRange,
   formatUnit: (unit, value) => (value === 1 ? unit : `${unit}s`),
   dateTimeConstraintText: 'Range must be between 6 and 30 days. Use 24 hour format.',
+  modeSelectionAriaLabel: 'Date range mode',
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
   relativeRangeSelectionHeading: 'Choose a range',
