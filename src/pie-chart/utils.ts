@@ -14,7 +14,7 @@ export interface Dimension {
 }
 
 const minRadius = 30;
-const paddingLabels = 40; // = 2 * (line-height-body-m)
+const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
 const defaultPadding = 12; // = space-s
 const smallPadding = 8; // = space-xs
 export const minLabelLineAngularPadding = Math.PI / 20;
