@@ -207,8 +207,6 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
         className={clsx(styles['drawer-content'], {
           [styles['drawer-content-clickable']]: drawers?.items.length === 1,
         })}
-        role="toolbar"
-        aria-orientation="vertical"
         onClick={() => {
           drawers?.items.length === 1 &&
             drawers?.onChange({
@@ -217,8 +215,8 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
         }}
       >
         {!isMobile && (
-          <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers-wrapper'])}>
-            <>
+          <aside aria-label={drawers?.ariaLabel}>
+            <div className={clsx(styles['drawer-triggers-wrapper'])} role="toolbar" aria-orientation="vertical">
               {visibleItems.map((item, index) => {
                 return (
                   <DrawerTrigger
@@ -256,7 +254,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                   />
                 </div>
               )}
-            </>
+            </div>
           </aside>
         )}
       </div>
