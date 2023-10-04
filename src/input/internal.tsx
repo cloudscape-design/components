@@ -101,7 +101,7 @@ function InternalInput(
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledby,
+    'aria-labelledby': ariaLabel ? undefined : ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     name,
     placeholder,
