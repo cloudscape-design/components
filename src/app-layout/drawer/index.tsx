@@ -191,6 +191,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
   };
 
   const { visibleItems, overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem(), drawers?.activeDrawerId);
+  const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
     <div
@@ -245,7 +246,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
               {overflowItems.length > 0 && (
                 <div className={clsx(styles['drawer-trigger'])}>
                   <OverflowMenu
-                    ariaLabel={drawers?.overflowAriaLabel}
+                    ariaLabel={overflowMenuHasBadge ? drawers?.overflowWithBadgeAriaLabel : drawers?.overflowAriaLabel}
                     items={overflowItems}
                     onItemClick={({ detail }) => {
                       drawers?.onChange({

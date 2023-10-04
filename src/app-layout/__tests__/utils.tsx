@@ -163,7 +163,7 @@ export const singleDrawer: Required<InternalDrawerProps> = {
   },
 };
 
-const getDrawerItem = (id: string, iconName: IconProps.Name) => {
+const getDrawerItem = (id: string, iconName: IconProps.Name, badge: boolean) => {
   return {
     ariaLabels: {
       closeButton: `${id} close button`,
@@ -172,6 +172,7 @@ const getDrawerItem = (id: string, iconName: IconProps.Name) => {
       resizeHandle: `${id} resize handle`,
     },
     content: <span>{id}</span>,
+    badge,
     id,
     trigger: {
       iconName,
@@ -184,6 +185,8 @@ const manyDrawersArray = [...Array(100).keys()].map(item => item.toString());
 export const manyDrawers: Required<InternalDrawerProps> = {
   drawers: {
     ariaLabel: 'Drawers',
+    overflowAriaLabel: 'Overflow drawers',
+    overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
     items: [
       {
         ariaLabels: {
@@ -199,8 +202,17 @@ export const manyDrawers: Required<InternalDrawerProps> = {
           iconName: 'security',
         },
       },
-      ...manyDrawersArray.map(item => getDrawerItem(item, 'security')),
+      ...manyDrawersArray.map(item => getDrawerItem(item, 'security', false)),
     ],
+  },
+};
+
+export const manyDrawersWithBadges: Required<InternalDrawerProps> = {
+  drawers: {
+    ariaLabel: 'Drawers',
+    overflowAriaLabel: 'Overflow drawers',
+    overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
+    items: [...manyDrawersArray.map(item => getDrawerItem(item, 'security', true))],
   },
 };
 

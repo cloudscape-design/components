@@ -1,7 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { describeEachAppLayout, renderComponent, singleDrawer, manyDrawers, findActiveDrawerLandmark } from './utils';
+import {
+  describeEachAppLayout,
+  renderComponent,
+  singleDrawer,
+  manyDrawers,
+  manyDrawersWithBadges,
+  findActiveDrawerLandmark,
+} from './utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import { render } from '@testing-library/react';
@@ -54,6 +61,19 @@ describeEachAppLayout(size => {
     buttonDropdown!.openDropdown();
     buttonDropdown!.findItemById('5')!.click();
     expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
+  test('renders correct aria-label on overflow menu', () => {
+    const { container, rerender } = render(<AppLayout contentType="form" {...manyDrawers} />);
+    const buttonDropdown = createWrapper(container).findButtonDropdown();
+
+    expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Overflow drawers');
+
+    rerender(<AppLayout contentType="form" {...manyDrawersWithBadges} />);
+    expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute(
+      'aria-label',
+      'Overflow drawers (Unread notifications)'
+    );
   });
 
   test('renders aria-labels', async () => {

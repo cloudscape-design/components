@@ -145,6 +145,7 @@ function DesktopTriggers() {
     drawers,
     drawersAriaLabel,
     drawersOverflowAriaLabel,
+    drawersOverflowWithBadgeAriaLabel,
     drawersRefs,
     drawersTriggerCount,
     handleDrawersClick,
@@ -240,7 +241,7 @@ function DesktopTriggers() {
         {overflowItems.length > 0 && (
           <OverflowMenu
             items={overflowItems}
-            ariaLabel={drawersOverflowAriaLabel}
+            ariaLabel={overflowMenuHasBadge ? drawersOverflowWithBadgeAriaLabel : drawersOverflowAriaLabel}
             customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
               <TriggerButton
                 ref={triggerRef}
@@ -286,6 +287,7 @@ export function MobileTriggers() {
     drawers,
     drawersAriaLabel,
     drawersOverflowAriaLabel,
+    drawersOverflowWithBadgeAriaLabel,
     drawersRefs,
     handleDrawersClick,
     hasDrawerViewportOverlay,
@@ -302,6 +304,7 @@ export function MobileTriggers() {
   }
 
   const { visibleItems, overflowItems } = splitItems(drawers, 2, activeDrawerId);
+  const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
     <aside
@@ -335,7 +338,7 @@ export function MobileTriggers() {
       {overflowItems.length > 0 && (
         <OverflowMenu
           items={overflowItems}
-          ariaLabel={drawersOverflowAriaLabel}
+          ariaLabel={overflowMenuHasBadge ? drawersOverflowWithBadgeAriaLabel : drawersOverflowAriaLabel}
           onItemClick={({ detail }) => handleDrawersClick(detail.id)}
         />
       )}

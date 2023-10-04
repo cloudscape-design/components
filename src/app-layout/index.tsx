@@ -525,6 +525,7 @@ const OldAppLayout = React.forwardRef(
                       },
                       ariaLabel: drawersProps.ariaLabel,
                       overflowAriaLabel: drawersProps.overflowAriaLabel,
+                      overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
                     }
                   : undefined
               }
@@ -728,6 +729,7 @@ const OldAppLayout = React.forwardRef(
                   },
                   ariaLabel: drawersProps.ariaLabel,
                   overflowAriaLabel: drawersProps.overflowAriaLabel,
+                  overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
                 }}
               />
             )}
