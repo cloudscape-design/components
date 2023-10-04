@@ -3,7 +3,6 @@
 import React from 'react';
 import Box from '~components/box';
 import PropertyFilter from '~components/property-filter';
-import Header from '~components/header';
 import { allItems } from './table.data';
 import { i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
@@ -24,7 +23,7 @@ export default function () {
   return (
     <Box padding="m">
       <SpaceBetween size="m">
-        <Header>Single-use properties demo</Header>
+        <Box variant="h1">Single-use properties demo</Box>
         <PropertyFilter
           {...propertyFilterProps}
           filteringProperties={remainedProperties}
