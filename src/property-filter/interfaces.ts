@@ -336,6 +336,11 @@ export interface InternalFilteringProperty<TokenValue = any> {
   externalProperty: PropertyFilterProperty;
 }
 
+export interface InternalProperties<TokenValue = any> {
+  keys: ReadonlyArray<string>;
+  get(propertyKey: string): InternalFilteringProperty<TokenValue>;
+}
+
 export interface InternalFilteringOption {
   propertyKey: string;
   value: string;

@@ -12,6 +12,7 @@ import {
   I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
+  InternalProperties,
   LoadItemsDetail,
   Token,
 } from './interfaces';
@@ -28,7 +29,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { getPropertyByKey, matchTokenValue } from './utils';
+import { matchTokenValue } from './utils';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
@@ -36,7 +37,7 @@ interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
   customGroupsText: readonly GroupText[];
   disableFreeTextFiltering?: boolean;
-  filteringProperties: readonly InternalFilteringProperty[];
+  filteringProperties: InternalProperties;
   i18nStrings: I18nStrings;
   onChangePropertyKey: (propertyKey: undefined | string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
@@ -53,7 +54,7 @@ function PropertyInput({
   i18nStrings,
   disableFreeTextFiltering,
 }: PropertyInputProps) {
-  const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
+  const property = propertyKey !== undefined ? filteringProperties.get(propertyKey) : undefined;
   const propertySelectHandlers = useLoadItems(onLoadItems);
   const asyncPropertySelectProps = asyncProps ? { ...asyncProps, ...propertySelectHandlers } : {};
   const propertyOptions: (SelectProps.Option | SelectProps.OptionGroup)[] = getPropertySuggestions(
@@ -104,7 +105,7 @@ function PropertyInput({
 }
 
 interface OperatorInputProps {
-  filteringProperties: readonly InternalFilteringProperty[];
+  filteringProperties: InternalProperties;
   i18nStrings: I18nStrings;
   onChangeOperator: (operator: ComparisonOperator) => void;
   operator: undefined | ComparisonOperator;
@@ -118,7 +119,7 @@ function OperatorInput({
   filteringProperties,
   i18nStrings,
 }: OperatorInputProps) {
-  const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
+  const property = propertyKey !== undefined ? filteringProperties.get(propertyKey) : undefined;
   const freeTextOperators: ComparisonOperator[] = [':', '!:'];
   const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => ({
     value: operator,
@@ -146,7 +147,7 @@ function OperatorInput({
 interface ValueInputProps {
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
-  filteringProperties: readonly InternalFilteringProperty[];
+  filteringProperties: InternalProperties;
   i18nStrings: I18nStrings;
   onChangeValue: (value: string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
@@ -166,7 +167,7 @@ function ValueInput({
   onLoadItems,
   i18nStrings,
 }: ValueInputProps) {
-  const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
+  const property = propertyKey !== undefined ? filteringProperties.get(propertyKey) : undefined;
   const valueOptions = property
     ? getPropertyOptions(property, filteringOptions).map(({ label, value }) => ({ label, value }))
     : [];
@@ -202,7 +203,7 @@ interface TokenEditorProps {
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
   filteringOptions: readonly InternalFilteringOption[];
-  filteringProperties: readonly InternalFilteringProperty[];
+  filteringProperties: InternalProperties;
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   setToken: (newToken: Token) => void;
@@ -232,8 +233,8 @@ export function TokenEditor({
 
   const propertyKey = temporaryToken.propertyKey;
   const onChangePropertyKey = (newPropertyKey: undefined | string) => {
-    const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
-      (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
+    const filteringProperty = filteringProperties.keys.reduce<InternalFilteringProperty | undefined>(
+      (acc, propertyKey) => (propertyKey === newPropertyKey ? filteringProperties.get(propertyKey) : acc),
       undefined
     );
     const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextOperators;

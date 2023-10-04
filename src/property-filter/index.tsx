@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useImperativeHandle } from 'react';
+import React, { useRef, useState, useImperativeHandle, useMemo } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
@@ -22,6 +22,7 @@ import {
   FilteringProperty,
   PropertyDefinition,
   PropertyOperatorDefinition,
+  InternalProperties,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -161,51 +162,58 @@ const PropertyFilter = React.forwardRef(
     );
     const [filteringText, setFilteringText] = useState<string>('');
 
-    const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
-      const definition = propertyDefinitions[property.key] as undefined | PropertyDefinition;
+    const internalFilteringProperties: InternalProperties = useMemo(() => {
+      const propertyByKey = filteringProperties.reduce(
+        (acc, p) => acc.set(p.key, p),
+        new Map<string, FilteringProperty>()
+      );
+      const keys = filteringProperties.map(p => p.key);
+      const get = (key: string): InternalFilteringProperty => {
+        const property = propertyByKey.get(key);
+        const definition = propertyDefinitions[key] as undefined | PropertyDefinition;
 
-      if (!definition?.propertyLabel && !property.propertyLabel) {
-        warnOnce('PropertyFilter', `Property "${property.key}" does not have a label.`);
-      }
-      if (!definition?.groupValuesLabel && !property.groupValuesLabel) {
-        warnOnce('PropertyFilter', `Property "${property.key}" does not have a group values label.`);
-      }
+        if (!definition?.propertyLabel && !property?.propertyLabel) {
+          warnOnce('PropertyFilter', `Property "${key}" does not have a label.`);
+        }
+        if (!definition?.groupValuesLabel && !property?.groupValuesLabel) {
+          warnOnce('PropertyFilter', `Property "${key}" does not have a group values label.`);
+        }
 
-      const extendedOperators = (property.operators ?? []).reduce((acc, operator) => {
-        const operatorKey = typeof operator === 'string' ? operator : operator.operator;
-        const renderForm =
-          definition?.operators?.[operatorKey]?.renderForm ??
-          (typeof operator === 'object' ? operator.form : undefined);
-        const formatValue =
-          definition?.operators?.[operatorKey]?.formatValue ??
-          (typeof operator === 'object' ? operator.format : undefined);
+        const extendedOperators = (property?.operators ?? []).reduce((acc, operator) => {
+          const operatorKey = typeof operator === 'string' ? operator : operator.operator;
+          const renderForm =
+            definition?.operators?.[operatorKey]?.renderForm ??
+            (typeof operator === 'object' ? operator.form : undefined);
+          const formatValue =
+            definition?.operators?.[operatorKey]?.formatValue ??
+            (typeof operator === 'object' ? operator.format : undefined);
 
-        return acc.set(operatorKey, { renderForm, formatValue });
-      }, new Map<PropertyFilterOperator, null | PropertyOperatorDefinition>());
+          return acc.set(operatorKey, { renderForm, formatValue });
+        }, new Map<PropertyFilterOperator, null | PropertyOperatorDefinition>());
 
-      return {
-        propertyKey: property.key,
-        propertyLabel: definition?.propertyLabel ?? property.propertyLabel ?? '',
-        groupValuesLabel: definition?.groupValuesLabel ?? property.groupValuesLabel ?? '',
-        propertyGroup: definition?.group ?? property.group,
-        operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
-        defaultOperator: property.defaultOperator ?? '=',
-        getValueFormatter: operator =>
-          operator
-            ? extendedOperators.get(operator)?.formatValue ?? definition?.formatValue ?? null
-            : definition?.formatValue ?? null,
-        getValueFormRenderer: operator =>
-          operator
-            ? extendedOperators.get(operator)?.renderForm ?? definition?.renderForm ?? null
-            : definition?.renderForm ?? null,
-        externalProperty: property,
+        return {
+          propertyKey: key,
+          propertyLabel: definition?.propertyLabel ?? property?.propertyLabel ?? '',
+          groupValuesLabel: definition?.groupValuesLabel ?? property?.groupValuesLabel ?? '',
+          propertyGroup: definition?.group ?? property?.group,
+          operators: (property?.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
+          defaultOperator: property?.defaultOperator ?? '=',
+          getValueFormatter: operator =>
+            operator
+              ? extendedOperators.get(operator)?.formatValue ?? definition?.formatValue ?? null
+              : definition?.formatValue ?? null,
+          getValueFormRenderer: operator =>
+            operator
+              ? extendedOperators.get(operator)?.renderForm ?? definition?.renderForm ?? null
+              : definition?.renderForm ?? null,
+          externalProperty: property ?? { key, propertyLabel: '', groupValuesLabel: '' },
+        };
       };
-    });
-
-    const propertyByKey = new Map(internalFilteringProperties.map(p => [p.propertyKey, p]));
+      return { keys, get };
+    }, [filteringProperties, propertyDefinitions]);
 
     const internalFilteringOptions: readonly InternalFilteringOption[] = filteringOptions.map(option => {
-      const formatter = propertyByKey.get(option.propertyKey)?.getValueFormatter();
+      const formatter = internalFilteringProperties.get(option.propertyKey)?.getValueFormatter();
       return {
         propertyKey: option.propertyKey,
         value: option.value,
