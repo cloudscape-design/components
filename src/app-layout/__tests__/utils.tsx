@@ -13,6 +13,8 @@ import visualRefreshStyles from '../../../lib/components/app-layout/visual-refre
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import { InternalDrawerProps, DrawerItem } from '../../../lib/components/app-layout/drawer/interfaces';
 import { IconProps } from '../../../lib/components/icon/interfaces';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 
 // Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -104,6 +106,27 @@ export function findActiveDrawerLandmark(wrapper: AppLayoutWrapper) {
     return drawer;
   }
   return drawer.find('aside');
+}
+
+export function isDrawerTriggerWithBadge(wrapper: AppLayoutWrapper, triggerId: string) {
+  const trigger = wrapper.findDrawerTriggerById(triggerId)!;
+  return (
+    // Visual refresh implementation
+    trigger.getElement().classList.contains(visualRefreshStyles.badge) ||
+    // Classic implementation
+    !!trigger.findByClassName(iconStyles.badge)
+  );
+}
+
+export function getActiveDrawerWidth(wrapper: AppLayoutWrapper): string {
+  const drawerElement = wrapper.findActiveDrawer()!.getElement();
+  const value = drawerElement.style.getPropertyValue(customCssProps.drawerSize);
+  // Visual refresh implementation
+  if (value) {
+    return value;
+  }
+  // Classic implementation
+  return drawerElement.style.width;
 }
 
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {

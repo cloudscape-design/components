@@ -12,13 +12,14 @@ import {
   singleDrawer,
   singleDrawerOpen,
   manyDrawers,
+  isDrawerTriggerWithBadge,
+  getActiveDrawerWidth,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.js';
-import iconStyles from '../../../lib/components/icon/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
@@ -240,15 +241,12 @@ describeEachThemeAppLayout(false, () => {
     wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute('aria-controls', 'security');
   });
-});
 
-// In VR we use a custom CSS property so we cannot test the style declaration.
-describe('Classic only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(false);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
+  test('should render badge when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+
+    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers.drawers.items[0].id)).toEqual(true);
+    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers.drawers.items[1].id)).toEqual(false);
   });
 
   test('should have width equal to the size declaration', () => {
@@ -277,14 +275,17 @@ describe('Classic only features', () => {
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
 
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findActiveDrawer()!.getElement().style.width).toBe('500px');
+    wrapper.findDrawersTriggers()![0].click();
+    expect(getActiveDrawerWidth(wrapper)).toEqual('500px');
   });
+});
 
-  test('should render badge when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
-
-    expect(wrapper.findByClassName(iconStyles.badge)!.getElement()).toBeInTheDocument();
+describe('Classic only features', () => {
+  beforeEach(() => {
+    (useVisualRefresh as jest.Mock).mockReturnValue(false);
+  });
+  afterEach(() => {
+    (useVisualRefresh as jest.Mock).mockReset();
   });
 
   test(`should toggle single drawer on click of container`, () => {
@@ -322,12 +323,6 @@ describe('VR only features', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
-  });
-
-  test('should render badge when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
-
-    expect(wrapper.findByClassName(visualRefreshStyles.badge)!.getElement()).toBeInTheDocument();
   });
 
   test('Does not add a label to the toggle and landmark when they are not defined', () => {
