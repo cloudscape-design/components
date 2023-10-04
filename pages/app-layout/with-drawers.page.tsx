@@ -45,6 +45,7 @@ export default function WithDrawers() {
         drawers: {
           ariaLabel: 'Drawers',
           overflowAriaLabel: 'Overflow drawers',
+          overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
           activeDrawerId: activeDrawerId,
           items: [
             {

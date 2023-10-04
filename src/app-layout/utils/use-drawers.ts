@@ -139,6 +139,7 @@ export function useDrawers(
   return {
     ariaLabel: ownDrawers?.ariaLabel,
     overflowAriaLabel: ownDrawers?.overflowAriaLabel,
+    overflowWithBadgeAriaLabel: ownDrawers?.overflowWithBadgeAriaLabel,
     drawers: combinedDrawers,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,

@@ -66,6 +66,7 @@ interface MobileToolbarProps {
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
     ariaLabel?: string;
     overflowAriaLabel?: string;
+    overflowWithBadgeAriaLabel?: string;
   };
 }
 
@@ -95,6 +96,7 @@ export function MobileToolbar({
   }, [anyPanelOpen]);
 
   const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId);
+  const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
     <div
@@ -150,7 +152,7 @@ export function MobileToolbar({
           {overflowItems.length > 0 && (
             <div className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
               <OverflowMenu
-                ariaLabel={drawers.overflowAriaLabel}
+                ariaLabel={overflowMenuHasBadge ? drawers.overflowWithBadgeAriaLabel : drawers.overflowAriaLabel}
                 items={overflowItems}
                 onItemClick={({ detail }) => {
                   drawers.onChange({
