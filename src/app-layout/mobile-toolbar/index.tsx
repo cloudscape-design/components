@@ -46,7 +46,7 @@ const MobileToggle = React.forwardRef(
   }
 );
 interface MobileToolbarProps {
-  anyPanelOpen: boolean | undefined;
+  anyPanelOpen: boolean;
   unfocusable: boolean | undefined;
   toggleRefs: {
     navigation: React.Ref<ButtonProps.Ref>;
@@ -55,7 +55,7 @@ interface MobileToolbarProps {
   navigationHide: boolean | undefined;
   toolsHide: boolean | undefined;
   topOffset?: number;
-  ariaLabels?: AppLayoutProps.Labels;
+  ariaLabels: AppLayoutProps.Labels | undefined;
   mobileBarRef: React.Ref<HTMLDivElement>;
   children: React.ReactNode;
   onNavigationOpen: () => void;
@@ -70,12 +70,12 @@ interface MobileToolbarProps {
 }
 
 export function MobileToolbar({
-  ariaLabels = {},
+  ariaLabels,
   toggleRefs,
   topOffset,
   navigationHide,
   toolsHide,
-  anyPanelOpen = false,
+  anyPanelOpen,
   unfocusable,
   children,
   onNavigationOpen,
