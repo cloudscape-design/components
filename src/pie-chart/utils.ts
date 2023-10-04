@@ -13,7 +13,8 @@ export interface Dimension {
   cornerRadius?: number;
 }
 
-const paddingLabels = 44; // = 2 * (size-lineHeight-body-100)
+const minRadius = 30;
+const paddingLabels = 40; // = 2 * (line-height-body-m)
 const defaultPadding = 12; // = space-s
 const smallPadding = 8; // = space-xs
 export const minLabelLineAngularPadding = Math.PI / 20;
@@ -91,7 +92,7 @@ export function getDimensionsBySize({
   const padding = sizeSpec[matchedSize].padding;
   const paddingLabels = hasLabels ? sizeSpec[matchedSize].paddingLabels : 0;
   const radiiRatio = sizeSpec[matchedSize].outerRadius / sizeSpec[matchedSize].innerRadius;
-  const outerRadius = (size - 2 * paddingLabels - 2 * padding) / 2;
+  const outerRadius = Math.max(minRadius, (size - 2 * paddingLabels - 2 * padding) / 2);
   const innerRadius = outerRadius / radiiRatio;
 
   return { ...sizeSpec[matchedSize], outerRadius, innerRadius, size: matchedSize };
