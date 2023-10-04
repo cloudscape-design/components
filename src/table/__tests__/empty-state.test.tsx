@@ -5,11 +5,12 @@ import { render } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import { supportsStickyPosition } from '../../../lib/components/internal/utils/dom';
-import { useContainerQuery } from '../../../lib/components/internal/hooks/container-queries';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import styles from '../../../lib/components/table/styles.css.js';
-import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/table/use-sticky-columns';
+import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/table/sticky-columns';
 
-jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: jest.fn(() => [600, () => {}]),
 }));
 
@@ -19,17 +20,16 @@ jest.mock('../../../lib/components/internal/utils/dom', () => ({
   findUpUntil: jest.fn(),
 }));
 
-jest.mock('../../../lib/components/table/use-sticky-columns', () => ({
+jest.mock('../../../lib/components/table/sticky-columns', () => ({
   useStickyColumns: jest.fn(),
   useStickyCellStyles: jest.fn(),
   selectionColumnId: 'id',
 }));
 
 const mockStickyStateModel = {
-  isEnabled: false,
   store: jest.fn(),
   style: {
-    wrapper: '',
+    wrapper: undefined,
   },
   refs: {
     table: jest.fn(),

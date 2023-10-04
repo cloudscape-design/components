@@ -11,7 +11,7 @@
   background-color: transparent;
   display: flex;
   grid-column: 5;
-  grid-row: 1 / span 5;
+  grid-row: 1 / span 10;
   height: var(#{custom-props.$contentHeight});
   pointer-events: none;
   position: sticky;
@@ -21,10 +21,10 @@
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
     box-shadow: awsui.$shadow-panel;
-  }
 
-  @include styles.with-motion {
-    transition: background-color awsui.$motion-duration-refresh-only-fast;
+    @include styles.with-motion {
+      transition: background-color awsui.$motion-duration-refresh-only-fast;
+    }
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -61,6 +61,7 @@
   height: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
 
   &:not(.has-multiple-triggers).has-open-drawer {
@@ -84,6 +85,10 @@
   }
 }
 
+.drawers-mobile-triggers-container {
+  display: flex;
+}
+
 .drawers-trigger-content {
   align-items: center;
   display: flex;
@@ -104,40 +109,57 @@
       transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
     }
   }
+
+  > .drawers-trigger-overflow {
+    padding: 0 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .drawers-trigger {
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     width: constants.$sidebar-size-closed;
-    text-align: right;
+    display: flex;
+    justify-content: center;
   }
 }
 
 .drawer {
-  #{custom-props.$activeDrawerWidth}: 290px;
+  #{custom-props.$drawerSize}: 290px;
   background-color: awsui.$color-background-container-content;
   border-color: transparent;
   display: grid;
   flex-shrink: 0;
-  grid-template-columns: 1fr auto awsui.$space-m;
+  grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
   grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
 
   > .drawer-close-button {
-    grid-column: 2;
+    grid-column: 3;
     grid-row: 2;
     z-index: 1;
   }
 
   > .drawer-content {
-    grid-column: 1 / span 3;
+    grid-column: 1 / span 4;
     grid-row: 1 / span 3;
-    width: var(#{custom-props.$activeDrawerWidth});
+    width: var(#{custom-props.$drawerSize});
+  }
+
+  > .drawer-slider {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 
   &:not(.is-drawer-open) {
@@ -148,23 +170,19 @@
   &.is-drawer-open {
     border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     opacity: 1;
-    width: var(#{custom-props.$activeDrawerWidth});
-  }
-
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-fast;
-    transition-property: border-color, opacity, width;
+    width: var(#{custom-props.$drawerSize});
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     &.is-drawer-open {
-      #{custom-props.$activeDrawerWidth}: 320px;
+      #{custom-props.$drawerSize}: 320px;
     }
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     &.is-drawer-open {
-      #{custom-props.$activeDrawerWidth}: 100vw;
+      #{custom-props.$drawerSize}: 100vw;
+      width: 100vw;
     }
   }
 }

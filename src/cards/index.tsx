@@ -1,28 +1,36 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { FocusEventHandler, useImperativeHandle, useRef } from 'react';
+import React, { FocusEventHandler, useCallback, useImperativeHandle, useRef } from 'react';
 import { CardsForwardRefType, CardsProps } from './interfaces';
 import styles from './styles.css.js';
 import { getCardsPerRow } from './cards-layout-helper';
 import { getBaseProps } from '../internal/base-component';
-import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
 import ToolsHeader from '../table/tools-header';
 import { getItemKey } from '../table/utils';
-import { focusMarkers, useFocusMove, useSelection } from '../table/use-selection';
-import SelectionControl, { SelectionControlProps } from '../table/selection-control';
-import InternalContainer from '../container/internal';
+import {
+  SelectionControl,
+  SelectionControlProps,
+  focusMarkers,
+  useSelectionFocusMove,
+  useSelection,
+} from '../table/selection';
+import { InternalContainerAsSubstep } from '../container/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import stickyScrolling from '../table/sticky-scrolling';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { supportsStickyPosition } from '../internal/utils/dom';
+import { useInternalI18n } from '../i18n/context';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 export { CardsProps };
 
@@ -58,20 +66,25 @@ const Cards = React.forwardRef(function <T = any>(
   const { __internalRootRef } = useBaseComponent('Cards');
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
+  const isMobile = useMobile();
+
   const computedVariant = isRefresh ? variant : 'container';
 
-  const instanceUniqueId = useUniqueId('cards');
-  const cardsId = baseProps?.id || instanceUniqueId;
-  const cardsHeaderId = header ? `${cardsId}-header` : undefined;
+  const headerIdRef = useRef<string | undefined>(undefined);
+  const setHeaderRef = useCallback((id: string) => {
+    headerIdRef.current = id;
+  }, []);
+  const isLabelledByHeader = !ariaLabels?.cardsLabel && !!header;
 
   const [columns, measureRef] = useContainerQuery<number>(
-    ({ width }) => getCardsPerRow(width, cardsPerRow),
+    ({ contentBoxWidth }) => getCardsPerRow(contentBoxWidth, cardsPerRow),
     [cardsPerRow]
   );
   const refObject = useRef(null);
   const mergedRef = useMergeRefs(measureRef, refObject, __internalRootRef);
   const getMouseDownTarget = useMouseDownTarget();
 
+  const i18n = useInternalI18n('cards');
   const { isItemSelected, getItemSelectionProps, updateShiftToggle } = useSelection({
     items,
     trackBy,
@@ -79,11 +92,15 @@ const Cards = React.forwardRef(function <T = any>(
     selectionType,
     isItemDisabled,
     onSelectionChange,
-    ariaLabels,
+    ariaLabels: {
+      itemSelectionLabel: ariaLabels?.itemSelectionLabel,
+      selectionGroupLabel: i18n('ariaLabels.selectionGroupLabel', ariaLabels?.selectionGroupLabel),
+    },
   });
   const hasToolsHeader = header || filter || pagination || preferences;
+  const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
   const headerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMobile();
+
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
   stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
@@ -119,55 +136,64 @@ const Cards = React.forwardRef(function <T = any>(
   }
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
-      <InternalContainer
-        header={
-          hasToolsHeader && (
-            <div
-              className={clsx(
-                styles.header,
-                isRefresh && styles['header-refresh'],
-                styles[`header-variant-${computedVariant}`]
+    <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+      <AnalyticsFunnelSubStep>
+        <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
+          <InternalContainerAsSubstep
+            header={
+              hasToolsHeader && (
+                <div
+                  className={clsx(
+                    styles.header,
+                    isRefresh && styles['header-refresh'],
+                    styles[`header-variant-${computedVariant}`]
+                  )}
+                >
+                  <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
+                    <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                  </CollectionLabelContext.Provider>
+                </div>
+              )
+            }
+            footer={hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
+            disableContentPaddings={true}
+            disableHeaderPaddings={computedVariant === 'full-page'}
+            variant={computedVariant === 'container' ? 'cards' : computedVariant}
+            __stickyHeader={stickyHeader}
+            __stickyOffset={stickyHeaderVerticalOffset}
+            __headerRef={headerRef}
+            __darkHeader={computedVariant === 'full-page'}
+            __disableFooterDivider={true}
+          >
+            <div className={clsx(hasToolsHeader && styles['has-header'])}>
+              {!!renderAriaLive && !!firstIndex && (
+                <LiveRegion>
+                  <span>
+                    {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}
+                  </span>
+                </LiveRegion>
               )}
-            >
-              <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+              {status ?? (
+                <CardsList
+                  items={items}
+                  cardDefinition={cardDefinition}
+                  trackBy={trackBy}
+                  selectionType={selectionType}
+                  columns={columns}
+                  isItemSelected={isItemSelected}
+                  getItemSelectionProps={getItemSelectionProps}
+                  visibleSections={visibleSections}
+                  updateShiftToggle={updateShiftToggle}
+                  onFocus={onCardFocus}
+                  ariaLabel={ariaLabels?.cardsLabel}
+                  ariaLabelledby={isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined}
+                />
+              )}
             </div>
-          )
-        }
-        disableContentPaddings={true}
-        disableHeaderPaddings={computedVariant === 'full-page'}
-        variant={computedVariant === 'container' ? 'cards' : computedVariant}
-        __stickyHeader={stickyHeader}
-        __stickyOffset={stickyHeaderVerticalOffset}
-        __headerRef={headerRef}
-        __headerId={cardsHeaderId}
-        __darkHeader={computedVariant === 'full-page'}
-      >
-        <div className={clsx(hasToolsHeader && styles['has-header'])}>
-          {!!renderAriaLive && !!firstIndex && (
-            <LiveRegion>
-              <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}</span>
-            </LiveRegion>
-          )}
-          {status ?? (
-            <CardsList
-              items={items}
-              cardDefinition={cardDefinition}
-              trackBy={trackBy}
-              selectionType={selectionType}
-              columns={columns}
-              isItemSelected={isItemSelected}
-              getItemSelectionProps={getItemSelectionProps}
-              visibleSections={visibleSections}
-              updateShiftToggle={updateShiftToggle}
-              onFocus={onCardFocus}
-              ariaLabel={ariaLabels?.cardsLabel}
-              ariaLabelledby={ariaLabels?.cardsLabel ? undefined : cardsHeaderId}
-            />
-          )}
+          </InternalContainerAsSubstep>
         </div>
-      </InternalContainer>
-    </div>
+      </AnalyticsFunnelSubStep>
+    </LinkDefaultVariantContext.Provider>
   );
 }) as CardsForwardRefType;
 
@@ -198,7 +224,7 @@ const CardsList = <T,>({
 }) => {
   const selectable = !!selectionType;
 
-  const { moveFocusDown, moveFocusUp } = useFocusMove(selectionType, items.length);
+  const { moveFocusDown, moveFocusUp } = useSelectionFocusMove(selectionType, items.length);
 
   let visibleSectionsDefinition = cardDefinition.sections || [];
   visibleSectionsDefinition = visibleSections

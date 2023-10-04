@@ -15,7 +15,7 @@ export interface ListProps {
   autosuggestItemsState: AutosuggestItemsState;
   menuProps: Omit<OptionsListProps, 'children'>;
   handleLoadMore: () => void;
-  enteredTextLabel: AutosuggestProps.EnteredTextLabel;
+  enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   highlightedA11yProps: Record<string, string | number | boolean>;
   hasDropdownStatus?: boolean;
   highlightText: string;

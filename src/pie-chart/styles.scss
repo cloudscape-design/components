@@ -10,26 +10,10 @@
 @use './motion';
 
 .root {
-  @include styles.styles-reset;
-  display: block;
-}
-
-.filter-container {
   /* used in test-utils */
 }
 
-.has-default-filter {
-  & > :first-child {
-    flex: 280px 0 1;
-  }
-}
-
 .content {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-
   @each $size in map.keys(constants.$pie-chart-sizes) {
     &.content--#{$size} {
       $sizes: map.get(constants.$pie-chart-sizes, $size);
@@ -41,14 +25,10 @@
       }
     }
   }
+}
 
-  &.content--reserve-filter {
-    margin-top: calc(2 * #{awsui.$font-body-m-line-height});
-  }
-
-  &.content--reserve-legend {
-    margin-bottom: calc(2 * #{awsui.$font-body-m-line-height});
-  }
+.content--fit-height {
+  flex: 1;
 }
 
 .status-container {
@@ -58,6 +38,24 @@
 .chart-container {
   display: flex;
   flex: 1;
+
+  &--fit-height {
+    height: 100%;
+    min-height: inherit;
+  }
+}
+
+.chart-container-chart-plot {
+  display: contents;
+
+  &--fit-height {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
 }
 
 .inner-content {
@@ -108,7 +106,7 @@
 
   /* stylelint-disable-next-line selector-max-type */
   > line {
-    stroke: awsui.$color-border-control-default;
+    stroke: awsui.$color-stroke-chart-line;
     stroke-width: awsui.$border-divider-section-width;
   }
 

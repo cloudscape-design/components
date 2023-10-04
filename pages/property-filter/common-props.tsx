@@ -190,6 +190,9 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     key: def.id,
     operators: operators,
     defaultOperator,
+    // TODO: remove once collection-hooks type is updated
+    propertyLabel: undefined as unknown as string,
+    groupValuesLabel: undefined as unknown as string,
   };
 });
 

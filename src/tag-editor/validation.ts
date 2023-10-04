@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ComponentFormatFunction } from '../i18n/context';
 import { TagEditorProps } from './interfaces';
 
 /**
@@ -31,7 +32,8 @@ export interface ValidationError {
 export function validate(
   tags: ReadonlyArray<TagEditorProps.Tag>,
   keyDirtyState: ReadonlyArray<boolean>,
-  i18nStrings: TagEditorProps.I18nStrings,
+  i18n: ComponentFormatFunction<'tag-editor'>,
+  i18nStrings: TagEditorProps.I18nStrings | undefined,
   charRegex: RegExp = DEFAULT_CHAR_REGEX
 ): ReadonlyArray<ValidationError | undefined> {
   // Create cache to use for duplicate key check
@@ -46,22 +48,22 @@ export function validate(
     let keyError: string | undefined, valueError: string | undefined;
 
     if (keyDirtyState[i] && emptyKeyCheck(tag.key)) {
-      keyError = i18nStrings.emptyKeyError;
+      keyError = i18n('i18nStrings.emptyKeyError', i18nStrings?.emptyKeyError);
     } else if (awsPrefixCheck(tag.key)) {
-      keyError = i18nStrings.awsPrefixError;
+      keyError = i18n('i18nStrings.awsPrefixError', i18nStrings?.awsPrefixError);
     } else if (invalidCharCheck(tag.key, charRegex)) {
-      keyError = i18nStrings.invalidKeyError;
+      keyError = i18n('i18nStrings.invalidKeyError', i18nStrings?.invalidKeyError);
     } else if (maxKeyLengthCheck(tag.key)) {
-      keyError = i18nStrings.maxKeyCharLengthError;
+      keyError = i18n('i18nStrings.maxKeyCharLengthError', i18nStrings?.maxKeyCharLengthError);
     } else if (duplicateKeyCheck(tag.key, tagKeysCache)) {
-      keyError = i18nStrings.duplicateKeyError;
+      keyError = i18n('i18nStrings.duplicateKeyError', i18nStrings?.duplicateKeyError);
     }
 
     if (!tag.markedForRemoval) {
       if (invalidCharCheck(tag.value, charRegex)) {
-        valueError = i18nStrings.invalidValueError;
+        valueError = i18n('i18nStrings.invalidValueError', i18nStrings?.invalidValueError);
       } else if (maxValueLengthCheck(tag.value)) {
-        valueError = i18nStrings.maxValueCharLengthError;
+        valueError = i18n('i18nStrings.maxValueCharLengthError', i18nStrings?.maxValueCharLengthError);
       }
     }
 

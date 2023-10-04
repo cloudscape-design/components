@@ -1,0 +1,50 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+
+.sticky-scrollbar {
+  height: 15px;
+  position: sticky;
+  display: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  bottom: 0;
+  width: 100%;
+
+  &-content {
+    height: 15px;
+  }
+  &-visible {
+    display: block;
+  }
+  &-native-invisible {
+    // Native scrollbar does not take space when it is not always invisible
+    // For example it is set as "show when scrolling"
+    margin-top: -15px;
+  }
+
+  &-offset {
+    // "offset" styles are needed for when sticky columns are enabled.
+    // We move the scrollbar lower, so it doesn't overlap interactive elements (such as checkboxes or links)
+
+    z-index: 800; // Higher than sticky columns
+    &:not(.is-visual-refresh) {
+      background-color: awsui.$color-background-container-content;
+      height: 15px;
+      margin-top: calc(-1 * awsui.$border-divider-section-width); // -1px to compensate for border width
+      border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    }
+
+    &.is-visual-refresh {
+      // Needed to avoid sticky scrollbar overlapping with interactive elements in VR compact mode
+      margin-top: -5px;
+    }
+  }
+}
+
+.is-visual-refresh {
+  // Used for detecting Visual Refresh
+}

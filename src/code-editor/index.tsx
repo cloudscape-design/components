@@ -11,15 +11,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CodeEditorProps } from './interfaces';
 import { Pane } from './pane';
 import { useChangeEffect } from './listeners';
-import {
-  getDefaultConfig,
-  getAceTheme,
-  PaneStatus,
-  getLanguageLabel,
-  DEFAULT_DARK_THEME,
-  DEFAULT_LIGHT_THEME,
-  getDefaultTheme,
-} from './util';
+import { DEFAULT_DARK_THEME, DEFAULT_LIGHT_THEME, PaneStatus, getLanguageLabel } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
 import { ResizableBox } from './resizable-box';
@@ -30,8 +22,8 @@ import ErrorScreen from './error-screen';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
-import { useCurrentMode } from '../internal/hooks/use-visual-mode';
+import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
+import { useInternalI18n } from '../i18n/context';
 import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -39,11 +31,20 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
 
 import styles from './styles.css.js';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import {
+  useEditor,
+  useSyncEditorSize,
+  useSyncEditorLabels,
+  useSyncEditorValue,
+  useSyncEditorLanguage,
+  useSyncEditorWrapLines,
+  useSyncEditorTheme,
+} from './use-editor';
 
 export { CodeEditorProps };
 
 const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditorProps.Ref>) => {
-  const codeEditorRef = useRef<HTMLDivElement>(null);
   const { __internalRootRef } = useBaseComponent('CodeEditor');
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const {
@@ -53,7 +54,11 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     i18nStrings,
     editorContentHeight,
     onEditorContentResize,
+    ariaLabel,
     languageLabel: customLanguageLabel,
+    preferences,
+    loading,
+    themes,
     ...rest
   } = props;
   const [editorHeight = 480, setEditorHeight] = useControllable(editorContentHeight, onEditorContentResize, 480, {
@@ -61,26 +66,17 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     changeHandler: 'onEditorContentResize',
     controlledProp: 'editorContentHeight',
   });
-  const baseProps = getBaseProps(rest);
-
-  const [editor, setEditor] = useState<Ace.Editor>();
   const mode = useCurrentMode(__internalRootRef);
-  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
+  const isRefresh = useVisualRefresh();
+  const baseProps = getBaseProps(rest);
+  const i18n = useInternalI18n('code-editor');
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    const { textarea } = editor.renderer as unknown as { textarea: HTMLTextAreaElement };
-    if (!textarea) {
-      return;
-    }
-    const updateAttribute = (attribute: string, value: string | undefined) =>
-      value ? textarea.setAttribute(attribute, value) : textarea.removeAttribute(attribute);
-    updateAttribute('id', controlId);
-    updateAttribute('aria-labelledby', ariaLabelledby);
-    updateAttribute('aria-describedby', ariaDescribedby);
-  }, [ariaDescribedby, ariaLabelledby, controlId, editor]);
+  const errorsTabRef = useRef<HTMLButtonElement>(null);
+  const warningsTabRef = useRef<HTMLButtonElement>(null);
+  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth);
+  const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
+
+  const paneId = useUniqueId('code-editor-pane');
 
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
@@ -88,31 +84,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const [cursorPosition, setCursorPosition] = useState<Ace.Point>({ row: 0, column: 0 });
   const [isTabFocused, setTabFocused] = useState<boolean>(false);
 
-  const errorsTabRef = useRef<HTMLButtonElement>(null);
-  const warningsTabRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const elem = codeEditorRef.current;
-    if (!ace || !elem) {
-      return;
-    }
-    const config = getDefaultConfig();
-    setEditor(
-      ace.edit(elem, {
-        ...config,
-        theme: getAceTheme(getDefaultTheme(elem)),
-      })
-    );
-  }, [ace, props.loading]);
-  const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.width);
-  const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
-  useForwardFocus(ref, codeEditorRef);
-  const isRefresh = useVisualRefresh();
+  const { editorRef, editor } = useEditor(ace, loading);
 
-  useEffect(() => {
-    editor?.resize();
-  }, [editor, editorContentHeight, codeEditorWidth]);
-
-  const paneId = useUniqueId('code-editor-pane');
+  useForwardFocus(ref, editorRef);
 
   useEffect(() => {
     if (!ace || !editor) {
@@ -124,35 +98,20 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     return () => {
       editor?.destroy();
     };
-  }, [ace, editor, __internalRootRef]);
+  }, [ace, editor]);
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    if (value === editor.getValue()) {
-      return;
-    }
-    // TODO maintain cursor position?
-    const pos = editor.session.selection.toJSON();
-    editor.setValue(value, -1);
-    editor.session.selection.fromJSON(pos);
-  }, [editor, value]);
+  useSyncEditorLabels(editor, { controlId, ariaLabel, ariaLabelledby, ariaDescribedby });
 
-  useEffect(() => {
-    editor?.session.setMode(`ace/mode/${language}`);
-  }, [editor, language]);
+  const { onResize } = useSyncEditorSize(editor, { width: codeEditorWidth, height: editorContentHeight });
 
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
+  useSyncEditorValue(editor, value);
 
-    const theme: CodeEditorProps.Theme = props.preferences?.theme ?? defaultTheme;
-    editor.setTheme(getAceTheme(theme));
+  useSyncEditorLanguage(editor, language);
 
-    editor.session.setUseWrapMode(props.preferences?.wrapLines ?? true);
-  }, [editor, defaultTheme, props.preferences]);
+  useSyncEditorWrapLines(editor, preferences?.wrapLines);
+
+  const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
+  useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
 
   // Change listeners
   useChangeEffect(editor, props.onChange, props.onDelayedChange);
@@ -192,10 +151,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   const onTabFocus = useCallback(() => setTabFocused(true), []);
   const onTabBlur = useCallback(() => setTabFocused(false), []);
 
-  const onResize = useCallback(() => {
-    editor?.resize();
-  }, [editor]);
-
   const onErrorPaneToggle = useCallback(() => {
     setPaneStatus(paneStatus !== 'error' ? 'error' : 'hidden');
   }, [paneStatus]);
@@ -204,15 +159,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     setPaneStatus(paneStatus !== 'warning' ? 'warning' : 'hidden');
   }, [paneStatus]);
 
-  const onPaneClose = useCallback(() => {
-    if (paneStatus === 'error' && errorsTabRef.current) {
-      errorsTabRef.current.focus();
-    }
-    if (paneStatus === 'warning' && warningsTabRef.current) {
-      warningsTabRef.current.focus();
-    }
+  const onPaneClose = () => {
     setPaneStatus('hidden');
-  }, [paneStatus]);
+  };
 
   const onAnnotationClick = ({ row = 0, column = 0 }: Ace.Annotation) => {
     if (!editor) {
@@ -243,19 +192,22 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
       className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
       ref={mergedRef}
     >
-      {props.loading && (
+      {loading && (
         <LoadingScreen>
-          <LiveRegion visible={true}>{i18nStrings.loadingState}</LiveRegion>
+          <LiveRegion visible={true}>{i18n('i18nStrings.loadingState', i18nStrings?.loadingState)}</LiveRegion>
         </LoadingScreen>
       )}
 
-      {!ace && !props.loading && (
-        <ErrorScreen recoveryText={i18nStrings.errorStateRecovery} onRecoveryClick={props.onRecoveryClick}>
-          {i18nStrings.errorState}
+      {!ace && !loading && (
+        <ErrorScreen
+          recoveryText={i18n('i18nStrings.errorStateRecovery', i18nStrings?.errorStateRecovery)}
+          onRecoveryClick={props.onRecoveryClick}
+        >
+          {i18n('i18nStrings.errorState', i18nStrings?.errorState)}
         </ErrorScreen>
       )}
 
-      {ace && !props.loading && (
+      {ace && !loading && (
         <>
           <ResizableBox
             height={Math.max(editorHeight, 20)}
@@ -267,18 +219,25 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
             }}
           >
             <div
-              ref={codeEditorRef}
+              ref={editorRef}
               className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
               onKeyDown={onEditorKeydown}
               tabIndex={0}
               role="group"
-              aria-label={i18nStrings.editorGroupAriaLabel}
+              aria-label={i18n('i18nStrings.editorGroupAriaLabel', i18nStrings?.editorGroupAriaLabel)}
             />
           </ResizableBox>
-          <div role="group" aria-label={i18nStrings.statusBarGroupAriaLabel}>
+          <div
+            role="group"
+            aria-label={i18n('i18nStrings.statusBarGroupAriaLabel', i18nStrings?.statusBarGroupAriaLabel)}
+          >
             <StatusBar
               languageLabel={languageLabel}
-              cursorPosition={i18nStrings.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1)}
+              cursorPosition={i18n(
+                'i18nStrings.cursorPosition',
+                i18nStrings?.cursorPosition(cursorPosition.row + 1, cursorPosition.column + 1),
+                format => format({ row: cursorPosition.row + 1, column: cursorPosition.column + 1 })
+              )}
               errorCount={errorCount}
               warningCount={warningCount}
               paneStatus={paneStatus}
@@ -302,28 +261,32 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               onAnnotationClick={onAnnotationClick}
               onAnnotationClear={onAnnotationClear}
               onClose={onPaneClose}
-              cursorPositionLabel={i18nStrings.cursorPosition}
-              closeButtonAriaLabel={i18nStrings.paneCloseButtonAriaLabel}
+              cursorPositionLabel={i18n(
+                'i18nStrings.cursorPosition',
+                i18nStrings?.cursorPosition,
+                format => (row, column) => format({ row, column })
+              )}
+              closeButtonAriaLabel={i18n('i18nStrings.paneCloseButtonAriaLabel', i18nStrings?.paneCloseButtonAriaLabel)}
             />
           </div>
           {isPreferencesModalVisible && (
             <PreferencesModal
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}
-              themes={props.themes}
-              preferences={props.preferences}
+              themes={themes}
+              preferences={preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{
-                header: i18nStrings.preferencesModalHeader,
-                cancel: i18nStrings.preferencesModalCancel,
-                confirm: i18nStrings.preferencesModalConfirm,
-                wrapLines: i18nStrings.preferencesModalWrapLines,
-                theme: i18nStrings.preferencesModalTheme,
-                lightThemes: i18nStrings.preferencesModalLightThemes,
-                darkThemes: i18nStrings.preferencesModalDarkThemes,
-                themeFilteringAriaLabel: i18nStrings.preferencesModalThemeFilteringAriaLabel,
-                themeFilteringClearAriaLabel: i18nStrings.preferencesModalThemeFilteringClearAriaLabel,
-                themeFilteringPlaceholder: i18nStrings.preferencesModalThemeFilteringPlaceholder,
+                header: i18n('i18nStrings.preferencesModalHeader', i18nStrings?.preferencesModalHeader),
+                cancel: i18n('i18nStrings.preferencesModalCancel', i18nStrings?.preferencesModalCancel),
+                confirm: i18n('i18nStrings.preferencesModalConfirm', i18nStrings?.preferencesModalConfirm),
+                wrapLines: i18n('i18nStrings.preferencesModalWrapLines', i18nStrings?.preferencesModalWrapLines),
+                theme: i18n('i18nStrings.preferencesModalTheme', i18nStrings?.preferencesModalTheme),
+                lightThemes: i18n('i18nStrings.preferencesModalLightThemes', i18nStrings?.preferencesModalLightThemes),
+                darkThemes: i18n('i18nStrings.preferencesModalDarkThemes', i18nStrings?.preferencesModalDarkThemes),
+                themeFilteringAriaLabel: i18nStrings?.preferencesModalThemeFilteringAriaLabel,
+                themeFilteringClearAriaLabel: i18nStrings?.preferencesModalThemeFilteringClearAriaLabel,
+                themeFilteringPlaceholder: i18nStrings?.preferencesModalThemeFilteringPlaceholder,
               }}
             />
           )}

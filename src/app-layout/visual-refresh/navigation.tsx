@@ -26,12 +26,12 @@ export default function Navigation() {
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
+    isToolsOpen,
     navigation,
     navigationHide,
-    navigationWidth,
-    isToolsOpen,
-    toolsHide,
     navigationRefs,
+    navigationWidth,
+    toolsHide,
   } = useAppLayoutInternals();
 
   if (navigationHide) {
@@ -75,6 +75,7 @@ export default function Navigation() {
             >
               <TriggerButton
                 ariaLabel={ariaLabels?.navigationToggle}
+                ariaExpanded={isNavigationOpen ? undefined : false}
                 iconName="menu"
                 className={testutilStyles['navigation-toggle']}
                 onClick={() => handleNavigationClick(true)}

@@ -18,16 +18,19 @@ export interface DropdownStatusProps {
   finishedText?: string;
   /**
    * Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
+   * @i18n
    **/
   errorText?: string;
   /**
    * Specifies the text for the recovery button. The text is displayed next to the error text.
    * Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
+   * @i18n
    **/
   recoveryText?: string;
 
   /**
    * Provides a text alternative for the error icon in the error message.
+   * @i18n
    */
   errorIconAriaLabel?: string;
   /**

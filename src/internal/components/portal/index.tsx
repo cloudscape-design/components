@@ -4,7 +4,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface PortalProps {
-  container?: Element;
+  container?: null | Element;
   children: React.ReactNode;
 }
 

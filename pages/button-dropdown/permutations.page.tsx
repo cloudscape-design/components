@@ -17,7 +17,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
     disabled: [false, true],
     loading: [false, true],
     items: [[]],
-    variant: ['icon'],
+    variant: ['icon', 'inline-icon'],
     ariaLabel: ['Button dropdown'],
   },
 ]);

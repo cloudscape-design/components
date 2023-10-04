@@ -1,0 +1,350 @@
+{
+  "[charts]": {
+    "loadingText": "Cargando gráfico",
+    "errorText": "No se pudieron recuperar los datos. Inténtelo de nuevo más tarde.",
+    "recoveryText": "Reintentar",
+    "i18nStrings.filterLabel": "Filtrar los datos mostrados",
+    "i18nStrings.filterPlaceholder": "Filtrar datos",
+    "i18nStrings.legendAriaLabel": "Leyenda",
+    "i18nStrings.xAxisAriaRoleDescription": "eje x",
+    "i18nStrings.yAxisAriaRoleDescription": "eje y"
+  },
+  "alert": {
+    "dismissAriaLabel": "Descartar alerta"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "Siguiente",
+    "i18nStrings.previousButtonText": "Anterior",
+    "i18nStrings.finishButtonText": "Finalizar",
+    "i18nStrings.labelDismissAnnotation": "Descartar anotación",
+    "i18nStrings.stepCounterText": "Paso {stepNumber} de {totalStepCount}",
+    "i18nStrings.taskTitle": "Tarea {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {Cerrar anotación para el paso {stepNumber} de {totalStepCount}} false {Abrir anotación para el paso {stepNumber} de {totalStepCount}} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.navigation": "Navegación lateral",
+    "ariaLabels.navigationClose": "Cerrar navegación lateral",
+    "ariaLabels.navigationToggle": "Abrir navegación lateral",
+    "ariaLabels.notifications": "Notificaciones",
+    "ariaLabels.tools": "Panel de ayuda",
+    "ariaLabels.toolsClose": "Cerrar panel de ayuda",
+    "ariaLabels.toolsToggle": "Abrir panel de ayuda"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "Total"
+  },
+  "attribute-editor": {
+    "removeButtonText": "Eliminar"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "Error",
+    "selectedAriaLabel": "Seleccionado",
+    "enteredTextLabel": "Utilizar: “{value}”",
+    "recoveryText": "Reintentar"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "Mostrar ruta"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "Próximo mes",
+    "previousMonthAriaLabel": "Mes anterior",
+    "todayAriaLabel": "Hoy"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "Selección de elementos"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "Cargando editor de código",
+    "i18nStrings.errorState": "Se ha producido un error al cargar el editor de código.",
+    "i18nStrings.errorStateRecovery": "Reintentar",
+    "i18nStrings.editorGroupAriaLabel": "Editor de código",
+    "i18nStrings.statusBarGroupAriaLabel": "Barra de estado",
+    "i18nStrings.cursorPosition": "Ln {row}, Col {column}",
+    "i18nStrings.errorsTab": "Errores",
+    "i18nStrings.warningsTab": "Advertencias",
+    "i18nStrings.preferencesButtonAriaLabel": "Preferencias",
+    "i18nStrings.paneCloseButtonAriaLabel": "Cerrar",
+    "i18nStrings.preferencesModalHeader": "Preferencias",
+    "i18nStrings.preferencesModalCancel": "Cancelar",
+    "i18nStrings.preferencesModalConfirm": "Confirmar",
+    "i18nStrings.preferencesModalWrapLines": "Ajustar líneas",
+    "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalLightThemes": "Temas claros",
+    "i18nStrings.preferencesModalDarkThemes": "Temas oscuros"
+  },
+  "collection-preferences": {
+    "title": "Preferencias",
+    "confirmLabel": "Confirmar",
+    "cancelLabel": "Cancelar",
+    "pageSizePreference.title": "Tamaño de página",
+    "wrapLinesPreference.label": "Ajustar líneas",
+    "wrapLinesPreference.description": "Seleccione para ver todo el texto y ajustar las líneas",
+    "stripedRowsPreference.label": "Filas rayadas",
+    "stripedRowsPreference.description": "Seleccione para agregar filas sombreadas alternativas",
+    "contentDensityPreference.label": "Modo compacto",
+    "contentDensityPreference.description": "Seleccione para mostrar contenido en un modo más denso y compacto",
+    "contentDisplayPreference.title": "Preferencias de columnas",
+    "contentDisplayPreference.description": "Personalice la visibilidad y el orden de las columnas.",
+    "contentDisplayPreference.dragHandleAriaLabel": "Arrastrar controlador",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape.",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "Recogida del elemento en la posición {position} de {total}",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenación cancelada",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Mover el elemento de nuevo a la posición {currentPosition} de {total}} false {Mover el elemento a la posición {currentPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {El artículo ha vuelto a su posición original {initialPosition} de {total}} false {El artículo se movió de la posición {initialPosition} a la posición {finalPosition} de {total}} other {}}"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "Modo relativo",
+    "i18nStrings.absoluteModeTitle": "Modo absoluto",
+    "i18nStrings.relativeRangeSelectionHeading": "Elegir un rango",
+    "i18nStrings.cancelButtonLabel": "Cancelar",
+    "i18nStrings.clearButtonLabel": "Borrar y descartar",
+    "i18nStrings.applyButtonLabel": "Aplicar",
+    "i18nStrings.customRelativeRangeOptionLabel": "Rango personalizado",
+    "i18nStrings.customRelativeRangeOptionDescription": "Establecer un rango personalizado en el pasado",
+    "i18nStrings.customRelativeRangeUnitLabel": "Unidad de tiempo",
+    "i18nStrings.customRelativeRangeDurationLabel": "Duración",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "Introduzca una duración",
+    "i18nStrings.startDateLabel": "Fecha de inicio",
+    "i18nStrings.startTimeLabel": "Hora de inicio",
+    "i18nStrings.endDateLabel": "Fecha de finalización",
+    "i18nStrings.endTimeLabel": "Hora de finalización",
+    "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rango seleccionado de {startDate} a {endDate}",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {Último {amount} {unit}} other {Últimos {amount} {unit}}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "drawer": {
+    "i18nStrings.loadingText": "Cargando contenido"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "Notificaciones",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.inProgressIconAriaLabel": "En curso",
+    "i18nStrings.infoIconAriaLabel": "Información",
+    "i18nStrings.notificationBarAriaLabel": "Todas las notificaciones",
+    "i18nStrings.notificationBarText": "Notificaciones",
+    "i18nStrings.successIconAriaLabel": "Éxito",
+    "i18nStrings.warningIconAriaLabel": "Advertencia"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "Error"
+  },
+  "form": {
+    "errorIconAriaLabel": "Error"
+  },
+  "help-panel": {
+    "loadingText": "Cargando contenido"
+  },
+  "input": {
+    "clearAriaLabel": "Borrar"
+  },
+  "link": {
+    "externalIconAriaLabel": "Abrir en una pestaña nueva"
+  },
+  "modal": {
+    "closeAriaLabel": "Cerrar modal"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "Eliminar {option__label}"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "Página siguiente",
+    "ariaLabels.pageLabel": "Página {pageNumber} de todas las páginas",
+    "ariaLabels.previousPageLabel": "Página anterior"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "Valor",
+    "i18nStrings.detailsPercentage": "Porcentaje",
+    "i18nStrings.chartAriaRoleDescription": "Gráfico circular",
+    "i18nStrings.segmentAriaRoleDescription": "Segmento"
+  },
+  "popover": {
+    "dismissAriaLabel": "Cerrar ventana emergente"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "Todas las propiedades",
+    "i18nStrings.applyActionText": "Aplicar",
+    "i18nStrings.cancelActionText": "Cancelar",
+    "i18nStrings.clearFiltersText": "Borrar filtros",
+    "i18nStrings.editTokenHeader": "Editar filtro",
+    "i18nStrings.groupPropertiesText": "Propiedades",
+    "i18nStrings.groupValuesText": "Valores",
+    "i18nStrings.operationAndText": "y",
+    "i18nStrings.operationOrText": "o",
+    "i18nStrings.operatorContainsText": "Contiene",
+    "i18nStrings.operatorDoesNotContainText": "No contiene",
+    "i18nStrings.operatorDoesNotEqualText": "No es igual a",
+    "i18nStrings.operatorEqualsText": "Igual a",
+    "i18nStrings.operatorGreaterOrEqualText": "Mayor o igual que",
+    "i18nStrings.operatorGreaterText": "Mayor que",
+    "i18nStrings.operatorLessOrEqualText": "Menor o igual que",
+    "i18nStrings.operatorLessText": "Menor que",
+    "i18nStrings.operatorText": "Operador",
+    "i18nStrings.operatorsText": "Operadores",
+    "i18nStrings.propertyText": "Propiedad",
+    "i18nStrings.tokenLimitShowFewer": "Mostrar menos",
+    "i18nStrings.tokenLimitShowMore": "Mostrar más",
+    "i18nStrings.valueText": "Valor",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Eliminar filtro, {token__propertyKey} igual a {token__value}} not_equals {Eliminar filtro, {token__propertyKey} no es igual a {token__value}} greater_than {Eliminar filtro, {token__propertyKey} es mayor que {token__value}} greater_than_equal {Eliminar filtro, {token__propertyKey} es mayor o igual que {token__value}} less_than {Eliminar filtro, {token__propertyKey} es menor que {token__value}} less_than_equal {Eliminar filtro, {token__propertyKey} es menor o igual que {token__value}} contains {Eliminar filtro, {token__propertyKey} contiene {token__value}} not_contains {Eliminar filtro, {token__propertyKey} no contiene {token__value}} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "Elija una versión",
+    "i18nStrings.inContextBrowseButton": "Explorar S3",
+    "i18nStrings.inContextViewButton": "Ver",
+    "i18nStrings.inContextViewButtonAriaLabel": "Ver (se abre en una pestaña nueva)",
+    "i18nStrings.inContextLoadingText": "Cargando recurso",
+    "i18nStrings.inContextUriLabel": "URI de S3",
+    "i18nStrings.inContextVersionSelectLabel": "Versión del objeto",
+    "i18nStrings.modalTitle": "Elija un archivo en S3",
+    "i18nStrings.modalCancelButton": "Cancelar",
+    "i18nStrings.modalSubmitButton": "Elija",
+    "i18nStrings.modalBreadcrumbRootItem": "Buckets de S3",
+    "i18nStrings.selectionBuckets": "Buckets",
+    "i18nStrings.selectionObjects": "Objetos",
+    "i18nStrings.selectionVersions": "Versiones",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "Encuentra un bucket",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "Buscar objeto por el prefijo",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "Encuentre la versión",
+    "i18nStrings.selectionBucketsLoading": "Cargando buckets",
+    "i18nStrings.selectionBucketsNoItems": "No hay buckets",
+    "i18nStrings.selectionObjectsLoading": "Cargando objetos",
+    "i18nStrings.selectionObjectsNoItems": "No hay objetos",
+    "i18nStrings.selectionVersionsLoading": "Cargando versiones",
+    "i18nStrings.selectionVersionsNoItems": "No hay versiones",
+    "i18nStrings.filteringNoMatches": "No hay coincidencias",
+    "i18nStrings.filteringCantFindMatch": "No se encuentra ninguna coincidencia.",
+    "i18nStrings.clearFilterButtonText": "Borrar filtro",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "Nombre",
+    "i18nStrings.columnBucketCreationDate": "Fecha de creación",
+    "i18nStrings.columnBucketRegion": "Región",
+    "i18nStrings.columnObjectKey": "Clave",
+    "i18nStrings.columnObjectLastModified": "Modificado por última vez",
+    "i18nStrings.columnObjectSize": "Tamaño",
+    "i18nStrings.columnVersionID": "ID de la versión",
+    "i18nStrings.columnVersionLastModified": "Modificado por última vez",
+    "i18nStrings.columnVersionSize": "Tamaño",
+    "i18nStrings.validationPathMustBegin": "La ruta debe empezar por s3://",
+    "i18nStrings.validationBucketLowerCase": "El nombre del bucket debe empezar por un carácter o número en minúscula.",
+    "i18nStrings.validationBucketMustNotContain": "El nombre del bucket no debe contener caracteres en mayúscula.",
+    "i18nStrings.validationBucketLength": "El nombre del bucket debe tener entre 3 y 63 caracteres.",
+    "i18nStrings.validationBucketMustComplyDns": "El nombre del bucket debe cumplir con las convenciones de nomenclatura de DNS.",
+    "i18nStrings.labelSortedDescending": "{columnName}, ordenados de forma descendente",
+    "i18nStrings.labelSortedAscending": "{columnName}, ordenados de forma ascendente",
+    "i18nStrings.labelNotSorted": "{columnName}, no ordenados",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "Buckets",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "Objetos",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "Versiones",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "Encuentre {itemsType}",
+    "i18nStrings.labelRefresh": "Actualizar los datos",
+    "i18nStrings.labelBreadcrumbs": "Navegación S3",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 coincidencia} other {{count} coincidencias}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "Error",
+    "selectedAriaLabel": "Seleccionado",
+    "recoveryText": "Reintentar"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "Cerrar panel",
+    "i18nStrings.openButtonAriaLabel": "Abrir panel",
+    "i18nStrings.preferencesTitle": "Preferencias de panel dividido",
+    "i18nStrings.preferencesPositionLabel": "Posición del panel dividido",
+    "i18nStrings.preferencesPositionDescription": "Elija la posición predeterminada del panel dividido para el servicio.",
+    "i18nStrings.preferencesPositionSide": "Lateral",
+    "i18nStrings.preferencesPositionBottom": "Parte inferior",
+    "i18nStrings.preferencesConfirm": "Confirmar",
+    "i18nStrings.preferencesCancel": "Cancelar",
+    "i18nStrings.resizeHandleAriaLabel": "Cambiar el tamaño del panel dividido"
+  },
+  "table": {
+    "ariaLabels.submittingEditText": "Envío de edición",
+    "ariaLabels.successfulEditLabel": "Se ha editado correctamente",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
+    "columnDefinitions.editConfig.editIconAriaLabel": "editable"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "Desplácese hacia la izquierda",
+    "i18nStrings.scrollRightAriaLabel": "Desplácese hacia la derecha"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "Ingresar clave",
+    "i18nStrings.valuePlaceholder": "Ingresar valor",
+    "i18nStrings.addButton": "Agregar nueva etiqueta",
+    "i18nStrings.removeButton": "Eliminar",
+    "i18nStrings.removeButtonAriaLabel": "Eliminar {tag__key}",
+    "i18nStrings.undoButton": "Deshacer",
+    "i18nStrings.undoPrompt": "Esta etiqueta se eliminará una vez que se guarden los cambios.",
+    "i18nStrings.loading": "Cargando las etiquetas asociadas con este recurso",
+    "i18nStrings.keyHeader": "Clave",
+    "i18nStrings.valueHeader": "Valor",
+    "i18nStrings.optional": "opcional",
+    "i18nStrings.keySuggestion": "Clave de etiqueta personalizada",
+    "i18nStrings.valueSuggestion": "Valor de etiqueta personalizado",
+    "i18nStrings.emptyTags": "No hay etiquetas asociadas con el recurso.",
+    "i18nStrings.tooManyKeysSuggestion": "Tiene más claves de las que se pueden mostrar.",
+    "i18nStrings.tooManyValuesSuggestion": "Tiene más valores de los que se pueden mostrar.",
+    "i18nStrings.keysSuggestionLoading": "Cargando claves de etiqueta",
+    "i18nStrings.keysSuggestionError": "No se pudieron recuperar las claves de etiqueta.",
+    "i18nStrings.valuesSuggestionLoading": "Cargando valores de etiqueta",
+    "i18nStrings.valuesSuggestionError": "No se pudieron recuperar los valores de etiqueta.",
+    "i18nStrings.emptyKeyError": "Debe especificar una clave de etiqueta.",
+    "i18nStrings.maxKeyCharLengthError": "En una clave de etiqueta, puede utilizar 128 caracteres como máximo.",
+    "i18nStrings.maxValueCharLengthError": "En un valor de etiqueta, puede utilizar 256 caracteres como máximo.",
+    "i18nStrings.duplicateKeyError": "Debe especificar una clave de etiqueta que sea única.",
+    "i18nStrings.invalidKeyError": "La clave no es válida. Las claves solo pueden contener letras de un solo código, dígitos, espacios en blanco y uno de los siguientes símbolos: _.:/=+@-.",
+    "i18nStrings.invalidValueError": "El valor no es válido. Los valores solo pueden contener letras de un solo código, dígitos, espacios en blanco y uno de los siguientes símbolos: _.:/=+@-.",
+    "i18nStrings.awsPrefixError": "No se puede iniciar con “aws:”.",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {Alcanzó el límite de 1 etiqueta.} other {Alcanzó el límite de {tagLimit} etiquetas.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {Superó el límite de 1 etiqueta.} other {Superó el límite de {tagLimit} etiquetas.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {Puede agregar hasta {tagLimit} etiquetas.}}} false {{availableTags, plural, one {Puede agregar hasta 1 etiqueta más.} other {Puede agregar hasta {availableTags} etiquetas más.}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "Mostrar menos",
+    "i18nStrings.limitShowMore": "Mostrar más"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "Buscar",
+    "i18nStrings.searchDismissIconAriaLabel": "Cerrar búsqueda",
+    "i18nStrings.overflowMenuTriggerText": "Más",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "Cerrar menú",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "Volver",
+    "i18nStrings.overflowMenuTitleText": "Todos"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "Cargando",
+    "i18nStrings.tutorialListTitle": "Elija un tutorial",
+    "i18nStrings.tutorialListDownloadLinkText": "Descargar versión en PDF",
+    "i18nStrings.labelTutorialListDownloadLink": "Descargue la versión en PDF de este tutorial",
+    "i18nStrings.tutorialCompletedText": "Tutorial completado",
+    "i18nStrings.learnMoreLinkText": "Más información",
+    "i18nStrings.startTutorialButtonText": "Tutorial de inicio",
+    "i18nStrings.restartTutorialButtonText": "Tutorial de reinicio",
+    "i18nStrings.completionScreenTitle": "¡Enhorabuena! Ha completado el tutorial.",
+    "i18nStrings.feedbackLinkText": "Comentarios",
+    "i18nStrings.dismissTutorialButtonText": "Descartar tutorial",
+    "i18nStrings.taskTitle": "Tarea {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "Paso{stepNumber}:{stepTitle}",
+    "i18nStrings.labelExitTutorial": "Descartar tutorial",
+    "i18nStrings.labelTotalSteps": "Total de pasos: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "Pendiente",
+    "i18nStrings.labelsTaskStatus.in-progress": "En curso",
+    "i18nStrings.labelsTaskStatus.success": "Acción realizada correctamente"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "Paso {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "Paso {stepNumber} de {stepsCount}",
+    "i18nStrings.skipToButtonLabel": "Vaya a {task__title}",
+    "i18nStrings.navigationAriaLabel": "Pasos",
+    "i18nStrings.cancelButton": "Cancelar",
+    "i18nStrings.previousButton": "Anterior",
+    "i18nStrings.nextButton": "Siguiente",
+    "i18nStrings.optional": "opcional",
+    "i18nStrings.nextButtonLoadingAnnouncement": "Cargando paso siguiente",
+    "i18nStrings.submitButtonLoadingAnnouncement": "Formulario de envío"
+  }
+}

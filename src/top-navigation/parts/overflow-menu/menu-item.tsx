@@ -169,7 +169,7 @@ const ExpandableItem: React.FC<
 };
 
 function utilityComponentFactory(
-  utility: TopNavigationProps.Utility,
+  utility: TopNavigationProps.Utility & { onClose?: () => void },
   index: number,
   ref?: React.Ref<HTMLAnchorElement & HTMLButtonElement>
 ) {
@@ -187,6 +187,7 @@ function utilityComponentFactory(
         }
 
         fireCancelableEvent(utility.onClick, {}, event);
+        utility.onClose?.();
       };
 
       const content = (
@@ -283,7 +284,7 @@ function dropdownComponentFactory(
   );
 }
 
-type UtilityMenuItemProps = TopNavigationProps.Utility & { index: number };
+type UtilityMenuItemProps = TopNavigationProps.Utility & { index: number; onClose?: () => void };
 
 export const UtilityMenuItem = forwardRef(
   ({ index, ...props }: UtilityMenuItemProps, ref: React.Ref<HTMLAnchorElement & HTMLButtonElement>) => {

@@ -10,6 +10,7 @@ import InternalSpaceBetween from '../space-between/internal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
+import { useInternalI18n } from '../i18n/context';
 
 export const copyPreferences = ({
   pageSize,
@@ -90,66 +91,82 @@ interface PageSizePreferenceProps extends CollectionPreferencesProps.PageSizePre
   value?: number;
 }
 
-export const PageSizePreference = ({ title, options, value, onChange }: PageSizePreferenceProps) => (
-  <div className={styles['page-size']}>
-    <InternalFormField label={title} stretch={true} className={styles['page-size-form-field']}>
-      <InternalRadioGroup
-        className={styles['page-size-radio-group']}
-        value={`${value}`}
-        items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
-        onChange={({ detail }) => onChange(parseInt(detail.value, 10))}
-      />
-    </InternalFormField>
-  </div>
-);
+export const PageSizePreference = ({ title, options, value, onChange }: PageSizePreferenceProps) => {
+  const i18n = useInternalI18n('collection-preferences');
+  return (
+    <div className={styles['page-size']}>
+      <InternalFormField
+        label={i18n('pageSizePreference.title', title)}
+        stretch={true}
+        className={styles['page-size-form-field']}
+      >
+        <InternalRadioGroup
+          className={styles['page-size-radio-group']}
+          value={`${value}`}
+          items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
+          onChange={({ detail }) => onChange(parseInt(detail.value, 10))}
+        />
+      </InternalFormField>
+    </div>
+  );
+};
 
 interface WrapLinesPreferenceProps extends CollectionPreferencesProps.WrapLinesPreference {
   onChange: (value: boolean) => void;
   value?: boolean;
 }
 
-export const WrapLinesPreference = ({ label, description, value, onChange }: WrapLinesPreferenceProps) => (
-  <InternalCheckbox
-    checked={!!value}
-    description={description}
-    onChange={({ detail }) => onChange(detail.checked)}
-    className={styles['wrap-lines']}
-  >
-    {label}
-  </InternalCheckbox>
-);
+export const WrapLinesPreference = ({ label, description, value, onChange }: WrapLinesPreferenceProps) => {
+  const i18n = useInternalI18n('collection-preferences');
+  return (
+    <InternalCheckbox
+      checked={!!value}
+      description={i18n('wrapLinesPreference.description', description)}
+      onChange={({ detail }) => onChange(detail.checked)}
+      className={styles['wrap-lines']}
+    >
+      {i18n('wrapLinesPreference.label', label)}
+    </InternalCheckbox>
+  );
+};
 
 interface StripedRowsPreferenceProps extends CollectionPreferencesProps.StripedRowsPreference {
   onChange: (value: boolean) => void;
   value?: boolean;
 }
 
-export const StripedRowsPreference = ({ label, description, value, onChange }: StripedRowsPreferenceProps) => (
-  <InternalCheckbox
-    checked={!!value}
-    description={description}
-    onChange={({ detail }) => onChange(detail.checked)}
-    className={styles['striped-rows']}
-  >
-    {label}
-  </InternalCheckbox>
-);
+export function StripedRowsPreference({ label, description, value, onChange }: StripedRowsPreferenceProps) {
+  const i18n = useInternalI18n('collection-preferences');
+  return (
+    <InternalCheckbox
+      checked={!!value}
+      description={i18n('stripedRowsPreference.description', description)}
+      onChange={({ detail }) => onChange(detail.checked)}
+      className={styles['striped-rows']}
+    >
+      {i18n('stripedRowsPreference.label', label)}
+    </InternalCheckbox>
+  );
+}
 
 interface ContentDensityPreferenceProps extends CollectionPreferencesProps.ContentDensityPreference {
   onChange: (value: 'comfortable' | 'compact') => void;
   value?: 'comfortable' | 'compact';
 }
 
-export const ContentDensityPreference = ({ label, description, value, onChange }: ContentDensityPreferenceProps) => (
-  <InternalCheckbox
-    checked={value === 'compact'}
-    description={description}
-    onChange={({ detail }) => onChange(detail.checked ? 'compact' : 'comfortable')}
-    className={styles['content-density']}
-  >
-    {label}
-  </InternalCheckbox>
-);
+export const ContentDensityPreference = ({ label, description, value, onChange }: ContentDensityPreferenceProps) => {
+  const i18n = useInternalI18n('collection-preferences');
+  return (
+    <InternalCheckbox
+      checked={value === 'compact'}
+      description={i18n('contentDensityPreference.description', description)}
+      onChange={({ detail }) => onChange(detail.checked ? 'compact' : 'comfortable')}
+      className={styles['content-density']}
+    >
+      {i18n('contentDensityPreference.label', label)}
+    </InternalCheckbox>
+  );
+};
 
 interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.StickyColumnsPreference {
   onChange: (value?: { first?: number; last?: number }) => void;

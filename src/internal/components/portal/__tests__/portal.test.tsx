@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import Portal, { PortalProps } from '../index';
+import Portal, { PortalProps } from '../../../../../lib/components/internal/components/portal';
 
 function renderPortal(props: PortalProps) {
   const { rerender, unmount } = render(<Portal {...props} />);

@@ -1,62 +1,99 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { describeEachAppLayout, drawersConfigurations, renderComponent } from './utils';
+import { describeEachAppLayout, renderComponent, singleDrawer, manyDrawers, findActiveDrawerLandmark } from './utils';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import { render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { KeyCode } from '../../../lib/components/internal/keycode';
+import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
 }));
 
-describeEachAppLayout(() => {
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [100, () => {}],
+}));
+
+describeEachAppLayout(size => {
   test(`should not render drawer when it is not defined`, () => {
-    const { wrapper, rerender } = renderComponent(
-      <AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />
-    );
-    expect(wrapper.findDrawersTriggers()!).toHaveLength(1);
+    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
-  });
-});
-
-describe('Classic only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(false);
-    (useMobile as jest.Mock).mockReturnValue(false);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
-    (useMobile as jest.Mock).mockReset();
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
   });
 
-  test(`Moves focus to slider when opened`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
-
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
-  });
-
-  test('should change size via keyboard events on slider handle', async () => {
-    const drawersOpen = {
+  test('should not apply drawers treatment to the tools if the drawers array is empty', () => {
+    const emptyDrawerItems = {
       drawers: {
-        activeDrawerId: 'security',
-        items: drawersConfigurations.drawersResizableItems,
+        ariaLabel: 'Drawers',
+        items: [],
       },
     };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
-    act(() => wrapper.findDrawersSlider()!.keydown(KeyCode.left));
-    await act(async () => {
-      await requestAnimationFramePromise();
-    });
-    // Drawer grows after a left keydown (10px increments)
-    expect(wrapper.findActiveDrawer()!.getElement().style.width).toBe('300px');
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...emptyDrawerItems} />);
+
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper.findToolsToggle()).toBeFalsy();
+  });
+
+  test('ignores tools when drawers API is used', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+
+    expect(wrapper.findToolsToggle()).toBeFalsy();
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+  });
+
+  test('should open active drawer on click of overflow item', () => {
+    const { container } = render(<AppLayout contentType="form" {...manyDrawers} />);
+    const wrapper = createWrapper(container).findAppLayout()!;
+    const buttonDropdown = createWrapper(container).findButtonDropdown();
+
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    buttonDropdown!.openDropdown();
+    buttonDropdown!.findItemById('5')!.click();
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
+  test('renders aria-labels', async () => {
+    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
+    wrapper.findDrawerTriggerById('security')!.click();
+    expect(findActiveDrawerLandmark(wrapper)!.getElement()).toHaveAttribute('aria-label', 'Security drawer content');
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Security close button');
+  });
+
+  test('renders resize only on resizable drawer', async () => {
+    const drawers: Required<InternalDrawerProps> = {
+      drawers: {
+        items: [
+          singleDrawer.drawers.items[0],
+          {
+            ...singleDrawer.drawers.items[0],
+            id: 'security-resizable',
+            resizable: true,
+          },
+        ],
+      },
+    };
+    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...drawers} />);
+
+    wrapper.findDrawerTriggerById('security')!.click();
+    expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
+
+    wrapper.findDrawerTriggerById('security-resizable')!.click();
+    if (size === 'desktop') {
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeTruthy();
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Security resize handle'
+      );
+    } else {
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
+    }
   });
 });
-
-function requestAnimationFramePromise() {
-  return new Promise(resolve => requestAnimationFrame(resolve));
-}

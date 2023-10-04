@@ -5,15 +5,18 @@ import { act, render } from '@testing-library/react';
 import Mockdate from 'mockdate';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
+import FormField from '../../../lib/components/form-field';
 import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 import { changeMode } from './change-mode';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from '../../../lib/components/date-range-picker/styles.css.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
@@ -80,6 +83,44 @@ describe('Date range picker', () => {
     test('controlId', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, controlId: 'test' });
       expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
+    });
+
+    test('does not pass through form field context to dropdown elements', () => {
+      const { container } = render(
+        <FormField label="Label">
+          <DateRangePicker {...defaultProps} />
+        </FormField>
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      act(() => wrapper.openDropdown());
+      const dropdown = wrapper.findDropdown()!;
+
+      expect(dropdown.findRelativeRangeRadioGroup()!.getElement()).toHaveAccessibleName(
+        i18nStrings.relativeRangeSelectionHeading
+      );
+
+      dropdown.findRelativeRangeRadioGroup()?.findButtons().at(-1)!.findNativeInput().click();
+      expect(dropdown.findCustomRelativeRangeDuration()!.findNativeInput().getElement()).toHaveAccessibleName(
+        i18nStrings.customRelativeRangeDurationLabel
+      );
+      expect(dropdown.findCustomRelativeRangeUnit()!.findTrigger().getElement()).toHaveAccessibleName(
+        [i18nStrings.customRelativeRangeUnitLabel, 'minutes'].join(' ')
+      );
+
+      changeMode(wrapper, 'absolute');
+
+      expect(dropdown.findStartDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.startDateLabel
+      );
+      expect(dropdown.findStartTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.startTimeLabel
+      );
+      expect(dropdown.findEndDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.endDateLabel
+      );
+      expect(dropdown.findEndTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.endTimeLabel
+      );
     });
   });
 
@@ -310,6 +351,35 @@ describe('Date range picker', () => {
         'DateRangePicker',
         'The provided value does not correspond to the current range selector mode. Reverting back to default.'
       );
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using mode selector and modal footer props from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'date-range-picker': {
+              'i18nStrings.relativeModeTitle': 'Custom relative',
+              'i18nStrings.absoluteModeTitle': 'Custom absolute',
+              'i18nStrings.clearButtonLabel': 'Custom clear',
+              'i18nStrings.cancelButtonLabel': 'Custom cancel',
+              'i18nStrings.applyButtonLabel': 'Custom apply',
+            },
+          }}
+        >
+          <DateRangePicker {...defaultProps} i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      wrapper.openDropdown();
+      const modeSwitch = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSelect()!;
+      modeSwitch.openDropdown();
+      expect(modeSwitch.findDropdown().findOption(1)!.getElement()).toHaveTextContent('Custom relative');
+      expect(modeSwitch.findDropdown().findOption(2)!.getElement()).toHaveTextContent('Custom absolute');
+      expect(wrapper.findDropdown()!.findClearButton()!.getElement()).toHaveTextContent('Custom clear');
+      expect(wrapper.findDropdown()!.findCancelButton()!.getElement()).toHaveTextContent('Custom cancel');
+      expect(wrapper.findDropdown()!.findApplyButton()!.getElement()).toHaveTextContent('Custom apply');
     });
   });
 });

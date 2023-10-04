@@ -29,8 +29,9 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   disabled?: boolean;
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
-  i18nStrings: PropertyFilterProps.I18nStrings;
+  i18nStrings?: PropertyFilterProps.I18nStrings;
   /**
    * Accepts a human-readable, localized string that indicates the number of results. For example, "1 match" or "165 matches."
    * If the total number of results is unknown, also include an indication that there may be more results than
@@ -137,6 +138,11 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    */
   customControl?: React.ReactNode;
   /**
+   * A slot that replaces the standard "Clear filter" button.
+   * When using this slot, make sure to still provide a mechanism to clear all filters.
+   */
+  customFilterActions?: React.ReactNode;
+  /**
    * Set `asyncProperties` if you need to load `filteringProperties` asynchronously. This would cause extra `onLoadMore`
    * events to fire calling for more properties.
    */
@@ -145,6 +151,15 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * Specifies the maximum number of displayed tokens. If the property isn't set, all of the tokens are displayed.
    */
   tokenLimit?: number;
+  /**
+   * The label that will be passed down to the Autosuggest `ariaLabel` property.
+   * See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more details.
+   */
+  filteringAriaLabel?: string;
+  /**
+   * Placeholder for the filtering input.
+   */
+  filteringPlaceholder?: string;
   /**
    * Displayed when there are no options to display.
    * This is only shown when `statusType` is set to `finished` or not set at all.
@@ -224,14 +239,17 @@ export namespace PropertyFilterProps {
 
   export interface I18nStrings {
     /**
-     * Label that will be passed down to the Autosuggest `ariaLabel` property.
-     * See the [Autosuggest API](/system/components/autosuggest/?tabId=api) page for more details.
+     * @deprecated Use `filteringAriaLabel` on the component instead.
      */
-    filteringAriaLabel: string;
+    filteringAriaLabel?: string;
+
+    /**
+     * @deprecated Use `filteringPlaceholder` on the component instead.
+     */
+    filteringPlaceholder?: string;
+
     dismissAriaLabel?: string;
     clearAriaLabel?: string;
-
-    filteringPlaceholder?: string;
     groupValuesText?: string;
     groupPropertiesText?: string;
     operatorsText?: string;

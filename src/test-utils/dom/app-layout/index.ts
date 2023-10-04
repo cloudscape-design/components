@@ -55,19 +55,15 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button']);
   }
 
-  findDrawersDesktopTriggersContainer(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles['drawers-desktop-triggers-container']);
-  }
-
-  findDrawersMobileTriggersContainer(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles['drawers-mobile-triggers-container']);
-  }
-
-  findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] | null {
+  findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
     return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
 
-  findDrawersSlider(): ElementWrapper | null {
+  findDrawerTriggerById(id: string): ElementWrapper<HTMLButtonElement> | null {
+    return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
+  }
+
+  findActiveDrawerResizeHandle(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['drawers-slider']);
   }
 }

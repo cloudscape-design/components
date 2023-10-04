@@ -41,6 +41,6 @@ export default class AlertWrapper extends ComponentWrapper {
   }
 
   findActionSlot(): ElementWrapper | null {
-    return this.findByClassName(styles.action);
+    return this.findByClassName(styles['action-slot']);
   }
 }

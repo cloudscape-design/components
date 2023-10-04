@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { ButtonProps } from '../../button/interfaces';
 import { togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
 import { IconProps } from '../../icon/interfaces';
@@ -14,14 +13,14 @@ export interface DesktopDrawerProps {
   toggleClassName: string;
   closeClassName: string;
   toggleRefs: {
-    toggle: React.Ref<ButtonProps.Ref>;
-    close: React.Ref<ButtonProps.Ref>;
+    toggle: React.Ref<{ focus(): void }>;
+    close: React.Ref<{ focus(): void }>;
   };
   width: number;
   topOffset: number | undefined;
   bottomOffset: number | undefined;
   ariaLabels: AppLayoutProps.Labels | undefined;
-  drawersAriaLabels?: DrawerItemAriaLabels | undefined;
+  drawersAriaLabels?: { mainLabel: string | undefined; closeLabel: string | undefined; openLabel: string | undefined };
   children: React.ReactNode;
   type: keyof typeof togglesConfig;
   isMobile: boolean;
@@ -46,8 +45,6 @@ export interface ResizableDrawerProps extends DesktopDrawerProps {
 }
 
 export interface DrawerTriggersBarProps {
-  contentClassName: string;
-  toggleClassName: string;
   topOffset: number | undefined;
   bottomOffset: number | undefined;
   isMobile: boolean;
@@ -56,6 +53,7 @@ export interface DrawerTriggersBarProps {
     activeDrawerId?: string;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
     ariaLabel?: string;
+    overflowAriaLabel?: string;
   };
 }
 
@@ -77,14 +75,7 @@ export interface DrawerItem {
   resizable?: boolean;
   defaultSize?: number;
   onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
-}
-
-export interface SizeControlProps {
-  position: 'side';
-  splitPanelRef?: React.RefObject<HTMLDivElement>;
-  handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
+  badge?: boolean;
 }
 
 export interface InternalDrawerProps {
@@ -94,5 +85,6 @@ export interface InternalDrawerProps {
     onChange?: NonCancelableEventHandler<string>;
     onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
     ariaLabel?: string;
+    overflowAriaLabel?: string;
   };
 }

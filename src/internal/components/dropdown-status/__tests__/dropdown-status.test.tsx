@@ -23,7 +23,7 @@ function renderComponent(props: DropdownStatusPropsExtended) {
   const wrapper = createWrapper(container!);
   return {
     getStickyState: () => getByTestId('sticky-state').textContent,
-    getContent: () => getByTestId('content').textContent,
+    getContent: () => getByTestId('content').textContent?.trim(),
     getIcon: () => wrapper.findStatusIndicator()!.findByClassName(statusIconStyles.icon)!.getElement(),
   };
 }
@@ -38,11 +38,23 @@ describe('useDropdownStatus', () => {
     expect(getContent()).toBe('hello world');
   });
 
-  test('renders error indicator', () => {
+  test('renders error text', () => {
     const { getContent, getStickyState } = renderComponent({
       statusType: 'error',
       errorText: 'we got a problem',
       recoveryText: 'do not worry',
+    });
+
+    expect(getStickyState()).toBe('true');
+    expect(getContent()).toBe('we got a problem');
+  });
+
+  test('renders error text with recovery button if has recovery callback', () => {
+    const { getContent, getStickyState } = renderComponent({
+      statusType: 'error',
+      errorText: 'we got a problem',
+      recoveryText: 'do not worry',
+      hasRecoveryCallback: true,
     });
 
     expect(getStickyState()).toBe('true');
@@ -106,6 +118,7 @@ describe('useDropdownStatus', () => {
       errorText: 'we got a problem',
       recoveryText: 'do not worry',
       errorIconAriaLabel: 'error-icon',
+      hasRecoveryCallback: true,
     });
 
     expect(getContent()).toBe('we got a problem do not worry');
@@ -139,6 +152,7 @@ describe('useDropdownStatus', () => {
       isFiltered: true,
       errorText: 'We got a problem',
       recoveryText: 'do not worry',
+      hasRecoveryCallback: true,
     });
     expect(getContent()).toBe('We got a problem do not worry');
   });

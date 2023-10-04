@@ -17,7 +17,7 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  padding: awsui.$space-scaled-xs 0 awsui.$space-scaled-xxs;
+  padding: awsui.$space-scaled-xs 0 awsui.$space-table-header-tools-bottom;
 
   &-filtering {
     @supports (flex-basis: fit-content) {
@@ -63,9 +63,9 @@
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  padding-top: awsui.$space-table-content-top;
-  padding-bottom: awsui.$space-table-content-bottom;
   overflow-x: auto;
+
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
   &.variant-stacked,
   &.variant-container {
     & > .table {
@@ -73,18 +73,15 @@
       padding-right: awsui.$space-table-horizontal;
     }
   }
-  &.variant-embedded {
-    padding-bottom: awsui.$space-table-embedded-content-bottom;
-  }
-  &.has-header {
-    padding-top: 0px;
-  }
-  &.has-footer {
-    padding-bottom: 0px;
+  &.variant-container:not(.has-footer) {
+    padding-bottom: awsui.$space-table-content-bottom;
   }
   &:not(.has-header) {
     border-top-right-radius: awsui.$border-radius-container;
     border-top-left-radius: awsui.$border-radius-container;
+  }
+  &::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Safari and Chrome */
   }
 
   @include focus-visible.when-visible {
@@ -143,24 +140,6 @@ filter search icon.
   }
 }
 
-.sticky-scrollbar {
-  height: 15px;
-  position: fixed;
-  display: none;
-  overflow-x: auto;
-  overflow-y: hidden;
-  margin-top: -15px;
-  bottom: 0;
-  width: 100%;
-
-  &-content {
-    height: 15px;
-  }
-  &-visible {
-    display: block;
-  }
-}
-
 /*
 The dynamic height dark header needs a background that will cover
 the default white background of the container component.
@@ -194,14 +173,20 @@ the default white background of the container component.
 }
 
 .header-controls {
-  padding-top: awsui.$space-container-header-vertical;
-  padding-bottom: awsui.$space-container-header-vertical;
+  padding-top: awsui.$space-container-header-top;
+  padding-bottom: awsui.$space-container-header-bottom;
+
+  &.variant-full-page {
+    padding-top: 0;
+    padding-bottom: calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
+  }
   &.variant-stacked,
   &.variant-container {
     padding-left: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
     padding-right: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
   }
-  &.variant-embedded {
+  &.variant-embedded,
+  &.variant-borderless {
     padding-left: awsui.$space-table-header-horizontal;
     padding-right: awsui.$space-table-header-horizontal;
     padding-top: awsui.$space-table-embedded-header-top;
@@ -218,6 +203,18 @@ the default white background of the container component.
 
 .footer {
   padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
+  &-with-pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-s;
+  }
+  &-pagination {
+    // Align the footer pagination on the right
+    margin-left: auto;
+  }
 }
 
 .thead-active,

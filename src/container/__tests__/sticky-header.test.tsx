@@ -23,7 +23,7 @@ jest.mock('../../internal/utils/dom', () => ({
   findUpUntil: jest.fn(),
 }));
 
-const defaultContext = { stickyOffsetTop: 0, stickyOffsetBottom: 0, hasBreadcrumbs: false };
+const defaultContext = { stickyOffsetTop: 0, stickyOffsetBottom: 0 };
 beforeEach(() => {
   jest.resetAllMocks();
 });

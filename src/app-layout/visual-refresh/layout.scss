@@ -3,54 +3,88 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/styles' as styles;
-@use '../../internal/styles/tokens' as awsui;
 @use '../constants' as constants;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
 
 /*
-  The first and last column definitions have two responsibilities.
-  If Navigation and/or Tools exist then that will determine the width of
-  the first and last columns, respectively, and the content in these drawers
-  will create horizontal space from the center column content. However, if the
-  navigationHide and/or toolsHide properties have been set then the first
-  and last column width will default to the minimum content gap properties to
-  create the necessary visual space around the main content.
+The first and last column definitions have two responsibilities.
+If Navigation and/or Tools exist then that will determine the width of
+the first and last columns, respectively, and the content in these drawers
+will create horizontal space from the center column content. However, if the
+navigationHide and/or toolsHide properties have been set then the first
+and last column width will default to the minimum content gap properties to
+create the necessary visual space around the main content.
 
-  The minimum content width property is set to zero and applied under all
-  circumstances regardless of whether the minContentWidth property is
-  explicitly set in script.
-  */
+The minimum content width property is set to zero and applied under all
+circumstances regardless of whether the minContentWidth property is
+explicitly set in script.
+*/
 .layout {
+  #{custom-props.$breadcrumbsGap}: 0px;
   #{custom-props.$contentGapLeft}: 0px;
   #{custom-props.$contentGapRight}: 0px;
   #{custom-props.$contentHeight}: calc(100vh - var(#{custom-props.$headerHeight}) - var(#{custom-props.$footerHeight}));
+  #{custom-props.$containerFirstGap}: 0px;
+  #{custom-props.$containerFirstOverlapExtension}: 0px;
   #{custom-props.$defaultMaxContentWidth}: 1280px;
   #{custom-props.$defaultMinContentWidth}: 0px;
   #{custom-props.$footerHeight}: 0px;
+  #{custom-props.$headerGap}: 0px;
   #{custom-props.$headerHeight}: 0px;
   #{custom-props.$layoutWidth}: 0px;
+  #{custom-props.$mainGap}: 0px;
   #{custom-props.$mainOffsetLeft}: 0px;
+  #{custom-props.$mainTemplateRows}: 1fr;
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
   #{custom-props.$mobileBarHeight}: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
+  #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
-  #{custom-props.$offsetTop}: 0px;
+  #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
   #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
+  color: awsui.$color-text-body-default;
   display: grid;
-  grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr;
+  grid-template-areas:
+    '. . mobileToolbar . .'
+    '. . notificationsGap . .'
+    '. . notifications . .'
+    '. . breadcrumbsGap . .'
+    '. . breadcrumbs . .'
+    '. . headerGap . .'
+    '. . header . .'
+    '. . mainGap . .'
+    '. . main . .'
+    '. . main . .';
   grid-template-columns:
     min-content
     minmax(var(#{custom-props.$contentGapLeft}), 1fr)
     minmax(var(#{custom-props.$defaultMinContentWidth}), var(#{custom-props.$defaultMaxContentWidth}))
     minmax(var(#{custom-props.$contentGapRight}), 1fr)
     min-content;
+  grid-template-rows:
+    auto // mobileToolbar template area
+    var(#{custom-props.$notificationsGap})
+    auto // notifications template area
+    var(#{custom-props.$breadcrumbsGap})
+    auto // breadcrumbs template area
+    var(#{custom-props.$headerGap})
+    auto // contentHeader template area
+    var(#{custom-props.$mainGap})
+    var(#{custom-props.$overlapHeight}) // main template area with overlap
+    var(#{custom-props.$mainTemplateRows}); // main template area
+  min-height: var(#{custom-props.$contentHeight});
   position: relative;
-  color: awsui.$color-text-body-default;
 
-  // Add unified max-width for AppLayout content based on breakpoints.
+  /*
+  Add unified max-width for AppLayout content based on breakpoints. Only use the max content 
+  width custom property for the middle column definition if the maxContentWidth property 
+  has been explicitly set to a non-zero value and subsequently set the has-max-content-width 
+  data attribute to true.
+  */
   &:not(.has-max-content-width) {
     @each $breakpoint, $width in constants.$adaptive-content-widths {
       @include styles.media-breakpoint-up($breakpoint) {
@@ -75,6 +109,11 @@
     #{custom-props.$defaultMaxContentWidth}: var(#{custom-props.$maxContentWidth});
   }
 
+  // Override the dark header overlap height property if disableContentHeaderOverlap is true.
+  &.is-overlap-disabled {
+    #{custom-props.$overlapHeight}: 0;
+  }
+
   /*
   Warning! This is a hack! We are implementing a short term fix to prevent the
   tools drawer from potentially getting pushed off screen. Currently there is no
@@ -92,75 +131,35 @@
   }
 
   /*
-  Override the dark header overlap height property if isOverlapDisabled is true.
-  The is computed state from props that can be found in the AppLayout context.
-  */
-  &.is-overlap-disabled {
-    #{custom-props.$overlapHeight}: 0;
-  }
-
-  /*
-  If disableBodyScroll is false (this is the overwhelming majority
-  of use cases and the default scenario) then the scrollable element
-  will be the document body which is a parent of the AppLayout component.
-  The Layout should have a minimum but not fixed content height set to the
-  viewport height less the header and footer height set by the resize
-  observers in the component. The offset top value for components
-  with position: sticky (AppBar, Navigation, Notifications, Tools) will
-  be set to the header height value. The offset top value for AppLayout
-  contentMain children with position: sticky will be the combined value of the
-  header and notifications height in addition to the notifications top margin
+  The offset top value for components with position: sticky (AppBar, Navigation, 
+  Notifications, Tools) will be set to the header height value. The offset top value 
+  for AppLayout contentMain children with position: sticky will be the combined value 
+  of the header and notifications height in addition to the notifications top margin
   and some additional vertical space for aesthetics.
   */
-  &:not(.disable-body-scroll) {
-    #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
-    min-height: var(#{custom-props.$contentHeight});
-  }
-
-  &:not(.disable-body-scroll):not(.has-sticky-notifications) {
+  &:not(.has-sticky-notifications):not(.has-sticky-background) {
     #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
   }
 
-  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &:not(.disable-body-scroll).has-sticky-notifications {
+  &:not(.has-sticky-notifications).has-sticky-background {
+    #{custom-props.$offsetTopWithNotifications}: calc(var(#{custom-props.$headerHeight}) + #{awsui.$space-scaled-s});
+  }
+
+  /* stylelint-disable scss/operator-no-newline-after */
+  &.has-sticky-notifications:not(.has-sticky-background) {
     #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
+      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
+        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xxxs}
     );
   }
 
-  /*
-  If disableBodyScroll is true (very uncommon use case) then the
-  AppLayout component and not the document body will be the scrollable
-  element. This requires a fixed height instead of a minimum height
-  with a vertical scroll policy. The offset top value for components
-  with position: sticky (AppBar, Navigation, Notifications, Tools) will
-  be set zero since the AppLayout is nearest scrollable parent and any
-  existing header does not matter. The offset top value for AppLayout
-  contentMain children with position: sticky will be the value of the
-  notifications height in addition to the notifications top margin
-  and some additional vertical space for aesthetics.
-  */
-  &.disable-body-scroll {
-    #{custom-props.$offsetTop}: 0px;
-    grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr auto;
-    height: var(#{custom-props.$contentHeight});
-    overflow-y: scroll;
-  }
-
-  &.disable-body-scroll.has-split-panel.split-panel-position-bottom {
-    grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) repeat(2, auto);
-  }
-
-  &.disable-body-scroll:not(.has-sticky-notifications) {
-    #{custom-props.$offsetTopWithNotifications}: 0px;
-  }
-
-  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &.disable-body-scroll.has-sticky-notifications {
+  &.has-sticky-notifications.has-sticky-background {
     #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxs}
+      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
+        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-scaled-s}
     );
   }
+  /* stylelint-enable scss/operator-no-newline-after */
 
   /*
   In desktop viewports the content gap property for the left and right
@@ -168,9 +167,9 @@
   or toolsHide property is set. This ensures adequate horizontal space
   for the center column from the edges of the viewport when there is
   not left or right content.
-
-  Warning! If these design tokens change it will adversely impact the
-  calculation used to determine the Split Panel maximum width in the
+  
+  Warning! If these design tokens change it will adversely impact the 
+  calculation used to determine the Split Panel maximum width in the 
   handleSplitPanelMaxWidth function in the context.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -185,13 +184,132 @@
 
   /*
   In mobile viewports the Navigation and Tools drawers are hidden
-  and triggered by the AppBar which then take up the entire viewport.
+  and triggered by the MobileToolbar which then take up the entire viewport.
   The center column needs permanent space from the horizontal viewport
   edges regardless of whether or not there is a Navigation or Tools.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$contentGapLeft}: #{awsui.$space-l};
     #{custom-props.$contentGapRight}: #{awsui.$space-l};
+  }
+
+  // Vertically align the notifications with the trigger buttons
+  &.content-first-child-notifications {
+    #{custom-props.$notificationsGap}: #{awsui.$space-xs};
+  }
+
+  // Vertically align the breadcrumbs with the trigger buttons
+  &.has-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
+  }
+
+  // Vertically align the content header with the trigger buttons
+  &.content-first-child-header,
+  &.content-first-child-notifications:not(.has-breadcrumbs).has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  // The Header gap is slightly smaller when it comes after the Breadcrumbs
+  &.has-breadcrumbs.has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  // Set the Main gap when it follows the Notifications
+  &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header) {
+    #{custom-props.$mainGap}: #{awsui.$space-xs};
+  }
+
+  // Set gap to be used by content that has a container on top (e.g. content-layout without header) when breadcrumbs are present
+  &.has-breadcrumbs:not(.has-header) {
+    #{custom-props.$containerFirstGap}: calc(var(#{custom-props.$breadcrumbsGap}) - var(#{custom-props.$mainGap}));
+  }
+
+  // Set the Main gap when it follows the Breadcrumbs without an overlap
+  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  // Set the Main gap when it follows the Breadcrumbs with an overlap
+  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
+  }
+
+  // Set the Main gap when it follows the Header
+  &.has-header {
+    #{custom-props.$mainGap}: #{awsui.$space-content-header-padding-bottom};
+  }
+
+  // Set the Main gap when it is the first page content
+  &.content-first-child-main:not(.is-overlap-disabled),
+  &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
+  }
+
+  // Set an extension of the overlap and an additional gap on top to be used by content-layout without header
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    &.content-first-child-main:not(.has-header) {
+      #{custom-props.$containerFirstOverlapExtension}: #{awsui.$space-m};
+      #{custom-props.$containerFirstGap}: #{awsui.$space-xxs};
+    }
+  }
+
+  /*
+  Override the desktop gap values set above for the Notifications, Header, and Main
+  components for mobile viewports.
+  */
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    &.content-first-child-notifications {
+      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
+    }
+
+    &.content-first-child-header {
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
+    }
+
+    &.content-first-child-notifications:not(.has-breadcrumbs).has-header {
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
+    }
+
+    &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header),
+    &.content-first-child-main:not(.is-overlap-disabled) {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
+    }
+
+    &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+    }
+  }
+}
+
+/*
+If disableBodyScroll is true (very uncommon use case) then the AppLayout component 
+and not the document body will be the scrollable element. This requires a fixed height 
+instead of a minimum height with a vertical scroll policy. The offset top value for 
+components with position: sticky (MobileToolbar, Navigation, Notifications, Tools) will be 
+set zero since the AppLayout is nearest scrollable parent and any existing header does 
+not matter. The offset top value for AppLayout contentMain children with 
+position: sticky will be the value of the notifications height in addition to the 
+notifications top margin and some additional vertical space for aesthetics.
+*/
+.layout.disable-body-scroll {
+  #{custom-props.$mainTemplateRows}: 1fr auto;
+  #{custom-props.$offsetTop}: 0px;
+  height: var(#{custom-props.$contentHeight});
+  overflow-y: scroll;
+
+  &.has-split-panel.split-panel-position-bottom {
+    #{custom-props.$mainTemplateRows}: repeat(2, auto);
+  }
+
+  &:not(.has-sticky-notifications) {
+    #{custom-props.$offsetTopWithNotifications}: 0px;
+  }
+
+  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
+  &.has-sticky-notifications {
+    #{custom-props.$offsetTopWithNotifications}: calc(
+      var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxs}
+    );
   }
 }
 
@@ -202,3 +320,11 @@ when the navigation or tools drawers are open in responsive viewports.
 .block-body-scroll {
   overflow: hidden;
 }
+
+// Prevent content that is visually hidden behind drawers and content area in mobile view from receiving focus
+/* stylelint-disable selector-max-universal, selector-combinator-disallowed-list */
+.unfocusable,
+.unfocusable * {
+  visibility: hidden !important;
+}
+/* stylelint-enable selector-max-universal, selector-combinator-disallowed-list */

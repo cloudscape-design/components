@@ -8,6 +8,7 @@ import InternalStatusIndicator from '../../../status-indicator/internal';
 import InternalLink from '../../../link/internal';
 
 import styles from './styles.css.js';
+import { useInternalI18n } from '../../../i18n/context';
 
 interface ChartStatusContainerProps extends BaseComponentProps {
   statusType: 'loading' | 'finished' | 'error';
@@ -54,18 +55,21 @@ export default function ChartStatusContainer({
   isEmpty,
   showChart,
 }: ChartStatusContainerProps) {
+  const i18n = useInternalI18n('[charts]');
+
   const statusContainer = useMemo(() => {
     const handleRecoveryClick = (event: CustomEvent) => {
       event.preventDefault();
       fireNonCancelableEvent(onRecoveryClick);
     };
     if (statusType === 'error') {
+      const renderedRecoveryText = i18n('recoveryText', recoveryText);
       return (
         <span>
-          <InternalStatusIndicator type="error">{errorText}</InternalStatusIndicator>{' '}
-          {recoveryText && (
+          <InternalStatusIndicator type="error">{i18n('errorText', errorText)}</InternalStatusIndicator>{' '}
+          {!!renderedRecoveryText && !!onRecoveryClick && (
             <InternalLink onFollow={handleRecoveryClick} variant="recovery">
-              {recoveryText}
+              {renderedRecoveryText}
             </InternalLink>
           )}
         </span>
@@ -73,7 +77,7 @@ export default function ChartStatusContainer({
     }
 
     if (statusType === 'loading') {
-      return <InternalStatusIndicator type="loading">{loadingText}</InternalStatusIndicator>;
+      return <InternalStatusIndicator type="loading">{i18n('loadingText', loadingText)}</InternalStatusIndicator>;
     }
 
     if (isNoMatch) {
@@ -83,7 +87,7 @@ export default function ChartStatusContainer({
     if (isEmpty) {
       return <div className={styles.empty}>{empty}</div>;
     }
-  }, [statusType, onRecoveryClick, isEmpty, isNoMatch, recoveryText, loadingText, errorText, empty, noMatch]);
+  }, [i18n, statusType, onRecoveryClick, isEmpty, isNoMatch, recoveryText, loadingText, errorText, empty, noMatch]);
 
   return (
     <div className={styles.root} aria-live="polite" aria-atomic="true">

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -15,7 +15,18 @@ import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+
+import { FunnelMetrics } from '../internal/analytics';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import {
+  DATA_ATTR_FIELD_ERROR,
+  DATA_ATTR_FIELD_LABEL,
+  getFieldSlotSeletor,
+  getNameFromSelector,
+  getSubStepAllSelector,
+} from '../internal/analytics/selectors';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -81,6 +92,10 @@ export default function InternalFormField({
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
 
+  const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
+  const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
+
   const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText);
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
@@ -99,15 +114,61 @@ export default function InternalFormField({
     invalid: !!errorText || !!parentInvalid,
   };
 
+  const analyticsAttributes = {
+    [DATA_ATTR_FIELD_LABEL]: slotIds.label ? getFieldSlotSeletor(slotIds.label) : undefined,
+    [DATA_ATTR_FIELD_ERROR]: slotIds.error ? getFieldSlotSeletor(slotIds.error) : undefined,
+  };
+
+  useEffect(() => {
+    if (funnelInteractionId && errorText && funnelState.current !== 'complete') {
+      const stepName = getNameFromSelector(stepNameSelector);
+      const subStepName = getNameFromSelector(subStepNameSelector);
+
+      errorCount.current++;
+
+      // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
+      const errorIsVisible = (__internalRootRef?.current?.getBoundingClientRect()?.width ?? 0) > 0;
+
+      if (errorIsVisible) {
+        FunnelMetrics.funnelSubStepError({
+          funnelInteractionId,
+          subStepSelector,
+          subStepName,
+          subStepNameSelector,
+          stepNumber,
+          stepName,
+          stepNameSelector,
+          fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
+          fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
+          subStepAllSelector: getSubStepAllSelector(),
+        });
+      }
+
+      return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        errorCount.current--;
+      };
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
+
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root)}
+      ref={__internalRootRef}
+      {...analyticsAttributes}
+    >
       <div className={clsx(__hideLabel && styles['visually-hidden'])}>
         {label && (
           <label className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
             {label}
           </label>
         )}
-        {!__hideLabel && info && <span className={styles.info}>{info}</span>}
+        <InfoLinkLabelContext.Provider value={slotIds.label}>
+          {!__hideLabel && info && <span className={styles.info}>{info}</span>}
+        </InfoLinkLabelContext.Provider>
       </div>
 
       {description && (

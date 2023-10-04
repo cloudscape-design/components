@@ -82,7 +82,7 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
   }
 
   describe(`${componentName}`, () => {
-    const isGroupComponent = ['radio-group', 'tiles'].indexOf(componentName) !== -1;
+    const isGroupComponent = ['radio-group', 'tiles'].includes(componentName);
     if (!isGroupComponent) {
       describe('controlId', () => {
         test('applies controlId from FormField when controlId is not set on itself', () => {

@@ -14,6 +14,13 @@ export interface LinkProps extends BaseComponentProps {
    *     This can be used in cases where the interactivity is strongly implied by its context,
    *     such as in a table or a list of external links.
    * - `info` - Use for "info" links that link to content in a help panel.
+   *
+   * The default is `secondary`, except inside the following components where it defaults to `primary`:
+   * - Table
+   * - Cards
+   * - Alert
+   * - Popover
+   * - Help Panel (main `content` only)
    */
   variant?: LinkProps.Variant;
 
@@ -68,6 +75,7 @@ export interface LinkProps extends BaseComponentProps {
 
   /**
    * Adds an aria-label to the external icon.
+   * @i18n
    */
   externalIconAriaLabel?: string;
 

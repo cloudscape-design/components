@@ -5,11 +5,25 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import { TableBodyCell } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
 import { renderHook } from '../../__tests__/render-hook';
-import { useStickyColumns } from '../../../lib/components/table/use-sticky-columns';
+import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
+import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
+
+const tableRole = 'table';
 
 const testItem = {
   test: 'testData',
 };
+
+const stickyCellRef = jest.fn();
+
+jest.mock('../../../lib/components/table/sticky-columns', () => ({
+  ...jest.requireActual('../../../lib/components/table/sticky-columns'),
+  useStickyCellStyles: () => ({ ref: stickyCellRef }),
+}));
+
+afterEach(() => {
+  stickyCellRef.mockReset();
+});
 
 const column: TableProps.ColumnDefinition<typeof testItem> = {
   id: 'test',
@@ -31,7 +45,7 @@ const { result } = renderHook(() =>
   useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
 );
 
-const TestComponent = ({ isEditing = false }) => {
+const TestComponent = ({ isEditing = false, successfulEdit = false }) => {
   return (
     <table>
       <tbody>
@@ -46,6 +60,7 @@ const TestComponent = ({ isEditing = false }) => {
               activateEditLabel: (column, item) => `Edit ${item.test} ${column.id}`,
               cancelEditLabel: () => 'cancel edit',
               submitEditLabel: () => 'submit edit',
+              successfulEditLabel: () => 'edit successful',
             }}
             isEditable={true}
             isPrevSelected={false}
@@ -55,7 +70,10 @@ const TestComponent = ({ isEditing = false }) => {
             isSelected={false}
             wrapLines={false}
             stickyState={result.current}
+            successfulEdit={successfulEdit}
             columnId="id"
+            colIndex={0}
+            tableRole={tableRole}
           />
         </tr>
       </tbody>
@@ -88,6 +106,8 @@ const TestComponent2 = ({ column }: any) => {
             wrapLines={false}
             stickyState={result.current}
             columnId="id"
+            colIndex={0}
+            tableRole={tableRole}
           />
         </tr>
       </tbody>
@@ -141,5 +161,83 @@ describe('TableBodyCell', () => {
       },
     };
     render(<TestComponent2 column={col} />);
+  });
+
+  it('should call sticky columns ref on mount and unmount', () => {
+    const { unmount } = render(<TestComponent />);
+
+    expect(stickyCellRef).toHaveBeenCalledWith(expect.any(HTMLTableCellElement));
+
+    unmount();
+
+    expect(stickyCellRef).toHaveBeenCalledWith(null);
+  });
+
+  describe('success icon behaviour', () => {
+    const bodyCellSuccessIcon$ = `.${styles['body-cell-success']}`;
+
+    test('should not render success icon in default state when edit button is focused', () => {
+      const { container } = render(<TestComponent />);
+      screen.getByRole('button', { name: 'Edit testData test' }).focus();
+      expect(container.querySelector(bodyCellSuccessIcon$)!).not.toBeInTheDocument();
+    });
+
+    test('should not render success icon in edit mode', () => {
+      const { container } = render(<TestComponent isEditing={true} />);
+      expect(container.querySelector(bodyCellSuccessIcon$)!).not.toBeInTheDocument();
+    });
+
+    test('should render success icon and live region after a successful edit', () => {
+      const { container } = render(<TestComponent successfulEdit={true} />);
+      // Success icon is shown when cell is focused.
+      screen.getByRole('button', { name: 'Edit testData test' }).focus();
+
+      expect(container.querySelector(bodyCellSuccessIcon$)!).toBeInTheDocument();
+      expect(screen.getByText('edit successful')).toBeInTheDocument();
+    });
+
+    test('should not render success icon when cell lost focus and get focused again', () => {
+      const { container } = render(
+        <>
+          <TestComponent successfulEdit={true} />
+          <a href="#">dummy button</a>
+        </>
+      );
+      // Success icon is shown when cell is focused.
+      screen.getByRole('button', { name: 'Edit testData test' }).focus();
+      expect(container.querySelector(bodyCellSuccessIcon$)!).toBeInTheDocument();
+
+      // Success icon is hidden when cell lost focus.
+      screen.getByText('dummy button').focus();
+      expect(container.querySelector(bodyCellSuccessIcon$)!).not.toBeInTheDocument();
+
+      // Cell is focused again.
+      screen.getByRole('button', { name: 'Edit testData test' }).focus();
+      expect(container.querySelector(bodyCellSuccessIcon$)!).not.toBeInTheDocument();
+    });
+
+    test('should not render success icon when edit is cancelled after a successfully edit has been performed', () => {
+      // Successful edit has been performed.
+      const { container, rerender } = render(<TestComponent successfulEdit={true} />);
+      screen.getByRole('button', { name: 'Edit testData test' }).focus();
+      expect(container.querySelector(bodyCellSuccessIcon$)!).toBeInTheDocument();
+
+      // Switch into edit mode and click edit button (triggers onEditEnd which hides the success icon).
+      rerender(<TestComponent successfulEdit={true} isEditing={true} />);
+      fireEvent.click(screen.getByRole('button', { name: 'cancel edit' }));
+      expect(onEditEnd).toHaveBeenCalled();
+      rerender(<TestComponent successfulEdit={true} />);
+
+      expect(container.querySelector(bodyCellSuccessIcon$)!).not.toBeInTheDocument();
+    });
+
+    test('should call onEditStart when success icon is clicked', () => {
+      const { container } = render(<TestComponent successfulEdit={true} />);
+      // Success icon is shown when cell is focused.
+      screen.getByRole('button', { name: 'Edit testData test' }).focus();
+      const successIcon = container.querySelector(bodyCellSuccessIcon$)!;
+      fireEvent.mouseDown(successIcon);
+      expect(onEditStart).toHaveBeenCalled();
+    });
   });
 });

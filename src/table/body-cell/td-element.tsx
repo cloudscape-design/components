@@ -3,8 +3,10 @@
 import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
-import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
-import { getStickyClassNames } from '../utils.js';
+import { getStickyClassNames } from '../utils';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
+import { TableRole, getTableCellRoleProps } from '../table-role';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -28,9 +30,11 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
-  columnId: string;
+  columnId: PropertyKey;
+  colIndex: number;
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
+  tableRole: TableRole;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -56,24 +60,24 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasSelection,
       hasFooter,
       columnId,
+      colIndex,
       stickyState,
+      tableRole,
     },
     ref
   ) => {
-    let Element: 'th' | 'td' = 'td';
-    if (isRowHeader) {
-      Element = 'th';
-      nativeAttributes = {
-        ...nativeAttributes,
-        scope: 'row',
-      };
-    }
+    const Element = isRowHeader ? 'th' : 'td';
+
+    nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
 
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
       columnId,
       getClassName: props => getStickyClassNames(styles, props),
     });
+
+    const mergedRef = useMergeRefs(stickyStyles.ref, ref);
+
     return (
       <Element
         style={{ ...style, ...stickyStyles.style }}
@@ -96,14 +100,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        ref={node => {
-          if (node) {
-            stickyStyles.ref(node);
-            if (ref) {
-              (ref as React.MutableRefObject<HTMLTableCellElement>).current = node;
-            }
-          }
-        }}
+        ref={mergedRef}
         {...nativeAttributes}
       >
         {children}

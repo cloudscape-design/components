@@ -15,15 +15,15 @@ import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { createFlashbarWrapper, findList } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
-import { FlashbarProps, FlashType } from '../interfaces';
+import { FlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
 
-const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
+const sampleItems: Record<FlashbarProps.Type, FlashbarProps.MessageDefinition> = {
   error: { type: 'error', header: 'Error', content: 'There was an error' },
   success: { type: 'success', header: 'Success', content: 'Everything went fine' },
   warning: { type: 'warning', header: 'Warning' },
   info: { type: 'info', header: 'Information' },
-  progress: { type: 'info', loading: true, header: 'Operation in progress' },
+  'in-progress': { type: 'in-progress', header: 'Operation in progress' },
 };
 
 const defaultStrings = {
@@ -301,6 +301,31 @@ describe('Collapsible Flashbar', () => {
         expect(innerCounter!.querySelector(`[title="${ariaLabel}"]`)).toBeTruthy();
       }
     });
+
+    test.each([['success'], ['error'], ['info'], ['warning'], ['in-progress']] as FlashbarProps.Type[][])(
+      'item icon has aria-label from i18nStrings when no statusIconAriaLabel provided: type %s',
+      type => {
+        const wrapper = renderFlashbar({
+          i18nStrings: {
+            successIconAriaLabel: 'success',
+            errorIconAriaLabel: 'error',
+            infoIconAriaLabel: 'info',
+            warningIconAriaLabel: 'warning',
+            inProgressIconAriaLabel: 'in-progress',
+          },
+          items: [
+            {
+              header: 'The header',
+              content: 'The content',
+              type: type === 'in-progress' ? 'info' : type,
+              loading: type === 'in-progress',
+            },
+          ],
+        });
+
+        expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(type);
+      }
+    );
   });
 
   describe('Sticky', () => {

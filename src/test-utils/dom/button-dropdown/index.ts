@@ -7,14 +7,21 @@ import dropdownStyles from '../../../internal/components/dropdown/styles.selecto
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import buttonStyles from '../../../button/styles.selectors.js';
+import ButtonWrapper from '../button/index.js';
 
 export default class ButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles['button-dropdown'];
 
   findNativeButton(): ElementWrapper<HTMLButtonElement> {
-    // ButtonDropdown always has a button
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.find<HTMLButtonElement>(`button.${buttonStyles.button}`)!;
+    return this.findByClassName(styles['dropdown-trigger'])!.findByClassName<HTMLButtonElement>(
+      styles['test-utils-button-trigger']
+    )!;
+  }
+
+  findMainAction(): null | ButtonWrapper {
+    return (
+      this.findByClassName(styles['split-trigger'])?.findComponent(`.${buttonStyles.button}`, ButtonWrapper) ?? null
+    );
   }
 
   findOpenDropdown(): ElementWrapper | null {

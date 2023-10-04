@@ -11,7 +11,7 @@
 
 $_status-colors: (
   'error': awsui.$color-text-status-error,
-  'warning': awsui.$color-text-status-error,
+  'warning': awsui.$color-text-status-warning,
   'success': awsui.$color-text-status-success,
   'info': awsui.$color-text-status-info,
   'stopped': awsui.$color-text-status-inactive,
@@ -41,14 +41,25 @@ $_color-overrides: (
   }
 }
 
-.icon {
-  padding-right: awsui.$space-xxs;
-}
-
 .container {
-  display: inline-block;
-  word-break: break-all;
-  word-wrap: break-word;
+  &.display-inline {
+    @include styles.text-wrapping;
+    display: inline;
+
+    > .icon {
+      white-space: nowrap;
+    }
+  }
+
+  &.display-inline-block {
+    display: inline-block;
+    word-wrap: break-word;
+    word-break: break-all;
+
+    > .icon {
+      padding-right: awsui.$space-xxs;
+    }
+  }
 }
 
 .overflow-ellipsis {

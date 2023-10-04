@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import { FunnelContext } from '../../../../../lib/components/internal/analytics/context/analytics-context';
 import { useFunnel } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
+import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
 
 describe('useFunnel hook', () => {
   test('adds the correct data attributes', () => {
@@ -27,6 +28,14 @@ describe('useFunnel hook', () => {
           totalFunnelSteps: 0,
           funnelSubmit: () => {},
           funnelCancel: () => {},
+          submissionAttempt: 0,
+          funnelNextOrSubmitAttempt: () => {},
+          funnelState: { current: 'default' },
+          loadingButtonCount: { current: 0 },
+          errorCount: { current: 0 },
+          latestFocusCleanupFunction: { current: undefined },
+          isInFunnel: true,
+          wizardCount: { current: 0 },
         }}
       >
         <ChildComponent />
@@ -34,7 +43,7 @@ describe('useFunnel hook', () => {
     );
 
     const content = getByTestId('content');
-    expect(content).toHaveAttribute('data-analytics-funnel-interaction-id');
+    expect(content).toHaveAttribute(DATA_ATTR_FUNNEL_INTERACTION_ID);
   });
 
   test('calls funnelSubmit, funnelCancel and setFunnelInteractionId methods', () => {
@@ -63,6 +72,14 @@ describe('useFunnel hook', () => {
           setFunnelInteractionId,
           funnelSubmit,
           funnelCancel,
+          submissionAttempt: 0,
+          funnelNextOrSubmitAttempt: () => {},
+          funnelState: { current: 'default' },
+          loadingButtonCount: { current: 0 },
+          errorCount: { current: 0 },
+          latestFocusCleanupFunction: { current: undefined },
+          isInFunnel: true,
+          wizardCount: { current: 0 },
         }}
       >
         <ChildComponent />

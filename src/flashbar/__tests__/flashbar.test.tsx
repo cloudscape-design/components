@@ -7,6 +7,7 @@ import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
 import { createFlashbarWrapper, findList } from './common';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
 
 let mockUseAnimations = false;
 let useAnimations = false;
@@ -17,6 +18,13 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
     ...originalVisualModeModule,
     useVisualRefresh: (...args: any) =>
       mockUseAnimations ? useAnimations : originalVisualModeModule.useVisualRefresh(...args),
+  };
+});
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalVisualModeModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+  return {
+    __esModule: true,
+    ...originalVisualModeModule,
     useReducedMotion: (...args: any) =>
       mockUseAnimations ? !useAnimations : originalVisualModeModule.useReducedMotion(...args),
   };
@@ -335,7 +343,7 @@ describe('Flashbar component', () => {
       });
 
       test('icon has an aria-label when statusIconAriaLabel is provided', () => {
-        const iconLabel = 'Warning';
+        const iconLabel = 'Info';
         const wrapper = createFlashbarWrapper(
           <Flashbar
             items={[
@@ -349,11 +357,36 @@ describe('Flashbar component', () => {
           />
         );
 
-        expect(wrapper.findItems()[0].find(`:scope [aria-label]`)?.getElement()).toHaveAttribute(
-          'aria-label',
-          iconLabel
-        );
+        expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(iconLabel);
       });
+
+      test.each([['success'], ['error'], ['info'], ['warning'], ['in-progress']] as FlashbarProps.Type[][])(
+        'icon has aria-label from i18nStrings when no statusIconAriaLabel provided: type %s',
+        type => {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar
+              i18nStrings={{
+                successIconAriaLabel: 'success',
+                errorIconAriaLabel: 'error',
+                infoIconAriaLabel: 'info',
+                warningIconAriaLabel: 'warning',
+                inProgressIconAriaLabel: 'in-progress',
+              }}
+              items={[
+                {
+                  header: 'The header',
+                  content: 'The content',
+                  action: <Button>Click me</Button>,
+                  type: type === 'in-progress' ? 'info' : type,
+                  loading: type === 'in-progress',
+                },
+              ]}
+            />
+          );
+
+          expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(type);
+        }
+      );
 
       describe('Accessibility', () => {
         test('renders items in an unordered list', () => {
@@ -676,12 +709,15 @@ describe('Analytics', () => {
     );
   });
 
-  test('adds the correct data-analytics tag', () => {
-    const { container, rerender } = reactRender(<Flashbar items={[{ id: '0', type: 'success' }]} />);
-    expect(container.querySelector('[data-analytics-flashbar="success"]')).toBeInTheDocument();
+  describe('analytics', () => {
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the flashbar type`, () => {
+      const { container } = reactRender(<Flashbar items={[{ id: '0', type: 'success' }]} />);
+      expect(container.querySelector(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="success"]`)).toBeInTheDocument();
+    });
 
-    // Effective type when loading is info
-    rerender(<Flashbar items={[{ id: '0', type: 'success', loading: true }]} />);
-    expect(container.querySelector('[data-analytics-flashbar="info"]')).toBeInTheDocument();
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the effective flashbar type when loading`, () => {
+      const { container } = reactRender(<Flashbar items={[{ id: '0', type: 'success', loading: true }]} />);
+      expect(container.querySelector(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="info"]`)).toBeInTheDocument();
+    });
   });
 });

@@ -4,8 +4,15 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import styles from '../../../lib/components/table/styles.selectors.js';
+import scrollbarStyles from '../../../lib/components/table/sticky-scrollbar/styles.selectors.js';
 
-const scrollbarSelector = `.${styles['sticky-scrollbar-visible']}`;
+declare global {
+  interface Window {
+    __columnWidths: readonly number[];
+  }
+}
+
+const scrollbarSelector = `.${scrollbarStyles['sticky-scrollbar-visible']}`;
 const wrapper = createWrapper();
 const tableWrapper = wrapper.findTable();
 // All the columns fit in the viewport, which make it easier to test the columns' widths
@@ -40,6 +47,11 @@ class TablePage extends BasePageObject {
     const element = await this.browser.$(columnSelector);
     const size = await element.getSize();
     return size.width;
+  }
+
+  // Returns column width communicated with onColumnWidthsChange
+  readTableWidth(columnIndex: number) {
+    return this.browser.execute(columnIndex => window.__columnWidths[columnIndex - 1], columnIndex);
   }
 
   async getColumnStyle(columnIndex: number) {
@@ -238,7 +250,7 @@ test(
 );
 
 test(
-  'should recover column withs when the inner state is reset',
+  'should recover column widths when the inner state is reset',
   setupTest(async page => {
     await page.resizeColumn(2, 100);
     const oldWidth = await page.getColumnWidth(2);
@@ -252,10 +264,20 @@ test(
   'should resize column to grow by keyboard',
   setupTest(async page => {
     await page.click('#reset-state');
-    const oldWidth = await page.getColumnWidth(1);
+    const originalWidth = await page.getColumnWidth(1);
     await page.keys(['Tab']);
     // wait for the resizer to attach handler
+
     await page.keys(['ArrowRight']);
-    await page.assertColumnWidth(1, oldWidth + 10);
+    await page.assertColumnWidth(1, originalWidth + 10);
+    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
+
+    await page.keys(['ArrowRight']);
+    await page.assertColumnWidth(1, originalWidth + 20);
+    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
+
+    await page.keys(['ArrowLeft']);
+    await page.assertColumnWidth(1, originalWidth + 10);
+    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
   })
 );

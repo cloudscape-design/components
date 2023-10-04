@@ -93,7 +93,7 @@ $modal-z-index: 5000;
 }
 
 .header {
-  padding: awsui.$space-s awsui.$space-modal-horizontal;
+  padding: awsui.$space-container-header-top awsui.$space-modal-horizontal awsui.$space-container-header-bottom;
   background-color: awsui.$color-background-container-header;
   border-bottom: 1px solid awsui.$color-border-container-divider;
   border-radius: awsui.$border-radius-container awsui.$border-radius-container 0 0;
@@ -111,6 +111,7 @@ $modal-z-index: 5000;
   // Make sure that the footer is always visible
   position: sticky;
   bottom: 0;
+  z-index: 800;
 
   &--stuck {
     border-radius: 0 0 awsui.$border-radius-container awsui.$border-radius-container;

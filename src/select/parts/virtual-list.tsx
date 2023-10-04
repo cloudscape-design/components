@@ -4,11 +4,11 @@ import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import OptionsList from '../../internal/components/options-list';
 import { renderOptions } from '../utils/render-options';
-import { useVirtual } from 'react-virtual';
 import { SelectListProps } from './plain-list';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
 
 import styles from './styles.css.js';
+import { useVirtual } from '../../internal/hooks/use-virtual';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const VirtualList = (props: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
   return props.menuProps.open ? <VirtualListOpen {...props} ref={ref} /> : <VirtualListClosed {...props} ref={ref} />;
@@ -31,12 +31,12 @@ const VirtualListOpen = forwardRef(
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
     // update component, when it gets wider or narrower to reposition items
-    const [width, menuMeasureRef] = useContainerQuery(rect => rect.width, []);
+    const [width, menuMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
 
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
-      size: filteredOptions.length,
+      items: filteredOptions,
       parentRef: menuRefObject,
       // estimateSize is a dependency of measurements memo. We update it to force full recalculation
       // when the height of any option could have changed:
@@ -44,8 +44,8 @@ const VirtualListOpen = forwardRef(
       // 2: because the option changed its content (filteringValue property controls the highlight and the visibility of hidden tags)
       // eslint-disable-next-line react-hooks/exhaustive-deps
       estimateSize: useCallback(() => 31, [width, filteringValue]),
-      overscan: 5,
     });
+
     useImperativeHandle(
       ref,
       () => (index: number) => {
@@ -67,6 +67,7 @@ const VirtualListOpen = forwardRef(
       screenReaderContent,
       ariaSetsize: filteredOptions.length,
     });
+
     return (
       <OptionsList {...menuProps} ref={menuRef}>
         <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />

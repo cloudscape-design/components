@@ -10,6 +10,7 @@ import { i18nStrings } from './i18n-strings';
 import { changeMode } from './change-mode';
 import { isValidRange } from './is-valid-range';
 import '../../__a11y__/to-validate-a11y';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
@@ -133,7 +134,7 @@ describe('Date range picker', () => {
         .getAttribute('aria-labelledby')!
         .split(' ')[0];
       expect(wrapper.find(`#${durationAriaLabelId}`)!.getElement()).toHaveTextContent(
-        i18nStrings.customRelativeRangeDurationLabel
+        i18nStrings.customRelativeRangeDurationLabel!
       );
 
       const unitAriaLabelId = wrapper
@@ -144,7 +145,7 @@ describe('Date range picker', () => {
         .getAttribute('aria-labelledby')!
         .split(' ')[0];
       expect(wrapper.find(`#${unitAriaLabelId}`)!.getElement()).toHaveTextContent(
-        i18nStrings.customRelativeRangeUnitLabel
+        i18nStrings.customRelativeRangeUnitLabel!
       );
     });
 
@@ -234,6 +235,41 @@ describe('Date range picker', () => {
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['days', 'weeks', 'months', 'years']);
+    });
+
+    describe('i18n', () => {
+      test('supports using relative range props from i18n provider', () => {
+        const { container } = render(
+          <TestI18nProvider
+            messages={{
+              'date-range-picker': {
+                'i18nStrings.relativeRangeSelectionHeading': 'Custom choose range',
+                'i18nStrings.formatRelativeRange': 'Custom last {amount} {unit}',
+                'i18nStrings.customRelativeRangeOptionLabel': 'Custom custom range',
+                'i18nStrings.customRelativeRangeOptionDescription': 'Custom custom range description',
+              },
+            }}
+          >
+            <DateRangePicker {...defaultProps} rangeSelectorMode="relative-only" i18nStrings={undefined} />
+          </TestI18nProvider>
+        );
+
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+
+        wrapper.openDropdown();
+        expect(
+          createWrapper(wrapper.findDropdown()!.getElement()).findFormField()!.findLabel()!.getElement()
+        ).toHaveTextContent('Custom choose range');
+        expect(
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[0].findLabel()!.getElement()
+        ).toHaveTextContent('Custom last 5 minute');
+        expect(
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4]!.findLabel()!.getElement()
+        ).toHaveTextContent('Custom custom range');
+        expect(
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4]!.findDescription()!.getElement()
+        ).toHaveTextContent('Custom custom range description');
+      });
     });
   });
 });

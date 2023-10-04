@@ -29,6 +29,11 @@ export interface PopoverProps extends BaseComponentProps {
   triggerType?: PopoverProps.TriggerType;
 
   /**
+   * Adds an aria-label to the text trigger button.
+   */
+  triggerAriaLabel?: string;
+
+  /**
    * Element that triggers the popover when selected by the user.
    * @displayname trigger
    */
@@ -51,6 +56,7 @@ export interface PopoverProps extends BaseComponentProps {
 
   /**
    * Adds an `aria-label` to the dismiss button for accessibility.
+   * @i18n
    */
   dismissAriaLabel?: string;
 

@@ -9,14 +9,10 @@ import InternalLink from './internal';
 export { LinkProps };
 
 const Link = React.forwardRef(
-  (
-    { variant = 'secondary', fontSize = 'body-m', color = 'normal', external = false, ...props }: LinkProps,
-    ref: React.Ref<LinkProps.Ref>
-  ) => {
+  ({ fontSize = 'body-m', color = 'normal', external = false, ...props }: LinkProps, ref: React.Ref<LinkProps.Ref>) => {
     const baseComponentProps = useBaseComponent('Link');
     return (
       <InternalLink
-        variant={variant}
         fontSize={fontSize}
         color={color}
         external={external}

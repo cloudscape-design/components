@@ -96,6 +96,10 @@ export const keyHandler = (
 };
 
 export const enterHandler = (value: string, format: MaskFormat): HandlerResult => {
+  // Do not autocomplete if input is empty
+  if (!value) {
+    return { value: '', position: 0 };
+  }
   const autoCompletedValue = format.autoComplete(value);
   const position = autoCompletedValue.length;
   return { value: autoCompletedValue, position };

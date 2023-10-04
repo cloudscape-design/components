@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src-themeable",
+    "declaration": true,
+    "incremental": true
+  },
+  "include": ["src-themeable"]
+}

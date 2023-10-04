@@ -2,12 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { S3ResourceSelectorProps } from '../interfaces';
 import { TableProps } from '../../table/interfaces';
-
-const defaultLabels = {
-  labelNotSorted: () => '',
-  labelSortedDescending: () => '',
-  labelSortedAscending: () => '',
-};
+import { ComponentFormatFunction } from '../../i18n/context';
 
 export function includes<T>(array: ReadonlyArray<T> | undefined, item: T) {
   return !!array && array.indexOf(item) > -1;
@@ -20,19 +15,32 @@ export const compareDates = (itemA: string | undefined, itemB: string | undefine
 };
 
 export function getColumnAriaLabel(
-  i18nStrings: Pick<
+  i18n: ComponentFormatFunction<'s3-resource-selector'>,
+  i18nStrings?: Pick<
     S3ResourceSelectorProps.I18nStrings,
     'labelNotSorted' | 'labelSortedDescending' | 'labelSortedAscending'
-  > = defaultLabels,
+  >,
   columnName = ''
 ) {
   return ({ sorted, descending }: TableProps.LabelData) => {
     if (!sorted) {
-      return i18nStrings?.labelNotSorted(columnName);
+      return (
+        i18n('i18nStrings.labelNotSorted', i18nStrings?.labelNotSorted?.(columnName), format =>
+          format({ columnName })
+        ) ?? ''
+      );
     }
     if (descending) {
-      return i18nStrings?.labelSortedDescending(columnName);
+      return (
+        i18n('i18nStrings.labelSortedDescending', i18nStrings?.labelSortedDescending?.(columnName), format =>
+          format({ columnName })
+        ) ?? ''
+      );
     }
-    return i18nStrings?.labelSortedAscending(columnName);
+    return (
+      i18n('i18nStrings.labelSortedAscending', i18nStrings?.labelSortedAscending?.(columnName), format =>
+        format({ columnName })
+      ) ?? ''
+    );
   };
 }

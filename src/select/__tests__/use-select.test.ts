@@ -87,7 +87,15 @@ describe('useSelect', () => {
 
     test('should return getTriggerProps that configures the trigger', () => {
       const triggerProps = getTriggerProps();
-      expect(Object.keys(triggerProps)).toEqual(['ref', 'onFocus', 'autoFocus', 'onMouseDown', 'onKeyDown']);
+      expect(Object.keys(triggerProps)).toEqual([
+        'ref',
+        'onFocus',
+        'autoFocus',
+        'ariaHasPopup',
+        'ariaControls',
+        'onMouseDown',
+        'onKeyDown',
+      ]);
       expect(triggerProps.ref).toEqual({ current: null });
     });
 
@@ -135,7 +143,7 @@ describe('useSelect', () => {
 
     const { getTriggerProps } = hook.result.current;
     const triggerProps = getTriggerProps();
-    const testEvent = createCustomEvent({ cancelable: true });
+    const testEvent = createCustomEvent<any>({ cancelable: true });
     act(() => triggerProps.onMouseDown && triggerProps.onMouseDown(testEvent));
     expect(hook.result.current.isOpen).toBe(true);
     expect(testEvent.defaultPrevented).toBe(true);
@@ -290,5 +298,19 @@ describe('useSelect', () => {
       });
       expect(hook.result.current.announceSelected).toEqual(false);
     });
+  });
+
+  test('should set aria-haspopup="listbox" on trigger for standard select', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, filteringType: 'none' },
+    });
+    expect(hook.result.current.getTriggerProps().ariaHasPopup).toBe('listbox');
+  });
+
+  test('should set aria-haspopup="dialog" on trigger for select with filtering', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, filteringType: 'auto' },
+    });
+    expect(hook.result.current.getTriggerProps().ariaHasPopup).toBe('dialog');
   });
 });

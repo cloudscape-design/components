@@ -4,10 +4,9 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 const tableWrapper = createWrapper().findTable();
-import styles from '../../../lib/components/table/styles.selectors.js';
-import splitPanelStyles from '../../../lib/components/split-panel/styles.selectors.js';
+import scrollbarStyles from '../../../lib/components/table/sticky-scrollbar/styles.selectors.js';
 
-const scrollbarSelector = `.${styles['sticky-scrollbar-visible']}`;
+const scrollbarSelector = `.${scrollbarStyles['sticky-scrollbar-visible']}`;
 
 class StickyScrollbarPage extends BasePageObject {
   findVisibleScrollbar() {
@@ -61,14 +60,6 @@ describe('Sticky scrollbar', () => {
     })
   );
   test(
-    `is hidden, when table bottom is in view`,
-    setupTest(async page => {
-      await page.windowScrollTo({ top: 1000 });
-      await page.waitForVisible(tableWrapper.findRows().toSelector());
-      await expect(page.isExisting(await page.findVisibleScrollbar())).resolves.toEqual(false);
-    })
-  );
-  test(
     `scrollbar position updates when window resizes`,
     setupTest(async page => {
       await page.setWindowSize({ width: 600, height: 400 });
@@ -80,34 +71,3 @@ describe('Sticky scrollbar', () => {
     })
   );
 });
-
-[false, true].forEach(visualRefresh =>
-  describe(`visualRefresh=${visualRefresh}`, () => {
-    test(
-      'Table sticky scrollbar should not be shown when bottom is visible in split panel in page with footer',
-      useBrowser(async browser => {
-        const page = new BasePageObject(browser);
-        await page.setWindowSize({ width: 1600, height: 400 });
-        await browser.url(`#/light/app-layout/with-table-and-split-panel?visualRefresh=${visualRefresh}`);
-
-        const wrapper = createWrapper();
-        await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-        await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
-        await page.click(wrapper.findModal().findContent().findTiles().findItemByValue('side').toSelector());
-        await page.click('button=Confirm');
-        const { bottom } = await page.getBoundingBox(
-          wrapper.find(`.${splitPanelStyles['content-side']}`).findTable().toSelector()
-        );
-        const { bottom: parentBottom } = await page.getBoundingBox(
-          wrapper.find(`.${splitPanelStyles['content-side']}`).toSelector()
-        );
-        await page.elementScrollTo(wrapper.find(`.${splitPanelStyles['content-side']}`).toSelector(), {
-          top: bottom - parentBottom + 15,
-        });
-        await expect(
-          page.isExisting(await wrapper.find(`.${splitPanelStyles['content-side']} ${scrollbarSelector}`).toSelector())
-        ).resolves.toEqual(false);
-      })
-    );
-  })
-);

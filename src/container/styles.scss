@@ -16,6 +16,9 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    &.with-side-media {
+      flex-direction: row;
+    }
   }
 
   &.variant {
@@ -61,10 +64,71 @@
   }
 }
 
+.with-side-media {
+  display: flex;
+  flex-direction: row;
+}
+
+.with-top-media {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  &-fit-height {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+.media {
+  overflow: hidden;
+  flex-shrink: 0;
+
+  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
+  img,
+  video,
+  picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  &-top {
+    max-height: 66%;
+    border-top-left-radius: awsui.$border-radius-container;
+    border-top-right-radius: awsui.$border-radius-container;
+  }
+
+  &-side {
+    max-width: 66%;
+    border-top-left-radius: awsui.$border-radius-container;
+    border-bottom-left-radius: awsui.$border-radius-container;
+  }
+}
+
 .header {
   background-color: awsui.$color-background-container-header;
   border-top-left-radius: awsui.$border-radius-container;
   border-top-right-radius: awsui.$border-radius-container;
+
+  &.header-with-media {
+    background: none;
+    &:not(:empty) {
+      border-bottom: none;
+    }
+  }
 
   // sticky positioning may be disabled (on mobile or if browser does not support it),
   // but some markup still requires a new stacking context
@@ -92,7 +156,7 @@
 
   &-dynamic-height.header-stuck {
     // to prevent the block from changing its height when variant dynamically changes
-    margin-bottom: calc(#{awsui.$font-heading-xl-line-height} - #{awsui.$font-heading-l-line-height});
+    margin-bottom: calc(#{awsui.$line-height-heading-xl} - #{awsui.$line-height-heading-l});
   }
 
   &:not(:empty) {
@@ -101,6 +165,9 @@
 
   &.with-paddings {
     padding: shared.$header-padding;
+    &.header-variant-cards {
+      padding: awsui.$space-container-header-top awsui.$space-container-horizontal;
+    }
   }
 
   &.with-hidden-content {
@@ -151,8 +218,8 @@ the default white background of the container component.
 }
 
 .content {
-  .fit-height > & {
-    flex: 1;
+  flex: 1;
+  &-fit-height {
     overflow: auto;
   }
   &.with-paddings {
@@ -160,6 +227,9 @@ the default white background of the container component.
 
     .header + & {
       padding-top: awsui.$space-container-content-top;
+      &.content-with-media {
+        padding-top: 0;
+      }
     }
   }
 }

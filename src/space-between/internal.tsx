@@ -14,6 +14,7 @@ export default function InternalSpaceBetween({
   direction = 'vertical',
   size,
   children,
+  alignItems,
   __internalRootRef,
   ...props
 }: InternalSpaceBetweenProps) {
@@ -27,7 +28,13 @@ export default function InternalSpaceBetween({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, styles[direction], styles[`${direction}-${size}`])}
+      className={clsx(
+        baseProps.className,
+        styles.root,
+        styles[direction],
+        styles[`${direction}-${size}`],
+        alignItems && styles[`align-${alignItems}`]
+      )}
       ref={__internalRootRef}
     >
       {flattenedChildren.map(child => {

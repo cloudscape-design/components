@@ -1,10 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
-import { getSubStepAllSelector } from '../selectors';
+import {
+  DATA_ATTR_FUNNEL_INTERACTION_ID,
+  DATA_ATTR_FUNNEL_SUBSTEP,
+  getNameFromSelector,
+  getSubStepAllSelector,
+} from '../selectors';
 import { FunnelMetrics } from '../';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 /**
  * Custom React Hook to manage and interact with FunnelSubStep.
@@ -17,48 +23,127 @@ import { FunnelMetrics } from '../';
  * The subStepRef is a reference to the DOM element of the funnel sub-step.
  */
 export const useFunnelSubStep = () => {
-  const subStepRef = useRef<HTMLDivElement | null>(null);
   const context = useContext(FunnelSubStepContext);
-  const { funnelInteractionId, subStepId, subStepSelector, subStepNameSelector, stepNumber, stepNameSelector } =
-    context;
+  const { funnelInteractionId, funnelState, latestFocusCleanupFunction } = useFunnel();
+  const { stepNumber, stepNameSelector } = useFunnelStep();
 
-  const onFocus = (event: React.FocusEvent<HTMLDivElement>) => {
-    if (
-      funnelInteractionId &&
-      subStepRef.current &&
-      (!event.relatedTarget || !subStepRef.current.contains(event.relatedTarget as Node))
-    ) {
+  const {
+    subStepId,
+    subStepSelector,
+    subStepNameSelector,
+    subStepRef,
+    isNestedSubStep,
+    mousePressed,
+    isFocusedSubStep,
+    focusCleanupFunction,
+  } = context;
+
+  if (isNestedSubStep) {
+    return context;
+  }
+
+  const onFocus = async (event: React.FocusEvent<HTMLDivElement>) => {
+    const element = event.target;
+    // Ignore spurious focus events, such as when the browser window is focused again.
+    await new Promise(r => setTimeout(r, 1));
+    if (document.activeElement !== element) {
+      return;
+    }
+
+    if (isFocusedSubStep.current) {
+      return;
+    }
+    isFocusedSubStep.current = true;
+
+    if (funnelInteractionId && subStepId) {
+      /*
+        If the previously focused substep has provided a cleanup function, we
+        call it here on behalf of the previously focused substep.
+      */
+      latestFocusCleanupFunction.current?.();
+
+      const subStepName = getNameFromSelector(subStepNameSelector);
+      const stepName = getNameFromSelector(stepNameSelector);
+
       FunnelMetrics.funnelSubStepStart({
         funnelInteractionId,
         subStepSelector,
         subStepNameSelector,
+        subStepName,
         stepNumber,
+        stepName,
         stepNameSelector,
         subStepAllSelector: getSubStepAllSelector(),
       });
+
+      /*
+        This cleanup function will be called when the user leaves this substep.
+        The function might be called either:
+
+          - by the next focused substep as `latestFocusCleanupFunction`
+            (through a separate instance of the function we're currently in), or
+
+          - by the same substep as `focusCleanupFunction`
+            (through the `onMouseUp` handler or the `onBlur` handler).
+      */
+      let cleanupFunctionHasBeenRun = false;
+      focusCleanupFunction.current = () => {
+        if (cleanupFunctionHasBeenRun) {
+          return;
+        }
+        cleanupFunctionHasBeenRun = true;
+
+        if (funnelState.current !== 'cancelled') {
+          FunnelMetrics.funnelSubStepComplete({
+            funnelInteractionId,
+            subStepSelector,
+            subStepNameSelector,
+            subStepName,
+            stepNumber,
+            stepName,
+            stepNameSelector,
+            subStepAllSelector: getSubStepAllSelector(),
+          });
+        }
+      };
+      latestFocusCleanupFunction.current = focusCleanupFunction.current;
     }
   };
 
   const onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-    if (funnelInteractionId && subStepRef.current && !subStepRef.current.contains(event.relatedTarget)) {
-      FunnelMetrics.funnelSubStepComplete({
-        funnelInteractionId,
-        subStepSelector,
-        subStepNameSelector,
-        stepNumber,
-        stepNameSelector,
-        subStepAllSelector: getSubStepAllSelector(),
-      });
+    if (mousePressed.current) {
+      /*
+       Ignore blur events that are caused by mouse interaction, because these events don't
+       always reflect user intention. For example, clicking the label of an interactive form
+       element will briefly blur it.
+       The mouse-caused events are handled in the global `onMouseUp` handler of the substep
+       context instead.
+       */
+      return;
+    }
+
+    if (!subStepRef.current || !event.relatedTarget || !nodeBelongs(subStepRef.current, event.relatedTarget)) {
+      isFocusedSubStep.current = false;
+
+      if (funnelInteractionId && subStepId && funnelState.current !== 'cancelled') {
+        /*
+         Run this substep's own focus cleanup function if another substep
+         hasn't already done it for us.
+         */
+        focusCleanupFunction.current?.();
+      }
     }
   };
 
-  const funnelSubStepProps: Record<string, any> = {
-    'data-analytics-funnel-substep': subStepId,
-    onFocus,
-    onBlur,
-  };
+  const funnelSubStepProps: Record<string, any> = funnelInteractionId
+    ? {
+        [DATA_ATTR_FUNNEL_SUBSTEP]: subStepId,
+        onFocus,
+        onBlur,
+      }
+    : {};
 
-  return { funnelSubStepProps, subStepRef, ...context };
+  return { funnelSubStepProps, ...context };
 };
 
 /**
@@ -66,16 +151,12 @@ export const useFunnelSubStep = () => {
  * This hook will provide necessary properties required to track
  * and manage interactions with a FunnelStep component.
  *
- * The 'data-analytics-funnel-step-index' property of funnelStepProps is used to track the index of the current step in the funnel.
+ * The 'data-analytics-funnel-step' property of funnelStepProps is used to track the index of the current step in the funnel.
  * The context contains additional properties of the FunnelStep.
  */
 export const useFunnelStep = () => {
   const context = useContext(FunnelStepContext);
-  const funnelStepProps: Record<string, string | number | boolean | undefined> = {
-    'data-analytics-funnel-step-index': context.stepNumber,
-  };
-
-  return { funnelStepProps, ...context };
+  return context;
 };
 
 /**
@@ -87,9 +168,11 @@ export const useFunnelStep = () => {
  */
 export const useFunnel = () => {
   const context = useContext(FunnelContext);
-  const funnelProps: Record<string, string | number | boolean | undefined> = {
-    'data-analytics-funnel-interaction-id': context.funnelInteractionId,
-  };
+  const funnelProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
+    ? {
+        [DATA_ATTR_FUNNEL_INTERACTION_ID]: context.funnelInteractionId,
+      }
+    : {};
 
   return { funnelProps, ...context };
 };

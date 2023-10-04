@@ -11,6 +11,7 @@ import icons from '../../../lib/components/icon/icons';
 import selectors from '../../../lib/components/token-group/styles.selectors.js';
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {
   const { container } = render(<TokenGroup {...props} />);
@@ -261,5 +262,26 @@ describe('Token', () => {
     expect(screen.getByLabelText('Error icon')).toBeDefined();
     expect(screen.getByText('Error text')).toBeDefined();
     expect(tokenElement).toHaveAccessibleDescription('Error text');
+  });
+});
+
+describe('i18n', () => {
+  test('supports rendering limitShowFewer and limitShowMore using i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'token-group': {
+            'i18nStrings.limitShowFewer': 'Custom show fewer',
+            'i18nStrings.limitShowMore': 'Custom show more',
+          },
+        }}
+      >
+        <TokenGroup limit={1} items={[{ label: '1' }, { label: '2' }]} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findTokenGroup()!;
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom show more');
+    wrapper.findTokenToggle()!.click();
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom show fewer');
   });
 });

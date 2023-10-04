@@ -126,6 +126,7 @@ export default function PieChartPermutations() {
               legendTitle="Legend"
               segmentDescription={segmentDescription1}
               ariaLabel="Permutation chart"
+              onRecoveryClick={() => {}}
               {...permutation}
             />
           )}

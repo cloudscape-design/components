@@ -4,14 +4,15 @@ import clsx from 'clsx';
 import React, { useEffect, useState, useRef } from 'react';
 
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
-import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
+import { usePointerEvents } from '../utils/use-pointer-events';
+import { useKeyboardEvents } from '../utils/use-keyboard-events';
+import { SizeControlProps } from '../utils/interfaces';
 import { Drawer } from './index';
 import testutilStyles from '../test-classes/styles.css.js';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import splitPanelStyles from '../../split-panel/styles.css.js';
-import { SizeControlProps, ResizableDrawerProps } from './interfaces';
+import { ResizableDrawerProps } from './interfaces';
 
 export const ResizableDrawer = ({
   onResize,
@@ -52,7 +53,7 @@ export const ResizableDrawer = ({
 
   const sizeControlProps: SizeControlProps = {
     position,
-    splitPanelRef: drawerRefObject,
+    panelRef: drawerRefObject,
     handleRef: refs.slider,
     setSidePanelWidth,
     setBottomPanelHeight,
@@ -86,6 +87,11 @@ export const ResizableDrawer = ({
         !isMobile &&
         activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
       }
+      drawersAriaLabels={{
+        openLabel: activeDrawer?.ariaLabels?.triggerButton,
+        mainLabel: activeDrawer?.ariaLabels?.content,
+        closeLabel: activeDrawer?.ariaLabels?.closeButton,
+      }}
     >
       {children}
     </Drawer>

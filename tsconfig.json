@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2015", "ES2017.Intl", "ES2018.Intl", "ES2020.Intl", "DOM"],
+    "lib": ["ES2020", "DOM"],
     "target": "ES2015",
     "types": [],
     "module": "ES2015",

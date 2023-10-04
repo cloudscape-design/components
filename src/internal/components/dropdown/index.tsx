@@ -7,7 +7,13 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { fireNonCancelableEvent } from '../../events';
 import { DropdownProps } from './interfaces';
-import { DropdownPosition, InteriorDropdownPosition, calculatePosition } from './dropdown-fit-handler';
+import {
+  DropdownPosition,
+  InteriorDropdownPosition,
+  calculatePosition,
+  defaultMaxDropdownWidth,
+  hasEnoughSpaceToStretchBeyondTriggerWidth,
+} from './dropdown-fit-handler';
 import { Transition, TransitionStatus } from '../transition';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
@@ -15,18 +21,26 @@ import { DropdownContextProvider, DropdownContextProviderProps } from './context
 import { useMobile } from '../../hooks/use-mobile';
 import TabTrap from '../tab-trap/index.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
+import { useUniqueId } from '../../hooks/use-unique-id/index.js';
+import customCssProps from '../../generated/custom-css-properties';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
   renderWithPortal?: boolean;
   id?: string;
+  referrerId?: string;
   open?: boolean;
 }
 
-const DropdownContainer = ({ children, renderWithPortal = false, id, open }: DropdownContainerProps) => {
+const DropdownContainer = ({ children, renderWithPortal = false, id, referrerId, open }: DropdownContainerProps) => {
   if (renderWithPortal) {
     if (open) {
-      return createPortal(<div id={id}>{children}</div>, document.body);
+      return createPortal(
+        <div id={id} data-awsui-referrer-id={referrerId}>
+          {children}
+        </div>,
+        document.body
+      );
     } else {
       return null;
     }
@@ -45,12 +59,17 @@ interface TransitionContentProps {
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
+  stretchBeyondTriggerWidth?: boolean;
   header?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
   onMouseDown?: React.MouseEventHandler<Element>;
+  id?: string;
+  role?: string;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
 }
 
 const TransitionContent = ({
@@ -63,12 +82,17 @@ const TransitionContent = ({
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
+  stretchBeyondTriggerWidth,
   header,
   children,
   footer,
   position,
   open,
   onMouseDown,
+  id,
+  role,
+  ariaLabelledby,
+  ariaDescribedby,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   return (
@@ -78,25 +102,36 @@ const TransitionContent = ({
         [styles['with-limited-width']]: !stretchWidth,
         [styles['hide-upper-border']]: stretchWidth,
         [styles.interior]: interior,
-        [styles['is-empty']]: !header && !children,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
+        [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
       })}
       ref={contentRef}
+      id={id}
+      role={role}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
+      style={
+        stretchBeyondTriggerWidth ? { [customCssProps.dropdownDefaultMaxWidth]: `${defaultMaxDropdownWidth}px` } : {}
+      }
       onMouseDown={onMouseDown}
     >
-      <div className={clsx(styles['dropdown-content-wrapper'], isRefresh && styles.refresh)}>
-        <div className={styles['ie11-wrapper']}>
-          <div ref={verticalContainerRef} className={styles['dropdown-content']}>
-            <DropdownContextProvider position={position}>
-              {header}
-              {children}
-              {footer}
-            </DropdownContextProvider>
-          </div>
+      <div
+        className={clsx(
+          styles['dropdown-content-wrapper'],
+          !header && !children && styles['is-empty'],
+          isRefresh && styles.refresh
+        )}
+      >
+        <div ref={verticalContainerRef} className={styles['dropdown-content']}>
+          <DropdownContextProvider position={position}>
+            {header}
+            {children}
+            {footer}
+          </DropdownContextProvider>
         </div>
       </div>
     </div>
@@ -116,6 +151,7 @@ const Dropdown = ({
   stretchWidth = true,
   stretchHeight = false,
   stretchToTriggerWidth = true,
+  stretchBeyondTriggerWidth = false,
   expandToViewport = false,
   preferCenter = false,
   interior = false,
@@ -125,6 +161,10 @@ const Dropdown = ({
   onFocus,
   onBlur,
   contentKey,
+  dropdownContentId,
+  dropdownContentRole,
+  ariaLabelledby,
+  ariaDescribedby,
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLDivElement | null>(null);
@@ -164,6 +204,7 @@ const Dropdown = ({
     } else {
       target.style.width = position.width;
     }
+
     // Using styles for main dropdown to adjust its position as preferred alternative
     if (position.dropUp && !interior) {
       target.classList.add(styles['dropdown-drop-up']);
@@ -255,7 +296,8 @@ const Dropdown = ({
             stretchWidth,
             stretchHeight,
             isMobile,
-            minWidth
+            minWidth,
+            stretchBeyondTriggerWidth
           ),
           dropdownRef.current,
           verticalContainerRef.current
@@ -284,6 +326,26 @@ const Dropdown = ({
     // See AWSUI-13040
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile, contentKey]);
+
+  // Prevent the dropdown width from stretching beyond the trigger width
+  // if that is going to cause the dropdown to be cropped because of overflow
+  useLayoutEffect(() => {
+    if (stretchBeyondTriggerWidth && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
+      if (
+        !hasEnoughSpaceToStretchBeyondTriggerWidth({
+          triggerElement: triggerRef.current,
+          dropdownElement: dropdownRef.current,
+          desiredMinWidth: minWidth,
+          expandToViewport,
+          stretchWidth,
+          stretchHeight,
+          isMobile,
+        })
+      ) {
+        dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
+      }
+    }
+  });
 
   // subscribe to outside click
   useEffect(() => {
@@ -336,6 +398,8 @@ const Dropdown = ({
     };
   }, [open, expandToViewport]);
 
+  const referrerId = useUniqueId();
+
   return (
     <div
       className={clsx(
@@ -347,7 +411,7 @@ const Dropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
+      <div id={referrerId} className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
         {trigger}
       </div>
 
@@ -356,7 +420,12 @@ const Dropdown = ({
         disabled={!open || !loopFocus}
       />
 
-      <DropdownContainer renderWithPortal={expandToViewport && !interior} id={dropdownId} open={open}>
+      <DropdownContainer
+        renderWithPortal={expandToViewport && !interior}
+        id={dropdownId}
+        referrerId={referrerId}
+        open={open}
+      >
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
             <div ref={dropdownContainerRef}>
@@ -374,12 +443,17 @@ const Dropdown = ({
                 interior={interior}
                 header={header}
                 expandToViewport={expandToViewport}
+                stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
                 footer={footer}
                 onMouseDown={onMouseDown}
                 isRefresh={isRefresh}
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}
                 position={position}
+                id={dropdownContentId}
+                role={dropdownContentRole}
+                ariaLabelledby={ariaLabelledby}
+                ariaDescribedby={ariaDescribedby}
               >
                 {children}
               </TransitionContent>

@@ -4,9 +4,9 @@ import React from 'react';
 import { ChartSeriesMarkerType } from '../../internal/components/chart-series-marker';
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { XDomain, YDomain } from '../../internal/components/cartesian-chart/interfaces';
-import { ReadonlyAsyncStore } from './async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
+import { ReadonlyAsyncStore } from '../async-store';
 
 export interface ChartModel<T extends AreaChartProps.DataTypes> {
   height: number;
@@ -32,6 +32,7 @@ export interface ChartModel<T extends AreaChartProps.DataTypes> {
   interactions: ReadonlyAsyncStore<ChartModel.InteractionsState<T>>;
   refs: {
     plot: React.RefObject<ChartPlotRef>;
+    plotMeasure: React.Ref<SVGLineElement>;
     container: React.RefObject<HTMLDivElement>;
     verticalMarker: React.RefObject<SVGLineElement>;
     popoverRef: React.RefObject<HTMLElement>;

@@ -3,8 +3,9 @@
 import React from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import InternalTable from './internal';
+import InternalTable, { InternalTableAsSubstep } from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 
 export { TableProps };
 const Table = React.forwardRef(
@@ -13,16 +14,25 @@ const Table = React.forwardRef(
     ref: React.Ref<TableProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Table');
+
+    const tableProps: Parameters<typeof InternalTable<T>>[0] = {
+      items,
+      selectedItems,
+      variant,
+      contentDensity,
+      ...props,
+      ...baseComponentProps,
+      ref,
+    };
+
+    if (variant === 'borderless' || variant === 'embedded') {
+      return <InternalTable {...tableProps} />;
+    }
+
     return (
-      <InternalTable
-        items={items}
-        selectedItems={selectedItems}
-        variant={variant}
-        contentDensity={contentDensity}
-        {...props}
-        {...baseComponentProps}
-        ref={ref}
-      />
+      <AnalyticsFunnelSubStep>
+        <InternalTableAsSubstep {...tableProps} />
+      </AnalyticsFunnelSubStep>
     );
   }
 ) as TableForwardRefType;

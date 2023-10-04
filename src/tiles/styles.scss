@@ -30,15 +30,21 @@ $gutter: awsui.$space-grid-gutter;
 
 .tile-container {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   border: styles.$control-border-width solid awsui.$color-border-input-default;
   border-radius: awsui.$border-radius-tiles;
   background: awsui.$color-background-input-default;
   padding: awsui.$space-xs awsui.$space-scaled-m;
-  display: flex;
-  flex-direction: column;
+  &.refresh {
+    padding: awsui.$space-xs awsui.$space-s;
+  }
 
   &.has-metadata {
     padding-bottom: awsui.$space-s;
+    &.refresh {
+      padding-bottom: awsui.$space-scaled-s;
+    }
   }
 
   &.selected {

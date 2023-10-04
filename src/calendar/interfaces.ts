@@ -50,16 +50,19 @@ export interface CalendarProps extends BaseComponentProps {
 
   /**
    * Used as part of the `aria-label` for today's date in the calendar.
+   * @i18n
    */
   todayAriaLabel?: string;
 
   /**
    * Specifies an `aria-label` for the 'next month' button.
+   * @i18n
    */
   nextMonthAriaLabel?: string;
 
   /**
    * Specifies an `aria-label` for the 'previous month' button.
+   * @i18n
    */
   previousMonthAriaLabel?: string;
 

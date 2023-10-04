@@ -45,8 +45,9 @@ export interface DateRangePickerBaseProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
-  i18nStrings: DateRangePickerProps.I18nStrings;
+  i18nStrings?: DateRangePickerProps.I18nStrings;
 
   /**
    * Hides time inputs and changes the input format to date-only, e.g. 2021-04-06.
@@ -266,107 +267,107 @@ export namespace DateRangePickerProps {
     /**
      * Segment title of the relative range selection mode
      */
-    relativeModeTitle: string;
+    relativeModeTitle?: string;
 
     /**
      * Segment title of the absolute range selection mode
      */
-    absoluteModeTitle: string;
+    absoluteModeTitle?: string;
 
     /**
      * Heading for the relative range selection area
      */
-    relativeRangeSelectionHeading: string;
+    relativeRangeSelectionHeading?: string;
 
     /**
      * Visible label of the Cancel button
      */
-    cancelButtonLabel: string;
+    cancelButtonLabel?: string;
     /**
      * Visible label of the Clear and dismiss button
      */
-    clearButtonLabel: string;
+    clearButtonLabel?: string;
     /**
      * Visible label of the Apply button
      */
-    applyButtonLabel: string;
+    applyButtonLabel?: string;
 
     /**
      * Formatting function for relative ranges.
      * This function must convert a relative range to a human-readable string.
      */
-    formatRelativeRange: (value: RelativeValue) => string;
+    formatRelativeRange?: (value: RelativeValue) => string;
 
     /**
      * Formatting function for time units.
      *
      * This function must return a localized form of the unit that fits the provided time value.
      */
-    formatUnit: (unit: TimeUnit, value: number) => string;
+    formatUnit?: (unit: TimeUnit, value: number) => string;
 
     /**
      * Visible label for the option for selecting
      * a custom relative range.
      */
-    customRelativeRangeOptionLabel: string;
+    customRelativeRangeOptionLabel?: string;
 
     /**
      * Visible description for the option for selecting
      * a custom relative range.
      */
-    customRelativeRangeOptionDescription: string;
+    customRelativeRangeOptionDescription?: string;
 
     /**
      * Visible label for the duration selector for
      * the custom relative range.
      */
-    customRelativeRangeDurationLabel: string;
+    customRelativeRangeDurationLabel?: string;
     /**
      * Placeholder for the duration selector for
      * the custom relative range.
      */
-    customRelativeRangeDurationPlaceholder: string;
+    customRelativeRangeDurationPlaceholder?: string;
     /**
      * Visible label for the unit selector for the
      * custom relative range.
      */
-    customRelativeRangeUnitLabel: string;
+    customRelativeRangeUnitLabel?: string;
 
     /**
      * Used as part of the aria label for today's date in the calendar.
      */
-    todayAriaLabel: string;
+    todayAriaLabel?: string;
 
     /**
      * An aria label for the 'next month' button.
      */
-    nextMonthAriaLabel: string;
+    nextMonthAriaLabel?: string;
 
     /**
      * An aria label for the 'previous month' button.
      */
-    previousMonthAriaLabel: string;
+    previousMonthAriaLabel?: string;
 
     /**
      * Visible label for the Start Date input for the
      * absolute range.
      */
-    startDateLabel: string;
+    startDateLabel?: string;
     /**
      * Visible label for the Start Time input for the
      * absolute range.
      */
-    startTimeLabel: string;
+    startTimeLabel?: string;
     /**
      * Visible label for the End Date input for the
      * absolute range.
      */
-    endDateLabel: string;
+    endDateLabel?: string;
     /**
      * Visible label for the End Time input for the
      * absolute range.
      */
-    endTimeLabel: string;
+    endTimeLabel?: string;
 
     /**
      * Constraint text for the input fields for the

@@ -14,7 +14,11 @@ import { EmptyState, getMatchesCountText, paginationLabels, pageSizeOptions } fr
 import ScreenshotArea from '../utils/screenshot-area';
 
 export const cardDefinition: CardsProps.CardDefinition<Instance> = {
-  header: item => <Link fontSize="heading-m">{item.id}</Link>,
+  header: item => (
+    <Link fontSize="heading-m" href="#">
+      {item.id}
+    </Link>
+  ),
   sections: [
     {
       id: 'type',

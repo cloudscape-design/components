@@ -7,6 +7,7 @@ import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/d
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 import '../../__a11y__/to-validate-a11y';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
@@ -534,6 +535,44 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findSelectedEndDate()).toBeNull();
         expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('');
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('');
+      });
+    });
+
+    describe('i18n', () => {
+      test('supports using relative range props from i18n provider', () => {
+        const { container } = render(
+          <TestI18nProvider
+            messages={{
+              'date-range-picker': {
+                'i18nStrings.startDateLabel': 'Custom start date',
+                'i18nStrings.startTimeLabel': 'Custom start time',
+                'i18nStrings.endDateLabel': 'Custom end date',
+                'i18nStrings.endTimeLabel': 'Custom end time',
+                'i18nStrings.dateTimeConstraintText': 'Custom constraint text',
+              },
+            }}
+          >
+            <DateRangePicker {...defaultProps} rangeSelectorMode="absolute-only" i18nStrings={undefined} />
+          </TestI18nProvider>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+        wrapper.openDropdown();
+
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+          'Custom start date'
+        );
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+          'Custom start time'
+        );
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+          'Custom end date'
+        );
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+          'Custom end time'
+        );
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleDescription(
+          'Custom constraint text'
+        );
       });
     });
   });

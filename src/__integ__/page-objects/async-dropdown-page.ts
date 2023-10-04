@@ -93,7 +93,7 @@ export default class AsyncDropdownComponentPage extends AsyncDropdownPage {
     if (!exists) {
       return null;
     }
-    return this.getText(statusIndicatorSelector);
+    return this.getText(statusIndicatorSelector).then(value => value.trim());
   }
 
   async assertStatusText(expected: string | null) {

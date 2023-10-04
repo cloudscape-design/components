@@ -6,7 +6,7 @@ import { InternalButton } from '../../../button/internal';
 import styles from '../../styles.css.js';
 
 interface HeaderButtonProps {
-  ariaLabel: string;
+  ariaLabel?: string;
   baseDate: Date;
   onChangeMonth: (date: Date) => void;
 }

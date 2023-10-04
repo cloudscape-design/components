@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import FocusLock from 'react-focus-lock';
 
 import { useNavigate } from '../router';
 import Header from '../header';
 import { SubmenuItem } from '../menu-item';
 import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
+import FocusLock from '../../../../internal/components/focus-lock';
 
 import { TopNavigationProps } from '../../../interfaces';
 
@@ -33,7 +33,7 @@ const SubmenuView = ({
   const headerId = useUniqueId('overflow-menu-header');
 
   return (
-    <FocusLock returnFocus={true}>
+    <FocusLock autoFocus={true}>
       <Header
         secondaryText={headerSecondaryText}
         dismissIconAriaLabel={dismissIconAriaLabel}
@@ -65,6 +65,7 @@ const SubmenuView = ({
                 { id: item.id, href: item.href, external: item.external },
                 event
               );
+              onClose?.();
             }}
           />
         ))}

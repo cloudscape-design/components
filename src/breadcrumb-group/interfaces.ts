@@ -26,6 +26,7 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
 
   /**
    * Provides an `aria-label` to the ellipsis button that screen readers can read (for accessibility).
+   * @i18n
    */
   expandAriaLabel?: string;
   /**

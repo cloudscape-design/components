@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import InternalContainer from './internal';
+import { InternalContainerAsSubstep } from './internal';
 import { ContainerProps } from './interfaces';
 import { getExternalProps } from '../internal/utils/external-props';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 
 export { ContainerProps };
 
@@ -17,14 +18,18 @@ export default function Container({
 }: ContainerProps) {
   const baseComponentProps = useBaseComponent('Container');
   const externalProps = getExternalProps(props);
+
   return (
-    <InternalContainer
-      variant={variant}
-      disableHeaderPaddings={disableHeaderPaddings}
-      disableContentPaddings={disableContentPaddings}
-      {...externalProps}
-      {...baseComponentProps}
-    />
+    <AnalyticsFunnelSubStep>
+      <InternalContainerAsSubstep
+        variant={variant}
+        disableContentPaddings={disableContentPaddings}
+        disableHeaderPaddings={disableHeaderPaddings}
+        {...props}
+        {...externalProps}
+        {...baseComponentProps}
+      />
+    </AnalyticsFunnelSubStep>
   );
 }
 

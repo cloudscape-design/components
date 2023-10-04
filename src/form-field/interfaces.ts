@@ -35,6 +35,7 @@ export interface FormFieldProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: FormFieldProps.I18nStrings;
 

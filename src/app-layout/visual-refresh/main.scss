@@ -8,8 +8,7 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .container {
-  grid-column: 3;
-  grid-row: 4 / span 2;
+  grid-area: main;
   padding-bottom: awsui.$space-layout-content-bottom;
 
   /*
@@ -44,94 +43,4 @@
       }
     }
   }
-
-  /*
-  If disableContentPaddings is not enabled (the majority of use cases) then
-  the following code block will compute the padding behavior for the Main
-  under various circumstances.
-  */
-  &:not(.disable-content-paddings) {
-    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      /*
-      Notifications is the previous adjacent sibling to the Main in
-      desktop viewports if there are no Breadcrumbs or Header. Use additional
-      to padding on the Main.
-      */
-      &.content-type-default.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(
-          .has-dynamic-overlap-height
-        ),
-      &.content-type-form.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(
-          .has-dynamic-overlap-height
-        ) {
-        padding-top: awsui.$space-scaled-m;
-      }
-
-      /*
-      Main is the only rendered center content if there are no Notifications,
-      Breadcrumbs, or Header. Use minimal top padding.
-      */
-      &.content-type-default:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(
-          .has-dynamic-overlap-height
-        ),
-      &.content-type-form:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(
-          .has-dynamic-overlap-height
-        ) {
-        padding-top: awsui.$space-scaled-xs;
-      }
-
-      /*
-      If the Header exists then it is necessarily the previous adjacent
-      sibling to the Main which requires no top padding.
-      */
-      &.has-header,
-      &.has-dynamic-overlap-height {
-        padding-top: 0;
-      }
-    }
-
-    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-      /*
-      If the Notifications exist but the Header does not then the
-      Notifications is the previous adjacent sibling to the Main
-      requiring additional top padding. This is because the Breadcrumbs
-      are now rendered first and positioned sticky.
-      */
-      &.content-type-default.has-notifications-content:not(.has-header):not(.has-dynamic-overlap-height),
-      &.content-type-form.has-notifications-content:not(.has-header):not(.has-dynamic-overlap-height) {
-        padding-top: awsui.$space-scaled-m;
-      }
-
-      /*
-      Main is the only rendered center content if there are no Notifications or Header.
-      */
-      &.content-type-default:not(.has-notifications-content):not(.has-header):not(.has-dynamic-overlap-height),
-      &.content-type-form:not(.has-notifications-content):not(.has-header):not(.has-dynamic-overlap-height) {
-        padding-top: awsui.$space-scaled-m;
-      }
-
-      /*
-      If the Header exists then it is necessarily the previous adjacent
-      sibling to the Main which requires no top padding.
-      */
-      &.has-header,
-      &.has-dynamic-overlap-height {
-        padding-top: 0;
-      }
-    }
-  }
-
-  // Main should never have top padding for dark header content types
-  &.content-type-cards,
-  &.content-type-table,
-  &.content-type-wizard {
-    padding-top: 0;
-  }
 }
-
-// Prevent content that is visually hidden behind drawers and content area in mobile view from receiving focus
-/* stylelint-disable selector-max-universal, selector-combinator-disallowed-list */
-.unfocusable,
-.unfocusable * {
-  visibility: hidden !important;
-}
-/* stylelint-enable selector-max-universal, selector-combinator-disallowed-list */

@@ -4,6 +4,7 @@ import React from 'react';
 import { render, act } from '@testing-library/react';
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
 import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
@@ -176,6 +177,24 @@ describe('BreadcrumbGroup Component', () => {
       expect(console.warn).toHaveBeenCalledWith(
         `[AwsUi] [BreadcrumbGroup] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello!')".`
       );
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports providing expandAriaLabel from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ 'breadcrumb-group': { expandAriaLabel: 'Custom show path' } }}>
+          <BreadcrumbGroup
+            items={[
+              { text: 'Item 1', href: '/#1' },
+              { text: 'Item 2', href: '/#3' },
+              { text: 'Item 3', href: '/#3' },
+            ]}
+          />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findBreadcrumbGroup()!;
+      expect(wrapper.findDropdown()?.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Custom show path');
     });
   });
 });

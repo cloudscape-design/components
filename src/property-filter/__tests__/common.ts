@@ -10,10 +10,8 @@ import {
 } from '../interfaces';
 
 export const i18nStrings = {
-  filteringAriaLabel: 'your choice',
   dismissAriaLabel: 'Dismiss',
 
-  filteringPlaceholder: 'Search',
   groupValuesText: 'Values',
   groupPropertiesText: 'Properties',
   operatorsText: 'Operators',

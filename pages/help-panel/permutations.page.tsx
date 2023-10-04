@@ -6,6 +6,7 @@ import Box from '~components/box';
 import Icon from '~components/icon';
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './styles.scss';
+import { Link } from '~components';
 
 const mainContent = (
   <div>
@@ -97,7 +98,8 @@ const mainContent = (
         <ul>
           <li>This is a nested list.</li>
           <li>
-            <a>This is a link</a>. Mi proin sed libero enim sed faucibus turpis.
+            <a>This is a link</a>. And a <Link href="#">Cloudscape Link</Link>. Mi proin sed libero enim sed faucibus
+            turpis.
           </li>
           <li>
             <pre>

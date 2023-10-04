@@ -83,6 +83,7 @@ export default function () {
                 i18nStrings={i18nStrings}
                 expandToViewport={true}
                 propertyDefinitions={propertyDefinitions}
+                filteringEmpty="No properties"
               />
             }
             columnDefinitions={columnDefinitions.slice(0, 2)}

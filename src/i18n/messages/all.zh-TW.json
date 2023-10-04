@@ -1,0 +1,350 @@
+{
+  "[charts]": {
+    "loadingText": "正在載入圖表",
+    "errorText": "無法擷取資料。請稍後再試一次。",
+    "recoveryText": "重試",
+    "i18nStrings.filterLabel": "篩選顯示的資料",
+    "i18nStrings.filterPlaceholder": "篩選資料",
+    "i18nStrings.legendAriaLabel": "圖例",
+    "i18nStrings.xAxisAriaRoleDescription": "X 軸",
+    "i18nStrings.yAxisAriaRoleDescription": "Y 軸"
+  },
+  "alert": {
+    "dismissAriaLabel": "關閉提醒"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "下一步",
+    "i18nStrings.previousButtonText": "上一步",
+    "i18nStrings.finishButtonText": "完成",
+    "i18nStrings.labelDismissAnnotation": "關閉註釋",
+    "i18nStrings.stepCounterText": "步驟 {stepNumber}，共 {totalStepCount} 步",
+    "i18nStrings.taskTitle": "任務 {taskNumber}：{taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {關閉步驟 {totalStepCount} 之 {stepNumber} 的註釋} false {開啟步驟 {totalStepCount} 之 {stepNumber} 的註釋} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.navigation": "側邊導覽",
+    "ariaLabels.navigationClose": "關閉側邊導覽",
+    "ariaLabels.navigationToggle": "開啟側邊導覽",
+    "ariaLabels.notifications": "通知",
+    "ariaLabels.tools": "說明面板",
+    "ariaLabels.toolsClose": "關閉說明面板",
+    "ariaLabels.toolsToggle": "開啟說明面板"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "合計"
+  },
+  "attribute-editor": {
+    "removeButtonText": "移除"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "錯誤",
+    "selectedAriaLabel": "已選取",
+    "enteredTextLabel": "使用：“{value}”",
+    "recoveryText": "重試"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "顯示路徑"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "下個月",
+    "previousMonthAriaLabel": "上個月",
+    "todayAriaLabel": "今天"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "項目選擇"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "正在載入程式碼編輯器",
+    "i18nStrings.errorState": "載入程式碼編輯器時發生錯誤。",
+    "i18nStrings.errorStateRecovery": "重試",
+    "i18nStrings.editorGroupAriaLabel": "程式碼編輯器",
+    "i18nStrings.statusBarGroupAriaLabel": "狀態列",
+    "i18nStrings.cursorPosition": "行 {row}、欄 {column}",
+    "i18nStrings.errorsTab": "錯誤",
+    "i18nStrings.warningsTab": "警告",
+    "i18nStrings.preferencesButtonAriaLabel": "偏好設定",
+    "i18nStrings.paneCloseButtonAriaLabel": "關閉",
+    "i18nStrings.preferencesModalHeader": "偏好設定",
+    "i18nStrings.preferencesModalCancel": "取消",
+    "i18nStrings.preferencesModalConfirm": "確認",
+    "i18nStrings.preferencesModalWrapLines": "換行",
+    "i18nStrings.preferencesModalTheme": "佈景主題",
+    "i18nStrings.preferencesModalLightThemes": "淺色佈景主題",
+    "i18nStrings.preferencesModalDarkThemes": "深色佈景主題"
+  },
+  "collection-preferences": {
+    "title": "偏好設定",
+    "confirmLabel": "確認",
+    "cancelLabel": "取消",
+    "pageSizePreference.title": "頁面大小",
+    "wrapLinesPreference.label": "換行",
+    "wrapLinesPreference.description": "選取以查看所有文字並換行",
+    "stripedRowsPreference.label": "條紋列",
+    "stripedRowsPreference.description": "選取以新增加網底的列",
+    "contentDensityPreference.label": "精簡模式",
+    "contentDensityPreference.description": "選擇以更密集、更精簡的模式顯示內容",
+    "contentDisplayPreference.title": "欄偏好設定",
+    "contentDisplayPreference.description": "自訂欄的可見性和順序。",
+    "contentDisplayPreference.dragHandleAriaLabel": "拖曳控點",
+    "contentDisplayPreference.dragHandleAriaDescription": "使用空白鍵或 ENTER 鍵啟用項目拖曳功能，然後使用方向鍵移動項目的位置。若要完成位置移動，請使用空白鍵或 ENTER 鍵，或者若要捨棄移動，請使用 ESC 鍵。",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "在第 {position} 位置 (共 {total} 個位置) 拾取了項目",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "重新排序已取消",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "相對模式",
+    "i18nStrings.absoluteModeTitle": "絕對模式",
+    "i18nStrings.relativeRangeSelectionHeading": "選擇範圍",
+    "i18nStrings.cancelButtonLabel": "取消",
+    "i18nStrings.clearButtonLabel": "清除和關閉",
+    "i18nStrings.applyButtonLabel": "套用",
+    "i18nStrings.customRelativeRangeOptionLabel": "自訂範圍",
+    "i18nStrings.customRelativeRangeOptionDescription": "設定過去的自訂範圍",
+    "i18nStrings.customRelativeRangeUnitLabel": "時間單位",
+    "i18nStrings.customRelativeRangeDurationLabel": "持續時間",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "輸入持續時間",
+    "i18nStrings.startDateLabel": "開始日期",
+    "i18nStrings.startTimeLabel": "開始時間",
+    "i18nStrings.endDateLabel": "結束日期",
+    "i18nStrings.endTimeLabel": "結束時間",
+    "i18nStrings.dateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
+    "i18nStrings.errorIconAriaLabel": "錯誤",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "已選取從 {startDate} 到 {endDate} 的範圍",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {最後 {amount} {unit}} other {最後 {amount} {unit}}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "drawer": {
+    "i18nStrings.loadingText": "載入內容"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "通知",
+    "i18nStrings.errorIconAriaLabel": "錯誤",
+    "i18nStrings.inProgressIconAriaLabel": "進行中",
+    "i18nStrings.infoIconAriaLabel": "資訊",
+    "i18nStrings.notificationBarAriaLabel": "所有通知",
+    "i18nStrings.notificationBarText": "通知",
+    "i18nStrings.successIconAriaLabel": "成功",
+    "i18nStrings.warningIconAriaLabel": "警告"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "錯誤"
+  },
+  "form": {
+    "errorIconAriaLabel": "錯誤"
+  },
+  "help-panel": {
+    "loadingText": "載入內容"
+  },
+  "input": {
+    "clearAriaLabel": "清除"
+  },
+  "link": {
+    "externalIconAriaLabel": "在新索引標籤中開啟"
+  },
+  "modal": {
+    "closeAriaLabel": "關閉強制回應"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "移除 {option__label}"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "下一頁",
+    "ariaLabels.pageLabel": "所有頁面中的第 {pageNumber} 頁",
+    "ariaLabels.previousPageLabel": "上一頁"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "值",
+    "i18nStrings.detailsPercentage": "百分比",
+    "i18nStrings.chartAriaRoleDescription": "圓餅圖",
+    "i18nStrings.segmentAriaRoleDescription": "區段"
+  },
+  "popover": {
+    "dismissAriaLabel": "關閉彈出視窗"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "所有屬性",
+    "i18nStrings.applyActionText": "套用",
+    "i18nStrings.cancelActionText": "取消",
+    "i18nStrings.clearFiltersText": "清除篩選條件",
+    "i18nStrings.editTokenHeader": "編輯篩選條件",
+    "i18nStrings.groupPropertiesText": "屬性",
+    "i18nStrings.groupValuesText": "值",
+    "i18nStrings.operationAndText": "和",
+    "i18nStrings.operationOrText": "或",
+    "i18nStrings.operatorContainsText": "包含",
+    "i18nStrings.operatorDoesNotContainText": "不包含",
+    "i18nStrings.operatorDoesNotEqualText": "不等於",
+    "i18nStrings.operatorEqualsText": "等於",
+    "i18nStrings.operatorGreaterOrEqualText": "大於或等於",
+    "i18nStrings.operatorGreaterText": "大於",
+    "i18nStrings.operatorLessOrEqualText": "小於或等於",
+    "i18nStrings.operatorLessText": "小於",
+    "i18nStrings.operatorText": "運算子",
+    "i18nStrings.operatorsText": "運算子",
+    "i18nStrings.propertyText": "屬性",
+    "i18nStrings.tokenLimitShowFewer": "顯示較少",
+    "i18nStrings.tokenLimitShowMore": "顯示更多",
+    "i18nStrings.valueText": "值",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {移除篩選條件，{token__propertyKey} 等於 {token__value}} not_equals {移除篩選條件，{token__propertyKey} 不等於 {token__value}} greater_than {移除篩選條件，{token__propertyKey} 大於 {token__value}} greater_than_equal {移除篩選條件，{token__propertyKey} 大於或等於 {token__value}} less_than {移除篩選條件，{token__propertyKey} 小於 {token__value}} less_than_equal {移除篩選條件，{token__propertyKey} 小於或等於 {token__value}} contains {移除篩選條件，{token__propertyKey} 包含 {token__value}} not_contains {移除篩選條件，{token__propertyKey} 不包含 {token__value}} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "選擇一個版本",
+    "i18nStrings.inContextBrowseButton": "瀏覽 S3",
+    "i18nStrings.inContextViewButton": "檢視",
+    "i18nStrings.inContextViewButtonAriaLabel": "檢視 (在新索引標籤中開啟)",
+    "i18nStrings.inContextLoadingText": "正在載入資源",
+    "i18nStrings.inContextUriLabel": "S3 URI",
+    "i18nStrings.inContextVersionSelectLabel": "選取版本",
+    "i18nStrings.modalTitle": "選擇 S3 中的存檔",
+    "i18nStrings.modalCancelButton": "取消",
+    "i18nStrings.modalSubmitButton": "選擇",
+    "i18nStrings.modalBreadcrumbRootItem": "S3 儲存貯體",
+    "i18nStrings.selectionBuckets": "儲存貯體",
+    "i18nStrings.selectionObjects": "物件",
+    "i18nStrings.selectionVersions": "版本",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "尋找儲存貯體",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "按前綴查找物件",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "尋找版本",
+    "i18nStrings.selectionBucketsLoading": "裝載儲存貯體",
+    "i18nStrings.selectionBucketsNoItems": "沒有儲存貯體",
+    "i18nStrings.selectionObjectsLoading": "載入物件",
+    "i18nStrings.selectionObjectsNoItems": "沒有物件",
+    "i18nStrings.selectionVersionsLoading": "載入版本",
+    "i18nStrings.selectionVersionsNoItems": "沒有版本",
+    "i18nStrings.filteringNoMatches": "無相符項目",
+    "i18nStrings.filteringCantFindMatch": "找不到相符項目",
+    "i18nStrings.clearFilterButtonText": "清除篩選條件",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "名稱",
+    "i18nStrings.columnBucketCreationDate": "建立日期",
+    "i18nStrings.columnBucketRegion": "區域",
+    "i18nStrings.columnObjectKey": "索引鍵",
+    "i18nStrings.columnObjectLastModified": "上次修改",
+    "i18nStrings.columnObjectSize": "尺寸",
+    "i18nStrings.columnVersionID": "版本 ID",
+    "i18nStrings.columnVersionLastModified": "上次修改",
+    "i18nStrings.columnVersionSize": "尺寸",
+    "i18nStrings.validationPathMustBegin": "路徑必須以 s3:// 開頭",
+    "i18nStrings.validationBucketLowerCase": "儲存貯體名稱必須以小寫字元或數字開頭。",
+    "i18nStrings.validationBucketMustNotContain": "儲存貯體名稱不得包含大寫字元。",
+    "i18nStrings.validationBucketLength": "儲存貯體名稱必須介於 3 到 63 個字元之間。",
+    "i18nStrings.validationBucketMustComplyDns": "儲存貯體名稱必須符合 DNS 命名慣例。",
+    "i18nStrings.labelSortedDescending": "{columnName}，遞減排序",
+    "i18nStrings.labelSortedAscending": "{columnName}，升序排序",
+    "i18nStrings.labelNotSorted": "{columnName}，未排序",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "儲存貯體",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "物件",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "版本",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "尋找 {itemsType}",
+    "i18nStrings.labelRefresh": "重新整理資料",
+    "i18nStrings.labelBreadcrumbs": "S3 導覽",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 個符合} other {{count} 個符合}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "錯誤",
+    "selectedAriaLabel": "已選取",
+    "recoveryText": "重試"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "關閉面板",
+    "i18nStrings.openButtonAriaLabel": "打開面板",
+    "i18nStrings.preferencesTitle": "分割面板偏好",
+    "i18nStrings.preferencesPositionLabel": "分割面板位置",
+    "i18nStrings.preferencesPositionDescription": "選擇服務的預設分割面板位置。",
+    "i18nStrings.preferencesPositionSide": "側邊",
+    "i18nStrings.preferencesPositionBottom": "底部",
+    "i18nStrings.preferencesConfirm": "確認",
+    "i18nStrings.preferencesCancel": "取消",
+    "i18nStrings.resizeHandleAriaLabel": "調整分割面板大小"
+  },
+  "table": {
+    "ariaLabels.submittingEditText": "提交編輯",
+    "ariaLabels.successfulEditLabel": "編輯成功",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "錯誤",
+    "columnDefinitions.editConfig.editIconAriaLabel": "可編輯"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "向左捲動",
+    "i18nStrings.scrollRightAriaLabel": "向右捲動"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "輸入索引鍵",
+    "i18nStrings.valuePlaceholder": "輸入值",
+    "i18nStrings.addButton": "新增標籤",
+    "i18nStrings.removeButton": "移除",
+    "i18nStrings.removeButtonAriaLabel": "移除 {tag__key}",
+    "i18nStrings.undoButton": "復原",
+    "i18nStrings.undoPrompt": "此標籤會在儲存變更時移除",
+    "i18nStrings.loading": "正在載入與此資源相關聯的標籤",
+    "i18nStrings.keyHeader": "索引鍵",
+    "i18nStrings.valueHeader": "值",
+    "i18nStrings.optional": "選用",
+    "i18nStrings.keySuggestion": "自訂標籤索引鍵",
+    "i18nStrings.valueSuggestion": "自訂標籤值",
+    "i18nStrings.emptyTags": "沒有與資源相關聯的標籤。",
+    "i18nStrings.tooManyKeysSuggestion": "您的索引鍵數目超過可顯示的數目",
+    "i18nStrings.tooManyValuesSuggestion": "您的值數目超過可顯示的數目",
+    "i18nStrings.keysSuggestionLoading": "正在載入標籤索引鍵",
+    "i18nStrings.keysSuggestionError": "無法擷取標籤索引鍵",
+    "i18nStrings.valuesSuggestionLoading": "正在載入標籤值",
+    "i18nStrings.valuesSuggestionError": "無法擷取標籤值",
+    "i18nStrings.emptyKeyError": "您必須指定標籤索引鍵",
+    "i18nStrings.maxKeyCharLengthError": "標籤索引鍵中可使用的字元數上限為 128 個字元。",
+    "i18nStrings.maxValueCharLengthError": "標籤值中可使用的字元數上限為 256 個字元。",
+    "i18nStrings.duplicateKeyError": "您必須指定唯一的標籤索引鍵。",
+    "i18nStrings.invalidKeyError": "無效的金鑰。金鑰只能包含 Unicode 字母、數字、空格和下列符號︰ _.:/=+@–",
+    "i18nStrings.invalidValueError": "無效的值。值只能包含 Unicode 字母、數字、空格和下列符號︰_.:/=+@ –",
+    "i18nStrings.awsPrefixError": "開頭不能為 aws:",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {您已達到 1 個標籤的上限。} other {您已達到 {tagLimit} 個標籤的上限。}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {您已超過 1 個標籤的上限。} other {您已超過 {tagLimit} 個標籤的上限。}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {您最多可以新增 {tagLimit} 個標籤。}}} false {{availableTags, plural, one {您最多可以再新增 1 個標籤。} other {您最多可以再新增 {availableTags} 個標籤。}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "顯示較少",
+    "i18nStrings.limitShowMore": "顯示更多"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "搜尋",
+    "i18nStrings.searchDismissIconAriaLabel": "關閉搜尋",
+    "i18nStrings.overflowMenuTriggerText": "更多",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "關閉選單",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "返回",
+    "i18nStrings.overflowMenuTitleText": "全部"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "正在載入",
+    "i18nStrings.tutorialListTitle": "選擇教學",
+    "i18nStrings.tutorialListDownloadLinkText": "下載 PDF 版本",
+    "i18nStrings.labelTutorialListDownloadLink": "下載本教學課程的 PDF 版本",
+    "i18nStrings.tutorialCompletedText": "教學已完成",
+    "i18nStrings.learnMoreLinkText": "進一步了解",
+    "i18nStrings.startTutorialButtonText": "開始教學",
+    "i18nStrings.restartTutorialButtonText": "重新啟動教學課程",
+    "i18nStrings.completionScreenTitle": "恭喜！您已完成了教學課程。",
+    "i18nStrings.feedbackLinkText": "意見回饋",
+    "i18nStrings.dismissTutorialButtonText": "結束教學",
+    "i18nStrings.taskTitle": "任務 {taskNumber}：{taskTitle}",
+    "i18nStrings.stepTitle": "步驟{stepNumber}︰{stepTitle}",
+    "i18nStrings.labelExitTutorial": "結束教學",
+    "i18nStrings.labelTotalSteps": "總步驟︰{totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "等待中",
+    "i18nStrings.labelsTaskStatus.in-progress": "進行中",
+    "i18nStrings.labelsTaskStatus.success": "成功"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "步驟 {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "步驟 {stepNumber}，共 {stepsCount} 步",
+    "i18nStrings.skipToButtonLabel": "跳到 {task__title}",
+    "i18nStrings.navigationAriaLabel": "步驟",
+    "i18nStrings.cancelButton": "取消",
+    "i18nStrings.previousButton": "上一步",
+    "i18nStrings.nextButton": "下一步",
+    "i18nStrings.optional": "選用",
+    "i18nStrings.nextButtonLoadingAnnouncement": "載入下一個步驟",
+    "i18nStrings.submitButtonLoadingAnnouncement": "提交表單"
+  }
+}

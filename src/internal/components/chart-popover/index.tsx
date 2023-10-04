@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
 import { getBaseProps } from '../../base-component';
 
@@ -9,10 +10,10 @@ import { PopoverProps } from '../../../popover/interfaces';
 import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
 import popoverStyles from '../../../popover/styles.css.js';
-import { nodeContains } from '../../utils/dom';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import styles from './styles.css.js';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 export interface ChartPopoverProps extends PopoverProps {
   /** Title of the popover */
@@ -81,7 +82,7 @@ function ChartPopover(
     const onDocumentClick = (event: MouseEvent) => {
       if (
         event.target &&
-        !nodeContains(popoverObjectRef.current, event.target as Element) && // click not in popover
+        !nodeBelongs(popoverObjectRef.current, event.target as Element) && // click not in popover
         !nodeContains(container, event.target as Element) // click not in segment
       ) {
         onDismiss(true);
@@ -97,7 +98,7 @@ function ChartPopover(
   return (
     <div
       {...baseProps}
-      className={clsx(popoverStyles.root, styles.root, baseProps.className, { [styles.dismissable]: dismissButton })}
+      className={clsx(popoverStyles.root, styles.root, baseProps.className)}
       ref={popoverRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -121,6 +122,7 @@ function ChartPopover(
             dismissAriaLabel={dismissAriaLabel}
             header={title}
             onDismiss={onDismiss}
+            overflowVisible="content"
             className={styles['popover-body']}
           >
             {children}

@@ -66,6 +66,7 @@ export namespace IconProps {
   // https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
   export type Name =
     | 'add-plus'
+    | 'anchor-link'
     | 'angle-left-double'
     | 'angle-left'
     | 'angle-right-double'
@@ -125,6 +126,9 @@ export namespace IconProps {
     | 'settings'
     | 'share'
     | 'shrink'
+    | 'star-filled'
+    | 'star-half'
+    | 'star'
     | 'status-in-progress'
     | 'status-info'
     | 'status-negative'

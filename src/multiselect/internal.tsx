@@ -35,8 +35,9 @@ import { MultiselectProps } from './interfaces';
 import styles from './styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { joinStrings } from '../internal/utils/strings';
+import { useInternalI18n } from '../i18n/context';
 
-type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps;
+type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps & { inlineTokens?: boolean };
 
 const InternalMultiselect = React.forwardRef(
   (
@@ -56,9 +57,7 @@ const InternalMultiselect = React.forwardRef(
       loadingText,
       finishedText,
       errorText,
-      recoveryText,
       noMatch,
-      selectedAriaLabel,
       renderHighlightedAriaLive,
       selectedOptions = [],
       deselectAriaLabel,
@@ -70,6 +69,7 @@ const InternalMultiselect = React.forwardRef(
       onLoadItems,
       onChange,
       virtualScroll,
+      inlineTokens = false,
       hideTokens = false,
       expandToViewport,
       __internalRootRef = null,
@@ -82,6 +82,12 @@ const InternalMultiselect = React.forwardRef(
 
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+    const i18n = useInternalI18n('multiselect');
+
+    const i18nCommon = useInternalI18n('select');
+    const recoveryText = i18nCommon('recoveryText', restProps.recoveryText);
+    const errorIconAriaLabel = i18nCommon('errorIconAriaLabel', restProps.errorIconAriaLabel);
+    const selectedAriaLabel = i18nCommon('selectedAriaLabel', restProps.selectedAriaLabel);
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
@@ -197,7 +203,8 @@ const InternalMultiselect = React.forwardRef(
       isFiltered,
       filteringResultsText: filteredText,
       onRecoveryClick: handleRecoveryClick,
-      errorIconAriaLabel: restProps.errorIconAriaLabel,
+      errorIconAriaLabel: errorIconAriaLabel,
+      hasRecoveryCallback: !!onLoadItems,
     });
 
     const filter = (
@@ -218,6 +225,8 @@ const InternalMultiselect = React.forwardRef(
         disabled={disabled}
         triggerProps={getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
+        selectedOptions={selectedOptions}
+        triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
         isOpen={isOpen}
         {...formFieldContext}
         controlId={controlId}
@@ -250,7 +259,9 @@ const InternalMultiselect = React.forwardRef(
       iconUrl: option.iconUrl,
       iconSvg: option.iconSvg,
       tags: option.tags,
-      dismissLabel: deselectAriaLabel ? deselectAriaLabel(option) : undefined,
+      dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
+        format({ option__label: option.label ?? '' })
+      ),
     }));
 
     useEffect(() => {
@@ -268,7 +279,7 @@ const InternalMultiselect = React.forwardRef(
       }
     };
 
-    const showTokens = !hideTokens && tokens.length > 0;
+    const showTokens = !hideTokens && !inlineTokens && tokens.length > 0;
     const handleTokenDismiss: TokenGroupProps['onDismiss'] = ({ detail }) => {
       const optionToDeselect = selectedOptions[detail.itemIndex];
       updateSelectedOption(optionToDeselect);
@@ -285,6 +296,8 @@ const InternalMultiselect = React.forwardRef(
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
+    const dropdownProps = getDropdownProps();
+
     return (
       <div
         {...baseProps}
@@ -293,7 +306,13 @@ const InternalMultiselect = React.forwardRef(
         onKeyPress={handleNativeSearch}
       >
         <Dropdown
-          {...getDropdownProps()}
+          {...dropdownProps}
+          ariaLabelledby={
+            dropdownProps.dropdownContentRole ? joinStrings(multiSelectAriaLabelId, controlId) : undefined
+          }
+          ariaDescribedby={
+            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
+          }
           open={isOpen}
           trigger={trigger}
           header={filter}
@@ -304,6 +323,7 @@ const InternalMultiselect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
+          stretchBeyondTriggerWidth={true}
         >
           <ListComponent
             listBottom={

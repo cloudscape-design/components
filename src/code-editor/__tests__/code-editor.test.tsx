@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { Ace } from 'ace-builds';
 import { act, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '../../internal/keycode';
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
@@ -14,12 +15,14 @@ import {
 import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/code-editor/styles.css.js';
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
@@ -159,6 +162,10 @@ describe('Code editor component', () => {
     rerender(<CodeEditor {...defaultProps} value="value-final" />);
 
     expect(editorMock.setValue).toHaveBeenCalledWith('value-final', -1);
+
+    rerender(<CodeEditor {...defaultProps} value="value-final" />);
+
+    expect(editorMock.setValue).toHaveBeenCalledTimes(2);
   });
 
   it('sets value with test-util', () => {
@@ -206,6 +213,18 @@ describe('Code editor component', () => {
     );
 
     editorMock.on.mockRestore();
+  });
+
+  it('provides ariaLabel to the underlying textarea', () => {
+    const textarea = editorMock.renderer.textarea;
+    editorMock.renderer.textarea = null as any;
+
+    expect(() => renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrowError();
+
+    editorMock.renderer.textarea = textarea;
+
+    renderCodeEditor({ ariaLabel: 'test aria label' });
+    expect(editorMock.renderer.textarea).toHaveAttribute('aria-label', 'test aria label');
   });
 
   describe('onDelayedChange', () => {
@@ -327,8 +346,8 @@ describe('Code editor component', () => {
 
     const liveRegion = wrapper.findStatusBar()?.find(`.${liveRegionStyles.root}`)?.getElement().innerHTML;
 
-    expect(liveRegion).toContain(defaultProps.i18nStrings.errorsTab);
-    expect(liveRegion).toContain(defaultProps.i18nStrings.warningsTab);
+    expect(liveRegion).toContain(defaultProps.i18nStrings!.errorsTab);
+    expect(liveRegion).toContain(defaultProps.i18nStrings!.warningsTab);
   });
 
   it('moves cursor to annotation when clicked', () => {
@@ -394,7 +413,7 @@ describe('Code editor component', () => {
     expect(wrapper.findPane()).toBeNull();
   });
 
-  it('highlights annotation when clicked in gutter', () => {
+  it('focuses annotation when clicked in gutter', () => {
     let gutterClickCallback: (event: any) => void;
     editorMock.on = jest.fn((name: string, _callback: (event: any) => void) => {
       if (name === 'gutterclick') {
@@ -412,7 +431,30 @@ describe('Code editor component', () => {
     expect(wrapper.findPane()).not.toBeNull(); // Pane should open
 
     const [item] = findPaneItems(wrapper.findPane()!);
-    expect(item.getElement().classList).toContain(styles['pane__item--highlighted']);
+    expect(document.activeElement).toBe(item.getElement());
+
+    editorMock.on.mockRestore();
+  });
+
+  it('focuses annotation when annotation is activated with keyboard in gutter', () => {
+    let gutterKeydownCallback: (event: any) => void;
+    editorMock.on = jest.fn((name: string, _callback: (event: any) => void) => {
+      if (name === 'gutterkeydown') {
+        gutterKeydownCallback = _callback;
+      }
+    });
+    editorMock.session.getAnnotations.mockReturnValue([{ type: 'error', row: 1, column: 1 }]);
+    const { wrapper } = renderCodeEditor();
+
+    act(() => {
+      emulateAceAnnotationEvent!();
+      gutterKeydownCallback!({ isInAnnotationLane: () => true, getKey: () => 'return', getRow: () => 1 }); // emulate gutter keydown
+    });
+
+    expect(wrapper.findPane()).not.toBeNull(); // Pane should open
+
+    const [item] = findPaneItems(wrapper.findPane()!);
+    expect(document.activeElement).toBe(item.getElement());
 
     editorMock.on.mockRestore();
   });
@@ -472,5 +514,189 @@ describe('Code editor component', () => {
   test('a11y', async () => {
     const { wrapper } = renderCodeEditor();
     await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  describe('i18n', () => {
+    test('supports using i18nStrings.loadingState from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ 'code-editor': { 'i18nStrings.loadingState': 'Custom loading' } }}>
+          <CodeEditor {...defaultProps} ace={undefined} loading={true} i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findCodeEditor()!;
+      expect(wrapper.findLoadingScreen()!.getElement()).toHaveTextContent('Custom loading');
+    });
+
+    test('supports using i18nStrings.errorState and i18nStrings.errorStateRecovery from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'code-editor': {
+              'i18nStrings.errorState': 'Custom error',
+              'i18nStrings.errorStateRecovery': 'Custom recovery',
+            },
+          }}
+        >
+          <CodeEditor {...defaultProps} ace={undefined} i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findCodeEditor()!;
+      expect(wrapper.findErrorScreen()!.getElement()).toHaveTextContent('Custom error Custom recovery');
+      expect(wrapper.findErrorScreen()!.find('a')!.getElement()).toHaveTextContent('Custom recovery');
+    });
+
+    test('supports using group aria label and status bar strings from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'code-editor': {
+              'i18nStrings.editorGroupAriaLabel': 'Custom editor',
+              'i18nStrings.statusBarGroupAriaLabel': 'Custom status bar',
+              'i18nStrings.errorsTab': 'Custom errors',
+              'i18nStrings.warningsTab': 'Custom warnings',
+              'i18nStrings.preferencesButtonAriaLabel': 'Custom settings',
+              'i18nStrings.cursorPosition': 'Custom row {row}, Custom col {column}',
+            },
+          }}
+        >
+          <CodeEditor {...defaultProps} i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findCodeEditor()!;
+      expect(wrapper.findEditor()!.getElement()).toHaveAttribute('aria-label', 'Custom editor');
+      expect(wrapper.find('[aria-label="Custom status bar"]')).toBeTruthy();
+      expect(wrapper.findStatusBar()!.getElement().textContent).toEqual(
+        expect.stringContaining('Custom row 1, Custom col 1')
+      );
+      expect(wrapper.findErrorsTab()!.getElement()).toHaveTextContent('Custom errors: 0');
+      expect(wrapper.findWarningsTab()!.getElement()).toHaveTextContent('Custom warnings: 0');
+      expect(wrapper.findSettingsButton()!.getElement()).toHaveAttribute('aria-label', 'Custom settings');
+    });
+  });
+
+  test('supports using pane props from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'code-editor': {
+            'i18nStrings.paneCloseButtonAriaLabel': 'Custom close',
+          },
+        }}
+      >
+        <CodeEditor {...defaultProps} i18nStrings={undefined} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findCodeEditor()!;
+    act(() => emulateAceAnnotationEvent!());
+    wrapper.findErrorsTab()!.click();
+    expect(wrapper.findPane()!.findButton()!.getElement()).toHaveAttribute('aria-label', 'Custom close');
+  });
+
+  test('supports using preferences modal strings from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'code-editor': {
+            'i18nStrings.preferencesModalHeader': 'Custom modal header',
+            'i18nStrings.preferencesModalCancel': 'Custom cancel',
+            'i18nStrings.preferencesModalConfirm': 'Custom confirm',
+            'i18nStrings.preferencesModalWrapLines': 'Custom wrap lines',
+            'i18nStrings.preferencesModalTheme': 'Custom theme',
+            'i18nStrings.preferencesModalLightThemes': 'Custom light themes',
+            'i18nStrings.preferencesModalDarkThemes': 'Custom dark themes',
+          },
+        }}
+      >
+        <CodeEditor {...defaultProps} themes={{ light: ['One'], dark: ['Two'] }} i18nStrings={undefined} />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findCodeEditor()!;
+    wrapper.findSettingsButton()!.click();
+    const modal = createWrapper().findModal()!;
+    expect(modal.findHeader().getElement()).toHaveTextContent('Custom modal header');
+    expect(modal.findFooter()!.findSpaceBetween()!.find(':nth-child(1)')!.findButton()!.getElement()).toHaveTextContent(
+      'Custom cancel'
+    );
+    expect(modal.findFooter()!.findSpaceBetween()!.find(':nth-child(2)')!.findButton()!.getElement()).toHaveTextContent(
+      'Custom confirm'
+    );
+    expect(modal.findContent()!.findCheckbox()!.findLabel().getElement()).toHaveTextContent('Custom wrap lines');
+    expect(modal.findContent()!.findFormField()!.findLabel()!.getElement()).toHaveTextContent('Custom theme');
+    modal.findContent()!.findSelect()!.openDropdown();
+    expect(modal.findContent()!.findSelect()!.findDropdown().find('li:nth-child(1)')!.getElement()).toHaveTextContent(
+      'Custom light themes'
+    );
+    expect(modal.findContent()!.findSelect()!.findDropdown().find('li:nth-child(2)')!.getElement()).toHaveTextContent(
+      'Custom dark themes'
+    );
+  });
+
+  test('prevents default on guttermousedown', () => {
+    let callback: (e: any) => void;
+    editorMock.on = jest.fn((name: string, _callback: () => void) => {
+      if (name === 'guttermousedown') {
+        callback = _callback;
+      }
+    });
+
+    renderCodeEditor();
+
+    const event = { stop: jest.fn() };
+    callback!(event);
+
+    expect(event.stop).toHaveBeenCalledTimes(1);
+
+    editorMock.on.mockRestore();
+  });
+
+  test('makes text input focusable when code editor receives focus', () => {
+    let callback: () => void;
+    editorMock.on = jest.fn((name: string, _callback: () => void) => {
+      if (name === 'focus') {
+        callback = _callback;
+      }
+    });
+
+    renderCodeEditor();
+
+    callback!();
+
+    expect(editorMock.textInput.getElement().setAttribute).toHaveBeenCalledWith('tabindex', 0);
+
+    editorMock.on.mockRestore();
+  });
+
+  test('makes text input non-focusable when code editor loses focus', () => {
+    let callback: () => void;
+    editorMock.on = jest.fn((name: string, _callback: () => void) => {
+      if (name === 'blur') {
+        callback = _callback;
+      }
+    });
+
+    renderCodeEditor();
+
+    callback!();
+
+    expect(editorMock.textInput.getElement().setAttribute).toHaveBeenCalledWith('tabindex', -1);
+
+    editorMock.on.mockRestore();
+  });
+
+  test('adds command to focus editor container on Esc keypress', () => {
+    let callback: (editor: Ace.Editor) => void;
+    editorMock.commands.addCommand = jest.fn((command: Ace.Command) => {
+      if (command.name === 'exitCodeEditor' && command.bindKey === 'Esc') {
+        callback = command.exec;
+      }
+    });
+
+    renderCodeEditor();
+
+    callback!(editorMock as any);
+
+    expect(editorMock.container.focus).toHaveBeenCalledTimes(1);
+
+    editorMock.commands.addCommand.mockRestore();
   });
 });

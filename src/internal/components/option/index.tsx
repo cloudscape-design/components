@@ -6,7 +6,7 @@ import styles from './styles.css.js';
 import { OptionProps } from './interfaces';
 import { Label, LabelTag, Description, Tags, FilteringTags, OptionIcon } from './option-parts';
 import { getBaseProps } from '../../base-component';
-import { warnOnce } from '../../logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { isDevelopment } from '../../is-development';
 
 export { OptionProps };
@@ -48,7 +48,12 @@ const Option = ({
     });
   }
 
-  const className = clsx(styles.option, disabled && styles.disabled, isGroupOption && styles.parent);
+  const className = clsx(
+    styles.option,
+    disabled && styles.disabled,
+    isGroupOption && styles.parent,
+    highlightedOption && styles.highlighted
+  );
 
   const icon = option.__customIcon || (
     <OptionIcon

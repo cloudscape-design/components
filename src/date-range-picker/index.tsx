@@ -16,18 +16,19 @@ import Dropdown from '../internal/components/dropdown';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
 import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
 import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { isDevelopment } from '../internal/is-development.js';
-import { warnOnce } from '../internal/logging.js';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
 import { formatValue } from './utils.js';
+import { useInternalI18n } from '../i18n/context.js';
 
 export { DateRangePickerProps };
 
@@ -47,7 +48,7 @@ function renderDateRange(
 
   const formatted =
     range.type === 'relative' ? (
-      formatRelativeRange(range)
+      formatRelativeRange?.(range) ?? ''
     ) : (
       <BreakSpaces text={formatDateRange(range.startDate, range.endDate, timeOffset)} />
     );
@@ -116,8 +117,8 @@ const DateRangePicker = React.forwardRef(
 
     const baseProps = getBaseProps(rest);
     const { invalid, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
-      ariaLabelledby: rest.ariaLabelledby ?? i18nStrings.ariaLabelledby,
-      ariaDescribedby: rest.ariaDescribedby ?? i18nStrings.ariaDescribedby,
+      ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
+      ariaDescribedby: rest.ariaDescribedby ?? i18nStrings?.ariaDescribedby,
       ...rest,
     });
     const isSingleGrid = useMobile();
@@ -128,7 +129,7 @@ const DateRangePicker = React.forwardRef(
     const rootRef = useRef<HTMLDivElement>(null);
     const dropdownId = useUniqueId('date-range-picker-dropdown');
 
-    useFocusTracker({ rootRef, onBlur, onFocus, viewportId: expandToViewport ? dropdownId : '' });
+    useFocusTracker({ rootRef, onBlur, onFocus });
 
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 
@@ -204,13 +205,31 @@ const DateRangePicker = React.forwardRef(
       value = null;
     }
 
+    const i18n = useInternalI18n('date-range-picker');
+    const formatRelativeRange = i18n(
+      'i18nStrings.formatRelativeRange',
+      i18nStrings?.formatRelativeRange,
+      format =>
+        ({ amount, unit }) =>
+          format({ amount, unit })
+    );
+
+    if (isDevelopment) {
+      if (!formatRelativeRange) {
+        warnOnce(
+          'DateRangePicker',
+          'A function for i18nStrings.formatRelativeRange was not provided. Relative ranges will not be correctly rendered.'
+        );
+      }
+    }
+
     const trigger = (
       <div className={styles['trigger-wrapper']}>
         <ButtonTrigger
           ref={triggerRef}
           id={controlId}
           invalid={invalid}
-          ariaLabel={i18nStrings.ariaLabel}
+          ariaLabel={i18nStrings?.ariaLabel}
           ariaDescribedby={ariaDescribedby}
           ariaLabelledby={ariaLabelledby}
           className={clsx(styles.label, {
@@ -224,13 +243,13 @@ const DateRangePicker = React.forwardRef(
           }}
           disabled={disabled}
           readOnly={readOnly}
-          ariaHasPopup="true"
+          ariaHasPopup="dialog"
         >
           <span className={styles['trigger-flexbox']}>
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            {renderDateRange(value, placeholder ?? '', i18nStrings.formatRelativeRange, normalizedTimeOffset)}
+            {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
           </span>
         </ButtonTrigger>
       </div>
@@ -255,28 +274,31 @@ const DateRangePicker = React.forwardRef(
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
         >
-          {isDropDownOpen && (
-            <DateRangePickerDropdown
-              startOfWeek={startOfWeek}
-              locale={normalizedLocale}
-              isSingleGrid={isSingleGrid}
-              onDropdownClose={() => closeDropdown(true)}
-              value={value}
-              showClearButton={showClearButton}
-              isDateEnabled={isDateEnabled}
-              i18nStrings={i18nStrings}
-              onClear={onClear}
-              onApply={onApply}
-              relativeOptions={relativeOptions}
-              isValidRange={isValidRange}
-              dateOnly={dateOnly}
-              timeInputFormat={timeInputFormat}
-              rangeSelectorMode={rangeSelectorMode}
-              ariaLabelledby={ariaLabelledby}
-              ariaDescribedby={ariaDescribedby}
-              customAbsoluteRangeControl={customAbsoluteRangeControl}
-            />
-          )}
+          {/* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */}
+          <FormFieldContext.Provider value={{}}>
+            {isDropDownOpen && (
+              <DateRangePickerDropdown
+                startOfWeek={startOfWeek}
+                locale={normalizedLocale}
+                isSingleGrid={isSingleGrid}
+                onDropdownClose={() => closeDropdown(true)}
+                value={value}
+                showClearButton={showClearButton}
+                isDateEnabled={isDateEnabled}
+                i18nStrings={i18nStrings}
+                onClear={onClear}
+                onApply={onApply}
+                relativeOptions={relativeOptions}
+                isValidRange={isValidRange}
+                dateOnly={dateOnly}
+                timeInputFormat={timeInputFormat}
+                rangeSelectorMode={rangeSelectorMode}
+                ariaLabelledby={ariaLabelledby}
+                ariaDescribedby={ariaDescribedby}
+                customAbsoluteRangeControl={customAbsoluteRangeControl}
+              />
+            )}
+          </FormFieldContext.Provider>
         </Dropdown>
       </div>
     );

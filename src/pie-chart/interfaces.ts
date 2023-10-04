@@ -35,6 +35,7 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
 
   /**
    * Specifies the size of the pie or donut chart.
+   * When used with `fitHeight`, this property defines the minimum size of the chart area.
    */
   size?: 'small' | 'medium' | 'large';
 
@@ -55,6 +56,11 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
    * * `value` (string | number) - The value of this detail for the target segment.
    */
   detailPopoverContent?: PieChartProps.DetailPopoverContentFunction<T>;
+
+  /**
+   * Additional content that is displayed at the bottom of the detail popover.
+   */
+  detailPopoverFooter?: PieChartProps.DetailPopoverFooter<T>;
 
   /**
    * A function that determines the description of a segment that is displayed on the chart, unless `hideDescriptions` is set to `true`.
@@ -151,16 +157,19 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
 
   /**
    * Text that's displayed when the chart is loading (that is, when `statusType` is set to `loading`).
+   * @i18n
    */
   loadingText?: string;
 
   /**
    * Text that's displayed when the chart is in error state (that is, when `statusType` is set to `error`).
+   * @i18n
    */
   errorText?: string;
 
   /**
    * Text for the recovery button that's displayed next to the error text.
+   * @i18n
    **/
   recoveryText?: string;
 
@@ -203,8 +212,14 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
 
   /**
    * An object that contains all of the localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: PieChartProps.I18nStrings;
+
+  /**
+   * Enable this property to make the chart fit into the available height of the parent container.
+   */
+  fitHeight?: boolean;
 }
 
 export namespace PieChartProps {
@@ -218,6 +233,10 @@ export namespace PieChartProps {
 
   export interface DetailPopoverContentFunction<T = Datum> {
     (segment: T, visibleDataSum: number): ReadonlyArray<ChartDetailPair>;
+  }
+
+  export interface DetailPopoverFooter<T> {
+    (segment: T): React.ReactNode;
   }
 
   export interface SegmentDescriptionFunction<T = Datum> {

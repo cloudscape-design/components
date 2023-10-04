@@ -162,6 +162,14 @@ describe('Masked Input component', () => {
       );
     });
 
+    test('should not autocorrect empty input', () => {
+      const { wrapper, onChangeSpy } = renderMaskedInput({ ...defaultProps, value: '' });
+      expect(wrapper.findNativeInput().getElement().value).toBe('');
+      wrapper.blur();
+
+      expect(onChangeSpy).not.toHaveBeenCalled();
+    });
+
     test('should correct "1:" to "01:" and set cursor position correctly', () => {
       const { wrapper, onChangeSpy } = renderMaskedInput({
         ...defaultProps,
@@ -225,6 +233,28 @@ describe('Masked Input component', () => {
     });
 
     expect(wrapper.findNativeInput().getElement().value).toBe('12:34');
+  });
+
+  test('should autocomplete when pressing Enter', () => {
+    const { wrapper, onChangeSpy } = renderMaskedInput({ ...defaultProps, value: '01' });
+    expect(wrapper.findNativeInput().getElement()).toHaveValue('01:');
+
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(onChangeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          value: '01:00:00',
+        },
+      })
+    );
+  });
+
+  test('should not autocomplete when pressing Enter if input is empty', () => {
+    const { wrapper, onChangeSpy } = renderMaskedInput();
+    expect(wrapper.findNativeInput().getElement()).toHaveValue('');
+
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(onChangeSpy).not.toHaveBeenCalled();
   });
 
   describe('Limiting range', () => {

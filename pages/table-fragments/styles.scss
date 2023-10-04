@@ -1,0 +1,84 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as tokens;
+
+.custom-table {
+  box-sizing: border-box;
+  overflow-x: auto;
+  width: 100%;
+
+  &.use-wrapper-paddings {
+    width: calc(100% - 64px);
+    margin: 0 32px;
+  }
+
+  &-table {
+    width: 100%;
+    box-sizing: border-box;
+    border-spacing: 0;
+
+    &:not(.use-wrapper-paddings) {
+      padding: 0 32px;
+    }
+  }
+
+  &-cell {
+    position: relative;
+    border-left: 1px solid tokens.$color-border-divider-default;
+    border-bottom: 1px solid tokens.$color-border-divider-default;
+    padding: 8px 16px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    background-color: tokens.$color-background-container-content;
+
+    &:first-child {
+      padding-left: 2px;
+      border-left: none;
+    }
+    &:last-child {
+      padding-right: 2px;
+    }
+
+    &.sticky-cell {
+      position: sticky;
+
+      &-last-left {
+        border-right: 2px solid red;
+      }
+      &-last-right {
+        border-left: 2px solid red !important;
+      }
+      &-pad-left {
+        padding-left: 32px;
+      }
+    }
+  }
+
+  &-selection-cell {
+    width: 40px;
+  }
+
+  &-sorting-header {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    font-weight: bold;
+    margin-left: 2px;
+  }
+}
+
+.status-trigger-button {
+  background-color: initial;
+  border: 0;
+  border-bottom: 1px dashed;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}

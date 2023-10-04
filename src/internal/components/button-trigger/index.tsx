@@ -15,7 +15,9 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   readOnly?: boolean;
   invalid?: boolean;
   inFilteringToken?: boolean;
-  ariaHasPopup?: 'true' | 'listbox';
+  inlineTokens?: boolean;
+  ariaHasPopup?: 'true' | 'listbox' | 'dialog';
+  ariaControls?: string;
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
@@ -36,11 +38,13 @@ const ButtonTrigger = (
     disabled = false,
     readOnly = false,
     invalid = false,
+    inlineTokens,
     inFilteringToken,
     ariaHasPopup,
     ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
+    ariaControls,
     onKeyDown,
     onKeyUp,
     onMouseDown,
@@ -64,7 +68,8 @@ const ButtonTrigger = (
       invalid && styles.invalid,
       !hideCaret && styles['has-caret'],
       readOnly && styles['read-only'],
-      inFilteringToken && styles['in-filtering-token']
+      inFilteringToken && styles['in-filtering-token'],
+      inlineTokens && styles['inline-tokens']
     ),
     disabled: disabled || readOnly,
     'aria-expanded': pressed,
@@ -72,6 +77,7 @@ const ButtonTrigger = (
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     'aria-haspopup': ariaHasPopup ?? 'listbox',
+    'aria-controls': ariaControls,
     onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),

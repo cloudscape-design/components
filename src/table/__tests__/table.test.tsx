@@ -5,12 +5,22 @@ import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
 import PropertyFilter from '../../../lib/components/property-filter';
 import Select from '../../../lib/components/select';
-import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper, { ElementWrapper, PaginationWrapper, TableWrapper } from '../../../lib/components/test-utils/dom';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
+import styles from '../../../lib/components/table/styles.css.js';
+
+jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
+  useMobile: jest.fn(),
+}));
 
 interface Item {
   id: number;
   name: string;
+}
+
+function findFooterPagination(wrapper: TableWrapper) {
+  return wrapper.findComponent(`.${styles['footer-pagination']}`, PaginationWrapper);
 }
 
 function getHeaderHtmlContent(wrapper: ElementWrapper) {
@@ -77,6 +87,34 @@ test('should render table without extra slots', () => {
   expect(wrapper.findFooterSlot()).toBeNull();
   expect(wrapper.findTextFilter()).toBeNull();
   expect(wrapper.findPagination()).toBeNull();
+});
+
+test('should render table with no pagination in the footer for default variant', () => {
+  const { wrapper } = renderTable(
+    <Table pagination="pagination" columnDefinitions={defaultColumns} items={defaultItems} />
+  );
+  expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+  expect(findFooterPagination(wrapper)).toBeNull();
+});
+
+test('should render table with pagination in the footer for full-page variants on mobile', () => {
+  (useMobile as jest.Mock).mockReturnValue(true);
+  const { wrapper } = renderTable(
+    <Table pagination="pagination" variant="full-page" columnDefinitions={defaultColumns} items={defaultItems} />
+  );
+  expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+  expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
+  jest.resetAllMocks();
+});
+
+test('should not render table with pagination in the footer for full-page variants on desktop', () => {
+  (useMobile as jest.Mock).mockReturnValue(false);
+  const { wrapper } = renderTable(
+    <Table pagination="pagination" variant="full-page" columnDefinitions={defaultColumns} items={defaultItems} />
+  );
+  expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+  expect(findFooterPagination(wrapper)).toBeNull();
+  jest.resetAllMocks();
 });
 
 test('should render table with header and footer', () => {

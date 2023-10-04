@@ -140,6 +140,7 @@ describe('Box', () => {
       'text-status-success',
       'text-status-info',
       'text-status-inactive',
+      'text-status-warning',
     ],
     'color'
   );

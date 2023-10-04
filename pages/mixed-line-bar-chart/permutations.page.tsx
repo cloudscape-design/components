@@ -234,7 +234,7 @@ export default function () {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => <MixedLineBarChart<any> {...permutation} />}
+          render={permutation => <MixedLineBarChart<any> onRecoveryClick={() => {}} {...permutation} />}
         />
       </ScreenshotArea>
     </>

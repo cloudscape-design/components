@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { warnOnce } from '../../logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { mergeLocales } from './merge-locales';
 
 export function normalizeLocale(component: string, locale: string | null): string {

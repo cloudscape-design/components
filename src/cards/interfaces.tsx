@@ -64,7 +64,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   /**
    *  Defines what to display in each card. It has the following properties:
    *  * `header` ((item) => ReactNode) - Responsible for displaying the card header. You receive the current item as an argument.
-   *      Use `fontSize="heading-m"` on [link](/components/link/) components inside card header.
+   *      Use `fontSize="inherit"` on [link](/components/link/) components inside card header.
    *  * `sections` (array) - Responsible for displaying the card content. Cards can have many sections in their
    *    body. Each entry in the array is responsible for displaying a section. An entry has the following properties:
    *    * `id`: (string) - A unique identifier for the section. The property is used as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -157,6 +157,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * state of the component (for example, the `selectedItems` list). The label function for individual
    * items also receives the corresponding  `Item` object. You can use the group label to
    * add a meaningful description to the whole selection.
+   * @i18n
    */
   ariaLabels?: CardsProps.AriaLabels<T>;
   /**

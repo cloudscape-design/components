@@ -29,6 +29,6 @@ $invalid-control-left-padding: calc(
   #{$control-padding-horizontal} - (#{$invalid-control-left-border} - #{$control-border-width})
 );
 
-$control-icon-vertical-offset: calc(50% - #{awsui.$font-body-m-line-height} / 2);
+$control-icon-vertical-offset: calc(50% - #{awsui.$line-height-body-m} / 2);
 $control-icon-horizontal-offset: $control-padding-horizontal;
 $control-icon-horizontal-padding: awsui.$space-field-icon-offset;

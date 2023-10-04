@@ -5,7 +5,7 @@ import { tokens as parentTokens } from '../colors';
 import merge from 'lodash/merge';
 import { expandColorDictionary } from '../../utils';
 
-const tokens: StyleDictionary.ColorsDictionary = {
+export const alertButtonTokens: StyleDictionary.ColorsDictionary = {
   colorTextButtonNormalDefault: {
     light: '{colorGrey600}',
     dark: '{colorGrey300}',
@@ -27,15 +27,40 @@ const tokens: StyleDictionary.ColorsDictionary = {
     light: 'rgba(0, 7, 22, 0.1)',
     dark: 'rgba(255, 255, 255, 0.15)',
   },
-  colorBorderItemFocused: {
-    dark: '{colorGrey100}',
-  },
   colorTextLinkButtonNormalDefault: '{colorTextLinkDefault}',
   colorTextLinkButtonNormalHover: '{colorTextLinkHover}',
 };
 
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
-  merge({}, parentTokens, tokens)
+const alertExpandableSectionTokens: StyleDictionary.ColorsDictionary = {
+  colorBorderDividerDefault: '{colorTextButtonNormalDefault}',
+  colorTextExpandableSectionDefault: '{colorTextButtonNormalDefault}',
+  colorTextExpandableSectionHover: '{colorTextButtonNormalHover}',
+};
+
+const colorTokens: StyleDictionary.ColorsDictionary = {
+  ...alertButtonTokens,
+  ...alertExpandableSectionTokens,
+  colorBorderItemFocused: {
+    dark: '{colorGrey100}',
+  },
+};
+
+const alertExpandableSectionFontTokens: StyleDictionary.TypographyDictionary = {
+  fontExpandableHeadingSize: '14px',
+};
+
+const alertExpandableSectionBorderTokens: StyleDictionary.BordersDictionary = {
+  borderDividerSectionWidth: '1px',
+};
+
+export const expandedColorTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
+  merge({}, parentTokens, colorTokens)
 );
 
-export default expandedTokens;
+const expandedTokens = {
+  ...expandedColorTokens,
+  ...alertExpandableSectionFontTokens,
+  ...alertExpandableSectionBorderTokens,
+};
+
+export { expandedTokens as tokens };

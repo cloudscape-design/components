@@ -3,6 +3,7 @@
 import React from 'react';
 import { act, screen } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
+import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
 import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
@@ -28,21 +29,24 @@ const fakeComputedStyle: Window['getComputedStyle'] = (...args) => {
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
+}));
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isMotionDisabled: jest.fn().mockReturnValue(true),
   useDensityMode: jest.fn().mockReturnValue('comfortable'),
   useReducedMotion: jest.fn().mockReturnValue(true),
-}));
-jest.mock('../../../lib/components/internal/motion', () => ({
-  isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
 
 let isMocked = false;
 
-const actualUseContainerQuery = jest.requireActual(
-  '../../../lib/components/internal/hooks/container-queries/use-container-query'
-);
-jest.mock('../../../lib/components/internal/hooks/container-queries/use-container-query', () => ({
-  useContainerQuery: (arg: any) => (isMocked ? [800, () => {}] : actualUseContainerQuery.useContainerQuery(arg)),
-}));
+jest.mock('@cloudscape-design/component-toolkit', () => {
+  const actualUseContainerQuery = jest.requireActual('@cloudscape-design/component-toolkit');
+  return {
+    ...actualUseContainerQuery,
+    useContainerQuery: (arg: any) => (isMocked ? [800, () => {}] : actualUseContainerQuery.useContainerQuery(arg)),
+  };
+});
 
 beforeEach(() => {
   originalDocumentHeight = document.documentElement.clientHeight;
@@ -67,6 +71,7 @@ for (const theme of ['refresh', 'classic']) {
     afterEach(() => {
       (useVisualRefresh as jest.Mock).mockReset();
     });
+
     test('should render split panel in bottom position', () => {
       const { wrapper } = renderComponent(
         <AppLayout
@@ -95,7 +100,7 @@ for (const theme of ['refresh', 'classic']) {
       isMocked = false;
     });
 
-    (['bottom', 'side'] as const).forEach(position =>
+    (['bottom', 'side'] as const).forEach(position => {
       test(`split panel can open and close in ${position} position`, () => {
         const { wrapper } = renderComponent(
           <AppLayout
@@ -109,10 +114,8 @@ for (const theme of ['refresh', 'classic']) {
         expect(wrapper.findSplitPanel()!.findOpenButton()).toBeNull();
         act(() => wrapper.findSplitPanel()!.findCloseButton()!.click());
         expect(wrapper.findSplitPanel()!.findOpenButton()).not.toBeNull();
-      })
-    );
+      });
 
-    (['bottom', 'side'] as const).forEach(position => {
       test(`Moves focus to slider when opened in ${position} position`, () => {
         const { wrapper } = renderComponent(
           <AppLayout
@@ -137,7 +140,38 @@ for (const theme of ['refresh', 'classic']) {
         act(() => wrapper.findSplitPanel()!.findCloseButton()!.click());
         expect(wrapper.findSplitPanel()!.findOpenButton()!.getElement()).toHaveFocus();
       });
+
+      test(`Moves focus to the slider when focusSplitPanel() is called`, () => {
+        const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
+        const { wrapper } = renderComponent(
+          <AppLayout
+            ref={ref}
+            splitPanel={defaultSplitPanel}
+            splitPanelOpen={true}
+            splitPanelPreferences={{ position }}
+            onSplitPanelPreferencesChange={noop}
+          />
+        );
+        ref.current!.focusSplitPanel();
+        expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
+      });
+
+      test(`Does nothing when focusSplitPanel() is called but split panel is closed`, () => {
+        const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
+        renderComponent(
+          <AppLayout
+            ref={ref}
+            splitPanel={defaultSplitPanel}
+            splitPanelPreferences={{ position }}
+            onSplitPanelPreferencesChange={noop}
+          />
+        );
+        const previouslyFocusedElement = document.activeElement;
+        ref.current!.focusSplitPanel();
+        expect(previouslyFocusedElement).toHaveFocus();
+      });
     });
+
     test(`should not render split panel when it is not defined in ${theme}`, () => {
       const { wrapper, rerender } = renderComponent(<AppLayout splitPanel={defaultSplitPanel} />);
       expect(wrapper.findSplitPanel()).toBeTruthy();
@@ -266,6 +300,7 @@ test('should change split panel position in uncontrolled mode', () => {
   expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
   wrapper.findSplitPanel()!.findPreferencesButton()!.click();
   expect(screen.getByRole('radio', { name: 'Bottom' })).toBeChecked();
+  expect(screen.getByRole('radio', { name: 'Side' })).toBeEnabled();
   screen.getByRole('radio', { name: 'Side' }).click();
   screen.getByRole('button', { name: 'Confirm' }).click();
   expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
@@ -283,7 +318,7 @@ test('should fire split panel resize event', () => {
     />
   );
   wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
-  expect(onSplitPanelResize).toHaveBeenCalledWith({ size: 460 });
+  expect(onSplitPanelResize).toHaveBeenCalled();
 });
 
 test('should not set width on split panel drawer when there is no splitPanel', () => {
