@@ -338,6 +338,19 @@ describe('Input', () => {
       expect(element).toHaveAttribute('aria-label', 'Input label');
       expect(element).not.toHaveAttribute('aria-labelledby');
     });
+
+    test('aria-labelled by from input takes precedence over aria-label', () => {
+      render(
+        <FormField label="Form label">
+          <Input value="" ariaLabel="Input label" ariaLabelledby="test" />
+        </FormField>
+      );
+
+      const element = createWrapper().find('input')!.getElement();
+
+      expect(element).toHaveAttribute('aria-label', 'Input label');
+      expect(element).toHaveAttribute('aria-labelledby', 'test');
+    });
   });
 
   describe('Ref', () => {
