@@ -215,7 +215,7 @@ const DateRangePicker = React.forwardRef(
     );
 
     if (isDevelopment) {
-      if (!formatRelativeRange) {
+      if (!formatRelativeRange && rangeSelectorMode !== 'absolute-only') {
         warnOnce(
           'DateRangePicker',
           'A function for i18nStrings.formatRelativeRange was not provided. Relative ranges will not be correctly rendered.'
