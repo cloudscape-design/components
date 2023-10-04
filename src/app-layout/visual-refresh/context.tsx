@@ -50,7 +50,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
-  handleSplitPanelResize: (detail: { size: number }) => void;
+  handleSplitPanelResize: (newSize: number) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
   hasBackgroundOverlap: boolean;
   hasDefaultToolsWidth: boolean;
@@ -369,9 +369,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     const handleSplitPanelResize = useCallback(
-      function handleSplitPanelChange(detail: { size: number }) {
-        setSplitPanelSize(detail.size);
-        fireNonCancelableEvent(props.onSplitPanelResize, detail);
+      (size: number) => {
+        setSplitPanelSize(size);
+        fireNonCancelableEvent(props.onSplitPanelResize, { size });
       },
       [props.onSplitPanelResize, setSplitPanelSize]
     );

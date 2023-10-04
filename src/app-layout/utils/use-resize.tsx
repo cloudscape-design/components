@@ -55,15 +55,11 @@ function useResize(
     }
   };
 
-  const position = 'side';
-  const setBottomPanelHeight = () => {};
-
   const sizeControlProps: SizeControlProps = {
-    position,
+    position: 'side',
     panelRef: drawerRefObject,
     handleRef: drawersRefs.slider,
-    setSidePanelWidth,
-    setBottomPanelHeight,
+    onResize: setSidePanelWidth,
     hasTransitions: true,
   };
 

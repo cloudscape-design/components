@@ -36,7 +36,7 @@ export function SplitPanelContentSide({
         [styles['drawer-closed']]: !isOpen,
       })}
       style={{
-        width: isOpen ? cappedSize : undefined,
+        width: isOpen && isRefresh ? cappedSize : undefined,
         maxWidth: isRefresh ? '100%' : undefined,
       }}
       ref={splitPanelRef}

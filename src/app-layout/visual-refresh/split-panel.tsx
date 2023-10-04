@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
-import { SplitPanelContextProvider, SplitPanelContextProps } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
+import { SplitPanelProvider, SplitPanelProviderProps } from '../split-panel';
 import { AppLayoutProps } from '../interfaces';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -20,7 +20,6 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     handleSplitPanelPreferencesChange,
     handleSplitPanelResize,
     headerHeight,
-    isMobile,
     isSplitPanelForcedPosition,
     isSplitPanelOpen,
     setSplitPanelReportedSize,
@@ -31,7 +30,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     splitPanelSize,
   } = useAppLayoutInternals();
 
-  const context: SplitPanelContextProps = {
+  const props: SplitPanelProviderProps = {
     bottomOffset: 0,
     getMaxHeight: () => {
       const availableHeight = document.documentElement.clientHeight - headerHeight - footerHeight;
@@ -40,7 +39,6 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     },
     getMaxWidth: () => document.documentElement.clientWidth,
     isForcedPosition: isSplitPanelForcedPosition,
-    isMobile,
     isOpen: isSplitPanelOpen,
     leftOffset: 0,
     onPreferencesChange: handleSplitPanelPreferencesChange,
@@ -56,7 +54,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     refs: splitPanelRefs,
   };
 
-  return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;
+  return <SplitPanelProvider {...props}>{children}</SplitPanelProvider>;
 }
 
 /**
