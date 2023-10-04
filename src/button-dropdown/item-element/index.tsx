@@ -39,8 +39,7 @@ const ItemElement = ({
     }
   };
 
-  const onHover = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const onHover = () => {
     highlightItem(item);
   };
 
