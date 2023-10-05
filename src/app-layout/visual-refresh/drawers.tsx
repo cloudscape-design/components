@@ -206,6 +206,7 @@ function DesktopTriggers() {
       })}
       aria-label={drawersAriaLabel}
       ref={triggersContainerRef}
+      role="region"
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -313,6 +314,7 @@ export function MobileTriggers() {
         [styles.unfocusable]: hasDrawerViewportOverlay,
       })}
       aria-label={drawersAriaLabel}
+      role="region"
     >
       <div className={clsx(styles['drawers-mobile-triggers-container'])} role="toolbar" aria-orientation="horizontal">
         {visibleItems.map(item => (

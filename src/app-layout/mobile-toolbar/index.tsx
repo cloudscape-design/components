@@ -128,7 +128,7 @@ export function MobileToolbar({
         />
       )}
       {drawers && (
-        <aside aria-label={drawers.ariaLabel}>
+        <aside aria-label={drawers.ariaLabel} role="region">
           <div className={clsx(styles['drawers-container'])} role="toolbar" aria-orientation="horizontal">
             {visibleItems.map((item, index) => (
               <div
