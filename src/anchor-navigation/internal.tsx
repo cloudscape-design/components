@@ -10,6 +10,7 @@ import useScrollSpy from './use-scroll-spy.js';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { getBaseProps } from '../internal/base-component/index.js';
+import prismjs from 'prismjs';
 
 export default function InternalAnchorNavigation({
   anchors,
@@ -22,7 +23,7 @@ export default function InternalAnchorNavigation({
   ...props
 }: AnchorNavigationProps & InternalBaseComponentProps) {
   const baseProps = getBaseProps(props);
-
+  console.log(prismjs);
   const hrefs = useMemo(() => anchors.map(anchor => anchor.href), [anchors]);
 
   const onFollowHandler = useCallback(
