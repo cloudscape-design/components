@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act } from 'react-dom/test-utils';
-import { screen } from '@testing-library/react';
+import { within } from '@testing-library/react';
 import {
   describeEachThemeAppLayout,
   drawerWithoutLabels,
@@ -64,6 +64,9 @@ describeEachThemeAppLayout(true, theme => {
   const isUnfocusable = (element: HTMLElement) =>
     !!findUpUntil(element, current => current.classList.contains(unfocusableClassName));
 
+  const findMobileToolbar = (wrapper: AppLayoutWrapper) => wrapper.findByClassName(mobileBarClassName);
+  const findDrawersContainer = (wrapper: AppLayoutWrapper) => wrapper.findByClassName(drawerBarClassName);
+
   test('Renders closed drawer state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
     expect(document.body).not.toHaveClass(blockBodyScrollClassName);
@@ -123,15 +126,14 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('Renders mobile toolbar when at least one of it features is defined', function () {
-    const findMobileToolbar = () => wrapper.findByClassName(mobileBarClassName);
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} toolsHide={true} breadcrumbs="test" />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} toolsHide={true} />);
-    expect(findMobileToolbar()).toBeFalsy();
+    expect(findMobileToolbar(wrapper)).toBeFalsy();
   });
 
   test('clears up body scroll class when component is destroyed', () => {
@@ -431,24 +433,33 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 
-  test('Adds labels to toggle button and landmark when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Security trigger button'
-    );
-    expect(screen.getByLabelText('Drawers')).not.toBeNull();
-  });
-
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
   });
 
-  test('Does not add a label to the toggle and landmark when they are not defined', () => {
+  test('renders roles only when aria labels are not provided', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
-    const findDrawersToolbar = () => wrapper.findByClassName(drawerBarClassName);
+    const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
+
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
-    expect(findDrawersToolbar()!.getElement()).not.toHaveAttribute('aria-label');
+    expect(drawersAside).not.toHaveAttribute('aria-label');
+
+    const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
+    expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
+  });
+
+  test('renders roles and aria labels when provided', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
+
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
+    expect(drawersAside).toHaveAttribute('aria-label', 'Drawers');
+
+    const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
+    expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
   });
 });
