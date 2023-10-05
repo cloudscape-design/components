@@ -101,6 +101,9 @@ function InternalInput(
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
+    // aria-labelledby has precedence over aria-label in accessible name calculation.
+    // When aria-label is provided for Input, it should override aria-labelledBy from form-field context.
+    // If both aria-label and aria-labelledby come from Input props, aria-labelledby will be used in accessible name
     'aria-labelledby': ariaLabel && !rest.ariaLabelledby ? undefined : ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     name,
