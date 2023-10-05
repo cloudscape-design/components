@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 
 import {
   describeEachThemeAppLayout,
@@ -158,15 +158,6 @@ describeEachThemeAppLayout(false, () => {
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 
-  test('Adds labels to toggle button and landmark when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Security trigger button'
-    );
-    expect(screen.getByLabelText('Drawers')).not.toBeNull();
-  });
-
   test(`should toggle drawer on click`, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
     act(() => wrapper.findDrawersTriggers()![0].click());
@@ -302,18 +293,33 @@ describe('Classic only features', () => {
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
-  test('Does not add a label to the toggle and landmark when they are not defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
-    expect(wrapper.findByClassName(drawerStyles['drawer-triggers-wrapper'])!.getElement()).not.toHaveAttribute(
-      'aria-label'
+  test('renders roles only when aria labels are not provided', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout navigationHide={true} contentType="form" {...drawerWithoutLabels} />
+    );
+    const drawersAside = within(wrapper.findByClassName(drawerStyles['drawer-closed'])!.getElement()).getByRole(
+      'region'
+    );
+
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
+    expect(drawersAside).not.toHaveAttribute('aria-label');
+    expect(wrapper.findByClassName(drawerStyles['drawer-triggers-wrapper'])!.getElement()).toHaveAttribute(
+      'role',
+      'toolbar'
     );
   });
 
-  test('renders correct mark-up and roles', () => {
-    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+  test('renders roles and aria labels when provided', () => {
+    const { wrapper } = renderComponent(<AppLayout navigationHide={true} contentType="form" {...singleDrawer} />);
+    const drawersAside = within(wrapper.findByClassName(drawerStyles['drawer-closed'])!.getElement()).getByRole(
+      'region'
+    );
 
-    expect(screen.getByLabelText('Drawers')).toHaveAttribute('role', 'region');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
+    expect(drawersAside).toHaveAttribute('aria-label', 'Drawers');
     expect(wrapper.findByClassName(drawerStyles['drawer-triggers-wrapper'])!.getElement()).toHaveAttribute(
       'role',
       'toolbar'
@@ -335,18 +341,29 @@ describe('VR only features', () => {
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
   });
 
-  test('Does not add a label to the toggle and landmark when they are not defined', () => {
+  test('renders roles only when aria labels are not provided', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
+
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
     expect(
       wrapper.findByClassName(visualRefreshStyles['drawers-desktop-triggers-container'])!.getElement()
     ).not.toHaveAttribute('aria-label');
+    expect(wrapper.findByClassName(visualRefreshStyles['drawers-trigger-content'])!.getElement()).toHaveAttribute(
+      'role',
+      'toolbar'
+    );
   });
 
-  test('renders correct mark-up and roles', () => {
-    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+  test('renders roles and aria labels when provided', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
 
-    expect(screen.getByLabelText('Drawers')).toHaveAttribute('role', 'region');
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
+    expect(
+      wrapper.findByClassName(visualRefreshStyles['drawers-desktop-triggers-container'])!.getElement()
+    ).toHaveAttribute('aria-label', 'Drawers');
     expect(wrapper.findByClassName(visualRefreshStyles['drawers-trigger-content'])!.getElement()).toHaveAttribute(
       'role',
       'toolbar'
