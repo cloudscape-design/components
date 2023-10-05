@@ -309,6 +309,16 @@ describe('Classic only features', () => {
       'aria-label'
     );
   });
+
+  test('renders correct mark-up and roles', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+
+    expect(screen.getByLabelText('Drawers')).toHaveAttribute('role', 'region');
+    expect(wrapper.findByClassName(drawerStyles['drawer-triggers-wrapper'])!.getElement()).toHaveAttribute(
+      'role',
+      'toolbar'
+    );
+  });
 });
 
 describe('VR only features', () => {
@@ -331,5 +341,15 @@ describe('VR only features', () => {
     expect(
       wrapper.findByClassName(visualRefreshStyles['drawers-desktop-triggers-container'])!.getElement()
     ).not.toHaveAttribute('aria-label');
+  });
+
+  test('renders correct mark-up and roles', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+
+    expect(screen.getByLabelText('Drawers')).toHaveAttribute('role', 'region');
+    expect(wrapper.findByClassName(visualRefreshStyles['drawers-trigger-content'])!.getElement()).toHaveAttribute(
+      'role',
+      'toolbar'
+    );
   });
 });

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act } from 'react-dom/test-utils';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import {
   describeEachThemeAppLayout,
   drawerWithoutLabels,
@@ -447,8 +447,16 @@ describeEachThemeAppLayout(true, theme => {
 
   test('Does not add a label to the toggle and landmark when they are not defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
-    const findDrawersToolbar = () => wrapper.findByClassName(drawerBarClassName);
+    const findMobileToolbar = () => wrapper.findByClassName(mobileBarClassName);
+    const drawersAside = within(findMobileToolbar()!.getElement()).getByRole('region');
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
-    expect(findDrawersToolbar()!.getElement()).not.toHaveAttribute('aria-label');
+    expect(drawersAside).not.toHaveAttribute('aria-label');
+  });
+
+  test('renders correct mark-up and roles', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+    const findDrawersToolbar = () => wrapper.findByClassName(drawerBarClassName);
+    expect(screen.getByLabelText('Drawers')).toHaveAttribute('role', 'region');
+    expect(findDrawersToolbar()!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 });
