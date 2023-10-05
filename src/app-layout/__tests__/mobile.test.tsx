@@ -122,6 +122,14 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findToolsToggle().getElement()).toBeDisabled();
   });
 
+  test('renders open drawer state', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
+    expect(document.body).toHaveClass(blockBodyScrollClassName);
+    expect(wrapper.findNavigation()).toBeTruthy();
+    expect(wrapper.findTools()).toBeFalsy(); // no tools rendered in drawers mode
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
   test('Renders mobile toolbar when at least one of it features is defined', function () {
     const findMobileToolbar = () => wrapper.findByClassName(mobileBarClassName);
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} />);
@@ -383,6 +391,23 @@ describeEachThemeAppLayout(true, theme => {
         expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
         expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
         expect(wrapper.findByClassName(styles['layout-main'])?.getElement()).toHaveClass(unfocusableClassName);
+      }
+    });
+
+    test('content and toolbar is unfocusable when a drawer is open', () => {
+      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} {...singleDrawerOpen} />);
+
+      if (isUsingGridLayout) {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(6);
+        expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(testUtilsStyles.content)!.getElement()).toHaveClass(unfocusableClassName);
+        expect(
+          wrapper.findByClassName(visualRefreshRefactoredStyles['navigation-container'])!.getElement()
+        ).toHaveClass(unfocusableClassName);
+      } else {
+        expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(styles['layout-main'])!.getElement()).toHaveClass(unfocusableClassName);
       }
     });
 
