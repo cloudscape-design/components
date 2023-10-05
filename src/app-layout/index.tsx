@@ -18,11 +18,7 @@ import testutilStyles from './test-classes/styles.css.js';
 import { findUpUntil } from '../internal/utils/dom';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import {
-  SplitPanelContextProvider,
-  SplitPanelContextProps,
-  SplitPanelSideToggleProps,
-} from '../internal/context/split-panel-context';
+import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
   CONSTRAINED_PAGE_HEIGHT,
@@ -34,7 +30,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { Drawer, DrawerTriggersBar } from './drawer';
 import { ResizableDrawer } from './drawer/resizable-drawer';
-import { SideSplitPanelDrawer } from './split-panel-drawer';
+import { SplitPanelProvider, SideSplitPanelDrawer, SplitPanelProviderProps } from './split-panel';
 import useAppLayoutOffsets from './utils/use-content-width';
 import { isDevelopment } from '../internal/is-development';
 import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -305,9 +301,9 @@ const OldAppLayout = React.forwardRef(
       [setSplitPanelPreferences, onSplitPanelPreferencesChange, setSplitPanelLastInteraction]
     );
     const onSplitPanelSizeSet = useCallback(
-      (detail: { size: number }) => {
-        setSplitPanelSize(detail.size);
-        fireNonCancelableEvent(onSplitPanelResize, detail);
+      (newSize: number) => {
+        setSplitPanelSize(newSize);
+        fireNonCancelableEvent(onSplitPanelResize, { size: newSize });
       },
       [setSplitPanelSize, onSplitPanelResize]
     );
@@ -423,7 +419,7 @@ const OldAppLayout = React.forwardRef(
       return toolsClosedWidth;
     };
 
-    const splitPanelContext: SplitPanelContextProps = {
+    const splitPanelContextProps: SplitPanelProviderProps = {
       topOffset: headerHeight + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
       bottomOffset: footerHeight,
       leftOffset:
@@ -436,7 +432,6 @@ const OldAppLayout = React.forwardRef(
       disableContentPaddings,
       contentWidthStyles: contentMaxWidthStyle,
       isOpen: splitPanelOpen,
-      isMobile,
       isForcedPosition: isSplitpanelForcedPosition,
       onResize: onSplitPanelSizeSet,
       onToggle: onSplitPanelToggleHandler,
@@ -447,7 +442,13 @@ const OldAppLayout = React.forwardRef(
       refs: splitPanelRefs,
     };
     const splitPanelWrapped = splitPanel && (
-      <SplitPanelContextProvider value={splitPanelContext}>{splitPanel}</SplitPanelContextProvider>
+      <SplitPanelProvider {...splitPanelContextProps}>
+        {finalSplitPanePosition === 'side' ? (
+          <SideSplitPanelDrawer displayed={splitPanelDisplayed}>{splitPanel}</SideSplitPanelDrawer>
+        ) : (
+          splitPanel
+        )}
+      </SplitPanelProvider>
     );
 
     const contentWrapperProps: ContentWrapperProps = {
@@ -639,16 +640,7 @@ const OldAppLayout = React.forwardRef(
               {finalSplitPanePosition === 'bottom' && splitPanelWrapped}
             </main>
 
-            {finalSplitPanePosition === 'side' && (
-              <SideSplitPanelDrawer
-                topOffset={headerHeight}
-                bottomOffset={footerHeight}
-                displayed={splitPanelDisplayed}
-                width={splitPanelOpen && splitPanel ? splitPanelSize : undefined}
-              >
-                {splitPanelWrapped}
-              </SideSplitPanelDrawer>
-            )}
+            {finalSplitPanePosition === 'side' && splitPanelWrapped}
 
             {hasDrawers
               ? activeDrawerId && (

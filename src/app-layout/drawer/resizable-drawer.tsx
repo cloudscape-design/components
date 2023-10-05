@@ -47,16 +47,13 @@ export const ResizableDrawer = ({
     }
   };
 
-  const position = 'side';
-  const setBottomPanelHeight = () => {};
   const drawerRefObject = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
-    position,
+    position: 'side',
     panelRef: drawerRefObject,
     handleRef: refs.slider,
-    setSidePanelWidth,
-    setBottomPanelHeight,
+    onResize: setSidePanelWidth,
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
