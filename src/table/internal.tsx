@@ -469,6 +469,7 @@ const InternalTable = React.forwardRef(
 
                           {treeGrid !== undefined && (
                             <TableTdElement
+                              className={clsx(styles['selection-control'])}
                               isVisualRefresh={isVisualRefresh}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
@@ -487,28 +488,15 @@ const InternalTable = React.forwardRef(
                               level={getItemLevel(item)}
                             >
                               {treeGrid.getItemExpandable(item) ? (
-                                <InternalButton
-                                  variant="inline-icon"
-                                  iconName={treeGrid.getItemExpanded(item) ? 'caret-down-filled' : 'caret-right-filled'}
-                                  onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
-                                  ariaLabel="row expand"
-                                />
-                              ) : (
-                                <InternalButton
-                                  variant="inline-icon"
-                                  disabled={true}
-                                  iconSvg={
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 16 16"
-                                      focusable="false"
-                                      aria-hidden="true"
-                                    >
-                                      <circle cx="8" cy="8" r="2" fill="currentColor" />
-                                    </svg>
-                                  }
-                                />
-                              )}
+                                <span style={{ marginLeft: '-10px' }}>
+                                  <InternalButton
+                                    variant="inline-icon"
+                                    iconName={treeGrid.getItemExpanded(item) ? 'treeview-collapse' : 'treeview-expand'}
+                                    onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
+                                    ariaLabel="row expand"
+                                  />
+                                </span>
+                              ) : null}
                             </TableTdElement>
                           )}
 
@@ -555,6 +543,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
+                                level={colIndex === 0 ? getItemLevel(item) : 1}
                               />
                             );
                           })}

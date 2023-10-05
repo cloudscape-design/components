@@ -17,18 +17,6 @@
   font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
   padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
-  &-expand-max-level-1 {
-    width: 20px;
-    min-width: 20px;
-  }
-  &-expand-max-level-2 {
-    width: 40px;
-    min-width: 40px;
-  }
-  &-expand-max-level-3 {
-    width: 60px;
-    min-width: 60px;
-  }
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }

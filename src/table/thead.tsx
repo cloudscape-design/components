@@ -137,6 +137,7 @@ const Thead = React.forwardRef(
             <TableThElement
               className={clsx(
                 headerCellClass,
+                selectionCellClass,
                 headerCellStyles['header-cell-expand'],
                 hidden && headerCellStyles['header-cell-hidden']
               )}
