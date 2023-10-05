@@ -87,7 +87,10 @@ export default function SplitPanel({
 
   useEffect(() => {
     reportSize(cappedSize);
-  }, [reportSize, cappedSize]);
+    if (size !== cappedSize) {
+      onResize({ size: cappedSize });
+    }
+  }, [reportSize, cappedSize, size, onResize]);
 
   useEffect(() => {
     const handler = () => setMaxSize(position === 'bottom' ? getMaxHeight() : getMaxWidth());

@@ -244,6 +244,20 @@ test(
 );
 
 test(
+  'should respect different min limit when moving from bottom to side',
+  setupTest(async page => {
+    await page.openPanel();
+    const { height } = await page.getWindowSize();
+    await page.dragResizerTo({ x: 0, y: height });
+    expect((await page.getSplitPanelSize()).height).toEqual(160);
+
+    await page.switchPosition('side');
+
+    expect((await page.getSplitPanelSize()).width).toEqual(280);
+  })
+);
+
+test(
   'automatically shrinks split panel when screen resizes (bottom position)',
   setupTest(async page => {
     await page.openPanel();
