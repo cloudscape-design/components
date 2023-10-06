@@ -233,28 +233,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     /**
-     * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
-     * that consumes 100% of the viewport height and width. The body content could potentially
-     * be scrollable underneath the drawer. In order to prevent this a CSS class needs to be
-     * added to the document body that sets overflow to hidden.
-     */
-    useEffect(
-      function handleBodyScroll() {
-        if (isMobile && (isNavigationOpen || isToolsOpen)) {
-          document.body.classList.add(styles['block-body-scroll']);
-        } else {
-          document.body.classList.remove(styles['block-body-scroll']);
-        }
-
-        // Ensure the CSS class is removed from the body on side effect cleanup
-        return function cleanup() {
-          document.body.classList.remove(styles['block-body-scroll']);
-        };
-      },
-      [isMobile, isNavigationOpen, isToolsOpen]
-    );
-
-    /**
      * Query the DOM for the header and footer elements based on the selectors provided
      * by the properties and pass the heights to the custom property definitions.
      */
@@ -473,6 +451,28 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
       },
       [layoutWidth, isNavigationOpen, isToolsOpen, splitPanelReportedSize]
+    );
+
+    /**
+     * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
+     * that consumes 100% of the viewport height and width. The body content could potentially
+     * be scrollable underneath the drawer. In order to prevent this a CSS class needs to be
+     * added to the document body that sets overflow to hidden.
+     */
+    useEffect(
+      function handleBodyScroll() {
+        if (isMobile && (isNavigationOpen || isToolsOpen || !!activeDrawer)) {
+          document.body.classList.add(styles['block-body-scroll']);
+        } else {
+          document.body.classList.remove(styles['block-body-scroll']);
+        }
+
+        // Ensure the CSS class is removed from the body on side effect cleanup
+        return function cleanup() {
+          document.body.classList.remove(styles['block-body-scroll']);
+        };
+      },
+      [isMobile, isNavigationOpen, isToolsOpen, activeDrawer]
     );
 
     /**
