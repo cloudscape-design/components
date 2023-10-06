@@ -30,7 +30,7 @@
     // "offset" styles are needed for when sticky columns are enabled.
     // We move the scrollbar lower, so it doesn't overlap interactive elements (such as checkboxes or links)
 
-    z-index: 800; // Higher than sticky columns
+    z-index: 799; // Higher than sticky columns (798) and lower than table sticky header (800)
     &:not(.is-visual-refresh) {
       background-color: awsui.$color-background-container-content;
       height: 15px;
