@@ -75,6 +75,7 @@ function ActiveDrawer() {
   } = useAppLayoutInternals();
 
   const activeDrawer = drawers?.find(item => item.id === activeDrawerId) ?? null;
+  const MIN_WIDTH = 290;
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -85,7 +86,7 @@ function ActiveDrawer() {
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
 
-  const size = Math.min(drawersMaxWidth, drawerSize);
+  const size = Math.max(Math.min(drawersMaxWidth, drawerSize), MIN_WIDTH);
 
   return (
     <aside
