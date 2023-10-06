@@ -114,6 +114,18 @@
   }
 }
 
+.cell-loader {
+  padding: 0;
+  border-bottom: 1px solid awsui.$color-border-divider-default;
+  &-content {
+    width: fit-content;
+    position: sticky;
+    left: 0;
+    box-sizing: border-box;
+    padding: awsui.$space-xs awsui.$space-l;
+  }
+}
+
 .empty {
   color: awsui.$color-text-empty;
 }

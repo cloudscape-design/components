@@ -40,6 +40,9 @@ import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import InternalBox from '../box/internal';
+import InternalSpinner from '../spinner/internal';
+import InternalButton from '../button/internal';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -106,12 +109,14 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
+      inContextLoader,
       __funnelSubStepProps,
       __subStepRef,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
+    const loaderRows = inContextLoader ? 1 : 0;
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
@@ -139,7 +144,7 @@ const InternalTable = React.forwardRef(
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
-    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length);
+    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length + loaderRows);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({
@@ -249,7 +254,7 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items.length + loaderRows);
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -339,7 +344,11 @@ const InternalTable = React.forwardRef(
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>
-                    {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}
+                    {renderAriaLive({
+                      totalItemsCount,
+                      firstIndex,
+                      lastIndex: firstIndex + items.length + loaderRows - 1,
+                    })}
                   </span>
                 </LiveRegion>
               )}
@@ -396,6 +405,7 @@ const InternalTable = React.forwardRef(
                       const isSelected = !!selectionType && isItemSelected(item);
                       const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                       const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+
                       return (
                         <tr
                           key={getItemKey(trackBy, item, rowIndex)}
@@ -489,6 +499,19 @@ const InternalTable = React.forwardRef(
                       );
                     })
                   )}
+
+                  {inContextLoader ? (
+                    <tr>
+                      <td
+                        colSpan={totalColumnsCount}
+                        className={clsx(styles['cell-loader'], styles['cell-loader-sticky'])}
+                      >
+                        <div className={styles['cell-loader-content']}>
+                          <InContextLoader {...inContextLoader} />
+                        </div>
+                      </td>
+                    </tr>
+                  ) : null}
                 </tbody>
               </table>
               {resizableColumns && <ResizeTracker />}
@@ -507,5 +530,27 @@ const InternalTable = React.forwardRef(
     );
   }
 ) as TableForwardRefType;
+
+function InContextLoader({ state, emptyText, loadingText, loadMoreText, onLoadMore }: TableProps.InContextLoaderProps) {
+  if (state === 'empty') {
+    return <InternalBox color="text-body-secondary">{emptyText}</InternalBox>;
+  }
+  if (state === 'loading') {
+    return (
+      <>
+        <InternalSpinner />
+        <LiveRegion>{loadingText}</LiveRegion>
+      </>
+    );
+  }
+  if (state === 'pending') {
+    return (
+      <InternalButton variant="inline-link" onClick={onLoadMore}>
+        {loadMoreText}
+      </InternalButton>
+    );
+  }
+  throw new Error('Invariant violation: unsupported in-context loader state');
+}
 
 export default InternalTable;

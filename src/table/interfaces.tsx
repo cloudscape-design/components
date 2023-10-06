@@ -315,6 +315,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
+
+  /**
+   * Experimental in-context loader API.
+   */
+  inContextLoader?: TableProps.InContextLoaderProps;
 }
 
 export namespace TableProps {
@@ -454,5 +459,13 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible: boolean;
+  }
+
+  export interface InContextLoaderProps {
+    state: 'empty' | 'pending' | 'loading';
+    loadingText: string;
+    emptyText: string;
+    loadMoreText: string;
+    onLoadMore: CancelableEventHandler;
   }
 }
