@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from '../utils/use-pointer-events';
@@ -18,33 +18,23 @@ import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 export const ResizableDrawer = ({
   onResize,
-  size,
-  minSize,
-  getMaxWidth,
+  maxWidth,
+  minWidth,
   refs,
   activeDrawer,
   toolsContent,
   ...props
 }: ResizableDrawerProps) => {
-  const { isOpen, children, isMobile } = props;
-  const [relativeSize, setRelativeSize] = useState(0);
+  const { isOpen, children, width, isMobile } = props;
 
-  useEffect(() => {
-    // effects are called inside out in the components tree
-    // wait one frame to allow app-layout to complete its calculations
-    const handle = requestAnimationFrame(() => {
-      const maxSize = getMaxWidth();
-      setRelativeSize((size / maxSize) * 100);
-    });
-    return () => cancelAnimationFrame(handle);
-  }, [size, getMaxWidth]);
+  const clampedWidth = getLimitedValue(minWidth, width, maxWidth);
+  const relativeSize = ((clampedWidth - minWidth) / (maxWidth - minWidth)) * 100;
 
-  const setSidePanelWidth = (width: number) => {
-    const maxWidth = getMaxWidth();
-    const size = getLimitedValue(minSize, width, maxWidth);
+  const setSidePanelWidth = (newWidth: number) => {
+    const size = getLimitedValue(minWidth, newWidth, maxWidth);
     const id = activeDrawer?.id;
 
-    if (isOpen && id && maxWidth >= minSize) {
+    if (isOpen && id && maxWidth >= minWidth) {
       onResize({ size, id });
     }
   };
@@ -82,6 +72,7 @@ export const ResizableDrawer = ({
     <Drawer
       {...props}
       id={activeDrawer?.id}
+      width={clampedWidth}
       ref={drawerRefObject}
       isHidden={!activeDrawer}
       resizeHandle={
