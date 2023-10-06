@@ -4,9 +4,9 @@
 import {
   ComparisonOperator,
   ExtendedOperatorForm,
-  FilteringSettings,
   GroupText,
   I18nStrings,
+  InternalFilteringOption,
   InternalFilteringProperty,
   JoinOperation,
   ParsedText,
@@ -74,7 +74,7 @@ export const getAllowedOperators = (property: InternalFilteringProperty): Compar
  */
 export const parseText = (
   filteringText: string,
-  filteringSettings: FilteringSettings,
+  filteringProperties: readonly InternalFilteringProperty[],
   disableFreeTextFiltering: boolean
 ): ParsedText => {
   const negatedGlobalQuery = /^(!:|!)(.*)/.exec(filteringText);
@@ -86,7 +86,7 @@ export const parseText = (
     };
   }
 
-  const property = matchFilteringProperty(filteringSettings, filteringText);
+  const property = matchFilteringProperty(filteringProperties, filteringText);
   if (!property) {
     return {
       step: 'free-text',
@@ -126,7 +126,7 @@ interface OptionGroup<T> {
 }
 
 export const getAllValueSuggestions = (
-  filteringSettings: FilteringSettings,
+  filteringOptions: readonly InternalFilteringOption[],
   operator: ComparisonOperator | undefined = '=',
   i18nStrings: I18nStrings,
   customGroupsText: readonly GroupText[]
@@ -136,8 +136,8 @@ export const getAllValueSuggestions = (
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<AutosuggestProps.Option> } = {};
-  filteringSettings.options.forEach(filteringOption => {
-    const property = filteringSettings.getProperty(filteringOption.propertyKey);
+  filteringOptions.forEach(filteringOption => {
+    const property = filteringOption.property;
     // given option refers to a non-existent filtering property
     if (!property) {
       return;
@@ -167,13 +167,13 @@ export const getAllValueSuggestions = (
 };
 
 export function createPropertiesCompatibilityMap(
-  filteringSettings: FilteringSettings
+  filteringProperties: readonly InternalFilteringProperty[]
 ): (propertyA: string, propertyB: string) => boolean {
   const lookup: {
     [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | null }[];
   } = {};
 
-  for (const property of filteringSettings.properties) {
+  for (const property of filteringProperties) {
     lookup[property.propertyKey] = (property.operators || [])
       .map(operator => ({ operator, form: property.getValueFormRenderer(operator) }))
       .sort((a, b) => a.operator.localeCompare(b.operator));
@@ -202,7 +202,7 @@ const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteri
 });
 
 export function getPropertySuggestions<T>(
-  filteringSettings: FilteringSettings,
+  filteringProperties: readonly InternalFilteringProperty[],
   customGroupsText: readonly GroupText[],
   i18nStrings: I18nStrings,
   filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
@@ -213,7 +213,7 @@ export function getPropertySuggestions<T>(
   };
   const customGroups: { [K in string]: OptionGroup<T> } = {};
 
-  filteringSettings.properties.forEach(filteringProperty => {
+  filteringProperties.forEach(filteringProperty => {
     const { propertyGroup } = filteringProperty;
     let optionsGroup = defaultGroup;
     if (propertyGroup) {
@@ -235,14 +235,15 @@ export function getPropertySuggestions<T>(
 
 export const getAutosuggestOptions = (
   parsedText: ParsedText,
-  filteringSettings: FilteringSettings,
+  filteringProperties: readonly InternalFilteringProperty[],
+  filteringOptions: readonly InternalFilteringOption[],
   customGroupsText: readonly GroupText[],
   i18nStrings: I18nStrings
 ) => {
   switch (parsedText.step) {
     case 'property': {
       const { propertyLabel, groupValuesLabel } = parsedText.property;
-      const options = filteringSettings.getPropertyOptions(parsedText.property.propertyKey);
+      const options = filteringOptions.filter(o => o.property === parsedText.property);
       return {
         filterText: parsedText.value,
         options: [
@@ -262,7 +263,7 @@ export const getAutosuggestOptions = (
         filterText: parsedText.property.propertyLabel + ' ' + parsedText.operatorPrefix,
         options: [
           ...getPropertySuggestions(
-            filteringSettings,
+            filteringProperties,
             customGroupsText,
             i18nStrings,
             filteringPropertyToAutosuggestOption
@@ -287,14 +288,14 @@ export const getAutosuggestOptions = (
         options: [
           ...(needsPropertySuggestions
             ? getPropertySuggestions(
-                filteringSettings,
+                filteringProperties,
                 customGroupsText,
                 i18nStrings,
                 filteringPropertyToAutosuggestOption
               )
             : []),
           ...(needsValueSuggestions
-            ? getAllValueSuggestions(filteringSettings, parsedText.operator, i18nStrings, customGroupsText)
+            ? getAllValueSuggestions(filteringOptions, parsedText.operator, i18nStrings, customGroupsText)
             : []),
         ],
       };

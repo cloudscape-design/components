@@ -307,17 +307,21 @@ export interface InternalFilteringProperty<TokenValue = any> {
   externalProperty: PropertyFilterProperty;
 }
 
-export interface FilteringSettings<TokenValue = any> {
-  properties: readonly InternalFilteringProperty<TokenValue>[];
-  options: readonly InternalFilteringOption[];
-  getProperty(propertyKey: string): null | InternalFilteringProperty<TokenValue>;
-  getPropertyOptions(propertyKey: string): readonly InternalFilteringOption[];
-}
-
 export interface InternalFilteringOption {
-  propertyKey: string;
+  property: null | InternalFilteringProperty;
   value: string;
   label: string;
+}
+
+export interface InternalToken<TokenValue = any> {
+  property: null | InternalFilteringProperty<TokenValue>;
+  operator: PropertyFilterOperator;
+  value: TokenValue;
+}
+
+export interface InternalQuery {
+  operation: PropertyFilterOperation;
+  tokens: readonly InternalToken[];
 }
 
 export type ParsedText =

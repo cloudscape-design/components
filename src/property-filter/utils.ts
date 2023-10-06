@@ -3,21 +3,21 @@
 
 import {
   ComparisonOperator,
-  FilteringSettings,
   InternalFilteringOption,
   InternalFilteringProperty,
+  InternalToken,
   Token,
 } from './interfaces';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
-  filteringSettings: FilteringSettings,
+  filteringProperties: readonly InternalFilteringProperty[],
   filteringText: string
 ): null | InternalFilteringProperty {
   let maxLength = 0;
   let matchedProperty: null | InternalFilteringProperty = null;
 
-  for (const property of filteringSettings.properties) {
+  for (const property of filteringProperties) {
     if (
       (property.propertyLabel.length >= maxLength && startsWith(filteringText, property.propertyLabel)) ||
       (property.propertyLabel.length > maxLength &&
@@ -67,21 +67,21 @@ export function matchOperatorPrefix(
   return null;
 }
 
-export function matchTokenValue(token: Token, filteringOptions: readonly InternalFilteringOption[]): Token {
-  const propertyOptions = filteringOptions.filter(option => option.propertyKey === token.propertyKey);
-  const bestMatch = { ...token };
+export function matchTokenValue(
+  { property, operator, value }: InternalToken,
+  filteringOptions: readonly InternalFilteringOption[]
+): Token {
+  const propertyOptions = filteringOptions.filter(option => option.property === property);
+  const bestMatch: Token = { propertyKey: property?.propertyKey, operator, value };
   for (const option of propertyOptions) {
-    if ((option.label && option.label === token.value) || (!option.label && option.value === token.value)) {
+    if ((option.label && option.label === value) || (!option.label && option.value === value)) {
       // exact match found: return it
-      return { ...token, value: option.value };
+      return { propertyKey: property?.propertyKey, operator, value: option.value };
     }
 
     // By default, the token value is a string, but when a custom property is used,
     // the token value can be any, therefore we need to check for its type before calling toLowerCase()
-    if (
-      typeof token.value === 'string' &&
-      token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()
-    ) {
+    if (typeof value === 'string' && value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()) {
       // non-exact match: save and keep running in case exact match found later
       bestMatch.value = option.value;
     }
@@ -90,10 +90,9 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
   return bestMatch;
 }
 
-export function getFormattedToken(filteringSettings: FilteringSettings, token: Token) {
-  const property = token.propertyKey ? filteringSettings.getProperty(token.propertyKey) : undefined;
-  const valueFormatter = property?.getValueFormatter(token.operator);
-  const propertyLabel = property && property.propertyLabel;
+export function getFormattedToken(token: InternalToken) {
+  const valueFormatter = token.property?.getValueFormatter(token.operator);
+  const propertyLabel = token.property && token.property.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
   return { property: propertyLabel ?? '', operator: token.operator, value: tokenValue, label };

@@ -21,7 +21,7 @@ import {
   InternalFilteringOption,
   FilteringProperty,
   ExtendedOperator,
-  FilteringSettings,
+  InternalQuery,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -150,8 +150,7 @@ const PropertyFilter = React.forwardRef(
     };
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
-    const { tokens, operation } = query;
-    const showResults = !!tokens?.length && !disabled && !!countText;
+    const showResults = !!query.tokens?.length && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
@@ -159,7 +158,7 @@ const PropertyFilter = React.forwardRef(
     );
     const [filteringText, setFilteringText] = useState<string>('');
 
-    const filteringSettings: FilteringSettings = useMemo(() => {
+    const { internalProperties, internalOptions, internalQuery } = useMemo(() => {
       const propertyByKey = filteringProperties.reduce((acc, property) => {
         const extendedOperators = (property?.operators ?? []).reduce(
           (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
@@ -181,46 +180,45 @@ const PropertyFilter = React.forwardRef(
       const getProperty = (propertyKey: string): null | InternalFilteringProperty =>
         propertyByKey.get(propertyKey) ?? null;
 
-      const options: readonly InternalFilteringOption[] = filteringOptions.map(option => {
-        const formatter = getProperty(option.propertyKey)?.getValueFormatter();
-        return {
-          propertyKey: option.propertyKey,
-          value: option.value,
-          label: formatter ? formatter(option.value) : option.label ?? option.value ?? '',
-        };
-      });
-      const optionsByProperty = options.reduce((acc, option) => {
-        const propertyOptions = acc.get(option.propertyKey) ?? [];
-        propertyOptions.push(option);
-        acc.set(option.propertyKey, propertyOptions);
-        return acc;
-      }, new Map<string, InternalFilteringOption[]>());
-      const getPropertyOptions = (propertyKey: string): readonly InternalFilteringOption[] =>
-        optionsByProperty.get(propertyKey) ?? [];
+      const internalOptions: readonly InternalFilteringOption[] = filteringOptions.map(option => ({
+        property: getProperty(option.propertyKey),
+        value: option.value,
+        label: option.label ?? option.value ?? '',
+      }));
 
-      return {
-        properties: [...propertyByKey.values()],
-        options,
-        getProperty,
-        getPropertyOptions,
+      const internalQuery: InternalQuery = {
+        operation: query.operation,
+        tokens: query.tokens.map(token => ({
+          property: token.propertyKey ? getProperty(token.propertyKey) : null,
+          operator: token.operator,
+          value: token.value,
+        })),
       };
-    }, [filteringProperties, filteringOptions]);
 
-    const parsedText = parseText(filteringText, filteringSettings, disableFreeTextFiltering);
-    const autosuggestOptions = getAutosuggestOptions(parsedText, filteringSettings, customGroupsText, i18nStrings);
+      return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery };
+    }, [filteringProperties, filteringOptions, query]);
+
+    const parsedText = parseText(filteringText, internalProperties, disableFreeTextFiltering);
+    const autosuggestOptions = getAutosuggestOptions(
+      parsedText,
+      internalProperties,
+      internalOptions,
+      customGroupsText,
+      i18nStrings
+    );
 
     const createToken = (currentText: string) => {
-      const parsedText = parseText(currentText, filteringSettings, disableFreeTextFiltering);
+      const parsedText = parseText(currentText, internalProperties, disableFreeTextFiltering);
       let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
           newToken = matchTokenValue(
             {
-              propertyKey: parsedText.property.propertyKey,
+              property: parsedText.property,
               operator: parsedText.operator,
               value: parsedText.value,
             },
-            filteringSettings.options
+            internalOptions
           );
           break;
         }
@@ -309,7 +307,7 @@ const PropertyFilter = React.forwardRef(
       // stop dropdown from closing
       event.preventDefault();
 
-      const parsedText = parseText(value, filteringSettings, disableFreeTextFiltering);
+      const parsedText = parseText(value, internalProperties, disableFreeTextFiltering);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
 
       // Insert operator automatically if only one operator is defined for the given property.
@@ -385,25 +383,26 @@ const PropertyFilter = React.forwardRef(
             </div>
           ) : null}
         </div>
-        {tokens && tokens.length > 0 && (
+        {internalQuery.tokens && internalQuery.tokens.length > 0 && (
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal">
               <TokenList
                 alignment="inline"
                 limit={tokenLimit}
-                items={tokens}
+                items={internalQuery.tokens}
                 renderItem={(token, tokenIndex) => (
                   <TokenButton
                     token={token}
                     first={tokenIndex === 0}
-                    operation={operation}
+                    operation={internalQuery.operation}
                     removeToken={() => {
                       removeToken(tokenIndex);
                       setRemovedTokenIndex(tokenIndex);
                     }}
                     setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
                     setOperation={setOperation}
-                    filteringSettings={filteringSettings}
+                    filteringProperties={internalProperties}
+                    filteringOptions={internalOptions}
                     asyncProps={asyncProps}
                     onLoadItems={onLoadItems}
                     i18nStrings={i18nStrings}
