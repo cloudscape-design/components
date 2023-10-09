@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "표시된 데이터 필터링",
     "i18nStrings.filterPlaceholder": "데이터 필터링",
     "i18nStrings.legendAriaLabel": "범례",
+    "i18nStrings.chartAriaRoleDescription": "차트",
     "i18nStrings.xAxisAriaRoleDescription": "x축",
     "i18nStrings.yAxisAriaRoleDescription": "y축"
   },
@@ -22,6 +23,8 @@
     "i18nStrings.labelHotspot": "{openState, select, true {{stepNumber}/{totalStepCount}단계에 대한 주석 닫기} false {{stepNumber}/{totalStepCount}단계에 대한 주석 열기} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "드로어",
+    "ariaLabels.drawersOverflow": "드로어 오버플로",
     "ariaLabels.navigation": "측면 탐색",
     "ariaLabels.navigationClose": "측면 탐색 닫기",
     "ariaLabels.navigationToggle": "측면 탐색 열기",
@@ -180,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "보다 큼",
     "i18nStrings.operatorLessOrEqualText": "작거나 같음",
     "i18nStrings.operatorLessText": "보다 작음",
+    "i18nStrings.operatorStartsWithText": "로 시작",
     "i18nStrings.operatorText": "연산자",
     "i18nStrings.operatorsText": "연산자",
     "i18nStrings.propertyText": "속성",
@@ -262,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "분할 패널 크기 조정"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "크기 조정 버튼",
     "ariaLabels.submittingEditText": "편집 제출 중",
     "ariaLabels.successfulEditLabel": "편집 성공",
     "columnDefinitions.editConfig.errorIconAriaLabel": "오류",

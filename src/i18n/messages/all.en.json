@@ -23,6 +23,8 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Close annotation for step {stepNumber} of {totalStepCount}} false {Open annotation for step {stepNumber} of {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Drawers",
+    "ariaLabels.drawersOverflow": "Drawers overflow",
     "ariaLabels.navigation": "Side navigation",
     "ariaLabels.navigationClose": "Close side navigation",
     "ariaLabels.navigationToggle": "Open side navigation",
@@ -181,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "Greater than",
     "i18nStrings.operatorLessOrEqualText": "Less than or equal",
     "i18nStrings.operatorLessText": "Less than",
+    "i18nStrings.operatorStartsWithText": "Starts with",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operators",
     "i18nStrings.propertyText": "Property",
@@ -263,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Resize split panel"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "resize button",
     "ariaLabels.submittingEditText": "Submitting edit",
     "ariaLabels.successfulEditLabel": "Edit successful",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",
