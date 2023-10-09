@@ -17,6 +17,7 @@ for (const visualRefresh of [true, false]) {
           `#/light/app-layout/runtime-drawers?${new URLSearchParams({
             hasDrawers: 'false',
             hasTools: 'true',
+            splitPanelPosition: 'side',
             visualRefresh: `${visualRefresh}`,
           }).toString()}`
         );
@@ -39,16 +40,12 @@ for (const visualRefresh of [true, false]) {
       })
     );
 
-    test.only(
+    test(
       'should resize equally with tools or drawers',
       setupTest(async page => {
         await page.setWindowSize({ ...viewports.desktop, width: 1800 });
         await page.click(wrapper.findToolsToggle().toSelector());
         await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-        await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
-        const tile = createWrapper().findModal().findContent().findTiles().findItemByValue('side');
-        await page.click(tile.toSelector());
-        await page.click('button=Confirm');
 
         const { width: splitPanelWidthWithTools } = await page.getBoundingBox(wrapper.findSplitPanel().toSelector());
 
