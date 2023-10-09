@@ -3,6 +3,7 @@
 import React from 'react';
 import { KeyCode } from '../../internal/keycode';
 import { SizeControlProps } from './interfaces';
+import styles from '../styles.css.js';
 
 const KEYBOARD_SINGLE_STEP_SIZE = 10;
 const KEYBOARD_MULTIPLE_STEPS_SIZE = 60;
@@ -27,6 +28,8 @@ export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlP
     let maxSize;
 
     const { panelHeight, panelWidth } = getCurrentSize(panelRef);
+
+    panelRef?.current?.classList.remove(styles['with-motion']);
 
     if (position === 'side') {
       currentSize = panelWidth;

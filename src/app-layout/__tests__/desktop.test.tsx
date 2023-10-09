@@ -335,9 +335,19 @@ describe('VR only features', () => {
     (useVisualRefresh as jest.Mock).mockReset();
   });
 
-  test('should add motion class', () => {
+  test('should add motion class when expected', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
-    act(() => wrapper.findDrawersTriggers()![0].click());
+    act(() => wrapper.findDrawerTriggerById('security')!.click());
+
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
+
+    // we want to remove the class on keypress to avoid jumping
+    act(() => wrapper.findActiveDrawerResizeHandle()!.keydown(KeyCode.left));
+    expect(wrapper.findActiveDrawer()!.getElement()).not.toHaveClass(styles['with-motion']);
+
+    // we expect the class to be back when the drawer is re-opened
+    act(() => wrapper.findActiveDrawerCloseButton()!.click());
+    act(() => wrapper.findDrawerTriggerById('security')!.click());
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
   });
 
