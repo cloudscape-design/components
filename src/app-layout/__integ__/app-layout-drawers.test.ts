@@ -127,6 +127,16 @@ for (const visualRefresh of [true, false]) {
     );
 
     test(
+      `should not shrink drawer beyond min width`,
+      setupTest({ screenSize: { ...viewports.desktop, width: 700 } }, async page => {
+        await page.openThirdDrawer();
+        // there are different layouts between these two designs
+        // the min-width of the drawer is 290
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh ? 292 : 290);
+      })
+    );
+
+    test(
       'split panel and drawer can resize independently',
       setupTest({ splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1800 } }, async page => {
         await page.openFirstDrawer();
