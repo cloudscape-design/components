@@ -128,9 +128,7 @@ for (const visualRefresh of [true, false]) {
 
     test(
       `should not shrink drawer beyond min width`,
-      setupTest({}, async page => {
-        // this width is small enough that it would hit the min-width of a drawer
-        await page.setWindowSize({ ...viewports.desktop, width: 700 });
+      setupTest({ screenSize: { ...viewports.desktop, width: 700 } }, async page => {
         await page.openThirdDrawer();
         // there are different layouts between these two designs
         // the min-width of the drawer is 290
