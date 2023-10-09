@@ -22,6 +22,7 @@ type DemoContext = React.Context<
   AppContextType<{
     hasDrawers: boolean | undefined;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+    disableContentPaddings: boolean | undefined;
   }>
 >;
 
@@ -38,6 +39,7 @@ export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const hasDrawers = urlParams.hasDrawers ?? true;
+  const disableContentPaddings = urlParams.disableContentPaddings ?? false;
 
   const drawers = !hasDrawers
     ? null
@@ -155,6 +157,7 @@ export default function WithDrawers() {
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
+            data-test-id="content"
             header={
               <SpaceBetween size="m">
                 <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
@@ -183,6 +186,7 @@ export default function WithDrawers() {
           const { position } = event.detail;
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
         }}
+        disableContentPaddings={disableContentPaddings}
         splitPanel={
           <SplitPanel
             header="Split panel header"

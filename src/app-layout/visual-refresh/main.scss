@@ -38,7 +38,8 @@
       }
 
       &.is-tools-open,
-      &.is-split-panel-open.split-panel-position-side {
+      &.is-split-panel-open.split-panel-position-side,
+      &.has-active-drawer {
         grid-column-end: 5;
       }
     }
