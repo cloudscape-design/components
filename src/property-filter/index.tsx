@@ -56,6 +56,8 @@ function getOperatorI18nString(operator: ComparisonOperator): string {
       return 'contains';
     case '!:':
       return 'not_contains';
+    case '^':
+      return 'starts_with';
     // The line is ignored from coverage because it is not reachable.
     // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
     /* istanbul ignore next */

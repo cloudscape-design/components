@@ -68,7 +68,7 @@ export const getQueryActions = (
 
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
-  const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
+  const operatorOrder = ['=', '!=', ':', '!:', '^', '>=', '<=', '<', '>'] as const;
   const operatorSet = new Set([defaultOperator, ...operators]);
   return operatorOrder.filter(op => operatorSet.has(op));
 };
@@ -342,6 +342,8 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
       return i18nStrings.operatorEqualsText;
     case '!=':
       return i18nStrings.operatorDoesNotEqualText;
+    case '^':
+      return i18nStrings.operatorStartsWithText;
     // The line is ignored from coverage because it is not reachable.
     // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
     /* istanbul ignore next */

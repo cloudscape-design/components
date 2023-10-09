@@ -34,7 +34,7 @@ const filteringProperties: readonly FilteringProperty[] = [
   {
     key: 'string',
     propertyLabel: 'string',
-    operators: ['!:', ':', '=', '!='],
+    operators: ['!:', ':', '=', '!=', '^'],
     groupValuesLabel: 'String values',
   },
   // property label has the a prefix equal to another property's label
@@ -1473,6 +1473,7 @@ describe('i18n', () => {
               less_than_equal {Remove filter, {token__propertyKey} Custom less than or equals {token__value}}
               contains {Remove filter, {token__propertyKey} Custom contains {token__value}}
               not_contains {Remove filter, {token__propertyKey} Custom does not contain {token__value}}
+              starts_with {Remove filter, {token__propertyKey} Custom starts with {token__value}}
               other {}}`,
           },
         }}
@@ -1487,6 +1488,7 @@ describe('i18n', () => {
               { propertyKey: 'string', operator: '!=', value: 'value2' },
               { propertyKey: 'string', operator: ':', value: 'value3' },
               { propertyKey: 'string', operator: '!:', value: 'value4' },
+              { propertyKey: 'string', operator: '^', value: 'value5' },
               { propertyKey: 'range', operator: '>', value: '1' },
               { propertyKey: 'range', operator: '<', value: '2' },
               { propertyKey: 'range', operator: '>=', value: '3' },
@@ -1508,6 +1510,7 @@ describe('i18n', () => {
     expect(getRemoveButton(1)).toHaveAccessibleName('Remove filter, string Custom does not equal value2');
     expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, string Custom contains value3');
     expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom does not contain value4');
+    expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom starts with value5');
     expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
     expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom less than 2');
     expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
