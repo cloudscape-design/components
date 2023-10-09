@@ -5,7 +5,7 @@ import Header from '~components/header';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import Table from '~components/table';
 import { Instance, generateItems } from '../table/generate-data';
-import { columnsConfig, ARIA_LABELS } from '../table/shared-configs';
+import { columnsConfig, selectionLabels } from '../table/shared-configs';
 
 const dropdownItems: Array<ButtonDropdownProps.Item> = [
   { id: '1', text: 'Item 1' },
@@ -23,11 +23,18 @@ export default function () {
       <div style={{ height: '400px', width: '500px', overflow: 'auto', padding: '0px 1px' }} id="scroll-container">
         <div style={{ height: '100px' }} />
         <Table<Instance>
-          ariaLabels={ARIA_LABELS}
+          ariaLabels={selectionLabels}
           selectionType="multi"
           stickyColumns={{ last: 1 }}
           header={
-            <Header actions={<ButtonDropdown items={dropdownItems}>Actions</ButtonDropdown>} headingTagOverride="h1">
+            <Header
+              actions={
+                <ButtonDropdown data-test-id="actions-button" items={dropdownItems}>
+                  Actions
+                </ButtonDropdown>
+              }
+              headingTagOverride="h1"
+            >
               Instances
             </Header>
           }
