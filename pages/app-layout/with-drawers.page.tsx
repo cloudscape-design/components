@@ -155,7 +155,6 @@ export default function WithDrawers() {
       <AppLayout
         ariaLabels={appLayoutLabels}
         breadcrumbs={<Breadcrumbs />}
-        tools={<Links />}
         content={
           <ContentLayout
             data-test-id="content"
@@ -222,44 +221,5 @@ function ProHelp() {
 }
 
 function Links() {
-  return (
-    <HelpPanel header={<h2>Links</h2>}>
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-      Here is a link. <br />
-    </HelpPanel>
-  );
+  return <HelpPanel header={<h2>Links</h2>}>Here is a link.</HelpPanel>;
 }

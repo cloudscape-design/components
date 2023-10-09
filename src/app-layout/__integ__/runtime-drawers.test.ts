@@ -3,6 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { viewports } from './constants';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -35,6 +36,26 @@ for (const visualRefresh of [true, false]) {
 
         await page.click(wrapper.findDrawerTriggerById('awsui-internal-tools').toSelector());
         await expect(page.getText(wrapper.findTools().getElement())).resolves.toContain('Here is some info for you!');
+      })
+    );
+
+    test.only(
+      'should resize equally with tools or drawers',
+      setupTest(async page => {
+        await page.setWindowSize({ ...viewports.desktop, width: 1800 });
+        await page.click(wrapper.findToolsToggle().toSelector());
+        await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+        await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
+        const tile = createWrapper().findModal().findContent().findTiles().findItemByValue('side');
+        await page.click(tile.toSelector());
+        await page.click('button=Confirm');
+
+        const { width: splitPanelWidthWithTools } = await page.getBoundingBox(wrapper.findSplitPanel().toSelector());
+
+        await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
+        const { width: splitPanelWidthWithDrawer } = await page.getBoundingBox(wrapper.findSplitPanel().toSelector());
+
+        expect(splitPanelWidthWithTools).toEqual(splitPanelWidthWithDrawer);
       })
     );
 
