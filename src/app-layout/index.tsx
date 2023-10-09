@@ -386,45 +386,14 @@ const OldAppLayout = React.forwardRef(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contentWidthWithSplitPanel, activeDrawerSize, defaults.minContentWidth, isMobile]);
 
-    const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
-    const toolsClosedWidth = toolsHide || isMobile || (!hasDrawers && toolsHide) ? 0 : closedDrawerWidth;
-
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
-    const getSplitPanelRightOffset = () => {
-      if (isMobile) {
-        return 0;
-      }
-
-      if (hasDrawers) {
-        if (activeDrawer) {
-          if (drawers.length === 1) {
-            return activeDrawerSize;
-          }
-          if (!isResizeInvalid && activeDrawerSize) {
-            return activeDrawerSize + closedDrawerWidth;
-          }
-
-          return toolsWidth + closedDrawerWidth;
-        }
-        return drawers.length > 0 ? closedDrawerWidth : 0;
-      }
-
-      if (!toolsHide && toolsOpen) {
-        return toolsWidth;
-      }
-      return toolsClosedWidth;
-    };
-
     const splitPanelContextProps: SplitPanelProviderProps = {
       topOffset: headerHeight + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
-      bottomOffset: footerHeight,
-      leftOffset:
-        leftOffset + (isMobile ? 0 : !navigationHide && navigationOpen ? navigationWidth : navigationClosedWidth),
-      rightOffset: rightOffset + getSplitPanelRightOffset(),
+      bottomOffset: disableBodyScroll ? 0 : footerHeight,
       position: finalSplitPanePosition,
       size: splitPanelSize,
       getMaxWidth: getSplitPanelMaxWidth,
@@ -562,11 +531,7 @@ const OldAppLayout = React.forwardRef(
                 [styles.unfocusable]: isMobile && anyPanelOpen,
               })}
             >
-              <div
-                style={{
-                  marginBottom: splitPanelBottomOffset,
-                }}
-              >
+              <div>
                 {notifications && (
                   <Notifications
                     disableContentPaddings={disableContentPaddings}

@@ -11,8 +11,6 @@ export interface SplitPanelSideToggleProps {
 export interface SplitPanelContextBaseProps {
   topOffset: number;
   bottomOffset: number;
-  leftOffset: number;
-  rightOffset: number;
   position: 'side' | 'bottom';
   size: number;
   disableContentPaddings?: boolean;

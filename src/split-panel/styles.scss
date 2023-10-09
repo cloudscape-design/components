@@ -75,7 +75,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .position-bottom {
-  position: fixed;
+  position: sticky;
   overflow-y: auto;
   border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
@@ -93,14 +93,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
   & > .drawer-content-bottom > [aria-hidden='true'] {
     display: none;
-  }
-
-  /*
-  Removed the position fixed with the AppLayout refactor because the
-  SplitPanel is no longer in fixed position in the DOM.
-  */
-  &.refresh {
-    position: relative;
   }
 }
 

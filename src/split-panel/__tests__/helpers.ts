@@ -5,8 +5,6 @@ import { SplitPanelContextProps } from '../../../lib/components/internal/context
 export const defaultSplitPanelContextProps: SplitPanelContextProps = {
   topOffset: 0,
   bottomOffset: 0,
-  leftOffset: 0,
-  rightOffset: 0,
   position: 'bottom',
   size: 0,
   relativeSize: 0,

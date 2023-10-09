@@ -66,12 +66,6 @@ class AppLayoutSplitViewPage extends BasePageObject {
     );
     return parseFloat(attrValue);
   }
-
-  getContentMarginBottom() {
-    return this.browser.execute(contentRegion => {
-      return document.querySelector(contentRegion)?.parentElement?.parentElement?.style.marginBottom;
-    }, wrapper.findContentRegion().toSelector());
-  }
 }
 
 function setupTest(
@@ -166,7 +160,6 @@ test(
 
     await page.setWindowSize(viewports.mobile);
     await expect(page.getPanelPosition()).resolves.toEqual('bottom');
-    await expect(page.getContentMarginBottom()).resolves.toEqual('160px');
   })
 );
 test(
@@ -283,23 +276,4 @@ test(
     await page.dragResizerTo({ x: 0, y: height });
     await expect(page.getPanelPosition()).resolves.toEqual('bottom');
   })
-);
-
-test(
-  'should resize main content area when switching to side',
-  setupTest(async page => {
-    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
-    await page.switchPosition('side');
-    await expect(page.getContentMarginBottom()).resolves.toEqual('');
-  }, '#/light/app-layout/with-full-page-table-and-split-panel')
-);
-
-test(
-  'should resize main content area when switching to side then back to bottom',
-  setupTest(async page => {
-    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
-    await page.switchPosition('side');
-    await page.switchPosition('bottom');
-    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
-  }, '#/light/app-layout/with-full-page-table-and-split-panel')
 );

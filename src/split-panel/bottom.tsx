@@ -32,8 +32,7 @@ export function SplitPanelContentBottom({
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
-  const { bottomOffset, leftOffset, rightOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } =
-    useSplitPanelContext();
+  const { bottomOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } = useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
   const isMobile = useMobile();
 
@@ -64,8 +63,6 @@ export function SplitPanelContentBottom({
       onClick={() => !isOpen && onToggle()}
       style={{
         bottom: bottomOffset,
-        left: leftOffset,
-        right: rightOffset,
         height: isOpen ? cappedSize : undefined,
       }}
       ref={transitionContentBottomRef}

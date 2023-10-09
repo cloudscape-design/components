@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal';
@@ -42,7 +42,6 @@ export default function SplitPanel({
     position,
     topOffset,
     bottomOffset,
-    rightOffset,
     contentWidthStyles,
     isOpen,
     isForcedPosition,
@@ -156,31 +155,6 @@ export default function SplitPanel({
       <ResizeHandler className={clsx(styles['slider-icon'], styles[`slider-icon-${position}`])} />
     </div>
   );
-
-  /*
-    This effect forces the browser to recalculate the layout
-    whenever the split panel might have moved.
-
-    This is needed as a workaround for a bug in Safari, which does
-    not automatically calculate the new position of the split panel
-    _content_ when the split panel moves.
-  */
-  useLayoutEffect(() => {
-    const root = __internalRootRef.current;
-
-    if (root) {
-      const property = 'transform';
-      const temporaryValue = 'translateZ(0)';
-
-      const valueBefore = root.style[property];
-      root.style[property] = temporaryValue;
-
-      // This line forces the browser to recalculate the layout
-      void root.offsetHeight;
-
-      root.style[property] = valueBefore;
-    }
-  }, [rightOffset, __internalRootRef]);
 
   const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
 
