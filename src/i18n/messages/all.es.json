@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "Filtrar los datos mostrados",
     "i18nStrings.filterPlaceholder": "Filtrar datos",
     "i18nStrings.legendAriaLabel": "Leyenda",
+    "i18nStrings.chartAriaRoleDescription": "Gráfico",
     "i18nStrings.xAxisAriaRoleDescription": "eje x",
     "i18nStrings.yAxisAriaRoleDescription": "eje y"
   },
@@ -22,12 +23,14 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Cerrar anotación para el paso {stepNumber} de {totalStepCount}} false {Abrir anotación para el paso {stepNumber} de {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Cajones",
+    "ariaLabels.drawersOverflow": "Desbordamiento de cajones",
     "ariaLabels.navigation": "Navegación lateral",
     "ariaLabels.navigationClose": "Cerrar navegación lateral",
     "ariaLabels.navigationToggle": "Abrir navegación lateral",
     "ariaLabels.notifications": "Notificaciones",
     "ariaLabels.tools": "Panel de ayuda",
-    "ariaLabels.toolsClose": "Cerrar panel de ayuda",
+    "ariaLabels.toolsClose": "Cerrar el panel de ayuda",
     "ariaLabels.toolsToggle": "Abrir panel de ayuda"
   },
   "area-chart": {
@@ -125,7 +128,7 @@
     "i18nStrings.notificationBarAriaLabel": "Todas las notificaciones",
     "i18nStrings.notificationBarText": "Notificaciones",
     "i18nStrings.successIconAriaLabel": "Éxito",
-    "i18nStrings.warningIconAriaLabel": "Advertencia"
+    "i18nStrings.warningIconAriaLabel": "Aviso"
   },
   "form-field": {
     "i18nStrings.errorIconAriaLabel": "Error"
@@ -180,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "Mayor que",
     "i18nStrings.operatorLessOrEqualText": "Menor o igual que",
     "i18nStrings.operatorLessText": "Menor que",
+    "i18nStrings.operatorStartsWithText": "Empieza con",
     "i18nStrings.operatorText": "Operador",
     "i18nStrings.operatorsText": "Operadores",
     "i18nStrings.propertyText": "Propiedad",
@@ -262,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Cambiar el tamaño del panel dividido"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "botón de redimensionamiento",
     "ariaLabels.submittingEditText": "Envío de edición",
     "ariaLabels.successfulEditLabel": "Se ha editado correctamente",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",

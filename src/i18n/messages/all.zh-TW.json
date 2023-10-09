@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "篩選顯示的資料",
     "i18nStrings.filterPlaceholder": "篩選資料",
     "i18nStrings.legendAriaLabel": "圖例",
+    "i18nStrings.chartAriaRoleDescription": "圖表",
     "i18nStrings.xAxisAriaRoleDescription": "X 軸",
     "i18nStrings.yAxisAriaRoleDescription": "Y 軸"
   },
@@ -22,6 +23,8 @@
     "i18nStrings.labelHotspot": "{openState, select, true {關閉步驟 {totalStepCount} 之 {stepNumber} 的註釋} false {開啟步驟 {totalStepCount} 之 {stepNumber} 的註釋} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "抽屜",
+    "ariaLabels.drawersOverflow": "抽屜溢出",
     "ariaLabels.navigation": "側邊導覽",
     "ariaLabels.navigationClose": "關閉側邊導覽",
     "ariaLabels.navigationToggle": "開啟側邊導覽",
@@ -180,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "大於",
     "i18nStrings.operatorLessOrEqualText": "小於或等於",
     "i18nStrings.operatorLessText": "小於",
+    "i18nStrings.operatorStartsWithText": "開始為",
     "i18nStrings.operatorText": "運算子",
     "i18nStrings.operatorsText": "運算子",
     "i18nStrings.propertyText": "屬性",
@@ -262,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "調整分割面板大小"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "調整按鈕大小",
     "ariaLabels.submittingEditText": "提交編輯",
     "ariaLabels.successfulEditLabel": "編輯成功",
     "columnDefinitions.editConfig.errorIconAriaLabel": "錯誤",
