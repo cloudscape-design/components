@@ -22,14 +22,16 @@ const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
   };
 };
 
-export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlProps) => {
+export const useKeyboardEvents = ({ position, onResize, panelRef, hasTransitions = false }: SizeControlProps) => {
   return (event: React.KeyboardEvent) => {
     let currentSize;
     let maxSize;
 
     const { panelHeight, panelWidth } = getCurrentSize(panelRef);
 
-    panelRef?.current?.classList.remove(styles['with-motion']);
+    if (hasTransitions) {
+      panelRef?.current?.classList.remove(styles['with-motion']);
+    }
 
     if (position === 'side') {
       currentSize = panelWidth;
