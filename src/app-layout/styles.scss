@@ -33,10 +33,7 @@
   }
 }
 
-// double flex container to work around flexbox issue in IE
-// https://github.com/philipwalton/flexbugs#flexbug-3
-.root,
-.layout-wrapper {
+.root {
   display: flex;
   flex-direction: column;
   position: relative;

@@ -490,236 +490,231 @@ const OldAppLayout = React.forwardRef(
       <div
         className={clsx(styles.root, testutilStyles.root, disableBodyScroll && styles['root-no-scroll'])}
         ref={rootRef}
+        style={contentHeightStyle}
       >
-        <div className={styles['layout-wrapper']} style={contentHeightStyle}>
-          {isMobile && (!toolsHide || !navigationHide || breadcrumbs) && (
-            <MobileToolbar
-              anyPanelOpen={anyPanelOpen}
-              toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}
-              topOffset={headerHeight}
+        {isMobile && (!toolsHide || !navigationHide || breadcrumbs) && (
+          <MobileToolbar
+            anyPanelOpen={anyPanelOpen}
+            toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}
+            topOffset={headerHeight}
+            ariaLabels={ariaLabels}
+            navigationHide={navigationHide}
+            toolsHide={toolsHide}
+            onNavigationOpen={() => onNavigationToggle(true)}
+            onToolsOpen={() => onToolsToggle(true)}
+            unfocusable={anyPanelOpen}
+            mobileBarRef={mobileBarRef}
+            drawers={
+              hasDrawers
+                ? {
+                    items: drawers,
+                    activeDrawerId: activeDrawerId,
+                    onChange: changeDetail => {
+                      onActiveDrawerChange(changeDetail.activeDrawerId);
+                      if (changeDetail.activeDrawerId !== activeDrawerId) {
+                        focusToolsButtons();
+                        focusDrawersButtons();
+                        setDrawerLastInteraction({ type: 'open' });
+                      }
+                    },
+                    ariaLabel: drawersProps.ariaLabel,
+                    overflowAriaLabel: drawersProps.overflowAriaLabel,
+                    overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
+                  }
+                : undefined
+            }
+          >
+            {breadcrumbs}
+          </MobileToolbar>
+        )}
+        <div className={clsx(styles.layout, disableBodyScroll && styles['layout-no-scroll'])}>
+          {!navigationHide && (
+            <Drawer
+              contentClassName={testutilStyles.navigation}
+              toggleClassName={testutilStyles['navigation-toggle']}
+              closeClassName={testutilStyles['navigation-close']}
               ariaLabels={ariaLabels}
-              navigationHide={navigationHide}
-              toolsHide={toolsHide}
-              onNavigationOpen={() => onNavigationToggle(true)}
-              onToolsOpen={() => onToolsToggle(true)}
-              unfocusable={anyPanelOpen}
-              mobileBarRef={mobileBarRef}
-              drawers={
-                hasDrawers
-                  ? {
-                      items: drawers,
-                      activeDrawerId: activeDrawerId,
-                      onChange: changeDetail => {
-                        onActiveDrawerChange(changeDetail.activeDrawerId);
-                        if (changeDetail.activeDrawerId !== activeDrawerId) {
-                          focusToolsButtons();
-                          focusDrawersButtons();
-                          setDrawerLastInteraction({ type: 'open' });
-                        }
-                      },
-                      ariaLabel: drawersProps.ariaLabel,
-                      overflowAriaLabel: drawersProps.overflowAriaLabel,
-                      overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
-                    }
-                  : undefined
-              }
+              bottomOffset={footerHeight}
+              topOffset={headerHeight}
+              isMobile={isMobile}
+              isOpen={navigationOpen}
+              onClick={isMobile ? onNavigationClick : undefined}
+              onToggle={onNavigationToggle}
+              toggleRefs={navigationRefs}
+              type="navigation"
+              width={navigationWidth}
             >
-              {breadcrumbs}
-            </MobileToolbar>
+              {navigation}
+            </Drawer>
           )}
-          <div className={clsx(styles.layout, disableBodyScroll && styles['layout-no-scroll'])}>
-            {!navigationHide && (
-              <Drawer
-                contentClassName={testutilStyles.navigation}
-                toggleClassName={testutilStyles['navigation-toggle']}
-                closeClassName={testutilStyles['navigation-close']}
-                ariaLabels={ariaLabels}
-                bottomOffset={footerHeight}
-                topOffset={headerHeight}
-                isMobile={isMobile}
-                isOpen={navigationOpen}
-                onClick={isMobile ? onNavigationClick : undefined}
-                onToggle={onNavigationToggle}
-                toggleRefs={navigationRefs}
-                type="navigation"
-                width={navigationWidth}
-              >
-                {navigation}
-              </Drawer>
-            )}
-            <main
-              ref={legacyScrollRootRef}
-              className={clsx(styles['layout-main'], {
-                [styles['layout-main-scrollable']]: disableBodyScroll,
-                [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
-                [styles.unfocusable]: isMobile && anyPanelOpen,
-              })}
+          <main
+            ref={legacyScrollRootRef}
+            className={clsx(styles['layout-main'], {
+              [styles['layout-main-scrollable']]: disableBodyScroll,
+              [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
+              [styles.unfocusable]: isMobile && anyPanelOpen,
+            })}
+          >
+            <div
+              style={{
+                marginBottom: splitPanelBottomOffset,
+              }}
             >
-              <div
-                style={{
-                  marginBottom: splitPanelBottomOffset,
-                }}
-              >
-                {notifications && (
-                  <Notifications
-                    disableContentPaddings={disableContentPaddings}
-                    testUtilsClassName={testutilStyles.notifications}
-                    labels={ariaLabels}
-                    topOffset={disableBodyScroll ? 0 : headerHeight}
-                    sticky={!isMobile && stickyNotifications}
-                    ref={notificationsRef}
-                  >
-                    {notifications}
-                  </Notifications>
-                )}
-                {((!isMobile && breadcrumbs) || contentHeader) && (
-                  <ContentWrapper {...contentWrapperProps}>
-                    {!isMobile && breadcrumbs && (
-                      <div className={clsx(testutilStyles.breadcrumbs, styles['breadcrumbs-desktop'])}>
-                        {breadcrumbs}
-                      </div>
-                    )}
-                    {contentHeader && (
-                      <div
-                        className={clsx(
-                          styles['content-header-wrapper'],
-                          !hasRenderedNotifications &&
-                            (isMobile || !breadcrumbs) &&
-                            styles['content-extra-top-padding'],
-                          !hasRenderedNotifications && !breadcrumbs && styles['content-header-wrapper-first-child'],
-                          !disableContentHeaderOverlap && styles['content-header-wrapper-overlapped']
-                        )}
-                      >
-                        {contentHeader}
-                      </div>
-                    )}
-                  </ContentWrapper>
-                )}
-                <ContentWrapper
-                  {...contentWrapperProps}
-                  ref={mainContentRef}
-                  disablePaddings={disableContentPaddings}
-                  // eslint-disable-next-line react/forbid-component-props
-                  className={clsx(
-                    !disableContentPaddings && styles['content-wrapper'],
-                    !disableContentPaddings &&
-                      (isMobile || !breadcrumbs) &&
-                      !contentHeader &&
-                      styles['content-extra-top-padding'],
-                    testutilStyles.content,
-                    !disableContentHeaderOverlap && contentHeader && styles['content-overlapped'],
-                    !hasRenderedNotifications &&
-                      !breadcrumbs &&
-                      !isMobile &&
-                      !contentHeader &&
-                      styles['content-wrapper-first-child']
-                  )}
+              {notifications && (
+                <Notifications
+                  disableContentPaddings={disableContentPaddings}
+                  testUtilsClassName={testutilStyles.notifications}
+                  labels={ariaLabels}
+                  topOffset={disableBodyScroll ? 0 : headerHeight}
+                  sticky={!isMobile && stickyNotifications}
+                  ref={notificationsRef}
                 >
-                  <AppLayoutContext.Provider
-                    value={{
-                      stickyOffsetTop:
-                        // We don't support the table header being sticky in case the deprecated disableBodyScroll is enabled,
-                        // therefore we ensure the table header scrolls out of view by offseting a large enough value (9999px)
-                        (disableBodyScroll ? (isMobile ? -9999 : 0) : headerHeight) +
-                        (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
-                      stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
-                      mobileBarHeight: mobileBarHeight ?? 0,
-                    }}
-                  >
-                    {content}
-                  </AppLayoutContext.Provider>
+                  {notifications}
+                </Notifications>
+              )}
+              {((!isMobile && breadcrumbs) || contentHeader) && (
+                <ContentWrapper {...contentWrapperProps}>
+                  {!isMobile && breadcrumbs && (
+                    <div className={clsx(testutilStyles.breadcrumbs, styles['breadcrumbs-desktop'])}>{breadcrumbs}</div>
+                  )}
+                  {contentHeader && (
+                    <div
+                      className={clsx(
+                        styles['content-header-wrapper'],
+                        !hasRenderedNotifications && (isMobile || !breadcrumbs) && styles['content-extra-top-padding'],
+                        !hasRenderedNotifications && !breadcrumbs && styles['content-header-wrapper-first-child'],
+                        !disableContentHeaderOverlap && styles['content-header-wrapper-overlapped']
+                      )}
+                    >
+                      {contentHeader}
+                    </div>
+                  )}
                 </ContentWrapper>
-              </div>
-              {finalSplitPanePosition === 'bottom' && splitPanelWrapped}
-            </main>
-
-            {finalSplitPanePosition === 'side' && splitPanelWrapped}
-
-            {hasDrawers ? (
-              <ResizableDrawer
-                contentClassName={clsx(
-                  activeDrawerId && testutilStyles['active-drawer'],
-                  activeDrawerId === TOOLS_DRAWER_ID && testutilStyles.tools
+              )}
+              <ContentWrapper
+                {...contentWrapperProps}
+                ref={mainContentRef}
+                disablePaddings={disableContentPaddings}
+                // eslint-disable-next-line react/forbid-component-props
+                className={clsx(
+                  !disableContentPaddings && styles['content-wrapper'],
+                  !disableContentPaddings &&
+                    (isMobile || !breadcrumbs) &&
+                    !contentHeader &&
+                    styles['content-extra-top-padding'],
+                  testutilStyles.content,
+                  !disableContentHeaderOverlap && contentHeader && styles['content-overlapped'],
+                  !hasRenderedNotifications &&
+                    !breadcrumbs &&
+                    !isMobile &&
+                    !contentHeader &&
+                    styles['content-wrapper-first-child']
                 )}
+              >
+                <AppLayoutContext.Provider
+                  value={{
+                    stickyOffsetTop:
+                      // We don't support the table header being sticky in case the deprecated disableBodyScroll is enabled,
+                      // therefore we ensure the table header scrolls out of view by offseting a large enough value (9999px)
+                      (disableBodyScroll ? (isMobile ? -9999 : 0) : headerHeight) +
+                      (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
+                    stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
+                    mobileBarHeight: mobileBarHeight ?? 0,
+                  }}
+                >
+                  {content}
+                </AppLayoutContext.Provider>
+              </ContentWrapper>
+            </div>
+            {finalSplitPanePosition === 'bottom' && splitPanelWrapped}
+          </main>
+
+          {finalSplitPanePosition === 'side' && splitPanelWrapped}
+
+          {hasDrawers ? (
+            <ResizableDrawer
+              contentClassName={clsx(
+                activeDrawerId && testutilStyles['active-drawer'],
+                activeDrawerId === TOOLS_DRAWER_ID && testutilStyles.tools
+              )}
+              toggleClassName={testutilStyles['tools-toggle']}
+              closeClassName={clsx(
+                testutilStyles['active-drawer-close-button'],
+                activeDrawerId === TOOLS_DRAWER_ID && testutilStyles['tools-close']
+              )}
+              ariaLabels={ariaLabels}
+              width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+              bottomOffset={footerHeight}
+              topOffset={headerHeight}
+              isMobile={isMobile}
+              onToggle={() => {
+                /*noop in this mode*/
+              }}
+              isOpen={true}
+              toggleRefs={toolsRefs}
+              type="tools"
+              onLoseFocus={loseDrawersFocus}
+              activeDrawer={activeDrawer}
+              drawers={{
+                items: drawers,
+                activeDrawerId: activeDrawerId,
+                onChange: changeDetail => {
+                  focusToolsButtons();
+                  setDrawerLastInteraction({ type: 'close' });
+                  onActiveDrawerChange(changeDetail.activeDrawerId);
+                },
+              }}
+              size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+              onResize={changeDetail => onActiveDrawerResize(changeDetail)}
+              refs={drawerRefs}
+              getMaxWidth={getDrawerMaxWidth}
+              toolsContent={drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content}
+            >
+              {activeDrawer?.content}
+            </ResizableDrawer>
+          ) : (
+            !toolsHide && (
+              <Drawer
+                contentClassName={testutilStyles.tools}
                 toggleClassName={testutilStyles['tools-toggle']}
-                closeClassName={clsx(
-                  testutilStyles['active-drawer-close-button'],
-                  activeDrawerId === TOOLS_DRAWER_ID && testutilStyles['tools-close']
-                )}
+                closeClassName={testutilStyles['tools-close']}
                 ariaLabels={ariaLabels}
-                width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+                width={effectiveToolsWidth}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}
-                onToggle={() => {
-                  /*noop in this mode*/
-                }}
-                isOpen={true}
+                onToggle={onToolsToggle}
+                isOpen={toolsOpen}
                 toggleRefs={toolsRefs}
                 type="tools"
-                onLoseFocus={loseDrawersFocus}
-                activeDrawer={activeDrawer}
-                drawers={{
-                  items: drawers,
-                  activeDrawerId: activeDrawerId,
-                  onChange: changeDetail => {
-                    focusToolsButtons();
-                    setDrawerLastInteraction({ type: 'close' });
-                    onActiveDrawerChange(changeDetail.activeDrawerId);
-                  },
-                }}
-                size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
-                onResize={changeDetail => onActiveDrawerResize(changeDetail)}
-                refs={drawerRefs}
-                getMaxWidth={getDrawerMaxWidth}
-                toolsContent={drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content}
+                onLoseFocus={loseToolsFocus}
               >
-                {activeDrawer?.content}
-              </ResizableDrawer>
-            ) : (
-              !toolsHide && (
-                <Drawer
-                  contentClassName={testutilStyles.tools}
-                  toggleClassName={testutilStyles['tools-toggle']}
-                  closeClassName={testutilStyles['tools-close']}
-                  ariaLabels={ariaLabels}
-                  width={effectiveToolsWidth}
-                  bottomOffset={footerHeight}
-                  topOffset={headerHeight}
-                  isMobile={isMobile}
-                  onToggle={onToolsToggle}
-                  isOpen={toolsOpen}
-                  toggleRefs={toolsRefs}
-                  type="tools"
-                  onLoseFocus={loseToolsFocus}
-                >
-                  {tools}
-                </Drawer>
-              )
-            )}
-            {hasDrawers && drawers.length > 0 && (
-              <DrawerTriggersBar
-                bottomOffset={footerHeight}
-                topOffset={headerHeight}
-                isMobile={isMobile}
-                drawers={{
-                  items: drawers,
-                  activeDrawerId: activeDrawerId,
-                  onChange: changeDetail => {
-                    if (activeDrawerId !== changeDetail.activeDrawerId) {
-                      focusToolsButtons();
-                      focusDrawersButtons();
-                      setDrawerLastInteraction({ type: 'open' });
-                    }
-                    onActiveDrawerChange(changeDetail.activeDrawerId);
-                  },
-                  ariaLabel: drawersProps.ariaLabel,
-                  overflowAriaLabel: drawersProps.overflowAriaLabel,
-                  overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
-                }}
-              />
-            )}
-          </div>
+                {tools}
+              </Drawer>
+            )
+          )}
+          {hasDrawers && drawers.length > 0 && (
+            <DrawerTriggersBar
+              bottomOffset={footerHeight}
+              topOffset={headerHeight}
+              isMobile={isMobile}
+              drawers={{
+                items: drawers,
+                activeDrawerId: activeDrawerId,
+                onChange: changeDetail => {
+                  if (activeDrawerId !== changeDetail.activeDrawerId) {
+                    focusToolsButtons();
+                    focusDrawersButtons();
+                    setDrawerLastInteraction({ type: 'open' });
+                  }
+                  onActiveDrawerChange(changeDetail.activeDrawerId);
+                },
+                ariaLabel: drawersProps.ariaLabel,
+                overflowAriaLabel: drawersProps.overflowAriaLabel,
+                overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
+              }}
+            />
+          )}
         </div>
       </div>
     );
