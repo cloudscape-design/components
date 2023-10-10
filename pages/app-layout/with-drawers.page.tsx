@@ -17,6 +17,7 @@ import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
+import styles from './styles.scss';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -213,7 +214,15 @@ export default function WithDrawers() {
 }
 
 function Security() {
-  return <HelpPanel header={<h2>Security</h2>}>Everyone needs it.</HelpPanel>;
+  return (
+    <HelpPanel header={<h2>Security</h2>}>
+      <SpaceBetween size="l">
+        <div className={styles.contentPlaceholder} />
+        <div className={styles.contentPlaceholder} />
+        <div className={styles.contentPlaceholder} />
+      </SpaceBetween>
+    </HelpPanel>
+  );
 }
 
 function ProHelp() {
