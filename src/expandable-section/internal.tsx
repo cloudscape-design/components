@@ -13,14 +13,12 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { ExpandableSectionProps } from './interfaces';
 
 import styles from './styles.css.js';
-import { ExpandableSectionContainer, ExpandableSectionContainerProps } from './expandable-section-container';
+import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { variantSupportsDescription } from './utils';
 
-export type InternalExpandableSectionProps = ExpandableSectionProps &
-  InternalBaseComponentProps &
-  Pick<ExpandableSectionContainerProps, '__funnelSubStepProps' | '__subStepRef'>;
+export type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
 export default function InternalExpandableSection({
   expanded: controlledExpanded,
@@ -38,8 +36,6 @@ export default function InternalExpandableSection({
   disableContentPaddings,
   headerAriaLabel,
   __internalRootRef,
-  __funnelSubStepProps,
-  __subStepRef,
   ...props
 }: InternalExpandableSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -102,8 +98,6 @@ export default function InternalExpandableSection({
       expanded={expanded}
       className={clsx(baseProps.className, styles.root)}
       variant={variant}
-      __funnelSubStepProps={__funnelSubStepProps}
-      __subStepRef={__subStepRef}
       disableContentPaddings={disableContentPaddings}
       header={
         <ExpandableSectionHeader
