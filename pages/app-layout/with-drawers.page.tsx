@@ -204,7 +204,11 @@ export default function WithDrawers() {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            This is the Split Panel!
+            <SpaceBetween size="l">
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+            </SpaceBetween>
           </SplitPanel>
         }
         {...drawers}

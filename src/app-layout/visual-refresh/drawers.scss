@@ -131,36 +131,43 @@
   background-color: awsui.$color-background-container-content;
   border-color: transparent;
   display: grid;
+  grid-template-columns: awsui.$space-m 1fr;
   flex-shrink: 0;
-  grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
-  grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
+
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
 
-  > .drawer-close-button {
-    grid-column: 3;
-    grid-row: 2;
-    z-index: 1;
-  }
-
-  > .drawer-content {
-    grid-column: 1 / span 4;
-    grid-row: 1 / span 3;
+  > .drawer-content-container {
+    grid-column: 1 / span 2;
+    grid-row: 1;
     width: var(#{custom-props.$drawerSize});
+    display: grid;
+    grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
+    grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
+    overflow-y: auto;
+
+    > .drawer-close-button {
+      grid-column: 3;
+      grid-row: 2;
+      z-index: 1;
+    }
+
+    > .drawer-content {
+      grid-column: 1 / span 4;
+    }
   }
 
   > .drawer-slider {
     grid-column: 1;
-    grid-row: 1 / span 3;
+    grid-row: 1;
     height: 100%;
     display: flex;
     align-items: center;
-    position: absolute;
   }
 
   &:not(.is-drawer-open) {

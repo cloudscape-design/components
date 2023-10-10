@@ -111,25 +111,26 @@ function ActiveDrawer() {
       }}
     >
       {!isMobile && activeDrawer?.resizable && resizeHandle}
-      <div className={clsx(styles['drawer-close-button'])}>
-        <InternalButton
-          ariaLabel={computedAriaLabels.closeButton}
-          className={clsx({
-            [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-            [testutilStyles['tools-close']]: isToolsDrawer,
-          })}
-          formAction="none"
-          iconName={isMobile ? 'close' : 'angle-right'}
-          onClick={() => {
-            handleDrawersClick(activeDrawerId ?? undefined);
-            handleToolsClick(false);
-          }}
-          ref={drawersRefs.close}
-          variant="icon"
-        />
+      <div className={styles['drawer-content-container']}>
+        <div className={clsx(styles['drawer-close-button'])}>
+          <InternalButton
+            ariaLabel={computedAriaLabels.closeButton}
+            className={clsx({
+              [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+              [testutilStyles['tools-close']]: isToolsDrawer,
+            })}
+            formAction="none"
+            iconName={isMobile ? 'close' : 'angle-right'}
+            onClick={() => {
+              handleDrawersClick(activeDrawerId ?? undefined);
+              handleToolsClick(false);
+            }}
+            ref={drawersRefs.close}
+            variant="icon"
+          />
+        </div>
+        <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
       </div>
-
-      <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
     </aside>
   );
 }
