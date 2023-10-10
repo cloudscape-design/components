@@ -26,18 +26,16 @@ import { useIntersectionObserver } from '../internal/hooks/use-intersection-obse
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { ButtonContext } from '../internal/context/button-context';
 import { FunnelNameSelectorContext } from '../internal/analytics/context/analytics-context';
+import { ModalContext } from '../internal/context/modal-context';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
 
 export default function InternalModal({ modalRoot, ...rest }: InternalModalProps) {
-  const referrerId = useUniqueId('modal');
-
   return (
-    <div id={referrerId}>
-      <Portal container={modalRoot}>
-        <InnerModal {...rest} referrerId={referrerId} />
-      </Portal>
-    </div>
+    <Portal container={modalRoot}>
+      <InnerModal {...rest} />
+    </Portal>
   );
 }
 
@@ -52,9 +50,8 @@ function InnerModal({
   disableContentPaddings,
   onDismiss,
   __internalRootRef = null,
-  referrerId,
   ...rest
-}: InternalModalProps & { referrerId: string }) {
+}: InternalModalProps) {
   const instanceUniqueId = useUniqueId();
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
@@ -120,72 +117,75 @@ function InnerModal({
   // Add extra scroll padding to account for the height of the sticky footer,
   // to prevent it from covering focused elements.
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
+  const { subStepRef } = useFunnelSubStep();
 
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
       <ButtonContext.Provider value={{ onClick: () => {} }}>
         <FormFieldContext.Provider value={{}}>
-          <div
-            {...baseProps}
-            className={clsx(
-              styles.root,
-              { [styles.hidden]: !visible },
-              baseProps.className,
-              isRefresh && styles.refresh
-            )}
-            role="dialog"
-            aria-modal={true}
-            aria-labelledby={headerId}
-            onMouseDown={onOverlayMouseDown}
-            onClick={onOverlayClick}
-            ref={mergedRef}
-            style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
-            data-awsui-referrer-id={referrerId}
-          >
-            <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
-              <div
-                className={clsx(
-                  styles.dialog,
-                  styles[size],
-                  styles[`breakpoint-${breakpoint}`],
-                  isRefresh && styles.refresh
-                )}
-                onKeyDown={escKeyHandler}
-              >
-                <div className={styles.container}>
-                  <div className={styles.header}>
-                    <InternalHeader
-                      variant="h2"
-                      __disableActionsWrapping={true}
-                      actions={
-                        <InternalButton
-                          ariaLabel={closeAriaLabel}
-                          className={styles['dismiss-control']}
-                          variant="modal-dismiss"
-                          iconName="close"
-                          formAction="none"
-                          onClick={onCloseButtonClick}
-                        />
-                      }
-                    >
-                      <span id={headerId} className={styles['header--text']}>
-                        {header}
-                      </span>
-                    </InternalHeader>
-                  </div>
-                  <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
-                    {children}
-                    <div ref={stickySentinelRef} />
-                  </div>
-                  {footer && (
-                    <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
-                      {footer}
-                    </div>
+          <ModalContext.Provider value={{ isInModal: true }}>
+            <div
+              {...baseProps}
+              className={clsx(
+                styles.root,
+                { [styles.hidden]: !visible },
+                baseProps.className,
+                isRefresh && styles.refresh
+              )}
+              role="dialog"
+              aria-modal={true}
+              aria-labelledby={headerId}
+              onMouseDown={onOverlayMouseDown}
+              onClick={onOverlayClick}
+              ref={mergedRef}
+              style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
+              data-awsui-referrer-id={subStepRef.current?.id}
+            >
+              <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
+                <div
+                  className={clsx(
+                    styles.dialog,
+                    styles[size],
+                    styles[`breakpoint-${breakpoint}`],
+                    isRefresh && styles.refresh
                   )}
+                  onKeyDown={escKeyHandler}
+                >
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <InternalHeader
+                        variant="h2"
+                        __disableActionsWrapping={true}
+                        actions={
+                          <InternalButton
+                            ariaLabel={closeAriaLabel}
+                            className={styles['dismiss-control']}
+                            variant="modal-dismiss"
+                            iconName="close"
+                            formAction="none"
+                            onClick={onCloseButtonClick}
+                          />
+                        }
+                      >
+                        <span id={headerId} className={styles['header--text']}>
+                          {header}
+                        </span>
+                      </InternalHeader>
+                    </div>
+                    <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
+                      {children}
+                      <div ref={stickySentinelRef} />
+                    </div>
+                    {footer && (
+                      <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
+                        {footer}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </FocusLock>
-          </div>
+              </FocusLock>
+            </div>
+          </ModalContext.Provider>
         </FormFieldContext.Provider>
       </ButtonContext.Provider>
     </FunnelNameSelectorContext.Provider>

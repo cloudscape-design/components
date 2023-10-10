@@ -13,6 +13,8 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useModalContext } from '../internal/context/modal-context';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -38,7 +40,15 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
 
 export function InternalContainerAsSubstep(props: InternalContainerProps) {
   const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
-  return <InternalContainer {...props} __subStepRef={subStepRef} __funnelSubStepProps={funnelSubStepProps} />;
+  const modalContext = useModalContext();
+
+  return (
+    <InternalContainer
+      {...props}
+      __subStepRef={modalContext?.isInModal ? { current: null } : subStepRef}
+      __funnelSubStepProps={modalContext?.isInModal ? {} : funnelSubStepProps}
+    />
+  );
 }
 
 export default function InternalContainer({
@@ -76,13 +86,14 @@ export default function InternalContainer({
     __mobileStickyOffset,
     __disableStickyMobile
   );
+  const contentId = useUniqueId();
   const { setHasStickyBackground } = useAppLayoutContext();
   const isRefresh = useVisualRefresh();
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
-  const mergedRef = useMergeRefs(rootRef, __subStepRef, __internalRootRef);
+  const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
 
   /**
@@ -132,7 +143,11 @@ export default function InternalContainer({
           {media.content}
         </div>
       )}
-      <div className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}>
+      <div
+        id={contentId}
+        ref={__subStepRef}
+        className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
+      >
         {header && (
           <StickyHeaderContext.Provider value={{ isStuck }}>
             <div
