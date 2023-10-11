@@ -74,7 +74,6 @@ export default function () {
         <Container header={<Header variant="h2">Costs line chart</Header>}>
           <LineChart
             {...commonProps}
-            height={250}
             series={allSeries}
             xDomain={rawCostsData.ResultsByTime.map(({ TimePeriod }) => TimePeriod.Start)}
             xTitle="Time"

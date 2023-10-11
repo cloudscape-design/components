@@ -76,7 +76,6 @@ export default function () {
           <BarChart
             {...commonProps}
             stackedBars={true}
-            height={250}
             series={allSeries}
             xDomain={rawCostsData.ResultsByTime.map(({ TimePeriod }) => TimePeriod.Start)}
             xTitle="Time"
