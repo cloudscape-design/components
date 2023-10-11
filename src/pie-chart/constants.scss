@@ -23,3 +23,21 @@ $pie-chart-sizes: (
     'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
   ),
 );
+
+$pie-chart-sizes-fit-height: (
+  'small': (
+    'radius': 30px,
+    'innerPadding': 0px,
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
+  ),
+  'medium': (
+    'radius': 100px,
+    'innerPadding': 0px,
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
+  ),
+  'large': (
+    'radius': 140px,
+    'innerPadding': 0px,
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
+  ),
+);

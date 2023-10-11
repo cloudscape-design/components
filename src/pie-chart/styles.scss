@@ -17,11 +17,20 @@
   @each $size in map.keys(constants.$pie-chart-sizes) {
     &.content--#{$size} {
       $sizes: map.get(constants.$pie-chart-sizes, $size);
+      $fitSizes: map.get(constants.$pie-chart-sizes-fit-height, $size);
+
       min-height: calc(
         2 * (#{map.get($sizes, 'radius')} + #{map.get($sizes, 'innerPadding')} + #{map.get($sizes, 'labelPadding')})
       );
+      &.content--fit-height {
+        min-height: calc(2 * (#{map.get($fitSizes, 'radius')} + #{map.get($fitSizes, 'labelPadding')}));
+      }
+
       &.content--without-labels {
         min-height: calc(2 * (#{map.get($sizes, 'radius')} + #{map.get($sizes, 'innerPadding')}));
+        &.content--fit-height {
+          min-height: calc(2 * (#{map.get($fitSizes, 'radius')}));
+        }
       }
     }
   }
