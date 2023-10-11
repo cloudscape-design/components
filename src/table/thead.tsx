@@ -130,7 +130,7 @@ const Thead = React.forwardRef(
 
           {columnDefinitions.map((column, colIndex) => {
             const columnId = getColumnKey(column, colIndex);
-            const columnWidth = resizableColumns && columnWidths ? columnWidths[columnId] : column.width;
+            const columnWidth = resizableColumns ? columnWidths[columnId] ?? 'auto' : column.width;
             return (
               <TableHeaderCell
                 key={columnId}
