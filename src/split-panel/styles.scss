@@ -255,13 +255,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   display: flex;
   flex: auto;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: awsui.$space-scaled-m 0 awsui.$space-m 0;
+  margin: awsui.$size-vertical-panel-icon-offset 0;
   &-text {
     @include styles.font-panel-header;
-    padding: awsui.$space-xxs 0 awsui.$space-scaled-xxs 0;
+    padding: 0;
     margin: 0;
   }
 }
