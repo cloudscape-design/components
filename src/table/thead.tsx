@@ -46,7 +46,6 @@ export interface TheadProps {
 const Thead = React.forwardRef(
   (
     {
-      containerWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions,
@@ -89,7 +88,7 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
+    const { columnWidths, updateColumn, setCell } = useColumnWidths();
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -131,18 +130,7 @@ const Thead = React.forwardRef(
 
           {columnDefinitions.map((column, colIndex) => {
             const columnId = getColumnKey(column, colIndex);
-
-            let columnWidth = column.width;
-            if (resizableColumns) {
-              if (columnWidths) {
-                // use stateful value if available
-                columnWidth = columnWidths[columnId];
-              }
-              if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
-                // let the last column grow and fill the container width
-                columnWidth = undefined;
-              }
-            }
+            const columnWidth = resizableColumns && columnWidths ? columnWidths[columnId] : column.width;
             return (
               <TableHeaderCell
                 key={columnId}
