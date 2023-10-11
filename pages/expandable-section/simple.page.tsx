@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import ExpandableSection from '~components/expandable-section';
 import SpaceBetween from '~components/space-between';
+import Button from '~components/button';
+import StatusIndicator from '~components/status-indicator';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -53,6 +55,25 @@ export default function SimpleContainers() {
             headerCounter={'(5)'}
             variant="container"
             defaultExpanded={true}
+          >
+            Verify or edit the settings below.
+          </ExpandableSection>
+
+          <ExpandableSection
+            headerText={'Header component'}
+            headerCounter={'(5)'}
+            variant="container"
+            defaultExpanded={false}
+            headerActions={<StatusIndicator>Warning</StatusIndicator>}
+          >
+            Verify or edit the settings below.
+          </ExpandableSection>
+          <ExpandableSection
+            headerText={'Header component'}
+            headerCounter={'(5)'}
+            variant="container"
+            defaultExpanded={false}
+            headerActions={<Button>Action</Button>}
           >
             Verify or edit the settings below.
           </ExpandableSection>

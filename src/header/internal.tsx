@@ -87,7 +87,12 @@ export default function InternalHeader({
         </div>
         {actions && (
           <div
-            className={clsx(styles.actions, styles[`actions-variant-${variantOverride}`], isRefresh && styles.refresh)}
+            className={clsx(
+              styles.actions,
+              styles[`actions-variant-${variantOverride}`],
+              isRefresh && styles.refresh,
+              !__disableActionsWrapping && [styles['actions-centered']]
+            )}
           >
             {actions}
           </div>
