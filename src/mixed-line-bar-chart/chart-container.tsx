@@ -78,6 +78,8 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   i18nStrings: MixedLineBarChartProps<T>['i18nStrings'];
 
   plotContainerRef: React.RefObject<HTMLDivElement>;
+
+  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>;
 }
 
 interface BaseAxisProps {
@@ -128,6 +130,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   ariaDescription,
   i18nStrings = {},
   plotContainerRef,
+  detailPopoverSeriesContent,
   ...props
 }: ChartContainerProps<T>) {
   const plotRef = useRef<ChartPlotRef>(null);
@@ -467,12 +470,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
       const seriesToShow = visibleSeries.filter(
         series => series.series === highlightedPoint?.series || isXThreshold(series.series)
       );
-      return formatHighlighted(highlightedX, seriesToShow, xTickFormatter);
+      return formatHighlighted(highlightedX, seriesToShow, xTickFormatter, detailPopoverSeriesContent);
     }
 
     // Otherwise - show all visible series details.
-    return formatHighlighted(highlightedX, visibleSeries, xTickFormatter);
-  }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter]);
+    return formatHighlighted(highlightedX, visibleSeries, xTickFormatter, detailPopoverSeriesContent);
+  }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter, detailPopoverSeriesContent]);
 
   const detailPopoverFooterContent = useMemo(
     () => (detailPopoverFooter && highlightedX ? detailPopoverFooter(highlightedX) : null),

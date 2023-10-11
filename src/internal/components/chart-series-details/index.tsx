@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo } from 'react';
+import React, { ReactNode, memo } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -8,11 +8,13 @@ import InternalBox from '../../../box/internal';
 import { ChartDetailPair } from '../../../pie-chart/interfaces';
 import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import styles from './styles.css.js';
+import InternalExpandableSection from '../../../expandable-section/internal';
 
 export interface ChartSeriesDetailItem extends ChartDetailPair {
   markerType?: ChartSeriesMarkerType;
   color?: string;
   isDimmed?: boolean;
+  details?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
 }
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
@@ -28,19 +30,42 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
   return (
     <div {...baseProps} className={className}>
       <ul className={styles.list}>
-        {details.map(({ key, value, markerType, color, isDimmed }, index) => (
+        {details.map(({ key, value, markerType, color, isDimmed, details }, index) => (
           <li
             key={index}
             className={clsx({
               [styles.dimmed]: isDimmed,
               [styles['list-item']]: true,
+              [styles['with-details']]: details,
             })}
           >
-            <div className={styles.key}>
-              {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-              <span>{key}</span>
-            </div>
-            <InternalBox textAlign="right">{value}</InternalBox>
+            {details ? (
+              <div className={styles.key}>
+                {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
+                <div style={{ width: '100%' }}>
+                  <InternalExpandableSection
+                    variant="compact"
+                    headerText={key}
+                    headerActions={<InternalBox textAlign="right">{value}</InternalBox>}
+                  >
+                    {details.map(({ key, value }, index) => (
+                      <div key={index} className={styles['inner-list-item']}>
+                        <span className={styles.key}>{key}</span>
+                        <InternalBox textAlign="right">{value}</InternalBox>
+                      </div>
+                    ))}
+                  </InternalExpandableSection>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className={styles.key}>
+                  {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
+                  <span>{key}</span>
+                </div>
+                <InternalBox textAlign="right">{value}</InternalBox>
+              </>
+            )}
           </li>
         ))}
       </ul>

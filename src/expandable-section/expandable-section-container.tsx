@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { InternalContainerAsSubstep } from '../container/internal';
 import React from 'react';
-import { ExpandableSectionProps } from './interfaces';
+import { InternalVariant } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
@@ -11,7 +11,7 @@ export interface ExpandableSectionContainerProps extends InternalBaseComponentPr
   className?: string;
   header: React.ReactNode;
   children?: React.ReactNode;
-  variant: ExpandableSectionProps.Variant;
+  variant: InternalVariant;
   expanded: boolean | undefined;
   disableContentPaddings: boolean | undefined;
 }

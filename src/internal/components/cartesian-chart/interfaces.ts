@@ -194,14 +194,8 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
    */
   fitHeight?: boolean;
 
-  detailPopoverSeriesContent?: ({ series, x, y }: { series: Series; x: T; y: number }) => {
-    key: ReactNode;
-    value: ReactNode;
-    expandable?: boolean;
-    details?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
-  };
+  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, Series>;
 }
-
 export namespace CartesianChartProps {
   export interface FilterChangeDetail<Series> {
     visibleSeries: ReadonlyArray<Series>;
@@ -221,6 +215,15 @@ export namespace CartesianChartProps {
 
   export interface DetailPopoverFooter<T> {
     (xValue: T): React.ReactNode;
+  }
+
+  export interface DetailPopoverSeriesContent<T, Series> {
+    ({ series, x, y }: { series: Series; x: T; y: number }): {
+      key: ReactNode;
+      value: ReactNode;
+      expandable?: boolean;
+      details?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+    };
   }
 
   export interface I18nStrings<T> {

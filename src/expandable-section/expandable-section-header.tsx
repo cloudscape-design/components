@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ExpandableSectionProps } from './interfaces';
+import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
@@ -24,7 +24,7 @@ interface ExpandableDefaultHeaderProps {
   onKeyDown: KeyboardEventHandler;
   onClick: MouseEventHandler;
   icon: JSX.Element;
-  variant: ExpandableSectionProps.Variant;
+  variant: InternalVariant;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -40,7 +40,6 @@ interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps 
 }
 
 interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'children' | 'icon'> {
-  variant: ExpandableSectionProps.Variant;
   header?: ReactNode;
   headerText?: ReactNode;
   headerDescription?: ReactNode;
@@ -190,12 +189,15 @@ const ExpandableHeaderTextWrapper = ({
         </InternalHeader>
       ) : (
         <>
-          <HeadingTag
-            className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-            {...headingTagListeners}
-          >
-            {headerButton}
-          </HeadingTag>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <HeadingTag
+              className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+              {...headingTagListeners}
+            >
+              {headerButton}
+            </HeadingTag>
+            {headerActions}
+          </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
         </>
       )}

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartDataTypes, InternalChartSeries } from './interfaces';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
 import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
@@ -14,13 +14,14 @@ export interface HighlightDetails {
 export default function formatHighlighted<T extends ChartDataTypes>(
   position: T,
   series: readonly InternalChartSeries<T>[],
-  xTickFormatter?: CartesianChartProps.TickFormatter<T>
+  xTickFormatter?: CartesianChartProps.TickFormatter<T>,
+  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>
 ): HighlightDetails {
   const formattedPosition = xTickFormatter ? xTickFormatter(position) : position.toString();
 
   const details: ChartSeriesDetailItem[] = [];
   series.forEach(s => {
-    const detail = getSeriesDetail(s, position);
+    const detail = getSeriesDetail(s, position, detailPopoverSeriesContent);
     if (detail) {
       details.push(detail);
     }
@@ -29,7 +30,11 @@ export default function formatHighlighted<T extends ChartDataTypes>(
   return { position: formattedPosition, details };
 }
 
-function getSeriesDetail<T>(internalSeries: InternalChartSeries<T>, targetX: T): ChartSeriesDetailItem | null {
+function getSeriesDetail<T>(
+  internalSeries: InternalChartSeries<T>,
+  targetX: T,
+  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>
+): ChartSeriesDetailItem | null {
   const { series, color } = internalSeries;
 
   // X-thresholds are only shown when X matches.
@@ -56,11 +61,15 @@ function getSeriesDetail<T>(internalSeries: InternalChartSeries<T>, targetX: T):
   if (isDataSeries(series)) {
     for (const datum of series.data) {
       if (matchesX(targetX, datum.x)) {
+        const customContent = detailPopoverSeriesContent
+          ? detailPopoverSeriesContent({ series, x: targetX, y: datum.y })
+          : undefined;
         return {
           key: series.title,
           value: series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y,
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
+          details: customContent?.details,
         };
       }
     }
