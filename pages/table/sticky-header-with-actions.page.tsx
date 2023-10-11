@@ -31,7 +31,7 @@ export default function () {
             header={
               <Header
                 actions={
-                  <ButtonDropdown data-test-gid="actions-button" items={dropdownItems}>
+                  <ButtonDropdown data-test-id="actions-button" items={dropdownItems}>
                     Actions
                   </ButtonDropdown>
                 }
