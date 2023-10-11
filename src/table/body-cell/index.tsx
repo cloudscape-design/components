@@ -158,10 +158,63 @@ function TableCellEditable<ItemType>({
   );
 }
 
+function TableCellDisabledEdit<ItemType>({
+  className,
+  item,
+  column,
+  ariaLabels,
+  isVisualRefresh,
+  ...rest
+}: TableBodyCellProps<ItemType>) {
+  const [hasHover, setHasHover] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const showIcon = hasHover || hasFocus;
+  return (
+    <TableTdElement
+      {...rest}
+      className={clsx(className, styles['body-cell-editable'], isVisualRefresh && styles['is-visual-refresh'])}
+      onMouseEnter={() => setHasHover(true)}
+      onMouseLeave={() => setHasHover(false)}
+    >
+      <div
+        onFocus={() => {
+          console.log('onFocus');
+          setHasFocus(true);
+        }}
+        onBlur={() => {
+          console.log('onBlur');
+          setHasFocus(false);
+        }}
+      >
+        {column.cell(item)}
+        <div
+          tabIndex={0}
+          className={styles['body-cell-editor']}
+          aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+          // onFocus={() => setHasFocus(true)}
+          // onBlur={() => setHasFocus(false)}
+        >
+          {showIcon && (
+            <Popover content="You cannot edit this!">
+              <Icon name="lock-private" variant="normal" />
+            </Popover>
+          )}
+        </div>
+      </div>
+    </TableTdElement>
+  );
+}
+
 export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
 }: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
+  const editDisabledReason = rest.column.editConfig?.isDisabled?.(rest.item) ?? false;
+
+  if (editDisabledReason) {
+    return <TableCellDisabledEdit {...rest} />;
+  }
+
   if (isEditable || rest.isEditing) {
     return <TableCellEditable {...rest} />;
   }
