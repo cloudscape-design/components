@@ -132,15 +132,15 @@ const Thead = React.forwardRef(
           {columnDefinitions.map((column, colIndex) => {
             const columnId = getColumnKey(column, colIndex);
 
-            let widthOverride;
+            let columnWidth = column.width;
             if (resizableColumns) {
               if (columnWidths) {
                 // use stateful value if available
-                widthOverride = columnWidths[columnId];
+                columnWidth = columnWidths[columnId];
               }
               if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
                 // let the last column grow and fill the container width
-                widthOverride = 'auto';
+                columnWidth = undefined;
               }
             }
             return (
@@ -148,7 +148,7 @@ const Thead = React.forwardRef(
                 key={columnId}
                 className={headerCellClass}
                 style={{
-                  width: widthOverride || column.width,
+                  width: columnWidth,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
                 }}
