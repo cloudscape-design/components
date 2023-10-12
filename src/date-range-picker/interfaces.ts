@@ -265,7 +265,7 @@ export namespace DateRangePickerProps {
     ariaDescribedby?: string;
 
     /**
-     * Label of the mode selection group. In the standard view it adds `aria-label` on the group of segments.
+     * Label of the mode selection group. In the standard view, it adds 'aria-label' to the group of segments.
      * In a narrow container the label is visible and attached to the select component.
      */
     modeSelectionLabel?: string;
