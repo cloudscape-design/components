@@ -19,12 +19,14 @@ type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React
   item: T;
   isLast: boolean;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
+  funnelAttributes: Record<string, string>;
 };
 
 const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   item,
   isLast,
   anchorAttributes,
+  funnelAttributes,
   ...itemAttributes
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -99,7 +101,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         onMouseLeave={() => setShowPopover(false)}
         anchorAttributes={anchorAttributes}
       >
-        <span className={styles.text} ref={textRef}>
+        <span {...funnelAttributes} className={styles.text} ref={textRef}>
           {item.text}
         </span>
         <span className={styles['virtual-item']} ref={virtualTextRef}>
@@ -112,17 +114,14 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
 };
 
 type ItemProps = React.HTMLAttributes<HTMLElement> & {
-  dataAttributes?: React.DataHTMLAttributes<HTMLElement>;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
   isLast: boolean;
 };
-const Item = ({ anchorAttributes, dataAttributes, children, isLast, ...itemAttributes }: ItemProps) =>
+const Item = ({ anchorAttributes, children, isLast, ...itemAttributes }: ItemProps) =>
   isLast ? (
-    <span {...itemAttributes} {...dataAttributes}>
-      {children}
-    </span>
+    <span {...itemAttributes}>{children}</span>
   ) : (
-    <a {...itemAttributes} {...anchorAttributes} {...dataAttributes}>
+    <a {...itemAttributes} {...anchorAttributes}>
       {children}
     </a>
   );
@@ -151,9 +150,9 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     onClick: isLast ? preventDefault : onClickHandler,
   };
 
-  const dataAttibutes: Record<string, string> = {};
+  const funnelAttributes: Record<string, string> = {};
   if (isLast) {
-    dataAttibutes[DATA_ATTR_FUNNEL_KEY] = FUNNEL_KEY_FUNNEL_NAME;
+    funnelAttributes[DATA_ATTR_FUNNEL_KEY] = FUNNEL_KEY_FUNNEL_NAME;
   }
 
   return (
@@ -163,11 +162,14 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
           item={item}
           isLast={isLast}
           anchorAttributes={anchorAttributes}
+          funnelAttributes={funnelAttributes}
           {...itemAttributes}
         />
       ) : (
-        <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes} {...dataAttibutes}>
-          <span className={styles.text}>{item.text}</span>
+        <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
+          <span {...funnelAttributes} className={styles.text}>
+            {item.text}
+          </span>
         </Item>
       )}
       {!isLast ? (

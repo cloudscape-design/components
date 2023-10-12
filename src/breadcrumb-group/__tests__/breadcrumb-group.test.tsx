@@ -11,7 +11,7 @@ import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/t
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const renderResult = render(<BreadcrumbGroup {...props} />);
-  return createWrapper(renderResult.container).findBreadcrumbGroup(`.${styles['breadcrumb-group']}`)!;
+  return createWrapper(renderResult.container).findBreadcrumbGroup()!;
 };
 
 describe('BreadcrumbGroup Component', () => {
