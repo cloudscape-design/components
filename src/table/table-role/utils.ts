@@ -103,14 +103,7 @@ export function muteElementFocusables(element: HTMLElement, suppressed: boolean)
     return;
   }
 
-  const tableCells = queryTableCells(element);
-
   // Assigning pseudo-focusable tab index to all cells and all interactive elements makes them focusable with grid navigation.
-  for (const cell of tableCells) {
-    if (cell !== document.activeElement) {
-      setTabIndex(cell, PSEUDO_FOCUSABLE_TAB_INDEX);
-    }
-  }
   for (const focusable of getActualFocusables(element)) {
     if (focusable !== document.activeElement) {
       setTabIndex(focusable, PSEUDO_FOCUSABLE_TAB_INDEX);
@@ -227,13 +220,4 @@ function setTabIndex(element: null | HTMLElement, tabIndex: number) {
   if (element && element.tabIndex !== tabIndex) {
     element.tabIndex = tabIndex;
   }
-}
-
-function queryTableCells(element: HTMLElement) {
-  const tableCells = Array.from(element.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
-  if (element instanceof HTMLTableCellElement) {
-    tableCells.push(element);
-  }
-
-  return tableCells;
 }

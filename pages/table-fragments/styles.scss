@@ -37,6 +37,10 @@
 
     background-color: tokens.$color-background-container-content;
 
+    &:focus {
+      outline-offset: -2px;
+    }
+
     &:first-child {
       padding-left: 2px;
       border-left: none;
