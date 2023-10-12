@@ -5973,7 +5973,7 @@ Default: the user's current time offset as provided by the browser.
             "type": "(unit: DateRangePickerProps.TimeUnit, value: number) => string",
           },
           Object {
-            "name": "modeSelectionAriaLabel",
+            "name": "modeSelectionLabel",
             "optional": true,
             "type": "string",
           },

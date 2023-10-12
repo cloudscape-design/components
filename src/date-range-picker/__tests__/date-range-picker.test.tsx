@@ -129,7 +129,7 @@ describe('Date range picker', () => {
       wrapper.openDropdown();
       const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSegments();
       expect(modeSelector.findByClassName(segmentedStyles['segment-part'])!.getElement()).toHaveAccessibleName(
-        i18nStrings.modeSelectionAriaLabel
+        i18nStrings.modeSelectionLabel
       );
     });
   });
