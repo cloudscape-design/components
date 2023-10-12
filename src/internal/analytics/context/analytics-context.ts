@@ -94,3 +94,5 @@ export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
   isFocusedSubStep: { current: false },
   focusCleanupFunction: { current: undefined },
 });
+
+export const FunnelNameSelectorContext = createContext<string | undefined>(undefined);

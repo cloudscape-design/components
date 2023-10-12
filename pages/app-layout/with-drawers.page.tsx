@@ -17,11 +17,13 @@ import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
+import styles from './styles.scss';
 
 type DemoContext = React.Context<
   AppContextType<{
     hasDrawers: boolean | undefined;
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+    disableContentPaddings: boolean | undefined;
   }>
 >;
 
@@ -38,6 +40,7 @@ export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const hasDrawers = urlParams.hasDrawers ?? true;
+  const disableContentPaddings = urlParams.disableContentPaddings ?? false;
 
   const drawers = !hasDrawers
     ? null
@@ -155,6 +158,7 @@ export default function WithDrawers() {
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
+            data-test-id="content"
             header={
               <SpaceBetween size="m">
                 <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
@@ -183,6 +187,7 @@ export default function WithDrawers() {
           const { position } = event.detail;
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
         }}
+        disableContentPaddings={disableContentPaddings}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -199,7 +204,11 @@ export default function WithDrawers() {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            This is the Split Panel!
+            <SpaceBetween size="l">
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+            </SpaceBetween>
           </SplitPanel>
         }
         {...drawers}
@@ -209,7 +218,15 @@ export default function WithDrawers() {
 }
 
 function Security() {
-  return <HelpPanel header={<h2>Security</h2>}>Everyone needs it.</HelpPanel>;
+  return (
+    <HelpPanel header={<h2>Security</h2>}>
+      <SpaceBetween size="l">
+        <div className={styles.contentPlaceholder} />
+        <div className={styles.contentPlaceholder} />
+        <div className={styles.contentPlaceholder} />
+      </SpaceBetween>
+    </HelpPanel>
+  );
 }
 
 function ProHelp() {

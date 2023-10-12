@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "Filtra i dati visualizzati",
     "i18nStrings.filterPlaceholder": "Filtra i dati",
     "i18nStrings.legendAriaLabel": "Legenda",
+    "i18nStrings.chartAriaRoleDescription": "Grafico",
     "i18nStrings.xAxisAriaRoleDescription": "asse x",
     "i18nStrings.yAxisAriaRoleDescription": "asse y"
   },
@@ -22,6 +23,8 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Chiudi l'annotazione per la fase {stepNumber} di {totalStepCount}} false {Apri l'annotazione per la fase {stepNumber} di {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Cassetti",
+    "ariaLabels.drawersOverflow": "Overflow dei cassetti",
     "ariaLabels.navigation": "Navigazione laterale",
     "ariaLabels.navigationClose": "Chiudi navigazione laterale",
     "ariaLabels.navigationToggle": "Apri navigazione laterale",
@@ -180,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "Maggiore di",
     "i18nStrings.operatorLessOrEqualText": "Minore o uguale a",
     "i18nStrings.operatorLessText": "Minore di",
+    "i18nStrings.operatorStartsWithText": "Inizia con",
     "i18nStrings.operatorText": "Operatore",
     "i18nStrings.operatorsText": "Operatori",
     "i18nStrings.propertyText": "Proprietà",
@@ -262,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Ridimensiona il pannello diviso"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "pulsante di ridimensionamento",
     "ariaLabels.submittingEditText": "Invio della modifica in corso",
     "ariaLabels.successfulEditLabel": "Modifica eseguita correttamente",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Errore",

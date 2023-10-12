@@ -13,11 +13,18 @@ import {
   Toggle,
 } from '~components';
 import appLayoutLabels from './utils/labels';
+import { AppLayoutProps } from '~components/app-layout';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
 
-type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
+type DemoContext = React.Context<
+  AppContextType<{
+    hasTools: boolean | undefined;
+    hasDrawers: boolean | undefined;
+    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+  }>
+>;
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
@@ -118,6 +125,13 @@ export default function WithDrawers() {
           This is the Split Panel!
         </SplitPanel>
       }
+      splitPanelPreferences={{
+        position: urlParams.splitPanelPosition,
+      }}
+      onSplitPanelPreferencesChange={event => {
+        const { position } = event.detail;
+        setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
+      }}
       onToolsChange={event => {
         setIsToolsOpen(event.detail.open);
       }}

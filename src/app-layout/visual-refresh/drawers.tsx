@@ -75,6 +75,7 @@ function ActiveDrawer() {
   } = useAppLayoutInternals();
 
   const activeDrawer = drawers?.find(item => item.id === activeDrawerId) ?? null;
+  const MIN_WIDTH = 290;
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -85,7 +86,7 @@ function ActiveDrawer() {
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
 
-  const size = Math.min(drawersMaxWidth, drawerSize);
+  const size = Math.max(Math.min(drawersMaxWidth, drawerSize), MIN_WIDTH);
 
   return (
     <aside
@@ -110,25 +111,26 @@ function ActiveDrawer() {
       }}
     >
       {!isMobile && activeDrawer?.resizable && resizeHandle}
-      <div className={clsx(styles['drawer-close-button'])}>
-        <InternalButton
-          ariaLabel={computedAriaLabels.closeButton}
-          className={clsx({
-            [testutilStyles['active-drawer-close-button']]: activeDrawerId,
-            [testutilStyles['tools-close']]: isToolsDrawer,
-          })}
-          formAction="none"
-          iconName={isMobile ? 'close' : 'angle-right'}
-          onClick={() => {
-            handleDrawersClick(activeDrawerId ?? undefined);
-            handleToolsClick(false);
-          }}
-          ref={drawersRefs.close}
-          variant="icon"
-        />
+      <div className={styles['drawer-content-container']}>
+        <div className={clsx(styles['drawer-close-button'])}>
+          <InternalButton
+            ariaLabel={computedAriaLabels.closeButton}
+            className={clsx({
+              [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+              [testutilStyles['tools-close']]: isToolsDrawer,
+            })}
+            formAction="none"
+            iconName={isMobile ? 'close' : 'angle-right'}
+            onClick={() => {
+              handleDrawersClick(activeDrawerId ?? undefined);
+              handleToolsClick(false);
+            }}
+            ref={drawersRefs.close}
+            variant="icon"
+          />
+        </div>
+        <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
       </div>
-
-      <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
     </aside>
   );
 }
