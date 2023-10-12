@@ -14,6 +14,7 @@ import { changeMode } from './change-mode';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from '../../../lib/components/date-range-picker/styles.css.js';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import segmentedStyles from '../../../lib/components/segmented-control/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -120,6 +121,15 @@ describe('Date range picker', () => {
       );
       expect(dropdown.findEndTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
         i18nStrings.endTimeLabel
+      );
+    });
+
+    test('toolbar accessible name', () => {
+      const { wrapper } = renderDateRangePicker();
+      wrapper.openDropdown();
+      const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSegments();
+      expect(modeSelector.findByClassName(segmentedStyles['segment-part'])!.getElement()).toHaveAccessibleName(
+        i18nStrings.modeSelectionLabel
       );
     });
   });
