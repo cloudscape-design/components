@@ -47,7 +47,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    *
    * * value [string]: The string value of the token to be used as a filter.
    * * propertyKey [string]: The key of the corresponding property in filteringProperties.
-   * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=']: The operator which indicates how to filter the dataset using this token.
+   * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^']: The operator which indicates how to filter the dataset using this token.
    *
    * `operation` has two valid values [and, or] and controls the join operation to be applied between tokens when filtering the items.
    */
@@ -238,6 +238,7 @@ export namespace PropertyFilterProps {
     operatorDoesNotContainText?: string;
     operatorEqualsText?: string;
     operatorDoesNotEqualText?: string;
+    operatorStartsWithText?: string;
 
     editTokenHeader?: string;
     propertyText?: string;

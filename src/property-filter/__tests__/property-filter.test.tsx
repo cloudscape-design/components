@@ -1388,6 +1388,7 @@ describe('i18n', () => {
       'i18nStrings.operatorGreaterText': 'Custom Greater than',
       'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
       'i18nStrings.operatorLessText': 'Custom Less than',
+      'i18nStrings.operatorStartsWithText': 'Custom Starts with',
       'i18nStrings.operatorText': 'Custom Operator',
       'i18nStrings.operatorsText': 'Custom Operators',
       'i18nStrings.propertyText': 'Custom Property',
@@ -1399,6 +1400,14 @@ describe('i18n', () => {
       <TestI18nProvider messages={providerMessages}>
         <PropertyFilter
           {...defaultProps}
+          filteringProperties={[
+            {
+              key: 'string',
+              propertyLabel: 'string',
+              operators: ['!:', ':', '=', '!=', '^'],
+              groupValuesLabel: 'String values',
+            },
+          ]}
           i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
         />
       </TestI18nProvider>
@@ -1413,7 +1422,13 @@ describe('i18n', () => {
     expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
     expect(
       dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
-    ).toEqual(['Custom Equals', 'Custom Does not equal', 'Custom Contains', 'Custom Does not contain']);
+    ).toEqual([
+      'Custom Equals',
+      'Custom Does not equal',
+      'Custom Contains',
+      'Custom Does not contain',
+      'Custom Starts with',
+    ]);
   });
 
   it('uses dropdown labels from i18n provider for a numeric property', () => {
@@ -1473,6 +1488,7 @@ describe('i18n', () => {
               less_than_equal {Remove filter, {token__propertyKey} Custom less than or equals {token__value}}
               contains {Remove filter, {token__propertyKey} Custom contains {token__value}}
               not_contains {Remove filter, {token__propertyKey} Custom does not contain {token__value}}
+              starts_with {Remove filter, {token__propertyKey} Custom starts with {token__value}}
               other {}}`,
           },
         }}
@@ -1487,6 +1503,7 @@ describe('i18n', () => {
               { propertyKey: 'string', operator: '!=', value: 'value2' },
               { propertyKey: 'string', operator: ':', value: 'value3' },
               { propertyKey: 'string', operator: '!:', value: 'value4' },
+              { propertyKey: 'string', operator: '^', value: 'value5' },
               { propertyKey: 'range', operator: '>', value: '1' },
               { propertyKey: 'range', operator: '<', value: '2' },
               { propertyKey: 'range', operator: '>=', value: '3' },
@@ -1508,10 +1525,11 @@ describe('i18n', () => {
     expect(getRemoveButton(1)).toHaveAccessibleName('Remove filter, string Custom does not equal value2');
     expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, string Custom contains value3');
     expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom does not contain value4');
-    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
-    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom less than 2');
-    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
-    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
+    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, string Custom starts with value5');
+    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
+    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom less than 2');
+    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
+    expect(getRemoveButton(8)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
 
     const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
     tokenOperation.openDropdown();
