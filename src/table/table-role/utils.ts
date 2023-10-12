@@ -105,19 +105,25 @@ export function muteElementFocusables(element: HTMLElement, suppressed: boolean)
     return;
   }
 
+  console.time('queryCells');
   const tableCells = queryTableCells(element);
+  console.timeEnd('queryCells');
 
   // Assigning pseudo-focusable tab index to all cells and all interactive elements makes them focusable with grid navigation.
+  console.time('updateCells');
   for (const cell of tableCells) {
     if (cell !== document.activeElement) {
       cell.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
     }
   }
+  console.timeEnd('updateCells');
+  console.time('query and update elements');
   for (const focusable of getActualFocusables(element)) {
     if (focusable !== document.activeElement) {
       focusable.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
     }
   }
+  console.timeEnd('query and update elements');
 }
 
 /**

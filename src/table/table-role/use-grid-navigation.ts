@@ -71,6 +71,8 @@ class GridNavigationHelper {
     this._table = table;
     this._isSuppressed = isSuppressed;
 
+    console.time('init');
+
     this.table.addEventListener('focusin', this.onFocusin);
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
@@ -80,6 +82,8 @@ class GridNavigationHelper {
 
     muteElementFocusables(this.table, false);
     ensureSingleFocusable(this.table, null);
+
+    console.timeEnd('init');
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -124,7 +128,12 @@ class GridNavigationHelper {
     this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
+    console.time('muteElementFocusables');
+
     muteElementFocusables(this.table, this.isSuppressed(cell.element));
+
+    console.timeEnd('muteElementFocusables');
+
     ensureSingleFocusable(this.table, cell);
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
