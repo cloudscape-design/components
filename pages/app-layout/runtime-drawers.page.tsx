@@ -28,6 +28,7 @@ type DemoContext = React.Context<
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
+  const [helpPathSlug, setHelpPathSlug] = useState<string>('default');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const hasTools = urlParams.hasTools ?? false;
   const hasDrawers = urlParams.hasDrawers ?? true;
@@ -77,13 +78,21 @@ export default function WithDrawers() {
       breadcrumbs={<Breadcrumbs />}
       content={
         <ContentLayout
+          disableOverlap={true}
           header={
             <SpaceBetween size="m">
               <Header
                 variant="h1"
                 description="Sometimes you need custom drawers to get the job done."
                 info={
-                  <Link variant="info" onFollow={() => setIsToolsOpen(true)}>
+                  <Link
+                    data-testid="info-link-header"
+                    variant="info"
+                    onFollow={() => {
+                      setHelpPathSlug('header');
+                      setIsToolsOpen(true);
+                    }}
+                  >
                     Info
                   </Link>
                 }
@@ -103,6 +112,22 @@ export default function WithDrawers() {
             </SpaceBetween>
           }
         >
+          <Header
+            info={
+              <Link
+                data-testid="info-link-content"
+                variant="info"
+                onFollow={() => {
+                  setHelpPathSlug('content');
+                  setIsToolsOpen(true);
+                }}
+              >
+                Info
+              </Link>
+            }
+          >
+            Content
+          </Header>
           <Containers />
         </ContentLayout>
       }
@@ -135,7 +160,7 @@ export default function WithDrawers() {
       onToolsChange={event => {
         setIsToolsOpen(event.detail.open);
       }}
-      tools={<Info />}
+      tools={<Info helpPathSlug={helpPathSlug} />}
       toolsOpen={isToolsOpen}
       toolsHide={!hasTools}
       {...drawers}
@@ -143,8 +168,8 @@ export default function WithDrawers() {
   );
 }
 
-function Info() {
-  return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
+function Info({ helpPathSlug }: { helpPathSlug: string }) {
+  return <HelpPanel header={<h2>Info</h2>}>Here is some info for you: {helpPathSlug}</HelpPanel>;
 }
 
 function ProHelp() {

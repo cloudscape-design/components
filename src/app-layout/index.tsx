@@ -141,6 +141,11 @@ const OldAppLayout = React.forwardRef(
       isMobile ? false : defaults.toolsOpen,
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
+    const onToolsToggle = (open: boolean) => {
+      setToolsOpen(open);
+      focusToolsButtons();
+      fireNonCancelableEvent(onToolsChange, { open });
+    };
 
     const {
       drawers,
@@ -156,7 +161,7 @@ const OldAppLayout = React.forwardRef(
       toolsOpen,
       toolsHide,
       toolsWidth,
-      onToolsChange,
+      onToolsToggle,
     });
     const hasDrawers = !!drawers;
 
@@ -178,14 +183,6 @@ const OldAppLayout = React.forwardRef(
       focusNavButtons();
       fireNonCancelableEvent(onNavigationChange, { open });
     });
-    const onToolsToggle = useCallback(
-      (open: boolean) => {
-        setToolsOpen(open);
-        focusToolsButtons();
-        fireNonCancelableEvent(onToolsChange, { open });
-      },
-      [setToolsOpen, onToolsChange, focusToolsButtons]
-    );
 
     const onNavigationClick = (event: React.MouseEvent) => {
       const hasLink = findUpUntil(
@@ -469,20 +466,16 @@ const OldAppLayout = React.forwardRef(
       isMobile,
     };
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        openTools: () => onToolsToggle(true),
-        closeNavigationIfNecessary: () => {
-          if (isMobile) {
-            onNavigationToggle(false);
-          }
-        },
-        focusToolsClose: () => focusToolsButtons(true),
-        focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
-      }),
-      [onToolsToggle, isMobile, onNavigationToggle, focusToolsButtons, splitPanelRefs.slider]
-    );
+    useImperativeHandle(ref, () => ({
+      openTools: () => onToolsToggle(true),
+      closeNavigationIfNecessary: () => {
+        if (isMobile) {
+          onNavigationToggle(false);
+        }
+      },
+      focusToolsClose: () => focusToolsButtons(true),
+      focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
+    }));
 
     const splitPanelBottomOffset =
       (!splitPanelDisplayed || finalSplitPanePosition !== 'bottom'
@@ -642,67 +635,68 @@ const OldAppLayout = React.forwardRef(
 
             {finalSplitPanePosition === 'side' && splitPanelWrapped}
 
-            {hasDrawers
-              ? activeDrawerId && (
-                  <ResizableDrawer
-                    contentClassName={clsx(
-                      testutilStyles['active-drawer'],
-                      activeDrawerId === TOOLS_DRAWER_ID && testutilStyles.tools
-                    )}
-                    toggleClassName={testutilStyles['tools-toggle']}
-                    closeClassName={clsx(
-                      testutilStyles['active-drawer-close-button'],
-                      activeDrawerId === TOOLS_DRAWER_ID && testutilStyles['tools-close']
-                    )}
-                    ariaLabels={ariaLabels}
-                    width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
-                    bottomOffset={footerHeight}
-                    topOffset={headerHeight}
-                    isMobile={isMobile}
-                    onToggle={() => {
-                      /*noop in this mode*/
-                    }}
-                    isOpen={true}
-                    toggleRefs={toolsRefs}
-                    type="tools"
-                    onLoseFocus={loseDrawersFocus}
-                    activeDrawer={activeDrawer}
-                    drawers={{
-                      items: drawers,
-                      activeDrawerId: activeDrawerId,
-                      onChange: changeDetail => {
-                        focusToolsButtons();
-                        setDrawerLastInteraction({ type: 'close' });
-                        onActiveDrawerChange(changeDetail.activeDrawerId);
-                      },
-                    }}
-                    size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
-                    onResize={changeDetail => onActiveDrawerResize(changeDetail)}
-                    refs={drawerRefs}
-                    getMaxWidth={getDrawerMaxWidth}
-                  >
-                    {activeDrawer?.content}
-                  </ResizableDrawer>
-                )
-              : !toolsHide && (
-                  <Drawer
-                    contentClassName={testutilStyles.tools}
-                    toggleClassName={testutilStyles['tools-toggle']}
-                    closeClassName={testutilStyles['tools-close']}
-                    ariaLabels={ariaLabels}
-                    width={effectiveToolsWidth}
-                    bottomOffset={footerHeight}
-                    topOffset={headerHeight}
-                    isMobile={isMobile}
-                    onToggle={onToolsToggle}
-                    isOpen={toolsOpen}
-                    toggleRefs={toolsRefs}
-                    type="tools"
-                    onLoseFocus={loseToolsFocus}
-                  >
-                    {tools}
-                  </Drawer>
+            {hasDrawers ? (
+              <ResizableDrawer
+                contentClassName={clsx(
+                  activeDrawerId && testutilStyles['active-drawer'],
+                  activeDrawerId === TOOLS_DRAWER_ID && testutilStyles.tools
                 )}
+                toggleClassName={testutilStyles['tools-toggle']}
+                closeClassName={clsx(
+                  testutilStyles['active-drawer-close-button'],
+                  activeDrawerId === TOOLS_DRAWER_ID && testutilStyles['tools-close']
+                )}
+                ariaLabels={ariaLabels}
+                width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+                bottomOffset={footerHeight}
+                topOffset={headerHeight}
+                isMobile={isMobile}
+                onToggle={() => {
+                  /*noop in this mode*/
+                }}
+                isOpen={true}
+                toggleRefs={toolsRefs}
+                type="tools"
+                onLoseFocus={loseDrawersFocus}
+                activeDrawer={activeDrawer}
+                drawers={{
+                  items: drawers,
+                  activeDrawerId: activeDrawerId,
+                  onChange: changeDetail => {
+                    focusToolsButtons();
+                    setDrawerLastInteraction({ type: 'close' });
+                    onActiveDrawerChange(changeDetail.activeDrawerId);
+                  },
+                }}
+                size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
+                onResize={changeDetail => onActiveDrawerResize(changeDetail)}
+                refs={drawerRefs}
+                getMaxWidth={getDrawerMaxWidth}
+                toolsContent={drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content}
+              >
+                {activeDrawer?.content}
+              </ResizableDrawer>
+            ) : (
+              !toolsHide && (
+                <Drawer
+                  contentClassName={testutilStyles.tools}
+                  toggleClassName={testutilStyles['tools-toggle']}
+                  closeClassName={testutilStyles['tools-close']}
+                  ariaLabels={ariaLabels}
+                  width={effectiveToolsWidth}
+                  bottomOffset={footerHeight}
+                  topOffset={headerHeight}
+                  isMobile={isMobile}
+                  onToggle={onToolsToggle}
+                  isOpen={toolsOpen}
+                  toggleRefs={toolsRefs}
+                  type="tools"
+                  onLoseFocus={loseToolsFocus}
+                >
+                  {tools}
+                </Drawer>
+              )
+            )}
             {hasDrawers && drawers.length > 0 && (
               <DrawerTriggersBar
                 bottomOffset={footerHeight}

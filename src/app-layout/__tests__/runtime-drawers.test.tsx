@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 import {
   describeEachAppLayout,
@@ -9,7 +9,7 @@ import {
   isDrawerTriggerWithBadge,
   singleDrawer,
 } from './utils';
-import AppLayout from '../../../lib/components/app-layout';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
@@ -202,6 +202,20 @@ describeEachAppLayout(size => {
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
   });
 
+  test('opens tools drawer via ref', async () => {
+    let ref: AppLayoutProps.Ref | null = null;
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayout ref={newRef => (ref = newRef)} tools="Tools content" />);
+
+    expect(wrapper.findTools()).toBeFalsy();
+
+    ref!.openTools();
+    expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
+
+    wrapper.findToolsClose().click();
+    expect(wrapper.findTools()).toBeFalsy();
+  });
+
   test('allows closing tools in controlled mode when runtime drawers exist', async () => {
     const onToolsChange = jest.fn();
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
@@ -287,6 +301,40 @@ describeEachAppLayout(size => {
 
       wrapper.findToolsToggle().click();
       expect(onToolsChange).toHaveBeenCalledWith({ open: true });
+    });
+
+    test('preserves tools inner state while switching drawers', async () => {
+      function Counter() {
+        const [count, setCount] = useState(0);
+        return (
+          <>
+            <button data-testid="count-increment" onClick={() => setCount(count + 1)}>
+              Inc
+            </button>
+            <div>Count: {count}</div>
+          </>
+        );
+      }
+
+      awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+      const { wrapper } = await renderComponent(<AppLayout tools={<Counter />} />);
+      wrapper.findToolsToggle().click();
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 0');
+      wrapper.find('[data-testid="count-increment"]')!.click();
+
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+
+      wrapper.findToolsClose().click();
+      expect(wrapper.findTools()).toBeFalsy();
+
+      wrapper.findToolsToggle().click();
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+
+      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+      expect(wrapper.findTools()).toBeFalsy();
+
+      wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.click();
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
     });
   });
 

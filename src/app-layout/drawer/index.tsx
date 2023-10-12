@@ -44,6 +44,7 @@ export const Drawer = React.forwardRef(
       drawersAriaLabels,
       children,
       isOpen,
+      isHidden,
       isMobile,
       onToggle,
       onClick,
@@ -77,6 +78,7 @@ export const Drawer = React.forwardRef(
         id={drawers?.activeDrawerId}
         ref={ref}
         className={clsx(styles.drawer, {
+          [styles.hide]: isHidden,
           [styles['drawer-closed']]: !isOpen,
           [testutilStyles['drawer-closed']]: !isOpen,
           [styles['drawer-mobile']]: isMobile,

@@ -85,6 +85,7 @@ function ActiveDrawer() {
   const isHidden = !activeDrawerId;
   const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
+  const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
 
   const size = Math.max(Math.min(drawersMaxWidth, drawerSize), MIN_WIDTH);
 
@@ -129,7 +130,19 @@ function ActiveDrawer() {
             variant="icon"
           />
         </div>
-        <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
+        {toolsContent && (
+          <div
+            className={clsx(
+              styles['drawer-content'],
+              activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
+            )}
+          >
+            {toolsContent}
+          </div>
+        )}
+        {activeDrawerId !== TOOLS_DRAWER_ID && (
+          <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
+        )}
       </div>
     </aside>
   );

@@ -18,7 +18,7 @@ interface ToolsProps {
   toolsOpen: boolean | undefined;
   toolsWidth: number;
   tools: React.ReactNode | undefined;
-  onToolsChange: AppLayoutProps['onToolsChange'];
+  onToolsToggle: (newOpen: boolean) => void;
   ariaLabels: AppLayoutProps.Labels | undefined;
 }
 
@@ -121,7 +121,7 @@ export function useDrawers(
     if (hasOwnDrawers) {
       fireNonCancelableEvent(ownDrawers?.onChange, newDrawerId);
     } else if (!toolsProps.toolsHide) {
-      fireNonCancelableEvent(toolsProps.onToolsChange, { open: newDrawerId === TOOLS_DRAWER_ID });
+      toolsProps.onToolsToggle(newDrawerId === TOOLS_DRAWER_ID);
     }
   }
 

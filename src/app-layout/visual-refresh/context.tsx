@@ -377,7 +377,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       toolsOpen: isToolsOpen,
       tools: props.tools,
       toolsWidth,
-      onToolsChange: props.onToolsChange,
+      onToolsToggle: handleToolsClick,
     });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
