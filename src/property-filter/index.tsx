@@ -132,6 +132,7 @@ const PropertyFilter = React.forwardRef(
       operatorGreaterText: i18n('i18nStrings.operatorGreaterText', rest.i18nStrings?.operatorGreaterText),
       operatorLessOrEqualText: i18n('i18nStrings.operatorLessOrEqualText', rest.i18nStrings?.operatorLessOrEqualText),
       operatorLessText: i18n('i18nStrings.operatorLessText', rest.i18nStrings?.operatorLessText),
+      operatorStartsWithText: i18n('i18nStrings.operatorStartsWithText', rest.i18nStrings?.operatorStartsWithText),
       operatorText: i18n('i18nStrings.operatorText', rest.i18nStrings?.operatorText),
       operatorsText: i18n('i18nStrings.operatorsText', rest.i18nStrings?.operatorsText),
       propertyText: i18n('i18nStrings.propertyText', rest.i18nStrings?.propertyText),

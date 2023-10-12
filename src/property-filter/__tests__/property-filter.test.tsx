@@ -34,7 +34,7 @@ const filteringProperties: readonly FilteringProperty[] = [
   {
     key: 'string',
     propertyLabel: 'string',
-    operators: ['!:', ':', '=', '!=', '^'],
+    operators: ['!:', ':', '=', '!='],
     groupValuesLabel: 'String values',
   },
   // property label has the a prefix equal to another property's label
@@ -1388,6 +1388,7 @@ describe('i18n', () => {
       'i18nStrings.operatorGreaterText': 'Custom Greater than',
       'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
       'i18nStrings.operatorLessText': 'Custom Less than',
+      'i18nStrings.operatorStartsWithText': 'Custom Starts with',
       'i18nStrings.operatorText': 'Custom Operator',
       'i18nStrings.operatorsText': 'Custom Operators',
       'i18nStrings.propertyText': 'Custom Property',
@@ -1399,6 +1400,14 @@ describe('i18n', () => {
       <TestI18nProvider messages={providerMessages}>
         <PropertyFilter
           {...defaultProps}
+          filteringProperties={[
+            {
+              key: 'string',
+              propertyLabel: 'string',
+              operators: ['!:', ':', '=', '!=', '^'],
+              groupValuesLabel: 'String values',
+            },
+          ]}
           i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
         />
       </TestI18nProvider>
@@ -1413,7 +1422,13 @@ describe('i18n', () => {
     expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
     expect(
       dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
-    ).toEqual(['Custom Equals', 'Custom Does not equal', 'Custom Contains', 'Custom Does not contain']);
+    ).toEqual([
+      'Custom Equals',
+      'Custom Does not equal',
+      'Custom Contains',
+      'Custom Does not contain',
+      'Custom Starts with',
+    ]);
   });
 
   it('uses dropdown labels from i18n provider for a numeric property', () => {
@@ -1510,11 +1525,11 @@ describe('i18n', () => {
     expect(getRemoveButton(1)).toHaveAccessibleName('Remove filter, string Custom does not equal value2');
     expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, string Custom contains value3');
     expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom does not contain value4');
-    expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom starts with value5');
-    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
-    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom less than 2');
-    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
-    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
+    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, string Custom starts with value5');
+    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
+    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom less than 2');
+    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
+    expect(getRemoveButton(8)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
 
     const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
     tokenOperation.openDropdown();

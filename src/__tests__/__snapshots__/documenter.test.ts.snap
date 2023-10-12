@@ -10624,6 +10624,11 @@ operations are communicated to the user in another way.",
             "type": "string",
           },
           Object {
+            "name": "operatorStartsWithText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "operatorText",
             "optional": true,
             "type": "string",
@@ -10683,7 +10688,7 @@ operations are communicated to the user in another way.",
 Each token has the following properties:
 * value [string]: The string value of the token to be used as a filter.
 * propertyKey [string]: The key of the corresponding property in filteringProperties.
-* operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=']: The operator which indicates how to filter the dataset using this token.
+* operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^']: The operator which indicates how to filter the dataset using this token.
 
 \`operation\` has two valid values [and, or] and controls the join operation to be applied between tokens when filtering the items.
 ",
