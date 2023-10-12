@@ -141,6 +141,11 @@ const OldAppLayout = React.forwardRef(
       isMobile ? false : defaults.toolsOpen,
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
+    const onToolsToggle = (open: boolean) => {
+      setToolsOpen(open);
+      focusToolsButtons();
+      fireNonCancelableEvent(onToolsChange, { open });
+    };
 
     const {
       drawers,
@@ -156,7 +161,7 @@ const OldAppLayout = React.forwardRef(
       toolsOpen,
       toolsHide,
       toolsWidth,
-      onToolsChange,
+      onToolsToggle,
     });
     const hasDrawers = !!drawers;
 
@@ -178,14 +183,6 @@ const OldAppLayout = React.forwardRef(
       focusNavButtons();
       fireNonCancelableEvent(onNavigationChange, { open });
     });
-    const onToolsToggle = useCallback(
-      (open: boolean) => {
-        setToolsOpen(open);
-        focusToolsButtons();
-        fireNonCancelableEvent(onToolsChange, { open });
-      },
-      [setToolsOpen, onToolsChange, focusToolsButtons]
-    );
 
     const onNavigationClick = (event: React.MouseEvent) => {
       const hasLink = findUpUntil(
@@ -469,20 +466,16 @@ const OldAppLayout = React.forwardRef(
       isMobile,
     };
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        openTools: () => onToolsToggle(true),
-        closeNavigationIfNecessary: () => {
-          if (isMobile) {
-            onNavigationToggle(false);
-          }
-        },
-        focusToolsClose: () => focusToolsButtons(true),
-        focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
-      }),
-      [onToolsToggle, isMobile, onNavigationToggle, focusToolsButtons, splitPanelRefs.slider]
-    );
+    useImperativeHandle(ref, () => ({
+      openTools: () => onToolsToggle(true),
+      closeNavigationIfNecessary: () => {
+        if (isMobile) {
+          onNavigationToggle(false);
+        }
+      },
+      focusToolsClose: () => focusToolsButtons(true),
+      focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
+    }));
 
     const splitPanelBottomOffset =
       (!splitPanelDisplayed || finalSplitPanePosition !== 'bottom'
