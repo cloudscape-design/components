@@ -942,6 +942,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverSeriesContent",
+        "parameters": Array [
+          Object {
+            "name": "__namedParameters",
+            "type": "unknown",
+          },
+        ],
+        "returnType": "unknown",
+        "type": "function",
+      },
+      "name": "detailPopoverSeriesContent",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, AreaChartProps.Series<T>>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -2155,6 +2171,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "detailPopoverFooter",
       "optional": true,
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverSeriesContent",
+        "parameters": Array [
+          Object {
+            "name": "__namedParameters",
+            "type": "unknown",
+          },
+        ],
+        "returnType": "unknown",
+        "type": "function",
+      },
+      "name": "detailPopoverSeriesContent",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -7995,6 +8027,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverSeriesContent",
+        "parameters": Array [
+          Object {
+            "name": "__namedParameters",
+            "type": "unknown",
+          },
+        ],
+        "returnType": "unknown",
+        "type": "function",
+      },
+      "name": "detailPopoverSeriesContent",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -8602,6 +8650,22 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "detailPopoverFooter",
       "optional": true,
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverSeriesContent",
+        "parameters": Array [
+          Object {
+            "name": "__namedParameters",
+            "type": "unknown",
+          },
+        ],
+        "returnType": "unknown",
+        "type": "function",
+      },
+      "name": "detailPopoverSeriesContent",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
