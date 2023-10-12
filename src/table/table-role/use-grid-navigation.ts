@@ -125,7 +125,6 @@ class GridNavigationHelper {
     this.focusedCell = cell;
 
     muteElementFocusables(this.table, this.isSuppressed(cell.element));
-
     ensureSingleFocusable(this.table, cell);
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
