@@ -91,6 +91,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   splitPanelRefs: SplitPanelFocusControlRefs;
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
+  prevActiveDrawerId: string | undefined;
 }
 
 /**
@@ -381,6 +382,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
+    const [prevActiveDrawerId, setPrevActiveDrawerId] = useState<string | undefined>(activeDrawerId);
 
     const {
       refs: drawersRefs,
@@ -399,7 +401,14 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawersMaxWidth,
     });
 
+    const previousActiveDrawerId = useRef(activeDrawerId);
+
+    useEffect(() => {
+      previousActiveDrawerId.current = activeDrawerId;
+    }, [activeDrawerId]);
+
     const handleDrawersClick = (id: string | undefined, skipFocusControl?: boolean) => {
+      setPrevActiveDrawerId(previousActiveDrawerId.current);
       const newActiveDrawerId = id !== activeDrawerId ? id : undefined;
 
       onActiveDrawerChange(newActiveDrawerId);
@@ -665,6 +674,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
+          prevActiveDrawerId,
         }}
       >
         <AppLayoutContext.Provider

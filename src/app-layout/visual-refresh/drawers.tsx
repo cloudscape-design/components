@@ -72,6 +72,7 @@ function ActiveDrawer() {
     drawerSize,
     drawersMaxWidth,
     drawerRef,
+    prevActiveDrawerId,
   } = useAppLayoutInternals();
 
   const activeDrawer = drawers?.find(item => item.id === activeDrawerId) ?? null;
@@ -99,7 +100,7 @@ function ActiveDrawer() {
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
-        [sharedStyles['with-motion']]: activeDrawerId,
+        [sharedStyles['with-motion']]: activeDrawerId && !prevActiveDrawerId,
       })}
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
