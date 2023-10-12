@@ -12,7 +12,9 @@ import testutilStyles from '../test-classes/styles.css.js';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import splitPanelStyles from '../../split-panel/styles.css.js';
+import styles from './styles.css.js';
 import { ResizableDrawerProps } from './interfaces';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 export const ResizableDrawer = ({
   onResize,
@@ -20,6 +22,7 @@ export const ResizableDrawer = ({
   getMaxWidth,
   refs,
   activeDrawer,
+  toolsContent,
   ...props
 }: ResizableDrawerProps) => {
   const { isOpen, children, isMobile } = props;
@@ -80,6 +83,7 @@ export const ResizableDrawer = ({
     <Drawer
       {...props}
       ref={drawerRefObject}
+      isHidden={!activeDrawer}
       resizeHandle={
         !isMobile &&
         activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
@@ -90,7 +94,8 @@ export const ResizableDrawer = ({
         closeLabel: activeDrawer?.ariaLabels?.closeButton,
       }}
     >
-      {children}
+      {toolsContent && <div className={clsx(activeDrawer?.id !== TOOLS_DRAWER_ID && styles.hide)}>{toolsContent}</div>}
+      {activeDrawer?.id !== TOOLS_DRAWER_ID ? children : null}
     </Drawer>
   );
 };

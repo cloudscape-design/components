@@ -159,6 +159,9 @@
 
     > .drawer-content {
       grid-column: 1 / span 4;
+      &.drawer-content-hidden {
+        display: none;
+      }
     }
   }
 

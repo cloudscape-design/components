@@ -63,6 +63,8 @@ function ActiveDrawer() {
     drawersRefs,
     handleDrawersClick,
     handleToolsClick,
+    tools,
+    toolsHide,
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
@@ -129,7 +131,19 @@ function ActiveDrawer() {
             variant="icon"
           />
         </div>
-        <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
+        {!toolsHide && (
+          <div
+            className={clsx(
+              styles['drawer-content'],
+              activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
+            )}
+          >
+            {tools}
+          </div>
+        )}
+        {activeDrawerId !== TOOLS_DRAWER_ID && (
+          <div className={styles['drawer-content']}>{activeDrawerId && activeDrawer?.content}</div>
+        )}
       </div>
     </aside>
   );
