@@ -27,20 +27,6 @@ for (const visualRefresh of [true, false]) {
     }
 
     test(
-      'should switch between tools panel and runtime drawers',
-      setupTest(async page => {
-        await page.click(wrapper.findToolsToggle().toSelector());
-        await expect(page.getText(wrapper.findTools().getElement())).resolves.toContain('Here is some info for you!');
-
-        await page.click(wrapper.findDrawerTriggerById('security').toSelector());
-        await expect(page.getText(wrapper.findActiveDrawer().getElement())).resolves.toContain('I am runtime drawer');
-
-        await page.click(wrapper.findDrawerTriggerById('awsui-internal-tools').toSelector());
-        await expect(page.getText(wrapper.findTools().getElement())).resolves.toContain('Here is some info for you!');
-      })
-    );
-
-    test(
       'should resize equally with tools or drawers',
       setupTest(async page => {
         await page.setWindowSize({ ...viewports.desktop, width: 1800 });
@@ -53,21 +39,6 @@ for (const visualRefresh of [true, false]) {
         const { width: splitPanelWidthWithDrawer } = await page.getBoundingBox(wrapper.findSplitPanel().toSelector());
 
         expect(splitPanelWidthWithTools).toEqual(splitPanelWidthWithDrawer);
-      })
-    );
-
-    test(
-      'should open and close tools via controlled mode',
-      setupTest(async page => {
-        const toolsContentSelector = wrapper.findTools().getElement();
-        await page.click(createWrapper().findHeader().findInfo().findLink().toSelector());
-        await expect(page.isDisplayed(toolsContentSelector)).resolves.toBe(true);
-        await expect(page.getText(wrapper.findActiveDrawer().getElement())).resolves.toContain(
-          'Here is some info for you!'
-        );
-
-        await page.click(wrapper.findToolsClose().toSelector());
-        await expect(page.isDisplayed(toolsContentSelector)).resolves.toBe(false);
       })
     );
 

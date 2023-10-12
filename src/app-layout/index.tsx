@@ -638,7 +638,7 @@ const OldAppLayout = React.forwardRef(
             {hasDrawers ? (
               <ResizableDrawer
                 contentClassName={clsx(
-                  testutilStyles['active-drawer'],
+                  activeDrawerId && testutilStyles['active-drawer'],
                   activeDrawerId === TOOLS_DRAWER_ID && testutilStyles.tools
                 )}
                 toggleClassName={testutilStyles['tools-toggle']}
@@ -672,7 +672,7 @@ const OldAppLayout = React.forwardRef(
                 onResize={changeDetail => onActiveDrawerResize(changeDetail)}
                 refs={drawerRefs}
                 getMaxWidth={getDrawerMaxWidth}
-                toolsContent={!toolsHide && tools}
+                toolsContent={drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content}
               >
                 {activeDrawer?.content}
               </ResizableDrawer>
