@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '~components/button';
 import Box from '~components/box';
 import { Instance, generateItems } from '../table/generate-data';
-import { ButtonDropdown, Checkbox, Link, StatusIndicator } from '~components';
-import { stateToStatusIndicator } from '../table/shared-configs';
+import { Checkbox, Link } from '~components';
 import { range } from 'lodash';
 import {
   getTableCellRoleProps,
@@ -18,10 +17,9 @@ import {
 } from '~components/table/table-role';
 import styles from './styles.scss';
 
-const ITEMS_COUNT = 100;
-const COLUMNS_COUNT = 50;
-
-const items = generateItems(ITEMS_COUNT);
+const ITEMS_COUNT = 500;
+const TEXT_COLUMNS_COUNT = 50;
+const INTERACTIVE_COLUMNS_COUNT = 50;
 
 export default function Page() {
   const [isActive, setIsActive] = useState(false);
@@ -56,44 +54,25 @@ export default function Page() {
 }
 
 function Table({ useGridNavigation: gridNavigationActive }: { useGridNavigation: boolean }) {
+  const [items, setItems] = useState(generateItems(ITEMS_COUNT));
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setItems(prev => [...prev, ...generateItems(1)]);
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   const columnDefinitions = [
-    {
-      key: 'id',
-      label: 'ID',
-      render: (item: Instance) => item.id,
-    },
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: () => (
-        <ButtonDropdown
-          ariaLabel="Item actions"
-          variant="inline-icon"
-          items={[
-            { id: 'delete', text: 'Delete' },
-            { id: 'duplicate', text: 'Duplicate' },
-            { id: 'update', text: 'Update' },
-          ]}
-          onItemClick={() => {}}
-          expandToViewport={true}
-        />
-      ),
-    },
-    {
-      key: 'state',
-      label: 'State',
-      render: (item: Instance) => <StatusIndicator {...stateToStatusIndicator[item.state]} />,
-    },
-    {
-      key: 'imageId',
-      label: 'Image ID',
+    ...range(0, TEXT_COLUMNS_COUNT).map(index => ({
+      key: 'state' + index,
+      label: 'State ' + (index + 1),
+      render: (item: Instance) => item.state,
+    })),
+    ...range(0, INTERACTIVE_COLUMNS_COUNT).map(index => ({
+      key: 'imageId' + index,
+      label: 'Image ID ' + (index + 1),
       render: (item: Instance) => <Link>{item.imageId}</Link>,
-    },
-    { key: 'type', label: 'Type', render: (item: Instance) => item.type },
-    ...range(0, COLUMNS_COUNT - 5).map(index => ({
-      key: `dnsName-${index}`,
-      label: `DNS name ${index + 1}`,
-      render: (item: Instance) => item.dnsName,
     })),
   ];
 
