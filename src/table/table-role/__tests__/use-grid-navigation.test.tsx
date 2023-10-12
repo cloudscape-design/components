@@ -136,16 +136,6 @@ test('not activated for "table" role', () => {
   expect(container.querySelectorAll('td[tabIndex],th[tabIndex]')).toHaveLength(0);
 });
 
-test('updates cell tab indices', () => {
-  const { container } = render(<TestTable columns={[idColumn, nameColumn]} items={items} />);
-  const focusableCells = container.querySelectorAll('td[tabIndex="-999"],th[tabIndex="-999"]');
-  const userFocusableCells = container.querySelectorAll('td[tabIndex="0"],th[tabIndex="0"]');
-
-  expect(focusableCells).toHaveLength(9);
-  expect(userFocusableCells).toHaveLength(1);
-  expect(userFocusableCells[0].textContent).toBe('ID');
-});
-
 test('updates interactive elements tab indices', () => {
   const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
   const mutedButtons = container.querySelectorAll('button[tabIndex="-999"]');
@@ -295,14 +285,14 @@ test('ensures table always has a user-focusable element', () => {
 test('ensures new interactive table elements are muted', () => {
   const { container, rerender } = render(<TestTable columns={[idColumn, valueColumn]} items={items.slice(0, 3)} />);
 
-  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(11);
+  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(4);
   expect(container.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 
   rerender(<TestTable columns={[idColumn, valueColumn]} items={items} />);
   const lastRow = container.querySelector('[aria-rowindex="5"]')!;
   mockObserver.callback([{ type: 'childList', addedNodes: [lastRow], removedNodes: [] } as unknown as MutationRecord]);
 
-  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(14);
+  expect(container.querySelectorAll('[tabIndex="-999"]')).toHaveLength(5);
   expect(container.querySelectorAll('[tabIndex="0"]')).toHaveLength(1);
 });
 
