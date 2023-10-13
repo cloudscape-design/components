@@ -6,7 +6,7 @@ import {
   GroupText,
   I18nStrings,
   InternalFilteringOption,
-  InternalFilteringProperty,
+  InternalProperties,
   JoinOperation,
   LoadItemsDetail,
   Token,
@@ -27,7 +27,7 @@ interface TokenProps {
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
   filteringOptions: readonly InternalFilteringOption[];
-  filteringProperties: readonly InternalFilteringProperty[];
+  filteringProperties: InternalProperties;
   first?: boolean;
   hideOperations?: boolean;
   i18nStrings: I18nStrings;

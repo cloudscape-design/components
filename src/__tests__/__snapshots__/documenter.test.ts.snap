@@ -10333,7 +10333,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronousely. This would cause extra \`onLoadMore\`
+      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronously. This would cause extra \`onLoadMore\`
 events to fire calling for more properties.",
       "name": "asyncProperties",
       "optional": true,
@@ -10686,6 +10686,13 @@ operations are communicated to the user in another way.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "defaultValue": "{}",
+      "description": "Decorators for property filter properties to define property and value labels and more.",
+      "name": "propertyDefinitions",
+      "optional": true,
+      "type": "unknown",
     },
     Object {
       "description": "An object representing the current query displayed in the property filter. Has two properties: \`tokens\` and \`operation\`.

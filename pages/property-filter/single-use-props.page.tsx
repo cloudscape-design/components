@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import AppLayout from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
 import Box from '~components/box';
 import Table from '~components/table';
 import PropertyFilter from '~components/property-filter';
@@ -41,6 +40,10 @@ export default function () {
     sorting: {},
   });
 
+  const notUsedProperties = propertyFilterProps.filteringProperties.filter(property =>
+    propertyFilterProps.query.tokens.every(token => token.propertyKey !== property.key)
+  );
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -48,26 +51,6 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
-        splitPanelOpen={true}
-        splitPanel={
-          <SplitPanel
-            header="Split panel header"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Slider',
-            }}
-          >
-            {' '}
-          </SplitPanel>
-        }
         content={
           <Table<TableItem>
             className="main-content"
@@ -78,6 +61,7 @@ export default function () {
             filter={
               <PropertyFilter
                 {...propertyFilterProps}
+                filteringProperties={notUsedProperties}
                 virtualScroll={true}
                 countText={`${items.length} matches`}
                 i18nStrings={i18nStrings}

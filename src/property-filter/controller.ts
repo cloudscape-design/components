@@ -8,6 +8,7 @@ import {
   I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
+  InternalProperties,
   JoinOperation,
   ParsedText,
   Query,
@@ -15,14 +16,7 @@ import {
 } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import {
-  getPropertyByKey,
-  matchFilteringProperty,
-  matchOperator,
-  matchOperatorPrefix,
-  trimFirstSpace,
-  trimStart,
-} from './utils';
+import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
@@ -81,7 +75,7 @@ export const getAllowedOperators = (property: InternalFilteringProperty): Compar
  */
 export const parseText = (
   filteringText: string,
-  filteringProperties: readonly InternalFilteringProperty[] = [],
+  filteringProperties: InternalProperties,
   disableFreeTextFiltering: boolean
 ): ParsedText => {
   const negatedGlobalQuery = /^(!:|!)(.*)/.exec(filteringText);
@@ -141,7 +135,7 @@ interface OptionGroup<T> {
 
 export const getAllValueSuggestions = (
   filteringOptions: readonly InternalFilteringOption[],
-  filteringProperties: readonly InternalFilteringProperty[],
+  filteringProperties: InternalProperties,
   operator: ComparisonOperator | undefined = '=',
   i18nStrings: I18nStrings,
   customGroupsText: readonly GroupText[]
@@ -152,7 +146,7 @@ export const getAllValueSuggestions = (
   };
   const customGroups: { [K in string]: OptionGroup<AutosuggestProps.Option> } = {};
   filteringOptions.forEach(filteringOption => {
-    const property = getPropertyByKey(filteringProperties, filteringOption.propertyKey);
+    const property = filteringProperties.get(filteringOption.propertyKey);
     // given option refers to a non-existent filtering property
     if (!property) {
       return;
@@ -182,13 +176,14 @@ export const getAllValueSuggestions = (
 };
 
 export function createPropertiesCompatibilityMap(
-  filteringProperties: readonly InternalFilteringProperty[]
+  filteringProperties: InternalProperties
 ): (propertyA: string, propertyB: string) => boolean {
   const lookup: {
     [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | null }[];
   } = {};
 
-  for (const property of filteringProperties) {
+  for (const propertyKey of filteringProperties.keys) {
+    const property = filteringProperties.get(propertyKey);
     lookup[property.propertyKey] = (property.operators || [])
       .map(operator => ({ operator, form: property.getValueFormRenderer(operator) }))
       .sort((a, b) => a.operator.localeCompare(b.operator));
@@ -217,7 +212,7 @@ const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteri
 });
 
 export function getPropertySuggestions<T>(
-  filteringProperties: readonly InternalFilteringProperty[],
+  filteringProperties: InternalProperties,
   customGroupsText: readonly GroupText[],
   i18nStrings: I18nStrings,
   filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
@@ -228,7 +223,8 @@ export function getPropertySuggestions<T>(
   };
   const customGroups: { [K in string]: OptionGroup<T> } = {};
 
-  filteringProperties.forEach(filteringProperty => {
+  filteringProperties.keys.forEach(propertyKey => {
+    const filteringProperty = filteringProperties.get(propertyKey);
     const { propertyGroup } = filteringProperty;
     let optionsGroup = defaultGroup;
     if (propertyGroup) {
@@ -251,7 +247,7 @@ export function getPropertySuggestions<T>(
 export const getAutosuggestOptions = (
   parsedText: ParsedText,
   filteringOptions: readonly InternalFilteringOption[],
-  filteringProperties: readonly InternalFilteringProperty[],
+  filteringProperties: InternalProperties,
   customGroupsText: readonly GroupText[],
   i18nStrings: I18nStrings
 ) => {
