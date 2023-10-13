@@ -110,9 +110,9 @@ export function muteElementFocusables(element: HTMLElement, suppressed: boolean)
     }
   }
 
-  if (!!cell && cell.element === cell.cellElement && getFocusables(cell.cellElement).length > 0) {
-    return getFocusables(cell.cellElement)[0];
-  }
+  // if (!!cell && cell.element === cell.cellElement && getFocusables(cell.cellElement).length > 0) {
+  //   return getFocusables(cell.cellElement)[0];
+  // }
 
   return null;
 }
