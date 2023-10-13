@@ -256,11 +256,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <ColumnWidthsProvider
-          visibleColumns={visibleColumnWidthsWithSelection}
-          resizableColumns={resizableColumns}
-          containerWidth={containerWidth ?? 0}
-        >
+        <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}
