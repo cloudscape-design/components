@@ -163,6 +163,24 @@ function setupTest(
           )
         );
 
+        test(
+          'moves focus back to overflow button if drawer opens from overflow menu',
+          setupTest(
+            async page => {
+              await page.setWindowSize({ ...viewports.desktop, height: 350 });
+              const triggerSelector = wrapper
+                .find('[aria-label="Overflow drawers (Unread notifications)"]')
+                .toSelector();
+              await page.click(triggerSelector);
+              await page.keys('Enter');
+              await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
+              await page.keys('Enter');
+              await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
+            },
+            { pageName: 'with-drawers', visualRefresh, mobile }
+          )
+        );
+
         describe('focus interaction with info links', () => {
           test(
             'moves focus to close button when panel is opened from info link',
