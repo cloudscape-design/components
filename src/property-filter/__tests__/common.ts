@@ -1,13 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import {
-  FilteringOption,
-  FilteringProperty,
-  InternalFilteringOption,
-  InternalFilteringProperty,
-  Token,
-} from '../interfaces';
+import { FilteringProperty, InternalFilteringProperty, Token } from '../interfaces';
 
 export const i18nStrings = {
   dismissAriaLabel: 'Dismiss',
@@ -56,16 +50,5 @@ export function toInternalProperties(properties: FilteringProperty[]): InternalF
     getValueFormatter: () => null,
     getValueFormRenderer: () => null,
     externalProperty: property,
-  }));
-}
-
-export function toInternalOptions(
-  properties: InternalFilteringProperty[],
-  options: FilteringOption[]
-): InternalFilteringOption[] {
-  return options.map(option => ({
-    property: properties.find(p => p.propertyKey === option.propertyKey) ?? null,
-    value: option.value,
-    label: option.label ?? option.value ?? '',
   }));
 }
