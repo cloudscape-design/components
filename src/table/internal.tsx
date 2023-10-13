@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer, { InternalContainerProps } from '../container/internal';
@@ -119,14 +119,6 @@ const InternalTable = React.forwardRef(
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const tableRefObject = useRef(null);
 
-    const containerContentWidth = useMemo(() => {
-      if (!containerWidth || !tableRefObject.current) {
-        return null;
-      }
-      const tableStyle = getComputedStyle(tableRefObject.current);
-      return containerWidth - (parseFloat(tableStyle.paddingLeft) || 0) - (parseFloat(tableStyle.paddingRight) || 0);
-    }, [containerWidth]);
-
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
@@ -213,7 +205,7 @@ const InternalTable = React.forwardRef(
     const tableRole = hasEditableCells ? 'grid-default' : 'table';
 
     const theadProps: TheadProps = {
-      containerWidth: containerContentWidth,
+      containerWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
@@ -241,12 +233,12 @@ const InternalTable = React.forwardRef(
       tableRole,
     };
 
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+    const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     const wrapperProps = getTableWrapperRoleProps({
       tableRole,
-      isScrollable: !!(tableWidth && containerContentWidth && tableWidth > containerContentWidth),
+      isScrollable: !!(tableWidth && containerWidth && tableWidth > containerWidth),
       ariaLabel: ariaLabels?.tableLabel,
     });
 
@@ -340,6 +332,7 @@ const InternalTable = React.forwardRef(
               onScroll={handleScroll}
               {...wrapperProps}
             >
+              <div className={styles['wrapper-content-measure']} ref={wrapperMeasureRef}></div>
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>
