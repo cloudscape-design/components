@@ -304,14 +304,25 @@ export interface InternalFilteringProperty<TokenValue = any> {
   defaultOperator: PropertyFilterOperator;
   getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
   getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
-  // Original property to be used in callbacks.
+  // Original property used in callbacks.
   externalProperty: PropertyFilterProperty;
 }
 
 export interface InternalFilteringOption {
-  propertyKey: string;
+  property: null | InternalFilteringProperty;
   value: string;
   label: string;
+}
+
+export interface InternalToken<TokenValue = any> {
+  property: null | InternalFilteringProperty<TokenValue>;
+  operator: PropertyFilterOperator;
+  value: TokenValue;
+}
+
+export interface InternalQuery {
+  operation: PropertyFilterOperation;
+  tokens: readonly InternalToken[];
 }
 
 export type ParsedText =

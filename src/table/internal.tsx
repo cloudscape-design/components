@@ -213,6 +213,7 @@ const InternalTable = React.forwardRef(
     const tableRole = hasEditableCells ? 'grid-default' : 'table';
 
     const theadProps: TheadProps = {
+      containerWidth: containerContentWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
@@ -263,11 +264,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <ColumnWidthsProvider
-          visibleColumns={visibleColumnWidthsWithSelection}
-          resizableColumns={resizableColumns}
-          containerWidth={containerContentWidth ?? 0}
-        >
+        <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}
