@@ -3,7 +3,7 @@
 
 import { ComparisonOperator, FilteringProperty, GroupText, InternalFilteringProperty, ParsedText } from '../interfaces';
 import { parseText, getAllowedOperators, getAutosuggestOptions } from '../controller';
-import { i18nStrings, toInternalOptions, toInternalProperties } from './common';
+import { i18nStrings, toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([
   {
@@ -52,17 +52,21 @@ const customGroupText: readonly GroupText[] = [
   { group: 'group-name', properties: 'Group properties', values: 'Group values' },
 ];
 
-const filteringOptions = toInternalOptions([
-  { propertyKey: 'string', value: 'value1' },
-  { propertyKey: 'other-string', value: 'value1' },
-  { propertyKey: 'string', value: 'value2' },
-  { propertyKey: 'range', value: '1' },
-  { propertyKey: 'range', value: '2' },
-  { propertyKey: 'other-string', value: 'value2' },
-  { propertyKey: 'missing-property', value: 'value' },
-  { propertyKey: 'default-operator', value: 'value' },
-  { propertyKey: 'custom-default', value: 'value' },
-]);
+function getProperty(key: string) {
+  return filteringProperties.find(p => p.propertyKey === key)!;
+}
+
+const filteringOptions = [
+  { property: getProperty('string'), value: 'value1', label: 'value1' },
+  { property: getProperty('other-string'), value: 'value1', label: 'value1' },
+  { property: getProperty('string'), value: 'value2', label: 'value2' },
+  { property: getProperty('range'), value: '1', label: '1' },
+  { property: getProperty('range'), value: '2', label: '2' },
+  { property: getProperty('other-string'), value: 'value2', label: 'value2' },
+  { property: getProperty('missing-property'), value: 'value', label: 'value' },
+  { property: getProperty('default-operator'), value: 'value', label: 'value' },
+  { property: getProperty('custom-default'), value: 'value', label: 'value' },
+];
 
 describe('getAllowedOperators', () => {
   type TestCase = [string, InternalFilteringProperty, ComparisonOperator[]];
@@ -239,8 +243,8 @@ describe('getAutosuggestOptions', () => {
     };
     const actual = getAutosuggestOptions(
       parsedText,
-      filteringOptions,
       filteringProperties,
+      filteringOptions,
       customGroupText,
       i18nStrings
     );
@@ -260,8 +264,8 @@ describe('getAutosuggestOptions', () => {
     };
     const actual = getAutosuggestOptions(
       parsedText,
-      filteringOptions,
       filteringProperties,
+      filteringOptions,
       customGroupText,
       i18nStrings
     );
@@ -285,8 +289,8 @@ describe('getAutosuggestOptions', () => {
     };
     const actual = getAutosuggestOptions(
       parsedText,
-      filteringOptions,
       filteringProperties,
+      filteringOptions,
       customGroupText,
       i18nStrings
     );
@@ -317,8 +321,8 @@ describe('getAutosuggestOptions', () => {
     };
     const actual = getAutosuggestOptions(
       parsedText,
-      filteringOptions,
       filteringProperties,
+      filteringOptions,
       customGroupText,
       i18nStrings
     );
@@ -347,8 +351,8 @@ describe('getAutosuggestOptions', () => {
     };
     const actual = getAutosuggestOptions(
       parsedText,
-      filteringOptions,
       filteringProperties,
+      filteringOptions,
       customGroupText,
       i18nStrings
     );
