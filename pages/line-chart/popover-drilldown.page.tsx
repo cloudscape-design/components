@@ -8,7 +8,7 @@ import Box from '~components/box';
 import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
 import rawCostsData from './popover-drilldown-sample-data';
-import { LineChart, MixedLineBarChartProps } from '~components';
+import { LineChart, Link, MixedLineBarChartProps } from '~components';
 
 interface LineDataSeries<T, Y> {
   type: 'line';
@@ -47,9 +47,9 @@ const sortedCostsDataSeries = [...costsDataSeries].sort((series1, series2) => {
 const maxSeries = 9;
 
 const slicedSeries = sortedCostsDataSeries.slice(0, maxSeries - 1);
-const otherSeries = sortedCostsDataSeries.slice(maxSeries, sortedCostsDataSeries.length - 2);
+const groupedSeries = sortedCostsDataSeries.slice(maxSeries, sortedCostsDataSeries.length - 2);
 const otherData: MixedLineBarChartProps.Datum<string>[] = [];
-for (const series of otherSeries) {
+for (const series of groupedSeries) {
   for (const { x, y } of series.data) {
     let data = otherData.find(item => item.x === x);
     if (data) {
@@ -61,10 +61,14 @@ for (const series of otherSeries) {
   }
 }
 
-const allSeries: ReadonlyArray<LineDataSeries<string, number>> = [
-  ...slicedSeries,
-  { title: 'Others', type: 'line', valueFormatter: dollarFormatter, data: otherData },
-];
+const otherSeries: LineDataSeries<string, number> = {
+  title: 'Others',
+  type: 'line',
+  valueFormatter: dollarFormatter,
+  data: otherData,
+};
+
+const allSeries: ReadonlyArray<LineDataSeries<string, number>> = [...slicedSeries, otherSeries];
 
 export default function () {
   return (
@@ -83,24 +87,34 @@ export default function () {
             ariaDescription={barChartInstructions}
             xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
             detailPopoverSeriesContent={({ series, x, y }) => {
+              const isOtherSeries = series === otherSeries;
               return {
-                expandable: true,
-                key: series.title,
+                expandable: isOtherSeries,
+                key: isOtherSeries ? (
+                  series.title
+                ) : (
+                  <Link external={true} href="#">
+                    {series.title}
+                  </Link>
+                ),
                 value: dollarFormatter(y),
-                details:
-                  series.title === 'Others'
-                    ? (otherSeries
-                        .map(childSeries => {
-                          const datum = childSeries.data.find(item => item.x === x);
-                          if (datum && datum.y >= 0.005) {
-                            return {
-                              key: childSeries.title,
-                              value: dollarFormatter(datum.y),
-                            };
-                          }
-                        })
-                        .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>)
-                    : undefined,
+                details: isOtherSeries
+                  ? (groupedSeries
+                      .map(childSeries => {
+                        const datum = childSeries.data.find(item => item.x === x);
+                        if (datum && datum.y >= 0.005) {
+                          return {
+                            key: (
+                              <Link external={true} href="#">
+                                {childSeries.title}
+                              </Link>
+                            ),
+                            value: dollarFormatter(datum.y),
+                          };
+                        }
+                      })
+                      .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>)
+                  : undefined,
               };
             }}
           />
