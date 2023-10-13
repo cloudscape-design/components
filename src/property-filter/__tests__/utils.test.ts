@@ -108,7 +108,7 @@ describe('matchOperatorPrefix', () => {
 });
 
 describe('matchTokenValue', () => {
-  const property = filteringProperties.find(p => p.propertyKey === 'key') ?? null;
+  const property = null;
 
   test('should return token as-is if no match found', () => {
     const token: InternalToken = { property, operator: '=', value: 'one' };
