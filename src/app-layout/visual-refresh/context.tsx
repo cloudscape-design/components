@@ -15,8 +15,7 @@ import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
-import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-drawer-focus-control';
+import { ResizableFocusControlRefs, FocusControlRefs, useDrawerFocusControl } from '../utils/use-focus-control';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { isDevelopment } from '../../internal/is-development';
 import { getSplitPanelPosition } from './split-panel';
@@ -40,7 +39,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersOverflowWithBadgeAriaLabel: string | undefined;
-  drawersRefs: DrawerFocusControlRefs;
+  drawersRefs: ResizableFocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
@@ -181,7 +180,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
     );
 
-    const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
+    const { refs: navigationRefs, setFocus: focusNavButtons } = useDrawerFocusControl(isNavigationOpen);
 
     const handleNavigationClick = useStableCallback(function handleNavigationChange(isOpen: boolean) {
       setIsNavigationOpen(isOpen);
@@ -221,7 +220,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       refs: toolsRefs,
       setFocus: focusToolsButtons,
       loseFocus: loseToolsFocus,
-    } = useFocusControl(isToolsOpen, true);
+    } = useDrawerFocusControl(isToolsOpen, true);
 
     const handleToolsClick = useCallback(
       function handleToolsChange(isOpen: boolean, skipFocusControl?: boolean) {
@@ -387,7 +386,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], true, true);
+    } = useDrawerFocusControl(true, true, [activeDrawerId, activeDrawer?.resizable]);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     const { resizeHandle, drawerSize } = useResize(drawerRef, {

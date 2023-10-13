@@ -6,7 +6,7 @@ import { AppLayoutProps } from '../interfaces';
 import { IconProps } from '../../icon/interfaces';
 import { NonCancelableEventHandler } from '../../internal/events';
 
-import { DrawerFocusControlRefs } from '../utils/use-drawer-focus-control';
+import { ResizableFocusControlRefs } from '../utils/use-focus-control';
 
 export interface DesktopDrawerProps {
   contentClassName: string;
@@ -42,7 +42,7 @@ export interface ResizableDrawerProps extends DesktopDrawerProps {
   onResize: (resizeDetail: { size: number; id: string }) => void;
   size: number;
   getMaxWidth: () => number;
-  refs: DrawerFocusControlRefs;
+  refs: ResizableFocusControlRefs;
   toolsContent?: React.ReactNode;
 }
 

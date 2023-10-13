@@ -1,7 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useCallback, useEffect, useRef } from 'react';
+import { DependencyList, RefObject, useEffect, useRef, useCallback } from 'react';
 import { ButtonProps } from '../../button/interfaces';
+
+export type DrawerLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
+
+export interface ResizableFocusControlRefs {
+  toggle: RefObject<ButtonProps.Ref>;
+  close: RefObject<ButtonProps.Ref>;
+  slider: RefObject<HTMLDivElement>;
+}
 
 export interface FocusControlRefs {
   toggle: RefObject<ButtonProps.Ref>;
@@ -9,18 +17,42 @@ export interface FocusControlRefs {
 }
 
 interface FocusControlState {
-  refs: FocusControlRefs;
+  refs: ResizableFocusControlRefs;
   setFocus: (force?: boolean) => void;
   loseFocus: () => void;
+  setLastInteraction: (interaction: DrawerLastInteraction) => void;
 }
 
-export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusControlState {
+export function useDrawerFocusControl(
+  isOpen: boolean,
+  restoreFocus = false,
+  dependencies?: DependencyList
+): FocusControlState {
   const refs = {
     toggle: useRef<ButtonProps.Ref>(null),
     close: useRef<ButtonProps.Ref>(null),
+    slider: useRef<HTMLDivElement>(null),
   };
   const previousFocusedElement = useRef<HTMLElement>();
   const shouldFocus = useRef(false);
+  const lastInteraction = useRef<DrawerLastInteraction | null>(null);
+
+  useEffect(() => {
+    switch (lastInteraction.current?.type) {
+      case 'open':
+        if (refs.slider.current) {
+          refs.slider.current?.focus();
+        } else {
+          refs.close.current?.focus();
+        }
+        break;
+      case 'close':
+        refs.toggle.current?.focus();
+        break;
+    }
+    lastInteraction.current = null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, dependencies);
 
   const doFocus = () => {
     if (!shouldFocus.current) {
@@ -58,5 +90,6 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
       }
     },
     loseFocus,
+    setLastInteraction: (interaction: DrawerLastInteraction) => (lastInteraction.current = interaction),
   };
 }

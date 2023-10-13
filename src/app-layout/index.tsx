@@ -10,7 +10,6 @@ import { applyDefaults } from './defaults';
 import { AppLayoutProps } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
-import { useFocusControl } from './utils/use-focus-control';
 import useWindowWidth from './utils/use-window-width';
 import useContentHeight from './utils/use-content-height';
 import styles from './styles.css.js';
@@ -38,7 +37,7 @@ import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolki
 import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../i18n/context';
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
-import { useDrawerFocusControl } from './utils/use-drawer-focus-control';
+import { useDrawerFocusControl } from './utils/use-focus-control';
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
 import { InternalDrawerProps } from './drawer/interfaces';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -165,18 +164,18 @@ const OldAppLayout = React.forwardRef(
     });
     const hasDrawers = !!drawers;
 
-    const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
+    const { refs: navigationRefs, setFocus: focusNavButtons } = useDrawerFocusControl(navigationOpen);
     const {
       refs: toolsRefs,
       setFocus: focusToolsButtons,
       loseFocus: loseToolsFocus,
-    } = useFocusControl(toolsOpen || activeDrawer !== undefined, true);
+    } = useDrawerFocusControl(toolsOpen || activeDrawer !== undefined, true);
     const {
       refs: drawerRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
       setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawer?.resizable], toolsOpen || activeDrawer !== undefined, true);
+    } = useDrawerFocusControl(toolsOpen || activeDrawer !== undefined, true, [activeDrawer?.resizable]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
       setNavigationOpen(open);
