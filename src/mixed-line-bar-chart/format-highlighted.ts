@@ -65,8 +65,8 @@ function getSeriesDetail<T>(
           ? detailPopoverSeriesContent({ series, x: targetX, y: datum.y })
           : undefined;
         return {
-          key: series.title,
-          value: series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y,
+          key: customContent?.key || series.title,
+          value: customContent?.value || (series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y),
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
           details: customContent?.details,
