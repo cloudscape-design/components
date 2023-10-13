@@ -36,15 +36,6 @@ export function useGridNavigation({ keyboardNavigation, pageSize, getTable, isSu
       table && gridNavigation.init(table, isSuppressedStable);
     }
     return () => gridNavigation.cleanup();
-  }, [keyboardNavigation, gridNavigation, getTableStable, isSuppressedStable]);
-
-  // Initialize the model with the table container assuming it is mounted synchronously and only once.
-  useEffect(() => {
-    if (keyboardNavigation) {
-      const table = getTableStable();
-      table && gridNavigation.init(table, isSuppressedStable);
-    }
-    return () => gridNavigation.cleanup();
   }, [gridNavigation, keyboardNavigation, getTableStable, isSuppressedStable]);
 
   // Notify the model of the props change.
