@@ -186,6 +186,9 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
+  // The page width of 620px is an empirical value defined for the respective test page in VR
+  // so that the container width is slightly less than the table width (a sum of the column widths).
+  // In that case we expect the container to be scrollable and no auto-width set for the last column.
   test(
     'should set explicit width for the last column when table width exceeds container width',
     useBrowser({ width: 620, height: 1000 }, async browser => {
