@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useImperativeHandle, useMemo } from 'react';
+import React, { useRef, useState, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
@@ -158,7 +158,7 @@ const PropertyFilter = React.forwardRef(
     );
     const [filteringText, setFilteringText] = useState<string>('');
 
-    const { internalProperties, internalOptions, internalQuery } = useMemo(() => {
+    const { internalProperties, internalOptions, internalQuery } = (() => {
       const propertyByKey = filteringProperties.reduce((acc, property) => {
         const extendedOperators = (property?.operators ?? []).reduce(
           (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
@@ -196,7 +196,7 @@ const PropertyFilter = React.forwardRef(
       };
 
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery };
-    }, [filteringProperties, filteringOptions, query]);
+    })();
 
     const parsedText = parseText(filteringText, internalProperties, disableFreeTextFiltering);
     const autosuggestOptions = getAutosuggestOptions(
