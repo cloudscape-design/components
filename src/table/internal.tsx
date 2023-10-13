@@ -296,6 +296,7 @@ const InternalTable = React.forwardRef(
                     onScroll={handleScroll}
                     tableHasHeader={hasHeader}
                     contentDensity={contentDensity}
+                    resizableColumns={!!resizableColumns}
                     tableRole={tableRole}
                   />
                 )}

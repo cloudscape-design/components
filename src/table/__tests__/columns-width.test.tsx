@@ -194,28 +194,51 @@ describe('with stickyHeader=true', () => {
     window.CSS.supports = originalFn;
   });
 
-  test('mirrors column width on sticky header copy, but not minWidth/maxWidth', () => {
-    const extractSize = (thead: ElementWrapper) =>
-      thead.findAll('tr > *').map(column => {
-        const { minWidth, maxWidth, width } = column.getElement().style;
-        return { minWidth, maxWidth, width };
-      });
-    const columns: TableProps.ColumnDefinition<Item>[] = [
-      { id: 'id', header: 'id', cell: () => '-', width: 200 },
-      { id: 'name', header: 'name', cell: () => '-', minWidth: 100 },
-      { id: 'description', header: '', cell: () => '-', maxWidth: 300 },
-    ];
-    const { wrapper } = renderTable(<Table columnDefinitions={columns} items={defaultItems} stickyHeader={true} />);
+  const extractSize = (thead: ElementWrapper) =>
+    thead.findAll('tr > *').map(column => {
+      const { minWidth, maxWidth, width } = column.getElement().style;
+      return { minWidth, maxWidth, width };
+    });
+
+  const columns: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: 'id', cell: () => '-', width: 200 },
+    { id: 'name', header: 'name', cell: () => '-', minWidth: 100 },
+    { id: 'description', header: '', cell: () => '-', maxWidth: 300 },
+  ];
+
+  test('mirrors column width on sticky header copy, but not minWidth/maxWidth when resizableColumns=false', () => {
+    const { wrapper } = renderTable(
+      <Table columnDefinitions={columns} items={defaultItems} stickyHeader={true} resizableColumns={false} />
+    );
     const [fakeHeader, realHeader] = wrapper.findAll('thead');
     expect(extractSize(realHeader)).toEqual([
       { minWidth: '', width: '200px', maxWidth: '' },
       { minWidth: '100px', width: '', maxWidth: '' },
       { minWidth: '', width: '', maxWidth: '300px' },
     ]);
+    // in JSDOM, there is no layout, so copied width is "0px" and no value is "".
+    expect(extractSize(fakeHeader)).toEqual([
+      { minWidth: '', width: '0px', maxWidth: '' },
+      { minWidth: '', width: '0px', maxWidth: '' },
+      { minWidth: '', width: '0px', maxWidth: '' },
+    ]);
+  });
+
+  test('mirrors column width on sticky header copy, but not minWidth/maxWidth when resizableColumns=true', () => {
+    const { wrapper } = renderTable(
+      <Table columnDefinitions={columns} items={defaultItems} stickyHeader={true} resizableColumns={true} />
+    );
+    const [fakeHeader, realHeader] = wrapper.findAll('thead');
+    expect(extractSize(realHeader)).toEqual([
+      { minWidth: '', width: '200px', maxWidth: '' },
+      { minWidth: '100px', width: '100px', maxWidth: '' },
+      { minWidth: '', width: '120px', maxWidth: '' },
+    ]);
+    // The widths are not synced but instead the same widths are explicitly assigned.
     expect(extractSize(fakeHeader)).toEqual([
       { minWidth: '', width: '200px', maxWidth: '' },
-      { minWidth: '', width: '', maxWidth: '' },
-      { minWidth: '', width: '', maxWidth: '' },
+      { minWidth: '', width: '100px', maxWidth: '' },
+      { minWidth: '', width: '120px', maxWidth: '' },
     ]);
   });
 });

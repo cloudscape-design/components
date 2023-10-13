@@ -5,12 +5,21 @@ import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+function syncSizes(from: HTMLElement, to: HTMLElement) {
+  const fromCells = Array.prototype.slice.apply(from.children);
+  const toCells = Array.prototype.slice.apply(to.children);
+  for (let i = 0; i < fromCells.length; i++) {
+    toCells[i].style.width = `${fromCells[i].offsetWidth}px`;
+  }
+}
+
 export const useStickyHeader = (
   tableRef: RefObject<HTMLElement>,
   theadRef: RefObject<HTMLElement>,
   secondaryTheadRef: RefObject<HTMLElement>,
   secondaryTableRef: RefObject<HTMLElement>,
-  tableWrapperRef: RefObject<HTMLElement>
+  tableWrapperRef: RefObject<HTMLElement>,
+  resizableColumns: boolean
 ) => {
   const isMobile = useMobile();
   // Sync the sizes of the column header copies in the sticky header with the originals
@@ -22,6 +31,11 @@ export const useStickyHeader = (
       secondaryTableRef.current &&
       tableWrapperRef.current
     ) {
+      // When resizable columns are used the column sizes are set explicitly in both headers and no sync is needed.
+      if (!resizableColumns) {
+        syncSizes(theadRef.current, secondaryTheadRef.current);
+      }
+
       // Using the tableRef offsetWidth instead of the theadRef because in VR
       // the tableRef adds extra padding to the table and by default the theadRef will have a width
       // without the padding and will make the sticky header width incorrect.
@@ -29,7 +43,7 @@ export const useStickyHeader = (
 
       tableWrapperRef.current.style.marginTop = `-${theadRef.current.offsetHeight}px`;
     }
-  }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
+  }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef, resizableColumns]);
   useLayoutEffect(() => {
     syncColumnHeaderWidths();
   });

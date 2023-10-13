@@ -26,6 +26,7 @@ interface StickyHeaderProps {
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
+  resizableColumns: boolean;
   tableRole: TableRole;
 }
 
@@ -42,6 +43,7 @@ function StickyHeader(
     tableRef,
     tableHasHeader,
     contentDensity,
+    resizableColumns,
     tableRole,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
@@ -56,7 +58,8 @@ function StickyHeader(
     theadRef,
     secondaryTheadRef,
     secondaryTableRef,
-    wrapperRef
+    wrapperRef,
+    resizableColumns
   );
 
   useImperativeHandle(ref, () => ({
