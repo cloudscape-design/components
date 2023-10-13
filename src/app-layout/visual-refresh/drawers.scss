@@ -21,10 +21,6 @@
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
     box-shadow: awsui.$shadow-panel;
-
-    @include styles.with-motion {
-      transition: background-color awsui.$motion-duration-refresh-only-fast;
-    }
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -70,18 +66,10 @@
 
   &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
-
-    @include styles.with-motion {
-      transition: background-color awsui.$motion-duration-refresh-only-fast;
-    }
   }
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
     width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
-
-    @include styles.with-motion {
-      transition: width awsui.$motion-duration-refresh-only-fast;
-    }
   }
 }
 
@@ -103,11 +91,6 @@
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
     opacity: 1;
-
-    @include styles.with-motion {
-      transition: opacity awsui.$motion-duration-refresh-only-medium;
-      transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
-    }
   }
 
   > .drawers-trigger-overflow {

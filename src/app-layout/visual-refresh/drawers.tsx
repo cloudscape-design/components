@@ -9,7 +9,6 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
-import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
@@ -99,7 +98,6 @@ function ActiveDrawer() {
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
-        [sharedStyles['with-motion']]: activeDrawerId,
       })}
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
