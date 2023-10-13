@@ -20,6 +20,7 @@ import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+import { usePrevious } from '@dnd-kit/utilities';
 
 export { FlashbarProps };
 
@@ -33,6 +34,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
+  const wasFlashbarStackExpanded = usePrevious(isFlashbarStackExpanded);
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -76,8 +78,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setIsFlashbarStackExpanded(false);
   }
 
-  const animateFlash = !isReducedMotion;
-
   function toggleCollapseExpand() {
     sendToggleMetric(items.length, !isFlashbarStackExpanded);
     if (!isReducedMotion) {
@@ -92,6 +92,10 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       if (mostRecentItem.id !== undefined) {
         focusFlashById(ref.current, mostRecentItem.id);
       }
+    }
+    // When collapsing, scroll up if necessary to avoid losing track of the focused button
+    else if (wasFlashbarStackExpanded && !isFlashbarStackExpanded && notificationBarRef.current) {
+      scrollElementIntoView(notificationBarRef.current);
     }
     // Run this after expanding, but not every time the items change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -160,11 +164,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         onTransitionsEnd: () => setTransitioning(false),
       });
 
-      // When collapsing, scroll up if necessary to avoid losing track of the focused button
-      if (!isFlashbarStackExpanded && notificationBarRef.current) {
-        scrollElementIntoView(notificationBarRef.current);
-      }
-
       setTransitioning(true);
       setInitialAnimationState(null);
     }
@@ -188,106 +187,164 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     item.id ?? (item as StackableItem).expandedIndex ?? 0;
 
-  // This check allows us to use the standard "enter" Transition only when the notification was not existing before.
-  // If instead it was moved to the top of the stack but was already present in the array
-  // (e.g, after dismissing another notification),
-  // we need to use different, more custom and more controlled animations.
-  const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-    enteringItems.some(_item => _item.id && _item.id === item.id);
-  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
-  const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => hasEntered(item) || hasLeft(item);
+  const renderListWithoutAnimations = () => {
+    const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
+      isFlashbarStackExpanded || ('expandedIndex' in item && item.expandedIndex === 0);
 
-  const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-    isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
-
-  const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
-
-  const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
-
-  const renderList = () => (
-    <ul
-      ref={listElementRef}
-      className={clsx(
-        styles['flash-list'],
-        isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-        transitioning && styles['animation-running'],
-        initialAnimationState && styles['animation-ready'],
-        isVisualRefresh && styles['visual-refresh']
-      )}
-      id={flashbarElementId}
-      aria-label={ariaLabel}
-      aria-describedby={isCollapsible ? itemCountElementId : undefined}
-      style={
-        !isFlashbarStackExpanded || transitioning
-          ? {
-              [customCssProps.flashbarStackDepth]: stackDepth,
-            }
-          : undefined
-      }
-    >
-      <TransitionGroup component={null}>
-        {itemsToShow.map((item: StackableItem, index: number) => (
-          <Transition
-            key={getItemId(item)}
-            in={!hasLeft(item)}
-            onStatusChange={status => {
-              if (status === 'entered') {
-                setEnteringItems([]);
-              } else if (status === 'exited') {
-                setExitingItems([]);
+    return (
+      <ul
+        ref={listElementRef}
+        className={clsx(
+          styles['flash-list'],
+          isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+          isVisualRefresh && styles['visual-refresh']
+        )}
+        id={flashbarElementId}
+        aria-label={ariaLabel}
+        aria-describedby={isCollapsible ? itemCountElementId : undefined}
+        style={
+          !isFlashbarStackExpanded
+            ? {
+                [customCssProps.flashbarStackDepth]: stackDepth,
               }
-            }}
-          >
-            {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-              <li
-                aria-hidden={!showInnerContent(item)}
-                className={
-                  showInnerContent(item)
-                    ? clsx(
-                        styles['flash-list-item'],
-                        !isFlashbarStackExpanded && styles.item,
-                        !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
-                      )
-                    : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
-                }
-                ref={element => {
-                  if (isFlashbarStackExpanded) {
-                    expandedItemRefs.current[getAnimationElementId(item)] = element;
-                  } else {
-                    collapsedItemRefs.current[getAnimationElementId(item)] = element;
+            : undefined
+        }
+      >
+        {itemsToShow.map((item: StackableItem, index: number) => (
+          <li
+            aria-hidden={!showInnerContent(item)}
+            className={
+              showInnerContent(item)
+                ? clsx(styles['flash-list-item'], !isFlashbarStackExpanded && styles.item)
+                : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+            }
+            style={
+              !isFlashbarStackExpanded
+                ? {
+                    [customCssProps.flashbarStackIndex]:
+                      (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
                   }
-                }}
-                style={
-                  !isFlashbarStackExpanded || transitioning
-                    ? {
-                        [customCssProps.flashbarStackIndex]:
-                          (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                      }
-                    : undefined
-                }
+                : undefined
+            }
+            key={getItemId(item)}
+          >
+            {showInnerContent(item) && (
+              <Flash
+                // eslint-disable-next-line react/forbid-component-props
+                className={clsx(isVisualRefresh && styles['flash-refresh'])}
                 key={getItemId(item)}
-              >
-                {showInnerContent(item) && (
-                  <Flash
-                    // eslint-disable-next-line react/forbid-component-props
-                    className={clsx(
-                      animateFlash && styles['flash-with-motion'],
-                      isVisualRefresh && styles['flash-refresh']
-                    )}
-                    key={getItemId(item)}
-                    ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
-                    transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
-                    i18nStrings={iconAriaLabels}
-                    {...item}
-                  />
-                )}
-              </li>
+                i18nStrings={iconAriaLabels}
+                {...item}
+              />
             )}
-          </Transition>
+          </li>
         ))}
-      </TransitionGroup>
-    </ul>
-  );
+      </ul>
+    );
+  };
+
+  const renderListWithAnimations = () => {
+    // This check allows us to use the standard "enter" Transition only when the notification was not existing before.
+    // If instead it was moved to the top of the stack but was already present in the array
+    // (e.g, after dismissing another notification),
+    // we need to use different, more custom and more controlled animations.
+    const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
+      enteringItems.some(_item => _item.id && _item.id === item.id);
+    const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
+    const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) =>
+      hasEntered(item) || hasLeft(item);
+
+    const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
+      isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
+
+    const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
+
+    const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
+
+    return (
+      <ul
+        ref={listElementRef}
+        className={clsx(
+          styles['flash-list'],
+          isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+          transitioning && styles['animation-running'],
+          initialAnimationState && styles['animation-ready'],
+          isVisualRefresh && styles['visual-refresh']
+        )}
+        id={flashbarElementId}
+        aria-label={ariaLabel}
+        aria-describedby={isCollapsible ? itemCountElementId : undefined}
+        style={
+          !isFlashbarStackExpanded || transitioning
+            ? {
+                [customCssProps.flashbarStackDepth]: stackDepth,
+              }
+            : undefined
+        }
+      >
+        <TransitionGroup component={null}>
+          {itemsToShow.map((item: StackableItem, index: number) => (
+            <Transition
+              key={getItemId(item)}
+              in={!hasLeft(item)}
+              onStatusChange={status => {
+                if (status === 'entered') {
+                  setEnteringItems([]);
+                } else if (status === 'exited') {
+                  setExitingItems([]);
+                }
+              }}
+            >
+              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+                <li
+                  aria-hidden={!showInnerContent(item)}
+                  className={
+                    showInnerContent(item)
+                      ? clsx(
+                          styles['flash-list-item'],
+                          !isFlashbarStackExpanded && styles.item,
+                          !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
+                        )
+                      : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+                  }
+                  ref={element => {
+                    if (isFlashbarStackExpanded) {
+                      expandedItemRefs.current[getAnimationElementId(item)] = element;
+                    } else {
+                      collapsedItemRefs.current[getAnimationElementId(item)] = element;
+                    }
+                  }}
+                  style={
+                    !isFlashbarStackExpanded || transitioning
+                      ? {
+                          [customCssProps.flashbarStackIndex]:
+                            (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+                        }
+                      : undefined
+                  }
+                  key={getItemId(item)}
+                >
+                  {showInnerContent(item) && (
+                    <Flash
+                      // eslint-disable-next-line react/forbid-component-props
+                      className={clsx(styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
+                      key={getItemId(item)}
+                      ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
+                      transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
+                      i18nStrings={iconAriaLabels}
+                      {...item}
+                    />
+                  )}
+                </li>
+              )}
+            </Transition>
+          ))}
+        </TransitionGroup>
+      </ul>
+    );
+  };
+
+  const renderList = isReducedMotion ? renderListWithoutAnimations : renderListWithAnimations;
 
   return (
     <div

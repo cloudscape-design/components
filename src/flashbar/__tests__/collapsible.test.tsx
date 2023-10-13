@@ -11,12 +11,23 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
   };
 });
 
-import React from 'react';
+import React, { useState } from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { createFlashbarWrapper, findList } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
+import Button from '../../../lib/components/button';
+import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalVisualModeModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+  return {
+    __esModule: true,
+    ...originalVisualModeModule,
+    useReducedMotion: jest.fn(),
+  };
+});
 
 const sampleItems: Record<FlashbarProps.Type, FlashbarProps.MessageDefinition> = {
   error: { type: 'error', header: 'Error', content: 'There was an error' },
@@ -46,97 +57,109 @@ const defaultProps = {
 
 describe('Collapsible Flashbar', () => {
   describe('Basic behavior', () => {
-    it('shows only the header and content of the first item in the array when collapsed', () => {
-      const flashbar = renderFlashbar();
-      const items = flashbar.findItems();
-      expect(items.length).toBe(1);
-      expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
-      expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
-    });
+    for (const withAnimations of [false, true]) {
+      describe(withAnimations ? 'with animations' : 'without animations', () => {
+        beforeAll(() => {
+          (useReducedMotion as jest.Mock).mockReturnValue(!withAnimations);
+        });
 
-    it('shows toggle element with desired text', () => {
-      const customToggleButtonText = 'Custom text';
-      const flashbar = renderFlashbar({
-        i18nStrings: {
-          notificationBarText: customToggleButtonText,
-        },
+        afterAll(() => {
+          (useReducedMotion as jest.Mock).mockReturnValue(true);
+        });
+
+        it('shows only the header and content of the first item in the array when collapsed', () => {
+          const flashbar = renderFlashbar();
+          const items = flashbar.findItems();
+          expect(items.length).toBe(1);
+          expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+          expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+        });
+
+        it('shows toggle element with desired text', () => {
+          const customToggleButtonText = 'Custom text';
+          const flashbar = renderFlashbar({
+            i18nStrings: {
+              notificationBarText: customToggleButtonText,
+            },
+          });
+          const toggleElement = findNotificationBar(flashbar);
+          expect(toggleElement).toBeTruthy();
+          expect(toggleElement).toHaveTextContent(customToggleButtonText);
+        });
+
+        it('does not show toggle element if there is only one item', () => {
+          const flashbar = renderFlashbar({ items: [{ type: 'error' }] });
+          expect(findNotificationBar(flashbar)).toBeFalsy();
+        });
+
+        it('expands and collapses by clicking on notification bar', () => {
+          const flashbar = renderFlashbar();
+          const items = flashbar.findItems();
+          expect(items.length).toBe(1);
+          expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+          expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+
+          findNotificationBar(flashbar)!.click();
+
+          const expandedItems = flashbar.findItems();
+          expect(expandedItems.length).toBe(2);
+          expect(expandedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+          expect(expandedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+          expect(expandedItems[1].findHeader()!.getElement()).toHaveTextContent(defaultItems[1].header!.toString());
+          expect(expandedItems[1].findContent()!.getElement()).toHaveTextContent(defaultItems[1].content!.toString());
+
+          findNotificationBar(flashbar)!.click();
+
+          const collapsedItems = flashbar.findItems();
+          expect(collapsedItems.length).toBe(1);
+          expect(collapsedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+          expect(collapsedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+        });
+
+        it('collapses automatically when enough items are added', () => {
+          const item1 = { ...sampleItems.success, id: '0' };
+          const item2 = { ...sampleItems.error, id: '1' };
+
+          const { container, rerender } = render(
+            <Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
+          );
+          const wrapper = createWrapper(container);
+          const flashbar = wrapper.findFlashbar()!;
+          expect(flashbar.findItems()).toHaveLength(1);
+          expect(findNotificationBar(flashbar)).toBeFalsy();
+
+          rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+          expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+          const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
+          expect(toggleElement).toBeTruthy();
+        });
+
+        it('collapses automatically again when enough items are added even if it had been expanded before', () => {
+          const item1 = { ...sampleItems.success, id: '0' };
+          const item2 = { ...sampleItems.error, id: '1' };
+
+          const { container, rerender } = render(
+            <Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
+          );
+          const wrapper = createWrapper(container);
+          const flashbar = wrapper.findFlashbar()!;
+          expect(flashbar.findItems()).toHaveLength(1);
+          expect(findNotificationBar(flashbar)).toBeTruthy();
+          const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
+          expect(toggleElement).toBeTruthy();
+          toggleElement!.click();
+          expect(flashbar.findItems()).toHaveLength(2);
+
+          rerender(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+          expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+          expect(findNotificationBar(wrapper.findFlashbar()!)).toBeFalsy();
+
+          rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+          expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+          expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
+        });
       });
-      const toggleElement = findNotificationBar(flashbar);
-      expect(toggleElement).toBeTruthy();
-      expect(toggleElement).toHaveTextContent(customToggleButtonText);
-    });
-
-    it('does not show toggle element if there is only one item', () => {
-      const flashbar = renderFlashbar({ items: [{ type: 'error' }] });
-      expect(findNotificationBar(flashbar)).toBeFalsy();
-    });
-
-    it('expands and collapses by clicking on notification bar', () => {
-      const flashbar = renderFlashbar();
-      const items = flashbar.findItems();
-      expect(items.length).toBe(1);
-      expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
-      expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
-
-      findNotificationBar(flashbar)!.click();
-
-      const expandedItems = flashbar.findItems();
-      expect(expandedItems.length).toBe(2);
-      expect(expandedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
-      expect(expandedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
-      expect(expandedItems[1].findHeader()!.getElement()).toHaveTextContent(defaultItems[1].header!.toString());
-      expect(expandedItems[1].findContent()!.getElement()).toHaveTextContent(defaultItems[1].content!.toString());
-
-      findNotificationBar(flashbar)!.click();
-
-      const collapsedItems = flashbar.findItems();
-      expect(collapsedItems.length).toBe(1);
-      expect(collapsedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
-      expect(collapsedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
-    });
-
-    it('collapses automatically when enough items are added', () => {
-      const item1 = { ...sampleItems.success, id: '0' };
-      const item2 = { ...sampleItems.error, id: '1' };
-
-      const { container, rerender } = render(
-        <Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
-      );
-      const wrapper = createWrapper(container);
-      const flashbar = wrapper.findFlashbar()!;
-      expect(flashbar.findItems()).toHaveLength(1);
-      expect(findNotificationBar(flashbar)).toBeFalsy();
-
-      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
-      expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
-      const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
-      expect(toggleElement).toBeTruthy();
-    });
-
-    it('collapses automatically again when enough items are added even if it had been expanded before', () => {
-      const item1 = { ...sampleItems.success, id: '0' };
-      const item2 = { ...sampleItems.error, id: '1' };
-
-      const { container, rerender } = render(
-        <Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
-      );
-      const wrapper = createWrapper(container);
-      const flashbar = wrapper.findFlashbar()!;
-      expect(flashbar.findItems()).toHaveLength(1);
-      expect(findNotificationBar(flashbar)).toBeTruthy();
-      const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
-      expect(toggleElement).toBeTruthy();
-      toggleElement!.click();
-      expect(flashbar.findItems()).toHaveLength(2);
-
-      rerender(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
-      expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
-      expect(findNotificationBar(wrapper.findFlashbar()!)).toBeFalsy();
-
-      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
-      expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
-      expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
-    });
+    }
 
     test('findItemsByType', () => {
       {
@@ -173,6 +196,27 @@ describe('Collapsible Flashbar', () => {
 
         expect(wrapper.findItemsByType('warning')).toHaveLength(2);
       }
+    });
+
+    test('dismisses items', () => {
+      const App = () => {
+        const [items, setItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
+        const onDismiss = () => setItems([]);
+        const onAdd = () => setItems([{ content: 'The content', dismissible: true, onDismiss }]);
+        return (
+          <>
+            <Button onClick={onAdd}>Add an item</Button>
+            <Flashbar stackItems={true} items={items} />
+          </>
+        );
+      };
+      const appWrapper = createWrapper(render(<App />).container);
+      expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
+      appWrapper.findButton()!.click();
+      const foundItems = appWrapper.findFlashbar()!.findItems();
+      expect(foundItems).toHaveLength(1);
+      foundItems![0]!.findDismissButton()!.click();
+      expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
     });
   });
 
@@ -330,10 +374,11 @@ describe('Collapsible Flashbar', () => {
 
   describe('Sticky', () => {
     it('scrolls the button into view when collapsing', () => {
+      (useReducedMotion as jest.Mock).mockReturnValue(true);
       scrollElementIntoViewMock.mockClear();
       const flashbar = renderFlashbar();
-      findNotificationBar(flashbar)!.click();
-      findNotificationBar(flashbar)!.click();
+      findNotificationBar(flashbar)!.click(); // Expand
+      findNotificationBar(flashbar)!.click(); // Collapse
       expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
     });
   });
