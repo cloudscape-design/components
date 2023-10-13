@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "Angezeigte Daten filtern",
     "i18nStrings.filterPlaceholder": "Daten filtern",
     "i18nStrings.legendAriaLabel": "Legende",
+    "i18nStrings.chartAriaRoleDescription": "Diagramm",
     "i18nStrings.xAxisAriaRoleDescription": "x-Achse",
     "i18nStrings.yAxisAriaRoleDescription": "y-Achse"
   },
@@ -22,6 +23,8 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Anmerkung schließen für Schritt {stepNumber} von {totalStepCount}} false {Anmerkung öffnen für Schritt {stepNumber} von {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Schubladen",
+    "ariaLabels.drawersOverflow": "Überlauf der Schubladen",
     "ariaLabels.navigation": "Seitennavigation",
     "ariaLabels.navigationClose": "Seitennavigation schließen",
     "ariaLabels.navigationToggle": "Seitennavigation öffnen",
@@ -73,7 +76,7 @@
     "i18nStrings.preferencesModalDarkThemes": "Dunkles Design"
   },
   "collection-preferences": {
-    "title": "Einstellungen",
+    "title": "Präferenzen",
     "confirmLabel": "Bestätigen",
     "cancelLabel": "Abbrechen",
     "pageSizePreference.title": "Seitengröße",
@@ -113,6 +116,9 @@
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Bereich ausgewählt von {startDate} bis {endDate}",
     "i18nStrings.formatRelativeRange": "{amount, plural, one {Letzte {amount} {unit}} other {Letzte {amount} {unit}s}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}s}}"
+  },
+  "drawer": {
+    "i18nStrings.loadingText": "Inhalte werden geladen"
   },
   "flashbar": {
     "i18nStrings.ariaLabel": "Benachrichtigungen",
@@ -177,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "Ist größer als",
     "i18nStrings.operatorLessOrEqualText": "Ist kleiner als oder gleich",
     "i18nStrings.operatorLessText": "Ist kleiner als",
+    "i18nStrings.operatorStartsWithText": "Beginnt mit",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operatoren",
     "i18nStrings.propertyText": "Eigenschaft",
@@ -259,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Größe des geteilten Bereichs ändern"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "Schaltfläche für die Größenänderung",
     "ariaLabels.submittingEditText": "Bearbeitung wird gesendet",
     "ariaLabels.successfulEditLabel": "Bearbeitung erfolgreich",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Fehler",

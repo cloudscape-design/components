@@ -28,8 +28,6 @@ interface TableHeaderCellProps<ItemType> {
   onResizeFinish: () => void;
   colIndex: number;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
   columnId: PropertyKey;
@@ -141,17 +139,15 @@ export function TableHeaderCell<ItemType>({
         )}
       </div>
       {resizableColumns && (
-        <>
-          <Resizer
-            tabIndex={tabIndex}
-            focusId={`resize-control-${String(columnId)}`}
-            showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
-            onDragMove={newWidth => updateColumn(columnId, newWidth)}
-            onFinish={onResizeFinish}
-            ariaLabelledby={headerId}
-            minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
-          />
-        </>
+        <Resizer
+          tabIndex={tabIndex}
+          focusId={`resize-control-${String(columnId)}`}
+          showFocusRing={focusedComponent === `resize-control-${String(columnId)}`}
+          onWidthUpdate={newWidth => updateColumn(columnId, newWidth)}
+          onWidthUpdateCommit={onResizeFinish}
+          ariaLabelledby={headerId}
+          minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
+        />
       )}
     </TableThElement>
   );

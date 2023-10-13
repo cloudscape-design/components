@@ -7,9 +7,10 @@ import InternalForm from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 
 import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { getFunnelNameSelector } from '../internal/analytics/selectors';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
-import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+
+import styles from './styles.css.js';
 
 export { FormProps };
 
@@ -33,10 +34,17 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
   const baseComponentProps = useBaseComponent('Form');
+  const inheritedFunnelNameSelector = useFunnelNameSelector();
+  const funnelNameSelector = inheritedFunnelNameSelector || `.${styles.header}`;
 
   return (
-    <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-      <AnalyticsFunnelStep stepNumber={1} stepNameSelector={getFunnelNameSelector()}>
+    <AnalyticsFunnel
+      funnelType="single-page"
+      optionalStepNumbers={[]}
+      totalFunnelSteps={1}
+      funnelNameSelector={funnelNameSelector}
+    >
+      <AnalyticsFunnelStep stepNumber={1} stepNameSelector={funnelNameSelector}>
         <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
       </AnalyticsFunnelStep>
     </AnalyticsFunnel>

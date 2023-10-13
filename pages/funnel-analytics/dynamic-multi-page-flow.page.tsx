@@ -12,6 +12,7 @@ import { Button, SpaceBetween } from '~components';
 export default function WizardPage() {
   const [subStepCount1, setSubStepCount1] = useState(2);
   const [subStepCount2, setSubStepCount2] = useState(7);
+  const [extraStepCount, setExtraStepCount] = useState(1);
 
   const steps: WizardProps.Step[] = [
     {
@@ -22,7 +23,9 @@ export default function WizardPage() {
           <SpaceBetween size="l">
             <SpaceBetween direction="horizontal" size="xs">
               <Button onClick={() => setSubStepCount1(c => c + 1)}>Increase substep count</Button>
-              <Button onClick={() => setSubStepCount1(c => c - 1)}>Decrease substep count</Button>
+              <Button onClick={() => setSubStepCount1(c => c - 1)} disabled={subStepCount1 <= 0}>
+                Decrease substep count
+              </Button>
             </SpaceBetween>
 
             {Array(subStepCount1)
@@ -43,7 +46,9 @@ export default function WizardPage() {
           <SpaceBetween size="l">
             <SpaceBetween direction="horizontal" size="xs">
               <Button onClick={() => setSubStepCount2(c => c + 1)}>Increase substep count</Button>
-              <Button onClick={() => setSubStepCount2(c => c - 1)}>Decrease substep count</Button>
+              <Button onClick={() => setSubStepCount2(c => c - 1)} disabled={subStepCount2 <= 0}>
+                Decrease substep count
+              </Button>
             </SpaceBetween>
 
             {Array(subStepCount2)
@@ -59,5 +64,36 @@ export default function WizardPage() {
     },
   ];
 
-  return <Wizard steps={steps} i18nStrings={i18nStrings} />;
+  const extraSteps = Array(extraStepCount)
+    .fill(0)
+    .map((_, index) => ({
+      title: `Step ${steps.length + index + 1}`,
+      isOptional: index % 3 === 0,
+      content: (
+        <div>
+          <SpaceBetween size="l">
+            <Container header={<Header>A container in step {steps.length + index + 1}</Header>}>
+              This is a text on the substep level
+            </Container>
+            <Container header={<Header>Another container in step {steps.length + index + 1}</Header>}>
+              This is a text on the substep level
+            </Container>
+          </SpaceBetween>
+        </div>
+      ),
+    }));
+
+  return (
+    <>
+      <SpaceBetween size="l">
+        <SpaceBetween direction="horizontal" size="xs">
+          <Button onClick={() => setExtraStepCount(c => c + 1)}>Increase step count</Button>
+          <Button onClick={() => setExtraStepCount(c => c - 1)} disabled={extraStepCount <= 0}>
+            Decrease step count
+          </Button>
+        </SpaceBetween>
+        <Wizard steps={[...steps, ...extraSteps]} i18nStrings={i18nStrings} />
+      </SpaceBetween>
+    </>
+  );
 }

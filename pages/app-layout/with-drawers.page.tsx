@@ -11,13 +11,21 @@ import {
   SplitPanel,
   Toggle,
 } from '~components';
+import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
+import styles from './styles.scss';
 
-type DemoContext = React.Context<AppContextType<{ hasTools: boolean | undefined; hasDrawers: boolean | undefined }>>;
+type DemoContext = React.Context<
+  AppContextType<{
+    hasDrawers: boolean | undefined;
+    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+    disableContentPaddings: boolean | undefined;
+  }>
+>;
 
 const getAriaLabels = (title: string, badge: boolean) => {
   return {
@@ -31,8 +39,8 @@ const getAriaLabels = (title: string, badge: boolean) => {
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const hasTools = urlParams.hasTools ?? false;
   const hasDrawers = urlParams.hasDrawers ?? true;
+  const disableContentPaddings = urlParams.disableContentPaddings ?? false;
 
   const drawers = !hasDrawers
     ? null
@@ -40,6 +48,7 @@ export default function WithDrawers() {
         drawers: {
           ariaLabel: 'Drawers',
           overflowAriaLabel: 'Overflow drawers',
+          overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
           activeDrawerId: activeDrawerId,
           items: [
             {
@@ -149,6 +158,7 @@ export default function WithDrawers() {
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
+            data-test-id="content"
             header={
               <SpaceBetween size="m">
                 <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
@@ -156,15 +166,6 @@ export default function WithDrawers() {
                 </Header>
 
                 <SpaceBetween size="xs">
-                  <Toggle
-                    checked={hasTools}
-                    onChange={e => {
-                      setUrlParams({ hasTools: e.detail.checked });
-                    }}
-                  >
-                    Has Tools
-                  </Toggle>
-
                   <Toggle
                     checked={hasDrawers}
                     onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
@@ -179,6 +180,14 @@ export default function WithDrawers() {
             <Containers />
           </ContentLayout>
         }
+        splitPanelPreferences={{
+          position: urlParams.splitPanelPosition,
+        }}
+        onSplitPanelPreferencesChange={event => {
+          const { position } = event.detail;
+          setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
+        }}
+        disableContentPaddings={disableContentPaddings}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -195,23 +204,29 @@ export default function WithDrawers() {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            This is the Split Panel!
+            <SpaceBetween size="l">
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+            </SpaceBetween>
           </SplitPanel>
         }
-        tools={<Info />}
-        toolsHide={!hasTools}
         {...drawers}
       />
     </ScreenshotArea>
   );
 }
 
-function Info() {
-  return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
-}
-
 function Security() {
-  return <HelpPanel header={<h2>Security</h2>}>Everyone needs it.</HelpPanel>;
+  return (
+    <HelpPanel header={<h2>Security</h2>}>
+      <SpaceBetween size="l">
+        <div className={styles.contentPlaceholder} />
+        <div className={styles.contentPlaceholder} />
+        <div className={styles.contentPlaceholder} />
+      </SpaceBetween>
+    </HelpPanel>
+  );
 }
 
 function ProHelp() {

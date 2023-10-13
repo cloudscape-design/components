@@ -372,6 +372,52 @@ describe('keyboard interactions', () => {
   });
 });
 
+describe('Check if should render dropdown', () => {
+  test('should render dropdown content when not empty and dropdown content is not null', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest
+        {...defaultProps}
+        value="1"
+        options={[{ value: '1', label: 'One' }]}
+        statusType="error"
+        errorText="Test error text"
+      />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should not render dropdown content when empty and dropdown content is null', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="" options={[]} />);
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+  });
+
+  test('should render dropdown content when not empty', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="1" options={[{ value: '1', label: 'One' }]} />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should render dropdown content when dropdown content is not null', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="" options={[]} statusType="error" errorText="Test error text" />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+});
+
 describe('Ref', () => {
   test('can be used to focus the component', () => {
     const ref = React.createRef<AutosuggestProps.Ref>();

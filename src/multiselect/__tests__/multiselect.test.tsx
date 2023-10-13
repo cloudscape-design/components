@@ -8,7 +8,6 @@ import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js'
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },
@@ -499,13 +498,54 @@ test('Trigger receives focus when autofocus is true', () => {
   expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
 });
 
-describe('i18n', () => {
-  test('supports providing deselectAriaLabel from i18n provider', () => {
+describe('With inline tokens (private API)', () => {
+  it('can render inline tokens', () => {
     const { wrapper } = renderMultiselect(
-      <TestI18nProvider messages={{ multiselect: { deselectAriaLabel: 'Custom deselect {option__label}' } }}>
-        <Multiselect selectedOptions={[{ label: 'First', value: '1' }]} options={defaultOptions} />
-      </TestI18nProvider>
+      <Multiselect {...{ inlineTokens: true }} options={defaultOptions} selectedOptions={[defaultOptions[0]]} />
     );
-    expect(wrapper.findToken(1)!.findDismiss().getElement()).toHaveAttribute('aria-label', 'Custom deselect First');
+
+    // Trigger contains token labels and the number of selected items
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('(1)');
+
+    // Default tokens below the trigger are not displayed
+    expect(wrapper.findTokens()).toHaveLength(0);
+  });
+
+  it('shows placeholder when no items are selected', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect {...{ inlineTokens: true }} selectedOptions={[]} placeholder="Choose something" />
+    );
+
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Choose something');
+  });
+
+  it('does not display features like tags in the inline tokens', () => {
+    const extendedOptions = [
+      { value: '1', label: 'First', description: 'description', tags: ['tag'], labelTag: 'label' },
+    ];
+    const { wrapper } = renderMultiselect(
+      <Multiselect {...{ inlineTokens: true }} options={extendedOptions} selectedOptions={[extendedOptions[0]]} />
+    );
+
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('description');
+    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('tag');
+    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('label');
+  });
+
+  it('shows multiple selected options inline', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        {...{ inlineTokens: true }}
+        options={defaultOptions}
+        selectedOptions={[defaultOptions[0], defaultOptions[1], defaultOptions[2]]}
+      />
+    );
+
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Second');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Third');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('(3)');
   });
 });

@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "Filter data yang ditampilkan",
     "i18nStrings.filterPlaceholder": "Filter data",
     "i18nStrings.legendAriaLabel": "Legenda",
+    "i18nStrings.chartAriaRoleDescription": "Bagan",
     "i18nStrings.xAxisAriaRoleDescription": "sumbu x",
     "i18nStrings.yAxisAriaRoleDescription": "sumbu y"
   },
@@ -22,6 +23,8 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Tutup anotasi untuk langkah {stepNumber} dari {totalStepCount}} false {Buka anotasi untuk langkah {stepNumber} dari {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Laci",
+    "ariaLabels.drawersOverflow": "Tambahan laci",
     "ariaLabels.navigation": "Navigasi samping",
     "ariaLabels.navigationClose": "Tutup navigasi samping",
     "ariaLabels.navigationToggle": "Buka navigasi samping",
@@ -114,6 +117,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {{amount} {unit} terakhir} other {{amount} {unit} terakhir}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "Memuat konten"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notifikasi",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
@@ -177,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "Lebih besar dari",
     "i18nStrings.operatorLessOrEqualText": "Kurang dari atau sama dengan",
     "i18nStrings.operatorLessText": "Kurang dari",
+    "i18nStrings.operatorStartsWithText": "Dimulai dengan",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operator",
     "i18nStrings.propertyText": "Properti",
@@ -259,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Ubah ukuran panel terpisah"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "tombol ubah ukuran",
     "ariaLabels.submittingEditText": "Mengirimkan pengeditan",
     "ariaLabels.successfulEditLabel": "Edit berhasil",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Kesalahan",

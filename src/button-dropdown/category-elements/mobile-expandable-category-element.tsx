@@ -42,8 +42,7 @@ const MobileExpandableCategoryElement = ({
     }
   };
 
-  const onHover = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const onHover = () => {
     highlightItem(item);
   };
 

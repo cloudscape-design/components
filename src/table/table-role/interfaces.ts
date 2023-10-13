@@ -10,10 +10,8 @@ export interface GridNavigationProps {
   suppressNavigation?: (focusedElement: HTMLElement) => boolean;
   pageSize: number;
   getTable: () => null | HTMLTableElement;
+  isSuppressed?: (focusedElement: HTMLElement) => void;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface GridNavigationAPI {}
 
 export interface FocusedCell {
   rowIndex: number;

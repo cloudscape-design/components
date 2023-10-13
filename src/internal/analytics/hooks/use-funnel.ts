@@ -2,7 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useContext } from 'react';
-import { FunnelContext, FunnelStepContext, FunnelSubStepContext } from '../context/analytics-context';
+import {
+  FunnelContext,
+  FunnelNameSelectorContext,
+  FunnelStepContext,
+  FunnelSubStepContext,
+} from '../context/analytics-context';
 import {
   DATA_ATTR_FUNNEL_INTERACTION_ID,
   DATA_ATTR_FUNNEL_SUBSTEP,
@@ -10,6 +15,7 @@ import {
   getSubStepAllSelector,
 } from '../selectors';
 import { FunnelMetrics } from '../';
+import { nodeBelongs } from '../../utils/node-belongs';
 
 /**
  * Custom React Hook to manage and interact with FunnelSubStep.
@@ -121,7 +127,7 @@ export const useFunnelSubStep = () => {
       return;
     }
 
-    if (!subStepRef.current || !subStepRef.current.contains(event.relatedTarget) || !event.relatedTarget) {
+    if (!subStepRef.current || !event.relatedTarget || !nodeBelongs(subStepRef.current, event.relatedTarget)) {
       isFocusedSubStep.current = false;
 
       if (funnelInteractionId && subStepId && funnelState.current !== 'cancelled') {
@@ -174,4 +180,9 @@ export const useFunnel = () => {
     : {};
 
   return { funnelProps, ...context };
+};
+
+export const useFunnelNameSelector = () => {
+  const context = useContext(FunnelNameSelectorContext);
+  return context;
 };

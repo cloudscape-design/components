@@ -88,6 +88,7 @@ const filteringOptions: readonly FilteringOption[] = [
 ];
 
 const defaultProps: PropertyFilterProps = {
+  filteringEmpty: 'Empty',
   filteringProperties,
   filteringOptions,
   filteringPlaceholder: 'Search',
@@ -1002,17 +1003,41 @@ describe('property filter parts', () => {
   });
 
   describe('dropdown states', () => {
-    it('when free text filtering is allowed and no property is matched dropdown is visible but aria-expanded is false', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: false });
+    it('when free text filtering is allowed and no property is matched the dropdown is visible but aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: false,
+        filteringProperties: [],
+      });
       wrapper.setInputValue('free-text');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Use: "free-text"');
     });
-    it('when free text filtering is not allowed and no property is matched dropdown is not shown and aria-expanded is false', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: true });
+    it('when free text filtering is not allowed and no property is matched the dropdown is not shown and aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: true,
+        filteringProperties: [],
+      });
       wrapper.setInputValue('free-text');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+    });
+    it('when free text filtering is allowed and no properties available the filtering-empty is shown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: false,
+        filteringProperties: [],
+      });
+      wrapper.focus();
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'true');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Empty');
+    });
+    it('when free text filtering is not allowed and no properties available the filtering-empty is shown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        disableFreeTextFiltering: true,
+        filteringProperties: [],
+      });
+      wrapper.focus();
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'true');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Empty');
     });
   });
 
@@ -1318,6 +1343,22 @@ describe('property filter parts', () => {
     });
   });
 
+  describe('custom element slots', () => {
+    test('can define a customControl element', () => {
+      const { propertyFilterWrapper } = renderComponent({ customControl: <div>Custom</div> });
+      expect(propertyFilterWrapper.findCustomControl()?.getElement()).toHaveTextContent('Custom');
+    });
+
+    test('can define a customFilterAction that replaces the clear filters button', () => {
+      const { propertyFilterWrapper } = renderComponent({
+        customFilterActions: <div>Custom actions</div>,
+        query: { tokens: [{ value: 'free text', operator: '=' }], operation: 'and' },
+      });
+      expect(propertyFilterWrapper.findRemoveAllButton()).toBeNull();
+      expect(propertyFilterWrapper.findCustomFilterActions()?.getElement()).toHaveTextContent('Custom actions');
+    });
+  });
+
   test('property filter input can be found with autosuggest selector', () => {
     const { container } = renderComponent();
     expect(createWrapper(container).findAutosuggest()!.getElement()).not.toBe(null);
@@ -1334,30 +1375,39 @@ describe('property filter parts', () => {
 });
 
 describe('i18n', () => {
-  it('uses dropdown labels from i18n provider', () => {
+  const providerMessages = {
+    'property-filter': {
+      'i18nStrings.allPropertiesLabel': 'Custom All properties',
+      'i18nStrings.groupPropertiesText': 'Custom Properties',
+      'i18nStrings.groupValuesText': 'Custom Values',
+      'i18nStrings.operatorContainsText': 'Custom Contains',
+      'i18nStrings.operatorDoesNotContainText': 'Custom Does not contain',
+      'i18nStrings.operatorDoesNotEqualText': 'Custom Does not equal',
+      'i18nStrings.operatorEqualsText': 'Custom Equals',
+      'i18nStrings.operatorGreaterOrEqualText': 'Custom Greater than or equal',
+      'i18nStrings.operatorGreaterText': 'Custom Greater than',
+      'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
+      'i18nStrings.operatorLessText': 'Custom Less than',
+      'i18nStrings.operatorStartsWithText': 'Custom Starts with',
+      'i18nStrings.operatorText': 'Custom Operator',
+      'i18nStrings.operatorsText': 'Custom Operators',
+      'i18nStrings.propertyText': 'Custom Property',
+    },
+  };
+
+  it('uses dropdown labels from i18n provider for a string property', () => {
     const { container } = render(
-      <TestI18nProvider
-        messages={{
-          'property-filter': {
-            'i18nStrings.allPropertiesLabel': 'Custom All properties',
-            'i18nStrings.groupPropertiesText': 'Custom Properties',
-            'i18nStrings.groupValuesText': 'Custom Values',
-            'i18nStrings.operatorContainsText': 'Custom Contains',
-            'i18nStrings.operatorDoesNotContainText': 'Custom Does not contain',
-            'i18nStrings.operatorDoesNotEqualText': 'Custom Does not equal',
-            'i18nStrings.operatorEqualsText': 'Custom Equals',
-            'i18nStrings.operatorGreaterOrEqualText': 'Custom Greater than or equal',
-            'i18nStrings.operatorGreaterText': 'Custom Greater than',
-            'i18nStrings.operatorLessOrEqualText': 'Custom Less than or equal',
-            'i18nStrings.operatorLessText': 'Custom Less than',
-            'i18nStrings.operatorText': 'Custom Operator',
-            'i18nStrings.operatorsText': 'Custom Operators',
-            'i18nStrings.propertyText': 'Custom Property',
-          },
-        }}
-      >
+      <TestI18nProvider messages={providerMessages}>
         <PropertyFilter
           {...defaultProps}
+          filteringProperties={[
+            {
+              key: 'string',
+              propertyLabel: 'string',
+              operators: ['!:', ':', '=', '!=', '^'],
+              groupValuesLabel: 'String values',
+            },
+          ]}
           i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
         />
       </TestI18nProvider>
@@ -1372,7 +1422,42 @@ describe('i18n', () => {
     expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
     expect(
       dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
-    ).toEqual(['Custom Equals', 'Custom Does not equal', 'Custom Contains', 'Custom Does not contain']);
+    ).toEqual([
+      'Custom Equals',
+      'Custom Does not equal',
+      'Custom Contains',
+      'Custom Does not contain',
+      'Custom Starts with',
+    ]);
+  });
+
+  it('uses dropdown labels from i18n provider for a numeric property', () => {
+    const { container } = render(
+      <TestI18nProvider messages={providerMessages}>
+        <PropertyFilter
+          {...defaultProps}
+          i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findPropertyFilter()!;
+
+    wrapper.focus();
+    const dropdown = wrapper.findDropdown()!;
+    expect(dropdown.find('li')!.getElement()).toHaveTextContent('Custom Properties');
+
+    wrapper.selectSuggestion(6);
+    expect(dropdown.find('li:nth-child(2)')!.getElement()).toHaveTextContent('Custom Operators');
+    expect(
+      dropdown.findOptions().map(optionWrapper => optionWrapper.findDescription()?.getElement().textContent)
+    ).toEqual([
+      'Custom Equals',
+      'Custom Does not equal',
+      'Custom Greater than or equal',
+      'Custom Less than or equal',
+      'Custom Less than',
+      'Custom Greater than',
+    ]);
   });
 
   it('uses token and editor labels from i18n provider', () => {
@@ -1394,8 +1479,17 @@ describe('i18n', () => {
             'i18nStrings.tokenLimitShowFewer': 'Custom Show fewer',
             'i18nStrings.tokenLimitShowMore': 'Custom Show more',
             'i18nStrings.valueText': 'Custom Value',
-            'i18nStrings.removeTokenButtonAriaLabel':
-              '{token__operator, select, equals {Remove filter, {token__propertyKey} Custom equals {token__value}} not_equals {Remove filter, {token__propertyKey} Custom does not equal {token__value}} other {}}',
+            'i18nStrings.removeTokenButtonAriaLabel': `{token__operator, select, 
+              equals {Remove filter, {token__propertyKey} Custom equals {token__value}}
+              not_equals {Remove filter, {token__propertyKey} Custom does not equal {token__value}}
+              greater_than {Remove filter, {token__propertyKey} Custom greater than {token__value}}
+              greater_than_equal {Remove filter, {token__propertyKey} Custom greater than or equals {token__value}}
+              less_than {Remove filter, {token__propertyKey} Custom less than {token__value}}
+              less_than_equal {Remove filter, {token__propertyKey} Custom less than or equals {token__value}}
+              contains {Remove filter, {token__propertyKey} Custom contains {token__value}}
+              not_contains {Remove filter, {token__propertyKey} Custom does not contain {token__value}}
+              starts_with {Remove filter, {token__propertyKey} Custom starts with {token__value}}
+              other {}}`,
           },
         }}
       >
@@ -1407,6 +1501,13 @@ describe('i18n', () => {
             tokens: [
               { propertyKey: 'string', operator: '=', value: 'value1' },
               { propertyKey: 'string', operator: '!=', value: 'value2' },
+              { propertyKey: 'string', operator: ':', value: 'value3' },
+              { propertyKey: 'string', operator: '!:', value: 'value4' },
+              { propertyKey: 'string', operator: '^', value: 'value5' },
+              { propertyKey: 'range', operator: '>', value: '1' },
+              { propertyKey: 'range', operator: '<', value: '2' },
+              { propertyKey: 'range', operator: '>=', value: '3' },
+              { propertyKey: 'range', operator: '<=', value: '4' },
             ],
           }}
           i18nStrings={{ filteringAriaLabel: 'your choice', filteringPlaceholder: 'Search' }}
@@ -1414,15 +1515,21 @@ describe('i18n', () => {
       </TestI18nProvider>
     );
     const wrapper = createWrapper(container).findPropertyFilter()!;
-    console.log(wrapper.getElement().innerHTML);
     expect(wrapper.findRemoveAllButton()!.getElement()).toHaveTextContent('Custom Clear filters');
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show more');
     wrapper.findTokenToggle()!.click();
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show fewer');
 
-    expect(wrapper.findTokens()[0].findRemoveButton().getElement()).toHaveAccessibleName(
-      'Remove filter, string Custom equals value1'
-    );
+    const getRemoveButton = (index: number) => wrapper.findTokens()[index].findRemoveButton().getElement();
+    expect(getRemoveButton(0)).toHaveAccessibleName('Remove filter, string Custom equals value1');
+    expect(getRemoveButton(1)).toHaveAccessibleName('Remove filter, string Custom does not equal value2');
+    expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, string Custom contains value3');
+    expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, string Custom does not contain value4');
+    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, string Custom starts with value5');
+    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, range Custom greater than 1');
+    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, range Custom less than 2');
+    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, range Custom greater than or equals 3');
+    expect(getRemoveButton(8)).toHaveAccessibleName('Remove filter, range Custom less than or equals 4');
 
     const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
     tokenOperation.openDropdown();

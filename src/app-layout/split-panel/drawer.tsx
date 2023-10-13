@@ -3,16 +3,16 @@
 import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
+import { useSplitPanelContext } from '../../internal/context/split-panel-context';
 
 interface SideSplitPanelDrawer {
-  topOffset: number | undefined;
-  bottomOffset: number | undefined;
-  width: number | undefined;
   displayed: boolean;
   children: React.ReactNode;
 }
 
-export function SideSplitPanelDrawer({ topOffset, bottomOffset, width, displayed, children }: SideSplitPanelDrawer) {
+export function SideSplitPanelDrawer({ displayed, children }: SideSplitPanelDrawer) {
+  const { isOpen, size, topOffset, bottomOffset } = useSplitPanelContext();
+  const width = isOpen && children ? size : undefined;
   return (
     <div
       className={clsx(displayed && styles['drawer-displayed'])}

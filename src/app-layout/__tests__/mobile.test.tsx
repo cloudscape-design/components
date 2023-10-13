@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { act } from 'react-dom/test-utils';
+import { within } from '@testing-library/react';
 import {
   describeEachThemeAppLayout,
   drawerWithoutLabels,
@@ -16,6 +17,7 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/app-layout/styles.css.js';
+import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
@@ -52,11 +54,18 @@ function AppLayoutWithControlledNavigation({
 describeEachThemeAppLayout(true, theme => {
   // In refactored Visual Refresh different styles are used compared to Classic
   const mobileBarClassName = theme === 'refresh' ? testUtilsStyles['mobile-bar'] : toolbarStyles['mobile-bar'];
+  const drawerBarClassName =
+    theme === 'refresh'
+      ? visualRefreshRefactoredStyles['drawers-mobile-triggers-container']
+      : drawersMobileStyles['drawers-container'];
   const blockBodyScrollClassName =
     theme === 'refresh' ? visualRefreshRefactoredStyles['block-body-scroll'] : toolbarStyles['block-body-scroll'];
   const unfocusableClassName = theme === 'refresh' ? visualRefreshRefactoredStyles.unfocusable : styles.unfocusable;
   const isUnfocusable = (element: HTMLElement) =>
     !!findUpUntil(element, current => current.classList.contains(unfocusableClassName));
+
+  const findMobileToolbar = (wrapper: AppLayoutWrapper) => wrapper.findByClassName(mobileBarClassName);
+  const findDrawersContainer = (wrapper: AppLayoutWrapper) => wrapper.findByClassName(drawerBarClassName);
 
   test('Renders closed drawer state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
@@ -116,16 +125,23 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findToolsToggle().getElement()).toBeDisabled();
   });
 
+  test('renders open drawer state', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
+    expect(document.body).toHaveClass(blockBodyScrollClassName);
+    expect(wrapper.findNavigation()).toBeTruthy();
+    expect(wrapper.findTools()).toBeFalsy(); // no tools rendered in drawers mode
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
   test('Renders mobile toolbar when at least one of it features is defined', function () {
-    const findMobileToolbar = () => wrapper.findByClassName(mobileBarClassName);
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} toolsHide={true} breadcrumbs="test" />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} toolsHide={true} />);
-    expect(findMobileToolbar()).toBeFalsy();
+    expect(findMobileToolbar(wrapper)).toBeFalsy();
   });
 
   test('clears up body scroll class when component is destroyed', () => {
@@ -380,6 +396,23 @@ describeEachThemeAppLayout(true, theme => {
       }
     });
 
+    test('content and toolbar is unfocusable when a drawer is open', () => {
+      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} {...singleDrawerOpen} />);
+
+      if (isUsingGridLayout) {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(6);
+        expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(testUtilsStyles.content)!.getElement()).toHaveClass(unfocusableClassName);
+        expect(
+          wrapper.findByClassName(visualRefreshRefactoredStyles['navigation-container'])!.getElement()
+        ).toHaveClass(unfocusableClassName);
+      } else {
+        expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(styles['layout-main'])!.getElement()).toHaveClass(unfocusableClassName);
+      }
+    });
+
     test('when both navigation and tools rendered, the tools take precedence', () => {
       const { wrapper, isUsingGridLayout } = renderComponent(
         <AppLayout {...props} navigationOpen={true} toolsOpen={true} />
@@ -419,35 +452,39 @@ describeEachThemeAppLayout(true, theme => {
     });
   });
 
-  test('should render drawers mobile triggers container', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-
-    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
-    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
-  });
-
   test('should render an active drawer', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
 
-    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
-    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
     expect(wrapper.findActiveDrawer()).toBeTruthy();
-  });
-
-  test('Does not add a label to the toggle and landmark when they are not defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
-    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
-  });
-
-  test('Adds labels to toggle button and landmark when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
-    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
 
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
-    expect(wrapper.findDrawersTriggers()[0]!.getElement().children[0]).toHaveClass(iconStyles.badge);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
+  });
+
+  test('renders roles only when aria labels are not provided', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
+    const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
+
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
+    expect(drawersAside).not.toHaveAttribute('aria-label');
+
+    const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
+    expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
+  });
+
+  test('renders roles and aria labels when provided', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
+
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
+    expect(drawersAside).toHaveAttribute('aria-label', 'Drawers');
+
+    const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
+    expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
   });
 });

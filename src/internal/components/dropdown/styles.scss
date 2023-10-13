@@ -6,6 +6,7 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use './motion';
+@use '../../generated/custom-css-properties/index' as custom-props;
 
 .root {
   @include styles.styles-reset;
@@ -49,6 +50,11 @@
     }
 
     border-bottom: none;
+
+    // Don't show dropdown border when there's no dropdown content
+    &.is-empty::after {
+      display: none;
+    }
   }
 
   &-drop-up {
@@ -72,6 +78,7 @@
   }
   &.stretch-beyond-trigger-width {
     width: max-content;
+    max-width: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
   }
   &.hide-upper-border > .dropdown-content-wrapper {
     border-top: none;
@@ -96,23 +103,12 @@
       overflow: scroll;
     }
   }
-  // Don't show dropdown border when there's no dropdown content
-  &.is-empty::after {
-    display: none;
-  }
 }
 
 .dropdown-content {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-// Child flex wrapper used because when combining an absolute position
-// and flexbox, IE11 will incorrectly size the container according to its parent
-// and not its content.
-.ie11-wrapper {
-  display: flex;
 }
 
 .stretch-trigger-height {

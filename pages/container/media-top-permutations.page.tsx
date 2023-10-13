@@ -11,7 +11,7 @@ import image169 from './images/16-9.png';
 import image43 from './images/4-3.png';
 import image916 from './images/9-16.png';
 import imageVideo from './images/video.png';
-import { PermutationContainer } from './common';
+import { PermutationContainer, PermutationIframe } from './common';
 
 const permutations = createPermutations<ContainerProps.Media>([
   {
@@ -20,6 +20,7 @@ const permutations = createPermutations<ContainerProps.Media>([
       <img key={'image43'} src={image43} alt="placeholder" />,
       <img key={'image916'} src={image916} alt="placeholder" />,
       <img key={'imageVideo'} src={imageVideo} alt="placeholder" />,
+      <PermutationIframe key="iframe" />,
     ],
     height: ['', 100, 200, 300],
   },

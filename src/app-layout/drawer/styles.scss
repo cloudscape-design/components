@@ -84,4 +84,15 @@ $drawer-z-index-mobile: 1001;
     background-color: awsui.$color-background-layout-toggle-selected-default;
     color: awsui.$color-text-layout-toggle-active;
   }
+  .drawer-triggers-wrapper > & {
+    .drawer-content-clickable > & {
+      &:hover {
+        color: awsui.$color-text-interactive-default;
+      }
+    }
+  }
+}
+
+.hide {
+  display: none;
 }

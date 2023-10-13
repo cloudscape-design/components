@@ -407,7 +407,7 @@ test('raises a warning when setting activeStepIndex without onNavigate listener'
 test('does not perform navigation when used in controlled mode', () => {
   const [wrapper] = renderDefaultWizard({ activeStepIndex: 1, onNavigate: () => {} });
   const checkStep = () => {
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent(DEFAULT_STEPS[1].content as string);
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Step 2, substep oneStep 2, substep two');
   };
   wrapper.findPreviousButton()!.click();
   checkStep();
@@ -420,7 +420,11 @@ test('does not perform navigation when used in controlled mode', () => {
 test('performs navigation when used in uncontrolled mode', () => {
   const [wrapper] = renderDefaultWizard();
   const checkStep = (index: number) => {
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent(DEFAULT_STEPS[index].content as string);
+    if (index === 0) {
+      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Step 1, substep oneStep 1, substep two');
+    } else {
+      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Step 2, substep oneStep 2, substep two');
+    }
   };
   checkStep(0);
   wrapper.findPrimaryButton().click();

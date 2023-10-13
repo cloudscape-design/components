@@ -24,7 +24,9 @@ export default function WizardPage() {
           <SpaceBetween size="l">
             <SpaceBetween direction="horizontal" size="xs">
               <Button onClick={() => setContainerCount(c => c + 1)}>Increase substep count</Button>
-              <Button onClick={() => setContainerCount(c => c - 1)}>Decrease substep count</Button>
+              <Button onClick={() => setContainerCount(c => c - 1)} disabled={containerCount <= 0}>
+                Decrease substep count
+              </Button>
             </SpaceBetween>
 
             {Array(containerCount)

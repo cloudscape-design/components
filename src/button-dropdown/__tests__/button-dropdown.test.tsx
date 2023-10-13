@@ -150,15 +150,15 @@ describe('ButtonDropdown component', () => {
 });
 
 describe('with main action', () => {
-  test('main action is not rendered if variant is not "primary"', () => {
-    const wrapper = renderSplitButtonDropdown({ mainAction: { text: 'Main' }, variant: 'normal' });
+  test('main action is not rendered if variant is not "primary" or "normal"', () => {
+    const wrapper = renderSplitButtonDropdown({ mainAction: { text: 'Main' }, variant: 'icon' });
 
     expect(wrapper.findMainAction()).toBe(null);
 
     expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith(
       'ButtonDropdown',
-      'Main action is only supported for "primary" component variant.'
+      'Main action is only supported for "primary" and "normal" component variant.'
     );
   });
 

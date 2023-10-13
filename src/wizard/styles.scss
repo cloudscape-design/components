@@ -49,6 +49,7 @@
       column-gap: awsui.$space-xs;
       grid-template-columns: awsui.$space-l 1fr;
       grid-template-rows: repeat(2, auto);
+      padding: 0;
 
       > hr {
         background-color: awsui.$color-border-divider-default;

@@ -29,6 +29,7 @@ export default function () {
             enteredTextLabel={enteredTextLabel}
             expandToViewport={true}
             recoveryText="Try again"
+            onLoadItems={() => {}}
           />
         </SpaceBetween>
       </ScreenshotArea>

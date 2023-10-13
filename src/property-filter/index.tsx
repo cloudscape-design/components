@@ -38,16 +38,33 @@ import { SearchResults } from '../text-filter/search-results';
 
 export { PropertyFilterProps };
 
-const OPERATOR_I18N_MAPPING: Record<PropertyFilterOperator, string> = {
-  '=': 'equals',
-  '!=': 'not_equals',
-  '>': 'greater_than',
-  '>=': 'greater_than_equal',
-  '<': 'less_than',
-  '<=': 'less_than_equal',
-  ':': 'contains',
-  '!:': 'not_contains',
-};
+function getOperatorI18nString(operator: ComparisonOperator): string {
+  switch (operator) {
+    case '=':
+      return 'equals';
+    case '!=':
+      return 'not_equals';
+    case '>':
+      return 'greater_than';
+    case '>=':
+      return 'greater_than_equal';
+    case '<':
+      return 'less_than';
+    case '<=':
+      return 'less_than_equal';
+    case ':':
+      return 'contains';
+    case '!:':
+      return 'not_contains';
+    case '^':
+      return 'starts_with';
+    // The line is ignored from coverage because it is not reachable.
+    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
+    /* istanbul ignore next */
+    default:
+      return operator;
+  }
+}
 
 const PropertyFilter = React.forwardRef(
   (
@@ -64,6 +81,7 @@ const PropertyFilter = React.forwardRef(
       onLoadItems,
       virtualScroll,
       customControl,
+      customFilterActions,
       filteringPlaceholder,
       filteringAriaLabel,
       filteringEmpty,
@@ -114,6 +132,7 @@ const PropertyFilter = React.forwardRef(
       operatorGreaterText: i18n('i18nStrings.operatorGreaterText', rest.i18nStrings?.operatorGreaterText),
       operatorLessOrEqualText: i18n('i18nStrings.operatorLessOrEqualText', rest.i18nStrings?.operatorLessOrEqualText),
       operatorLessText: i18n('i18nStrings.operatorLessText', rest.i18nStrings?.operatorLessText),
+      operatorStartsWithText: i18n('i18nStrings.operatorStartsWithText', rest.i18nStrings?.operatorStartsWithText),
       operatorText: i18n('i18nStrings.operatorText', rest.i18nStrings?.operatorText),
       operatorsText: i18n('i18nStrings.operatorsText', rest.i18nStrings?.operatorsText),
       propertyText: i18n('i18nStrings.propertyText', rest.i18nStrings?.propertyText),
@@ -125,7 +144,7 @@ const PropertyFilter = React.forwardRef(
         rest.i18nStrings?.removeTokenButtonAriaLabel,
         format => token =>
           format({
-            token__operator: OPERATOR_I18N_MAPPING[token.operator],
+            token__operator: getOperatorI18nString(token.operator),
             token__propertyKey: token.propertyKey ?? '',
             token__value: token.value,
           })
@@ -392,14 +411,18 @@ const PropertyFilter = React.forwardRef(
                   limitShowMore: i18nStrings.tokenLimitShowMore,
                 }}
                 after={
-                  <InternalButton
-                    formAction="none"
-                    onClick={removeAllTokens}
-                    className={styles['remove-all']}
-                    disabled={disabled}
-                  >
-                    {i18nStrings.clearFiltersText}
-                  </InternalButton>
+                  customFilterActions ? (
+                    <div className={styles['custom-filter-actions']}>{customFilterActions}</div>
+                  ) : (
+                    <InternalButton
+                      formAction="none"
+                      onClick={removeAllTokens}
+                      className={styles['remove-all']}
+                      disabled={disabled}
+                    >
+                      {i18nStrings.clearFiltersText}
+                    </InternalButton>
+                  )
                 }
                 removedItemIndex={removedTokenIndex}
               />

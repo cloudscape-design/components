@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import InternalContainer from '../container/internal';
+import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
@@ -40,13 +40,29 @@ import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useTableRole } from './table-role/table-role-helper';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
-  InternalBaseComponentProps;
+  InternalBaseComponentProps & {
+    __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
+  };
+
+export const InternalTableAsSubstep = React.forwardRef(
+  <T,>(props: InternalTableProps<T>, ref: React.Ref<TableProps.Ref>) => {
+    const { funnelSubStepProps } = useFunnelSubStep();
+
+    const tableProps: InternalTableProps<T> = {
+      ...props,
+      __funnelSubStepProps: funnelSubStepProps,
+    };
+
+    return <InternalTable {...tableProps} ref={ref} />;
+  }
+) as TableForwardRefType;
 
 const InternalTable = React.forwardRef(
   <T,>(
@@ -91,6 +107,7 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       keyboardNavigation,
+      __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -254,11 +271,16 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
+        <ColumnWidthsProvider
+          visibleColumns={visibleColumnWidthsWithSelection}
+          resizableColumns={resizableColumns}
+          containerWidth={containerWidth ?? 0}
+        >
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}
             className={clsx(baseProps.className, styles.root)}
+            __funnelSubStepProps={__funnelSubStepProps}
             header={
               <>
                 {hasHeader && (
@@ -486,6 +508,7 @@ const InternalTable = React.forwardRef(
               </table>
               {resizableColumns && <ResizeTracker />}
             </div>
+
             <StickyScrollbar
               ref={scrollbarRef}
               wrapperRef={wrapperRefObject}

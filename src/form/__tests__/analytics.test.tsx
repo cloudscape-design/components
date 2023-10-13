@@ -5,16 +5,20 @@ import { act, render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
+import Container from '../../../lib/components/container';
 import Form from '../../../lib/components/form';
+import Header from '../../../lib/components/header';
 import Modal from '../../../lib/components/modal';
-import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 
 import { FunnelMetrics } from '../../../lib/components/internal/analytics';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
 
-import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
-import Container from '../../../lib/components/container';
-import Header from '../../../lib/components/header';
+import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
+
+import formStyles from '../../../lib/components/form/styles.selectors.js';
+import modalStyles from '../../../lib/components/modal/styles.selectors.js';
+
+mockInnerText();
 
 describe('Form Analytics', () => {
   beforeEach(() => {
@@ -23,26 +27,13 @@ describe('Form Analytics', () => {
     mockFunnelMetrics();
   });
 
-  if (!('innerText' in HTMLElement.prototype)) {
-    // JSDom does not support the `innerText` property. For this test, `textContent` is close enough.
-
-    beforeEach(() =>
-      Object.defineProperty(HTMLElement.prototype, 'innerText', {
-        get() {
-          return this.textContent;
-        },
-        set(v) {
-          this.textContent = v;
-        },
-        configurable: true,
-      })
-    );
-
-    afterEach(() => delete (HTMLElement.prototype as Partial<HTMLElement>).innerText);
-  }
-
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
-    render(<Form />);
+    render(
+      <Form header="My funnel">
+        <Container header={<Header>Substep one</Header>}></Container>
+        <Container header={<Header>Substep two</Header>}></Container>
+      </Form>
+    );
     act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
@@ -51,10 +42,11 @@ describe('Form Analytics', () => {
         funnelType: 'single-page',
         totalFunnelSteps: 1,
         optionalStepNumbers: [],
-        funnelNameSelector: expect.any(String),
+        funnelNameSelector: `.${formStyles.header}`,
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         theme: expect.any(String),
+        stepConfiguration: [{ isOptional: false, name: 'My funnel', number: 1 }],
       })
     );
 
@@ -65,22 +57,16 @@ describe('Form Analytics', () => {
         funnelInteractionId: expect.any(String),
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
+        subStepConfiguration: [
+          { name: 'Substep one', number: 1 },
+          { name: 'Substep two', number: 2 },
+        ],
       })
     );
   });
 
-  test('includes the current breadcrumb as the step name in the funnelStepStart event', () => {
-    render(
-      <>
-        <BreadcrumbGroup
-          items={[
-            { text: 'Resources', href: '' },
-            { text: 'My creation flow', href: '' },
-          ]}
-        />
-        <Form />
-      </>
-    );
+  test('includes the current Form Header as the step name in the funnelStepStart event', () => {
+    render(<Form header="My creation flow" />);
     act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
@@ -350,6 +336,27 @@ describe('Form Analytics', () => {
           { name: 'Substep 3', number: 4 },
           { name: 'Substep 4', number: 5 },
         ],
+      })
+    );
+  });
+
+  test('forms embedded inside a Modal use Modal header for the Funnel Name', () => {
+    render(
+      <Modal header="My Modal Funnel" visible={true}>
+        <Form>
+          <Container header={<Header>Substep one</Header>}></Container>
+          <Container header={<Header>Substep two</Header>}></Container>
+        </Form>
+      </Modal>
+    );
+
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        funnelNameSelector: `.${modalStyles['header--text']}`,
+        stepConfiguration: [{ isOptional: false, name: 'My Modal Funnel', number: 1 }],
       })
     );
   });

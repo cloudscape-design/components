@@ -45,8 +45,7 @@ const ExpandableCategoryElement = ({
     }
   };
 
-  const onHover = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const onHover = () => {
     highlightItem(item);
   };
 

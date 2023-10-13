@@ -46,7 +46,6 @@ export interface TheadProps {
 const Thead = React.forwardRef(
   (
     {
-      containerWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions,
@@ -89,7 +88,7 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
+    const { columnWidths, updateColumn, setCell } = useColumnWidths();
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -132,24 +131,13 @@ const Thead = React.forwardRef(
 
           {columnDefinitions.map((column, colIndex) => {
             const columnId = getColumnKey(column, colIndex);
-
-            let widthOverride;
-            if (resizableColumns) {
-              if (columnWidths) {
-                // use stateful value if available
-                widthOverride = columnWidths[columnId];
-              }
-              if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
-                // let the last column grow and fill the container width
-                widthOverride = 'auto';
-              }
-            }
+            const columnWidth = resizableColumns ? columnWidths[columnId] ?? 'auto' : column.width;
             return (
               <TableHeaderCell
                 key={columnId}
                 className={headerCellClass}
                 style={{
-                  width: widthOverride || column.width,
+                  width: columnWidth,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
                 }}
