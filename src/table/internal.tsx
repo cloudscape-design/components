@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer, { InternalContainerProps } from '../container/internal';
@@ -119,6 +119,14 @@ const InternalTable = React.forwardRef(
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const tableRefObject = useRef(null);
 
+    const containerContentWidth = useMemo(() => {
+      if (!containerWidth || !tableRefObject.current) {
+        return null;
+      }
+      const tableStyle = getComputedStyle(tableRefObject.current);
+      return containerWidth - (parseFloat(tableStyle.paddingLeft) || 0) - (parseFloat(tableStyle.paddingRight) || 0);
+    }, [containerWidth]);
+
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
@@ -205,7 +213,6 @@ const InternalTable = React.forwardRef(
     const tableRole = hasEditableCells ? 'grid-default' : 'table';
 
     const theadProps: TheadProps = {
-      containerWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
@@ -238,7 +245,7 @@ const InternalTable = React.forwardRef(
 
     const wrapperProps = getTableWrapperRoleProps({
       tableRole,
-      isScrollable: !!(tableWidth && containerWidth && tableWidth > containerWidth),
+      isScrollable: !!(tableWidth && containerContentWidth && tableWidth > containerContentWidth),
       ariaLabel: ariaLabels?.tableLabel,
     });
 
@@ -259,7 +266,7 @@ const InternalTable = React.forwardRef(
         <ColumnWidthsProvider
           visibleColumns={visibleColumnWidthsWithSelection}
           resizableColumns={resizableColumns}
-          containerWidth={containerWidth ?? 0}
+          containerWidth={containerContentWidth ?? 0}
         >
           <InternalContainer
             {...baseProps}
