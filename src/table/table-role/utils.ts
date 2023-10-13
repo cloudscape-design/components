@@ -86,9 +86,7 @@ export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCe
     focusTarget = cell.element;
   }
 
-  if (focusTarget) {
-    focusTarget.tabIndex = 0;
-  }
+  setTabIndex(focusTarget, 0);
 }
 
 /**
@@ -100,22 +98,15 @@ export function muteElementFocusables(element: HTMLElement, suppressed: boolean)
   // the navigation when implemented correctly.
   if (suppressed) {
     for (const focusable of getFocusables(element)) {
-      focusable.tabIndex = 0;
+      setTabIndex(focusable, 0);
     }
     return;
   }
 
-  const tableCells = queryTableCells(element);
-
   // Assigning pseudo-focusable tab index to all cells and all interactive elements makes them focusable with grid navigation.
-  for (const cell of tableCells) {
-    if (cell !== document.activeElement) {
-      cell.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
-    }
-  }
   for (const focusable of getActualFocusables(element)) {
     if (focusable !== document.activeElement) {
-      focusable.tabIndex = PSEUDO_FOCUSABLE_TAB_INDEX;
+      setTabIndex(focusable, PSEUDO_FOCUSABLE_TAB_INDEX);
     }
   }
 }
@@ -127,9 +118,9 @@ export function muteElementFocusables(element: HTMLElement, suppressed: boolean)
 export function restoreElementFocusables(element: HTMLTableElement) {
   for (const focusable of getFocusables(element)) {
     if (focusable instanceof HTMLTableCellElement) {
-      focusable.tabIndex = -1;
+      setTabIndex(focusable, -1);
     } else {
-      focusable.tabIndex = 0;
+      setTabIndex(focusable, 0);
     }
   }
 }
@@ -221,17 +212,12 @@ function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAri
 }
 
 function focus(element: null | HTMLElement) {
-  if (element) {
-    element.tabIndex = 0;
-    element.focus();
-  }
+  setTabIndex(element, 0);
+  element?.focus();
 }
 
-function queryTableCells(element: HTMLElement) {
-  const tableCells = Array.from(element.querySelectorAll('td,th') as NodeListOf<HTMLTableCellElement>);
-  if (element instanceof HTMLTableCellElement) {
-    tableCells.push(element);
+function setTabIndex(element: null | HTMLElement, tabIndex: number) {
+  if (element && element.tabIndex !== tabIndex) {
+    element.tabIndex = tabIndex;
   }
-
-  return tableCells;
 }
