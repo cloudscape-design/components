@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
+import React, { useEffect, useRef, useState, createContext, useContext, useMemo } from 'react';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
@@ -47,14 +47,12 @@ function updateWidths(
 }
 
 interface WidthsContext {
-  totalWidth: number;
   columnWidths: Record<PropertyKey, number>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   setCell: (columnId: PropertyKey, node: null | HTMLElement) => void;
 }
 
 const WidthsContext = createContext<WidthsContext>({
-  totalWidth: 0,
   columnWidths: {},
   updateColumn: () => {},
   setCell: () => {},
@@ -63,10 +61,16 @@ const WidthsContext = createContext<WidthsContext>({
 interface WidthProviderProps {
   visibleColumns: readonly ColumnWidthDefinition[];
   resizableColumns: boolean | undefined;
+  containerWidth: number;
   children: React.ReactNode;
 }
 
-export function ColumnWidthsProvider({ visibleColumns, resizableColumns, children }: WidthProviderProps) {
+export function ColumnWidthsProvider({
+  visibleColumns,
+  resizableColumns,
+  containerWidth,
+  children,
+}: WidthProviderProps) {
   const visibleColumnsRef = useRef<(PropertyKey | undefined)[] | null>(null);
   const [columnWidths, setColumnWidths] = useState<Record<PropertyKey, number>>({});
 
@@ -100,7 +104,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, childre
       }
     }
     visibleColumnsRef.current = visibleColumns.map(column => column.id);
-  }, [columnWidths, resizableColumns, visibleColumns]);
+  }, [columnWidths, resizableColumns, visibleColumns, setColumnWidths]);
 
   // Read the actual column widths after the first render to employ the browser defaults for
   // those columns without explicit width.
@@ -117,13 +121,19 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, childre
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths, newWidth, columnId));
   }
 
-  const totalWidth = visibleColumns.reduce(
-    (total, column) => total + (columnWidths[column.id] || DEFAULT_COLUMN_WIDTH),
-    0
-  );
+  const columnWidthsWithAuto = useMemo(() => {
+    const nextWidths = { ...columnWidths };
+    const totalWidth = visibleColumns.reduce((total, { id }) => total + (nextWidths[id] || DEFAULT_COLUMN_WIDTH), 0);
+
+    // The width of the last column is not set when there is enough space to allow the column to grow.
+    if (visibleColumns.length > 0 && containerWidth > totalWidth) {
+      delete nextWidths[visibleColumns[visibleColumns.length - 1].id];
+    }
+    return nextWidths;
+  }, [columnWidths, visibleColumns, containerWidth]);
 
   return (
-    <WidthsContext.Provider value={{ columnWidths, totalWidth, updateColumn, setCell }}>
+    <WidthsContext.Provider value={{ columnWidths: columnWidthsWithAuto, updateColumn, setCell }}>
       {children}
     </WidthsContext.Provider>
   );
