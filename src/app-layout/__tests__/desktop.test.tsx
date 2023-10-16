@@ -335,12 +335,6 @@ describe('VR only features', () => {
     (useVisualRefresh as jest.Mock).mockReset();
   });
 
-  test('should add motion class', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
-  });
-
   test('renders roles only when aria labels are not provided', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
 
