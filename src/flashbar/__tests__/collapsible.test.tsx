@@ -374,7 +374,6 @@ describe('Collapsible Flashbar', () => {
 
   describe('Sticky', () => {
     it('scrolls the button into view when collapsing', () => {
-      (useReducedMotion as jest.Mock).mockReturnValue(true);
       scrollElementIntoViewMock.mockClear();
       const flashbar = renderFlashbar();
       findNotificationBar(flashbar)!.click(); // Expand
