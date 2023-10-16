@@ -177,6 +177,7 @@ function DesktopTriggers() {
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side';
+  const [openedFromOverflow, setOpenedFromOverflow] = React.useState(false);
 
   const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
@@ -243,8 +244,11 @@ function DesktopTriggers() {
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
-              onClick={() => handleDrawersClick(item.id)}
-              ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+              onClick={() => {
+                handleDrawersClick(item.id);
+                setOpenedFromOverflow(false);
+              }}
+              ref={item.id === previousActiveDrawerId.current && !openedFromOverflow ? drawersRefs.toggle : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
@@ -258,7 +262,7 @@ function DesktopTriggers() {
             ariaLabel={overflowMenuHasBadge ? drawersOverflowWithBadgeAriaLabel : drawersOverflowAriaLabel}
             customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
               <TriggerButton
-                ref={triggerRef}
+                ref={openedFromOverflow ? drawersRefs.toggle : triggerRef}
                 ariaLabel={ariaLabel}
                 ariaExpanded={ariaExpanded}
                 badge={overflowMenuHasBadge}
@@ -269,6 +273,7 @@ function DesktopTriggers() {
             )}
             onItemClick={({ detail }) => {
               handleDrawersClick(detail.id);
+              setOpenedFromOverflow(true);
             }}
           />
         )}
@@ -308,6 +313,7 @@ export function MobileTriggers() {
   } = useAppLayoutInternals();
 
   const previousActiveDrawerId = useRef(activeDrawerId);
+  const [openedFromOverflow, setOpenedFromOverflow] = React.useState(false);
 
   if (!drawers) {
     return null;
@@ -340,13 +346,16 @@ export function MobileTriggers() {
               item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
             )}
             disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+            ref={item.id === previousActiveDrawerId.current && !openedFromOverflow ? drawersRefs.toggle : undefined}
             formAction="none"
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
             badge={item.badge}
             key={item.id}
-            onClick={() => handleDrawersClick(item.id)}
+            onClick={() => {
+              handleDrawersClick(item.id);
+              setOpenedFromOverflow(false);
+            }}
             variant="icon"
             __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
           />
@@ -355,7 +364,24 @@ export function MobileTriggers() {
           <OverflowMenu
             items={overflowItems}
             ariaLabel={overflowMenuHasBadge ? drawersOverflowWithBadgeAriaLabel : drawersOverflowAriaLabel}
-            onItemClick={({ detail }) => handleDrawersClick(detail.id)}
+            onItemClick={({ detail }) => {
+              handleDrawersClick(detail.id);
+              setOpenedFromOverflow(true);
+            }}
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
+              return (
+                <InternalButton
+                  ref={openedFromOverflow ? drawersRefs.toggle : triggerRef}
+                  className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
+                  ariaLabel={ariaLabel}
+                  ariaExpanded={ariaExpanded}
+                  variant="icon"
+                  iconName="ellipsis"
+                  badge={overflowMenuHasBadge}
+                  onClick={onClick}
+                />
+              );
+            }}
           />
         )}
       </div>
