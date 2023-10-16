@@ -104,7 +104,7 @@ export default function () {
                   ? (groupedSeries
                       .map(childSeries => {
                         const datum = childSeries.data.find(item => item.x === x);
-                        if (datum && datum.y >= 0.005) {
+                        if (datum) {
                           return {
                             key: (
                               <Link external={true} href="#">
