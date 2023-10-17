@@ -119,6 +119,29 @@ export default function () {
                   : undefined,
               };
             }}
+            detailPopoverFooter={x => {
+              const sum = allSeries.reduce((previousValue, currentSeries) => {
+                const datum = currentSeries.data.find(item => item.x === x);
+                if (datum) {
+                  return previousValue + datum.y;
+                }
+                return previousValue;
+              }, 0);
+              return (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontWeight: 'bold',
+                    paddingTop: '.5em',
+                    borderTop: '1px solid lightgray',
+                  }}
+                >
+                  <span>Total</span>
+                  <span>{dollarFormatter(sum)}</span>
+                </div>
+              );
+            }}
           />
         </Container>
       </Box>
