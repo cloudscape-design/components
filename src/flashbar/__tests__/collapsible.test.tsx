@@ -17,16 +17,7 @@ import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
-import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => {
-  const originalVisualModeModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
-  return {
-    __esModule: true,
-    ...originalVisualModeModule,
-    useReducedMotion: jest.fn(),
-  };
-});
+import { disableMotion } from '@cloudscape-design/global-styles';
 
 const sampleItems: Record<FlashbarProps.Type, FlashbarProps.MessageDefinition> = {
   error: { type: 'error', header: 'Error', content: 'There was an error' },
@@ -58,11 +49,11 @@ describe('Collapsible Flashbar', () => {
   for (const withAnimations of [false, true]) {
     describe(withAnimations ? 'with animations' : 'without animations', () => {
       beforeAll(() => {
-        (useReducedMotion as jest.Mock).mockReturnValue(!withAnimations);
+        disableMotion(!withAnimations);
       });
 
       afterAll(() => {
-        (useReducedMotion as jest.Mock).mockReturnValue(true);
+        disableMotion(false);
       });
 
       describe('Basic behavior', () => {
@@ -362,8 +353,9 @@ describe('Collapsible Flashbar', () => {
 
   test('dismisses items', () => {
     // Test this feature only without animations because TransitionGroup delays item removals by one frame.
-    // Customers should disable animations in their tests.
-    (useReducedMotion as jest.Mock).mockReturnValue(true);
+    // Customers should disable animations in their tests too:
+    // https://cloudscape.design/foundation/visual-foundation/motion/#implementation
+    disableMotion(true);
     testFlashDismissal({ stackItems: true });
   });
 });

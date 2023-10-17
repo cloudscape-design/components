@@ -8,27 +8,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
 import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
-
-let mockUseAnimations = false;
-let useAnimations = false;
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
-  const originalVisualModeModule = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
-  return {
-    __esModule: true,
-    ...originalVisualModeModule,
-    useVisualRefresh: (...args: any) =>
-      mockUseAnimations ? useAnimations : originalVisualModeModule.useVisualRefresh(...args),
-  };
-});
-jest.mock('@cloudscape-design/component-toolkit/internal', () => {
-  const originalVisualModeModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
-  return {
-    __esModule: true,
-    ...originalVisualModeModule,
-    useReducedMotion: (...args: any) =>
-      mockUseAnimations ? !useAnimations : originalVisualModeModule.useReducedMotion(...args),
-  };
-});
+import { disableMotion } from '@cloudscape-design/global-styles';
 
 declare global {
   interface Window {
@@ -48,12 +28,11 @@ describe('Flashbar component', () => {
   for (const withAnimations of [false, true]) {
     describe(withAnimations ? 'with animations' : 'without animations', () => {
       beforeEach(() => {
-        mockUseAnimations = true;
-        useAnimations = withAnimations;
+        disableMotion(!withAnimations);
       });
 
       afterEach(() => {
-        mockUseAnimations = false;
+        disableMotion(false);
       });
 
       test('renders no flash when items are empty', () => {
