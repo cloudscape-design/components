@@ -11,13 +11,12 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
   };
 });
 
-import React, { useState } from 'react';
+import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
-import { createFlashbarWrapper, findList } from './common';
+import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
-import Button from '../../../lib/components/button';
 import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
@@ -56,17 +55,17 @@ const defaultProps = {
 };
 
 describe('Collapsible Flashbar', () => {
-  describe('Basic behavior', () => {
-    for (const withAnimations of [false, true]) {
-      describe(withAnimations ? 'with animations' : 'without animations', () => {
-        beforeAll(() => {
-          (useReducedMotion as jest.Mock).mockReturnValue(!withAnimations);
-        });
+  for (const withAnimations of [false, true]) {
+    describe(withAnimations ? 'with animations' : 'without animations', () => {
+      beforeAll(() => {
+        (useReducedMotion as jest.Mock).mockReturnValue(!withAnimations);
+      });
 
-        afterAll(() => {
-          (useReducedMotion as jest.Mock).mockReturnValue(true);
-        });
+      afterAll(() => {
+        (useReducedMotion as jest.Mock).mockReturnValue(true);
+      });
 
+      describe('Basic behavior', () => {
         it('shows only the header and content of the first item in the array when collapsed', () => {
           const flashbar = renderFlashbar();
           const items = flashbar.findItems();
@@ -159,227 +158,213 @@ describe('Collapsible Flashbar', () => {
           expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
         });
       });
-    }
 
-    test('findItemsByType', () => {
-      {
-        const wrapper = createFlashbarWrapper(
-          <Flashbar
-            stackItems={true}
-            items={[
-              { content: 'Flash', type: 'success' },
-              { content: 'Flash', type: 'warning' },
-            ]}
-          />
-        );
-        expect(wrapper.findItemsByType('success')).toHaveLength(1);
-        expect(wrapper.findItemsByType('warning')).toHaveLength(0);
+      test('findItemsByType', () => {
+        {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar
+              stackItems={true}
+              items={[
+                { content: 'Flash', type: 'success' },
+                { content: 'Flash', type: 'warning' },
+              ]}
+            />
+          );
+          expect(wrapper.findItemsByType('success')).toHaveLength(1);
+          expect(wrapper.findItemsByType('warning')).toHaveLength(0);
 
-        findNotificationBar(wrapper)!.click();
+          findNotificationBar(wrapper)!.click();
 
-        expect(wrapper.findItemsByType('success')).toHaveLength(1);
-        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
-      }
-      {
-        const wrapper = createFlashbarWrapper(
-          <Flashbar
-            stackItems={true}
-            items={[
-              { content: 'Flash', type: 'warning' },
-              { content: 'Flash', type: 'warning' },
-            ]}
-          />
-        );
-        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+          expect(wrapper.findItemsByType('success')).toHaveLength(1);
+          expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+        }
+        {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar
+              stackItems={true}
+              items={[
+                { content: 'Flash', type: 'warning' },
+                { content: 'Flash', type: 'warning' },
+              ]}
+            />
+          );
+          expect(wrapper.findItemsByType('warning')).toHaveLength(1);
 
-        findNotificationBar(wrapper)!.click();
+          findNotificationBar(wrapper)!.click();
 
-        expect(wrapper.findItemsByType('warning')).toHaveLength(2);
-      }
-    });
-
-    test('dismisses items', () => {
-      const App = () => {
-        const [items, setItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
-        const onDismiss = () => setItems([]);
-        const onAdd = () => setItems([{ content: 'The content', dismissible: true, onDismiss }]);
-        return (
-          <>
-            <Button onClick={onAdd}>Add an item</Button>
-            <Flashbar stackItems={true} items={items} />
-          </>
-        );
-      };
-      const appWrapper = createWrapper(render(<App />).container);
-      expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
-      appWrapper.findButton()!.click();
-      const foundItems = appWrapper.findFlashbar()!.findItems();
-      expect(foundItems).toHaveLength(1);
-      foundItems![0]!.findDismissButton()!.click();
-      expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
-    });
-  });
-
-  describe('Accessibility', () => {
-    it('renders items in an unordered list', () => {
-      const flashbar = renderFlashbar();
-      const list = flashbar.find('ul')!;
-      expect(list).toBeTruthy();
-      expect(list.findAll('li')).toHaveLength(2);
-    });
-
-    it('applies ARIA label to the unordered list', () => {
-      const customAriaLabel = 'Custom text';
-      const flashbar = renderFlashbar({
-        i18nStrings: {
-          ariaLabel: customAriaLabel,
-        },
+          expect(wrapper.findItemsByType('warning')).toHaveLength(2);
+        }
       });
-      const list = findList(flashbar)!;
-      expect(list).toBeTruthy();
-      expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
-    });
 
-    it('hides collapsed items from the accessibility tree', () => {
-      const flashbar = renderFlashbar();
-      const accessibleItems = flashbar
-        .findAll('li')
-        .filter(item => item.getElement().getAttribute('aria-hidden') !== 'true');
-      expect(accessibleItems.length).toBe(1);
-    });
-
-    it('does not render outer toggle element as HTML button element', () => {
-      const flashbar = renderFlashbar();
-      const toggle = findNotificationBar(flashbar);
-      expect(toggle!.tagName).not.toEqual('BUTTON');
-    });
-
-    it('applies desired ARIA label to toggle element', () => {
-      const customToggleButtonAriaLabel = 'Custom toggle button ARIA label';
-      const flashbar = renderFlashbar({
-        i18nStrings: {
-          notificationBarAriaLabel: customToggleButtonAriaLabel,
-        },
-      });
-      const button = flashbar.findToggleButton()?.getElement();
-      expect(button).toHaveAttribute('aria-label', customToggleButtonAriaLabel);
-    });
-
-    it('applies aria-expanded attribute to toggle button', () => {
-      const flashbar = renderFlashbar();
-      const button = flashbar.findToggleButton()!;
-      expect(button?.getElement()).toHaveAttribute('aria-expanded', 'false');
-
-      button.click();
-      expect(button?.getElement()).toHaveAttribute('aria-expanded', 'true');
-    });
-
-    it('applies aria-controls attribute to toggle button referring to the unordered list', () => {
-      const flashbar = renderFlashbar();
-      const listId = findList(flashbar)!.getElement().id;
-      expect(listId).toBeTruthy();
-      const button = flashbar.findToggleButton()?.getElement();
-      expect(button).toHaveAttribute('aria-controls', listId);
-    });
-
-    it('applies aria-describedby attribute to the list, referencing the item counter', () => {
-      const flashbar = renderFlashbar();
-      const list = findList(flashbar)!;
-      expect(list).toBeTruthy();
-      const counter = findOuterCounter(flashbar);
-      expect(counter).toBeTruthy();
-      const itemCounterElementId = findOuterCounter(flashbar)!.id;
-      expect(itemCounterElementId).toBeTruthy();
-      expect(list.getElement()).toHaveAttribute('aria-describedby', itemCounterElementId);
-    });
-
-    it('does not apply aria-describedby to the list when the toggle element is not rendered', () => {
-      const flashbar = renderFlashbar({ items: [sampleItems.error] });
-      const list = findList(flashbar)!;
-      expect(list).toBeTruthy();
-      const itemCounterElement = findOuterCounter(flashbar);
-      expect(itemCounterElement).toBeFalsy();
-      expect(list.getElement()).not.toHaveAttribute('aria-describedby');
-    });
-
-    it('applies aria-describedby to the toggle button, referencing the item counter', () => {
-      const flashbar = renderFlashbar();
-      const itemCounterElementId = findOuterCounter(flashbar)!.id;
-      expect(itemCounterElementId).toBeTruthy();
-      const toggleButton = flashbar.findToggleButton()?.getElement();
-      expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
-    });
-
-    it('announces updates to the item counter with aria-live', () => {
-      const flashbar = renderFlashbar();
-      const counter = findOuterCounter(flashbar);
-      expect(counter).toHaveAttribute('aria-live', 'polite');
-      // We add `role="status"` as well, to maximize compatibility
-      // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions#roles_with_implicit_live_region_attributes
-      expect(counter).toHaveAttribute('role', 'status');
-    });
-
-    it('renders the toggle element header as H2 element', () => {
-      const customToggleButtonText = 'Custom text';
-      const flashbar = renderFlashbar({
-        i18nStrings: {
-          notificationBarText: customToggleButtonText,
-        },
-      });
-      const h2 = findNotificationBar(flashbar)!.querySelector('h2');
-      expect(h2).toHaveTextContent(customToggleButtonText);
-    });
-
-    it('applies ARIA labels and title attributes to the item counter', () => {
-      const customLabels = {
-        errorIconAriaLabel: 'Custom error ARIA label',
-        successIconAriaLabel: 'Custom success ARIA label',
-        infoIconAriaLabel: 'Custom info ARIA label',
-        inProgressIconAriaLabel: 'Custom progress ARIA label',
-        warningIconAriaLabel: 'Custom warning ARIA label',
-      };
-      const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
-      const innerCounter = findInnerCounterElement(flashbar);
-      for (const ariaLabel of Object.values(customLabels)) {
-        expect(innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`)).toBeTruthy();
-        expect(innerCounter!.querySelector(`[title="${ariaLabel}"]`)).toBeTruthy();
-      }
-    });
-
-    test.each([['success'], ['error'], ['info'], ['warning'], ['in-progress']] as FlashbarProps.Type[][])(
-      'item icon has aria-label from i18nStrings when no statusIconAriaLabel provided: type %s',
-      type => {
-        const wrapper = renderFlashbar({
-          i18nStrings: {
-            successIconAriaLabel: 'success',
-            errorIconAriaLabel: 'error',
-            infoIconAriaLabel: 'info',
-            warningIconAriaLabel: 'warning',
-            inProgressIconAriaLabel: 'in-progress',
-          },
-          items: [
-            {
-              header: 'The header',
-              content: 'The content',
-              type: type === 'in-progress' ? 'info' : type,
-              loading: type === 'in-progress',
-            },
-          ],
+      describe('Accessibility', () => {
+        it('renders items in an unordered list', () => {
+          const flashbar = renderFlashbar();
+          const list = flashbar.find('ul')!;
+          expect(list).toBeTruthy();
+          expect(list.findAll('li')).toHaveLength(2);
         });
 
-        expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(type);
-      }
-    );
-  });
+        it('applies ARIA label to the unordered list', () => {
+          const customAriaLabel = 'Custom text';
+          const flashbar = renderFlashbar({
+            i18nStrings: {
+              ariaLabel: customAriaLabel,
+            },
+          });
+          const list = findList(flashbar)!;
+          expect(list).toBeTruthy();
+          expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
+        });
 
-  describe('Sticky', () => {
-    it('scrolls the button into view when collapsing', () => {
-      scrollElementIntoViewMock.mockClear();
-      const flashbar = renderFlashbar();
-      findNotificationBar(flashbar)!.click(); // Expand
-      findNotificationBar(flashbar)!.click(); // Collapse
-      expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
+        it('hides collapsed items from the accessibility tree', () => {
+          const flashbar = renderFlashbar();
+          const accessibleItems = flashbar
+            .findAll('li')
+            .filter(item => item.getElement().getAttribute('aria-hidden') !== 'true');
+          expect(accessibleItems.length).toBe(1);
+        });
+
+        it('does not render outer toggle element as HTML button element', () => {
+          const flashbar = renderFlashbar();
+          const toggle = findNotificationBar(flashbar);
+          expect(toggle!.tagName).not.toEqual('BUTTON');
+        });
+
+        it('applies desired ARIA label to toggle element', () => {
+          const customToggleButtonAriaLabel = 'Custom toggle button ARIA label';
+          const flashbar = renderFlashbar({
+            i18nStrings: {
+              notificationBarAriaLabel: customToggleButtonAriaLabel,
+            },
+          });
+          const button = flashbar.findToggleButton()?.getElement();
+          expect(button).toHaveAttribute('aria-label', customToggleButtonAriaLabel);
+        });
+
+        it('applies aria-expanded attribute to toggle button', () => {
+          const flashbar = renderFlashbar();
+          const button = flashbar.findToggleButton()!;
+          expect(button?.getElement()).toHaveAttribute('aria-expanded', 'false');
+
+          button.click();
+          expect(button?.getElement()).toHaveAttribute('aria-expanded', 'true');
+        });
+
+        it('applies aria-controls attribute to toggle button referring to the unordered list', () => {
+          const flashbar = renderFlashbar();
+          const listId = findList(flashbar)!.getElement().id;
+          expect(listId).toBeTruthy();
+          const button = flashbar.findToggleButton()?.getElement();
+          expect(button).toHaveAttribute('aria-controls', listId);
+        });
+
+        it('applies aria-describedby attribute to the list, referencing the item counter', () => {
+          const flashbar = renderFlashbar();
+          const list = findList(flashbar)!;
+          expect(list).toBeTruthy();
+          const counter = findOuterCounter(flashbar);
+          expect(counter).toBeTruthy();
+          const itemCounterElementId = findOuterCounter(flashbar)!.id;
+          expect(itemCounterElementId).toBeTruthy();
+          expect(list.getElement()).toHaveAttribute('aria-describedby', itemCounterElementId);
+        });
+
+        it('does not apply aria-describedby to the list when the toggle element is not rendered', () => {
+          const flashbar = renderFlashbar({ items: [sampleItems.error] });
+          const list = findList(flashbar)!;
+          expect(list).toBeTruthy();
+          const itemCounterElement = findOuterCounter(flashbar);
+          expect(itemCounterElement).toBeFalsy();
+          expect(list.getElement()).not.toHaveAttribute('aria-describedby');
+        });
+
+        it('applies aria-describedby to the toggle button, referencing the item counter', () => {
+          const flashbar = renderFlashbar();
+          const itemCounterElementId = findOuterCounter(flashbar)!.id;
+          expect(itemCounterElementId).toBeTruthy();
+          const toggleButton = flashbar.findToggleButton()?.getElement();
+          expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
+        });
+
+        it('announces updates to the item counter with aria-live', () => {
+          const flashbar = renderFlashbar();
+          const counter = findOuterCounter(flashbar);
+          expect(counter).toHaveAttribute('aria-live', 'polite');
+          // We add `role="status"` as well, to maximize compatibility
+          // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions#roles_with_implicit_live_region_attributes
+          expect(counter).toHaveAttribute('role', 'status');
+        });
+
+        it('renders the toggle element header as H2 element', () => {
+          const customToggleButtonText = 'Custom text';
+          const flashbar = renderFlashbar({
+            i18nStrings: {
+              notificationBarText: customToggleButtonText,
+            },
+          });
+          const h2 = findNotificationBar(flashbar)!.querySelector('h2');
+          expect(h2).toHaveTextContent(customToggleButtonText);
+        });
+
+        it('applies ARIA labels and title attributes to the item counter', () => {
+          const customLabels = {
+            errorIconAriaLabel: 'Custom error ARIA label',
+            successIconAriaLabel: 'Custom success ARIA label',
+            infoIconAriaLabel: 'Custom info ARIA label',
+            inProgressIconAriaLabel: 'Custom progress ARIA label',
+            warningIconAriaLabel: 'Custom warning ARIA label',
+          };
+          const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
+          const innerCounter = findInnerCounterElement(flashbar);
+          for (const ariaLabel of Object.values(customLabels)) {
+            expect(innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`)).toBeTruthy();
+            expect(innerCounter!.querySelector(`[title="${ariaLabel}"]`)).toBeTruthy();
+          }
+        });
+
+        test.each([['success'], ['error'], ['info'], ['warning'], ['in-progress']] as FlashbarProps.Type[][])(
+          'item icon has aria-label from i18nStrings when no statusIconAriaLabel provided: type %s',
+          type => {
+            const wrapper = renderFlashbar({
+              i18nStrings: {
+                successIconAriaLabel: 'success',
+                errorIconAriaLabel: 'error',
+                infoIconAriaLabel: 'info',
+                warningIconAriaLabel: 'warning',
+                inProgressIconAriaLabel: 'in-progress',
+              },
+              items: [
+                {
+                  header: 'The header',
+                  content: 'The content',
+                  type: type === 'in-progress' ? 'info' : type,
+                  loading: type === 'in-progress',
+                },
+              ],
+            });
+
+            expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(type);
+          }
+        );
+      });
+
+      describe('Sticky', () => {
+        it('scrolls the button into view when collapsing', () => {
+          scrollElementIntoViewMock.mockClear();
+          const flashbar = renderFlashbar();
+          findNotificationBar(flashbar)!.click(); // Expand
+          findNotificationBar(flashbar)!.click(); // Collapse
+          expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
+        });
+      });
     });
+  }
+
+  test('dismisses items', () => {
+    // Test this feature only without animations because TransitionGroup delays item removals by one frame.
+    // Customers should disable animations in their tests.
+    (useReducedMotion as jest.Mock).mockReturnValue(true);
+    testFlashDismissal({ stackItems: true });
   });
 });
 

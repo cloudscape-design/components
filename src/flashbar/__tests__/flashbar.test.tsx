@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 import { render as reactRender } from '@testing-library/react';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
-import { createFlashbarWrapper, findList } from './common';
+import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
-import { render } from '@testing-library/react';
 
 let mockUseAnimations = false;
 let useAnimations = false;
@@ -448,24 +447,7 @@ describe('Flashbar component', () => {
   }
 
   test('dismisses items', () => {
-    const App = () => {
-      const [items, setItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
-      const onDismiss = () => setItems([]);
-      const onAdd = () => setItems([{ content: 'The content', dismissible: true, onDismiss }]);
-      return (
-        <>
-          <Button onClick={onAdd}>Add an item</Button>
-          <Flashbar items={items} />
-        </>
-      );
-    };
-    const appWrapper = createWrapper(render(<App />).container);
-    expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
-    appWrapper.findButton()!.click();
-    const foundItems = appWrapper.findFlashbar()!.findItems();
-    expect(foundItems).toHaveLength(1);
-    foundItems![0]!.findDismissButton()!.click();
-    expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
+    testFlashDismissal({ stackItems: false });
   });
 });
 
