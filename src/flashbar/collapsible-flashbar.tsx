@@ -20,7 +20,7 @@ import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import { usePrevious } from '@dnd-kit/utilities';
+import { usePrevious } from '../internal/hooks/use-previous';
 
 export { FlashbarProps };
 
