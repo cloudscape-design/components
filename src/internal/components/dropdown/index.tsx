@@ -3,7 +3,7 @@
 import styles from './styles.css.js';
 import clsx from 'clsx';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { fireNonCancelableEvent } from '../../events';
 import { DropdownProps } from './interfaces';
@@ -329,23 +329,29 @@ const Dropdown = ({
 
   // Prevent the dropdown width from stretching beyond the trigger width
   // if that is going to cause the dropdown to be cropped because of overflow
-  useLayoutEffect(() => {
-    if (stretchBeyondTriggerWidth && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-      if (
-        !hasEnoughSpaceToStretchBeyondTriggerWidth({
-          triggerElement: triggerRef.current,
-          dropdownElement: dropdownRef.current,
-          desiredMinWidth: minWidth,
-          expandToViewport,
-          stretchWidth,
-          stretchHeight,
-          isMobile,
-        })
-      ) {
-        dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
-      }
+  const preventOverflow = useCallback(() => {
+    if (
+      stretchBeyondTriggerWidth &&
+      dropdownRef.current &&
+      triggerRef.current &&
+      verticalContainerRef.current &&
+      !hasEnoughSpaceToStretchBeyondTriggerWidth({
+        triggerElement: triggerRef.current,
+        dropdownElement: dropdownRef.current,
+        desiredMinWidth: minWidth,
+        expandToViewport,
+        stretchWidth,
+        stretchHeight,
+        isMobile,
+      })
+    ) {
+      dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
     }
-  });
+  }, [expandToViewport, isMobile, minWidth, stretchBeyondTriggerWidth, stretchHeight, stretchWidth]);
+
+  useLayoutEffect(() => {
+    preventOverflow();
+  }, [children, preventOverflow]);
 
   // subscribe to outside click
   useEffect(() => {
@@ -386,6 +392,7 @@ const Dropdown = ({
           }
         }
       }
+      preventOverflow();
     };
 
     updateDropdownPosition();
@@ -396,7 +403,7 @@ const Dropdown = ({
       window.removeEventListener('scroll', updateDropdownPosition, true);
       window.removeEventListener('resize', updateDropdownPosition, true);
     };
-  }, [open, expandToViewport]);
+  }, [open, expandToViewport, preventOverflow]);
 
   const referrerId = useUniqueId();
 
