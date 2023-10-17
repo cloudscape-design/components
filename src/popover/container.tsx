@@ -32,7 +32,7 @@ export interface PopoverContainerProps {
   size: PopoverProps.Size;
   fixedWidth: boolean;
   variant?: 'annotation';
-  freezepositionOnResize?: boolean;
+  freezePositionOnResize?: boolean;
 }
 
 const INITIAL_STYLES: CSSProperties = { position: 'absolute', top: -9999, left: -9999 };
@@ -48,7 +48,7 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
-  freezepositionOnResize,
+  freezePositionOnResize,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -173,7 +173,7 @@ export default function PopoverContainer({
 
   // Recalculate position when content size changes.
   useResizeObserver(contentRef, () => {
-    updatePositionHandler(freezepositionOnResize);
+    updatePositionHandler(freezePositionOnResize);
   });
 
   // Recalculate position on DOM events.
