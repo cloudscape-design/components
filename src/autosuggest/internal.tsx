@@ -82,6 +82,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
   const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
+  if (restProps.recoveryText && !onLoadItems) {
+    warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+  }
+
   if (!enteredTextLabel) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
   }
