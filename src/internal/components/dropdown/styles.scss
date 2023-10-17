@@ -6,7 +6,6 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use './motion';
-@use '../../generated/custom-css-properties/index' as custom-props;
 
 .root {
   @include styles.styles-reset;
@@ -78,7 +77,6 @@
   }
   &.stretch-beyond-trigger-width {
     width: max-content;
-    max-width: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
   }
   &.hide-upper-border > .dropdown-content-wrapper {
     border-top: none;

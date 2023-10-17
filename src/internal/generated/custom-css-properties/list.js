@@ -47,7 +47,5 @@ const customCssPropertiesList = [
   'flashbarStickyBottomMargin',
   'stackedNotificationsBottomMargin',
   'stackedNotificationsDefaultBottomMargin',
-  // Dropdown
-  'dropdownDefaultMaxWidth',
 ];
 module.exports = customCssPropertiesList;

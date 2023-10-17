@@ -12,7 +12,6 @@ import {
   InteriorDropdownPosition,
   calculatePosition,
   defaultMaxDropdownWidth,
-  hasEnoughSpaceToStretchBeyondTriggerWidth,
 } from './dropdown-fit-handler';
 import { Transition, TransitionStatus } from '../transition';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
@@ -22,7 +21,6 @@ import { useMobile } from '../../hooks/use-mobile';
 import TabTrap from '../tab-trap/index.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import { useUniqueId } from '../../hooks/use-unique-id/index.js';
-import customCssProps from '../../generated/custom-css-properties';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -114,9 +112,7 @@ const TransitionContent = ({
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
-      style={
-        stretchBeyondTriggerWidth ? { [customCssProps.dropdownDefaultMaxWidth]: `${defaultMaxDropdownWidth}px` } : {}
-      }
+      style={stretchBeyondTriggerWidth ? { maxWidth: defaultMaxDropdownWidth } : {}}
       onMouseDown={onMouseDown}
     >
       <div
@@ -204,7 +200,6 @@ const Dropdown = ({
     } else {
       target.style.width = position.width;
     }
-
     // Using styles for main dropdown to adjust its position as preferred alternative
     if (position.dropUp && !interior) {
       target.classList.add(styles['dropdown-drop-up']);
@@ -326,26 +321,6 @@ const Dropdown = ({
     // See AWSUI-13040
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile, contentKey]);
-
-  // Prevent the dropdown width from stretching beyond the trigger width
-  // if that is going to cause the dropdown to be cropped because of overflow
-  useLayoutEffect(() => {
-    if (stretchBeyondTriggerWidth && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-      if (
-        !hasEnoughSpaceToStretchBeyondTriggerWidth({
-          triggerElement: triggerRef.current,
-          dropdownElement: dropdownRef.current,
-          desiredMinWidth: minWidth,
-          expandToViewport,
-          stretchWidth,
-          stretchHeight,
-          isMobile,
-        })
-      ) {
-        dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
-      }
-    }
-  });
 
   // subscribe to outside click
   useEffect(() => {

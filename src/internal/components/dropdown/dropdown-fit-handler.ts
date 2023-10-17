@@ -44,19 +44,14 @@ const getClosestParentDimensions = (element: HTMLElement): any => {
 // This value was determined by UX but may be subject to change in the future, depending on the feedback.
 export const defaultMaxDropdownWidth = getBreakpointValue('xxs');
 
-export const getAvailableSpace = ({
-  trigger,
-  overflowParents,
+export const getAvailableSpace = (
+  trigger: HTMLElement,
+  dropdown: HTMLElement,
+  overflowParents: ReadonlyArray<Dimensions>,
   stretchWidth = false,
   stretchHeight = false,
-  isMobile,
-}: {
-  trigger: HTMLElement;
-  overflowParents: ReadonlyArray<Dimensions>;
-  stretchWidth?: boolean;
-  stretchHeight?: boolean;
-  isMobile?: boolean;
-}): AvailableSpace => {
+  isMobile?: boolean
+): AvailableSpace => {
   const availableSpaceReserveVertical = stretchHeight
     ? 0
     : isMobile
@@ -88,15 +83,12 @@ export const getAvailableSpace = ({
   );
 };
 
-export const getInteriorAvailableSpace = ({
-  trigger,
-  overflowParents,
-  isMobile,
-}: {
-  trigger: HTMLElement;
-  overflowParents: ReadonlyArray<Dimensions>;
-  isMobile?: boolean;
-}): AvailableSpace => {
+export const getInteriorAvailableSpace = (
+  trigger: HTMLElement,
+  dropdown: HTMLElement,
+  overflowParents: ReadonlyArray<Dimensions>,
+  isMobile?: boolean
+): AvailableSpace => {
   const AVAILABLE_SPACE_RESERVE_VERTICAL = isMobile
     ? AVAILABLE_SPACE_RESERVE_MOBILE_VERTICAL
     : AVAILABLE_SPACE_RESERVE_DEFAULT;
@@ -129,69 +121,6 @@ export const getInteriorAvailableSpace = ({
   );
 };
 
-export const getWidths = ({
-  triggerElement,
-  dropdownElement,
-  desiredMinWidth,
-  stretchBeyondTriggerWidth = false,
-}: {
-  triggerElement: HTMLElement;
-  dropdownElement: HTMLElement;
-  desiredMinWidth?: number;
-  stretchBeyondTriggerWidth?: boolean;
-}) => {
-  // Determine the width of the trigger
-  const triggerWidth = triggerElement.getBoundingClientRect().width;
-  // Minimum width is determined by either an explicit number (desiredMinWidth) or the trigger width
-  const minWidth = desiredMinWidth ? Math.min(triggerWidth, desiredMinWidth) : triggerWidth;
-  // If stretchBeyondTriggerWidth is true, the maximum width is the XS breakpoint (465px) or the trigger width (if bigger).
-  const maxWidth = stretchBeyondTriggerWidth ? Math.max(defaultMaxDropdownWidth, triggerWidth) : Number.MAX_VALUE;
-  // Determine the actual dropdown width, the size that it "wants" to be
-  const requiredWidth = dropdownElement.getBoundingClientRect().width;
-  // Try to achieve the required/desired width within the given parameters
-  const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
-  return { idealWidth, minWidth, triggerWidth };
-};
-
-export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
-  triggerElement,
-  dropdownElement,
-  desiredMinWidth,
-  expandToViewport,
-  stretchWidth,
-  stretchHeight,
-  isMobile,
-}: {
-  triggerElement: HTMLElement;
-  dropdownElement: HTMLElement;
-  desiredMinWidth?: number;
-  expandToViewport: boolean;
-  stretchWidth: boolean;
-  stretchHeight: boolean;
-  isMobile: boolean;
-}) => {
-  const overflowParents = getOverflowParentDimensions({
-    element: dropdownElement,
-    excludeClosestParent: false,
-    expandToViewport,
-    canExpandOutsideViewport: stretchHeight,
-  });
-  const { idealWidth } = getWidths({
-    triggerElement: triggerElement,
-    dropdownElement,
-    desiredMinWidth,
-    stretchBeyondTriggerWidth: true,
-  });
-  const availableSpace = getAvailableSpace({
-    trigger: triggerElement,
-    overflowParents,
-    stretchWidth,
-    stretchHeight,
-    isMobile,
-  });
-  return idealWidth <= availableSpace.left || idealWidth <= availableSpace.right;
-};
-
 export const getDropdownPosition = ({
   triggerElement,
   dropdownElement,
@@ -214,19 +143,24 @@ export const getDropdownPosition = ({
   stretchBeyondTriggerWidth?: boolean;
 }): DropdownPosition => {
   // Determine the space available around the dropdown that it can grow in
-  const availableSpace = getAvailableSpace({
-    trigger: triggerElement,
+  const availableSpace = getAvailableSpace(
+    triggerElement,
+    dropdownElement,
     overflowParents,
     stretchWidth,
     stretchHeight,
-    isMobile,
-  });
-  const { idealWidth, minWidth, triggerWidth } = getWidths({
-    triggerElement,
-    dropdownElement,
-    desiredMinWidth,
-    stretchBeyondTriggerWidth,
-  });
+    isMobile
+  );
+  // Determine the width of the trigger
+  const triggerWidth = triggerElement.getBoundingClientRect().width;
+  // Minimum width is determined by either an explicit number (desiredMinWidth) or the trigger width
+  const minWidth = desiredMinWidth ? Math.min(triggerWidth, desiredMinWidth) : triggerWidth;
+  // If stretchBeyondTriggerWidth is true, the maximum width is the XS breakpoint (465px) or the trigger width (if bigger).
+  const maxWidth = stretchBeyondTriggerWidth ? Math.max(defaultMaxDropdownWidth, triggerWidth) : Number.MAX_VALUE;
+  // Determine the actual dropdown width, the size that it "wants" to be
+  const requiredWidth = dropdownElement.getBoundingClientRect().width;
+  // Try to achieve the required/desired width within the given parameters
+  const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
 
   let dropLeft: boolean;
   let left: number | null = null;
@@ -277,7 +211,7 @@ export const getInteriorDropdownPosition = (
   overflowParents: ReadonlyArray<Dimensions>,
   isMobile?: boolean
 ): InteriorDropdownPosition => {
-  const availableSpace = getInteriorAvailableSpace({ trigger, overflowParents, isMobile });
+  const availableSpace = getInteriorAvailableSpace(trigger, dropdown, overflowParents, isMobile);
   const { bottom: triggerBottom, top: triggerTop, width: triggerWidth } = trigger.getBoundingClientRect();
   const { top: parentDropdownTop, height: parentDropdownHeight } = getClosestParentDimensions(trigger);
 
@@ -338,12 +272,7 @@ export const calculatePosition = (
   dropdownElement.classList.remove(styles['dropdown-drop-right']);
   dropdownElement.classList.remove(styles['dropdown-drop-up']);
 
-  const overflowParents = getOverflowParentDimensions({
-    element: dropdownElement,
-    excludeClosestParent: interior,
-    expandToViewport,
-    canExpandOutsideViewport: stretchHeight,
-  });
+  const overflowParents = getOverflowParentDimensions(dropdownElement, interior, expandToViewport, stretchHeight);
   const position = interior
     ? getInteriorDropdownPosition(triggerElement, dropdownElement, overflowParents, isMobile)
     : getDropdownPosition({
