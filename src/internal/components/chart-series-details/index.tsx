@@ -48,12 +48,14 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                     headerText={key}
                     headerActions={<InternalBox textAlign="right">{value}</InternalBox>}
                   >
-                    {details.map(({ key, value }, index) => (
-                      <div key={index} className={styles['inner-list-item']}>
-                        <span className={styles.key}>{key}</span>
-                        <InternalBox textAlign="right">{value}</InternalBox>
-                      </div>
-                    ))}
+                    <ul className={styles.details}>
+                      {details.map(({ key, value }, index) => (
+                        <li key={index} className={styles['inner-list-item']}>
+                          <span className={styles.key}>{key}</span>
+                          <InternalBox textAlign="right">{value}</InternalBox>
+                        </li>
+                      ))}
+                    </ul>
                   </InternalExpandableSection>
                 </div>
               </div>
