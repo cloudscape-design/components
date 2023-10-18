@@ -403,7 +403,7 @@ describe('Wizard Analytics', () => {
 
     createWrapper(container).findWizard()!.findPrimaryButton().click();
 
-    expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 2 - optional');
+    expect(document.querySelector(getFunnelKeySelector(FUNNEL_KEY_STEP_NAME))?.textContent).toBe('Step 2');
   });
 
   describe('funnelStepChange', () => {

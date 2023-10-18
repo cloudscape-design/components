@@ -23,6 +23,7 @@ describe('useFunnel hook', () => {
         value={{
           funnelInteractionId: 'funnel-id',
           setFunnelInteractionId: () => {},
+          funnelNameSelector: '',
           funnelType: 'single-page',
           optionalStepNumbers: [],
           totalFunnelSteps: 0,
@@ -67,6 +68,7 @@ describe('useFunnel hook', () => {
         value={{
           funnelInteractionId: 'funnel-id',
           funnelType: 'single-page',
+          funnelNameSelector: '',
           optionalStepNumbers: [],
           totalFunnelSteps: 0,
           setFunnelInteractionId,

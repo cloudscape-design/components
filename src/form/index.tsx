@@ -10,7 +10,8 @@ import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/comp
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
 import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
 
-import styles from './styles.css.js';
+import formStyles from './styles.css.js';
+import headerStyles from '../header/styles.css.js';
 
 export { FormProps };
 
@@ -26,27 +27,27 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
   };
 
   return (
-    <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
-      <InternalForm variant={variant} actions={actions} {...props} {...funnelProps} {...funnelStepProps} />
-    </ButtonContext.Provider>
+    <AnalyticsFunnelStep stepNumber={1}>
+      <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
+        <InternalForm variant={variant} actions={actions} {...props} {...funnelProps} {...funnelStepProps} />
+      </ButtonContext.Provider>
+    </AnalyticsFunnelStep>
   );
 };
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
   const baseComponentProps = useBaseComponent('Form');
   const inheritedFunnelNameSelector = useFunnelNameSelector();
-  const funnelNameSelector = inheritedFunnelNameSelector || `.${styles.header}`;
+  const funnelNameSelector = inheritedFunnelNameSelector || `.${headerStyles['heading-text']}`;
 
   return (
     <AnalyticsFunnel
       funnelType="single-page"
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
-      funnelNameSelector={funnelNameSelector}
+      funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
     >
-      <AnalyticsFunnelStep stepNumber={1} stepNameSelector={funnelNameSelector}>
-        <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
-      </AnalyticsFunnelStep>
+      <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
     </AnalyticsFunnel>
   );
 }
