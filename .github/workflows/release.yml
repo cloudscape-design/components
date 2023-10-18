@@ -84,6 +84,6 @@ jobs:
           aws codeartifact login --tool npm --repository $CODE_ARTIFACT_REPO --domain awsui --domain-owner ${{ secrets.AWS_ACCOUNT_ID }} --region us-west-2 --namespace @cloudscape-design
 
       - name: Release package to private CodeArtifact
-        uses: cloudscape-design/.github/.github/actions/release-package@main
+        uses: cloudscape-design/actions/.github/actions/release-package@main
         with:
           publish-packages: lib/components,lib/design-tokens,lib/style-dictionary,lib/components-themeable,lib/dev-pages,lib/components-definitions
