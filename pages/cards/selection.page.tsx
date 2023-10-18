@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import range from 'lodash/range';
 import Cards, { CardsProps } from '~components/cards/index';
 import Header from '~components/header/index';
+import Toggle from '~components/toggle';
 
 interface Item {
   number: number;
@@ -37,13 +38,22 @@ const cardDefinition: CardsProps.CardDefinition<Item> = {
   ],
 };
 
-const items = createSimpleItems(4);
+const items = createSimpleItems(8);
 
 export default function () {
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+  const [entireCard, setEntireCard] = useState(false);
+  const [someDisabled, setSomeDisabled] = useState(false);
+
   return (
     <>
       <h1>Cards selection</h1>
+      <Toggle checked={entireCard} onChange={event => setEntireCard(event.detail.checked)}>
+        Allow clicking entire card to select
+      </Toggle>
+      <Toggle checked={someDisabled} onChange={event => setSomeDisabled(event.detail.checked)}>
+        Make some card elements inactive
+      </Toggle>
       <Cards<Item>
         items={items}
         cardDefinition={cardDefinition}
@@ -52,6 +62,8 @@ export default function () {
         selectedItems={selectedItems}
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
         ariaLabels={ariaLabels}
+        entireCardClickable={entireCard}
+        isItemDisabled={item => someDisabled && !item.text.includes('o')}
       />
     </>
   );

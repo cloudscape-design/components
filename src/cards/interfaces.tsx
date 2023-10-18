@@ -207,6 +207,12 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * @visualrefresh `full-page` variant
    */
   variant?: 'container' | 'full-page';
+
+  /**
+   * Activating this property makes the entire card clickable to select it.
+   * Do not use this if there are any other interactive elements in the card.
+   */
+  entireCardClickable?: boolean;
 }
 
 export namespace CardsProps {

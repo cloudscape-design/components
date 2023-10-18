@@ -3828,6 +3828,13 @@ Default value:
       "type": "string",
     },
     Object {
+      "description": "Activating this property makes the entire card clickable to select it.
+Do not use this if there are any other interactive elements in the card.",
+      "name": "entireCardClickable",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": " Use this property to inform screen readers which range of cards is currently displayed.
  It specifies the index (1-based) of the first card.
  If the cards list has no pagination, leave this property undefined.",
