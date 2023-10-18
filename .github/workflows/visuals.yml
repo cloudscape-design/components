@@ -20,10 +20,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.base_ref }}
-      - name: Use Node.js 16.x
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - run: npm install
       - name: Install BackstopJS
         run: npm --prefix backstop install ./backstop
@@ -48,10 +48,10 @@ jobs:
       - buildReference
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: Download reference artifacts
         uses: actions/download-artifact@v3
         with:
