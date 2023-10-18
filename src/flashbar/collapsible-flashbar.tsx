@@ -187,54 +187,67 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     item.id ?? (item as StackableItem).expandedIndex ?? 0;
 
+  const commonListProps = {
+    ref: listElementRef,
+    id: flashbarElementId,
+    'aria-label': ariaLabel,
+    'aria-describedby': isCollapsible ? itemCountElementId : undefined,
+    style:
+      !isFlashbarStackExpanded || transitioning
+        ? {
+            [customCssProps.flashbarStackDepth]: stackDepth,
+          }
+        : undefined,
+  };
+
+  const commonListClassNames = [
+    styles['flash-list'],
+    isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+    isVisualRefresh && styles['visual-refresh'],
+  ];
+
+  const getListItemCommonProps = (item: StackableItem, index: number) => ({
+    key: getItemId(item),
+    style:
+      !isFlashbarStackExpanded || transitioning
+        ? {
+            [customCssProps.flashbarStackIndex]:
+              (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+          }
+        : undefined,
+  });
+
+  const getCommonFlashProps = (item: StackableItem) => ({
+    key: getItemId(item),
+    i18nStrings: iconAriaLabels,
+    ...item,
+  });
+
+  const commonFlashClassNames = [isVisualRefresh && styles['flash-refresh']];
+
   const renderListWithoutAnimations = () => {
     const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
       isFlashbarStackExpanded || ('expandedIndex' in item && item.expandedIndex === 0);
 
     return (
-      <ul
-        ref={listElementRef}
-        className={clsx(
-          styles['flash-list'],
-          isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-          isVisualRefresh && styles['visual-refresh']
-        )}
-        id={flashbarElementId}
-        aria-label={ariaLabel}
-        aria-describedby={isCollapsible ? itemCountElementId : undefined}
-        style={
-          !isFlashbarStackExpanded
-            ? {
-                [customCssProps.flashbarStackDepth]: stackDepth,
-              }
-            : undefined
-        }
-      >
+      <ul {...commonListProps} className={clsx(commonListClassNames)}>
         {itemsToShow.map((item: StackableItem, index: number) => (
+          // The key is provided by getListItemCommonProps
+          // eslint-disable-next-line react/jsx-key
           <li
+            {...getListItemCommonProps(item, index)}
             aria-hidden={!showInnerContent(item)}
             className={
               showInnerContent(item)
                 ? clsx(styles['flash-list-item'], !isFlashbarStackExpanded && styles.item)
                 : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
             }
-            style={
-              !isFlashbarStackExpanded
-                ? {
-                    [customCssProps.flashbarStackIndex]:
-                      (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                  }
-                : undefined
-            }
-            key={getItemId(item)}
           >
             {showInnerContent(item) && (
               <Flash
                 // eslint-disable-next-line react/forbid-component-props
-                className={clsx(isVisualRefresh && styles['flash-refresh'])}
-                key={getItemId(item)}
-                i18nStrings={iconAriaLabels}
-                {...item}
+                className={clsx(commonFlashClassNames)}
+                {...getCommonFlashProps(item)}
               />
             )}
           </li>
@@ -263,24 +276,12 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
     return (
       <ul
-        ref={listElementRef}
+        {...commonListProps}
         className={clsx(
-          styles['flash-list'],
-          isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+          commonListClassNames,
           transitioning && styles['animation-running'],
-          initialAnimationState && styles['animation-ready'],
-          isVisualRefresh && styles['visual-refresh']
+          initialAnimationState && styles['animation-ready']
         )}
-        id={flashbarElementId}
-        aria-label={ariaLabel}
-        aria-describedby={isCollapsible ? itemCountElementId : undefined}
-        style={
-          !isFlashbarStackExpanded || transitioning
-            ? {
-                [customCssProps.flashbarStackDepth]: stackDepth,
-              }
-            : undefined
-        }
       >
         <TransitionGroup component={null}>
           {itemsToShow.map((item: StackableItem, index: number) => (
@@ -297,6 +298,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             >
               {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
                 <li
+                  {...getListItemCommonProps(item, index)}
                   aria-hidden={!showInnerContent(item)}
                   className={
                     showInnerContent(item)
@@ -314,25 +316,14 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                       collapsedItemRefs.current[getAnimationElementId(item)] = element;
                     }
                   }}
-                  style={
-                    !isFlashbarStackExpanded || transitioning
-                      ? {
-                          [customCssProps.flashbarStackIndex]:
-                            (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                        }
-                      : undefined
-                  }
-                  key={getItemId(item)}
                 >
                   {showInnerContent(item) && (
                     <Flash
                       // eslint-disable-next-line react/forbid-component-props
-                      className={clsx(styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
-                      key={getItemId(item)}
+                      className={clsx(styles['flash-with-motion'], commonFlashClassNames)}
                       ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                       transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
-                      i18nStrings={iconAriaLabels}
-                      {...item}
+                      {...getCommonFlashProps(item)}
                     />
                   )}
                 </li>
