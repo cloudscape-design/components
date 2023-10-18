@@ -12,6 +12,7 @@ import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/ana
 
 import formStyles from './styles.css.js';
 import headerStyles from '../header/styles.css.js';
+import { getFunnelNameSelector } from '../internal/analytics/selectors';
 
 export { FormProps };
 
@@ -45,7 +46,7 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
       funnelType="single-page"
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
-      funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
+      funnelNameSelectors={[getFunnelNameSelector(), funnelNameSelector, `.${formStyles.header}`]}
     >
       <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
     </AnalyticsFunnel>
