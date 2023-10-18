@@ -344,21 +344,23 @@ const Dropdown = ({
   // Prevent the dropdown width from stretching beyond the trigger width
   // if that is going to cause the dropdown to be cropped because of overflow
   useLayoutEffect(() => {
-    if (stretchBeyondTriggerWidth && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-      if (
-        !hasEnoughSpaceToStretchBeyondTriggerWidth({
-          triggerElement: triggerRef.current,
-          dropdownElement: dropdownRef.current,
-          dropdownOverflowParents: getDropdownOverflowParents(),
-          desiredMinWidth: minWidth,
-          expandToViewport,
-          stretchWidth,
-          stretchHeight,
-          isMobile,
-        })
-      ) {
-        dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
-      }
+    if (
+      stretchBeyondTriggerWidth &&
+      dropdownRef.current &&
+      triggerRef.current &&
+      verticalContainerRef.current &&
+      !hasEnoughSpaceToStretchBeyondTriggerWidth({
+        triggerElement: triggerRef.current,
+        dropdownElement: dropdownRef.current,
+        dropdownOverflowParents: getDropdownOverflowParents(),
+        desiredMinWidth: minWidth,
+        expandToViewport,
+        stretchWidth,
+        stretchHeight,
+        isMobile,
+      })
+    ) {
+      dropdownRef.current.classList.remove(styles['stretch-beyond-trigger-width']);
     }
   });
 
