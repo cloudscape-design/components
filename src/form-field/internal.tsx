@@ -138,7 +138,7 @@ export default function InternalFormField({
           stepNumber,
           stepName,
           stepNameSelector,
-          fieldErrorSelector: getFieldSlotSeletor(slotIds.error),
+          fieldErrorSelector: `${getFieldSlotSeletor(slotIds.error)} .${styles.error__message}`,
           fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
           subStepAllSelector: getSubStepAllSelector(),
         });

@@ -15,7 +15,7 @@ import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-
 
 import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
 
-import formStyles from '../../../lib/components/form/styles.selectors.js';
+import headerStyles from '../../../lib/components/header/styles.selectors.js';
 import modalStyles from '../../../lib/components/modal/styles.selectors.js';
 
 mockInnerText();
@@ -29,7 +29,13 @@ describe('Form Analytics', () => {
 
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
     render(
-      <Form header="My funnel">
+      <Form
+        header={
+          <Header info="This is info" description="This is a description">
+            My funnel
+          </Header>
+        }
+      >
         <Container header={<Header>Substep one</Header>}></Container>
         <Container header={<Header>Substep two</Header>}></Container>
       </Form>
@@ -42,7 +48,7 @@ describe('Form Analytics', () => {
         funnelType: 'single-page',
         totalFunnelSteps: 1,
         optionalStepNumbers: [],
-        funnelNameSelector: `.${formStyles.header}`,
+        funnelNameSelector: `.${headerStyles['heading-text']}`,
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         theme: expect.any(String),
@@ -66,7 +72,15 @@ describe('Form Analytics', () => {
   });
 
   test('includes the current Form Header as the step name in the funnelStepStart event', () => {
-    render(<Form header="My creation flow" />);
+    render(
+      <Form
+        header={
+          <Header info="This is info" description="This is a description">
+            My creation flow
+          </Header>
+        }
+      />
+    );
     act(() => void jest.runAllTimers());
 
     expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
