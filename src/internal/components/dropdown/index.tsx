@@ -176,6 +176,8 @@ const Dropdown = ({
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
+  // Cache the list of parents which have overflow different than "visible" as this can be an expensive operation in test environments.
+  // This does not cache the actual measurements if these elements, which will be re-calculated on render.
   const overflowParents = useRef<HTMLElement[] | null>(null);
 
   const isRefresh = useVisualRefresh();
@@ -280,6 +282,14 @@ const Dropdown = ({
     }
   };
 
+  const getDropdownOverflowParents = () => {
+    if (expandToViewport || !dropdownRef.current) {
+      return [];
+    }
+    overflowParents.current = overflowParents.current || getOverflowParents(dropdownRef.current);
+    return overflowParents.current;
+  };
+
   useLayoutEffect(() => {
     const onDropdownOpen = () => {
       if (open && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
@@ -287,12 +297,11 @@ const Dropdown = ({
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
-        overflowParents.current = overflowParents.current || getOverflowParents(dropdownRef.current);
 
         setDropdownPosition(
           ...calculatePosition({
             dropdownElement: dropdownRef.current,
-            dropdownOverflowParents: overflowParents.current,
+            dropdownOverflowParents: getDropdownOverflowParents(),
             triggerElement: triggerRef.current,
             verticalContainerElement: verticalContainerRef.current,
             interior,
@@ -336,12 +345,11 @@ const Dropdown = ({
   // if that is going to cause the dropdown to be cropped because of overflow
   useLayoutEffect(() => {
     if (stretchBeyondTriggerWidth && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-      overflowParents.current = overflowParents.current || getOverflowParents(dropdownRef.current);
       if (
         !hasEnoughSpaceToStretchBeyondTriggerWidth({
           triggerElement: triggerRef.current,
           dropdownElement: dropdownRef.current,
-          dropdownOverflowParents: overflowParents.current,
+          dropdownOverflowParents: getDropdownOverflowParents(),
           desiredMinWidth: minWidth,
           expandToViewport,
           stretchWidth,

@@ -173,7 +173,6 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
   isMobile: boolean;
 }) => {
   const overflowParentDimensions = getOverflowParentDimensions({
-    element: dropdownElement,
     overflowParents: dropdownOverflowParents,
     excludeClosestParent: false,
     expandToViewport,
@@ -356,7 +355,6 @@ export const calculatePosition = ({
   dropdownElement.classList.remove(styles['dropdown-drop-up']);
 
   const overflowParents = getOverflowParentDimensions({
-    element: dropdownElement,
     excludeClosestParent: interior,
     expandToViewport,
     canExpandOutsideViewport: stretchHeight,

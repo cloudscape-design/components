@@ -18,31 +18,27 @@ export const getOverflowParents = (element: HTMLElement): HTMLElement[] => {
 };
 
 export const getOverflowParentDimensions = ({
-  element,
   excludeClosestParent = false,
   expandToViewport = false,
   canExpandOutsideViewport = false,
-  overflowParents = getOverflowParents(element),
+  overflowParents,
 }: {
-  element: HTMLElement;
   excludeClosestParent: boolean;
   expandToViewport: boolean;
   canExpandOutsideViewport: boolean;
-  overflowParents?: HTMLElement[];
+  overflowParents: HTMLElement[];
 }): Dimensions[] => {
-  const parents = expandToViewport
-    ? []
-    : overflowParents.map(el => {
-        const { height, width, top, left } = el.getBoundingClientRect();
-        return {
-          // Treat the whole scrollable area as the available height
-          // if we're allowed to expand past the viewport.
-          height: canExpandOutsideViewport ? el.scrollHeight : height,
-          width,
-          top,
-          left,
-        };
-      });
+  const parents = overflowParents.map(el => {
+    const { height, width, top, left } = el.getBoundingClientRect();
+    return {
+      // Treat the whole scrollable area as the available height
+      // if we're allowed to expand past the viewport.
+      height: canExpandOutsideViewport ? el.scrollHeight : height,
+      width,
+      top,
+      left,
+    };
+  });
 
   if (canExpandOutsideViewport && !expandToViewport) {
     const documentDimensions = document.documentElement.getBoundingClientRect();
