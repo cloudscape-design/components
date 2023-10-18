@@ -10,4 +10,4 @@ on:
 
 jobs:
   dry-run:
-    uses: cloudscape-design/.github/.github/workflows/lint-pr.yml@main
+    uses: cloudscape-design/actions/.github/workflows/lint-pr.yml@new-with-node18

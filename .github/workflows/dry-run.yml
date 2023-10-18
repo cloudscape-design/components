@@ -12,4 +12,4 @@ on:
 
 jobs:
   dry-run:
-    uses: cloudscape-design/.github/.github/workflows/dry-run.yml@main
+    uses: cloudscape-design/actions/.github/workflows/dry-run.yml@new-with-node18

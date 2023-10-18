@@ -27,7 +27,7 @@ jobs:
             })
 
       - name: Checkout the PR branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: 'components'
 
@@ -64,7 +64,7 @@ jobs:
       # ------- Base branch size measurement ------------------------------
 
       - name: Checkout the base branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           path: 'components'
@@ -102,7 +102,7 @@ jobs:
       # ------- Pull request size measurement -----------------------------
 
       - name: Checkout the PR branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: 'components'
 
