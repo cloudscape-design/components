@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Alert, { AlertProps } from '~components/alert';
+import Box from '~components/box';
 import Container from '~components/container';
 import FormField from '~components/form-field';
 import Header from '~components/header';
@@ -10,17 +10,7 @@ import S3ResourceSelector, { S3ResourceSelectorProps } from '~components/s3-reso
 
 import { fetchBuckets, fetchObjects, fetchVersions } from './data/request';
 import { i18nStrings } from './data/i18n-strings';
-import Box from '~components/box';
-
-function SelfDismissibleAlert(props: Omit<AlertProps, 'visible' | 'onDismiss'>) {
-  const [visible, setVisible] = React.useState(true);
-  return <Alert {...props} visible={visible} dismissible={true} onDismiss={() => setVisible(false)} />;
-}
-
-function uriToConsoleUrl(uri: string) {
-  const prefix = 'https://s3.console.aws.amazon.com/s3/buckets/';
-  return uri.replace(/^s3:\/\//, prefix);
-}
+import { SelfDismissibleAlert, uriToConsoleUrl } from './shared';
 
 export default function S3PickerExample() {
   const [validationError, setValidationError] = useState<string | undefined>();
