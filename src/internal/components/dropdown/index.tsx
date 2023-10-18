@@ -23,6 +23,7 @@ import TabTrap from '../tab-trap/index.js';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import { useUniqueId } from '../../hooks/use-unique-id/index.js';
 import customCssProps from '../../generated/custom-css-properties';
+import { getOverflowParents } from '../../utils/scrollable-containers.js';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -175,6 +176,7 @@ const Dropdown = ({
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
+  const overflowParents = useRef<HTMLElement[] | null>(null);
 
   const isRefresh = useVisualRefresh();
 
@@ -285,11 +287,14 @@ const Dropdown = ({
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
+        overflowParents.current = overflowParents.current || getOverflowParents(dropdownRef.current);
+
         setDropdownPosition(
-          ...calculatePosition(
-            dropdownRef.current,
-            triggerRef.current,
-            verticalContainerRef.current,
+          ...calculatePosition({
+            dropdownElement: dropdownRef.current,
+            dropdownOverflowParents: overflowParents.current,
+            triggerElement: triggerRef.current,
+            verticalContainerElement: verticalContainerRef.current,
             interior,
             expandToViewport,
             preferCenter,
@@ -297,8 +302,8 @@ const Dropdown = ({
             stretchHeight,
             isMobile,
             minWidth,
-            stretchBeyondTriggerWidth
-          ),
+            stretchBeyondTriggerWidth,
+          }),
           dropdownRef.current,
           verticalContainerRef.current
         );
@@ -331,10 +336,12 @@ const Dropdown = ({
   // if that is going to cause the dropdown to be cropped because of overflow
   useLayoutEffect(() => {
     if (stretchBeyondTriggerWidth && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
+      overflowParents.current = overflowParents.current || getOverflowParents(dropdownRef.current);
       if (
         !hasEnoughSpaceToStretchBeyondTriggerWidth({
           triggerElement: triggerRef.current,
           dropdownElement: dropdownRef.current,
+          dropdownOverflowParents: overflowParents.current,
           desiredMinWidth: minWidth,
           expandToViewport,
           stretchWidth,

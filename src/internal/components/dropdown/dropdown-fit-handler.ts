@@ -156,6 +156,7 @@ export const getWidths = ({
 export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
   triggerElement,
   dropdownElement,
+  dropdownOverflowParents,
   desiredMinWidth,
   expandToViewport,
   stretchWidth,
@@ -164,14 +165,16 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
+  dropdownOverflowParents: HTMLElement[];
   desiredMinWidth?: number;
   expandToViewport: boolean;
   stretchWidth: boolean;
   stretchHeight: boolean;
   isMobile: boolean;
 }) => {
-  const overflowParents = getOverflowParentDimensions({
+  const overflowParentDimensions = getOverflowParentDimensions({
     element: dropdownElement,
+    overflowParents: dropdownOverflowParents,
     excludeClosestParent: false,
     expandToViewport,
     canExpandOutsideViewport: stretchHeight,
@@ -184,7 +187,7 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
   });
   const availableSpace = getAvailableSpace({
     trigger: triggerElement,
-    overflowParents,
+    overflowParents: overflowParentDimensions,
     stretchWidth,
     stretchHeight,
     isMobile,
@@ -313,19 +316,33 @@ export const getInteriorDropdownPosition = (
   };
 };
 
-export const calculatePosition = (
-  dropdownElement: HTMLDivElement,
-  triggerElement: HTMLDivElement,
-  verticalContainerElement: HTMLDivElement,
-  interior: boolean,
-  expandToViewport: boolean,
-  preferCenter: boolean,
-  stretchWidth: boolean,
-  stretchHeight: boolean,
-  isMobile: boolean,
-  minWidth?: number,
-  stretchBeyondTriggerWidth?: boolean
-): [DropdownPosition, DOMRect] => {
+export const calculatePosition = ({
+  dropdownElement,
+  dropdownOverflowParents,
+  triggerElement,
+  verticalContainerElement,
+  interior,
+  expandToViewport,
+  preferCenter,
+  stretchWidth,
+  stretchHeight,
+  isMobile,
+  minWidth,
+  stretchBeyondTriggerWidth,
+}: {
+  dropdownElement: HTMLDivElement;
+  dropdownOverflowParents: HTMLElement[];
+  triggerElement: HTMLDivElement;
+  verticalContainerElement: HTMLDivElement;
+  interior: boolean;
+  expandToViewport: boolean;
+  preferCenter: boolean;
+  stretchWidth: boolean;
+  stretchHeight: boolean;
+  isMobile: boolean;
+  minWidth?: number;
+  stretchBeyondTriggerWidth?: boolean;
+}): [DropdownPosition, DOMRect] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
   verticalContainerElement.style.maxHeight = '';
@@ -343,6 +360,7 @@ export const calculatePosition = (
     excludeClosestParent: interior,
     expandToViewport,
     canExpandOutsideViewport: stretchHeight,
+    overflowParents: dropdownOverflowParents,
   });
   const position = interior
     ? getInteriorDropdownPosition(triggerElement, dropdownElement, overflowParents, isMobile)

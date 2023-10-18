@@ -22,15 +22,17 @@ export const getOverflowParentDimensions = ({
   excludeClosestParent = false,
   expandToViewport = false,
   canExpandOutsideViewport = false,
+  overflowParents = getOverflowParents(element),
 }: {
   element: HTMLElement;
   excludeClosestParent: boolean;
   expandToViewport: boolean;
   canExpandOutsideViewport: boolean;
+  overflowParents?: HTMLElement[];
 }): Dimensions[] => {
   const parents = expandToViewport
     ? []
-    : getOverflowParents(element).map(el => {
+    : overflowParents.map(el => {
         const { height, width, top, left } = el.getBoundingClientRect();
         return {
           // Treat the whole scrollable area as the available height
