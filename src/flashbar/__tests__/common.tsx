@@ -28,10 +28,10 @@ export function testFlashDismissal({ stackItems }: { stackItems: boolean }) {
     );
   };
   const appWrapper = createWrapper(render(<App />).container);
-  expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
+  expect(appWrapper.findFlashbar()!.findItems()).toHaveLength(0);
   appWrapper.findButton()!.click();
   const foundItems = appWrapper.findFlashbar()!.findItems();
   expect(foundItems).toHaveLength(1);
   foundItems![0]!.findDismissButton()!.click();
-  expect(appWrapper.findFlashbar()?.findItems()).toHaveLength(0);
+  expect(appWrapper.findFlashbar()!.findItems()).toHaveLength(0);
 }
