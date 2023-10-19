@@ -21,14 +21,15 @@ import InternalIcon from '../icon/internal';
 import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { usePrevious } from '../internal/hooks/use-previous/index.js';
+import { usePrevious } from '../internal/hooks/use-previous';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings/join-strings';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
-import { formatValue } from './utils.js';
-import { useInternalI18n } from '../i18n/context.js';
+import { useInternalI18n } from '../i18n/context';
+import { formatValue } from './utils';
 
 export { DateRangePickerProps };
 
@@ -128,6 +129,7 @@ const DateRangePicker = React.forwardRef(
 
     const rootRef = useRef<HTMLDivElement>(null);
     const dropdownId = useUniqueId('date-range-picker-dropdown');
+    const triggerContentId = useUniqueId('date-range-picker-trigger');
 
     useFocusTracker({ rootRef, onBlur, onFocus });
 
@@ -229,9 +231,9 @@ const DateRangePicker = React.forwardRef(
           ref={triggerRef}
           id={controlId}
           invalid={invalid}
+          ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
           ariaLabel={i18nStrings?.ariaLabel}
           ariaDescribedby={ariaDescribedby}
-          ariaLabelledby={ariaLabelledby}
           className={clsx(styles.label, {
             [styles['label-enabled']]: !readOnly && !disabled,
           })}
@@ -249,7 +251,9 @@ const DateRangePicker = React.forwardRef(
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
+            <span id={triggerContentId}>
+              {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
+            </span>
           </span>
         </ButtonTrigger>
       </div>

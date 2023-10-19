@@ -70,7 +70,10 @@ describe('Date range picker', () => {
 
     test('aria-labelledby', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, ariaLabelledby: '#element' });
-      expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-labelledby', '#element');
+      expect(wrapper.findTrigger().getElement()).toHaveAttribute(
+        'aria-labelledby',
+        expect.stringContaining('#element')
+      );
 
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-labelledby', '#element');
@@ -84,6 +87,19 @@ describe('Date range picker', () => {
     test('controlId', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, controlId: 'test' });
       expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
+    });
+
+    test('correctly labels the dropdown trigger with the selected value', () => {
+      const value = { type: 'relative', amount: 5, unit: 'day' } as const;
+      const { container } = render(
+        <FormField label="Label">
+          <DateRangePicker {...defaultProps} value={value} />
+        </FormField>
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      expect(wrapper.findTrigger().getElement()).toHaveAccessibleName(
+        'Label ' + i18nStrings.formatRelativeRange!(value)
+      );
     });
 
     test('does not pass through form field context to dropdown elements', () => {
