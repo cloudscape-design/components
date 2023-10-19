@@ -90,18 +90,12 @@ export default function () {
             xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
             detailPopoverSeriesContent={({ series, x, y }) => {
               const isOtherSeries = series === otherSeries;
-              return {
-                expandable: isOtherSeries,
-                key: isOtherSeries ? (
-                  series.title
-                ) : (
-                  <Link external={true} href="#">
-                    {series.title}
-                  </Link>
-                ),
-                value: dollarFormatter(y),
-                details: isOtherSeries
-                  ? (groupedSeries
+              return isOtherSeries
+                ? {
+                    expandable: true,
+                    key: series.title,
+                    value: dollarFormatter(y),
+                    details: groupedSeries
                       .map(childSeries => {
                         const datum = childSeries.data.find(item => item.x === x);
                         if (datum) {
@@ -115,9 +109,16 @@ export default function () {
                           };
                         }
                       })
-                      .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>)
-                  : undefined,
-              };
+                      .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>,
+                  }
+                : {
+                    key: (
+                      <Link external={true} href="#">
+                        {series.title}
+                      </Link>
+                    ),
+                    value: dollarFormatter(y),
+                  };
             }}
             detailPopoverFooter={x => {
               const sum = allSeries.reduce((previousValue, currentSeries) => {

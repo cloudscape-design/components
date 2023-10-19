@@ -217,13 +217,22 @@ export namespace CartesianChartProps {
     (xValue: T): React.ReactNode;
   }
 
+  interface SeriesContentWithDetails {
+    key: string;
+    value: ReactNode;
+    expandable?: boolean;
+    details: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+  }
+
+  interface SeriesContentWithoutDetails {
+    key: ReactNode;
+    value: ReactNode;
+    details: undefined;
+  }
+
+  export type SeriesContent = SeriesContentWithDetails | SeriesContentWithoutDetails;
   export interface DetailPopoverSeriesContent<T, Series> {
-    ({ series, x, y }: { series: Series; x: T; y: number }): {
-      key: ReactNode;
-      value: ReactNode;
-      expandable?: boolean;
-      details?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
-    };
+    ({ series, x, y }: { series: Series; x: T; y: number }): SeriesContent;
   }
 
   export interface I18nStrings<T> {
