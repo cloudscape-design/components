@@ -7,7 +7,7 @@ import Header from '~components/header';
 import Box from '~components/box';
 import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
-import rawCostsData from './popover-drilldown-sample-data';
+import rawCostsData from '../common/popover-drilldown-sample-data';
 import { LineChart, Link, MixedLineBarChartProps } from '~components';
 
 interface LineDataSeries<T, Y> {

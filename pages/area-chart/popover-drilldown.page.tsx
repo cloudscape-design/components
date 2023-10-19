@@ -5,20 +5,19 @@ import React, { ReactNode } from 'react';
 import Container from '~components/container';
 import Header from '~components/header';
 import Box from '~components/box';
-import BarChart from '~components/bar-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
 import rawCostsData from '../common/popover-drilldown-sample-data';
-import { MixedLineBarChartProps } from '~components';
+import AreaChart, { AreaChartProps } from '~components/area-chart';
 import Link from '~components/link';
 
-interface BarDataSeries<T, Y> {
-  type: 'bar';
+interface AreaDataSeries<T, Y> {
+  type: 'area';
   title: string;
-  data: MixedLineBarChartProps.Datum<T>[];
-  valueFormatter?: MixedLineBarChartProps.ValueFormatter<Y, T>;
+  data: AreaChartProps.Datum<T>[];
+  valueFormatter?: AreaChartProps.ValueFormatter<Y, T>;
 }
-const costsDataSeries: BarDataSeries<string, number>[] = [];
+const costsDataSeries: AreaDataSeries<string, number>[] = [];
 
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -31,7 +30,7 @@ for (const { Groups, TimePeriod } of rawCostsData.ResultsByTime) {
     } else {
       series = {
         title: group.Keys[0],
-        type: 'bar',
+        type: 'area',
         data: [{ x: TimePeriod.Start, y: Number(group.Metrics.UnblendedCost.Amount) }],
         valueFormatter: dollarFormatter,
       };
@@ -50,7 +49,7 @@ const maxSeries = 9;
 
 const slicedSeries = sortedCostsDataSeries.slice(0, maxSeries - 1);
 const groupedSeries = sortedCostsDataSeries.slice(maxSeries, sortedCostsDataSeries.length - 2);
-const otherData: MixedLineBarChartProps.Datum<string>[] = [];
+const otherData: AreaChartProps.Datum<string>[] = [];
 for (const series of groupedSeries) {
   for (const { x, y } of series.data) {
     let data = otherData.find(item => item.x === x);
@@ -63,14 +62,14 @@ for (const series of groupedSeries) {
   }
 }
 
-const otherSeries: BarDataSeries<string, number> = {
+const otherSeries: AreaDataSeries<string, number> = {
   title: 'Others',
-  type: 'bar',
+  type: 'area',
   valueFormatter: dollarFormatter,
   data: otherData,
 };
 
-const allSeries: ReadonlyArray<BarDataSeries<string, number>> = [...slicedSeries, otherSeries];
+const allSeries: ReadonlyArray<AreaDataSeries<string, number>> = [...slicedSeries, otherSeries];
 
 export default function () {
   return (
@@ -78,14 +77,14 @@ export default function () {
       <h1>Chart popover explorations</h1>
       <Box padding="l">
         <Container header={<Header variant="h2">Costs bar chart</Header>}>
-          <BarChart
+          <AreaChart
             {...commonProps}
-            stackedBars={true}
             series={allSeries}
             xDomain={rawCostsData.ResultsByTime.map(({ TimePeriod }) => TimePeriod.Start)}
             xTitle="Time"
             yTitle="Costs"
             ariaLabel="Costs chart"
+            xScaleType="categorical"
             ariaDescription={barChartInstructions}
             xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
             detailPopoverSeriesContent={({ series, x, y }) => {
@@ -119,29 +118,6 @@ export default function () {
                     ),
                     value: dollarFormatter(y),
                   };
-            }}
-            detailPopoverFooter={x => {
-              const sum = allSeries.reduce((previousValue, currentSeries) => {
-                const datum = currentSeries.data.find(item => item.x === x);
-                if (datum) {
-                  return previousValue + datum.y;
-                }
-                return previousValue;
-              }, 0);
-              return (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    fontWeight: 'bold',
-                    paddingTop: '.5em',
-                    borderTop: '1px solid lightgray',
-                  }}
-                >
-                  <span>Total</span>
-                  <span>{dollarFormatter(sum)}</span>
-                </div>
-              );
             }}
           />
         </Container>
