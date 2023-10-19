@@ -20,7 +20,7 @@ import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import { usePrevious } from '../internal/hooks/use-previous';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 export { FlashbarProps };
 
@@ -34,7 +34,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
-  const wasFlashbarStackExpanded = usePrevious(isFlashbarStackExpanded);
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -93,12 +92,15 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         focusFlashById(ref.current, mostRecentItem.id);
       }
     }
-    // When collapsing, scroll up if necessary to avoid losing track of the focused button
-    else if (wasFlashbarStackExpanded && !isFlashbarStackExpanded && notificationBarRef.current) {
-      scrollElementIntoView(notificationBarRef.current);
-    }
     // Run this after expanding, but not every time the items change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFlashbarStackExpanded]);
+
+  // When collapsing, scroll up if necessary to avoid losing track of the focused button
+  useEffectOnUpdate(() => {
+    if (!isFlashbarStackExpanded && notificationBarRef.current) {
+      scrollElementIntoView(notificationBarRef.current);
+    }
   }, [isFlashbarStackExpanded]);
 
   const updateBottomSpacing = useMemo(
