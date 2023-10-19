@@ -39,6 +39,16 @@ export interface ProgressBarProps extends BaseComponentProps {
   resultButtonText?: string;
 
   /**
+   * Adds an `aria-label` to the progress bar.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Adds `aria-labelledby` to the progress bar.
+   */
+  ariaLabelledby?: string;
+
+  /**
    * Short description of the operation that appears at the top of the component.
    *
    * Make sure that you always provide a label for accessibility.

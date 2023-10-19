@@ -36,6 +36,7 @@ import styles from './styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { joinStrings } from '../internal/utils/strings';
 import { useInternalI18n } from '../i18n/context';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps & { inlineTokens?: boolean };
 
@@ -88,6 +89,10 @@ const InternalMultiselect = React.forwardRef(
     const recoveryText = i18nCommon('recoveryText', restProps.recoveryText);
     const errorIconAriaLabel = i18nCommon('errorIconAriaLabel', restProps.errorIconAriaLabel);
     const selectedAriaLabel = i18nCommon('selectedAriaLabel', restProps.selectedAriaLabel);
+
+    if (restProps.recoveryText && !onLoadItems) {
+      warnOnce('Multiselect', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+    }
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,

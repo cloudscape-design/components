@@ -88,6 +88,26 @@ allVariants.forEach(variant => {
         expect(wrapper.find('[aria-live]')!.getElement()).toHaveTextContent('Result!');
       });
     });
+
+    describe('ARIA labels', () => {
+      test('attaches aria-label to the progress bar', () => {
+        const wrapper = renderProgressBar({ variant, value: 100, ariaLabel: 'aria label' });
+        expect(wrapper.find('progress')!.getElement()).toHaveAttribute('aria-label', 'aria label');
+      });
+
+      test('attaches aria-labelledby to the progress bar', () => {
+        const wrapper = renderProgressBar({ variant, value: 100, ariaLabelledby: 'testid' });
+        expect(wrapper.find('progress')!.getElement()).toHaveAttribute(
+          'aria-labelledby',
+          expect.stringContaining('testid')
+        );
+      });
+
+      test('ignores aria-labelledby if aria-label is provided', () => {
+        const wrapper = renderProgressBar({ variant, value: 100, ariaLabelledby: 'testid', ariaLabel: 'hello' });
+        expect(wrapper.find('progress')!.getElement()).not.toHaveAttribute('aria-labelledby');
+      });
+    });
   });
 });
 describe('Progress bar component flash variant - Result state', () => {
