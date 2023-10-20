@@ -46,7 +46,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { animateFlash, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -320,7 +320,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                   {showInnerContent(item) && (
                     <Flash
                       // eslint-disable-next-line react/forbid-component-props
-                      className={clsx(styles['flash-with-motion'], commonFlashClassNames)}
+                      className={clsx(commonFlashClassNames, animateFlash && styles['flash-with-motion'])}
                       ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                       transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
                       {...getCommonFlashProps(item)}
