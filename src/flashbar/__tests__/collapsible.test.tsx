@@ -46,7 +46,7 @@ const defaultProps = {
 };
 
 describe('Collapsible Flashbar', () => {
-  describe.each([false, true])('withAnimations=%s', withAnimations => {
+  describe.each([true, false])('withAnimations=%s', withAnimations => {
     beforeEach(() => {
       disableMotion(!withAnimations);
     });

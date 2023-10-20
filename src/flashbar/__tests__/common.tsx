@@ -19,7 +19,7 @@ export function testFlashDismissal({ stackItems }: { stackItems: boolean }) {
   const App = () => {
     const [items, setItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
     const onDismiss = () => setItems([]);
-    const onAdd = () => setItems([{ content: 'The content', dismissible: true, onDismiss }]);
+    const onAdd = () => setItems([{ content: 'The content', id: '1', dismissible: true, onDismiss }]);
     return (
       <>
         <Button onClick={onAdd}>Add an item</Button>
