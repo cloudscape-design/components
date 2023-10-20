@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
@@ -189,155 +189,97 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     item.id ?? (item as StackableItem).expandedIndex ?? 0;
 
-  const commonListProps = {
-    ref: listElementRef,
-    id: flashbarElementId,
-    'aria-label': ariaLabel,
-    'aria-describedby': isCollapsible ? itemCountElementId : undefined,
-    style:
-      !isFlashbarStackExpanded || transitioning
-        ? {
-            [customCssProps.flashbarStackDepth]: stackDepth,
-          }
-        : undefined,
-  };
+  // This check allows us to use the standard "enter" Transition only when the notification was not existing before.
+  // If instead it was moved to the top of the stack but was already present in the array
+  // (e.g, after dismissing another notification),
+  // we need to use different, more custom and more controlled animations.
+  const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
+    enteringItems.some(_item => _item.id && _item.id === item.id);
+  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
+  const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => hasEntered(item) || hasLeft(item);
 
-  const commonListClassNames = [
-    styles['flash-list'],
-    isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-    isVisualRefresh && styles['visual-refresh'],
-  ];
+  const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
+    isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
 
-  const getListItemCommonProps = (item: StackableItem, index: number) => ({
-    key: getItemId(item),
-    style:
-      !isFlashbarStackExpanded || transitioning
-        ? {
-            [customCssProps.flashbarStackIndex]:
-              (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-          }
-        : undefined,
-  });
+  const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
 
-  const getCommonFlashProps = (item: StackableItem) => ({
-    key: getItemId(item),
-    i18nStrings: iconAriaLabels,
-    ...item,
-  });
+  const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
-  const commonFlashClassNames = [isVisualRefresh && styles['flash-refresh']];
-
-  const renderListWithoutAnimations = () => {
-    const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-      isFlashbarStackExpanded || ('expandedIndex' in item && item.expandedIndex === 0);
-
-    return (
-      <ul {...commonListProps} className={clsx(commonListClassNames)}>
-        {itemsToShow.map((item: StackableItem, index: number) => (
-          // The key is provided by getListItemCommonProps
-          // eslint-disable-next-line react/jsx-key
-          <li
-            {...getListItemCommonProps(item, index)}
-            aria-hidden={!showInnerContent(item)}
-            className={
-              showInnerContent(item)
-                ? clsx(styles['flash-list-item'], !isFlashbarStackExpanded && styles.item)
-                : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+  const renderList = () => (
+    <ul
+      ref={listElementRef}
+      className={clsx(
+        styles['flash-list'],
+        isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+        transitioning && styles['animation-running'],
+        initialAnimationState && styles['animation-ready'],
+        isVisualRefresh && styles['visual-refresh']
+      )}
+      id={flashbarElementId}
+      aria-label={ariaLabel}
+      aria-describedby={isCollapsible ? itemCountElementId : undefined}
+      style={
+        !isFlashbarStackExpanded || transitioning
+          ? {
+              [customCssProps.flashbarStackDepth]: stackDepth,
             }
+          : undefined
+      }
+    >
+      <ListWrapper withMotion={!isReducedMotion}>
+        {itemsToShow.map((item: StackableItem, index: number) => (
+          <Transition
+            key={getItemId(item)}
+            in={!hasLeft(item)}
+            onStatusChange={status => {
+              if (status === 'entered') {
+                setEnteringItems([]);
+              } else if (status === 'exited') {
+                setExitingItems([]);
+              }
+            }}
           >
-            {showInnerContent(item) && (
-              <Flash
-                // eslint-disable-next-line react/forbid-component-props
-                className={clsx(commonFlashClassNames)}
-                {...getCommonFlashProps(item)}
-              />
-            )}
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
-  const renderListWithAnimations = () => {
-    // This check allows us to use the standard "enter" Transition only when the notification was not existing before.
-    // If instead it was moved to the top of the stack but was already present in the array
-    // (e.g, after dismissing another notification),
-    // we need to use different, more custom and more controlled animations.
-    const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-      enteringItems.some(_item => _item.id && _item.id === item.id);
-    const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
-    const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-      hasEntered(item) || hasLeft(item);
-
-    const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-      isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
-
-    const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
-
-    const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
-
-    return (
-      <ul
-        {...commonListProps}
-        className={clsx(
-          commonListClassNames,
-          transitioning && styles['animation-running'],
-          initialAnimationState && styles['animation-ready']
-        )}
-      >
-        <TransitionGroup component={null}>
-          {itemsToShow.map((item: StackableItem, index: number) => (
-            <Transition
-              key={getItemId(item)}
-              in={!hasLeft(item)}
-              onStatusChange={status => {
-                if (status === 'entered') {
-                  setEnteringItems([]);
-                } else if (status === 'exited') {
-                  setExitingItems([]);
+            {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+              <li
+                aria-hidden={!showInnerContent(item)}
+                className={
+                  showInnerContent(item)
+                    ? clsx(
+                        styles['flash-list-item'],
+                        !isFlashbarStackExpanded && styles.item,
+                        !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
+                      )
+                    : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
                 }
-              }}
-            >
-              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-                <li
-                  {...getListItemCommonProps(item, index)}
-                  aria-hidden={!showInnerContent(item)}
-                  className={
-                    showInnerContent(item)
-                      ? clsx(
-                          styles['flash-list-item'],
-                          !isFlashbarStackExpanded && styles.item,
-                          !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
-                        )
-                      : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+                ref={element => {
+                  if (isFlashbarStackExpanded) {
+                    expandedItemRefs.current[getAnimationElementId(item)] = element;
+                  } else {
+                    collapsedItemRefs.current[getAnimationElementId(item)] = element;
                   }
-                  ref={element => {
-                    if (isFlashbarStackExpanded) {
-                      expandedItemRefs.current[getAnimationElementId(item)] = element;
-                    } else {
-                      collapsedItemRefs.current[getAnimationElementId(item)] = element;
-                    }
-                  }}
-                >
-                  {showInnerContent(item) && (
-                    <Flash
-                      // eslint-disable-next-line react/forbid-component-props
-                      className={clsx(commonFlashClassNames, animateFlash && styles['flash-with-motion'])}
-                      ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
-                      transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
-                      {...getCommonFlashProps(item)}
-                    />
-                  )}
-                </li>
-              )}
-            </Transition>
-          ))}
-        </TransitionGroup>
-      </ul>
-    );
-  };
-
-  const renderList = isReducedMotion ? renderListWithoutAnimations : renderListWithAnimations;
+                }}
+              >
+                {showInnerContent(item) && (
+                  <Flash
+                    // eslint-disable-next-line react/forbid-component-props
+                    className={clsx(
+                      animateFlash && styles['flash-with-motion'],
+                      isVisualRefresh && styles['flash-refresh']
+                    )}
+                    key={getItemId(item)}
+                    ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
+                    transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
+                    i18nStrings={iconAriaLabels}
+                    {...item}
+                  />
+                )}
+              </li>
+            )}
+          </Transition>
+        ))}
+      </ListWrapper>
+    </ul>
+  );
 
   return (
     <div
@@ -354,47 +296,45 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       )}
       ref={mergedRef}
     >
-      <>
-        {isFlashbarStackExpanded && renderList()}
-        {isCollapsible && (
-          <div
-            className={clsx(
-              styles['notification-bar'],
-              isVisualRefresh && styles['visual-refresh'],
-              isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-              transitioning && styles['animation-running'],
-              items.length === 2 && styles['short-list'],
-              getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
-            )}
-            onClick={toggleCollapseExpand}
-            ref={notificationBarRef}
-          >
-            <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
-              {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
-              <span className={styles['item-count']}>
-                {counterTypes.map(({ type, labelName, iconName }) => (
-                  <NotificationTypeCount
-                    key={type}
-                    iconName={iconName}
-                    label={iconAriaLabels[labelName]}
-                    count={countByType[type]}
-                  />
-                ))}
-              </span>
+      {isFlashbarStackExpanded && renderList()}
+      {isCollapsible && (
+        <div
+          className={clsx(
+            styles['notification-bar'],
+            isVisualRefresh && styles['visual-refresh'],
+            isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+            transitioning && styles['animation-running'],
+            items.length === 2 && styles['short-list'],
+            getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
+          )}
+          onClick={toggleCollapseExpand}
+          ref={notificationBarRef}
+        >
+          <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
+            {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
+            <span className={styles['item-count']}>
+              {counterTypes.map(({ type, labelName, iconName }) => (
+                <NotificationTypeCount
+                  key={type}
+                  iconName={iconName}
+                  label={iconAriaLabels[labelName]}
+                  count={countByType[type]}
+                />
+              ))}
             </span>
-            <button
-              aria-controls={flashbarElementId}
-              aria-describedby={itemCountElementId}
-              aria-expanded={isFlashbarStackExpanded}
-              aria-label={notificationBarAriaLabel}
-              className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
-            >
-              <InternalIcon className={styles.icon} size="normal" name="angle-down" />
-            </button>
-          </div>
-        )}
-        {!isFlashbarStackExpanded && renderList()}
-      </>
+          </span>
+          <button
+            aria-controls={flashbarElementId}
+            aria-describedby={itemCountElementId}
+            aria-expanded={isFlashbarStackExpanded}
+            aria-label={notificationBarAriaLabel}
+            className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
+          >
+            <InternalIcon className={styles.icon} size="normal" name="angle-down" />
+          </button>
+        </div>
+      )}
+      {!isFlashbarStackExpanded && renderList()}
     </div>
   );
 }
@@ -419,3 +359,6 @@ const NotificationTypeCount = ({
     </span>
   );
 };
+
+const ListWrapper = ({ children, withMotion }: { children: ReactNode; withMotion: boolean }) =>
+  withMotion ? <TransitionGroup component={null}>{children}</TransitionGroup> : <>{children}</>;
