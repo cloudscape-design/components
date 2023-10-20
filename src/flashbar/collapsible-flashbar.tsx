@@ -258,6 +258,15 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     collapsedItemRefs.current[getAnimationElementId(item)] = element;
                   }
                 }}
+                style={
+                  !isFlashbarStackExpanded || transitioning
+                    ? {
+                        [customCssProps.flashbarStackIndex]:
+                          (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+                      }
+                    : undefined
+                }
+                key={getItemId(item)}
               >
                 {showInnerContent(item) && (
                   <Flash
