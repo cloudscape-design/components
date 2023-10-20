@@ -341,9 +341,9 @@ describe('Collapsible Flashbar', () => {
     describe('Sticky', () => {
       test('scrolls the button into view when collapsing', () => {
         scrollElementIntoViewMock.mockClear();
-        const flashbar = renderFlashbar();
-        findNotificationBar(flashbar)!.click(); // Expand
-        findNotificationBar(flashbar)!.click(); // Collapse
+        const button = renderFlashbar().findToggleButton()!;
+        button.click(); // Expand
+        button.click(); // Collapse
         expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
       });
     });
