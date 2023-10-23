@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
@@ -20,6 +20,7 @@ import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
 import { useInternalI18n } from '../i18n/context';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 export { FlashbarProps };
 
@@ -44,7 +45,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { animateFlash, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -76,8 +77,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setIsFlashbarStackExpanded(false);
   }
 
-  const animateFlash = !isReducedMotion;
-
   function toggleCollapseExpand() {
     sendToggleMetric(items.length, !isFlashbarStackExpanded);
     if (!isReducedMotion) {
@@ -95,6 +94,13 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     }
     // Run this after expanding, but not every time the items change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFlashbarStackExpanded]);
+
+  // When collapsing, scroll up if necessary to avoid losing track of the focused button
+  useEffectOnUpdate(() => {
+    if (!isFlashbarStackExpanded && notificationBarRef.current) {
+      scrollElementIntoView(notificationBarRef.current);
+    }
   }, [isFlashbarStackExpanded]);
 
   const updateBottomSpacing = useMemo(
@@ -160,11 +166,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         onTransitionsEnd: () => setTransitioning(false),
       });
 
-      // When collapsing, scroll up if necessary to avoid losing track of the focused button
-      if (!isFlashbarStackExpanded && notificationBarRef.current) {
-        scrollElementIntoView(notificationBarRef.current);
-      }
-
       setTransitioning(true);
       setInitialAnimationState(null);
     }
@@ -225,7 +226,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           : undefined
       }
     >
-      <TransitionGroup component={null}>
+      <ListWrapper withMotion={!isReducedMotion}>
         {itemsToShow.map((item: StackableItem, index: number) => (
           <Transition
             key={getItemId(item)}
@@ -285,7 +286,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             )}
           </Transition>
         ))}
-      </TransitionGroup>
+      </ListWrapper>
     </ul>
   );
 
@@ -304,47 +305,45 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       )}
       ref={mergedRef}
     >
-      <>
-        {isFlashbarStackExpanded && renderList()}
-        {isCollapsible && (
-          <div
-            className={clsx(
-              styles['notification-bar'],
-              isVisualRefresh && styles['visual-refresh'],
-              isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-              transitioning && styles['animation-running'],
-              items.length === 2 && styles['short-list'],
-              getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
-            )}
-            onClick={toggleCollapseExpand}
-            ref={notificationBarRef}
-          >
-            <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
-              {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
-              <span className={styles['item-count']}>
-                {counterTypes.map(({ type, labelName, iconName }) => (
-                  <NotificationTypeCount
-                    key={type}
-                    iconName={iconName}
-                    label={iconAriaLabels[labelName]}
-                    count={countByType[type]}
-                  />
-                ))}
-              </span>
+      {isFlashbarStackExpanded && renderList()}
+      {isCollapsible && (
+        <div
+          className={clsx(
+            styles['notification-bar'],
+            isVisualRefresh && styles['visual-refresh'],
+            isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+            transitioning && styles['animation-running'],
+            items.length === 2 && styles['short-list'],
+            getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
+          )}
+          onClick={toggleCollapseExpand}
+          ref={notificationBarRef}
+        >
+          <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
+            {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
+            <span className={styles['item-count']}>
+              {counterTypes.map(({ type, labelName, iconName }) => (
+                <NotificationTypeCount
+                  key={type}
+                  iconName={iconName}
+                  label={iconAriaLabels[labelName]}
+                  count={countByType[type]}
+                />
+              ))}
             </span>
-            <button
-              aria-controls={flashbarElementId}
-              aria-describedby={itemCountElementId}
-              aria-expanded={isFlashbarStackExpanded}
-              aria-label={notificationBarAriaLabel}
-              className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
-            >
-              <InternalIcon className={styles.icon} size="normal" name="angle-down" />
-            </button>
-          </div>
-        )}
-        {!isFlashbarStackExpanded && renderList()}
-      </>
+          </span>
+          <button
+            aria-controls={flashbarElementId}
+            aria-describedby={itemCountElementId}
+            aria-expanded={isFlashbarStackExpanded}
+            aria-label={notificationBarAriaLabel}
+            className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
+          >
+            <InternalIcon className={styles.icon} size="normal" name="angle-down" />
+          </button>
+        </div>
+      )}
+      {!isFlashbarStackExpanded && renderList()}
     </div>
   );
 }
@@ -369,3 +368,6 @@ const NotificationTypeCount = ({
     </span>
   );
 };
+
+const ListWrapper = ({ children, withMotion }: { children: ReactNode; withMotion: boolean }) =>
+  withMotion ? <TransitionGroup component={null}>{children}</TransitionGroup> : <>{children}</>;
