@@ -41,7 +41,7 @@ function setAnimations(state: boolean) {
   disableMotion(!state);
 }
 
-describe.only('Flashbar component', () => {
+describe('Flashbar component', () => {
   describe.each([true, false])('withAnimations=%s', withAnimations => {
     beforeEach(() => {
       setAnimations(withAnimations);
