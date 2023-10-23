@@ -122,8 +122,8 @@ describe('useHighlightedOption', () => {
       initialProps: { options: optionProp, isHighlightable },
     });
     act(() => hook.result.current[1].setHighlightedIndexWithMouse(1));
-    expect(hook.result.current[0].highlightType).toEqual('mouse');
+    expect(hook.result.current[0].highlightType).toEqual({ type: 'mouse', moveFocus: false });
     act(() => hook.result.current[1].highlightOptionWithKeyboard(optionProp[1]));
-    expect(hook.result.current[0].highlightType).toEqual('keyboard');
+    expect(hook.result.current[0].highlightType).toEqual({ type: 'keyboard', moveFocus: true });
   });
 });

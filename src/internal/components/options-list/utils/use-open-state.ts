@@ -9,10 +9,12 @@ interface OpenStateProps {
 
 export const useOpenState = ({ onOpen, onClose }: OpenStateProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openedWithKeyboard, setOpenedWithKeyboard] = useState(false);
 
-  const openDropdown = () => {
+  const openDropdown = (isKeyboard?: boolean) => {
     if (!isOpen) {
       setIsOpen(true);
+      setOpenedWithKeyboard(!!isKeyboard);
       onOpen?.();
     }
   };
@@ -32,5 +34,5 @@ export const useOpenState = ({ onOpen, onClose }: OpenStateProps) => {
     }
   };
 
-  return { isOpen, openDropdown, closeDropdown, toggleDropdown };
+  return { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard };
 };
