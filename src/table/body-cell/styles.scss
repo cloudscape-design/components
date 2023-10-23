@@ -101,6 +101,13 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     border-top: $selected-border;
     border-bottom: $selected-border;
     padding-bottom: $cell-vertical-padding;
+
+    // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
+    // Adjust padding-bottom prevents a slight jump in the table height.
+    &.body-cell-last-row.is-visual-refresh {
+      padding-bottom: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    }
+
     &:first-child {
       border-left: $selected-border;
       border-radius: awsui.$border-radius-item 0 0 awsui.$border-radius-item;
