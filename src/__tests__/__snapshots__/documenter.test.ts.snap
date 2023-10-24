@@ -12455,6 +12455,7 @@ Object {
           "grey",
           "green",
           "red",
+          "yellow",
         ],
       },
       "name": "colorOverride",
