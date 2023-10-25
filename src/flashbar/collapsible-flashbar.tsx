@@ -226,7 +226,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           : undefined
       }
     >
-      <ListWrapper withMotion={!isReducedMotion}>
+      <ListWrapper withMotion={animateFlash}>
         {itemsToShow.map((item: StackableItem, index: number) => (
           <Transition
             key={getItemId(item)}

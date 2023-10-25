@@ -147,6 +147,10 @@ describe('Collapsible Flashbar', () => {
         expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
         expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
       });
+
+      test('dismisses items', () => {
+        testFlashDismissal({ stackItems: true });
+      });
     });
 
     test('findItemsByType', () => {
@@ -347,14 +351,6 @@ describe('Collapsible Flashbar', () => {
         expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
       });
     });
-  });
-
-  test('dismisses items', () => {
-    // Test this feature only without animations because TransitionGroup delays item removals by one frame.
-    // Customers should disable animations in their tests too:
-    // https://cloudscape.design/foundation/visual-foundation/motion/#implementation
-    disableMotion(true);
-    testFlashDismissal({ stackItems: true });
   });
 });
 
