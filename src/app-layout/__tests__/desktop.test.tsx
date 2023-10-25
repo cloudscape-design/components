@@ -32,10 +32,10 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
-    const { wrapper, contentElement } = renderComponent(
-      <AppLayout breadcrumbs="breadcrumbs" notifications="notifications" />
-    );
-    const main = contentElement; //wrapper.getElement().parentElement!.querySelector('main');
+    const { wrapper } = renderComponent(<AppLayout breadcrumbs="breadcrumbs" notifications="notifications" />);
+    const mains = document.querySelectorAll('main');
+    expect(mains).toHaveLength(1);
+    const main = mains[0];
     expect(main).toContainElement(wrapper.findNotifications()!.getElement());
     expect(main).toContainElement(wrapper.findBreadcrumbs()!.getElement());
   });
