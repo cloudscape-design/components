@@ -4,7 +4,7 @@ import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { ChartScale, NumericChartScale } from './scales';
-import { TICK_LENGTH, TICK_MARGIN } from './constants';
+import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
 
 import styles from './styles.css.js';
 import { formatTicks, getVisibleTicks } from './label-utils';
@@ -92,9 +92,16 @@ function LeftLabels({
                   aria-hidden="true"
                 />
               )}
-              <text className={styles.ticks__text} x={-(TICK_LENGTH + TICK_MARGIN)} y={0}>
-                {lines.join(' ')}
-              </text>
+              {lines.map((line, lineIndex) => (
+                <text
+                  key={lineIndex}
+                  className={styles.ticks__text}
+                  x={-(TICK_LENGTH + TICK_MARGIN)}
+                  y={lineIndex * TICK_LINE_HEIGHT - (lines.length - 1) * TICK_LINE_HEIGHT * 0.5}
+                >
+                  {line}
+                </text>
+              ))}
             </g>
           )
       )}

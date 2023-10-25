@@ -33,11 +33,13 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth }: LabelsMeasure
       return null;
     }
 
-    return (
+    const textValue = tickFormatter ? tickFormatter(value as any) : value.toString();
+
+    return textValue.split('\n').map(value => (
       <div key={`${value}`} className={styles['labels-left__label']} aria-hidden="true">
-        {tickFormatter ? tickFormatter(value as any) : value.toString()}
+        {value}
       </div>
-    );
+    ));
   };
 
   return (
