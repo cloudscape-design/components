@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Box from '~components/box';
 import BarChart from '~components/bar-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 
 import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
+import { SpaceBetween } from '~components';
 
-const series1 = [
+const foodSeries = [
   {
     title: 'John',
     type: 'bar' as const,
@@ -44,7 +44,7 @@ const series1 = [
   },
 ];
 
-const series2 = [
+const cPackSeries = [
   {
     title: 'Conformance Packs',
     type: 'bar' as const,
@@ -56,12 +56,12 @@ export default function () {
   return (
     <ScreenshotArea>
       <h1>Bar chart integration test</h1>
-      <Box padding="l">
+      <SpaceBetween direction="vertical" size="xxl">
         <BarChart
           {...commonProps}
           id="chart-horizontal"
           height={300}
-          series={series1}
+          series={foodSeries}
           xDomain={[
             'Apples\nare\ngood',
             'Oranges\nare\ngood',
@@ -70,8 +70,8 @@ export default function () {
             'Bananas\nare\ngood',
           ]}
           yDomain={[0, 8]}
-          xTitle="Conformance Packs"
-          yTitle="Number of rules"
+          xTitle="Food"
+          yTitle="Consumption"
           xScaleType="categorical"
           horizontalBars={true}
           ariaLabel="Horizontal bar chart"
@@ -81,17 +81,17 @@ export default function () {
           {...commonProps}
           id="chart-horizontal"
           height={300}
-          series={series2}
+          series={cPackSeries}
           xDomain={['AWS-QuickSetup-Operational\n-Best-Practices-for-AWS-Well-\nArchitected-Security-Pillar']}
           yDomain={[0, 8]}
-          xTitle="Food"
-          yTitle="Consumption"
+          xTitle="Conformance Packs"
+          yTitle="Number of rules"
           xScaleType="categorical"
           horizontalBars={true}
           ariaLabel="Horizontal bar chart"
           ariaDescription={barChartInstructions}
         />
-      </Box>
+      </SpaceBetween>
     </ScreenshotArea>
   );
 }
