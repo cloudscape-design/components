@@ -201,6 +201,17 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
   );
 
   test(
+    'should set explicit width for the last column when full-page table width exceeds container width',
+    useBrowser({ width: 600, height: 1000 }, async browser => {
+      const page = new TablePage(browser);
+      await browser.url('#/light/table/resizable-columns?visualRefresh=true&fullPage=true');
+      await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
+
+      await expect(page.getColumnStyle(4)).resolves.toContain('width: 120px;');
+    })
+  );
+
+  test(
     'should shrink the last column after revealing a column',
     setupStickyTest(async page => {
       const nameColumnWidth = await page.getColumnWidth(1);
