@@ -59,7 +59,6 @@ export default function () {
       <SpaceBetween direction="vertical" size="xxl">
         <BarChart
           {...commonProps}
-          id="chart-horizontal"
           height={300}
           series={foodSeries}
           xDomain={[
@@ -79,7 +78,6 @@ export default function () {
         />
         <BarChart
           {...commonProps}
-          id="chart-horizontal"
           height={300}
           series={cPackSeries}
           xDomain={['AWS-QuickSetup-Operational\n-Best-Practices-for-AWS-Well-\nArchitected-Security-Pillar']}
