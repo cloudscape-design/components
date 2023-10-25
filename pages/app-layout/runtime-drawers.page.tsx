@@ -163,7 +163,7 @@ export default function WithDrawers() {
       tools={<Info helpPathSlug={helpPathSlug} />}
       toolsOpen={isToolsOpen}
       toolsHide={!hasTools}
-      {...drawers}
+      {...(drawers as any)}
     />
   );
 }

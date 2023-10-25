@@ -8,7 +8,7 @@ import ResizeHandler from '../../split-panel/icons/resize-handler';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from './use-pointer-events';
 import { useKeyboardEvents } from './use-keyboard-events';
-import { PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -17,7 +17,7 @@ import { FocusControlRefs } from './use-focus-control';
 import { SizeControlProps } from './interfaces';
 
 export interface DrawerResizeProps {
-  activeDrawer: PublicDrawer | undefined;
+  activeDrawer: AppLayoutProps.Drawer | undefined;
   activeDrawerSize: number;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   drawersRefs: FocusControlRefs;

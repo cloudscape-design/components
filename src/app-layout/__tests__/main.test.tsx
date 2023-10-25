@@ -80,7 +80,7 @@ describe('drawers', () => {
 
   test('property is controlled', () => {
     const onChange = jest.fn();
-    const drawers = {
+    const drawers: any = {
       drawers: {
         onChange: onChange,
         activeDrawerId: null,
@@ -88,7 +88,7 @@ describe('drawers', () => {
       },
     };
 
-    const drawersOpen = {
+    const drawersOpen: any = {
       drawers: {
         onChange: onChange,
         activeDrawerId: 'security',

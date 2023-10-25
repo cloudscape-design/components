@@ -418,7 +418,7 @@ describeEachAppLayout(size => {
         onChange: event => onChange(event.detail),
       },
     };
-    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...drawers} />);
+    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...(drawers as any)} />);
     expect(onChange).toHaveBeenCalledWith(drawerDefaults.id);
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
   });

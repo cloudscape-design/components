@@ -8,10 +8,10 @@ import {
   drawerWithoutLabels,
   isDrawerClosed,
   renderComponent,
-  singleDrawer,
   singleDrawerOpen,
   manyDrawers,
   splitPanelI18nStrings,
+  singleDrawerPublic,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
@@ -126,7 +126,7 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('renders open drawer state', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(singleDrawerOpen as any)} />);
     expect(document.body).toHaveClass(blockBodyScrollClassName);
     expect(wrapper.findNavigation()).toBeTruthy();
     expect(wrapper.findTools()).toBeFalsy(); // no tools rendered in drawers mode
@@ -397,7 +397,7 @@ describeEachThemeAppLayout(true, theme => {
     });
 
     test('content and toolbar is unfocusable when a drawer is open', () => {
-      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} {...singleDrawerOpen} />);
+      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} {...(singleDrawerOpen as any)} />);
 
       if (isUsingGridLayout) {
         expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(6);
@@ -453,18 +453,18 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('should render an active drawer', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(singleDrawerOpen as any)} />);
 
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 
   test('should render badge when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...manyDrawers} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(manyDrawers as any)} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
   });
 
   test('renders roles only when aria labels are not provided', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawerWithoutLabels} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawerWithoutLabels as any)} />);
     const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
 
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
@@ -475,7 +475,7 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('renders roles and aria labels when provided', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} ariaLabels={{ drawers: 'Drawers' }} />);
     const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
 
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(

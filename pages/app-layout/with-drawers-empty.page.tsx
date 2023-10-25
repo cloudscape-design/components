@@ -7,12 +7,6 @@ import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function WithDrawers() {
-  const drawers = {
-    drawers: {
-      items: [],
-    },
-  };
-
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -51,7 +45,7 @@ export default function WithDrawers() {
             This is the Split Panel!
           </SplitPanel>
         }
-        {...drawers}
+        drawers={[]}
       />
     </ScreenshotArea>
   );
