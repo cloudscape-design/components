@@ -11,7 +11,7 @@ export const useOpenState = ({ onOpen, onClose }: OpenStateProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openedWithKeyboard, setOpenedWithKeyboard] = useState(false);
 
-  const openDropdown = (isKeyboard?: boolean) => {
+  const openDropdown = (isKeyboard: boolean) => {
     if (!isOpen) {
       setIsOpen(true);
       setOpenedWithKeyboard(!!isKeyboard);
@@ -30,7 +30,7 @@ export const useOpenState = ({ onOpen, onClose }: OpenStateProps) => {
     if (isOpen) {
       closeDropdown();
     } else {
-      openDropdown();
+      openDropdown(false);
     }
   };
 
