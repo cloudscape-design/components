@@ -233,7 +233,7 @@ const InternalTable = React.forwardRef(
       tableRole,
     };
 
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+    const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     const wrapperProps = getTableWrapperRoleProps({
@@ -332,6 +332,7 @@ const InternalTable = React.forwardRef(
               onScroll={handleScroll}
               {...wrapperProps}
             >
+              <div className={styles['wrapper-content-measure']} ref={wrapperMeasureRef}></div>
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>

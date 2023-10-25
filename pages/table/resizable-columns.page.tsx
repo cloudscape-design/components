@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import range from 'lodash/range';
 import zipObject from 'lodash/zipObject';
 import Button from '~components/button';
@@ -13,6 +13,7 @@ import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
 import { NonCancelableCustomEvent } from '~components/interfaces';
 import ScreenshotArea from '../utils/screenshot-area';
+import AppContext, { AppContextType } from '../app/app-context';
 
 declare global {
   interface Window {
@@ -90,7 +91,22 @@ const items: Item[] = [
   })),
 ];
 
+type PageContext = React.Context<
+  AppContextType<{
+    wrapLines: boolean;
+    stickyHeader: boolean;
+    resizableColumns: boolean;
+    fullPage: boolean;
+  }>
+>;
+
 export default function App() {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const wrapLines = urlParams.wrapLines ?? false;
+  const stickyHeader = urlParams.stickyHeader ?? false;
+  const resizableColumns = urlParams.resizableColumns ?? true;
+  const fullPage = urlParams.fullPage ?? false;
+
   const [renderKey, setRenderKey] = useState(0);
   const [columns, setColumns] = useState(columnsConfig);
   const [columnDisplay, setColumnDisplay] = useState([
@@ -100,9 +116,7 @@ export default function App() {
     { id: 'state', visible: true },
     { id: 'extra', visible: false },
   ]);
-  const [wrapLines, setWrapLines] = useState(false);
-  const [stickyHeader, setStickyHeader] = useState(false);
-  const [resizableColumns, setResizableColumns] = useState(true);
+
   const [sorting, setSorting] = useState<TableProps.SortingState<any>>();
 
   function handleWidthChange(event: NonCancelableCustomEvent<TableProps.ColumnWidthsChangeDetail>) {
@@ -127,22 +141,25 @@ export default function App() {
       <Container header={<Header>Preferences</Header>}>
         <ColumnLayout columns={3} borders="vertical">
           <div>
-            <Checkbox checked={wrapLines} onChange={event => setWrapLines(event.detail.checked)}>
+            <Checkbox checked={wrapLines} onChange={event => setUrlParams({ wrapLines: event.detail.checked })}>
               Wrap lines
             </Checkbox>
             <Checkbox
               id="sticky-header-toggle"
               checked={stickyHeader}
-              onChange={event => setStickyHeader(event.detail.checked)}
+              onChange={event => setUrlParams({ stickyHeader: event.detail.checked })}
             >
               Sticky header
             </Checkbox>
             <Checkbox
               id="resizable-columns-toggle"
               checked={resizableColumns}
-              onChange={event => setResizableColumns(event.detail.checked)}
+              onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
             >
               Resizable columns
+            </Checkbox>
+            <Checkbox checked={fullPage} onChange={event => setUrlParams({ fullPage: event.detail.checked })}>
+              Full page table
             </Checkbox>
           </div>
           <div>
@@ -182,6 +199,7 @@ export default function App() {
           sortingDescending={sorting?.isDescending}
           onSortingChange={event => setSorting(event.detail)}
           onColumnWidthsChange={handleWidthChange}
+          variant={fullPage ? 'full-page' : undefined}
         />
       </ScreenshotArea>
     </SpaceBetween>
