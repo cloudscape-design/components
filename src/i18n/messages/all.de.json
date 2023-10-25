@@ -25,6 +25,7 @@
   "app-layout": {
     "ariaLabels.drawers": "Schubladen",
     "ariaLabels.drawersOverflow": "Überlauf der Schubladen",
+    "ariaLabels.drawersOverflowWithBadge": "Überlauf der Schubladen mit Badge",
     "ariaLabels.navigation": "Seitennavigation",
     "ariaLabels.navigationClose": "Seitennavigation schließen",
     "ariaLabels.navigationToggle": "Seitennavigation öffnen",
@@ -190,7 +191,7 @@
     "i18nStrings.tokenLimitShowFewer": "Weniger anzeigen",
     "i18nStrings.tokenLimitShowMore": "Mehr anzeigen",
     "i18nStrings.valueText": "Wert",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Filter entfernen, {token__propertyKey} ist gleich {token__value}} not_equals {Filter entfernen, {token__propertyKey} ist nicht gleich {token__value}} greater_than {Filter entfernen, {token__propertyKey} ist größer als {token__value}} greater_than_equal {Filter entfernen, {token__propertyKey} ist größer oder gleich {token__value}} less_than {Filter entfernen, {token__propertyKey} ist kleiner als {token__value}} less_than_equal {Filter entfernen, {token__propertyKey} ist kleiner als oder gleich {token__value}} contains {Filter entfernen, {token__propertyKey} enthält {token__value}} not_contains {Filter entfernen, {token__propertyKey} enthält nicht {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Filter entfernen, {token__propertyKey} ist gleich {token__value}} not_equals {Filter entfernen, {token__propertyKey} ist nicht gleich {token__value}} greater_than {Filter entfernen, {token__propertyKey} ist größer als {token__value}} greater_than_equal {Filter entfernen, {token__propertyKey} ist größer oder gleich {token__value}} less_than {Filter entfernen, {token__propertyKey} ist kleiner als {token__value}} less_than_equal {Filter entfernen, {token__propertyKey} ist kleiner als oder gleich {token__value}} contains {Filter entfernen, {token__propertyKey} enthält {token__value}} not_contains {Filter entfernen, {token__propertyKey} enthält nicht {token__value}} starts_with {Filter entfernen, {token__propertyKey} beginnt mit {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Version auswählen",

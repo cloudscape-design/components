@@ -40,6 +40,7 @@ export interface I18nFormatArgTypes {
   "app-layout": {
     "ariaLabels.drawers": never;
     "ariaLabels.drawersOverflow": never;
+    "ariaLabels.drawersOverflowWithBadge": never;
     "ariaLabels.navigation": never;
     "ariaLabels.navigationClose": never;
     "ariaLabels.navigationToggle": never;

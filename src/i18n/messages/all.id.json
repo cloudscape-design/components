@@ -25,6 +25,7 @@
   "app-layout": {
     "ariaLabels.drawers": "Laci",
     "ariaLabels.drawersOverflow": "Tambahan laci",
+    "ariaLabels.drawersOverflowWithBadge": "Tambahan laci dengan lencana",
     "ariaLabels.navigation": "Navigasi samping",
     "ariaLabels.navigationClose": "Tutup navigasi samping",
     "ariaLabels.navigationToggle": "Buka navigasi samping",
@@ -190,7 +191,7 @@
     "i18nStrings.tokenLimitShowFewer": "Tampilkan lebih sedikit",
     "i18nStrings.tokenLimitShowMore": "Tampilkan selengkapnya",
     "i18nStrings.valueText": "Nilai",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} starts_with {Hapus filter, {token__propertyKey} dimulai dengan {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Pilih versi",
