@@ -15,11 +15,10 @@ import { useInternalI18n } from '../i18n/context';
 export { FlashbarProps };
 
 export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, animateFlash, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } =
-    useFlashbar({
-      items,
-      ...restProps,
-    });
+  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+    items,
+    ...restProps,
+  });
 
   const i18n = useInternalI18n('flashbar');
   const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
@@ -38,6 +37,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
    */
   const motionDisabled = isReducedMotion || !isVisualRefresh || !allItemsHaveId;
 
+  const animateFlash = !isReducedMotion && isVisualRefresh;
   /**
    * If the flashbar is flat and motion is `enabled` then the adding and removing of items
    * from the flashbar will render with visual transitions.
