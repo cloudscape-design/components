@@ -47,16 +47,14 @@ const selectionColumnId = Symbol('selection-column-id');
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
-    __subStepRef?: InternalContainerProps['__subStepRef'];
   };
 
 export const InternalTableAsSubstep = React.forwardRef(
   <T,>(props: InternalTableProps<T>, ref: React.Ref<TableProps.Ref>) => {
-    const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+    const { funnelSubStepProps } = useFunnelSubStep();
 
     const tableProps: InternalTableProps<T> = {
       ...props,
-      __subStepRef: subStepRef,
       __funnelSubStepProps: funnelSubStepProps,
     };
 
@@ -107,7 +105,6 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       __funnelSubStepProps,
-      __subStepRef,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -266,7 +263,6 @@ const InternalTable = React.forwardRef(
             __internalRootRef={__internalRootRef}
             className={clsx(baseProps.className, styles.root)}
             __funnelSubStepProps={__funnelSubStepProps}
-            __subStepRef={__subStepRef}
             header={
               <>
                 {hasHeader && (

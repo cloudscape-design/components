@@ -66,7 +66,8 @@ export function useStickyScrollbar(
   scrollbarContentRef: RefObject<HTMLDivElement>,
   tableRef: RefObject<HTMLTableElement>,
   wrapperRef: RefObject<HTMLDivElement>,
-  footerHeight: number
+  footerHeight: number,
+  offsetScrollbar: boolean
 ) {
   // We don't take into account containing-block calculations because that would
   // unnecessarily overcomplicate the position logic. For now, we assume that a
@@ -109,7 +110,15 @@ export function useStickyScrollbar(
         observer.disconnect();
       };
     }
-  }, [scrollbarContentRef, scrollbarRef, tableRef, wrapperRef, consideredFooterHeight, hasContainingBlock]);
+  }, [
+    scrollbarContentRef,
+    scrollbarRef,
+    tableRef,
+    wrapperRef,
+    consideredFooterHeight,
+    hasContainingBlock,
+    offsetScrollbar,
+  ]);
 
   // Update scrollbar position when window resizes (vertically).
   useEffect(() => {

@@ -98,6 +98,8 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
   const isMobile = useMobile();
 
   let breadcrumbItems = items.map((item, index) => {
+    const isLast = index === items.length - 1;
+
     return (
       <li className={styles.item} key={index}>
         <BreadcrumbItem
@@ -105,8 +107,8 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
           onClick={onClick}
           onFollow={onFollow}
           isCompressed={isMobile}
-          isLast={index === items.length - 1}
-          isDisplayed={!isMobile || index === items.length - 1 || index === 0}
+          isLast={isLast}
+          isDisplayed={!isMobile || isLast || index === 0}
         />
       </li>
     );

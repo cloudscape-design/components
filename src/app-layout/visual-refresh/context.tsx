@@ -36,9 +36,10 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | undefined;
-  drawers: Array<DrawerItem>;
+  drawers: Array<DrawerItem> | null;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
+  drawersOverflowWithBadgeAriaLabel: string | undefined;
   drawersRefs: DrawerFocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
@@ -49,7 +50,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
-  handleSplitPanelResize: (detail: { size: number }) => void;
+  handleSplitPanelResize: (newSize: number) => void;
   handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
   hasBackgroundOverlap: boolean;
   hasDefaultToolsWidth: boolean;
@@ -232,28 +233,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     /**
-     * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
-     * that consumes 100% of the viewport height and width. The body content could potentially
-     * be scrollable underneath the drawer. In order to prevent this a CSS class needs to be
-     * added to the document body that sets overflow to hidden.
-     */
-    useEffect(
-      function handleBodyScroll() {
-        if (isMobile && (isNavigationOpen || isToolsOpen)) {
-          document.body.classList.add(styles['block-body-scroll']);
-        } else {
-          document.body.classList.remove(styles['block-body-scroll']);
-        }
-
-        // Ensure the CSS class is removed from the body on side effect cleanup
-        return function cleanup() {
-          document.body.classList.remove(styles['block-body-scroll']);
-        };
-      },
-      [isMobile, isNavigationOpen, isToolsOpen]
-    );
-
-    /**
      * Query the DOM for the header and footer elements based on the selectors provided
      * by the properties and pass the heights to the custom property definitions.
      */
@@ -368,9 +347,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     const handleSplitPanelResize = useCallback(
-      function handleSplitPanelChange(detail: { size: number }) {
-        setSplitPanelSize(detail.size);
-        fireNonCancelableEvent(props.onSplitPanelResize, detail);
+      (size: number) => {
+        setSplitPanelSize(size);
+        fireNonCancelableEvent(props.onSplitPanelResize, { size });
       },
       [props.onSplitPanelResize, setSplitPanelSize]
     );
@@ -398,6 +377,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       toolsOpen: isToolsOpen,
       tools: props.tools,
       toolsWidth,
+      onToolsToggle: handleToolsClick,
     });
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
@@ -428,8 +408,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
     };
 
-    const drawersTriggerCount =
-      drawers.length + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
+    let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
+    if (splitPanelDisplayed && splitPanelPosition === 'side') {
+      drawersTriggerCount++;
+    }
     const hasOpenDrawer =
       activeDrawerId !== undefined ||
       (!toolsHide && isToolsOpen) ||
@@ -469,6 +451,28 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
       },
       [layoutWidth, isNavigationOpen, isToolsOpen, splitPanelReportedSize]
+    );
+
+    /**
+     * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
+     * that consumes 100% of the viewport height and width. The body content could potentially
+     * be scrollable underneath the drawer. In order to prevent this a CSS class needs to be
+     * added to the document body that sets overflow to hidden.
+     */
+    useEffect(
+      function handleBodyScroll() {
+        if (isMobile && (isNavigationOpen || isToolsOpen || !!activeDrawer)) {
+          document.body.classList.add(styles['block-body-scroll']);
+        } else {
+          document.body.classList.remove(styles['block-body-scroll']);
+        }
+
+        // Ensure the CSS class is removed from the body on side effect cleanup
+        return function cleanup() {
+          document.body.classList.remove(styles['block-body-scroll']);
+        };
+      },
+      [isMobile, isNavigationOpen, isToolsOpen, activeDrawer]
     );
 
     /**
@@ -537,17 +541,20 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       function handleSplitPanelMaxWidth() {
         const contentGapRight = 80; // Approximately 40px when rendered but doubled for safety
         const toolsFormOffsetWidth = 160; // Approximately 80px when rendered but doubled for safety
-        const toolsOffsetWidth = isToolsOpen ? toolsWidth : 0;
-        const activeDrawerOffsetWidth = activeDrawerId ? drawerSize : 0;
+        const getPanelOffsetWidth = () => {
+          if (drawers) {
+            return activeDrawerId ? drawerSize : 0;
+          }
+          return isToolsOpen ? toolsWidth : 0;
+        };
 
         setSplitPanelMaxWidth(
           layoutWidth -
             mainOffsetLeft -
             minContentWidth -
             contentGapRight -
-            toolsOffsetWidth -
             toolsFormOffsetWidth -
-            activeDrawerOffsetWidth
+            getPanelOffsetWidth()
         );
 
         setDrawersMaxWidth(layoutWidth - mainOffsetLeft - minContentWidth - contentGapRight - toolsFormOffsetWidth);
@@ -555,6 +562,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [
         activeDrawerId,
         drawerSize,
+        drawers,
         isNavigationOpen,
         isToolsOpen,
         layoutWidth,
@@ -596,6 +604,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawers,
           drawersAriaLabel: drawersProps.ariaLabel,
           drawersOverflowAriaLabel: drawersProps.overflowAriaLabel,
+          drawersOverflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
           drawersRefs,
           drawersMaxWidth,
           drawerSize,

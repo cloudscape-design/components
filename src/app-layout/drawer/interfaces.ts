@@ -25,6 +25,7 @@ export interface DesktopDrawerProps {
   type: keyof typeof togglesConfig;
   isMobile: boolean;
   isOpen: boolean;
+  isHidden?: boolean;
   onToggle: (isOpen: boolean) => void;
   onClick?: (event: React.MouseEvent) => void;
   onLoseFocus?: (event: React.FocusEvent) => void;
@@ -42,6 +43,7 @@ export interface ResizableDrawerProps extends DesktopDrawerProps {
   size: number;
   getMaxWidth: () => number;
   refs: DrawerFocusControlRefs;
+  toolsContent?: React.ReactNode;
 }
 
 export interface DrawerTriggersBarProps {
@@ -54,6 +56,7 @@ export interface DrawerTriggersBarProps {
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
     ariaLabel?: string;
     overflowAriaLabel?: string;
+    overflowWithBadgeAriaLabel?: string;
   };
 }
 
@@ -86,5 +89,6 @@ export interface InternalDrawerProps {
     onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
     ariaLabel?: string;
     overflowAriaLabel?: string;
+    overflowWithBadgeAriaLabel?: string;
   };
 }

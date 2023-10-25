@@ -44,6 +44,7 @@ export const Drawer = React.forwardRef(
       drawersAriaLabels,
       children,
       isOpen,
+      isHidden,
       isMobile,
       onToggle,
       onClick,
@@ -77,6 +78,7 @@ export const Drawer = React.forwardRef(
         id={drawers?.activeDrawerId}
         ref={ref}
         className={clsx(styles.drawer, {
+          [styles.hide]: isHidden,
           [styles['drawer-closed']]: !isOpen,
           [testutilStyles['drawer-closed']]: !isOpen,
           [styles['drawer-mobile']]: isMobile,
@@ -110,7 +112,7 @@ export const Drawer = React.forwardRef(
           style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
           className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName)}
         >
-          {!isMobile && regularOpenButton}
+          {!isMobile && !drawers && regularOpenButton}
           {resizeHandle}
           <TagName aria-label={mainLabel} aria-hidden={!isOpen}>
             <CloseButton
@@ -191,36 +193,40 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
   };
 
   const { visibleItems, overflowItems } = splitItems(drawers?.items, getIndexOfOverflowItem(), drawers?.activeDrawerId);
+  const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
         [styles['drawer-mobile']]: isMobile,
+        [styles.hide]: drawers?.items.length === 1 && drawers.activeDrawerId !== undefined,
       })}
       ref={containerRef}
     >
       <div
         ref={triggersContainerRef}
         style={{ top: topOffset, bottom: bottomOffset }}
-        className={clsx(styles['drawer-content'])}
-        role="toolbar"
-        aria-orientation="vertical"
+        className={clsx(styles['drawer-content'], {
+          [styles['drawer-content-clickable']]: drawers?.items.length === 1,
+        })}
+        onClick={() => {
+          drawers?.items.length === 1 &&
+            drawers?.onChange({
+              activeDrawerId: drawers.items[0].id !== drawers.activeDrawerId ? drawers.items[0].id : undefined,
+            });
+        }}
       >
         {!isMobile && (
-          <aside
-            aria-label={drawers?.ariaLabel}
-            className={clsx(styles['drawer-triggers-wrapper'], testutilStyles['drawers-desktop-triggers-container'])}
-          >
-            <>
+          <aside aria-label={drawers?.ariaLabel} role="region">
+            <div className={clsx(styles['drawer-triggers-wrapper'])} role="toolbar" aria-orientation="vertical">
               {visibleItems.map((item, index) => {
                 return (
                   <DrawerTrigger
                     key={index}
-                    testUtilsClassName={
-                      item.id === TOOLS_DRAWER_ID
-                        ? clsx(testutilStyles['drawers-trigger'], testutilStyles['tools-toggle'])
-                        : testutilStyles['drawers-trigger']
-                    }
+                    testUtilsClassName={clsx(
+                      testutilStyles['drawers-trigger'],
+                      item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                    )}
                     ariaExpanded={drawers?.activeDrawerId === item.id}
                     ariaLabel={item.ariaLabels?.triggerButton}
                     ariaControls={drawers?.activeDrawerId === item.id ? item.id : undefined}
@@ -229,9 +235,10 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                     itemId={item.id}
                     isActive={drawers?.activeDrawerId === item.id}
                     onClick={() => {
-                      drawers?.onChange({
-                        activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
-                      });
+                      drawers?.items.length !== 1 &&
+                        drawers?.onChange({
+                          activeDrawerId: item.id !== drawers.activeDrawerId ? item.id : undefined,
+                        });
                     }}
                   />
                 );
@@ -239,7 +246,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
               {overflowItems.length > 0 && (
                 <div className={clsx(styles['drawer-trigger'])}>
                   <OverflowMenu
-                    ariaLabel={drawers?.overflowAriaLabel}
+                    ariaLabel={overflowMenuHasBadge ? drawers?.overflowWithBadgeAriaLabel : drawers?.overflowAriaLabel}
                     items={overflowItems}
                     onItemClick={({ detail }) => {
                       drawers?.onChange({
@@ -249,7 +256,7 @@ export const DrawerTriggersBar = ({ isMobile, topOffset, bottomOffset, drawers }
                   />
                 </div>
               )}
-            </>
+            </div>
           </aside>
         )}
       </div>

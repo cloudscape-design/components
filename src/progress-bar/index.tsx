@@ -10,6 +10,7 @@ import { ProgressBarProps } from './interfaces';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { Progress, ResultState, SmallText } from './internal';
+import { joinStrings } from '../internal/utils/strings';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { throttle } from '../internal/utils/throttle';
@@ -25,6 +26,8 @@ export default function ProgressBar({
   variant = 'standalone',
   resultButtonText,
   label,
+  ariaLabel,
+  ariaLabelledby,
   description,
   additionalInfo,
   resultText,
@@ -71,7 +74,12 @@ export default function ProgressBar({
         <div>
           {isInProgressState ? (
             <>
-              <Progress value={value} labelId={labelId} isInFlash={isInFlash} />
+              <Progress
+                value={value}
+                ariaLabel={ariaLabel}
+                ariaLabelledby={joinStrings(labelId, ariaLabelledby)}
+                isInFlash={isInFlash}
+              />
               <LiveRegion delay={0}>
                 {label}
                 {label ? ': ' : null}

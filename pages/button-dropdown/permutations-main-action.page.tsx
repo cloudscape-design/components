@@ -40,6 +40,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
     ],
     disabled: [false, true],
     loading: [false, true],
+    variant: ['primary', 'normal'],
   },
   {
     mainAction: [{ ...viewInstancesItem }, { ...viewInstancesItem, disabled: true }],
@@ -49,6 +50,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
         { id: '2', ...launchInstanceFromTemplateItem },
       ],
     ],
+    variant: ['primary', 'normal'],
   },
 ]);
 

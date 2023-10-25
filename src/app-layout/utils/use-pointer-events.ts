@@ -8,8 +8,7 @@ export const usePointerEvents = ({
   position,
   panelRef,
   handleRef,
-  setSidePanelWidth,
-  setBottomPanelHeight,
+  onResize,
   hasTransitions = false,
 }: SizeControlProps) => {
   const onDocumentPointerMove = useCallback(
@@ -27,7 +26,7 @@ export const usePointerEvents = ({
         const handleOffset = handleRef.current.getBoundingClientRect().width / 2;
         const width = panelRef.current.getBoundingClientRect().right - mouseClientX + handleOffset;
 
-        setSidePanelWidth(width);
+        onResize(width);
       } else {
         const mouseClientY = event.clientY || 0;
 
@@ -35,10 +34,10 @@ export const usePointerEvents = ({
         const handleOffset = handleRef.current.getBoundingClientRect().height / 2;
         const height = panelRef.current.getBoundingClientRect().bottom - mouseClientY + handleOffset;
 
-        setBottomPanelHeight(height);
+        onResize(height);
       }
     },
-    [position, panelRef, handleRef, setSidePanelWidth, setBottomPanelHeight]
+    [position, panelRef, handleRef, onResize]
   );
 
   const onDocumentPointerUp = useCallback(() => {

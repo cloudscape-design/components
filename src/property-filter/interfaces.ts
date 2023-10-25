@@ -47,7 +47,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    *
    * * value [string]: The string value of the token to be used as a filter.
    * * propertyKey [string]: The key of the corresponding property in filteringProperties.
-   * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=']: The operator which indicates how to filter the dataset using this token.
+   * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^']: The operator which indicates how to filter the dataset using this token.
    *
    * `operation` has two valid values [and, or] and controls the join operation to be applied between tokens when filtering the items.
    */
@@ -131,6 +131,11 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * filter queries only after an initial filter is applied.
    */
   customControl?: React.ReactNode;
+  /**
+   * A slot that replaces the standard "Clear filter" button.
+   * When using this slot, make sure to still provide a mechanism to clear all filters.
+   */
+  customFilterActions?: React.ReactNode;
   /**
    * Set `asyncProperties` if you need to load `filteringProperties` asynchronousely. This would cause extra `onLoadMore`
    * events to fire calling for more properties.
@@ -233,6 +238,7 @@ export namespace PropertyFilterProps {
     operatorDoesNotContainText?: string;
     operatorEqualsText?: string;
     operatorDoesNotEqualText?: string;
+    operatorStartsWithText?: string;
 
     editTokenHeader?: string;
     propertyText?: string;
@@ -298,14 +304,25 @@ export interface InternalFilteringProperty<TokenValue = any> {
   defaultOperator: PropertyFilterOperator;
   getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
   getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
-  // Original property to be used in callbacks.
+  // Original property used in callbacks.
   externalProperty: PropertyFilterProperty;
 }
 
 export interface InternalFilteringOption {
-  propertyKey: string;
+  property: null | InternalFilteringProperty;
   value: string;
   label: string;
+}
+
+export interface InternalToken<TokenValue = any> {
+  property: null | InternalFilteringProperty<TokenValue>;
+  operator: PropertyFilterOperator;
+  value: TokenValue;
+}
+
+export interface InternalQuery {
+  operation: PropertyFilterOperation;
+  tokens: readonly InternalToken[];
 }
 
 export type ParsedText =

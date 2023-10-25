@@ -169,29 +169,3 @@ test('a11y', async () => {
   );
   await expect(container).toValidateA11y();
 });
-
-test('drawers a11y', async () => {
-  const { container } = renderComponent(
-    <AppLayout
-      navigationOpen={true}
-      toolsOpen={true}
-      splitPanelOpen={true}
-      navigation={<div></div>}
-      content={<div></div>}
-      notifications={<div></div>}
-      breadcrumbs={<div></div>}
-      splitPanel={<div></div>}
-      {...singleDrawer}
-      ariaLabels={{
-        // notifications?: string;
-        // navigation?: string;
-        navigationToggle: 'Open navigation',
-        navigationClose: 'Close navigation',
-        // tools?: string;
-        toolsToggle: 'Open tools',
-        toolsClose: 'Close tools',
-      }}
-    />
-  );
-  await expect(container).toValidateA11y();
-});

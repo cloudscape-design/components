@@ -55,10 +55,10 @@ export default function Tools({ children }: ToolsProps) {
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
   /**
-   * If the drawers property is defined the Tools and SplitPanel will be mounted and rendered
+   * If the drawers property is defined the SplitPanel will be mounted and rendered
    * by the Drawers component.
    */
-  if ((toolsHide && !hasSplitPanel) || drawers.length > 0) {
+  if ((toolsHide && !hasSplitPanel) || drawers) {
     return null;
   }
 
@@ -161,23 +161,6 @@ export default function Tools({ children }: ToolsProps) {
       )}
     </Transition>
   );
-}
-
-/**
- * Determine the default state of the Tools component. Mobile viewports should be
- * closed by default under all circumstances. If the toolsOpen prop has not been
- * set then it should be closed as well. Otherwise, default to the toolsOpen prop.
- */
-export function getToolsDefaultState(isMobile: boolean, stateFromProps?: boolean) {
-  let isToolsOpen;
-
-  if (isMobile || stateFromProps === undefined) {
-    isToolsOpen = false;
-  } else {
-    isToolsOpen = stateFromProps;
-  }
-
-  return isToolsOpen;
 }
 
 /**

@@ -138,7 +138,10 @@ test.each([
         await page.keys(['Shift', 'Tab', 'Shift']);
       }
       await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
-      await page.keys(Array(30).fill(repeatKey));
+      // send each keystroke as individual command to allow UI re-rendering between keys
+      for (const key of Array(30).fill(repeatKey)) {
+        await page.keys(key);
+      }
       await expect(page.getSplitPanelSliderValue()).resolves.toBe(expectedValue);
     })()
 );
@@ -253,6 +256,19 @@ test(
     const { height: newHeight } = await page.getSplitPanelSize();
     expect(newHeight).toBeLessThan(originalHeight);
     expect(newHeight).toBeLessThan(windowHeight);
+  })
+);
+
+test(
+  'respects min width when switching panel from bottom to side',
+  setupTest(async page => {
+    await page.openPanel();
+    await page.dragResizerTo({ x: 0, y: viewports.desktop.height });
+    const { height } = await page.getSplitPanelSize();
+    expect(height).toEqual(160);
+    await page.switchPosition('side');
+    const { width } = await page.getSplitPanelSize();
+    expect(width).toEqual(280);
   })
 );
 

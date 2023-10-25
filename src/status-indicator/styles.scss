@@ -25,6 +25,7 @@ $_color-overrides: (
   'grey': awsui.$color-text-status-inactive,
   'blue': awsui.$color-text-status-info,
   'green': awsui.$color-text-status-success,
+  'yellow': awsui.$color-text-status-warning,
 );
 
 .root {

@@ -6,7 +6,6 @@ export interface SizeControlProps {
   position: 'side' | 'bottom';
   panelRef?: React.RefObject<HTMLDivElement>;
   handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
+  onResize: (newSize: number) => void;
   hasTransitions?: boolean;
 }

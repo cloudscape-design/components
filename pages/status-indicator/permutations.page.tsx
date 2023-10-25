@@ -12,7 +12,7 @@ const permutations = createPermutations<InternalStatusIndicatorProps>([
   },
   {
     type: ['pending'],
-    colorOverride: ['blue', 'grey', 'green', 'red'],
+    colorOverride: ['blue', 'grey', 'green', 'red', 'yellow'],
   },
   {
     type: ['info'],

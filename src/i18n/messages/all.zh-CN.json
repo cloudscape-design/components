@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "筛选显示的数据",
     "i18nStrings.filterPlaceholder": "筛选数据",
     "i18nStrings.legendAriaLabel": "图例",
+    "i18nStrings.chartAriaRoleDescription": "图表",
     "i18nStrings.xAxisAriaRoleDescription": "x 轴",
     "i18nStrings.yAxisAriaRoleDescription": "y 轴"
   },
@@ -22,6 +23,8 @@
     "i18nStrings.labelHotspot": "{openState, select, true {关闭第 {stepNumber} 步（共 {totalStepCount} 步）的注释} false {打开第 {stepNumber} 步（共 {totalStepCount} 步）的注释} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "抽屉",
+    "ariaLabels.drawersOverflow": "抽屉溢出",
     "ariaLabels.navigation": "侧导航",
     "ariaLabels.navigationClose": "关闭侧导航",
     "ariaLabels.navigationToggle": "打开侧导航",
@@ -180,6 +183,7 @@
     "i18nStrings.operatorGreaterText": "大于",
     "i18nStrings.operatorLessOrEqualText": "小于或等于",
     "i18nStrings.operatorLessText": "小于",
+    "i18nStrings.operatorStartsWithText": "开头为",
     "i18nStrings.operatorText": "运算符",
     "i18nStrings.operatorsText": "运算符",
     "i18nStrings.propertyText": "属性",
@@ -262,6 +266,7 @@
     "i18nStrings.resizeHandleAriaLabel": "调整拆分面板的大小"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "调整按钮大小",
     "ariaLabels.submittingEditText": "正在提交编辑",
     "ariaLabels.successfulEditLabel": "编辑成功",
     "columnDefinitions.editConfig.errorIconAriaLabel": "错误",

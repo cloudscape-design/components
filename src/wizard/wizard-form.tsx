@@ -29,6 +29,8 @@ interface WizardFormProps {
   onSkipToClick: (stepIndex: number) => void;
 }
 
+export const STEP_NAME_SELECTOR = `[${DATA_ATTR_FUNNEL_KEY}=${FUNNEL_KEY_STEP_NAME}]`;
+
 export default function WizardForm({
   steps,
   activeStepIndex,
@@ -64,10 +66,7 @@ export default function WizardForm({
 
   return (
     <>
-      <AnalyticsFunnelStep
-        stepNameSelector={`.${styles['form-header-component-wrapper']}`}
-        stepNumber={activeStepIndex + 1}
-      >
+      <AnalyticsFunnelStep stepNameSelector={STEP_NAME_SELECTOR} stepNumber={activeStepIndex + 1}>
         {({ funnelStepProps }) => (
           <>
             <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
@@ -80,13 +79,8 @@ export default function WizardForm({
                 description={description}
                 info={info}
               >
-                <span
-                  {...{ [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_STEP_NAME }}
-                  className={styles['form-header-component-wrapper']}
-                  tabIndex={-1}
-                  ref={stepHeaderRef}
-                >
-                  {title}
+                <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef}>
+                  <span {...{ [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_STEP_NAME }}>{title}</span>
                   {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
                 </span>
               </InternalHeader>

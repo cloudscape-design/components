@@ -12,6 +12,8 @@ type DemoContext = React.Context<
     fitHeight: boolean;
     hideFilter: boolean;
     hideLegend: boolean;
+    hideTitles: boolean;
+    hideDescriptions: boolean;
     minSize: 'large' | 'medium' | 'small';
   }>
 >;
@@ -19,7 +21,7 @@ type DemoContext = React.Context<
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const minSize = urlParams.minSize ?? 'small';
-  const heights = [800, 600, 400, 300, 200, 100];
+  const heights = [800, 600, 400, 300, 160, 100];
   const fitHeight = urlParams.fitHeight ?? true;
   return (
     <Box padding="m">
@@ -34,6 +36,15 @@ export default function () {
         </Checkbox>
         <Checkbox checked={urlParams.hideLegend} onChange={e => setUrlParams({ hideLegend: e.detail.checked })}>
           hide legend
+        </Checkbox>
+        <Checkbox checked={urlParams.hideTitles} onChange={e => setUrlParams({ hideTitles: e.detail.checked })}>
+          hide titles
+        </Checkbox>
+        <Checkbox
+          checked={urlParams.hideDescriptions}
+          onChange={e => setUrlParams({ hideDescriptions: e.detail.checked })}
+        >
+          hide descriptions
         </Checkbox>
         <SpaceBetween size="xs" direction="horizontal" alignItems="center">
           <SegmentedControl
@@ -64,6 +75,9 @@ export default function () {
                   fitHeight={fitHeight}
                   hideFilter={urlParams.hideFilter}
                   hideLegend={urlParams.hideLegend}
+                  hideTitles={urlParams.hideTitles}
+                  hideDescriptions={urlParams.hideDescriptions}
+                  segmentDescription={item => `${item.calories} calories`}
                   data={data1}
                   ariaLabel="Food facts"
                   size={minSize}

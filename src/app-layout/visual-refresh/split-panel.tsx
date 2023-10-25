@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
-import { SplitPanelContextProvider, SplitPanelContextProps } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
+import { SplitPanelProvider, SplitPanelProviderProps } from '../split-panel';
 import { AppLayoutProps } from '../interfaces';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -20,7 +20,6 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     handleSplitPanelPreferencesChange,
     handleSplitPanelResize,
     headerHeight,
-    isMobile,
     isSplitPanelForcedPosition,
     isSplitPanelOpen,
     setSplitPanelReportedSize,
@@ -31,7 +30,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     splitPanelSize,
   } = useAppLayoutInternals();
 
-  const context: SplitPanelContextProps = {
+  const props: SplitPanelProviderProps = {
     bottomOffset: 0,
     getMaxHeight: () => {
       const availableHeight = document.documentElement.clientHeight - headerHeight - footerHeight;
@@ -40,7 +39,6 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     },
     getMaxWidth: () => document.documentElement.clientWidth,
     isForcedPosition: isSplitPanelForcedPosition,
-    isMobile,
     isOpen: isSplitPanelOpen,
     leftOffset: 0,
     onPreferencesChange: handleSplitPanelPreferencesChange,
@@ -56,7 +54,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     refs: splitPanelRefs,
   };
 
-  return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;
+  return <SplitPanelProvider {...props}>{children}</SplitPanelProvider>;
 }
 
 /**
@@ -112,6 +110,11 @@ function SplitPanelBottom() {
  * but instead a direct child of the Tools component. The width constraints
  * for this position are computed in the Tools component.
  */
+
+/**
+ * This component has no opening animations because it causes lots of rerenders that makes the component lag. *
+ */
+
 function SplitPanelSide() {
   const {
     isSplitPanelOpen,
@@ -119,7 +122,6 @@ function SplitPanelSide() {
     splitPanelPosition,
     splitPanelMaxWidth,
     splitPanelMinWidth,
-    splitPanelReportedSize,
     splitPanelControlId,
   } = useAppLayoutInternals();
 
@@ -128,26 +130,19 @@ function SplitPanelSide() {
   }
 
   return (
-    <Transition in={isSplitPanelOpen ?? false} exit={false}>
-      {(state, transitionEventsRef) => (
-        <section
-          id={splitPanelControlId}
-          aria-hidden={!isSplitPanelOpen || splitPanelPosition === 'bottom' ? true : false}
-          className={clsx(styles['split-panel-side'], styles[`position-${splitPanelPosition}`], {
-            [styles.animating]: state === 'entering',
-            [styles['is-split-panel-open']]: isSplitPanelOpen,
-          })}
-          ref={transitionEventsRef}
-          style={{
-            [customCssProps.splitPanelMaxWidth]: `${splitPanelMaxWidth}px`,
-            [customCssProps.splitPanelMinWidth]: `${splitPanelMinWidth}px`,
-            [customCssProps.splitPanelReportedSize]: `${splitPanelReportedSize}px`,
-          }}
-        >
-          <div className={clsx(styles['animated-content'])}>{splitPanelPosition === 'side' && splitPanel}</div>
-        </section>
-      )}
-    </Transition>
+    <section
+      id={splitPanelControlId}
+      aria-hidden={!isSplitPanelOpen || splitPanelPosition === 'bottom' ? true : false}
+      className={clsx(styles['split-panel-side'], styles[`position-${splitPanelPosition}`], {
+        [styles['is-split-panel-open']]: isSplitPanelOpen,
+      })}
+      style={{
+        [customCssProps.splitPanelMaxWidth]: `${splitPanelMaxWidth}px`,
+        [customCssProps.splitPanelMinWidth]: `${splitPanelMinWidth}px`,
+      }}
+    >
+      {splitPanelPosition === 'side' && splitPanel}
+    </section>
   );
 }
 

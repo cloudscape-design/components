@@ -16,19 +16,20 @@ import Dropdown from '../internal/components/dropdown';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
 import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
-import { useFormFieldContext } from '../internal/context/form-field-context';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
 import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { usePrevious } from '../internal/hooks/use-previous/index.js';
+import { usePrevious } from '../internal/hooks/use-previous';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings/join-strings';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
-import { formatValue } from './utils.js';
-import { useInternalI18n } from '../i18n/context.js';
+import { useInternalI18n } from '../i18n/context';
+import { formatValue } from './utils';
 
 export { DateRangePickerProps };
 
@@ -128,6 +129,7 @@ const DateRangePicker = React.forwardRef(
 
     const rootRef = useRef<HTMLDivElement>(null);
     const dropdownId = useUniqueId('date-range-picker-dropdown');
+    const triggerContentId = useUniqueId('date-range-picker-trigger');
 
     useFocusTracker({ rootRef, onBlur, onFocus });
 
@@ -215,7 +217,7 @@ const DateRangePicker = React.forwardRef(
     );
 
     if (isDevelopment) {
-      if (!formatRelativeRange) {
+      if (!formatRelativeRange && rangeSelectorMode !== 'absolute-only') {
         warnOnce(
           'DateRangePicker',
           'A function for i18nStrings.formatRelativeRange was not provided. Relative ranges will not be correctly rendered.'
@@ -229,9 +231,9 @@ const DateRangePicker = React.forwardRef(
           ref={triggerRef}
           id={controlId}
           invalid={invalid}
+          ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
           ariaLabel={i18nStrings?.ariaLabel}
           ariaDescribedby={ariaDescribedby}
-          ariaLabelledby={ariaLabelledby}
           className={clsx(styles.label, {
             [styles['label-enabled']]: !readOnly && !disabled,
           })}
@@ -243,13 +245,15 @@ const DateRangePicker = React.forwardRef(
           }}
           disabled={disabled}
           readOnly={readOnly}
-          ariaHasPopup="true"
+          ariaHasPopup="dialog"
         >
           <span className={styles['trigger-flexbox']}>
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
+            <span id={triggerContentId}>
+              {renderDateRange(value, placeholder ?? '', formatRelativeRange, normalizedTimeOffset)}
+            </span>
           </span>
         </ButtonTrigger>
       </div>
@@ -274,28 +278,31 @@ const DateRangePicker = React.forwardRef(
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
         >
-          {isDropDownOpen && (
-            <DateRangePickerDropdown
-              startOfWeek={startOfWeek}
-              locale={normalizedLocale}
-              isSingleGrid={isSingleGrid}
-              onDropdownClose={() => closeDropdown(true)}
-              value={value}
-              showClearButton={showClearButton}
-              isDateEnabled={isDateEnabled}
-              i18nStrings={i18nStrings}
-              onClear={onClear}
-              onApply={onApply}
-              relativeOptions={relativeOptions}
-              isValidRange={isValidRange}
-              dateOnly={dateOnly}
-              timeInputFormat={timeInputFormat}
-              rangeSelectorMode={rangeSelectorMode}
-              ariaLabelledby={ariaLabelledby}
-              ariaDescribedby={ariaDescribedby}
-              customAbsoluteRangeControl={customAbsoluteRangeControl}
-            />
-          )}
+          {/* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */}
+          <FormFieldContext.Provider value={{}}>
+            {isDropDownOpen && (
+              <DateRangePickerDropdown
+                startOfWeek={startOfWeek}
+                locale={normalizedLocale}
+                isSingleGrid={isSingleGrid}
+                onDropdownClose={() => closeDropdown(true)}
+                value={value}
+                showClearButton={showClearButton}
+                isDateEnabled={isDateEnabled}
+                i18nStrings={i18nStrings}
+                onClear={onClear}
+                onApply={onApply}
+                relativeOptions={relativeOptions}
+                isValidRange={isValidRange}
+                dateOnly={dateOnly}
+                timeInputFormat={timeInputFormat}
+                rangeSelectorMode={rangeSelectorMode}
+                ariaLabelledby={ariaLabelledby}
+                ariaDescribedby={ariaDescribedby}
+                customAbsoluteRangeControl={customAbsoluteRangeControl}
+              />
+            )}
+          </FormFieldContext.Provider>
         </Dropdown>
       </div>
     );

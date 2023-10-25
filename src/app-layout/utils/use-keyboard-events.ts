@@ -21,26 +21,18 @@ const getCurrentSize = (panelRef?: React.RefObject<HTMLDivElement>) => {
   };
 };
 
-export const useKeyboardEvents = ({
-  position,
-  setSidePanelWidth,
-  setBottomPanelHeight,
-  panelRef,
-}: SizeControlProps) => {
+export const useKeyboardEvents = ({ position, onResize, panelRef }: SizeControlProps) => {
   return (event: React.KeyboardEvent) => {
-    let setSizeFunction;
     let currentSize;
     let maxSize;
 
     const { panelHeight, panelWidth } = getCurrentSize(panelRef);
 
     if (position === 'side') {
-      setSizeFunction = setSidePanelWidth;
       currentSize = panelWidth;
       // don't need the exact max size as it's constrained in the set size function
       maxSize = window.innerWidth;
     } else {
-      setSizeFunction = setBottomPanelHeight;
       currentSize = panelHeight;
       // don't need the exact max size as it's constrained in the set size function
       maxSize = window.innerHeight;
@@ -55,24 +47,24 @@ export const useKeyboardEvents = ({
     switch (event.keyCode) {
       case primaryGrowKey:
       case altGrowKey:
-        setSizeFunction(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
+        onResize(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
 
         break;
       case primaryShrinkKey:
       case altShrinkKey:
-        setSizeFunction(currentSize - KEYBOARD_SINGLE_STEP_SIZE);
+        onResize(currentSize - KEYBOARD_SINGLE_STEP_SIZE);
         break;
       case KeyCode.pageUp:
-        setSizeFunction(currentSize + KEYBOARD_MULTIPLE_STEPS_SIZE);
+        onResize(currentSize + KEYBOARD_MULTIPLE_STEPS_SIZE);
         break;
       case KeyCode.pageDown:
-        setSizeFunction(currentSize - KEYBOARD_MULTIPLE_STEPS_SIZE);
+        onResize(currentSize - KEYBOARD_MULTIPLE_STEPS_SIZE);
         break;
       case KeyCode.home:
-        setSizeFunction(maxSize);
+        onResize(maxSize);
         break;
       case KeyCode.end:
-        setSizeFunction(0);
+        onResize(0);
         break;
       default:
         isEventHandled = false;

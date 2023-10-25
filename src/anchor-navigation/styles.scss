@@ -1,0 +1,113 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '../internal/hooks/focus-visible' as focus-visible;
+@use '../internal/styles/typography/constants.scss' as typography;
+
+$guide-line-width: 2px;
+$guide-line-offset: -2px; // Negative to expand 2px beyond the element
+
+.root {
+  @include styles.styles-reset;
+}
+
+.anchor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  text-indent: 0;
+
+  &::before {
+    content: '';
+    background-color: awsui.$color-border-divider-default;
+    border-radius: awsui.$border-radius-tabs-focus-ring;
+    bottom: $guide-line-offset;
+    pointer-events: none;
+    position: absolute;
+    top: $guide-line-offset;
+    width: $guide-line-width;
+  }
+}
+
+.anchor-item {
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
+  @include styles.font-body-m;
+
+  color: awsui.$color-text-body-secondary;
+  font-weight: styles.$font-weight-normal;
+  margin: awsui.$space-scaled-xxs 0;
+
+  &--active {
+    position: relative;
+
+    &::before {
+      content: '';
+      background-color: awsui.$color-text-accent;
+      border-radius: awsui.$border-radius-tabs-focus-ring;
+      bottom: $guide-line-offset;
+      pointer-events: none;
+      position: absolute;
+      top: $guide-line-offset;
+      width: $guide-line-width;
+    }
+  }
+}
+
+.anchor-link {
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+
+  @include styles.font-body-m;
+
+  align-items: baseline;
+  color: awsui.$color-text-body-secondary;
+  display: flex;
+  flex-direction: row;
+  font-weight: styles.$font-weight-normal;
+  text-decoration: none;
+
+  &:hover {
+    color: awsui.$color-text-accent;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &--active {
+    font-weight: awsui.$font-wayfinding-link-active-weight;
+    @include styles.font-smoothing;
+    color: awsui.$color-text-accent;
+  }
+}
+
+.anchor-link-text {
+  display: block;
+}
+
+.anchor-link-info {
+  margin-left: awsui.$space-xs;
+  @include styles.font-body-s;
+  @include styles.font-smoothing;
+  font-weight: awsui.$font-button-weight;
+  letter-spacing: typography.$letter-spacing-bold-link;
+  color: awsui.$color-text-link-default;
+}

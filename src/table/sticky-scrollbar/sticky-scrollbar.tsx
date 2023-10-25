@@ -39,8 +39,7 @@ function StickyScrollbar(
    */
   const { stickyOffsetBottom } = useAppLayoutContext();
 
-  useStickyScrollbar(scrollbarRef, scrollbarContentRef, tableRef, wrapperRef, stickyOffsetBottom);
-
+  useStickyScrollbar(scrollbarRef, scrollbarContentRef, tableRef, wrapperRef, stickyOffsetBottom, offsetScrollbar);
   return (
     <div
       ref={mergedRef}

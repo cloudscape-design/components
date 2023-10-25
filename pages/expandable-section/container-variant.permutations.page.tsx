@@ -6,7 +6,7 @@ import ExpandableSection, { ExpandableSectionProps } from '~components/expandabl
 import ScreenshotArea from '../utils/screenshot-area';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { headerActions, headerInfo } from './common';
+import { headerActions, headerInfo, headerTextActions } from './common';
 
 const permutations = createPermutations<ExpandableSectionProps>([
   {
@@ -18,6 +18,10 @@ const permutations = createPermutations<ExpandableSectionProps>([
     ],
     headerInfo: [undefined, headerInfo],
     headerActions: [undefined, headerActions],
+  },
+  {
+    headerCounter: ['(5)'],
+    headerActions: [headerTextActions],
   },
 ]);
 export default function ExpandableSectionContainerVariantPermutations({
