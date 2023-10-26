@@ -9,6 +9,7 @@ export interface FormattedTick {
   position: number;
   space: number;
   lines: string[];
+  label: string;
 }
 
 export function formatTicks({
@@ -26,7 +27,7 @@ export function formatTicks({
     const position = scale.d3Scale(tick as any) ?? NaN;
     const label = tickFormatter ? tickFormatter(tick as any) : tick.toString();
     const lines = (label + '').split('\n');
-    return { position, lines, space: Math.max(...lines.map(getLabelSpace)) };
+    return { position, lines, space: Math.max(...lines.map(getLabelSpace)), label };
   });
 }
 

@@ -10,6 +10,7 @@ import styles from './styles.css.js';
 import { formatTicks, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
+import ResponsiveText from './responsive-text';
 
 const OFFSET_PX = 12;
 
@@ -17,6 +18,7 @@ interface LeftLabelsProps {
   axis?: 'x' | 'y';
   width: number;
   height: number;
+  maxWidth?: number;
   scale: ChartScale | NumericChartScale;
   ticks: readonly ChartDataTypes[];
   tickFormatter?: (value: number) => string;
@@ -31,6 +33,7 @@ function LeftLabels({
   axis = 'y',
   width,
   height,
+  maxWidth = Number.POSITIVE_INFINITY,
   scale,
   ticks,
   tickFormatter,
@@ -42,15 +45,17 @@ function LeftLabels({
 
   const yOffset = axis === 'x' && scale.isCategorical() ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
-  const cacheRef = useRef<{ [label: string]: number }>({});
+  const labelToHeightCache = useRef<{ [label: string]: number }>({});
+  const labelToWidthCache = useRef<{ [label: string]: number }>({});
   const getLabelSpace = (label: string) => {
-    if (cacheRef.current[label] !== undefined) {
-      return cacheRef.current[label];
+    if (labelToHeightCache.current[label] !== undefined) {
+      return labelToHeightCache.current[label];
     }
     if (virtualTextRef.current && virtualTextRef.current.getBBox) {
       virtualTextRef.current.textContent = label;
-      cacheRef.current[label] = virtualTextRef.current.getBBox().height;
-      return cacheRef.current[label];
+      labelToHeightCache.current[label] = virtualTextRef.current.getBBox().height;
+      labelToWidthCache.current[label] = virtualTextRef.current.getBBox().width;
+      return labelToHeightCache.current[label];
     }
     return 0;
   };
@@ -74,7 +79,7 @@ function LeftLabels({
       aria-hidden={true}
     >
       {visibleTicks.map(
-        ({ position, lines }, index) =>
+        ({ position, lines, label }, index) =>
           isFinite(position) && (
             <g
               key={index}
@@ -92,9 +97,21 @@ function LeftLabels({
                   aria-hidden="true"
                 />
               )}
-              <text className={styles.ticks__text} x={-(TICK_LENGTH + TICK_MARGIN)} y={0}>
-                {lines.join(' ')}
-              </text>
+
+              {labelToWidthCache.current[label] <= maxWidth ? (
+                <text className={styles.ticks__text} x={-(TICK_LENGTH + TICK_MARGIN)} y={0}>
+                  {lines.join(' ')}
+                </text>
+              ) : (
+                <ResponsiveText
+                  className={styles.ticks__text}
+                  x={-(TICK_LENGTH + TICK_MARGIN)}
+                  y={0}
+                  maxWidth={maxWidth}
+                >
+                  {lines.join(' ')}
+                </ResponsiveText>
+              )}
             </g>
           )
       )}

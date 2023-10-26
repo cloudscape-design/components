@@ -134,6 +134,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
   const [containerWidth, containerMeasureRef] = useContainerWidth(500);
+  const maxLeftLabelsWidth = Math.round((containerWidth ?? 0) / 2);
   const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
@@ -501,6 +502,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           scale={leftAxisProps.scale}
           tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
           autoWidth={setLeftLabelsWidth}
+          maxWidth={maxLeftLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={bottomAxisProps.title} />}
@@ -548,6 +550,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
             tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
             title={leftAxisProps.title}
             ariaRoleDescription={leftAxisProps.ariaRoleDescription}
+            maxWidth={maxLeftLabelsWidth}
             width={plotWidth}
             height={plotHeight}
           />
