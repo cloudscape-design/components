@@ -99,7 +99,7 @@ function LeftLabels({
               {lines.map((line, lineIndex) => {
                 const lineTextProps = {
                   x: -(TICK_LENGTH + TICK_MARGIN),
-                  y: lineIndex * TICK_LINE_HEIGHT,
+                  y: (lineIndex - (lines.length - 1) * 0.5) * TICK_LINE_HEIGHT,
                   className: styles.ticks__text,
                   children: line,
                 };
