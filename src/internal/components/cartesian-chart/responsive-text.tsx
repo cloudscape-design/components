@@ -13,37 +13,21 @@ interface ResponsiveTextProps {
 export default memo(ResponsiveText);
 
 function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextProps) {
-  const actualRef = useRef<SVGTextElement>(null);
-  const virtualRef = useRef<SVGTextElement>(null);
+  const textRef = useRef<SVGTextElement>(null);
 
   // Determine the visible width of the text and if necessary truncate it until it fits.
   useEffect(() => {
     // The debouncing is necessary for visual smoothness.
     const timeoutId = setTimeout(() => {
-      renderTextContent(actualRef.current!, children, maxWidth);
+      renderTextContent(textRef.current!, children, maxWidth);
     }, 25);
     return () => clearTimeout(timeoutId);
   });
 
   return (
-    <>
-      {/* Invisible sample text used for measurement */}
-      <text
-        ref={virtualRef}
-        x={x}
-        y={y}
-        style={{ textAnchor: 'end', visibility: 'hidden' }}
-        aria-hidden="true"
-        className={className}
-      >
-        {children}
-      </text>
-
-      {/* Text node to render truncated text into */}
-      <text ref={actualRef} x={x} y={y} style={{ textAnchor: 'end' }} className={className}>
-        {children}
-      </text>
-    </>
+    <text ref={textRef} x={x} y={y} style={{ textAnchor: 'end' }} className={className}>
+      {children}
+    </text>
   );
 }
 

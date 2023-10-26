@@ -78,8 +78,14 @@ function LeftLabels({
       aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}
       aria-hidden={true}
     >
-      {visibleTicks.map(
-        ({ position, lines, label }, index) =>
+      {visibleTicks.map(({ position, lines, label }, index) => {
+        const textProps = {
+          x: -(TICK_LENGTH + TICK_MARGIN),
+          y: 0,
+          className: styles.ticks__text,
+          children: lines.join(' '),
+        };
+        return (
           isFinite(position) && (
             <g
               key={index}
@@ -99,22 +105,14 @@ function LeftLabels({
               )}
 
               {labelToWidthCache.current[label] <= maxWidth ? (
-                <text className={styles.ticks__text} x={-(TICK_LENGTH + TICK_MARGIN)} y={0}>
-                  {lines.join(' ')}
-                </text>
+                <text {...textProps} />
               ) : (
-                <ResponsiveText
-                  className={styles.ticks__text}
-                  x={-(TICK_LENGTH + TICK_MARGIN)}
-                  y={0}
-                  maxWidth={maxWidth}
-                >
-                  {lines.join(' ')}
-                </ResponsiveText>
+                <ResponsiveText {...textProps} maxWidth={maxWidth} />
               )}
             </g>
           )
-      )}
+        );
+      })}
 
       <text ref={virtualTextRef} x={0} y={0} style={{ visibility: 'hidden' }} aria-hidden="true"></text>
     </g>
