@@ -45,7 +45,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { animateFlash, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -76,6 +76,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   if (items.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
     setIsFlashbarStackExpanded(false);
   }
+
+  const animateFlash = !isReducedMotion;
 
   function toggleCollapseExpand() {
     sendToggleMetric(items.length, !isFlashbarStackExpanded);

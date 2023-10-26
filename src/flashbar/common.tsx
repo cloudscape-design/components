@@ -35,7 +35,6 @@ export function useFlashbar({
   const isVisualRefresh = useVisualRefresh();
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
-  const animateFlash = !isReducedMotion && isVisualRefresh;
 
   if (isDevelopment) {
     if (items?.some(item => item.ariaRole === 'alert' && !item.id)) {
@@ -72,7 +71,6 @@ export function useFlashbar({
 
   return {
     allItemsHaveId,
-    animateFlash,
     baseProps,
     breakpoint,
     isReducedMotion,
