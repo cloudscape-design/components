@@ -4,10 +4,10 @@ import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { ChartScale, NumericChartScale } from './scales';
-import { TICK_LENGTH, TICK_MARGIN } from './constants';
+import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
 
 import styles from './styles.css.js';
-import { formatTicks, getVisibleTicks } from './label-utils';
+import { formatTicks, getLabelBBox, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
 import ResponsiveText from '../responsive-text';
@@ -50,9 +50,9 @@ function LeftLabels({
     if (labelToBoxCache.current[label] !== undefined) {
       return labelToBoxCache.current[label].height;
     }
-    if (virtualTextRef.current && virtualTextRef.current.getBBox) {
-      virtualTextRef.current.textContent = label;
-      labelToBoxCache.current[label] = virtualTextRef.current.getBBox();
+    const labelBBox = getLabelBBox(virtualTextRef.current, label);
+    if (labelBBox) {
+      labelToBoxCache.current[label] = labelBBox;
       return labelToBoxCache.current[label].height;
     }
     return 0;
@@ -76,14 +76,8 @@ function LeftLabels({
       aria-roledescription={i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription)}
       aria-hidden={true}
     >
-      {visibleTicks.map(({ position, lines, label }, index) => {
-        const textProps = {
-          x: -(TICK_LENGTH + TICK_MARGIN),
-          y: 0,
-          className: styles.ticks__text,
-          children: lines.join(' '),
-        };
-        return (
+      {visibleTicks.map(
+        ({ position, lines }, index) =>
           isFinite(position) && (
             <g
               key={index}
@@ -102,15 +96,22 @@ function LeftLabels({
                 />
               )}
 
-              {labelToBoxCache.current[label]?.width <= maxLabelsWidth ? (
-                <text {...textProps} />
-              ) : (
-                <ResponsiveText {...textProps} maxWidth={maxLabelsWidth} />
-              )}
+              {lines.map((line, lineIndex) => {
+                const lineTextProps = {
+                  x: -(TICK_LENGTH + TICK_MARGIN),
+                  y: lineIndex * TICK_LINE_HEIGHT,
+                  className: styles.ticks__text,
+                  children: line,
+                };
+                return labelToBoxCache.current[lines[0]]?.width > maxLabelsWidth ? (
+                  <ResponsiveText {...lineTextProps} maxWidth={maxLabelsWidth} />
+                ) : (
+                  <text {...lineTextProps} />
+                );
+              })}
             </g>
           )
-        );
-      })}
+      )}
 
       <text ref={virtualTextRef} x={0} y={0} style={{ visibility: 'hidden' }} aria-hidden="true"></text>
     </g>

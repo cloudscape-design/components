@@ -37,7 +37,7 @@ export default function () {
                 case 'Potatoes':
                   return 'Potatoes (fried, ~400g)';
                 case 'Chocolate':
-                  return 'Chocolate (none was left)';
+                  return 'Chocolate (delicious milk chocolate slice)\n(comment: none was left)';
                 case 'Apples':
                   return 'Apples (1 apple)';
                 case 'Oranges':

@@ -9,7 +9,6 @@ export interface FormattedTick {
   position: number;
   space: number;
   lines: string[];
-  label: string;
 }
 
 export function formatTicks({
@@ -27,13 +26,21 @@ export function formatTicks({
     const position = scale.d3Scale(tick as any) ?? NaN;
     const label = tickFormatter ? tickFormatter(tick as any) : tick.toString();
     const lines = (label + '').split('\n');
-    return { position, lines, space: Math.max(...lines.map(getLabelSpace)), label };
+    return { position, lines, space: Math.max(...lines.map(getLabelSpace)) };
   });
 }
 
 export function getVisibleTicks(ticks: readonly FormattedTick[], from: number, until: number, balanceTicks = false) {
   ticks = getTicksInRange(ticks, from, until);
   return balanceTicks ? getReducedTicks(ticks) : removeIntersections(ticks);
+}
+
+export function getLabelBBox(element: null | SVGTextElement, label: string) {
+  if (element && element.getBBox) {
+    element.textContent = label;
+    return element.getBBox();
+  }
+  return null;
 }
 
 function getTicksInRange(ticks: readonly FormattedTick[], from: number, until: number) {
