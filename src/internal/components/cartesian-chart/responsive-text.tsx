@@ -17,11 +17,7 @@ function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextP
 
   // Determine the visible width of the text and if necessary truncate it until it fits.
   useEffect(() => {
-    // The debouncing is necessary for visual smoothness.
-    const timeoutId = setTimeout(() => {
-      renderTextContent(textRef.current!, children, maxWidth);
-    }, 25);
-    return () => clearTimeout(timeoutId);
+    renderTextContent(textRef.current!, children, maxWidth);
   });
 
   return (
