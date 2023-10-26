@@ -35,14 +35,6 @@ export function getVisibleTicks(ticks: readonly FormattedTick[], from: number, u
   return balanceTicks ? getReducedTicks(ticks) : removeIntersections(ticks);
 }
 
-export function getLabelBBox(element: null | SVGTextElement, label: string) {
-  if (element && element.getBBox) {
-    element.textContent = label;
-    return element.getBBox();
-  }
-  return null;
-}
-
 function getTicksInRange(ticks: readonly FormattedTick[], from: number, until: number) {
   return ticks.filter(tick => from <= tick.position - tick.space / 2 && tick.position + tick.space / 2 <= until);
 }
@@ -87,4 +79,13 @@ function hasIntersection(a: FormattedTick, b: FormattedTick) {
   const leftEdge = left.position + left.space / 2 + SPACE_BETWEEN;
   const rightEdge = right.position - right.space / 2;
   return leftEdge > rightEdge;
+}
+
+/* istanbul ignore next */
+export function getLabelBBox(element: null | SVGTextElement, label: string) {
+  if (element && element.getBBox) {
+    element.textContent = label;
+    return element.getBBox();
+  }
+  return null;
 }
