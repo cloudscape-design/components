@@ -18,7 +18,7 @@ function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextP
   // Determine the visible width of the text and if necessary truncate it until it fits.
   useEffect(() => {
     renderTextContent(textRef.current!, children, maxWidth);
-  });
+  }, [maxWidth, children]);
 
   return (
     <text ref={textRef} x={x} y={y} style={{ textAnchor: 'end' }} className={className}>
