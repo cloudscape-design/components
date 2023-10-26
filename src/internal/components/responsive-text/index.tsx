@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useEffect, useRef } from 'react';
+import { getTextWidth } from './responsive-text-utils';
 
 interface ResponsiveTextProps {
   x: number;
@@ -31,7 +32,11 @@ export function renderTextContent(textNode: SVGTextElement, text: string, visibl
   let visibleLength = text.length;
   while (visibleLength >= 0) {
     textNode.textContent = truncateText(text, visibleLength);
-    if (!textNode.getComputedTextLength || textNode.getComputedTextLength() <= visibleWidth) {
+
+    const l = getTextWidth(textNode);
+    console.log('DEBUG', l);
+
+    if (l <= visibleWidth) {
       return;
     } else {
       visibleLength--;
