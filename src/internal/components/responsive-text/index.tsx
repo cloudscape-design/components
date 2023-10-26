@@ -27,7 +27,7 @@ function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextP
   );
 }
 
-function renderTextContent(textNode: SVGTextElement, text: string, visibleWidth: number) {
+export function renderTextContent(textNode: SVGTextElement, text: string, visibleWidth: number) {
   let visibleLength = text.length;
   while (visibleLength >= 0) {
     textNode.textContent = truncateText(text, visibleLength);

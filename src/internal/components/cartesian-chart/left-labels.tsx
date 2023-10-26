@@ -10,7 +10,7 @@ import styles from './styles.css.js';
 import { formatTicks, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
-import ResponsiveText from './responsive-text';
+import ResponsiveText from '../responsive-text';
 
 const OFFSET_PX = 12;
 
