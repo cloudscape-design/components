@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 
 import { ChartScale, NumericChartScale } from './scales';
@@ -34,10 +34,17 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth 
       return null;
     }
 
+    const formattedValue = tickFormatter ? tickFormatter(value as any) : value.toString();
+    const lines = (formattedValue + '').split('\n');
+
     return (
-      <div key={`${value}`} className={styles['labels-left__label']} aria-hidden="true">
-        {tickFormatter ? tickFormatter(value as any) : value.toString()}
-      </div>
+      <Fragment key={`${value}`}>
+        {lines.map((line, lineIndex) => (
+          <div key={lineIndex} className={styles['labels-left__label']} aria-hidden="true">
+            {line}
+          </div>
+        ))}
+      </Fragment>
     );
   };
 
