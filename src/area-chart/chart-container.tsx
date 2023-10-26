@@ -78,7 +78,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
 }: ChartContainerProps<T>) {
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
-  const maxLeftLabelsWidth = Math.round((containerWidth ?? 0) / 2);
+  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
 
   const bottomLabelsProps = useBottomLabels({
     ticks: model.computed.xTicks,

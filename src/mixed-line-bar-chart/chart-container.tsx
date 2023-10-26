@@ -134,7 +134,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
   const [containerWidth, containerMeasureRef] = useContainerWidth(500);
-  const maxLeftLabelsWidth = Math.round((containerWidth ?? 0) / 2);
+  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
   const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
