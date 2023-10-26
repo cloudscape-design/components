@@ -502,7 +502,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           scale={leftAxisProps.scale}
           tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
           autoWidth={setLeftLabelsWidth}
-          maxWidth={maxLeftLabelsWidth}
+          maxLabelsWidth={maxLeftLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={bottomAxisProps.title} />}
@@ -550,9 +550,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
             tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
             title={leftAxisProps.title}
             ariaRoleDescription={leftAxisProps.ariaRoleDescription}
-            maxWidth={maxLeftLabelsWidth}
-            width={plotWidth}
-            height={plotHeight}
+            maxLabelsWidth={maxLeftLabelsWidth}
+            plotWidth={plotWidth}
+            plotHeight={plotHeight}
           />
 
           {horizontalBars && (

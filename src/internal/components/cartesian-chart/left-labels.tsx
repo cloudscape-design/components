@@ -16,9 +16,9 @@ const OFFSET_PX = 12;
 
 interface LeftLabelsProps {
   axis?: 'x' | 'y';
-  width: number;
-  height: number;
-  maxWidth?: number;
+  plotWidth: number;
+  plotHeight: number;
+  maxLabelsWidth?: number;
   scale: ChartScale | NumericChartScale;
   ticks: readonly ChartDataTypes[];
   tickFormatter?: (value: number) => string;
@@ -31,9 +31,9 @@ export default memo(LeftLabels) as typeof LeftLabels;
 // Renders the visible tick labels on the left axis, as well as their grid lines.
 function LeftLabels({
   axis = 'y',
-  width,
-  height,
-  maxWidth = Number.POSITIVE_INFINITY,
+  plotWidth,
+  plotHeight,
+  maxLabelsWidth = Number.POSITIVE_INFINITY,
   scale,
   ticks,
   tickFormatter,
@@ -67,7 +67,7 @@ function LeftLabels({
   }
 
   const from = 0 - OFFSET_PX - yOffset;
-  const until = height + OFFSET_PX - yOffset;
+  const until = plotHeight + OFFSET_PX - yOffset;
   const visibleTicks = getVisibleTicks(formattedTicks, from, until);
 
   return (
@@ -98,16 +98,16 @@ function LeftLabels({
                   className={clsx(styles.grid, styles.ticks_line)}
                   x1={-TICK_LENGTH}
                   y1={0}
-                  x2={width}
+                  x2={plotWidth}
                   y2={0}
                   aria-hidden="true"
                 />
               )}
 
-              {labelToWidthCache.current[label] <= maxWidth ? (
+              {labelToWidthCache.current[label] <= maxLabelsWidth ? (
                 <text {...textProps} />
               ) : (
-                <ResponsiveText {...textProps} maxWidth={maxWidth} />
+                <ResponsiveText {...textProps} maxWidth={maxLabelsWidth} />
               )}
             </g>
           )

@@ -14,13 +14,13 @@ interface LabelsMeasureProps {
   ticks: readonly ChartDataTypes[];
   tickFormatter?: (value: ChartDataTypes) => string;
   autoWidth: (value: number) => void;
-  maxWidth?: number;
+  maxLabelsWidth?: number;
 }
 
 export default memo(LabelsMeasure) as typeof LabelsMeasure;
 
 // Places the invisible left-hand side labels to calculate their maximum width.
-function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxWidth }: LabelsMeasureProps) {
+function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth }: LabelsMeasureProps) {
   const [width, ref] = useContainerQuery<number>(rect => rect.contentBoxWidth);
 
   // Tell elements's width to the parent.
@@ -42,7 +42,11 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxWidth }: Lab
   };
 
   return (
-    <div ref={ref} className={clsx(styles['labels-left'], styles['labels-left--hidden'])} style={{ maxWidth }}>
+    <div
+      ref={ref}
+      className={clsx(styles['labels-left'], styles['labels-left--hidden'])}
+      style={{ maxWidth: maxLabelsWidth }}
+    >
       {ticks.map(labelMapper)}
     </div>
   );

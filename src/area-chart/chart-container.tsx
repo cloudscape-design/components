@@ -125,7 +125,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           ticks={model.computed.yTicks}
           tickFormatter={yTickFormatter as TickFormatter}
           autoWidth={setLeftLabelsWidth}
-          maxWidth={maxLeftLabelsWidth}
+          maxLabelsWidth={maxLeftLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis="x" position="bottom" title={xTitle} />}
@@ -162,14 +162,14 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           />
 
           <LeftLabels
-            width={model.width}
-            height={model.height}
+            plotWidth={model.width}
+            plotHeight={model.height}
             scale={model.computed.yScale}
             ticks={model.computed.yTicks}
             tickFormatter={yTickFormatter}
             title={yTitle}
             ariaRoleDescription={yAxisAriaRoleDescription}
-            maxWidth={maxLeftLabelsWidth}
+            maxLabelsWidth={maxLeftLabelsWidth}
           />
 
           <AreaDataSeries model={model} />
