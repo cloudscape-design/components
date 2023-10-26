@@ -104,9 +104,9 @@ function LeftLabels({
                   children: line,
                 };
                 return labelToBoxCache.current[lines[0]]?.width > maxLabelsWidth ? (
-                  <ResponsiveText {...lineTextProps} maxWidth={maxLabelsWidth} />
+                  <ResponsiveText key={lineIndex} {...lineTextProps} maxWidth={maxLabelsWidth} />
                 ) : (
-                  <text {...lineTextProps} />
+                  <text key={lineIndex} {...lineTextProps} />
                 );
               })}
             </g>
