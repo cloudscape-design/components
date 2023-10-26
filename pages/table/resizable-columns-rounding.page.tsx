@@ -39,11 +39,11 @@ const items: Array<Item> = [
 ];
 
 export default function () {
-  const [width, setWidth] = useState(649);
+  const [width, setWidth] = useState(609);
   return (
     <>
       <h1>Table in container with special size </h1>
-      <button id="shrink-container" onClick={() => setWidth(635)}>
+      <button id="shrink-container" onClick={() => setWidth(595)}>
         Resize container
       </button>
       <div style={{ width }}>

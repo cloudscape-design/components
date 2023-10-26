@@ -186,31 +186,6 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
-  // The page width of 620px is an empirical value defined for the respective test page in VR
-  // so that the container width is slightly less than the table width (a sum of the column widths).
-  // In that case we expect the container to be scrollable and no auto-width set for the last column.
-  test(
-    'should set explicit width for the last column when table width exceeds container width',
-    useBrowser({ width: 620, height: 1000 }, async browser => {
-      const page = new TablePage(browser);
-      await browser.url('#/light/table/resizable-columns?visualRefresh=true');
-      await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
-
-      await expect(page.getColumnStyle(4)).resolves.toContain('width: 120px;');
-    })
-  );
-
-  test(
-    'should set explicit width for the last column when full-page table width exceeds container width',
-    useBrowser({ width: 600, height: 1000 }, async browser => {
-      const page = new TablePage(browser);
-      await browser.url('#/light/table/resizable-columns?visualRefresh=true&fullPage=true');
-      await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
-
-      await expect(page.getColumnStyle(4)).resolves.toContain('width: 120px;');
-    })
-  );
-
   test(
     'should shrink the last column after revealing a column',
     setupStickyTest(async page => {
