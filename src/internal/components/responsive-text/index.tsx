@@ -33,10 +33,7 @@ export function renderTextContent(textNode: SVGTextElement, text: string, visibl
   while (visibleLength >= 0) {
     textNode.textContent = truncateText(text, visibleLength);
 
-    const l = getTextWidth(textNode);
-    console.log('DEBUG', l);
-
-    if (l <= visibleWidth) {
+    if (getTextWidth(textNode) <= visibleWidth) {
       return;
     } else {
       visibleLength--;
