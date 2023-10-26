@@ -359,7 +359,7 @@ describe('Single-page create', () => {
 
 describe('Embedded Form', () => {
   test.skip(
-    'Forms embedded in Modal unrelataed to the main Form',
+    'Forms embedded in Modal unrelated to the main Form',
     setupTest(async page => {
       await page.click('[data-testid=embedded-form-modal]');
       const { funnelLog, actions } = await page.getFunnelLog();
