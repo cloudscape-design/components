@@ -68,8 +68,7 @@
   scrollbar-width: none; /* Hide scrollbar in Firefox */
   &.variant-stacked,
   &.variant-container {
-    & > .table,
-    & > .wrapper-content-measure {
+    & > .table {
       padding-left: awsui.$space-table-horizontal;
       padding-right: awsui.$space-table-horizontal;
     }
@@ -108,6 +107,8 @@
     @supports (position: sticky) {
       position: sticky;
       left: 0;
+      // Offset table paddings to position centered when sticky
+      margin: 0 calc(-2 * #{awsui.$space-table-horizontal});
     }
     /* stylelint-enable plugin/no-unsupported-browser-features */
   }
