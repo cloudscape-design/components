@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 import LiveRegion from '../internal/components/live-region';
 import { TableProps } from './interfaces';
 
-interface EmptyStateCellProps {
+interface NoDataCellProps {
   variant: TableProps.Variant;
   containerWidth: number;
   totalColumnsCount: number;
@@ -19,7 +19,7 @@ interface EmptyStateCellProps {
   tableRef: React.RefObject<HTMLTableElement>;
 }
 
-export function EmptyStateCell({
+export function NoDataCell({
   variant,
   containerWidth,
   totalColumnsCount,
@@ -28,7 +28,7 @@ export function EmptyStateCell({
   loadingText,
   empty,
   tableRef,
-}: EmptyStateCellProps) {
+}: NoDataCellProps) {
   const [tablePaddings, setTablePaddings] = useState(containerWidth);
 
   useEffect(() => {

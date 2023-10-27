@@ -39,7 +39,7 @@ import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { EmptyStateCell } from './empty-state-cell';
+import { NoDataCell } from './node-data-cell';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -364,7 +364,7 @@ const InternalTable = React.forwardRef(
                 <tbody>
                   {loading || items.length === 0 ? (
                     <tr>
-                      <EmptyStateCell
+                      <NoDataCell
                         variant={variant}
                         containerWidth={containerWidth ?? 0}
                         totalColumnsCount={totalColumnsCount}
