@@ -13,7 +13,7 @@ import React, {
 import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
-import { AppLayoutProps } from '../interfaces';
+import { AppLayoutProps, PublicDrawer } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-drawer-focus-control';
@@ -25,18 +25,17 @@ import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { useObservedElement } from '../utils/use-observed-element';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { DrawerItem, InternalDrawerProps } from '../drawer/interfaces';
 import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
-import { useDrawers } from '../utils/use-drawers';
+import { useDrawers, UseDrawersProps } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawerId: string | undefined;
-  drawers: Array<DrawerItem> | null;
+  activeDrawerId: string | null;
+  drawers: Array<PublicDrawer> | undefined;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersOverflowWithBadgeAriaLabel: string | undefined;
@@ -46,7 +45,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
   drawersTriggerCount: number;
-  handleDrawersClick: (activeDrawerId: string | undefined, skipFocusControl?: boolean) => void;
+  handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
@@ -371,7 +370,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(props as InternalDrawerProps, {
+    } = useDrawers(props as UseDrawersProps, props.ariaLabels, {
       ariaLabels: props.ariaLabels,
       toolsHide,
       toolsOpen: isToolsOpen,
@@ -399,8 +398,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawersMaxWidth,
     });
 
-    const handleDrawersClick = (id: string | undefined, skipFocusControl?: boolean) => {
-      const newActiveDrawerId = id !== activeDrawerId ? id : undefined;
+    const handleDrawersClick = (id: string | null, skipFocusControl?: boolean) => {
+      const newActiveDrawerId = id !== activeDrawerId ? id : null;
 
       onActiveDrawerChange(newActiveDrawerId);
 
@@ -413,7 +412,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawersTriggerCount++;
     }
     const hasOpenDrawer =
-      activeDrawerId !== undefined ||
+      !!activeDrawerId ||
       (!toolsHide && isToolsOpen) ||
       (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
@@ -602,9 +601,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           activeDrawerId,
           contentType,
           drawers,
-          drawersAriaLabel: drawersProps.ariaLabel,
-          drawersOverflowAriaLabel: drawersProps.overflowAriaLabel,
-          drawersOverflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
+          drawersAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawers,
+          drawersOverflowAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflow,
+          drawersOverflowWithBadgeAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflowWithBadge,
           drawersRefs,
           drawersMaxWidth,
           drawerSize,

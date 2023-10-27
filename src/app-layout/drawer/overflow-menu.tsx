@@ -4,10 +4,10 @@ import React from 'react';
 import InternalButtonDropdown from '../../button-dropdown/internal';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../button-dropdown/interfaces';
 import { CancelableEventHandler } from '../../internal/events';
-import { DrawerItem } from './interfaces';
+import { PublicDrawer } from '../interfaces';
 
 interface OverflowMenuProps {
-  items: DrawerItem[];
+  items: Array<PublicDrawer>;
   onItemClick: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   customTriggerBuilder?: InternalButtonDropdownProps['customTriggerBuilder'];
   ariaLabel?: string;
@@ -18,7 +18,7 @@ export default function OverflowMenu({ items, onItemClick, customTriggerBuilder,
     <InternalButtonDropdown
       items={items.map(item => ({
         id: item.id,
-        text: item.ariaLabels?.content || 'Content',
+        text: item.ariaLabels.drawerName,
         iconName: item.trigger.iconName,
         iconSvg: item.trigger.iconSvg,
         badge: item.badge,

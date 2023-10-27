@@ -4,11 +4,11 @@
 import { splitItems } from '../../../../lib/components/app-layout/drawer/drawers-helpers';
 
 test('handles empty values', () => {
-  expect(splitItems(undefined, 2, undefined)).toEqual({ visibleItems: [], overflowItems: [] });
+  expect(splitItems(undefined, 2, null)).toEqual({ visibleItems: [], overflowItems: [] });
 });
 
 test('splits items by index', () => {
-  expect(splitItems([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }], 2, undefined)).toEqual({
+  expect(splitItems([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }], 2, null)).toEqual({
     visibleItems: [{ id: '1' }, { id: '2' }],
     overflowItems: [{ id: '3' }, { id: '4' }],
   });
@@ -36,7 +36,7 @@ test('does not fail when active id resolves to a non-existing item', () => {
 });
 
 test('moves single overflow item into visible items', () => {
-  expect(splitItems([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }], 3, undefined)).toEqual({
+  expect(splitItems([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }], 3, null)).toEqual({
     visibleItems: [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }],
     overflowItems: [],
   });

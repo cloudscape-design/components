@@ -13,7 +13,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 import { render } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
-import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
+import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
@@ -88,7 +88,7 @@ describeEachAppLayout(size => {
   });
 
   test('renders resize only on resizable drawer', async () => {
-    const drawers: Required<InternalDrawerProps> = {
+    const drawers: { drawers: BetaDrawersProps } = {
       drawers: {
         items: [
           singleDrawer.drawers.items[0],

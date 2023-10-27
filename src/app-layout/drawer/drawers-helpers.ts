@@ -4,7 +4,7 @@
 export function splitItems<T extends { id: string }>(
   maybeItems: Array<T> | undefined,
   splitIndex: number,
-  activeId: string | undefined
+  activeId: string | null
 ) {
   const items = maybeItems ?? [];
   const visibleItems = items.slice(0, splitIndex);

@@ -3,6 +3,7 @@
 import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { IconProps } from '../icon/interfaces';
 
 export interface AppLayoutProps extends BaseComponentProps {
   /**
@@ -251,4 +252,31 @@ export namespace AppLayoutProps {
   // Duplicated the positions because using this definition in SplitPanelPreferences would display
   // 'AppLayoutProps.SplitPanelPosition' on the API docs instead of the string values.
   export type SplitPanelPosition = 'side' | 'bottom';
+}
+
+export interface PublicDrawer {
+  id: string;
+  content: React.ReactNode;
+  trigger: {
+    iconName?: IconProps.Name;
+    iconSvg?: React.ReactNode;
+  };
+  ariaLabels: PublicDrawerAriaLabels;
+  badge?: boolean;
+  resizable?: boolean;
+  defaultSize?: number;
+  onResize?: NonCancelableEventHandler<{ size: number }>;
+}
+
+export interface PublicAriaLabelsWithDrawers extends AppLayoutProps.Labels {
+  drawers?: string;
+  drawersOverflow?: string;
+  drawersOverflowWithBadge?: string;
+}
+
+export interface PublicDrawerAriaLabels {
+  drawerName: string;
+  closeButton?: string;
+  triggerButton?: string;
+  resizeHandle?: string;
 }

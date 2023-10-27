@@ -3,8 +3,7 @@
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { ButtonProps } from '../../button/interfaces';
-import { AppLayoutProps } from '../interfaces';
-import { DrawerItem } from '../drawer/interfaces';
+import { AppLayoutProps, PublicAriaLabelsWithDrawers, PublicDrawer } from '../interfaces';
 import { ToggleButton, togglesConfig } from '../toggles';
 import OverflowMenu from '../drawer/overflow-menu';
 import styles from './styles.css.js';
@@ -55,19 +54,14 @@ interface MobileToolbarProps {
   navigationHide: boolean | undefined;
   toolsHide: boolean | undefined;
   topOffset?: number;
-  ariaLabels: AppLayoutProps.Labels | undefined;
+  ariaLabels: PublicAriaLabelsWithDrawers | undefined;
   mobileBarRef: React.Ref<HTMLDivElement>;
   children: React.ReactNode;
   onNavigationOpen: () => void;
   onToolsOpen: () => void;
-  drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
-    ariaLabel?: string;
-    overflowAriaLabel?: string;
-    overflowWithBadgeAriaLabel?: string;
-  };
+  drawers: Array<PublicDrawer> | undefined;
+  activeDrawerId: string | null;
+  onDrawerChange: (newDrawerId: string | null) => void;
 }
 
 export function MobileToolbar({
@@ -78,10 +72,12 @@ export function MobileToolbar({
   toolsHide,
   anyPanelOpen,
   unfocusable,
+  drawers,
+  activeDrawerId,
   children,
   onNavigationOpen,
   onToolsOpen,
-  drawers,
+  onDrawerChange,
   mobileBarRef,
 }: MobileToolbarProps) {
   useEffect(() => {
@@ -95,7 +91,7 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
 
-  const { overflowItems, visibleItems } = splitItems(drawers?.items, 2, drawers?.activeDrawerId);
+  const { overflowItems, visibleItems } = splitItems(drawers, 2, activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -128,13 +124,13 @@ export function MobileToolbar({
         />
       )}
       {drawers && (
-        <aside aria-label={drawers.ariaLabel} role="region">
+        <aside aria-label={ariaLabels?.drawers} role="region">
           <div className={clsx(styles['drawers-container'])} role="toolbar" aria-orientation="horizontal">
             {visibleItems.map((item, index) => (
               <div
                 className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
                 key={index}
-                onClick={() => drawers.onChange({ activeDrawerId: item.id })}
+                onClick={() => onDrawerChange(item.id)}
               >
                 <ToggleButton
                   className={clsx(
@@ -145,7 +141,7 @@ export function MobileToolbar({
                   iconSvg={item.trigger.iconSvg}
                   badge={item.badge}
                   ariaLabel={item.ariaLabels?.triggerButton}
-                  ariaExpanded={drawers.activeDrawerId === item.id}
+                  ariaExpanded={activeDrawerId === item.id}
                   testId={`awsui-app-layout-trigger-${item.id}`}
                 />
               </div>
@@ -153,13 +149,9 @@ export function MobileToolbar({
             {overflowItems.length > 0 && (
               <div className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
                 <OverflowMenu
-                  ariaLabel={overflowMenuHasBadge ? drawers.overflowWithBadgeAriaLabel : drawers.overflowAriaLabel}
+                  ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
                   items={overflowItems}
-                  onItemClick={({ detail }) => {
-                    drawers.onChange({
-                      activeDrawerId: detail.id !== drawers.activeDrawerId ? detail.id : undefined,
-                    });
-                  }}
+                  onItemClick={({ detail }) => onDrawerChange(detail.id)}
                 />
               </div>
             )}

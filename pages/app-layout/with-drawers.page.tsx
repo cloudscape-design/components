@@ -15,7 +15,6 @@ import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
-import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
 import styles from './styles.scss';
 
@@ -56,7 +55,7 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
-              onResize: ({ detail: { size } }) => {
+              onResize: ({ detail: { size } }: { detail: { size: number } }) => {
                 // A drawer implementer may choose to listen to THEIR drawer's
                 // resize event,should they want to persist, or otherwise respond
                 // to their drawer being resized.
@@ -144,7 +143,7 @@ export default function WithDrawers() {
                 iconName: 'call',
               },
             },
-          ] as DrawerItem[],
+          ],
           onChange: (event: NonCancelableCustomEvent<string>) => {
             setActiveDrawerId(event.detail);
           },

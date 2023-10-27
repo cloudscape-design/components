@@ -88,9 +88,9 @@ export const ResizableDrawer = ({
         !isMobile &&
         activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
       }
-      drawersAriaLabels={{
+      ariaLabels={{
         openLabel: activeDrawer?.ariaLabels?.triggerButton,
-        mainLabel: activeDrawer?.ariaLabels?.content,
+        mainLabel: activeDrawer?.ariaLabels?.drawerName,
         closeLabel: activeDrawer?.ariaLabels?.closeButton,
       }}
     >
