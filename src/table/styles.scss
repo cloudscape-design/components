@@ -108,6 +108,8 @@
     @supports (position: sticky) {
       position: sticky;
       left: 0;
+      // Offset table paddings to position centered when sticky
+      margin: 0 calc(-2 * #{awsui.$space-table-horizontal});
     }
     /* stylelint-enable plugin/no-unsupported-browser-features */
   }

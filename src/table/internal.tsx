@@ -9,7 +9,6 @@ import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
-import InternalStatusIndicator from '../status-indicator/internal';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
@@ -40,6 +39,7 @@ import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { EmptyStateCell } from './empty-state-cell';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -364,26 +364,16 @@ const InternalTable = React.forwardRef(
                 <tbody>
                   {loading || items.length === 0 ? (
                     <tr>
-                      <td
-                        colSpan={totalColumnsCount}
-                        className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
-                      >
-                        <div
-                          className={styles['cell-merged-content']}
-                          style={{
-                            width:
-                              (supportsStickyPosition() && containerWidth && Math.floor(containerWidth)) || undefined,
-                          }}
-                        >
-                          {loading ? (
-                            <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>
-                              <LiveRegion visible={true}>{loadingText}</LiveRegion>
-                            </InternalStatusIndicator>
-                          ) : (
-                            <div className={styles.empty}>{empty}</div>
-                          )}
-                        </div>
-                      </td>
+                      <EmptyStateCell
+                        variant={variant}
+                        containerWidth={containerWidth ?? 0}
+                        totalColumnsCount={totalColumnsCount}
+                        hasFooter={hasFooter}
+                        loading={loading}
+                        loadingText={loadingText}
+                        empty={empty}
+                        tableRef={tableRefObject}
+                      />
                     </tr>
                   ) : (
                     items.map((item, rowIndex) => {
