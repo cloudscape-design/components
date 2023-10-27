@@ -5,14 +5,14 @@ import { render } from '@testing-library/react';
 import LeftLabels from '../../../../../lib/components/internal/components/cartesian-chart/left-labels';
 import {
   getVisibleTicks,
-  getLabelBBox,
+  getSVGTextSize,
 } from '../../../../../lib/components/internal/components/cartesian-chart/label-utils';
 import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales';
 
 jest.mock('../../../../../lib/components/internal/components/cartesian-chart/label-utils', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/components/cartesian-chart/label-utils'),
   getVisibleTicks: jest.fn().mockReturnValue([]),
-  getLabelBBox: jest.fn().mockReturnValue({ width: 0, height: 0 }),
+  getSVGTextSize: jest.fn().mockReturnValue({ width: 0, height: 0 }),
 }));
 
 jest.mock('../../../../../lib/components/internal/components/responsive-text', () => ({
@@ -22,11 +22,12 @@ jest.mock('../../../../../lib/components/internal/components/responsive-text', (
 
 describe('cartesian chart left labels', () => {
   beforeEach(() => {
-    (getVisibleTicks as any).mockClear();
+    jest.mocked(getVisibleTicks).mockClear();
+    jest.mocked(getSVGTextSize).mockClear();
   });
 
-  test('all ticks are visible', () => {
-    (getVisibleTicks as any as jest.Mock).mockReturnValueOnce([
+  test('renders all ticks normally', () => {
+    jest.mocked(getVisibleTicks).mockReturnValueOnce([
       { position: 0, lines: ['Tick 10'], space: 20 },
       { position: 10, lines: ['Tick 20'], space: 20 },
       { position: 20, lines: ['Tick 30'], space: 20 },
@@ -48,13 +49,14 @@ describe('cartesian chart left labels', () => {
   });
 
   test('truncates long labels', () => {
-    (getVisibleTicks as any as jest.Mock).mockReturnValueOnce([
+    jest.mocked(getVisibleTicks).mockReturnValueOnce([
       { position: 0, lines: ['Tick 10'], space: 20 },
       { position: 10, lines: ['Tick 20'], space: 20 },
       { position: 20, lines: ['Tick 30'], space: 20 },
     ]);
 
-    (getLabelBBox as any as jest.Mock)
+    jest
+      .mocked(getSVGTextSize)
       .mockReturnValueOnce({ width: 200, height: 20 })
       .mockReturnValueOnce({ width: 260, height: 20 })
       .mockReturnValueOnce({ width: 250, height: 20 });

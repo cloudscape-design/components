@@ -7,7 +7,7 @@ import { ChartScale, NumericChartScale } from './scales';
 import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
 
 import styles from './styles.css.js';
-import { formatTicks, getLabelBBox, getVisibleTicks } from './label-utils';
+import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
 import ResponsiveText from '../responsive-text';
@@ -45,17 +45,16 @@ function LeftLabels({
 
   const yOffset = axis === 'x' && scale.isCategorical() ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
-  const labelToBoxCache = useRef<{ [label: string]: DOMRect }>({});
+  const labelToBoxCache = useRef<{ [label: string]: { width: number; height: number } }>({});
   const getLabelSpace = (label: string) => {
     if (labelToBoxCache.current[label] !== undefined) {
       return labelToBoxCache.current[label].height;
     }
-    const labelBBox = getLabelBBox(virtualTextRef.current, label);
-    if (labelBBox) {
-      labelToBoxCache.current[label] = labelBBox;
-      return labelToBoxCache.current[label].height;
+    if (virtualTextRef.current) {
+      virtualTextRef.current.textContent = label;
     }
-    return 0;
+    labelToBoxCache.current[label] = getSVGTextSize(virtualTextRef.current);
+    return labelToBoxCache.current[label]?.height ?? 0;
   };
 
   const formattedTicks = formatTicks({ ticks, scale, getLabelSpace, tickFormatter });
