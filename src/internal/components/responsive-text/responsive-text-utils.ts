@@ -1,7 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-/* istanbul ignore next */
 export function getTextWidth(textNode: SVGTextElement) {
-  return textNode.getComputedTextLength?.() ?? -1;
+  // Ignoring as unsupported in JSDom.
+  /* istanbul ignore next */
+  if (textNode.getComputedTextLength) {
+    return textNode.getComputedTextLength();
+  }
+  return -1;
 }

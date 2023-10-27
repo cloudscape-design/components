@@ -28,12 +28,12 @@ function ResponsiveText({ x, y, className, children, maxWidth }: ResponsiveTextP
   );
 }
 
-export function renderTextContent(textNode: SVGTextElement, text: string, visibleWidth: number) {
+export function renderTextContent(textNode: SVGTextElement, text: string, maxWidth: number) {
   let visibleLength = text.length;
   while (visibleLength >= 0) {
     textNode.textContent = truncateText(text, visibleLength);
 
-    if (getTextWidth(textNode) <= visibleWidth) {
+    if (getTextWidth(textNode) <= maxWidth) {
       return;
     } else {
       visibleLength--;

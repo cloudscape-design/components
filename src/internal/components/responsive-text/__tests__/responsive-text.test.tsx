@@ -12,7 +12,7 @@ jest.mock('../../../../../lib/components/internal/components/responsive-text/res
 
 describe('responsive SVG text tests', () => {
   test('renders full text', () => {
-    (getTextWidth as any as jest.Mock).mockReturnValueOnce(100);
+    jest.mocked(getTextWidth).mockReturnValueOnce(100);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
@@ -24,7 +24,7 @@ describe('responsive SVG text tests', () => {
   });
 
   test('renders truncated text', () => {
-    (getTextWidth as any as jest.Mock).mockReturnValueOnce(101);
+    jest.mocked(getTextWidth).mockReturnValueOnce(101);
 
     const { container } = render(
       <ResponsiveText x={0} y={0} maxWidth={100}>
