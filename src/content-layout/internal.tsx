@@ -16,6 +16,7 @@ export default function InternalContentLayout({
   children,
   disableOverlap,
   header,
+  headerBackgroundImage,
   __internalRootRef,
   ...rest
 }: InternalContentLayoutProps) {
@@ -44,6 +45,7 @@ export default function InternalContentLayout({
           { [styles['is-overlap-disabled']]: isOverlapDisabled },
           'awsui-context-content-header'
         )}
+        style={headerBackgroundImage ? { backgroundImage: `url(${headerBackgroundImage})` } : {}}
         ref={overlapElement}
       />
 

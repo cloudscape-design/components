@@ -235,9 +235,16 @@
   &-variant-h3 {
     @include styles.font-heading-m;
   }
+  &-variant-h1-page {
+    @include styles.font-display-l;
+  }
 }
 
 .counter {
   color: awsui.$color-text-counter;
   font-weight: styles.$font-weight-normal;
+}
+
+.page-header {
+  padding-top: 2em;
 }

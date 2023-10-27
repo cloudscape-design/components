@@ -149,6 +149,7 @@ export namespace BoxProps {
     | 'inherit'
     | 'text-label'
     | 'text-body-secondary'
+    | 'text-heading'
     | 'text-status-error'
     | 'text-status-success'
     | 'text-status-info'

@@ -27,12 +27,18 @@ export default function InternalHeader({
   counter,
   description,
   info,
+  tags,
+  subHeading,
+  // metadata,
+  actionsPosition = 'top',
+  // secondaryContent,
   __internalRootRef = null,
   __disableActionsWrapping,
   ...restProps
 }: InternalHeaderProps) {
   const isMobile = useMobile();
-  const HeadingTag = headingTagOverride ?? (variant === 'awsui-h1-sticky' ? 'h1' : variant);
+  const HeadingTag =
+    headingTagOverride ?? (variant === 'awsui-h1-sticky' || variant === 'awsui-h1-page' ? 'h1' : variant);
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
@@ -43,7 +49,21 @@ export default function InternalHeader({
   }
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
   const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
-  const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
+  const variantOverride =
+    variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant === 'awsui-h1-page' ? 'h1' : variant;
+
+  const actionSet = actions && (
+    <div
+      className={clsx(
+        styles.actions,
+        styles[`actions-variant-${variantOverride}`],
+        isRefresh && styles.refresh,
+        !__disableActionsWrapping && [styles['actions-centered']]
+      )}
+    >
+      {actions}
+    </div>
+  );
 
   return (
     <div
@@ -63,14 +83,20 @@ export default function InternalHeader({
           styles.main,
           styles[`main-variant-${variantOverride}`],
           isRefresh && styles.refresh,
+          variant === 'awsui-h1-page' && styles['page-header'],
           __disableActionsWrapping && [styles['no-wrap']]
         )}
       >
+        {tags && <div className={styles.tags}>{tags}</div>}
         <div className={clsx(styles.title, styles[`title-variant-${variantOverride}`], isRefresh && styles.refresh)}>
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
             <span
               {...(HeadingTag === 'h2' ? { [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_SUBSTEP_NAME } : {})}
-              className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}
+              className={clsx(
+                styles['heading-text'],
+                styles[`heading-text-variant-${variantOverride}`],
+                variant === 'awsui-h1-page' && styles['heading-text-variant-h1-page']
+              )}
               id={headingId}
             >
               {children}
@@ -84,21 +110,12 @@ export default function InternalHeader({
               <span className={styles.info}>{info}</span>
             </InfoLinkLabelContext.Provider>
           )}
+          {subHeading && <div className={styles.subheading}>{subHeading}</div>}
         </div>
-        {actions && (
-          <div
-            className={clsx(
-              styles.actions,
-              styles[`actions-variant-${variantOverride}`],
-              isRefresh && styles.refresh,
-              !__disableActionsWrapping && [styles['actions-centered']]
-            )}
-          >
-            {actions}
-          </div>
-        )}
+        {actionsPosition === 'top' && actionSet}
       </div>
       <Description variantOverride={variantOverride}>{description}</Description>
+      {actionsPosition === 'bottom' && actionSet}
     </div>
   );
 }

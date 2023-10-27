@@ -18,7 +18,7 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
-        disableContentPaddings={true}
+        disableContentPaddings={false}
         content={
           <ContentLayout
             disableOverlap={true}
