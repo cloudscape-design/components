@@ -78,6 +78,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
 }: ChartContainerProps<T>) {
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
+  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
 
   const bottomLabelsProps = useBottomLabels({
     ticks: model.computed.xTicks,
@@ -124,6 +125,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           ticks={model.computed.yTicks}
           tickFormatter={yTickFormatter as TickFormatter}
           autoWidth={setLeftLabelsWidth}
+          maxLabelsWidth={maxLeftLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis="x" position="bottom" title={xTitle} />}
@@ -160,13 +162,14 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           />
 
           <LeftLabels
-            width={model.width}
-            height={model.height}
+            plotWidth={model.width}
+            plotHeight={model.height}
             scale={model.computed.yScale}
             ticks={model.computed.yTicks}
             tickFormatter={yTickFormatter}
             title={yTitle}
             ariaRoleDescription={yAxisAriaRoleDescription}
+            maxLabelsWidth={maxLeftLabelsWidth}
           />
 
           <AreaDataSeries model={model} />

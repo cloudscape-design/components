@@ -4,19 +4,21 @@ import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { ChartScale, NumericChartScale } from './scales';
-import { TICK_LENGTH, TICK_MARGIN } from './constants';
+import { TICK_LENGTH, TICK_LINE_HEIGHT, TICK_MARGIN } from './constants';
 
 import styles from './styles.css.js';
-import { formatTicks, getVisibleTicks } from './label-utils';
+import { formatTicks, getSVGTextSize, getVisibleTicks } from './label-utils';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
+import ResponsiveText from '../responsive-text';
 
 const OFFSET_PX = 12;
 
 interface LeftLabelsProps {
   axis?: 'x' | 'y';
-  width: number;
-  height: number;
+  plotWidth: number;
+  plotHeight: number;
+  maxLabelsWidth?: number;
   scale: ChartScale | NumericChartScale;
   ticks: readonly ChartDataTypes[];
   tickFormatter?: (value: number) => string;
@@ -29,8 +31,9 @@ export default memo(LeftLabels) as typeof LeftLabels;
 // Renders the visible tick labels on the left axis, as well as their grid lines.
 function LeftLabels({
   axis = 'y',
-  width,
-  height,
+  plotWidth,
+  plotHeight,
+  maxLabelsWidth = Number.POSITIVE_INFINITY,
   scale,
   ticks,
   tickFormatter,
@@ -42,17 +45,16 @@ function LeftLabels({
 
   const yOffset = axis === 'x' && scale.isCategorical() ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
-  const cacheRef = useRef<{ [label: string]: number }>({});
+  const labelToBoxCache = useRef<{ [label: string]: undefined | { width: number; height: number } }>({});
   const getLabelSpace = (label: string) => {
-    if (cacheRef.current[label] !== undefined) {
-      return cacheRef.current[label];
+    if (labelToBoxCache.current[label] !== undefined) {
+      return labelToBoxCache.current[label]?.height ?? 0;
     }
-    if (virtualTextRef.current && virtualTextRef.current.getBBox) {
+    if (virtualTextRef.current) {
       virtualTextRef.current.textContent = label;
-      cacheRef.current[label] = virtualTextRef.current.getBBox().height;
-      return cacheRef.current[label];
     }
-    return 0;
+    labelToBoxCache.current[label] = getSVGTextSize(virtualTextRef.current);
+    return labelToBoxCache.current[label]?.height ?? 0;
   };
 
   const formattedTicks = formatTicks({ ticks, scale, getLabelSpace, tickFormatter });
@@ -62,7 +64,7 @@ function LeftLabels({
   }
 
   const from = 0 - OFFSET_PX - yOffset;
-  const until = height + OFFSET_PX - yOffset;
+  const until = plotHeight + OFFSET_PX - yOffset;
   const visibleTicks = getVisibleTicks(formattedTicks, from, until);
 
   return (
@@ -87,14 +89,25 @@ function LeftLabels({
                   className={clsx(styles.grid, styles.ticks_line)}
                   x1={-TICK_LENGTH}
                   y1={0}
-                  x2={width}
+                  x2={plotWidth}
                   y2={0}
                   aria-hidden="true"
                 />
               )}
-              <text className={styles.ticks__text} x={-(TICK_LENGTH + TICK_MARGIN)} y={0}>
-                {lines.join(' ')}
-              </text>
+
+              {lines.map((line, lineIndex) => {
+                const lineTextProps = {
+                  x: -(TICK_LENGTH + TICK_MARGIN),
+                  y: (lineIndex - (lines.length - 1) * 0.5) * TICK_LINE_HEIGHT,
+                  className: styles.ticks__text,
+                  children: line,
+                };
+                return (labelToBoxCache.current[lines[0]]?.width ?? 0) > maxLabelsWidth ? (
+                  <ResponsiveText key={lineIndex} {...lineTextProps} maxWidth={maxLabelsWidth} />
+                ) : (
+                  <text key={lineIndex} {...lineTextProps} />
+                );
+              })}
             </g>
           )
       )}

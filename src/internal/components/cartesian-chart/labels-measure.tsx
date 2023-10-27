@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 
 import { ChartScale, NumericChartScale } from './scales';
@@ -14,12 +14,13 @@ interface LabelsMeasureProps {
   ticks: readonly ChartDataTypes[];
   tickFormatter?: (value: ChartDataTypes) => string;
   autoWidth: (value: number) => void;
+  maxLabelsWidth?: number;
 }
 
 export default memo(LabelsMeasure) as typeof LabelsMeasure;
 
 // Places the invisible left-hand side labels to calculate their maximum width.
-function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth }: LabelsMeasureProps) {
+function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth }: LabelsMeasureProps) {
   const [width, ref] = useContainerQuery<number>(rect => rect.contentBoxWidth);
 
   // Tell elements's width to the parent.
@@ -33,15 +34,26 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth }: LabelsMeasure
       return null;
     }
 
+    const formattedValue = tickFormatter ? tickFormatter(value as any) : value.toString();
+    const lines = (formattedValue + '').split('\n');
+
     return (
-      <div key={`${value}`} className={styles['labels-left__label']} aria-hidden="true">
-        {tickFormatter ? tickFormatter(value as any) : value.toString()}
-      </div>
+      <Fragment key={`${value}`}>
+        {lines.map((line, lineIndex) => (
+          <div key={lineIndex} className={styles['labels-left__label']} aria-hidden="true">
+            {line}
+          </div>
+        ))}
+      </Fragment>
     );
   };
 
   return (
-    <div ref={ref} className={clsx(styles['labels-left'], styles['labels-left--hidden'])}>
+    <div
+      ref={ref}
+      className={clsx(styles['labels-left'], styles['labels-left--hidden'])}
+      style={{ maxWidth: maxLabelsWidth }}
+    >
       {ticks.map(labelMapper)}
     </div>
   );
