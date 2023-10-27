@@ -81,8 +81,8 @@ function hasIntersection(a: FormattedTick, b: FormattedTick) {
   return leftEdge > rightEdge;
 }
 
+// Ignoring as unsupported in JSDom.
+/* istanbul ignore next */
 export function getSVGTextSize(element: null | SVGTextElement): { width: number; height: number } {
-  // Ignoring as unsupported in JSDom.
-  /* istanbul ignore next */
   return element?.getBBox() ?? { width: 0, height: 0 };
 }
