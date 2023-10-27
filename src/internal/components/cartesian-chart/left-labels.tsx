@@ -45,10 +45,10 @@ function LeftLabels({
 
   const yOffset = axis === 'x' && scale.isCategorical() ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
-  const labelToBoxCache = useRef<{ [label: string]: { width: number; height: number } }>({});
+  const labelToBoxCache = useRef<{ [label: string]: undefined | { width: number; height: number } }>({});
   const getLabelSpace = (label: string) => {
     if (labelToBoxCache.current[label] !== undefined) {
-      return labelToBoxCache.current[label].height;
+      return labelToBoxCache.current[label]?.height ?? 0;
     }
     if (virtualTextRef.current) {
       virtualTextRef.current.textContent = label;
@@ -102,7 +102,7 @@ function LeftLabels({
                   className: styles.ticks__text,
                   children: line,
                 };
-                return labelToBoxCache.current[lines[0]]?.width > maxLabelsWidth ? (
+                return (labelToBoxCache.current[lines[0]]?.width ?? 0) > maxLabelsWidth ? (
                   <ResponsiveText key={lineIndex} {...lineTextProps} maxWidth={maxLabelsWidth} />
                 ) : (
                   <text key={lineIndex} {...lineTextProps} />
