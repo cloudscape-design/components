@@ -84,5 +84,8 @@ function hasIntersection(a: FormattedTick, b: FormattedTick) {
 // Ignoring as unsupported in JSDom.
 /* istanbul ignore next */
 export function getSVGTextSize(element: null | SVGTextElement): undefined | { width: number; height: number } {
-  return element?.getBBox();
+  if (element && element.getBBox) {
+    return element.getBBox();
+  }
+  return undefined;
 }
