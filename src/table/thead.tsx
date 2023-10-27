@@ -18,7 +18,7 @@ import { TableThElement } from './header-cell/th-element';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 export interface TheadProps {
-  containerWidth: number | null;
+  containerWidth: null | number;
   selectionType: TableProps.SelectionType | undefined;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;

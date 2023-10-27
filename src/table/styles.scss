@@ -68,7 +68,8 @@
   scrollbar-width: none; /* Hide scrollbar in Firefox */
   &.variant-stacked,
   &.variant-container {
-    & > .table {
+    & > .table,
+    & > .wrapper-content-measure {
       padding-left: awsui.$space-table-horizontal;
       padding-right: awsui.$space-table-horizontal;
     }
