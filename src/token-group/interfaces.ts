@@ -24,6 +24,7 @@ export interface TokenGroupProps extends BaseComponentProps {
 
   /**
    * Removes any outer padding from the component.
+   * We recommend to always enable this property.
    */
   disableOuterPadding?: boolean;
 

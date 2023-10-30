@@ -14596,7 +14596,8 @@ Object {
       "type": "string",
     },
     Object {
-      "description": "Removes any outer padding from the component.",
+      "description": "Removes any outer padding from the component.
+We recommend to always enable this property.",
       "name": "disableOuterPadding",
       "optional": true,
       "type": "boolean",
