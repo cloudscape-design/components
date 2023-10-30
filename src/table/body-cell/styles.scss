@@ -257,6 +257,10 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     position: relative;
     cursor: pointer;
 
+    &.body-cell-disabled-edit {
+      cursor: auto;
+    }
+
     &.sticky-cell {
       position: sticky;
     }
@@ -302,17 +306,22 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
           position: sticky;
         }
       }
-      &:hover {
-        position: relative;
+
+      &:hover:not(.body-cell-disabled-edit) {
         background-color: awsui.$color-background-dropdown-item-hover;
         border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
-        @include focused-editor-styles;
+
         &:first-child {
           left: 0;
           right: 0;
         }
+      }
+      &:hover {
+        position: relative;
+        @include focused-editor-styles;
+
         & > .body-cell-editor {
           padding-right: calc(#{$edit-button-padding-right} - (2 * #{awsui.$border-divider-list-width}));
         }
@@ -352,4 +361,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       padding-top: awsui.$border-divider-list-width;
     }
   }
+}
+
+.body-cell-disabled-edit > .body-cell-editor {
+  color: inherit;
+  cursor: auto;
 }

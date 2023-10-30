@@ -172,34 +172,25 @@ function TableCellDisabledEdit<ItemType>({
   return (
     <TableTdElement
       {...rest}
-      className={clsx(className, styles['body-cell-editable'], isVisualRefresh && styles['is-visual-refresh'])}
+      className={clsx(
+        className,
+        styles['body-cell-editable'],
+        styles['body-cell-disabled-edit'],
+        isVisualRefresh && styles['is-visual-refresh']
+      )}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
+      {column.cell(item)}
+
       <div
-        onFocus={() => {
-          console.log('onFocus');
-          setHasFocus(true);
-        }}
-        onBlur={() => {
-          console.log('onBlur');
-          setHasFocus(false);
-        }}
+        tabIndex={0}
+        className={styles['body-cell-editor']}
+        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+        onFocus={() => setHasFocus(true)}
+        onBlur={() => setHasFocus(false)}
       >
-        {column.cell(item)}
-        <div
-          tabIndex={0}
-          className={styles['body-cell-editor']}
-          aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-          // onFocus={() => setHasFocus(true)}
-          // onBlur={() => setHasFocus(false)}
-        >
-          {showIcon && (
-            <Popover content="You cannot edit this!">
-              <Icon name="lock-private" variant="normal" />
-            </Popover>
-          )}
-        </div>
+        {showIcon && <Icon name="lock-private" variant="normal" />}
       </div>
     </TableTdElement>
   );
