@@ -193,6 +193,7 @@ export const DrawerTriggersBar = ({
   if (activeDrawerId) {
     previousActiveDrawerId.current = activeDrawerId;
   }
+
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
       const ITEM_HEIGHT = isCompactMode ? 34 : 38;

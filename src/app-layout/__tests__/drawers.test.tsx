@@ -122,7 +122,7 @@ describeEachAppLayout(size => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} {...singleDrawerOpen} />);
     expect(wrapper.findActiveDrawer()).toBeTruthy();
-    act(() => ref!.focusActiveDrawerClose());
+    act(() => ref!.focusActiveDrawer());
     expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
   });
 });

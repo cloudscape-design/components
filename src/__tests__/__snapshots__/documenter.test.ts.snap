@@ -494,7 +494,7 @@ viewport size.",
     },
     Object {
       "description": "Focuses the active drawer. Use this to focus the active drawer after opening it programmatically.",
-      "name": "focusActiveDrawerClose",
+      "name": "focusActiveDrawer",
       "parameters": Array [],
       "returnType": "void",
     },

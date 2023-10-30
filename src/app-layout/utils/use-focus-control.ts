@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useCallback, useEffect, useRef } from 'react';
+import { RefObject, useCallback, useEffect, useRef, DependencyList } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 
 export interface FocusControlRefs {
@@ -15,7 +15,11 @@ interface FocusControlState {
   loseFocus: () => void;
 }
 
-export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusControlState {
+export function useFocusControl(
+  isOpen: boolean,
+  restoreFocus = false,
+  dependencies?: DependencyList
+): FocusControlState {
   const refs = {
     toggle: useRef<ButtonProps.Ref>(null),
     close: useRef<ButtonProps.Ref>(null),
@@ -47,9 +51,8 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
     shouldFocus.current = false;
   };
 
-  // We explictly want this effect to run when only `isOpen` changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(doFocus, [isOpen]);
+  useEffect(doFocus, [isOpen, dependencies]);
 
   const loseFocus = useCallback(() => {
     previousFocusedElement.current = undefined;

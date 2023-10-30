@@ -45,7 +45,7 @@ export default function WithDrawers() {
 
   function openDrawer(id: string) {
     setActiveDrawerId(id);
-    appLayoutRef.current?.focusActiveDrawerClose();
+    appLayoutRef.current?.focusActiveDrawer();
   }
 
   const drawers = !hasDrawers

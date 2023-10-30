@@ -174,7 +174,7 @@ const OldAppLayout = React.forwardRef(
       refs: drawerRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
-    } = useFocusControl(!!activeDrawerId, true);
+    } = useFocusControl(!!activeDrawerId, true, [activeDrawerId]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
       setNavigationOpen(open);
@@ -472,7 +472,7 @@ const OldAppLayout = React.forwardRef(
         }
       },
       focusToolsClose: () => focusToolsButtons(true),
-      focusActiveDrawerClose: () => focusDrawersButtons(true),
+      focusActiveDrawer: () => focusDrawersButtons(true),
       focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
     }));
 

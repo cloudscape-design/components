@@ -384,7 +384,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       refs: drawersRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
-    } = useFocusControl(!!activeDrawerId, true);
+    } = useFocusControl(!!activeDrawerId, true, [activeDrawerId]);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     const { resizeHandle, drawerSize } = useResize(drawerRef, {
@@ -577,7 +577,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             handleToolsClick(true);
           },
           focusToolsClose: () => focusToolsButtons(true),
-          focusActiveDrawerClose: () => focusDrawersButtons(true),
+          focusActiveDrawer: () => focusDrawersButtons(true),
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
