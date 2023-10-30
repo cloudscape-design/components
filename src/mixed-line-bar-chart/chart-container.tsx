@@ -99,6 +99,8 @@ interface YAxisProps extends BaseAxisProps {
   ticks: number[];
 }
 
+const fallbackContainerWidth = 500;
+
 export default function ChartContainer<T extends ChartDataTypes>({
   fitHeight,
   height: explicitPlotHeight,
@@ -133,9 +135,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
-  const [containerWidth, containerMeasureRef] = useContainerWidth(500);
+  const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
   const maxLeftLabelsWidth = Math.round(containerWidth / 2);
-  const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
+  const plotWidth = containerWidth
+    ? // Calculate the minimum between leftLabelsWidth and maxLeftLabelsWidth for extra safety because leftLabelsWidth could be out of date
+      Math.max(0, containerWidth - Math.min(leftLabelsWidth, maxLeftLabelsWidth) - LEFT_LABELS_MARGIN)
+    : fallbackContainerWidth;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
