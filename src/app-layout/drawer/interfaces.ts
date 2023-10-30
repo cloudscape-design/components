@@ -6,7 +6,7 @@ import { PublicAriaLabelsWithDrawers, PublicDrawer } from '../interfaces';
 import { IconProps } from '../../icon/interfaces';
 import { NonCancelableEventHandler } from '../../internal/events';
 
-import { DrawerFocusControlRefs } from '../utils/use-drawer-focus-control';
+import { FocusControlRefs } from '../utils/use-focus-control';
 
 export interface DesktopDrawerProps {
   id?: string;
@@ -43,7 +43,7 @@ export interface ResizableDrawerProps extends DesktopDrawerProps {
   onResize: (resizeDetail: { size: number; id: string }) => void;
   size: number;
   getMaxWidth: () => number;
-  refs: DrawerFocusControlRefs;
+  refs: FocusControlRefs;
   toolsContent?: React.ReactNode;
 }
 
@@ -55,6 +55,7 @@ export interface DrawerTriggersBarProps {
   activeDrawerId: string | null;
   onDrawerChange: (newDrawerId: string | null) => void;
   ariaLabels: PublicAriaLabelsWithDrawers | undefined;
+  drawerRefs: FocusControlRefs;
 }
 
 // Beta interfaces

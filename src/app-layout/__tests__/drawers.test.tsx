@@ -8,12 +8,13 @@ import {
   manyDrawers,
   manyDrawersWithBadges,
   findActiveDrawerLandmark,
+  singleDrawerOpen,
 } from './utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import { render } from '@testing-library/react';
-import AppLayout from '../../../lib/components/app-layout';
 import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
+import { render, act } from '@testing-library/react';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
@@ -115,5 +116,13 @@ describeEachAppLayout(size => {
     } else {
       expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
     }
+  });
+
+  test('focuses drawer close button', () => {
+    let ref: AppLayoutProps.Ref | null = null;
+    const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} {...singleDrawerOpen} />);
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+    act(() => ref!.focusActiveDrawerClose());
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
   });
 });

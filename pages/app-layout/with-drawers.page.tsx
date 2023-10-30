@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import {
   AppLayout,
   ContentLayout,
@@ -10,6 +10,7 @@ import {
   SpaceBetween,
   SplitPanel,
   Toggle,
+  Button,
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
@@ -40,6 +41,12 @@ export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const hasDrawers = urlParams.hasDrawers ?? true;
   const disableContentPaddings = urlParams.disableContentPaddings ?? false;
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
+
+  function openDrawer(id: string) {
+    setActiveDrawerId(id);
+    appLayoutRef.current?.focusActiveDrawerClose();
+  }
 
   const drawers = !hasDrawers
     ? null
@@ -153,6 +160,7 @@ export default function WithDrawers() {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        ref={appLayoutRef}
         ariaLabels={appLayoutLabels}
         breadcrumbs={<Breadcrumbs />}
         content={
@@ -173,6 +181,12 @@ export default function WithDrawers() {
                     Has Drawers
                   </Toggle>
                 </SpaceBetween>
+                <Button onClick={() => openDrawer('security')} data-testid="open-drawer-button">
+                  Open drawer
+                </Button>
+                <Button onClick={() => openDrawer('pro-help')} data-testid="open-drawer-button-2">
+                  Open second drawer
+                </Button>
               </SpaceBetween>
             }
           >

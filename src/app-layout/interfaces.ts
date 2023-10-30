@@ -221,6 +221,13 @@ export namespace AppLayoutProps {
     focusToolsClose(): void;
 
     /**
+     * Focuses the active drawer. Use this to focus the active drawer
+     * after changing the content, for example when clicking on an 'info' link while
+     * the panel is already open.
+     */
+    focusActiveDrawerClose(): void;
+
+    /**
      * Focuses the split panel if it is open.
      */
     focusSplitPanel(): void;

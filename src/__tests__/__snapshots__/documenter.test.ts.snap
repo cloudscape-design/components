@@ -493,6 +493,14 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the active drawer. Use this to focus the active drawer
+after changing the content, for example when clicking on an 'info' link while
+the panel is already open.",
+      "name": "focusActiveDrawerClose",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Focuses the split panel if it is open.",
       "name": "focusSplitPanel",
       "parameters": Array [],

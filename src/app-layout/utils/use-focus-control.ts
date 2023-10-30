@@ -6,6 +6,7 @@ import { ButtonProps } from '../../button/interfaces';
 export interface FocusControlRefs {
   toggle: RefObject<ButtonProps.Ref>;
   close: RefObject<ButtonProps.Ref>;
+  slider: RefObject<HTMLDivElement>;
 }
 
 interface FocusControlState {
@@ -18,6 +19,7 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
   const refs = {
     toggle: useRef<ButtonProps.Ref>(null),
     close: useRef<ButtonProps.Ref>(null),
+    slider: useRef<HTMLDivElement>(null),
   };
   const previousFocusedElement = useRef<HTMLElement>();
   const shouldFocus = useRef(false);
@@ -29,7 +31,11 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
     if (isOpen) {
       previousFocusedElement.current =
         document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
-      refs.close.current?.focus();
+      if (refs.slider.current) {
+        refs.slider.current?.focus();
+      } else {
+        refs.close.current?.focus();
+      }
     } else {
       if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
         previousFocusedElement.current.focus();

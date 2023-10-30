@@ -13,14 +13,14 @@ import { PublicDrawer } from '../interfaces';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from '../visual-refresh/styles.css.js';
-import { DrawerFocusControlRefs } from './use-drawer-focus-control';
+import { FocusControlRefs } from './use-focus-control';
 import { SizeControlProps } from './interfaces';
 
 export interface DrawerResizeProps {
   activeDrawer: PublicDrawer | undefined;
   activeDrawerSize: number;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
-  drawersRefs: DrawerFocusControlRefs;
+  drawersRefs: FocusControlRefs;
   isToolsOpen: boolean;
   drawersMaxWidth: number;
 }

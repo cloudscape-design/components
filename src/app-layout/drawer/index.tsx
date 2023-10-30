@@ -182,12 +182,17 @@ export const DrawerTriggersBar = ({
   activeDrawerId,
   ariaLabels,
   drawers,
+  drawerRefs,
   onDrawerChange,
 }: DrawerTriggersBarProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
   const isCompactMode = useDensityMode(containerRef) === 'compact';
 
+  if (activeDrawerId) {
+    previousActiveDrawerId.current = activeDrawerId;
+  }
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
       const ITEM_HEIGHT = isCompactMode ? 34 : 38;
@@ -235,6 +240,7 @@ export const DrawerTriggersBar = ({
                       item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
                     )}
                     ariaExpanded={activeDrawerId === item.id}
+                    ref={item.id === previousActiveDrawerId.current ? drawerRefs.toggle : undefined}
                     ariaLabel={item.ariaLabels?.triggerButton}
                     ariaControls={activeDrawerId === item.id ? item.id : undefined}
                     trigger={item.trigger}
