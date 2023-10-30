@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { act, render, fireEvent } from '@testing-library/react';
 import Modal, { ModalProps } from '../../../lib/components/modal';
+import Select from '../../../lib/components/select';
 import createWrapper, { ElementWrapper, ModalWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/modal/styles.css.js';
@@ -182,6 +183,36 @@ describe('Modal component', () => {
         createWrapper(textFieldRef!).keydown(KeyCode.escape);
       });
 
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+    it('does not dismiss modal if ESC pressed with child dropdown element opened', () => {
+      const onDismissSpy = jest.fn();
+      const select = (
+        <Select
+          selectedOption={{
+            label: 'Option 1',
+            value: '1',
+          }}
+          onChange={() => {}}
+          options={[
+            { label: 'Option 1', value: '1' },
+            { label: 'Option 2', value: '2' },
+            { label: 'Option 3', value: '3' },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: select });
+      const selectWrapper = wrapper.findContent().findSelect()!;
+
+      expect(selectWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      act(() => selectWrapper.findTrigger()!.keydown(KeyCode.space));
+      expect(selectWrapper.findDropdown()!.findOpenDropdown()).toBeTruthy();
+
+      act(() => selectWrapper.findDropdown().findOptionByValue('1')!.keydown(KeyCode.escape));
+      expect(selectWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
       expect(onDismissSpy).toHaveBeenCalled();
     });
   });

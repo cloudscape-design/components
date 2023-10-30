@@ -84,6 +84,7 @@ function InternalPopover(
 
   const onTriggerKeyDown = useCallback((event: React.KeyboardEvent) => {
     if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
+      event.stopPropagation();
       setVisible(false);
     }
   }, []);
