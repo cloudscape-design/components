@@ -3,15 +3,18 @@
  SPDX-License-Identifier: Apache-2.0
 */
 .header {
+  align-items: center;
   box-sizing: border-box;
   background: #232f3e;
-  padding: 12px 12px 11px;
+  color: #eee;
+  display: flex;
   font-size: 15px;
   font-weight: 700;
-  line-height: 17px;
-  display: flex;
-  color: #eee;
   justify-content: space-between;
+  line-height: 17px;
+  height: 45px;
+  padding: 12px 12px 11px;
+
   &-sticky {
     width: 100%;
     z-index: 1000;
