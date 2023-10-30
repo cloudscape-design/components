@@ -127,8 +127,8 @@ export function Resizer({
         if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space || event.keyCode === KeyCode.escape) {
           event.preventDefault();
           setIsKeyboardDragging(false);
-          onWidthUpdateCommit();
           resizerToggleRef.current?.focus();
+          // The onWidthUpdateCommit is fired from the separator's blur event handler.
         }
       }
       // Enter keyboard dragging mode
@@ -192,6 +192,8 @@ export function Resizer({
           setResizerHasFocus(true);
         }}
         onBlur={event => {
+          // Ignoring blur event when focus moves to the resizer separator element.
+          // (This focus transition is done programmatically when the resizer button is clicked).
           if (event.relatedTarget !== resizerSeparatorRef.current) {
             setResizerHasFocus(false);
           }
@@ -216,14 +218,12 @@ export function Resizer({
         aria-valuetext={headerCellWidth.toFixed(0)}
         aria-valuemin={minWidth}
         data-focus-id={focusId}
-        onBlur={event => {
+        onBlur={() => {
           setResizerHasFocus(false);
           if (isKeyboardDragging) {
             setIsKeyboardDragging(false);
           }
-          if (event.relatedTarget !== resizerToggleRef.current) {
-            onWidthUpdateCommit();
-          }
+          onWidthUpdateCommit();
         }}
       />
     </>
