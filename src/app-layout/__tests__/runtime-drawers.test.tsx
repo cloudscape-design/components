@@ -10,7 +10,7 @@ import {
   singleDrawer,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
+import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
@@ -126,6 +126,24 @@ describeEachAppLayout(size => {
     } else {
       expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
     }
+  });
+
+  (size === 'desktop' ? test : test.skip)('calls onResize handler', async () => {
+    const onResize = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      resizable: true,
+      onResize: event => onResize(event.detail),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    const handle = wrapper.findActiveDrawerResizeHandle()!;
+    handle.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    handle.fireEvent(new MouseEvent('pointermove', { bubbles: true }));
+    handle.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
+
+    expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
   });
 
   test('supports badge property', async () => {
@@ -394,7 +412,7 @@ describeEachAppLayout(size => {
   test('updates active drawer id in controlled mode', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, defaultActive: true });
     const onChange = jest.fn();
-    const drawers: Required<InternalDrawerProps> = {
+    const drawers: { drawers: BetaDrawersProps } = {
       drawers: {
         ...singleDrawer.drawers,
         onChange: event => onChange(event.detail),
@@ -523,7 +541,7 @@ describeEachAppLayout(size => {
         ariaLabels: { triggerButton: 'ccc' },
         orderPriority: -1,
       });
-      const drawers: InternalDrawerProps = {
+      const drawers: { drawers: BetaDrawersProps } = {
         drawers: {
           items: [{ id: 'ddd', trigger: {}, content: null, ariaLabels: { triggerButton: 'ddd' } }],
         },

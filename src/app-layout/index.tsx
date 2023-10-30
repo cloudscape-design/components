@@ -39,9 +39,9 @@ import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../i18n/context';
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
 import { useDrawerFocusControl } from './utils/use-drawer-focus-control';
-import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
-import { InternalDrawerProps } from './drawer/interfaces';
+import { TOOLS_DRAWER_ID, useDrawers, UseDrawersProps } from './utils/use-drawers';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { togglesConfig } from './toggles';
 
 export { AppLayoutProps };
 
@@ -152,10 +152,10 @@ const OldAppLayout = React.forwardRef(
       activeDrawer,
       activeDrawerSize,
       activeDrawerId,
+      ariaLabelsWithDrawers,
       onActiveDrawerChange,
       onActiveDrawerResize,
-      ...drawersProps
-    } = useDrawers(props as InternalDrawerProps, {
+    } = useDrawers(props as UseDrawersProps, ariaLabels, {
       ariaLabels,
       tools,
       toolsOpen,
@@ -497,32 +497,23 @@ const OldAppLayout = React.forwardRef(
             anyPanelOpen={anyPanelOpen}
             toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}
             topOffset={headerHeight}
-            ariaLabels={ariaLabels}
+            ariaLabels={ariaLabelsWithDrawers}
             navigationHide={navigationHide}
             toolsHide={toolsHide}
             onNavigationOpen={() => onNavigationToggle(true)}
             onToolsOpen={() => onToolsToggle(true)}
             unfocusable={anyPanelOpen}
             mobileBarRef={mobileBarRef}
-            drawers={
-              hasDrawers
-                ? {
-                    items: drawers,
-                    activeDrawerId: activeDrawerId,
-                    onChange: changeDetail => {
-                      onActiveDrawerChange(changeDetail.activeDrawerId);
-                      if (changeDetail.activeDrawerId !== activeDrawerId) {
-                        focusToolsButtons();
-                        focusDrawersButtons();
-                        setDrawerLastInteraction({ type: 'open' });
-                      }
-                    },
-                    ariaLabel: drawersProps.ariaLabel,
-                    overflowAriaLabel: drawersProps.overflowAriaLabel,
-                    overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
-                  }
-                : undefined
-            }
+            drawers={drawers}
+            activeDrawerId={activeDrawerId}
+            onDrawerChange={newDrawerId => {
+              onActiveDrawerChange(newDrawerId);
+              if (newDrawerId !== activeDrawerId) {
+                focusToolsButtons();
+                focusDrawersButtons();
+                setDrawerLastInteraction({ type: 'open' });
+              }
+            }}
           >
             {breadcrumbs}
           </MobileToolbar>
@@ -533,7 +524,7 @@ const OldAppLayout = React.forwardRef(
               contentClassName={testutilStyles.navigation}
               toggleClassName={testutilStyles['navigation-toggle']}
               closeClassName={testutilStyles['navigation-close']}
-              ariaLabels={ariaLabels}
+              ariaLabels={togglesConfig.navigation.getLabels(ariaLabels)}
               bottomOffset={footerHeight}
               topOffset={headerHeight}
               isMobile={isMobile}
@@ -642,28 +633,29 @@ const OldAppLayout = React.forwardRef(
                 testutilStyles['active-drawer-close-button'],
                 activeDrawerId === TOOLS_DRAWER_ID && testutilStyles['tools-close']
               )}
-              ariaLabels={ariaLabels}
+              ariaLabels={{
+                openLabel: activeDrawer?.ariaLabels?.triggerButton,
+                closeLabel: activeDrawer?.ariaLabels?.closeButton,
+                mainLabel: activeDrawer?.ariaLabels.drawerName,
+                resizeHandle: activeDrawer?.ariaLabels?.resizeHandle,
+              }}
               width={!isResizeInvalid ? activeDrawerSize : toolsWidth}
               bottomOffset={footerHeight}
               topOffset={headerHeight}
               isMobile={isMobile}
-              onToggle={() => {
-                /*noop in this mode*/
+              onToggle={isOpen => {
+                if (!isOpen) {
+                  focusToolsButtons();
+                  setDrawerLastInteraction({ type: 'close' });
+                  onActiveDrawerChange(null);
+                }
               }}
               isOpen={true}
+              hideOpenButton={true}
               toggleRefs={toolsRefs}
               type="tools"
               onLoseFocus={loseDrawersFocus}
               activeDrawer={activeDrawer}
-              drawers={{
-                items: drawers,
-                activeDrawerId: activeDrawerId,
-                onChange: changeDetail => {
-                  focusToolsButtons();
-                  setDrawerLastInteraction({ type: 'close' });
-                  onActiveDrawerChange(changeDetail.activeDrawerId);
-                },
-              }}
               size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
               onResize={changeDetail => onActiveDrawerResize(changeDetail)}
               refs={drawerRefs}
@@ -678,7 +670,7 @@ const OldAppLayout = React.forwardRef(
                 contentClassName={testutilStyles.tools}
                 toggleClassName={testutilStyles['tools-toggle']}
                 closeClassName={testutilStyles['tools-close']}
-                ariaLabels={ariaLabels}
+                ariaLabels={togglesConfig.tools.getLabels(ariaLabels)}
                 width={effectiveToolsWidth}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
@@ -698,21 +690,17 @@ const OldAppLayout = React.forwardRef(
               bottomOffset={footerHeight}
               topOffset={headerHeight}
               isMobile={isMobile}
-              drawers={{
-                items: drawers,
-                activeDrawerId: activeDrawerId,
-                onChange: changeDetail => {
-                  if (activeDrawerId !== changeDetail.activeDrawerId) {
-                    focusToolsButtons();
-                    focusDrawersButtons();
-                    setDrawerLastInteraction({ type: 'open' });
-                  }
-                  onActiveDrawerChange(changeDetail.activeDrawerId);
-                },
-                ariaLabel: drawersProps.ariaLabel,
-                overflowAriaLabel: drawersProps.overflowAriaLabel,
-                overflowWithBadgeAriaLabel: drawersProps.overflowWithBadgeAriaLabel,
+              drawers={drawers}
+              activeDrawerId={activeDrawerId}
+              onDrawerChange={newDrawerId => {
+                if (activeDrawerId !== newDrawerId) {
+                  focusToolsButtons();
+                  focusDrawersButtons();
+                  setDrawerLastInteraction({ type: 'open' });
+                }
+                onActiveDrawerChange(newDrawerId);
               }}
+              ariaLabels={ariaLabelsWithDrawers}
             />
           )}
         </div>

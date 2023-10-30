@@ -1,9 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DrawerItem } from '../../../app-layout/drawer/interfaces';
 import debounce from '../../debounce';
+import { NonCancelableEventHandler } from '../../events';
 
-export type DrawerConfig = Omit<DrawerItem, 'content' | 'trigger'> & {
+export interface DrawerConfig {
+  id: string;
+  ariaLabels: {
+    content?: string;
+    closeButton?: string;
+    triggerButton?: string;
+    resizeHandle?: string;
+  };
+  badge?: boolean;
+  resizable?: boolean;
+  defaultSize?: number;
+  onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
   orderPriority?: number;
   defaultActive?: boolean;
   trigger: {
@@ -11,7 +22,8 @@ export type DrawerConfig = Omit<DrawerItem, 'content' | 'trigger'> & {
   };
   mountContent: (container: HTMLElement) => void;
   unmountContent: (container: HTMLElement) => void;
-};
+}
+
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
 export interface DrawersApiPublic {

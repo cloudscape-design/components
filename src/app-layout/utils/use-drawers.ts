@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { DrawerItem, InternalDrawerProps } from '../drawer/interfaces';
+import { BetaDrawersProps } from '../drawer/interfaces';
 import { useControllable } from '../../internal/hooks/use-controllable';
-import { fireNonCancelableEvent } from '../../internal/events';
+import { fireNonCancelableEvent, NonCancelableCustomEvent, NonCancelableEventHandler } from '../../internal/events';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
-import { AppLayoutProps } from '../interfaces';
+import { AppLayoutProps, PublicAriaLabelsWithDrawers, PublicDrawer } from '../interfaces';
 import { togglesConfig } from '../toggles';
 
 export const TOOLS_DRAWER_ID = 'awsui-internal-tools';
@@ -22,9 +22,7 @@ interface ToolsProps {
   ariaLabels: AppLayoutProps.Labels | undefined;
 }
 
-type DrawerChangeHandler = (newDrawerId: string | undefined) => void;
-
-function getToolsDrawerItem(props: ToolsProps): DrawerItem | null {
+function getToolsDrawerItem(props: ToolsProps): PublicDrawer | null {
   if (props.toolsHide) {
     return null;
   }
@@ -37,7 +35,7 @@ function getToolsDrawerItem(props: ToolsProps): DrawerItem | null {
     ariaLabels: {
       triggerButton: openLabel,
       closeButton: closeLabel,
-      content: mainLabel,
+      drawerName: mainLabel ?? '',
     },
     trigger: {
       iconName: iconName,
@@ -47,8 +45,8 @@ function getToolsDrawerItem(props: ToolsProps): DrawerItem | null {
 
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
-  activeDrawerId: string | undefined,
-  onActiveDrawerChange: DrawerChangeHandler
+  activeDrawerId: string | null,
+  onActiveDrawerChange: (newDrawerId: string | null) => void
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({ before: [], after: [] });
   const onActiveDrawerChangeStable = useStableCallback(onActiveDrawerChange);
@@ -78,6 +76,34 @@ function useRuntimeDrawers(
   return runtimeDrawers;
 }
 
+function isBetaDrawers(drawers: unknown): drawers is BetaDrawersProps {
+  return typeof drawers === 'object' && !!drawers && !Array.isArray(drawers) && 'items' in drawers;
+}
+
+function convertBetaApi(drawers: BetaDrawersProps, ariaLabels: AppLayoutProps['ariaLabels']) {
+  return {
+    drawers: drawers.items.map(
+      (betaDrawer): PublicDrawer => ({
+        ...betaDrawer,
+        ariaLabels: { drawerName: betaDrawer.ariaLabels?.content ?? '', ...betaDrawer.ariaLabels },
+        onResize: event => {
+          fireNonCancelableEvent(betaDrawer.onResize, { size: event.detail.size, id: betaDrawer.id });
+          fireNonCancelableEvent(drawers.onResize, { size: event.detail.size, id: betaDrawer.id });
+        },
+      })
+    ),
+    controlledActiveDrawerId: drawers.activeDrawerId,
+    onDrawerChange: (event: NonCancelableCustomEvent<{ activeDrawerId: string | null }>) =>
+      fireNonCancelableEvent(drawers.onChange, event.detail.activeDrawerId),
+    ariaLabels: {
+      ...ariaLabels,
+      drawers: drawers.ariaLabel,
+      drawersOverflow: drawers.overflowAriaLabel,
+      drawersOverflowWithBadge: drawers.overflowWithBadgeAriaLabel,
+    },
+  };
+}
+
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
   const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
   if (drawers.length === 0) {
@@ -91,56 +117,57 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
   return drawers;
 }
 
+export interface UseDrawersProps {
+  drawers: Array<PublicDrawer>;
+  __disableRuntimeDrawers?: boolean;
+}
+
 export function useDrawers(
-  {
-    drawers: ownDrawers,
-    __disableRuntimeDrawers: disableRuntimeDrawers,
-  }: InternalDrawerProps & { __disableRuntimeDrawers?: boolean },
+  { drawers, __disableRuntimeDrawers: disableRuntimeDrawers }: UseDrawersProps,
+  ariaLabels: PublicAriaLabelsWithDrawers | undefined,
   toolsProps: ToolsProps
 ) {
-  const [activeDrawerId, setActiveDrawerId] = useControllable(
-    ownDrawers?.activeDrawerId,
-    ownDrawers?.onChange,
-    undefined,
-    {
-      componentName: 'AppLayout',
-      controlledProp: 'activeDrawerId',
-      changeHandler: 'onChange',
-    }
-  );
+  let controlledActiveDrawerId = undefined;
+  let onDrawerChange: NonCancelableEventHandler<{ activeDrawerId: string | null }> = () => {};
+  if (isBetaDrawers(drawers)) {
+    ({ drawers, controlledActiveDrawerId, onDrawerChange, ariaLabels } = convertBetaApi(drawers, ariaLabels));
+  }
+
+  const [activeDrawerId = null, setActiveDrawerId] = useControllable(controlledActiveDrawerId, onDrawerChange, null, {
+    componentName: 'AppLayout',
+    controlledProp: 'activeDrawerId',
+    changeHandler: 'onChange',
+  });
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
     fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
-    fireNonCancelableEvent(ownDrawers?.onResize, { id, size });
   }
 
-  function onActiveDrawerChange(newDrawerId: string | undefined) {
+  function onActiveDrawerChange(newDrawerId: string | null) {
     setActiveDrawerId(newDrawerId);
     if (hasOwnDrawers) {
-      fireNonCancelableEvent(ownDrawers?.onChange, newDrawerId);
+      fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
     } else if (!toolsProps.toolsHide) {
       toolsProps.onToolsToggle(newDrawerId === TOOLS_DRAWER_ID);
     }
   }
 
-  const hasOwnDrawers = !!ownDrawers?.items;
+  const hasOwnDrawers = !!drawers;
   const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
-  const combinedDrawers = hasOwnDrawers
-    ? [...runtimeDrawers.before, ...ownDrawers.items, ...runtimeDrawers.after]
+  const combinedDrawers = drawers
+    ? [...runtimeDrawers.before, ...drawers, ...runtimeDrawers.after]
     : applyToolsDrawer(toolsProps, runtimeDrawers);
   // support toolsOpen in runtime-drawers-only mode
-  let activeDrawerIdResolved = toolsProps.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
+  let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
   const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
   // ensure that id is only defined when the drawer exists
-  activeDrawerIdResolved = activeDrawer?.id;
+  activeDrawerIdResolved = activeDrawer?.id ?? null;
 
   return {
-    ariaLabel: ownDrawers?.ariaLabel,
-    overflowAriaLabel: ownDrawers?.overflowAriaLabel,
-    overflowWithBadgeAriaLabel: ownDrawers?.overflowWithBadgeAriaLabel,
-    drawers: combinedDrawers,
+    ariaLabelsWithDrawers: ariaLabels,
+    drawers: combinedDrawers || undefined,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
     activeDrawerSize: activeDrawerIdResolved

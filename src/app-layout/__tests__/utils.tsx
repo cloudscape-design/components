@@ -10,7 +10,7 @@ import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-vis
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-import { InternalDrawerProps, DrawerItem } from '../../../lib/components/app-layout/drawer/interfaces';
+import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { IconProps } from '../../../lib/components/icon/interfaces';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
@@ -137,7 +137,7 @@ export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   resizeHandleAriaLabel: 'Resize panel',
 };
 
-export const singleDrawer: Required<InternalDrawerProps> = {
+export const singleDrawer: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     items: [
@@ -177,7 +177,7 @@ const getDrawerItem = (id: string, iconName: IconProps.Name, badge: boolean) => 
 
 const manyDrawersArray = [...Array(100).keys()].map(item => item.toString());
 
-export const manyDrawers: Required<InternalDrawerProps> = {
+export const manyDrawers: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     overflowAriaLabel: 'Overflow drawers',
@@ -202,7 +202,7 @@ export const manyDrawers: Required<InternalDrawerProps> = {
   },
 };
 
-export const manyDrawersWithBadges: Required<InternalDrawerProps> = {
+export const manyDrawersWithBadges: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     overflowAriaLabel: 'Overflow drawers',
@@ -211,7 +211,7 @@ export const manyDrawersWithBadges: Required<InternalDrawerProps> = {
   },
 };
 
-export const singleDrawerOpen: Required<InternalDrawerProps> = {
+export const singleDrawerOpen: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     activeDrawerId: 'security',
@@ -233,7 +233,7 @@ export const singleDrawerOpen: Required<InternalDrawerProps> = {
   },
 };
 
-export const resizableDrawer: Required<InternalDrawerProps> = {
+export const resizableDrawer: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     items: [
@@ -255,7 +255,7 @@ export const resizableDrawer: Required<InternalDrawerProps> = {
   },
 };
 
-export const drawerWithoutLabels: Required<InternalDrawerProps> = {
+export const drawerWithoutLabels: { drawers: BetaDrawersProps } = {
   drawers: {
     items: [
       {
@@ -264,7 +264,7 @@ export const drawerWithoutLabels: Required<InternalDrawerProps> = {
         trigger: {
           iconName: 'security',
         },
-      } as DrawerItem,
+      } as BetaDrawersProps['items'][number],
     ],
   },
 };

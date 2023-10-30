@@ -78,7 +78,7 @@ function ActiveDrawer() {
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
-    content: activeDrawerId ? activeDrawer?.ariaLabels?.content : ariaLabels?.tools,
+    content: activeDrawerId ? activeDrawer?.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
   const isHidden = !activeDrawerId;
@@ -90,7 +90,7 @@ function ActiveDrawer() {
 
   return (
     <aside
-      id={activeDrawerId}
+      id={activeDrawerId ?? undefined}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, {
@@ -121,7 +121,7 @@ function ActiveDrawer() {
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => {
-              handleDrawersClick(activeDrawerId ?? undefined);
+              handleDrawersClick(activeDrawerId);
               handleToolsClick(false);
             }}
             ref={drawersRefs.close}
