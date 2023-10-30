@@ -29,6 +29,8 @@ export default function TokenGroupPage() {
       <h1>Token Group integration test page</h1>
       <input className="focus-element" aria-label="focus element" />
       <TokenGroup alignment="vertical" items={items} onDismiss={onDismiss} id="test" />
+      <h2>Token group without outer padding</h2>
+      <TokenGroup items={items} disableOuterPadding={true} onDismiss={() => {}} />
     </>
   );
 }
