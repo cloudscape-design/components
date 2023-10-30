@@ -23,6 +23,7 @@ export default function InternalTokenGroup({
   onDismiss,
   limit,
   i18nStrings,
+  disableOuterPadding,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -35,7 +36,12 @@ export default function InternalTokenGroup({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, hasItems && styles['has-items'])}
+      className={clsx(
+        baseProps.className,
+        styles.root,
+        hasItems && styles['has-items'],
+        disableOuterPadding && styles['no-padding']
+      )}
       ref={__internalRootRef}
     >
       <TokenList
