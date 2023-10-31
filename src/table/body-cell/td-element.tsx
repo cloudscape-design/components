@@ -35,6 +35,7 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
+  level?: number;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -63,6 +64,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       colIndex,
       stickyState,
       tableRole,
+      level,
     },
     ref
   ) => {
@@ -103,7 +105,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         ref={mergedRef}
         {...nativeAttributes}
       >
-        {children}
+        {!level || level === 1 ? children : <div style={{ paddingLeft: `${20 * (level - 1)}px` }}>{children}</div>}
       </Element>
     );
   }

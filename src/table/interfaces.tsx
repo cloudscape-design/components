@@ -315,6 +315,21 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
+
+  /**
+   * Experimental API
+   */
+  getItemLevel?: (item: T) => number;
+
+  /**
+   * Experimental API
+   */
+  getItemExpandable?: (item: T) => boolean;
+
+  /**
+   * Experimental API
+   */
+  onExpandableItemToggle?: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
 }
 
 export namespace TableProps {
@@ -454,5 +469,9 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible: boolean;
+  }
+
+  export interface ExpandableItemToggleDetail<T> {
+    item: T;
   }
 }

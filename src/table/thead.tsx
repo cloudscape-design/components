@@ -41,6 +41,7 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
+  getItemLevel?: (item: any) => number;
 }
 
 const Thead = React.forwardRef(
@@ -69,6 +70,7 @@ const Thead = React.forwardRef(
       focusedComponent,
       onFocusedComponentChange,
       tableRole,
+      getItemLevel,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -126,6 +128,20 @@ const Thead = React.forwardRef(
               ) : (
                 <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
               )}
+            </TableThElement>
+          ) : null}
+
+          {getItemLevel ? (
+            <TableThElement
+              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              style={{ width: '10px', minWidth: '10px', maxWidth: '10px', padding: '0px' }}
+              hidden={hidden}
+              tableRole={tableRole}
+              colIndex={-1}
+              columnId="expand-column-id"
+              stickyState={stickyState}
+            >
+              {null}
             </TableThElement>
           ) : null}
 

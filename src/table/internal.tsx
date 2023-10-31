@@ -40,6 +40,7 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './node-data-cell';
+import InternalButton from '../button/internal';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -105,6 +106,9 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       __funnelSubStepProps,
+      getItemLevel,
+      getItemExpandable,
+      onExpandableItemToggle,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -231,6 +235,7 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
+      getItemLevel,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -383,6 +388,8 @@ const InternalTable = React.forwardRef(
                       const isSelected = !!selectionType && isItemSelected(item);
                       const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                       const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+                      const isExpanded =
+                        getItemLevel && items[rowIndex + 1] && getItemLevel(item) < getItemLevel(items[rowIndex + 1]);
                       return (
                         <tr
                           key={getItemKey(trackBy, item, rowIndex)}
@@ -427,6 +434,40 @@ const InternalTable = React.forwardRef(
                               />
                             </TableTdElement>
                           )}
+
+                          {getItemLevel && (
+                            <TableTdElement
+                              className={clsx(styles['expand-cell'])}
+                              isVisualRefresh={isVisualRefresh}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                              wrapLines={true}
+                              isEvenRow={isEven}
+                              stripedRows={stripedRows}
+                              hasSelection={hasSelection}
+                              hasFooter={hasFooter}
+                              stickyState={stickyState}
+                              columnId="expand-column-id"
+                              colIndex={-1}
+                              tableRole={tableRole}
+                              level={getItemLevel(item)}
+                            >
+                              {getItemExpandable?.(item) ? (
+                                <span style={{ marginLeft: '0px' }}>
+                                  <InternalButton
+                                    variant="inline-icon"
+                                    iconName={isExpanded ? 'treeview-collapse' : 'treeview-expand'}
+                                    onClick={() => fireNonCancelableEvent(onExpandableItemToggle, { item })}
+                                    ariaLabel="row expand"
+                                  />
+                                </span>
+                              ) : null}
+                            </TableTdElement>
+                          )}
+
                           {visibleColumnDefinitions.map((column, colIndex) => {
                             const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                             const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
@@ -469,6 +510,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
+                                level={getItemLevel && colIndex === 0 ? getItemLevel(item) : 1}
                               />
                             );
                           })}
