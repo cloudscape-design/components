@@ -487,17 +487,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * know if the notifications slot is empty.
      */
     const [notificationsContainerQuery, notificationsElement] = useContainerQuery(rect => rect.contentBoxHeight);
-    const [notificationsHeight, setNotificationsHeight] = useState(0);
-    const [hasNotificationsContent, setHasNotificationsContent] = useState(false);
 
-    useEffect(
-      function handleNotificationsContent() {
-        setNotificationsHeight(notificationsContainerQuery ?? 0);
-        setHasNotificationsContent(notificationsContainerQuery && notificationsContainerQuery > 0 ? true : false);
-      },
-      [notificationsContainerQuery]
-    );
-
+    const notificationsHeight = notificationsContainerQuery ?? 0;
+    const hasNotificationsContent = notificationsHeight > 0;
     /**
      * Determine the offsetBottom value based on the presence of a footer element and
      * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
