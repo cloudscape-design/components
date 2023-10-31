@@ -105,6 +105,8 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       __funnelSubStepProps,
+      getItemLevel,
+      onExpandableItemToggle,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
