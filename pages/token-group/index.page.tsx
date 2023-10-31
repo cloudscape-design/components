@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import TokenGroup, { TokenGroupProps } from '~components/token-group';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const generateItems = (numberOfItems: number) => {
   return [...new Array(numberOfItems)].map((item, index) => ({
@@ -25,12 +26,12 @@ export default function TokenGroupPage() {
   };
 
   return (
-    <>
+    <ScreenshotArea>
       <h1>Token Group integration test page</h1>
       <input className="focus-element" aria-label="focus element" />
       <TokenGroup alignment="vertical" items={items} onDismiss={onDismiss} id="test" />
       <h2>Token group without outer padding</h2>
       <TokenGroup items={items} disableOuterPadding={true} onDismiss={() => {}} />
-    </>
+    </ScreenshotArea>
   );
 }
