@@ -227,6 +227,22 @@ describe('Popover', () => {
       await expect(page.hasPopover()).resolves.toBe(false);
     })
   );
+
+  test(
+    'popover can be closed by moving focus away',
+    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+      await page.focusPlot();
+      await expect(page.hasPopover()).resolves.toBe(true);
+      const popover = page.getPopover();
+      const buttonDropdown = popover.findContent().findButtonDropdown();
+      expect(page.getElementsCount(buttonDropdown.toSelector())).resolves.toBe(1);
+      await page.keys(['Tab']);
+      expect(await page.getFocusedElementText()).toBe('Actions');
+      await page.keys(['Tab']);
+      expect(await page.getFocusedElementText()).toBe('p50');
+      await expect(page.hasPopover()).resolves.toBe(false);
+    })
+  );
 });
 
 describe('Keyboard navigation', () => {

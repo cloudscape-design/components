@@ -637,6 +637,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           footer={detailPopoverFooterContent}
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
+          onBlur={onSVGBlur}
         />
       }
     />
