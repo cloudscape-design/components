@@ -324,6 +324,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Experimental API
    */
+  getItemExpandable?: (item: T) => boolean;
+
+  /**
+   * Experimental API
+   */
   onExpandableItemToggle?: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
 }
 

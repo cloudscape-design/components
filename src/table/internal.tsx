@@ -107,6 +107,7 @@ const InternalTable = React.forwardRef(
       columnDisplay,
       __funnelSubStepProps,
       getItemLevel,
+      getItemExpandable,
       onExpandableItemToggle,
       ...rest
     }: InternalTableProps<T>,
@@ -387,6 +388,8 @@ const InternalTable = React.forwardRef(
                       const isSelected = !!selectionType && isItemSelected(item);
                       const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                       const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+                      const isExpanded =
+                        getItemLevel && items[rowIndex + 1] && getItemLevel(item) < getItemLevel(items[rowIndex + 1]);
                       return (
                         <tr
                           key={getItemKey(trackBy, item, rowIndex)}
@@ -452,12 +455,12 @@ const InternalTable = React.forwardRef(
                               tableRole={tableRole}
                               level={getItemLevel(item)}
                             >
-                              {true ? (
+                              {getItemExpandable?.(item) ? (
                                 <span style={{ marginLeft: '0px' }}>
                                   <InternalButton
                                     variant="inline-icon"
-                                    iconName="treeview-collapse"
-                                    onClick={() => {}}
+                                    iconName={isExpanded ? 'treeview-collapse' : 'treeview-expand'}
+                                    onClick={() => fireNonCancelableEvent(onExpandableItemToggle, { item })}
                                     ariaLabel="row expand"
                                   />
                                 </span>
