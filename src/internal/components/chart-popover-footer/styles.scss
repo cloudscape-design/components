@@ -6,4 +6,10 @@
 
 .root {
   margin-top: awsui.$space-xs;
+  /* stylelint-disable selector-max-type */
+  > hr {
+    border: none;
+    border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    margin: awsui.$space-xs 0;
+  }
 }
