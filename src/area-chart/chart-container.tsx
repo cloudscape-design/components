@@ -199,6 +199,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           dismissAriaLabel={detailPopoverDismissAriaLabel}
           size={detailPopoverSize}
           footer={detailPopoverFooterContent}
+          onBlur={model.handlers.onSVGBlur}
         />
       }
     />
