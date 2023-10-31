@@ -35,6 +35,7 @@ export interface TableTdElementProps {
   stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
   tableRole: TableRole;
+  level?: number;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -63,6 +64,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       colIndex,
       stickyState,
       tableRole,
+      level,
     },
     ref
   ) => {
@@ -95,6 +97,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
+          level && styles[`body-cell-expand-level-${level}`],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -103,7 +106,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         ref={mergedRef}
         {...nativeAttributes}
       >
-        {children}
+        {!level || level === 1 ? children : <div style={{ paddingLeft: `${20 * (level - 1)}px` }}>{children}</div>}
       </Element>
     );
   }

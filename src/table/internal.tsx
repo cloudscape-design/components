@@ -38,6 +38,7 @@ import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } fro
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import InternalButton from '../button/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './node-data-cell';
 
@@ -104,6 +105,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
+      treeGrid,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -202,7 +204,27 @@ const InternalTable = React.forwardRef(
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
     const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid-default' : 'table';
+    // TODO: support tree-grid ARIA role.
+    const tableRole = hasEditableCells || treeGrid ? 'grid-default' : 'table';
+
+    // TODO: validate tree structure when obtaining level
+    const getItemLevel = (item: T): number => {
+      if (!treeGrid) {
+        return 1;
+      }
+
+      const parents: T[] = [];
+
+      let parent = treeGrid.getItemParent(item);
+      while (parent !== null) {
+        parents.push(parent);
+        parent = treeGrid.getItemParent(parent);
+      }
+
+      return parents.length + 1;
+    };
+
+    const maxLevel = Math.max(...items.map(getItemLevel));
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -231,6 +253,8 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
+      treeGrid,
+      maxLevel,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -252,7 +276,9 @@ const InternalTable = React.forwardRef(
     const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
-    const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
+    let totalColumnsCount = visibleColumnDefinitions.length;
+    totalColumnsCount = selectionType ? totalColumnsCount + 1 : totalColumnsCount;
+    totalColumnsCount = treeGrid ? totalColumnsCount + 1 : totalColumnsCount;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -427,10 +453,45 @@ const InternalTable = React.forwardRef(
                               />
                             </TableTdElement>
                           )}
+
+                          {treeGrid !== undefined && (
+                            <TableTdElement
+                              className={clsx(styles['selection-control'])}
+                              isVisualRefresh={isVisualRefresh}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                              wrapLines={true}
+                              isEvenRow={isEven}
+                              stripedRows={stripedRows}
+                              hasSelection={hasSelection}
+                              hasFooter={hasFooter}
+                              stickyState={stickyState}
+                              columnId={selectionColumnId}
+                              colIndex={0}
+                              tableRole={tableRole}
+                              level={getItemLevel(item)}
+                            >
+                              {treeGrid.getItemExpandable(item) ? (
+                                <span style={{ marginLeft: '-10px' }}>
+                                  <InternalButton
+                                    variant="inline-icon"
+                                    iconName={treeGrid.getItemExpanded(item) ? 'treeview-collapse' : 'treeview-expand'}
+                                    onClick={() => treeGrid.onItemExpandedChange(item, !treeGrid.getItemExpanded(item))}
+                                    ariaLabel="row expand"
+                                  />
+                                </span>
+                              ) : null}
+                            </TableTdElement>
+                          )}
+
                           {visibleColumnDefinitions.map((column, colIndex) => {
                             const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                             const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
                             const isEditable = !!column.editConfig && !cellEditing.isLoading;
+
                             return (
                               <TableBodyCell
                                 key={getColumnKey(column, colIndex)}
@@ -469,6 +530,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
+                                level={colIndex === 0 ? getItemLevel(item) : 1}
                               />
                             );
                           })}

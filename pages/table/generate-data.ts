@@ -19,7 +19,7 @@ export function id() {
   return padStart(id, 8, '0');
 }
 
-function state() {
+export function state() {
   const states = [
     'PENDING',
     'RUNNING',
@@ -34,15 +34,15 @@ function state() {
   return states[Math.floor(pseudoRandom() * states.length)];
 }
 
-function number() {
+export function number() {
   return 1 + Math.floor(pseudoRandom() * 256);
 }
 
-function dnsName() {
+export function dnsName() {
   return `ec2-${number()}-${number()}-${number()}-${number()}.eu-west-1.compute.amazonaws.com`;
 }
 
-function instanceType() {
+export function instanceType() {
   const types = [
     't1.micro',
     't2.nano',
@@ -91,7 +91,7 @@ function instanceType() {
   return types[Math.floor(pseudoRandom() * types.length)];
 }
 
-function imageId() {
+export function imageId() {
   return `ami-${id()}`;
 }
 

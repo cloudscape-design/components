@@ -41,6 +41,8 @@ export interface TheadProps {
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
+  treeGrid?: TableProps.TreeGridProps<any>;
+  maxLevel?: number;
 }
 
 const Thead = React.forwardRef(
@@ -69,6 +71,8 @@ const Thead = React.forwardRef(
       focusedComponent,
       onFocusedComponentChange,
       tableRole,
+      treeGrid,
+      maxLevel,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -126,6 +130,25 @@ const Thead = React.forwardRef(
               ) : (
                 <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
               )}
+            </TableThElement>
+          ) : null}
+
+          {treeGrid ? (
+            <TableThElement
+              className={clsx(
+                headerCellClass,
+                selectionCellClass,
+                headerCellStyles['header-cell-expand'],
+                hidden && headerCellStyles['header-cell-hidden']
+              )}
+              hidden={hidden}
+              tableRole={tableRole}
+              colIndex={0}
+              columnId={selectionColumnId}
+              stickyState={stickyState}
+              maxLevel={maxLevel}
+            >
+              {null}
             </TableThElement>
           ) : null}
 
