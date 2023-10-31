@@ -23,6 +23,7 @@ import { nodeBelongs } from '../internal/utils/node-belongs';
 import clsx from 'clsx';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
+import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -383,7 +384,7 @@ export default <T extends PieChartProps.Datum>({
           onMouseLeave={checkMouseLeave}
         >
           {tooltipContent}
-          {detailPopoverFooterContent && <InternalBox margin={{ top: 's' }}>{detailPopoverFooterContent}</InternalBox>}
+          {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
         </ChartPopover>
       )}
     </div>
