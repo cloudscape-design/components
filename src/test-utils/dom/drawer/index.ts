@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../drawer/styles.selectors.js';
 
-export default class HelpPanelWrapper extends ComponentWrapper {
+export default class DrawerWrapper extends ComponentWrapper {
   static rootSelector: string = styles.drawer;
 
   findHeader(): ElementWrapper | null {
