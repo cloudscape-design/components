@@ -40,6 +40,7 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { NoDataCell } from './node-data-cell';
+import InternalButton from '../button/internal';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
@@ -233,6 +234,7 @@ const InternalTable = React.forwardRef(
       stickyState,
       selectionColumnId,
       tableRole,
+      getItemLevel,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -429,6 +431,40 @@ const InternalTable = React.forwardRef(
                               />
                             </TableTdElement>
                           )}
+
+                          {getItemLevel && (
+                            <TableTdElement
+                              className={clsx(styles['expand-cell'])}
+                              isVisualRefresh={isVisualRefresh}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                              wrapLines={true}
+                              isEvenRow={isEven}
+                              stripedRows={stripedRows}
+                              hasSelection={hasSelection}
+                              hasFooter={hasFooter}
+                              stickyState={stickyState}
+                              columnId="expand-column-id"
+                              colIndex={-1}
+                              tableRole={tableRole}
+                              level={getItemLevel(item)}
+                            >
+                              {true ? (
+                                <span style={{ marginLeft: '0px' }}>
+                                  <InternalButton
+                                    variant="inline-icon"
+                                    iconName="treeview-collapse"
+                                    onClick={() => {}}
+                                    ariaLabel="row expand"
+                                  />
+                                </span>
+                              ) : null}
+                            </TableTdElement>
+                          )}
+
                           {visibleColumnDefinitions.map((column, colIndex) => {
                             const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
                             const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
@@ -471,6 +507,7 @@ const InternalTable = React.forwardRef(
                                 stickyState={stickyState}
                                 isVisualRefresh={isVisualRefresh}
                                 tableRole={tableRole}
+                                level={getItemLevel && colIndex === 0 ? getItemLevel(item) : 1}
                               />
                             );
                           })}
