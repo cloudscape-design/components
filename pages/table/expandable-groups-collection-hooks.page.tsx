@@ -61,10 +61,6 @@ export default function Page() {
     },
   });
 
-  if (collectionProps.getItemExpandable) {
-    // console.log(collectionProps.getItemExpandable(items[0]));
-  }
-
   return (
     <ScreenshotArea>
       <Box variant="h1">Table with expandable groups</Box>
