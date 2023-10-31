@@ -167,6 +167,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * add a meaningful description to the whole selection.
    * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
    *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
+   * * `resizerRoleDescription` (string) - Provides role description for table column resizer buttons.
    * * `activateEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the edit button in editable cells.
    * * `cancelEditLabel` (EditableColumnDefinition) => string -
@@ -390,6 +391,7 @@ export namespace TableProps {
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
+    resizerRoleDescription?: string;
     // do not use <T> to prevent overly strict validation on consumer end
     // it works, practically, we are only interested in `id` and `header` properties only
     activateEditLabel?: (column: ColumnDefinition<any>, item: T) => string;

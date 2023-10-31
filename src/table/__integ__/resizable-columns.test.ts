@@ -293,16 +293,16 @@ test(
     await page.keys(['Tab']);
     // wait for the resizer to attach handler
 
-    await page.keys(['ArrowRight']);
-    await page.assertColumnWidth(1, originalWidth + 10);
-    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
-
-    await page.keys(['ArrowRight']);
+    await page.keys(['Enter', 'ArrowRight', 'ArrowRight', 'Enter']);
     await page.assertColumnWidth(1, originalWidth + 20);
     await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
 
-    await page.keys(['ArrowLeft']);
+    await page.keys(['Space', 'ArrowLeft', 'Space']);
     await page.assertColumnWidth(1, originalWidth + 10);
     await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 10);
+
+    await page.keys(['Enter', 'ArrowRight', 'Escape']);
+    await page.assertColumnWidth(1, originalWidth + 20);
+    await expect(page.readTableWidth(1)).resolves.toEqual(originalWidth + 20);
   })
 );
