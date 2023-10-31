@@ -174,7 +174,7 @@ const OldAppLayout = React.forwardRef(
       refs: drawerRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
-    } = useFocusControl(!!activeDrawerId, true, [activeDrawerId]);
+    } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
       setNavigationOpen(open);

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useCallback, useEffect, useRef, DependencyList } from 'react';
+import { RefObject, useCallback, useEffect, useRef } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 
 export interface FocusControlRefs {
@@ -18,7 +18,7 @@ interface FocusControlState {
 export function useFocusControl(
   isOpen: boolean,
   restoreFocus = false,
-  dependencies?: DependencyList
+  activeDrawerId?: string | null
 ): FocusControlState {
   const refs = {
     toggle: useRef<ButtonProps.Ref>(null),
@@ -51,8 +51,15 @@ export function useFocusControl(
     shouldFocus.current = false;
   };
 
+  const setFocus = (force?: boolean) => {
+    shouldFocus.current = true;
+    if (force && isOpen) {
+      doFocus();
+    }
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(doFocus, [isOpen, dependencies]);
+  useEffect(doFocus, [isOpen, activeDrawerId]);
 
   const loseFocus = useCallback(() => {
     previousFocusedElement.current = undefined;
@@ -60,12 +67,7 @@ export function useFocusControl(
 
   return {
     refs,
-    setFocus: force => {
-      shouldFocus.current = true;
-      if (force && isOpen) {
-        doFocus();
-      }
-    },
+    setFocus,
     loseFocus,
   };
 }

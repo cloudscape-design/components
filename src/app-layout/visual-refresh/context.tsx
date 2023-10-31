@@ -384,7 +384,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       refs: drawersRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
-    } = useFocusControl(!!activeDrawerId, true, [activeDrawerId]);
+    } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     const { resizeHandle, drawerSize } = useResize(drawerRef, {
