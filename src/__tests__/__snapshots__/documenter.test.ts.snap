@@ -493,6 +493,12 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the active drawer. Use this to focus the active drawer after opening it programmatically.",
+      "name": "focusActiveDrawer",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Focuses the split panel if it is open.",
       "name": "focusSplitPanel",
       "parameters": Array [],

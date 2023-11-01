@@ -16,7 +16,6 @@ import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-co
 import { AppLayoutProps, PublicDrawer } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-drawer-focus-control';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { isDevelopment } from '../../internal/is-development';
 import { getSplitPanelPosition } from './split-panel';
@@ -39,7 +38,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersOverflowWithBadgeAriaLabel: string | undefined;
-  drawersRefs: DrawerFocusControlRefs;
+  drawersRefs: FocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
@@ -385,8 +384,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       refs: drawersRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
-      setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], true, true);
+    } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     const { resizeHandle, drawerSize } = useResize(drawerRef, {
@@ -404,7 +402,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerChange(newActiveDrawerId);
 
       !skipFocusControl && focusDrawersButtons();
-      setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
     };
 
     let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
@@ -580,10 +577,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             handleToolsClick(true);
           },
           focusToolsClose: () => focusToolsButtons(true),
+          focusActiveDrawer: () => focusDrawersButtons(true),
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
-      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, splitPanelRefs.slider]
+      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, focusDrawersButtons, splitPanelRefs.slider]
     );
 
     return (

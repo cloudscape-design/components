@@ -38,7 +38,6 @@ import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolki
 import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../i18n/context';
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
-import { useDrawerFocusControl } from './utils/use-drawer-focus-control';
 import { TOOLS_DRAWER_ID, useDrawers, UseDrawersProps } from './utils/use-drawers';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { togglesConfig } from './toggles';
@@ -175,8 +174,7 @@ const OldAppLayout = React.forwardRef(
       refs: drawerRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
-      setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawer?.resizable], toolsOpen || activeDrawer !== undefined, true);
+    } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
       setNavigationOpen(open);
@@ -474,6 +472,7 @@ const OldAppLayout = React.forwardRef(
         }
       },
       focusToolsClose: () => focusToolsButtons(true),
+      focusActiveDrawer: () => focusDrawersButtons(true),
       focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
     }));
 
@@ -511,7 +510,6 @@ const OldAppLayout = React.forwardRef(
               if (newDrawerId !== activeDrawerId) {
                 focusToolsButtons();
                 focusDrawersButtons();
-                setDrawerLastInteraction({ type: 'open' });
               }
             }}
           >
@@ -646,13 +644,13 @@ const OldAppLayout = React.forwardRef(
               onToggle={isOpen => {
                 if (!isOpen) {
                   focusToolsButtons();
-                  setDrawerLastInteraction({ type: 'close' });
+                  focusDrawersButtons();
                   onActiveDrawerChange(null);
                 }
               }}
               isOpen={true}
               hideOpenButton={true}
-              toggleRefs={toolsRefs}
+              toggleRefs={drawerRefs}
               type="tools"
               onLoseFocus={loseDrawersFocus}
               activeDrawer={activeDrawer}
@@ -687,6 +685,7 @@ const OldAppLayout = React.forwardRef(
           )}
           {hasDrawers && drawers.length > 0 && (
             <DrawerTriggersBar
+              drawerRefs={drawerRefs}
               bottomOffset={footerHeight}
               topOffset={headerHeight}
               isMobile={isMobile}
@@ -696,7 +695,6 @@ const OldAppLayout = React.forwardRef(
                 if (activeDrawerId !== newDrawerId) {
                   focusToolsButtons();
                   focusDrawersButtons();
-                  setDrawerLastInteraction({ type: 'open' });
                 }
                 onActiveDrawerChange(newDrawerId);
               }}
