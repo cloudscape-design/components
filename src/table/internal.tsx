@@ -108,6 +108,8 @@ const InternalTable = React.forwardRef(
       __funnelSubStepProps,
       getItemLevel,
       getItemExpandable,
+      getItemChildren,
+      getItemExpanded,
       onExpandableItemToggle,
       ...rest
     }: InternalTableProps<T>,
@@ -116,6 +118,27 @@ const InternalTable = React.forwardRef(
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
     const isMobile = useMobile();
+
+    let allItems = items;
+    const itemToLevel = new Map<T, number>();
+
+    if (!getItemLevel && getItemChildren) {
+      const visibleItems = new Array<T>();
+
+      const traverse = (item: T, level = 1) => {
+        itemToLevel.set(item, level);
+        visibleItems.push(item);
+        if (!getItemExpanded || getItemExpanded(item)) {
+          getItemChildren(item).forEach(child => traverse(child, level + 1));
+        }
+      };
+
+      items.forEach(item => traverse(item));
+
+      allItems = visibleItems;
+    }
+
+    getItemLevel = getItemLevel ? getItemLevel : getItemChildren ? (item: T) => itemToLevel.get(item) ?? 1 : undefined;
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const wrapperRefObject = useRef(null);
@@ -140,7 +163,7 @@ const InternalTable = React.forwardRef(
 
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
-    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length);
+    const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, allItems.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
     const visibleColumnDefinitions = getVisibleColumnDefinitions({
@@ -150,7 +173,7 @@ const InternalTable = React.forwardRef(
     });
 
     const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
-      items,
+      items: allItems,
       trackBy,
       selectedItems,
       selectionType,
@@ -251,7 +274,7 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, allItems?.length);
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -367,7 +390,7 @@ const InternalTable = React.forwardRef(
                   {...theadProps}
                 />
                 <tbody>
-                  {loading || items.length === 0 ? (
+                  {loading || allItems.length === 0 ? (
                     <tr>
                       <NoDataCell
                         variant={variant}
@@ -381,15 +404,18 @@ const InternalTable = React.forwardRef(
                       />
                     </tr>
                   ) : (
-                    items.map((item, rowIndex) => {
+                    allItems.map((item, rowIndex) => {
                       const firstVisible = rowIndex === 0;
-                      const lastVisible = rowIndex === items.length - 1;
+                      const lastVisible = rowIndex === allItems.length - 1;
                       const isEven = rowIndex % 2 === 0;
                       const isSelected = !!selectionType && isItemSelected(item);
-                      const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
-                      const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
-                      const isExpanded =
-                        getItemLevel && items[rowIndex + 1] && getItemLevel(item) < getItemLevel(items[rowIndex + 1]);
+                      const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(allItems[rowIndex - 1]);
+                      const isNextSelected = !!selectionType && !lastVisible && isItemSelected(allItems[rowIndex + 1]);
+                      const isExpanded = getItemExpanded
+                        ? getItemExpanded(item)
+                        : getItemLevel &&
+                          allItems[rowIndex + 1] &&
+                          getItemLevel(item) < getItemLevel(allItems[rowIndex + 1]);
                       return (
                         <tr
                           key={getItemKey(trackBy, item, rowIndex)}
