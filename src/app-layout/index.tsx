@@ -101,6 +101,7 @@ const OldAppLayout = React.forwardRef(
       minContentWidth,
       headerSelector = '#b #h',
       footerSelector = '#b #f',
+      hideMobileToolbar,
       ariaLabels,
       splitPanel,
       splitPanelSize: controlledSplitPanelSize,
@@ -492,7 +493,7 @@ const OldAppLayout = React.forwardRef(
         ref={rootRef}
         style={contentHeightStyle}
       >
-        {isMobile && (!toolsHide || !navigationHide || breadcrumbs) && (
+        {isMobile && !hideMobileToolbar && (!toolsHide || !navigationHide || breadcrumbs) && (
           <MobileToolbar
             anyPanelOpen={anyPanelOpen}
             toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}

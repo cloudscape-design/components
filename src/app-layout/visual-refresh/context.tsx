@@ -123,6 +123,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       footerSelector = '#b #h',
       children,
       splitPanel,
+      hideMobileToolbar,
       ...props
     }: AppLayoutProviderInternalsProps,
     forwardRef: React.Ref<AppLayoutProps.Ref>
@@ -624,6 +625,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           hasNotificationsContent,
           hasOpenDrawer,
           hasStickyBackground,
+          hideMobileToolbar,
           isBackgroundOverlapDisabled: props.disableContentHeaderOverlap || !hasBackgroundOverlap,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
