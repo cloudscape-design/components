@@ -56,7 +56,7 @@ const PlainList = ({
     const item = listRef.current?.querySelector<HTMLElement>(
       `[data-mouse-target="${autosuggestItemsState.highlightedIndex}"]`
     );
-    if (autosuggestItemsState.highlightType === 'keyboard' && item) {
+    if (autosuggestItemsState.highlightType.moveFocus && item) {
       scrollElementIntoView(item);
     }
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex]);

@@ -38,7 +38,7 @@ const VirtualList = ({
   });
 
   useEffect(() => {
-    if (autosuggestItemsState.highlightType === 'keyboard') {
+    if (autosuggestItemsState.highlightType.moveFocus) {
       rowVirtualizer.scrollToIndex(autosuggestItemsState.highlightedIndex);
     }
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);
