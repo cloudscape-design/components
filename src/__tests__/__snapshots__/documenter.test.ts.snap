@@ -647,7 +647,7 @@ Individual properties will always take precedence over the default coming from t
       "type": "string",
     },
     Object {
-      "description": "Hide mobile toolbar",
+      "description": "When set to \`true\`, hides the mobile toolbar",
       "name": "hideMobileToolbar",
       "optional": true,
       "type": "boolean",
