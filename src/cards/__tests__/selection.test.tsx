@@ -66,6 +66,20 @@ describe('Cards selection', () => {
       ).wrapper;
       expect(getSelectedCardsText()).toEqual(['0']);
     });
+
+    it('cannot select items by clicking anywhere on the card by default', () => {
+      wrapper = renderCards(<Cards<Item> {...props} selectionType={selectionType} />).wrapper;
+      getCard(1).findCardHeader()?.click();
+      expect(handleSelectionChange).not.toHaveBeenCalled();
+    });
+
+    it('can select items by clicking anywhere on the card when entireCardClickable is enabled', () => {
+      wrapper = renderCards(
+        <Cards<Item> {...props} selectionType={selectionType} entireCardClickable={true} />
+      ).wrapper;
+      getCard(1).findCardHeader()?.click();
+      expectSelected([{ description: '1' }]);
+    });
   });
 
   describe('Single selection', () => {
