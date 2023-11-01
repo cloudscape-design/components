@@ -14,7 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 export { DrawerProps };
 
 export default function Drawer({ header, children, loading, i18nStrings, ...restProps }: DrawerProps) {
-  const { __internalRootRef } = useBaseComponent('HelpPanel');
+  const { __internalRootRef } = useBaseComponent('Drawer');
   const baseProps = getBaseProps(restProps);
   const i18n = useInternalI18n('drawer');
   const containerProps = {
