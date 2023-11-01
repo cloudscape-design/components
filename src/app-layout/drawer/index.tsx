@@ -135,7 +135,7 @@ export const Drawer = React.forwardRef(
                 }}
               />
             </div>
-            {children}
+            <div className={styles['drawer-children']}>{children}</div>
           </TagName>
         </div>
       </div>

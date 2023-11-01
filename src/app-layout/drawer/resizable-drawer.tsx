@@ -93,12 +93,8 @@ export const ResizableDrawer = ({
         closeLabel: activeDrawer?.ariaLabels?.closeButton,
       }}
     >
-      {toolsContent && (
-        <div className={clsx(styles['drawer-children'], activeDrawer?.id !== TOOLS_DRAWER_ID && styles.hide)}>
-          {toolsContent}
-        </div>
-      )}
-      {activeDrawer?.id !== TOOLS_DRAWER_ID ? <div className={styles['drawer-children']}>{children}</div> : null}
+      {toolsContent && <div className={clsx(activeDrawer?.id !== TOOLS_DRAWER_ID && styles.hide)}>{toolsContent}</div>}
+      {activeDrawer?.id !== TOOLS_DRAWER_ID ? children : null}
     </Drawer>
   );
 };
