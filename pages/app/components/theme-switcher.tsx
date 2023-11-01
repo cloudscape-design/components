@@ -27,10 +27,8 @@ export default function ThemeSwitcher() {
 
   return (
     <Popover
-      fixedWidth={true}
-      header="Network interface eth0"
-      size="large"
       position="bottom"
+      size="large"
       content={
         <SpaceBetween direction="vertical" size="xs">
           <label>
