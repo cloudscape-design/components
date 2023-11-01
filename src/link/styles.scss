@@ -9,18 +9,6 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use './constants' as constants;
 
-$font-sizes: (
-  'body-s',
-  'body-m',
-  'heading-xs',
-  'heading-s',
-  'heading-m',
-  'heading-l',
-  'heading-xl',
-  'display-l',
-  'inherit'
-);
-
 .link {
   @include styles.styles-reset;
   display: inline;
@@ -48,8 +36,7 @@ $font-sizes: (
   &.color-inverted {
     color: awsui.$color-text-notification-default;
     &:not(.button) {
-      text-decoration: underline;
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      text-decoration-line: underline;
       text-decoration-color: currentColor;
     }
     &:hover {
@@ -61,9 +48,11 @@ $font-sizes: (
     @include styles.link-focus;
   }
 
-  @each $variant in $font-sizes {
-    &.font-size-#{$variant} {
-      @include styles.font($variant);
+  @each $font-size, $properties in constants.$link-font-sizes {
+    &.font-size-#{$font-size} {
+      @include styles.font($font-size);
+      text-underline-offset: map.get($properties, 'text-underline-offset');
+      text-decoration-thickness: map.get($properties, 'text-decoration-thickness');
     }
   }
 }

@@ -15,11 +15,8 @@
   color: map.get($variant, 'text-color-default');
   font-weight: map.get($variant, 'font-weight');
   letter-spacing: map.get($variant, 'letter-spacing');
-  // Fallback for browsers that do not support text-decoration-color, like IE11
-  text-decoration: map.get($variant, 'decoration');
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  text-decoration-line: map.get($variant, 'decoration-line');
   text-decoration-color: map.get($variant, 'decoration-color');
-  text-decoration-thickness: map.get($variant, 'decoration-thickness');
 
   @include styles.with-motion {
     transition-property: color, text-decoration;
@@ -42,10 +39,8 @@
   &:active,
   &:focus,
   &:hover {
-    text-decoration: underline;
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    text-decoration-line: underline;
     text-decoration-color: map.get($variant, 'decoration-color-hover');
-    text-decoration-thickness: map.get($variant, 'decoration-thickness');
   }
 }
 
