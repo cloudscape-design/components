@@ -647,6 +647,12 @@ Individual properties will always take precedence over the default coming from t
       "type": "string",
     },
     Object {
+      "description": "Hide mobile toolbar",
+      "name": "hideMobileToolbar",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
