@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
-import { THEME, ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
+import { ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
 import { Popover, SpaceBetween } from '~components';
 import AppContext from '../app-context';
 import { Density, Mode } from '@cloudscape-design/global-styles';
@@ -27,31 +27,11 @@ export default function ThemeSwitcher() {
 
   return (
     <Popover
+      header="Settings"
       position="bottom"
       size="large"
       content={
         <SpaceBetween direction="vertical" size="xs">
-          <label>
-            Theme
-            <select defaultValue={THEME}>
-              <option value={THEME}>{THEME}</option>
-            </select>
-          </label>
-
-          <label>
-            Direction
-            <select
-              defaultValue={urlParams.direction}
-              onChange={event => {
-                setUrlParams({ direction: event.target.value as 'rtl' | 'ltr' });
-                window.location.reload();
-              }}
-            >
-              <option value="ltr">Left-to-Right</option>
-              <option value="rtl">Right-to-Left</option>
-            </select>
-          </label>
-
           <label>
             <input {...vrSwitchProps} />
             Visual refresh
@@ -87,6 +67,19 @@ export default function ThemeSwitcher() {
               onChange={event => setUrlParams({ motionDisabled: event.target.checked })}
             />
             Disable motion
+          </label>
+
+          <label>
+            <input
+              id="disabled-motion-toggle"
+              type="checkbox"
+              checked={urlParams.direction === 'rtl'}
+              onChange={event => {
+                setUrlParams({ direction: event.target.checked ? 'rtl' : 'ltr' });
+                window.location.reload();
+              }}
+            />
+            Right to Left
           </label>
         </SpaceBetween>
       }
