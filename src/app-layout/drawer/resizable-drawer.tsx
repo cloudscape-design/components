@@ -85,8 +85,7 @@ export const ResizableDrawer = ({
       ref={drawerRefObject}
       isHidden={!activeDrawer}
       resizeHandle={
-        !isMobile &&
-        activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
+        !isMobile && activeDrawer?.resizable && <div className={clsx(styles['drawer-slider'])}>{resizeHandle}</div>
       }
       ariaLabels={{
         openLabel: activeDrawer?.ariaLabels?.triggerButton,
@@ -94,8 +93,12 @@ export const ResizableDrawer = ({
         closeLabel: activeDrawer?.ariaLabels?.closeButton,
       }}
     >
-      {toolsContent && <div className={clsx(activeDrawer?.id !== TOOLS_DRAWER_ID && styles.hide)}>{toolsContent}</div>}
-      {activeDrawer?.id !== TOOLS_DRAWER_ID ? children : null}
+      {toolsContent && (
+        <div className={clsx(styles['drawer-children'], activeDrawer?.id !== TOOLS_DRAWER_ID && styles.hide)}>
+          {toolsContent}
+        </div>
+      )}
+      {activeDrawer?.id !== TOOLS_DRAWER_ID ? <div className={styles['drawer-children']}>{children}</div> : null}
     </Drawer>
   );
 };

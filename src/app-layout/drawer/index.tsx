@@ -111,19 +111,30 @@ export const Drawer = React.forwardRef(
       >
         <div
           style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
-          className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName)}
+          className={clsx(
+            isOpen && styles['drawer-content-open'],
+            styles['drawer-content'],
+            !isOpen && styles['drawer-content-clickable'],
+            contentClassName
+          )}
         >
           {!isMobile && !hideOpenButton && regularOpenButton}
           {resizeHandle}
-          <TagName aria-label={mainLabel} aria-hidden={!isOpen}>
-            <CloseButton
-              ref={toggleRefs.close}
-              className={closeClassName}
-              ariaLabel={closeLabel}
-              onClick={() => {
-                onToggle(false);
-              }}
-            />
+          <TagName
+            className={clsx(isOpen && styles['drawer-children-container'])}
+            aria-label={mainLabel}
+            aria-hidden={!isOpen}
+          >
+            <div className={clsx(styles['drawer-close-button'])}>
+              <CloseButton
+                ref={toggleRefs.close}
+                className={closeClassName}
+                ariaLabel={closeLabel}
+                onClick={() => {
+                  onToggle(false);
+                }}
+              />
+            </div>
             {children}
           </TagName>
         </div>

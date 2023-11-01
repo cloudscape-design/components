@@ -26,6 +26,7 @@ $drawer-z-index-mobile: 1001;
   position: relative;
   word-wrap: break-word;
   box-shadow: awsui.$shadow-panel;
+
   &:not(.drawer-mobile) {
     z-index: $drawer-z-index;
   }
@@ -35,11 +36,17 @@ $drawer-z-index-mobile: 1001;
       display: none;
     }
   }
+  > .drawer-content-open {
+    display: grid;
+    grid-template-columns: awsui.$space-m 1fr;
+    overflow-y: hidden;
+  }
 }
+
 .drawer-content {
   position: fixed;
-  overflow: auto;
   background-color: awsui.$color-background-layout-panel-content;
+
   .drawer-mobile > & {
     z-index: $drawer-z-index-mobile;
     top: 0;
@@ -59,6 +66,33 @@ $drawer-z-index-mobile: 1001;
   }
   & > [aria-hidden='true'] {
     display: none;
+  }
+
+  > .drawer-children-container {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
+    grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
+    overflow-y: auto;
+
+    > .drawer-close-button {
+      grid-column: 3;
+      grid-row: 2;
+      z-index: 1;
+    }
+
+    > .drawer-children {
+      grid-column: 1 / span 4;
+    }
+  }
+
+  > .drawer-slider {
+    grid-column: 1;
+    grid-row: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 }
 
