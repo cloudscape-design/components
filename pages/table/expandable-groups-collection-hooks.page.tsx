@@ -23,30 +23,21 @@ type DemoContext = React.Context<
 
 const selectionTypeOptions = [{ value: 'none' }, { value: 'single' }, { value: 'multi' }];
 
-interface Node {
-  item: Instance;
-  children: Node[];
+const l1items = generateItems(20) as (Instance & { parentId: null | string })[];
+const l2items = generateItems(100) as (Instance & { parentId: null | string })[];
+const l3items = generateItems(400) as (Instance & { parentId: null | string })[];
+
+for (const l3 of l3items) {
+  l3.parentId = l2items[Math.floor(pseudoRandom() * l2items.length)].id;
+}
+for (const l2 of l2items) {
+  l2.parentId = l1items[Math.floor(pseudoRandom() * l1items.length)].id;
+}
+for (const l1 of l1items) {
+  l1.parentId = null;
 }
 
-const itemsTree = generateItems(10).map(l1 => ({
-  item: l1,
-  children: generateItems(Math.floor(pseudoRandom() * 10)).map(l2 => ({
-    item: l2,
-    children: generateItems(Math.floor(pseudoRandom() * 3)).map(l3 => ({
-      item: l3,
-      children: [],
-    })),
-  })),
-}));
-
-const allItems: (Instance & { parentId: null | string })[] = [];
-
-function traverse(node: Node, parentId: null | string = null) {
-  allItems.push({ ...node.item, parentId });
-  node.children.forEach(child => traverse(child, node.item.id));
-}
-
-itemsTree.forEach(item => traverse(item, null));
+const allItems = [...l1items, ...l2items, ...l3items];
 
 export default function Page() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
