@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { THEME, ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
-import { Modal, SpaceBetween } from '~components';
+import { Popover, SpaceBetween } from '~components';
 import AppContext from '../app-context';
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
-  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
   const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
     id: 'visual-refresh-toggle',
@@ -27,14 +26,12 @@ export default function ThemeSwitcher() {
   }
 
   return (
-    <>
-      <button onClick={() => setIsSettingsModalVisible(true)}>Demo Page Settings</button>
-
-      <Modal
-        header="Demo Page Settings"
-        onDismiss={() => setIsSettingsModalVisible(false)}
-        visible={isSettingsModalVisible}
-      >
+    <Popover
+      fixedWidth={true}
+      header="Network interface eth0"
+      size="large"
+      position="bottom"
+      content={
         <SpaceBetween direction="vertical" size="xs">
           <label>
             Theme
@@ -42,20 +39,26 @@ export default function ThemeSwitcher() {
               <option value={THEME}>{THEME}</option>
             </select>
           </label>
+
           <label>
             Direction
             <select
-              onChange={event => setUrlParams({ direction: event.target.value as 'rtl' | 'ltr' })}
               defaultValue={urlParams.direction}
+              onChange={event => {
+                setUrlParams({ direction: event.target.value as 'rtl' | 'ltr' });
+                window.location.reload();
+              }}
             >
               <option value="ltr">Left-to-Right</option>
               <option value="rtl">Right-to-Left</option>
             </select>
           </label>
+
           <label>
             <input {...vrSwitchProps} />
             Visual refresh
           </label>
+
           <label>
             <input
               id="mode-toggle"
@@ -65,6 +68,7 @@ export default function ThemeSwitcher() {
             />
             Dark mode
           </label>
+
           <label>
             <input
               id="density-toggle"
@@ -76,6 +80,7 @@ export default function ThemeSwitcher() {
             />
             Compact mode
           </label>
+
           <label>
             <input
               id="disabled-motion-toggle"
@@ -86,7 +91,9 @@ export default function ThemeSwitcher() {
             Disable motion
           </label>
         </SpaceBetween>
-      </Modal>
-    </>
+      }
+    >
+      Demo Page Settings
+    </Popover>
   );
 }

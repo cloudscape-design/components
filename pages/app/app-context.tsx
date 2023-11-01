@@ -69,8 +69,6 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   const { mode, pageId } = match ? match.params : { mode: undefined, pageId: undefined };
   const urlParams = parseQuery(location.search) as AppUrlParams;
 
-  document.querySelector('html')?.setAttribute('dir', urlParams.direction);
-
   function setUrlParams(newParams: Partial<AppUrlParams>) {
     const pathname = [mode, pageId].filter(segment => !!segment).join('/') + '/';
     history.replace(`/${pathname}${formatQuery({ ...urlParams, ...newParams })}`);
