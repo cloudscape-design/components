@@ -48,7 +48,7 @@
 }
 
 .toggle-container-inline {
-  padding-left: awsui.$space-xs;
+  padding-inline-start: awsui.$space-xs;
   display: flex;
   align-items: center;
 }
@@ -66,7 +66,7 @@
 
   // Icon svg has one pixel around it. We need to shift the button one
   // pixel to the left to vertically align it with the input field
-  margin-left: -1px;
+  margin-inline-start: -1px;
 
   &:active,
   &:focus,
@@ -81,12 +81,12 @@
   }
 
   > .description {
-    margin-left: awsui.$space-xxs;
+    margin-inline-start: awsui.$space-xxs;
   }
 }
 
 .separator {
   margin: 0px awsui.$space-scaled-m;
-  width: awsui.$border-divider-section-width;
+  inline-size: awsui.$border-divider-section-width;
   background-color: awsui.$color-border-divider-default;
 }

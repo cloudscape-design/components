@@ -12,7 +12,7 @@
 }
 
 .with-result-button {
-  padding-right: awsui.$space-m;
+  padding-inline-end: awsui.$space-m;
 }
 
 .result-text {
@@ -42,7 +42,7 @@
   &-key-value {
     @include styles.font-label;
     color: awsui.$color-text-label;
-    margin-bottom: awsui.$space-scaled-xxxs;
+    margin-block-end: awsui.$space-scaled-xxxs;
   }
 }
 
@@ -53,15 +53,15 @@
 .progress-container {
   display: flex;
   align-items: center;
-  max-width: 800px;
-  height: awsui.$line-height-body-m;
+  max-inline-size: 800px;
+  block-size: awsui.$line-height-body-m;
 }
 
 .percentage-container {
-  width: 3.3 * styles.$base-size;
+  inline-size: 3.3 * styles.$base-size;
   flex-shrink: 0;
   white-space: nowrap;
-  text-align: right;
+  text-align: end;
   @include styles.font(body-s);
 }
 
@@ -70,7 +70,7 @@
 }
 
 @mixin general-progress-background-style {
-  height: 0.4 * styles.$base-size;
+  block-size: 0.4 * styles.$base-size;
   border: 0 none;
   box-sizing: border-box;
   border-radius: 10px;
@@ -91,9 +91,9 @@ $bar-color-edge: #0073bb;
 $bar-color-edge-in-flash: rgba(255, 255, 255, 0.7);
 
 .progress {
-  width: 100%;
-  margin-right: awsui.$space-s;
-  min-width: 0;
+  inline-size: 100%;
+  margin-inline-end: awsui.$space-s;
+  min-inline-size: 0;
   @include general-progress-background-style;
   background-color: $background-color;
 

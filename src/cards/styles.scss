@@ -18,10 +18,8 @@
 .header {
   &-variant-full-page.header-refresh {
     @include container.borders-and-shadows;
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
+    padding: logical 0 0
+      calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
   }
 }
 
@@ -37,7 +35,7 @@
   @for $i from 1 through 20 {
     &.list-grid-#{$i} {
       > .card {
-        width: math.div(100%, $i);
+        inline-size: math.div(100%, $i);
       }
     }
   }
@@ -46,9 +44,9 @@
 .selection-control {
   position: absolute;
   box-sizing: border-box;
-  width: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
-  top: 0;
-  right: 0;
+  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
+  inset-block-start: 0;
+  inset-inline-end: 0;
   padding: awsui.$space-card-vertical awsui.$space-card-horizontal;
 }
 
@@ -57,13 +55,13 @@
   overflow: hidden;
   text-align: center;
   color: awsui.$color-text-empty;
-  margin-bottom: awsui.$space-scaled-l;
+  margin-block-end: awsui.$space-scaled-l;
 }
 
 .has-header {
   // Unfortunately, we don't have access to the header of InternalContainer
   // in order to use margin-bottom instead.
-  margin-top: awsui.$space-grid-gutter;
+  margin-block-start: awsui.$space-grid-gutter;
 }
 
 .card {
@@ -79,19 +77,19 @@
     margin: 0 0 awsui.$space-grid-gutter awsui.$space-grid-gutter;
     padding: awsui.$space-card-vertical awsui.$space-card-horizontal;
     @include styles.container-shadow;
-    width: 100%;
-    min-width: 0;
+    inline-size: 100%;
+    min-inline-size: 0;
   }
   &-header {
     @include styles.font-heading-m;
     &-inner {
-      width: 100%;
+      inline-size: 100%;
       display: inline-block;
     }
   }
   &-selectable {
     > .card-inner > .card-header {
-      width: 90%;
+      inline-size: 90%;
     }
   }
   &-selected {

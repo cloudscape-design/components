@@ -17,13 +17,13 @@
   margin: 0;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
-  padding-right: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
+  padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
 }
 
 .header-link {
   @include styles.font-panel-header;
   color: awsui.$color-text-heading-default;
-  min-height: awsui.$font-panel-header-line-height;
+  min-block-size: awsui.$font-panel-header-line-height;
 
   display: flex;
 
@@ -36,25 +36,25 @@
 }
 
 .header-logo {
-  margin-right: awsui.$space-s;
-  margin-top: awsui.$space-xxxs;
-  max-width: calc(1.25 * #{awsui.$size-icon-big});
+  margin-inline-end: awsui.$space-s;
+  margin-block-start: awsui.$space-xxxs;
+  max-inline-size: calc(1.25 * #{awsui.$size-icon-big});
   align-self: flex-start;
 
   &--stretched {
-    max-width: 100%;
-    margin-right: 0;
+    max-inline-size: 100%;
+    margin-inline-end: 0;
   }
 }
 
 .list-container {
-  margin-top: awsui.$space-scaled-l;
+  margin-block-start: awsui.$space-scaled-l;
 }
 
 .list {
   margin: 0;
   padding: 0;
-  padding-left: awsui.$space-l;
+  padding-inline-start: awsui.$space-l;
 }
 
 .list-variant-root {
@@ -62,12 +62,12 @@
   padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-nav-left;
 
   &--last {
-    margin-bottom: awsui.$space-scaled-xxxl;
+    margin-block-end: awsui.$space-scaled-xxxl;
   }
 }
 
 .list-variant-expandable-link-group {
-  padding-left: awsui.$space-xxxl;
+  padding-inline-start: awsui.$space-xxxl;
 }
 
 .list-item {
@@ -78,19 +78,17 @@
 
 .section,
 .expandable-link-group {
-  margin-left: calc(-1 * #{awsui.$space-l});
+  margin-inline-start: calc(-1 * #{awsui.$space-l});
 
   &--no-ident {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 }
 
 .section {
-  margin-top: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
-  margin-bottom: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
   &.refresh {
-    margin-top: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
-    margin-bottom: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
+    margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
   }
 
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
@@ -151,16 +149,16 @@
 }
 
 .info {
-  margin-left: awsui.$space-xs;
+  margin-inline-start: awsui.$space-xs;
 }
 
 .external-icon {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }
 
 .divider {
   border: none;
-  border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .divider-default {
@@ -168,5 +166,5 @@
 }
 
 .divider-header {
-  margin-top: 0;
+  margin-block-start: 0;
 }

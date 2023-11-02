@@ -61,17 +61,17 @@ $_icon-sizes: (
     $padding: calc((#{$supportedLineHeight} - #{$size}) / 2);
 
     &.size-#{$name} {
-      width: $size;
+      inline-size: $size;
       box-sizing: border-box;
       &-mapped-height {
-        height: $supportedLineHeight;
+        block-size: $supportedLineHeight;
         padding: $padding 0;
       }
 
       > svg,
       > img {
-        width: $size;
-        height: $size;
+        inline-size: $size;
+        block-size: $size;
         vertical-align: top;
       }
 

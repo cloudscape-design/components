@@ -16,7 +16,7 @@
 .tabs {
   @include styles.styles-reset;
   display: block;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .tabs-content {

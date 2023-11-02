@@ -40,24 +40,24 @@ $grid-gutter-width: awsui.$space-grid-gutter;
       // Add a `max-width` to ensure content within each column does not blow out
       // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
       // do not appear to require this.
-      max-width: math.percentage(math.div($i, $grid-columns));
+      max-inline-size: math.percentage(math.div($i, $grid-columns));
     }
 
     &.push-#{$i} {
-      left: math.percentage(math.div($i, $grid-columns));
+      inset-inline-start: math.percentage(math.div($i, $grid-columns));
     }
 
     &.pull-#{$i} {
-      right: math.percentage(math.div($i, $grid-columns));
+      inset-inline-end: math.percentage(math.div($i, $grid-columns));
     }
   }
 
   &.push-0 {
-    left: auto;
+    inset-inline-start: auto;
   }
 
   &.pull-0 {
-    right: auto;
+    inset-inline-end: auto;
   }
 
   // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
@@ -65,7 +65,7 @@ $grid-gutter-width: awsui.$space-grid-gutter;
     // Avoid emitting useless .offset-0
     @if $i != 0 {
       &.offset-#{$i} {
-        margin-left: math.percentage(math.div($i, $grid-columns));
+        margin-inline-start: math.percentage(math.div($i, $grid-columns));
       }
     }
   }
@@ -73,5 +73,5 @@ $grid-gutter-width: awsui.$space-grid-gutter;
 
 .restore-pointer-events {
   pointer-events: auto;
-  width: 100%;
+  inline-size: 100%;
 }

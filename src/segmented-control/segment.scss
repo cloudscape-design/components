@@ -40,7 +40,7 @@ $selected-color: awsui.$color-text-segment-active;
   letter-spacing: 0.25px;
   border: styles.$control-border-width solid $default-border-color;
   padding: styles.$control-padding-vertical awsui.$space-button-horizontal;
-  border-right-width: 0;
+  border-inline-end-width: 0;
   background: $default-background;
   color: $default-color;
   overflow: visible;
@@ -57,7 +57,7 @@ $selected-color: awsui.$color-text-segment-active;
     @include styles.focus-highlight(awsui.$space-segmented-control-focus-outline-gutter);
   }
   &:last-child {
-    border-right-width: styles.$control-border-width;
+    border-inline-end-width: styles.$control-border-width;
     border-radius: 0 awsui.$border-radius-button awsui.$border-radius-button 0;
   }
   &:first-child {
@@ -71,7 +71,7 @@ $selected-color: awsui.$color-text-segment-active;
   }
 
   &:not(.disabled) + .segment.disabled {
-    border-left-color: $default-border-color;
+    border-inline-start-color: $default-border-color;
   }
 
   &.selected {
@@ -80,7 +80,7 @@ $selected-color: awsui.$color-text-segment-active;
     color: $selected-color;
     & + .segment,
     & + .segment.disabled {
-      border-left-color: $selected-border-color;
+      border-inline-start-color: $selected-border-color;
     }
   }
 
@@ -90,12 +90,12 @@ $selected-color: awsui.$color-text-segment-active;
     border-color: $hover-border-color;
     cursor: pointer;
     & + .segment:not(.selected) {
-      border-left-color: $hover-border-color;
+      border-inline-start-color: $hover-border-color;
     }
   }
 
   &.selected + .segment:hover:not(.selected):not(.disabled):not(:focus) {
-    border-left-color: $selected-border-color;
+    border-inline-start-color: $selected-border-color;
   }
 }
 
@@ -105,13 +105,11 @@ $selected-color: awsui.$color-text-segment-active;
 
 .with-text {
   position: relative;
-  left: calc(-1 * #{awsui.$space-xxs});
-  margin-right: awsui.$space-xxs;
+  inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+  margin-inline-end: awsui.$space-xxs;
 }
 
 .with-no-text {
-  margin-right: auto;
-  margin-left: auto;
-  right: 0;
-  left: 0;
+  margin-inline: auto;
+  inset-inline: 0;
 }

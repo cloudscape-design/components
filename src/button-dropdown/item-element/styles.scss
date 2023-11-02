@@ -13,7 +13,7 @@
   list-style: none;
   padding: 0;
   color: awsui.$color-text-dropdown-item-default;
-  margin-top: calc(-1 * #{styles.$control-border-width});
+  margin-block-start: calc(-1 * #{styles.$control-border-width});
   cursor: pointer;
 
   &.disabled {
@@ -21,10 +21,10 @@
     color: awsui.$color-text-dropdown-item-disabled;
   }
   &:first-child {
-    margin-top: 0;
+    margin-block-start: 0;
   }
   &.last {
-    border-bottom: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
+    border-block-end: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
   }
   &.highlighted {
     color: awsui.$color-text-dropdown-item-highlighted;
@@ -58,18 +58,17 @@
 
     // Additional spacing for groups of items
     &.first:not(.has-category-header) {
-      padding-top: styles.$option-padding-vertical;
+      padding-block-start: styles.$option-padding-vertical;
     }
     &.last {
-      padding-bottom: styles.$option-padding-vertical;
+      padding-block-end: styles.$option-padding-vertical;
     }
     &.first.last {
-      padding-bottom: styles.$option-padding-vertical;
-      padding-top: styles.$option-padding-vertical;
+      padding-block: styles.$option-padding-vertical;
     }
     // Additional spacing for the very last item in the list
     &.last:last-child {
-      padding-bottom: styles.$option-padding-vertical;
+      padding-block-end: styles.$option-padding-vertical;
     }
   }
 }
@@ -89,15 +88,15 @@
   /* stylelint-disable-next-line selector-max-type */
   .has-category-header > &,
   .has-category-header > span > & {
-    padding-left: calc(#{awsui.$space-s} + #{awsui.$space-button-horizontal});
+    padding-inline-start: calc(#{awsui.$space-s} + #{awsui.$space-button-horizontal});
   }
 }
 
 .icon {
-  padding-right: awsui.$space-xs;
+  padding-inline-end: awsui.$space-xs;
   flex-shrink: 0;
 }
 
 .external-icon {
-  margin-left: awsui.$space-xxs;
+  margin-inline-start: awsui.$space-xxs;
 }

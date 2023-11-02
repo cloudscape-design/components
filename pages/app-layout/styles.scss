@@ -16,8 +16,8 @@
 }
 
 .footer {
-  bottom: 0;
-  width: 100%;
+  inset-block-end: 0;
+  inline-size: 100%;
   color: #eee;
   background: #232f3e;
   box-sizing: border-box;
@@ -39,7 +39,7 @@
 }
 
 .longContent {
-  height: 200vh;
+  block-size: 200vh;
 }
 
 .floatingBlock {
@@ -55,15 +55,15 @@
 }
 
 .wizard-steps {
-  width: 16rem;
-  height: 40rem;
-  margin-right: 4rem;
+  inline-size: 16rem;
+  block-size: 40rem;
+  margin-inline-end: 4rem;
 }
 
 .wizard-form {
-  min-width: 30rem;
-  max-width: 80rem;
-  height: 150rem;
+  min-inline-size: 30rem;
+  max-inline-size: 80rem;
+  block-size: 150rem;
 }
 
 @media (max-width: 703px) {
@@ -72,10 +72,10 @@
   }
 
   .wizard-steps {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 
   .wizard-form {
-    margin-top: 4rem;
+    margin-block-start: 4rem;
   }
 }

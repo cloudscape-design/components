@@ -15,7 +15,7 @@
   /* stylelint-disable-next-line selector-max-type */
   > li + li {
     // Avoid Flashbar list gets additional padding to fix issue AWSUI-20382
-    padding-top: 0;
+    padding-block-start: 0;
   }
 }
 
@@ -52,7 +52,7 @@
 
   &:not(.collapsed) {
     > li:not(:last-child) {
-      margin-bottom: awsui.$space-xxxs;
+      margin-block-end: awsui.$space-xxxs;
     }
   }
 }
@@ -60,13 +60,13 @@
 .flash-body {
   display: flex;
   flex-grow: 1;
-  min-width: 0;
+  min-inline-size: 0;
 }
 
 .flash-focus-container {
   display: flex;
   flex: 1;
-  min-width: 0;
+  min-inline-size: 0;
 
   &:focus {
     outline: none;
@@ -83,7 +83,7 @@
 
 .flash-icon {
   flex: 0 0 auto;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .flash-message {
@@ -101,9 +101,8 @@
 
 .dismiss-button-wrapper {
   flex: 0 0 auto;
-  margin-left: awsui.$space-s;
-  margin-right: calc(-1 * #{awsui.$space-xxs});
-  padding-right: awsui.$space-flashbar-dismiss-right;
+  margin-inline: awsui.$space-s calc(-1 * #{awsui.$space-xxs});
+  padding-inline-end: awsui.$space-flashbar-dismiss-right;
 }
 
 .dismiss-button {
@@ -112,15 +111,15 @@
 
 .action-button-wrapper {
   white-space: nowrap;
-  margin-left: awsui.$space-flashbar-action-left;
+  margin-inline-start: awsui.$space-flashbar-action-left;
 }
 
 .flashbar.breakpoint-default > .flash-list > .flash-list-item > .flash > .flash-body {
   display: block;
   & > .action-button-wrapper {
-    margin-left: awsui.$space-l;
-    padding-left: awsui.$space-xxs;
-    margin-bottom: awsui.$space-xxs;
+    margin-inline-start: awsui.$space-l;
+    padding-inline-start: awsui.$space-xxs;
+    margin-block-end: awsui.$space-xxs;
   }
 }
 

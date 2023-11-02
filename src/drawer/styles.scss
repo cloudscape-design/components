@@ -16,11 +16,10 @@
 .header {
   @include styles.font-panel-header;
   color: awsui.$color-text-heading-default;
-  padding-bottom: awsui.$space-scaled-l;
-  padding-left: awsui.$space-panel-side-left;
+  padding-block-end: awsui.$space-scaled-l;
+  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
-  padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
-  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   margin: 0 calc(-1 * #{awsui.$space-panel-side-right}) awsui.$space-scaled-l calc(-1 * #{awsui.$space-panel-side-left});
 
   h2,
@@ -29,10 +28,8 @@
   h5,
   h6 {
     @include styles.font-panel-header;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+    padding-block: 0;
+    margin-block: 0;
   }
 }
 

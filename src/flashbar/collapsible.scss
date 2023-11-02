@@ -83,7 +83,7 @@ the grid layout will be:
        with one single line of text.
        This makes them look better during the collapse animation, in which they are already empty.
      */
-    min-height: calc(
+    min-block-size: calc(
       #{awsui.$line-height-body-m} + (
           #{awsui.$space-scaled-xs} + #{awsui.$border-field-width} + #{awsui.$space-scaled-xxs}
         ) * 2
@@ -114,7 +114,7 @@ the grid layout will be:
   #{custom-props.$stackedNotificationsDefaultBottomMargin}: calc(
     #{$notification-bar-line-height} + 2 * #{$notification-bar-padding-vertical} + 2 * #{$border-width} - #{$top-overlap}
   );
-  margin-bottom: calc(
+  margin-block-end: calc(
     var(
         #{custom-props.$stackedNotificationsBottomMargin},
         var(#{custom-props.$stackedNotificationsDefaultBottomMargin})
@@ -122,16 +122,15 @@ the grid layout will be:
   );
 
   > .notification-bar {
-    margin-top: calc(-1 * #{$top-overlap} + #{$offset-bottom});
+    margin-block: calc(-1 * #{$top-overlap} + #{$offset-bottom})
+      calc(
+        #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 * #{$border-width} -
+          #{$offset-bottom}
+      );
     /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
     is the full height of the notification bar */
     /* stylelint-disable scss/operator-no-newline-after */
-    margin-bottom: calc(
-      #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 * #{$border-width} -
-        #{$offset-bottom}
-    );
-    padding-top: $notification-bar-padding-vertical;
-    padding-bottom: $notification-bar-padding-vertical;
+    padding-block: $notification-bar-padding-vertical;
   }
 }
 
@@ -214,8 +213,7 @@ the grid layout will be:
   column-gap: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
   justify-content: center;
   letter-spacing: awsui.$font-button-letter-spacing;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
   row-gap: 0;
   text-align: center;
   text-decoration: none;
@@ -227,10 +225,8 @@ the grid layout will be:
     @include typography.default-text-style;
     color: awsui.$color-text-notification-stack-bar;
     cursor: pointer;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    margin-block: 0;
+    padding-block: 0;
   }
 
   > .status {
@@ -255,7 +251,7 @@ the grid layout will be:
       row-gap: 0;
 
       > .type-count > .count-number {
-        margin-left: awsui.$space-xxs;
+        margin-inline-start: awsui.$space-xxs;
       }
     }
   }
@@ -272,15 +268,13 @@ the grid layout will be:
   &.visual-refresh {
     $border-width: map.get($notification-bar-border-width, 'visual-refresh');
     border-width: $border-width;
-    padding-left: awsui.$space-l;
-    padding-right: awsui.$space-l;
+    padding-inline: awsui.$space-l;
   }
 
   &:not(.visual-refresh) {
     $border-width: map.get($notification-bar-border-width, 'classic');
     border-width: $border-width;
-    padding-left: awsui.$space-s;
-    padding-right: awsui.$space-s;
+    padding-inline: awsui.$space-s;
 
     &:focus {
       text-decoration: none;
@@ -296,8 +290,7 @@ the grid layout will be:
     flex-grow: 1;
     background: none;
     border: 0 none;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-block: 0;
 
     > .icon {
       @include styles.with-motion {
@@ -321,5 +314,5 @@ the grid layout will be:
 // Prevent the sticky Flashbar from reaching the end of the window by leaving some space below.
 .stack.expanded:not(.floating) {
   // Default to 0 so that this does not apply to non-sticky Flashbar.
-  padding-bottom: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
+  padding-block-end: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
 }

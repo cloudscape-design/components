@@ -7,14 +7,14 @@
 
 .bodyScrollOverride {
   overflow-y: scroll;
-  height: 100%;
+  block-size: 100%;
 }
 
 .fixedHeader {
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inline-size: 100%;
   z-index: 1;
   padding: 10px;
   box-sizing: border-box;
@@ -22,6 +22,6 @@
 }
 
 .placeholder {
-  height: 3000px;
+  block-size: 3000px;
   background: awsui.$color-background-layout-main;
 }

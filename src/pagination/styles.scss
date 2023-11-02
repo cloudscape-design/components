@@ -14,14 +14,14 @@
   flex-wrap: wrap;
   box-sizing: border-box;
   //reset base styles for ul
-  padding-left: 0;
+  padding-inline-start: 0;
   margin: 0;
   list-style: none;
 }
 
 .button,
 .dots {
-  min-width: awsui.$space-l;
+  min-inline-size: awsui.$space-l;
   border: styles.$control-border-width solid transparent;
 }
 
@@ -86,10 +86,10 @@
   box-sizing: border-box;
   padding: 0;
   &:first-child {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   &:last-child {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 }
 

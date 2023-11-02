@@ -26,18 +26,18 @@
   $arrow-width: 20px;
   $arrow-height: $arrow-width * 0.5;
 
-  width: $arrow-width;
-  height: $arrow-height;
+  inline-size: $arrow-width;
+  block-size: $arrow-height;
 
   &-outer,
   &-inner {
     position: absolute;
     overflow: hidden;
-    width: $arrow-width;
-    height: $arrow-height;
+    inline-size: $arrow-width;
+    block-size: $arrow-height;
 
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
 
     &::after {
       content: '';
@@ -46,11 +46,11 @@
       position: absolute;
       border-radius: 2px 0 0 0;
 
-      bottom: 0;
-      left: 0;
+      inset-block-end: 0;
+      inset-inline-start: 0;
 
-      width: $arrow-edge-length;
-      height: $arrow-edge-length;
+      inline-size: $arrow-edge-length;
+      block-size: $arrow-edge-length;
       transform: rotate(45deg);
       transform-origin: 0 100%;
     }
@@ -63,7 +63,7 @@
   }
 
   &-inner {
-    top: 2px;
+    inset-block-start: 2px;
 
     &::after {
       border-radius: 1px 0 0 0;

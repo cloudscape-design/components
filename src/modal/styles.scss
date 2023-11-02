@@ -17,11 +17,7 @@ $modal-z-index: 5000;
   display: flex;
   align-items: center;
   justify-items: center;
-
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
+  inset: 0;
   position: fixed;
   z-index: $modal-z-index;
 
@@ -45,10 +41,10 @@ $modal-z-index: 5000;
 
 .dialog {
   position: static;
-  top: 0;
+  inset-block-start: 0;
   transform: translate(0, 0);
 
-  width: calc(100vw - #{awsui.$space-s} * 2);
+  inline-size: calc(100vw - #{awsui.$space-s} * 2);
 
   box-sizing: border-box;
   outline: none; // prevent highlight when focus set for ESC support
@@ -57,20 +53,20 @@ $modal-z-index: 5000;
   pointer-events: all;
 
   &.small {
-    max-width: 320px;
+    max-inline-size: 320px;
   }
 
   &.medium {
-    max-width: 600px;
+    max-inline-size: 600px;
   }
 
   &.large {
-    max-width: 820px;
+    max-inline-size: 820px;
   }
 
   &.max.breakpoint-xs {
     // viewport - (closed app layout panel widths + 20px on each side)
-    max-width: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
+    max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
     margin: auto;
   }
 }
@@ -80,7 +76,7 @@ $modal-z-index: 5000;
   display: block;
   background-color: awsui.$color-background-container-content;
   word-wrap: break-word;
-  border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+  border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
   border-radius: awsui.$border-radius-container;
   box-shadow: awsui.$shadow-modal;
 }
@@ -95,7 +91,7 @@ $modal-z-index: 5000;
 .header {
   padding: awsui.$space-container-header-top awsui.$space-modal-horizontal awsui.$space-container-header-bottom;
   background-color: awsui.$color-background-container-header;
-  border-bottom: 1px solid awsui.$color-border-container-divider;
+  border-block-end: 1px solid awsui.$color-border-container-divider;
   border-radius: awsui.$border-radius-container awsui.$border-radius-container 0 0;
 }
 
@@ -110,7 +106,7 @@ $modal-z-index: 5000;
 
   // Make sure that the footer is always visible
   position: sticky;
-  bottom: 0;
+  inset-block-end: 0;
   z-index: 800;
 
   &--stuck {

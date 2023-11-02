@@ -12,8 +12,8 @@
   color: awsui.$color-text-dropdown-group-label;
   border: awsui.$border-divider-list-width solid transparent;
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
-  border-left: 0;
-  border-right: 0;
+  border-inline-start: 0;
+  border-inline-end: 0;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -29,8 +29,8 @@
   }
 
   &.expandable-header {
-    border-top-color: awsui.$color-border-dropdown-group;
-    border-bottom-color: awsui.$color-border-dropdown-group;
+    border-block-start-color: awsui.$color-border-dropdown-group;
+    border-block-end-color: awsui.$color-border-dropdown-group;
     cursor: pointer;
     &.disabled {
       cursor: default;
@@ -39,7 +39,7 @@
       outline: none;
     }
     &.rolled-down {
-      border-bottom-color: transparent;
+      border-block-end-color: transparent;
     }
     &.highlighted {
       background-color: awsui.$color-background-dropdown-item-hover;
@@ -61,13 +61,12 @@
     }
 
     &.variant-navigation {
-      padding-top: awsui.$space-xs;
-      padding-bottom: awsui.$space-xs;
+      padding-block: awsui.$space-xs;
 
       &.highlighted {
         border-color: transparent;
-        border-top-color: awsui.$color-border-dropdown-group;
-        border-bottom-color: awsui.$color-border-dropdown-group;
+        border-block-start-color: awsui.$color-border-dropdown-group;
+        border-block-end-color: awsui.$color-border-dropdown-group;
 
         background-color: transparent;
         color: awsui.$color-text-accent;
@@ -78,33 +77,33 @@
 
 .category {
   list-style: none;
-  margin-top: calc(-1 * #{awsui.$border-divider-list-width});
+  margin-block-start: calc(-1 * #{awsui.$border-divider-list-width});
   padding: 0;
   &:first-child {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 
   &.expandable {
-    border-top: 0;
+    border-block-start: 0;
   }
 
   &:last-child {
-    border-bottom: none;
+    border-block-end: none;
   }
 
   &.variant-navigation {
-    padding-top: awsui.$space-xxs;
+    padding-block-start: awsui.$space-xxs;
 
     &.expandable {
-      padding-top: 0;
+      padding-block-start: 0;
     }
   }
 }
 
 .expand-icon {
   position: relative;
-  left: awsui.$space-s;
-  width: awsui.$space-m;
+  inset-inline-start: awsui.$space-s;
+  inline-size: awsui.$space-m;
   display: inline-block;
 
   &-up {

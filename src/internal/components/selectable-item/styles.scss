@@ -15,26 +15,26 @@
   z-index: 1;
 
   border: awsui.$border-divider-list-width solid transparent;
-  border-top-color: awsui.$color-border-dropdown-item-default;
-  border-bottom-color: awsui.$color-border-dropdown-item-default;
+  border-block-start-color: awsui.$color-border-dropdown-item-default;
+  border-block-end-color: awsui.$color-border-dropdown-item-default;
   background-color: awsui.$color-background-dropdown-item-default;
   color: awsui.$color-text-dropdown-item-default;
 
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
-  border-left-width: 0;
-  border-right-width: 0;
+  border-inline-start-width: 0;
+  border-inline-end-width: 0;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
   padding: styles.$option-padding-with-border-placeholder-vertical
     calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
 
   &.pad-bottom {
-    padding-bottom: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
-    border-bottom-color: transparent;
+    padding-block-end: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
+    border-block-end-color: transparent;
   }
 
   &:not(:first-child) {
-    margin-top: calc(-1 * #{awsui.$border-item-width});
+    margin-block-start: calc(-1 * #{awsui.$border-item-width});
   }
 
   &.has-background {
@@ -48,7 +48,7 @@
     border-radius: awsui.$border-radius-item;
     padding: styles.$option-padding-vertical styles.$control-padding-horizontal;
     &.pad-bottom {
-      padding-bottom: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+      padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
     }
   }
 
@@ -67,14 +67,14 @@
     background-color: awsui.$color-background-dropdown-item-selected;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
     }
   }
 
   &.selected + &.selected {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
   }
 
   &.highlighted.is-keyboard {
@@ -86,7 +86,7 @@
     font-weight: bold;
     color: awsui.$color-text-dropdown-group-label;
     &:not(.interactiveGroups) {
-      border-top-color: awsui.$color-border-dropdown-group;
+      border-block-start-color: awsui.$color-border-dropdown-group;
       padding: awsui.$space-xs;
     }
     &.interactiveGroups {
@@ -103,10 +103,10 @@
   }
 
   &.child {
-    padding-left: calc(#{awsui.$space-xxl} + #{awsui.$border-item-width});
+    padding-inline-start: calc(#{awsui.$space-xxl} + #{awsui.$border-item-width});
     &.highlighted,
     &.selected {
-      padding-left: awsui.$space-xxl;
+      padding-inline-start: awsui.$space-xxl;
     }
   }
 
@@ -122,12 +122,12 @@
   }
   &.virtual {
     position: absolute;
-    top: awsui.$border-dropdown-virtual-offset-width;
-    left: 0;
-    width: 100%;
+    inset-block-start: awsui.$border-dropdown-virtual-offset-width;
+    inset-inline-start: 0;
+    inline-size: 100%;
     box-sizing: border-box;
     &:first-of-type:not(.selected, .highlighted) {
-      border-top-color: awsui.$color-border-dropdown-item-top;
+      border-block-start-color: awsui.$color-border-dropdown-item-top;
     }
   }
 }
@@ -135,13 +135,13 @@
 .measure-strut {
   position: absolute;
   pointer-events: none;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  padding-top: awsui.$border-divider-list-width;
+  block-size: 100%;
+  inline-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  padding-block-start: awsui.$border-divider-list-width;
   &-first {
-    padding-bottom: awsui.$border-divider-list-width;
+    padding-block-end: awsui.$border-divider-list-width;
   }
 }
 

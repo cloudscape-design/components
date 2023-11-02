@@ -10,7 +10,7 @@
 
 .root {
   @include styles.default-text-style;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .tools {
@@ -26,31 +26,31 @@
     @supports not (flex-basis: fit-content) {
       flex: 1 1 auto;
     }
-    max-width: 100%;
-    margin-right: awsui.$space-l;
+    max-inline-size: 100%;
+    margin-inline-end: awsui.$space-l;
   }
 
   &-align-right {
     display: flex;
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 
   &-pagination + &-preferences {
-    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
-    margin-left: awsui.$space-xs;
-    padding-left: awsui.$space-xs;
+    margin-inline-start: awsui.$space-xs;
+    padding-inline-start: awsui.$space-xs;
   }
 
   &-small > &-filtering {
-    margin-right: 0;
-    margin-bottom: awsui.$space-scaled-xs;
+    margin-inline-end: 0;
+    margin-block-end: awsui.$space-scaled-xs;
     flex-basis: 100%;
   }
 }
 
 .table {
-  width: 100%;
+  inline-size: 100%;
   border-spacing: 0;
   position: relative;
   box-sizing: border-box;
@@ -62,7 +62,7 @@
 .wrapper {
   position: relative;
   box-sizing: border-box;
-  width: 100%;
+  inline-size: 100%;
   overflow-x: auto;
 
   scrollbar-width: none; /* Hide scrollbar in Firefox */
@@ -70,16 +70,15 @@
   &.variant-container {
     & > .table,
     & > .wrapper-content-measure {
-      padding-left: awsui.$space-table-horizontal;
-      padding-right: awsui.$space-table-horizontal;
+      padding-inline: awsui.$space-table-horizontal;
     }
   }
   &.variant-container:not(.has-footer) {
-    padding-bottom: awsui.$space-table-content-bottom;
+    padding-block-end: awsui.$space-table-content-bottom;
   }
   &:not(.has-header) {
-    border-top-right-radius: awsui.$border-radius-container;
-    border-top-left-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-container;
   }
   &::-webkit-scrollbar {
     display: none; /* Hide scrollbar in Safari and Chrome */
@@ -98,16 +97,16 @@
     Add a bottom border to the body cell of an empty table as a separator between the 
     table and the footer
     */
-    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
   &-content {
     box-sizing: border-box;
-    width: 100%;
+    inline-size: 100%;
     padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l;
     /* stylelint-disable plugin/no-unsupported-browser-features */
     @supports (position: sticky) {
       position: sticky;
-      left: 0;
+      inset-inline-start: 0;
       // Offset table paddings to position centered when sticky
       margin: 0 calc(-2 * #{awsui.$space-table-horizontal});
     }
@@ -130,14 +129,14 @@ filter search icon.
 */
 .selection-control {
   box-sizing: border-box;
-  max-width: awsui.$size-table-selection-horizontal;
-  min-width: awsui.$size-table-selection-horizontal;
+  max-inline-size: awsui.$size-table-selection-horizontal;
+  min-inline-size: awsui.$size-table-selection-horizontal;
   position: relative;
-  width: awsui.$size-table-selection-horizontal;
+  inline-size: awsui.$size-table-selection-horizontal;
 
   &.selection-control-header {
     padding: awsui.$space-scaled-xs awsui.$space-scaled-l;
-    border-left: awsui.$border-item-width solid transparent;
+    border-inline-start: awsui.$border-item-width solid transparent;
   }
 }
 
@@ -155,50 +154,44 @@ the default white background of the container component.
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   box-sizing: border-box;
-  width: 100%;
+  inline-size: 100%;
   border-radius: 0;
   background: awsui.$color-background-table-header;
   &.variant-stacked,
   &.variant-container {
     & > .table {
-      padding-left: awsui.$space-table-horizontal;
-      padding-right: awsui.$space-table-horizontal;
+      padding-inline: awsui.$space-table-horizontal;
     }
   }
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   }
   &.table-has-header {
-    border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
+    border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
   }
 }
 
 .header-controls {
-  padding-top: awsui.$space-container-header-top;
-  padding-bottom: awsui.$space-container-header-bottom;
+  padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
 
   &.variant-full-page {
-    padding-top: 0;
-    padding-bottom: calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
+    padding-block: 0 calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
   }
   &.variant-stacked,
   &.variant-container {
-    padding-left: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
-    padding-right: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
+    padding-inline: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
   }
   &.variant-embedded,
   &.variant-borderless {
-    padding-left: awsui.$space-table-header-horizontal;
-    padding-right: awsui.$space-table-header-horizontal;
-    padding-top: awsui.$space-table-embedded-header-top;
+    padding-inline: awsui.$space-table-header-horizontal;
+    padding-block-start: awsui.$space-table-embedded-header-top;
   }
 }
 
 .footer-wrapper {
   &.variant-stacked,
   &.variant-container {
-    padding-left: awsui.$space-table-horizontal;
-    padding-right: awsui.$space-table-horizontal;
+    padding-inline: awsui.$space-table-horizontal;
   }
 }
 
@@ -214,7 +207,7 @@ the default white background of the container component.
   }
   &-pagination {
     // Align the footer pagination on the right
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 }
 

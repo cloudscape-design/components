@@ -13,8 +13,8 @@
 }
 
 .overflow-container {
-  width: 300px;
-  height: 300px;
+  inline-size: 300px;
+  block-size: 300px;
   border: 1px solid red;
   -ms-overflow-style: none;
 
@@ -23,14 +23,14 @@
     overflow: scroll;
     > .inner-container {
       position: relative;
-      left: 300px;
+      inset-inline-start: 300px;
     }
     > :first-child {
-      height: 300px;
-      width: 1200px;
+      block-size: 300px;
+      inline-size: 1200px;
     }
     > :last-child {
-      height: 300px;
+      block-size: 300px;
     }
   }
 
@@ -38,8 +38,8 @@
     overflow: hidden;
     > .inner-container {
       position: relative;
-      left: 50px;
-      top: 75px;
+      inset-inline-start: 50px;
+      inset-block-start: 75px;
     }
   }
 }
@@ -49,7 +49,7 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: calc(80vh);
+  block-size: calc(80vh);
   box-sizing: border-box;
   > .row {
     display: flex;
@@ -60,16 +60,16 @@
 .restricting-container {
   padding: 10px;
   border: red 1px solid;
-  width: 600px;
-  height: 600px;
+  inline-size: 600px;
+  block-size: 600px;
   overflow: hidden;
 }
 
 .positioning-container {
-  left: 200px;
+  inset-inline-start: 200px;
   position: relative;
 }
 
 .dropdown-permutation {
-  height: 50px;
+  block-size: 50px;
 }

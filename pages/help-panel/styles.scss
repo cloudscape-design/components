@@ -8,18 +8,18 @@
   margin: 20px;
 }
 .default {
-  max-width: 290px;
+  max-inline-size: 290px;
   border: 1px solid;
   flex-grow: 1;
   margin: 20px;
 }
 .medium {
-  max-width: 350px;
+  max-inline-size: 350px;
   border: 1px solid;
   margin: 20px;
 }
 .large {
-  max-width: 550px;
+  max-inline-size: 550px;
   border: 1px solid;
   margin: 20px;
 }

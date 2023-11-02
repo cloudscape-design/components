@@ -37,24 +37,24 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   z-index: 840;
   &-closed {
     cursor: pointer;
-    min-width: constants.$sidebar-size-closed;
+    min-inline-size: constants.$sidebar-size-closed;
   }
 }
 
 .drawer-content-side {
   display: flex;
   align-items: center;
-  height: 100%;
+  block-size: 100%;
   overflow: auto;
   .drawer-closed > & {
-    width: constants.$sidebar-size-closed;
+    inline-size: constants.$sidebar-size-closed;
     &:hover {
       background: awsui.$color-background-layout-panel-hover;
     }
   }
 
   &.refresh {
-    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
     box-sizing: border-box;
   }
 
@@ -67,19 +67,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   :not(.drawer-closed) > & {
     overflow-y: auto;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
   }
 }
 
 .position-bottom {
   position: fixed;
   overflow-y: auto;
-  border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
-  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
-  border-top: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+  border-block-start: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
 
   &:not(.refresh) {
     // custom shadow because the existing one does not have shadow on top
@@ -105,16 +102,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .position-side {
-  border-top: none;
+  border-block-start: none;
   box-shadow: awsui.$shadow-split-side;
-  height: 100%;
+  block-size: 100%;
 }
 
 .slider {
   padding: 0;
   cursor: ns-resize;
   margin: 2px 0 0 0;
-  height: $slider-width;
+  block-size: $slider-width;
   // Desktop Safari doesn't support touch events, but Safari on iOS does.
   // stylelint-disable-next-line plugin/no-unsupported-browser-features
   touch-action: none;
@@ -135,10 +132,10 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .slider-wrapper-bottom {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: $slider-width + 2px;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  block-size: $slider-width + 2px;
   display: flex;
   justify-content: center;
   z-index: 2;
@@ -146,10 +143,10 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .slider-wrapper-side {
   position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: $slider-width + 2px;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  block-size: 100%;
+  inline-size: $slider-width + 2px;
   display: flex;
   align-items: center;
   z-index: 1;
@@ -182,7 +179,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .pane-header-wrapper-bottom {
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   position: sticky;
-  top: 0;
+  inset-block-start: 0;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -196,13 +193,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
   :not(.drawer-closed) > .drawer-content-bottom > & {
     background-color: awsui.$color-background-layout-panel-content;
-    border-bottom: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
   }
 }
 
 .content-bottom {
-  padding: 0 awsui.$space-layout-content-horizontal;
-  margin-top: awsui.$space-panel-split-top;
+  padding: 0 awsui.$space-scaled-2x-xxxl;
+  margin-block-start: awsui.$space-panel-split-top;
   position: relative;
   z-index: 0; // the content inside .content-bottom should not be above pane-header-wrapper-bottom
   .drawer-mobile > .drawer-content-bottom > & {
@@ -219,16 +216,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .pane-bottom-content-nav-padding {
-  padding-left: $app-layout-drawer-width;
+  padding-inline-start: $app-layout-drawer-width;
 }
 
 .pane-bottom-content-tools-padding {
-  padding-right: $app-layout-drawer-width;
+  padding-inline-end: $app-layout-drawer-width;
 }
 
 .content-bottom-max-width {
   flex-grow: 1;
-  max-width: 100%;
+  max-inline-size: 100%;
 }
 
 .content-side {
@@ -237,17 +234,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   box-sizing: border-box;
   overflow-y: auto;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 100%;
   > .pane-header-wrapper-side {
     padding: 0 awsui.$space-m 0 awsui.$space-panel-side-left;
-    border-bottom: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
   }
   > .pane-content-wrapper-side {
     padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
-    margin-top: awsui.$space-panel-split-top;
+    margin-block-start: awsui.$space-panel-split-top;
   }
 }
 
@@ -257,13 +253,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  width: 100%;
+  inline-size: 100%;
   margin: awsui.$size-vertical-panel-icon-offset 0;
   &-text {
     @include styles.font-panel-header;
     padding: 0;
     margin: 0;
-    margin-top: calc(#{awsui.$space-scaled-xxs} + 1px);
+    margin-block-start: calc(#{awsui.$space-scaled-xxs} + 1px);
   }
 }
 
@@ -272,10 +268,10 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   flex-direction: row;
   justify-content: space-between;
   flex: 0 0 auto;
-  margin-left: awsui.$space-xs;
+  margin-inline-start: awsui.$space-xs;
 }
 
 .divider {
-  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   margin: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
 }

@@ -9,8 +9,8 @@
 .container {
   display: inline-block;
   position: fixed;
-  top: -9999px;
-  left: -9999px;
+  inset-block-start: -9999px;
+  inset-inline-start: -9999px;
   z-index: 2000;
 }
 
@@ -30,27 +30,27 @@
 }
 
 .container-body-size-small {
-  max-width: 210px;
+  max-inline-size: 210px;
   &.fixed-width {
-    width: 210px;
+    inline-size: 210px;
   }
 }
 
 .container-body-size-medium {
-  max-width: 310px;
+  max-inline-size: 310px;
   &.fixed-width {
-    width: 310px;
+    inline-size: 310px;
   }
 }
 
 .container-body-size-large {
-  max-width: 480px;
+  max-inline-size: 480px;
   @media (max-width: 480px) {
     // On viewports smaller than 480px, we default to the body-size-medium width
-    max-width: 310px;
+    max-inline-size: 310px;
   }
   &.fixed-width {
-    width: 480px;
+    inline-size: 480px;
   }
 }
 
@@ -69,13 +69,13 @@
   }
 
   &-position-right-top {
-    top: calc(#{$arrow-offset} + #{$arrow-height});
-    left: 0;
+    inset-block-start: calc(#{$arrow-offset} + #{$arrow-height});
+    inset-inline-start: 0;
   }
 
   &-position-right-bottom {
-    bottom: $arrow-offset;
-    left: 0;
+    inset-block-end: $arrow-offset;
+    inset-inline-start: 0;
   }
 
   &-position-left-top,
@@ -85,13 +85,13 @@
   }
 
   &-position-left-top {
-    top: calc(#{$arrow-offset} + #{$arrow-height});
-    right: 0;
+    inset-block-start: calc(#{$arrow-offset} + #{$arrow-height});
+    inset-inline-end: 0;
   }
 
   &-position-left-bottom {
-    bottom: $arrow-offset;
-    right: 0;
+    inset-block-end: $arrow-offset;
+    inset-inline-end: 0;
   }
 
   &-position-top-center,
@@ -103,32 +103,32 @@
   }
 
   &-position-top-center {
-    bottom: -$arrow-width * 0.5;
-    left: calc(50% - #{$arrow-height});
+    inset-block-end: -$arrow-width * 0.5;
+    inset-inline-start: calc(50% - #{$arrow-height});
   }
 
   &-position-top-right {
-    bottom: -$arrow-width * 0.5;
-    left: $arrow-offset;
+    inset-block-end: -$arrow-width * 0.5;
+    inset-inline-start: $arrow-offset;
   }
 
   &-position-top-left {
-    bottom: -$arrow-width * 0.5;
-    left: calc(100% - #{$arrow-width} - #{$arrow-offset});
+    inset-block-end: -$arrow-width * 0.5;
+    inset-inline-start: calc(100% - #{$arrow-width} - #{$arrow-offset});
   }
 
   &-position-bottom-center {
-    top: -$arrow-width * 0.5;
-    left: calc(50% - #{$arrow-height});
+    inset-block-start: -$arrow-width * 0.5;
+    inset-inline-start: calc(50% - #{$arrow-height});
   }
 
   &-position-bottom-right {
-    top: -$arrow-width * 0.5;
-    left: $arrow-offset;
+    inset-block-start: -$arrow-width * 0.5;
+    inset-inline-start: $arrow-offset;
   }
 
   &-position-bottom-left {
-    top: -$arrow-width * 0.5;
-    left: calc(100% - #{$arrow-width} - #{$arrow-offset});
+    inset-block-start: -$arrow-width * 0.5;
+    inset-inline-start: calc(100% - #{$arrow-width} - #{$arrow-offset});
   }
 }

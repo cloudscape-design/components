@@ -63,10 +63,10 @@ $column-breakpoint-spans: (
 @mixin make-horizontal-borders() {
   /* stylelint-disable selector-max-universal */
   > * {
-    border-bottom: $column-layout-border;
+    border-block-end: $column-layout-border;
 
     &:last-child {
-      border-bottom-width: 0;
+      border-block-end-width: 0;
     }
   }
   /* stylelint-enable selector-max-universal */
@@ -89,7 +89,7 @@ $column-breakpoint-spans: (
       @for $h from 1 through $items-per-row - $m + 1 {
         @if $h > 0 {
           > *:nth-last-child(#{$m}):nth-child(#{$items-per-row}n + #{$h}) {
-            border-bottom-width: 0;
+            border-block-end-width: 0;
           }
         }
       }

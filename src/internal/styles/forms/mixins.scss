@@ -61,10 +61,10 @@
     content: ' ';
     display: block;
     position: absolute;
-    left: calc(-1 * #{$gutter-horizontal});
-    top: calc(-1 * #{$gutter-vertical});
-    width: calc(100% + 2 * #{$gutter-horizontal});
-    height: calc(100% + 2 * #{$gutter-vertical});
+    inset-inline-start: calc(-1 * #{$gutter-horizontal});
+    inset-block-start: calc(-1 * #{$gutter-vertical});
+    inline-size: calc(100% + 2 * #{$gutter-horizontal});
+    block-size: calc(100% + 2 * #{$gutter-vertical});
     border-radius: $border-radius;
     box-shadow: $box-shadow;
   }
@@ -111,8 +111,8 @@
 @mixin form-invalid-control {
   color: awsui.$color-text-status-error;
   border-color: awsui.$color-text-status-error;
-  padding-left: constants.$invalid-control-left-padding;
-  border-left-width: constants.$invalid-control-left-border;
+  padding-inline-start: constants.$invalid-control-left-padding;
+  border-inline-start-width: constants.$invalid-control-left-border;
   &:focus {
     box-shadow: foundation.$box-shadow-focused-light-invalid;
   }
@@ -120,11 +120,11 @@
 }
 
 @mixin label-info-link {
-  margin-left: typography.$base-size;
+  margin-inline-start: typography.$base-size;
 }
 
 @mixin info-link-spacing {
-  margin-right: awsui.$space-xs;
+  margin-inline-end: awsui.$space-xs;
   &:only-child {
     margin: 0;
   }
@@ -138,7 +138,7 @@
     @include utils.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
-    border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
     border-radius: awsui.$border-radius-container;
     z-index: 1;
   }
@@ -160,17 +160,14 @@
 @mixin dropdown-shadow {
   box-shadow: awsui.$shadow-dropdown;
   border-radius: awsui.$border-radius-dropdown;
-  border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
+  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   box-sizing: border-box;
 
   &::after {
     content: '';
     position: absolute;
     z-index: 1;
-    top: -1px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
+    inset: -1px 0px;
     background-color: transparent;
     border: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
     border-radius: awsui.$border-radius-dropdown;
@@ -179,9 +176,9 @@
 }
 
 @mixin make-control-size($height, $width: $height) {
-  margin-top: calc((#{awsui.$line-height-body-m} - #{$height}) / 2);
-  min-height: $height;
-  min-width: $width;
-  height: $height;
-  width: $width;
+  margin-block-start: calc((#{awsui.$line-height-body-m} - #{$height}) / 2);
+  min-block-size: $height;
+  min-inline-size: $width;
+  block-size: $height;
+  inline-size: $width;
 }

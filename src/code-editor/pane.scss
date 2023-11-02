@@ -11,17 +11,17 @@
   $border: awsui.$border-item-width solid $border-color;
   $radius: awsui.$border-radius-item;
   > .pane__cell {
-    border-top: $border;
-    border-bottom: $border;
+    border-block-start: $border;
+    border-block-end: $border;
     &:first-child {
-      border-left: $border;
-      border-top-left-radius: $radius;
-      border-bottom-left-radius: $radius;
+      border-inline-start: $border;
+      border-start-start-radius: $radius;
+      border-end-start-radius: $radius;
     }
     &:last-child {
-      border-right: $border;
-      border-top-right-radius: $radius;
-      border-bottom-right-radius: $radius;
+      border-inline-end: $border;
+      border-start-end-radius: $radius;
+      border-end-end-radius: $radius;
     }
   }
 }
@@ -32,28 +32,28 @@
   flex-direction: row;
   flex: 1;
 
-  border-top: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
-  border-bottom-left-radius: awsui.$border-radius-code-editor;
-  border-bottom-right-radius: awsui.$border-radius-code-editor;
+  border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-end-start-radius: awsui.$border-radius-code-editor;
+  border-end-end-radius: awsui.$border-radius-code-editor;
   background: awsui.$color-background-code-editor-status-bar;
   color: awsui.$color-text-body-default;
 
   &__close-container {
     position: absolute;
-    top: 0;
-    right: calc(#{awsui.$space-s} / 2);
+    inset-block-start: 0;
+    inset-inline-end: calc(#{awsui.$space-s} / 2);
   }
 
   &__list {
     flex: 1;
     overflow: auto;
-    max-height: 100%;
+    max-block-size: 100%;
     box-sizing: border-box;
-    margin-right: calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-xs});
+    margin-inline-end: calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-xs});
   }
 
   &__table {
-    width: 100%;
+    inline-size: 100%;
     border-spacing: 0;
     margin: awsui.$space-s 0;
   }
@@ -81,15 +81,15 @@
   &__location {
     vertical-align: baseline;
     white-space: nowrap;
-    padding-left: calc(#{awsui.$space-l} + #{awsui.$space-s});
+    padding-inline-start: calc(#{awsui.$space-l} + #{awsui.$space-s});
   }
 
   &__description {
-    padding-right: 0;
+    padding-inline-end: 0;
     @include styles.text-wrapping;
   }
 }
 
 .focus-lock {
-  height: 100%;
+  block-size: 100%;
 }

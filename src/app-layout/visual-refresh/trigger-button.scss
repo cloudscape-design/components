@@ -21,10 +21,14 @@
 
 @mixin trigger-button-styles {
   background: awsui.$color-background-layout-toggle-default;
+<<<<<<< HEAD
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
   border-end-start-radius: 50%;
   border-end-end-radius: 50%;
+=======
+  border-radius: 50%;
+>>>>>>> 2cf44aa5 (Test stylelint configuring with auto fixing.)
   block-size: awsui.$space-layout-toggle-diameter;
   inline-size: awsui.$space-layout-toggle-diameter;
 

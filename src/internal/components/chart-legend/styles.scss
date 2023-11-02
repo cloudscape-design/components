@@ -31,7 +31,7 @@
 .marker {
   display: inline-flex;
   align-items: flex-start;
-  margin-right: awsui.$space-m;
+  margin-inline-end: awsui.$space-m;
   padding: 0;
   border: 0;
   background-color: transparent;
@@ -47,7 +47,7 @@
   }
 
   &:last-child {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 
   &.marker--dimmed {

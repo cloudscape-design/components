@@ -32,10 +32,10 @@
 .badge::after {
   content: '';
   position: absolute;
-  width: 6px;
-  height: 6px;
+  inline-size: 6px;
+  block-size: 6px;
   border-radius: 4px;
   background-color: awsui.$color-background-badge-icon;
-  top: 0px;
-  right: -3px;
+  inset-block-start: 0px;
+  inset-inline-end: -3px;
 }

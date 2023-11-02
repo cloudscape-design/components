@@ -31,11 +31,11 @@
 }
 
 .grid {
-  width: awsui.$size-calendar-grid-width;
+  inline-size: awsui.$size-calendar-grid-width;
   border-spacing: 0;
 }
 .grid-cell {
-  width: calc(100% / 7);
+  inline-size: calc(100% / 7);
   word-break: break-word;
   text-align: center;
   font-weight: unset;
@@ -51,8 +51,8 @@
 }
 
 .day {
-  border-bottom: calendar.$grid-border;
-  border-right: calendar.$grid-border;
+  border-block-end: calendar.$grid-border;
+  border-inline-end: calendar.$grid-border;
   padding: awsui.$space-xxs 0;
   color: calendar.$grid-disabled-day-color;
   position: relative;
@@ -65,10 +65,7 @@
     content: '';
     position: absolute;
     z-index: 1;
-    top: calc(-1 * #{awsui.$border-item-width});
-    left: -1px;
-    bottom: -1px;
-    right: calc(-1 * #{awsui.$border-item-width});
+    inset: logical calc(-1 * #{awsui.$border-item-width}) -1px -1px calc(-1 * #{awsui.$border-item-width});
     background-color: transparent;
   }
 
@@ -87,11 +84,11 @@
 }
 
 .in-first-row:not(.in-previous-month) {
-  border-top: calendar.$grid-border;
+  border-block-start: calendar.$grid-border;
 }
 
 .in-previous-month:not(.last-day-of-month) {
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
 }
 
 .in-next-month {
@@ -99,10 +96,10 @@
 }
 
 .in-first-column {
-  border-left: 1px solid transparent;
+  border-inline-start: 1px solid transparent;
 
   &.in-current-month {
-    border-left: calendar.$grid-border;
+    border-inline-start: calendar.$grid-border;
   }
 }
 
