@@ -59,6 +59,12 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
 
   // Find next cell to focus or move focus into (can be null if the left/right edge is reached).
   const targetAriaColIndex = from.colIndex + delta.x;
+
+  // Can't move before the first cell.
+  if (targetAriaColIndex === 0) {
+    return;
+  }
+
   const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
   if (!targetCell) {
     return;
