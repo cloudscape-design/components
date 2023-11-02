@@ -52,7 +52,9 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                       {subItems.map(({ key, value }, index) => (
                         <li key={index} className={styles['inner-list-item']}>
                           <span className={styles.key}>{key}</span>
-                          <InternalBox textAlign="right">{value}</InternalBox>
+                          <InternalBox textAlign="right" className={styles.value}>
+                            {value}
+                          </InternalBox>
                         </li>
                       ))}
                     </ul>

@@ -11,6 +11,10 @@
   @include styles.styles-reset;
 }
 
+.value {
+  /* used in test-utils */
+}
+
 .inner-list-item {
   display: flex;
   justify-content: space-between;
