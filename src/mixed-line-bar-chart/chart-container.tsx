@@ -470,11 +470,21 @@ export default function ChartContainer<T extends ChartDataTypes>({
       const seriesToShow = visibleSeries.filter(
         series => series.series === highlightedPoint?.series || isXThreshold(series.series)
       );
-      return formatHighlighted(highlightedX, seriesToShow, xTickFormatter, detailPopoverSeriesContent);
+      return formatHighlighted({
+        position: highlightedX,
+        series: seriesToShow,
+        xTickFormatter,
+        detailPopoverSeriesContent,
+      });
     }
 
     // Otherwise - show all visible series details.
-    return formatHighlighted(highlightedX, visibleSeries, xTickFormatter, detailPopoverSeriesContent);
+    return formatHighlighted({
+      position: highlightedX,
+      series: visibleSeries,
+      xTickFormatter,
+      detailPopoverSeriesContent,
+    });
   }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter, detailPopoverSeriesContent]);
 
   const detailPopoverFooterContent = useMemo(

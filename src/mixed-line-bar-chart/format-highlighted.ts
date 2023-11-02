@@ -11,12 +11,17 @@ export interface HighlightDetails {
 }
 
 /** Formats provided x-position and its corresponding series values. */
-export default function formatHighlighted<T extends ChartDataTypes>(
-  position: T,
-  series: readonly InternalChartSeries<T>[],
-  xTickFormatter?: CartesianChartProps.TickFormatter<T>,
-  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>
-): HighlightDetails {
+export default function formatHighlighted<T extends ChartDataTypes>({
+  position,
+  series,
+  xTickFormatter,
+  detailPopoverSeriesContent,
+}: {
+  position: T;
+  series: readonly InternalChartSeries<T>[];
+  xTickFormatter?: CartesianChartProps.TickFormatter<T>;
+  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>;
+}): HighlightDetails {
   const formattedPosition = xTickFormatter ? xTickFormatter(position) : position.toString();
 
   const details: ChartSeriesDetailItem[] = [];
