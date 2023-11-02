@@ -269,7 +269,15 @@ const CardsList = <T,>({
         >
           <div
             className={styles['card-inner']}
-            onClick={canClickEntireCard ? getItemSelectionProps(item).onChange : undefined}
+            onClick={
+              canClickEntireCard
+                ? event => {
+                    getItemSelectionProps(item).onChange();
+                    // Manually move focus to the native input (checkbox or radio button)
+                    event.currentTarget.querySelector('input')?.focus();
+                  }
+                : undefined
+            }
           >
             <div className={styles['card-header']}>
               <div className={styles['card-header-inner']}>

@@ -79,6 +79,7 @@ describe('Cards selection', () => {
       ).wrapper;
       getCard(1).findCardHeader()?.click();
       expectSelected([{ description: '1' }]);
+      expect(getCardSelectionArea(1)?.find('input')?.getElement()).toHaveFocus();
     });
   });
 

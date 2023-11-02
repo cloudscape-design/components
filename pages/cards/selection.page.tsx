@@ -5,7 +5,7 @@ import range from 'lodash/range';
 import Cards, { CardsProps } from '~components/cards';
 import Header from '~components/header';
 import Toggle from '~components/toggle';
-import { EmptyState } from '../table/shared-configs';
+import { EmptyState, getMatchesCountText, paginationLabels } from '../table/shared-configs';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import Pagination from '~components/pagination';
 import TextFilter from '~components/text-filter';
@@ -49,8 +49,6 @@ const cardDefinition: CardsProps.CardDefinition<Item> = {
   ],
 };
 
-const getTextFilterCounterText = (count: number) => `${count} ${count === 1 ? 'match' : 'matches'}`;
-
 const allItems = createSimpleItems(50);
 
 export default function () {
@@ -92,14 +90,14 @@ export default function () {
         renderAriaLive={renderAriaLive}
         entireCardClickable={entireCard}
         isItemDisabled={item => someDisabled && !item.text.includes('o')}
-        pagination={<Pagination {...paginationProps} />}
+        pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
         filter={
           <TextFilter
             {...filterProps}
             filteringAriaLabel="Filter resources"
             filteringPlaceholder="Find resources"
             filteringClearAriaLabel="Clear"
-            countText={getTextFilterCounterText(filteredItemsCount ?? 0)}
+            countText={getMatchesCountText(filteredItemsCount ?? 0)}
           />
         }
       />
