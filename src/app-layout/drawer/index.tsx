@@ -12,7 +12,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 import { splitItems } from './drawers-helpers';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-import { PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -140,7 +140,7 @@ interface DrawerTriggerProps {
   badge: boolean | undefined;
   itemId?: string;
   isActive: boolean;
-  trigger: PublicDrawer['trigger'];
+  trigger: AppLayoutProps.Drawer['trigger'];
   onClick: (() => void) | undefined;
 }
 
