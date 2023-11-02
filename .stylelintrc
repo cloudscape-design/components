@@ -4,6 +4,7 @@
     "stylelint-prettier/recommended"
   ],
   "rules": {
+    "csstools/use-logical": "always",
     "custom-property-pattern": "^(?!.+)",
     "scss/comment-no-empty": null,
     "selector-pseudo-class-no-unknown": [
