@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
+import Link from '../../../lib/components/link';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
@@ -1006,6 +1007,62 @@ describe('Details popover', () => {
     wrapper.findApplication()!.focus();
     expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
   });
+
+  test('renders links in keys', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart
+        {...barChartProps}
+        detailPopoverSeriesContent={({ series, y }) => ({ key: <Link>{series.title}</Link>, value: y })}
+      />
+    );
+
+    wrapper.findApplication()!.focus();
+    expect(wrapper.findDetailPopover()!.findSeries()![0].findKey()!.findLink()).toBeTruthy();
+  });
+
+  test('renders links in values', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart
+        {...barChartProps}
+        detailPopoverSeriesContent={({ series, y }) => ({ key: series.title, value: <Link>{y}</Link> })}
+      />
+    );
+
+    wrapper.findApplication()!.focus();
+    expect(wrapper.findDetailPopover()!.findSeries()![0].findValue()!.findLink()).toBeTruthy();
+  });
+
+  test('renders nested items', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart
+        {...barChartProps}
+        detailPopoverSeriesContent={({ series, y }) => ({
+          key: series.title,
+          value: y,
+          subItems: [
+            {
+              key: 'a',
+              value: 1,
+            },
+            {
+              key: 'b',
+              value: 2,
+            },
+          ],
+        })}
+      />
+    );
+
+    wrapper.findApplication()!.focus();
+    const subItems = wrapper.findDetailPopover()!.findSeries()![0].findSubItems()!;
+    expect(subItems[0].findKey()!.getElement()).toHaveTextContent('a');
+    expect(subItems[0].findValue()!.getElement()).toHaveTextContent('1');
+    expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
+    expect(subItems[1].findValue()!.getElement()).toHaveTextContent('2');
+  });
+  test('logs a warning when `expandable` is used for a series with no sub-items', () => {});
+  test('logs a warning and ignores the custom property when a ReactNode is used for an expandable key', () => {});
+  test('logs a warning when a ReactNode is used for both key and value', () => {});
 });
 
 test('highlighted series are controllable', () => {
