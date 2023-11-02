@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import {
   AppLayout,
   ContentLayout,
@@ -10,12 +10,12 @@ import {
   SpaceBetween,
   SplitPanel,
   Toggle,
+  Button,
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
-import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
 import styles from './styles.scss';
 
@@ -41,6 +41,12 @@ export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const hasDrawers = urlParams.hasDrawers ?? true;
   const disableContentPaddings = urlParams.disableContentPaddings ?? false;
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
+
+  function openDrawer(id: string) {
+    setActiveDrawerId(id);
+    appLayoutRef.current?.focusActiveDrawer();
+  }
 
   const drawers = !hasDrawers
     ? null
@@ -56,7 +62,7 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
-              onResize: ({ detail: { size } }) => {
+              onResize: ({ detail: { size } }: { detail: { size: number } }) => {
                 // A drawer implementer may choose to listen to THEIR drawer's
                 // resize event,should they want to persist, or otherwise respond
                 // to their drawer being resized.
@@ -144,7 +150,7 @@ export default function WithDrawers() {
                 iconName: 'call',
               },
             },
-          ] as DrawerItem[],
+          ],
           onChange: (event: NonCancelableCustomEvent<string>) => {
             setActiveDrawerId(event.detail);
           },
@@ -154,6 +160,7 @@ export default function WithDrawers() {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        ref={appLayoutRef}
         ariaLabels={appLayoutLabels}
         breadcrumbs={<Breadcrumbs />}
         content={
@@ -174,6 +181,12 @@ export default function WithDrawers() {
                     Has Drawers
                   </Toggle>
                 </SpaceBetween>
+                <Button onClick={() => openDrawer('security')} data-testid="open-drawer-button">
+                  Open drawer
+                </Button>
+                <Button onClick={() => openDrawer('pro-help')} data-testid="open-drawer-button-2">
+                  Open second drawer
+                </Button>
               </SpaceBetween>
             }
           >

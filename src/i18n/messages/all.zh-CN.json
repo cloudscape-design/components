@@ -25,6 +25,7 @@
   "app-layout": {
     "ariaLabels.drawers": "抽屉",
     "ariaLabels.drawersOverflow": "抽屉溢出",
+    "ariaLabels.drawersOverflowWithBadge": "抽屉中徽章溢出",
     "ariaLabels.navigation": "侧导航",
     "ariaLabels.navigationClose": "关闭侧导航",
     "ariaLabels.navigationToggle": "打开侧导航",
@@ -190,7 +191,7 @@
     "i18nStrings.tokenLimitShowFewer": "显示更少",
     "i18nStrings.tokenLimitShowMore": "显示更多",
     "i18nStrings.valueText": "值",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {删除筛选条件，{token__propertyKey} 等于 {token__value}} not_equals {删除筛选条件，{token__propertyKey} 不等于 {token__value}} greater_than {删除筛选条件，{token__propertyKey} 大于 {token__value}} greater_than_equal {删除筛选条件，{token__propertyKey} 大于或等于 {token__value}} less_than {删除筛选条件，{token__propertyKey} 小于 {token__value}} less_than_equal {删除筛选条件，{token__propertyKey} 小于或等于 {token__value}} contains {删除筛选条件，{token__propertyKey} 包含 {token__value}} not_contains {删除筛选条件，{token__propertyKey} 不包含 {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {删除筛选条件，{token__propertyKey} 等于 {token__value}} not_equals {删除筛选条件，{token__propertyKey} 不等于 {token__value}} greater_than {删除筛选条件，{token__propertyKey} 大于 {token__value}} greater_than_equal {删除筛选条件，{token__propertyKey} 大于或等于 {token__value}} less_than {删除筛选条件，{token__propertyKey} 小于 {token__value}} less_than_equal {删除筛选条件，{token__propertyKey} 小于或等于 {token__value}} contains {删除筛选条件，{token__propertyKey} 包含 {token__value}} not_contains {删除筛选条件，{token__propertyKey} 不包含 {token__value}} starts_with {删除筛选条件，{token__propertyKey} 开头为 {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "选择版本",

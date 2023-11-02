@@ -92,6 +92,13 @@
   // https://github.com/philipwalton/flexbugs/issues/170
   display: flex;
   align-items: flex-start;
+  min-height: awsui.$size-vertical-input;
+
+  // we can align actions to center in most cases, cause if the header is too long, actions will wrap the first.
+  // exception is Modal header, where __disableActionsWrapping makes header text wrap to multiple lines, shifting the close button
+  &-centered {
+    align-items: center;
+  }
 
   // Calculate padding so the heading text is better aligned with the buttons.
   // Can't align-items: middle because we want buttons to stay at the top of the container when text wraps to multiple lines.

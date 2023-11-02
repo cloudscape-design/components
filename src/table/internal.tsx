@@ -9,7 +9,6 @@ import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
 import { TableBodyCell } from './body-cell';
-import InternalStatusIndicator from '../status-indicator/internal';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
@@ -41,6 +40,7 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useTableRole } from './table-role/table-role-helper';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { NoDataCell } from './node-data-cell';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -233,13 +233,14 @@ const InternalTable = React.forwardRef(
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
+      resizerRoleDescription: ariaLabels?.resizerRoleDescription,
       stripedRows,
       stickyState,
       selectionColumnId,
       tableRole,
     };
 
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+    const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     const wrapperProps = getTableWrapperRoleProps({
@@ -271,11 +272,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <ColumnWidthsProvider
-          visibleColumns={visibleColumnWidthsWithSelection}
-          resizableColumns={resizableColumns}
-          containerWidth={containerWidth ?? 0}
-        >
+        <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}
@@ -351,6 +348,7 @@ const InternalTable = React.forwardRef(
               onScroll={handleScroll}
               {...wrapperProps}
             >
+              <div className={styles['wrapper-content-measure']} ref={wrapperMeasureRef}></div>
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>
@@ -382,26 +380,16 @@ const InternalTable = React.forwardRef(
                 <tbody>
                   {loading || items.length === 0 ? (
                     <tr>
-                      <td
-                        colSpan={totalColumnsCount}
-                        className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
-                      >
-                        <div
-                          className={styles['cell-merged-content']}
-                          style={{
-                            width:
-                              (supportsStickyPosition() && containerWidth && Math.floor(containerWidth)) || undefined,
-                          }}
-                        >
-                          {loading ? (
-                            <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>
-                              <LiveRegion visible={true}>{loadingText}</LiveRegion>
-                            </InternalStatusIndicator>
-                          ) : (
-                            <div className={styles.empty}>{empty}</div>
-                          )}
-                        </div>
-                      </td>
+                      <NoDataCell
+                        variant={variant}
+                        containerWidth={containerWidth ?? 0}
+                        totalColumnsCount={totalColumnsCount}
+                        hasFooter={hasFooter}
+                        loading={loading}
+                        loadingText={loadingText}
+                        empty={empty}
+                        tableRef={tableRefObject}
+                      />
                     </tr>
                   ) : (
                     items.map((item, rowIndex) => {

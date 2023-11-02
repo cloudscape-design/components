@@ -381,6 +381,7 @@ export default <T extends PieChartProps.Datum>({
           container={plotRef.current?.svg || null}
           size={detailPopoverSize}
           onMouseLeave={checkMouseLeave}
+          onBlur={onBlur}
         >
           {tooltipContent}
           {detailPopoverFooterContent && <InternalBox margin={{ top: 's' }}>{detailPopoverFooterContent}</InternalBox>}

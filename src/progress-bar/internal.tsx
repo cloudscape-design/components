@@ -20,9 +20,10 @@ const clamp = (value: number, lowerLimit: number, upperLimit: number) => {
 interface ProgressProps {
   value: number;
   isInFlash: boolean;
-  labelId: string;
+  ariaLabel?: string;
+  ariaLabelledby?: string;
 }
-export const Progress = ({ value, isInFlash, labelId }: ProgressProps) => {
+export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby }: ProgressProps) => {
   const roundedValue = Math.round(value);
   const progressValue = clamp(roundedValue, 0, MAX_VALUE);
 
@@ -36,7 +37,9 @@ export const Progress = ({ value, isInFlash, labelId }: ProgressProps) => {
         )}
         max={MAX_VALUE}
         value={progressValue}
-        aria-labelledby={labelId}
+        aria-label={ariaLabel}
+        // Ensures aria-label takes precedence over aria-labelledby
+        aria-labelledby={!ariaLabel ? ariaLabelledby : undefined}
       />
       <span aria-hidden="true" className={styles['percentage-container']}>
         <InternalBox className={styles.percentage} variant="small" color={isInFlash ? 'inherit' : undefined}>

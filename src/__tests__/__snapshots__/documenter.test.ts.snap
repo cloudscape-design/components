@@ -493,6 +493,12 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the active drawer. Use this to focus the active drawer after opening it programmatically.",
+      "name": "focusActiveDrawer",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Focuses the split panel if it is open.",
       "name": "focusSplitPanel",
       "parameters": Array [],
@@ -10127,6 +10133,18 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
   "name": "ProgressBar",
   "properties": Array [
     Object {
+      "description": "Adds an \`aria-label\` to the progress bar.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the progress bar.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -12443,6 +12461,7 @@ Object {
           "grey",
           "green",
           "red",
+          "yellow",
         ],
       },
       "name": "colorOverride",
@@ -12665,6 +12684,7 @@ items also receives the corresponding  \`Item\` object. You can use the \`select
 add a meaningful description to the whole selection.
 * \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
+* \`resizerRoleDescription\` (string) - Provides role description for table column resizer buttons.
 * \`activateEditLabel\` (EditableColumnDefinition, Item) => string -
                      Specifies an alternative text for the edit button in editable cells.
 * \`cancelEditLabel\` (EditableColumnDefinition) => string -
@@ -12698,6 +12718,11 @@ add a meaningful description to the whole selection.
             "name": "itemSelectionLabel",
             "optional": true,
             "type": "(data: TableProps.SelectionState<T>, row: T) => string",
+          },
+          Object {
+            "name": "resizerRoleDescription",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "selectionGroupLabel",
@@ -14599,6 +14624,13 @@ Object {
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Removes any outer padding from the component.
+We recommend to always enable this property.",
+      "name": "disableOuterPadding",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",

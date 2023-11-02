@@ -8,6 +8,21 @@ import Select, { SelectProps } from '../../../lib/components/select';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+
+  //just mock the `warnOnce` export
+  return {
+    __esModule: true,
+    ...originalModule,
+    warnOnce: jest.fn(),
+  };
+});
+beforeEach(() => {
+  (warnOnce as any).mockClear();
+});
 
 const VALUE_WITH_SPECIAL_CHARS = 'Option 4, test"2';
 const defaultOptions: SelectProps.Options = [
@@ -202,6 +217,19 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       onLoadItems.mockClear();
       wrapper.findErrorRecoveryButton({ expandToViewport })!.click();
       expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: false, samePage: true });
+    });
+
+    it('should warn if recoveryText is provided without associated handler', () => {
+      renderSelect({
+        options: defaultOptions,
+        recoveryText: 'Retry',
+        statusType: 'error',
+      });
+      expect(warnOnce).toHaveBeenCalledTimes(1);
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Select',
+        '`onLoadItems` must be provided for `recoveryText` to be displayed.'
+      );
     });
 
     test('applies automatic client-side filtering when it is enabled', () => {

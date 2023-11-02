@@ -25,6 +25,7 @@
   "app-layout": {
     "ariaLabels.drawers": "드로어",
     "ariaLabels.drawersOverflow": "드로어 오버플로",
+    "ariaLabels.drawersOverflowWithBadge": "배지 포함 드로어 오버플로",
     "ariaLabels.navigation": "측면 탐색",
     "ariaLabels.navigationClose": "측면 탐색 닫기",
     "ariaLabels.navigationToggle": "측면 탐색 열기",
@@ -190,7 +191,7 @@
     "i18nStrings.tokenLimitShowFewer": "간단히 표시",
     "i18nStrings.tokenLimitShowMore": "자세히 표시",
     "i18nStrings.valueText": "값",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}이(가) {token__value}과(와) 같음 필터 제거} not_equals {{token__propertyKey}이(가) {token__value}과(와) 같지 않음 필터 제거} greater_than {{token__propertyKey}이(가) {token__value}보다 큼 필터 제거} greater_than_equal {{token__propertyKey}이(가) {token__value}보다 크거나 같음 필터 제거} less_than {{token__propertyKey}이(가) {token__value}보다 작음 필터 제거} less_than_equal {{token__propertyKey}이(가) {token__value}보다 작거나 같음 필터 제거} contains {{token__propertyKey}이(가) {token__value}을(를) 포함함 필터 제거} not_contains {{token__propertyKey}이(가) {token__value}을(를) 포함하지 않음 필터 제거} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}이(가) {token__value}과(와) 같음 필터 제거} not_equals {{token__propertyKey}이(가) {token__value}과(와) 같지 않음 필터 제거} greater_than {{token__propertyKey}이(가) {token__value}보다 큼 필터 제거} greater_than_equal {{token__propertyKey}이(가) {token__value}보다 크거나 같음 필터 제거} less_than {{token__propertyKey}이(가) {token__value}보다 작음 필터 제거} less_than_equal {{token__propertyKey}이(가) {token__value}보다 작거나 같음 필터 제거} contains {{token__propertyKey}이(가) {token__value}을(를) 포함함 필터 제거} not_contains {{token__propertyKey}이(가) {token__value}을(를) 포함하지 않음 필터 제거} starts_with {필터 제거, {token__value}(으)로 시작하는 {token__propertyKey}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "버전 선택",

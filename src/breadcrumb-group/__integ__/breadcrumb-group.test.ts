@@ -31,12 +31,12 @@ class BreadcrumbGroupPage extends BasePageObject {
     return this.click(dropdownWrapper.findItems().get(index).toSelector());
   }
 }
-const setupTest = (testFn: (page: BreadcrumbGroupPage) => Promise<void>) => {
+const setupTest = (testFn: (page: BreadcrumbGroupPage, browser: WebdriverIO.Browser) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BreadcrumbGroupPage(browser);
     await browser.url(`#/light/breadcrumb-group/events`);
     await page.waitForVisible(breadcrumbGroupWrapper.toSelector());
-    await testFn(page);
+    await testFn(page, browser);
   });
 };
 describe('BreadcrumbGroup', () => {
@@ -105,6 +105,15 @@ describe('BreadcrumbGroup', () => {
       await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
         false
       );
+    })
+  );
+
+  test(
+    'Attachs funnel name attribute to last breadcrumb item',
+    setupTest(async (page, browser) => {
+      await page.setMobileViewport();
+      const funnelName = await browser.$('[data-analytics-funnel-key="funnel-name"]').getText();
+      expect(funnelName).toBe('Sixth that is very very very very very very long long long text');
     })
   );
 });

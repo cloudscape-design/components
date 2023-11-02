@@ -94,7 +94,7 @@ const AutosuggestOption = (
       screenReaderContent={screenReaderContent}
       ariaSetsize={ariaSetsize}
       ariaPosinset={ariaPosinset}
-      highlightType={highlightType}
+      highlightType={highlightType.type}
     >
       {optionContent}
     </SelectableItem>

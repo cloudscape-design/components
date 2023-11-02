@@ -23,7 +23,7 @@ import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.j
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { InternalDrawerProps } from '../../../lib/components/app-layout/drawer/interfaces';
+import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -32,10 +32,10 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 
 describeEachThemeAppLayout(false, () => {
   test('renders breadcrumbs and notifications inside of the main landmark', () => {
-    const { wrapper, contentElement } = renderComponent(
-      <AppLayout breadcrumbs="breadcrumbs" notifications="notifications" />
-    );
-    const main = contentElement; //wrapper.getElement().parentElement!.querySelector('main');
+    const { wrapper } = renderComponent(<AppLayout breadcrumbs="breadcrumbs" notifications="notifications" />);
+    const mains = document.querySelectorAll('main');
+    expect(mains).toHaveLength(1);
+    const main = mains[0];
     expect(main).toContainElement(wrapper.findNotifications()!.getElement());
     expect(main).toContainElement(wrapper.findBreadcrumbs()!.getElement());
   });
@@ -174,24 +174,31 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('should change size via keyboard events on slider handle', () => {
+    const onDrawerItemResize = jest.fn();
     const onResize = jest.fn();
-    const drawers: Required<InternalDrawerProps> = {
+    const drawers: { drawers: BetaDrawersProps } = {
       drawers: {
-        onResize: ({ detail }) => onResize(detail),
         activeDrawerId: 'security',
-        items: resizableDrawer.drawers.items,
+        onResize: ({ detail }) => onResize(detail),
+        items: [
+          {
+            ...resizableDrawer.drawers.items[0],
+            onResize: event => onDrawerItemResize(event.detail),
+          },
+        ],
       },
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawers} />);
     wrapper.findActiveDrawerResizeHandle()!.keydown(KeyCode.left);
 
     expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
+    expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'security' });
   });
 
   test('should change size via mouse pointer on slider handle', () => {
     const onResize = jest.fn();
     const onDrawerItemResize = jest.fn();
-    const drawersOpen: Required<InternalDrawerProps> = {
+    const drawersOpen: { drawers: BetaDrawersProps } = {
       drawers: {
         onResize: ({ detail }) => onResize(detail),
         activeDrawerId: 'security',
@@ -241,7 +248,7 @@ describeEachThemeAppLayout(false, () => {
   });
 
   test('should have width equal to the size declaration', () => {
-    const resizableDrawer = {
+    const resizableDrawer: { drawers: BetaDrawersProps } = {
       drawers: {
         ariaLabel: 'Drawers',
         activeDrawerId: 'security',
@@ -333,12 +340,6 @@ describe('VR only features', () => {
   });
   afterEach(() => {
     (useVisualRefresh as jest.Mock).mockReset();
-  });
-
-  test('should add motion class', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...resizableDrawer} />);
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findActiveDrawer()!.getElement()).toHaveClass(styles['with-motion']);
   });
 
   test('renders roles only when aria labels are not provided', () => {

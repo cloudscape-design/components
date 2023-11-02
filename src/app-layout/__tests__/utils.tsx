@@ -8,10 +8,9 @@ import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/co
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
-import styles from '../../../lib/components/app-layout/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-import { InternalDrawerProps, DrawerItem } from '../../../lib/components/app-layout/drawer/interfaces';
+import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
 import { IconProps } from '../../../lib/components/icon/interfaces';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
@@ -39,11 +38,7 @@ export function renderComponent(jsx: React.ReactElement) {
   const isUsingGridLayout = wrapper.getElement().classList.contains(visualRefreshStyles.layout);
   const isUsingMobile = !!wrapper.findByClassName(testutilStyles['mobile-bar']);
 
-  const contentElement = isUsingGridLayout
-    ? wrapper.getElement()
-    : wrapper.findByClassName(styles['layout-wrapper'])!.getElement();
-
-  return { wrapper, rerender, isUsingGridLayout, isUsingMobile, contentElement, container };
+  return { wrapper, rerender, isUsingGridLayout, isUsingMobile, container };
 }
 
 export function describeEachThemeAppLayout(isMobile: boolean, callback: (theme: string) => void) {
@@ -142,7 +137,7 @@ export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   resizeHandleAriaLabel: 'Resize panel',
 };
 
-export const singleDrawer: Required<InternalDrawerProps> = {
+export const singleDrawer: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     items: [
@@ -182,7 +177,7 @@ const getDrawerItem = (id: string, iconName: IconProps.Name, badge: boolean) => 
 
 const manyDrawersArray = [...Array(100).keys()].map(item => item.toString());
 
-export const manyDrawers: Required<InternalDrawerProps> = {
+export const manyDrawers: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     overflowAriaLabel: 'Overflow drawers',
@@ -207,7 +202,7 @@ export const manyDrawers: Required<InternalDrawerProps> = {
   },
 };
 
-export const manyDrawersWithBadges: Required<InternalDrawerProps> = {
+export const manyDrawersWithBadges: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     overflowAriaLabel: 'Overflow drawers',
@@ -216,7 +211,7 @@ export const manyDrawersWithBadges: Required<InternalDrawerProps> = {
   },
 };
 
-export const singleDrawerOpen: Required<InternalDrawerProps> = {
+export const singleDrawerOpen: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     activeDrawerId: 'security',
@@ -238,7 +233,7 @@ export const singleDrawerOpen: Required<InternalDrawerProps> = {
   },
 };
 
-export const resizableDrawer: Required<InternalDrawerProps> = {
+export const resizableDrawer: { drawers: BetaDrawersProps } = {
   drawers: {
     ariaLabel: 'Drawers',
     items: [
@@ -260,7 +255,7 @@ export const resizableDrawer: Required<InternalDrawerProps> = {
   },
 };
 
-export const drawerWithoutLabels: Required<InternalDrawerProps> = {
+export const drawerWithoutLabels: { drawers: BetaDrawersProps } = {
   drawers: {
     items: [
       {
@@ -269,7 +264,7 @@ export const drawerWithoutLabels: Required<InternalDrawerProps> = {
         trigger: {
           iconName: 'security',
         },
-      } as DrawerItem,
+      } as BetaDrawersProps['items'][number],
     ],
   },
 };

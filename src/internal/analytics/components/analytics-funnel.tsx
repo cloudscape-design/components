@@ -11,7 +11,7 @@ import {
   FunnelState,
   FunnelSubStepContextValue,
 } from '../context/analytics-context';
-import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../hooks/use-funnel';
+import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
@@ -31,12 +31,16 @@ import {
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { nodeBelongs } from '../../utils/node-belongs';
 
-export const FUNNEL_VERSION = '1.3';
+export const FUNNEL_VERSION = '1.4';
 
-type AnalyticsFunnelProps = { children?: React.ReactNode; stepConfiguration?: StepConfiguration[] } & Pick<
-  FunnelProps,
-  'funnelNameSelector' | 'funnelType' | 'optionalStepNumbers' | 'totalFunnelSteps'
->;
+interface AnalyticsFunnelProps {
+  children?: React.ReactNode;
+  stepConfiguration?: StepConfiguration[];
+  funnelNameSelectors?: string[];
+  funnelType: FunnelProps['funnelType'];
+  optionalStepNumbers: FunnelProps['optionalStepNumbers'];
+  totalFunnelSteps: FunnelProps['totalFunnelSteps'];
+}
 
 export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
   const { isInFunnel } = useFunnel();
@@ -64,13 +68,23 @@ const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string
   document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
 };
 
+function evaluateSelectors(selectors: string[], defaultSelector: string) {
+  for (const selector of selectors) {
+    const element = document.querySelector(selector);
+    if (element) {
+      return selector;
+    }
+  }
+
+  return defaultSelector;
+}
+
 const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
-  const inheritedFunnelNameSelector = useFunnelNameSelector();
-  const funnelNameSelector = props.funnelNameSelector || inheritedFunnelNameSelector || getFunnelNameSelector();
   const funnelState = useRef<FunnelState>('default');
+  const funnelNameSelector = useRef<string>(getFunnelNameSelector());
   const errorCount = useRef<number>(0);
   const loadingButtonCount = useRef<number>(0);
   const wizardCount = useRef<number>(0);
@@ -92,7 +106,10 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
       If it does contain a Wizard, that Wizard should take precedence for handling the funnel, and
       this current funnel component should do nothing.
     */
+    let funnelInteractionId: string;
     const handle = setTimeout(() => {
+      funnelNameSelector.current = evaluateSelectors(props.funnelNameSelectors || [], getFunnelNameSelector());
+
       if (props.funnelType === 'single-page' && wizardCount.current > 0) {
         return;
       }
@@ -101,11 +118,11 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
       funnelState.current = 'default';
 
       const singleStepFlowStepConfiguration = [
-        { number: 1, isOptional: false, name: getNameFromSelector(funnelNameSelector) ?? '' },
+        { number: 1, isOptional: false, name: getNameFromSelector(funnelNameSelector.current) ?? '' },
       ];
 
-      const funnelInteractionId = FunnelMetrics.funnelStart({
-        funnelNameSelector: funnelNameSelector,
+      funnelInteractionId = FunnelMetrics.funnelStart({
+        funnelNameSelector: funnelNameSelector.current,
         optionalStepNumbers: props.optionalStepNumbers,
         funnelType: props.funnelType,
         totalFunnelSteps: props.totalFunnelSteps,
@@ -193,6 +210,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
     funnelType: props.funnelType,
     optionalStepNumbers: props.optionalStepNumbers,
     totalFunnelSteps: props.totalFunnelSteps,
+    funnelNameSelector: funnelNameSelector.current,
     funnelSubmit,
     funnelCancel,
     submissionAttempt,
@@ -208,9 +226,11 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
   return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
 };
 
-type AnalyticsFunnelStepProps = {
+interface AnalyticsFunnelStepProps {
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
-} & Pick<FunnelStepProps, 'stepNumber' | 'stepNameSelector'>;
+  stepNameSelector?: FunnelStepProps['stepNameSelector'];
+  stepNumber: FunnelStepProps['stepNumber'];
+}
 
 export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
   /*
@@ -265,8 +285,8 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
   return stepChangeCallback;
 }
 
-const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: AnalyticsFunnelStepProps) => {
-  const { funnelInteractionId, funnelState, funnelType } = useFunnel();
+const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFunnelStepProps) => {
+  const { funnelInteractionId, funnelNameSelector, funnelState, funnelType } = useFunnel();
   const parentStep = useFunnelStep();
   const parentStepExists = parentStep.isInStep;
   const parentStepFunnelInteractionId = parentStep.funnelInteractionId;
@@ -275,6 +295,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, stepNameSelector }: An
 
   const subStepCount = useRef<number>(0);
 
+  const stepNameSelector = rest.stepNameSelector || funnelNameSelector;
   const onStepChange = useStepChangeListener(subStepConfiguration => {
     if (!funnelInteractionId) {
       return;

@@ -23,9 +23,12 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Adım {stepNumber}/{totalStepCount} için ek açıklamayı kapat} false {Adım {stepNumber}/{totalStepCount} için ek açıklamayı aç} other {}}"
   },
   "app-layout": {
-    "ariaLabels.navigation": "Yan gezinme",
-    "ariaLabels.navigationClose": "Yan gezinmeyi kapat",
-    "ariaLabels.navigationToggle": "Yan gezinmeyi aç",
+    "ariaLabels.drawers": "Çekmeceler",
+    "ariaLabels.drawersOverflow": "Çekmece taşması",
+    "ariaLabels.drawersOverflowWithBadge": "Rozetli çekmece taşması",
+    "ariaLabels.navigation": "Yan gezinti bölmesi",
+    "ariaLabels.navigationClose": "Yan gezinti bölmesini kapat",
+    "ariaLabels.navigationToggle": "Yan gezinti bölmesini aç",
     "ariaLabels.notifications": "Bildirimler",
     "ariaLabels.tools": "Yardım paneli",
     "ariaLabels.toolsClose": "Yardım panelini kapat",
@@ -115,6 +118,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {Son {amount} {unit}} other {Son {amount} {unit}}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "İçerik yükleniyor"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Bildirimler",
     "i18nStrings.errorIconAriaLabel": "Hata",
@@ -154,7 +160,7 @@
   "pie-chart": {
     "i18nStrings.detailsValue": "Değer",
     "i18nStrings.detailsPercentage": "Yüzde",
-    "i18nStrings.chartAriaRoleDescription": "Pasta grafiği",
+    "i18nStrings.chartAriaRoleDescription": "Pasta grafik",
     "i18nStrings.segmentAriaRoleDescription": "Segment"
   },
   "popover": {
@@ -178,13 +184,14 @@
     "i18nStrings.operatorGreaterText": "Büyüktür",
     "i18nStrings.operatorLessOrEqualText": "Küçük veya eşittir",
     "i18nStrings.operatorLessText": "Küçüktür",
+    "i18nStrings.operatorStartsWithText": "İle başlar",
     "i18nStrings.operatorText": "Operatör",
     "i18nStrings.operatorsText": "Operatörler",
     "i18nStrings.propertyText": "Özellik",
     "i18nStrings.tokenLimitShowFewer": "Daha az göster",
     "i18nStrings.tokenLimitShowMore": "Daha fazla göster",
     "i18nStrings.valueText": "Değer",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}, {token__value} değerine eşittir filtresini kaldır} not_equals {{token__propertyKey}, {token__value} değerine eşit değildir filtresini kaldır} greater_than {{token__propertyKey}, {token__value} değerinden büyüktür filtresini kaldır} greater_than_equal {{token__propertyKey}, {token__value} değerinden büyük veya buna eşittir filtresini kaldır} less_than {{token__propertyKey}, {token__value} değerinden küçüktür filtresini kaldır} less_than_equal {{token__propertyKey}, {token__value} değerinden küçük veya buna eşittir filtresini kaldır} contains {{token__propertyKey}, {token__value} değerini içerir filtresini kaldır} not_contains {{token__propertyKey}, {token__value} değerini içermez filtresini kaldır} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}, {token__value} değerine eşittir filtresini kaldır} not_equals {{token__propertyKey}, {token__value} değerine eşit değildir filtresini kaldır} greater_than {{token__propertyKey}, {token__value} değerinden büyüktür filtresini kaldır} greater_than_equal {{token__propertyKey}, {token__value} değerinden büyük veya buna eşittir filtresini kaldır} less_than {{token__propertyKey}, {token__value} değerinden küçüktür filtresini kaldır} less_than_equal {{token__propertyKey}, {token__value} değerinden küçük veya buna eşittir filtresini kaldır} contains {{token__propertyKey}, {token__value} değerini içerir filtresini kaldır} not_contains {{token__propertyKey}, {token__value} değerini içermez filtresini kaldır} starts_with {{token__propertyKey}, {token__value} değerinden şunla başlar filtresini kaldır} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Bir sürüm seçin",
@@ -239,7 +246,7 @@
     "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
     "i18nStrings.labelFiltering": "{itemsType} bul",
     "i18nStrings.labelRefresh": "Verileri yenile",
-    "i18nStrings.labelBreadcrumbs": "S3'te gezinme",
+    "i18nStrings.labelBreadcrumbs": "S3 gezintisi",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 eşleşme} other {{count} eşleşme}}"
   },
   "select": {
@@ -260,6 +267,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Bölünmüş paneli yeniden boyutlandır"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "yeniden boyutlandırma düğmesi",
     "ariaLabels.submittingEditText": "Düzenleme gönderiliyor",
     "ariaLabels.successfulEditLabel": "Düzenleme başarılı",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Hata",

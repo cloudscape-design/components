@@ -112,35 +112,35 @@ describe('drawers', () => {
 
 describe('Content height calculation', () => {
   test('should take the full page height by default', () => {
-    const { contentElement } = renderComponent(<AppLayout />);
-    expect(contentElement).toHaveStyle({ minHeight: 'calc(100vh - 0px)' });
+    const { wrapper } = renderComponent(<AppLayout />);
+    expect(wrapper.getElement()).toHaveStyle({ minHeight: 'calc(100vh - 0px)' });
   });
 
   test('should include header and footer in the calculation', async () => {
-    const { contentElement } = renderComponent(
+    const { wrapper } = renderComponent(
       <div id="b">
         <div style={{ height: 40 }} id="h" />
         <AppLayout />
         <div style={{ height: 35 }} id="f" />
       </div>
     );
-    await waitFor(() => expect(contentElement).toHaveStyle({ minHeight: 'calc(100vh - 75px)' }));
+    await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minHeight: 'calc(100vh - 75px)' }));
   });
 
   test('should use alternative header and footer selector', async () => {
-    const { contentElement } = renderComponent(
+    const { wrapper } = renderComponent(
       <>
         <div style={{ height: 20 }} id="header" />
         <AppLayout headerSelector="#header" footerSelector="#footer" />
         <div style={{ height: 25 }} id="footer" />
       </>
     );
-    await waitFor(() => expect(contentElement).toHaveStyle({ minHeight: 'calc(100vh - 45px)' }));
+    await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minHeight: 'calc(100vh - 45px)' }));
   });
 
   test('should set height instead of min-height when the body scroll is disabled', () => {
-    const { contentElement } = renderComponent(<AppLayout disableBodyScroll={true} />);
-    const { height, minHeight } = contentElement.style;
+    const { wrapper } = renderComponent(<AppLayout disableBodyScroll={true} />);
+    const { height, minHeight } = wrapper.getElement().style;
     expect({ height, minHeight }).toEqual({ height: 'calc(100vh - 0px)', minHeight: '' });
   });
 });

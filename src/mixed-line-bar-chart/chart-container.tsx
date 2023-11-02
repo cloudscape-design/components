@@ -99,6 +99,8 @@ interface YAxisProps extends BaseAxisProps {
   ticks: number[];
 }
 
+const fallbackContainerWidth = 500;
+
 export default function ChartContainer<T extends ChartDataTypes>({
   fitHeight,
   height: explicitPlotHeight,
@@ -133,8 +135,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
-  const [containerWidth, containerMeasureRef] = useContainerWidth(500);
-  const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
+  const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
+  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
+  const plotWidth = containerWidth
+    ? // Calculate the minimum between leftLabelsWidth and maxLeftLabelsWidth for extra safety because leftLabelsWidth could be out of date
+      Math.max(0, containerWidth - Math.min(leftLabelsWidth, maxLeftLabelsWidth) - LEFT_LABELS_MARGIN)
+    : fallbackContainerWidth;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
@@ -501,6 +507,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           scale={leftAxisProps.scale}
           tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
           autoWidth={setLeftLabelsWidth}
+          maxLabelsWidth={maxLeftLabelsWidth}
         />
       }
       bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={bottomAxisProps.title} />}
@@ -548,8 +555,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
             tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
             title={leftAxisProps.title}
             ariaRoleDescription={leftAxisProps.ariaRoleDescription}
-            width={plotWidth}
-            height={plotHeight}
+            maxLabelsWidth={maxLeftLabelsWidth}
+            plotWidth={plotWidth}
+            plotHeight={plotHeight}
           />
 
           {horizontalBars && (
@@ -634,6 +642,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           footer={detailPopoverFooterContent}
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
+          onBlur={onSVGBlur}
         />
       }
     />

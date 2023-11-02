@@ -9,7 +9,6 @@ import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
-import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
@@ -79,7 +78,7 @@ function ActiveDrawer() {
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
-    content: activeDrawerId ? activeDrawer?.ariaLabels?.content : ariaLabels?.tools,
+    content: activeDrawerId ? activeDrawer?.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
   const isHidden = !activeDrawerId;
@@ -91,7 +90,7 @@ function ActiveDrawer() {
 
   return (
     <aside
-      id={activeDrawerId}
+      id={activeDrawerId ?? undefined}
       aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, {
@@ -99,7 +98,6 @@ function ActiveDrawer() {
         [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
-        [sharedStyles['with-motion']]: activeDrawerId,
       })}
       style={{
         ...(!isMobile && drawerSize && { [customCssProps.drawerSize]: `${size}px` }),
@@ -123,7 +121,7 @@ function ActiveDrawer() {
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
             onClick={() => {
-              handleDrawersClick(activeDrawerId ?? undefined);
+              handleDrawersClick(activeDrawerId);
               handleToolsClick(false);
             }}
             ref={drawersRefs.close}

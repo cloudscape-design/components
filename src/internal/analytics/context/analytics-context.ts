@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { MutableRefObject, RefObject, createContext } from 'react';
 import { FunnelType } from '../interfaces';
+import { getFunnelNameSelector } from '../selectors';
 
 export type FunnelState = 'default' | 'validating' | 'complete' | 'cancelled';
 
 export interface FunnelContextValue {
   funnelInteractionId: string | undefined;
   funnelType: FunnelType;
+  funnelNameSelector: string;
   optionalStepNumbers: number[];
   totalFunnelSteps: number;
   funnelSubmit: () => void;
@@ -59,6 +61,7 @@ export interface FunnelSubStepContextValue {
 /* istanbul ignore next */
 export const FunnelContext = createContext<FunnelContextValue>({
   funnelInteractionId: undefined,
+  funnelNameSelector: getFunnelNameSelector(),
   setFunnelInteractionId: () => {},
   funnelType: 'single-page',
   optionalStepNumbers: [],

@@ -3,27 +3,34 @@
 import React from 'react';
 import { DrawerConfig as RuntimeDrawerConfig } from '../internal/plugins/controllers/drawers';
 import { RuntimeContentWrapper } from '../internal/plugins/helpers';
-import { DrawerItem } from './drawer/interfaces';
 import { sortByPriority } from '../internal/plugins/helpers/utils';
+import { PublicDrawer } from './interfaces';
+import { fireNonCancelableEvent } from '../internal/events';
 
 export interface DrawersLayout {
-  before: Array<DrawerItem>;
-  after: Array<DrawerItem>;
+  before: Array<PublicDrawer>;
+  after: Array<PublicDrawer>;
 }
 
 export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): DrawersLayout {
-  const converted = drawers.map(({ mountContent, unmountContent, trigger, ...runtimeDrawer }) => ({
-    ...runtimeDrawer,
-    trigger: {
-      iconSvg: (
-        // eslint-disable-next-line react/no-danger
-        <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+  const converted = drawers.map(
+    ({ mountContent, unmountContent, trigger, ...runtimeDrawer }): PublicDrawer & { orderPriority?: number } => ({
+      ...runtimeDrawer,
+      ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
+      trigger: {
+        iconSvg: (
+          // eslint-disable-next-line react/no-danger
+          <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+        ),
+      },
+      content: (
+        <RuntimeContentWrapper key={runtimeDrawer.id} mountContent={mountContent} unmountContent={unmountContent} />
       ),
-    },
-    content: (
-      <RuntimeContentWrapper key={runtimeDrawer.id} mountContent={mountContent} unmountContent={unmountContent} />
-    ),
-  }));
+      onResize: event => {
+        fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
+      },
+    })
+  );
   const sorted = sortByPriority(converted);
   return {
     before: sorted.filter(item => (item.orderPriority ?? 0) > 0),
