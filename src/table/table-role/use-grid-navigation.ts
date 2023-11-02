@@ -23,11 +23,24 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
  * The hook attaches the GridNavigationHelper helper when active=true.
  * See GridNavigationHelper for more details.
  */
-export function useGridNavigation({ keyboardNavigation, pageSize, getTable, isSuppressed }: GridNavigationProps) {
+export function useGridNavigation({
+  keyboardNavigation,
+  pageSize,
+  getTable,
+  suppressKeyboardNavigationFor,
+}: GridNavigationProps) {
   const gridNavigation = useMemo(() => new GridNavigationHelper(), []);
 
   const getTableStable = useStableCallback(getTable);
-  const isSuppressedStable = useStableCallback((element: HTMLElement) => isSuppressed?.(element) ?? false);
+  const isSuppressedStable = useStableCallback((element: HTMLElement) => {
+    if (typeof suppressKeyboardNavigationFor === 'function') {
+      return suppressKeyboardNavigationFor(element);
+    }
+    if (typeof suppressKeyboardNavigationFor === 'string') {
+      return element.matches(suppressKeyboardNavigationFor);
+    }
+    return false;
+  });
 
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
   useEffect(() => {

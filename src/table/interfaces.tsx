@@ -318,13 +318,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onEditCancel?: CancelableEventHandler;
 
   /**
-   * Use this property to activate advanced keyboard navigation and focusing behaviors.
-   * When `keyboardNavigation=true` the table cells become navigable with arrow keys and
-   * the entire table has a single Tab stop.
-   * Use callback variant of the property when it is necessary to suppress the navigation conditionally.
-   * See the usage guidelines for more details.
+   * Experimental API
    */
-  keyboardNavigation?: TableProps.KeyboardNavigation;
+  keyboardNavigation?: boolean;
+  /**
+   * Experimental API
+   */
+  suppressKeyboardNavigationFor?: string | ((element: HTMLElement) => boolean);
 }
 
 export namespace TableProps {
@@ -466,6 +466,4 @@ export namespace TableProps {
     id: string;
     visible: boolean;
   }
-
-  export type KeyboardNavigation = boolean | ((focusedElement: Element) => boolean);
 }

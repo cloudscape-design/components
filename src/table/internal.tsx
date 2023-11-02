@@ -107,6 +107,7 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       keyboardNavigation,
+      suppressKeyboardNavigationFor,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -208,7 +209,7 @@ const InternalTable = React.forwardRef(
     // Tables with interactive elements such as inline editing, row selection, or resizable columns are assigned role="grid" by default.
     const hasInlineEditing = !!submitEdit;
     const defaultGridRole = hasInlineEditing || hasSelection || resizableColumns || !sortingDisabled;
-    const tableRole = useTableRole({ keyboardNavigation: !!keyboardNavigation, defaultGridRole });
+    const tableRole = useTableRole({ keyboardNavigation, defaultGridRole });
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -260,10 +261,9 @@ const InternalTable = React.forwardRef(
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
     const keyboardNavigationStable = tableRole === 'grid';
-    const suppressNavigation = typeof keyboardNavigation === 'function' ? keyboardNavigation : undefined;
     useGridNavigation({
       keyboardNavigation: keyboardNavigationStable,
-      suppressNavigation,
+      suppressKeyboardNavigationFor,
       pageSize: GRID_NAVIGATION_PAGE_SIZE,
       getTable: () => tableRefObject.current,
     });
