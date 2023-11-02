@@ -46,7 +46,11 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                   <InternalExpandableSection
                     variant="compact"
                     headerText={key}
-                    headerActions={<InternalBox textAlign="right">{value}</InternalBox>}
+                    headerActions={
+                      <InternalBox textAlign="right" className={styles.value}>
+                        {value}
+                      </InternalBox>
+                    }
                   >
                     <ul className={styles['sub-items']}>
                       {subItems.map(({ key, value }, index) => (
@@ -67,7 +71,9 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                   {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                   <span>{key}</span>
                 </div>
-                <InternalBox textAlign="right">{value}</InternalBox>
+                <InternalBox textAlign="right" className={styles.value}>
+                  {value}
+                </InternalBox>
               </>
             )}
           </li>
