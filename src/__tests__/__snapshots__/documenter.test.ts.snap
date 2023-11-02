@@ -6258,6 +6258,69 @@ or a relative time range.",
 }
 `;
 
+exports[`Documenter definition for drawer matches the snapshot: drawer 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "Drawer",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "loadingText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Renders the drawer in a loading state. We recommend that you also set a \`loadingText\`.",
+      "name": "loading",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": Array [
+    Object {
+      "description": "Main content of the drawer.",
+      "isDefault": true,
+      "name": "children",
+    },
+    Object {
+      "description": "Header of the drawer.
+It should contain the only \`h2\` used in the drawer.
+",
+      "isDefault": false,
+      "name": "header",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for expandable-section matches the snapshot: expandable-section 1`] = `
 Object {
   "events": Array [

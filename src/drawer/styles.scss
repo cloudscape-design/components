@@ -4,8 +4,8 @@
 */
 
 /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
-@use '../../styles/tokens' as awsui;
-@use '../../styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
 
 .drawer {
   @include styles.styles-reset;
