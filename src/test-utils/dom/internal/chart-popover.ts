@@ -8,11 +8,11 @@ import chartSeriesDetails from '../../../internal/components/chart-series-detail
 
 export class ChartPopoverSeriesItemWrapper extends ComponentWrapper {
   findKey(): ElementWrapper | null {
-    return this.find(chartSeriesDetails.key);
+    return this.findByClassName(chartSeriesDetails.key);
   }
 
   findValue(): ElementWrapper | null {
-    return this.find(chartSeriesDetails.value);
+    return this.findByClassName(chartSeriesDetails.value);
   }
 }
 
