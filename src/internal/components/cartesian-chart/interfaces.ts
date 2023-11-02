@@ -222,7 +222,7 @@ export namespace CartesianChartProps {
       key: ReactNode;
       value: ReactNode;
       expandable?: boolean;
-      details?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+      subItems?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
     };
   }
 

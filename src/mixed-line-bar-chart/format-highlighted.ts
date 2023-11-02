@@ -78,7 +78,7 @@ function getSeriesDetail<T>({
           value: customContent?.value || (series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y),
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
-          details: customContent?.details,
+          details: customContent?.subItems,
         };
       }
     }

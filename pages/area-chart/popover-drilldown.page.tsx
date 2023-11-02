@@ -94,7 +94,7 @@ export default function () {
                     expandable: true,
                     key: series.title,
                     value: dollarFormatter(y),
-                    details: groupedSeries
+                    subItems: groupedSeries
                       .map(childSeries => {
                         const datum = childSeries.data.find(item => item.x === x);
                         if (datum) {

@@ -100,7 +100,7 @@ export default function () {
                   </Link>
                 ),
                 value: dollarFormatter(y),
-                details: isOtherSeries
+                subItems: isOtherSeries
                   ? (groupedSeries
                       .map(childSeries => {
                         const datum = childSeries.data.find(item => item.x === x);
