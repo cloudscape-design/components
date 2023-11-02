@@ -135,11 +135,6 @@ export interface AppLayoutProps extends BaseComponentProps {
   content?: React.ReactNode;
 
   /**
-   * When set to `true`, hides the mobile toolbar
-   */
-  hideMobileToolbar?: boolean;
-
-  /**
    * Tools drawer.
    */
   tools?: React.ReactNode;

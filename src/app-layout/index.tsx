@@ -101,7 +101,6 @@ const OldAppLayout = React.forwardRef(
       minContentWidth,
       headerSelector = '#b #h',
       footerSelector = '#b #f',
-      hideMobileToolbar,
       ariaLabels,
       splitPanel,
       splitPanelSize: controlledSplitPanelSize,
@@ -124,6 +123,9 @@ const OldAppLayout = React.forwardRef(
         );
       }
     }
+
+    // Private API for embedded view mode
+    const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
 
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
@@ -493,7 +495,7 @@ const OldAppLayout = React.forwardRef(
         ref={rootRef}
         style={contentHeightStyle}
       >
-        {isMobile && !hideMobileToolbar && (!toolsHide || !navigationHide || breadcrumbs) && (
+        {isMobile && !__embeddedViewMode && (!toolsHide || !navigationHide || breadcrumbs) && (
           <MobileToolbar
             anyPanelOpen={anyPanelOpen}
             toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}

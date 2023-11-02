@@ -285,14 +285,14 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
   });
 
-  test.only('does not render mobile app bar when hideMobileToolbar is active', () => {
+  test('does not render mobile app bar when __embeddedViewMode is active (private API)', () => {
     const defaultProps = {
       breadcrumbs: 'Breadcrumbs',
     };
 
     const { wrapper, rerender } = renderComponent(<AppLayout {...defaultProps} />);
     expect(wrapper.findByClassName(mobileBarClassName)).not.toBeNull();
-    rerender(<AppLayout {...defaultProps} hideMobileToolbar={true} />);
+    rerender(<AppLayout {...defaultProps} {...{ __embeddedViewMode: true }} />);
     expect(wrapper.findByClassName(mobileBarClassName)).toBeNull();
   });
 

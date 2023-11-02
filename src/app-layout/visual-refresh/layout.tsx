@@ -40,7 +40,7 @@ export default function Layout({ children }: LayoutProps) {
     minContentWidth,
     navigationHide,
     notificationsHeight,
-    hideMobileToolbar,
+    __embeddedViewMode,
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
@@ -73,7 +73,7 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
           [styles['is-overlap-disabled']]: isBackgroundOverlapDisabled,
-          [styles['is-hide-mobile-toolbar']]: hideMobileToolbar,
+          [styles['is-hide-mobile-toolbar']]: __embeddedViewMode,
         },
         testutilStyles.root
       )}

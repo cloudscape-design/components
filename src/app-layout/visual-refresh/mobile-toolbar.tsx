@@ -18,7 +18,7 @@ export default function MobileToolbar() {
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
-    hideMobileToolbar,
+    __embeddedViewMode,
     isToolsOpen,
     navigationHide,
     navigationRefs,
@@ -28,7 +28,7 @@ export default function MobileToolbar() {
 
   if (
     !isMobile ||
-    hideMobileToolbar ||
+    __embeddedViewMode ||
     (navigationHide && !breadcrumbs && toolsHide && (!drawers || drawers.length === 0))
   ) {
     return null;
