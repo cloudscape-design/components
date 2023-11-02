@@ -88,15 +88,21 @@ export default function () {
             xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
             detailPopoverSeriesContent={({ series, x, y }) => {
               const isOtherSeries = series === otherSeries;
-              return isOtherSeries
-                ? {
-                    expandable: true,
-                    key: series.title,
-                    value: dollarFormatter(y),
-                    details: groupedSeries
+              return {
+                expandable: isOtherSeries,
+                key: isOtherSeries ? (
+                  series.title
+                ) : (
+                  <Link external={true} href="#">
+                    {series.title}
+                  </Link>
+                ),
+                value: dollarFormatter(y),
+                details: isOtherSeries
+                  ? (groupedSeries
                       .map(childSeries => {
                         const datum = childSeries.data.find(item => item.x === x);
-                        if (datum) {
+                        if (datum && datum.y >= 0.005) {
                           return {
                             key: (
                               <Link external={true} href="#">
@@ -107,39 +113,9 @@ export default function () {
                           };
                         }
                       })
-                      .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>,
-                  }
-                : {
-                    key: (
-                      <Link external={true} href="#">
-                        {series.title}
-                      </Link>
-                    ),
-                    value: dollarFormatter(y),
-                  };
-            }}
-            detailPopoverFooter={x => {
-              const sum = allSeries.reduce((previousValue, currentSeries) => {
-                const datum = currentSeries.data.find(item => item.x === x);
-                if (datum) {
-                  return previousValue + datum.y;
-                }
-                return previousValue;
-              }, 0);
-              return (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    fontWeight: 'bold',
-                    paddingTop: '.5em',
-                    borderTop: '1px solid lightgray',
-                  }}
-                >
-                  <span>Total</span>
-                  <span>{dollarFormatter(sum)}</span>
-                </div>
-              );
+                      .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>)
+                  : undefined,
+              };
             }}
           />
         </Container>
