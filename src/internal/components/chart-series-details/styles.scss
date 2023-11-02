@@ -31,14 +31,14 @@
       color: awsui.$color-text-group-label;
     }
 
-    &:not(.with-details) {
+    &:not(.with-sub-items) {
       justify-content: space-between;
       > .key {
         display: inline-flex;
         margin-right: awsui.$space-xxl;
       }
     }
-    &.with-details {
+    &.with-sub-items {
       > .key {
         display: flex;
         width: 100%;
@@ -51,6 +51,6 @@
   opacity: 0.35;
 }
 
-.details {
+.sub-items {
   padding-left: 0;
 }

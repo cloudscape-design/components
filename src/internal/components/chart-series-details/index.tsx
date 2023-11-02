@@ -14,7 +14,7 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
   markerType?: ChartSeriesMarkerType;
   color?: string;
   isDimmed?: boolean;
-  details?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+  subItems?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
 }
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
@@ -30,16 +30,16 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
   return (
     <div {...baseProps} className={className}>
       <ul className={styles.list}>
-        {details.map(({ key, value, markerType, color, isDimmed, details }, index) => (
+        {details.map(({ key, value, markerType, color, isDimmed, subItems }, index) => (
           <li
             key={index}
             className={clsx({
               [styles.dimmed]: isDimmed,
               [styles['list-item']]: true,
-              [styles['with-details']]: details,
+              [styles['with-sub-items']]: subItems,
             })}
           >
-            {details ? (
+            {subItems ? (
               <div className={styles.key}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                 <div style={{ width: '100%' }}>
@@ -48,8 +48,8 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                     headerText={key}
                     headerActions={<InternalBox textAlign="right">{value}</InternalBox>}
                   >
-                    <ul className={styles.details}>
-                      {details.map(({ key, value }, index) => (
+                    <ul className={styles['sub-items']}>
+                      {subItems.map(({ key, value }, index) => (
                         <li key={index} className={styles['inner-list-item']}>
                           <span className={styles.key}>{key}</span>
                           <InternalBox textAlign="right">{value}</InternalBox>
