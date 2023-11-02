@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import Box from '~components/box';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
@@ -11,6 +11,14 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { Instance, generateItems } from './generate-data';
 import { columnsConfig, selectionLabels } from './shared-configs';
 import Link from '~components/link';
+import AppContext, { AppContextType } from '../app/app-context';
+import { Checkbox } from '~components';
+
+type PageContext = React.Context<
+  AppContextType<{
+    keyboardNavigation: boolean;
+  }>
+>;
 
 const items = generateItems(10);
 
@@ -148,63 +156,76 @@ const columnDefinitionsOnlyIcons: TableProps.ColumnDefinition<Instance>[] = [
 ];
 
 export default function () {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const keyboardNavigation = urlParams.keyboardNavigation ?? false;
+
   return (
-    <ScreenshotArea style={{ padding: '10px 50px' }}>
-      <Box padding="l">
-        <h1>Tables with inline actions</h1>
-        <SpaceBetween size="l">
-          <Table
-            ariaLabels={selectionLabels}
-            header={<Header>Table with single actions</Header>}
-            columnDefinitions={columnDefinitionsSingle}
-            items={items}
-          />
-          <Table
-            ariaLabels={selectionLabels}
-            header={<Header>Table with multiple actions</Header>}
-            columnDefinitions={columnDefinitionsMultiple}
-            items={items}
-          />
-          <Table
-            ariaLabels={selectionLabels}
-            header={
-              <Header
-                actions={
-                  <SpaceBetween size="xs" direction="horizontal">
-                    <ButtonDropdown
-                      items={[
-                        { id: 'connect', text: 'Connect' },
-                        { id: 'view', text: 'View details' },
-                        { id: 'manage', text: 'Manage instances' },
-                      ]}
-                    >
-                      Actions
-                    </ButtonDropdown>
-                    <Button variant="primary">Launch instance</Button>
-                  </SpaceBetween>
-                }
-              >
-                Table with action dropdowns
-              </Header>
-            }
-            selectionType="multi"
-            columnDefinitions={columnDefinitionsDropdown}
-            items={items}
-          />
-          <Table
-            ariaLabels={selectionLabels}
-            header={<Header>Table with mixed actions</Header>}
-            columnDefinitions={columnDefinitionsMixed}
-            items={items}
-          />
-          <Table
-            ariaLabels={selectionLabels}
-            header={<Header>Table with only icon actions</Header>}
-            columnDefinitions={columnDefinitionsOnlyIcons}
-            items={items}
-          />
-        </SpaceBetween>
-      </Box>
-    </ScreenshotArea>
+    <>
+      <Checkbox checked={keyboardNavigation} onChange={e => setUrlParams({ keyboardNavigation: e.detail.checked })}>
+        Keyboard navigation
+      </Checkbox>
+      <ScreenshotArea style={{ padding: '10px 50px' }}>
+        <Box padding="l">
+          <h1>Tables with inline actions</h1>
+          <SpaceBetween size="l">
+            <Table
+              ariaLabels={selectionLabels}
+              header={<Header>Table with single actions</Header>}
+              columnDefinitions={columnDefinitionsSingle}
+              items={items}
+              keyboardNavigation={keyboardNavigation}
+            />
+            <Table
+              ariaLabels={selectionLabels}
+              header={<Header>Table with multiple actions</Header>}
+              columnDefinitions={columnDefinitionsMultiple}
+              items={items}
+              keyboardNavigation={keyboardNavigation}
+            />
+            <Table
+              ariaLabels={selectionLabels}
+              header={
+                <Header
+                  actions={
+                    <SpaceBetween size="xs" direction="horizontal">
+                      <ButtonDropdown
+                        items={[
+                          { id: 'connect', text: 'Connect' },
+                          { id: 'view', text: 'View details' },
+                          { id: 'manage', text: 'Manage instances' },
+                        ]}
+                      >
+                        Actions
+                      </ButtonDropdown>
+                      <Button variant="primary">Launch instance</Button>
+                    </SpaceBetween>
+                  }
+                >
+                  Table with action dropdowns
+                </Header>
+              }
+              selectionType="multi"
+              columnDefinitions={columnDefinitionsDropdown}
+              items={items}
+              keyboardNavigation={keyboardNavigation}
+            />
+            <Table
+              ariaLabels={selectionLabels}
+              header={<Header>Table with mixed actions</Header>}
+              columnDefinitions={columnDefinitionsMixed}
+              items={items}
+              keyboardNavigation={keyboardNavigation}
+            />
+            <Table
+              ariaLabels={selectionLabels}
+              header={<Header>Table with only icon actions</Header>}
+              columnDefinitions={columnDefinitionsOnlyIcons}
+              items={items}
+              keyboardNavigation={keyboardNavigation}
+            />
+          </SpaceBetween>
+        </Box>
+      </ScreenshotArea>
+    </>
   );
 }
