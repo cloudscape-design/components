@@ -168,6 +168,7 @@ export function Resizer({
     <>
       <button
         ref={resizerToggleRef}
+        data-awsui-table-suppress-navigation={isKeyboardDragging}
         className={clsx(
           styles.resizer,
           isDragging && styles['resizer-active'],
@@ -208,6 +209,7 @@ export function Resizer({
       />
       <span
         ref={resizerSeparatorRef}
+        data-awsui-table-suppress-navigation={isKeyboardDragging}
         id={separatorId}
         role="separator"
         tabIndex={-1}

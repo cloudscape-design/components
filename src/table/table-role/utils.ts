@@ -116,10 +116,6 @@ export function muteElementFocusables(element: HTMLElement, suppressed: boolean)
     }
   }
 
-  // if (!!cell && cell.element === cell.cellElement && getFocusables(cell.cellElement).length > 0) {
-  //   return getFocusables(cell.cellElement)[0];
-  // }
-
   return null;
 }
 
@@ -229,7 +225,20 @@ function focus(element: null | HTMLElement) {
 }
 
 function setTabIndex(element: null | HTMLElement, tabIndex: number) {
-  if (element && element.tabIndex !== tabIndex) {
-    element.tabIndex = tabIndex;
+  if (!element) {
+    return;
   }
+  // Performance optimization: not touching a DOM element unless the change is needed.
+  if (element.tabIndex === tabIndex) {
+    return;
+  }
+  // Ignoring content elements with muted tab index.
+  if (!isCell(element) && element.tabIndex < 0 && element.tabIndex !== PSEUDO_FOCUSABLE_TAB_INDEX) {
+    return;
+  }
+  element.tabIndex = tabIndex;
+}
+
+function isCell(element: HTMLElement) {
+  return element instanceof HTMLTableCellElement;
 }
