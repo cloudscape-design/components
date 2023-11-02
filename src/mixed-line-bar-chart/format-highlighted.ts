@@ -21,7 +21,7 @@ export default function formatHighlighted<T extends ChartDataTypes>(
 
   const details: ChartSeriesDetailItem[] = [];
   series.forEach(s => {
-    const detail = getSeriesDetail(s, position, detailPopoverSeriesContent);
+    const detail = getSeriesDetail({ internalSeries: s, targetX: position, detailPopoverSeriesContent });
     if (detail) {
       details.push(detail);
     }
@@ -30,11 +30,15 @@ export default function formatHighlighted<T extends ChartDataTypes>(
   return { position: formattedPosition, details };
 }
 
-function getSeriesDetail<T>(
-  internalSeries: InternalChartSeries<T>,
-  targetX: T,
-  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>
-): ChartSeriesDetailItem | null {
+function getSeriesDetail<T>({
+  internalSeries,
+  targetX,
+  detailPopoverSeriesContent,
+}: {
+  internalSeries: InternalChartSeries<T>;
+  targetX: T;
+  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>;
+}): ChartSeriesDetailItem | null {
   const { series, color } = internalSeries;
 
   // X-thresholds are only shown when X matches.
