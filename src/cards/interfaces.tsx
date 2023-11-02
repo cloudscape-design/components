@@ -210,7 +210,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
 
   /**
    * Activating this property makes the entire card clickable to select it.
-   * Do not use this if there are any other interactive elements in the card.
+   * Don't use this property if the card has any other interactive elements.
    */
   entireCardClickable?: boolean;
 }
