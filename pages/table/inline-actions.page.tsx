@@ -161,7 +161,13 @@ export default function () {
 
   return (
     <>
-      <Checkbox checked={keyboardNavigation} onChange={e => setUrlParams({ keyboardNavigation: e.detail.checked })}>
+      <Checkbox
+        checked={keyboardNavigation}
+        onChange={e => {
+          setUrlParams({ keyboardNavigation: e.detail.checked });
+          window.location.reload();
+        }}
+      >
         Keyboard navigation
       </Checkbox>
       <ScreenshotArea style={{ padding: '10px 50px' }}>

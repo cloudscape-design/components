@@ -97,6 +97,7 @@ type PageContext = React.Context<
     stickyHeader: boolean;
     resizableColumns: boolean;
     fullPage: boolean;
+    keyboardNavigation: boolean;
   }>
 >;
 
@@ -105,6 +106,7 @@ export default function App() {
   const wrapLines = urlParams.wrapLines ?? false;
   const stickyHeader = urlParams.stickyHeader ?? false;
   const resizableColumns = urlParams.resizableColumns ?? true;
+  const keyboardNavigation = urlParams.keyboardNavigation ?? false;
   const fullPage = urlParams.fullPage ?? false;
 
   const [renderKey, setRenderKey] = useState(0);
@@ -161,6 +163,15 @@ export default function App() {
             <Checkbox checked={fullPage} onChange={event => setUrlParams({ fullPage: event.detail.checked })}>
               Full page table
             </Checkbox>
+            <Checkbox
+              checked={keyboardNavigation}
+              onChange={event => {
+                setUrlParams({ keyboardNavigation: event.detail.checked });
+                window.location.reload();
+              }}
+            >
+              Keyboard navigation
+            </Checkbox>
           </div>
           <div>
             {columnsConfig.map(column => (
@@ -200,6 +211,7 @@ export default function App() {
           onSortingChange={event => setSorting(event.detail)}
           onColumnWidthsChange={handleWidthChange}
           variant={fullPage ? 'full-page' : undefined}
+          keyboardNavigation={keyboardNavigation}
         />
       </ScreenshotArea>
     </SpaceBetween>

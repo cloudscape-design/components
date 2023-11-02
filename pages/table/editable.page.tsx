@@ -290,7 +290,13 @@ export default function () {
 
   return (
     <>
-      <Checkbox checked={keyboardNavigation} onChange={e => setUrlParams({ keyboardNavigation: e.detail.checked })}>
+      <Checkbox
+        checked={keyboardNavigation}
+        onChange={event => {
+          setUrlParams({ keyboardNavigation: event.detail.checked });
+          window.location.reload();
+        }}
+      >
         Keyboard navigation
       </Checkbox>
       <ScreenshotArea disableAnimations={true}>
