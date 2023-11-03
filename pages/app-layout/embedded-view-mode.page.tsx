@@ -8,45 +8,15 @@ import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
-import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
 import labels from './utils/labels';
 import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
 
 export default function () {
-  const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
-    {
-      label: 'Instance properties',
-      options: [
-        {
-          id: 'id',
-          label: 'ID',
-          editable: false,
-        },
-        { id: 'type', label: 'Type' },
-        {
-          id: 'dnsName',
-          label: 'DNS name',
-        },
-        {
-          id: 'imageId',
-          label: 'Image ID',
-        },
-        {
-          id: 'state',
-          label: 'State',
-        },
-      ],
-    },
-  ];
-
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
-    stickyColumns: { first: 1, last: 1 },
-    visibleContent: visibleContentOptions[0].options.map(o => o.id),
-  });
+  const [splitPanelEnabled, setSplitPanelEnabled] = useState(false);
   const items = generateItems(20);
 
   return (
@@ -63,15 +33,16 @@ export default function () {
       }
       contentType="table"
       navigationOpen={navigationOpen}
-      toolsOpen={toolsOpen}
       onNavigationChange={({ detail }) => setNavigationOpen(detail.open)}
+      onSplitPanelToggle={() => setSplitPanelEnabled(!splitPanelEnabled)}
       onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-      splitPanelOpen={true}
       splitPanel={
         <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
           I need to be on top! Even on mobile!
         </SplitPanel>
       }
+      splitPanelOpen={splitPanelEnabled}
+      toolsOpen={toolsOpen}
       content={
         <Table
           resizableColumns={true}
@@ -82,45 +53,8 @@ export default function () {
               <Button onClick={() => setToolsOpen(!toolsOpen)}>Click me to open the tools panel</Button>
             </Box>
           }
-          stickyColumns={preferences.stickyColumns}
-          visibleColumns={preferences.visibleContent}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              visibleContentPreference={{
-                title: 'Select visible columns',
-                options: visibleContentOptions,
-              }}
-              stickyColumnsPreference={{
-                firstColumns: {
-                  title: 'First column(s)',
-                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'First column', value: 1 },
-                    { label: 'First two columns', value: 2 },
-                  ],
-                },
-                lastColumns: {
-                  title: 'Stick last visible column',
-                  description: 'Keep the last column visible when tables are wider than the viewport.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'Last column', value: 1 },
-                  ],
-                },
-              }}
-            />
-          }
-          header={
-            <Header variant="awsui-h1-sticky" actions={<div style={{ height: '10vh' }} />}>
-              Embedded view mode
-            </Header>
-          }
+          stickyColumns={{ first: 1, last: 1 }}
+          header={<Header variant="awsui-h1-sticky">Embedded view mode</Header>}
           columnDefinitions={columnsConfig}
           items={items}
         />
