@@ -109,7 +109,8 @@
 .inputs {
   display: flex;
   flex: 1;
-  padding: 0 awsui.$space-m;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
   justify-content: center;
 }
 
@@ -142,7 +143,8 @@
   position: relative;
   flex-shrink: 0;
   align-items: center;
-  padding: 0 awsui.$space-m;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
 
   &::after {
     display: block;
@@ -162,11 +164,13 @@
 }
 
 .utility-type-button-link {
-  padding: 0 awsui.$space-l;
+  padding-block: 0;
+  padding-inline: awsui.$space-l;
 }
 
 .utility-type-menu-dropdown {
-  padding: 0 awsui.$space-s;
+  padding-block: 0;
+  padding-inline: awsui.$space-s;
   align-items: stretch;
 
   &:not(.narrow):last-of-type,
@@ -222,7 +226,8 @@
   display: flex;
   align-items: center;
   min-block-size: awsui.$font-panel-header-line-height;
-  padding: awsui.$space-scaled-m;
+  padding-block: awsui.$space-scaled-m;
+  padding-inline: awsui.$space-scaled-m;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
   &-text {
@@ -264,7 +269,8 @@
   border-inline: none;
 
   .overflow-menu-list-item-utility > & {
-    padding: awsui.$space-scaled-m;
+    padding-block: awsui.$space-scaled-m;
+    padding-inline: awsui.$space-scaled-m;
   }
 
   &:hover {
@@ -325,11 +331,13 @@
   &-submenu {
     border-block-start: awsui.$border-divider-section-width solid transparent;
     border-block-end: awsui.$border-divider-section-width solid transparent;
-    padding: awsui.$space-scaled-xxs awsui.$space-scaled-l;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-l;
   }
 
   &-dropdown-menu {
-    padding: awsui.$space-scaled-xxs awsui.$space-scaled-s;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-s;
   }
 
   &-expandable {

@@ -25,11 +25,12 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  border: awsui.$border-field-width solid;
   border-start-start-radius: awsui.$border-radius-alert;
   border-start-end-radius: awsui.$border-radius-alert;
   border-end-start-radius: awsui.$border-radius-alert;
   border-end-end-radius: awsui.$border-radius-alert;
+  border-block: awsui.$border-field-width solid;
+  border-inline: awsui.$border-field-width solid;
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;

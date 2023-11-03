@@ -42,7 +42,8 @@ $label-horizontal-spacing: awsui.$space-l;
 .pagination-button {
   margin-block: awsui.$space-scaled-s;
   margin-inline: 0;
-  padding: 0 awsui.$space-xxs;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
   display: flex;
   &-left {
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
@@ -78,7 +79,8 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab-label {
   display: flex;
   align-items: center;
-  padding: awsui.$space-scaled-2x-xxs $label-horizontal-spacing;
+  padding-block: awsui.$space-scaled-2x-xxs;
+  padding-inline: $label-horizontal-spacing;
   text-align: start;
   position: relative;
 
@@ -99,7 +101,9 @@ $label-horizontal-spacing: awsui.$space-l;
   align-items: stretch;
   text-decoration: none;
   cursor: pointer;
-  padding: calc(#{awsui.$space-scaled-s} - 1px) 0 awsui.$space-scaled-s 0;
+  padding-block-start: calc(#{awsui.$space-scaled-s} - 1px);
+  padding-block-end: awsui.$space-scaled-s;
+  padding-inline: 0;
   margin-block-start: 1px;
   border-block: awsui.$border-divider-section-width solid transparent;
   border-inline: awsui.$border-divider-section-width solid transparent;
@@ -109,7 +113,9 @@ $label-horizontal-spacing: awsui.$space-l;
   font-weight: awsui.$font-wayfinding-link-active-weight;
   color: awsui.$color-text-interactive-default;
   &.refresh {
-    padding: calc(awsui.$space-static-xs - 1px) 0 awsui.$space-static-xs 0;
+    padding-block-start: calc(awsui.$space-static-xs - 1px);
+    padding-block-end: awsui.$space-static-xs;
+    padding-inline: 0;
   }
 
   &:hover {

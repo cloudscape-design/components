@@ -23,7 +23,8 @@
   border-block: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
   border-inline: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
   border-radius: awsui.$border-radius-tutorial-panel-item;
-  padding: awsui.$space-m;
+  padding-block: awsui.$space-m;
+  padding-inline: awsui.$space-m;
 
   &:not(:first-child) {
     margin-block-start: awsui.$space-l;

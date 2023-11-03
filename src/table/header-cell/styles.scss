@@ -16,7 +16,9 @@
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
-  padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xs;
+
   &-sticky {
     border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
@@ -73,8 +75,9 @@
 
 .header-cell-content {
   position: relative;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-s;
 
-  padding: awsui.$space-scaled-xxs awsui.$space-s;
   .header-cell-sortable > & {
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
   }

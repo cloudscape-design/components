@@ -36,9 +36,12 @@ $gutter: awsui.$space-grid-gutter;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   border-radius: awsui.$border-radius-tiles;
   background: awsui.$color-background-input-default;
-  padding: awsui.$space-xs awsui.$space-scaled-m;
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-scaled-m;
+
   &.refresh {
-    padding: awsui.$space-xs awsui.$space-s;
+    padding-block: awsui.$space-xs;
+    padding-inline: awsui.$space-s;
   }
 
   &.has-metadata {

@@ -19,7 +19,9 @@
   // Allow multi-line placeholders
   white-space: pre-wrap;
 
-  padding: styles.$control-padding;
+  padding-block: styles.$control-padding;
+  padding-inline: styles.$control-padding;
+
   color: awsui.$color-text-body-default;
   max-inline-size: 100%;
   inline-size: 100%;

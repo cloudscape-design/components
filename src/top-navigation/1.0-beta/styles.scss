@@ -19,7 +19,9 @@
     align-items: center;
     box-sizing: border-box;
     block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
-    padding: 0 0 0 awsui.$space-l;
+    padding-block: 0;
+    padding-inline-start: 0;
+    padding-inline-end: awsui.$space-l;
   }
 
   &.medium > .padding-box,
@@ -29,7 +31,9 @@
 
   &.narrow > .padding-box {
     block-size: awsui.$space-xxxl;
-    padding: 0 0 0 awsui.$space-xs;
+    padding-block: 0;
+    padding-inline-start: 0;
+    padding-inline-end: awsui.$space-xs;
   }
 }
 
@@ -182,13 +186,15 @@
 }
 
 .utility-type-menu-dropdown {
-  padding: 0 awsui.$space-s;
+  padding-block: 0;
+  padding-inline: awsui.$space-s;
   align-items: stretch;
 }
 
 .utility-type-button-link,
 .utility-type-button-primary-button {
-  padding: 0 awsui.$space-m;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
 }
 
 .utility-type-button-primary-button {

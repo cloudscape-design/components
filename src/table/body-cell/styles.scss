@@ -27,7 +27,9 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
 .body-cell {
   box-sizing: border-box;
-  padding: $cell-vertical-padding $cell-horizontal-padding $cell-vertical-padding-w-border;
+  padding-block-start: $cell-vertical-padding;
+  padding-block-end: $cell-vertical-padding-w-border;
+  padding-inline: $cell-horizontal-padding;
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
@@ -195,11 +197,15 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
 
   &-editor {
-    padding: 0 $edit-button-padding-right 0 0;
+    padding-block-start: 0;
+    padding-inline-start: $edit-button-padding-right;
+    padding-inline-end: 0;
   }
 
   &-success {
-    padding: 0 $success-icon-padding-right 0 0;
+    padding-block: 0;
+    padding-inline-start: $success-icon-padding-right;
+    padding-inline-end: 0;
   }
 
   &-success,

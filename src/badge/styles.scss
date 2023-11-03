@@ -13,7 +13,8 @@
   line-height: awsui.$line-height-body-m;
   display: inline-block;
   border-radius: awsui.$border-radius-badge;
-  padding: 0 awsui.$space-xs;
+  padding-block: 0;
+  padding-inline: awsui.$space-xs;
   color: awsui.$color-text-notification-default;
 
   &.badge-color-grey {

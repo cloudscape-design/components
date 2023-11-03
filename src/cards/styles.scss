@@ -18,8 +18,11 @@
 .header {
   &-variant-full-page.header-refresh {
     @include container.borders-and-shadows;
-    padding: logical 0 0
-      calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
+    padding-block-start: 0;
+    padding-block-end: calc(
+      #{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom}
+    );
+    padding-inline: 0;
   }
 }
 
@@ -50,7 +53,8 @@
   inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
   inset-block-start: 0;
   inset-inline-end: 0;
-  padding: awsui.$space-card-vertical awsui.$space-card-horizontal;
+  padding-block: awsui.$space-card-vertical;
+  padding-inline: awsui.$space-card-horizontal;
 }
 
 .loading,
@@ -115,7 +119,9 @@
   display: inline-block;
   box-sizing: border-box;
   // only scale bottom padding to reduce padding between sections and after the last section.
-  padding: awsui.$space-xs 0 awsui.$space-scaled-xs 0;
+  padding-block-start: awsui.$space-xs;
+  padding-block-end: awsui.$space-scaled-xs;
+  padding-inline: 0;
   vertical-align: top;
   &-header {
     @include styles.font-label;
@@ -126,7 +132,9 @@
   }
 }
 .section:last-child {
-  padding: awsui.$space-xs 0 0 0;
+  padding-block-start: awsui.$space-xs;
+  padding-block-end: 0;
+  padding-inline: 0;
 }
 
 .footer-pagination {

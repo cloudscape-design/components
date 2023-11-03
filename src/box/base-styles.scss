@@ -132,7 +132,8 @@ $font-styles: (
   margin-block: 0;
   margin-inline: 0;
   text-decoration: none;
-  padding: awsui.$space-xxs 0;
+  padding-block: awsui.$space-xxs;
+  padding-inline: 0;
 }
 
 @mixin code-extra-defaults {
