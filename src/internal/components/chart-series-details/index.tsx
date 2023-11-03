@@ -43,22 +43,12 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
               <div className={styles.key}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                 <div style={{ width: '100%' }}>
-                  <InternalExpandableSection
-                    variant="compact"
-                    headerText={key}
-                    headerActions={
-                      <InternalBox textAlign="right" className={styles.value}>
-                        {value}
-                      </InternalBox>
-                    }
-                  >
+                  <InternalExpandableSection variant="compact" headerText={key} headerActions={<Value value={value} />}>
                     <ul className={styles['sub-items']}>
                       {subItems.map(({ key, value }, index) => (
                         <li key={index} className={styles['inner-list-item']}>
                           <span className={styles.key}>{key}</span>
-                          <InternalBox textAlign="right" className={styles.value}>
-                            {value}
-                          </InternalBox>
+                          <Value value={value} />
                         </li>
                       ))}
                     </ul>
@@ -71,14 +61,20 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                   {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                   <span>{key}</span>
                 </div>
-                <InternalBox textAlign="right" className={styles.value}>
-                  {value}
-                </InternalBox>
+                <Value value={value} />
               </>
             )}
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function Value({ value }: { value: ReactNode }) {
+  return (
+    <InternalBox textAlign="right" className={styles.value}>
+      {value}
+    </InternalBox>
   );
 }
