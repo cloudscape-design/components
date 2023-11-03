@@ -130,7 +130,7 @@ const OldAppLayout = React.forwardRef(
     }
 
     // Private API for embedded view mode
-    const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
+    const __embeddedViewMode = Boolean((rest as any).__embeddedViewMode);
 
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
