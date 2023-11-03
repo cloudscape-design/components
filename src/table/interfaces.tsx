@@ -319,7 +319,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Experimental API
    */
-  getItemLevel?: (item: T) => number;
+  getItemChildren?: (item: T) => readonly T[];
 
   /**
    * Experimental API
@@ -329,17 +329,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Experimental API
    */
-  onExpandableItemToggle?: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
-
-  /**
-   * Experimental API
-   */
-  getItemChildren?: (item: T) => readonly T[];
-
-  /**
-   * Experimental API
-   */
   getItemExpanded?: (item: T) => boolean;
+
+  /**
+   * Experimental API
+   */
+  onExpandableItemToggle?: NonCancelableEventHandler<TableProps.ExpandableItemToggleDetail<T>>;
 }
 
 export namespace TableProps {

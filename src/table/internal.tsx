@@ -106,7 +106,6 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       __funnelSubStepProps,
-      getItemLevel,
       getItemExpandable,
       getItemChildren,
       getItemExpanded,
@@ -122,7 +121,7 @@ const InternalTable = React.forwardRef(
     let allItems = items;
     const itemToLevel = new Map<T, number>();
 
-    if (!getItemLevel && getItemChildren) {
+    if (getItemChildren) {
       const visibleItems = new Array<T>();
 
       const traverse = (item: T, level = 1) => {
@@ -138,7 +137,7 @@ const InternalTable = React.forwardRef(
       allItems = visibleItems;
     }
 
-    getItemLevel = getItemLevel ? getItemLevel : getItemChildren ? (item: T) => itemToLevel.get(item) ?? 1 : undefined;
+    const getItemLevel = getItemChildren ? (item: T) => itemToLevel.get(item) ?? 1 : undefined;
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const wrapperRefObject = useRef(null);
