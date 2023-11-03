@@ -129,6 +129,9 @@ const OldAppLayout = React.forwardRef(
       }
     }
 
+    // Private API for embedded view mode
+    const __embeddedViewMode = Boolean((rest as any).__embeddedViewMode);
+
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
 
@@ -507,7 +510,7 @@ const OldAppLayout = React.forwardRef(
         ref={rootRef}
         style={contentHeightStyle}
       >
-        {isMobile && (!toolsHide || !navigationHide || breadcrumbs) && (
+        {isMobile && !__embeddedViewMode && (!toolsHide || !navigationHide || breadcrumbs) && (
           <MobileToolbar
             anyPanelOpen={anyPanelOpen}
             toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}

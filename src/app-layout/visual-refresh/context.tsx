@@ -89,6 +89,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   splitPanelRefs: SplitPanelFocusControlRefs;
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
+  __embeddedViewMode?: boolean;
 }
 
 /**
@@ -127,6 +128,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     forwardRef: React.Ref<AppLayoutProps.Ref>
   ) => {
     const isMobile = useMobile();
+
+    // Private API for embedded view mode
+    const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
 
     if (isDevelopment) {
       if (controlledToolsOpen && toolsHide) {
@@ -654,6 +658,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
+          __embeddedViewMode,
         }}
       >
         <AppLayoutContext.Provider
