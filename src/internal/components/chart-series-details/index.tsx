@@ -43,8 +43,8 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             {subItems?.length ? (
               <div className={styles.key}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-                <div style={{ width: '100%' }}>
-                  {expandable ? (
+                {expandable ? (
+                  <div style={{ width: '100%' }}>
                     <InternalExpandableSection
                       variant="compact"
                       headerText={key}
@@ -52,10 +52,10 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                     >
                       <SubItems subItems={subItems} />
                     </InternalExpandableSection>
-                  ) : (
-                    <SubItems subItems={subItems} />
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <SubItems subItems={subItems} />
+                )}
               </div>
             ) : (
               <>

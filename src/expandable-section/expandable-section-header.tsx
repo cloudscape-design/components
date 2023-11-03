@@ -242,7 +242,12 @@ export const ExpandableSectionHeader = ({
     variant,
   };
 
-  if ((headerCounter || headerInfo || headerActions) && variant !== 'container' && isDevelopment) {
+  if (
+    (headerCounter || headerInfo || headerActions) &&
+    variant !== 'container' &&
+    variant !== 'compact' &&
+    isDevelopment
+  ) {
     warnOnce(
       componentName,
       'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'

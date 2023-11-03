@@ -4,6 +4,7 @@ import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './i
 import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export interface HighlightDetails {
   position: string;
@@ -73,13 +74,34 @@ function getSeriesDetail<T>({
         const customContent = detailPopoverSeriesContent
           ? detailPopoverSeriesContent({ series, x: targetX, y: datum.y })
           : undefined;
+        const hasSubItems = !!customContent?.subItems?.length;
+        const isExpandable = !!customContent?.expandable && hasSubItems;
+        const isKeyString = typeof customContent?.key === 'string';
+        const key = customContent?.key && (!isExpandable || isKeyString) ? customContent.key : series.title;
+
+        if (customContent?.expandable && !hasSubItems) {
+          warnOnce(
+            'MixedLineBarChart',
+            '`expandable` was set to `true` for a series without sub-items. This property will be ignored.'
+          );
+        }
+        if (isExpandable && !isKeyString) {
+          warnOnce(
+            'MixedLineBarChart',
+            'A ReactNode was used for the key of an expandable series. The series title will be used instead because nested interactive elements can cause accessiblity issues'
+          );
+        }
+        if (!isKeyString && !isExpandable && customContent?.value && typeof customContent.value !== 'string') {
+          warnOnce('MixedLineBarChart', 'Use a ReactNode for the key or the value of a series, but not for both');
+        }
+
         return {
-          key: customContent?.key || series.title,
+          key,
           value: customContent?.value || (series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y),
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
           subItems: customContent?.subItems,
-          expandable: customContent?.expandable,
+          expandable: isExpandable,
         };
       }
     }

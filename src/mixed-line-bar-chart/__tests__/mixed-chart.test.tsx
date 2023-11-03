@@ -1,16 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import Link from '../../../lib/components/link';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
-import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';
-import { lineSeries3 } from './common';
+import { barChartProps, lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
@@ -22,14 +19,6 @@ function expectToExist(wrapper: ElementWrapper | null, shouldExist: boolean) {
   } else {
     expect(wrapper).toBeNull();
   }
-}
-
-function renderMixedChart(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
-  return {
-    rerender,
-    wrapper: new MixedLineBarChartWrapper(container),
-  };
 }
 
 const lineSeries: MixedLineBarChartProps.DataSeries<number> = {
@@ -900,16 +889,6 @@ describe('Details popover', () => {
     xScaleType: 'linear' as const,
   };
 
-  const barChartProps = {
-    series: [barSeries, { ...barSeries2, type: 'line' }, thresholdSeries] as ReadonlyArray<
-      MixedLineBarChartProps.ChartSeries<string>
-    >,
-    height: 250,
-    xDomain: ['Group 1', 'Group 2', 'Group 3', 'Group 4'],
-    yDomain: [0, 20],
-    xScaleType: 'categorical' as const,
-  };
-
   test('uses the formatters when available', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart
@@ -1008,80 +987,6 @@ describe('Details popover', () => {
     wrapper.findApplication()!.focus();
     expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
   });
-
-  test('renders links in keys', () => {
-    const { wrapper } = renderMixedChart(
-      <MixedLineBarChart
-        {...barChartProps}
-        detailPopoverSeriesContent={({ series, y }) => ({ key: <Link>{series.title}</Link>, value: y })}
-      />
-    );
-
-    wrapper.findApplication()!.focus();
-    expect(wrapper.findDetailPopover()!.findSeries()![0].findKey()!.findLink()).toBeTruthy();
-  });
-
-  test('renders links in values', () => {
-    const { wrapper } = renderMixedChart(
-      <MixedLineBarChart
-        {...barChartProps}
-        detailPopoverSeriesContent={({ series, y }) => ({ key: series.title, value: <Link>{y}</Link> })}
-      />
-    );
-
-    wrapper.findApplication()!.focus();
-    expect(wrapper.findDetailPopover()!.findSeries()![0].findValue()!.findLink()).toBeTruthy();
-  });
-
-  test('renders nested items', () => {
-    const { wrapper } = renderMixedChart(
-      <MixedLineBarChart
-        {...barChartProps}
-        detailPopoverSeriesContent={({ series, y }) => ({
-          key: series.title,
-          value: y,
-          subItems: [
-            {
-              key: 'a',
-              value: 1,
-            },
-            {
-              key: 'b',
-              value: 2,
-            },
-          ],
-        })}
-      />
-    );
-
-    wrapper.findApplication()!.focus();
-    const subItems = wrapper.findDetailPopover()!.findSeries()![0].findSubItems()!;
-    expect(subItems[0].findKey()!.getElement()).toHaveTextContent('a');
-    expect(subItems[0].findValue()!.getElement()).toHaveTextContent('1');
-    expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
-    expect(subItems[1].findValue()!.getElement()).toHaveTextContent('2');
-  });
-  test('does not render nested items list if the length of sub-items is 0', () => {
-    const { wrapper } = renderMixedChart(
-      <MixedLineBarChart
-        {...barChartProps}
-        detailPopoverSeriesContent={({ series, y }) => ({
-          key: series.title,
-          value: y,
-          subItems: [],
-        })}
-      />
-    );
-
-    wrapper.findApplication()!.focus();
-    const series = wrapper.findDetailPopover()!.findSeries()![0];
-    expect(series.findSubItems()).toHaveLength(0);
-    expect(series.findByClassName(chartSeriesDetailsStyles['.sub-items'])).toBeNull();
-    expect(series.getElement().classList).not.toContain(chartSeriesDetailsStyles['with-sub-items']);
-  });
-  test('logs a warning when `expandable` is used for a series with no sub-items', () => {});
-  test('logs a warning and ignores the custom property when a ReactNode is used for an expandable key', () => {});
-  test('logs a warning when a ReactNode is used for both key and value', () => {});
 });
 
 test('highlighted series are controllable', () => {
