@@ -1,18 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import AppLayout from '~components/app-layout';
-import SplitPanel from '~components/split-panel';
-import Header from '~components/header';
-import labels from './utils/labels';
-import Table from '~components/table';
-import { splitPaneli18nStrings } from './utils/strings';
-import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import { columnsConfig } from '../table/shared-configs';
 import { generateItems } from '../table/generate-data';
+import { splitPaneli18nStrings } from './utils/strings';
+import AppLayout from '~components/app-layout';
 import Box from '~components/box';
-// import Link from '~components/link';
-import { Button } from '~components';
+import BreadcrumbGroup from '~components/breadcrumb-group';
+import Button from '~components/button';
+import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
+import Header from '~components/header';
+import labels from './utils/labels';
+import SplitPanel from '~components/split-panel';
+import Table from '~components/table';
 
 export default function () {
   const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
@@ -53,6 +53,14 @@ export default function () {
     <AppLayout
       {...{ __embeddedViewMode: true }}
       ariaLabels={labels}
+      breadcrumbs={
+        <BreadcrumbGroup
+          items={[
+            { text: 'Home', href: '#' },
+            { text: 'Service', href: '#' },
+          ]}
+        />
+      }
       contentType="table"
       navigationOpen={navigationOpen}
       toolsOpen={toolsOpen}
@@ -71,7 +79,7 @@ export default function () {
           stickyHeader={true}
           footer={
             <Box textAlign="center">
-              <Button onClick={() => setToolsOpen(!toolsOpen)}>View all</Button>
+              <Button onClick={() => setToolsOpen(!toolsOpen)}>Click me to open the tools panel</Button>
             </Box>
           }
           stickyColumns={preferences.stickyColumns}
@@ -110,7 +118,7 @@ export default function () {
           }
           header={
             <Header variant="awsui-h1-sticky" actions={<div style={{ height: '10vh' }} />}>
-              Sticky Full-Page Header
+              Embedded view mode
             </Header>
           }
           columnDefinitions={columnsConfig}
