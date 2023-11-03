@@ -82,12 +82,17 @@ function InternalPopover(
     focusTrigger();
   }, [focusTrigger]);
 
-  const onTriggerKeyDown = useCallback((event: React.KeyboardEvent) => {
-    if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
-      event.stopPropagation();
-      setVisible(false);
-    }
-  }, []);
+  const onTriggerKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
+        if (event.keyCode === KeyCode.escape && visible) {
+          event.stopPropagation();
+        }
+        setVisible(false);
+      }
+    },
+    [visible]
+  );
 
   useImperativeHandle(ref, () => ({
     dismissPopover: onDismiss,
