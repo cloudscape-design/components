@@ -13,6 +13,31 @@ export interface AppLayoutProps extends BaseComponentProps {
   contentType?: AppLayoutProps.ContentType;
 
   /**
+   * Drawers property.
+ 
+   * Each Drawer is an item in the drawers wrapper with the following properties:
+   * * id (string) - the id of the drawer.
+   * * content (React.ReactNode) - the content in the drawer.
+   * * trigger (DrawerTrigger) - the button that opens and closes the active drawer. 
+   * * ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer.
+   * * badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+   * * resizable (boolean) - if the drawer is resizable or not.
+   * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
+   * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+   */
+  drawers?: Array<AppLayoutProps.Drawer>;
+
+  /**
+   * The active drawer id. If you want to clear the active drawer, use `null`.
+   */
+  activeDrawerId?: string | null;
+
+  /**
+   * Fired when the active drawer is toggled.
+   */
+  onDrawerChange?: NonCancelableEventHandler<{ activeDrawerId: string | null }>;
+
+  /**
    * If `true`, disables outer paddings for the content slot.
    */
   disableContentPaddings?: boolean;
@@ -93,6 +118,9 @@ export interface AppLayoutProps extends BaseComponentProps {
    * * `tools` (string) - Label for the landmark that wraps the tools drawer.
    * * `toolsClose` (string) - Label for the button that closes the tools drawer.
    * * `toolsToggle` (string) - Label for the button that opens the tools drawer.
+   * * `drawers` (string) - Label for the landmark that the active drawer.
+   * * `drawersOverflow` (string) - Label for the ellipsis button with any overflow drawers.
+   * * `drawersOverflowWithBadge` (string) - Label for the ellipsis button with any overflow drawers, with a badge.
    *
    * Example:
    * ```
@@ -104,6 +132,9 @@ export interface AppLayoutProps extends BaseComponentProps {
    *   tools: "Help panel",
    *   toolsClose: "Close help panel",
    *   toolsToggle: "Open help panel"
+   *   drawers: "Drawers",
+   *   drawersOverflow: "Overflow drawers",
+   *   drawersOverflowWithBadge: "Overflow drawers (Unread notifications)"
    * }
    * ```
    * @i18n
@@ -221,9 +252,35 @@ export namespace AppLayoutProps {
     focusToolsClose(): void;
 
     /**
+     * Focuses the active drawer. Use this to focus the active drawer after opening it programmatically.
+     */
+    focusActiveDrawer(): void;
+
+    /**
      * Focuses the split panel if it is open.
      */
     focusSplitPanel(): void;
+  }
+
+  export interface Drawer {
+    id: string;
+    content: React.ReactNode;
+    trigger: {
+      iconName?: IconProps.Name;
+      iconSvg?: React.ReactNode;
+    };
+    ariaLabels: DrawerAriaLabels;
+    badge?: boolean;
+    resizable?: boolean;
+    defaultSize?: number;
+    onResize?: NonCancelableEventHandler<{ size: number }>;
+  }
+
+  export interface DrawerAriaLabels {
+    drawerName: string;
+    closeButton?: string;
+    triggerButton?: string;
+    resizeHandle?: string;
   }
 
   export interface Labels {
@@ -236,6 +293,10 @@ export namespace AppLayoutProps {
     tools?: string;
     toolsToggle?: string;
     toolsClose?: string;
+
+    drawers?: string;
+    drawersOverflow?: string;
+    drawersOverflowWithBadge?: string;
   }
 
   export interface ChangeDetail {
@@ -252,31 +313,4 @@ export namespace AppLayoutProps {
   // Duplicated the positions because using this definition in SplitPanelPreferences would display
   // 'AppLayoutProps.SplitPanelPosition' on the API docs instead of the string values.
   export type SplitPanelPosition = 'side' | 'bottom';
-}
-
-export interface PublicDrawer {
-  id: string;
-  content: React.ReactNode;
-  trigger: {
-    iconName?: IconProps.Name;
-    iconSvg?: React.ReactNode;
-  };
-  ariaLabels: PublicDrawerAriaLabels;
-  badge?: boolean;
-  resizable?: boolean;
-  defaultSize?: number;
-  onResize?: NonCancelableEventHandler<{ size: number }>;
-}
-
-export interface PublicAriaLabelsWithDrawers extends AppLayoutProps.Labels {
-  drawers?: string;
-  drawersOverflow?: string;
-  drawersOverflowWithBadge?: string;
-}
-
-export interface PublicDrawerAriaLabels {
-  drawerName: string;
-  closeButton?: string;
-  triggerButton?: string;
-  resizeHandle?: string;
 }

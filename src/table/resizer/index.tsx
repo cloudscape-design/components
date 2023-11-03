@@ -6,6 +6,7 @@ import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 
 interface ResizerProps {
@@ -16,6 +17,7 @@ interface ResizerProps {
   tabIndex?: number;
   focusId?: string;
   showFocusRing?: boolean;
+  roleDescription?: string;
 }
 
 const AUTO_GROW_START_TIME = 10;
@@ -30,23 +32,28 @@ export function Resizer({
   tabIndex,
   showFocusRing,
   focusId,
+  roleDescription,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
 
-  const resizerRef = useRef<HTMLSpanElement>(null);
+  const separatorId = useUniqueId();
+  const resizerToggleRef = useRef<HTMLButtonElement>(null);
+  const resizerSeparatorRef = useRef<HTMLSpanElement>(null);
+
   const [isDragging, setIsDragging] = useState(false);
+  const [isKeyboardDragging, setIsKeyboardDragging] = useState(false);
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
   const [resizerHasFocus, setResizerHasFocus] = useState(false);
   const [headerCellWidth, setHeaderCellWidth] = useState(0);
 
   // Read header width after mounting for it to be available in the element's ARIA label before it gets focused.
   useEffect(() => {
-    setHeaderCellWidth(getHeaderWidth(resizerRef.current));
+    setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
   }, []);
 
   useEffect(() => {
-    const elements = getResizerElements(resizerRef.current);
+    const elements = getResizerElements(resizerToggleRef.current);
     if ((!isDragging && !resizerHasFocus) || !elements) {
       return;
     }
@@ -106,15 +113,29 @@ export function Resizer({
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.keyCode === KeyCode.left) {
-        event.preventDefault();
-        updateColumnWidth(elements.header.getBoundingClientRect().width - 10);
-        setTimeout(() => onWidthUpdateCommit(), 0);
+      if (isKeyboardDragging) {
+        // Update width
+        if (event.keyCode === KeyCode.left) {
+          event.preventDefault();
+          updateColumnWidth(elements.header.getBoundingClientRect().width - 10);
+        }
+        if (event.keyCode === KeyCode.right) {
+          event.preventDefault();
+          updateColumnWidth(elements.header.getBoundingClientRect().width + 10);
+        }
+        // Exit keyboard dragging mode
+        if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space || event.keyCode === KeyCode.escape) {
+          event.preventDefault();
+          setIsKeyboardDragging(false);
+          resizerToggleRef.current?.focus();
+          // The onWidthUpdateCommit is fired from the separator's blur event handler.
+        }
       }
-      if (event.keyCode === KeyCode.right) {
+      // Enter keyboard dragging mode
+      else if (event.keyCode === KeyCode.enter || event.keyCode === KeyCode.space) {
         event.preventDefault();
-        updateColumnWidth(elements.header.getBoundingClientRect().width + 10);
-        setTimeout(() => onWidthUpdateCommit(), 0);
+        setIsKeyboardDragging(true);
+        resizerSeparatorRef.current?.focus();
       }
     };
 
@@ -126,9 +147,11 @@ export function Resizer({
       document.addEventListener('mouseup', onMouseUp);
     }
     if (resizerHasFocus) {
-      document.body.classList.add(styles['resize-active']);
       document.body.classList.add(styles['resize-active-with-focus']);
       elements.header.addEventListener('keydown', onKeyDown);
+    }
+    if (isKeyboardDragging) {
+      document.body.classList.add(styles['resize-active']);
     }
 
     return () => {
@@ -139,27 +162,16 @@ export function Resizer({
       document.removeEventListener('mouseup', onMouseUp);
       elements.header.removeEventListener('keydown', onKeyDown);
     };
-  }, [isDragging, resizerHasFocus, minWidth, onWidthUpdate, onWidthUpdateCommit]);
-
-  const headerCellWidthString = headerCellWidth.toFixed(0);
-  const resizerAriaProps = {
-    role: 'separator',
-    'aria-labelledby': ariaLabelledby,
-    'aria-orientation': 'vertical' as const,
-    'aria-valuenow': headerCellWidth,
-    // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
-    'aria-valuetext': headerCellWidthString,
-    'aria-valuemin': minWidth,
-  };
+  }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
   return (
     <>
-      <span
-        ref={resizerRef}
+      <button
+        ref={resizerToggleRef}
         className={clsx(
           styles.resizer,
           isDragging && styles['resizer-active'],
-          (resizerHasFocus || showFocusRing) && styles['has-focus']
+          (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
         )}
         onMouseDown={event => {
           if (event.button !== 0) {
@@ -169,19 +181,50 @@ export function Resizer({
           setIsDragging(true);
         }}
         onClick={() => {
-          // Prevents dragging mode activation for VO+Space click.
+          // Prevent mouse drag activation and activate keyboard dragging for VO+Space click.
           setIsDragging(false);
+          setResizerHasFocus(true);
+          setIsKeyboardDragging(true);
+          resizerSeparatorRef.current?.focus();
         }}
         onFocus={() => {
-          setHeaderCellWidth(getHeaderWidth(resizerRef.current));
+          setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
           setResizerHasFocus(true);
         }}
-        onBlur={() => {
-          setResizerHasFocus(false);
+        onBlur={event => {
+          // Ignoring blur event when focus moves to the resizer separator element.
+          // (This focus transition is done programmatically when the resizer button is clicked).
+          if (event.relatedTarget !== resizerSeparatorRef.current) {
+            setResizerHasFocus(false);
+          }
         }}
-        {...resizerAriaProps}
+        // Using a custom role-description to make the element's purpose better clear.
+        // The role-description must include the word "button" to imply the interaction model.
+        // See https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription
+        aria-roledescription={roleDescription}
+        aria-labelledby={ariaLabelledby}
         tabIndex={tabIndex}
         data-focus-id={focusId}
+      />
+      <span
+        ref={resizerSeparatorRef}
+        id={separatorId}
+        role="separator"
+        tabIndex={-1}
+        aria-hidden={!isKeyboardDragging}
+        aria-orientation="vertical"
+        aria-valuenow={headerCellWidth}
+        // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
+        aria-valuetext={headerCellWidth.toFixed(0)}
+        aria-valuemin={minWidth}
+        data-focus-id={focusId}
+        onBlur={() => {
+          setResizerHasFocus(false);
+          if (isKeyboardDragging) {
+            setIsKeyboardDragging(false);
+          }
+          onWidthUpdateCommit();
+        }}
       />
     </>
   );

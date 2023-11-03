@@ -49,7 +49,7 @@ const VirtualListOpen = forwardRef(
     useImperativeHandle(
       ref,
       () => (index: number) => {
-        if (highlightType === 'keyboard') {
+        if (highlightType.moveFocus) {
           scrollToIndex(index);
         }
       },

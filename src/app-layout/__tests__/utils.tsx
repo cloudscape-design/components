@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import AppLayout from '../../../lib/components/app-layout';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
@@ -268,3 +268,19 @@ export const drawerWithoutLabels: { drawers: BetaDrawersProps } = {
     ],
   },
 };
+
+export const singleDrawerPublic: Array<AppLayoutProps.Drawer> = [
+  {
+    ariaLabels: {
+      closeButton: 'Security close button',
+      drawerName: 'Security drawer content',
+      triggerButton: 'Security trigger button',
+      resizeHandle: 'Security resize handle',
+    },
+    content: <span>Security</span>,
+    id: 'security',
+    trigger: {
+      iconName: 'security',
+    },
+  },
+];

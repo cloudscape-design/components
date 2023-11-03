@@ -35,6 +35,7 @@ interface TableHeaderCellProps<ItemType> {
   cellRef: React.RefCallback<HTMLElement>;
   focusedComponent?: null | string;
   tableRole: TableRole;
+  resizerRoleDescription?: string;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -58,6 +59,7 @@ export function TableHeaderCell<ItemType>({
   stickyState,
   cellRef,
   tableRole,
+  resizerRoleDescription,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -146,6 +148,7 @@ export function TableHeaderCell<ItemType>({
           onWidthUpdateCommit={onResizeFinish}
           ariaLabelledby={headerId}
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
+          roleDescription={i18n('ariaLabels.resizerRoleDescription', resizerRoleDescription)}
         />
       )}
     </TableThElement>

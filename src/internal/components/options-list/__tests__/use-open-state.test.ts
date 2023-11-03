@@ -14,10 +14,23 @@ describe('useOpenState', () => {
       },
     });
     expect(hook.result.current.isOpen).toBe(false);
-    act(() => hook.result.current.openDropdown());
+    act(() => hook.result.current.openDropdown(false));
     expect(hook.result.current.isOpen).toBe(true);
+    expect(hook.result.current.openedWithKeyboard).toBe(false);
     expect(onOpen).toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
+  });
+  test('should open with keyboard flag', () => {
+    const onOpen = jest.fn();
+    const onClose = jest.fn();
+    const hook = renderHook(useOpenState, {
+      initialProps: {
+        onOpen,
+        onClose,
+      },
+    });
+    act(() => hook.result.current.openDropdown(true));
+    expect(hook.result.current.openedWithKeyboard).toBe(true);
   });
 
   test('should close', () => {
@@ -28,7 +41,7 @@ describe('useOpenState', () => {
       },
     });
     expect(hook.result.current.isOpen).toBe(false);
-    act(() => hook.result.current.openDropdown());
+    act(() => hook.result.current.openDropdown(false));
     expect(hook.result.current.isOpen).toBe(true);
     act(() => hook.result.current.closeDropdown());
     expect(hook.result.current.isOpen).toBe(false);

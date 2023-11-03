@@ -112,4 +112,8 @@ export default class AreaChartPageObject extends BasePageObject {
     const distanceBetweenPoints = (chartWidth - labelsWidth) / totalPoints;
     return labelsWidth + distanceBetweenPoints * serialIndex;
   }
+
+  getPopover() {
+    return this.chart.findDetailPopover();
+  }
 }

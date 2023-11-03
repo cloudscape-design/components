@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
 import ChartSeriesDetails from '../internal/components/chart-series-details';
-import InternalBox from '../box/internal';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
 import { Transition } from '../internal/components/transition';
 import { HighlightDetails } from './format-highlighted';
+import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 
 export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   containerRef: React.RefObject<HTMLDivElement>;
@@ -24,6 +24,7 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   dismissAriaLabel?: string;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
 }
 
 export default React.forwardRef(MixedChartPopover);
@@ -41,6 +42,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
     dismissAriaLabel,
     onMouseEnter,
     onMouseLeave,
+    onBlur,
   }: MixedChartPopoverProps<T>,
   popoverRef: React.Ref<HTMLElement>
 ) {
@@ -61,9 +63,10 @@ function MixedChartPopover<T extends ChartDataTypes>(
               size={size}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
+              onBlur={onBlur}
             >
               <ChartSeriesDetails details={highlightDetails.details} />
-              {footer && <InternalBox margin={{ top: 's' }}>{footer}</InternalBox>}
+              {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
             </ChartPopover>
           )}
         </div>

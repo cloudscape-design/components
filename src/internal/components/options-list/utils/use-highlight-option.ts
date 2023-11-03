@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback, useState } from 'react';
 
-export type HighlightType = 'keyboard' | 'mouse';
+export class HighlightType {
+  constructor(public type: 'keyboard' | 'mouse', public moveFocus: boolean = type === 'keyboard') {}
+}
 
 export interface HighlightedOptionProps<OptionType> {
   options: readonly OptionType[];
@@ -17,7 +19,7 @@ export interface HighlightedOptionState<OptionType> {
 
 export interface HighlightedOptionHandlers<OptionType> {
   // Mouse handlers
-  setHighlightedIndexWithMouse(index: number): void;
+  setHighlightedIndexWithMouse(index: number, moveFocus?: boolean): void;
   // Keyboard handlers
   moveHighlightWithKeyboard(direction: -1 | 1): void;
   highlightOptionWithKeyboard(option: OptionType): void;
@@ -31,7 +33,7 @@ export function useHighlightedOption<OptionType>({
   isHighlightable,
 }: HighlightedOptionProps<OptionType>): [HighlightedOptionState<OptionType>, HighlightedOptionHandlers<OptionType>] {
   const [highlightedIndex, setHighlightedIndexState] = useState(-1);
-  const [highlightType, setHighlightType] = useState<HighlightType>('keyboard');
+  const [highlightType, setHighlightType] = useState<HighlightType>(new HighlightType('keyboard'));
   const setHighlightedIndex = useCallback((index: number, highlightType: HighlightType) => {
     setHighlightedIndexState(index);
     setHighlightType(highlightType);
@@ -65,12 +67,13 @@ export function useHighlightedOption<OptionType>({
   return [
     { highlightType, highlightedIndex, highlightedOption },
     {
-      setHighlightedIndexWithMouse: (index: number) => setHighlightedIndex(index, 'mouse'),
-      moveHighlightWithKeyboard: (direction: -1 | 1) => moveHighlight(direction, 'keyboard'),
-      highlightOptionWithKeyboard: (option: OptionType) => highlightOption(option, 'keyboard'),
-      resetHighlightWithKeyboard: () => setHighlightedIndex(-1, 'keyboard'),
-      goHomeWithKeyboard: () => moveHighlightFrom(1, -1, 'keyboard'),
-      goEndWithKeyboard: () => moveHighlightFrom(-1, options.length, 'keyboard'),
+      setHighlightedIndexWithMouse: (index: number, moveFocus = false) =>
+        setHighlightedIndex(index, new HighlightType('mouse', moveFocus)),
+      moveHighlightWithKeyboard: (direction: -1 | 1) => moveHighlight(direction, new HighlightType('keyboard')),
+      highlightOptionWithKeyboard: (option: OptionType) => highlightOption(option, new HighlightType('keyboard')),
+      resetHighlightWithKeyboard: () => setHighlightedIndex(-1, new HighlightType('keyboard')),
+      goHomeWithKeyboard: () => moveHighlightFrom(1, -1, new HighlightType('keyboard')),
+      goEndWithKeyboard: () => moveHighlightFrom(-1, options.length, new HighlightType('keyboard')),
     },
   ];
 }

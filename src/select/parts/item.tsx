@@ -23,7 +23,7 @@ export interface ItemProps {
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
-  highlightType?: HighlightType;
+  highlightType?: HighlightType['type'];
 }
 
 const Item = (

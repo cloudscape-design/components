@@ -84,7 +84,7 @@ export function useSelect({
     },
   ] = useHighlightedOption({ options, isHighlightable });
 
-  const { isOpen, openDropdown, closeDropdown, toggleDropdown } = useOpenState({
+  const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
     onOpen: () => fireLoadItems(''),
     onClose: () => {
       resetHighlightWithKeyboard();
@@ -130,7 +130,10 @@ export function useSelect({
     preventNativeSpace: !hasFilter,
   });
 
-  const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome: goHomeWithKeyboard });
+  const triggerKeyDownHandler = useTriggerKeyboard({
+    openDropdown: () => openDropdown(true),
+    goHome: goHomeWithKeyboard,
+  });
 
   const getDropdownProps: () => Pick<
     DropdownProps,
@@ -250,9 +253,23 @@ export function useSelect({
     // highlight the first selected option, when opening the Select component without filter input
     // keep the focus in the filter input when opening, so that screenreader can recognize the combobox
     if (isOpen && !prevOpen && hasSelectedOption && !hasFilter) {
-      setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]));
+      if (openedWithKeyboard) {
+        highlightOptionWithKeyboard(__selectedOptions[0]);
+      } else {
+        setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]), true);
+      }
     }
-  }, [isOpen, __selectedOptions, hasSelectedOption, setHighlightedIndexWithMouse, options, prevOpen, hasFilter]);
+  }, [
+    isOpen,
+    __selectedOptions,
+    hasSelectedOption,
+    setHighlightedIndexWithMouse,
+    highlightOptionWithKeyboard,
+    openedWithKeyboard,
+    options,
+    prevOpen,
+    hasFilter,
+  ]);
 
   useEffect(() => {
     if (isOpen) {

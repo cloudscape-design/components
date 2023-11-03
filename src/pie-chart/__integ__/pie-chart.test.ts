@@ -335,6 +335,20 @@ describe('Detail popover', () => {
   );
 
   test(
+    'can be dismissed by moving focus away',
+    setupTest(async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'Enter']);
+      await page.waitForVisible(detailsPopoverSelector);
+      await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Potatoes');
+      await page.keys(['Tab']);
+      await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(true);
+      await page.keys(['Tab']);
+      await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
+    })
+  );
+
+  test(
     'allow mouse to enter popover on hover',
     setupTest(async page => {
       await page.hoverElement(pieWrapper.findSegments().get(3).toSelector());
