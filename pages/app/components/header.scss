@@ -5,15 +5,15 @@
 .header {
   box-sizing: border-box;
   background: #232f3e;
-  padding-block-start: 12px;
-  padding-block-end: 11px;
-  padding-inline: 12px;
   font-size: 15px;
   font-weight: 700;
   line-height: 17px;
   display: flex;
   color: #eee;
   justify-content: space-between;
+  padding-block-start: 12px;
+  padding-block-end: 11px;
+  padding-inline: 12px;
   &-sticky {
     inline-size: 100%;
     z-index: 1000;
