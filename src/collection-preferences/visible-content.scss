@@ -43,7 +43,8 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 }
 
 .visible-content-option-label {
-  overflow: hidden;
+  overflow-block: hidden;
+  overflow-inline: hidden;
   text-overflow: ellipsis;
   padding-inline-end: awsui.$space-l;
   flex-grow: 1;

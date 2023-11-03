@@ -17,7 +17,8 @@
 }
 
 .calendar {
-  overflow: auto;
+  overflow-block: auto;
+  overflow-inline: auto;
 
   &:focus {
     outline: none;

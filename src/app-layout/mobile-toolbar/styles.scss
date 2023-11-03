@@ -8,7 +8,8 @@
 @use '../constants' as constants;
 
 .block-body-scroll {
-  overflow: hidden;
+  overflow-block: hidden;
+  overflow-inline: hidden;
 }
 
 .mobile-bar {

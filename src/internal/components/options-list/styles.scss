@@ -16,7 +16,7 @@
   border-inline: none;
   @include styles.styles-reset;
   white-space: inherit;
-  overflow-y: auto;
+  overflow-block: auto;
   flex: 1 1 auto;
   min-block-size: 0;
   border-radius: awsui.$border-radius-dropdown;

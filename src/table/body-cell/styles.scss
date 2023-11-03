@@ -36,7 +36,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   font-weight: inherit;
   &:not(.body-cell-wrap) {
     white-space: nowrap;
-    overflow: hidden;
+    overflow-block: hidden;
+    overflow-inline: hidden;
     text-overflow: ellipsis;
   }
   &:first-child {
@@ -270,7 +271,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
     }
 
     &.body-cell-edit-active {
-      overflow: visible;
+      overflow-block: visible;
+      overflow-inline: visible;
       &.sticky-cell {
         position: sticky;
       }

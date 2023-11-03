@@ -26,7 +26,8 @@
   &:focus {
     @include styles.focus-highlight(3px);
     position: absolute;
-    overflow: visible;
+    overflow-block: visible;
+    overflow-inline: visible;
   }
 }
 

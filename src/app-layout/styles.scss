@@ -52,7 +52,8 @@
   background-color: awsui.$color-background-layout-main;
 
   &-no-scroll {
-    overflow: hidden;
+    overflow-block: hidden;
+    overflow-inline: hidden;
   }
 }
 
@@ -62,7 +63,8 @@
   background-color: awsui.$color-background-layout-main;
   position: relative;
   &-scrollable {
-    overflow: auto;
+    overflow-block: auto;
+    overflow-inline: auto;
   }
 }
 

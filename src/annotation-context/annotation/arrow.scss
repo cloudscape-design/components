@@ -32,7 +32,8 @@
   &-outer,
   &-inner {
     position: absolute;
-    overflow: hidden;
+    overflow-block: hidden;
+    overflow-inline: hidden;
     inline-size: $arrow-width;
     block-size: $arrow-height;
 

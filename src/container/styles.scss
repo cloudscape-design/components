@@ -80,12 +80,14 @@
   inline-size: 100%;
   &-fit-height {
     block-size: 100%;
-    overflow: hidden;
+    overflow-block: hidden;
+    overflow-inline: hidden;
   }
 }
 
 .media {
-  overflow: hidden;
+  overflow-block: hidden;
+  overflow-inline: hidden;
   flex-shrink: 0;
 
   // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
@@ -222,7 +224,8 @@ the default white background of the container component.
 .content {
   flex: 1;
   &-fit-height {
-    overflow: auto;
+    overflow-block: auto;
+    overflow-inline: auto;
   }
   &.with-paddings {
     padding-block: awsui.$space-scaled-l;

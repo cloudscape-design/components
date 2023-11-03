@@ -7,7 +7,7 @@
 
 .custom-table {
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow-inline: auto;
   inline-size: 100%;
 
   &.use-wrapper-paddings {
@@ -34,7 +34,8 @@
     padding-block: 8px;
     padding-inline: 16px;
 
-    overflow: hidden;
+    overflow-block: hidden;
+    overflow-inline: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 

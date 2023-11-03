@@ -91,8 +91,8 @@ nav.navigation {
   box-shadow: awsui.$shadow-panel;
   inset-block-end: 0;
   block-size: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-inline: hidden;
+  overflow-block: auto;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   position: relative;

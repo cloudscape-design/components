@@ -14,11 +14,13 @@
 
 .file-option-metadata {
   inline-size: 100%;
-  overflow: hidden;
+  overflow-block: hidden;
+  overflow-inline: hidden;
 }
 
 .file-option-name-label {
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
+  overflow-block: hidden;
+  overflow-inline: hidden;
 }

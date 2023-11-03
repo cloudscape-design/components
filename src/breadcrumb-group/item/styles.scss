@@ -42,9 +42,11 @@
 }
 .compressed {
   min-inline-size: 0;
-  overflow: hidden;
+  overflow-block: hidden;
+  overflow-inline: hidden;
   > .text {
-    overflow: hidden;
+    overflow-block: hidden;
+    overflow-inline: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: block;

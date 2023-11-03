@@ -12,7 +12,8 @@
   display: inline-block;
   inline-size: 100%;
   block-size: 200px;
-  overflow: scroll;
+  overflow-block: scroll;
+  overflow-inline: scroll;
 }
 
 .content-item {

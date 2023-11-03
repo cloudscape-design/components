@@ -64,8 +64,8 @@ viewport size and state of the Tools drawer.
   box-shadow: awsui.$shadow-panel;
   flex-shrink: 0;
   block-size: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-block: auto;
+  overflow-inline: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   pointer-events: auto;

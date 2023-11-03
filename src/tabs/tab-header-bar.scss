@@ -25,8 +25,8 @@ $label-horizontal-spacing: awsui.$space-l;
   padding-block: 0;
   padding-inline: 0;
   display: flex;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-inline: scroll;
+  overflow-block: hidden;
   position: relative;
   inline-size: 100%;
   // do not use pointer-events none because it disables scroll by sliding

@@ -83,7 +83,8 @@
   position: relative;
   display: block;
   inline-size: 100%;
-  overflow: visible;
+  overflow-block: visible;
+  overflow-inline: visible;
 }
 
 .vertical-marker {

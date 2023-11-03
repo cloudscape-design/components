@@ -24,7 +24,7 @@ section.split-panel-bottom {
   grid-column: 1 / 6;
   grid-row: 10;
   block-size: auto;
-  overflow-y: hidden;
+  overflow-block: hidden;
 
   /*
   The position sticky will work in conjunction with the align self: end; property.
@@ -94,7 +94,7 @@ section.split-panel-bottom {
 
 section.split-panel-side {
   block-size: 100%;
-  overflow-x: hidden;
+  overflow-inline: hidden;
   pointer-events: auto;
 
   &:not(.is-split-panel-open),

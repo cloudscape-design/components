@@ -21,7 +21,8 @@
 }
 
 .description {
-  overflow: hidden;
+  overflow-block: hidden;
+  overflow-inline: hidden;
   margin-block-start: awsui.$space-xxs;
 }
 
