@@ -46,7 +46,8 @@ $_spinner-variants: (
     &.size-#{$name} {
       inline-size: $iconSizeMap;
       block-size: $iconSizeMap;
-      padding: $padding;
+      padding-block: $padding;
+      padding-inline: $padding;
       margin-block: $margin;
       box-sizing: border-box;
     }

@@ -70,11 +70,13 @@
   &__cursor-position {
     display: inline-block;
     color: awsui.$color-text-body-default;
-    padding: awsui.$space-scaled-xs awsui.$space-s;
+    padding-block: awsui.$space-scaled-xs;
+    padding-inline: awsui.$space-s;
   }
 
   &__cog-button {
-    padding: calc(#{awsui.$space-scaled-xxs} - 1px) calc(#{awsui.$space-xs} - 2px);
+    padding-block: calc(#{awsui.$space-scaled-xxs} - 1px);
+    padding-inline: calc(#{awsui.$space-xs} - 2px);
   }
 }
 
@@ -85,7 +87,8 @@
 .tab-button {
   position: relative;
   display: inline-block;
-  padding: awsui.$space-scaled-xs awsui.$space-s;
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-s;
   line-height: inherit;
   color: awsui.$color-text-status-error;
   background: none;

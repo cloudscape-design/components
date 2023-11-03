@@ -29,7 +29,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: awsui.$space-scaled-xs awsui.$space-flashbar-horizontal;
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-flashbar-horizontal;
   border-radius: awsui.$border-radius-flashbar;
   color: awsui.$color-text-notification-default;
   overflow-wrap: break-word;
@@ -81,7 +82,8 @@
 .flash-text {
   margin-block: awsui.$border-field-width;
   margin-inline: 0;
-  padding: awsui.$space-scaled-xxs awsui.$space-xxs;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-xxs;
 }
 
 .flash-icon {

@@ -21,7 +21,8 @@
   color: #eee;
   background: #232f3e;
   box-sizing: border-box;
-  padding: 0 1rem;
+  padding-block: 0;
+  padding-inline: 1rem;
   line-height: 30px;
   z-index: 1000;
   &:not(.legacyNav) {

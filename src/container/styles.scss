@@ -166,9 +166,11 @@
   }
 
   &.with-paddings {
-    padding: shared.$header-padding;
+    padding-block: shared.$header-padding;
+    padding-inline: shared.$header-padding;
     &.header-variant-cards {
-      padding: awsui.$space-container-header-top awsui.$space-container-horizontal;
+      padding-block: awsui.$space-container-header-top;
+      padding-inline: awsui.$space-container-horizontal;
     }
   }
 
@@ -223,7 +225,8 @@ the default white background of the container component.
     overflow: auto;
   }
   &.with-paddings {
-    padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
+    padding-block: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
 
     .header + & {
       padding-block-start: awsui.$space-container-content-top;
@@ -236,7 +239,8 @@ the default white background of the container component.
 
 .footer {
   &.with-paddings {
-    padding: shared.$footer-padding;
+    padding-block: shared.$footer-padding;
+    padding-inline: shared.$footer-padding;
   }
 
   &.with-divider {

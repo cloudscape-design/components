@@ -22,7 +22,8 @@
     border-spacing: 0;
 
     &:not(.use-wrapper-paddings) {
-      padding: 0 32px;
+      padding-block: 0;
+      padding-inline: 32px;
     }
   }
 
@@ -30,7 +31,8 @@
     position: relative;
     border-inline-start: 1px solid tokens.$color-border-divider-default;
     border-block-end: 1px solid tokens.$color-border-divider-default;
-    padding: 8px 16px;
+    padding-block: 8px;
+    padding-inline: 16px;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -70,7 +72,8 @@
   }
 
   &-sorting-header {
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
     margin-block: 0;
     margin-inline: 0;
     background: none;
@@ -89,5 +92,6 @@
   cursor: pointer;
   margin-block: 0;
   margin-inline: 0;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }

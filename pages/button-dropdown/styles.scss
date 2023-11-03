@@ -4,7 +4,8 @@
 */
 
 .container {
-  padding: 10px;
+  padding-block: 10px;
+  padding-inline: 10px;
 }
 
 .layout-wrapper {
@@ -46,7 +47,8 @@
 }
 
 .wide-container {
-  padding: 10px;
+  padding-block: 10px;
+  padding-inline: 10px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -59,7 +61,8 @@
   }
 }
 .restricting-container {
-  padding: 10px;
+  padding-block: 10px;
+  padding-inline: 10px;
   border-block: red 1px solid;
   border-inline: red 1px solid;
   inline-size: 600px;

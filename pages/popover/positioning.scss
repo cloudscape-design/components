@@ -7,7 +7,8 @@
   box-sizing: border-box;
   block-size: 100vh;
   flex: 1 1 auto;
-  padding: 1.2rem;
+  padding-block: 1.2rem;
+  padding-inline: 1.2rem;
 
   display: grid;
   display: -ms-grid;

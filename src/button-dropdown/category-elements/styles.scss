@@ -19,8 +19,8 @@
   justify-content: space-between;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
-  padding: styles.$option-padding-with-border-placeholder-vertical
-    calc(#{awsui.$space-button-horizontal} + #{awsui.$border-item-width});
+  padding-block: styles.$option-padding-with-border-placeholder-vertical;
+  padding-inline: calc(#{awsui.$space-button-horizontal} + #{awsui.$border-item-width});
   z-index: 1;
 
   &.disabled {
@@ -45,7 +45,8 @@
       background-color: awsui.$color-background-dropdown-item-hover;
       color: awsui.$color-text-dropdown-item-highlighted;
       // reset padding when adding border back in
-      padding: styles.$option-padding-vertical awsui.$space-button-horizontal;
+      padding-block: styles.$option-padding-vertical;
+      padding-inline: awsui.$space-button-horizontal;
       border-block: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
       border-inline: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
       border-radius: awsui.$border-radius-item;

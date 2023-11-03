@@ -10,7 +10,8 @@
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
 
-  padding: awsui.$space-s awsui.$space-m;
+  padding-block: awsui.$space-s;
+  padding-inline: awsui.$space-m;
 
   &-overflow-visible {
     overflow: visible;

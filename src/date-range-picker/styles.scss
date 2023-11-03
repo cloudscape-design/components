@@ -101,14 +101,18 @@ $calendar-header-color: awsui.$color-text-body-default;
   flex-wrap: wrap;
   justify-content: flex-end;
   border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
-  padding: 0 awsui.$space-l awsui.$space-s;
+  padding-block-start: 0;
+  padding-block-end: awsui.$space-s;
+  padding-inline: awsui.$space-l;
 
   &.has-clear-button {
     justify-content: space-between;
   }
 
   &.one-grid {
-    padding: 0 awsui.$space-xs awsui.$space-s;
+    padding-block-start: 0;
+    padding-block-end: awsui.$space-s;
+    padding-inline: awsui.$space-xs;
   }
 }
 

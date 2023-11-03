@@ -103,21 +103,26 @@
   // Calculate padding so the heading text is better aligned with the buttons.
   // Can't align-items: middle because we want buttons to stay at the top of the container when text wraps to multiple lines.
   &-variant-h1.refresh {
-    padding: calc((#{awsui.$line-height-heading-xl} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding-block: calc((#{awsui.$line-height-heading-xl} - #{awsui.$size-vertical-input}) / 2);
+    padding-inline: 0;
   }
   &-variant-h2.refresh {
-    padding: calc((#{awsui.$line-height-heading-l} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding-block: calc((#{awsui.$line-height-heading-l} - #{awsui.$size-vertical-input}) / 2);
+    padding-inline: 0;
   }
   &-variant-h3.refresh {
-    padding: calc((#{awsui.$line-height-heading-m} - #{awsui.$size-vertical-input}) / 2) 0;
+    padding-block: calc((#{awsui.$line-height-heading-m} - #{awsui.$size-vertical-input}) / 2);
+    padding-inline: 0;
   }
 
   &-variant-h1:not(.refresh) {
-    padding: awsui.$space-scaled-xs 0;
+    padding-block: awsui.$space-scaled-xs;
+    padding-inline: 0;
   }
   &-variant-h2:not(.refresh),
   &-variant-h3:not(.refresh) {
-    padding: awsui.$space-scaled-xxs 0;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: 0;
   }
 
   .root-has-description > .main > & {

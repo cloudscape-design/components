@@ -85,7 +85,8 @@ $checkbox-size: awsui.$size-control;
 
     border-block: awsui.$border-field-width solid awsui.$color-border-item-selected;
     border-inline: awsui.$border-field-width solid awsui.$color-border-item-selected;
-    padding: 0 awsui.$space-xxs;
+    padding-block: 0;
+    padding-inline: awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
     border-radius: awsui.$border-radius-token;
     color: awsui.$color-text-body-default;

@@ -18,7 +18,8 @@
   inline-size: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: styles.$control-padding-vertical styles.$control-padding-horizontal;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
 
   background-color: awsui.$color-background-input-default;
   border-radius: styles.$control-border-radius;

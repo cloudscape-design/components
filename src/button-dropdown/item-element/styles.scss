@@ -79,7 +79,8 @@
   @include styles.text-wrapping;
   display: flex;
   align-items: flex-start;
-  padding: styles.$option-padding-vertical awsui.$space-button-horizontal;
+  padding-block: styles.$option-padding-vertical;
+  padding-inline: awsui.$space-button-horizontal;
   color: inherit;
   text-decoration: none;
 

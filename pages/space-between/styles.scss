@@ -19,5 +19,6 @@
 .box {
   background-color: tokens.$color-background-status-info;
   display: inline-block;
-  padding: 1rem;
+  padding-block: 1rem;
+  padding-inline: 1rem;
 }

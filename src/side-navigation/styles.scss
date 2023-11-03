@@ -16,7 +16,8 @@
   @include styles.font-panel-header;
   margin-block: 0;
   margin-inline: 0;
-  padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
+  padding-block: awsui.$space-scaled-l;
+  padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
 }
@@ -63,7 +64,9 @@
 .list-variant-root {
   margin-block: 0;
   margin-inline: 0;
-  padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-nav-left;
+  padding-block: 0;
+  padding-inline-start: awsui.$space-panel-side-right;
+  padding-inline-end: awsui.$space-panel-nav-left;
 
   &--last {
     margin-block-end: awsui.$space-scaled-xxxl;

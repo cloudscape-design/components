@@ -5,7 +5,9 @@
 .header {
   box-sizing: border-box;
   background: #232f3e;
-  padding: 12px 12px 11px;
+  padding-block-start: 12px;
+  padding-block-end: 11px;
+  padding-inline: 12px;
   font-size: 15px;
   font-weight: 700;
   line-height: 17px;

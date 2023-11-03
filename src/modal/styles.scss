@@ -35,7 +35,8 @@ $modal-z-index: 5000;
   align-self: flex-start;
   margin-block: auto;
   margin-inline: auto;
-  padding: awsui.$space-s 0;
+  padding-block: awsui.$space-s;
+  padding-inline: 0;
   z-index: $modal-z-index;
   pointer-events: none;
 }
@@ -84,7 +85,10 @@ $modal-z-index: 5000;
 }
 
 .content {
-  padding: awsui.$space-container-content-top awsui.$space-modal-horizontal awsui.$space-modal-content-bottom;
+  padding-block-start: awsui.$space-container-content-top;
+  padding-block-end: awsui.$space-modal-content-bottom;
+  padding-inline: awsui.$space-modal-horizontal;
+
   &.no-paddings {
     padding-block: 0;
     padding-inline: 0;
@@ -92,7 +96,9 @@ $modal-z-index: 5000;
 }
 
 .header {
-  padding: awsui.$space-container-header-top awsui.$space-modal-horizontal awsui.$space-container-header-bottom;
+  padding-block-start: awsui.$space-container-header-top;
+  padding-block-end: awsui.$space-container-header-bottom;
+  padding-inline: awsui.$space-modal-horizontal;
   background-color: awsui.$color-background-container-header;
   border-block-end: 1px solid awsui.$color-border-container-divider;
   border-radius: awsui.$border-radius-container awsui.$border-radius-container 0 0;
@@ -104,7 +110,8 @@ $modal-z-index: 5000;
 
 .footer {
   @include container.divider;
-  padding: container.$footer-padding;
+  padding-block: container.$footer-padding;
+  padding-inline: container.$footer-padding;
   background-color: awsui.$color-background-container-content;
 
   // Make sure that the footer is always visible

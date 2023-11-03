@@ -26,8 +26,8 @@
   border-inline-end-width: 0;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
-  padding: styles.$option-padding-with-border-placeholder-vertical
-    calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+  padding-block: styles.$option-padding-with-border-placeholder-vertical;
+  padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
 
   &.pad-bottom {
     padding-block-end: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
@@ -47,7 +47,9 @@
     color: awsui.$color-text-dropdown-item-highlighted;
     border-width: awsui.$border-item-width;
     border-radius: awsui.$border-radius-item;
-    padding: styles.$option-padding-vertical styles.$control-padding-horizontal;
+    padding-block: styles.$option-padding-vertical;
+    padding-inline: styles.$control-padding-horizontal;
+
     &.pad-bottom {
       padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
     }
@@ -88,17 +90,19 @@
     color: awsui.$color-text-dropdown-group-label;
     &:not(.interactiveGroups) {
       border-block-start-color: awsui.$color-border-dropdown-group;
-      padding: awsui.$space-xs;
+      padding-block: awsui.$space-xs;
+      padding-inline: awsui.$space-xs;
     }
     &.interactiveGroups {
-      padding: styles.$group-option-padding-with-border-placeholder-vertical
-        calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+      padding-block: styles.$group-option-padding-with-border-placeholder-vertical;
+      padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
       &.highlighted {
         color: awsui.$color-text-dropdown-item-highlighted;
       }
       &.highlighted,
       &.selected {
-        padding: styles.$group-option-padding-vertical styles.$control-padding-horizontal;
+        padding-block: styles.$group-option-padding-vertical;
+        padding-inline: styles.$control-padding-horizontal;
       }
     }
   }

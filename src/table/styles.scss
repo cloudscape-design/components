@@ -17,7 +17,9 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  padding: awsui.$space-scaled-xs 0 awsui.$space-table-header-tools-bottom;
+  padding-block-start: awsui.$space-scaled-xs;
+  padding-block-end: awsui.$space-table-header-tools-bottom;
+  padding-inline: 0;
 
   &-filtering {
     @supports (flex-basis: fit-content) {
@@ -103,7 +105,9 @@
   &-content {
     box-sizing: border-box;
     inline-size: 100%;
-    padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l;
+    padding-block-start: awsui.$space-scaled-m;
+    padding-block-end: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-l;
     /* stylelint-disable plugin/no-unsupported-browser-features */
     @supports (position: sticky) {
       position: sticky;
@@ -137,7 +141,8 @@ filter search icon.
   inline-size: awsui.$size-table-selection-horizontal;
 
   &.selection-control-header {
-    padding: awsui.$space-scaled-xs awsui.$space-scaled-l;
+    padding-block: awsui.$space-scaled-xs;
+    padding-inline: awsui.$space-scaled-l;
     border-inline-start: awsui.$border-item-width solid transparent;
   }
 }
@@ -198,7 +203,9 @@ the default white background of the container component.
 }
 
 .footer {
-  padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-table-footer-horizontal;
+
   &-with-pagination {
     display: flex;
     flex-direction: row;
