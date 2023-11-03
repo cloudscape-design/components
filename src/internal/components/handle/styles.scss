@@ -12,7 +12,8 @@
   background: transparent;
   border: none;
   padding: 0 awsui.$space-scaled-xxxs;
-  margin: 0 awsui.$space-scaled-xxs;
+  margin-block: 0;
+  margin-inline: awsui.$space-scaled-xxs;
 
   color: awsui.$color-text-interactive-default;
 

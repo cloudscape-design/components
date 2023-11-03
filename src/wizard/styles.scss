@@ -39,7 +39,8 @@
     background: awsui.$color-background-container-content;
     position: relative;
     @include styles.container-shadow;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
     padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
     inline-size: 280px;
     box-sizing: border-box;
@@ -49,11 +50,13 @@
       column-gap: awsui.$space-xs;
       grid-template-columns: awsui.$space-l 1fr;
       grid-template-rows: repeat(2, auto);
-      padding: 0;
+      padding-block: 0;
+      padding-inline: 0;
 
       > hr {
         background-color: awsui.$color-border-divider-default;
-        border: 0;
+        border-block: 0;
+        border-inline: 0;
         grid-column: 1;
         block-size: 100%;
         inline-size: awsui.$space-xxxs;
@@ -174,8 +177,10 @@
 
   > ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
 
     > li {
       @include styles.text-wrapping;

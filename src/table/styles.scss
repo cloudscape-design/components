@@ -91,7 +91,8 @@
 
 .cell-merged {
   text-align: center;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   &.has-footer {
     /*
     Add a bottom border to the body cell of an empty table as a separator between the 
@@ -108,7 +109,8 @@
       position: sticky;
       inset-inline-start: 0;
       // Offset table paddings to position centered when sticky
-      margin: 0 calc(-2 * #{awsui.$space-table-horizontal});
+      margin-block: 0;
+      margin-inline: calc(-2 * #{awsui.$space-table-horizontal});
     }
     /* stylelint-enable plugin/no-unsupported-browser-features */
   }

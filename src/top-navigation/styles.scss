@@ -229,7 +229,8 @@
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
     flex: 1;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
     text-align: center;
 
     &--secondary {
@@ -256,7 +257,8 @@
   @include styles.styles-reset;
   display: flex;
   inline-size: 100%;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   background: none;
   border: none;
 
@@ -291,11 +293,14 @@
 
 .overflow-menu-list {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
 
   &-submenu {
-    margin: awsui.$space-scaled-xxs 0;
+    margin-block: awsui.$space-scaled-xxs;
+    margin-inline: 0;
   }
 }
 

@@ -13,7 +13,8 @@
 .hover-area {
   pointer-events: none;
   padding: awsui.$space-static-s;
-  margin: calc(-1 * #{awsui.$space-static-s});
+  margin-block: calc(-1 * #{awsui.$space-static-s});
+  margin-inline: calc(-1 * #{awsui.$space-static-s});
 }
 
 .popover-body {

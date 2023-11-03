@@ -33,7 +33,8 @@ $modal-z-index: 5000;
 
 .focus-lock {
   align-self: flex-start;
-  margin: auto;
+  margin-block: auto;
+  margin-inline: auto;
   padding: awsui.$space-s 0;
   z-index: $modal-z-index;
   pointer-events: none;
@@ -67,7 +68,8 @@ $modal-z-index: 5000;
   &.max.breakpoint-xs {
     // viewport - (closed app layout panel widths + 20px on each side)
     max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
-    margin: auto;
+    margin-block: auto;
+    margin-inline: auto;
   }
 }
 
@@ -84,7 +86,8 @@ $modal-z-index: 5000;
 .content {
   padding: awsui.$space-container-content-top awsui.$space-modal-horizontal awsui.$space-modal-content-bottom;
   &.no-paddings {
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
   }
 }
 

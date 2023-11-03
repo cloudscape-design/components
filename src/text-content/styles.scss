@@ -18,7 +18,8 @@
     font-family: inherit;
     font-weight: normal;
     text-decoration: none;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
     padding: awsui.$space-xxs 0;
   }
   h1,
@@ -83,7 +84,8 @@
   ul,
   ol {
     padding-inline-start: awsui.$space-l;
-    margin: awsui.$space-scaled-xs 0;
+    margin-block: awsui.$space-scaled-xs;
+    margin-inline: 0;
     list-style-position: outside;
 
     + ul,
@@ -98,7 +100,8 @@
 
     > li > ul,
     > li > ol {
-      margin: 0;
+      margin-block: 0;
+      margin-inline: 0;
     }
   }
 }

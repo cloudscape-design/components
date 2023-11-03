@@ -25,9 +25,12 @@
 }
 
 .trigger-type-text {
-  border: 0;
-  margin: 0;
-  padding: 0;
+  border-block: 0;
+  border-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   background-color: transparent;
 
   cursor: pointer;

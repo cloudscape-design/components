@@ -128,8 +128,12 @@
   }
 
   &.variant-inline-icon {
+<<<<<<< HEAD
     padding-block-start: 0;
     padding-block-end: 0;
+=======
+    padding-block: 0;
+>>>>>>> cb9a5a96 (Removed all margin shorthand.)
     border-block: 0;
     border-inline: 0;
   }

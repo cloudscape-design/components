@@ -23,9 +23,9 @@
 }
 
 .dismiss {
-  margin: calc(-1 * (#{awsui.$space-scaled-xxs} + #{awsui.$border-field-width}))
-    calc(-1 * (#{awsui.$space-xxs} + #{awsui.$border-field-width}));
+  margin-block: calc(-1 * (#{awsui.$space-scaled-xxs} + #{awsui.$border-field-width}));
   margin-inline-start: 0;
+  margin-inline-end: calc(-1 * (#{awsui.$space-xxs} + #{awsui.$border-field-width}));
   flex: 0 0 auto;
   order: 1;
 }

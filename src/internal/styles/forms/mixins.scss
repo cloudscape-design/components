@@ -126,7 +126,8 @@
 @mixin info-link-spacing {
   margin-inline-end: awsui.$space-xs;
   &:only-child {
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
   }
 }
 

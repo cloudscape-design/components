@@ -4,6 +4,7 @@
     "stylelint-prettier/recommended"
   ],
   "rules": {
+    "property-disallowed-list": ["margin"],
     "csstools/use-logical": "always",
     "custom-property-pattern": "^(?!.+)",
     "scss/comment-no-empty": null,

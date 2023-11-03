@@ -15,7 +15,8 @@
 .content-display-title {
   @include styles.font-label;
   color: awsui.$color-text-form-label;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
 }
 
 .content-display-description {
@@ -26,5 +27,6 @@
 .content-display-option-list {
   position: relative;
   list-style: none;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }

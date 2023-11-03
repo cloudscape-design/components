@@ -108,9 +108,12 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .slider {
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   cursor: ns-resize;
-  margin: 2px 0 0 0;
+  margin-block-start: 2px;
+  margin-block-end: 0;
+  margin-inline: 0;
   block-size: $slider-width;
   // Desktop Safari doesn't support touch events, but Safari on iOS does.
   // stylelint-disable-next-line plugin/no-unsupported-browser-features
@@ -127,7 +130,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .slider-side {
   cursor: ew-resize;
-  margin: 0 0 0 2px;
+  margin-block: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 2px;
 }
 
 .slider-wrapper-bottom {
@@ -160,7 +165,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   flex: 0 0 auto;
   align-self: flex-start;
   box-sizing: border-box;
-  margin: awsui.$space-xxs auto 0;
+  margin-block-start: awsui.$space-xxs;
+  margin-block-end: 0;
+  margin-inline: auto;
 }
 
 .slider-icon {
@@ -169,7 +176,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     stroke: awsui.$color-text-interactive-hover;
   }
   &-bottom {
-    margin: auto;
+    margin-block: auto;
+    margin-inline: auto;
   }
   &-side {
     transform: rotate(90deg);
@@ -206,7 +214,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     padding: 0 awsui.$space-l;
   }
   .drawer-disable-content-paddings > .drawer-content-bottom > & {
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
   }
 }
 
@@ -254,11 +263,15 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   align-items: flex-start;
   justify-content: space-between;
   inline-size: 100%;
-  margin: awsui.$size-vertical-panel-icon-offset 0;
+  margin-block: awsui.$size-vertical-panel-icon-offset;
+  margin-inline: 0;
+
   &-text {
     @include styles.font-panel-header;
-    padding: 0;
-    margin: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
     margin-block-start: calc(#{awsui.$space-scaled-xxs} + 1px);
   }
 }
@@ -273,5 +286,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .divider {
   border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  margin: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: awsui.$space-scaled-xs;
 }

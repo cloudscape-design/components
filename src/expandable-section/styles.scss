@@ -139,8 +139,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-wrapper {
     font-size: inherit;
     letter-spacing: inherit;
-    margin: 0;
-    padding: 0;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
   }
 
   &-button,
@@ -173,8 +175,10 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       display: inline-flex;
       cursor: pointer;
       color: awsui.$color-text-expandable-section-navigation-icon-default;
-      border: 0;
-      padding: 0;
+      border-block: 0;
+      border-inline: 0;
+      padding-block: 0;
+      padding-inline: 0;
       background: transparent;
       outline: none;
       text-decoration: none;

@@ -13,8 +13,10 @@ $dropdown-trigger-icon-offset: 2px;
 }
 
 .items-list-container {
-  padding: 0;
-  margin: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
 
   @include styles.with-motion {
     animation: awsui-motion-fade-in-0 500ms awsui.$motion-easing-show-quick;

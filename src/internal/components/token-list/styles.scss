@@ -24,8 +24,10 @@
 .list {
   display: contents;
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
 
   &.horizontal,
   &.vertical {
@@ -43,8 +45,10 @@
 
 .list-item {
   // To override v2.1 list styling
-  padding: 0;
-  margin: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
 }
 
 .toggle-container-inline {
@@ -62,7 +66,8 @@
   background-color: transparent;
   border: styles.$control-border-width solid transparent;
 
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
 
   // Icon svg has one pixel around it. We need to shift the button one
   // pixel to the left to vertically align it with the input field
@@ -86,7 +91,8 @@
 }
 
 .separator {
-  margin: 0px awsui.$space-scaled-m;
+  margin-block: 0;
+  margin-inline: awsui.$space-scaled-m;
   inline-size: awsui.$border-divider-section-width;
   background-color: awsui.$color-border-divider-default;
 }

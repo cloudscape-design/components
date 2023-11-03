@@ -21,11 +21,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  margin: calc(-1 * #{awsui.$space-xs});
+  margin-block: calc(-1 * #{awsui.$space-xs});
+  margin-inline: calc(-1 * #{awsui.$space-xs});
 
   /* stylelint-disable selector-max-universal */
   & > * {
-    margin: awsui.$space-xs;
+    margin-block: awsui.$space-xs;
+    margin-inline: awsui.$space-xs;
   }
   &-uri {
     min-inline-size: 200px;

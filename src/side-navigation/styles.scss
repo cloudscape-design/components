@@ -14,7 +14,8 @@
 
 .header {
   @include styles.font-panel-header;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
@@ -52,13 +53,16 @@
 }
 
 .list {
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   padding-inline-start: awsui.$space-l;
 }
 
 .list-variant-root {
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-nav-left;
 
   &--last {
@@ -71,8 +75,10 @@
 }
 
 .list-item {
-  margin: awsui.$space-scaled-xs 0;
-  padding: 0;
+  margin-block: awsui.$space-scaled-xs;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   list-style: none;
 }
 
@@ -94,18 +100,22 @@
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
   > div {
-    padding: 0;
+    padding-block: 0;
+    padding-inline: 0;
   }
 }
 
 .list-variant-section-group {
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }
 
 .section-group {
   @include styles.font-heading-m;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
 }
 
 .section-group-title {
@@ -162,7 +172,8 @@
 }
 
 .divider-default {
-  margin: awsui.$space-scaled-2x-xl calc(-1 * #{awsui.$space-s});
+  margin-block: awsui.$space-scaled-2x-xl;
+  margin-inline: calc(-1 * #{awsui.$space-s});
 }
 
 .divider-header {

@@ -102,7 +102,8 @@
   iframe {
     inline-size: 100%;
     block-size: 100%;
-    border: 0;
+    border-block: 0;
+    border-inline: 0;
   }
 
   &-top {
@@ -147,7 +148,8 @@
   &-stuck {
     border-radius: 0;
     &::before {
-      border: 0;
+      border-block: 0;
+      border-inline: 0;
     }
     &:not(.header-variant-cards) {
       box-shadow: awsui.$shadow-sticky-embedded;
@@ -183,7 +185,8 @@
 
     &.header-stuck::after,
     &.header-stuck::before {
-      border: 0;
+      border-block: 0;
+      border-inline: 0;
       border-start-start-radius: 0;
       border-start-end-radius: 0;
     }

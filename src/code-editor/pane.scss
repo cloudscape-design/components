@@ -55,7 +55,8 @@
   &__table {
     inline-size: 100%;
     border-spacing: 0;
-    margin: awsui.$space-s 0;
+    margin-block: awsui.$space-s;
+    margin-inline: 0;
   }
 
   &__item {

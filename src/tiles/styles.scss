@@ -66,11 +66,13 @@ $gutter: awsui.$space-grid-gutter;
 .columns {
   display: flex;
   flex-wrap: wrap;
-  margin: calc(#{$gutter} / -2);
+  margin-block: calc(#{$gutter} / -2);
+  margin-inline: calc(#{$gutter} / -2);
   @each $i, $columns-setting in mixins.$column-breakpoint-spans {
     &.column-#{$i} {
       & > .tile-container {
-        margin: calc(#{$gutter} / 2);
+        margin-block: calc(#{$gutter} / 2);
+        margin-inline: calc(#{$gutter} / 2);
         box-sizing: border-box;
         @include make-column(12);
         &.breakpoint-xs {

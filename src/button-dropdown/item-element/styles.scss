@@ -11,7 +11,8 @@
   z-index: 1;
   border: awsui.$border-item-width solid transparent;
   list-style: none;
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   color: awsui.$color-text-dropdown-item-default;
   margin-block-start: calc(-1 * #{styles.$control-border-width});
   cursor: pointer;
