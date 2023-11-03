@@ -9,6 +9,7 @@ import Link from '../../../lib/components/link';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
+import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';
 import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
@@ -1059,6 +1060,24 @@ describe('Details popover', () => {
     expect(subItems[0].findValue()!.getElement()).toHaveTextContent('1');
     expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
     expect(subItems[1].findValue()!.getElement()).toHaveTextContent('2');
+  });
+  test('does not render nested items list if the length of sub-items is 0', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart
+        {...barChartProps}
+        detailPopoverSeriesContent={({ series, y }) => ({
+          key: series.title,
+          value: y,
+          subItems: [],
+        })}
+      />
+    );
+
+    wrapper.findApplication()!.focus();
+    const series = wrapper.findDetailPopover()!.findSeries()![0];
+    expect(series.findSubItems()).toHaveLength(0);
+    expect(series.findByClassName(chartSeriesDetailsStyles['.sub-items'])).toBeNull();
+    expect(series.getElement().classList).not.toContain(chartSeriesDetailsStyles['with-sub-items']);
   });
   test('logs a warning when `expandable` is used for a series with no sub-items', () => {});
   test('logs a warning and ignores the custom property when a ReactNode is used for an expandable key', () => {});

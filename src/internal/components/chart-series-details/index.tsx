@@ -36,10 +36,10 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             className={clsx({
               [styles.dimmed]: isDimmed,
               [styles['list-item']]: true,
-              [styles['with-sub-items']]: subItems,
+              [styles['with-sub-items']]: subItems?.length,
             })}
           >
-            {subItems ? (
+            {subItems?.length ? (
               <div className={styles.key}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                 <div style={{ width: '100%' }}>
