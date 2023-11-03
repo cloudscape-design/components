@@ -239,6 +239,108 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
       });
+
+      (['hh:mm:ss', 'hh:mm', 'hh'] as DateRangePickerProps['timeInputFormat'][]).forEach(timeInputFormat => {
+        test(`sets start and end time to the beginning and end of day when only selecting a date with format ${timeInputFormat}`, () => {
+          const onChangeSpy = jest.fn();
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            timeInputFormat,
+            onChange: event => onChangeSpy(event.detail),
+          });
+
+          wrapper.findTrigger().click();
+          wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05/10');
+          wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05/12');
+          wrapper.findDropdown()!.findApplyButton().click();
+          expect(onChangeSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              value: {
+                type: 'absolute',
+                startDate: '2018-05-10T00:00:00+08:45',
+                endDate: '2018-05-12T23:59:59+08:45',
+              },
+            })
+          );
+        });
+      });
+    });
+
+    describe('time formats', () => {
+      test('hh:mm:ss format uses the provided string', () => {
+        const onChangeSpy = jest.fn();
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          timeInputFormat: 'hh:mm:ss',
+          onChange: event => onChangeSpy(event.detail),
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05/10');
+        wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05/12');
+        wrapper.findDropdown()!.findStartTimeInput()!.setInputValue('05:00:05');
+        wrapper.findDropdown()!.findEndTimeInput()!.setInputValue('23:00:05');
+        wrapper.findDropdown()!.findApplyButton().click();
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            value: {
+              type: 'absolute',
+              startDate: '2018-05-10T05:00:05+08:45',
+              endDate: '2018-05-12T23:00:05+08:45',
+            },
+          })
+        );
+      });
+
+      test('hh:mm format gets padded with 00 for ss when provided via input', () => {
+        const onChangeSpy = jest.fn();
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          timeInputFormat: 'hh:mm',
+          onChange: event => onChangeSpy(event.detail),
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05/10');
+        wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05/12');
+        wrapper.findDropdown()!.findStartTimeInput()!.setInputValue('05:00');
+        wrapper.findDropdown()!.findEndTimeInput()!.setInputValue('23:00');
+        wrapper.findDropdown()!.findApplyButton().click();
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            value: {
+              type: 'absolute',
+              startDate: '2018-05-10T05:00:00+08:45',
+              endDate: '2018-05-12T23:00:00+08:45',
+            },
+          })
+        );
+      });
+
+      test('hh format gets padded with 00:00 for mm:ss when provided via input', () => {
+        const onChangeSpy = jest.fn();
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          timeInputFormat: 'hh',
+          onChange: event => onChangeSpy(event.detail),
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05/10');
+        wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05/12');
+        wrapper.findDropdown()!.findStartTimeInput()!.setInputValue('05');
+        wrapper.findDropdown()!.findEndTimeInput()!.setInputValue('23');
+        wrapper.findDropdown()!.findApplyButton().click();
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            value: {
+              type: 'absolute',
+              startDate: '2018-05-10T05:00:00+08:45',
+              endDate: '2018-05-12T23:00:00+08:45',
+            },
+          })
+        );
+      });
     });
 
     describe('time offset', () => {
@@ -251,10 +353,8 @@ describe('Date range picker', () => {
         });
 
         act(() => wrapper.findTrigger().click());
-
         act(() => wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05/10'));
         act(() => wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05/12'));
-
         act(() => wrapper.findDropdown()!.findApplyButton().click());
 
         expect(onChangeSpy).toHaveBeenCalledWith(

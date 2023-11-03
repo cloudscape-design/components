@@ -3,6 +3,7 @@
 import { DateRangePickerProps } from './interfaces';
 import { setTimeOffset } from './time-offset';
 import { joinDateTime, splitDateTime } from '../internal/utils/date-time';
+import { normalizeTimeString } from '../internal/utils/date-time/join-date-time';
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,
@@ -53,9 +54,12 @@ export function splitAbsoluteValue(
 export function joinAbsoluteValue(
   value: DateRangePickerProps.PendingAbsoluteValue
 ): DateRangePickerProps.AbsoluteValue {
+  const startTime = normalizeTimeString(value.start.time || '00:00:00');
+  const endTime = normalizeTimeString(value.end.time || '23:59:59');
+
   return {
     type: 'absolute',
-    startDate: joinDateTime(value.start.date, value.start.time || '00:00:00'),
-    endDate: joinDateTime(value.end.date, value.end.time || '23:59:59'),
+    startDate: joinDateTime(value.start.date, startTime),
+    endDate: joinDateTime(value.end.date, endTime),
   };
 }
