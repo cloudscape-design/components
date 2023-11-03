@@ -91,7 +91,9 @@ export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCe
     focusTarget = cell.element;
   }
 
-  setTabIndex(focusTarget, 0);
+  if (focusTarget && focusTarget.tabIndex === PSEUDO_FOCUSABLE_TAB_INDEX) {
+    setTabIndex(focusTarget, 0);
+  }
 }
 
 /**
@@ -224,20 +226,7 @@ function focus(element: null | HTMLElement) {
 }
 
 function setTabIndex(element: null | HTMLElement, tabIndex: number) {
-  if (!element) {
-    return;
+  if (element && element.tabIndex !== tabIndex) {
+    element.tabIndex = tabIndex;
   }
-  // Performance optimization: not touching a DOM element unless the change is needed.
-  if (element.tabIndex === tabIndex) {
-    return;
-  }
-  // Ignoring content elements with muted tab index.
-  if (!isCell(element) && element.tabIndex < 0 && element.tabIndex !== PSEUDO_FOCUSABLE_TAB_INDEX) {
-    return;
-  }
-  element.tabIndex = tabIndex;
-}
-
-function isCell(element: HTMLElement) {
-  return element instanceof HTMLTableCellElement;
 }
