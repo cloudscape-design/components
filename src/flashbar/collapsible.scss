@@ -122,14 +122,16 @@ the grid layout will be:
   );
 
   > .notification-bar {
+    /* stylelint-disable scss/operator-no-newline-after */
     margin-block: calc(-1 * #{$top-overlap} + #{$offset-bottom})
       calc(
         #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 * #{$border-width} -
           #{$offset-bottom}
       );
+    /* stylelint-enable scss/operator-no-newline-after */
+
     /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
     is the full height of the notification bar */
-    /* stylelint-disable scss/operator-no-newline-after */
     padding-block: $notification-bar-padding-vertical;
   }
 }
