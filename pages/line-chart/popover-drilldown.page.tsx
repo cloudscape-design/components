@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import Container from '~components/container';
 import Header from '~components/header';
@@ -10,13 +10,13 @@ import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/commo
 import rawCostsData from '../common/popover-drilldown-sample-data';
 import { LineChart, Link, MixedLineBarChartProps } from '~components';
 
-interface LineDataSeries<T, Y> {
+interface LineDataSeries {
   type: 'line';
   title: string;
-  data: MixedLineBarChartProps.Datum<T>[];
-  valueFormatter?: MixedLineBarChartProps.ValueFormatter<Y, T>;
+  data: MixedLineBarChartProps.Datum<string>[];
+  valueFormatter?: MixedLineBarChartProps.ValueFormatter<number, string>;
 }
-const costsDataSeries: LineDataSeries<string, number>[] = [];
+const costsDataSeries: LineDataSeries[] = [];
 
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -61,16 +61,18 @@ for (const series of groupedSeries) {
   }
 }
 
-const otherSeries: LineDataSeries<string, number> = {
+const otherSeries: LineDataSeries = {
   title: 'Others',
   type: 'line',
   valueFormatter: dollarFormatter,
   data: otherData,
 };
 
-const allSeries: ReadonlyArray<LineDataSeries<string, number>> = [...slicedSeries, otherSeries];
+const allSeries: ReadonlyArray<LineDataSeries> = [...slicedSeries, otherSeries];
 
 export default function () {
+  const [highlightedSeries, setHighlightedSeries] = useState<LineDataSeries | null>(null);
+  const [visibleSeries, setVisibleSeries] = useState<LineDataSeries[] | null>(null);
   return (
     <ScreenshotArea>
       <h1>Chart popover explorations</h1>
@@ -86,6 +88,8 @@ export default function () {
             xScaleType="categorical"
             ariaDescription={barChartInstructions}
             xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+            onHighlightChange={({ detail }) => setHighlightedSeries(detail.highlightedSeries as LineDataSeries)}
+            onFilterChange={({ detail }) => setVisibleSeries(detail.visibleSeries as LineDataSeries[])}
             detailPopoverSeriesContent={({ series, x, y }) => {
               const isOtherSeries = series === otherSeries;
               return {
@@ -118,7 +122,10 @@ export default function () {
               };
             }}
             detailPopoverFooter={x => {
-              const sum = allSeries.reduce((previousValue, currentSeries) => {
+              if (highlightedSeries || (visibleSeries && visibleSeries.length === 1)) {
+                return null;
+              }
+              const sum = (visibleSeries || allSeries).reduce((previousValue, currentSeries) => {
                 const datum = currentSeries.data.find(item => item.x === x);
                 if (datum) {
                   return previousValue + datum.y;

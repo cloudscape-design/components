@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import Container from '~components/container';
 import Header from '~components/header';
@@ -12,13 +12,13 @@ import rawCostsData from '../common/popover-drilldown-sample-data';
 import { MixedLineBarChartProps } from '~components';
 import Link from '~components/link';
 
-interface BarDataSeries<T, Y> {
+interface BarDataSeries {
   type: 'bar';
   title: string;
-  data: MixedLineBarChartProps.Datum<T>[];
-  valueFormatter?: MixedLineBarChartProps.ValueFormatter<Y, T>;
+  data: MixedLineBarChartProps.Datum<string>[];
+  valueFormatter?: MixedLineBarChartProps.ValueFormatter<number, string>;
 }
-const costsDataSeries: BarDataSeries<string, number>[] = [];
+const costsDataSeries: BarDataSeries[] = [];
 
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -63,16 +63,17 @@ for (const series of groupedSeries) {
   }
 }
 
-const otherSeries: BarDataSeries<string, number> = {
+const otherSeries: BarDataSeries = {
   title: 'Others',
   type: 'bar',
   valueFormatter: dollarFormatter,
   data: otherData,
 };
 
-const allSeries: ReadonlyArray<BarDataSeries<string, number>> = [...slicedSeries, otherSeries];
+const allSeries: ReadonlyArray<BarDataSeries> = [...slicedSeries, otherSeries];
 
 export default function () {
+  const [visibleSeries, setVisibleSeries] = useState<BarDataSeries[] | null>(null);
   return (
     <ScreenshotArea>
       <h1>Chart popover explorations</h1>
@@ -88,6 +89,7 @@ export default function () {
             ariaLabel="Costs chart"
             ariaDescription={barChartInstructions}
             xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+            onFilterChange={({ detail }) => setVisibleSeries(detail.visibleSeries as BarDataSeries[])}
             detailPopoverSeriesContent={({ series, x, y }) => {
               const isOtherSeries = series === otherSeries;
               return {
@@ -120,7 +122,10 @@ export default function () {
               };
             }}
             detailPopoverFooter={x => {
-              const sum = allSeries.reduce((previousValue, currentSeries) => {
+              if (visibleSeries && visibleSeries.length === 1) {
+                return null;
+              }
+              const sum = (visibleSeries || allSeries).reduce((previousValue, currentSeries) => {
                 const datum = currentSeries.data.find(item => item.x === x);
                 if (datum) {
                   return previousValue + datum.y;
