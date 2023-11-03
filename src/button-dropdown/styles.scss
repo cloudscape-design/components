@@ -43,8 +43,9 @@ $dropdown-trigger-icon-offset: 2px;
   flex-direction: column;
   list-style: none;
   padding: awsui.$space-s awsui.$space-l;
-  border: styles.$control-border-width solid transparent;
+  border-block-start: styles.$control-border-width solid transparent;
   border-block-end: styles.$control-border-width solid awsui.$color-border-dropdown-group;
+  border-inline: styles.$control-border-width solid transparent;
 }
 
 .title,

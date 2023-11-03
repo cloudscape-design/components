@@ -40,7 +40,8 @@ th:not(:last-child) > .divider {
 
 .resizer {
   @include styles.styles-reset;
-  border: none;
+  border-block: none;
+  border-inline: none;
   background: none;
   inset-block: 0;
   cursor: col-resize;

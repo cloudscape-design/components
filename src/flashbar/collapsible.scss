@@ -291,7 +291,8 @@ the grid layout will be:
     display: inline-block;
     flex-grow: 1;
     background: none;
-    border: 0 none;
+    border-block: 0;
+    border-inline: none;
     padding-block: 0;
 
     > .icon {

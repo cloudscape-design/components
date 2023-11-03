@@ -13,7 +13,8 @@
   padding: awsui.$space-scaled-l awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
 
   hr {
-    border: none;
+    border-block: none;
+    border-inline: none;
     border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     margin-block: awsui.$space-scaled-xl;
     margin-inline: calc(-1 * #{awsui.$space-xs});
@@ -116,7 +117,8 @@
     padding-block-end: awsui.$space-scaled-l;
     padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
     // padding to make sure the header doesn't overlap with the close icon
-    border: none;
+    border-block: none;
+    border-inline: none;
     border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     margin-block-start: 0;
     margin-block-end: awsui.$space-scaled-l;

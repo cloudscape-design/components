@@ -32,7 +32,8 @@ $gutter: awsui.$space-grid-gutter;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  border: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   border-radius: awsui.$border-radius-tiles;
   background: awsui.$color-background-input-default;
   padding: awsui.$space-xs awsui.$space-scaled-m;
@@ -48,12 +49,14 @@ $gutter: awsui.$space-grid-gutter;
   }
 
   &.selected {
-    border: styles.$control-border-width solid awsui.$color-border-item-selected;
+    border-block: styles.$control-border-width solid awsui.$color-border-item-selected;
+    border-inline: styles.$control-border-width solid awsui.$color-border-item-selected;
     background: awsui.$color-background-item-selected;
   }
 
   &.disabled {
-    border: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
+    border-block: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
+    border-inline: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
     background: awsui.$color-background-tiles-disabled;
   }
 

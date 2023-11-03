@@ -6,14 +6,16 @@
 .list-container {
   overflow: auto;
   list-style: none;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0;
 }
 
 .container {
   inline-size: 200px;
   block-size: 200px;
-  border: 1px solid cornflowerblue;
+  border-block: 1px solid cornflowerblue;
+  border-inline: 1px solid cornflowerblue;
   overflow: hidden;
   display: inline-block;
 
@@ -37,7 +39,8 @@
 
 .list {
   padding: 0;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   list-style: none;
   overflow-y: auto;
 }

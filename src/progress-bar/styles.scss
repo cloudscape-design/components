@@ -72,7 +72,8 @@
 
 @mixin general-progress-background-style {
   block-size: 0.4 * styles.$base-size;
-  border: 0 none;
+  border-block: 0;
+  border-inline: none;
   box-sizing: border-box;
   border-radius: 10px;
 }
@@ -120,7 +121,8 @@ $bar-color-edge-in-flash: rgba(255, 255, 255, 0.7);
   &::-ms-fill {
     @include general-progress-bar-style;
     background-color: $bar-color-edge;
-    border: none;
+    border-block: none;
+    border-inline: none;
   }
 
   &.complete::-ms-fill {

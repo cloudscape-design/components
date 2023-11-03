@@ -7,11 +7,13 @@
 
 .border-box-outer,
 .box {
-  border: 1px solid tokens.$color-border-status-info;
+  border-block: 1px solid tokens.$color-border-status-info;
+  border-inline: 1px solid tokens.$color-border-status-info;
 }
 
 .border-box-inner {
-  border: 1px solid tokens.$color-border-status-error;
+  border-block: 1px solid tokens.$color-border-status-error;
+  border-inline: 1px solid tokens.$color-border-status-error;
 }
 
 .box {

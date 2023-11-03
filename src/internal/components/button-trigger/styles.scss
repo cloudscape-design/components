@@ -22,7 +22,8 @@
 
   background-color: awsui.$color-background-input-default;
   border-radius: styles.$control-border-radius;
-  border: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   min-block-size: awsui.$size-vertical-input;
 
   &.has-caret {

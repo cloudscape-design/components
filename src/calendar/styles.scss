@@ -90,7 +90,8 @@
           background-color: calendar.$grid-hover-background-color;
           &:not(.calendar-day-selected) {
             &::after {
-              border: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+              border-block: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+              border-inline: awsui.$border-item-width solid calendar.$grid-hover-border-color;
             }
           }
         }
@@ -147,7 +148,8 @@
       }
       &::after {
         background-color: calendar.$grid-selected-background-color;
-        border: awsui.$border-item-width solid calendar.$grid-selected-border-color;
+        border-block: awsui.$border-item-width solid calendar.$grid-selected-border-color;
+        border-inline: awsui.$border-item-width solid calendar.$grid-selected-border-color;
         border-radius: awsui.$border-radius-item;
       }
       > .day-inner {

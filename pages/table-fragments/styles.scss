@@ -12,7 +12,8 @@
 
   &.use-wrapper-paddings {
     inline-size: calc(100% - 64px);
-    margin: 0 32px;
+    margin-block: 0;
+    margin-inline: 32px;
   }
 
   &-table {
@@ -70,9 +71,11 @@
 
   &-sorting-header {
     padding: 0;
-    margin: 0;
+    margin-block: 0;
+    margin-inline: 0;
     background: none;
-    border: none;
+    border-block: none;
+    border-inline: none;
     font-weight: bold;
     margin-inline-start: 2px;
   }
@@ -80,9 +83,11 @@
 
 .status-trigger-button {
   background-color: initial;
-  border: 0;
+  border-block: 0;
+  border-inline: 0;
   border-block-end: 1px dashed;
   cursor: pointer;
-  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
   padding: 0;
 }

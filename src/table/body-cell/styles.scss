@@ -307,7 +307,8 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
       &:hover {
         position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
-        border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
+        border-block: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
+        border-inline: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         inset-inline: calc(-1 * #{awsui.$border-divider-list-width});
         @include focused-editor-styles;
         &:first-child {

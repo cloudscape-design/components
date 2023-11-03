@@ -13,7 +13,8 @@
 .code-editor {
   @include styles.styles-reset;
   display: inline-block;
-  border: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-block: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-inline: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   border-radius: awsui.$border-radius-code-editor;
   inline-size: 100%;
 }
@@ -88,7 +89,8 @@
   line-height: inherit;
   color: awsui.$color-text-status-error;
   background: none;
-  border: none;
+  border-block: none;
+  border-inline: none;
   font-weight: bold;
   outline: none;
   cursor: pointer;

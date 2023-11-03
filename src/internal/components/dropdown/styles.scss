@@ -46,7 +46,8 @@
     // HACK: because of the issues with IE's box shadow rendering we draw
     // a border and don't mind the pixel fitting
     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-      border: styles.$control-border-width solid awsui.$color-border-container-top;
+      border-block: styles.$control-border-width solid awsui.$color-border-container-top;
+      border-inline: styles.$control-border-width solid awsui.$color-border-container-top;
     }
 
     border-block-end: none;

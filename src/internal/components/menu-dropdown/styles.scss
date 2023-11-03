@@ -22,7 +22,8 @@
   text-decoration: none;
   cursor: pointer;
 
-  border: transparent;
+  border-block: transparent;
+  border-inline: transparent;
   background: transparent;
   color: awsui.$color-text-interactive-default;
 

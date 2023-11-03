@@ -6,7 +6,8 @@
 .parent {
   block-size: 180vh;
   inline-size: 50%;
-  border: 1px solid black;
+  border-block: 1px solid black;
+  border-inline: 1px solid black;
   margin-block-end: var(--fixed-height);
   display: flex;
   flex-flow: column nowrap;

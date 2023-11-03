@@ -5,21 +5,28 @@
 .permutations {
   display: flex;
   flex-wrap: wrap;
-  margin: 20px;
+  margin-block: 20px;
+  margin-inline: 20px;
 }
 .default {
   max-inline-size: 290px;
-  border: 1px solid;
+  border-block: 1px solid;
+  border-inline: 1px solid;
   flex-grow: 1;
-  margin: 20px;
+  margin-block: 20px;
+  margin-inline: 20px;
 }
 .medium {
   max-inline-size: 350px;
-  border: 1px solid;
-  margin: 20px;
+  border-block: 1px solid;
+  border-inline: 1px solid;
+  margin-block: 20px;
+  margin-inline: 20px;
 }
 .large {
   max-inline-size: 550px;
-  border: 1px solid;
-  margin: 20px;
+  border-block: 1px solid;
+  border-inline: 1px solid;
+  margin-block: 20px;
+  margin-inline: 20px;
 }

@@ -14,7 +14,8 @@
 }
 
 .token {
-  border: awsui.$border-field-width solid constants.$token-border-color;
+  border-block: awsui.$border-field-width solid constants.$token-border-color;
+  border-inline: awsui.$border-field-width solid constants.$token-border-color;
   display: flex;
   align-items: stretch;
   background: constants.$token-background;
@@ -42,7 +43,8 @@
   inline-size: 30px;
   margin-block: 0;
   margin-inline: 0;
-  border: none;
+  border-block: none;
+  border-inline: none;
   padding: 0 awsui.$space-xxs;
   color: awsui.$color-text-interactive-default;
   background-color: transparent;

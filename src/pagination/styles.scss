@@ -23,7 +23,8 @@
 .button,
 .dots {
   min-inline-size: awsui.$space-l;
-  border: styles.$control-border-width solid transparent;
+  border-block: styles.$control-border-width solid transparent;
+  border-inline: styles.$control-border-width solid transparent;
 }
 
 .button {

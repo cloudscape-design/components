@@ -260,7 +260,8 @@
   padding-block: 0;
   padding-inline: 0;
   background: none;
-  border: none;
+  border-block: none;
+  border-inline: none;
 
   .overflow-menu-list-item-utility > & {
     padding: awsui.$space-scaled-m;

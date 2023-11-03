@@ -14,7 +14,8 @@
   list-style: none;
   z-index: 1;
 
-  border: awsui.$border-divider-list-width solid transparent;
+  border-block: awsui.$border-divider-list-width solid transparent;
+  border-inline: awsui.$border-divider-list-width solid transparent;
   border-block-start-color: awsui.$color-border-dropdown-item-default;
   border-block-end-color: awsui.$color-border-dropdown-item-default;
   background-color: awsui.$color-background-dropdown-item-default;

@@ -20,7 +20,8 @@
 .tutorial-box {
   @include styles.styles-reset;
   list-style: none;
-  border: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
+  border-block: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
+  border-inline: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
   border-radius: awsui.$border-radius-tutorial-panel-item;
   padding: awsui.$space-m;
 

@@ -77,21 +77,24 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border: constants.$control-border-width solid awsui.$color-border-item-focused;
+  border-block: constants.$control-border-width solid awsui.$color-border-item-focused;
+  border-inline: constants.$control-border-width solid awsui.$color-border-item-focused;
   border-radius: $border-radius;
   box-shadow: foundation.$box-shadow-focused-light;
 }
 
 @mixin form-disabled-element {
   background-color: awsui.$color-background-input-disabled;
-  border: constants.$control-border-width solid awsui.$color-border-input-disabled;
+  border-block: constants.$control-border-width solid awsui.$color-border-input-disabled;
+  border-inline: constants.$control-border-width solid awsui.$color-border-input-disabled;
   color: awsui.$color-text-input-disabled;
   cursor: auto;
 }
 
 @mixin form-readonly-element {
   background-color: awsui.$color-background-input-default;
-  border: constants.$control-border-width solid awsui.$color-border-input-disabled;
+  border-block: constants.$control-border-width solid awsui.$color-border-input-disabled;
+  border-inline: constants.$control-border-width solid awsui.$color-border-input-disabled;
 }
 
 @mixin form-placeholder {
@@ -154,7 +157,8 @@
   // HACK: because of the issues with IE's box shadow rendering we draw
   // a border and don't mind the pixel fitting
   @media screen and (-ms-high-contrast: active) {
-    border: constants.$control-border-width solid awsui.$color-border-container-top;
+    border-block: constants.$control-border-width solid awsui.$color-border-container-top;
+    border-inline: constants.$control-border-width solid awsui.$color-border-container-top;
   }
 }
 
@@ -170,7 +174,8 @@
     z-index: 1;
     inset: -1px 0px;
     background-color: transparent;
-    border: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
+    border-block: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
+    border-inline: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
     border-radius: awsui.$border-radius-dropdown;
     pointer-events: none;
   }

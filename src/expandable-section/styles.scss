@@ -49,14 +49,16 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .wrapper {
   box-sizing: border-box;
-  border: none;
+  border-block: none;
+  border-inline: none;
   inline-size: 100%;
   line-height: awsui.$line-height-body-m;
   text-align: start;
 
   &-default,
   &-footer {
-    border: awsui.$border-divider-section-width solid transparent;
+    border-block: awsui.$border-divider-section-width solid transparent;
+    border-inline: awsui.$border-divider-section-width solid transparent;
   }
   &-navigation {
     // not needed for focus ring compensation, but to keep this variant vertically aligned with other variants when used together

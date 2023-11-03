@@ -12,6 +12,7 @@
 }
 
 .narrow {
-  border: 1px solid red;
+  border-block: 1px solid red;
+  border-inline: 1px solid red;
   max-inline-size: 12ch;
 }

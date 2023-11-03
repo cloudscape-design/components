@@ -64,7 +64,8 @@
   display: flex;
   align-items: center;
   background-color: transparent;
-  border: styles.$control-border-width solid transparent;
+  border-block: styles.$control-border-width solid transparent;
+  border-inline: styles.$control-border-width solid transparent;
 
   padding-block: 0;
   padding-inline: 0;

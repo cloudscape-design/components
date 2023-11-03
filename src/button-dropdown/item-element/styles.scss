@@ -9,7 +9,8 @@
 .item-element {
   position: relative;
   z-index: 1;
-  border: awsui.$border-item-width solid transparent;
+  border-block: awsui.$border-item-width solid transparent;
+  border-inline: awsui.$border-item-width solid transparent;
   list-style: none;
   padding-block: 0;
   padding-inline: 0;

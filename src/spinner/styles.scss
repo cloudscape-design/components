@@ -44,7 +44,8 @@
     box-sizing: border-box;
     content: '';
     border-radius: 50%;
-    border: 0.2 * styles.$base-size solid;
+    border-block: 0.2 * styles.$base-size solid;
+    border-inline: 0.2 * styles.$base-size solid;
     border-inline-end-color: transparent;
     border-block-end-color: transparent;
   }

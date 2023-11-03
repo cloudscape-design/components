@@ -101,7 +101,8 @@ $label-horizontal-spacing: awsui.$space-l;
   cursor: pointer;
   padding: calc(#{awsui.$space-scaled-s} - 1px) 0 awsui.$space-scaled-s 0;
   margin-block-start: 1px;
-  border: awsui.$border-divider-section-width solid transparent;
+  border-block: awsui.$border-divider-section-width solid transparent;
+  border-inline: awsui.$border-divider-section-width solid transparent;
 
   font-size: awsui.$font-tabs-size;
   line-height: awsui.$font-tabs-line-height;

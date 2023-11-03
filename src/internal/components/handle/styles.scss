@@ -10,7 +10,8 @@
 .handle {
   appearance: none;
   background: transparent;
-  border: none;
+  border-block: none;
+  border-inline: none;
   padding: 0 awsui.$space-scaled-xxxs;
   margin-block: 0;
   margin-inline: awsui.$space-scaled-xxs;

@@ -80,6 +80,7 @@
   @include styles.text-wrapping;
   @include styles.font-button;
   letter-spacing: awsui.$font-button-letter-spacing;
+<<<<<<< HEAD
   border-start-start-radius: awsui.$border-radius-button;
   border-start-end-radius: awsui.$border-radius-button;
   border-end-start-radius: awsui.$border-radius-button;
@@ -88,6 +89,12 @@
   border-inline: styles.$control-border-width solid;
   padding-block: styles.$control-padding-vertical;
   padding-inline: awsui.$space-button-horizontal;
+=======
+  border-radius: awsui.$border-radius-button;
+  border-block: styles.$control-border-width solid;
+  border-inline: styles.$control-border-width solid;
+  padding: styles.$control-padding-vertical awsui.$space-button-horizontal;
+>>>>>>> ccdf7eac (Remove border shorthand.)
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
@@ -128,12 +135,8 @@
   }
 
   &.variant-inline-icon {
-<<<<<<< HEAD
     padding-block-start: 0;
     padding-block-end: 0;
-=======
-    padding-block: 0;
->>>>>>> cb9a5a96 (Removed all margin shorthand.)
     border-block: 0;
     border-inline: 0;
   }

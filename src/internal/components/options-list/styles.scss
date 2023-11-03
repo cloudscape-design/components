@@ -12,7 +12,8 @@
   margin-block: 0;
   margin-inline: 0;
   outline: none;
-  border: none;
+  border-block: none;
+  border-inline: none;
   @include styles.styles-reset;
   white-space: inherit;
   overflow-y: auto;
