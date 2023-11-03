@@ -4,20 +4,20 @@ import React, { ReactNode } from 'react';
 
 import Container from '~components/container';
 import Header from '~components/header';
-import Box from '~components/box';
+import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
 import rawCostsData from '../common/popover-drilldown-sample-data';
 import AreaChart, { AreaChartProps } from '~components/area-chart';
 import Link from '~components/link';
 
-interface AreaDataSeries<T, Y> {
+interface AreaDataSeries {
   type: 'area';
   title: string;
-  data: AreaChartProps.Datum<T>[];
-  valueFormatter?: AreaChartProps.ValueFormatter<Y, T>;
+  data: AreaChartProps.Datum<string>[];
+  valueFormatter?: AreaChartProps.ValueFormatter<number, string>;
 }
-const costsDataSeries: AreaDataSeries<string, number>[] = [];
+const costsDataSeries: AreaDataSeries[] = [];
 
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -62,66 +62,75 @@ for (const series of groupedSeries) {
   }
 }
 
-const otherSeries: AreaDataSeries<string, number> = {
+const otherSeries: AreaDataSeries = {
   title: 'Others',
   type: 'area',
   valueFormatter: dollarFormatter,
   data: otherData,
 };
 
-const allSeries: ReadonlyArray<AreaDataSeries<string, number>> = [...slicedSeries, otherSeries];
+const allSeries: ReadonlyArray<AreaDataSeries> = [...slicedSeries, otherSeries];
+
+function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
+  return (
+    <AreaChart
+      {...commonProps}
+      series={allSeries}
+      xDomain={rawCostsData.ResultsByTime.map(({ TimePeriod }) => TimePeriod.Start)}
+      xTitle="Time"
+      yTitle="Costs"
+      ariaLabel="Costs chart"
+      xScaleType="categorical"
+      ariaDescription={barChartInstructions}
+      xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+      detailPopoverSeriesContent={({ series, x, y }) => {
+        const isOtherSeries = series === otherSeries;
+        return isOtherSeries
+          ? {
+              expandable: expandableSubItems,
+              key: series.title,
+              value: dollarFormatter(y),
+              subItems: groupedSeries
+                .map(childSeries => {
+                  const datum = childSeries.data.find(item => item.x === x);
+                  if (datum) {
+                    return {
+                      key: (
+                        <Link external={true} href="#">
+                          {childSeries.title}
+                        </Link>
+                      ),
+                      value: dollarFormatter(datum.y),
+                    };
+                  }
+                })
+                .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>,
+            }
+          : {
+              key: (
+                <Link external={true} href="#">
+                  {series.title}
+                </Link>
+              ),
+              value: dollarFormatter(y),
+            };
+      }}
+    />
+  );
+}
 
 export default function () {
   return (
     <ScreenshotArea>
       <h1>Chart popover explorations</h1>
-      <Box padding="l">
-        <Container header={<Header variant="h2">Costs bar chart</Header>}>
-          <AreaChart
-            {...commonProps}
-            series={allSeries}
-            xDomain={rawCostsData.ResultsByTime.map(({ TimePeriod }) => TimePeriod.Start)}
-            xTitle="Time"
-            yTitle="Costs"
-            ariaLabel="Costs chart"
-            xScaleType="categorical"
-            ariaDescription={barChartInstructions}
-            xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-            detailPopoverSeriesContent={({ series, x, y }) => {
-              const isOtherSeries = series === otherSeries;
-              return isOtherSeries
-                ? {
-                    expandable: true,
-                    key: series.title,
-                    value: dollarFormatter(y),
-                    subItems: groupedSeries
-                      .map(childSeries => {
-                        const datum = childSeries.data.find(item => item.x === x);
-                        if (datum) {
-                          return {
-                            key: (
-                              <Link external={true} href="#">
-                                {childSeries.title}
-                              </Link>
-                            ),
-                            value: dollarFormatter(datum.y),
-                          };
-                        }
-                      })
-                      .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>,
-                  }
-                : {
-                    key: (
-                      <Link external={true} href="#">
-                        {series.title}
-                      </Link>
-                    ),
-                    value: dollarFormatter(y),
-                  };
-            }}
-          />
+      <SpaceBetween direction="vertical" size="l">
+        <Container header={<Header variant="h2">Area chart with expandable sub-items</Header>}>
+          <Chart expandableSubItems={true} />
         </Container>
-      </Box>
+        <Container header={<Header variant="h2">Area chart with non-expandable sub-items</Header>}>
+          <Chart expandableSubItems={false} />
+        </Container>
+      </SpaceBetween>
     </ScreenshotArea>
   );
 }

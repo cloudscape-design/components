@@ -15,6 +15,7 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
   color?: string;
   isDimmed?: boolean;
   subItems?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+  expandable?: boolean;
 }
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
@@ -30,7 +31,7 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
   return (
     <div {...baseProps} className={className}>
       <ul className={styles.list}>
-        {details.map(({ key, value, markerType, color, isDimmed, subItems }, index) => (
+        {details.map(({ key, value, markerType, color, isDimmed, subItems, expandable }, index) => (
           <li
             key={index}
             className={clsx({
@@ -43,16 +44,17 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
               <div className={styles.key}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                 <div style={{ width: '100%' }}>
-                  <InternalExpandableSection variant="compact" headerText={key} headerActions={<Value value={value} />}>
-                    <ul className={styles['sub-items']}>
-                      {subItems.map(({ key, value }, index) => (
-                        <li key={index} className={styles['inner-list-item']}>
-                          <span className={styles.key}>{key}</span>
-                          <Value value={value} />
-                        </li>
-                      ))}
-                    </ul>
-                  </InternalExpandableSection>
+                  {expandable ? (
+                    <InternalExpandableSection
+                      variant="compact"
+                      headerText={key}
+                      headerActions={<Value value={value} />}
+                    >
+                      <SubItems subItems={subItems} />
+                    </InternalExpandableSection>
+                  ) : (
+                    <SubItems subItems={subItems} />
+                  )}
                 </div>
               </div>
             ) : (
@@ -76,5 +78,18 @@ function Value({ value }: { value: ReactNode }) {
     <InternalBox textAlign="right" className={styles.value}>
       {value}
     </InternalBox>
+  );
+}
+
+function SubItems({ subItems }: { subItems: ReadonlyArray<{ key: ReactNode; value: ReactNode }> }) {
+  return (
+    <ul className={styles['sub-items']}>
+      {subItems.map(({ key, value }, index) => (
+        <li key={index} className={styles['inner-list-item']}>
+          <span className={styles.key}>{key}</span>
+          <Value value={value} />
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -79,6 +79,7 @@ function getSeriesDetail<T>({
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
           subItems: customContent?.subItems,
+          expandable: customContent?.expandable,
         };
       }
     }
