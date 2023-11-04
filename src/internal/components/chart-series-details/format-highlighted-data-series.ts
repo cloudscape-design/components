@@ -34,7 +34,7 @@ export default function formatHighlightedDataSeries<T, Series extends CartesianC
 }): ChartSeriesDetailItem {
   const customContent = detailPopoverSeriesContent ? detailPopoverSeriesContent({ series, x, y }) : undefined;
   const hasSubItems = !!customContent?.subItems?.length;
-  const isExpandable = !!customContent?.expandable && hasSubItems;
+  const isExpandable = customContent?.expandable && hasSubItems;
   const isKeyString = typeof customContent?.key === 'string';
   const key = customContent?.key && (!isExpandable || isKeyString) ? customContent.key : series.title;
 

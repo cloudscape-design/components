@@ -7,7 +7,7 @@ import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/componen
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
-import { barChartProps, lineSeries3, renderMixedChart } from './common';
+import { lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
@@ -889,10 +889,20 @@ describe('Details popover', () => {
     xScaleType: 'linear' as const,
   };
 
+  const mixedChartProps = {
+    series: [barSeries, { ...barSeries2, type: 'line' }, thresholdSeries] as ReadonlyArray<
+      MixedLineBarChartProps.ChartSeries<string>
+    >,
+    height: 250,
+    xDomain: ['Group 1', 'Group 2', 'Group 3', 'Group 4'],
+    yDomain: [0, 20],
+    xScaleType: 'categorical' as const,
+  };
+
   test('uses the formatters when available', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart
-        {...barChartProps}
+        {...mixedChartProps}
         series={[{ ...barSeries, valueFormatter: (value, x) => `${value.toFixed(2)} @ ${x}` }]}
         i18nStrings={{ xTickFormatter: value => value.toUpperCase() }}
       />
@@ -906,7 +916,7 @@ describe('Details popover', () => {
   });
 
   test('can be shown on focus in a mixed chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -918,7 +928,7 @@ describe('Details popover', () => {
   });
 
   test('can be pinned and unpinned in a mixed chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -953,7 +963,7 @@ describe('Details popover', () => {
   });
 
   test('delegates focus back to chart when unpinned in a grouped chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -968,7 +978,7 @@ describe('Details popover', () => {
   });
 
   test('no highlighted segment when pressing outside', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
     wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
@@ -981,7 +991,7 @@ describe('Details popover', () => {
 
   test('can contain custom content in the footer', () => {
     const { wrapper } = renderMixedChart(
-      <MixedLineBarChart {...barChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
+      <MixedLineBarChart {...mixedChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
     );
 
     wrapper.findApplication()!.focus();

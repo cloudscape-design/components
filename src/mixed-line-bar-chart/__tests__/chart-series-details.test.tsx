@@ -3,16 +3,64 @@
 
 import React from 'react';
 import Link from '../../../lib/components/link';
-import MixedLineBarChart from '../../../lib/components/mixed-line-bar-chart';
+import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';
-import { barChartProps, renderMixedChart } from './common';
+import { renderMixedChart } from './common';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 describe('Chart series details', () => {
+  const barSeries: MixedLineBarChartProps.DataSeries<string> = {
+    type: 'bar',
+    title: 'Bar Series 1',
+    data: [
+      { x: 'Group 1', y: 2 },
+      { x: 'Group 2', y: 4 },
+      { x: 'Group 3', y: 4 },
+      { x: 'Group 4', y: 9 },
+    ],
+  };
+
+  const barSeries2: MixedLineBarChartProps.DataSeries<string> = {
+    type: 'bar',
+    title: 'Bar Series 2',
+    data: [
+      { x: 'Group 1', y: 5 },
+      { x: 'Group 2', y: 2 },
+      { x: 'Group 3', y: 1 },
+      { x: 'Group 4', y: 3 },
+    ],
+  };
+
+  const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
+    type: 'threshold',
+    title: 'Threshold 1',
+    y: 6,
+  };
+
+  const mixedChartProps = {
+    series: [barSeries, { ...barSeries2, type: 'line' }, thresholdSeries] as ReadonlyArray<
+      MixedLineBarChartProps.ChartSeries<string>
+    >,
+    height: 250,
+    xDomain: ['Group 1', 'Group 2', 'Group 3', 'Group 4'],
+    yDomain: [0, 20],
+    xScaleType: 'categorical' as const,
+  };
+
   describe('Links', () => {
     test('renders links in keys', () => {
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
-          {...barChartProps}
+          {...mixedChartProps}
           detailPopoverSeriesContent={({ series, y }) => ({ key: <Link>{series.title}</Link>, value: y })}
         />
       );
@@ -24,7 +72,7 @@ describe('Chart series details', () => {
     test('renders links in values', () => {
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
-          {...barChartProps}
+          {...mixedChartProps}
           detailPopoverSeriesContent={({ series, y }) => ({ key: series.title, value: <Link>{y}</Link> })}
         />
       );
@@ -38,7 +86,7 @@ describe('Chart series details', () => {
     test('renders nested items', () => {
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
-          {...barChartProps}
+          {...mixedChartProps}
           detailPopoverSeriesContent={({ series, y }) => ({
             key: series.title,
             value: y,
@@ -67,7 +115,7 @@ describe('Chart series details', () => {
     test('does not render nested items list if the length of sub-items is 0', () => {
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
-          {...barChartProps}
+          {...mixedChartProps}
           detailPopoverSeriesContent={({ series, y }) => ({
             key: series.title,
             value: y,
@@ -85,19 +133,10 @@ describe('Chart series details', () => {
   });
 
   describe('Dev warnings', () => {
-    let consoleWarnSpy: jest.SpyInstance;
-    beforeEach(() => {
-      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
-
     test('logs a warning when `expandable` is used for a series with no sub-items', () => {
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
-          {...barChartProps}
+          {...mixedChartProps}
           detailPopoverSeriesContent={({ series, y }) => ({
             key: series.title,
             value: y,
@@ -107,16 +146,16 @@ describe('Chart series details', () => {
       );
 
       wrapper.findApplication()!.focus();
-      expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        '[AwsUi] [MixedLineBarChart] `expandable` was set to `true` for a series without sub-items. This property will be ignored.'
+      expect(warnOnce).toHaveBeenCalledWith(
+        'MixedLineBarChart',
+        '`expandable` was set to `true` for a series without sub-items. This property will be ignored.'
       );
     });
 
     test('logs a warning and ignores the custom property when a ReactNode is used for an expandable key', () => {
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
-          {...barChartProps}
+          {...mixedChartProps}
           detailPopoverSeriesContent={({ series, y }) => ({
             key: <Link>{series.title}</Link>,
             value: y,
@@ -132,16 +171,16 @@ describe('Chart series details', () => {
       );
 
       wrapper.findApplication()!.focus();
-      expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        '[AwsUi] [MixedLineBarChart] A ReactNode was used for the key of an expandable series. The series title will be used instead because nested interactive elements can cause accessiblity issues'
+      expect(warnOnce).toHaveBeenCalledWith(
+        'MixedLineBarChart',
+        'A ReactNode was used for the key of an expandable series. The series title will be used instead because nested interactive elements can cause accessiblity issues'
       );
     });
 
     test('logs a warning when a ReactNode is used for both key and value', () => {
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
-          {...barChartProps}
+          {...mixedChartProps}
           detailPopoverSeriesContent={({ series, y }) => ({
             key: <Link>{series.title}</Link>,
             value: <Link>{y}</Link>,
@@ -150,9 +189,9 @@ describe('Chart series details', () => {
       );
 
       wrapper.findApplication()!.focus();
-      expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        '[AwsUi] [MixedLineBarChart] Use a ReactNode for the key or the value of a series, but not for both'
+      expect(warnOnce).toHaveBeenCalledWith(
+        'MixedLineBarChart',
+        'Use a ReactNode for the key or the value of a series, but not for both'
       );
     });
   });
