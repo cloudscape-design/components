@@ -30,33 +30,28 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             className={clsx({
               [styles.dimmed]: isDimmed,
               [styles['list-item']]: true,
-              [styles['with-sub-items']]: subItems?.length,
+              [styles.expandable]: expandable,
             })}
           >
-            {subItems?.length ? (
-              <div className={styles.key}>
+            {subItems?.length && expandable ? (
+              <div className={styles['key-value-pair']}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-                {expandable ? (
-                  <div style={{ width: '100%' }}>
-                    <InternalExpandableSection
-                      variant="compact"
-                      headerText={key}
-                      headerActions={<Value value={value} />}
-                    >
-                      <SubItems subItems={subItems} />
-                    </InternalExpandableSection>
-                  </div>
-                ) : (
-                  <SubItems subItems={subItems} />
-                )}
+                <div style={{ width: '100%' }}>
+                  <InternalExpandableSection variant="compact" headerText={key} headerActions={<Value value={value} />}>
+                    <SubItems subItems={subItems} />
+                  </InternalExpandableSection>
+                </div>
               </div>
             ) : (
               <>
-                <div className={styles.key}>
-                  {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-                  <span>{key}</span>
+                <div className={styles['key-value-pair']}>
+                  <div className={styles.key}>
+                    {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
+                    <span>{key}</span>
+                  </div>
+                  <Value value={value} />
                 </div>
-                <Value value={value} />
+                {subItems && <SubItems subItems={subItems} />}
               </>
             )}
           </li>
