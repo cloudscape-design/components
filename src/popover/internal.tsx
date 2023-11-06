@@ -84,10 +84,12 @@ function InternalPopover(
 
   const onTriggerKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
-        if (event.keyCode === KeyCode.escape && visible) {
-          event.stopPropagation();
-        }
+      const isEscapeKey = event.keyCode === KeyCode.escape;
+      const isTabKey = event.keyCode === KeyCode.tab;
+      if (isEscapeKey && visible) {
+        event.stopPropagation();
+      }
+      if (isTabKey || isEscapeKey) {
         setVisible(false);
       }
     },
