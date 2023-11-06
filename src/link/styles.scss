@@ -24,13 +24,13 @@
         -webkit-font-smoothing: inherit;
         -moz-osx-font-smoothing: inherit;
       }
-      @include styles.link-style(map.get(constants.$link-variants, $variant));
+      @include styles.link-variant-style(map.get(constants.$link-variants, $variant));
     }
   }
 
   &.button {
     @include styles.font-smoothing;
-    @include styles.link-style(map.get(constants.$link-styles, 'button'));
+    @include styles.link-variant-style(map.get(constants.$link-styles, 'button'));
   }
 
   &.color-inverted {
@@ -51,8 +51,7 @@
   @each $font-size, $properties in constants.$link-font-sizes {
     &.font-size-#{$font-size} {
       @include styles.font($font-size);
-      text-underline-offset: map.get($properties, 'text-underline-offset');
-      text-decoration-thickness: map.get($properties, 'text-decoration-thickness');
+      @include styles.link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
     }
   }
 }
