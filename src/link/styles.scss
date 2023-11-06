@@ -9,18 +9,6 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use './constants' as constants;
 
-$font-sizes: (
-  'body-s',
-  'body-m',
-  'heading-xs',
-  'heading-s',
-  'heading-m',
-  'heading-l',
-  'heading-xl',
-  'display-l',
-  'inherit'
-);
-
 .link {
   @include styles.styles-reset;
   display: inline;
@@ -36,20 +24,19 @@ $font-sizes: (
         -webkit-font-smoothing: inherit;
         -moz-osx-font-smoothing: inherit;
       }
-      @include styles.link-style(map.get(constants.$link-variants, $variant));
+      @include styles.link-variant-style(map.get(constants.$link-variants, $variant));
     }
   }
 
   &.button {
     @include styles.font-smoothing;
-    @include styles.link-style(map.get(constants.$link-styles, 'button'));
+    @include styles.link-variant-style(map.get(constants.$link-styles, 'button'));
   }
 
   &.color-inverted {
     color: awsui.$color-text-notification-default;
     &:not(.button) {
-      text-decoration: underline;
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      text-decoration-line: underline;
       text-decoration-color: currentColor;
     }
     &:hover {
@@ -61,9 +48,10 @@ $font-sizes: (
     @include styles.link-focus;
   }
 
-  @each $variant in $font-sizes {
-    &.font-size-#{$variant} {
-      @include styles.font($variant);
+  @each $font-size, $properties in constants.$link-font-sizes {
+    &.font-size-#{$font-size} {
+      @include styles.font($font-size);
+      @include styles.link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
     }
   }
 }
