@@ -115,7 +115,11 @@ export const Drawer = React.forwardRef(
         >
           {!isMobile && !hideOpenButton && regularOpenButton}
           {resizeHandle}
-          <TagName className={clsx(styles['drawer-children'])} aria-label={mainLabel} aria-hidden={!isOpen}>
+          <TagName
+            className={clsx(resizeHandle && styles['drawer-resize-content'])}
+            aria-label={mainLabel}
+            aria-hidden={!isOpen}
+          >
             <CloseButton
               ref={toggleRefs.close}
               className={closeClassName}
