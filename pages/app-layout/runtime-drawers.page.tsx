@@ -6,6 +6,7 @@ import {
   ContentLayout,
   Header,
   HelpPanel,
+  Drawer,
   Link,
   NonCancelableCustomEvent,
   SpaceBetween,
@@ -173,5 +174,5 @@ function Info({ helpPathSlug }: { helpPathSlug: string }) {
 }
 
 function ProHelp() {
-  return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;
+  return <Drawer header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</Drawer>;
 }

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { AppLayoutProps, HelpPanel, SpaceBetween } from '~components';
+import { AppLayoutProps, Drawer, SpaceBetween } from '~components';
 import styles from '../styles.scss';
 
 const getAriaLabels = (title: string, badge: boolean) => {
@@ -15,13 +15,13 @@ const getAriaLabels = (title: string, badge: boolean) => {
 
 function Security() {
   return (
-    <HelpPanel header={<h2>Security</h2>}>
+    <Drawer header={<h2>Security</h2>}>
       <SpaceBetween size="l">
         <div className={styles.contentPlaceholder} />
         <div className={styles.contentPlaceholder} />
         <div className={styles.contentPlaceholder} />
       </SpaceBetween>
-    </HelpPanel>
+    </Drawer>
   );
 }
 
@@ -43,7 +43,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
   },
   {
     ariaLabels: getAriaLabels('Pro help', true),
-    content: <HelpPanel header={<h2>Pro help</h2>}>Pro help.</HelpPanel>,
+    content: <Drawer header={<h2>Pro help</h2>}>Pro help.</Drawer>,
     badge: true,
     defaultSize: 600,
     id: 'pro-help',
@@ -55,7 +55,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     ariaLabels: getAriaLabels('Links', false),
     resizable: true,
     defaultSize: 500,
-    content: <HelpPanel header={<h2>Links</h2>}>Links.</HelpPanel>,
+    content: <Drawer header={<h2>Links</h2>}>Links.</Drawer>,
     id: 'links',
     trigger: {
       iconName: 'share',
@@ -63,7 +63,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
   },
   {
     ariaLabels: getAriaLabels('Test 1', true),
-    content: <HelpPanel header={<h2>Test 1</h2>}>Test 1.</HelpPanel>,
+    content: <Drawer header={<h2>Test 1</h2>}>Test 1.</Drawer>,
     badge: true,
     id: 'test-1',
     trigger: {
@@ -74,7 +74,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     ariaLabels: getAriaLabels('Test 2', false),
     resizable: true,
     defaultSize: 500,
-    content: <HelpPanel header={<h2>Test 2</h2>}>Test 2.</HelpPanel>,
+    content: <Drawer header={<h2>Test 2</h2>}>Test 2.</Drawer>,
     id: 'test-2',
     trigger: {
       iconName: 'share',
@@ -82,7 +82,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
   },
   {
     ariaLabels: getAriaLabels('Test 3', true),
-    content: <HelpPanel header={<h2>Test 3</h2>}>Test 3.</HelpPanel>,
+    content: <Drawer header={<h2>Test 3</h2>}>Test 3.</Drawer>,
     badge: true,
     id: 'test-3',
     trigger: {
@@ -93,7 +93,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     ariaLabels: getAriaLabels('Test 4', false),
     resizable: true,
     defaultSize: 500,
-    content: <HelpPanel header={<h2>Test 4</h2>}>Test 4.</HelpPanel>,
+    content: <Drawer header={<h2>Test 4</h2>}>Test 4.</Drawer>,
     id: 'test-4',
     trigger: {
       iconName: 'edit',
@@ -103,7 +103,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     ariaLabels: getAriaLabels('Test 5', false),
     resizable: true,
     defaultSize: 500,
-    content: <HelpPanel header={<h2>Test 5</h2>}>Test 5.</HelpPanel>,
+    content: <Drawer header={<h2>Test 5</h2>}>Test 5.</Drawer>,
     id: 'test-5',
     trigger: {
       iconName: 'add-plus',
@@ -113,7 +113,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     ariaLabels: getAriaLabels('Test 6', false),
     resizable: true,
     defaultSize: 500,
-    content: <HelpPanel header={<h2>Test 6</h2>}>Test 6.</HelpPanel>,
+    content: <Drawer header={<h2>Test 6</h2>}>Test 6.</Drawer>,
     id: 'test-6',
     trigger: {
       iconName: 'call',
