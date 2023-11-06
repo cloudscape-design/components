@@ -260,7 +260,7 @@ const InternalTable = React.forwardRef(
         <ColumnWidthsProvider
           visibleColumns={visibleColumnWidthsWithSelection}
           resizableColumns={resizableColumns}
-          getWrapper={() => wrapperMeasureRefObject.current}
+          containerRef={wrapperMeasureRefObject}
         >
           <InternalContainer
             {...baseProps}

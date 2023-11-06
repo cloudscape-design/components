@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
-import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
+import React, { useEffect, useRef, useState, createContext, useContext, useCallback } from 'react';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
@@ -64,11 +64,11 @@ const WidthsContext = createContext<WidthsContext>({
 interface WidthProviderProps {
   visibleColumns: readonly ColumnWidthDefinition[];
   resizableColumns: boolean | undefined;
-  getWrapper: () => null | HTMLElement;
+  containerRef: React.RefObject<HTMLElement>;
   children: React.ReactNode;
 }
 
-export function ColumnWidthsProvider({ visibleColumns, resizableColumns, getWrapper, children }: WidthProviderProps) {
+export function ColumnWidthsProvider({ visibleColumns, resizableColumns, containerRef, children }: WidthProviderProps) {
   const visibleColumnsRef = useRef<(PropertyKey | undefined)[] | null>(null);
   const [columnWidths, setColumnWidths] = useState<Record<PropertyKey, number>>({});
 
@@ -82,9 +82,34 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, getWrap
     }
   };
 
-  const [wrapperWidth, setWrapperWidth] = useState(0);
-  useResizeObserver(getWrapper, entry => {
-    setWrapperWidth(entry.contentBoxWidth);
+  // Update getContainer when deps change to trigger new observation.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getContainer = useCallback(() => containerRef.current, [resizableColumns, visibleColumns, columnWidths]);
+
+  // Measure wrapper width to determine if the last column can stretch.
+  // When condition changes, updates the last column width style imperatively to avoid having a frame with improper style.
+  const [containerWidth, setContainerWidth] = useState(0);
+  useResizeObserver(getContainer, entry => {
+    if (!resizableColumns) {
+      return;
+    }
+
+    setContainerWidth(entry.contentBoxWidth);
+
+    const lastColumnId = visibleColumns[visibleColumns.length - 1]?.id;
+    const lastCellElement = lastColumnId ? cellsRef.current[lastColumnId] : null;
+    if (!lastCellElement) {
+      return;
+    }
+
+    const totalWidth = visibleColumns.reduce((total, { id }) => total + (columnWidths[id] || DEFAULT_COLUMN_WIDTH), 0);
+    const stretchLastColumn = Boolean(entry.contentBoxWidth > totalWidth);
+
+    if (stretchLastColumn && lastCellElement.style.width !== 'auto') {
+      lastCellElement.style.width = 'auto';
+    } else if (!stretchLastColumn && lastCellElement.style.width === 'auto') {
+      lastCellElement.style.width = columnWidths[lastColumnId] + 'px';
+    }
   });
 
   // The widths of the dynamically added columns (after the first render) if not set explicitly
@@ -124,12 +149,8 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, getWrap
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths, newWidth, columnId));
   }
 
-  const totalWidth = visibleColumns.reduce(
-    (total, column) => total + (columnWidths[column.id] || DEFAULT_COLUMN_WIDTH),
-    0
-  );
-
-  const stretchLastColumn = Boolean(wrapperWidth && wrapperWidth > totalWidth);
+  const totalWidth = visibleColumns.reduce((total, { id }) => total + (columnWidths[id] || DEFAULT_COLUMN_WIDTH), 0);
+  const stretchLastColumn = Boolean(containerWidth && containerWidth > totalWidth);
 
   return (
     <WidthsContext.Provider value={{ columnWidths, stretchLastColumn, updateColumn, setCell }}>
