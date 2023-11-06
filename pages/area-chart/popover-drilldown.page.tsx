@@ -83,6 +83,7 @@ function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
       xScaleType="categorical"
       ariaDescription={barChartInstructions}
       xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+      yTickFormatter={dollarFormatter}
       detailPopoverSeriesContent={({ series, x, y }) => {
         const isOtherSeries = series === otherSeries;
         return isOtherSeries
