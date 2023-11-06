@@ -32,6 +32,7 @@
   flex-direction: column;
 
   > .list-item {
+    list-style: none;
     > .key-value-pair {
       display: flex;
       width: 100%;
@@ -51,9 +52,8 @@
         padding-left: awsui.$space-l;
       }
     }
+    &.dimmed {
+      opacity: 0.35;
+    }
   }
-}
-
-.dimmed {
-  opacity: 0.35;
 }
