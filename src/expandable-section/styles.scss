@@ -76,6 +76,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-compact {
     color: awsui.$color-text-expandable-section-default;
     @include styles.font-smoothing;
+  }
+
+  &-default,
+  &-navigation,
+  &-footer {
     font-size: awsui.$font-expandable-heading-size;
     letter-spacing: awsui.$letter-spacing-heading-s;
   }
