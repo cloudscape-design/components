@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
@@ -47,14 +48,14 @@ function updateWidths(
 }
 
 interface WidthsContext {
-  totalWidth: number;
+  stretchLastColumn: boolean;
   columnWidths: Record<PropertyKey, number>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   setCell: (columnId: PropertyKey, node: null | HTMLElement) => void;
 }
 
 const WidthsContext = createContext<WidthsContext>({
-  totalWidth: 0,
+  stretchLastColumn: false,
   columnWidths: {},
   updateColumn: () => {},
   setCell: () => {},
@@ -63,10 +64,11 @@ const WidthsContext = createContext<WidthsContext>({
 interface WidthProviderProps {
   visibleColumns: readonly ColumnWidthDefinition[];
   resizableColumns: boolean | undefined;
+  getWrapper: () => null | HTMLElement;
   children: React.ReactNode;
 }
 
-export function ColumnWidthsProvider({ visibleColumns, resizableColumns, children }: WidthProviderProps) {
+export function ColumnWidthsProvider({ visibleColumns, resizableColumns, getWrapper, children }: WidthProviderProps) {
   const visibleColumnsRef = useRef<(PropertyKey | undefined)[] | null>(null);
   const [columnWidths, setColumnWidths] = useState<Record<PropertyKey, number>>({});
 
@@ -79,6 +81,11 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, childre
       delete cellsRef.current[columnId];
     }
   };
+
+  const [wrapperWidth, setWrapperWidth] = useState(0);
+  useResizeObserver(getWrapper, entry => {
+    setWrapperWidth(entry.contentBoxWidth);
+  });
 
   // The widths of the dynamically added columns (after the first render) if not set explicitly
   // will default to the DEFAULT_COLUMN_WIDTH.
@@ -122,8 +129,10 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, childre
     0
   );
 
+  const stretchLastColumn = Boolean(wrapperWidth && wrapperWidth > totalWidth);
+
   return (
-    <WidthsContext.Provider value={{ columnWidths, totalWidth, updateColumn, setCell }}>
+    <WidthsContext.Provider value={{ columnWidths, stretchLastColumn, updateColumn, setCell }}>
       {children}
     </WidthsContext.Provider>
   );

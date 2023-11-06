@@ -18,7 +18,6 @@ import { TableThElement } from './header-cell/th-element';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 export interface TheadProps {
-  containerWidth: null | number;
   selectionType: TableProps.SelectionType | undefined;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;
@@ -46,7 +45,6 @@ export interface TheadProps {
 const Thead = React.forwardRef(
   (
     {
-      containerWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions,
@@ -89,7 +87,7 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
+    const { columnWidths, stretchLastColumn, updateColumn, setCell } = useColumnWidths();
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -138,7 +136,7 @@ const Thead = React.forwardRef(
                 // use stateful value if available
                 widthOverride = columnWidths[columnId];
               }
-              if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
+              if (colIndex === columnDefinitions.length - 1 && stretchLastColumn) {
                 // let the last column grow and fill the container width
                 widthOverride = 'auto';
               }
