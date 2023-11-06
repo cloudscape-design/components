@@ -168,8 +168,10 @@
   }
 
   &.with-paddings {
-    padding-block: shared.$header-padding;
-    padding-inline: shared.$header-padding;
+    padding-block-start: awsui.$space-container-header-top;
+    padding-block-end: awsui.$space-container-header-bottom;
+    padding-inline: awsui.$space-container-horizontal;
+
     &.header-variant-cards {
       padding-block: awsui.$space-container-header-top;
       padding-inline: awsui.$space-container-horizontal;
@@ -242,8 +244,8 @@ the default white background of the container component.
 
 .footer {
   &.with-paddings {
-    padding-block: shared.$footer-padding;
-    padding-inline: shared.$footer-padding;
+    padding-block: awsui.$space-scaled-s;
+    padding-inline: awsui.$space-container-horizontal;
   }
 
   &.with-divider {
