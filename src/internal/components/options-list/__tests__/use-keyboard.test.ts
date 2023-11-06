@@ -22,7 +22,7 @@ const menuKeys: any = [
   ['enter', KeyCode.enter],
   ['space', KeyCode.space],
 ].reduce<any>((acc, [name, keyCode]) => {
-  acc[name] = { detail: { keyCode }, preventDefault: jest.fn() };
+  acc[name] = { detail: { keyCode }, preventDefault: jest.fn(), stopPropagation: jest.fn() };
   return acc;
 }, {});
 
