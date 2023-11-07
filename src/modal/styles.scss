@@ -111,8 +111,8 @@ $modal-z-index: 5000;
 
 .footer {
   @include container.divider;
-  padding-block: container.$footer-padding;
-  padding-inline: container.$footer-padding;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-container-horizontal;
   background-color: awsui.$color-background-container-content;
 
   // Make sure that the footer is always visible
