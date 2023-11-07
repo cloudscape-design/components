@@ -12,8 +12,9 @@
   margin-inline: 0;
   color: awsui.$color-text-dropdown-group-label;
   border-block: awsui.$border-divider-list-width solid transparent;
+  border-inline: awsui.$border-divider-list-width solid transparent;
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
-  border-inline: 0;
+  border-inline-width: 0;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -51,6 +52,7 @@
       border-inline: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
       border-radius: awsui.$border-radius-item;
       z-index: 2;
+
       &.disabled {
         background-color: awsui.$color-background-dropdown-item-dimmed;
         border-color: awsui.$color-border-dropdown-item-dimmed-hover;
@@ -69,7 +71,6 @@
         border-color: transparent;
         border-block-start-color: awsui.$color-border-dropdown-group;
         border-block-end-color: awsui.$color-border-dropdown-group;
-
         background-color: transparent;
         color: awsui.$color-text-accent;
       }
