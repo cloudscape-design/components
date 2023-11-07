@@ -79,7 +79,7 @@ function Table({ useGridNavigation: gridNavigationActive }: { useGridNavigation:
   const tableRole = 'grid';
   const tableRef = useRef<HTMLTableElement>(null);
 
-  useGridNavigation({ active: gridNavigationActive, pageSize: 10, getTable: () => tableRef.current });
+  useGridNavigation({ keyboardNavigation: gridNavigationActive, pageSize: 10, getTable: () => tableRef.current });
 
   return (
     <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>

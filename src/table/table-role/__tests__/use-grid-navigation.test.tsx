@@ -31,17 +31,22 @@ function TestTable<T extends object>({
   items,
   startIndex = 0,
   pageSize = 2,
-  isSuppressed,
+  suppressKeyboardNavigationFor,
 }: {
   tableRole?: 'grid' | 'table';
   columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
   items: T[];
   startIndex?: number;
   pageSize?: number;
-  isSuppressed?: (focusedElement: HTMLElement) => boolean;
+  suppressKeyboardNavigationFor?: string | ((focusedElement: HTMLElement) => boolean);
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({ active: tableRole === 'grid', isSuppressed, pageSize, getTable: () => tableRef.current });
+  useGridNavigation({
+    keyboardNavigation: tableRole === 'grid',
+    suppressKeyboardNavigationFor,
+    pageSize,
+    getTable: () => tableRef.current,
+  });
   return (
     <table role={tableRole} ref={tableRef}>
       <thead>
@@ -250,7 +255,7 @@ test('updates page size', () => {
 
 test('does not throw errors if table is null', () => {
   function TestTable() {
-    useGridNavigation({ active: true, pageSize: 2, getTable: () => null });
+    useGridNavigation({ keyboardNavigation: true, pageSize: 2, getTable: () => null });
     return null;
   }
   expect(() => render(<TestTable />)).not.toThrow();
@@ -384,7 +389,7 @@ test('cell navigation works when the table is mutated between commands', () => {
 test('throws no error when focusing on incorrect target', () => {
   function TestComponent() {
     const tableRef = useRef<HTMLTableElement>(null);
-    useGridNavigation({ active: true, pageSize: 2, getTable: () => tableRef.current });
+    useGridNavigation({ keyboardNavigation: true, pageSize: 2, getTable: () => tableRef.current });
     return (
       <table role="grid" ref={tableRef}>
         <tbody>
@@ -424,12 +429,15 @@ test('elements focus is restored if table changes role after being rendered as g
   expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
 });
 
-test('grid navigation is suppressed by `isSuppressed` callback', () => {
+test.each([
+  '[aria-label="Sort by value!"]',
+  (focusedElement: HTMLElement) => focusedElement.getAttribute('aria-label') === 'Sort by value!',
+])('grid navigation is suppressed by `suppressKeyboardNavigationFor`', suppressKeyboardNavigationFor => {
   const { container } = render(
     <TestTable
       columns={[nameColumn, valueColumn]}
       items={items}
-      isSuppressed={focusedElement => focusedElement.getAttribute('aria-label') === 'Sort by value!'}
+      suppressKeyboardNavigationFor={suppressKeyboardNavigationFor}
     />
   );
   const table = container.querySelector('table')!;
@@ -448,4 +456,33 @@ test('grid navigation is suppressed by `isSuppressed` callback', () => {
 
   fireEvent.keyDown(table, { keyCode: KeyCode.left });
   expect(getActiveElement()).toEqual(['button', 'Sort by value!']);
+});
+
+test('does not override tab index for programmatically focused elements', () => {
+  function TestComponent() {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useGridNavigation({ keyboardNavigation: true, pageSize: 10, getTable: () => tableRef.current });
+    return (
+      <table role="grid" ref={tableRef}>
+        <tbody>
+          <tr aria-rowindex={1}>
+            <td aria-colindex={1}>cell-1-1</td>
+            <td aria-colindex={2}>cell-1-2</td>
+            <td aria-colindex={3}>
+              cell-1-3 <button tabIndex={-1}>Programmatically focusable</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+
+  const { container } = render(<TestComponent />);
+  const button = container.querySelector('button')!;
+  const firstCell = container.querySelector('td')!;
+
+  button.focus();
+  expect(button).toHaveFocus();
+  expect(button).toHaveAttribute('tabIndex', '-1');
+  expect(firstCell).toHaveAttribute('tabIndex', '0');
 });
