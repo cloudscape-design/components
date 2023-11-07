@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
-import HelpPanel from '~components/help-panel';
+import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
@@ -17,9 +17,9 @@ const Content = React.forwardRef((props, ref) => {
     return () => console.log('unmounted');
   }, []);
   return (
-    <HelpPanel header={<h2>Security</h2>}>
+    <Drawer header={<h2>Security</h2>}>
       I am runtime drawer, <span data-testid="current-size">resized: {`${resized}`}</span>
-    </HelpPanel>
+    </Drawer>
   );
 });
 
