@@ -22,8 +22,7 @@
 
   &.scroll,
   &.auto {
-    overflow-block: scroll;
-    overflow-inline: scroll;
+    overflow: scroll;
     > .inner-container {
       position: relative;
       inset-inline-start: 300px;
@@ -38,8 +37,7 @@
   }
 
   &.hidden {
-    overflow-block: hidden;
-    overflow-inline: hidden;
+    overflow: hidden;
     > .inner-container {
       position: relative;
       inset-inline-start: 50px;
@@ -69,8 +67,7 @@
   border-inline: red 1px solid;
   inline-size: 600px;
   block-size: 600px;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
 }
 
 .positioning-container {

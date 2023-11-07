@@ -45,8 +45,7 @@ $selected-color: awsui.$color-text-segment-active;
   border-inline-end-width: 0;
   background: $default-background;
   color: $default-color;
-  overflow-block: visible;
-  overflow-inline: visible;
+  overflow: visible;
   &:focus {
     outline: none;
   }

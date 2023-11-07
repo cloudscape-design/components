@@ -101,8 +101,7 @@
     &.nowrap {
       white-space: nowrap;
       // Taking into account width of scroll element
-      overflow-block: scroll;
-      overflow-inline: scroll;
+      overflow: scroll;
     }
   }
 }

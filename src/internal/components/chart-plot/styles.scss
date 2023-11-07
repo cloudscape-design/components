@@ -9,8 +9,7 @@
 .root {
   outline: none;
   shape-rendering: auto;
-  overflow-block: visible;
-  overflow-inline: visible;
+  overflow: visible;
 
   // These attributes are needed to ensure that the chart does not grow indefinitely
   // when placed in a parent container without a width constraint.

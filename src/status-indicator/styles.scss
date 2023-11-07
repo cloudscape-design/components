@@ -65,8 +65,7 @@ $_color-overrides: (
 
 .overflow-ellipsis {
   max-inline-size: 100%;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: text-bottom;

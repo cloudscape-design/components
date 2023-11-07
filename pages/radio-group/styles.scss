@@ -4,8 +4,7 @@
 */
 
 .scrollableContainer {
-  overflow-block: scroll;
-  overflow-inline: scroll;
+  overflow: scroll;
   block-size: 70px;
 }
 

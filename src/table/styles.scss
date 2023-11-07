@@ -65,7 +65,7 @@
   position: relative;
   box-sizing: border-box;
   inline-size: 100%;
-  overflow-inline: auto;
+  overflow-x: auto;
 
   scrollbar-width: none; /* Hide scrollbar in Firefox */
   &.variant-stacked,
@@ -157,8 +157,7 @@ the default white background of the container component.
 }
 
 .header-secondary {
-  overflow-block: auto;
-  overflow-inline: auto;
+  overflow: auto;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   box-sizing: border-box;

@@ -14,8 +14,7 @@
   padding-inline: awsui.$space-m;
 
   &-overflow-visible {
-    overflow-block: visible;
-    overflow-inline: visible;
+    overflow: visible;
   }
 }
 
@@ -59,7 +58,6 @@
   flex: 1 1 auto;
   min-inline-size: 0;
   &-overflow-visible {
-    overflow-block: visible;
-    overflow-inline: visible;
+    overflow: visible;
   }
 }

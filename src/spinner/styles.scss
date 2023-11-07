@@ -68,8 +68,7 @@
   display: inline-block;
   inline-size: 50%;
   block-size: 100%;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
   @include awsui-spinner-circle;
   &:after {
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */

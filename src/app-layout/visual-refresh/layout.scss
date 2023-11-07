@@ -303,7 +303,7 @@ notifications top margin and some additional vertical space for aesthetics.
   #{custom-props.$mainTemplateRows}: 1fr auto;
   #{custom-props.$offsetTop}: 0px;
   block-size: var(#{custom-props.$contentHeight});
-  overflow-block: scroll;
+  overflow-y: scroll;
 
   &.has-split-panel.split-panel-position-bottom {
     #{custom-props.$mainTemplateRows}: repeat(2, auto);
@@ -326,8 +326,7 @@ This CSS class is applied to the document body to prevent overflow scrolling
 when the navigation or tools drawers are open in responsive viewports.
 */
 .block-body-scroll {
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
 }
 
 // Prevent content that is visually hidden behind drawers and content area in mobile view from receiving focus

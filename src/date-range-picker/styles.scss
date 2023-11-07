@@ -154,8 +154,7 @@ $calendar-header-color: awsui.$color-text-body-default;
   // There needs to be an outer container because we set a fixed width on the
   // actual dropdown and calendar grid, so the scrollbar would mess up the
   // widths.
-  overflow-block: auto;
-  overflow-inline: auto;
+  overflow: auto;
 
   border-block-start: 1px solid #{awsui.$color-border-container-top};
   border-block-end: 1px solid #{awsui.$color-border-container-top};

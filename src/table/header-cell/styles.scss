@@ -122,8 +122,7 @@
 
   &:not(.header-cell-text-wrap) {
     white-space: nowrap;
-    overflow-block: hidden;
-    overflow-inline: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
   }
 }

@@ -98,8 +98,7 @@
 .title {
   @include styles.font-heading-m;
   white-space: nowrap;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   .no-logo > .identity-link > & {

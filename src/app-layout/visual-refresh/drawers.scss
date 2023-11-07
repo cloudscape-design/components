@@ -55,8 +55,8 @@
   background-color: transparent;
   box-sizing: border-box;
   block-size: 100%;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
 
@@ -119,8 +119,8 @@
   flex-shrink: 0;
 
   block-size: 100%;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   pointer-events: auto;
@@ -133,7 +133,7 @@
     display: grid;
     grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
     grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
-    overflow-block: auto;
+    overflow-y: auto;
 
     > .drawer-close-button {
       grid-column: 3;

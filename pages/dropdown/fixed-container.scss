@@ -6,7 +6,7 @@
 @use '~design-tokens' as awsui;
 
 .bodyScrollOverride {
-  overflow-block: scroll;
+  overflow-y: scroll;
   block-size: 100%;
 }
 

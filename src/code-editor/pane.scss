@@ -46,8 +46,7 @@
 
   &__list {
     flex: 1;
-    overflow-block: auto;
-    overflow-inline: auto;
+    overflow: auto;
     max-block-size: 100%;
     box-sizing: border-box;
     margin-inline-end: calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-xs});

@@ -22,8 +22,7 @@ $modal-z-index: 5000;
   z-index: $modal-z-index;
 
   outline: 0;
-  overflow-block: auto;
-  overflow-inline: auto;
+  overflow: auto;
 
   cursor: pointer;
 
@@ -137,8 +136,7 @@ $modal-z-index: 5000;
 
 // Added to `document.body` to disable body scroll
 .modal-open {
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
 
   /*
    * When padding-right is added to account for scrollbar being turned

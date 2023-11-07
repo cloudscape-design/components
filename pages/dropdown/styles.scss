@@ -4,8 +4,7 @@
 */
 
 .list-container {
-  overflow-block: auto;
-  overflow-inline: auto;
+  overflow: auto;
   list-style: none;
   margin-block: 0;
   margin-inline: 0;
@@ -18,8 +17,7 @@
   block-size: 200px;
   border-block: 1px solid cornflowerblue;
   border-inline: 1px solid cornflowerblue;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
   display: inline-block;
 
   &-wide {
@@ -27,12 +25,11 @@
   }
 
   &-overflow-visible {
-    overflow-block: auto;
-    overflow-inline: auto;
+    overflow: auto;
   }
 
   &-overflow-y-visible {
-    overflow-block: auto;
+    overflow-y: auto;
   }
 }
 
@@ -47,7 +44,7 @@
   margin-block: 0;
   margin-inline: 0;
   list-style: none;
-  overflow-block: auto;
+  overflow-y: auto;
 }
 
 .wide-container {

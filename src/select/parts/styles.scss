@@ -72,7 +72,7 @@ $checkbox-size: awsui.$size-control;
   align-items: center;
   gap: awsui.$space-xxs;
   inline-size: 100%;
-  overflow-inline: hidden;
+  overflow-x: hidden;
 
   // Fade out any overflow tokens
   mask-image: linear-gradient(270deg, transparent, white 20px, white);

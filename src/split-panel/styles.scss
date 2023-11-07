@@ -45,8 +45,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   display: flex;
   align-items: center;
   block-size: 100%;
-  overflow-block: auto;
-  overflow-inline: auto;
+  overflow: auto;
   .drawer-closed > & {
     inline-size: constants.$sidebar-size-closed;
     &:hover {
@@ -66,7 +65,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .drawer-content-bottom {
   :not(.drawer-closed) > & {
-    overflow-block: auto;
+    overflow-y: auto;
     position: absolute;
     inset: 0;
   }
@@ -74,7 +73,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 
 .position-bottom {
   position: fixed;
-  overflow-block: auto;
+  overflow-y: auto;
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
   border-block-start: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
@@ -84,8 +83,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
     box-shadow: awsui.$shadow-split-bottom;
   }
   &.drawer-closed {
-    overflow-block: hidden;
-    overflow-inline: hidden;
+    overflow: hidden;
   }
   &.drawer-closed:hover {
     background: awsui.$color-background-layout-panel-hover;
@@ -249,7 +247,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   flex: auto;
   align-self: flex-start;
   box-sizing: border-box;
-  overflow-block: auto;
+  overflow-y: auto;
   position: absolute;
   inset-block-start: 0;
   inset-inline: 0;

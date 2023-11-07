@@ -59,8 +59,7 @@
 
 .loading,
 .empty {
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
   text-align: center;
   color: awsui.$color-text-empty;
   margin-block-end: awsui.$space-scaled-l;

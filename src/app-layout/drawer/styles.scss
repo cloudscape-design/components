@@ -39,8 +39,7 @@ $drawer-z-index-mobile: 1001;
 }
 .drawer-content {
   position: fixed;
-  overflow-block: auto;
-  overflow-inline: auto;
+  overflow: auto;
   background-color: awsui.$color-background-layout-panel-content;
   .drawer-mobile > & {
     z-index: $drawer-z-index-mobile;

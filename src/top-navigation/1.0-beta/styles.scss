@@ -90,8 +90,7 @@
   @include styles.font-heading-m;
   margin-inline-start: awsui.$space-s;
   white-space: nowrap;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
 
   .no-logo > .identity-link > & {

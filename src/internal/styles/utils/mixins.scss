@@ -25,8 +25,7 @@
 @mixin text-flex-wrapping {
   word-wrap: break-word;
   max-inline-size: 100%;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
 }
 
 @mixin code-highlight {
@@ -41,8 +40,7 @@
 
 @mixin text-overflow-ellipsis {
   white-space: nowrap;
-  overflow-block: hidden;
-  overflow-inline: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
