@@ -131,18 +131,18 @@ function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
           return previousValue;
         }, 0);
         return (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontWeight: 'bold',
-              paddingTop: '.5em',
-              borderTop: '1px solid lightgray',
-            }}
-          >
-            <span>Total</span>
-            <span>{dollarFormatter(sum)}</span>
-          </div>
+          <>
+            <hr />
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <span>Total</span>
+              <span>{dollarFormatter(sum)}</span>
+            </div>
+          </>
         );
       }}
     />
