@@ -254,8 +254,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   block-size: 100%;
   > .pane-header-wrapper-side {
     padding-block: 0;
-    padding-inline-start: awsui.$space-m;
-    padding-inline-end: awsui.$space-panel-side-left;
+    padding-inline-end: awsui.$space-m;
+    padding-inline-start: awsui.$space-panel-side-left;
     border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
   }
   > .pane-content-wrapper-side {
