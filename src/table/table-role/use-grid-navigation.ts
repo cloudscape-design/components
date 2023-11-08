@@ -86,7 +86,7 @@ class GridNavigationHelper {
 
     this.table.addEventListener('focusin', this.onFocusin);
     this.table.addEventListener('focusout', this.onFocusout);
-    this.table.addEventListener('keydown', this.onKeydown, false);
+    this.table.addEventListener('keydown', this.onKeydown);
 
     const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
     tableNodesObserver.observe(table, { childList: true, subtree: true });
@@ -97,7 +97,7 @@ class GridNavigationHelper {
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('focusout', this.onFocusout);
-      this.table.removeEventListener('keydown', this.onKeydown, false);
+      this.table.removeEventListener('keydown', this.onKeydown);
 
       tableNodesObserver.disconnect();
 

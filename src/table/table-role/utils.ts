@@ -116,8 +116,6 @@ export function muteElementFocusables(element: HTMLElement, suppressed: boolean)
       setTabIndex(focusable, PSEUDO_FOCUSABLE_TAB_INDEX);
     }
   }
-
-  return null;
 }
 
 /**
