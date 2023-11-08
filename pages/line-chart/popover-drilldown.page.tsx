@@ -12,44 +12,20 @@ import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/commo
 import { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 import rawCostsData from '../common/popover-drilldown-sample-data';
 
-interface LineDataSeries {
-  type: 'line';
-  title: string;
-  data: MixedLineBarChartProps.Datum<string>[];
-  valueFormatter?: MixedLineBarChartProps.ValueFormatter<number, string>;
-}
-const costsDataSeries: LineDataSeries[] = [];
+const costsData = rawCostsData.map(series => ({
+  ...series,
+  type: 'line',
+})) as MixedLineBarChartProps.LineDataSeries<string>[];
+
+const xDomain = costsData[0].data.map(datum => datum.x);
 
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-for (const { Groups, TimePeriod } of rawCostsData.ResultsByTime) {
-  for (const group of Groups) {
-    let series = costsDataSeries.find(({ title }) => title === group.Keys[0]);
-    if (series) {
-      series.data.push({ x: TimePeriod.Start, y: Number(group.Metrics.UnblendedCost.Amount) });
-    } else {
-      series = {
-        title: group.Keys[0],
-        type: 'line',
-        data: [{ x: TimePeriod.Start, y: Number(group.Metrics.UnblendedCost.Amount) }],
-        valueFormatter: dollarFormatter,
-      };
-      costsDataSeries.push(series);
-    }
-  }
-}
-
-const sortedCostsDataSeries = [...costsDataSeries].sort((series1, series2) => {
-  const total1 = series1.data.reduce((acc, current) => acc + current.y, 0);
-  const total2 = series2.data.reduce((acc, current) => acc + current.y, 0);
-  return total2 - total1;
-});
-
 const maxSeries = 9;
 
-const slicedSeries = sortedCostsDataSeries.slice(0, maxSeries - 1);
-const groupedSeries = sortedCostsDataSeries.slice(maxSeries, sortedCostsDataSeries.length - 2);
+const slicedSeries = costsData.slice(0, maxSeries - 1);
+const groupedSeries = costsData.slice(maxSeries, costsData.length - 2);
 const otherData: MixedLineBarChartProps.Datum<string>[] = [];
 for (const series of groupedSeries) {
   for (const { x, y } of series.data) {
@@ -63,31 +39,37 @@ for (const series of groupedSeries) {
   }
 }
 
-const otherSeries: LineDataSeries = {
+const otherSeries: MixedLineBarChartProps.LineDataSeries<string> = {
   title: 'Others',
   type: 'line',
   valueFormatter: dollarFormatter,
   data: otherData,
 };
 
-const allSeries: ReadonlyArray<LineDataSeries> = [...slicedSeries, otherSeries];
+const allSeries: ReadonlyArray<MixedLineBarChartProps.LineDataSeries<string>> = [...slicedSeries, otherSeries];
 
 function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
-  const [highlightedSeries, setHighlightedSeries] = useState<LineDataSeries | null>(null);
-  const [visibleSeries, setVisibleSeries] = useState<LineDataSeries[] | null>(null);
+  const [highlightedSeries, setHighlightedSeries] = useState<MixedLineBarChartProps.LineDataSeries<string> | null>(
+    null
+  );
+  const [visibleSeries, setVisibleSeries] = useState<MixedLineBarChartProps.LineDataSeries<string>[] | null>(null);
   return (
     <LineChart
       {...commonProps}
       series={allSeries}
-      xDomain={rawCostsData.ResultsByTime.map(({ TimePeriod }) => TimePeriod.Start)}
+      xDomain={xDomain}
       xTitle="Time"
       yTitle="Costs"
       ariaLabel="Costs chart"
       xScaleType="categorical"
       ariaDescription={barChartInstructions}
       xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-      onHighlightChange={({ detail }) => setHighlightedSeries(detail.highlightedSeries as LineDataSeries)}
-      onFilterChange={({ detail }) => setVisibleSeries(detail.visibleSeries as LineDataSeries[])}
+      onHighlightChange={({ detail }) =>
+        setHighlightedSeries(detail.highlightedSeries as MixedLineBarChartProps.LineDataSeries<string>)
+      }
+      onFilterChange={({ detail }) =>
+        setVisibleSeries(detail.visibleSeries as MixedLineBarChartProps.LineDataSeries<string>[])
+      }
       detailPopoverSeriesContent={({ series, x, y }) => {
         const isOtherSeries = series === otherSeries;
         return {

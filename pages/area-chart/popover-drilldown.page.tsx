@@ -11,44 +11,20 @@ import rawCostsData from '../common/popover-drilldown-sample-data';
 import AreaChart, { AreaChartProps } from '~components/area-chart';
 import Link from '~components/link';
 
-interface AreaDataSeries {
-  type: 'area';
-  title: string;
-  data: AreaChartProps.Datum<string>[];
-  valueFormatter?: AreaChartProps.ValueFormatter<number, string>;
-}
-const costsDataSeries: AreaDataSeries[] = [];
+const costsData = rawCostsData.map(series => ({
+  ...series,
+  type: 'area',
+})) as AreaChartProps.AreaSeries<string>[];
+
+const xDomain = costsData[0].data.map(datum => datum.x);
 
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-for (const { Groups, TimePeriod } of rawCostsData.ResultsByTime) {
-  for (const group of Groups) {
-    let series = costsDataSeries.find(({ title }) => title === group.Keys[0]);
-    if (series) {
-      series.data.push({ x: TimePeriod.Start, y: Number(group.Metrics.UnblendedCost.Amount) });
-    } else {
-      series = {
-        title: group.Keys[0],
-        type: 'area',
-        data: [{ x: TimePeriod.Start, y: Number(group.Metrics.UnblendedCost.Amount) }],
-        valueFormatter: dollarFormatter,
-      };
-      costsDataSeries.push(series);
-    }
-  }
-}
-
-const sortedCostsDataSeries = [...costsDataSeries].sort((series1, series2) => {
-  const total1 = series1.data.reduce((acc, current) => acc + current.y, 0);
-  const total2 = series2.data.reduce((acc, current) => acc + current.y, 0);
-  return total2 - total1;
-});
-
 const maxSeries = 9;
 
-const slicedSeries = sortedCostsDataSeries.slice(0, maxSeries - 1);
-const groupedSeries = sortedCostsDataSeries.slice(maxSeries, sortedCostsDataSeries.length - 2);
+const slicedSeries = costsData.slice(0, maxSeries - 1);
+const groupedSeries = costsData.slice(maxSeries, costsData.length - 2);
 const otherData: AreaChartProps.Datum<string>[] = [];
 for (const series of groupedSeries) {
   for (const { x, y } of series.data) {
@@ -62,21 +38,21 @@ for (const series of groupedSeries) {
   }
 }
 
-const otherSeries: AreaDataSeries = {
+const otherSeries: AreaChartProps.AreaSeries<string> = {
   title: 'Others',
   type: 'area',
   valueFormatter: dollarFormatter,
   data: otherData,
 };
 
-const allSeries: ReadonlyArray<AreaDataSeries> = [...slicedSeries, otherSeries];
+const allSeries: ReadonlyArray<AreaChartProps.AreaSeries<string>> = [...slicedSeries, otherSeries];
 
 function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
   return (
     <AreaChart
       {...commonProps}
       series={allSeries}
-      xDomain={rawCostsData.ResultsByTime.map(({ TimePeriod }) => TimePeriod.Start)}
+      xDomain={xDomain}
       xTitle="Time"
       yTitle="Costs"
       ariaLabel="Costs chart"
