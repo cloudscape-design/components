@@ -4,17 +4,22 @@ import React from 'react';
 import { DrawerConfig as RuntimeDrawerConfig } from '../internal/plugins/controllers/drawers';
 import { RuntimeContentWrapper } from '../internal/plugins/helpers';
 import { sortByPriority } from '../internal/plugins/helpers/utils';
-import { PublicDrawer } from './interfaces';
+import { AppLayoutProps } from './interfaces';
 import { fireNonCancelableEvent } from '../internal/events';
 
 export interface DrawersLayout {
-  before: Array<PublicDrawer>;
-  after: Array<PublicDrawer>;
+  before: Array<AppLayoutProps.Drawer>;
+  after: Array<AppLayoutProps.Drawer>;
 }
 
 export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): DrawersLayout {
   const converted = drawers.map(
-    ({ mountContent, unmountContent, trigger, ...runtimeDrawer }): PublicDrawer & { orderPriority?: number } => ({
+    ({
+      mountContent,
+      unmountContent,
+      trigger,
+      ...runtimeDrawer
+    }): AppLayoutProps.Drawer & { orderPriority?: number } => ({
       ...runtimeDrawer,
       ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
       trigger: {

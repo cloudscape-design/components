@@ -8,12 +8,14 @@ import {
   manyDrawers,
   manyDrawersWithBadges,
   findActiveDrawerLandmark,
+  singleDrawerOpen,
+  singleDrawerPublic,
 } from './utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import { render } from '@testing-library/react';
-import AppLayout from '../../../lib/components/app-layout';
 import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
+import { render, act } from '@testing-library/react';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
@@ -26,7 +28,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 
 describeEachAppLayout(size => {
   test(`should not render drawer when it is not defined`, () => {
-    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" toolsHide={true} {...singleDrawer} />);
+    const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={singleDrawerPublic} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
@@ -39,21 +41,21 @@ describeEachAppLayout(size => {
         items: [],
       },
     };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...emptyDrawerItems} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(emptyDrawerItems as any)} />);
 
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     expect(wrapper.findToolsToggle()).toBeFalsy();
   });
 
   test('ignores tools when drawers API is used', () => {
-    const { wrapper } = renderComponent(<AppLayout tools="Test" {...singleDrawer} />);
+    const { wrapper } = renderComponent(<AppLayout tools="Test" drawers={singleDrawerPublic} />);
 
     expect(wrapper.findToolsToggle()).toBeFalsy();
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 
   test('should open active drawer on click of overflow item', () => {
-    const { container } = render(<AppLayout contentType="form" {...manyDrawers} />);
+    const { container } = render(<AppLayout contentType="form" {...(manyDrawers as any)} />);
     const wrapper = createWrapper(container).findAppLayout()!;
     const buttonDropdown = createWrapper(container).findButtonDropdown();
 
@@ -64,12 +66,12 @@ describeEachAppLayout(size => {
   });
 
   test('renders correct aria-label on overflow menu', () => {
-    const { container, rerender } = render(<AppLayout contentType="form" {...manyDrawers} />);
+    const { container, rerender } = render(<AppLayout contentType="form" {...(manyDrawers as any)} />);
     const buttonDropdown = createWrapper(container).findButtonDropdown();
 
     expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Overflow drawers');
 
-    rerender(<AppLayout contentType="form" {...manyDrawersWithBadges} />);
+    rerender(<AppLayout contentType="form" {...(manyDrawersWithBadges as any)} />);
     expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute(
       'aria-label',
       'Overflow drawers (Unread notifications)'
@@ -77,7 +79,7 @@ describeEachAppLayout(size => {
   });
 
   test('renders aria-labels', async () => {
-    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+    const { wrapper } = await renderComponent(<AppLayout drawers={singleDrawerPublic} />);
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
       'aria-label',
       'Security trigger button'
@@ -100,7 +102,7 @@ describeEachAppLayout(size => {
         ],
       },
     };
-    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...drawers} />);
+    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...(drawers as any)} />);
 
     wrapper.findDrawerTriggerById('security')!.click();
     expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
@@ -115,5 +117,18 @@ describeEachAppLayout(size => {
     } else {
       expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
     }
+  });
+
+  test('focuses drawer close button', () => {
+    let ref: AppLayoutProps.Ref | null = null;
+    const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} {...(singleDrawerOpen as any)} />);
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+    act(() => ref!.focusActiveDrawer());
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
+  });
+
+  test('registers public drawers api', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 });

@@ -47,7 +47,7 @@ const PlainList = (
     ref,
     () => (index: number) => {
       const item = menuRef.current?.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
-      if (highlightType === 'keyboard' && item) {
+      if (highlightType.moveFocus && item) {
         scrollElementIntoView(item);
       }
     },

@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { ButtonProps } from '../../button/interfaces';
-import { AppLayoutProps, PublicAriaLabelsWithDrawers, PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 import { ToggleButton, togglesConfig } from '../toggles';
 import OverflowMenu from '../drawer/overflow-menu';
 import styles from './styles.css.js';
@@ -54,12 +54,12 @@ interface MobileToolbarProps {
   navigationHide: boolean | undefined;
   toolsHide: boolean | undefined;
   topOffset?: number;
-  ariaLabels: PublicAriaLabelsWithDrawers | undefined;
+  ariaLabels: AppLayoutProps.Labels | undefined;
   mobileBarRef: React.Ref<HTMLDivElement>;
   children: React.ReactNode;
   onNavigationOpen: () => void;
   onToolsOpen: () => void;
-  drawers: Array<PublicDrawer> | undefined;
+  drawers: Array<AppLayoutProps.Drawer> | undefined;
   activeDrawerId: string | null;
   onDrawerChange: (newDrawerId: string | null) => void;
 }

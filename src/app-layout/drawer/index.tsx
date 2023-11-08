@@ -12,7 +12,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 import { splitItems } from './drawers-helpers';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
-import { PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -115,7 +115,11 @@ export const Drawer = React.forwardRef(
         >
           {!isMobile && !hideOpenButton && regularOpenButton}
           {resizeHandle}
-          <TagName aria-label={mainLabel} aria-hidden={!isOpen}>
+          <TagName
+            className={clsx(resizeHandle && styles['drawer-resize-content'])}
+            aria-label={mainLabel}
+            aria-hidden={!isOpen}
+          >
             <CloseButton
               ref={toggleRefs.close}
               className={closeClassName}
@@ -140,7 +144,7 @@ interface DrawerTriggerProps {
   badge: boolean | undefined;
   itemId?: string;
   isActive: boolean;
-  trigger: PublicDrawer['trigger'];
+  trigger: AppLayoutProps.Drawer['trigger'];
   onClick: (() => void) | undefined;
 }
 
@@ -182,11 +186,17 @@ export const DrawerTriggersBar = ({
   activeDrawerId,
   ariaLabels,
   drawers,
+  drawerRefs,
   onDrawerChange,
 }: DrawerTriggersBarProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerHeight, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxHeight);
   const isCompactMode = useDensityMode(containerRef) === 'compact';
+
+  if (activeDrawerId) {
+    previousActiveDrawerId.current = activeDrawerId;
+  }
 
   const getIndexOfOverflowItem = () => {
     if (containerHeight) {
@@ -235,6 +245,7 @@ export const DrawerTriggersBar = ({
                       item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
                     )}
                     ariaExpanded={activeDrawerId === item.id}
+                    ref={item.id === previousActiveDrawerId.current ? drawerRefs.toggle : undefined}
                     ariaLabel={item.ariaLabels?.triggerButton}
                     ariaControls={activeDrawerId === item.id ? item.id : undefined}
                     trigger={item.trigger}

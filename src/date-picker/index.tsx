@@ -89,6 +89,7 @@ const DatePicker = React.forwardRef(
 
     const onWrapperKeyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.keyCode === KeyCode.escape && isDropDownOpen) {
+        event.stopPropagation();
         buttonRef.current?.focus();
         setIsDropDownOpen(false);
       }

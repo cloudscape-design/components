@@ -4,10 +4,10 @@
 export type TableRole = 'table' | 'grid' | 'grid-default';
 
 export interface GridNavigationProps {
-  active: boolean;
+  keyboardNavigation: boolean;
+  suppressKeyboardNavigationFor?: string | ((focusedElement: HTMLElement) => boolean);
   pageSize: number;
   getTable: () => null | HTMLTableElement;
-  isSuppressed?: (focusedElement: HTMLElement) => void;
 }
 
 export interface FocusedCell {

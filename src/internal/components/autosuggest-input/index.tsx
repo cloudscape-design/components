@@ -171,8 +171,10 @@ const AutosuggestInput = React.forwardRef(
         }
         case KeyCode.escape: {
           if (open) {
+            event.stopPropagation();
             closeDropdown();
           } else if (value) {
+            event.stopPropagation();
             fireNonCancelableEvent(onChange, { value: '' });
           }
           event.preventDefault();

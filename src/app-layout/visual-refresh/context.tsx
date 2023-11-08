@@ -13,10 +13,9 @@ import React, {
 import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
-import { AppLayoutProps, PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import { DrawerFocusControlRefs, useDrawerFocusControl } from '../utils/use-drawer-focus-control';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { isDevelopment } from '../../internal/is-development';
 import { getSplitPanelPosition } from './split-panel';
@@ -30,16 +29,16 @@ import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
-import { useDrawers, UseDrawersProps } from '../utils/use-drawers';
+import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
-  drawers: Array<PublicDrawer> | undefined;
+  drawers: Array<AppLayoutProps.Drawer> | undefined;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersOverflowWithBadgeAriaLabel: string | undefined;
-  drawersRefs: DrawerFocusControlRefs;
+  drawersRefs: FocusControlRefs;
   drawerSize: number;
   drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
@@ -90,6 +89,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   splitPanelRefs: SplitPanelFocusControlRefs;
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
+  __embeddedViewMode?: boolean;
 }
 
 /**
@@ -128,6 +128,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     forwardRef: React.Ref<AppLayoutProps.Ref>
   ) => {
     const isMobile = useMobile();
+
+    // Private API for embedded view mode
+    const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
 
     if (isDevelopment) {
       if (controlledToolsOpen && toolsHide) {
@@ -370,7 +373,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(props as UseDrawersProps, props.ariaLabels, {
+    } = useDrawers(props, props.ariaLabels, {
       ariaLabels: props.ariaLabels,
       toolsHide,
       toolsOpen: isToolsOpen,
@@ -385,8 +388,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       refs: drawersRefs,
       setFocus: focusDrawersButtons,
       loseFocus: loseDrawersFocus,
-      setLastInteraction: setDrawerLastInteraction,
-    } = useDrawerFocusControl([activeDrawerId, activeDrawer?.resizable], true, true);
+    } = useFocusControl(!!activeDrawerId, true, activeDrawerId);
 
     const drawerRef = useRef<HTMLDivElement>(null);
     const { resizeHandle, drawerSize } = useResize(drawerRef, {
@@ -404,7 +406,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerChange(newActiveDrawerId);
 
       !skipFocusControl && focusDrawersButtons();
-      setDrawerLastInteraction({ type: activeDrawerId ? 'close' : 'open' });
     };
 
     let drawersTriggerCount = drawers ? drawers.length : !toolsHide ? 1 : 0;
@@ -487,17 +488,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * know if the notifications slot is empty.
      */
     const [notificationsContainerQuery, notificationsElement] = useContainerQuery(rect => rect.contentBoxHeight);
-    const [notificationsHeight, setNotificationsHeight] = useState(0);
-    const [hasNotificationsContent, setHasNotificationsContent] = useState(false);
 
-    useEffect(
-      function handleNotificationsContent() {
-        setNotificationsHeight(notificationsContainerQuery ?? 0);
-        setHasNotificationsContent(notificationsContainerQuery && notificationsContainerQuery > 0 ? true : false);
-      },
-      [notificationsContainerQuery]
-    );
-
+    const notificationsHeight = notificationsContainerQuery ?? 0;
+    const hasNotificationsContent = notificationsHeight > 0;
     /**
      * Determine the offsetBottom value based on the presence of a footer element and
      * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
@@ -588,10 +581,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             handleToolsClick(true);
           },
           focusToolsClose: () => focusToolsButtons(true),
+          focusActiveDrawer: () => focusDrawersButtons(true),
           focusSplitPanel: () => splitPanelRefs.slider.current?.focus(),
         };
       },
-      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, splitPanelRefs.slider]
+      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, focusDrawersButtons, splitPanelRefs.slider]
     );
 
     return (
@@ -664,6 +658,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
+          __embeddedViewMode,
         }}
       >
         <AppLayoutContext.Provider

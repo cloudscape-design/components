@@ -44,6 +44,7 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
           goEnd();
           break;
         case KeyCode.escape:
+          e.stopPropagation();
           closeDropdown();
           break;
         case KeyCode.enter:

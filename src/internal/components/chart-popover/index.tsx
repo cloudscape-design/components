@@ -44,6 +44,8 @@ export interface ChartPopoverProps extends PopoverProps {
   /** Fired when the pointer leaves the hoverable area around the popover */
   onMouseLeave?: (event: React.MouseEvent) => void;
 
+  onBlur?: (event: React.FocusEvent) => void;
+
   /** Popover content */
   children?: React.ReactNode;
 }
@@ -68,6 +70,7 @@ function ChartPopover(
 
     onMouseEnter,
     onMouseLeave,
+    onBlur,
 
     ...restProps
   }: ChartPopoverProps,
@@ -102,6 +105,7 @@ function ChartPopover(
       ref={popoverRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onBlur={onBlur}
     >
       <PopoverContainer
         size={size}

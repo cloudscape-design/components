@@ -384,6 +384,19 @@ describe('Details popover', () => {
     })
   );
 
+  test('can be hidden by moving focus away', () => {
+    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+      await page.keys(['Tab']);
+      expect(await page.getFocusedElementText()).toBe('Filter by Apples');
+      await page.keys(['Tab']);
+      expect(await page.getFocusedElementText()).toBe('Happiness');
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(false);
+    });
+  });
+
   test(
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',
     setupTest('#/light/line-chart/test', async page => {

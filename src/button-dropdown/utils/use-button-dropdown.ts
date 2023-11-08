@@ -161,6 +161,9 @@ export function useButtonDropdown({
         onReturnFocus();
         closeDropdown();
         event.preventDefault();
+        if (isOpen) {
+          event.stopPropagation();
+        }
         break;
       }
       case KeyCode.tab: {

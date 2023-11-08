@@ -61,7 +61,7 @@
 
   /* stylelint-disable-next-line selector-max-type */
   > a {
-    @include styles.link-inline;
+    @include styles.link-inline('body-s');
   }
 }
 

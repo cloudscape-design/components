@@ -10,6 +10,7 @@ import {
   renderComponent,
   singleDrawer,
   singleDrawerOpen,
+  singleDrawerPublic,
 } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
@@ -253,7 +254,7 @@ describeEachAppLayout(size => {
           items: singleDrawer.drawers.items,
         },
       };
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersClosed as any)} />);
 
       wrapper.findDrawerTriggerById('security')!.click();
 
@@ -268,7 +269,7 @@ describeEachAppLayout(size => {
           items: singleDrawer.drawers.items,
         },
       };
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersClosed as any)} />);
 
       // Chrome bubbles up events from specific elements inside <button>s.
       wrapper.findDrawerTriggerById('security')!.find('span')!.click();
@@ -286,7 +287,7 @@ describeEachAppLayout(size => {
         },
       };
 
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersOpen as any)} />);
 
       wrapper.findActiveDrawerCloseButton()!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
@@ -294,7 +295,7 @@ describeEachAppLayout(size => {
     });
 
     test('Renders aria-expanded only on toggle', () => {
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+      const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
 
       const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
       expect(drawerTrigger.getElement()).toHaveAttribute('aria-expanded', 'false');
@@ -307,7 +308,7 @@ describeEachAppLayout(size => {
     });
 
     test('Close button does have a label if it is defined', () => {
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawerOpen} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(singleDrawerOpen as any)} />);
 
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute(
         'aria-label',
@@ -323,14 +324,14 @@ describeEachAppLayout(size => {
         },
       };
 
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawersOpen as any)} />);
 
       expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-label');
     });
 
     test('Opens and closes drawer in uncontrolled mode', () => {
       // use content type with initial closed state for all drawers
-      const { wrapper } = renderComponent(<AppLayout contentType="form" {...singleDrawer} />);
+      const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
       expect(wrapper.findActiveDrawer()).toBeNull();
 
       wrapper.findDrawerTriggerById('security')!.find('span')!.click();

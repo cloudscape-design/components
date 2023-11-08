@@ -55,7 +55,7 @@
 
 .toggle {
   @include styles.styles-reset;
-  @include styles.link-default;
+  @include styles.link-default('body-m');
 
   display: flex;
   align-items: center;

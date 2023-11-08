@@ -60,6 +60,11 @@ $drawer-z-index-mobile: 1001;
   & > [aria-hidden='true'] {
     display: none;
   }
+  > .drawer-resize-content {
+    overflow: auto;
+    height: 100%;
+    position: relative;
+  }
 }
 
 .drawer-triggers-wrapper {

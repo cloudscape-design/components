@@ -16,6 +16,7 @@ import { throttle } from '../../internal/utils/throttle';
 import { useReaction } from '../async-store';
 import { useHeightMeasure } from '../../internal/hooks/container-queries/use-height-measure';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
@@ -273,10 +274,10 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
     };
 
     // A callback for svg blur to clear all highlights unless the popover is pinned.
-    const onSVGBlur = () => {
+    const onSVGBlur = (event: React.FocusEvent<Element>) => {
       // Pinned popover stays pinned even if the focus is lost.
       // If blur is not caused by the popover, forget the previously highlighted point.
-      if (!interactions.get().isPopoverPinned) {
+      if (!nodeBelongs(containerRef.current, event.relatedTarget) && !interactions.get().isPopoverPinned) {
         interactions.clearHighlight();
       }
     };

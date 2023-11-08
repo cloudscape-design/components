@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { togglesConfig } from '../toggles';
-import { PublicAriaLabelsWithDrawers, PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 import { IconProps } from '../../icon/interfaces';
 import { NonCancelableEventHandler } from '../../internal/events';
 
-import { DrawerFocusControlRefs } from '../utils/use-drawer-focus-control';
+import { FocusControlRefs } from '../utils/use-focus-control';
 
 export interface DesktopDrawerProps {
   id?: string;
@@ -39,22 +39,23 @@ export interface DesktopDrawerProps {
 }
 
 export interface ResizableDrawerProps extends DesktopDrawerProps {
-  activeDrawer?: PublicDrawer;
+  activeDrawer: AppLayoutProps.Drawer | undefined;
   onResize: (resizeDetail: { size: number; id: string }) => void;
   size: number;
   getMaxWidth: () => number;
-  refs: DrawerFocusControlRefs;
-  toolsContent?: React.ReactNode;
+  refs: FocusControlRefs;
+  toolsContent: React.ReactNode;
 }
 
 export interface DrawerTriggersBarProps {
   topOffset: number | undefined;
   bottomOffset: number | undefined;
   isMobile: boolean;
-  drawers: Array<PublicDrawer>;
+  drawers: Array<AppLayoutProps.Drawer>;
   activeDrawerId: string | null;
   onDrawerChange: (newDrawerId: string | null) => void;
-  ariaLabels: PublicAriaLabelsWithDrawers | undefined;
+  ariaLabels: AppLayoutProps['ariaLabels'];
+  drawerRefs: FocusControlRefs;
 }
 
 // Beta interfaces

@@ -1,22 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
-import {
-  AppLayout,
-  ContentLayout,
-  Header,
-  HelpPanel,
-  NonCancelableCustomEvent,
-  SpaceBetween,
-  SplitPanel,
-  Toggle,
-} from '~components';
+import React, { useState, useContext, useRef } from 'react';
+import { AppLayout, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle, Button } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 import AppContext, { AppContextType } from '../app/app-context';
 import styles from './styles.scss';
+import { drawerItems, drawerLabels } from './utils/drawers';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -26,134 +18,23 @@ type DemoContext = React.Context<
   }>
 >;
 
-const getAriaLabels = (title: string, badge: boolean) => {
-  return {
-    closeButton: `${title} close button`,
-    content: `${title}`,
-    triggerButton: `${title} trigger button${badge ? ' (Unread notifications)' : ''}`,
-    resizeHandle: `${title} resize handle`,
-  };
-};
-
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const hasDrawers = urlParams.hasDrawers ?? true;
   const disableContentPaddings = urlParams.disableContentPaddings ?? false;
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
 
-  const drawers = !hasDrawers
-    ? null
-    : {
-        drawers: {
-          ariaLabel: 'Drawers',
-          overflowAriaLabel: 'Overflow drawers',
-          overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
-          activeDrawerId: activeDrawerId,
-          items: [
-            {
-              ariaLabels: getAriaLabels('Security', false),
-              content: <Security />,
-              id: 'security',
-              resizable: true,
-              onResize: ({ detail: { size } }: { detail: { size: number } }) => {
-                // A drawer implementer may choose to listen to THEIR drawer's
-                // resize event,should they want to persist, or otherwise respond
-                // to their drawer being resized.
-                console.log('Security Drawer is now: ', size);
-              },
-              trigger: {
-                iconName: 'security',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Pro help', true),
-              content: <ProHelp />,
-              badge: true,
-              defaultSize: 600,
-              id: 'pro-help',
-              trigger: {
-                iconName: 'contact',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Links', false),
-              resizable: true,
-              defaultSize: 500,
-              content: <Links />,
-              id: 'links',
-              trigger: {
-                iconName: 'share',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Test 1', true),
-              content: <HelpPanel header={<h2>Test 1</h2>}>Test 1.</HelpPanel>,
-              badge: true,
-              id: 'test-1',
-              trigger: {
-                iconName: 'contact',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Test 2', false),
-              resizable: true,
-              defaultSize: 500,
-              content: <HelpPanel header={<h2>Test 2</h2>}>Test 2.</HelpPanel>,
-              id: 'test-2',
-              trigger: {
-                iconName: 'share',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Test 3', true),
-              content: <HelpPanel header={<h2>Test 3</h2>}>Test 3.</HelpPanel>,
-              badge: true,
-              id: 'test-3',
-              trigger: {
-                iconName: 'contact',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Test 4', false),
-              resizable: true,
-              defaultSize: 500,
-              content: <HelpPanel header={<h2>Test 4</h2>}>Test 4.</HelpPanel>,
-              id: 'test-4',
-              trigger: {
-                iconName: 'edit',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Test 5', false),
-              resizable: true,
-              defaultSize: 500,
-              content: <HelpPanel header={<h2>Test 5</h2>}>Test 5.</HelpPanel>,
-              id: 'test-5',
-              trigger: {
-                iconName: 'add-plus',
-              },
-            },
-            {
-              ariaLabels: getAriaLabels('Test 6', false),
-              resizable: true,
-              defaultSize: 500,
-              content: <HelpPanel header={<h2>Test 6</h2>}>Test 6.</HelpPanel>,
-              id: 'test-6',
-              trigger: {
-                iconName: 'call',
-              },
-            },
-          ],
-          onChange: (event: NonCancelableCustomEvent<string>) => {
-            setActiveDrawerId(event.detail);
-          },
-        },
-      };
+  function openDrawer(id: string) {
+    setActiveDrawerId(id);
+    appLayoutRef.current?.focusActiveDrawer();
+  }
 
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
-        ariaLabels={appLayoutLabels}
+        ref={appLayoutRef}
+        ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
@@ -173,6 +54,12 @@ export default function WithDrawers() {
                     Has Drawers
                   </Toggle>
                 </SpaceBetween>
+                <Button onClick={() => openDrawer('security')} data-testid="open-drawer-button">
+                  Open drawer
+                </Button>
+                <Button onClick={() => openDrawer('pro-help')} data-testid="open-drawer-button-2">
+                  Open second drawer
+                </Button>
               </SpaceBetween>
             }
           >
@@ -210,28 +97,10 @@ export default function WithDrawers() {
             </SpaceBetween>
           </SplitPanel>
         }
-        {...drawers}
+        drawers={hasDrawers ? drawerItems : undefined}
+        onDrawerChange={event => setActiveDrawerId(event.detail.activeDrawerId)}
+        activeDrawerId={activeDrawerId}
       />
     </ScreenshotArea>
   );
-}
-
-function Security() {
-  return (
-    <HelpPanel header={<h2>Security</h2>}>
-      <SpaceBetween size="l">
-        <div className={styles.contentPlaceholder} />
-        <div className={styles.contentPlaceholder} />
-        <div className={styles.contentPlaceholder} />
-      </SpaceBetween>
-    </HelpPanel>
-  );
-}
-
-function ProHelp() {
-  return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;
-}
-
-function Links() {
-  return <HelpPanel header={<h2>Links</h2>}>Here is a link.</HelpPanel>;
 }
