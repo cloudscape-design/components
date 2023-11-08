@@ -70,8 +70,8 @@
 .step-list {
   list-style: none;
   padding-block: 0;
-  padding-inline-start: 0;
-  padding-inline-end: awsui.$space-xxxs;
+  padding-inline-start: awsui.$space-xxxs;
+  padding-inline-end: 0;
 }
 
 .step:not(:first-child) {
