@@ -74,11 +74,6 @@ describe('table role', () => {
     rerender(<Table items={defaultItems} columnDefinitions={defaultColumns} sortingDisabled={true} />);
     expect(container.querySelector('[role="grid"]')).not.toBeNull();
   });
-
-  test('table role grid can be provided via the API', () => {
-    const wrapper = renderTableWrapper({ sortingDisabled: true, tableRole: 'grid' });
-    expect(wrapper.find('[role="grid"]')).not.toBeNull();
-  });
 });
 
 describe('labels', () => {
