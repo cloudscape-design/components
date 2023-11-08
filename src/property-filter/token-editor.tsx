@@ -157,12 +157,10 @@ function ValueInput({
 }: ValueInputProps) {
   const valueOptions = property
     ? filteringOptions
-        .filter(option => option.property === property)
-        .map(({ label, value }) => ({
-          label,
-          value,
-        }))
+        .filter(option => option.property?.propertyKey === property.propertyKey)
+        .map(({ label, value }) => ({ label, value }))
     : [];
+
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty);
   const asyncValueAutosuggestProps = property?.propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
