@@ -48,6 +48,8 @@ export interface HeaderProps extends BaseComponentProps {
   metadata?: React.ReactNode;
   actionsPosition?: 'top' | 'bottom';
   secondaryContent?: React.ReactNode;
+
+  colorMode?: 'default' | 'dark';
 }
 
 export namespace HeaderProps {

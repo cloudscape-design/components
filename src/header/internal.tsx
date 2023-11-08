@@ -14,6 +14,7 @@ import { InfoLinkLabelContext } from '../internal/context/info-link-label-contex
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
@@ -29,6 +30,7 @@ export default function InternalHeader({
   info,
   tags,
   subHeading,
+  colorMode = 'default',
   // metadata,
   actionsPosition = 'top',
   // secondaryContent,
@@ -74,7 +76,8 @@ export default function InternalHeader({
         styles[`root-variant-${variantOverride}`],
         isRefresh && styles.refresh,
         !actions && [styles[`root-no-actions`]],
-        description && [styles[`root-has-description`]]
+        description && [styles[`root-has-description`]],
+        colorMode === 'dark' && getVisualContextClassname('header')
       )}
       ref={__internalRootRef}
     >
