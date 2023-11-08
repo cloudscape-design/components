@@ -13,6 +13,15 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   warnOnce: jest.fn(),
 }));
 
+jest.mock('../../../lib/components/popover/utils/positions', () => ({
+  ...jest.requireActual('../../../lib/components/popover/utils/positions'),
+  calculatePosition: () => ({
+    internalPosition: 'top-right',
+    boundingOffset: { top: 100, left: 100, width: 200, height: 100 },
+  }),
+  getOffsetDimensions: () => ({ offsetWidth: 100, offsetHeight: 200 }),
+}));
+
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
 });

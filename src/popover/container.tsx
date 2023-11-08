@@ -7,7 +7,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { getContainingBlock } from '../internal/utils/dom';
 import { BoundingOffset, InternalPosition, Offset, PopoverProps } from './interfaces';
-import { calculatePosition } from './utils/positions';
+import { calculatePosition, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
@@ -78,7 +78,8 @@ export default function PopoverContainer({
 
       // If the popover body isn't being rendered for whatever reason (e.g. "display: none" or JSDOM),
       // or track does not belong to the document - bail on calculating dimensions.
-      if (popover.offsetWidth === 0 || popover.offsetHeight === 0 || !nodeContains(document.body, track)) {
+      const { offsetWidth, offsetHeight } = getOffsetDimensions(popover);
+      if (offsetWidth === 0 || offsetHeight === 0 || !nodeContains(document.body, track)) {
         return;
       }
 

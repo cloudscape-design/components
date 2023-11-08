@@ -275,3 +275,7 @@ export function calculatePosition({
 
   return { internalPosition, boundingOffset: optimisedOffset, scrollable };
 }
+
+export function getOffsetDimensions(element: HTMLElement) {
+  return { offsetHeight: element.offsetHeight, offsetWidth: element.offsetWidth };
+}
