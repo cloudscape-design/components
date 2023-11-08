@@ -350,11 +350,13 @@ const InternalMultiselect = React.forwardRef(
         </Dropdown>
         {showTokens && (
           <InternalTokenGroup
+            className={styles.tokens}
             alignment="horizontal"
             limit={tokenLimit}
             items={tokens}
             onDismiss={handleTokenDismiss}
             i18nStrings={tokenGroupI18nStrings}
+            disableOuterPadding={true}
           />
         )}
         <ScreenreaderOnly id={multiSelectAriaLabelId}>{ariaLabel}</ScreenreaderOnly>
