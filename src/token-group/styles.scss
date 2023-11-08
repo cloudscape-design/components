@@ -49,14 +49,15 @@
   flex-direction: column;
   gap: awsui.$space-xxs;
 }
+
 .token-box {
   block-size: 100%;
   border-block: awsui.$border-field-width solid constants.$token-border-color;
   border-inline: awsui.$border-field-width solid constants.$token-border-color;
   padding-block-start: styles.$control-padding-vertical;
   padding-block-end: styles.$control-padding-vertical;
-  padding-inline-start: awsui.$space-xxs;
-  padding-inline-end: styles.$control-padding-horizontal;
+  padding-inline-start: styles.$control-padding-horizontal;
+  padding-inline-end: awsui.$space-xxs;
   display: flex;
   align-items: flex-start;
   background: constants.$token-background;
