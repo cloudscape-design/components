@@ -13,15 +13,6 @@ export default {
       Estimated: false,
       Groups: [
         {
-          Keys: ['AWS CloudTrail'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS CodeArtifact'],
           Metrics: {
             UnblendedCost: {
@@ -31,28 +22,10 @@ export default {
           },
         },
         {
-          Keys: ['AWS CodeCommit'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS Config'],
           Metrics: {
             UnblendedCost: {
               Amount: '39.017',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS Glue'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -77,15 +50,6 @@ export default {
         },
         {
           Keys: ['AWS Secrets Manager'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon CloudFront'],
           Metrics: {
             UnblendedCost: {
               Amount: '0',
@@ -130,15 +94,6 @@ export default {
           },
         },
         {
-          Keys: ['Amazon Glacier'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0.0000000282',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['Amazon GuardDuty'],
           Metrics: {
             UnblendedCost: {
@@ -152,33 +107,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '0.500006',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Security Lake'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Notification Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Queue Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -239,15 +167,6 @@ export default {
           },
         },
         {
-          Keys: ['AWS CloudTrail'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS CodeArtifact'],
           Metrics: {
             UnblendedCost: {
@@ -257,28 +176,10 @@ export default {
           },
         },
         {
-          Keys: ['AWS CodeCommit'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS Config'],
           Metrics: {
             UnblendedCost: {
               Amount: '41.942',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS Glue'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -312,15 +213,6 @@ export default {
         },
         {
           Keys: ['AWS Security Hub'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon CloudFront'],
           Metrics: {
             UnblendedCost: {
               Amount: '0',
@@ -401,33 +293,6 @@ export default {
           },
         },
         {
-          Keys: ['Amazon Security Lake'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Notification Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Queue Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['Amazon Simple Storage Service'],
           Metrics: {
             UnblendedCost: {
@@ -483,28 +348,10 @@ export default {
           },
         },
         {
-          Keys: ['AWS CloudTrail'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS CodeArtifact'],
           Metrics: {
             UnblendedCost: {
               Amount: '0.081633169',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS CodeCommit'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -523,15 +370,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '40.059',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS Glue'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -577,15 +415,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '0.00594',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon CloudFront'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -654,33 +483,6 @@ export default {
           },
         },
         {
-          Keys: ['Amazon Security Lake'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Notification Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Queue Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['Amazon Simple Storage Service'],
           Metrics: {
             UnblendedCost: {
@@ -736,28 +538,10 @@ export default {
           },
         },
         {
-          Keys: ['AWS CloudTrail'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS CodeArtifact'],
           Metrics: {
             UnblendedCost: {
               Amount: '0.1098914517',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS CodeCommit'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -776,15 +560,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '39.597',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS Glue'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -844,15 +619,6 @@ export default {
           },
         },
         {
-          Keys: ['Amazon CloudFront'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['Amazon Cognito'],
           Metrics: {
             UnblendedCost: {
@@ -907,15 +673,6 @@ export default {
           },
         },
         {
-          Keys: ['Amazon Glacier'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0.0000000796',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['Amazon GuardDuty'],
           Metrics: {
             UnblendedCost: {
@@ -938,24 +695,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '0.5',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Notification Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Queue Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -1016,28 +755,10 @@ export default {
       Estimated: false,
       Groups: [
         {
-          Keys: ['AWS CloudTrail'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS CodeArtifact'],
           Metrics: {
             UnblendedCost: {
               Amount: '0.1315460384',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS CodeCommit'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -1056,15 +777,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '48.62',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS Glue'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -1119,15 +831,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '0.00891',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon CloudFront'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -1196,24 +899,6 @@ export default {
           },
         },
         {
-          Keys: ['Amazon Simple Notification Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Queue Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['Amazon Simple Storage Service'],
           Metrics: {
             UnblendedCost: {
@@ -1269,28 +954,10 @@ export default {
       Estimated: false,
       Groups: [
         {
-          Keys: ['AWS CloudTrail'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
           Keys: ['AWS CodeArtifact'],
           Metrics: {
             UnblendedCost: {
               Amount: '0.1405257787',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS CodeCommit'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -1309,15 +976,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '88.343',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['AWS Glue'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -1363,15 +1021,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '7.2',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon CloudFront'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
@@ -1435,24 +1084,6 @@ export default {
           Metrics: {
             UnblendedCost: {
               Amount: '0.5',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Notification Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
-              Unit: 'USD',
-            },
-          },
-        },
-        {
-          Keys: ['Amazon Simple Queue Service'],
-          Metrics: {
-            UnblendedCost: {
-              Amount: '0',
               Unit: 'USD',
             },
           },
