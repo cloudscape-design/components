@@ -80,7 +80,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'top-right': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top - body.height - arrow.height,
-      left: trigger.left,
+      left: trigger.left + trigger.width / 2 - ARROW_OFFSET - arrow.width / 2,
       width: body.width,
       height: body.height,
     };
@@ -88,7 +88,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'top-left': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top - body.height - arrow.height,
-      left: trigger.left + trigger.width - body.width,
+      left: trigger.left + trigger.width / 2 + ARROW_OFFSET + arrow.width / 2 - body.width,
       width: body.width,
       height: body.height,
     };
@@ -104,7 +104,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'bottom-right': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top + trigger.height + arrow.height,
-      left: trigger.left,
+      left: trigger.left + trigger.width / 2 - ARROW_OFFSET - arrow.width / 2,
       width: body.width,
       height: body.height,
     };
@@ -112,7 +112,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'bottom-left': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top + trigger.height + arrow.height,
-      left: trigger.left + trigger.width - body.width,
+      left: trigger.left + trigger.width / 2 + ARROW_OFFSET + arrow.width / 2 - body.width,
       width: body.width,
       height: body.height,
     };
