@@ -87,7 +87,7 @@ export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCe
   let focusTarget: null | HTMLElement = (firstTableCell && getFocusables(firstTableCell)[0]) ?? firstTableCell;
 
   // When a navigation-focused element is present in the table it is used for user-navigation instead.
-  if (cell && table.contains(cell.element)) {
+  if (cell && table.contains(cell.element) && isUserFocusable(cell.element)) {
     focusTarget = cell.element;
   }
 
@@ -229,4 +229,8 @@ function setTabIndex(element: null | HTMLElement, tabIndex: number) {
   if (element && element.tabIndex !== tabIndex) {
     element.tabIndex = tabIndex;
   }
+}
+
+function isUserFocusable(element: HTMLElement) {
+  return element.matches(FOCUSABLES_SELECTOR);
 }

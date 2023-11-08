@@ -25,9 +25,9 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
  */
 export function useGridNavigation({
   keyboardNavigation,
+  suppressKeyboardNavigationFor,
   pageSize,
   getTable,
-  suppressKeyboardNavigationFor,
 }: GridNavigationProps) {
   const gridNavigation = useMemo(() => new GridNavigationHelper(), []);
 

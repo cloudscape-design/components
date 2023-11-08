@@ -3,6 +3,14 @@
 import * as React from 'react';
 import { act, render, fireEvent } from '@testing-library/react';
 import Modal, { ModalProps } from '../../../lib/components/modal';
+import Select from '../../../lib/components/select';
+import Multiselect from '../../../lib/components/multiselect';
+import Autosuggest from '../../../lib/components/autosuggest';
+import DatePicker from '../../../lib/components/date-picker';
+import DateRangePicker from '../../../lib/components/date-range-picker';
+import ButtonDropdown from '../../../lib/components/button-dropdown';
+import Popover from '../../../lib/components/popover';
+import StatusIndicator from '../../../lib/components/status-indicator';
 import createWrapper, { ElementWrapper, ModalWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/modal/styles.css.js';
@@ -182,6 +190,181 @@ describe('Modal component', () => {
         createWrapper(textFieldRef!).keydown(KeyCode.escape);
       });
 
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child select opened', () => {
+      const onDismissSpy = jest.fn();
+      const select = (
+        <Select
+          selectedOption={{
+            label: 'Option 1',
+            value: '1',
+          }}
+          onChange={() => {}}
+          options={[
+            { label: 'Option 1', value: '1' },
+            { label: 'Option 2', value: '2' },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: select });
+      const selectWrapper = wrapper.findContent().findSelect()!;
+
+      act(() => selectWrapper.findTrigger()!.keydown(KeyCode.space));
+
+      act(() => selectWrapper.findDropdown().findOptionByValue('1')!.keydown(KeyCode.escape));
+      expect(selectWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child multiselect opened', () => {
+      const onDismissSpy = jest.fn();
+      const multiselect = (
+        <Multiselect
+          selectedOptions={[]}
+          onChange={() => {}}
+          options={[
+            { label: 'Option 1', value: '1' },
+            { label: 'Option 2', value: '2' },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: multiselect });
+      const multiselectWrapper = wrapper.findContent().findMultiselect()!;
+
+      act(() => multiselectWrapper.findTrigger()!.keydown(KeyCode.space));
+
+      act(() => multiselectWrapper.findDropdown().findOptionByValue('1')!.keydown(KeyCode.escape));
+      expect(multiselectWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child autosuggest opened', () => {
+      const onDismissSpy = jest.fn();
+      const autosuggest = (
+        <Autosuggest
+          value={'opt'}
+          onChange={() => {}}
+          options={[
+            { label: 'Option 1', value: '1' },
+            { label: 'Option 2', value: '2' },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: autosuggest });
+      const autosuggestWrapper = wrapper.findContent().findAutosuggest()!;
+
+      act(() => autosuggestWrapper.focus());
+
+      act(() => autosuggestWrapper.findNativeInput().keydown(KeyCode.escape));
+      expect(autosuggestWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child button dropdown opened', () => {
+      const onDismissSpy = jest.fn();
+      const buttonDropdown = (
+        <ButtonDropdown
+          items={[
+            { text: 'Delete', id: 'rm', disabled: false },
+            { text: 'Move', id: 'mv', disabled: false },
+          ]}
+        >
+          Short
+        </ButtonDropdown>
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: buttonDropdown });
+      const btnDropdownWrapper = wrapper.findContent().findButtonDropdown()!;
+
+      act(() => btnDropdownWrapper.findNativeButton().keydown(KeyCode.enter));
+      expect(btnDropdownWrapper.findOpenDropdown()).toBeTruthy();
+
+      act(() => btnDropdownWrapper.findItemById('rm')!.keydown(KeyCode.escape));
+      expect(btnDropdownWrapper.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child datepicker opened', () => {
+      const onDismissSpy = jest.fn();
+      const datePicker = <DatePicker onChange={() => {}} value={''} />;
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: datePicker });
+      const datePickerWrapper = wrapper.findContent().findDatePicker()!;
+
+      fireEvent.click(datePickerWrapper.findOpenCalendarButton().getElement());
+
+      act(() => datePickerWrapper.findCalendar()!.keydown(KeyCode.escape));
+      expect(datePickerWrapper.findCalendar()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child date range picker opened', () => {
+      const onDismissSpy = jest.fn();
+      const dateRangePicker = (
+        <DateRangePicker
+          onChange={() => {}}
+          value={null}
+          isValidRange={() => {
+            return { valid: true };
+          }}
+          relativeOptions={[
+            {
+              key: 'previous-5-minutes',
+              amount: 5,
+              unit: 'minute',
+              type: 'relative',
+            },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: dateRangePicker });
+      const dateRangePickerWrapper = wrapper.findContent().findDateRangePicker()!;
+
+      dateRangePickerWrapper.openDropdown();
+
+      act(() => dateRangePickerWrapper.findDropdown()!.findCancelButton()!.keydown(KeyCode.escape));
+      expect(dateRangePickerWrapper.findDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child popover opened', () => {
+      const onDismissSpy = jest.fn();
+      const popover = (
+        <Popover
+          header="Memory Error"
+          content="This instance contains insufficient memory. Stop the instance, choose a different instance type with more memory, and restart it."
+        >
+          <StatusIndicator>Error</StatusIndicator>
+        </Popover>
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: popover });
+      const popoverWrapper = wrapper.findContent().findPopover()!;
+
+      fireEvent.click(popoverWrapper.findTrigger().getElement());
+
+      act(() => popoverWrapper.findDismissButton()!.keydown(KeyCode.escape));
+      expect(popoverWrapper.findContent()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
       expect(onDismissSpy).toHaveBeenCalled();
     });
   });

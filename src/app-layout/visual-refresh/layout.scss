@@ -114,6 +114,10 @@ explicitly set in script.
     #{custom-props.$overlapHeight}: 0;
   }
 
+  &.is-hide-mobile-toolbar {
+    #{custom-props.$mobileBarHeight}: 0px;
+  }
+
   /*
   Warning! This is a hack! We are implementing a short term fix to prevent the
   tools drawer from potentially getting pushed off screen. Currently there is no

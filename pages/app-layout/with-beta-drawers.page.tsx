@@ -1,7 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext, useRef } from 'react';
-import { AppLayout, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle, Button } from '~components';
+
+// To-do: Delete this page once all instances of beta drawers is gone.
+import React, { useState, useContext } from 'react';
+import {
+  AppLayout,
+  ContentLayout,
+  Header,
+  NonCancelableCustomEvent,
+  SpaceBetween,
+  SplitPanel,
+  Toggle,
+} from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
@@ -23,18 +33,29 @@ export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const hasDrawers = urlParams.hasDrawers ?? true;
   const disableContentPaddings = urlParams.disableContentPaddings ?? false;
-  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
 
-  function openDrawer(id: string) {
-    setActiveDrawerId(id);
-    appLayoutRef.current?.focusActiveDrawer();
-  }
+  const betaDrawers = !hasDrawers
+    ? null
+    : {
+        drawers: {
+          ariaLabel: 'Drawers',
+          overflowAriaLabel: 'Overflow drawers',
+          overflowWithBadgeAriaLabel: 'Overflow drawers (Unread notifications)',
+          activeDrawerId: activeDrawerId,
+          items: drawerItems,
+          onResize: (event: NonCancelableCustomEvent<string>) => {
+            console.log(event.detail);
+          },
+          onChange: (event: NonCancelableCustomEvent<string>) => {
+            setActiveDrawerId(event.detail);
+          },
+        },
+      };
 
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
-        ref={appLayoutRef}
-        ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
+        ariaLabels={Object.assign(appLayoutLabels, drawerLabels)}
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
@@ -42,7 +63,7 @@ export default function WithDrawers() {
             header={
               <SpaceBetween size="m">
                 <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
-                  Testing Custom Drawers!
+                  Testing Beta Drawers!
                 </Header>
 
                 <SpaceBetween size="xs">
@@ -54,12 +75,6 @@ export default function WithDrawers() {
                     Has Drawers
                   </Toggle>
                 </SpaceBetween>
-                <Button onClick={() => openDrawer('security')} data-testid="open-drawer-button">
-                  Open drawer
-                </Button>
-                <Button onClick={() => openDrawer('pro-help')} data-testid="open-drawer-button-2">
-                  Open second drawer
-                </Button>
               </SpaceBetween>
             }
           >
@@ -97,9 +112,7 @@ export default function WithDrawers() {
             </SpaceBetween>
           </SplitPanel>
         }
-        drawers={hasDrawers ? drawerItems : undefined}
-        onDrawerChange={event => setActiveDrawerId(event.detail.activeDrawerId)}
-        activeDrawerId={activeDrawerId}
+        {...(betaDrawers as any)}
       />
     </ScreenshotArea>
   );

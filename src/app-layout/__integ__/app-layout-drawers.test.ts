@@ -57,6 +57,11 @@ class AppLayoutDrawersPage extends BasePageObject {
     const { width } = await this.getBoundingBox(wrapper.find('[data-test-id="content"]').toSelector());
     return width;
   }
+
+  async getResizeHandlePosition() {
+    const position = await this.getBoundingBox(wrapper.findActiveDrawerResizeHandle().toSelector());
+    return position;
+  }
 }
 
 interface SetupTestOptions {
@@ -197,6 +202,17 @@ for (const visualRefresh of ['true', 'false']) {
           );
         }
       )
+    );
+
+    test(
+      'scrolling drawer does not affect resize handle position',
+      setupTest({}, async page => {
+        await page.openFirstDrawer();
+        const resizeHandleBefore = await page.getResizeHandlePosition();
+        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+        const resizeHandleAfter = await page.getResizeHandlePosition();
+        await expect(resizeHandleAfter).toEqual(resizeHandleBefore);
+      })
     );
   });
 }

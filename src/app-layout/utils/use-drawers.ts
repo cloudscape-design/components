@@ -4,11 +4,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { BetaDrawersProps } from '../drawer/interfaces';
 import { useControllable } from '../../internal/hooks/use-controllable';
-import { fireNonCancelableEvent, NonCancelableCustomEvent, NonCancelableEventHandler } from '../../internal/events';
+import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../../internal/events';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
-import { AppLayoutProps, PublicAriaLabelsWithDrawers, PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 import { togglesConfig } from '../toggles';
 
 export const TOOLS_DRAWER_ID = 'awsui-internal-tools';
@@ -22,7 +22,7 @@ interface ToolsProps {
   ariaLabels: AppLayoutProps.Labels | undefined;
 }
 
-function getToolsDrawerItem(props: ToolsProps): PublicDrawer | null {
+function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
   if (props.toolsHide) {
     return null;
   }
@@ -83,7 +83,7 @@ function isBetaDrawers(drawers: unknown): drawers is BetaDrawersProps {
 function convertBetaApi(drawers: BetaDrawersProps, ariaLabels: AppLayoutProps['ariaLabels']) {
   return {
     drawers: drawers.items.map(
-      (betaDrawer): PublicDrawer => ({
+      (betaDrawer): AppLayoutProps.Drawer => ({
         ...betaDrawer,
         ariaLabels: { drawerName: betaDrawer.ariaLabels?.content ?? '', ...betaDrawer.ariaLabels },
         onResize: event => {
@@ -117,18 +117,20 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
   return drawers;
 }
 
-export interface UseDrawersProps {
-  drawers: Array<PublicDrawer>;
+type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
-}
+};
 
 export function useDrawers(
-  { drawers, __disableRuntimeDrawers: disableRuntimeDrawers }: UseDrawersProps,
-  ariaLabels: PublicAriaLabelsWithDrawers | undefined,
+  {
+    drawers,
+    activeDrawerId: controlledActiveDrawerId,
+    onDrawerChange,
+    __disableRuntimeDrawers: disableRuntimeDrawers,
+  }: UseDrawersProps,
+  ariaLabels: AppLayoutProps['ariaLabels'],
   toolsProps: ToolsProps
 ) {
-  let controlledActiveDrawerId = undefined;
-  let onDrawerChange: NonCancelableEventHandler<{ activeDrawerId: string | null }> = () => {};
   if (isBetaDrawers(drawers)) {
     ({ drawers, controlledActiveDrawerId, onDrawerChange, ariaLabels } = convertBetaApi(drawers, ariaLabels));
   }

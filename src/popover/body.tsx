@@ -45,6 +45,7 @@ export default function PopoverBody({
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.keyCode === KeyCode.escape) {
+        event.stopPropagation();
         onDismiss();
       }
     },

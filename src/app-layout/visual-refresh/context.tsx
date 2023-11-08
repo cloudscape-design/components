@@ -13,7 +13,7 @@ import React, {
 import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
-import { AppLayoutProps, PublicDrawer } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
@@ -29,12 +29,12 @@ import useResize from '../utils/use-resize';
 import styles from './styles.css.js';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
-import { useDrawers, UseDrawersProps } from '../utils/use-drawers';
+import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
-  drawers: Array<PublicDrawer> | undefined;
+  drawers: Array<AppLayoutProps.Drawer> | undefined;
   drawersAriaLabel: string | undefined;
   drawersOverflowAriaLabel: string | undefined;
   drawersOverflowWithBadgeAriaLabel: string | undefined;
@@ -89,6 +89,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   splitPanelRefs: SplitPanelFocusControlRefs;
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
+  __embeddedViewMode?: boolean;
 }
 
 /**
@@ -127,6 +128,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     forwardRef: React.Ref<AppLayoutProps.Ref>
   ) => {
     const isMobile = useMobile();
+
+    // Private API for embedded view mode
+    const __embeddedViewMode = Boolean((props as any).__embeddedViewMode);
 
     if (isDevelopment) {
       if (controlledToolsOpen && toolsHide) {
@@ -369,7 +373,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(props as UseDrawersProps, props.ariaLabels, {
+    } = useDrawers(props, props.ariaLabels, {
       ariaLabels: props.ariaLabels,
       toolsHide,
       toolsOpen: isToolsOpen,
@@ -654,6 +658,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
+          __embeddedViewMode,
         }}
       >
         <AppLayoutContext.Provider

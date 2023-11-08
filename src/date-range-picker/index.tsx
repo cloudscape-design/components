@@ -146,6 +146,9 @@ const DateRangePicker = React.forwardRef(
 
     const onWrapperKeyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.keyCode === KeyCode.escape) {
+        if (isDropDownOpen) {
+          event.stopPropagation();
+        }
         closeDropdown(true);
       }
     };

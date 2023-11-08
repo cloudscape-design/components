@@ -38,7 +38,7 @@ import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolki
 import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../i18n/context';
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
-import { TOOLS_DRAWER_ID, useDrawers, UseDrawersProps } from './utils/use-drawers';
+import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { togglesConfig } from './toggles';
 
@@ -61,6 +61,9 @@ const AppLayout = React.forwardRef(
       tools: i18n('ariaLabels.tools', rest.ariaLabels?.tools),
       toolsClose: i18n('ariaLabels.toolsClose', rest.ariaLabels?.toolsClose),
       toolsToggle: i18n('ariaLabels.toolsToggle', rest.ariaLabels?.toolsToggle),
+      drawers: i18n('ariaLabels.drawers', rest.ariaLabels?.drawers),
+      drawersOverflow: i18n('ariaLabels.drawersOverflow', rest.ariaLabels?.drawersOverflow),
+      drawersOverflowWithBadge: i18n('ariaLabels.drawersOverflowWithBadge', rest.ariaLabels?.drawersOverflowWithBadge),
     };
 
     // This re-builds the props including the default values
@@ -110,7 +113,10 @@ const OldAppLayout = React.forwardRef(
       onSplitPanelToggle,
       onNavigationChange,
       onToolsChange,
-      ...props
+      drawers: controlledDrawers,
+      onDrawerChange,
+      activeDrawerId: controlledActiveDrawerId,
+      ...rest
     }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
@@ -122,6 +128,9 @@ const OldAppLayout = React.forwardRef(
         );
       }
     }
+
+    // Private API for embedded view mode
+    const __embeddedViewMode = Boolean((rest as any).__embeddedViewMode);
 
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
@@ -154,14 +163,24 @@ const OldAppLayout = React.forwardRef(
       ariaLabelsWithDrawers,
       onActiveDrawerChange,
       onActiveDrawerResize,
-    } = useDrawers(props as UseDrawersProps, ariaLabels, {
+    } = useDrawers(
+      {
+        drawers: controlledDrawers,
+        onDrawerChange,
+        activeDrawerId: controlledActiveDrawerId,
+        ...rest,
+      },
       ariaLabels,
-      tools,
-      toolsOpen,
-      toolsHide,
-      toolsWidth,
-      onToolsToggle,
-    });
+      {
+        ariaLabels,
+        tools,
+        toolsOpen,
+        toolsHide,
+        toolsWidth,
+        onToolsToggle,
+      }
+    );
+    ariaLabels = ariaLabelsWithDrawers;
     const hasDrawers = !!drawers;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
@@ -491,12 +510,12 @@ const OldAppLayout = React.forwardRef(
         ref={rootRef}
         style={contentHeightStyle}
       >
-        {isMobile && (!toolsHide || !navigationHide || breadcrumbs) && (
+        {isMobile && !__embeddedViewMode && (!toolsHide || !navigationHide || breadcrumbs) && (
           <MobileToolbar
             anyPanelOpen={anyPanelOpen}
             toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}
             topOffset={headerHeight}
-            ariaLabels={ariaLabelsWithDrawers}
+            ariaLabels={ariaLabels}
             navigationHide={navigationHide}
             toolsHide={toolsHide}
             onNavigationOpen={() => onNavigationToggle(true)}
@@ -698,7 +717,7 @@ const OldAppLayout = React.forwardRef(
                 }
                 onActiveDrawerChange(newDrawerId);
               }}
-              ariaLabels={ariaLabelsWithDrawers}
+              ariaLabels={ariaLabels}
             />
           )}
         </div>
