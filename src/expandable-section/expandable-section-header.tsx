@@ -132,7 +132,7 @@ const ExpandableHeaderTextWrapper = ({
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const hasInteractiveElements = isContainer && (headerInfo || headerActions);
+  const restrictClickableArea = variant === 'compact' || (isContainer && (headerInfo || headerActions));
   const listeners = { onClick, onKeyDown, onKeyUp };
 
   const description = variantSupportsDescription(variant) && headerDescription && (
@@ -143,7 +143,7 @@ const ExpandableHeaderTextWrapper = ({
 
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
-  const headerButtonListeners = hasInteractiveElements ? listeners : undefined;
+  const headerButtonListeners = restrictClickableArea ? listeners : undefined;
   // For the default and footer variants with description,
   // include also the immediate wrapper around it to include the entire row for backwards compatibility,
   // but exclude the description.
