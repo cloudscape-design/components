@@ -30,8 +30,8 @@ $border-radius: awsui.$border-radius-item;
   display: flex;
   align-items: flex-start;
   padding-block: awsui.$space-xs;
-  padding-inline-start: awsui.$space-scaled-xs;
-  padding-inline-end: 0;
+  padding-inline-start: 0;
+  padding-inline-end: awsui.$space-scaled-xs;
   background-color: awsui.$color-background-container-content;
   border-radius: $border-radius;
 }

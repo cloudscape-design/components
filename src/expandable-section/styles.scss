@@ -120,8 +120,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
     @include focus-visible.when-visible {
       // HACK: Remediate focus border
-      padding-block: container.$header-focus-visible-padding;
-      padding-inline: container.$header-focus-visible-padding;
+      padding-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
+      padding-inline: calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
     }
   }
 

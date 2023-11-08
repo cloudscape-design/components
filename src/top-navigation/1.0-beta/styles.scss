@@ -20,8 +20,8 @@
     box-sizing: border-box;
     block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
     padding-block: 0;
-    padding-inline-start: 0;
-    padding-inline-end: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
+    padding-inline-end: 0;
   }
 
   &.medium > .padding-box,
@@ -32,8 +32,8 @@
   &.narrow > .padding-box {
     block-size: awsui.$space-xxxl;
     padding-block: 0;
-    padding-inline-start: 0;
-    padding-inline-end: awsui.$space-xs;
+    padding-inline-start: awsui.$space-xs;
+    padding-inline-end: 0;
   }
 }
 

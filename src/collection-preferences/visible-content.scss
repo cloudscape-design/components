@@ -34,8 +34,8 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   flex-wrap: nowrap;
   justify-content: space-between;
   padding-block: awsui.$space-xs;
-  padding-inline-start: 0px;
-  padding-inline-end: awsui.$space-scaled-l;
+  padding-inline-start: awsui.$space-scaled-l;
+  padding-inline-end: 0px;
   border-block-end: $border;
   &:last-child {
     border-block-end: none;

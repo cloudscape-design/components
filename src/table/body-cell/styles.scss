@@ -197,15 +197,15 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   }
 
   &-editor {
-    padding-block-start: 0;
-    padding-inline-start: $edit-button-padding-right;
-    padding-inline-end: 0;
+    padding-block: 0;
+    padding-inline-start: 0;
+    padding-inline-end: $edit-button-padding-right;
   }
 
   &-success {
     padding-block: 0;
-    padding-inline-start: $success-icon-padding-right;
-    padding-inline-end: 0;
+    padding-inline-start: 0;
+    padding-inline-end: $success-icon-padding-right;
   }
 
   &-success,

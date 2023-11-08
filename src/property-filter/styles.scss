@@ -96,7 +96,7 @@
 .results {
   // Align with the filter input's vertical padding and border sizes.
   padding-block: calc(#{styles.$control-padding-vertical} + #{styles.$control-border-width});
-  padding-inline: 0;
+  padding-inline: calc(#{styles.$control-padding-vertical} + #{styles.$control-border-width});
 }
 
 .token-trigger {
