@@ -126,8 +126,8 @@
     border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     margin-block-start: 0;
     margin-block-end: awsui.$space-scaled-l;
-    margin-inline-start: calc(-1 * #{awsui.$space-panel-side-right});
-    margin-inline-end: calc(-1 * #{awsui.$space-panel-side-left});
+    margin-inline-end: calc(-1 * #{awsui.$space-panel-side-right});
+    margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
 
     h2,
     h3,
