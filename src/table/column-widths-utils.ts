@@ -11,6 +11,19 @@ export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.Co
   }
 }
 
+export function setElementWidth(element: undefined | HTMLElement, width: undefined | number | string) {
+  let widthCssValue = '';
+  if (typeof width === 'number') {
+    widthCssValue = width + 'px';
+  }
+  if (typeof width === 'string') {
+    widthCssValue = width;
+  }
+  if (element && element.style.width !== widthCssValue) {
+    element.style.width = widthCssValue;
+  }
+}
+
 function checkProperty(column: TableProps.ColumnDefinition<any>, name: 'width' | 'minWidth') {
   const value = column[name];
   if (typeof value !== 'number' && typeof value !== 'undefined') {

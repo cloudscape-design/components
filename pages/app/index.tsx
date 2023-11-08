@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Suspense, useContext, useEffect } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
@@ -82,11 +82,10 @@ const { visualRefresh } = parseQuery(history.location.search);
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh;
 
-render(
+createRoot(document.getElementById('app')!).render(
   <HashRouter>
     <AppContextProvider>
       <App />
     </AppContextProvider>
-  </HashRouter>,
-  document.getElementById('app')
+  </HashRouter>
 );

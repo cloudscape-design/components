@@ -87,7 +87,7 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { columnWidths, stretchLastColumn, updateColumn, setCell } = useColumnWidths();
+    const { columnWidths, updateColumn, setCell } = useColumnWidths();
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -129,24 +129,12 @@ const Thead = React.forwardRef(
 
           {columnDefinitions.map((column, colIndex) => {
             const columnId = getColumnKey(column, colIndex);
-
-            let widthOverride;
-            if (resizableColumns) {
-              if (columnWidths) {
-                // use stateful value if available
-                widthOverride = columnWidths[columnId];
-              }
-              if (colIndex === columnDefinitions.length - 1 && stretchLastColumn) {
-                // let the last column grow and fill the container width
-                widthOverride = 'auto';
-              }
-            }
             return (
               <TableHeaderCell
                 key={columnId}
                 className={headerCellClass}
                 style={{
-                  width: widthOverride || column.width,
+                  width: column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
                 }}
