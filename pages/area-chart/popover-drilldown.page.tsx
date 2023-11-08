@@ -97,7 +97,7 @@ function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
                   if (datum) {
                     return {
                       key: (
-                        <Link external={true} href="#">
+                        <Link external={true} ariaLabel={`${series.title}: ${childSeries.title}`} href="#">
                           {childSeries.title}
                         </Link>
                       ),

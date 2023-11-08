@@ -107,7 +107,7 @@ function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
                   if (datum && datum.y >= 0.005) {
                     return {
                       key: (
-                        <Link external={true} href="#">
+                        <Link external={true} ariaLabel={`${series.title}: ${childSeries.title}`} href="#">
                           {childSeries.title}
                         </Link>
                       ),
