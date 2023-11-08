@@ -88,7 +88,7 @@
     margin-inline-start: 0;
     margin-inline-end: awsui.$space-grid-gutter;
     padding-block: awsui.$space-card-vertical;
-    padding-inline: awsui.$space-card-vertical;
+    padding-inline: awsui.$space-card-horizontal;
     @include styles.container-shadow;
     inline-size: 100%;
     min-inline-size: 0;
