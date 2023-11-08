@@ -32,7 +32,7 @@ export interface PopoverContainerProps {
   size: PopoverProps.Size;
   fixedWidth: boolean;
   variant?: 'annotation';
-  freezePositionOnResize?: boolean;
+  keepPositionOnResize?: boolean;
 }
 
 const INITIAL_STYLES: CSSProperties = { position: 'absolute', top: -9999, left: -9999 };
@@ -48,7 +48,7 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
-  freezePositionOnResize,
+  keepPositionOnResize,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -64,7 +64,7 @@ export default function PopoverContainer({
 
   // Updates the position handler.
   const updatePositionHandler = useCallback(
-    (freezePosition = false) => {
+    (keepPosition = false) => {
       if (!trackRef.current || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
         return;
       }
@@ -120,7 +120,7 @@ export default function PopoverContainer({
         boundingOffset,
       } = calculatePosition({
         preferredPosition: position,
-        internalPosition: freezePosition && internalPositionRef.current ? internalPositionRef.current : undefined,
+        internalPosition: keepPosition && internalPositionRef.current ? internalPositionRef.current : undefined,
         trigger: trackRect,
         arrow: arrowRect,
         body: contentBoundingBox,
@@ -172,7 +172,7 @@ export default function PopoverContainer({
 
   // Recalculate position when content size changes.
   useResizeObserver(contentRef, () => {
-    updatePositionHandler(freezePositionOnResize);
+    updatePositionHandler(keepPositionOnResize);
   });
 
   // Recalculate position on DOM events.
