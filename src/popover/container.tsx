@@ -54,9 +54,9 @@ export default function PopoverContainer({
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
+  const internalPositionRef = useRef<InternalPosition | null>(null);
 
   const [popoverStyle, setPopoverStyle] = useState<CSSProperties>(INITIAL_STYLES);
-  const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
@@ -118,15 +118,16 @@ export default function PopoverContainer({
         scrollable,
         internalPosition: newInternalPosition,
         boundingOffset,
-      } = calculatePosition(
-        position,
-        trackRect,
-        arrowRect,
-        contentBoundingBox,
-        containingBlock ? containingBlockRect : getDocumentRect(document),
-        viewportRect,
-        renderWithPortal
-      );
+      } = calculatePosition({
+        preferredPosition: position,
+        internalPosition: freezePosition && internalPositionRef.current ? internalPositionRef.current : undefined,
+        trigger: trackRect,
+        arrow: arrowRect,
+        body: contentBoundingBox,
+        container: containingBlock ? containingBlockRect : getDocumentRect(document),
+        viewport: viewportRect,
+        renderWithPortal,
+      });
 
       // Get the position of the popover relative to the offset parent.
       const popoverOffset = toRelativePosition(boundingOffset, containingBlockRect);
@@ -147,21 +148,19 @@ export default function PopoverContainer({
       }
 
       // Position the popover
-      if (!freezePosition) {
-        setInternalPosition(newInternalPosition);
-        setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
+      internalPositionRef.current = newInternalPosition;
+      setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
 
-        positionHandlerRef.current = () => {
-          const newTrackOffset = toRelativePosition(
-            track.getBoundingClientRect(),
-            containingBlock ? containingBlock.getBoundingClientRect() : viewportRect
-          );
-          setPopoverStyle({
-            top: newTrackOffset.top + trackRelativeOffset.top,
-            left: newTrackOffset.left + trackRelativeOffset.left,
-          });
-        };
-      }
+      positionHandlerRef.current = () => {
+        const newTrackOffset = toRelativePosition(
+          track.getBoundingClientRect(),
+          containingBlock ? containingBlock.getBoundingClientRect() : viewportRect
+        );
+        setPopoverStyle({
+          top: newTrackOffset.top + trackRelativeOffset.top,
+          left: newTrackOffset.left + trackRelativeOffset.left,
+        });
+      };
     },
     [position, trackRef, renderWithPortal]
   );
@@ -216,10 +215,10 @@ export default function PopoverContainer({
     >
       <div
         ref={arrowRef}
-        className={clsx(styles[`container-arrow`], styles[`container-arrow-position-${internalPosition}`])}
+        className={clsx(styles[`container-arrow`], styles[`container-arrow-position-${internalPositionRef.current}`])}
         aria-hidden={true}
       >
-        {arrow(internalPosition)}
+        {arrow(internalPositionRef.current)}
       </div>
 
       <div
