@@ -4,7 +4,6 @@ import React, { ReactNode, memo } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import InternalBox from '../../../box/internal';
 
 import ChartSeriesMarker from '../chart-series-marker';
 import styles from './styles.css.js';
@@ -30,15 +29,18 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             className={clsx({
               [styles.dimmed]: isDimmed,
               [styles['list-item']]: true,
-              [styles.expandable]: expandable,
             })}
           >
             {subItems?.length && expandable ? (
               <div className={styles['key-value-pair']}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                 <div style={{ width: '100%' }}>
-                  <InternalExpandableSection variant="compact" headerText={key} headerActions={<Value value={value} />}>
-                    <SubItems subItems={subItems} />
+                  <InternalExpandableSection
+                    variant="compact"
+                    headerText={key}
+                    headerActions={<span className={styles.value}>{value}</span>}
+                  >
+                    <SubItems items={subItems} expandable={expandable} />
                   </InternalExpandableSection>
                 </div>
               </div>
@@ -49,9 +51,9 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                     {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                     <span>{key}</span>
                   </div>
-                  <Value value={value} />
+                  <span className={styles.value}>{value}</span>
                 </div>
-                {subItems && <SubItems subItems={subItems} />}
+                {subItems && <SubItems items={subItems} />}
               </>
             )}
           </li>
@@ -61,21 +63,19 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
   );
 }
 
-function Value({ value }: { value: ReactNode }) {
+function SubItems({
+  items,
+  expandable,
+}: {
+  items: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+  expandable?: boolean;
+}) {
   return (
-    <InternalBox textAlign="right" className={styles.value}>
-      {value}
-    </InternalBox>
-  );
-}
-
-function SubItems({ subItems }: { subItems: ReadonlyArray<{ key: ReactNode; value: ReactNode }> }) {
-  return (
-    <ul className={styles['sub-items']}>
-      {subItems.map(({ key, value }, index) => (
+    <ul className={clsx(styles['sub-items'], expandable && styles.expandable)}>
+      {items.map(({ key, value }, index) => (
         <li key={index} className={styles['inner-list-item']}>
           <span className={styles.key}>{key}</span>
-          <Value value={value} />
+          <span className={styles.value}>{value}</span>
         </li>
       ))}
     </ul>

@@ -12,16 +12,39 @@
 }
 
 .value {
-  /* used in test-utils */
+  text-align: right;
 }
 
+.list-item,
 .inner-list-item {
+  list-style: none;
+}
+
+.inner-list-item > .key {
+  margin-right: awsui.$space-l;
+}
+
+.inner-list-item,
+.list-item > .key-value-pair {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  width: 100%;
+  > .key {
+    display: inline-flex;
+  }
 }
 
 .sub-items {
-  padding-left: 0;
+  &:not(.expandable) {
+    padding-left: awsui.$space-l;
+  }
+  &.expandable {
+    padding-left: 0;
+    > .inner-list-item > .value {
+      white-space: nowrap;
+    }
+  }
 }
 
 .list {
@@ -32,26 +55,12 @@
   flex-direction: column;
 
   > .list-item {
-    list-style: none;
-    > .key-value-pair {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
+    > .key-value-pair > .key {
+      align-items: flex-start;
+      margin-right: awsui.$space-xxl;
+      color: awsui.$color-text-group-label;
+    }
 
-      > .key {
-        display: inline-flex;
-        align-items: flex-start;
-        color: awsui.$color-text-group-label;
-      }
-    }
-    &:not(.expandable) {
-      > .key-value-pair > .key {
-        margin-right: awsui.$space-xxl;
-      }
-      > .sub-items {
-        padding-left: awsui.$space-l;
-      }
-    }
     &.dimmed {
       opacity: 0.35;
     }
