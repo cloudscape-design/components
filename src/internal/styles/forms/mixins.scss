@@ -76,7 +76,6 @@
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
   outline: 2px dotted transparent;
-
   border-block: constants.$control-border-width solid awsui.$color-border-item-focused;
   border-inline: constants.$control-border-width solid awsui.$color-border-item-focused;
   border-radius: $border-radius;
@@ -172,7 +171,10 @@
     content: '';
     position: absolute;
     z-index: 1;
-    inset: -1px 0px;
+    inset-block-start: -1px;
+    inset-block-end: 0px;
+    inset-inline-start: 0px;
+    inset-inline-end: 0px;
     background-color: transparent;
     border-block: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
     border-inline: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
