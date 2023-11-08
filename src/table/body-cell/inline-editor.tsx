@@ -105,7 +105,7 @@ export function InlineEditor<ItemType>({
   } = column.editConfig!;
 
   return (
-    <FocusLock autoFocus={true} restoreFocus={true} ref={focusLockRef}>
+    <FocusLock restoreFocus={true} ref={focusLockRef}>
       <div
         role="dialog"
         ref={clickAwayRef}

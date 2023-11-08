@@ -91,9 +91,7 @@ export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCe
     focusTarget = cell.element;
   }
 
-  if (focusTarget && focusTarget.tabIndex === PSEUDO_FOCUSABLE_TAB_INDEX) {
-    setTabIndex(focusTarget, 0);
-  }
+  setTabIndex(focusTarget, 0);
 }
 
 /**
