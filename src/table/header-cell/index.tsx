@@ -86,7 +86,9 @@ export function TableHeaderCell<ItemType>({
 
   return (
     <TableThElement
-      className={className}
+      className={clsx(className, {
+        [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
+      })}
       style={style}
       cellRef={cellRef}
       sortingStatus={sortingStatus}
@@ -101,9 +103,7 @@ export function TableHeaderCell<ItemType>({
     >
       <div
         data-focus-id={`sorting-control-${String(columnId)}`}
-        className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
-        })}
+        className={styles['header-cell-content']}
         aria-label={
           column.ariaLabel && !sortingDisabled
             ? column.ariaLabel({
