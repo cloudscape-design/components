@@ -143,6 +143,7 @@ export default function () {
           }
           detailPopoverSeriesContent={({ series, x, y }) => {
             const isOtherSeries = series === otherSeries;
+            const formattedValue = dollarFormatter(y);
             return {
               expandable: urlParams.expandableSubItems && isOtherSeries,
               key:
@@ -155,15 +156,18 @@ export default function () {
                 ),
               value:
                 urlParams.useLinks === 'values' ? (
-                  <Link external={true}>{dollarFormatter(y)}</Link>
+                  <Link external={true} ariaLabel={`${series.title}: ${formattedValue}`}>
+                    {formattedValue}
+                  </Link>
                 ) : (
-                  dollarFormatter(y)
+                  formattedValue
                 ),
               subItems: isOtherSeries
                 ? (groupedSeries
                     .map(childSeries => {
                       const datum = childSeries.data.find(item => item.x === x);
                       if (datum) {
+                        const formattedValue = dollarFormatter(datum.y);
                         return {
                           key:
                             urlParams.useLinks === 'keys' ? (
@@ -175,9 +179,11 @@ export default function () {
                             ),
                           value:
                             urlParams.useLinks === 'values' ? (
-                              <Link external={true}>{dollarFormatter(datum.y)}</Link>
+                              <Link external={true} ariaLabel={`${childSeries.title}: ${formattedValue}`}>
+                                {formattedValue}
+                              </Link>
                             ) : (
-                              dollarFormatter(datum.y)
+                              formattedValue
                             ),
                         };
                       }
