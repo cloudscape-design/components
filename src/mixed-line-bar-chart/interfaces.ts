@@ -58,10 +58,7 @@ export interface MixedLineBarChartProps<T extends ChartDataTypes>
    * Use this for wrapping keys or values in links, or to display an additional
    * level of nested items.
    */
-  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<
-    T,
-    MixedLineBarChartProps.ChartSeries<T>
-  >;
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
 export namespace MixedLineBarChartProps {
@@ -123,8 +120,8 @@ export namespace MixedLineBarChartProps {
 
   export type I18nStrings<T> = CartesianChartProps.I18nStrings<T>;
 
-  export interface DetailPopoverSeriesContent<T, Series> {
-    ({ series, x, y }: { series: Series; x: T; y: number }): {
+  export interface DetailPopoverSeriesContent<T> {
+    ({ series, x, y }: { series: ChartSeries<T>; x: T; y: number }): {
       key: ReactNode;
       value: ReactNode;
       expandable?: boolean;

@@ -21,7 +21,7 @@ export default function formatHighlighted<T extends ChartDataTypes>({
   position: T;
   series: readonly InternalChartSeries<T>[];
   xTickFormatter?: CartesianChartProps.TickFormatter<T>;
-  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>;
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }): HighlightDetails {
   const formattedPosition = xTickFormatter ? xTickFormatter(position) : position.toString();
 
@@ -43,7 +43,7 @@ function getSeriesDetail<T>({
 }: {
   internalSeries: InternalChartSeries<T>;
   targetX: T;
-  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>;
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }): ChartSeriesDetailItem | null {
   const { series, color } = internalSeries;
 

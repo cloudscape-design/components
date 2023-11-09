@@ -79,7 +79,7 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
 
   plotContainerRef: React.RefObject<HTMLDivElement>;
 
-  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>;
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
 interface BaseAxisProps {

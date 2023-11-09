@@ -47,7 +47,7 @@ export interface BarChartProps<T extends ChartDataTypes>
    * Use this for wrapping keys or values in links, or to display an additional
    * level of nested items.
    */
-  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T, BarSeries<T>>;
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
 // W/o this documenter injects CartesianChartProps namespace properties into BarChartProps definition.
