@@ -942,22 +942,6 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
-      "inlineType": Object {
-        "name": "CartesianChartProps.DetailPopoverSeriesContent",
-        "parameters": Array [
-          Object {
-            "name": "__namedParameters",
-            "type": "unknown",
-          },
-        ],
-        "returnType": "unknown",
-        "type": "function",
-      },
-      "name": "detailPopoverSeriesContent",
-      "optional": true,
-      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, AreaChartProps.Series<T>>",
-    },
-    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -2173,8 +2157,11 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "description": "Specifies custom rendering of the series displayed in the chart popover.
+Use this for wrapping keys or values in links, or to display an additional
+level of nested items.",
       "inlineType": Object {
-        "name": "CartesianChartProps.DetailPopoverSeriesContent",
+        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "__namedParameters",
@@ -2186,7 +2173,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       },
       "name": "detailPopoverSeriesContent",
       "optional": true,
-      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>",
+      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -8027,8 +8014,11 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "description": "Specifies custom rendering of the series displayed in the chart popover.
+Use this for wrapping keys or values in links, or to display an additional
+level of nested items.",
       "inlineType": Object {
-        "name": "CartesianChartProps.DetailPopoverSeriesContent",
+        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "__namedParameters",
@@ -8040,7 +8030,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       },
       "name": "detailPopoverSeriesContent",
       "optional": true,
-      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>",
+      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -8652,8 +8642,11 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
+      "description": "Specifies custom rendering of the series displayed in the chart popover.
+Use this for wrapping keys or values in links, or to display an additional
+level of nested items.",
       "inlineType": Object {
-        "name": "CartesianChartProps.DetailPopoverSeriesContent",
+        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "__namedParameters",
@@ -8665,7 +8658,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       },
       "name": "detailPopoverSeriesContent",
       "optional": true,
-      "type": "CartesianChartProps.DetailPopoverSeriesContent<T, MixedLineBarChartProps.ChartSeries<T>>",
+      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
