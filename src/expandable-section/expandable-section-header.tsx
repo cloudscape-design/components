@@ -189,15 +189,24 @@ const ExpandableHeaderTextWrapper = ({
         </InternalHeader>
       ) : (
         <>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          {variant === 'compact' ? (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <HeadingTag
+                className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+                {...headingTagListeners}
+              >
+                {headerButton}
+              </HeadingTag>
+              {headerActions}
+            </div>
+          ) : (
             <HeadingTag
               className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
               {...headingTagListeners}
             >
               {headerButton}
             </HeadingTag>
-            {headerActions}
-          </div>
+          )}
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
         </>
       )}
