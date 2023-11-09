@@ -70,8 +70,8 @@
     z-index: 1;
     inset-block-start: calc(-1 * #{awsui.$border-item-width});
     inset-block-end: -1px;
-    inset-inline-start: calc(-1 * #{awsui.$border-item-width});
-    inset-inline-end: -1px;
+    inset-inline-start: -1px;
+    inset-inline-end: calc(-1 * #{awsui.$border-item-width});
     background-color: transparent;
   }
 
