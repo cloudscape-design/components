@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 
 import Container from '~components/container';
 import Header from '~components/header';
@@ -11,6 +11,14 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
 import { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 import rawCostsData from '../common/popover-drilldown-sample-data';
+import AppContext, { AppContextType } from '../app/app-context';
+
+type DemoContext = React.Context<
+  AppContextType<{
+    useLinks: 'keys' | 'values' | null;
+    expandableSubItems: boolean;
+  }>
+>;
 
 const costsData = rawCostsData.map(series => ({
   ...series,
@@ -48,99 +56,159 @@ const otherSeries: MixedLineBarChartProps.LineDataSeries<string> = {
 
 const allSeries: ReadonlyArray<MixedLineBarChartProps.LineDataSeries<string>> = [...slicedSeries, otherSeries];
 
-function Chart({ expandableSubItems }: { expandableSubItems: boolean }) {
+export default function () {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [highlightedSeries, setHighlightedSeries] = useState<MixedLineBarChartProps.LineDataSeries<string> | null>(
     null
   );
   const [visibleSeries, setVisibleSeries] = useState<MixedLineBarChartProps.LineDataSeries<string>[] | null>(null);
-  return (
-    <LineChart
-      {...commonProps}
-      series={allSeries}
-      xDomain={xDomain}
-      xTitle="Time"
-      yTitle="Costs"
-      ariaLabel="Costs chart"
-      xScaleType="categorical"
-      ariaDescription={barChartInstructions}
-      xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-      onHighlightChange={({ detail }) =>
-        setHighlightedSeries(detail.highlightedSeries as MixedLineBarChartProps.LineDataSeries<string>)
-      }
-      onFilterChange={({ detail }) =>
-        setVisibleSeries(detail.visibleSeries as MixedLineBarChartProps.LineDataSeries<string>[])
-      }
-      detailPopoverSeriesContent={({ series, x, y }) => {
-        const isOtherSeries = series === otherSeries;
-        return {
-          expandable: expandableSubItems && isOtherSeries,
-          key: isOtherSeries ? (
-            series.title
-          ) : (
-            <Link external={true} href="#">
-              {series.title}
-            </Link>
-          ),
-          value: dollarFormatter(y),
-          subItems: isOtherSeries
-            ? (groupedSeries
-                .map(childSeries => {
-                  const datum = childSeries.data.find(item => item.x === x);
-                  if (datum && datum.y >= 0.005) {
-                    return {
-                      key: (
-                        <Link external={true} ariaLabel={`${series.title}: ${childSeries.title}`} href="#">
-                          {childSeries.title}
-                        </Link>
-                      ),
-                      value: dollarFormatter(datum.y),
-                    };
-                  }
-                })
-                .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>)
-            : undefined,
-        };
-      }}
-      detailPopoverFooter={x => {
-        if (highlightedSeries || (visibleSeries && visibleSeries.length === 1)) {
-          return null;
-        }
-        const sum = (visibleSeries || allSeries).reduce((previousValue, currentSeries) => {
-          const datum = currentSeries.data.find(item => item.x === x);
-          if (datum) {
-            return previousValue + datum.y;
-          }
-          return previousValue;
-        }, 0);
-        return (
-          <>
-            <hr />
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span>Total</span>
-              <span>{dollarFormatter(sum)}</span>
-            </div>
-          </>
-        );
-      }}
-    />
-  );
-}
 
-export default function () {
   return (
     <ScreenshotArea>
-      <h1>Chart popover explorations</h1>
+      <h1>Chart popover drilldown</h1>
       <SpaceBetween direction="vertical" size="l">
-        <Container header={<Header variant="h2">Line chart with expandable sub-items</Header>}>
-          <Chart expandableSubItems={true} />
-        </Container>
-        <Container header={<Header variant="h2">Line chart with non-expandable sub-items</Header>}>
-          <Chart expandableSubItems={false} />
+        <Container
+          header={
+            <Header
+              variant="h2"
+              actions={
+                <SpaceBetween direction="horizontal" size="xxl">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={urlParams.expandableSubItems || false}
+                      onChange={event => setUrlParams({ expandableSubItems: event.target.checked })}
+                    />{' '}
+                    Expandable sub-items
+                  </label>
+                  |
+                  <SpaceBetween direction="horizontal" size="s">
+                    <label>
+                      <input
+                        type="radio"
+                        name="links"
+                        value="keys"
+                        onChange={() => setUrlParams({ useLinks: 'keys' })}
+                        checked={urlParams.useLinks === 'keys'}
+                      />{' '}
+                      Links in keys
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="links"
+                        value="values"
+                        onChange={() => setUrlParams({ useLinks: 'values' })}
+                        checked={urlParams.useLinks === 'values'}
+                      />{' '}
+                      Links in values
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="links"
+                        value="none"
+                        onChange={() => setUrlParams({ useLinks: undefined })}
+                        checked={!urlParams.useLinks}
+                      />{' '}
+                      No links
+                    </label>
+                  </SpaceBetween>
+                </SpaceBetween>
+              }
+            >
+              Line chart with expandable sub-items
+            </Header>
+          }
+        >
+          <LineChart
+            {...commonProps}
+            series={allSeries}
+            xDomain={xDomain}
+            xTitle="Time"
+            yTitle="Costs"
+            ariaLabel="Costs chart"
+            xScaleType="categorical"
+            ariaDescription={barChartInstructions}
+            xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+            onHighlightChange={({ detail }) =>
+              setHighlightedSeries(detail.highlightedSeries as MixedLineBarChartProps.LineDataSeries<string>)
+            }
+            onFilterChange={({ detail }) =>
+              setVisibleSeries(detail.visibleSeries as MixedLineBarChartProps.LineDataSeries<string>[])
+            }
+            detailPopoverSeriesContent={({ series, x, y }) => {
+              const isOtherSeries = series === otherSeries;
+              return {
+                expandable: urlParams.expandableSubItems && isOtherSeries,
+                key:
+                  urlParams.useLinks === 'keys' && !isOtherSeries ? (
+                    <Link external={true} href="#">
+                      {series.title}
+                    </Link>
+                  ) : (
+                    series.title
+                  ),
+                value:
+                  urlParams.useLinks === 'values' ? (
+                    <Link external={true}>{dollarFormatter(y)}</Link>
+                  ) : (
+                    dollarFormatter(y)
+                  ),
+                subItems: isOtherSeries
+                  ? (groupedSeries
+                      .map(childSeries => {
+                        const datum = childSeries.data.find(item => item.x === x);
+                        if (datum) {
+                          return {
+                            key:
+                              urlParams.useLinks === 'keys' ? (
+                                <Link external={true} ariaLabel={`${series.title}: ${childSeries.title}`} href="#">
+                                  {childSeries.title}
+                                </Link>
+                              ) : (
+                                childSeries.title
+                              ),
+                            value:
+                              urlParams.useLinks === 'values' ? (
+                                <Link external={true}>{dollarFormatter(datum.y)}</Link>
+                              ) : (
+                                dollarFormatter(datum.y)
+                              ),
+                          };
+                        }
+                      })
+                      .filter(Boolean) as ReadonlyArray<{ key: ReactNode; value: ReactNode }>)
+                  : undefined,
+              };
+            }}
+            detailPopoverFooter={x => {
+              if (highlightedSeries || (visibleSeries && visibleSeries.length === 1)) {
+                return null;
+              }
+              const sum = (visibleSeries || allSeries).reduce((previousValue, currentSeries) => {
+                const datum = currentSeries.data.find(item => item.x === x);
+                if (datum) {
+                  return previousValue + datum.y;
+                }
+                return previousValue;
+              }, 0);
+              return (
+                <>
+                  <hr />
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <span>Total</span>
+                    <span>{dollarFormatter(sum)}</span>
+                  </div>
+                </>
+              );
+            }}
+          />
         </Container>
       </SpaceBetween>
     </ScreenshotArea>
