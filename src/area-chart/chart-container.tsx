@@ -18,7 +18,6 @@ import AreaVerticalMarker from './elements/vertical-marker';
 
 import useHighlightDetails from './elements/use-highlight-details';
 import useContainerWidth from '../internal/utils/use-container-width';
-import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import { useSelector } from './async-store';
 import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
 
@@ -47,7 +46,6 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   autoWidth: (value: number) => void;
   fitHeight?: boolean;
   minHeight: number;
-  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, AreaChartProps.AreaSeries<T>>;
 }
 
 export default memo(ChartContainer) as typeof ChartContainer;
@@ -77,7 +75,6 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   xTickFormatter = deprecatedXTickFormatter,
   yTickFormatter = deprecatedYTickFormatter,
   detailTotalFormatter = deprecatedDetailTotalFormatter,
-  detailPopoverSeriesContent,
 }: ChartContainerProps<T>) {
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
@@ -101,7 +98,6 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
     yTickFormatter,
     detailTotalFormatter,
     detailTotalLabel,
-    detailPopoverSeriesContent,
   });
 
   const highlightedPointRef = useRef<SVGGElement>(null);

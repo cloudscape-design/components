@@ -4,11 +4,18 @@ import React, { ReactNode, memo } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-
-import ChartSeriesMarker from '../chart-series-marker';
+import { ChartDetailPair } from '../../../pie-chart/interfaces';
+import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import styles from './styles.css.js';
 import InternalExpandableSection from '../../../expandable-section/internal';
-import { ChartSeriesDetailItem } from './format-highlighted-data-series';
+
+export interface ChartSeriesDetailItem extends ChartDetailPair {
+  markerType?: ChartSeriesMarkerType;
+  color?: string;
+  isDimmed?: boolean;
+  subItems?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+  expandable?: boolean;
+}
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
   details: ReadonlyArray<ChartSeriesDetailItem>;
