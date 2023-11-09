@@ -24,6 +24,13 @@ export interface LineChartProps<T extends ChartDataTypes>
    * See the usage guidelines for more details.
    */
   emphasizeBaselineAxis?: boolean;
+
+  /**
+   * Specifies custom rendering of the series displayed in the chart popover.
+   * Use this for wrapping keys or values in links, or to display an additional
+   * level of nested items.
+   */
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T, LineSeries<T>>;
 }
 
 // W/o this documenter injects CartesianChartProps namespace properties into LineChartProps definition.

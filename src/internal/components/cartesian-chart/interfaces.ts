@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ReactNode } from 'react';
 import { BaseComponentProps } from '../../base-component';
 import { NonCancelableEventHandler } from '../../events';
 
@@ -193,8 +192,6 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
    * Enable this property to make the chart fit into the available height of the parent container.
    */
   fitHeight?: boolean;
-
-  detailPopoverSeriesContent?: CartesianChartProps.DetailPopoverSeriesContent<T, Series>;
 }
 export namespace CartesianChartProps {
   export interface FilterChangeDetail<Series> {
@@ -215,15 +212,6 @@ export namespace CartesianChartProps {
 
   export interface DetailPopoverFooter<T> {
     (xValue: T): React.ReactNode;
-  }
-
-  export interface DetailPopoverSeriesContent<T, Series> {
-    ({ series, x, y }: { series: Series; x: T; y: number }): {
-      key: ReactNode;
-      value: ReactNode;
-      expandable?: boolean;
-      subItems?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
-    };
   }
 
   export interface I18nStrings<T> {
