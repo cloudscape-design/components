@@ -75,7 +75,7 @@ function getSeriesDetail<T>({
           ? detailPopoverSeriesContent({ series, x: targetX, y: datum.y })
           : undefined;
         const hasSubItems = !!customContent?.subItems?.length;
-        const isExpandable = !!customContent?.expandable && hasSubItems;
+        const isExpandable = customContent?.expandable && hasSubItems;
         const isKeyString = typeof customContent?.key === 'string';
         const key = customContent?.key && (!isExpandable || isKeyString) ? customContent.key : series.title;
 
