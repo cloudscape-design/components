@@ -86,18 +86,16 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   };
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
-  const setColumnWidthStyle = useStableCallback((columnId: PropertyKey) => {
-    const cellElement = cellsRef.current[columnId];
-    const stickyCellElement = stickyCellsRef.current[columnId];
-    const column = visibleColumns.find(column => column.id === columnId);
+  const setColumnWidthStyle = useStableCallback((column: ColumnWidthDefinition) => {
+    const cellElement = cellsRef.current[column.id];
 
     if (resizableColumns && columnWidths) {
-      const isLastColumn = columnId === visibleColumns[visibleColumns.length - 1]?.id;
+      const isLastColumn = column.id === visibleColumns[visibleColumns.length - 1]?.id;
       const totalWidth = visibleColumns.reduce((sum, { id }) => sum + (columnWidths[id] || DEFAULT_COLUMN_WIDTH), 0);
       if (isLastColumn && containerWidthRef.current > totalWidth) {
         setElementWidth(cellElement, 'width', 'auto');
       } else {
-        setElementWidth(cellElement, 'width', columnWidths[columnId]);
+        setElementWidth(cellElement, 'width', columnWidths[column.id]);
       }
       setElementWidth(cellElement, 'minWidth', column?.minWidth);
     } else {
@@ -107,34 +105,29 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     if (!resizableColumns) {
       setElementWidth(cellElement, 'maxWidth', column?.maxWidth);
     }
-
-    // Synchronize cell and sticky cells widths.
-    setElementWidth(stickyCellElement, 'width', cellElement?.offsetWidth);
-
-    // When resizableColumns changes, those column widths that are not set explicitly
-    // are then determined by the browser after the explicit column widths are assigned.
-    // Only then can the sticky cell widths be correctly synchronized.
-    setTimeout(() => setElementWidth(stickyCellElement, 'width', cellElement?.offsetWidth), 0);
+  });
+  const updateColumnWidths = useStableCallback(() => {
+    for (const column of visibleColumns) {
+      setColumnWidthStyle(column);
+    }
+    // Sticky column widths must be synchronized once all real columns widths are assigned.
+    for (const id of Object.keys(stickyCellsRef.current)) {
+      const cellElement = cellsRef.current[id];
+      const stickyCellElement = stickyCellsRef.current[id];
+      setElementWidth(stickyCellElement, 'width', cellElement?.offsetWidth);
+    }
   });
 
   // Observes container size and requests an update to the last cell width as it depends on the container's width.
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {
     containerWidthRef.current = containerWidth;
-
-    const columnIds = visibleColumnsRef.current ?? [];
-    const lastColumnId = columnIds[columnIds.length - 1];
-    if (lastColumnId) {
-      setColumnWidthStyle(lastColumnId);
-    }
+    updateColumnWidths();
   });
 
   // The widths of the dynamically added columns (after the first render) if not set explicitly
   // will default to the DEFAULT_COLUMN_WIDTH.
   useEffect(() => {
-    // Update width style for all visible cells to be in sync with React properties.
-    for (const column of visibleColumns) {
-      setColumnWidthStyle(column.id);
-    }
+    updateColumnWidths();
 
     if (!resizableColumns) {
       return;
@@ -153,7 +146,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       }
     }
     visibleColumnsRef.current = visibleColumns.map(column => column.id);
-  }, [columnWidths, resizableColumns, visibleColumns, setColumnWidthStyle]);
+  }, [columnWidths, resizableColumns, visibleColumns, updateColumnWidths]);
 
   // Read the actual column widths after the first render to employ the browser defaults for
   // those columns without explicit width.
