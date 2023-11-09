@@ -135,11 +135,6 @@ const Thead = React.forwardRef(
               <TableHeaderCell
                 key={columnId}
                 className={headerCellClass}
-                style={{
-                  width: column.width,
-                  minWidth: sticky ? undefined : column.minWidth,
-                  maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
-                }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
                 column={column}
@@ -156,7 +151,7 @@ const Thead = React.forwardRef(
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}
-                cellRef={node => setCell(columnId, node)}
+                cellRef={node => setCell(sticky, columnId, node)}
                 tableRole={tableRole}
                 resizerRoleDescription={resizerRoleDescription}
               />

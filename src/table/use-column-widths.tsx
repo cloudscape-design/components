@@ -9,6 +9,7 @@ export const DEFAULT_COLUMN_WIDTH = 120;
 export interface ColumnWidthDefinition {
   id: PropertyKey;
   minWidth?: string | number;
+  maxWidth?: string | number;
   width?: string | number;
 }
 
@@ -51,7 +52,7 @@ function updateWidths(
 interface WidthsContext {
   columnWidths: Record<PropertyKey, number>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
-  setCell: (columnId: PropertyKey, node: null | HTMLElement) => void;
+  setCell: (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => void;
 }
 
 const WidthsContext = createContext<WidthsContext>({
@@ -73,32 +74,46 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   const [columnWidths, setColumnWidths] = useState<null | Record<PropertyKey, number>>(null);
 
   const cellsRef = useRef<Record<PropertyKey, HTMLElement>>({});
+  const stickyCellsRef = useRef<Record<PropertyKey, HTMLElement>>({});
   const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current[columnId] ?? null;
-  const setCell = (columnId: PropertyKey, node: null | HTMLElement) => {
+  const setCell = (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => {
+    const ref = sticky ? stickyCellsRef : cellsRef;
     if (node) {
-      cellsRef.current[columnId] = node;
-      // Update node styles to ensure those are not overridden by React rendering.
-      setColumnWidthStyle(columnId);
+      ref.current[columnId] = node;
     } else {
-      delete cellsRef.current[columnId];
+      delete ref.current[columnId];
     }
   };
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const setColumnWidthStyle = useStableCallback((columnId: PropertyKey) => {
     const cellElement = cellsRef.current[columnId];
+    const stickyCellElement = stickyCellsRef.current[columnId];
+    const column = visibleColumns.find(column => column.id === columnId);
+
     if (resizableColumns && columnWidths) {
       const isLastColumn = columnId === visibleColumns[visibleColumns.length - 1]?.id;
       const totalWidth = visibleColumns.reduce((sum, { id }) => sum + (columnWidths[id] || DEFAULT_COLUMN_WIDTH), 0);
       if (isLastColumn && containerWidthRef.current > totalWidth) {
-        setElementWidth(cellElement, 'auto');
+        setElementWidth(cellElement, 'width', 'auto');
       } else {
-        setElementWidth(cellElement, columnWidths[columnId]);
+        setElementWidth(cellElement, 'width', columnWidths[columnId]);
       }
-    } else {
-      const definedWidth = visibleColumns.find(column => column.id === columnId)?.width;
-      setElementWidth(cellElement, definedWidth);
+      setElementWidth(cellElement, 'minWidth', column?.minWidth);
     }
+    if (!resizableColumns) {
+      setElementWidth(cellElement, 'width', column?.width);
+      setElementWidth(cellElement, 'minWidth', column?.minWidth);
+      setElementWidth(cellElement, 'maxWidth', column?.maxWidth);
+    }
+
+    // Synchronize cell and sticky cells widths.
+    setElementWidth(stickyCellElement, 'width', cellElement?.offsetWidth);
+
+    // When resizableColumns changes, those column widths that are not set explicitly
+    // are then determined by the browser after the explicit column widths are assigned.
+    // Only then can the sticky cell widths be correctly synchronized.
+    setTimeout(() => setElementWidth(stickyCellElement, 'width', cellElement?.offsetWidth), 0);
   });
 
   // Observes container size and requests an update to the last cell width as it depends on the container's width.
