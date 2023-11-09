@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
@@ -193,7 +193,7 @@ describe('Date picker - direct date input', () => {
         value: '2018-03-01',
         onBlur: onBlurSpy,
       }));
-      act(() => wrapper.focus());
+      wrapper.focus();
     });
 
     afterEach(() => {
@@ -201,7 +201,7 @@ describe('Date picker - direct date input', () => {
     });
 
     test('should fire blur handler when focusing another element', () => {
-      act(() => getByTestId(outsideId).focus());
+      getByTestId(outsideId).focus();
       expect(onBlurSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -209,7 +209,7 @@ describe('Date picker - direct date input', () => {
       wrapper.findOpenCalendarButton().click();
       expect(wrapper.findCalendarDropdown()).not.toBeNull();
 
-      act(() => getByTestId(outsideId).focus());
+      getByTestId(outsideId).focus();
 
       expect(onBlurSpy).toHaveBeenCalledTimes(1);
     });
