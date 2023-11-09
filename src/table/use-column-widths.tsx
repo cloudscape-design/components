@@ -100,10 +100,11 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
         setElementWidth(cellElement, 'width', columnWidths[columnId]);
       }
       setElementWidth(cellElement, 'minWidth', column?.minWidth);
-    }
-    if (!resizableColumns) {
+    } else {
       setElementWidth(cellElement, 'width', column?.width);
       setElementWidth(cellElement, 'minWidth', column?.minWidth);
+    }
+    if (!resizableColumns) {
       setElementWidth(cellElement, 'maxWidth', column?.maxWidth);
     }
 
