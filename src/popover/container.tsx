@@ -185,7 +185,9 @@ export default function PopoverContainer({
       TODO: extend this to Enter and Spacebar?
     */
     const updatePositionOnClick = (event: UIEvent) => {
-      if (!nodeContains(bodyRef.current, event.target)) {
+      const clickedOnTarget = event.target instanceof Node && nodeContains(event.target, trackRef.current);
+      const clickedInside = nodeContains(bodyRef.current, event.target);
+      if (!clickedOnTarget && !(keepPositionOnResize && clickedInside)) {
         requestAnimationFrame(() => updatePositionHandler());
       }
     };
@@ -206,7 +208,7 @@ export default function PopoverContainer({
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [updatePositionHandler]);
+  }, [keepPositionOnResize, trackRef, updatePositionHandler]);
 
   return (
     <div
