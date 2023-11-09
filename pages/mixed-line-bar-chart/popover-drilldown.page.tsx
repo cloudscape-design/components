@@ -4,8 +4,7 @@ import React, { ReactNode, useContext, useState } from 'react';
 
 import Container from '~components/container';
 import Header from '~components/header';
-import BarChart from '~components/bar-chart';
-import { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
+import MixedLineBarChart, { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
 import rawCostsData from '../common/popover-drilldown-sample-data';
@@ -17,24 +16,30 @@ type DemoContext = React.Context<
   AppContextType<{
     useLinks: 'keys' | 'values' | null;
     expandableSubItems: boolean;
-    horizontalBars: boolean;
   }>
 >;
 
-const costsData = rawCostsData.map(series => ({
-  ...series,
-  type: 'bar',
-})) as MixedLineBarChartProps.BarDataSeries<string>[];
+const maxUngroupedSeries = 9;
 
-const xDomain = costsData[0].data.map(datum => datum.x);
+const costsData = rawCostsData.slice(0, maxUngroupedSeries + 7).map((series, index) => ({
+  ...series,
+  type: index % 2 === 0 ? 'bar' : 'line',
+})) as MixedLineBarChartProps.DataSeries<string>[];
+
+const xDomainSet = new Set<string>();
+for (const series of costsData) {
+  for (const datum of series.data) {
+    xDomainSet.add(datum.x);
+  }
+}
+
+const xDomain = Array.from(xDomainSet).sort();
 
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-const maxUngroupedSeries = 9;
-
-const ungroupedSeries = costsData.slice(0, maxUngroupedSeries - 1);
-const groupedSeries = costsData.slice(maxUngroupedSeries, costsData.length - 2);
+const ungroupedSeries = costsData.filter(series => series.type === 'bar');
+const groupedSeries = costsData.filter(series => series.type === 'line');
 const groupedSeriesData: MixedLineBarChartProps.Datum<string>[] = [];
 for (const series of groupedSeries) {
   for (const { x, y } of series.data) {
@@ -48,18 +53,20 @@ for (const series of groupedSeries) {
   }
 }
 
-const otherSeries: MixedLineBarChartProps.BarDataSeries<string> = {
+groupedSeriesData.sort((a, b) => (b.x < a.x ? -1 : 1));
+
+const otherSeries: MixedLineBarChartProps.DataSeries<string> = {
   title: 'Others',
-  type: 'bar',
+  type: 'line',
   valueFormatter: dollarFormatter,
   data: groupedSeriesData,
 };
 
-const allSeries: ReadonlyArray<MixedLineBarChartProps.BarDataSeries<string>> = [...ungroupedSeries, otherSeries];
+const allSeries: ReadonlyArray<MixedLineBarChartProps.DataSeries<string>> = [...ungroupedSeries, otherSeries];
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-  const [visibleSeries, setVisibleSeries] = useState<MixedLineBarChartProps.BarDataSeries<string>[] | null>(null);
+  const [visibleSeries, setVisibleSeries] = useState<MixedLineBarChartProps.DataSeries<string>[] | null>(null);
 
   return (
     <ScreenshotArea>
@@ -71,14 +78,6 @@ export default function () {
             actions={
               <SpaceBetween direction="horizontal" size="xxl">
                 <SpaceBetween direction="horizontal" size="s">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={urlParams.horizontalBars || false}
-                      onChange={event => setUrlParams({ horizontalBars: event.target.checked })}
-                    />{' '}
-                    Horizontal bars
-                  </label>
                   <label>
                     <input
                       type="checkbox"
@@ -123,11 +122,11 @@ export default function () {
               </SpaceBetween>
             }
           >
-            Bar chart
+            Mixed line-bar chart
           </Header>
         }
       >
-        <BarChart
+        <MixedLineBarChart
           {...commonProps}
           stackedBars={true}
           series={allSeries}
@@ -136,10 +135,10 @@ export default function () {
           yTitle="Costs"
           ariaLabel="Costs chart"
           ariaDescription={barChartInstructions}
-          horizontalBars={urlParams.horizontalBars}
           xTickFormatter={d => new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+          xScaleType="categorical"
           onFilterChange={({ detail }) =>
-            setVisibleSeries(detail.visibleSeries as MixedLineBarChartProps.BarDataSeries<string>[])
+            setVisibleSeries(detail.visibleSeries as MixedLineBarChartProps.DataSeries<string>[])
           }
           detailPopoverSeriesContent={({ series, x, y }) => {
             const isOtherSeries = series === otherSeries;
