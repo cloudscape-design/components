@@ -19,6 +19,9 @@ class MultiPageCreate extends BasePageObject {
     const actions = funnelLog.map(item => item.action);
     return { funnelLog, actions };
   }
+  getFunnelLogItem(index: number) {
+    return this.browser.execute(index => window.__awsuiFunnelMetrics__[index], index);
+  }
 }
 
 const setupTest = (testFn: (page: MultiPageCreate) => Promise<void>) => {
@@ -336,6 +339,23 @@ describe('Multi-page create', () => {
       expect(funnelErrorEvent.props).toEqual({
         funnelInteractionId: FUNNEL_INTERACTION_ID,
       });
+    })
+  );
+
+  test(
+    'Correct substep number when the step is unmounted before blurring the substep',
+    setupTest(async page => {
+      await page.click(wrapper.findInput('[data-testid=field4]').findNativeInput().toSelector());
+      await page.click(wrapper.findWizard().findPrimaryButton().toSelector());
+
+      const funnelSubStepCompleteEvent = await page.getFunnelLogItem(6);
+
+      expect(funnelSubStepCompleteEvent.action).toEqual('funnelSubStepComplete');
+      expect(funnelSubStepCompleteEvent.props).toEqual(
+        expect.objectContaining({
+          subStepNumber: 2,
+        })
+      );
     })
   );
 });

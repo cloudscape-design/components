@@ -62,6 +62,7 @@ export interface FunnelSubStepProps extends FunnelStepProps {
   subStepSelector: string;
   subStepName?: string | undefined;
   subStepNameSelector: string;
+  subStepNumber?: number;
 }
 
 export interface FunnelSubStepErrorProps extends FunnelSubStepProps {
