@@ -6,12 +6,15 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
+$marker-width: 1.4 * styles.$base-size;
+$marker-margin-right: awsui.$space-xxs;
+
 .marker {
   @include styles.styles-reset;
-  margin-right: awsui.$space-xxs;
+  margin-right: $marker-margin-right;
   margin-top: awsui.$space-xxs;
   border-radius: 2px;
-  width: 1.4 * styles.$base-size;
+  width: $marker-width;
   flex-shrink: 0;
   cursor: inherit;
 

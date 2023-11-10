@@ -36,6 +36,8 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             className={clsx({
               [styles.dimmed]: isDimmed,
               [styles['list-item']]: true,
+              [styles['with-sub-items']]: subItems?.length,
+              [styles.expandable]: expandable,
             })}
           >
             {subItems?.length && expandable ? (
@@ -45,7 +47,7 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
                   <InternalExpandableSection
                     variant="compact"
                     headerText={key}
-                    headerActions={<span className={styles.value}>{value}</span>}
+                    headerActions={<span className={clsx(styles.value, styles.expandable)}>{value}</span>}
                   >
                     <SubItems items={subItems} expandable={expandable} />
                   </InternalExpandableSection>

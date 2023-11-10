@@ -7,12 +7,21 @@
 @use '../../styles/tokens' as awsui;
 @use './motion';
 
+@use '../chart-series-marker/styles' as marker;
+
+@mixin bold {
+  font-weight: awsui.$font-weight-heading-s;
+}
+
 .root {
   @include styles.styles-reset;
 }
 
 .value {
   text-align: right;
+  &.expandable {
+    @include bold;
+  }
 }
 
 .list-item,
@@ -32,12 +41,13 @@
   width: 100%;
   > .key {
     display: inline-flex;
+    color: awsui.$color-text-group-label;
   }
 }
 
 .sub-items {
   &:not(.expandable) {
-    padding-left: awsui.$space-l;
+    padding-left: calc(marker.$marker-width + marker.$marker-margin-right);
   }
   &.expandable {
     padding-left: 0;
@@ -58,11 +68,17 @@
     > .key-value-pair > .key {
       align-items: flex-start;
       margin-right: awsui.$space-xxl;
-      color: awsui.$color-text-group-label;
     }
 
     &.dimmed {
       opacity: 0.35;
     }
+  }
+}
+
+.list-item.with-sub-items:not(.expandable) > .key-value-pair {
+  > .key,
+  > .value {
+    @include bold;
   }
 }
