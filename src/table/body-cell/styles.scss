@@ -112,11 +112,17 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
 
     &:first-child {
       border-inline-start: $selected-border;
-      border-radius: awsui.$border-radius-item 0 0 awsui.$border-radius-item;
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: 0;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: 0;
     }
     &:last-child {
       border-inline-end: $selected-border;
-      border-radius: 0 awsui.$border-radius-item awsui.$border-radius-item 0;
+      border-start-start-radius: 0;
+      border-start-end-radius: awsui.$border-radius-item;
+      border-end-start-radius: 0;
+      border-end-end-radius: awsui.$border-radius-item;
     }
   }
 

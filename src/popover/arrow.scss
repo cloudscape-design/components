@@ -44,11 +44,12 @@
       box-sizing: border-box;
       display: inline-block;
       position: absolute;
-      border-radius: 2px 0 0 0;
-
+      border-start-start-radius: 2px;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
       inset-block-end: 0;
       inset-inline-start: 0;
-
       inline-size: $arrow-edge-length;
       block-size: $arrow-edge-length;
       transform: rotate(45deg);
@@ -66,7 +67,10 @@
     inset-block-start: 2px;
 
     &::after {
-      border-radius: 1px 0 0 0;
+      border-start-start-radius: 1px;
+      border-start-end-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
       background-color: awsui.$color-background-popover;
     }
   }

@@ -61,7 +61,10 @@
   display: flex;
   align-items: flex-start;
   background: constants.$token-background;
-  border-radius: awsui.$border-radius-token;
+  border-start-start-radius: awsui.$border-radius-token;
+  border-start-end-radius: awsui.$border-radius-token;
+  border-end-start-radius: awsui.$border-radius-token;
+  border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
 }

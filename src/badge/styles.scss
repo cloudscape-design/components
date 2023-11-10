@@ -12,7 +12,10 @@
   @include styles.font-body-s;
   line-height: awsui.$line-height-body-m;
   display: inline-block;
-  border-radius: awsui.$border-radius-badge;
+  border-start-start-radius: awsui.$border-radius-badge;
+  border-start-end-radius: awsui.$border-radius-badge;
+  border-end-start-radius: awsui.$border-radius-badge;
+  border-end-end-radius: awsui.$border-radius-badge;
   padding-block: 0;
   padding-inline: awsui.$space-xs;
   color: awsui.$color-text-notification-default;

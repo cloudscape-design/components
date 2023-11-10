@@ -19,7 +19,10 @@
   display: flex;
   align-items: stretch;
   background: constants.$token-background;
-  border-radius: awsui.$border-radius-token;
+  border-start-start-radius: awsui.$border-radius-token;
+  border-start-end-radius: awsui.$border-radius-token;
+  border-end-start-radius: awsui.$border-radius-token;
+  border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   block-size: 100%;
   box-sizing: border-box;

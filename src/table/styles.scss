@@ -162,7 +162,10 @@ the default white background of the container component.
   scrollbar-width: none; /* Firefox */
   box-sizing: border-box;
   inline-size: 100%;
-  border-radius: 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
   background: awsui.$color-background-table-header;
   &.variant-stacked,
   &.variant-container {

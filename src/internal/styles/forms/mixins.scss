@@ -17,7 +17,10 @@
   outline-offset: 2px;
   outline-color: awsui.$color-border-item-focused;
   // For visual refresh
-  border-radius: awsui.$border-radius-control-default-focus-ring;
+  border-start-start-radius: awsui.$border-radius-control-default-focus-ring;
+  border-start-end-radius: awsui.$border-radius-control-default-focus-ring;
+  border-end-start-radius: awsui.$border-radius-control-default-focus-ring;
+  border-end-end-radius: awsui.$border-radius-control-default-focus-ring;
   box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
 }
 
@@ -29,8 +32,10 @@
   // Window High Contrast Mode
   outline: 2px dotted transparent;
   outline-offset: 2px;
-
-  border-radius: $border-radius;
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
   box-shadow: foundation.$box-shadow-focused;
 }
 
@@ -65,7 +70,10 @@
     inset-block-start: calc(-1 * #{$gutter-vertical});
     inline-size: calc(100% + 2 * #{$gutter-horizontal});
     block-size: calc(100% + 2 * #{$gutter-vertical});
-    border-radius: $border-radius;
+    border-start-start-radius: $border-radius;
+    border-start-end-radius: $border-radius;
+    border-end-start-radius: $border-radius;
+    border-end-end-radius: $border-radius;
     box-shadow: $box-shadow;
   }
 }
@@ -78,7 +86,10 @@
   outline: 2px dotted transparent;
   border-block: constants.$control-border-width solid awsui.$color-border-item-focused;
   border-inline: constants.$control-border-width solid awsui.$color-border-item-focused;
-  border-radius: $border-radius;
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
   box-shadow: foundation.$box-shadow-focused-light;
 }
 
@@ -134,7 +145,10 @@
 }
 
 @mixin container-shadow {
-  border-radius: awsui.$border-radius-container;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
   box-sizing: border-box;
 
   &::before {
@@ -142,14 +156,20 @@
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
     border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
     z-index: 1;
   }
 
   &::after {
     @include utils.base-pseudo-element;
     box-shadow: awsui.$shadow-container;
-    border-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
     mix-blend-mode: multiply;
   }
 
@@ -163,7 +183,10 @@
 
 @mixin dropdown-shadow {
   box-shadow: awsui.$shadow-dropdown;
-  border-radius: awsui.$border-radius-dropdown;
+  border-start-start-radius: awsui.$border-radius-dropdown;
+  border-start-end-radius: awsui.$border-radius-dropdown;
+  border-end-start-radius: awsui.$border-radius-dropdown;
+  border-end-end-radius: awsui.$border-radius-dropdown;
   border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   box-sizing: border-box;
 
@@ -178,7 +201,10 @@
     background-color: transparent;
     border-block: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
     border-inline: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
-    border-radius: awsui.$border-radius-dropdown;
+    border-start-start-radius: awsui.$border-radius-dropdown;
+    border-start-end-radius: awsui.$border-radius-dropdown;
+    border-end-start-radius: awsui.$border-radius-dropdown;
+    border-end-end-radius: awsui.$border-radius-dropdown;
     pointer-events: none;
   }
 }

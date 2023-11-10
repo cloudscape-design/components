@@ -119,7 +119,10 @@
     &.no-range {
       &,
       &::after {
-        border-radius: awsui.$border-radius-item;
+        border-start-start-radius: awsui.$border-radius-item;
+        border-start-end-radius: awsui.$border-radius-item;
+        border-end-start-radius: awsui.$border-radius-item;
+        border-end-end-radius: awsui.$border-radius-item;
       }
     }
     &:hover {
@@ -137,7 +140,10 @@
 
 .today:not(.in-range) {
   background-color: calendar.$grid-today-background-color;
-  border-radius: awsui.$border-radius-item;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
   font-weight: styles.$font-weight-bold;
 }
 

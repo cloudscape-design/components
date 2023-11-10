@@ -16,9 +16,10 @@
 
 .container-body {
   @include styles.styles-reset;
-
-  border-radius: awsui.$border-radius-popover;
-
+  border-start-start-radius: awsui.$border-radius-popover;
+  border-start-end-radius: awsui.$border-radius-popover;
+  border-end-start-radius: awsui.$border-radius-popover;
+  border-end-end-radius: awsui.$border-radius-popover;
   background-color: awsui.$color-background-popover;
   box-shadow: awsui.$shadow-popover;
   border-block: awsui.$border-field-width solid awsui.$color-border-popover;

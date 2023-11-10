@@ -4,7 +4,7 @@
     "stylelint-prettier/recommended"
   ],
   "rules": {
-    "property-disallowed-list": ["margin", "border", "padding"],
+    "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
     "csstools/use-logical": "always",
     "custom-property-pattern": "^(?!.+)",
     "scss/comment-no-empty": null,

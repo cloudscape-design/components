@@ -84,7 +84,10 @@
         grid-template-columns: awsui.$space-l 1fr;
 
         > .circle {
-          border-radius: 100%;
+          border-start-start-radius: 100%;
+          border-start-end-radius: 100%;
+          border-end-start-radius: 100%;
+          border-end-end-radius: 100%;
           grid-column: 1;
           block-size: 10px;
           justify-self: center;

@@ -25,7 +25,10 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 .toggle-control {
   @include styles.make-control-size($toggle-height, $toggle-width);
   background: awsui.$color-background-toggle-default;
-  border-radius: 0.8 * styles.$base-size;
+  border-start-start-radius: 0.8 * styles.$base-size;
+  border-start-end-radius: 0.8 * styles.$base-size;
+  border-end-start-radius: 0.8 * styles.$base-size;
+  border-end-end-radius: 0.8 * styles.$base-size;
   &-checked {
     background: awsui.$color-background-control-checked;
   }
@@ -40,8 +43,10 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 .toggle-handle {
   display: block;
   position: absolute;
-
-  border-radius: 0.6 * styles.$base-size;
+  border-start-start-radius: 0.6 * styles.$base-size;
+  border-start-end-radius: 0.6 * styles.$base-size;
+  border-end-start-radius: 0.6 * styles.$base-size;
+  border-end-end-radius: 0.6 * styles.$base-size;
   background: awsui.$color-foreground-control-default;
   box-shadow: 1px 1px $shadow-color;
   inline-size: $handle-size;

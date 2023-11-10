@@ -10,7 +10,10 @@
   @include styles.styles-reset;
   margin-inline-end: awsui.$space-xxs;
   margin-block-start: awsui.$space-xxs;
-  border-radius: 2px;
+  border-start-start-radius: 2px;
+  border-start-end-radius: 2px;
+  border-end-start-radius: 2px;
+  border-end-end-radius: 2px;
   inline-size: 1.4 * styles.$base-size;
   flex-shrink: 0;
   cursor: inherit;
@@ -23,12 +26,18 @@
 
   &--rectangle {
     block-size: 1.4 * styles.$base-size;
-    border-radius: 2px;
+    border-start-start-radius: 2px;
+    border-start-end-radius: 2px;
+    border-end-start-radius: 2px;
+    border-end-end-radius: 2px;
   }
 
   &--hollow-rectangle {
     block-size: 1.4 * styles.$base-size;
-    border-radius: 2px;
+    border-start-start-radius: 2px;
+    border-start-end-radius: 2px;
+    border-end-start-radius: 2px;
+    border-end-end-radius: 2px;
 
     // inner rectangle
     &::after {
@@ -55,7 +64,10 @@
       inline-size: 0.6 * styles.$base-size;
       block-size: 0.4 * styles.$base-size;
       margin-inline-start: 0.8 * styles.$base-size;
-      border-radius: 2px;
+      border-start-start-radius: 2px;
+      border-start-end-radius: 2px;
+      border-end-start-radius: 2px;
+      border-end-end-radius: 2px;
       background-color: inherit;
     }
   }

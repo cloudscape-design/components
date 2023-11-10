@@ -60,10 +60,16 @@ $selected-color: awsui.$color-text-segment-active;
   }
   &:last-child {
     border-inline-end-width: styles.$control-border-width;
-    border-radius: 0 awsui.$border-radius-button awsui.$border-radius-button 0;
+    border-start-start-radius: 0;
+    border-start-end-radius: awsui.$border-radius-button;
+    border-end-start-radius: 0;
+    border-end-end-radius: awsui.$border-radius-button;
   }
   &:first-child {
-    border-radius: awsui.$border-radius-button 0 0 awsui.$border-radius-button;
+    border-start-start-radius: awsui.$border-radius-button;
+    border-start-end-radius: 0;
+    border-end-start-radius: awsui.$border-radius-button;
+    border-end-end-radius: 0;
   }
 
   &.disabled {

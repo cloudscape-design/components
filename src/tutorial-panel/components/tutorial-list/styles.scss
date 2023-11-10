@@ -22,7 +22,10 @@
   list-style: none;
   border-block: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
   border-inline: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
-  border-radius: awsui.$border-radius-tutorial-panel-item;
+  border-start-start-radius: awsui.$border-radius-tutorial-panel-item;
+  border-start-end-radius: awsui.$border-radius-tutorial-panel-item;
+  border-end-start-radius: awsui.$border-radius-tutorial-panel-item;
+  border-end-end-radius: awsui.$border-radius-tutorial-panel-item;
   padding-block: awsui.$space-m;
   padding-inline: awsui.$space-m;
 

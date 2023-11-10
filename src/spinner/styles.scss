@@ -43,7 +43,10 @@
     position: absolute;
     box-sizing: border-box;
     content: '';
-    border-radius: 50%;
+    border-start-start-radius: 50%;
+    border-start-end-radius: 50%;
+    border-end-start-radius: 50%;
+    border-end-end-radius: 50%;
     border-block: 0.2 * styles.$base-size solid;
     border-inline: 0.2 * styles.$base-size solid;
     border-inline-end-color: transparent;

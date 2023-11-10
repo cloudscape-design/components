@@ -31,14 +31,20 @@
   align-items: flex-start;
   padding-block: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-flashbar-horizontal;
-  border-radius: awsui.$border-radius-flashbar;
+  border-start-start-radius: awsui.$border-radius-flashbar;
+  border-start-end-radius: awsui.$border-radius-flashbar;
+  border-end-start-radius: awsui.$border-radius-flashbar;
+  border-end-end-radius: awsui.$border-radius-flashbar;
   color: awsui.$color-text-notification-default;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
   &::before {
     @include styles.base-pseudo-element;
-    border-radius: awsui.$border-radius-flashbar;
+    border-start-start-radius: awsui.$border-radius-flashbar;
+    border-start-end-radius: awsui.$border-radius-flashbar;
+    border-end-start-radius: awsui.$border-radius-flashbar;
+    border-end-end-radius: awsui.$border-radius-flashbar;
     box-shadow: awsui.$shadow-flash-sticky;
   }
   &-refresh::before {

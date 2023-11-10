@@ -46,7 +46,10 @@
   cursor: text;
   box-sizing: border-box;
   background-color: awsui.$color-background-input-default;
-  border-radius: styles.$control-border-radius;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
   border-block: styles.$control-border-width solid awsui.$color-border-input-default;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   @include styles.font-body-m;
@@ -112,7 +115,10 @@
     padding-inline-end: styles.$control-icon-horizontal-padding;
   }
   &.input-has-no-border-radius {
-    border-radius: awsui.$border-radius-dropdown;
+    border-start-start-radius: awsui.$border-radius-dropdown;
+    border-start-end-radius: awsui.$border-radius-dropdown;
+    border-end-start-radius: awsui.$border-radius-dropdown;
+    border-end-end-radius: awsui.$border-radius-dropdown;
   }
 }
 

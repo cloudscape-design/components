@@ -146,7 +146,11 @@
   }
 
   &-stuck {
-    border-radius: 0;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+
     &::before {
       border-block: 0;
       border-inline: 0;

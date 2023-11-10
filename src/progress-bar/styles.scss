@@ -75,11 +75,17 @@
   border-block: 0;
   border-inline: none;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-start-start-radius: 10px;
+  border-start-end-radius: 10px;
+  border-end-start-radius: 10px;
+  border-end-end-radius: 10px;
 }
 
 @mixin general-progress-bar-style {
-  border-radius: 10px 0px 0px 10px;
+  border-start-start-radius: 10px;
+  border-start-end-radius: 0;
+  border-end-start-radius: 10px;
+  border-end-end-radius: 0;
 }
 
 $background-color: awsui.$color-background-progress-bar-layout-default;
@@ -110,7 +116,10 @@ $bar-color-edge-in-flash: rgba(255, 255, 255, 0.7);
   }
 
   &.complete::-webkit-progress-value {
-    border-radius: 10px;
+    border-start-start-radius: 10px;
+    border-start-end-radius: 10px;
+    border-end-start-radius: 10px;
+    border-end-end-radius: 10px;
   }
 
   &::-moz-progress-bar {
@@ -126,7 +135,10 @@ $bar-color-edge-in-flash: rgba(255, 255, 255, 0.7);
   }
 
   &.complete::-ms-fill {
-    border-radius: 10px;
+    border-start-start-radius: 10px;
+    border-start-end-radius: 10px;
+    border-end-start-radius: 10px;
+    border-end-end-radius: 10px;
   }
 
   &.progress-in-flash {

@@ -50,7 +50,10 @@
       padding-inline: awsui.$space-button-horizontal;
       border-block: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
       border-inline: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
-      border-radius: awsui.$border-radius-item;
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: awsui.$border-radius-item;
       z-index: 2;
 
       &.disabled {

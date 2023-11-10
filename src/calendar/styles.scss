@@ -84,7 +84,10 @@
       cursor: pointer;
       color: calendar.$grid-nonmonth-day-color;
       &::after {
-        border-radius: awsui.$border-radius-item;
+        border-start-start-radius: awsui.$border-radius-item;
+        border-start-end-radius: awsui.$border-radius-item;
+        border-end-start-radius: awsui.$border-radius-item;
+        border-end-end-radius: awsui.$border-radius-item;
       }
       &.calendar-day-current-month {
         color: calendar.$grid-day-color;
@@ -103,7 +106,10 @@
 
     &-today {
       background-color: calendar.$grid-today-background-color;
-      border-radius: awsui.$border-radius-item;
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: awsui.$border-radius-item;
       font-weight: styles.$font-weight-bold;
     }
 
@@ -156,7 +162,10 @@
         background-color: calendar.$grid-selected-background-color;
         border-block: awsui.$border-item-width solid calendar.$grid-selected-border-color;
         border-inline: awsui.$border-item-width solid calendar.$grid-selected-border-color;
-        border-radius: awsui.$border-radius-item;
+        border-start-start-radius: awsui.$border-radius-item;
+        border-start-end-radius: awsui.$border-radius-item;
+        border-end-start-radius: awsui.$border-radius-item;
+        border-end-end-radius: awsui.$border-radius-item;
       }
       > .day-inner {
         z-index: 2;

@@ -80,7 +80,10 @@ $modal-z-index: 5000;
   background-color: awsui.$color-background-container-content;
   word-wrap: break-word;
   border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-  border-radius: awsui.$border-radius-container;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
   box-shadow: awsui.$shadow-modal;
 }
 
@@ -101,7 +104,10 @@ $modal-z-index: 5000;
   padding-inline: awsui.$space-modal-horizontal;
   background-color: awsui.$color-background-container-header;
   border-block-end: 1px solid awsui.$color-border-container-divider;
-  border-radius: awsui.$border-radius-container awsui.$border-radius-container 0 0;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
 }
 
 .header--text {
@@ -120,7 +126,10 @@ $modal-z-index: 5000;
   z-index: 800;
 
   &--stuck {
-    border-radius: 0 0 awsui.$border-radius-container awsui.$border-radius-container;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
   }
 
   &:after {

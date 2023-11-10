@@ -19,7 +19,10 @@
   overflow-y: auto;
   flex: 1 1 auto;
   min-block-size: 0;
-  border-radius: awsui.$border-radius-dropdown;
+  border-start-start-radius: awsui.$border-radius-dropdown;
+  border-start-end-radius: awsui.$border-radius-dropdown;
+  border-end-start-radius: awsui.$border-radius-dropdown;
+  border-end-end-radius: awsui.$border-radius-dropdown;
 }
 
 .decrease-top-margin {

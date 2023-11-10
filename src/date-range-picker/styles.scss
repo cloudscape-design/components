@@ -158,7 +158,10 @@ $calendar-header-color: awsui.$color-text-body-default;
 
   border-block-start: 1px solid #{awsui.$color-border-container-top};
   border-block-end: 1px solid #{awsui.$color-border-container-top};
-  border-radius: awsui.$border-radius-dropdown;
+  border-start-start-radius: awsui.$border-radius-dropdown;
+  border-start-end-radius: awsui.$border-radius-dropdown;
+  border-end-start-radius: awsui.$border-radius-dropdown;
+  border-end-end-radius: awsui.$border-radius-dropdown;
 
   &:focus {
     outline: none;

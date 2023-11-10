@@ -174,9 +174,11 @@ $label-horizontal-spacing: awsui.$space-l;
     inline-size: 100%;
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
     block-size: awsui.$border-active-width;
-    border-radius: awsui.$border-radius-tabs-focus-ring;
+    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
     background: awsui.$color-border-tabs-underline;
-
     opacity: 0;
   }
 

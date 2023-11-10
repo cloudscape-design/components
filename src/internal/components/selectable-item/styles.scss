@@ -46,7 +46,10 @@
   &.selected {
     color: awsui.$color-text-dropdown-item-highlighted;
     border-width: awsui.$border-item-width;
-    border-radius: awsui.$border-radius-item;
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
     padding-block: styles.$option-padding-vertical;
     padding-inline: styles.$control-padding-horizontal;
 

@@ -38,7 +38,10 @@
     &.variant-primary {
       background-color: awsui.$color-background-dropdown-item-hover;
       border-color: awsui.$color-border-dropdown-item-hover;
-      border-radius: awsui.$border-radius-item;
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: awsui.$border-radius-item;
 
       &.disabled {
         color: awsui.$color-text-dropdown-item-dimmed;

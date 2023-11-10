@@ -88,13 +88,19 @@ $checkbox-size: awsui.$size-control;
     padding-block: 0;
     padding-inline: awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
-    border-radius: awsui.$border-radius-token;
+    border-start-start-radius: awsui.$border-radius-token;
+    border-start-end-radius: awsui.$border-radius-token;
+    border-end-start-radius: awsui.$border-radius-token;
+    border-end-end-radius: awsui.$border-radius-token;
     color: awsui.$color-text-body-default;
   }
 }
 
 .visual-refresh > .inline-token-list > .inline-token {
-  border-radius: awsui.$border-radius-badge;
+  border-start-start-radius: awsui.$border-radius-badge;
+  border-start-end-radius: awsui.$border-radius-badge;
+  border-end-start-radius: awsui.$border-radius-badge;
+  border-end-end-radius: awsui.$border-radius-badge;
 }
 
 .inline-token-hidden-placeholder {
