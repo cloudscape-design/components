@@ -6,7 +6,7 @@ import Container from '~components/container';
 import Header from '~components/header';
 import MixedLineBarChart, { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 import ScreenshotArea from '../utils/screenshot-area';
-import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/common';
+import { commonProps, barChartInstructions } from './common';
 import rawCostsData from '../common/popover-drilldown-sample-data';
 import SpaceBetween from '~components/space-between';
 import Link from '~components/link';
