@@ -49,7 +49,17 @@
       }
     ]
   },
+  "overrides": [
+    {
+      "files": ["src/components/button/*.scss"],
+      "rules": {
+        "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
+        "csstools/use-logical": "always"
+      }
+    }
+  ],
   "plugins": [
+    "stylelint-use-logical",
     "stylelint-order",
     "stylelint-no-unsupported-browser-features",
     "./build-tools/stylelint"
