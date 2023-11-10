@@ -212,11 +212,10 @@ describe('with stickyHeader=true', () => {
       { minWidth: '100px', width: '', maxWidth: '' },
       { minWidth: '', width: '', maxWidth: '300px' },
     ]);
-    // in JSDOM, there is no layout, so copied width is "0px" and no value is ""
     expect(extractSize(fakeHeader)).toEqual([
-      { minWidth: '', width: '0px', maxWidth: '' },
-      { minWidth: '', width: '0px', maxWidth: '' },
-      { minWidth: '', width: '0px', maxWidth: '' },
+      { minWidth: '', width: '200px', maxWidth: '' },
+      { minWidth: '', width: '', maxWidth: '' },
+      { minWidth: '', width: '', maxWidth: '' },
     ]);
   });
 });

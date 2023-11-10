@@ -11,21 +11,23 @@ export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.Co
   }
 }
 
-export function setElementWidth(
-  element: undefined | HTMLElement,
-  property: 'width' | 'minWidth' | 'maxWidth',
-  width: undefined | number | string
-) {
-  let widthCssValue = '';
-  if (typeof width === 'number') {
-    widthCssValue = width + 'px';
+export function setElementWidths(element: undefined | HTMLElement, styles: React.CSSProperties) {
+  function setProperty(property: 'width' | 'minWidth' | 'maxWidth') {
+    const value = styles[property];
+    let widthCssValue = '';
+    if (typeof value === 'number') {
+      widthCssValue = value + 'px';
+    }
+    if (typeof value === 'string') {
+      widthCssValue = value;
+    }
+    if (element && element.style[property] !== widthCssValue) {
+      element.style[property] = widthCssValue;
+    }
   }
-  if (typeof width === 'string') {
-    widthCssValue = width;
-  }
-  if (element && element.style[property] !== widthCssValue) {
-    element.style[property] = widthCssValue;
-  }
+  setProperty('width');
+  setProperty('minWidth');
+  setProperty('maxWidth');
 }
 
 function checkProperty(column: TableProps.ColumnDefinition<any>, name: 'width' | 'minWidth') {

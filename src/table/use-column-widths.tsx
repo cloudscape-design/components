@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
-import { setElementWidth } from './column-widths-utils';
+import { setElementWidths } from './column-widths-utils';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
@@ -86,37 +86,42 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       delete ref.current[columnId];
     }
   };
-  // Imperatively sets width style for a cell avoiding React state.
-  // This allows setting the style as soon container's size change is observed.
-  const setColumnWidthStyle = useStableCallback((column: ColumnWidthDefinition) => {
-    const cellElement = cellsRef.current[column.id];
+
+  const getColumnStyles = (sticky: boolean, columnId: PropertyKey): React.CSSProperties => {
+    const column = visibleColumns.find(column => column.id === columnId);
+    if (!column) {
+      return {};
+    }
+
+    if (sticky) {
+      return { width: cellsRef.current[column.id]?.offsetWidth || (columnWidths?.[column.id] ?? column.width) };
+    }
 
     if (resizableColumns && columnWidths) {
       const isLastColumn = column.id === visibleColumns[visibleColumns.length - 1]?.id;
       const totalWidth = visibleColumns.reduce((sum, { id }) => sum + (columnWidths[id] || DEFAULT_COLUMN_WIDTH), 0);
       if (isLastColumn && containerWidthRef.current > totalWidth) {
-        setElementWidth(cellElement, 'width', 'auto');
+        return { width: 'auto', minWidth: column?.minWidth };
       } else {
-        setElementWidth(cellElement, 'width', columnWidths[column.id]);
+        return { width: columnWidths[column.id], minWidth: column?.minWidth };
       }
-      setElementWidth(cellElement, 'minWidth', column?.minWidth);
-    } else {
-      setElementWidth(cellElement, 'width', column?.width);
-      setElementWidth(cellElement, 'minWidth', column?.minWidth);
     }
-    if (!resizableColumns) {
-      setElementWidth(cellElement, 'maxWidth', column?.maxWidth);
-    }
-  });
+    return {
+      width: column.width,
+      minWidth: column.minWidth,
+      maxWidth: !resizableColumns ? column.maxWidth : undefined,
+    };
+  };
+
+  // Imperatively sets width style for a cell avoiding React state.
+  // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
     for (const column of visibleColumns) {
-      setColumnWidthStyle(column);
+      setElementWidths(cellsRef.current[column.id], getColumnStyles(false, column.id));
     }
-    // Sticky column widths must be synchronized once all real columns widths are assigned.
+    // Sticky column widths must be synchronized once all real column widths are assigned.
     for (const id of Object.keys(stickyCellsRef.current)) {
-      const cellElement = cellsRef.current[id];
-      const stickyCellElement = stickyCellsRef.current[id];
-      setElementWidth(stickyCellElement, 'width', cellElement?.offsetWidth);
+      setElementWidths(stickyCellsRef.current[id], getColumnStyles(true, id));
     }
   });
 
@@ -164,23 +169,6 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   function updateColumn(columnId: PropertyKey, newWidth: number) {
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? {}, newWidth, columnId));
   }
-
-  // Returns column styles to be assigned to header cells.
-  // That improves performance of the initial render by avoiding reflows caused by explicit widths assignment.
-  const getColumnStyles = (sticky: boolean, columnId: PropertyKey) => {
-    const column = visibleColumns.find(column => column.id === columnId);
-    if (column && sticky) {
-      return { width: columnWidths?.[column.id] ?? column.width };
-    }
-    if (column) {
-      return {
-        width: columnWidths?.[column.id] ?? column.width,
-        minWidth: column.minWidth,
-        maxWidth: !resizableColumns ? column.maxWidth : undefined,
-      };
-    }
-    return {};
-  };
 
   return (
     <WidthsContext.Provider value={{ getColumnStyles, columnWidths: columnWidths ?? {}, updateColumn, setCell }}>
