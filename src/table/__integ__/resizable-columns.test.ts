@@ -60,17 +60,17 @@ class TablePage extends BasePageObject {
     return element.getAttribute('style');
   }
 
-  getFirstTableHeaders() {
+  getFirstTableHeaderWidths() {
     return this.browser.execute(() => {
       const tables = document.querySelectorAll('table');
-      return Array.from(tables[0].querySelectorAll('th'));
+      return Array.from(tables[0].querySelectorAll('th')).map(el => el.offsetWidth);
     });
   }
 
-  getLastTableHeaders() {
+  getLastTableHeaderWidths() {
     return this.browser.execute(() => {
       const tables = document.querySelectorAll('table');
-      return Array.from(tables[tables.length - 1].querySelectorAll('th'));
+      return Array.from(tables[tables.length - 1].querySelectorAll('th')).map(el => el.offsetWidth);
     });
   }
 
@@ -191,27 +191,13 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
-  test(
-    'sticky and real column headers must have identical widths on big screen',
+  test.each([1680, 620])('sticky and real column headers must have identical widths for screen width %s', width =>
     setupStickyTest(async page => {
-      const stickyHeaders = await page.getFirstTableHeaders();
-      const realHeaders = await page.getLastTableHeaders();
-
-      expect(stickyHeaders.length).toBe(realHeaders.length);
-      expect(stickyHeaders.map(el => el.offsetWidth)).toEqual(realHeaders.map(el => el.offsetWidth));
-    })
-  );
-
-  test(
-    'sticky and real column headers must have identical widths on small screen',
-    setupStickyTest(async page => {
-      await page.setWindowSize({ ...defaultScreen, width: 620 });
-      const stickyHeaders = await page.getFirstTableHeaders();
-      const realHeaders = await page.getLastTableHeaders();
-
-      expect(stickyHeaders.length).toBe(realHeaders.length);
-      expect(stickyHeaders.map(el => el.offsetWidth)).toEqual(realHeaders.map(el => el.offsetWidth));
-    })
+      await page.setWindowSize({ ...defaultScreen, width });
+      const stickyHeaderWidths = await page.getFirstTableHeaderWidths();
+      const realHeaderWidths = await page.getLastTableHeaderWidths();
+      expect(stickyHeaderWidths).toEqual(realHeaderWidths);
+    })()
   );
 
   // The page width of 620px is an empirical value defined for the respective test page in VR

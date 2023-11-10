@@ -439,7 +439,10 @@ describe('column header content', () => {
 });
 
 test('should set last column width to "auto" when container width exceeds total column width', () => {
-  jest.mocked(useResizeObserver).mockImplementation((_target, cb) => cb({ contentBoxWidth: 451 } as any));
+  const totalColumnsWidth = 150 + 300;
+  jest
+    .mocked(useResizeObserver)
+    .mockImplementation((_target, cb) => cb({ contentBoxWidth: totalColumnsWidth + 1 } as any));
 
   const { wrapper } = renderTable(<Table {...defaultProps} />);
 
