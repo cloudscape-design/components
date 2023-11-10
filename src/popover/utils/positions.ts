@@ -220,7 +220,7 @@ export function intersectRectangles(rectangles: BoundingOffset[]): number | null
  */
 export function calculatePosition({
   preferredPosition,
-  internalPosition: forcedPosition,
+  fixedIternalPosition,
   trigger,
   arrow,
   body,
@@ -230,7 +230,7 @@ export function calculatePosition({
   renderWithPortal,
 }: {
   preferredPosition: PopoverProps.Position;
-  internalPosition?: InternalPosition;
+  fixedIternalPosition?: InternalPosition;
   trigger: BoundingOffset;
   arrow: BoundingBox;
   body: BoundingBox;
@@ -242,7 +242,9 @@ export function calculatePosition({
   let bestPositionOutsideViewport: CalculatePosition | null = null;
   let largestArea = 0;
 
-  const preferredInternalPositions = forcedPosition ? [forcedPosition] : PRIORITY_MAPPING[preferredPosition];
+  const preferredInternalPositions = fixedIternalPosition
+    ? [fixedIternalPosition]
+    : PRIORITY_MAPPING[preferredPosition];
 
   // Attempt to position the popover based on the priority list for this position,
   // trying to fit it inside the container and inside the viewport.
@@ -265,7 +267,7 @@ export function calculatePosition({
   }
 
   // Use best possible placement.
-  const internalPosition = forcedPosition || bestPositionOutsideViewport?.internalPosition || 'right-top';
+  const internalPosition = bestPositionOutsideViewport?.internalPosition || 'right-top';
   // Get default rect for that placement.
   const defaultOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
   // Get largest possible rect that fits into viewport or container.
