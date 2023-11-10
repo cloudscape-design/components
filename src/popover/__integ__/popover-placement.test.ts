@@ -79,22 +79,22 @@ const leftTop: Expectation = (trigger, container, arrow) => {
 
 const bottomRight: Expectation = (trigger, container) => {
   expect(trigger.bottom).toBeLessThan(container.top);
-  expect(Math.round(trigger.left)).toEqual(Math.round(container.left));
+  expect(trigger.left).toBeLessThan(container.left);
 };
 
 const bottomLeft: Expectation = (trigger, container) => {
   expect(trigger.bottom).toBeLessThan(container.top);
-  expect(Math.abs(trigger.right - container.right)).toBeLessThan(1);
+  expect(trigger.right).toBeGreaterThan(container.right);
 };
 
 const topRight: Expectation = (trigger, container) => {
   expect(trigger.top).toBeGreaterThan(container.bottom);
-  expect(Math.round(trigger.left)).toEqual(Math.round(container.left));
+  expect(trigger.left).toBeLessThan(container.left);
 };
 
 const topLeft: Expectation = (trigger, container) => {
   expect(trigger.top).toBeGreaterThan(container.bottom);
-  expect(Math.abs(trigger.right - container.right)).toBeLessThan(1);
+  expect(trigger.right).toBeGreaterThan(container.right);
 };
 
 const setupTest = (
