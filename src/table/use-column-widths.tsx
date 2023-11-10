@@ -50,12 +50,14 @@ function updateWidths(
 }
 
 interface WidthsContext {
+  getColumnStyles(sticky: boolean, columnId: PropertyKey): React.CSSProperties;
   columnWidths: Record<PropertyKey, number>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   setCell: (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => void;
 }
 
 const WidthsContext = createContext<WidthsContext>({
+  getColumnStyles: () => ({}),
   columnWidths: {},
   updateColumn: () => {},
   setCell: () => {},
@@ -163,8 +165,25 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? {}, newWidth, columnId));
   }
 
+  // Returns column styles to be assigned to header cells.
+  // That improves performance of the initial render by avoiding reflows caused by explicit widths assignment.
+  const getColumnStyles = (sticky: boolean, columnId: PropertyKey) => {
+    const column = visibleColumns.find(column => column.id === columnId);
+    if (column && sticky) {
+      return { width: columnWidths?.[column.id] ?? column.width };
+    }
+    if (column) {
+      return {
+        width: columnWidths?.[column.id] ?? column.width,
+        minWidth: column.minWidth,
+        maxWidth: !resizableColumns ? column.maxWidth : undefined,
+      };
+    }
+    return {};
+  };
+
   return (
-    <WidthsContext.Provider value={{ columnWidths: columnWidths ?? {}, updateColumn, setCell }}>
+    <WidthsContext.Provider value={{ getColumnStyles, columnWidths: columnWidths ?? {}, updateColumn, setCell }}>
       {children}
     </WidthsContext.Provider>
   );

@@ -89,7 +89,7 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { columnWidths, updateColumn, setCell } = useColumnWidths();
+    const { getColumnStyles, columnWidths, updateColumn, setCell } = useColumnWidths();
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -134,6 +134,7 @@ const Thead = React.forwardRef(
             return (
               <TableHeaderCell
                 key={columnId}
+                style={getColumnStyles(sticky, columnId)}
                 className={headerCellClass}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
