@@ -1213,6 +1213,41 @@ describe('property filter parts', () => {
         })
       );
     });
+
+    test('token editor has matched property options', () => {
+      function AsyncPropertyFilter(props: PropertyFilterProps) {
+        const [loadedFilteringOptions, setFilteringOptions] = useState<readonly FilteringOption[]>([]);
+        return (
+          <PropertyFilter
+            {...props}
+            filteringOptions={loadedFilteringOptions}
+            onLoadItems={(...args) => {
+              props.onLoadItems?.(...args);
+              setFilteringOptions(filteringOptions);
+            }}
+          />
+        );
+      }
+
+      const renderComponent = (props?: Partial<PropertyFilterProps>) => {
+        const { container } = render(<AsyncPropertyFilter {...defaultProps} {...props} />);
+        return createWrapper(container).findPropertyFilter()!;
+      };
+
+      const wrapper = renderComponent({
+        query: { tokens: [{ propertyKey: 'state', value: '0', operator: '=' }], operation: 'or' },
+      });
+
+      const [contentWrapper] = openTokenEditor(wrapper);
+      const valueSelectWrapper = findValueSelector(contentWrapper);
+      act(() => valueSelectWrapper.focus());
+      expect(
+        valueSelectWrapper
+          .findDropdown()
+          .findOptions()!
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['Stopped', 'Stopping', 'Running']);
+    });
   });
 
   describe('labelled values', () => {
