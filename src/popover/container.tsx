@@ -35,7 +35,7 @@ export interface PopoverContainerProps {
   keepPositionOnResize?: boolean;
 }
 
-const INITIAL_STYLES: CSSProperties = { position: 'absolute', top: -9999, left: -9999 };
+const INITIAL_STYLES: CSSProperties = { position: 'fixed', top: -9999, left: -9999 };
 
 export default function PopoverContainer({
   position,
