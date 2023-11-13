@@ -24,6 +24,7 @@ const setupTest = (testFn: (page: SinglePageCreate) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new SinglePageCreate(browser);
     await browser.url('#/light/funnel-analytics/static-single-page-flow');
+    await new Promise(r => setTimeout(r, 10));
     await testFn(page);
   });
 };
@@ -99,6 +100,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
+        subStepNumber: 1,
       });
 
       expect(funnelLog[2].resolvedProps).toEqual({
@@ -118,6 +120,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
+        subStepNumber: 1,
       });
 
       expect(funnelLog[3].resolvedProps).toEqual({
@@ -137,6 +140,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 2 - header',
+        subStepNumber: 2,
       });
 
       expect(funnelLog[4].resolvedProps).toEqual({
@@ -156,6 +160,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 2 - header',
+        subStepNumber: 2,
       });
 
       expect(funnelLog[5].resolvedProps).toEqual({

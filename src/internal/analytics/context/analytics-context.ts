@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { MutableRefObject, RefObject, createContext } from 'react';
-import { FunnelType } from '../interfaces';
+import { FunnelType, SubStepConfiguration } from '../interfaces';
 import { getFunnelNameSelector } from '../selectors';
 
 export type FunnelState = 'default' | 'validating' | 'complete' | 'cancelled';
@@ -34,6 +34,7 @@ export interface FunnelStepContextValue {
   funnelInteractionId: string | undefined;
   /** This function is called when the list of substeps in this step changes.  */
   onStepChange: () => void;
+  subStepConfiguration: MutableRefObject<Record<number, SubStepConfiguration[] | undefined> | undefined>;
 }
 
 export interface FunnelSubStepContextValue {
@@ -85,6 +86,7 @@ export const FunnelStepContext = createContext<FunnelStepContextValue>({
   isInStep: false,
   funnelInteractionId: undefined,
   onStepChange: () => {},
+  subStepConfiguration: { current: [] },
 });
 
 export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({

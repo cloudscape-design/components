@@ -240,7 +240,7 @@ export const AnalyticsFunnelStep = (props: AnalyticsFunnelStepProps) => {
   return <InnerAnalyticsFunnelStep {...props} key={props.stepNumber} />;
 };
 
-function getSubStepConfiguration() {
+function getSubStepConfiguration(): SubStepConfiguration[] {
   const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
 
   const subStepConfiguration = subSteps.map((substep, index) => {
@@ -253,7 +253,8 @@ function getSubStepConfiguration() {
   return subStepConfiguration;
 }
 
-function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration[]) => void) {
+function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: SubStepConfiguration[]) => void) {
+  const subStepConfiguration = useRef<Record<number, SubStepConfiguration[] | undefined>>({});
   /*
    Chosen so that it's hopefully shorter than a user interaction, but gives enough time for the
    amount of containers to stabilise.
@@ -274,15 +275,17 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
   /* We debounce this handler, so that multiple containers can change at once without causing 
   too many events. */
   const stepChangeCallback = useDebounceCallback(() => {
+    subStepConfiguration.current[stepNumber] = getSubStepConfiguration();
+
     // We don't want to emit the event after the component has been unmounted.
     if (!listenForSubStepChanges.current) {
       return;
     }
 
-    handler(getSubStepConfiguration());
+    handler(subStepConfiguration.current[stepNumber]!);
   }, SUBSTEP_CHANGE_DEBOUNCE);
 
-  return stepChangeCallback;
+  return { onStepChange: stepChangeCallback, subStepConfiguration };
 }
 
 const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFunnelStepProps) => {
@@ -296,7 +299,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
   const subStepCount = useRef<number>(0);
 
   const stepNameSelector = rest.stepNameSelector || funnelNameSelector;
-  const onStepChange = useStepChangeListener(subStepConfiguration => {
+  const { onStepChange, subStepConfiguration } = useStepChangeListener(stepNumber, subStepConfiguration => {
     if (!funnelInteractionId) {
       return;
     }
@@ -377,6 +380,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
     isInStep: true,
     funnelInteractionId,
     onStepChange,
+    subStepConfiguration,
   };
 
   /*
