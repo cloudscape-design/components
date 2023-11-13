@@ -35,6 +35,9 @@ export interface PopoverContainerProps {
   keepPositionOnResize?: boolean;
 }
 
+// Giving absolute positioning to an off-screen element can lead to its width being narrowed,
+// which would lead to extra unnecessary initial render loops with incorrect dimensions.
+// Using fixed position instead to let the popover expand to its needed width from the first render.
 const INITIAL_STYLES: CSSProperties = { position: 'fixed', top: -9999, left: -9999 };
 
 export default function PopoverContainer({
