@@ -58,7 +58,6 @@ groupedSeriesData.sort((a, b) => (b.x < a.x ? -1 : 1));
 const otherSeries: MixedLineBarChartProps.DataSeries<string> = {
   title: 'Others',
   type: 'line',
-  valueFormatter: dollarFormatter,
   data: groupedSeriesData,
 };
 

@@ -51,7 +51,6 @@ for (const series of groupedSeries) {
 const otherSeries: MixedLineBarChartProps.BarDataSeries<string> = {
   title: 'Others',
   type: 'bar',
-  valueFormatter: dollarFormatter,
   data: groupedSeriesData,
 };
 
