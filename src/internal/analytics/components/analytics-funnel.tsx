@@ -254,7 +254,7 @@ function getSubStepConfiguration(): SubStepConfiguration[] {
 }
 
 function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: SubStepConfiguration[]) => void) {
-  const subStepConfiguration = useRef<Record<number, SubStepConfiguration[]>>({});
+  const subStepConfiguration = useRef<Record<number, SubStepConfiguration[] | undefined>>({});
   /*
    Chosen so that it's hopefully shorter than a user interaction, but gives enough time for the
    amount of containers to stabilise.
@@ -282,7 +282,7 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
       return;
     }
 
-    handler(subStepConfiguration.current[stepNumber]);
+    handler(subStepConfiguration.current[stepNumber]!);
   }, SUBSTEP_CHANGE_DEBOUNCE);
 
   return { onStepChange: stepChangeCallback, subStepConfiguration };

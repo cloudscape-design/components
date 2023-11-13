@@ -34,7 +34,7 @@ export interface FunnelStepContextValue {
   funnelInteractionId: string | undefined;
   /** This function is called when the list of substeps in this step changes.  */
   onStepChange: () => void;
-  subStepConfiguration: MutableRefObject<Record<number, SubStepConfiguration[]> | undefined>;
+  subStepConfiguration: MutableRefObject<Record<number, SubStepConfiguration[] | undefined> | undefined>;
 }
 
 export interface FunnelSubStepContextValue {
