@@ -150,7 +150,6 @@ const ExpandableHeaderTextWrapper = ({
   const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
   // For all other cases, make the entire header clickable for backwards compatibility.
   const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
-
   const headerButton = (
     <span
       className={clsx(
@@ -190,13 +189,8 @@ const ExpandableHeaderTextWrapper = ({
       ) : (
         <>
           {variant === 'compact' ? (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <HeadingTag
-                className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-                {...headingTagListeners}
-              >
-                {headerButton}
-              </HeadingTag>
+            <div className={clsx(styles['header-wrapper'], styles['header-wrapper-compact'])}>
+              <HeadingTag className={styles['click-target']}>{headerButton}</HeadingTag>
               {headerActions}
             </div>
           ) : (

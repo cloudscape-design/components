@@ -43,7 +43,7 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             {subItems?.length && expandable ? (
               <div className={styles['key-value-pair']}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-                <div style={{ width: '100%' }}>
+                <div className={styles['full-width']}>
                   <InternalExpandableSection
                     variant="compact"
                     headerText={key}

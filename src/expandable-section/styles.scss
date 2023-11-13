@@ -156,6 +156,12 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     padding: 0;
   }
 
+  &-wrapper-compact {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   &-button,
   &-container-button {
     @include focus-visible.when-visible {
