@@ -19,8 +19,12 @@ class MultiPageCreate extends BasePageObject {
     const actions = funnelLog.map(item => item.action);
     return { funnelLog, actions };
   }
-  getFunnelLogItem(index: number) {
-    return this.browser.execute(index => window.__awsuiFunnelMetrics__[index], index);
+  async getFunnelLogItem(index: number) {
+    const item = await this.browser.execute(index => window.__awsuiFunnelMetrics__[index], index);
+    if (!item) {
+      throw new Error(`No funnel log item at index ${index}`);
+    }
+    return item;
   }
 }
 
@@ -28,6 +32,7 @@ const setupTest = (testFn: (page: MultiPageCreate) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new MultiPageCreate(browser);
     await browser.url('#/light/funnel-analytics/static-multi-page-flow');
+    await new Promise(r => setTimeout(r, 10));
     await testFn(page);
   });
 };
@@ -100,7 +105,7 @@ describe('Multi-page create', () => {
       await page.keys('Tab'); // Input 2 -> Form Field 3 External Link
 
       const { funnelLog, actions } = await page.getFunnelLog();
-      const [, , funnelSubStep1StartEvent, funnelSubsteStep1CompleteEvent, funnelSubStep2StartEvent] = funnelLog;
+      const [, , funnelSubStep1StartEvent, funnelSubStep1CompleteEvent, funnelSubStep2StartEvent] = funnelLog;
 
       expect(actions).toEqual([
         'funnelStart',
@@ -118,6 +123,7 @@ describe('Multi-page create', () => {
         funnelInteractionId: FUNNEL_INTERACTION_ID,
         stepName: 'Step 1',
         subStepName: 'Container 1 - header',
+        subStepNumber: 1,
         stepNumber: 1,
       });
       expect(funnelSubStep1StartEvent.resolvedProps).toEqual({
@@ -128,7 +134,7 @@ describe('Multi-page create', () => {
       });
       expect(funnelSubStep1StartEvent.resolvedProps.subStepAllElements.length).toBe(2);
 
-      expect(funnelSubsteStep1CompleteEvent.props).toEqual({
+      expect(funnelSubStep1CompleteEvent.props).toEqual({
         stepNameSelector: expect.any(String),
         subStepAllSelector: expect.any(String),
         subStepNameSelector: expect.any(String),
@@ -136,9 +142,10 @@ describe('Multi-page create', () => {
         funnelInteractionId: FUNNEL_INTERACTION_ID,
         stepName: 'Step 1',
         subStepName: 'Container 1 - header',
+        subStepNumber: 1,
         stepNumber: 1,
       });
-      expect(funnelSubsteStep1CompleteEvent.resolvedProps).toEqual({
+      expect(funnelSubStep1CompleteEvent.resolvedProps).toEqual({
         subStepElement: expect.any(Object),
         subStepAllElements: expect.any(Object),
         stepName: 'Step 1',
@@ -153,6 +160,7 @@ describe('Multi-page create', () => {
         funnelInteractionId: FUNNEL_INTERACTION_ID,
         stepName: 'Step 1',
         subStepName: 'Container 2 - header',
+        subStepNumber: 2,
         stepNumber: 1,
       });
       expect(funnelSubStep2StartEvent.resolvedProps).toEqual({

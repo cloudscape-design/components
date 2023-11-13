@@ -253,8 +253,8 @@ function getSubStepConfiguration(): SubStepConfiguration[] {
   return subStepConfiguration;
 }
 
-function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration[]) => void) {
-  const subStepConfiguration = useRef<SubStepConfiguration[]>();
+function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: SubStepConfiguration[]) => void) {
+  const subStepConfiguration = useRef<Record<number, SubStepConfiguration[]>>({});
   /*
    Chosen so that it's hopefully shorter than a user interaction, but gives enough time for the
    amount of containers to stabilise.
@@ -275,14 +275,14 @@ function useStepChangeListener(handler: (stepConfiguration: SubStepConfiguration
   /* We debounce this handler, so that multiple containers can change at once without causing 
   too many events. */
   const stepChangeCallback = useDebounceCallback(() => {
-    subStepConfiguration.current = getSubStepConfiguration();
+    subStepConfiguration.current[stepNumber] = getSubStepConfiguration();
 
     // We don't want to emit the event after the component has been unmounted.
     if (!listenForSubStepChanges.current) {
       return;
     }
 
-    handler(subStepConfiguration.current);
+    handler(subStepConfiguration.current[stepNumber]);
   }, SUBSTEP_CHANGE_DEBOUNCE);
 
   return { onStepChange: stepChangeCallback, subStepConfiguration };
@@ -299,7 +299,7 @@ const InnerAnalyticsFunnelStep = ({ children, stepNumber, ...rest }: AnalyticsFu
   const subStepCount = useRef<number>(0);
 
   const stepNameSelector = rest.stepNameSelector || funnelNameSelector;
-  const { onStepChange, subStepConfiguration } = useStepChangeListener(subStepConfiguration => {
+  const { onStepChange, subStepConfiguration } = useStepChangeListener(stepNumber, subStepConfiguration => {
     if (!funnelInteractionId) {
       return;
     }
