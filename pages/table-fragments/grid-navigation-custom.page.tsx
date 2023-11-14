@@ -339,6 +339,12 @@ function EditableStateCell({ value, onChange }: { value: InstanceState; onChange
   const [active, setActive] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (active) {
+      dialogRef.current?.querySelector('input')?.focus();
+    }
+  }, [active]);
+
   if (!active) {
     return value === 'TERMINATED' ? (
       <StatusIndicator {...stateToStatusIndicator[value]} />
