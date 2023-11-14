@@ -107,7 +107,6 @@ const InternalTable = React.forwardRef(
       stickyColumns,
       columnDisplay,
       keyboardNavigation,
-      suppressKeyboardNavigationFor,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -263,7 +262,6 @@ const InternalTable = React.forwardRef(
     const keyboardNavigationStable = tableRole === 'grid';
     useGridNavigation({
       keyboardNavigation: keyboardNavigationStable,
-      suppressKeyboardNavigationFor,
       pageSize: GRID_NAVIGATION_PAGE_SIZE,
       getTable: () => tableRefObject.current,
     });

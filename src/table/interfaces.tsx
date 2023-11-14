@@ -321,10 +321,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Experimental API
    */
   keyboardNavigation?: boolean;
-  /**
-   * Experimental API
-   */
-  suppressKeyboardNavigationFor?: string | ((element: HTMLElement) => boolean);
 }
 
 export namespace TableProps {
