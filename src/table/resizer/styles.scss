@@ -15,6 +15,29 @@
 $handle-width: awsui.$space-l;
 $active-separator-width: 2px;
 
+.divider {
+  th:not(:last-child) > & {
+    $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    min-height: awsui.$line-height-heading-xs;
+    max-height: calc(100% - #{$gap});
+    margin: auto;
+    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-interactive-default;
+    box-sizing: border-box;
+
+    &-disabled {
+      border-left-color: awsui.$color-border-divider-default;
+    }
+    &-active {
+      border-left-color: awsui.$color-border-divider-active;
+    }
+  }
+}
+
 .resizer {
   @include styles.styles-reset;
   border: none;
@@ -38,32 +61,13 @@ $active-separator-width: 2px;
     width: calc(#{$handle-width} / 2);
     right: 0;
   }
-  th:not(:last-child) > & {
-    &:hover,
-    &-active {
-      &::before {
-        $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
-
-        content: '';
-        position: absolute;
-        left: calc(#{$handle-width} / 2 - #{$active-separator-width});
-        bottom: 0;
-        top: 0;
-        min-height: awsui.$line-height-heading-xs;
-        max-height: calc(100% - #{$gap});
-        margin: auto;
-        border-left: $active-separator-width solid awsui.$color-border-divider-active;
-        box-sizing: border-box;
-      }
-    }
+  &:hover + .divider {
+    border-left-color: awsui.$color-border-divider-active;
   }
   // stylelint-disable-next-line selector-combinator-disallowed-list
   body[data-awsui-focus-visible='true'] &.has-focus {
-    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
+    @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
     position: absolute;
-    &::before {
-      box-shadow: inset 0 0 0 2px awsui.$color-border-item-focused;
-    }
   }
 }
 

@@ -24,6 +24,10 @@ const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
+export function Divider({ className }: { className?: string }) {
+  return <span className={clsx(styles.divider, styles['divider-disabled'], className)} />;
+}
+
 export function Resizer({
   onWidthUpdate,
   onWidthUpdateCommit,
@@ -207,6 +211,7 @@ export function Resizer({
         data-focus-id={focusId}
       />
       <span
+        className={clsx(styles.divider, isDragging && styles['divider-active'])}
         ref={resizerSeparatorRef}
         id={separatorId}
         role="separator"
