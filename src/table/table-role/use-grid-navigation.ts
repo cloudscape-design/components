@@ -147,8 +147,11 @@ class GridNavigationHelper {
     }
   };
 
-  private onFocusout = () => {
+  private onFocusout = (event: FocusEvent) => {
     this.focusedCell = null;
+    if (event.relatedTarget) {
+      this.prevFocusedCell = null;
+    }
   };
 
   private onKeydown = (event: KeyboardEvent) => {
