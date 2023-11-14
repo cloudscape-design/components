@@ -21,18 +21,6 @@
   box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
 }
 
-// TODO: implement the same as inline editing cells to have bigger offset from cell edges
-@mixin cell-focus {
-  // For classic
-  outline: thin dotted;
-  outline: awsui.$border-link-focus-ring-outline;
-  outline-offset: -2px;
-  outline-color: awsui.$color-border-item-focused;
-  // For visual refresh
-  border-radius: awsui.$border-radius-control-default-focus-ring;
-  box-shadow: inset 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
-}
-
 @mixin container-focus($border-radius: awsui.$border-radius-container) {
   // This mixin is different to `focus-highlight` because it needs to supports overflowing
   // content. Using a pseudo element does not take the width or height of the overflowing

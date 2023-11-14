@@ -19,11 +19,21 @@
   padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
 
   @include focus-visible.when-visible {
-    @include styles.cell-focus;
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
   }
   // stylelint-disable-next-line selector-combinator-disallowed-list
   body[data-awsui-focus-visible='true'] &-fake-focus {
-    @include styles.cell-focus;
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
   }
 
   &-sticky {
@@ -82,12 +92,6 @@
 
   &-resizable:not(:last-child):before {
     border-left-color: awsui.$color-border-divider-interactive-default;
-  }
-
-  // Hide resize handle when covered by the header cell focus ring.
-  &-fake-focus:before,
-  &:focus:before {
-    opacity: 0;
   }
 }
 
