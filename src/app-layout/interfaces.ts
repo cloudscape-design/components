@@ -131,7 +131,7 @@ export interface AppLayoutProps extends BaseComponentProps {
    *   notifications: "Notifications",
    *   tools: "Help panel",
    *   toolsClose: "Close help panel",
-   *   toolsToggle: "Open help panel"
+   *   toolsToggle: "Open help panel",
    *   drawers: "Drawers",
    *   drawersOverflow: "Overflow drawers",
    *   drawersOverflowWithBadge: "Overflow drawers (Unread notifications)"

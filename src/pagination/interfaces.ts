@@ -40,7 +40,7 @@ export interface PaginationProps {
    * ```
    * {
    *   nextPageLabel: 'Next page',
-   *   paginationLabel: 'Table pagination'
+   *   paginationLabel: 'Table pagination',
    *   previousPageLabel: 'Previous page',
    *   pageLabel: pageNumber => `Page ${pageNumber}`
    * }
