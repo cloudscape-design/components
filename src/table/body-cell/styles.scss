@@ -35,7 +35,12 @@ $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-
   font-weight: inherit;
 
   @include focus-visible.when-visible {
-    @include styles.cell-focus;
+    @include styles.focus-highlight(
+      (
+        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+        'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+      )
+    );
   }
 
   &:not(.body-cell-wrap) {
