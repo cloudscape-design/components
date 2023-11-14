@@ -52,8 +52,8 @@ function hasGlobalResizeClass() {
   return document.body.classList.contains(resizerStyles['resize-active']);
 }
 
-function findActiveResizer(wrapper: TableWrapper) {
-  return wrapper.findByClassName(resizerStyles['resizer-active']);
+function findActiveDivider(wrapper: TableWrapper) {
+  return wrapper.findByClassName(resizerStyles['divider-active']);
 }
 
 afterEach(() => {
@@ -110,15 +110,15 @@ test('should use the default width if it is not provided to a column and the col
 
 test('should show the tracking line and activate resizer onMouseDown', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
-  expect(findActiveResizer(wrapper)).toBeNull();
+  expect(findActiveDivider(wrapper)).toBeNull();
   expect(hasGlobalResizeClass()).toEqual(false);
 
   fireMousedown(wrapper.findColumnResizer(1)!);
-  expect(findActiveResizer(wrapper)).not.toBeNull();
+  expect(findActiveDivider(wrapper)).not.toBeNull();
   expect(hasGlobalResizeClass()).toEqual(true);
 
   fireMouseup(150);
-  expect(findActiveResizer(wrapper)).toBeNull();
+  expect(findActiveDivider(wrapper)).toBeNull();
   expect(hasGlobalResizeClass()).toEqual(false);
 });
 

@@ -20,6 +20,7 @@ $active-separator-width: 2px;
     $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 
     position: absolute;
+    pointer-events: none;
     right: 0;
     bottom: 0;
     top: 0;

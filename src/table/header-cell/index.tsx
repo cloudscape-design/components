@@ -93,7 +93,6 @@ export function TableHeaderCell<ItemType>({
       sortingDisabled={sortingDisabled}
       hidden={hidden}
       colIndex={colIndex}
-      resizableColumns={resizableColumns}
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}

@@ -174,7 +174,6 @@ export function Resizer({
         ref={resizerToggleRef}
         className={clsx(
           styles.resizer,
-          isDragging && styles['resizer-active'],
           (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
         )}
         onMouseDown={event => {
