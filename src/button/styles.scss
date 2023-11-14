@@ -98,7 +98,8 @@
   }
 
   &.button-no-text {
-    padding-inline: awsui.$space-button-icon-only-horizontal;
+    padding-inline-start: awsui.$space-button-icon-only-horizontal;
+    padding-inline-end: awsui.$space-button-icon-only-horizontal;
   }
 
   &.button-no-wrap {
@@ -115,7 +116,8 @@
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
-    padding-inline: awsui.$space-xxs;
+    padding-inline-start: awsui.$space-xxs;
+    padding-inline-end: awsui.$space-xxs;
   }
 
   &.variant-modal-dismiss {
@@ -125,7 +127,8 @@
   }
 
   &.variant-inline-icon {
-    padding-block: 0;
+    padding-block-start: 0;
+    padding-block-end: 0;
     border-block: 0;
     border-inline: 0;
   }
@@ -145,7 +148,8 @@
   }
 
   &.button-no-text > .icon {
-    margin-inline: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
     // IE does not understand `initial`
     inset-inline: 0;
   }
