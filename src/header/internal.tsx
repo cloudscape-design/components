@@ -52,7 +52,13 @@ export default function InternalHeader({
   // If is mobile there is no need to have the dynamic variant because it's scrolled out of view
   const dynamicVariant = !isMobile && isStuck ? 'h2' : 'h1';
   const variantOverride =
-    variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant === 'awsui-h1-page' ? 'h1' : variant;
+    variant === 'awsui-h1-sticky'
+      ? isRefresh
+        ? dynamicVariant
+        : 'h2'
+      : variant === 'awsui-h1-page'
+      ? 'display-l'
+      : variant;
 
   const actionSet = actions && (
     <div

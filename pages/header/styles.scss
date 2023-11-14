@@ -1,0 +1,34 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.content-page-content,
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.content-page-content {
+  padding: 20px;
+}
+
+.content-page-header {
+  position: relative;
+  padding: 40px 20px;
+}
+
+.header-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: auto;
+
+  background-size: cover;
+  background-position: center center;
+}

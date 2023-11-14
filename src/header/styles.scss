@@ -43,7 +43,8 @@
     }
   }
 
-  &.root-variant-h1:not(.refresh) {
+  &.root-variant-h1:not(.refresh),
+  &.root-variant-display-l:not(.refresh) {
     row-gap: awsui.$space-scaled-xxs;
   }
 
@@ -53,7 +54,8 @@
     padding-bottom: awsui.$space-scaled-xs;
   }
 
-  &.root-variant-h1.root-has-description:not(.refresh) {
+  &.root-variant-h1.root-has-description:not(.refresh),
+  &.root-variant-display-l.root-has-description:not(.refresh) {
     padding-bottom: awsui.$space-scaled-2x-xxs;
   }
 }
@@ -78,7 +80,8 @@
     row-gap: awsui.$space-xxs;
   }
 
-  &-variant-h1 {
+  &-variant-h1,
+  &-variant-display-l {
     row-gap: awsui.$space-scaled-2x-xxs;
   }
 }
@@ -102,7 +105,8 @@
 
   // Calculate padding so the heading text is better aligned with the buttons.
   // Can't align-items: middle because we want buttons to stay at the top of the container when text wraps to multiple lines.
-  &-variant-h1.refresh {
+  &-variant-h1.refresh,
+  &-variant-display-l.refresh {
     padding: calc((#{awsui.$line-height-heading-xl} - #{awsui.$size-vertical-input}) / 2) 0;
   }
   &-variant-h2.refresh {
@@ -112,7 +116,8 @@
     padding: calc((#{awsui.$line-height-heading-m} - #{awsui.$size-vertical-input}) / 2) 0;
   }
 
-  &-variant-h1:not(.refresh) {
+  &-variant-h1:not(.refresh),
+  &-variant-display-l:not(.refresh) {
     padding: awsui.$space-scaled-xs 0;
   }
   &-variant-h2:not(.refresh),
@@ -129,7 +134,8 @@
   @include styles.text-wrapping;
   color: awsui.$color-text-heading-default;
 
-  &-variant-h1 {
+  &-variant-h1,
+  &-variant-display-l {
     font-size: awsui.$font-size-heading-xl;
     padding-top: awsui.$space-scaled-2x-xxs;
     // Use padding rather than center align with min height to avoid having extra bottom space when no actions are present.
@@ -154,6 +160,9 @@
   &-variant-h2:not(.refresh),
   &-variant-h3:not(.refresh) {
     padding-top: awsui.$space-scaled-xs;
+  }
+  &-variant-display-l {
+    font-size: awsui.$font-size-display-l;
   }
 
   .no-wrap > &:not(.refresh) {
@@ -188,7 +197,8 @@
   padding: 0;
   color: awsui.$color-text-heading-secondary;
 
-  &-variant-h1 {
+  &-variant-h1,
+  &-variant-display-l {
     @include styles.font-body-m;
   }
   &-variant-h2 {
@@ -222,6 +232,9 @@
   &-variant-h3 {
     @include styles.font(heading-m);
   }
+  &-variant-display-l {
+    @include styles.font(display-l);
+  }
 }
 
 .heading-text {
@@ -235,7 +248,7 @@
   &-variant-h3 {
     @include styles.font-heading-m;
   }
-  &-variant-h1-page {
+  &-variant-display-l {
     @include styles.font-display-l;
   }
 }
@@ -245,6 +258,11 @@
   font-weight: styles.$font-weight-normal;
 }
 
-.page-header {
-  padding-top: 2em;
+.title-variant-h1 > .subheading {
+  @include styles.font-heading-xl;
+  font-weight: styles.$font-weight-lighter;
+}
+.title-variant-display-l > .subheading {
+  @include styles.font-display-l;
+  font-weight: styles.$font-weight-lighter;
 }
