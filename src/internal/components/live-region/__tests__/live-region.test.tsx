@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
-import LiveRegion, { defaultDelay } from '../../../../../lib/components/internal/components/live-region';
+import LiveRegion from '../../../../../lib/components/internal/components/live-region';
 import { mockInnerText } from '../../../../internal/analytics/__tests__/mocks';
 
 mockInnerText();
@@ -12,14 +12,14 @@ const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);
   const wrapper = createWrapper(container);
 
-  await new Promise(r => setTimeout(r, defaultDelay));
+  await waitFor(() => expect(wrapper.find('[aria-live]')!.getElement()).toBeInTheDocument());
 
   return {
     wrapper,
     container,
     visibleSource: wrapper.find(':first-child')?.getElement(),
     hiddenSource: wrapper.find('[aria-hidden=true]')?.getElement(),
-    liveRegion: wrapper.find('[aria-live]')?.getElement(),
+    liveRegion: wrapper.find('[aria-live]')!.getElement(),
   };
 };
 

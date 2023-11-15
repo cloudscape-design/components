@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render as reactRender } from '@testing-library/react';
+import { render as reactRender, waitFor } from '@testing-library/react';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import { defaultDelay } from '../../../lib/components/internal/components/live-region';
 import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -433,10 +432,9 @@ describe('Flashbar component', () => {
           />
         );
 
-        await new Promise(r => setTimeout(r, defaultDelay * 2));
-
-        // Render area of the LiveRegion component.
-        expect(container.querySelector('span[aria-live]')).toHaveTextContent('Error The header The content');
+        await waitFor(() => {
+          expect(container.querySelector('span[aria-live]')).toHaveTextContent('Error The header The content');
+        });
       });
     });
   });
