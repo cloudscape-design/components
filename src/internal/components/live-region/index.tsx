@@ -100,15 +100,15 @@ function LiveRegion({
     function getSourceContent() {
       if (source) {
         return source
-          .map(source => {
-            if (!source) {
+          .map(item => {
+            if (!item) {
               return undefined;
             }
-            if (typeof source === 'string') {
-              return source;
+            if (typeof item === 'string') {
+              return item;
             }
-            if (source.current) {
-              return extractInnerText(source.current);
+            if (item.current) {
+              return extractInnerText(item.current);
             }
           })
           .filter(Boolean)
