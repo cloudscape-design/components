@@ -51,7 +51,16 @@
   },
   "overrides": [
     {
-      "files": ["./src/button/*.scss"],
+      "files": [
+        "./src/alert/*.scss",
+        "./src/anchor-navigation/*.scss",
+        "./src/annotation-context/*.scss",
+        "./src/app-layout/*.scss",
+        "./src/area-chart/*.scss",
+        "./src/attribute-editor/*.scss",
+        "./src/autosuggest/*.scss",
+        "./src/button/*.scss"
+      ],
       "rules": {
         "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
         "csstools/use-logical": "always"
