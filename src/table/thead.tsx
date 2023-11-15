@@ -16,6 +16,7 @@ import { StickyColumnsModel } from './sticky-columns';
 import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 import { TableThElement } from './header-cell/th-element';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+import { Divider } from './resizer';
 
 export interface TheadProps {
   selectionType: TableProps.SelectionType | undefined;
@@ -126,6 +127,7 @@ const Thead = React.forwardRef(
               ) : (
                 <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
               )}
+              <Divider className={styles['resize-divider']} />
             </TableThElement>
           ) : null}
 
