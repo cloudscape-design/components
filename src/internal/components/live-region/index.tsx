@@ -70,9 +70,11 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
  */
 export default memo(LiveRegion);
 
+export const defaultDelay = 10;
+
 function LiveRegion({
   assertive = false,
-  delay = 10,
+  delay = defaultDelay,
   visible = false,
   tagName: TagName = 'span',
   children,
