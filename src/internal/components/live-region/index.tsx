@@ -13,8 +13,15 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
   delay?: number;
   visible?: boolean;
   tagName?: 'span' | 'div';
-  children: React.ReactNode;
   id?: string;
+  /**
+   * Use a list of strings and/or existing DOM elements for building the
+   * announcement text. This avoids rendering separate content just for this
+   * LiveRegion.
+   *
+   * If this property is set, the `children` will be ignored.
+   */
+  source?: Array<string | React.RefObject<HTMLElement> | undefined>;
 }
 
 /**
@@ -26,29 +33,40 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
  *
  * If you notice there are different words being merged together,
  * check if there are text nodes not being wrapped in elements, like:
+ * ```
  * <LiveRegion>
  *   {title}
  *   <span><Details /></span>
  * </LiveRegion>
+ * ```
  *
  * To fix, wrap "title" in an element:
+ * ```
  * <LiveRegion>
  *   <span>{title}</span>
  *   <span><Details /></span>
  * </LiveRegion>
+ * ```
  *
  * Or create a single text node if possible:
+ * ```
  * <LiveRegion>
  *   {`${title} ${details}`}
  * </LiveRegion>
+ * ```
  *
  * The live region is always atomic, because non-atomic regions can be treated by screen readers
  * differently and produce unexpected results. To imitate non-atomic announcements simply use
  * multiple live regions:
+ * ```
  * <>
  *   <LiveRegion>{title}</LiveRegion>
  *   <LiveRegion><Details /></LiveRegion>
  * </>
+ * ```
+ *
+ * If you place interactive content inside the LiveRegion, the content will still be
+ * interactive (e.g. as a tab stop). Consider using the `source` property instead.
  */
 export default memo(LiveRegion);
 
@@ -59,6 +77,7 @@ function LiveRegion({
   tagName: TagName = 'span',
   children,
   id,
+  source,
   ...restProps
 }: LiveRegionProps) {
   const sourceRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
@@ -76,9 +95,32 @@ function LiveRegion({
     does not impact the performance. If it does, prefer using a string as children prop.
   */
   useEffect(() => {
+    function getSourceContent() {
+      if (source) {
+        return source
+          .map(source => {
+            if (!source) {
+              return undefined;
+            }
+            if (typeof source === 'string') {
+              return source;
+            }
+            if (source.current) {
+              return extractInnerText(source.current);
+            }
+          })
+          .filter(Boolean)
+          .join(' ');
+      }
+
+      if (sourceRef.current) {
+        return extractInnerText(sourceRef.current);
+      }
+    }
     function updateLiveRegion() {
-      if (targetRef.current && sourceRef.current) {
-        const sourceContent = extractInnerText(sourceRef.current);
+      const sourceContent = getSourceContent();
+
+      if (targetRef.current && sourceContent) {
         const targetContent = extractInnerText(targetRef.current);
         if (targetContent !== sourceContent) {
           // The aria-atomic does not work properly in Voice Over, causing
@@ -105,14 +147,14 @@ function LiveRegion({
 
   return (
     <>
-      {visible && (
+      {visible && !source && (
         <TagName ref={sourceRef} id={id}>
           {children}
         </TagName>
       )}
 
       <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
-        {!visible && (
+        {!visible && !source && (
           <TagName ref={sourceRef} aria-hidden="true">
             {children}
           </TagName>
