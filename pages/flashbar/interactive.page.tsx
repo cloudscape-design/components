@@ -84,12 +84,17 @@ export default function InteractiveFlashbar() {
             Add To Bottom
           </Button>
           <Button onClick={() => removeAndAddToBottom('error')}>Add And Remove</Button>
+          <Button data-id="remove-all" onClick={() => setItems([])}>
+            Remove all
+          </Button>
         </SpaceBetween>
+        <input id="focus-before" />
         <ScreenshotArea>
           <Box padding="xxl">
             <Flashbar items={items} {...restProps} />
           </Box>
         </ScreenshotArea>
+        <input id="focus-after" />
       </SpaceBetween>
     </>
   );

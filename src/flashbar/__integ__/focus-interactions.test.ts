@@ -4,6 +4,21 @@ import { setupTest } from './pages/interactive-page';
 import { FOCUS_THROTTLE_DELAY } from '../utils';
 
 test(
+  'a flash with ariaRole="status" produces no duplicate interactive content',
+  setupTest(async page => {
+    await page.removeAll();
+    await page.addInfoFlash();
+
+    await page.click('#focus-before');
+    await page.keys('Tab');
+    await page.keys('Tab');
+    await page.keys('Tab');
+
+    expect(await page.isFocused('#focus-after')).toBe(true);
+  })
+);
+
+test(
   'adding flash with ariaRole="status" does not move focus',
   setupTest(async page => {
     await page.addInfoFlash();
