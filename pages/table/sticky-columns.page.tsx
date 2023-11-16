@@ -19,7 +19,7 @@ type DemoContext = React.Context<
     resizableColumns: boolean;
     stickyHeader: boolean;
     sortingDisabled: boolean;
-    keyboardNavigation: boolean;
+    enableKeyboardNavigation: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     stickyColumnsLast: string;
@@ -193,9 +193,9 @@ export default () => {
             </Checkbox>
 
             <Checkbox
-              checked={urlParams.keyboardNavigation}
+              checked={urlParams.enableKeyboardNavigation}
               onChange={event => {
-                setUrlParams({ keyboardNavigation: event.detail.checked });
+                setUrlParams({ enableKeyboardNavigation: event.detail.checked });
                 window.location.reload();
               }}
             >

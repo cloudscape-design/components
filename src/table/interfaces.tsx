@@ -318,9 +318,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
   onEditCancel?: CancelableEventHandler;
 
   /**
-   * Experimental API
+   * Use this property to activate advanced keyboard navigation and focusing behaviors.
+   * When set to `true` table cells become navigable with arrow keys and the entire table has a single Tab stop.
    */
-  keyboardNavigation?: boolean;
+  enableKeyboardNavigation?: boolean;
 }
 
 export namespace TableProps {

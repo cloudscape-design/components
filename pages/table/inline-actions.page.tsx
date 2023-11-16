@@ -179,14 +179,14 @@ export default function () {
               header={<Header>Table with single actions</Header>}
               columnDefinitions={columnDefinitionsSingle}
               items={items}
-              keyboardNavigation={keyboardNavigation}
+              enableKeyboardNavigation={keyboardNavigation}
             />
             <Table
               ariaLabels={selectionLabels}
               header={<Header>Table with multiple actions</Header>}
               columnDefinitions={columnDefinitionsMultiple}
               items={items}
-              keyboardNavigation={keyboardNavigation}
+              enableKeyboardNavigation={keyboardNavigation}
             />
             <Table
               ariaLabels={selectionLabels}
@@ -213,21 +213,21 @@ export default function () {
               selectionType="multi"
               columnDefinitions={columnDefinitionsDropdown}
               items={items}
-              keyboardNavigation={keyboardNavigation}
+              enableKeyboardNavigation={keyboardNavigation}
             />
             <Table
               ariaLabels={selectionLabels}
               header={<Header>Table with mixed actions</Header>}
               columnDefinitions={columnDefinitionsMixed}
               items={items}
-              keyboardNavigation={keyboardNavigation}
+              enableKeyboardNavigation={keyboardNavigation}
             />
             <Table
               ariaLabels={selectionLabels}
               header={<Header>Table with only icon actions</Header>}
               columnDefinitions={columnDefinitionsOnlyIcons}
               items={items}
-              keyboardNavigation={keyboardNavigation}
+              enableKeyboardNavigation={keyboardNavigation}
             />
           </SpaceBetween>
         </Box>

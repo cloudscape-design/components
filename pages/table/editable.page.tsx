@@ -263,7 +263,7 @@ const Demo = forwardRef(
         resizableColumns={true}
         ariaLabels={ariaLabels}
         stickyHeader={true}
-        keyboardNavigation={keyboardNavigation}
+        enableKeyboardNavigation={keyboardNavigation}
       />
     );
   }

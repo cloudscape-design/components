@@ -211,7 +211,7 @@ export default function App() {
           onSortingChange={event => setSorting(event.detail)}
           onColumnWidthsChange={handleWidthChange}
           variant={fullPage ? 'full-page' : undefined}
-          keyboardNavigation={keyboardNavigation}
+          enableKeyboardNavigation={keyboardNavigation}
         />
       </ScreenshotArea>
     </SpaceBetween>

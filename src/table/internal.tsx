@@ -106,7 +106,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       stickyColumns,
       columnDisplay,
-      keyboardNavigation,
+      enableKeyboardNavigation: keyboardNavigation,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
