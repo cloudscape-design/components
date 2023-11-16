@@ -7,22 +7,14 @@ import { Link } from 'react-router-dom';
 import ThemeSwitcher from './theme-switcher';
 import AppContext from '../app-context';
 
-export default function Header({
-  sticky,
-  showTokenEditor,
-  onShowTokenEditor,
-}: {
-  sticky?: boolean;
-  showTokenEditor: boolean;
-  onShowTokenEditor: (value: boolean) => void;
-}) {
+export default function Header({ sticky }: { sticky?: boolean }) {
   const { mode } = useContext(AppContext);
   return (
     <>
       {/* #h selector for compatibility with global navigation */}
       <header id="h" className={clsx(styles.header, sticky && styles['header-sticky'])}>
         <Link to={`/${mode}/`}>Demo Assets</Link>
-        <ThemeSwitcher showTokenEditor={showTokenEditor} onShowTokenEditor={onShowTokenEditor} />
+        <ThemeSwitcher />
       </header>
     </>
   );

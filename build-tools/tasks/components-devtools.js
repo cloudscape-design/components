@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 const fs = require('fs');
-const execa = require('execa');
 const path = require('path');
 const glob = require('glob');
 const postcss = require('postcss');
@@ -15,14 +14,7 @@ const babel = require('@babel/core');
 const SCSS = require('postcss-scss');
 const workspace = require('../utils/workspace');
 
-module.exports = series(
-  task('build-components-devtools:prepare-mappings', () => build()),
-  task('build-components-devtools:compile-typescript', async () => {
-    const config = path.resolve(path.resolve('devtools'), 'tsconfig.json');
-    const outDir = path.join(workspace.componentsDevtoolsPath);
-    await execa('tsc', ['-p', config, '--outDir', outDir, '--sourceMap'], { stdio: 'inherit' });
-  })
-);
+module.exports = series(task('build-components-devtools:prepare-mappings', () => build()));
 
 const tokenNameToFiles = {};
 

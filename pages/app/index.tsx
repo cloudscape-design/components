@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Suspense, useContext, useEffect, useState } from 'react';
+import React, { Suspense, useContext, useEffect } from 'react';
 import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history';
@@ -16,7 +16,6 @@ import IndexPage from './components/index-page';
 import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
-import { useInspector } from './inspector/use-inspector';
 
 const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
 interface ExtendedWindow extends Window {
@@ -62,9 +61,6 @@ function App() {
     }
   }, [isMacOS]);
 
-  const [showTokenEditor, setShowTokenEditor] = useState(false);
-  useInspector({ open: showTokenEditor, onClose: () => setShowTokenEditor(false) });
-
   if (!mode) {
     return <Redirect to="/light/" />;
   }
@@ -72,11 +68,7 @@ function App() {
     <StrictModeWrapper pageId={pageId}>
       <Suspense fallback={<span>Loading...</span>}>
         <ContentTag>
-          <Header
-            sticky={isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1}
-            showTokenEditor={showTokenEditor}
-            onShowTokenEditor={setShowTokenEditor}
-          />
+          <Header sticky={isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1} />
           {pageId ? <PageView pageId={pageId} /> : <IndexPage />}
         </ContentTag>
       </Suspense>
