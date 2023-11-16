@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "ID de version",
     "i18nStrings.columnVersionLastModified": "Dernière modification",
     "i18nStrings.columnVersionSize": "Taille",
-    "i18nStrings.validationPathMustBegin": "Le chemin doit commencer par s3 ://",
+    "i18nStrings.validationPathMustBegin": "Le chemin doit commencer par s3:// pour être valide.",
     "i18nStrings.validationBucketLowerCase": "Le nom du compartiment doit commencer par une minuscule ou un chiffre.",
     "i18nStrings.validationBucketMustNotContain": "Le nom du compartiment ne doit pas contenir de majuscules.",
     "i18nStrings.validationBucketLength": "Le nom du compartiment doit comporter entre 3 et 63 caractères.",

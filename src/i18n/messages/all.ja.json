@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "バージョン ID",
     "i18nStrings.columnVersionLastModified": "最終更新日",
     "i18nStrings.columnVersionSize": "サイズ",
-    "i18nStrings.validationPathMustBegin": "パスの先頭は s3:// である必要があります",
+    "i18nStrings.validationPathMustBegin": "パスが有効であるためには、s3:// で始まる必要があります。",
     "i18nStrings.validationBucketLowerCase": "バケット名の先頭は小文字または数字である必要があります。",
     "i18nStrings.validationBucketMustNotContain": "バケット名には大文字を使用できません。",
     "i18nStrings.validationBucketLength": "バケット名は 3～63 文字である必要があります。",

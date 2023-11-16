@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "ID-Version",
     "i18nStrings.columnVersionLastModified": "Zuletzt geändert",
     "i18nStrings.columnVersionSize": "Größe",
-    "i18nStrings.validationPathMustBegin": "Der Pfad muss mit s3:// beginnen",
+    "i18nStrings.validationPathMustBegin": "Der Pfad muss mit s3:// beginnen, um gültig zu sein.",
     "i18nStrings.validationBucketLowerCase": "Der Bucket-Name muss mit einem Kleinbuchstaben oder einer Zahl beginnen.",
     "i18nStrings.validationBucketMustNotContain": "Der Bucket-Name darf keine Großbuchstaben enthalten.",
     "i18nStrings.validationBucketLength": "Der Bucket-Name muss aus 3 bis 63 Zeichen bestehen.",

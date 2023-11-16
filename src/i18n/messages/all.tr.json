@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "Sürüm kimliği",
     "i18nStrings.columnVersionLastModified": "Son değiştirme",
     "i18nStrings.columnVersionSize": "Boyut",
-    "i18nStrings.validationPathMustBegin": "Yol s3:// ile başlamalıdır",
+    "i18nStrings.validationPathMustBegin": "Yolun geçerli olması için s3:// ile başlaması gerekir.",
     "i18nStrings.validationBucketLowerCase": "Bucket adı, küçük harfli bir karakter veya sayı ile başlamalıdır.",
     "i18nStrings.validationBucketMustNotContain": "Bucket adı, büyük harfli karakterler içermemelidir.",
     "i18nStrings.validationBucketLength": "Bucket adı, 3 ile 63 karakter arasında olmalıdır.",
