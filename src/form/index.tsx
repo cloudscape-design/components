@@ -27,11 +27,9 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormPro
   };
 
   return (
-    <AnalyticsFunnelStep stepNumber={1}>
-      <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
-        <InternalForm variant={variant} actions={actions} {...props} {...funnelProps} {...funnelStepProps} />
-      </ButtonContext.Provider>
-    </AnalyticsFunnelStep>
+    <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
+      <InternalForm variant={variant} actions={actions} {...props} {...funnelProps} {...funnelStepProps} />
+    </ButtonContext.Provider>
   );
 };
 
@@ -47,7 +45,9 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
       totalFunnelSteps={1}
       funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
     >
-      <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
+      <AnalyticsFunnelStep stepNumber={1}>
+        <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
+      </AnalyticsFunnelStep>
     </AnalyticsFunnel>
   );
 }
