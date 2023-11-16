@@ -9,8 +9,7 @@
 
 .toggle-button {
   cursor: pointer;
-  border-block: 0;
-  border-inline: 0;
+  border: 0;
   // resemble button styles with an extra 1px offset for non-existing here border width
   $padding-vertical: calc(#{awsui.$space-scaled-xxs} + 1px);
   $padding-horizontal: calc(#{awsui.$space-xxs} + 1px);
