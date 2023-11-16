@@ -371,14 +371,13 @@ const InternalTable = React.forwardRef(
                   {loading || items.length === 0 ? (
                     <tr>
                       <NoDataCell
-                        variant={variant}
-                        containerWidth={containerWidth ?? 0}
                         totalColumnsCount={totalColumnsCount}
                         hasFooter={hasFooter}
                         loading={loading}
                         loadingText={loadingText}
                         empty={empty}
                         tableRef={tableRefObject}
+                        containerRef={wrapperMeasureRefObject}
                       />
                     </tr>
                   ) : (
