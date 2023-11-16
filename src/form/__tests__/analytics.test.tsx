@@ -374,4 +374,10 @@ describe('Form Analytics', () => {
       })
     );
   });
+
+  test('adds a data-analytics-funnel-step attribute to the root of form', () => {
+    const { container } = render(<Form></Form>);
+    const form = createWrapper(container).findForm()!.getElement();
+    expect(form).toHaveAttribute('data-analytics-funnel-step', '1');
+  });
 });
