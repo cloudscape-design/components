@@ -39,7 +39,7 @@ import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { NoDataCell } from './node-data-cell';
+import { NoDataCell } from './no-data-cell';
 
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
