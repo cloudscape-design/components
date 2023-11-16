@@ -44,11 +44,22 @@
     "plugin/no-unsupported-browser-features": [
       true,
       {
-        "ignorePartialSupport": true
+        "ignorePartialSupport": true,
+        "ignore": ["css-nesting", "css-when-else", "flexbox-gap"]
       }
     ]
   },
+  "overrides": [
+    {
+      "files": ["./src/button/*.scss"],
+      "rules": {
+        "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
+        "csstools/use-logical": "always"
+      }
+    }
+  ],
   "plugins": [
+    "stylelint-use-logical",
     "stylelint-order",
     "stylelint-no-unsupported-browser-features",
     "./build-tools/stylelint"

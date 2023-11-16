@@ -19,16 +19,19 @@ interface LayoutProps {
  */
 export default function Layout({ children }: LayoutProps) {
   const {
+    breadcrumbs,
     contentHeader,
     contentType,
     disableBodyScroll,
-    disableContentHeaderOverlap,
+    disableContentPaddings,
     drawersTriggerCount,
-    dynamicOverlapHeight,
     footerHeight,
     hasNotificationsContent,
+    hasStickyBackground,
     hasOpenDrawer,
     headerHeight,
+    isBackgroundOverlapDisabled,
+    isMobile,
     isNavigationOpen,
     layoutElement,
     layoutWidth,
@@ -37,31 +40,40 @@ export default function Layout({ children }: LayoutProps) {
     minContentWidth,
     navigationHide,
     notificationsHeight,
+    __embeddedViewMode,
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
   } = useAppLayoutInternals();
 
+  // Determine the first content child so the gap will vertically align with the trigger buttons
+  const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent, isMobile);
+
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = isNavigationOpen || navigationHide;
-  const hasContentGapRight = drawersTriggerCount <= 0 || hasOpenDrawer;
-  const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
+  const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer;
 
   return (
     <main
       className={clsx(
         styles.layout,
+        styles[`content-first-child-${contentFirstChild}`],
         styles[`content-type-${contentType}`],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-body-scroll']]: disableBodyScroll,
           [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
+          [styles['disable-content-paddings']]: disableContentPaddings,
+          [styles['has-breadcrumbs']]: breadcrumbs && !isMobile,
           [styles['has-content-gap-left']]: hasContentGapLeft,
           [styles['has-content-gap-right']]: hasContentGapRight,
+          [styles['has-header']]: contentHeader,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
           [styles['has-split-panel']]: splitPanelDisplayed,
+          [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
-          [styles['is-overlap-disabled']]: isOverlapDisabled,
+          [styles['is-overlap-disabled']]: isBackgroundOverlapDisabled,
+          [styles['is-hide-mobile-toolbar']]: __embeddedViewMode,
         },
         testutilStyles.root
       )}
@@ -74,8 +86,6 @@ export default function Layout({ children }: LayoutProps) {
         ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
         ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
-        ...(!isOverlapDisabled &&
-          dynamicOverlapHeight > 0 && { [customCssProps.overlapHeight]: `${dynamicOverlapHeight}px` }),
       }}
     >
       {children}
@@ -83,27 +93,27 @@ export default function Layout({ children }: LayoutProps) {
   );
 }
 
-/**
- * Determine whether the overlap between the contentHeader and content slots should be disabled.
- * The disableContentHeaderOverlap property is absolute and will always disable the overlap
- * if it is set to true. If there is no contentHeader then the overlap should be disabled
- * unless there is a dynamicOverlapHeight. The dynamicOverlapHeight property is set by a
- * component in the content slot that needs to manually control the overlap height. Components
- * such as the Table (full page variant), Wizard, ContentLayout use this property and will
- * retain the overlap even if there is nothing rendered in the contentHeader slot.
- */
-function getOverlapDisabled(
-  dynamicOverlapHeight: number,
-  contentHeader?: React.ReactNode,
-  disableContentHeaderOverlap?: boolean
+/*
+The Notifications, Breadcrumbs, Header, and Main are all rendered in the center
+column of the grid layout. Any of these could be the first child to render in the
+content area if the previous siblings do not exist. The grid gap before the first
+child will be different to ensure vertical alignment with the trigger buttons.
+*/
+function getContentFirstChild(
+  breadcrumbs: React.ReactNode,
+  contentHeader: React.ReactNode,
+  hasNotificationsContent: boolean,
+  isMobile: boolean
 ) {
-  let isOverlapDisabled = false;
+  let contentFirstChild = 'main';
 
-  if (disableContentHeaderOverlap) {
-    isOverlapDisabled = true;
-  } else if (!contentHeader && dynamicOverlapHeight <= 0) {
-    isOverlapDisabled = true;
+  if (hasNotificationsContent) {
+    contentFirstChild = 'notifications';
+  } else if (breadcrumbs && !isMobile) {
+    contentFirstChild = 'breadcrumbs';
+  } else if (contentHeader) {
+    contentFirstChild = 'header';
   }
 
-  return isOverlapDisabled;
+  return contentFirstChild;
 }

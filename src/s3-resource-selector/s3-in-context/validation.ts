@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ComponentFormatFunction } from '../../i18n/context';
 import { S3ResourceSelectorProps } from '../interfaces';
 
 // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
@@ -41,8 +42,9 @@ export function validate(uri: string) {
 }
 
 export function getErrorText(
+  i18n: ComponentFormatFunction<'s3-resource-selector'>,
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined,
   errorCode: ReturnType<typeof validate>
 ) {
-  return errorCode ? i18nStrings?.[errorCode] : undefined;
+  return errorCode ? i18n(`i18nStrings.${errorCode}`, i18nStrings?.[errorCode]) : undefined;
 }

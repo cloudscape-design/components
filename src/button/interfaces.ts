@@ -67,7 +67,7 @@ export interface ButtonProps extends BaseComponentProps {
 
   /**
    * Adds `aria-label` to the button element. It should be used in buttons that don't have text in order to make
-   * them accessible.
+   * them accessible. The text will also be added to the `title` attribute of the button.
    */
   ariaLabel?: string;
 
@@ -112,6 +112,7 @@ export interface ButtonProps extends BaseComponentProps {
    * * `link` for tertiary buttons.
    * * `icon` to display an icon only (no text).
    * * `inline-icon` to display an icon-only (no text) button within a text context.
+   * * `inline-link` to display a tertiary button with no outer padding.
    */
   variant?: ButtonProps.Variant;
 
@@ -138,14 +139,18 @@ export interface ButtonProps extends BaseComponentProps {
   onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
 
   /**
-   *  Adds aria-expanded to the button element. Use when the button controls an expandable element.
+   * Adds aria-expanded to the button element. Use when the button controls an expandable element.
    */
-
   ariaExpanded?: boolean;
+
+  /**
+   * Sets the button width to be 100% of the parent container width. Button content is centered.
+   */
+  fullWidth?: boolean;
 }
 
 export namespace ButtonProps {
-  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon';
+  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon' | 'inline-link';
   export type ClickDetail = _ClickDetail;
   export type FollowDetail = BaseNavigationDetail;
 

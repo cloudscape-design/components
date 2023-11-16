@@ -8,15 +8,15 @@ import { i18nStrings } from './common';
 
 export let annotationCallback: (event?: any) => void;
 
+const textInput = { setAttribute: jest.fn() };
+
 export const editorMock = {
   getValue: jest.fn(),
   setValue: jest.fn(),
   setTheme: jest.fn(),
-  container: {},
+  container: { focus: jest.fn() },
   textInput: {
-    getElement: jest.fn(() => ({
-      setAttribute: jest.fn(),
-    })),
+    getElement: jest.fn(() => textInput),
   },
   renderer: {
     textarea: document.createElement('textarea'),

@@ -1,16 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { AppLayout, Box, Button, ColumnLayout, Container, Header, SpaceBetween, Table, Wizard } from '~components';
 import { columnsConfig } from '../table/shared-configs';
 import { generateItems, Instance } from '../table/generate-data';
 import labels from './utils/labels';
+import { Breadcrumbs } from './utils/content-blocks';
+import AppContext, { AppContextType } from '../app/app-context';
 
 import ScreenshotArea from '../utils/screenshot-area';
+
+type DemoContext = React.Context<
+  AppContextType<{ hasBreadcrumbs: boolean; hasNotifications: boolean; disableOverlap: boolean }>
+>;
 
 const items = generateItems(20);
 
 export default function () {
+  const { urlParams } = useContext(AppContext as DemoContext);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
   return (
@@ -18,6 +25,7 @@ export default function () {
       <AppLayout
         ariaLabels={labels}
         navigationHide={false}
+        breadcrumbs={urlParams.hasBreadcrumbs && <Breadcrumbs />}
         content={
           <Wizard
             i18nStrings={{

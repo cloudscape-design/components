@@ -3,12 +3,13 @@
 import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
 import { TransitionStatus } from '../internal/components/transition';
 import { SplitPanelContentProps } from './interfaces';
 import styles from './styles.css.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useResizeObserver } from '../internal/hooks/container-queries';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   state: TransitionStatus;
@@ -31,16 +32,10 @@ export function SplitPanelContentBottom({
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
-  const {
-    bottomOffset,
-    leftOffset,
-    rightOffset,
-    disableContentPaddings,
-    contentWrapperPaddings,
-    isMobile,
-    reportHeaderHeight,
-  } = useSplitPanelContext();
+  const { bottomOffset, leftOffset, rightOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } =
+    useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
+  const isMobile = useMobile();
 
   const headerRef = useRef<HTMLDivElement>(null);
   useResizeObserver(headerRef, entry => reportHeaderHeight(entry.borderBoxHeight));

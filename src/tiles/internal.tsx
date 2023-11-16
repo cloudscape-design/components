@@ -22,6 +22,7 @@ type InternalTilesProps = TilesProps & InternalBaseComponentProps;
 const InternalTiles = React.forwardRef(
   (
     {
+      name,
       value,
       items,
       ariaLabel,
@@ -64,7 +65,7 @@ const InternalTiles = React.forwardRef(
                 key={item.value}
                 item={item}
                 selected={item.value === value}
-                name={generatedName}
+                name={name || generatedName}
                 breakpoint={breakpoint}
                 onChange={onChange}
               />

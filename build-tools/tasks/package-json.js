@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const { writeFile, listPublicItems, listBetaVersions } = require('../utils/files');
 const themes = require('../utils/themes');
-const { task } = require('../utils/gulp-utils');
+const { task, copyTask } = require('../utils/gulp-utils');
 const workspace = require('../utils/workspace');
 const pkg = require('../../package.json');
 
@@ -37,14 +37,14 @@ function getComponentsExports() {
     result[`./${component}`] = `./${component}/index.js`;
   }
 
-  // For i18n beta: include internal i18n import and all messages.
-  result['./internal/i18n'] = './internal/i18n/index.js';
-  result[`./internal/i18n/messages/all.all`] = `./internal/i18n/messages/all.all.js`;
-  result[`./internal/i18n/messages/all.all.json`] = `./internal/i18n/messages/all.all.json`;
-  for (const translationFile of fs.readdirSync('src/internal/i18n/messages')) {
+  // Internationalization and messages
+  result['./i18n'] = './i18n/index.js';
+  result[`./i18n/messages/all.all`] = `./i18n/messages/all.all.js`;
+  result[`./i18n/messages/all.all.json`] = `./i18n/messages/all.all.json`;
+  for (const translationFile of fs.readdirSync('src/i18n/messages')) {
     const [subset, locale] = translationFile.split('.');
-    result[`./internal/i18n/messages/${subset}.${locale}`] = `./internal/i18n/messages/${subset}.${locale}.js`;
-    result[`./internal/i18n/messages/${subset}.${locale}.json`] = `./internal/i18n/messages/${subset}.${locale}.json`;
+    result[`./i18n/messages/${subset}.${locale}`] = `./i18n/messages/${subset}.${locale}.js`;
+    result[`./i18n/messages/${subset}.${locale}.json`] = `./i18n/messages/${subset}.${locale}.json`;
   }
 
   return result;
@@ -106,6 +106,7 @@ module.exports = parallel([
   }),
   styleDictionaryPackageJson,
   componentsThemeablePackageJson,
+  copyTask('package-lock', ['package-lock.json'], path.join(workspace.targetPath, 'dev-pages', 'internal')),
   devPagesPackageJson,
 ]);
 module.exports.generatePackageJson = generatePackageJson;

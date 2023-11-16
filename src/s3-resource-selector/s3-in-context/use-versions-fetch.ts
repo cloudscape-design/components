@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useState } from 'react';
-import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { makeCancellable, PromiseCancelledSignal } from '../../internal/utils/promises';
 import { SelectProps } from '../../select/interfaces';
 import { extractBucketName, validate } from './validation';
 import { S3ResourceSelectorProps } from '../interfaces';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 export function useVersionsFetch(fetchVersions: S3ResourceSelectorProps['fetchVersions']) {
   const [loading, setLoading] = useState(false);
@@ -48,6 +48,6 @@ export function useVersionsFetch(fetchVersions: S3ResourceSelectorProps['fetchVe
     versions,
     resetVersions: () => setVersions([]),
     // this function is a dependency of useEffect
-    loadVersions: useStableEventHandler(loadVersions),
+    loadVersions: useStableCallback(loadVersions),
   };
 }

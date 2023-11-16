@@ -161,13 +161,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `allItemsSelectionLabel` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
    * * `selectionGroupLabel` (string) - Specifies the alternative text for the whole selection and single-selection column header.
    *                                    It is prefixed to `itemSelectionLabel` and `allItemsSelectionLabel` when they are set.
-   * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
-   *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
    * You can use the first argument of type `SelectionState` to access the current selection
    * state of the component (for example, the `selectedItems` list). The `itemSelectionLabel` for individual
    * items also receives the corresponding  `Item` object. You can use the `selectionGroupLabel` to
    * add a meaningful description to the whole selection.
-   *
+   * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
+   *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
+   * * `resizerRoleDescription` (string) - Provides role description for table column resizer buttons.
    * * `activateEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the edit button in editable cells.
    * * `cancelEditLabel` (EditableColumnDefinition) => string -
@@ -178,6 +178,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
    * * `submittingEditText` (EditableColumnDefinition) => string -
    *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
+   * @i18n
    */
   ariaLabels?: TableProps.AriaLabels<T>;
 
@@ -276,8 +277,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specify a table variant with one of the following:
    * * `container` - Use this variant to have the table displayed within a container.
+   * * `borderless` - Use this variant when the table should have no outer borders or shadow
+   *                  (such as in a dashboard item container).
    * * `embedded` - Use this variant within a parent container (such as a modal, expandable
    *                section, container or split panel).
+   *                **Deprecated**, replaced by `borderless` and `container`.
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
    *               table).
    * * `full-page` – Use this variant when the table is the entire content of a page. Full page variants
@@ -374,7 +378,7 @@ export namespace TableProps {
   }
 
   export type SelectionType = 'single' | 'multi';
-  export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
+  export type Variant = 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;
   }
@@ -387,6 +391,7 @@ export namespace TableProps {
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
+    resizerRoleDescription?: string;
     // do not use <T> to prevent overly strict validation on consumer end
     // it works, practically, we are only interested in `id` and `header` properties only
     activateEditLabel?: (column: ColumnDefinition<any>, item: T) => string;

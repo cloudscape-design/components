@@ -7,6 +7,7 @@ import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor';
 import createWrapper, { TagEditorWrapper } from '../../../lib/components/test-utils/dom';
 
 import { i18nStrings, MAX_KEY_LENGTH, MAX_VALUE_LENGTH } from './common';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps = {
   i18nStrings,
@@ -621,6 +622,85 @@ describe('Tag Editor component', () => {
       wrapper.findRow(2)!.findRemoveButton()!.click();
       rerender();
       expect(wrapper.findRow(1)!.findUndoButton()!.getElement()).toHaveFocus();
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using i18nStrings.loading from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'tag-editor': {
+              'i18nStrings.loading': 'Custom loading',
+            },
+          }}
+        >
+          <StatefulTestComponent i18nStrings={undefined} loading={true} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+      expect(wrapper.findLoadingText()!.getElement()).toHaveTextContent('Custom loading');
+    });
+
+    test('supports using undo strings from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'tag-editor': {
+              'i18nStrings.undoPrompt': 'Custom prompt',
+              'i18nStrings.undoButton': 'Custom button',
+            },
+          }}
+        >
+          <TagEditor tags={[{ key: '', value: '', existing: true, markedForRemoval: true }]} i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+      expect(wrapper.findRow(1)!.findField(2)!.findControl()!.getElement()).toHaveTextContent(
+        'Custom prompt Custom button'
+      );
+    });
+
+    test('supports using basic strings from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{
+            'tag-editor': {
+              'i18nStrings.addButton': 'Custom add',
+              'i18nStrings.removeButtonAriaLabel': 'Custom remove {tag__key}',
+              'i18nStrings.emptyTags': 'Custom empty tags',
+              'i18nStrings.keyHeader': 'Custom key',
+              'i18nStrings.valueHeader': 'Custom value',
+              'i18nStrings.optional': 'Custom optional',
+              'i18nStrings.keySuggestion': 'Custom key suggestion',
+              'i18nStrings.valuePlaceholder': 'Custom value placeholder',
+              'i18nStrings.tagLimit': 'Custom limit {availableTags} out of {tagLimit}',
+              'i18nStrings.tagLimitReached': 'Custom limit reached {tagLimit}',
+            },
+          }}
+        >
+          <StatefulTestComponent i18nStrings={undefined} tagLimit={1} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findTagEditor()!;
+      expect(wrapper.findEmptySlot()!.getElement()).toHaveTextContent('Custom empty tags');
+      expect(wrapper.findAddButton().getElement()).toHaveTextContent('Custom add');
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit 1 out of 1');
+
+      wrapper.findAddButton().click();
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('Custom limit reached 1');
+      expect(wrapper.findRow(1)!.findField(1)!.findLabel()!.getElement()).toHaveTextContent('Custom key');
+      expect(wrapper.findRow(1)!.findField(2)!.findLabel()!.getElement()).toHaveTextContent(
+        'Custom value - Custom optional'
+      );
+      expect(
+        wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.findDropdown().getElement()
+      ).toHaveTextContent('Custom key suggestion');
+      expect(
+        wrapper.findRow(1)!.findField(2)!.findControl()!.findAutosuggest()!.findNativeInput()!.getElement()
+      ).toHaveAttribute('placeholder', 'Custom value placeholder');
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.setInputValue('Key 1');
+      expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Custom remove Key 1');
     });
   });
 });

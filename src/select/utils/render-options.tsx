@@ -58,7 +58,7 @@ export const renderOptions = ({
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
-        highlightType={highlightType}
+        highlightType={highlightType.type}
       />
     );
   });

@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
+import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
-import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../../lib/components/internal/analytics/selectors';
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
-  const renderResult = render(<BreadcrumbGroup {...props} />);
-  return createWrapper(renderResult.container).findBreadcrumbGroup(`.${styles['breadcrumb-group']}`)!;
+  const { container } = render(<BreadcrumbGroup {...props} />);
+  return createWrapper(container).findBreadcrumbGroup()!;
 };
 
 const items = [
@@ -36,6 +36,7 @@ describe('BreadcrumbGroup Item', () => {
       wrapper = renderBreadcrumbGroup({ items });
       links = wrapper.findBreadcrumbLinks();
     });
+
     test('text property displays content within rendered breadcrumb item element when non-empty', () => {
       expect(links[0].getElement()).toHaveTextContent(items[0].text);
     });
@@ -62,6 +63,7 @@ describe('BreadcrumbGroup Item', () => {
     let links: Array<ElementWrapper>;
     let onClickSpy: jest.Mock;
     let onFollowSpy: jest.Mock;
+
     beforeEach(() => {
       onClickSpy = jest.fn();
       onFollowSpy = jest.fn();
@@ -99,6 +101,7 @@ describe('BreadcrumbGroup Item', () => {
     let lastLink: ElementWrapper;
     const onClickSpy = jest.fn();
     const onFollowSpy = jest.fn();
+
     beforeEach(() => {
       wrapper = renderBreadcrumbGroup({ items, onClick: onClickSpy, onFollow: onFollowSpy });
       const links = wrapper.findBreadcrumbLinks();
@@ -119,6 +122,12 @@ describe('BreadcrumbGroup Item', () => {
     test('should not trigger follow event', () => {
       lastLink.click();
       expect(onFollowSpy).not.toHaveBeenCalled();
+    });
+
+    test('should add a data-analytics attribute for the funnel name to the last item', () => {
+      const expectedFunnelName = items[items.length - 1].text;
+      const element = wrapper.find(`[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_FUNNEL_NAME}"]`)!.getElement();
+      expect(element.innerHTML).toBe(expectedFunnelName);
     });
   });
 });

@@ -3,53 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/styles/' as styles;
-@use '../../internal/styles/tokens' as awsui;
-
 header.content {
-  grid-column: 3;
-  grid-row: 3;
-  padding-bottom: awsui.$space-content-header-padding-bottom;
-
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    /*
-    If Notifications exist and Breadcrumbs do not then Notifications 
-    is the previous adjacent sibling to the Header. Add minimal top padding 
-    in addition to the bottom padding on the Notifications.
-    */
-    &.has-notifications-content:not(.has-breadcrumbs) {
-      padding-top: awsui.$space-scaled-xs;
-    }
-
-    /*
-    If Breadcrumbs exists it is necessarily the previous adjacent 
-    sibling and the Header should have no padding. Add minimal top 
-    padding for vertical space between the Breadcrumbs and Header.
-    */
-    &.has-breadcrumbs {
-      padding-top: awsui.$space-xxs;
-    }
-
-    /*
-    If Notifications and Breadcrumbs do not exist then the Header 
-    is the first rendered center content. The top padding should 
-    vertically align the Header with the Navigation and Tools 
-    circular buttons.
-    */
-    &:not(.has-notifications-content):not(.has-breadcrumbs) {
-      padding-top: awsui.$space-scaled-xs;
-    }
-  }
-
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    padding: awsui.$space-m 0 awsui.$space-content-header-padding-bottom;
-
-    /*
-    Breadcrumbs has moved to first position and sticky so Notifications 
-    are now the previous adjacent sibling if they exist.
-    */
-    &.has-notifications-content {
-      padding-top: awsui.$space-scaled-xs;
-    }
-  }
+  grid-area: header;
 }

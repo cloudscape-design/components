@@ -10,6 +10,7 @@ import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 import styles from './styles.css.js';
 import { Transition } from '../internal/components/transition';
 import { HighlightDetails } from './format-highlighted';
+import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 
 export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   containerRef: React.RefObject<HTMLDivElement>;
@@ -19,9 +20,11 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   highlightDetails: null | HighlightDetails;
   onDismiss(): void;
   size: MixedLineBarChartProps<T>['detailPopoverSize'];
+  footer?: React.ReactNode;
   dismissAriaLabel?: string;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
 }
 
 export default React.forwardRef(MixedChartPopover);
@@ -33,11 +36,13 @@ function MixedChartPopover<T extends ChartDataTypes>(
     isOpen,
     isPinned,
     highlightDetails,
+    footer,
     onDismiss,
     size = 'medium',
     dismissAriaLabel,
     onMouseEnter,
     onMouseLeave,
+    onBlur,
   }: MixedChartPopoverProps<T>,
   popoverRef: React.Ref<HTMLElement>
 ) {
@@ -58,8 +63,10 @@ function MixedChartPopover<T extends ChartDataTypes>(
               size={size}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
+              onBlur={onBlur}
             >
               <ChartSeriesDetails details={highlightDetails.details} />
+              {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
             </ChartPopover>
           )}
         </div>

@@ -5,12 +5,12 @@ import clsx from 'clsx';
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SplitPanelProps, SplitPanelContentProps } from './interfaces';
+import { SplitPanelContentProps } from './interfaces';
 import styles from './styles.css.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 
 interface SplitPanelContentSideProps extends SplitPanelContentProps {
-  i18nStrings: SplitPanelProps.I18nStrings;
+  openButtonAriaLabel?: string;
   toggleRef: React.RefObject<ButtonProps.Ref>;
 }
 
@@ -23,7 +23,7 @@ export function SplitPanelContentSide({
   resizeHandle,
   isOpen,
   cappedSize,
-  i18nStrings,
+  openButtonAriaLabel,
   panelHeaderId,
   onToggle,
 }: SplitPanelContentSideProps) {
@@ -36,7 +36,7 @@ export function SplitPanelContentSide({
         [styles['drawer-closed']]: !isOpen,
       })}
       style={{
-        width: isOpen ? cappedSize : undefined,
+        width: isOpen && isRefresh ? cappedSize : undefined,
         maxWidth: isRefresh ? '100%' : undefined,
       }}
       ref={splitPanelRef}
@@ -61,14 +61,13 @@ export function SplitPanelContentSide({
             iconName="angle-left"
             variant="icon"
             formAction="none"
-            ariaLabel={i18nStrings.openButtonAriaLabel}
+            ariaLabel={openButtonAriaLabel}
             ariaExpanded={isOpen}
             ref={isRefresh ? null : toggleRef}
           />
         )}
         <div className={styles['content-side']} aria-hidden={!isOpen}>
           <div className={clsx(styles['pane-header-wrapper-side'])}>{header}</div>
-          <hr className={styles['header-divider']} />
           <div className={clsx(styles['pane-content-wrapper-side'])}>{children}</div>
         </div>
       </div>

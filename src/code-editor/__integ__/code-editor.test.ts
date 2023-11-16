@@ -141,6 +141,8 @@ test(
     await page.keys('Tab');
     await expect(page.isFocused(codeEditorWrapper.findEditor().toSelector())).resolves.toBe(true);
 
+    await page.keys('Tab'); // Tab into gutter
+    await page.keys('Tab'); // Tab into editor area
     await page.keys('Tab');
     await expect(page.isFocused(codeEditorWrapper.findSettingsButton().toSelector())).resolves.toBe(true);
 
@@ -170,7 +172,7 @@ test(
     // Open errors pane
     await page.click(codeEditorWrapper.findErrorsTab().toSelector());
     // Tab to close button
-    await page.keys(['Tab', 'Tab']);
+    await page.keys(['Tab']);
     await expect(page.isFocused(codeEditorWrapper.findPane().findButton().toSelector())).resolves.toBe(true);
     // Loop around again
     await page.keys(['Tab', 'Tab']);
@@ -185,8 +187,8 @@ test(
     await page.waitForVisible(codeEditorWrapper.findErrorsTab().toSelector() + ':not(:disabled)');
     // Open errors pane
     await page.click(codeEditorWrapper.findErrorsTab().toSelector());
-    // Activate close button (Tab, Shift+Tab, Enter)
-    await page.keys(['Tab', 'Shift', 'Tab', 'Shift', 'Enter']);
+    // Activate close button (Shift+Tab, Enter)
+    await page.keys(['Shift', 'Tab', 'Shift', 'Enter']);
     await expect(page.isFocused(codeEditorWrapper.findErrorsTab().toSelector())).resolves.toBe(true);
   })
 );

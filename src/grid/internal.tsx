@@ -6,7 +6,7 @@ import flattenChildren from 'react-keyed-flatten-children';
 import { getBaseProps } from '../internal/base-component';
 import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
 import { isDevelopment } from '../internal/is-development';
-import * as logging from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from './styles.css.js';
 import { GridProps } from './interfaces';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -51,7 +51,7 @@ const InternalGrid = React.forwardRef(
       const columnCount = gridDefinition.length;
       const childCount = flattenedChildren.length;
       if (columnCount !== childCount) {
-        logging.warnOnce(
+        warnOnce(
           'Grid',
           `The number of children (${childCount}) does not match the number of columns defined (${columnCount}).`
         );

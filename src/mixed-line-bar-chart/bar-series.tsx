@@ -110,25 +110,46 @@ export default function BarSeries<T extends ChartDataTypes>({
         [styles['series--dimmed']]: dimmed,
       })}
     >
-      {xCoordinates.map(
-        ({ x, y, width, height }, i) =>
-          isFinite(x) &&
-          isFinite(height) && (
-            <rect
-              key={`bar-${i}`}
-              fill={color}
-              x={axis === 'x' ? x : y - height}
-              y={axis === 'x' ? y : x}
-              width={axis === 'x' ? width : height}
-              height={axis === 'x' ? height : width}
-              rx={isRefresh ? '4px' : '0px'}
-              className={clsx(styles.series__rect, {
-                [styles['series--dimmed']]:
-                  highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
-              })}
-            />
-          )
-      )}
+      {xCoordinates.map(({ x, y, width, height }, i) => {
+        if (!isFinite(x) || !isFinite(height)) {
+          return;
+        }
+
+        // Create margins between stacked series but only when series data is not too small.
+        const baseHeightOffset = stackedBarOffsets ? 3 : 0;
+        const isSmallBar = height < 4;
+        const heightOffset = isSmallBar ? 0 : baseHeightOffset;
+        const widthOffset = 2;
+
+        const rx = isRefresh ? (isSmallBar ? '2px' : '4px') : '0px';
+        const className = clsx(styles.series__rect, {
+          [styles['series--dimmed']]: highlightedXValue !== null && !matchesX(highlightedXValue, series.data[i].x),
+        });
+
+        return axis === 'x' ? (
+          <rect
+            key={`bar-${i}`}
+            fill={color}
+            x={x + widthOffset / 2}
+            y={y + heightOffset / 2}
+            width={width - widthOffset}
+            height={height - heightOffset}
+            rx={rx}
+            className={className}
+          />
+        ) : (
+          <rect
+            key={`bar-${i}`}
+            fill={color}
+            x={y - height + heightOffset / 2}
+            y={x + widthOffset / 2}
+            width={height - heightOffset}
+            height={width - widthOffset}
+            rx={rx}
+            className={className}
+          />
+        );
+      })}
     </g>
   );
 }

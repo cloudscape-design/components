@@ -8,6 +8,7 @@ import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { formatSize, formatDefault } from './column-formats';
 import { BasicS3Table, getSharedI18Strings } from './basic-table';
 import { joinObjectPath } from '../utils';
+import { useInternalI18n } from '../../i18n/context';
 
 interface VersionsTableProps {
   forwardFocusRef: React.Ref<ForwardFocusRef>;
@@ -30,6 +31,8 @@ export function VersionsTable({
   visibleColumns,
   onSelect,
 }: VersionsTableProps) {
+  const i18n = useInternalI18n('s3-resource-selector');
+
   return (
     <BasicS3Table<S3ResourceSelectorProps.Version>
       forwardFocusRef={forwardFocusRef}
@@ -39,13 +42,31 @@ export function VersionsTable({
         return fetchData(bucketName, joinObjectPath(rest));
       }}
       i18nStrings={{
-        ...getSharedI18Strings(i18nStrings),
-        header: i18nStrings?.selectionVersions,
-        filteringAriaLabel: i18nStrings?.labelFiltering(i18nStrings?.selectionVersions),
-        filteringPlaceholder: i18nStrings?.selectionVersionsSearchPlaceholder,
-        loadingText: i18nStrings?.selectionVersionsLoading,
-        emptyText: i18nStrings?.selectionVersionsNoItems,
-        selectionLabels: i18nStrings?.labelsVersionsSelection,
+        ...getSharedI18Strings(i18n, i18nStrings),
+        header: i18n('i18nStrings.selectionVersions', i18nStrings?.selectionVersions),
+        loadingText: i18n('i18nStrings.selectionVersionsLoading', i18nStrings?.selectionVersionsLoading),
+        filteringAriaLabel: i18n(
+          'i18nStrings.labelFiltering',
+          i18nStrings?.labelFiltering,
+          format => itemsType => format({ itemsType })
+        )?.(i18n('i18nStrings.selectionVersions', i18nStrings?.selectionVersions) ?? ''),
+        filteringPlaceholder: i18n(
+          'i18nStrings.selectionVersionsSearchPlaceholder',
+          i18nStrings?.selectionVersionsSearchPlaceholder
+        ),
+        emptyText: i18n('i18nStrings.selectionVersionsNoItems', i18nStrings?.selectionVersionsNoItems),
+        selectionLabels: {
+          ...i18nStrings?.labelsVersionsSelection,
+          selectionGroupLabel: i18n(
+            'i18nStrings.labelsVersionsSelection.selectionGroupLabel',
+            i18nStrings?.labelsVersionsSelection?.selectionGroupLabel
+          ),
+          itemSelectionLabel: i18n(
+            'i18nStrings.labelsVersionsSelection.itemSelectionLabel',
+            i18nStrings?.labelsVersionsSelection?.itemSelectionLabel,
+            format => (data, item) => format({ item__VersionId: item.VersionId ?? '' })
+          ),
+        },
       }}
       isVisualRefresh={isVisualRefresh}
       visibleColumns={visibleColumns}
@@ -53,23 +74,35 @@ export function VersionsTable({
       columnDefinitions={[
         {
           id: 'ID',
-          header: i18nStrings?.columnVersionID,
-          ariaLabel: getColumnAriaLabel(i18nStrings, i18nStrings?.columnVersionID),
+          header: i18n('i18nStrings.columnVersionID', i18nStrings?.columnVersionID),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnVersionID', i18nStrings?.columnVersionID)
+          ),
           sortingField: 'VersionId',
           cell: item => item.VersionId,
           minWidth: '250px',
         },
         {
           id: 'LastModified',
-          header: i18nStrings?.columnVersionLastModified,
-          ariaLabel: getColumnAriaLabel(i18nStrings, i18nStrings?.columnVersionLastModified),
+          header: i18n('i18nStrings.columnVersionLastModified', i18nStrings?.columnVersionLastModified),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnVersionLastModified', i18nStrings?.columnVersionLastModified)
+          ),
           sortingComparator: (a, b) => compareDates(a.LastModified, b.LastModified),
           cell: item => formatDefault(item.LastModified),
         },
         {
           id: 'Size',
-          header: i18nStrings?.columnVersionSize,
-          ariaLabel: getColumnAriaLabel(i18nStrings, i18nStrings?.columnVersionSize),
+          header: i18n('i18nStrings.columnVersionSize', i18nStrings?.columnVersionSize),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnVersionSize', i18nStrings?.columnVersionSize)
+          ),
           sortingField: 'Size',
           cell: item => formatSize(item.Size),
         },

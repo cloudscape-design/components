@@ -49,7 +49,7 @@
     overflow: auto;
     max-height: 100%;
     box-sizing: border-box;
-    margin-right: calc(#{awsui.$font-body-m-line-height} + 2 * #{awsui.$space-xs});
+    margin-right: calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-xs});
   }
 
   &__table {

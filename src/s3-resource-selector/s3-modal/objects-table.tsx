@@ -10,6 +10,7 @@ import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { formatSize, formatDefault } from './column-formats';
 import { BasicS3Table, getSharedI18Strings } from './basic-table';
 import { joinObjectPath } from '../utils';
+import { useInternalI18n } from '../../i18n/context';
 
 interface ObjectsTableProps {
   forwardFocusRef: React.Ref<ForwardFocusRef>;
@@ -36,6 +37,8 @@ export function ObjectsTable({
   onDrilldown,
   onSelect,
 }: ObjectsTableProps) {
+  const i18n = useInternalI18n('s3-resource-selector');
+
   return (
     <BasicS3Table<S3ResourceSelectorProps.Object>
       // remount fresh component every we change the path to reset the inner state (e.g. selection/filtering)
@@ -47,13 +50,31 @@ export function ObjectsTable({
         return fetchData(bucketName, joinObjectPath(rest));
       }}
       i18nStrings={{
-        ...getSharedI18Strings(i18nStrings),
-        header: i18nStrings?.selectionObjects,
-        filteringAriaLabel: i18nStrings?.labelFiltering(i18nStrings?.selectionObjects),
-        filteringPlaceholder: i18nStrings?.selectionObjectsSearchPlaceholder,
-        loadingText: i18nStrings?.selectionObjectsLoading,
-        emptyText: i18nStrings?.selectionObjectsNoItems,
-        selectionLabels: i18nStrings?.labelsObjectsSelection,
+        ...getSharedI18Strings(i18n, i18nStrings),
+        header: i18n('i18nStrings.selectionObjects', i18nStrings?.selectionObjects),
+        loadingText: i18n('i18nStrings.selectionObjectsLoading', i18nStrings?.selectionObjectsLoading),
+        filteringAriaLabel: i18n(
+          'i18nStrings.labelFiltering',
+          i18nStrings?.labelFiltering,
+          format => itemsType => format({ itemsType })
+        )?.(i18n('i18nStrings.selectionObjects', i18nStrings?.selectionObjects) ?? ''),
+        filteringPlaceholder: i18n(
+          'i18nStrings.selectionObjectsSearchPlaceholder',
+          i18nStrings?.selectionObjectsSearchPlaceholder
+        ),
+        emptyText: i18n('i18nStrings.selectionObjectsNoItems', i18nStrings?.selectionObjectsNoItems),
+        selectionLabels: {
+          ...i18nStrings?.labelsObjectsSelection,
+          selectionGroupLabel: i18n(
+            'i18nStrings.labelsObjectsSelection.selectionGroupLabel',
+            i18nStrings?.labelsObjectsSelection?.selectionGroupLabel
+          ),
+          itemSelectionLabel: i18n(
+            'i18nStrings.labelsObjectsSelection.itemSelectionLabel',
+            i18nStrings?.labelsObjectsSelection?.itemSelectionLabel,
+            format => (data, item) => format({ item__Key: item.Key ?? '' })
+          ),
+        },
       }}
       isVisualRefresh={isVisualRefresh}
       visibleColumns={visibleColumns}
@@ -61,8 +82,12 @@ export function ObjectsTable({
       columnDefinitions={[
         {
           id: 'Key',
-          header: i18nStrings?.columnObjectKey,
-          ariaLabel: getColumnAriaLabel(i18nStrings, i18nStrings?.columnObjectKey),
+          header: i18n('i18nStrings.columnObjectKey', i18nStrings?.columnObjectKey),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnObjectKey', i18nStrings?.columnObjectKey)
+          ),
           sortingField: 'Key',
           cell: item => {
             const isClickable = item.IsFolder || includes(selectableItemsTypes, 'versions');
@@ -83,15 +108,23 @@ export function ObjectsTable({
         },
         {
           id: 'LastModified',
-          header: i18nStrings?.columnObjectLastModified,
-          ariaLabel: getColumnAriaLabel(i18nStrings, i18nStrings?.columnObjectLastModified),
+          header: i18n('i18nStrings.columnObjectLastModified', i18nStrings?.columnObjectLastModified),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnObjectLastModified', i18nStrings?.columnObjectLastModified)
+          ),
           sortingComparator: (a, b) => compareDates(a.LastModified, b.LastModified),
           cell: item => formatDefault(item.LastModified),
         },
         {
           id: 'Size',
-          header: i18nStrings?.columnObjectSize,
-          ariaLabel: getColumnAriaLabel(i18nStrings, i18nStrings?.columnObjectSize),
+          header: i18n('i18nStrings.columnObjectSize', i18nStrings?.columnObjectSize),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnObjectSize', i18nStrings?.columnObjectSize)
+          ),
           sortingField: 'Size',
           cell: item => formatSize(item.Size),
         },

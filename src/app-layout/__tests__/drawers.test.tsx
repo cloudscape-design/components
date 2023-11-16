@@ -1,114 +1,134 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { describeEachAppLayout, drawersConfigurations, renderComponent } from './utils';
-import AppLayout from '../../../lib/components/app-layout';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { KeyCode } from '../../../lib/components/internal/keycode';
+import {
+  describeEachAppLayout,
+  renderComponent,
+  singleDrawer,
+  manyDrawers,
+  manyDrawersWithBadges,
+  findActiveDrawerLandmark,
+  singleDrawerOpen,
+  singleDrawerPublic,
+} from './utils';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import { BetaDrawersProps } from '../../../lib/components/app-layout/drawer/interfaces';
+import { render, act } from '@testing-library/react';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
 }));
 
-describeEachAppLayout(() => {
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [100, () => {}],
+}));
+
+describeEachAppLayout(size => {
   test(`should not render drawer when it is not defined`, () => {
-    const { wrapper, rerender } = renderComponent(
-      <AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />
-    );
-    expect(wrapper.findDrawersTriggers()!).toHaveLength(1);
+    const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={singleDrawerPublic} />);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
-  });
-});
-
-describe('Classic only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(false);
-    (useMobile as jest.Mock).mockReturnValue(false);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
-    (useMobile as jest.Mock).mockReset();
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
   });
 
-  test(`Moves focus to slider when opened`, () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
-
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
-  });
-
-  test('should change drawers size in controlled mode', () => {
-    const onResize = jest.fn();
-
-    const drawersSize300 = {
+  test('should not apply drawers treatment to the tools if the drawers array is empty', () => {
+    const emptyDrawerItems = {
       drawers: {
-        onResize: onResize,
+        ariaLabel: 'Drawers',
+        items: [],
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(emptyDrawerItems as any)} />);
+
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper.findToolsToggle()).toBeFalsy();
+  });
+
+  test('ignores tools when drawers API is used', () => {
+    const { wrapper } = renderComponent(<AppLayout tools="Test" drawers={singleDrawerPublic} />);
+
+    expect(wrapper.findToolsToggle()).toBeFalsy();
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+  });
+
+  test('should open active drawer on click of overflow item', () => {
+    const { container } = render(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const wrapper = createWrapper(container).findAppLayout()!;
+    const buttonDropdown = createWrapper(container).findButtonDropdown();
+
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+    buttonDropdown!.openDropdown();
+    buttonDropdown!.findItemById('5')!.click();
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
+  test('renders correct aria-label on overflow menu', () => {
+    const { container, rerender } = render(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    const buttonDropdown = createWrapper(container).findButtonDropdown();
+
+    expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Overflow drawers');
+
+    rerender(<AppLayout contentType="form" {...(manyDrawersWithBadges as any)} />);
+    expect(buttonDropdown!.findNativeButton().getElement()).toHaveAttribute(
+      'aria-label',
+      'Overflow drawers (Unread notifications)'
+    );
+  });
+
+  test('renders aria-labels', async () => {
+    const { wrapper } = await renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
+    wrapper.findDrawerTriggerById('security')!.click();
+    expect(findActiveDrawerLandmark(wrapper)!.getElement()).toHaveAttribute('aria-label', 'Security drawer content');
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Security close button');
+  });
+
+  test('renders resize only on resizable drawer', async () => {
+    const drawers: { drawers: BetaDrawersProps } = {
+      drawers: {
         items: [
+          singleDrawer.drawers.items[0],
           {
-            ariaLabels: {
-              closeButton: 'Security close button',
-              content: 'Security drawer content',
-              triggerButton: 'Security trigger button',
-              resizeHandle: 'Security resize handle',
-            },
-            content: <span>Security</span>,
+            ...singleDrawer.drawers.items[0],
+            id: 'security-resizable',
             resizable: true,
-            size: 300,
-            id: 'security',
-            trigger: {
-              iconName: 'security',
-            },
           },
         ],
       },
     };
+    const { wrapper } = await renderComponent(<AppLayout contentType="form" {...(drawers as any)} />);
 
-    const drawersSize310 = {
-      drawers: {
-        onResize: onResize,
-        items: [
-          {
-            ariaLabels: {
-              closeButton: 'Security close button',
-              content: 'Security drawer content',
-              triggerButton: 'Security trigger button',
-              resizeHandle: 'Security resize handle',
-            },
-            content: <span>Security</span>,
-            resizable: true,
-            size: 310,
-            id: 'security',
-            trigger: {
-              iconName: 'security',
-            },
-          },
-        ],
-      },
-    };
+    wrapper.findDrawerTriggerById('security')!.click();
+    expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
 
-    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...drawersSize300} />);
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    act(() => wrapper.findDrawersSlider()!.keydown(KeyCode.left));
-    expect(getComputedStyle(wrapper.findActiveDrawer()!.getElement()).width).toBe('300px');
-
-    rerender(<AppLayout contentType="form" {...drawersSize310} />);
-
-    act(() => wrapper.findDrawersTriggers()![0].click());
-    expect(getComputedStyle(wrapper.findActiveDrawer()!.getElement()).width).toBe('310px');
+    wrapper.findDrawerTriggerById('security-resizable')!.click();
+    if (size === 'desktop') {
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeTruthy();
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Security resize handle'
+      );
+    } else {
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
+    }
   });
 
-  test('should change size in uncontrolled mode', () => {
-    const drawersOpen = {
-      drawers: {
-        activeDrawerId: 'security',
-        items: drawersConfigurations.drawersResizableItems,
-      },
-    };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
-    act(() => wrapper.findDrawersSlider()!.keydown(KeyCode.left));
-    expect(getComputedStyle(wrapper.findActiveDrawer()!.getElement()).width).toBe('290px');
+  test('focuses drawer close button', () => {
+    let ref: AppLayoutProps.Ref | null = null;
+    const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} {...(singleDrawerOpen as any)} />);
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+    act(() => ref!.focusActiveDrawer());
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveFocus();
+  });
+
+  test('registers public drawers api', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} />);
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
   });
 });

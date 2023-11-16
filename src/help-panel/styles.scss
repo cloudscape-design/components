@@ -22,13 +22,13 @@
   ul {
     padding-left: awsui.$space-l;
     list-style-position: outside;
+    margin: awsui.$space-s 0;
+  }
+  li {
+    margin: awsui.$space-scaled-xxs 0;
   }
 
   a,
-  p,
-  ul,
-  ol,
-  li,
   h2,
   h3,
   h4,
@@ -50,7 +50,7 @@
   }
 
   dl {
-    margin: awsui.$space-xs 0;
+    margin: awsui.$space-s 0;
     /* stylelint-disable-next-line selector-max-universal */
     * {
       margin-top: 0;
@@ -82,6 +82,7 @@
   p {
     color: inherit;
     text-decoration: none;
+    margin: awsui.$space-s 0;
   }
   h1 {
     @include styles.font-heading-xl;
@@ -101,12 +102,6 @@
   b,
   strong {
     font-weight: styles.$font-weight-bold;
-  }
-  a {
-    @include styles.link-default;
-    &:focus {
-      @include styles.link-focus;
-    }
   }
 
   .header {
@@ -144,6 +139,10 @@
   h6:first-child {
     margin-top: 0;
   }
+
+  a {
+    @include styles.link-inline;
+  }
 }
 
 .footer {
@@ -157,5 +156,15 @@
   ul {
     list-style: none;
     padding-left: 0;
+  }
+  a {
+    @include styles.link-default;
+  }
+}
+
+.content,
+.footer {
+  a:focus {
+    @include styles.link-focus;
   }
 }

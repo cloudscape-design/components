@@ -5,7 +5,6 @@ import { TabsProps } from './interfaces';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
-import { useContainerQuery } from '../internal/hooks/container-queries';
 import { KeyCode } from '../internal/keycode';
 import {
   onPaginationClick,
@@ -16,6 +15,8 @@ import {
 } from './scroll-utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useInternalI18n } from '../i18n/context';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 export interface TabHeaderBarProps {
   onChange: (changeDetail: TabsProps.ChangeDetail) => void;
@@ -41,10 +42,11 @@ export function TabHeaderBar({
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<HTMLAnchorElement>(null);
   const leftOverflowButton = useRef<HTMLElement>(null);
+  const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
 
-  const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.width);
+  const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [horizontalOverflow, setHorizontalOverflow] = useState(false);
   const [leftOverflow, setLeftOverflow] = useState(false);
@@ -132,7 +134,7 @@ export function TabHeaderBar({
             iconName="angle-left"
             disabled={!leftOverflow}
             onClick={() => onPaginationClick(headerBarRef, -1)}
-            ariaLabel={i18nStrings?.scrollLeftAriaLabel}
+            ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
           />
         </span>
       )}
@@ -154,7 +156,7 @@ export function TabHeaderBar({
             iconName="angle-right"
             disabled={!rightOverflow}
             onClick={() => onPaginationClick(headerBarRef, 1)}
-            ariaLabel={i18nStrings?.scrollRightAriaLabel}
+            ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
           />
         </span>
       )}

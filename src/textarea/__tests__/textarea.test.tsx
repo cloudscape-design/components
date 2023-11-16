@@ -31,6 +31,10 @@ describe('Textarea', () => {
       const { textarea } = renderTextarea({ value: 'value' });
       expect(textarea).toHaveTextContent('value');
     });
+    test('can be obtained through getTextareaValue API', () => {
+      const { textareaWrapper } = renderTextarea({ value: 'value' });
+      expect(textareaWrapper.getTextareaValue()).toBe('value');
+    });
   });
 
   describe('placeholder', () => {

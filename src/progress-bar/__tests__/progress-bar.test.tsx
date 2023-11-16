@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, act } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar';
@@ -86,6 +86,26 @@ allVariants.forEach(variant => {
       test('contains result text', () => {
         const wrapper = renderProgressBar({ variant, value: 100, status: 'success', resultText: 'Result!' });
         expect(wrapper.find('[aria-live]')!.getElement()).toHaveTextContent('Result!');
+      });
+    });
+
+    describe('ARIA labels', () => {
+      test('attaches aria-label to the progress bar', () => {
+        const wrapper = renderProgressBar({ variant, value: 100, ariaLabel: 'aria label' });
+        expect(wrapper.find('progress')!.getElement()).toHaveAttribute('aria-label', 'aria label');
+      });
+
+      test('attaches aria-labelledby to the progress bar', () => {
+        const wrapper = renderProgressBar({ variant, value: 100, ariaLabelledby: 'testid' });
+        expect(wrapper.find('progress')!.getElement()).toHaveAttribute(
+          'aria-labelledby',
+          expect.stringContaining('testid')
+        );
+      });
+
+      test('ignores aria-labelledby if aria-label is provided', () => {
+        const wrapper = renderProgressBar({ variant, value: 100, ariaLabelledby: 'testid', ariaLabel: 'hello' });
+        expect(wrapper.find('progress')!.getElement()).not.toHaveAttribute('aria-labelledby');
       });
     });
   });
@@ -173,28 +193,34 @@ standaloneAndKeyvalueVariants.forEach(variant => {
 });
 
 describe('Progress updates', () => {
-  const wait = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));
-  jest.setTimeout(7000);
-  test('Announced progress value changes not more often then given interval', async () => {
+  test('Announced progress value changes not more often then given interval', () => {
+    jest.useFakeTimers(); // Mock timers
     const label = 'progress';
     const { container, rerender } = render(<ProgressBar label={label} value={0} />);
     const wrapper = createWrapper(container).findProgressBar()!;
 
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 0%`);
+    rerender(<ProgressBar label={label} value={1} />);
 
-    await act(async () => {
-      await wait(2000);
-      rerender(<ProgressBar label={label} value={1} />);
-    });
     // live region has an old value
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 0%`);
+    rerender(<ProgressBar label={label} value={2} />);
 
-    await act(async () => {
-      await wait(2000);
-      rerender(<ProgressBar label={label} value={2} />);
-      await wait(2000);
-    });
     // 6 seconds passed, live region has a new value
+    jest.advanceTimersByTime(6000);
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 2%`);
+  });
+
+  test('correctly extracts react node label for announcement', () => {
+    const wrapper = renderProgressBar({
+      label: (
+        <span>
+          Text-<i>optional</i>
+        </span>
+      ),
+      value: 10,
+      status: 'in-progress',
+    });
+    expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe('Text-optional: 10%');
   });
 });

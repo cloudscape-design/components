@@ -11,7 +11,7 @@
 .root {
   @include styles.styles-reset;
 
-  &.has-items {
+  &.has-items:not(.no-padding) {
     padding-top: awsui.$space-xs;
   }
 }

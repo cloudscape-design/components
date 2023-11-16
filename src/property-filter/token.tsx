@@ -7,6 +7,7 @@ import {
   I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
+  InternalToken,
   JoinOperation,
   LoadItemsDetail,
   Token,
@@ -26,8 +27,8 @@ interface TokenProps {
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
-  filteringOptions: readonly InternalFilteringOption[];
   filteringProperties: readonly InternalFilteringProperty[];
+  filteringOptions: readonly InternalFilteringOption[];
   first?: boolean;
   hideOperations?: boolean;
   i18nStrings: I18nStrings;
@@ -36,7 +37,7 @@ interface TokenProps {
   removeToken: () => void;
   setOperation: (newOperation: JoinOperation) => void;
   setToken: (newToken: Token) => void;
-  token: Token;
+  token: InternalToken;
 }
 
 export const TokenButton = ({
@@ -46,8 +47,8 @@ export const TokenButton = ({
   removeToken,
   setToken,
   setOperation,
-  filteringOptions,
   filteringProperties,
+  filteringOptions,
   asyncProps,
   onLoadItems,
   i18nStrings,
@@ -58,7 +59,8 @@ export const TokenButton = ({
   disableFreeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const formattedToken = getFormattedToken(filteringProperties, token);
+  const externalToken = { ...token, propertyKey: token.property?.propertyKey };
+  const formattedToken = getFormattedToken(token);
   return (
     <FilteringToken
       ariaLabel={formattedToken.label}
@@ -66,7 +68,7 @@ export const TokenButton = ({
       operation={operation}
       andText={i18nStrings.operationAndText ?? ''}
       orText={i18nStrings.operationOrText ?? ''}
-      dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(token)}
+      dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(externalToken)}
       operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
       onChange={setOperation}
       onDismiss={removeToken}
@@ -79,8 +81,8 @@ export const TokenButton = ({
             <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
           </span>
         }
-        filteringOptions={filteringOptions}
         filteringProperties={filteringProperties}
+        filteringOptions={filteringOptions}
         token={token}
         asyncProps={asyncProps}
         onLoadItems={onLoadItems}

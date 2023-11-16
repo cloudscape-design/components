@@ -1,35 +1,71 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { act } from 'react-dom/test-utils';
+import { within } from '@testing-library/react';
 import {
   describeEachThemeAppLayout,
-  drawersConfigurations,
+  drawerWithoutLabels,
   isDrawerClosed,
   renderComponent,
+  singleDrawerOpen,
+  manyDrawers,
   splitPanelI18nStrings,
+  singleDrawerPublic,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/app-layout/styles.css.js';
+import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
+
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import { findUpUntil } from '../../../lib/components/internal/utils/dom';
+import SideNavigation from '../../../lib/components/side-navigation';
 
-jest.mock('../../../lib/components/internal/motion', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
+
+function AppLayoutWithControlledNavigation({
+  initialNavigationOpen,
+  navigation,
+}: {
+  initialNavigationOpen: boolean;
+  navigation: React.ReactNode;
+}) {
+  const [navigationOpen, setNavigationOpen] = useState(initialNavigationOpen);
+
+  return (
+    <AppLayout
+      navigationOpen={navigationOpen}
+      onNavigationChange={({ detail }) => {
+        setNavigationOpen(detail.open);
+      }}
+      navigation={navigation}
+    />
+  );
+}
 
 describeEachThemeAppLayout(true, theme => {
   // In refactored Visual Refresh different styles are used compared to Classic
   const mobileBarClassName = theme === 'refresh' ? testUtilsStyles['mobile-bar'] : toolbarStyles['mobile-bar'];
+  const drawerBarClassName =
+    theme === 'refresh'
+      ? visualRefreshRefactoredStyles['drawers-mobile-triggers-container']
+      : drawersMobileStyles['drawers-container'];
   const blockBodyScrollClassName =
     theme === 'refresh' ? visualRefreshRefactoredStyles['block-body-scroll'] : toolbarStyles['block-body-scroll'];
   const unfocusableClassName = theme === 'refresh' ? visualRefreshRefactoredStyles.unfocusable : styles.unfocusable;
   const isUnfocusable = (element: HTMLElement) =>
     !!findUpUntil(element, current => current.classList.contains(unfocusableClassName));
+
+  const findMobileToolbar = (wrapper: AppLayoutWrapper) => wrapper.findByClassName(mobileBarClassName);
+  const findDrawersContainer = (wrapper: AppLayoutWrapper) => wrapper.findByClassName(drawerBarClassName);
 
   test('Renders closed drawer state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
@@ -38,6 +74,37 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findTools()).toBeTruthy();
     expect(wrapper.findNavigationToggle().getElement()).toBeEnabled();
     expect(wrapper.findToolsToggle().getElement()).toBeEnabled();
+  });
+
+  test('AppLayout with controlled navigation has navigation forcely closed on initial load', () => {
+    const { wrapper } = renderComponent(
+      <AppLayoutWithControlledNavigation
+        initialNavigationOpen={true}
+        navigation={
+          <>
+            <h1>Navigation</h1>
+            <a href="test">Link</a>
+          </>
+        }
+      />
+    );
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+  });
+
+  test('AppLayout with uncontrolled navigation has navigation forcely closed on initial load', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout
+        navigation={
+          <>
+            <h1>Navigation</h1>
+            <a href="test">Link</a>
+          </>
+        }
+      />
+    );
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
   });
 
   test('renders open navigation state', () => {
@@ -58,16 +125,23 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findToolsToggle().getElement()).toBeDisabled();
   });
 
+  test('renders open drawer state', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(singleDrawerOpen as any)} />);
+    expect(document.body).toHaveClass(blockBodyScrollClassName);
+    expect(wrapper.findNavigation()).toBeTruthy();
+    expect(wrapper.findTools()).toBeFalsy(); // no tools rendered in drawers mode
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
   test('Renders mobile toolbar when at least one of it features is defined', function () {
-    const findMobileToolbar = () => wrapper.findByClassName(mobileBarClassName);
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} toolsHide={true} breadcrumbs="test" />);
-    expect(findMobileToolbar()).toBeTruthy();
+    expect(findMobileToolbar(wrapper)).toBeTruthy();
     rerender(<AppLayout navigationHide={true} toolsHide={true} />);
-    expect(findMobileToolbar()).toBeFalsy();
+    expect(findMobileToolbar(wrapper)).toBeFalsy();
   });
 
   test('clears up body scroll class when component is destroyed', () => {
@@ -80,30 +154,58 @@ describeEachThemeAppLayout(true, theme => {
   });
 
   test('closes navigation when clicking on links', () => {
-    const onNavigationChange = jest.fn();
     const { wrapper } = renderComponent(
-      <AppLayout
-        navigationOpen={true}
-        onNavigationChange={onNavigationChange}
+      <AppLayoutWithControlledNavigation
+        initialNavigationOpen={true}
         navigation={
           <>
             <h1>Navigation</h1>
-            <a href="#">Link</a>
+            <a href="test">Link</a>
           </>
         }
       />
     );
-    wrapper.findNavigation().find('a')!.click();
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
 
-    expect(onNavigationChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
+    wrapper.findNavigationToggle().click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+
+    wrapper.findNavigation().find('a')!.click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+  });
+
+  test('closes navigation when clicking on a link in the Side Navigation component', () => {
+    const { wrapper } = renderComponent(
+      <AppLayoutWithControlledNavigation
+        initialNavigationOpen={true}
+        navigation={
+          <SideNavigation
+            items={[
+              {
+                type: 'link',
+                text: 'Page 1',
+                href: '#/page1',
+              },
+            ]}
+          />
+        }
+      />
+    );
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+
+    wrapper.findNavigationToggle().click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+
+    wrapper.findNavigation().find('a')!.click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
   });
 
   test('does not close navigation when anchor without href was clicked', () => {
-    const onNavigationChange = jest.fn();
     const { wrapper } = renderComponent(
-      <AppLayout
-        navigationOpen={true}
-        onNavigationChange={onNavigationChange}
+      <AppLayoutWithControlledNavigation
+        initialNavigationOpen={true}
         navigation={
           <>
             <h1>Navigation</h1>
@@ -112,28 +214,36 @@ describeEachThemeAppLayout(true, theme => {
         }
       />
     );
-    wrapper.findNavigation().find('a')!.click();
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
 
-    expect(onNavigationChange).not.toHaveBeenCalled();
+    wrapper.findNavigationToggle().click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+
+    wrapper.findNavigation().find('a')!.click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
   });
 
   test('does not close navigation when other elements were clicked', () => {
-    const onNavigationChange = jest.fn();
     const { wrapper } = renderComponent(
-      <AppLayout
-        navigationOpen={true}
-        onNavigationChange={onNavigationChange}
+      <AppLayoutWithControlledNavigation
+        initialNavigationOpen={true}
         navigation={
           <>
             <h1>Navigation</h1>
-            <a href="#">Link</a>
+            <a>Link</a>
           </>
         }
       />
     );
-    wrapper.findNavigation().find('h1')!.click();
+    // AppLayout forcely closes the navigation on the first load on mobile, so the main content is visible
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
 
-    expect(onNavigationChange).not.toHaveBeenCalled();
+    wrapper.findNavigationToggle().click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+
+    wrapper.findNavigation().find('h1')!.click();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
   });
 
   test('does not close tools when clicking on any element', () => {
@@ -173,6 +283,17 @@ describeEachThemeAppLayout(true, theme => {
     expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
     rerender(<AppLayout {...defaultProps} splitPanelPreferences={{ position: 'side' }} />);
     expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
+  });
+
+  test('does not render mobile app bar when __embeddedViewMode is active (private API)', () => {
+    const defaultProps = {
+      breadcrumbs: 'Breadcrumbs',
+    };
+
+    const { wrapper, rerender } = renderComponent(<AppLayout {...defaultProps} />);
+    expect(wrapper.findByClassName(mobileBarClassName)).not.toBeNull();
+    rerender(<AppLayout {...defaultProps} {...{ __embeddedViewMode: true }} />);
+    expect(wrapper.findByClassName(mobileBarClassName)).toBeNull();
   });
 
   [
@@ -286,6 +407,23 @@ describeEachThemeAppLayout(true, theme => {
       }
     });
 
+    test('content and toolbar is unfocusable when a drawer is open', () => {
+      const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} {...(singleDrawerOpen as any)} />);
+
+      if (isUsingGridLayout) {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(6);
+        expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(testUtilsStyles.content)!.getElement()).toHaveClass(unfocusableClassName);
+        expect(
+          wrapper.findByClassName(visualRefreshRefactoredStyles['navigation-container'])!.getElement()
+        ).toHaveClass(unfocusableClassName);
+      } else {
+        expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(styles['layout-main'])!.getElement()).toHaveClass(unfocusableClassName);
+      }
+    });
+
     test('when both navigation and tools rendered, the tools take precedence', () => {
       const { wrapper, isUsingGridLayout } = renderComponent(
         <AppLayout {...props} navigationOpen={true} toolsOpen={true} />
@@ -325,35 +463,39 @@ describeEachThemeAppLayout(true, theme => {
     });
   });
 
-  test('should render drawers mobile triggers container', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
-
-    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
-    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
-  });
-
   test('should render an active drawer', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(singleDrawerOpen as any)} />);
 
-    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
-    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 
-  test('Does not add a label to the toggle and landmark when they are not defined', () => {
-    const drawersClosed = {
-      drawers: {
-        items: drawersConfigurations.drawersItemsWithoutLabels,
-      },
-    };
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
-    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
+  test('should render badge when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(manyDrawers as any)} />);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
   });
 
-  test('Adds labels to toggle button and landmark when defined', () => {
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
-    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
-    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
+  test('renders roles only when aria labels are not provided', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...(drawerWithoutLabels as any)} />);
+    const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
+
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).not.toHaveAttribute('aria-label');
+    expect(drawersAside).not.toHaveAttribute('aria-label');
+
+    const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
+    expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
+  });
+
+  test('renders roles and aria labels when provided', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={singleDrawerPublic} ariaLabels={{ drawers: 'Drawers' }} />);
+    const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
+
+    expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Security trigger button'
+    );
+    expect(drawersAside).toHaveAttribute('aria-label', 'Drawers');
+
+    const drawersToolbar = findDrawersContainer(wrapper)!.getElement();
+    expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
   });
 });

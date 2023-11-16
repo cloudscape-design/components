@@ -13,10 +13,12 @@ import {
 } from '../../events';
 import { findUpUntil } from '../../utils/dom';
 import styles from './styles.css.js';
-import { useStableEventHandler } from '../../hooks/use-stable-event-handler';
+import { DropdownStatusProps } from '../dropdown-status';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;
+  statusType: DropdownStatusProps.StatusType;
   /**
    * Options list
    */
@@ -33,6 +35,7 @@ export interface OptionsListProps extends BaseComponentProps {
   onMouseMove?: (itemIndex: number) => void;
   position?: React.CSSProperties['position'];
   role?: 'listbox' | 'list' | 'menu';
+  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   decreaseTopMargin?: boolean;
@@ -52,6 +55,7 @@ const getItemIndex = (containerRef: React.RefObject<HTMLElement>, event: React.M
 const OptionsList = (
   {
     open,
+    statusType,
     children,
     nativeAttributes = {},
     onKeyDown,
@@ -63,6 +67,7 @@ const OptionsList = (
     position = 'relative',
     role = 'listbox',
     decreaseTopMargin = false,
+    ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
     ...restProps
@@ -72,7 +77,7 @@ const OptionsList = (
   const baseProps = getBaseProps(restProps);
   const menuRef = useRef<HTMLUListElement>(null);
 
-  const handleScroll = useStableEventHandler(() => {
+  const handleScroll = useStableCallback(() => {
     const scrollContainer = menuRef?.current;
     if (scrollContainer) {
       const bottomEdgePosition = scrollContainer.scrollTop + scrollContainer.clientHeight;
@@ -84,11 +89,10 @@ const OptionsList = (
   });
 
   useEffect(() => {
-    if (!open) {
-      return;
+    if (open && statusType === 'pending') {
+      handleScroll();
     }
-    handleScroll();
-  }, [open, handleScroll]);
+  }, [open, statusType, handleScroll]);
 
   const className = clsx(styles['options-list'], {
     [styles['decrease-top-margin']]: decreaseTopMargin,
@@ -111,6 +115,7 @@ const OptionsList = (
       onBlur={event => fireNonCancelableEvent(onBlur, { relatedTarget: event.relatedTarget })}
       onFocus={() => fireNonCancelableEvent(onFocus)}
       tabIndex={-1}
+      aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
     >

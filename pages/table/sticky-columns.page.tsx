@@ -15,6 +15,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type DemoContext = React.Context<
   AppContextType<{
+    loading: boolean;
     resizableColumns: boolean;
     stickyHeader: boolean;
     sortingDisabled: boolean;
@@ -165,6 +166,10 @@ export default () => {
       <SpaceBetween size="xl">
         <SpaceBetween direction="horizontal" size="m">
           <FormField label="Table flags">
+            <Checkbox checked={urlParams.loading} onChange={event => setUrlParams({ loading: event.detail.checked })}>
+              Loading
+            </Checkbox>
+
             <Checkbox
               checked={urlParams.resizableColumns}
               onChange={event => setUrlParams({ resizableColumns: event.detail.checked })}
@@ -230,7 +235,10 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="small-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
+          stickyColumns={{
+            first: parseInt(urlParams.stickyColumnsFirst || '0'),
+            last: parseInt(urlParams.stickyColumnsLast || '0'),
+          }}
           {...urlParams}
           columnDefinitions={columnsConfig}
           selectedItems={selectedItems}
@@ -242,7 +250,10 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="large-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
+          stickyColumns={{
+            first: parseInt(urlParams.stickyColumnsFirst || '0'),
+            last: parseInt(urlParams.stickyColumnsLast || '0'),
+          }}
           {...urlParams}
           ariaLabels={{ ...ariaLabels, tableLabel: 'Large table' }}
           columnDefinitions={COLUMN_DEFINITIONS}
@@ -254,7 +265,10 @@ export default () => {
         <Table
           {...collectionProps}
           data-test-id="inline-editing-table"
-          stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
+          stickyColumns={{
+            first: parseInt(urlParams.stickyColumnsFirst || '0'),
+            last: parseInt(urlParams.stickyColumnsLast || '0'),
+          }}
           {...urlParams}
           columnDefinitions={[
             {

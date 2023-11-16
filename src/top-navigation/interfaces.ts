@@ -49,19 +49,22 @@ export interface TopNavigationProps extends BaseComponentProps {
    * * `external` (boolean) - Marks the link as external by adding an icon after the text. When clicked, the link opens in a new tab.
    * * `externalIconAriaLabel` (string) - Adds an `aria-label` for the external icon.
    * * `onClick` (() => void) - Specifies the event handler called when the utility is clicked.
+   * * `onFollow` (() => void) - Specifies the event handler called when the utility is clicked without pressing modifier keys, and the utility has an `href` set.
    *
    * ### menu-dropdown
    *
    * * `description` (string) - The description displayed inside the dropdown.
    * * `items` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the `items` property of the [button dropdown component](/components/button-dropdown).
    * * `onItemClick` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
+   * * `onItemFollow` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected without pressing modifier keys, and the item has an `href` set.
    */
   utilities?: ReadonlyArray<TopNavigationProps.Utility>;
 
   /**
    * An object containing all the localized strings required by the component.
+   * @i18n
    */
-  i18nStrings: TopNavigationProps.I18nStrings;
+  i18nStrings?: TopNavigationProps.I18nStrings;
 }
 
 export namespace TopNavigationProps {
@@ -118,7 +121,7 @@ export namespace TopNavigationProps {
     searchDismissIconAriaLabel?: string;
     overflowMenuDismissIconAriaLabel?: string;
     overflowMenuBackIconAriaLabel?: string;
-    overflowMenuTriggerText: string;
-    overflowMenuTitleText: string;
+    overflowMenuTriggerText?: string;
+    overflowMenuTitleText?: string;
   }
 }

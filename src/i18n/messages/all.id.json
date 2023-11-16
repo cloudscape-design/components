@@ -1,0 +1,356 @@
+{
+  "[charts]": {
+    "loadingText": "Memuat bagan",
+    "errorText": "Data tidak dapat diambil. Coba lagi nanti.",
+    "recoveryText": "Coba lagi",
+    "i18nStrings.filterLabel": "Filter data yang ditampilkan",
+    "i18nStrings.filterPlaceholder": "Filter data",
+    "i18nStrings.legendAriaLabel": "Legenda",
+    "i18nStrings.chartAriaRoleDescription": "Bagan",
+    "i18nStrings.xAxisAriaRoleDescription": "sumbu x",
+    "i18nStrings.yAxisAriaRoleDescription": "sumbu y"
+  },
+  "alert": {
+    "dismissAriaLabel": "Abaikan pemberitahuan"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "Berikutnya",
+    "i18nStrings.previousButtonText": "Sebelumnya",
+    "i18nStrings.finishButtonText": "Selesai",
+    "i18nStrings.labelDismissAnnotation": "Abaikan anotasi",
+    "i18nStrings.stepCounterText": "Langkah {stepNumber} dari {totalStepCount}",
+    "i18nStrings.taskTitle": "Tugas {taskNumber}: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {Tutup anotasi untuk langkah {stepNumber} dari {totalStepCount}} false {Buka anotasi untuk langkah {stepNumber} dari {totalStepCount}} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.drawers": "Laci",
+    "ariaLabels.drawersOverflow": "Tambahan laci",
+    "ariaLabels.drawersOverflowWithBadge": "Tambahan laci dengan lencana",
+    "ariaLabels.navigation": "Navigasi samping",
+    "ariaLabels.navigationClose": "Tutup navigasi samping",
+    "ariaLabels.navigationToggle": "Buka navigasi samping",
+    "ariaLabels.notifications": "Notifikasi",
+    "ariaLabels.tools": "Panel bantuan",
+    "ariaLabels.toolsClose": "Tutup panel bantuan",
+    "ariaLabels.toolsToggle": "Buka panel bantuan"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "Total"
+  },
+  "attribute-editor": {
+    "removeButtonText": "Hapus"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "Kesalahan",
+    "selectedAriaLabel": "Dipilih",
+    "enteredTextLabel": "Gunakan: \"{value}\"",
+    "recoveryText": "Coba lagi"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "Tampilkan jalur"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "Bulan berikutnya",
+    "previousMonthAriaLabel": "Bulan sebelumnya",
+    "todayAriaLabel": "Hari ini"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "Pemilihan item"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "Memuat editor kode",
+    "i18nStrings.errorState": "Terjadi kesalahan saat memuat editor kode.",
+    "i18nStrings.errorStateRecovery": "Coba lagi",
+    "i18nStrings.editorGroupAriaLabel": "Editor kode",
+    "i18nStrings.statusBarGroupAriaLabel": "Bilah status",
+    "i18nStrings.cursorPosition": "Brs. {row}, Kol. {column}",
+    "i18nStrings.errorsTab": "Kesalahan",
+    "i18nStrings.warningsTab": "Peringatan",
+    "i18nStrings.preferencesButtonAriaLabel": "Preferensi",
+    "i18nStrings.paneCloseButtonAriaLabel": "Tutup",
+    "i18nStrings.preferencesModalHeader": "Preferensi",
+    "i18nStrings.preferencesModalCancel": "Batalkan",
+    "i18nStrings.preferencesModalConfirm": "Konfirmasikan",
+    "i18nStrings.preferencesModalWrapLines": "Bungkus baris",
+    "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalLightThemes": "Tema terang",
+    "i18nStrings.preferencesModalDarkThemes": "Tema gelap"
+  },
+  "collection-preferences": {
+    "title": "Preferensi",
+    "confirmLabel": "Konfirmasikan",
+    "cancelLabel": "Batalkan",
+    "pageSizePreference.title": "Ukuran halaman",
+    "wrapLinesPreference.label": "Bungkus baris",
+    "wrapLinesPreference.description": "Pilih untuk melihat semua teks dan membungkus baris",
+    "stripedRowsPreference.label": "Baris bergaris",
+    "stripedRowsPreference.description": "Pilih untuk menambahkan baris berbayang bergantian",
+    "contentDensityPreference.label": "Mode ringkas",
+    "contentDensityPreference.description": "Pilih untuk menampilkan konten dalam mode yang lebih padat dan ringkas",
+    "contentDisplayPreference.title": "Preferensi kolom",
+    "contentDisplayPreference.description": "Sesuaikan visibilitas dan urutan kolom.",
+    "contentDisplayPreference.dragHandleAriaLabel": "Tuas seret",
+    "contentDisplayPreference.dragHandleAriaDescription": "Gunakan Spasi atau Enter untuk mengaktifkan seret item, lalu gunakan tombol panah untuk memindahkan posisi item. Untuk menyelesaikan perpindahan posisi, gunakan Spasi atau Enter, atau untuk membatalkan perpindahan, gunakan Escape.",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "Mengambil item pada posisi {position} dari {total}",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Pengurutan ulang dibatalkan",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Memindahkan item kembali ke posisi {currentPosition} dari {total}} false {Memindahkan item ke posisi {currentPosition} dari {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item dipindahkan kembali ke posisi aslinya {initialPosition} dari {total}} false {Item dipindahkan dari posisi {initialPosition} ke posisi {finalPosition} dari {total}} other {}}"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "Mode relatif",
+    "i18nStrings.absoluteModeTitle": "Mode absolut",
+    "i18nStrings.relativeRangeSelectionHeading": "Pilih rentang",
+    "i18nStrings.cancelButtonLabel": "Batalkan",
+    "i18nStrings.clearButtonLabel": "Hapus dan abaikan",
+    "i18nStrings.applyButtonLabel": "Terapkan",
+    "i18nStrings.customRelativeRangeOptionLabel": "Rentang kustom",
+    "i18nStrings.customRelativeRangeOptionDescription": "Atur rentang kustom pada masa lalu",
+    "i18nStrings.customRelativeRangeUnitLabel": "Satuan waktu",
+    "i18nStrings.customRelativeRangeDurationLabel": "Durasi",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "Masukkan durasi",
+    "i18nStrings.startDateLabel": "Tanggal mulai",
+    "i18nStrings.startTimeLabel": "Waktu mulai",
+    "i18nStrings.endDateLabel": "Tanggal berakhir",
+    "i18nStrings.endTimeLabel": "Waktu berakhir",
+    "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rentang dipilih dari {startDate} hingga {endDate}",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {{amount} {unit} terakhir} other {{amount} {unit} terakhir}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "drawer": {
+    "i18nStrings.loadingText": "Memuat konten"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "Notifikasi",
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.inProgressIconAriaLabel": "Sedang berlangsung",
+    "i18nStrings.infoIconAriaLabel": "Info",
+    "i18nStrings.notificationBarAriaLabel": "Semua notifikasi",
+    "i18nStrings.notificationBarText": "Notifikasi",
+    "i18nStrings.successIconAriaLabel": "Berhasil",
+    "i18nStrings.warningIconAriaLabel": "Peringatan"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "Kesalahan"
+  },
+  "form": {
+    "errorIconAriaLabel": "Kesalahan"
+  },
+  "help-panel": {
+    "loadingText": "Memuat konten"
+  },
+  "input": {
+    "clearAriaLabel": "Hapus"
+  },
+  "link": {
+    "externalIconAriaLabel": "Buka di tab baru"
+  },
+  "modal": {
+    "closeAriaLabel": "Tutup modal"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "Hapus {option__label}"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "Halaman berikutnya",
+    "ariaLabels.pageLabel": "Halaman {pageNumber} dari semua halaman",
+    "ariaLabels.previousPageLabel": "Halaman sebelumnya"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "Nilai",
+    "i18nStrings.detailsPercentage": "Persentase",
+    "i18nStrings.chartAriaRoleDescription": "Bagan pai",
+    "i18nStrings.segmentAriaRoleDescription": "Segmen"
+  },
+  "popover": {
+    "dismissAriaLabel": "Tutup popover"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "Semua properti",
+    "i18nStrings.applyActionText": "Terapkan",
+    "i18nStrings.cancelActionText": "Batalkan",
+    "i18nStrings.clearFiltersText": "Hapus filter",
+    "i18nStrings.editTokenHeader": "Edit filter",
+    "i18nStrings.groupPropertiesText": "Properti",
+    "i18nStrings.groupValuesText": "Nilai",
+    "i18nStrings.operationAndText": "dan",
+    "i18nStrings.operationOrText": "atau",
+    "i18nStrings.operatorContainsText": "Berisi",
+    "i18nStrings.operatorDoesNotContainText": "Tidak berisi",
+    "i18nStrings.operatorDoesNotEqualText": "Tidak sama dengan",
+    "i18nStrings.operatorEqualsText": "Sama dengan",
+    "i18nStrings.operatorGreaterOrEqualText": "Lebih besar dari atau sama dengan",
+    "i18nStrings.operatorGreaterText": "Lebih besar dari",
+    "i18nStrings.operatorLessOrEqualText": "Kurang dari atau sama dengan",
+    "i18nStrings.operatorLessText": "Kurang dari",
+    "i18nStrings.operatorStartsWithText": "Dimulai dengan",
+    "i18nStrings.operatorText": "Operator",
+    "i18nStrings.operatorsText": "Operator",
+    "i18nStrings.propertyText": "Properti",
+    "i18nStrings.tokenLimitShowFewer": "Tampilkan lebih sedikit",
+    "i18nStrings.tokenLimitShowMore": "Tampilkan selengkapnya",
+    "i18nStrings.valueText": "Nilai",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} starts_with {Hapus filter, {token__propertyKey} dimulai dengan {token__value}} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "Pilih versi",
+    "i18nStrings.inContextBrowseButton": "Jelajahi S3",
+    "i18nStrings.inContextViewButton": "Lihat",
+    "i18nStrings.inContextViewButtonAriaLabel": "Lihat (buka di tab baru)",
+    "i18nStrings.inContextLoadingText": "Memuat sumber daya",
+    "i18nStrings.inContextUriLabel": "URI S3",
+    "i18nStrings.inContextVersionSelectLabel": "Versi objek",
+    "i18nStrings.modalTitle": "Pilih arsip di S3",
+    "i18nStrings.modalCancelButton": "Batalkan",
+    "i18nStrings.modalSubmitButton": "Pilih",
+    "i18nStrings.modalBreadcrumbRootItem": "Bucket S3",
+    "i18nStrings.selectionBuckets": "Bucket",
+    "i18nStrings.selectionObjects": "Objek",
+    "i18nStrings.selectionVersions": "Versi",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "Temukan bucket",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "Temukan objek berdasarkan prefiks",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "Temukan versi",
+    "i18nStrings.selectionBucketsLoading": "Memuat bucket",
+    "i18nStrings.selectionBucketsNoItems": "Tidak ada bucket",
+    "i18nStrings.selectionObjectsLoading": "Memuat objek",
+    "i18nStrings.selectionObjectsNoItems": "Tidak ada objek",
+    "i18nStrings.selectionVersionsLoading": "Memuat versi",
+    "i18nStrings.selectionVersionsNoItems": "Tidak ada versi",
+    "i18nStrings.filteringNoMatches": "Tidak ada kecocokan",
+    "i18nStrings.filteringCantFindMatch": "Kami tidak dapat menemukan kecocokan.",
+    "i18nStrings.clearFilterButtonText": "Hapus filter",
+    "i18nStrings.columnBucketID": "ID",
+    "i18nStrings.columnBucketName": "Nama",
+    "i18nStrings.columnBucketCreationDate": "Tanggal pembuatan",
+    "i18nStrings.columnBucketRegion": "Wilayah",
+    "i18nStrings.columnObjectKey": "Kunci",
+    "i18nStrings.columnObjectLastModified": "Terakhir diubah",
+    "i18nStrings.columnObjectSize": "Ukuran",
+    "i18nStrings.columnVersionID": "ID Versi",
+    "i18nStrings.columnVersionLastModified": "Terakhir diubah",
+    "i18nStrings.columnVersionSize": "Ukuran",
+    "i18nStrings.validationPathMustBegin": "Jalur harus dimulai dengan s3://",
+    "i18nStrings.validationBucketLowerCase": "Nama bucket harus diawali dengan karakter huruf kecil atau angka.",
+    "i18nStrings.validationBucketMustNotContain": "Nama bucket tidak boleh berisi karakter huruf besar.",
+    "i18nStrings.validationBucketLength": "Nama bucket harus terdiri dari 3 hingga 63 karakter.",
+    "i18nStrings.validationBucketMustComplyDns": "Nama bucket harus mematuhi konvensi penamaan DNS.",
+    "i18nStrings.labelSortedDescending": "{columnName}, diurutkan turun",
+    "i18nStrings.labelSortedAscending": "{columnName}, diurutkan naik",
+    "i18nStrings.labelNotSorted": "{columnName}, tidak diurutkan",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "Bucket",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "Objek",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "Versi",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "Temukan {itemsType}",
+    "i18nStrings.labelRefresh": "Segarkan data",
+    "i18nStrings.labelBreadcrumbs": "Navigasi S3",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 kecocokan} other {{count} kecocokan}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "Kesalahan",
+    "selectedAriaLabel": "Dipilih",
+    "recoveryText": "Coba lagi"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "Tutup panel",
+    "i18nStrings.openButtonAriaLabel": "Buka panel",
+    "i18nStrings.preferencesTitle": "Preferensi panel terpisah",
+    "i18nStrings.preferencesPositionLabel": "Posisi panel terpisah",
+    "i18nStrings.preferencesPositionDescription": "Pilih posisi panel terpisah default untuk layanan.",
+    "i18nStrings.preferencesPositionSide": "Samping",
+    "i18nStrings.preferencesPositionBottom": "Bawah",
+    "i18nStrings.preferencesConfirm": "Konfirmasikan",
+    "i18nStrings.preferencesCancel": "Batalkan",
+    "i18nStrings.resizeHandleAriaLabel": "Ubah ukuran panel terpisah"
+  },
+  "table": {
+    "ariaLabels.resizerRoleDescription": "tombol ubah ukuran",
+    "ariaLabels.submittingEditText": "Mengirimkan pengeditan",
+    "ariaLabels.successfulEditLabel": "Edit berhasil",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "Kesalahan",
+    "columnDefinitions.editConfig.editIconAriaLabel": "dapat diedit"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "Gulir ke kiri",
+    "i18nStrings.scrollRightAriaLabel": "Gulir ke kanan"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "Masukkan kunci",
+    "i18nStrings.valuePlaceholder": "Masukkan nilai",
+    "i18nStrings.addButton": "Tambahkan tanda baru",
+    "i18nStrings.removeButton": "Hapus",
+    "i18nStrings.removeButtonAriaLabel": "Hapus {tag__key}",
+    "i18nStrings.undoButton": "Batalkan",
+    "i18nStrings.undoPrompt": "Tanda ini akan dihapus setelah perubahan disimpan",
+    "i18nStrings.loading": "Memuat tanda yang terkait dengan sumber daya ini",
+    "i18nStrings.keyHeader": "Kunci",
+    "i18nStrings.valueHeader": "Nilai",
+    "i18nStrings.optional": "opsional",
+    "i18nStrings.keySuggestion": "Kunci tanda kustom",
+    "i18nStrings.valueSuggestion": "Nilai tanda kustom",
+    "i18nStrings.emptyTags": "Tidak ada tanda yang terkait dengan sumber daya.",
+    "i18nStrings.tooManyKeysSuggestion": "Kunci yang Anda miliki lebih banyak dari yang dapat ditampilkan",
+    "i18nStrings.tooManyValuesSuggestion": "Nilai yang Anda miliki lebih banyak dari yang dapat ditampilkan",
+    "i18nStrings.keysSuggestionLoading": "Memuat kunci tanda",
+    "i18nStrings.keysSuggestionError": "Kunci tanda tidak dapat diambil",
+    "i18nStrings.valuesSuggestionLoading": "Memuat nilai tanda",
+    "i18nStrings.valuesSuggestionError": "Nilai tanda tidak dapat diambil",
+    "i18nStrings.emptyKeyError": "Anda harus menentukan kunci tanda",
+    "i18nStrings.maxKeyCharLengthError": "Jumlah maksimum karakter yang dapat Anda gunakan dalam kunci tanda adalah 128.",
+    "i18nStrings.maxValueCharLengthError": "Jumlah maksimum karakter yang dapat Anda gunakan dalam nilai tanda adalah 256.",
+    "i18nStrings.duplicateKeyError": "Anda harus menentukan kunci tanda unik.",
+    "i18nStrings.invalidKeyError": "Kunci tidak valid. Kunci hanya dapat berisi huruf Unicode, angka, spasi kosong, dan salah satu dari karakter berikut: _.:/=+@-",
+    "i18nStrings.invalidValueError": "Nilai tidak valid. Nilai hanya dapat berisi huruf Unicode, angka, spasi kosong, dan salah satu dari karakter berikut: _.:/=+@-",
+    "i18nStrings.awsPrefixError": "Tidak boleh diawali dengan aws:",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {Anda telah mencapai batas 1 tanda.} other {Anda telah mencapai batas {tagLimit} tanda.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {Anda telah melampaui batas 1 tanda.} other {Anda telah melampaui batas {tagLimit} tanda.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {Anda dapat menambahkan hingga {tagLimit} tanda.}}} false {{availableTags, plural, one {Anda dapat menambahkan hingga 1 tanda lagi.} other {Anda dapat menambahkan hingga {availableTags} tanda lagi.}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
+    "i18nStrings.limitShowMore": "Tampilkan selengkapnya"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "Cari",
+    "i18nStrings.searchDismissIconAriaLabel": "Tutup pencarian",
+    "i18nStrings.overflowMenuTriggerText": "Lainnya",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "Tutup menu",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "Kembali",
+    "i18nStrings.overflowMenuTitleText": "Semua"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "Memuat",
+    "i18nStrings.tutorialListTitle": "Pilih tutorial",
+    "i18nStrings.tutorialListDownloadLinkText": "Unduh versi PDF",
+    "i18nStrings.labelTutorialListDownloadLink": "Unduh versi PDF tutorial ini",
+    "i18nStrings.tutorialCompletedText": "Tutorial selesai",
+    "i18nStrings.learnMoreLinkText": "Pelajari selengkapnya",
+    "i18nStrings.startTutorialButtonText": "Mulai tutorial",
+    "i18nStrings.restartTutorialButtonText": "Mulai ulang tutorial",
+    "i18nStrings.completionScreenTitle": "Selamat! Anda menyelesaikan tutorial.",
+    "i18nStrings.feedbackLinkText": "Umpan balik",
+    "i18nStrings.dismissTutorialButtonText": "Abaikan tutorial",
+    "i18nStrings.taskTitle": "Tugas {taskNumber}: {taskTitle}",
+    "i18nStrings.stepTitle": "Langkah {stepNumber}: {stepTitle}",
+    "i18nStrings.labelExitTutorial": "Abaikan tutorial",
+    "i18nStrings.labelTotalSteps": "Total langkah: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "Tertunda",
+    "i18nStrings.labelsTaskStatus.in-progress": "Sedang berlangsung",
+    "i18nStrings.labelsTaskStatus.success": "Berhasil"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "Langkah {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "Langkah {stepNumber} dari {stepsCount}",
+    "i18nStrings.skipToButtonLabel": "Lewati ke {task__title}",
+    "i18nStrings.navigationAriaLabel": "Langkah",
+    "i18nStrings.cancelButton": "Batalkan",
+    "i18nStrings.previousButton": "Sebelumnya",
+    "i18nStrings.nextButton": "Berikutnya",
+    "i18nStrings.optional": "opsional",
+    "i18nStrings.nextButtonLoadingAnnouncement": "Memuat langkah berikutnya",
+    "i18nStrings.submitButtonLoadingAnnouncement": "Mengirimkan formulir"
+  }
+}

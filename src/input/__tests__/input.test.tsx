@@ -3,6 +3,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import Input, { InputProps } from '../../../lib/components/input';
+import FormField from '../../../lib/components/form-field';
 import styles from '../../../lib/components/input/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
@@ -103,6 +104,10 @@ describe('Input', () => {
     test('can be set', () => {
       const { input } = renderInput({ value: 'value' });
       expect(input).toHaveAttribute('value', 'value');
+    });
+    test('can be obtained through getInputValue API', () => {
+      const { wrapper } = renderInput({ value: 'value' });
+      expect(wrapper.getInputValue()).toBe('value');
     });
   });
 
@@ -319,6 +324,32 @@ describe('Input', () => {
         const { input } = renderInput({ ariaRequired: false, ariaLabel: 'input' });
         expect(input).not.toHaveAttribute('aria-required');
       });
+    });
+
+    test('aria-label from input takes precedence over aria-labelledBy from form field', () => {
+      render(
+        <FormField label="Form label">
+          <Input value="" ariaLabel="Input label" />
+        </FormField>
+      );
+
+      const element = createWrapper().find('input')!.getElement();
+
+      expect(element).toHaveAttribute('aria-label', 'Input label');
+      expect(element).not.toHaveAttribute('aria-labelledby');
+    });
+
+    test('aria-labelled by from input takes precedence over aria-label', () => {
+      render(
+        <FormField label="Form label">
+          <Input value="" ariaLabel="Input label" ariaLabelledby="test" />
+        </FormField>
+      );
+
+      const element = createWrapper().find('input')!.getElement();
+
+      expect(element).toHaveAttribute('aria-label', 'Input label');
+      expect(element).toHaveAttribute('aria-labelledby', 'test');
     });
   });
 

@@ -9,7 +9,7 @@ import styles from './styles.css.js';
 import { getPaginationState, range } from './utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { PaginationProps } from './interfaces';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 const defaultAriaLabels: Required<PaginationProps.Labels> = {
   nextPageLabel: '',
@@ -89,9 +89,8 @@ export default function InternalPagination({
 
   const i18n = useInternalI18n('pagination');
 
+  const paginationLabel = ariaLabels?.paginationLabel;
   const nextPageLabel = i18n('ariaLabels.nextPageLabel', ariaLabels?.nextPageLabel) ?? defaultAriaLabels.nextPageLabel;
-  const paginationLabel =
-    i18n('ariaLabels.paginationLabel', ariaLabels?.paginationLabel) ?? defaultAriaLabels.paginationLabel;
   const previousPageLabel =
     i18n('ariaLabels.previousPageLabel', ariaLabels?.previousPageLabel) ?? defaultAriaLabels.previousPageLabel;
   const pageNumberLabelFn =

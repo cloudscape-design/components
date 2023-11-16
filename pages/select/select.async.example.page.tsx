@@ -59,6 +59,17 @@ class SecurityGroupSingleSelect extends React.Component {
     });
   };
 
+  showFilteredText = (matchesCount: number, totalCount: number) => {
+    if (this.state.status === 'pending') {
+      return `${matchesCount}+ results`;
+    }
+
+    if (this.state.status === 'finished') {
+      return `${matchesCount} out of ${totalCount} results`;
+    }
+    return '';
+  };
+
   render() {
     const { status, options, selectedOption } = this.state;
     return (
@@ -71,6 +82,7 @@ class SecurityGroupSingleSelect extends React.Component {
           filteringType="manual"
           filteringPlaceholder="Find security group"
           filteringAriaLabel="Filtering aria label"
+          filteringResultsText={this.showFilteredText}
           statusType={status as any}
           placeholder="Choose a security group"
           loadingText="Loading security groups"

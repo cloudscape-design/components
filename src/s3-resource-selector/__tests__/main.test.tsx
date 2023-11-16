@@ -6,6 +6,7 @@ import S3ResourceSelector, { S3ResourceSelectorProps } from '../../../lib/compon
 import createWrapper, { S3ResourceSelectorWrapper } from '../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
 import FormField from '../../../lib/components/form-field';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 jest.setTimeout(10_000);
 
@@ -195,4 +196,74 @@ test('Should overwrites aria-labelledby aria-describedby from surrounding FormFi
   );
   expect(wrapper.getElement()).toHaveAttribute('aria-labelledby', 'label-id');
   expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'description-id');
+});
+
+describe('i18n', () => {
+  test('supports using (bucket) modal strings from i18n provider', async () => {
+    const wrapper = renderComponent(
+      <TestI18nProvider
+        messages={{
+          's3-resource-selector': {
+            'i18nStrings.modalTitle': 'Custom modal title',
+            'i18nStrings.modalCancelButton': 'Custom cancel',
+            'i18nStrings.modalSubmitButton': 'Custom submit',
+            'i18nStrings.modalBreadcrumbRootItem': 'Custom root',
+            'i18nStrings.selectionBuckets': 'Custom buckets',
+            'i18nStrings.labelRefresh': 'Custom refresh',
+            'i18nStrings.selectionBucketsSearchPlaceholder': 'Custom find buckets',
+            'i18nStrings.columnBucketName': 'Custom name',
+            'i18nStrings.columnBucketCreationDate': 'Custom creation date',
+            'i18nStrings.labelFiltering': 'Custom find {itemsType}',
+            'i18nStrings.labelNotSorted': 'Custom {columnName} not sorted',
+            'i18nStrings.labelSortedAscending': 'Custom {columnName} sorted ascending',
+            'i18nStrings.labelSortedDescending': 'Custom {columnName} sorted descending',
+          },
+        }}
+      >
+        <S3ResourceSelector {...defaultProps} i18nStrings={undefined} />
+      </TestI18nProvider>
+    );
+    await openBrowseDialog(wrapper);
+    expect(wrapper.findModal()!.findHeader().getElement()).toHaveTextContent('Custom modal title');
+    expect(
+      wrapper.findModal()!.findFooter()!.findSpaceBetween()!.find(':nth-child(1)')!.findButton()!.getElement()
+    ).toHaveTextContent('Custom cancel');
+    expect(
+      wrapper.findModal()!.findFooter()!.findSpaceBetween()!.find(':nth-child(2)')!.findButton()!.getElement()
+    ).toHaveTextContent('Custom submit');
+    const modalContent = wrapper.findModal()!.findContent();
+    expect(modalContent.findBreadcrumbGroup()!.getElement()).toHaveTextContent('Custom root');
+    const table = modalContent.findTable()!;
+    expect(table.findHeaderSlot()!.findHeader()!.findHeadingText().getElement()).toHaveTextContent('Custom buckets');
+    expect(table.findHeaderSlot()!.findHeader()!.findActions()!.findButton()!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom refresh'
+    );
+    expect(table.findHeaderSlot()!.findTextFilter()!.findInput()!.findNativeInput()!.getElement()).toHaveAttribute(
+      'placeholder',
+      'Custom find buckets'
+    );
+    expect(table.findHeaderSlot()!.findTextFilter()!.findInput()!.findNativeInput()!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom find Custom buckets'
+    );
+    expect(table.findColumnHeaders()[1].getElement()).toHaveTextContent('Custom name');
+    expect(table.findColumnSortingArea(2)!.getElement()).toHaveAttribute('aria-label', 'Custom Custom name not sorted');
+    expect(table.findColumnHeaders()[2].getElement()).toHaveTextContent('Custom creation date');
+    expect(table.findColumnSortingArea(3)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom Custom creation date not sorted'
+    );
+
+    table.findColumnSortingArea(2)!.click();
+    expect(table.findColumnSortingArea(2)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom Custom name sorted ascending'
+    );
+    table.findColumnSortingArea(2)!.click();
+    expect(table.findColumnSortingArea(2)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom Custom name sorted descending'
+    );
+  });
 });

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { FlashbarProps, FlashType } from './interfaces';
+import { FlashbarProps } from './interfaces';
 import { IconProps } from '../icon/interfaces';
 
 export const FOCUS_THROTTLE_DELAY = 2000;
@@ -13,28 +13,28 @@ export interface StackableItem extends FlashbarProps.MessageDefinition {
   collapsedIndex?: number;
 }
 
-const typesToColors: Record<FlashType, string> = {
+const typesToColors: Record<FlashbarProps.Type, string> = {
   error: 'red',
   info: 'blue',
-  progress: 'blue',
+  'in-progress': 'blue',
   success: 'green',
-  warning: 'blue',
+  warning: 'yellow',
 };
 
-function getColorFromType(type?: FlashType): string {
+function getColorFromType(type?: FlashbarProps.Type): string {
   const defaultColor = 'blue';
   return type ? typesToColors[type] || defaultColor : defaultColor;
 }
 
 export function getItemType(item: FlashbarProps.MessageDefinition) {
   if (item.loading) {
-    return 'progress';
+    return 'in-progress';
   } else {
     return item.type || 'info';
   }
 }
 
-function getItemColor(item: FlashbarProps.MessageDefinition) {
+export function getItemColor(item: FlashbarProps.MessageDefinition) {
   return getColorFromType(getItemType(item));
 }
 
@@ -96,8 +96,10 @@ export function getVisibleCollapsedItems(
   return selectedItems;
 }
 
-export function getFlashTypeCount(items: readonly FlashbarProps.MessageDefinition[]): Record<FlashType, number> {
-  const count = { error: 0, info: 0, progress: 0, success: 0, warning: 0 };
+export function getFlashTypeCount(
+  items: readonly FlashbarProps.MessageDefinition[]
+): Record<FlashbarProps.Type, number> {
+  const count = { error: 0, info: 0, 'in-progress': 0, success: 0, warning: 0 };
   for (const item of items) {
     const type = getItemType(item);
     count[type] += 1;
@@ -113,7 +115,7 @@ export type LabelName =
   | 'inProgressIconAriaLabel';
 
 export const counterTypes: {
-  type: FlashType;
+  type: FlashbarProps.Type;
   labelName: LabelName;
   iconName: IconProps.Name;
 }[] = [
@@ -121,5 +123,5 @@ export const counterTypes: {
   { type: 'warning', labelName: 'warningIconAriaLabel', iconName: 'status-warning' },
   { type: 'success', labelName: 'successIconAriaLabel', iconName: 'status-positive' },
   { type: 'info', labelName: 'infoIconAriaLabel', iconName: 'status-info' },
-  { type: 'progress', labelName: 'inProgressIconAriaLabel', iconName: 'status-in-progress' },
+  { type: 'in-progress', labelName: 'inProgressIconAriaLabel', iconName: 'status-in-progress' },
 ];

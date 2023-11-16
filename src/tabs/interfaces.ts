@@ -61,6 +61,7 @@ export interface TabsProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: TabsProps.I18nStrings;
 }
@@ -109,10 +110,10 @@ export namespace TabsProps {
     /**
      * ARIA label for the scroll left button that appears when the tab header is wider than the container.
      */
-    scrollLeftAriaLabel: string;
+    scrollLeftAriaLabel?: string;
     /**
      * ARIA label for the scroll right button that appears when the tab header is wider than the container.
      */
-    scrollRightAriaLabel: string;
+    scrollRightAriaLabel?: string;
   }
 }

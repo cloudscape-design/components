@@ -5,9 +5,8 @@ import styles from './styles.css.js';
 import clsx from 'clsx';
 import InternalIcon from '../icon/internal';
 import InternalButtonDropdown from '../button-dropdown/internal';
-import { LinkItem } from '../button-dropdown/interfaces';
+import { CustomTriggerProps, LinkItem } from '../button-dropdown/interfaces';
 import { InternalButton } from '../button/internal';
-import { ButtonProps } from '../button/interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupProps, EllipsisDropdownProps } from './interfaces';
 import { fireCancelableEvent } from '../internal/events';
@@ -15,24 +14,31 @@ import { getBaseProps } from '../internal/base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { SomeRequired } from '../internal/types';
+import { useInternalI18n } from '../i18n/context';
 
-const DropdownTrigger = (
-  clickHandler: () => void,
-  ref: React.Ref<ButtonProps.Ref>,
-  isDisabled: boolean,
-  isExpanded: boolean,
-  ariaLabel?: string
-) => {
+/**
+ * Provided for backwards compatibility
+ */
+const DEFAULT_EXPAND_ARIA_LABEL = 'Show path';
+
+const getDropdownTrigger = ({
+  ariaLabel,
+  triggerRef,
+  disabled,
+  testUtilsClass,
+  isOpen,
+  onClick,
+}: CustomTriggerProps) => {
   return (
     <InternalButton
-      disabled={isDisabled}
+      ref={triggerRef}
+      className={testUtilsClass}
+      disabled={disabled}
       onClick={event => {
         event.preventDefault();
-        clickHandler();
+        onClick();
       }}
-      ref={ref}
-      ariaExpanded={isExpanded}
+      ariaExpanded={isOpen}
       aria-haspopup={true}
       ariaLabel={ariaLabel}
       variant="breadcrumb-group"
@@ -49,14 +55,16 @@ const EllipsisDropdown = ({
   onDropdownItemClick,
   onDropdownItemFollow,
 }: EllipsisDropdownProps) => {
+  const i18n = useInternalI18n('breadcrumb-group');
+
   return (
     <li className={styles.ellipsis}>
       <InternalButtonDropdown
-        ariaLabel={ariaLabel}
+        ariaLabel={i18n('expandAriaLabel', ariaLabel) ?? DEFAULT_EXPAND_ARIA_LABEL}
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}
-        customTriggerBuilder={DropdownTrigger}
+        customTriggerBuilder={getDropdownTrigger}
       />
       <span className={styles.icon}>
         <InternalIcon name="angle-right" />
@@ -71,11 +79,8 @@ export const getEventDetail = <T extends BreadcrumbGroupProps.Item>(item: T) => 
   href: item.href,
 });
 
-type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> = SomeRequired<
-  BreadcrumbGroupProps<T>,
-  'expandAriaLabel'
-> &
-  InternalBaseComponentProps;
+type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
+  BreadcrumbGroupProps<T> & InternalBaseComponentProps;
 
 export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],
@@ -93,6 +98,8 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
   const isMobile = useMobile();
 
   let breadcrumbItems = items.map((item, index) => {
+    const isLast = index === items.length - 1;
+
     return (
       <li className={styles.item} key={index}>
         <BreadcrumbItem
@@ -100,8 +107,8 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
           onClick={onClick}
           onFollow={onFollow}
           isCompressed={isMobile}
-          isLast={index === items.length - 1}
-          isDisplayed={!isMobile || index === items.length - 1 || index === 0}
+          isLast={isLast}
+          isDisplayed={!isMobile || isLast || index === 0}
         />
       </li>
     );

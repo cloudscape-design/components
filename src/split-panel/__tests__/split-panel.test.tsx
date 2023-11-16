@@ -1,24 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
 import {
   SplitPanelContextProvider,
   SplitPanelContextProps,
 } from '../../../lib/components/internal/context/split-panel-context';
-import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/split-panel/styles.css.js';
 import { defaultSplitPanelContextProps } from './helpers';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const onKeyDown = jest.fn();
-jest.mock('../../../lib/components/split-panel/utils/use-keyboard-events', () => ({
+jest.mock('../../../lib/components/app-layout/utils/use-keyboard-events', () => ({
   useKeyboardEvents: () => onKeyDown,
 }));
 
 const onSliderPointerDown = jest.fn();
-jest.mock('../../../lib/components/split-panel/utils/use-pointer-events', () => ({
+jest.mock('../../../lib/components/app-layout/utils/use-pointer-events', () => ({
   usePointerEvents: () => onSliderPointerDown,
 }));
 
@@ -45,14 +46,18 @@ const defaultProps: SplitPanelProps = {
 function renderSplitPanel({
   props,
   contextProps,
+  messages = {},
 }: {
   props?: Partial<SplitPanelProps>;
   contextProps?: Partial<SplitPanelContextProps>;
+  messages?: Record<string, string>;
 } = {}) {
   const { container } = render(
-    <SplitPanelContextProvider value={{ ...defaultSplitPanelContextProps, ...contextProps }}>
-      <SplitPanel {...defaultProps} {...props} />
-    </SplitPanelContextProvider>
+    <TestI18nProvider messages={{ 'split-panel': messages }}>
+      <SplitPanelContextProvider value={{ ...defaultSplitPanelContextProps, ...contextProps }}>
+        <SplitPanel {...defaultProps} {...props} />
+      </SplitPanelContextProvider>
+    </TestI18nProvider>
   );
   const wrapper = createWrapper(container).findSplitPanel()!;
   return { wrapper };
@@ -152,62 +157,6 @@ describe('Split panel', () => {
         expect(onSliderPointerDown).toHaveBeenCalledTimes(1);
       });
     });
-
-    describe('size adjustments', () => {
-      const minSize = position === 'bottom' ? 160 : 280;
-
-      function getPanelSize(wrapper: SplitPanelWrapper) {
-        if (position === 'bottom') {
-          return wrapper.findOpenPanelBottom()!.getElement().style.height;
-        }
-        return (wrapper.findOpenPanelSide()!.getElement() as HTMLElement).style.width;
-      }
-
-      // layout calculation is delayed by one frame to wait for app-layout to finish its rendering
-      function nextFrame() {
-        return act(async () => {
-          await new Promise(resolve => requestAnimationFrame(resolve));
-        });
-      }
-
-      test('renders specified size', async () => {
-        const { wrapper } = renderSplitPanel({ contextProps: { position, size: 300 } });
-        await nextFrame();
-
-        expect(getPanelSize(wrapper)).toEqual('300px');
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(1);
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenLastCalledWith(300);
-      });
-
-      test('size cannot be less than minSize', async () => {
-        const { wrapper } = renderSplitPanel({ contextProps: { position, size: 100 } });
-        await nextFrame();
-
-        expect(getPanelSize(wrapper)).toEqual(`${minSize}px`);
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(1);
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenLastCalledWith(minSize);
-      });
-
-      test('size cannot be more than maxSize', async () => {
-        const { wrapper } = renderSplitPanel({ contextProps: { position, size: 800 } });
-        await nextFrame();
-
-        expect(getPanelSize(wrapper)).toEqual('500px');
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(2);
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenLastCalledWith(500);
-      });
-
-      test('when minSize > maxSize, prefer minSize', async () => {
-        const { wrapper } = renderSplitPanel({
-          contextProps: { position, size: 300, getMaxHeight: () => 100, getMaxWidth: () => 100 },
-        });
-        await nextFrame();
-
-        expect(getPanelSize(wrapper)).toEqual(`${minSize}px`);
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(2);
-        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledWith(minSize);
-      });
-    });
   });
 
   describe('Preferences', () => {
@@ -278,6 +227,61 @@ describe('Split panel', () => {
       const labelId = sidePanelElem?.getAttribute('aria-labelledby');
 
       expect(sidePanelElem?.querySelector(`#${labelId}`)!.textContent).toBe('Split panel header');
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports using i18nStrings.openButtonAriaLabel from i18n provider', () => {
+      const { wrapper } = renderSplitPanel({
+        props: { i18nStrings: undefined },
+        contextProps: { position: 'bottom', isOpen: false },
+        messages: { 'i18nStrings.openButtonAriaLabel': 'Custom open button' },
+      });
+      expect(wrapper.findOpenButton()!.getElement()).toHaveAttribute('aria-label', 'Custom open button');
+    });
+
+    test('supports using i18nStrings.closeButtonAriaLabel and i18nStrings.resizeHandleAriaLabel from i18n provider', () => {
+      const { wrapper } = renderSplitPanel({
+        props: { i18nStrings: undefined },
+        contextProps: { position: 'bottom', isOpen: true },
+        messages: {
+          'i18nStrings.closeButtonAriaLabel': 'Custom close button',
+          'i18nStrings.resizeHandleAriaLabel': 'Custom resize',
+        },
+      });
+      expect(wrapper.findCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Custom close button');
+      expect(wrapper.findSlider()!.getElement()).toHaveAttribute('aria-label', 'Custom resize');
+    });
+
+    test('supports using preferences props from i18n provider', () => {
+      const { wrapper } = renderSplitPanel({
+        props: { i18nStrings: undefined },
+        contextProps: { position: 'bottom', isOpen: true },
+        messages: {
+          'i18nStrings.preferencesTitle': 'Custom title',
+          'i18nStrings.preferencesPositionLabel': 'Custom position',
+          'i18nStrings.preferencesPositionDescription': 'Custom position description',
+          'i18nStrings.preferencesPositionSide': 'Custom side',
+          'i18nStrings.preferencesPositionBottom': 'Custom bottom',
+          'i18nStrings.preferencesConfirm': 'Custom confirm',
+          'i18nStrings.preferencesCancel': 'Custom cancel',
+        },
+      });
+      wrapper.findPreferencesButton()!.click();
+      const modalWrapper = createWrapper().findModal()!;
+      expect(modalWrapper.findHeader().getElement()).toHaveTextContent('Custom title');
+      expect(modalWrapper.findContent().findFormField()!.findLabel()!.getElement()).toHaveTextContent(
+        'Custom position'
+      );
+      expect(modalWrapper.findContent().findFormField()!.findDescription()!.getElement()).toHaveTextContent(
+        'Custom position description'
+      );
+      const tileItems = modalWrapper.findContent().findTiles()!.findItems();
+      expect(tileItems[0].findLabel().getElement()).toHaveTextContent('Custom bottom');
+      expect(tileItems[1].findLabel().getElement()).toHaveTextContent('Custom side');
+      const footerItems = modalWrapper.findFooter()!.findSpaceBetween()!;
+      expect(footerItems.find(':nth-child(1)')!.findButton()!.getElement()).toHaveTextContent('Custom cancel');
+      expect(footerItems.find(':nth-child(2)')!.findButton()!.getElement()).toHaveTextContent('Custom confirm');
     });
   });
 });

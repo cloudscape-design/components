@@ -19,6 +19,7 @@ import { ButtonTrigger } from '../internal/components/menu-dropdown';
 import styles from './styles.css.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { SomeRequired } from '../internal/types';
+import { useInternalI18n } from '../i18n/context';
 
 export type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 
@@ -40,6 +41,7 @@ export default function InternalTopNavigation({
   const isNarrowViewport = breakpoint === 'default';
   const isMediumViewport = breakpoint === 'xxs';
   const isLargeViewport = breakpoint === 's';
+  const i18n = useInternalI18n('top-navigation');
 
   const onIdentityClick = (event: React.MouseEvent) => {
     if (isPlainLeftClick(event)) {
@@ -135,8 +137,8 @@ export default function InternalTopNavigation({
                     type: 'button',
                     iconName: isSearchExpanded ? 'close' : 'search',
                     ariaLabel: isSearchExpanded
-                      ? i18nStrings.searchDismissIconAriaLabel
-                      : i18nStrings.searchIconAriaLabel,
+                      ? i18n('i18nStrings.searchDismissIconAriaLabel', i18nStrings?.searchDismissIconAriaLabel)
+                      : i18n('i18nStrings.searchIconAriaLabel', i18nStrings?.searchIconAriaLabel),
                     onClick: onSearchUtilityClick,
                   }}
                 />
@@ -214,7 +216,7 @@ export default function InternalTopNavigation({
                   offsetRight="l"
                   ref={!isVirtual ? overflowMenuTriggerRef : undefined}
                 >
-                  {i18nStrings.overflowMenuTriggerText}
+                  {i18n('i18nStrings.overflowMenuTriggerText', i18nStrings?.overflowMenuTriggerText)}
                 </ButtonTrigger>
               </div>
             )}
@@ -232,9 +234,9 @@ export default function InternalTopNavigation({
         {menuTriggerVisible && overflowMenuOpen && (
           <div className={styles['overflow-menu-drawer']}>
             <OverflowMenu
-              headerText={i18nStrings.overflowMenuTitleText}
-              dismissIconAriaLabel={i18nStrings.overflowMenuDismissIconAriaLabel}
-              backIconAriaLabel={i18nStrings.overflowMenuBackIconAriaLabel}
+              headerText={i18nStrings?.overflowMenuTitleText}
+              dismissIconAriaLabel={i18nStrings?.overflowMenuDismissIconAriaLabel}
+              backIconAriaLabel={i18nStrings?.overflowMenuBackIconAriaLabel}
               items={utilities.filter(
                 (utility, i) =>
                   (!responsiveState.hideUtilities || responsiveState.hideUtilities.indexOf(i) !== -1) &&

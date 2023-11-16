@@ -7,6 +7,7 @@ import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/a
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import Input from '../../../lib/components/input';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 interface Item {
   key: string;
@@ -195,6 +196,23 @@ describe('Attribute Editor', () => {
       const wrapper = renderAttributeEditor({
         ...defaultProps,
         i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel },
+      });
+      defaultProps.items!.forEach((item, index) => {
+        expect(
+          wrapper
+            .findRow(index + 1)!
+            .findRemoveButton()!
+            .getElement()
+        ).toHaveAccessibleName(`Remove ${item.key}`);
+      });
+    });
+
+    test('uses `removeButtonAriaLabel` over `i18nStrings.removeButtonAriaLabel`', () => {
+      const removeButtonAriaLabel = (item: Item) => `Remove ${item.key}`;
+      const wrapper = renderAttributeEditor({
+        ...defaultProps,
+        i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel: () => `Don't render` },
+        removeButtonAriaLabel,
       });
       defaultProps.items!.forEach((item, index) => {
         expect(
@@ -437,6 +455,18 @@ describe('Attribute Editor', () => {
         ' ' +
         wrapper.getElement().querySelector(`#${inputId}`)!.getAttribute('value');
       expect(label).toBe('Key label k1');
+    });
+  });
+
+  describe('i18n', () => {
+    test('supports providing removeButton text from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ 'attribute-editor': { removeButtonText: 'Custom remove' } }}>
+          <AttributeEditor {...defaultProps} removeButtonText={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+      expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveTextContent('Custom remove');
     });
   });
 });

@@ -5,14 +5,14 @@ import { useContext, createContext } from 'react';
 export interface AppLayoutContextProps {
   stickyOffsetBottom: number;
   stickyOffsetTop: number;
-  hasBreadcrumbs: boolean;
+  mobileBarHeight?: number;
   setHasStickyBackground?: (hasBackground: boolean) => void;
 }
 
 export const AppLayoutContext = createContext<AppLayoutContextProps>({
   stickyOffsetTop: 0,
   stickyOffsetBottom: 0,
-  hasBreadcrumbs: false,
+  mobileBarHeight: 0,
 });
 
 export function useAppLayoutContext() {

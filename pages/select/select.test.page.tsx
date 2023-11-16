@@ -4,6 +4,7 @@ import * as React from 'react';
 import range from 'lodash/range';
 import Select from '~components/select';
 import Box from '~components/box';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const options = [
   {
@@ -70,87 +71,89 @@ export default function SelectPage() {
 
   return (
     <article>
-      <Box padding="l">
-        <Box padding="s">
-          <Box variant="h1">Overflow test</Box>
-          <Box variant="p">Dropdown should not be rendered beyond the container with overflow hidden</Box>
-          <div id="smallest_container" style={{ overflow: 'hidden', height: '500px', padding: 0 }}>
-            <div style={{ overflow: 'hidden', height: '900px' }}>
-              <Select
-                id="select_overflow"
-                placeholder="Choose option"
-                selectedOption={null}
-                options={optionsOverflow}
-              />
+      <ScreenshotArea>
+        <Box padding="l">
+          <Box padding="s">
+            <Box variant="h1">Overflow test</Box>
+            <Box variant="p">Dropdown should not be rendered beyond the container with overflow hidden</Box>
+            <div id="smallest_container" style={{ overflow: 'hidden', height: '500px', padding: 0 }}>
+              <div style={{ overflow: 'hidden', height: '900px' }}>
+                <Select
+                  id="select_overflow"
+                  placeholder="Choose option"
+                  selectedOption={{ value: 'option30' }}
+                  options={optionsOverflow}
+                />
+              </div>
             </div>
-          </div>
+          </Box>
+          <Box padding="s">
+            <Box variant="h1">Simple select</Box>
+            <Select
+              id="simple_select"
+              statusType="pending"
+              filteringType="auto"
+              options={options}
+              selectedOption={selectedOption1}
+              placeholder="Choose option"
+              onChange={(e: any) => {
+                setSelectedOption1(e.detail.selectedOption);
+              }}
+            />
+          </Box>
+          <Box padding="s">
+            <Box variant="h1">Expanded select</Box>
+            <Select
+              expandToViewport={true}
+              id="expanded_select"
+              statusType="pending"
+              filteringType="auto"
+              options={options}
+              selectedOption={selectedOption2}
+              placeholder="Choose option"
+              onChange={(e: any) => {
+                setSelectedOption2(e.detail.selectedOption);
+              }}
+            />
+          </Box>
+          <Box padding="s">
+            <Box variant="h1">Native search tests</Box>
+            <Select
+              id="select_native_search_simple"
+              options={options}
+              selectedOption={selectedOption3}
+              placeholder="Choose option"
+              onChange={(e: any) => {
+                setSelectedOption3(e.detail.selectedOption);
+              }}
+            />
+          </Box>
+          <Box padding="s">
+            <Box variant="h1">Native search tests: extended</Box>
+            <Select
+              id="select_native_search_extended"
+              options={optionsExtended}
+              selectedOption={selectedOption4}
+              placeholder="Choose option"
+              onChange={(e: any) => {
+                setSelectedOption4(e.detail.selectedOption);
+              }}
+            />
+          </Box>
+          <Box padding="s">
+            <Box variant="h1">Native search tests: semi-extended</Box>
+            <Select
+              id="select_native_search_semi_extended"
+              options={optionsSemiExtended}
+              selectedOption={selectedOption5}
+              placeholder="Choose option"
+              onChange={(e: any) => {
+                setSelectedOption5(e.detail.selectedOption);
+              }}
+            />
+          </Box>
         </Box>
-        <Box padding="s">
-          <Box variant="h1">Simple select</Box>
-          <Select
-            id="simple_select"
-            statusType="pending"
-            filteringType="auto"
-            options={options}
-            selectedOption={selectedOption1}
-            placeholder="Choose option"
-            onChange={(e: any) => {
-              setSelectedOption1(e.detail.selectedOption);
-            }}
-          />
-        </Box>
-        <Box padding="s">
-          <Box variant="h1">Expanded select</Box>
-          <Select
-            expandToViewport={true}
-            id="expanded_select"
-            statusType="pending"
-            filteringType="auto"
-            options={options}
-            selectedOption={selectedOption2}
-            placeholder="Choose option"
-            onChange={(e: any) => {
-              setSelectedOption2(e.detail.selectedOption);
-            }}
-          />
-        </Box>
-        <Box padding="s">
-          <Box variant="h1">Native search tests</Box>
-          <Select
-            id="select_native_search_simple"
-            options={options}
-            selectedOption={selectedOption3}
-            placeholder="Choose option"
-            onChange={(e: any) => {
-              setSelectedOption3(e.detail.selectedOption);
-            }}
-          />
-        </Box>
-        <Box padding="s">
-          <Box variant="h1">Native search tests: extended</Box>
-          <Select
-            id="select_native_search_extended"
-            options={optionsExtended}
-            selectedOption={selectedOption4}
-            placeholder="Choose option"
-            onChange={(e: any) => {
-              setSelectedOption4(e.detail.selectedOption);
-            }}
-          />
-        </Box>
-        <Box padding="s">
-          <Box variant="h1">Native search tests: semi-extended</Box>
-          <Select
-            id="select_native_search_semi_extended"
-            options={optionsSemiExtended}
-            selectedOption={selectedOption5}
-            placeholder="Choose option"
-            onChange={(e: any) => {
-              setSelectedOption5(e.detail.selectedOption);
-            }}
-          />
-        </Box>
-      </Box>
+      </ScreenshotArea>
     </article>
   );
 }

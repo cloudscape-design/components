@@ -8,14 +8,9 @@
 
 // Toggle should have 40px width, whereas button is 26px wide.
 // 40 - 26 = 14px in total or 7px on each side
-$toggle-padding-horizontal: 0.7 * styles.$base-size;
-$toggle-padding-vertical: awsui.$space-xxs;
-$toggle-padding: $toggle-padding-vertical $toggle-padding-horizontal;
-
-// New styles for when there are drawers
-$drawers-padding-horizontal: 0.6 * styles.$base-size;
-$drawers-padding-vertical: awsui.$space-scaled-xs;
-$drawers-padding: $drawers-padding-vertical $drawers-padding-horizontal;
+$_toggle-padding-horizontal: 0.7 * styles.$base-size;
+$_toggle-padding-vertical: awsui.$space-xxs;
+$toggle-padding: $_toggle-padding-vertical $_toggle-padding-horizontal;
 
 $sidebar-size-closed: 4 * styles.$base-size;
 

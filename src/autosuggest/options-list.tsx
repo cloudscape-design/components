@@ -14,6 +14,7 @@ export interface AutosuggestOptionsListProps
     AutosuggestProps,
     'enteredTextLabel' | 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'
   > {
+  statusType: AutosuggestProps.StatusType;
   autosuggestItemsState: AutosuggestItemsState;
   autosuggestItemsHandlers: AutosuggestItemsHandlers;
   highlightedOptionId?: string;
@@ -34,6 +35,7 @@ const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex
 };
 
 export default function AutosuggestOptionsList({
+  statusType,
   autosuggestItemsState,
   autosuggestItemsHandlers,
   highlightedOptionId,
@@ -77,6 +79,7 @@ export default function AutosuggestOptionsList({
         onMouseUp: handleMouseUp,
         onMouseMove: handleMouseMove,
         ariaDescribedby,
+        statusType,
       }}
       screenReaderContent={announcement}
     />

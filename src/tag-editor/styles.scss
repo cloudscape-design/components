@@ -16,7 +16,7 @@
 }
 
 .undo-button {
-  @include styles.link-recovery;
+  @include styles.link-recovery('body-m');
 
   @include focus-visible.when-visible {
     @include styles.link-focus;

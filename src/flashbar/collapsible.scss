@@ -14,7 +14,7 @@ $notification-bar-top-overlap: (
   'collapsed': calc(#{awsui.$space-scaled-xl} + 3px),
   'expanded': awsui.$space-scaled-s,
 );
-$notification-bar-line-height: awsui.$font-body-m-line-height;
+$notification-bar-line-height: awsui.$line-height-body-m;
 $notification-bar-padding-vertical: styles.$control-padding-vertical;
 $notification-bar-collapsed-item-overflow: (
   'x': 10px,
@@ -84,7 +84,7 @@ the grid layout will be:
        This makes them look better during the collapse animation, in which they are already empty.
      */
     min-height: calc(
-      #{awsui.$font-body-m-line-height} + (
+      #{awsui.$line-height-body-m} + (
           #{awsui.$space-scaled-xs} + #{awsui.$border-field-width} + #{awsui.$space-scaled-xxs}
         ) * 2
     );
@@ -199,13 +199,12 @@ the grid layout will be:
 
 .stack > .notification-bar {
   @include styles.text-wrapping;
-
-  background: awsui.$color-background-layout-toggle-default;
-  border-color: awsui.$color-background-layout-toggle-default;
+  background: awsui.$color-background-notification-stack-bar;
+  border-color: awsui.$color-border-notification-stack-bar;
   border-radius: awsui.$border-radius-button;
   border-style: solid;
   box-shadow: awsui.$shadow-panel-toggle;
-  color: awsui.$color-text-layout-toggle;
+  color: awsui.$color-text-notification-stack-bar;
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -226,7 +225,7 @@ the grid layout will be:
   > .status > .item-count,
   > .button {
     @include typography.default-text-style;
-    color: awsui.$color-text-layout-toggle;
+    color: awsui.$color-text-notification-stack-bar;
     cursor: pointer;
     margin-top: 0;
     margin-bottom: 0;
@@ -262,12 +261,12 @@ the grid layout will be:
   }
 
   &:hover {
-    background: awsui.$color-background-layout-toggle-hover;
-    border-color: awsui.$color-background-layout-toggle-hover;
+    background: awsui.$color-background-notification-stack-bar-hover;
+    border-color: awsui.$color-background-notification-stack-bar-hover;
   }
 
   &:active {
-    background: awsui.$color-background-layout-toggle-active;
+    background: awsui.$color-background-notification-stack-bar-active;
   }
 
   &.visual-refresh {

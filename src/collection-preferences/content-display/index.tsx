@@ -13,6 +13,7 @@ import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 import Portal from '../../internal/components/portal';
 import ContentDisplayOption from './content-display-option';
+import { useInternalI18n } from '../../i18n/context';
 
 const componentPrefix = 'content-display';
 
@@ -40,6 +41,7 @@ export default function ContentDisplayPreference({
   dragHandleAriaLabel,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
+  const i18n = useInternalI18n('collection-preferences');
 
   const onToggle = (option: OptionWithVisibility) => {
     onChange(value.map(item => (item.id === option.id ? { ...item, visible: !option.visible } : item)));
@@ -58,20 +60,42 @@ export default function ContentDisplayPreference({
 
   const announcements = useLiveAnnouncements({
     isDragging: activeItem !== null,
-    liveAnnouncementDndStarted,
-    liveAnnouncementDndItemReordered,
-    liveAnnouncementDndItemCommitted,
-    liveAnnouncementDndDiscarded,
+    liveAnnouncementDndStarted: i18n(
+      'contentDisplayPreference.liveAnnouncementDndStarted',
+      liveAnnouncementDndStarted,
+      format => (position, total) => format({ position, total })
+    ),
+    liveAnnouncementDndItemReordered: i18n(
+      'contentDisplayPreference.liveAnnouncementDndItemReordered',
+      liveAnnouncementDndItemReordered,
+      format => (initialPosition, currentPosition, total) =>
+        format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
+    ),
+    liveAnnouncementDndItemCommitted: i18n(
+      'contentDisplayPreference.liveAnnouncementDndItemCommitted',
+      liveAnnouncementDndItemCommitted,
+      format => (initialPosition, finalPosition, total) =>
+        format({ initialPosition, finalPosition, total, isInitialPosition: `${initialPosition === finalPosition}` })
+    ),
+    liveAnnouncementDndDiscarded: i18n(
+      'contentDisplayPreference.liveAnnouncementDndDiscarded',
+      liveAnnouncementDndDiscarded
+    ),
     sortedOptions: value,
   });
+
+  const renderedDragHandleAriaDescription = i18n(
+    'contentDisplayPreference.dragHandleAriaDescription',
+    dragHandleAriaDescription
+  );
 
   return (
     <div className={styles[componentPrefix]}>
       <h3 className={getClassName('title')} id={titleId}>
-        {title}
+        {i18n('contentDisplayPreference.title', title)}
       </h3>
       <p className={getClassName('description')} id={descriptionId}>
-        {description}
+        {i18n('contentDisplayPreference.description', description)}
       </p>
       <DndContext
         sensors={sensors}
@@ -79,7 +103,9 @@ export default function ContentDisplayPreference({
         accessibility={{
           announcements,
           restoreFocus: false,
-          screenReaderInstructions: dragHandleAriaDescription ? { draggable: dragHandleAriaDescription } : undefined,
+          screenReaderInstructions: renderedDragHandleAriaDescription
+            ? { draggable: renderedDragHandleAriaDescription }
+            : undefined,
         }}
         onDragStart={({ active }) => setActiveItem(active.id)}
         onDragEnd={event => {
@@ -106,7 +132,7 @@ export default function ContentDisplayPreference({
             {sortedOptions.map(option => {
               return (
                 <DraggableOption
-                  dragHandleAriaLabel={dragHandleAriaLabel}
+                  dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}
                   key={option.id}
                   onKeyDown={handleKeyDown}
                   onToggle={onToggle}
@@ -127,7 +153,7 @@ export default function ContentDisplayPreference({
             {activeOption && (
               <ContentDisplayOption
                 listeners={{ onKeyDown: handleKeyDown }}
-                dragHandleAriaLabel={dragHandleAriaLabel}
+                dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}
                 onToggle={onToggle}
                 option={activeOption}
               />

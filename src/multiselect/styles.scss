@@ -9,3 +9,7 @@
 .root {
   @include styles.styles-reset;
 }
+
+.tokens {
+  margin-top: awsui.$space-scaled-xs;
+}

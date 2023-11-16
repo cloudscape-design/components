@@ -24,6 +24,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
   toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
+  closeDropdown: () => void;
   setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
@@ -160,6 +161,9 @@ export function useButtonDropdown({
         onReturnFocus();
         closeDropdown();
         event.preventDefault();
+        if (isOpen) {
+          event.stopPropagation();
+        }
         break;
       }
       case KeyCode.tab: {
@@ -194,6 +198,7 @@ export function useButtonDropdown({
     onItemActivate,
     onGroupToggle,
     toggleDropdown,
+    closeDropdown,
     setIsUsingMouse,
   };
 }

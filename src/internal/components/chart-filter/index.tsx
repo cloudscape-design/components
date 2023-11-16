@@ -9,6 +9,7 @@ import InternalMultiselect from '../../../multiselect/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { MultiselectProps } from '../../../multiselect/interfaces';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
+import { useInternalI18n } from '../../../i18n/context';
 
 import styles from './styles.css.js';
 
@@ -37,6 +38,7 @@ export default memo(ChartFilter) as typeof ChartFilter;
 function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange, ...restProps }: ChartFilterProps<T>) {
   const baseProps = getBaseProps(restProps);
   const className = clsx(baseProps.className, styles.root);
+  const i18n = useInternalI18n('[charts]');
 
   const defaultOptions = series.map((d, i) => ({
     label: d.label,
@@ -62,9 +64,13 @@ function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange, ...rest
   );
 
   return (
-    <InternalFormField {...baseProps} label={i18nStrings?.filterLabel} className={className}>
+    <InternalFormField
+      {...baseProps}
+      label={i18n('i18nStrings.filterLabel', i18nStrings?.filterLabel)}
+      className={className}
+    >
       <InternalMultiselect
-        placeholder={i18nStrings?.filterPlaceholder}
+        placeholder={i18n('i18nStrings.filterPlaceholder', i18nStrings?.filterPlaceholder)}
         options={defaultOptions}
         selectedOptions={selectedOptions}
         onChange={updateSelection}

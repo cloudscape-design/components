@@ -53,6 +53,11 @@ export default function () {
             </SpaceBetween>
           </ExpandableSection>
           <div>
+            <Container disableContentPaddings={true} header={<Header>Container with borderless table</Header>}>
+              <BorderlessTable />
+            </Container>
+          </div>
+          <div>
             <Container variant="stacked" header={<Header variant="h2">Stacked Container</Header>}>
               <KeyValuePairs />
             </Container>
@@ -93,6 +98,7 @@ const StackedTableWithFooter = () => (
 );
 const StackedTable = () => <BaseTable variant="stacked" header={<Header>Stacked</Header>} />;
 const EmbeddedTable = () => <BaseTable variant="embedded" />;
+const BorderlessTable = () => <BaseTable variant="borderless" header={null} />;
 const DefaultTable = () => <BaseTable variant="container" header={<Header>Default</Header>} />;
 
 const ValueWithLabel = ({ label, children }: { label: string; children: string }) => (

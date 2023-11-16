@@ -65,6 +65,7 @@ const initialProps = {
   filteringType: 'auto',
   fireLoadItems: () => {},
   setFilteringValue: () => {},
+  statusType: 'pending' as const,
 };
 
 describe('useSelect', () => {
@@ -86,7 +87,15 @@ describe('useSelect', () => {
 
     test('should return getTriggerProps that configures the trigger', () => {
       const triggerProps = getTriggerProps();
-      expect(Object.keys(triggerProps)).toEqual(['ref', 'onFocus', 'autoFocus', 'onMouseDown', 'onKeyDown']);
+      expect(Object.keys(triggerProps)).toEqual([
+        'ref',
+        'onFocus',
+        'autoFocus',
+        'ariaHasPopup',
+        'ariaControls',
+        'onMouseDown',
+        'onKeyDown',
+      ]);
       expect(triggerProps.ref).toEqual({ current: null });
     });
 
@@ -134,13 +143,13 @@ describe('useSelect', () => {
 
     const { getTriggerProps } = hook.result.current;
     const triggerProps = getTriggerProps();
-    const testEvent = createCustomEvent({ cancelable: true });
+    const testEvent = createCustomEvent<any>({ cancelable: true });
     act(() => triggerProps.onMouseDown && triggerProps.onMouseDown(testEvent));
     expect(hook.result.current.isOpen).toBe(true);
     expect(testEvent.defaultPrevented).toBe(true);
   });
 
-  test('should open and navigate to the first option', () => {
+  test('should open and navigate to the first option (keyboard:down)', () => {
     const hook = renderHook(useSelect, {
       initialProps,
     });
@@ -156,7 +165,48 @@ describe('useSelect', () => {
         value: 'child1',
       },
     });
-    expect(hook.result.current.highlightType).toBe('keyboard');
+    expect(hook.result.current.highlightType.type).toBe('keyboard');
+    expect(hook.result.current.highlightType.moveFocus).toBe(true);
+  });
+
+  test('should open and highlight the selected option (keyboard:enter)', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [initialProps.options[1].option] },
+    });
+
+    const { getTriggerProps } = hook.result.current;
+    const triggerProps = getTriggerProps();
+    act(() => triggerProps.onKeyDown && triggerProps.onKeyDown(createTestEvent(KeyCode.enter)));
+    expect(hook.result.current.isOpen).toBe(true);
+    expect(hook.result.current.highlightedOption).toEqual({
+      type: 'child',
+      option: {
+        label: 'Child 1',
+        value: 'child1',
+      },
+    });
+    expect(hook.result.current.highlightType.type).toBe('keyboard');
+    expect(hook.result.current.highlightType.moveFocus).toBe(true);
+  });
+
+  test('should open and highlight the selected option (mouse)', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [initialProps.options[1].option] },
+    });
+
+    const { getTriggerProps } = hook.result.current;
+    const triggerProps = getTriggerProps();
+    act(() => triggerProps.onMouseDown && triggerProps.onMouseDown(createCustomEvent({})));
+    expect(hook.result.current.isOpen).toBe(true);
+    expect(hook.result.current.highlightedOption).toEqual({
+      type: 'child',
+      option: {
+        label: 'Child 1',
+        value: 'child1',
+      },
+    });
+    expect(hook.result.current.highlightType.type).toBe('mouse');
+    expect(hook.result.current.highlightType.moveFocus).toBe(true);
   });
 
   test('should open and navigate to the first option and select', () => {
@@ -289,5 +339,19 @@ describe('useSelect', () => {
       });
       expect(hook.result.current.announceSelected).toEqual(false);
     });
+  });
+
+  test('should set aria-haspopup="listbox" on trigger for standard select', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, filteringType: 'none' },
+    });
+    expect(hook.result.current.getTriggerProps().ariaHasPopup).toBe('listbox');
+  });
+
+  test('should set aria-haspopup="dialog" on trigger for select with filtering', () => {
+    const hook = renderHook(useSelect, {
+      initialProps: { ...initialProps, filteringType: 'auto' },
+    });
+    expect(hook.result.current.getTriggerProps().ariaHasPopup).toBe('dialog');
   });
 });

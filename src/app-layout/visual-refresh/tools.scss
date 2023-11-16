@@ -26,7 +26,7 @@ viewport size and state of the Tools drawer.
   #{custom-props.$toolsWidth}: 290px;
   display: flex;
   grid-column: 5;
-  grid-row: 1 / span 5;
+  grid-row: 1 / span 10;
   height: var(#{custom-props.$contentHeight});
   max-width: var(#{custom-props.$toolsMaxWidth});
   position: sticky;
@@ -66,11 +66,11 @@ viewport size and state of the Tools drawer.
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
+  pointer-events: auto;
   position: relative;
   word-wrap: break-word;
-
-  pointer-events: auto;
 
   // Animation for the Tools opacity and width when it is added to the DOM
   @keyframes openTools {
@@ -160,7 +160,7 @@ handleSplitPanelMaxWidth function in the context.
   }
 
   /*
-  Apply the animation only in desktop viewports because the AppBar will
+  Apply the animation only in desktop viewports because the MobileToolbar will 
   take control in responsive viewports.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {

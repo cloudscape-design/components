@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import styles from './styles.css.js';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 export interface ResizeBoxProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ export interface ResizeBoxProps {
 
 export function ResizableBox({ children, height, minHeight, onResize }: ResizeBoxProps) {
   const [dragOffset, setDragOffset] = useState<null | number>(null);
-  const onResizeStable = useStableEventHandler(onResize);
+  const onResizeStable = useStableCallback(onResize);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const onMouseDown: React.MouseEventHandler = event => {

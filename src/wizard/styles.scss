@@ -7,6 +7,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .root {
   @include styles.styles-reset;
@@ -32,22 +33,23 @@
 .navigation.refresh {
   grid-column: 1;
   grid-row: 1 / span 2;
-  padding-top: awsui.$space-scaled-xxs;
+  padding-top: var(#{custom-props.$containerFirstGap}, 0px);
 
   > ul {
     background: awsui.$color-background-container-content;
     position: relative;
     @include styles.container-shadow;
     margin: 0;
-    padding: awsui.$space-scaled-l awsui.$space-l;
+    padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l awsui.$space-m;
     width: 280px;
     box-sizing: border-box;
 
     > li {
       display: grid;
-      column-gap: awsui.$space-s;
+      column-gap: awsui.$space-xs;
       grid-template-columns: awsui.$space-l 1fr;
       grid-template-rows: repeat(2, auto);
+      padding: 0;
 
       > hr {
         background-color: awsui.$color-border-divider-default;
@@ -59,17 +61,17 @@
 
       > .number {
         color: awsui.$color-text-small;
-        font-size: awsui.$font-body-s-size;
+        font-size: awsui.$font-size-body-s;
         grid-column: 2;
         grid-row: 1;
       }
 
       > a {
         align-items: start;
-        column-gap: awsui.$space-s;
+        column-gap: awsui.$space-xs;
         cursor: pointer;
         display: grid;
-        font-size: awsui.$font-body-m-size;
+        font-size: awsui.$font-size-body-m;
         grid-column: 1 / span 2;
         grid-row: 2;
         grid-template-columns: awsui.$space-l 1fr;
@@ -99,7 +101,7 @@
     }
 
     > li:not(:first-child) > .number {
-      margin-top: awsui.$space-scaled-xl;
+      margin-top: awsui.$space-m;
     }
 
     > li:last-child > hr {
@@ -220,8 +222,8 @@
   }
 
   > .form-header > .form-header-content {
-    padding-top: awsui.$space-scaled-xl;
-    padding-bottom: awsui.$space-scaled-xl;
+    padding-top: calc(var(#{custom-props.$containerFirstGap}, 0px) + awsui.$space-s);
+    padding-bottom: awsui.$space-scaled-m;
   }
 
   > .form-component {
@@ -252,9 +254,6 @@
   color: awsui.$color-text-heading-secondary;
   font-weight: styles.$font-weight-bold;
   padding-top: awsui.$space-scaled-xxs;
-  &-extra-padding {
-    padding-top: awsui.$space-scaled-l;
-  }
   &-hidden {
     display: none;
   }

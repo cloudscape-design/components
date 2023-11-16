@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, Token } from '../interfaces';
+import { ComparisonOperator, InternalToken } from '../interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, matchTokenValue } from '../utils';
-import { toInternalOptions, toInternalProperties } from './common';
+import { toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([
   {
@@ -109,41 +109,37 @@ describe('matchOperatorPrefix', () => {
 
 describe('matchTokenValue', () => {
   test('should return token as-is if no match found', () => {
-    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(token, toInternalOptions([{ propertyKey: 'key', value: 'two' }]));
+    const token: InternalToken = { property: null, operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [{ property: null, value: 'two', label: 'two' }]);
     expect(result.value).toBe('one');
   });
   test('should match by label', () => {
-    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(
-      token,
-      toInternalOptions([
-        { propertyKey: 'key', label: 'one', value: '1' },
-        { propertyKey: 'key', value: 'two' },
-      ])
-    );
+    const token: InternalToken = { property: null, operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [
+      { property: null, value: '1', label: 'one' },
+      { property: null, value: 'two', label: 'two' },
+    ]);
     expect(result.value).toBe('1');
   });
   test('should case-insensitive match', () => {
-    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(
-      token,
-      toInternalOptions([
-        { propertyKey: 'key', value: 'One' },
-        { propertyKey: 'key', value: 'two' },
-      ])
-    );
+    const token: InternalToken = { property: null, operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [
+      { property: null, value: 'One', label: 'One' },
+      { property: null, value: 'two', label: 'two' },
+    ]);
     expect(result.value).toBe('One');
   });
   test('should prefer case-sensitive match', () => {
-    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
-    const result = matchTokenValue(
-      token,
-      toInternalOptions([
-        { propertyKey: 'key', value: 'One' },
-        { propertyKey: 'key', value: 'one' },
-      ])
-    );
+    const token: InternalToken = { property: null, operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [
+      { property: null, value: 'One', label: 'One' },
+      { property: null, value: 'one', label: 'one' },
+    ]);
     expect(result.value).toBe('one');
+  });
+  test('should return token as-is for a token value of type string[]', () => {
+    const token: InternalToken = { property: null, operator: '=', value: ['one', 'two', 'three'] };
+    const result = matchTokenValue(token, [{ property: null, value: 'one,two,three', label: 'one,two,three' }]);
+    expect(result.value).toEqual(['one', 'two', 'three']);
   });
 });

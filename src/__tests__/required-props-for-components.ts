@@ -8,6 +8,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   table: { columnDefinitions: [] },
   cards: { cardDefinition: {} },
   autosuggest: { options: [], enteredPrefix: '' },
+  'anchor-navigation': { anchors: [] },
   'code-editor': { i18nStrings },
   wizard: {
     steps: [],

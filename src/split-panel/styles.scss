@@ -16,24 +16,6 @@ $slider-width: 16px;
 // Values taken from app layout
 $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-layout-toggle-padding});
 
-/* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
-.resize {
-  &-active * {
-    user-select: none;
-  }
-  &-active iframe {
-    // Prevents iframes from eating the mouseup event if the cursor is on top of it.
-    pointer-events: none;
-  }
-  &-side * {
-    cursor: ew-resize;
-  }
-  &-bottom * {
-    cursor: ns-resize;
-  }
-}
-/* stylelint-enable */
-
 .root {
   @include styles.styles-reset;
 }
@@ -49,7 +31,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .drawer {
   flex-shrink: 0;
   position: relative;
-  word-wrap: break-word;
+  @include styles.text-wrapping;
   background-color: awsui.$color-background-layout-panel-content;
   // should be above tools and navigation panels to avoid their shadows
   z-index: 840;
@@ -221,6 +203,8 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 .content-bottom {
   padding: 0 awsui.$space-scaled-2x-xxxl;
   margin-top: awsui.$space-panel-split-top;
+  position: relative;
+  z-index: 0; // the content inside .content-bottom should not be above pane-header-wrapper-bottom
   .drawer-mobile > .drawer-content-bottom > & {
     padding: 0 awsui.$space-l;
   }
@@ -259,6 +243,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   height: 100%;
   > .pane-header-wrapper-side {
     padding: 0 awsui.$space-m 0 awsui.$space-panel-side-left;
+    border-bottom: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
   }
   > .pane-content-wrapper-side {
     padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
@@ -273,18 +258,13 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
-  margin: awsui.$space-scaled-m 0 awsui.$space-m 0;
+  margin: awsui.$size-vertical-panel-icon-offset 0;
   &-text {
     @include styles.font-panel-header;
-    padding: awsui.$space-xxs 0 awsui.$space-scaled-xxs 0;
+    padding: 0;
     margin: 0;
+    margin-top: calc(#{awsui.$space-scaled-xxs} + 1px);
   }
-}
-
-.header-divider {
-  border: none;
-  border-top: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
-  margin-top: calc(-1 * #{awsui.$border-panel-header-width});
 }
 
 .header-actions {

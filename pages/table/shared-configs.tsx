@@ -37,7 +37,7 @@ export function getMatchesCountText(count: number) {
   return count === 1 ? `1 match` : `${count} matches`;
 }
 
-const stateToStatusIndicator: Record<InstanceState, StatusIndicatorProps> = {
+export const stateToStatusIndicator: Record<InstanceState, StatusIndicatorProps> = {
   PENDING: { type: 'pending', children: 'Pending' },
   RUNNING: { type: 'success', children: 'Running' },
   STOPPING: { type: 'in-progress', children: 'Stopping' },

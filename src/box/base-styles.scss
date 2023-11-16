@@ -40,6 +40,7 @@ $font-styles: (
     text-status-success: awsui.$color-text-status-success,
     text-status-info: awsui.$color-text-status-info,
     text-status-inactive: awsui.$color-text-status-inactive,
+    text-status-warning: awsui.$color-text-status-warning,
     inherit: inherit,
   ),
   font-size: (
@@ -95,19 +96,19 @@ $font-styles: (
         strong,
         b,
       ),
-      awsui.$font-heading-xs-weight: (
+      awsui.$font-weight-heading-xs: (
         h5,
       ),
-      awsui.$font-heading-s-weight: (
+      awsui.$font-weight-heading-s: (
         h4,
       ),
-      awsui.$font-heading-m-weight: (
+      awsui.$font-weight-heading-m: (
         h3,
       ),
-      awsui.$font-heading-l-weight: (
+      awsui.$font-weight-heading-l: (
         h2,
       ),
-      awsui.$font-heading-xl-weight: (
+      awsui.$font-weight-heading-xl: (
         h1,
       ),
     ),

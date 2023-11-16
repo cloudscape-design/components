@@ -26,7 +26,7 @@ import FocusLock from '../internal/components/focus-lock';
 import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
-import { useLocale } from '../internal/i18n/context.js';
+import { useLocale } from '../i18n/context.js';
 
 export { DatePickerProps };
 
@@ -77,7 +77,7 @@ const DatePicker = React.forwardRef(
     const calendarDescriptionId = useUniqueId('calendar-description-');
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
-    useFocusTracker({ rootRef, onBlur, onFocus, viewportId: expandToViewport ? dropdownId : '' });
+    useFocusTracker({ rootRef, onBlur, onFocus });
 
     const onDropdownCloseHandler = useCallback(() => setIsDropDownOpen(false), [setIsDropDownOpen]);
 
@@ -89,6 +89,7 @@ const DatePicker = React.forwardRef(
 
     const onWrapperKeyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.keyCode === KeyCode.escape && isDropDownOpen) {
+        event.stopPropagation();
         buttonRef.current?.focus();
         setIsDropDownOpen(false);
       }

@@ -1,0 +1,356 @@
+{
+  "[charts]": {
+    "loadingText": "Grafik yükleniyor",
+    "errorText": "Veriler getirilemedi. Daha sonra yeniden deneyin.",
+    "recoveryText": "Yeniden dene",
+    "i18nStrings.filterLabel": "Görüntülenen verileri filtrele",
+    "i18nStrings.filterPlaceholder": "Verileri filtreleyin",
+    "i18nStrings.legendAriaLabel": "Açıklama",
+    "i18nStrings.chartAriaRoleDescription": "Grafik",
+    "i18nStrings.xAxisAriaRoleDescription": "x ekseni",
+    "i18nStrings.yAxisAriaRoleDescription": "y ekseni"
+  },
+  "alert": {
+    "dismissAriaLabel": "Uyarıyı kapat"
+  },
+  "annotation-context": {
+    "i18nStrings.nextButtonText": "Sonraki",
+    "i18nStrings.previousButtonText": "Önceki",
+    "i18nStrings.finishButtonText": "Bitti",
+    "i18nStrings.labelDismissAnnotation": "Ek açıklamayı kapat",
+    "i18nStrings.stepCounterText": "Adım {stepNumber}/{totalStepCount}",
+    "i18nStrings.taskTitle": "{taskNumber}. Görev: {taskTitle}",
+    "i18nStrings.labelHotspot": "{openState, select, true {Adım {stepNumber}/{totalStepCount} için ek açıklamayı kapat} false {Adım {stepNumber}/{totalStepCount} için ek açıklamayı aç} other {}}"
+  },
+  "app-layout": {
+    "ariaLabels.drawers": "Çekmeceler",
+    "ariaLabels.drawersOverflow": "Çekmece taşması",
+    "ariaLabels.drawersOverflowWithBadge": "Rozetli çekmece taşması",
+    "ariaLabels.navigation": "Yan gezinti bölmesi",
+    "ariaLabels.navigationClose": "Yan gezinti bölmesini kapat",
+    "ariaLabels.navigationToggle": "Yan gezinti bölmesini aç",
+    "ariaLabels.notifications": "Bildirimler",
+    "ariaLabels.tools": "Yardım paneli",
+    "ariaLabels.toolsClose": "Yardım panelini kapat",
+    "ariaLabels.toolsToggle": "Yardım panelini aç"
+  },
+  "area-chart": {
+    "i18nStrings.detailTotalLabel": "Toplam"
+  },
+  "attribute-editor": {
+    "removeButtonText": "Kaldır"
+  },
+  "autosuggest": {
+    "errorIconAriaLabel": "Hata",
+    "selectedAriaLabel": "Seçili",
+    "enteredTextLabel": "Şunu kullan: \"{value}\"",
+    "recoveryText": "Yeniden dene"
+  },
+  "breadcrumb-group": {
+    "expandAriaLabel": "Yolu göster"
+  },
+  "calendar": {
+    "nextMonthAriaLabel": "Gelecek ay",
+    "previousMonthAriaLabel": "Önceki ay",
+    "todayAriaLabel": "Bugün"
+  },
+  "cards": {
+    "ariaLabels.selectionGroupLabel": "Öğe seçimi"
+  },
+  "code-editor": {
+    "i18nStrings.loadingState": "Kod düzenleyici yükleniyor",
+    "i18nStrings.errorState": "Kod düzenleyici yüklenirken bir hata oluştu.",
+    "i18nStrings.errorStateRecovery": "Yeniden dene",
+    "i18nStrings.editorGroupAriaLabel": "Kod düzenleyici",
+    "i18nStrings.statusBarGroupAriaLabel": "Durum çubuğu",
+    "i18nStrings.cursorPosition": "Satır {row}, Sütun {column}",
+    "i18nStrings.errorsTab": "Hatalar",
+    "i18nStrings.warningsTab": "Uyarılar",
+    "i18nStrings.preferencesButtonAriaLabel": "Tercihler",
+    "i18nStrings.paneCloseButtonAriaLabel": "Kapat",
+    "i18nStrings.preferencesModalHeader": "Tercihler",
+    "i18nStrings.preferencesModalCancel": "İptal",
+    "i18nStrings.preferencesModalConfirm": "Onayla",
+    "i18nStrings.preferencesModalWrapLines": "Satırları kaydır",
+    "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalLightThemes": "Açık temalar",
+    "i18nStrings.preferencesModalDarkThemes": "Koyu temalar"
+  },
+  "collection-preferences": {
+    "title": "Tercihler",
+    "confirmLabel": "Onayla",
+    "cancelLabel": "İptal",
+    "pageSizePreference.title": "Sayfa boyutu",
+    "wrapLinesPreference.label": "Satırları kaydır",
+    "wrapLinesPreference.description": "Tüm metni görmek ve satırları kaydırmak için seçin",
+    "stripedRowsPreference.label": "Şeritli satırlar",
+    "stripedRowsPreference.description": "Dönüşümlü renklere sahip satırlar eklemek için seçin",
+    "contentDensityPreference.label": "Kompakt mod",
+    "contentDensityPreference.description": "İçeriği daha yoğun ve daha kompakt bir modda görüntülemek için seçin",
+    "contentDisplayPreference.title": "Sütun tercihleri",
+    "contentDisplayPreference.description": "Sütunların görünürlüğünü ve sırasını özelleştirin.",
+    "contentDisplayPreference.dragHandleAriaLabel": "Sürükleme tutamacı",
+    "contentDisplayPreference.dragHandleAriaDescription": "Bir öğe için sürüklemeyi etkinleştirmek üzere Boşluk veya Enter tuşunu ve öğenin konumunu taşımak için ok tuşlarını kullanın. Konum taşıma işlemini tamamlamak için Boşluk veya Enter tuşunu ya da taşıma işlemini iptal etmek için ESC tuşunu kullanın.",
+    "contentDisplayPreference.liveAnnouncementDndStarted": "Öğe {position}/{total} konumundan alındı",
+    "contentDisplayPreference.liveAnnouncementDndDiscarded": "Yeniden sıralama iptal edildi",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öğe {currentPosition}/{total} konumuna geri taşınıyor} false {Öğe {currentPosition}/{total} konumuna taşınıyor} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öğe ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}"
+  },
+  "date-range-picker": {
+    "i18nStrings.relativeModeTitle": "Göreceli mod",
+    "i18nStrings.absoluteModeTitle": "Mutlak mod",
+    "i18nStrings.relativeRangeSelectionHeading": "Bir aralık seçin",
+    "i18nStrings.cancelButtonLabel": "İptal",
+    "i18nStrings.clearButtonLabel": "Temizle ve kapat",
+    "i18nStrings.applyButtonLabel": "Uygula",
+    "i18nStrings.customRelativeRangeOptionLabel": "Özel aralık",
+    "i18nStrings.customRelativeRangeOptionDescription": "Geçmişte özel bir aralık belirleyin",
+    "i18nStrings.customRelativeRangeUnitLabel": "Zaman birimi",
+    "i18nStrings.customRelativeRangeDurationLabel": "Süre",
+    "i18nStrings.customRelativeRangeDurationPlaceholder": "Bir süre girin",
+    "i18nStrings.startDateLabel": "Başlangıç tarihi",
+    "i18nStrings.startTimeLabel": "Başlangıç zamanı",
+    "i18nStrings.endDateLabel": "Bitiş tarihi",
+    "i18nStrings.endTimeLabel": "Bitiş zamanı",
+    "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}-{endDate} aralığı seçildi",
+    "i18nStrings.formatRelativeRange": "{amount, plural, one {Son {amount} {unit}} other {Son {amount} {unit}}}",
+    "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
+  },
+  "drawer": {
+    "i18nStrings.loadingText": "İçerik yükleniyor"
+  },
+  "flashbar": {
+    "i18nStrings.ariaLabel": "Bildirimler",
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.inProgressIconAriaLabel": "Devam ediyor",
+    "i18nStrings.infoIconAriaLabel": "Bilgi",
+    "i18nStrings.notificationBarAriaLabel": "Tüm bildirimler",
+    "i18nStrings.notificationBarText": "Bildirimler",
+    "i18nStrings.successIconAriaLabel": "Başarılı",
+    "i18nStrings.warningIconAriaLabel": "Uyarı"
+  },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "Hata"
+  },
+  "form": {
+    "errorIconAriaLabel": "Hata"
+  },
+  "help-panel": {
+    "loadingText": "İçerik yükleniyor"
+  },
+  "input": {
+    "clearAriaLabel": "Temizle"
+  },
+  "link": {
+    "externalIconAriaLabel": "Yeni bir sekmede açılır"
+  },
+  "modal": {
+    "closeAriaLabel": "Kalıcı iletişim kutusunu kapat"
+  },
+  "multiselect": {
+    "deselectAriaLabel": "{option__label} öğesini kaldır"
+  },
+  "pagination": {
+    "ariaLabels.nextPageLabel": "Sonraki sayfa",
+    "ariaLabels.pageLabel": "Sayfa {pageNumber}/tüm sayfalar",
+    "ariaLabels.previousPageLabel": "Önceki sayfa"
+  },
+  "pie-chart": {
+    "i18nStrings.detailsValue": "Değer",
+    "i18nStrings.detailsPercentage": "Yüzde",
+    "i18nStrings.chartAriaRoleDescription": "Pasta grafik",
+    "i18nStrings.segmentAriaRoleDescription": "Segment"
+  },
+  "popover": {
+    "dismissAriaLabel": "Açılır pencereyi kapat"
+  },
+  "property-filter": {
+    "i18nStrings.allPropertiesLabel": "Tüm özellikler",
+    "i18nStrings.applyActionText": "Uygula",
+    "i18nStrings.cancelActionText": "İptal",
+    "i18nStrings.clearFiltersText": "Filtreleri temizle",
+    "i18nStrings.editTokenHeader": "Filtreyi düzenle",
+    "i18nStrings.groupPropertiesText": "Özellikler",
+    "i18nStrings.groupValuesText": "Değerler",
+    "i18nStrings.operationAndText": "ve",
+    "i18nStrings.operationOrText": "veya",
+    "i18nStrings.operatorContainsText": "İçerir",
+    "i18nStrings.operatorDoesNotContainText": "İçermez",
+    "i18nStrings.operatorDoesNotEqualText": "Eşit değildir",
+    "i18nStrings.operatorEqualsText": "Eşittir",
+    "i18nStrings.operatorGreaterOrEqualText": "Büyük veya eşittir",
+    "i18nStrings.operatorGreaterText": "Büyüktür",
+    "i18nStrings.operatorLessOrEqualText": "Küçük veya eşittir",
+    "i18nStrings.operatorLessText": "Küçüktür",
+    "i18nStrings.operatorStartsWithText": "İle başlar",
+    "i18nStrings.operatorText": "Operatör",
+    "i18nStrings.operatorsText": "Operatörler",
+    "i18nStrings.propertyText": "Özellik",
+    "i18nStrings.tokenLimitShowFewer": "Daha az göster",
+    "i18nStrings.tokenLimitShowMore": "Daha fazla göster",
+    "i18nStrings.valueText": "Değer",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}, {token__value} değerine eşittir filtresini kaldır} not_equals {{token__propertyKey}, {token__value} değerine eşit değildir filtresini kaldır} greater_than {{token__propertyKey}, {token__value} değerinden büyüktür filtresini kaldır} greater_than_equal {{token__propertyKey}, {token__value} değerinden büyük veya buna eşittir filtresini kaldır} less_than {{token__propertyKey}, {token__value} değerinden küçüktür filtresini kaldır} less_than_equal {{token__propertyKey}, {token__value} değerinden küçük veya buna eşittir filtresini kaldır} contains {{token__propertyKey}, {token__value} değerini içerir filtresini kaldır} not_contains {{token__propertyKey}, {token__value} değerini içermez filtresini kaldır} starts_with {{token__propertyKey}, {token__value} değerinden şunla başlar filtresini kaldır} other {}}"
+  },
+  "s3-resource-selector": {
+    "i18nStrings.inContextSelectPlaceholder": "Bir sürüm seçin",
+    "i18nStrings.inContextBrowseButton": "S3'e göz at",
+    "i18nStrings.inContextViewButton": "Görüntüle",
+    "i18nStrings.inContextViewButtonAriaLabel": "Görüntüle (yeni bir sekmede açılır)",
+    "i18nStrings.inContextLoadingText": "Kaynak yükleniyor",
+    "i18nStrings.inContextUriLabel": "S3 URI'si",
+    "i18nStrings.inContextVersionSelectLabel": "Nesne sürümü",
+    "i18nStrings.modalTitle": "S3'te bir arşiv seç",
+    "i18nStrings.modalCancelButton": "İptal",
+    "i18nStrings.modalSubmitButton": "Seç",
+    "i18nStrings.modalBreadcrumbRootItem": "S3 bucket'ları",
+    "i18nStrings.selectionBuckets": "Bucket'lar",
+    "i18nStrings.selectionObjects": "Nesneler",
+    "i18nStrings.selectionVersions": "Sürümler",
+    "i18nStrings.selectionBucketsSearchPlaceholder": "Bucket bulun",
+    "i18nStrings.selectionObjectsSearchPlaceholder": "Ön eke göre nesne bulun",
+    "i18nStrings.selectionVersionsSearchPlaceholder": "Sürüm bulun",
+    "i18nStrings.selectionBucketsLoading": "Bucket'lar yükleniyor",
+    "i18nStrings.selectionBucketsNoItems": "Bucket yok",
+    "i18nStrings.selectionObjectsLoading": "Nesneler yükleniyor",
+    "i18nStrings.selectionObjectsNoItems": "Nesne yok",
+    "i18nStrings.selectionVersionsLoading": "Sürümler yükleniyor",
+    "i18nStrings.selectionVersionsNoItems": "Sürüm yok",
+    "i18nStrings.filteringNoMatches": "Eşleşme yok",
+    "i18nStrings.filteringCantFindMatch": "Eşleşme bulunamıyor.",
+    "i18nStrings.clearFilterButtonText": "Filtreyi temizle",
+    "i18nStrings.columnBucketID": "Kimlik",
+    "i18nStrings.columnBucketName": "Ad",
+    "i18nStrings.columnBucketCreationDate": "Oluşturma tarihi",
+    "i18nStrings.columnBucketRegion": "Bölge",
+    "i18nStrings.columnObjectKey": "Anahtar",
+    "i18nStrings.columnObjectLastModified": "Son değiştirme",
+    "i18nStrings.columnObjectSize": "Boyut",
+    "i18nStrings.columnVersionID": "Sürüm kimliği",
+    "i18nStrings.columnVersionLastModified": "Son değiştirme",
+    "i18nStrings.columnVersionSize": "Boyut",
+    "i18nStrings.validationPathMustBegin": "Yol s3:// ile başlamalıdır",
+    "i18nStrings.validationBucketLowerCase": "Bucket adı, küçük harfli bir karakter veya sayı ile başlamalıdır.",
+    "i18nStrings.validationBucketMustNotContain": "Bucket adı, büyük harfli karakterler içermemelidir.",
+    "i18nStrings.validationBucketLength": "Bucket adı, 3 ile 63 karakter arasında olmalıdır.",
+    "i18nStrings.validationBucketMustComplyDns": "Bucket adı, DNS adlandırma kurallarına uygun olmalıdır.",
+    "i18nStrings.labelSortedDescending": "{columnName}, azalan sıralı",
+    "i18nStrings.labelSortedAscending": "{columnName}, artan sıralı",
+    "i18nStrings.labelNotSorted": "{columnName}, sıralanmamış",
+    "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "Bucket'lar",
+    "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "{item__Name}",
+    "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "Nesneler",
+    "i18nStrings.labelsObjectsSelection.itemSelectionLabel": "{item__Key}",
+    "i18nStrings.labelsVersionsSelection.selectionGroupLabel": "Sürümler",
+    "i18nStrings.labelsVersionsSelection.itemSelectionLabel": "{item__VersionId}",
+    "i18nStrings.labelFiltering": "{itemsType} bul",
+    "i18nStrings.labelRefresh": "Verileri yenile",
+    "i18nStrings.labelBreadcrumbs": "S3 gezintisi",
+    "i18nStrings.filteringCounterText": "{count, plural, one {1 eşleşme} other {{count} eşleşme}}"
+  },
+  "select": {
+    "errorIconAriaLabel": "Hata",
+    "selectedAriaLabel": "Seçili",
+    "recoveryText": "Yeniden dene"
+  },
+  "split-panel": {
+    "i18nStrings.closeButtonAriaLabel": "Paneli kapat",
+    "i18nStrings.openButtonAriaLabel": "Paneli aç",
+    "i18nStrings.preferencesTitle": "Bölünmüş panel tercihleri",
+    "i18nStrings.preferencesPositionLabel": "Bölünmüş panel konumu",
+    "i18nStrings.preferencesPositionDescription": "Hizmet için varsayılan bölünmüş panel konumunu seçin.",
+    "i18nStrings.preferencesPositionSide": "Yan",
+    "i18nStrings.preferencesPositionBottom": "Alt",
+    "i18nStrings.preferencesConfirm": "Onayla",
+    "i18nStrings.preferencesCancel": "İptal",
+    "i18nStrings.resizeHandleAriaLabel": "Bölünmüş paneli yeniden boyutlandır"
+  },
+  "table": {
+    "ariaLabels.resizerRoleDescription": "yeniden boyutlandırma düğmesi",
+    "ariaLabels.submittingEditText": "Düzenleme gönderiliyor",
+    "ariaLabels.successfulEditLabel": "Düzenleme başarılı",
+    "columnDefinitions.editConfig.errorIconAriaLabel": "Hata",
+    "columnDefinitions.editConfig.editIconAriaLabel": "düzenlenebilir"
+  },
+  "tabs": {
+    "i18nStrings.scrollLeftAriaLabel": "Sola kaydır",
+    "i18nStrings.scrollRightAriaLabel": "Sağa kaydır"
+  },
+  "tag-editor": {
+    "i18nStrings.keyPlaceholder": "Enter tuşu",
+    "i18nStrings.valuePlaceholder": "Değer girin",
+    "i18nStrings.addButton": "Yeni etiket ekle",
+    "i18nStrings.removeButton": "Kaldır",
+    "i18nStrings.removeButtonAriaLabel": "{tag__key} öğesini kaldır",
+    "i18nStrings.undoButton": "Geri al",
+    "i18nStrings.undoPrompt": "Değişiklikler kaydedildikten sonra bu etiket kaldırılacaktır",
+    "i18nStrings.loading": "Bu kaynakla ilişkilendirilmiş etiketler yükleniyor",
+    "i18nStrings.keyHeader": "Anahtar",
+    "i18nStrings.valueHeader": "Değer",
+    "i18nStrings.optional": "isteğe bağlı",
+    "i18nStrings.keySuggestion": "Özel etiket anahtarı",
+    "i18nStrings.valueSuggestion": "Özel etiket değeri",
+    "i18nStrings.emptyTags": "Kaynakla ilişkilendirilmiş etiket yok.",
+    "i18nStrings.tooManyKeysSuggestion": "Görüntülenemeyecek kadar çok anahtarınız var",
+    "i18nStrings.tooManyValuesSuggestion": "Görüntülenemeyecek kadar çok değeriniz var",
+    "i18nStrings.keysSuggestionLoading": "Etiket anahtarları yükleniyor",
+    "i18nStrings.keysSuggestionError": "Etiket anahtarları alınamadı",
+    "i18nStrings.valuesSuggestionLoading": "Etiket değerleri yükleniyor",
+    "i18nStrings.valuesSuggestionError": "Etiket değerleri alınamadı",
+    "i18nStrings.emptyKeyError": "Bir etiket anahtarı belirtmelisiniz",
+    "i18nStrings.maxKeyCharLengthError": "Etiket anahtarında kullanabileceğiniz maksimum karakter sayısı 128'dir.",
+    "i18nStrings.maxValueCharLengthError": "Etiket değerinde kullanabileceğiniz maksimum karakter sayısı 256'dır.",
+    "i18nStrings.duplicateKeyError": "Benzersiz bir etiket anahtarı belirtmelisiniz.",
+    "i18nStrings.invalidKeyError": "Geçersiz anahtar. Anahtarlarda yalnızca Unicode harfleri, rakamlar, boşluk ve şu işaretler bulunabilir: _.:/=+@-",
+    "i18nStrings.invalidValueError": "Geçersiz değer. Değerlerde yalnızca Unicode harfleri, rakamlar, boşluk ve şu işaretler bulunabilir: _.:/=+@-",
+    "i18nStrings.awsPrefixError": "aws: ile başlayamaz",
+    "i18nStrings.tagLimitReached": "{tagLimit, plural, one {1 etiket sınırına ulaştınız.} other {{tagLimit} etiket sınırına ulaştınız.}}",
+    "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {1 etiket sınırını aştınız.} other {{tagLimit} etiket sınırını aştınız.}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, true {{availableTags, plural, other {En fazla {tagLimit} etiket ekleyebilirsiniz.}}} false {{availableTags, plural, one {En fazla 1 etiket ekleyebilirsiniz.} other {En fazla {availableTags} etiket daha ekleyebilirsiniz.}}} other {}}"
+  },
+  "token-group": {
+    "i18nStrings.limitShowFewer": "Daha az göster",
+    "i18nStrings.limitShowMore": "Daha fazla göster"
+  },
+  "top-navigation": {
+    "i18nStrings.searchIconAriaLabel": "Ara",
+    "i18nStrings.searchDismissIconAriaLabel": "Aramayı kapat",
+    "i18nStrings.overflowMenuTriggerText": "Daha",
+    "i18nStrings.overflowMenuDismissIconAriaLabel": "Menüyü kapat",
+    "i18nStrings.overflowMenuBackIconAriaLabel": "Geri",
+    "i18nStrings.overflowMenuTitleText": "Tümü"
+  },
+  "tutorial-panel": {
+    "i18nStrings.loadingText": "Yükleniyor",
+    "i18nStrings.tutorialListTitle": "Bir eğitim seçin",
+    "i18nStrings.tutorialListDownloadLinkText": "PDF sürümünü indir",
+    "i18nStrings.labelTutorialListDownloadLink": "Bu eğitimin PDF sürümünü indirin",
+    "i18nStrings.tutorialCompletedText": "Eğitim tamamlandı",
+    "i18nStrings.learnMoreLinkText": "Daha fazla bilgi edinin",
+    "i18nStrings.startTutorialButtonText": "Eğitimi başlat",
+    "i18nStrings.restartTutorialButtonText": "Eğitimi yeniden başlat",
+    "i18nStrings.completionScreenTitle": "Tebrikler! Eğitimi tamamladınız.",
+    "i18nStrings.feedbackLinkText": "Geri bildirim",
+    "i18nStrings.dismissTutorialButtonText": "Eğitimi kapat",
+    "i18nStrings.taskTitle": "{taskNumber}. Görev: {taskTitle}",
+    "i18nStrings.stepTitle": "{stepNumber}. Adım: {stepTitle}",
+    "i18nStrings.labelExitTutorial": "Eğitimi kapat",
+    "i18nStrings.labelTotalSteps": "Toplam adım: {totalStepCount}",
+    "i18nStrings.labelsTaskStatus.pending": "Beklemede",
+    "i18nStrings.labelsTaskStatus.in-progress": "Devam ediyor",
+    "i18nStrings.labelsTaskStatus.success": "Başarılı"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "{stepNumber}. Adım",
+    "i18nStrings.collapsedStepsLabel": "Adım {stepNumber}/{stepsCount}",
+    "i18nStrings.skipToButtonLabel": "{task__title} görevine atla",
+    "i18nStrings.navigationAriaLabel": "Adımlar",
+    "i18nStrings.cancelButton": "İptal",
+    "i18nStrings.previousButton": "Önceki",
+    "i18nStrings.nextButton": "Sonraki",
+    "i18nStrings.optional": "isteğe bağlı",
+    "i18nStrings.nextButtonLoadingAnnouncement": "Sonraki adım yükleniyor",
+    "i18nStrings.submitButtonLoadingAnnouncement": "Form gönderiliyor"
+  }
+}

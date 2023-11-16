@@ -4,14 +4,17 @@ import clsx from 'clsx';
 import React, { useEffect, useState, useRef } from 'react';
 
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
-import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
+import { usePointerEvents } from '../utils/use-pointer-events';
+import { useKeyboardEvents } from '../utils/use-keyboard-events';
+import { SizeControlProps } from '../utils/interfaces';
 import { Drawer } from './index';
 import testutilStyles from '../test-classes/styles.css.js';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import splitPanelStyles from '../../split-panel/styles.css.js';
-import { SizeControlProps, ResizableDrawerProps } from './interfaces';
+import styles from './styles.css.js';
+import { ResizableDrawerProps } from './interfaces';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 
 export const ResizableDrawer = ({
   onResize,
@@ -19,11 +22,12 @@ export const ResizableDrawer = ({
   getMaxWidth,
   refs,
   activeDrawer,
+  toolsContent,
   ...props
 }: ResizableDrawerProps) => {
   const { isOpen, children, isMobile } = props;
 
-  const MIN_WIDTH = activeDrawer?.size && activeDrawer.size < 280 ? activeDrawer?.size : 280;
+  const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 280 ? activeDrawer?.defaultSize : 280;
   const [relativeSize, setRelativeSize] = useState(0);
 
   useEffect(() => {
@@ -46,16 +50,13 @@ export const ResizableDrawer = ({
     }
   };
 
-  const position = 'side';
-  const setBottomPanelHeight = () => {};
   const drawerRefObject = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
-    position,
-    splitPanelRef: drawerRefObject,
+    position: 'side',
+    panelRef: drawerRefObject,
     handleRef: refs.slider,
-    setSidePanelWidth,
-    setBottomPanelHeight,
+    onResize: setSidePanelWidth,
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
@@ -82,12 +83,19 @@ export const ResizableDrawer = ({
     <Drawer
       {...props}
       ref={drawerRefObject}
+      isHidden={!activeDrawer}
       resizeHandle={
         !isMobile &&
         activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
       }
+      ariaLabels={{
+        openLabel: activeDrawer?.ariaLabels?.triggerButton,
+        mainLabel: activeDrawer?.ariaLabels?.drawerName,
+        closeLabel: activeDrawer?.ariaLabels?.closeButton,
+      }}
     >
-      {children}
+      {toolsContent && <div className={clsx(activeDrawer?.id !== TOOLS_DRAWER_ID && styles.hide)}>{toolsContent}</div>}
+      {activeDrawer?.id !== TOOLS_DRAWER_ID ? children : null}
     </Drawer>
   );
 };

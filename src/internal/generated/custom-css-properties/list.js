@@ -4,23 +4,31 @@
 /*
  * This file is only needed to generate the proper js ans scss files at build step generateCustomCssPropertiesMap
  */
-
 const customCssPropertiesList = [
-  'activeDrawerWidth',
-  'offsetTop',
-  'offsetTopWithNotifications',
+  // AppLayout Custom Properties
+  'breadcrumbsGap',
   'contentGapLeft',
   'contentGapRight',
   'contentHeight',
+  'containerFirstGap',
+  'containerFirstOverlapExtension',
   'defaultMaxContentWidth',
   'defaultMinContentWidth',
+  'drawerSize',
   'footerHeight',
+  'headerGap',
   'headerHeight',
   'layoutWidth',
+  'mainGap',
   'mainOffsetLeft',
+  'mainTemplateRows',
   'maxContentWidth',
   'minContentWidth',
+  'mobileBarHeight',
+  'notificationsGap',
   'notificationsHeight',
+  'offsetTop',
+  'offsetTopWithNotifications',
   'overlapHeight',
   'navigationWidth',
   'splitPanelReportedHeaderSize',
@@ -31,11 +39,15 @@ const customCssPropertiesList = [
   'toolsMaxWidth',
   'toolsWidth',
   'toolsAnimationStartingOpacity',
+  // Annotation Context Custom Properties
   'contentScrollMargin',
+  // Flashbar Custom Properties
   'flashbarStackDepth',
   'flashbarStackIndex',
   'flashbarStickyBottomMargin',
   'stackedNotificationsBottomMargin',
   'stackedNotificationsDefaultBottomMargin',
+  // Dropdown
+  'dropdownDefaultMaxWidth',
 ];
 module.exports = customCssPropertiesList;

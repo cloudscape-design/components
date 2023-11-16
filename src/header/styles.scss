@@ -6,6 +6,10 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
+@function space-heading-button-diff($heading-height) {
+  @return calc((#{awsui.$size-vertical-input} - #{$heading-height}) / 2);
+}
+
 .root {
   @include styles.styles-reset();
   cursor: inherit;
@@ -14,66 +18,73 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  &-no-actions {
-    &.root-variant-h1 {
-      padding-bottom: 0;
-      &-refresh {
-        padding-bottom: awsui.$space-xxxs;
-      }
-    }
+  &.refresh,
+  &:not(.root-no-actions) {
+    row-gap: awsui.$space-scaled-xxs;
   }
 
   &-no-actions,
   &-has-description {
-    &.root-variant-h2 {
+    &.root-variant-h2:not(.refresh),
+    &.root-variant-h3:not(.refresh) {
       padding-bottom: awsui.$space-scaled-xxs;
-      &-refresh {
-        padding-bottom: awsui.$space-xxxs;
-      }
-    }
-    &.root-variant-h3 {
-      padding-bottom: awsui.$space-scaled-xxs;
-      &-refresh {
-        padding-bottom: 0;
-      }
     }
   }
 
-  &-no-wrap {
-    flex-wrap: nowrap;
+  &-no-actions:not(.root-has-description):not(.refresh) {
+    // Make sure the header is just as high without actions
+    padding-bottom: calc(#{awsui.$space-scaled-xs} + #{awsui.$space-xxxs});
+  }
+
+  &-no-actions.refresh {
+    &.root-variant-h2,
+    &.root-variant-h3 {
+      row-gap: awsui.$space-scaled-xxxs;
+    }
+  }
+
+  &.root-variant-h1:not(.refresh) {
+    row-gap: awsui.$space-scaled-xxs;
+  }
+
+  // H3s are most often used inside containers, so minimal headings have extra padding below
+  // to prevent info links from having overlapping touch targets with surrounding elements.
+  &-no-actions:not(.root-has-description).refresh.root-variant-h3 {
+    padding-bottom: awsui.$space-scaled-xs;
+  }
+
+  &.root-variant-h1.root-has-description:not(.refresh) {
+    padding-bottom: awsui.$space-scaled-2x-xxs;
   }
 }
 
 .main {
-  @include styles.text-flex-wrapping;
-  :not(.root-no-actions) > & {
-    margin-right: awsui.$space-xs;
+  // Like styles.text-flex-wrapping, but without overflow: hidden, to prevent headings from being partially cut off.
+  word-wrap: break-word;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  column-gap: awsui.$space-xs;
+  row-gap: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
+
+  &.no-wrap {
+    flex-wrap: nowrap;
+  }
+
+  &.refresh {
+    // Can't use justify-content: center because it won't align with configurable dashboard fixed handle icon
+    row-gap: awsui.$space-xxs;
   }
 
   &-variant-h1 {
-    padding: awsui.$space-scaled-2x-xxs 0;
-    &-refresh {
-      padding: awsui.$space-xxs 0;
-    }
+    row-gap: awsui.$space-scaled-2x-xxs;
   }
-  :not(.root-no-actions) > &-variant-h1-refresh {
-    padding-top: awsui.$space-scaled-xxxs;
-  }
+}
 
-  // So that headers with only a title have the same height as headers with actions and descriptions
-  &-variant-h2,
-  &-variant-h3 {
-    padding-top: awsui.$space-scaled-xxs;
-    :not(.root-has-description) > & {
-      padding-bottom: awsui.$space-xxxs;
-    }
-  }
-  &-variant-h2-refresh {
-    padding-top: 0;
-    :not(.root-has-description) > & {
-      padding-bottom: 0;
-    }
-  }
+.root-has-description > .main {
+  row-gap: awsui.$space-scaled-2x-xxs;
 }
 
 .actions {
@@ -81,23 +92,35 @@
   // https://github.com/philipwalton/flexbugs/issues/170
   display: flex;
   align-items: flex-start;
-  &-variant-h1 {
+  min-height: awsui.$size-vertical-input;
+
+  // we can align actions to center in most cases, cause if the header is too long, actions will wrap the first.
+  // exception is Modal header, where __disableActionsWrapping makes header text wrap to multiple lines, shifting the close button
+  &-centered {
+    align-items: center;
+  }
+
+  // Calculate padding so the heading text is better aligned with the buttons.
+  // Can't align-items: middle because we want buttons to stay at the top of the container when text wraps to multiple lines.
+  &-variant-h1.refresh {
+    padding: calc((#{awsui.$line-height-heading-xl} - #{awsui.$size-vertical-input}) / 2) 0;
+  }
+  &-variant-h2.refresh {
+    padding: calc((#{awsui.$line-height-heading-l} - #{awsui.$size-vertical-input}) / 2) 0;
+  }
+  &-variant-h3.refresh {
+    padding: calc((#{awsui.$line-height-heading-m} - #{awsui.$size-vertical-input}) / 2) 0;
+  }
+
+  &-variant-h1:not(.refresh) {
     padding: awsui.$space-scaled-xs 0;
-    &-refresh {
-      padding: awsui.$space-xs 0;
-    }
   }
-  &-variant-h2,
-  &-variant-h3 {
+  &-variant-h2:not(.refresh),
+  &-variant-h3:not(.refresh) {
     padding: awsui.$space-scaled-xxs 0;
-    .root-has-description > & {
-      padding-bottom: 0;
-    }
   }
-  &-variant-h2-refresh {
-    padding-bottom: awsui.$space-xxxs;
-  }
-  &-variant-h3-refresh {
+
+  .root-has-description > .main > & {
     padding-bottom: 0;
   }
 }
@@ -107,21 +130,51 @@
   color: awsui.$color-text-heading-default;
 
   &-variant-h1 {
-    font-size: awsui.$font-heading-xl-size;
-  }
-  &-variant-h2,
-  &-variant-h3 {
-    padding: awsui.$space-scaled-xxs 0;
+    font-size: awsui.$font-size-heading-xl;
+    padding-top: awsui.$space-scaled-2x-xxs;
+    // Use padding rather than center align with min height to avoid having extra bottom space when no actions are present.
+    // Having top padding always present ensures that all headers of the same variant start at the same height in the container,
+    // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
+    &.refresh {
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-xl);
+    }
   }
   &-variant-h2 {
-    font-size: awsui.$font-heading-l-size;
-    &-refresh {
-      padding-top: awsui.$space-scaled-2x-xxs;
+    font-size: awsui.$font-size-heading-l;
+    &.refresh {
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-l);
     }
   }
   &-variant-h3 {
-    font-size: awsui.$font-heading-m-size;
+    font-size: awsui.$font-size-heading-m;
+    &.refresh {
+      padding-top: space-heading-button-diff(awsui.$line-height-heading-m);
+    }
   }
+  &-variant-h2:not(.refresh),
+  &-variant-h3:not(.refresh) {
+    padding-top: awsui.$space-scaled-xs;
+  }
+
+  .no-wrap > &:not(.refresh) {
+    // Additional padding to make it the same height as a header with wrapping
+    padding-bottom: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
+  }
+}
+
+.root-no-actions.root-has-description > .main > :not(.refresh) {
+  &.title-variant-h2,
+  &.title-variant-h3 {
+    padding-bottom: awsui.$space-scaled-xxs;
+  }
+}
+
+.root-variant-h1.root-no-actions:not(.root-has-description):not(.refresh) {
+  padding-bottom: awsui.$space-scaled-2x-xxs;
+}
+
+.virtual-space {
+  @include styles.awsui-util-hide;
 }
 
 .info {
@@ -137,21 +190,18 @@
 
   &-variant-h1 {
     @include styles.font-body-m;
-    padding-top: awsui.$space-scaled-xxs;
-    &-refresh {
-      padding-top: awsui.$space-scaled-xs;
-    }
   }
   &-variant-h2 {
     font-size: awsui.$font-header-h2-description-size;
     line-height: awsui.$font-header-h2-description-line-height;
-    padding-bottom: awsui.$space-scaled-xxs;
+    &:not(.refresh) {
+      padding-bottom: awsui.$space-scaled-xxs;
+    }
   }
   &-variant-h3 {
     @include styles.font-body-s;
-    padding-bottom: awsui.$space-scaled-xxs;
-    &-refresh {
-      padding-top: awsui.$space-xxxs;
+    &:not(.refresh) {
+      padding-bottom: awsui.$space-scaled-xxs;
     }
   }
 }

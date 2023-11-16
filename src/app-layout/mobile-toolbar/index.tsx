@@ -4,11 +4,14 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 import { AppLayoutProps } from '../interfaces';
-import { DrawerItem } from '../drawer/interfaces';
-import { AppLayoutButton, togglesConfig } from '../toggles';
+import { ToggleButton, togglesConfig } from '../toggles';
+import OverflowMenu from '../drawer/overflow-menu';
 import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
+import { splitItems } from '../drawer/drawers-helpers';
+import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+
 interface MobileToggleProps {
   className?: string;
   ariaLabels?: AppLayoutProps.Labels;
@@ -23,12 +26,12 @@ const MobileToggle = React.forwardRef(
 
     return (
       <TagName
-        className={clsx(styles['mobile-toggle'])}
+        className={clsx(styles['mobile-toggle'], styles[`mobile-toggle-type-${type}`])}
         aria-hidden={disabled}
         aria-label={mainLabel}
         onClick={e => e.target === e.currentTarget && onClick()}
       >
-        <AppLayoutButton
+        <ToggleButton
           ref={ref}
           className={className}
           iconName={iconName}
@@ -42,7 +45,7 @@ const MobileToggle = React.forwardRef(
   }
 );
 interface MobileToolbarProps {
-  anyPanelOpen: boolean | undefined;
+  anyPanelOpen: boolean;
   unfocusable: boolean | undefined;
   toggleRefs: {
     navigation: React.Ref<ButtonProps.Ref>;
@@ -51,30 +54,31 @@ interface MobileToolbarProps {
   navigationHide: boolean | undefined;
   toolsHide: boolean | undefined;
   topOffset?: number;
-  ariaLabels?: AppLayoutProps.Labels;
+  ariaLabels: AppLayoutProps.Labels | undefined;
+  mobileBarRef: React.Ref<HTMLDivElement>;
   children: React.ReactNode;
   onNavigationOpen: () => void;
   onToolsOpen: () => void;
-  drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
-    ariaLabel?: string;
-  };
+  drawers: Array<AppLayoutProps.Drawer> | undefined;
+  activeDrawerId: string | null;
+  onDrawerChange: (newDrawerId: string | null) => void;
 }
 
 export function MobileToolbar({
-  ariaLabels = {},
+  ariaLabels,
   toggleRefs,
   topOffset,
   navigationHide,
   toolsHide,
-  anyPanelOpen = false,
+  anyPanelOpen,
   unfocusable,
+  drawers,
+  activeDrawerId,
   children,
   onNavigationOpen,
   onToolsOpen,
-  drawers,
+  onDrawerChange,
+  mobileBarRef,
 }: MobileToolbarProps) {
   useEffect(() => {
     if (anyPanelOpen) {
@@ -86,8 +90,16 @@ export function MobileToolbar({
       document.body.classList.remove(styles['block-body-scroll']);
     }
   }, [anyPanelOpen]);
+
+  const { overflowItems, visibleItems } = splitItems(drawers, 2, activeDrawerId);
+  const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
+
   return (
-    <div className={clsx(styles['mobile-bar'], unfocusable && sharedStyles.unfocusable)} style={{ top: topOffset }}>
+    <div
+      ref={mobileBarRef}
+      className={clsx(styles['mobile-bar'], testutilStyles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
+      style={{ top: topOffset }}
+    >
       {!navigationHide && (
         <MobileToggle
           ref={toggleRefs.navigation}
@@ -112,25 +124,38 @@ export function MobileToolbar({
         />
       )}
       {drawers && (
-        <aside
-          aria-label={drawers.ariaLabel}
-          className={clsx(
-            styles['mobile-toggle'],
-            styles['mobile-toggle-with-drawers'],
-            testutilStyles['drawers-mobile-triggers-container']
-          )}
-        >
-          {drawers.items.map((item: DrawerItem, index: number) => (
-            <AppLayoutButton
-              className={clsx(styles['mobile-trigger-with-drawers'], testutilStyles['drawers-trigger'])}
-              key={`drawer-trigger-${index}`}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
-              ariaLabel={item.ariaLabels?.triggerButton}
-              onClick={() => drawers.onChange({ activeDrawerId: item.id })}
-              ariaExpanded={drawers.activeDrawerId !== undefined}
-            />
-          ))}
+        <aside aria-label={ariaLabels?.drawers} role="region">
+          <div className={clsx(styles['drawers-container'])} role="toolbar" aria-orientation="horizontal">
+            {visibleItems.map((item, index) => (
+              <div
+                className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}
+                key={index}
+                onClick={() => onDrawerChange(item.id)}
+              >
+                <ToggleButton
+                  className={clsx(
+                    testutilStyles['drawers-trigger'],
+                    item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                  )}
+                  iconName={item.trigger.iconName}
+                  iconSvg={item.trigger.iconSvg}
+                  badge={item.badge}
+                  ariaLabel={item.ariaLabels?.triggerButton}
+                  ariaExpanded={activeDrawerId === item.id}
+                  testId={`awsui-app-layout-trigger-${item.id}`}
+                />
+              </div>
+            ))}
+            {overflowItems.length > 0 && (
+              <div className={clsx(styles['mobile-toggle'], styles['mobile-toggle-type-drawer'])}>
+                <OverflowMenu
+                  ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
+                  items={overflowItems}
+                  onItemClick={({ detail }) => onDrawerChange(detail.id)}
+                />
+              </div>
+            )}
+          </div>
         </aside>
       )}
     </div>

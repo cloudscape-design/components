@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import HelpPanel from '../../../lib/components/help-panel';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 function renderHelpPanel(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -45,4 +46,15 @@ test('renders everything together', () => {
 test('renders loading state', () => {
   const { container } = render(<HelpPanel loading={true} loadingText="Loading content" />);
   expect(createWrapper(container).findStatusIndicator()!.getElement()).toHaveTextContent('Loading content');
+});
+
+describe('i18n', () => {
+  test('supports providing loadingText from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider messages={{ 'help-panel': { loadingText: 'Custom loading text' } }}>
+        <HelpPanel loading={true} />
+      </TestI18nProvider>
+    );
+    expect(createWrapper(container).findStatusIndicator()!.getElement()).toHaveTextContent('Custom loading text');
+  });
 });

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Mockdate from 'mockdate';
 import createWrapper, { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
@@ -10,6 +10,7 @@ import { i18nStrings } from './i18n-strings';
 import { changeMode } from './change-mode';
 import { isValidRange } from './is-valid-range';
 import '../../__a11y__/to-validate-a11y';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
@@ -59,7 +60,7 @@ describe('Date range picker', () => {
       const { container, wrapper } = renderDateRangePicker({
         ...defaultProps,
       });
-      act(() => wrapper.findTrigger().click());
+      wrapper.findTrigger().click();
 
       await expect(container).toValidateA11y();
     });
@@ -71,10 +72,10 @@ describe('Date range picker', () => {
         onChange: event => onChangeSpy(event.detail),
       });
 
-      act(() => wrapper.findTrigger().click());
+      wrapper.findTrigger().click();
 
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('previous-5-minutes')!.click());
-      act(() => wrapper.findDropdown()!.findApplyButton().click());
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('previous-5-minutes')!.click();
+      wrapper.findDropdown()!.findApplyButton().click();
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
       expect(onChangeSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -95,14 +96,14 @@ describe('Date range picker', () => {
         onChange: event => onChangeSpy(event.detail),
       });
 
-      act(() => wrapper.findTrigger().click());
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click());
+      wrapper.findTrigger().click();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click();
 
-      act(() => wrapper.findDropdown()!.findCustomRelativeRangeDuration()!.setInputValue('14'));
-      act(() => wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown());
-      act(() => wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.selectOption(5));
+      wrapper.findDropdown()!.findCustomRelativeRangeDuration()!.setInputValue('14');
+      wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
+      wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.selectOption(5);
 
-      act(() => wrapper.findDropdown()!.findApplyButton().click());
+      wrapper.findDropdown()!.findApplyButton().click();
 
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
       expect(onChangeSpy).toHaveBeenCalledWith(
@@ -122,8 +123,8 @@ describe('Date range picker', () => {
         onChange: () => undefined,
       });
 
-      act(() => wrapper.findTrigger().click());
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click());
+      wrapper.findTrigger().click();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click();
 
       const durationAriaLabelId = wrapper
         .findDropdown()!
@@ -133,7 +134,7 @@ describe('Date range picker', () => {
         .getAttribute('aria-labelledby')!
         .split(' ')[0];
       expect(wrapper.find(`#${durationAriaLabelId}`)!.getElement()).toHaveTextContent(
-        i18nStrings.customRelativeRangeDurationLabel
+        i18nStrings.customRelativeRangeDurationLabel!
       );
 
       const unitAriaLabelId = wrapper
@@ -144,7 +145,7 @@ describe('Date range picker', () => {
         .getAttribute('aria-labelledby')!
         .split(' ')[0];
       expect(wrapper.find(`#${unitAriaLabelId}`)!.getElement()).toHaveTextContent(
-        i18nStrings.customRelativeRangeUnitLabel
+        i18nStrings.customRelativeRangeUnitLabel!
       );
     });
 
@@ -153,8 +154,8 @@ describe('Date range picker', () => {
         ...defaultProps,
       });
 
-      act(() => wrapper.findTrigger().click());
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[2].findLabel().click());
+      wrapper.findTrigger().click();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[2].findLabel().click();
 
       changeMode(wrapper, 'absolute');
       expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBeNull();
@@ -173,7 +174,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findTrigger().click());
+      wrapper.findTrigger().click();
 
       const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch().findModesAsSegments();
       expect(modeSelector.findSelectedSegment()!.getElement().textContent).toBe('Absolute range');
@@ -185,7 +186,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findTrigger().click());
+      wrapper.findTrigger().click();
       changeMode(wrapper, 'relative');
 
       expect(!!wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBe(false);
@@ -197,7 +198,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findTrigger().click());
+      wrapper.findTrigger().click();
       changeMode(wrapper, 'relative');
 
       expect(wrapper.findDropdown()!.getElement().textContent).toContain('Set a custom range in the past');
@@ -209,7 +210,7 @@ describe('Date range picker', () => {
         rangeSelectorMode: 'relative-only',
         relativeOptions: [],
       });
-      act(() => wrapper.findTrigger().click());
+      wrapper.findTrigger().click();
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual([
@@ -230,10 +231,45 @@ describe('Date range picker', () => {
         relativeOptions: [],
         dateOnly: true,
       });
-      act(() => wrapper.findTrigger().click());
+      wrapper.findTrigger().click();
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['days', 'weeks', 'months', 'years']);
+    });
+
+    describe('i18n', () => {
+      test('supports using relative range props from i18n provider', () => {
+        const { container } = render(
+          <TestI18nProvider
+            messages={{
+              'date-range-picker': {
+                'i18nStrings.relativeRangeSelectionHeading': 'Custom choose range',
+                'i18nStrings.formatRelativeRange': 'Custom last {amount} {unit}',
+                'i18nStrings.customRelativeRangeOptionLabel': 'Custom custom range',
+                'i18nStrings.customRelativeRangeOptionDescription': 'Custom custom range description',
+              },
+            }}
+          >
+            <DateRangePicker {...defaultProps} rangeSelectorMode="relative-only" i18nStrings={undefined} />
+          </TestI18nProvider>
+        );
+
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+
+        wrapper.openDropdown();
+        expect(
+          createWrapper(wrapper.findDropdown()!.getElement()).findFormField()!.findLabel()!.getElement()
+        ).toHaveTextContent('Custom choose range');
+        expect(
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[0].findLabel()!.getElement()
+        ).toHaveTextContent('Custom last 5 minute');
+        expect(
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4]!.findLabel()!.getElement()
+        ).toHaveTextContent('Custom custom range');
+        expect(
+          wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4]!.findDescription()!.getElement()
+        ).toHaveTextContent('Custom custom range description');
+      });
     });
   });
 });

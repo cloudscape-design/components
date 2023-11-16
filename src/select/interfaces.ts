@@ -75,12 +75,18 @@ export interface BaseSelectProps
    * Specifies the placeholder to display in the filtering input if filtering is enabled.
    */
   filteringPlaceholder?: string;
+
+  /**
+   * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
   /**
    * Adds an `aria-label` on the built-in filtering input if filtering is enabled.
    */
   filteringAriaLabel?: string;
   /**
    * Adds an `aria-label` to the clear button inside the search input.
+   * @i18n
    */
   filteringClearAriaLabel?: string;
   /**
@@ -107,6 +113,7 @@ export interface BaseSelectProps
    * Specifies the localized string that describes an option as being selected.
    * This is required to provide a good screen reader experience. For more information, see the
    * [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
+   * @i18n
    */
   selectedAriaLabel?: string;
   /**

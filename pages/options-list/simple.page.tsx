@@ -36,7 +36,7 @@ export default function OptionsListScenario() {
         }
         onDropdownClose={toggleDropdown}
       >
-        <OptionsList onLoadMore={handleLoadMore} id={'list'} open={open}>
+        <OptionsList onLoadMore={handleLoadMore} id={'list'} open={open} statusType="pending">
           {[...Array(50)].map((_, index) => (
             <li key={index}>{`Option ${index}`}</li>
           ))}

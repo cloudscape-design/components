@@ -8,7 +8,10 @@ import { renderHook } from '../../__tests__/render-hook';
 
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
-import { useStickyColumns } from '../../../lib/components/table/use-sticky-columns';
+import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+
+const tableRole = 'table';
 
 const testItem = {
   test: 'test',
@@ -46,16 +49,17 @@ it('renders a fake focus outline on the sort control', () => {
   const { container } = render(
     <TableWrapper>
       <TableHeaderCell<typeof testItem>
-        focusedComponent={{ type: 'column', col: 0 }}
+        focusedComponent="sorting-control-id"
         column={column}
         colIndex={0}
         tabIndex={0}
-        onFocusedComponentChange={() => {}}
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
         stickyState={result.current}
         columnId="id"
+        cellRef={() => {}}
+        tableRole={tableRole}
       />
     </TableWrapper>
   );
@@ -68,21 +72,48 @@ it('renders a fake focus outline on the resize control', () => {
   const { container } = render(
     <TableWrapper>
       <TableHeaderCell<typeof testItem>
-        focusedComponent={{ type: 'resizer', col: 0 }}
+        focusedComponent="resize-control-id"
         column={column}
         colIndex={0}
         tabIndex={0}
         resizableColumns={true}
-        onFocusedComponentChange={() => {}}
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
         stickyState={result.current}
         columnId="id"
+        cellRef={() => {}}
+        tableRole={tableRole}
       />
     </TableWrapper>
   );
   // Activate focus-visible
   fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
   expect(container.querySelector(`.${resizerStyles['has-focus']}`)).toBeInTheDocument();
+});
+
+describe('i18n', () => {
+  it('supports using editIconAriaLabel from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider messages={{ table: { 'columnDefinitions.editConfig.editIconAriaLabel': 'Custom editable' } }}>
+        <TableWrapper>
+          <TableHeaderCell<typeof testItem>
+            column={{ ...column, editConfig: undefined }}
+            colIndex={0}
+            tabIndex={0}
+            resizableColumns={true}
+            updateColumn={() => {}}
+            onClick={() => {}}
+            onResizeFinish={() => {}}
+            stickyState={result.current}
+            columnId="id"
+            isEditable={true}
+            cellRef={() => {}}
+            tableRole={tableRole}
+          />
+        </TableWrapper>
+      </TestI18nProvider>
+    );
+    expect(container.querySelector(`.${styles['edit-icon']}`)).toHaveAttribute('aria-label', 'Custom editable');
+  });
 });

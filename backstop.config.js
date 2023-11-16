@@ -46,7 +46,7 @@ module.exports = {
     args: ['--no-sandbox', '--disable-gpu', '--headless', '--force-prefers-reduced-motion'],
   },
   asyncCaptureLimit: 5,
-  asyncCompareLimit: 50,
+  asyncCompareLimit: 5,
   resembleOutputOptions: {
     ignoreAntialiasing: true,
   },

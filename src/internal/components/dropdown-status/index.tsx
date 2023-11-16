@@ -15,7 +15,9 @@ export { DropdownStatusProps };
 export interface DropdownStatusPropsExtended extends DropdownStatusProps {
   isEmpty?: boolean;
   isNoMatch?: boolean;
+  isFiltered?: boolean;
   noMatch?: React.ReactNode;
+  filteringResultsText?: string;
   /**
    * Called when the user clicks the recovery button placed at the
    * bottom of the dropdown list in the error state. Use this to
@@ -23,6 +25,11 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * to recover from the error.
    */
   onRecoveryClick?: NonCancelableEventHandler;
+  /**
+   * Determines if retry button should be rendered
+   * in case recoveryText was automatically provided by i18n.
+   */
+  hasRecoveryCallback?: boolean;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
@@ -34,11 +41,14 @@ type UseDropdownStatus = ({
   empty,
   loadingText,
   finishedText,
+  filteringResultsText,
   errorText,
   recoveryText,
   isEmpty,
   isNoMatch,
+  isFiltered,
   noMatch,
+  hasRecoveryCallback,
   onRecoveryClick,
 }: DropdownStatusPropsExtended) => DropdownStatusResult;
 
@@ -52,12 +62,15 @@ export const useDropdownStatus: UseDropdownStatus = ({
   empty,
   loadingText,
   finishedText,
+  filteringResultsText,
   errorText,
   recoveryText,
   isEmpty,
   isNoMatch,
+  isFiltered,
   noMatch,
   onRecoveryClick,
+  hasRecoveryCallback = false,
   errorIconAriaLabel,
 }) => {
   const previousStatusType = usePrevious(statusType);
@@ -70,12 +83,13 @@ export const useDropdownStatus: UseDropdownStatus = ({
       <span>
         <InternalStatusIndicator
           type="error"
+          __display="inline"
           __animate={previousStatusType !== 'error'}
           iconAriaLabel={errorIconAriaLabel}
         >
           {errorText}
         </InternalStatusIndicator>{' '}
-        {recoveryText && (
+        {!!recoveryText && hasRecoveryCallback && (
           <InternalLink
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"
@@ -90,6 +104,8 @@ export const useDropdownStatus: UseDropdownStatus = ({
     statusResult.content = empty;
   } else if (isNoMatch && noMatch) {
     statusResult.content = noMatch;
+  } else if (isFiltered && filteringResultsText) {
+    statusResult.content = filteringResultsText;
   } else if (statusType === 'finished' && finishedText) {
     statusResult.content = finishedText;
     statusResult.isSticky = false;

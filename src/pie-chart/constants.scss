@@ -10,16 +10,34 @@ $pie-chart-sizes: (
   'small': (
     'radius': 50px,
     'innerPadding': awsui.$space-xs,
-    'labelPadding': calc(2 * #{awsui.$font-body-m-line-height}),
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
   ),
   'medium': (
     'radius': 100px,
     'innerPadding': awsui.$space-s,
-    'labelPadding': calc(2 * #{awsui.$font-body-m-line-height}),
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
   ),
   'large': (
     'radius': 140px,
     'innerPadding': awsui.$space-s,
-    'labelPadding': calc(2 * #{awsui.$font-body-m-line-height}),
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
+  ),
+);
+
+$pie-chart-sizes-fit-height: (
+  'small': (
+    'radius': 30px,
+    'innerPadding': 0px,
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
+  ),
+  'medium': (
+    'radius': 100px,
+    'innerPadding': 0px,
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
+  ),
+  'large': (
+    'radius': 140px,
+    'innerPadding': 0px,
+    'labelPadding': calc(2 * #{awsui.$line-height-body-m}),
   ),
 );

@@ -317,7 +317,7 @@ describe('Button Component', () => {
       expect(onClickSpy).not.toHaveBeenCalled();
     });
 
-    test('gives loading precendence over disabled', () => {
+    test('gives loading precedence over disabled', () => {
       const wrapper = renderButton({ loading: true, disabled: true });
       // Loading indicator is shown even when the button is also disabled.
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
@@ -353,13 +353,28 @@ describe('Button Component', () => {
   describe('aria-label attribute and children content', () => {
     test('renders from ariaLabel property', () => {
       const wrapper = renderButton({ ariaLabel: 'Benjamin', children: 'Button' });
-      expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Benjamin');
+      expect(wrapper.getElement()).toHaveAccessibleName('Benjamin');
       expect(wrapper.findTextRegion()!.getElement()).toHaveTextContent('Button');
     });
 
     test('does not render if there is no label property', () => {
       const wrapper = renderButton({ children: 'Button' });
-      expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
+      expect(wrapper.getElement()).toHaveAccessibleName('Button');
+    });
+
+    test('adds ariaLabel as title attribute - icon-only', () => {
+      const wrapper = renderButton({ ariaLabel: 'Benjamin', variant: 'icon', iconName: 'add-plus' });
+      expect(wrapper.getElement()).toHaveAttribute('title', 'Benjamin');
+    });
+
+    test('adds ariaLabel as title attribute - standard', () => {
+      const wrapper = renderButton({ ariaLabel: 'Remove item 1', children: 'Remove' });
+      expect(wrapper.getElement()).toHaveAttribute('title', 'Remove item 1');
+    });
+
+    test('does not add title to buttons without ariaLabel', () => {
+      const wrapper = renderButton({ variant: 'icon', iconName: 'add-plus' });
+      expect(wrapper.getElement()).not.toHaveAttribute('title');
     });
   });
 
@@ -522,4 +537,28 @@ describe('Button Component', () => {
       );
     });
   });
+
+  test.each(['normal', 'primary', 'link'] as const)(
+    'Assigns full-width class for buttons with content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, children: 'Content' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: true });
+    }
+  );
+
+  test.each(['normal', 'primary', 'link'] as const)(
+    'Does not assign full-width class buttons without content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, iconName: 'settings', iconAlign: 'left' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: false });
+    }
+  );
+
+  test.each(['icon', 'inline-icon'] as const)(
+    'Does not assign full-width class buttons without content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, iconName: 'settings', iconAlign: 'left' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: false });
+    }
+  );
 });

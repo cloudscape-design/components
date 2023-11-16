@@ -12,17 +12,21 @@ import PopoverContainer from '../../popover/container';
 import PopoverBody from '../../popover/body';
 import Portal from '../../internal/components/portal';
 import popoverStyles from '../../popover/styles.css.js';
+import { DATA_ATTR_FUNNEL_KEY } from '../../internal/analytics/selectors';
+import { FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
   item: T;
   isLast: boolean;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
+  funnelAttributes: Record<string, string>;
 };
 
 const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   item,
   isLast,
   anchorAttributes,
+  funnelAttributes,
   ...itemAttributes
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -97,7 +101,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         onMouseLeave={() => setShowPopover(false)}
         anchorAttributes={anchorAttributes}
       >
-        <span className={styles.text} ref={textRef}>
+        <span {...funnelAttributes} className={styles.text} ref={textRef}>
           {item.text}
         </span>
         <span className={styles['virtual-item']} ref={virtualTextRef}>
@@ -146,27 +150,33 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     onClick: isLast ? preventDefault : onClickHandler,
   };
 
+  const funnelAttributes: Record<string, string> = {};
+  if (isLast) {
+    funnelAttributes[DATA_ATTR_FUNNEL_KEY] = FUNNEL_KEY_FUNNEL_NAME;
+  }
+
   return (
-    <>
-      <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
-        {isDisplayed && isCompressed ? (
-          <BreadcrumbItemWithPopover
-            item={item}
-            isLast={isLast}
-            anchorAttributes={anchorAttributes}
-            {...itemAttributes}
-          />
-        ) : (
-          <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
-            <span className={styles.text}>{item.text}</span>
-          </Item>
-        )}
-        {!isLast ? (
-          <span className={styles.icon}>
-            <InternalIcon name="angle-right" />
+    <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
+      {isDisplayed && isCompressed ? (
+        <BreadcrumbItemWithPopover
+          item={item}
+          isLast={isLast}
+          anchorAttributes={anchorAttributes}
+          funnelAttributes={funnelAttributes}
+          {...itemAttributes}
+        />
+      ) : (
+        <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
+          <span {...funnelAttributes} className={styles.text}>
+            {item.text}
           </span>
-        ) : null}
-      </div>
-    </>
+        </Item>
+      )}
+      {!isLast ? (
+        <span className={styles.icon}>
+          <InternalIcon name="angle-right" />
+        </span>
+      ) : null}
+    </div>
   );
 }

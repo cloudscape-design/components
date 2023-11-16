@@ -25,7 +25,7 @@ Here is a basic example that renders a primary button:
 import Button from '@cloudscape-design/components/button';
 import '@cloudscape-design/global-styles/index.css';
 
-function App {
+function App() {
   return <Button variant="primary">Click me</Button>;
 }
 ```

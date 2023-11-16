@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isMotionDisabled } from '../internal/motion';
+import { isMotionDisabled } from '@cloudscape-design/component-toolkit/internal';
 import isNativeSmoothScrollingSupported from './native-smooth-scroll-supported';
 
 interface ScrollContext {

@@ -34,7 +34,9 @@ import { joinStrings } from '../internal/utils/strings';
 const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
 const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
 
-export interface PropertyFilterAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
+export interface PropertyFilterAutosuggestProps
+  extends Omit<AutosuggestProps, 'filteringResultsText'>,
+    InternalBaseComponentProps {
   customForm?: React.ReactNode;
   filterText?: string;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
@@ -151,7 +153,12 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
     const isEmpty = !value && !autosuggestItemsState.items.length;
-    const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
+    const dropdownStatus = useDropdownStatus({
+      ...props,
+      isEmpty,
+      onRecoveryClick: handleRecoveryClick,
+      hasRecoveryCallback: !!onLoadItems,
+    });
 
     let content = null;
     if (customForm) {
@@ -163,6 +170,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     } else if (autosuggestItemsState.items.length > 0) {
       content = (
         <AutosuggestOptionsList
+          statusType={statusType}
           autosuggestItemsState={autosuggestItemsState}
           autosuggestItemsHandlers={autosuggestItemsHandlers}
           highlightedOptionId={highlightedOptionId}
@@ -203,7 +211,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}
         dropdownFooter={
-          dropdownStatus.isSticky ? (
+          dropdownStatus.isSticky && dropdownStatus.content ? (
             <DropdownFooter
               content={dropdownStatus.content}
               hasItems={autosuggestItemsState.items.length >= 1}

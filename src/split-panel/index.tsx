@@ -8,27 +8,25 @@ import { getBaseProps } from '../internal/base-component';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 
-import { SplitPanelProps, SizeControlProps } from './interfaces';
+import { SplitPanelProps } from './interfaces';
 import ResizeHandler from './icons/resize-handler';
 import PreferencesModal from './preferences-modal';
-import { usePointerEvents } from './utils/use-pointer-events';
-import { useKeyboardEvents } from './utils/use-keyboard-events';
+import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
+import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
+import { SizeControlProps } from '../app-layout/utils/interfaces';
 
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
-import { getLimitedValue } from './utils/size-utils';
 import { Transition } from '../internal/components/transition';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SplitPanelContentSide } from './side';
 import { SplitPanelContentBottom } from './bottom';
+import { useInternalI18n } from '../i18n/context';
 
 export { SplitPanelProps };
-
-const MIN_HEIGHT = 160;
-const MIN_WIDTH = 280;
 
 export default function SplitPanel({
   header,
@@ -41,9 +39,6 @@ export default function SplitPanel({
   const isRefresh = useVisualRefresh();
   const { __internalRootRef } = useBaseComponent('SplitPanel');
   const {
-    size,
-    getMaxWidth,
-    getMaxHeight,
     position,
     topOffset,
     bottomOffset,
@@ -54,69 +49,29 @@ export default function SplitPanel({
     onPreferencesChange,
     onResize,
     onToggle,
-    reportSize,
+    size,
+    relativeSize,
     setSplitPanelToggle,
     refs,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
+  const i18n = useInternalI18n('split-panel');
   const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
-  const [relativeSize, setRelativeSize] = useState(0);
-  const [maxSize, setMaxSize] = useState(size);
-  const minSize = position === 'bottom' ? MIN_HEIGHT : MIN_WIDTH;
-  const cappedSize = getLimitedValue(minSize, size, maxSize);
+
   const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
 
+  const openButtonAriaLabel = i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel);
   useEffect(() => {
-    setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: i18nStrings.openButtonAriaLabel });
-  }, [setSplitPanelToggle, i18nStrings.openButtonAriaLabel, closeBehavior]);
-
-  useEffect(() => {
-    // effects are called inside out in the components tree
-    // wait one frame to allow app-layout to complete its calculations
-    const handle = requestAnimationFrame(() => {
-      const maxSize = position === 'bottom' ? getMaxHeight() : getMaxWidth();
-      setRelativeSize(((size - minSize) / (maxSize - minSize)) * 100);
-      setMaxSize(maxSize);
-    });
-    return () => cancelAnimationFrame(handle);
-  }, [size, minSize, position, getMaxHeight, getMaxWidth]);
-
-  useEffect(() => {
-    reportSize(cappedSize);
-  }, [reportSize, cappedSize]);
-
-  useEffect(() => {
-    const handler = () => setMaxSize(position === 'bottom' ? getMaxHeight() : getMaxWidth());
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, [position, getMaxWidth, getMaxHeight]);
-
-  const setSidePanelWidth = (width: number) => {
-    const maxWidth = getMaxWidth();
-    const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
-
-    if (isOpen && maxWidth >= MIN_WIDTH) {
-      onResize({ size });
-    }
-  };
-
-  const setBottomPanelHeight = (height: number) => {
-    const maxHeight = getMaxHeight();
-    const size = getLimitedValue(MIN_HEIGHT, height, maxHeight);
-
-    if (isOpen && maxHeight >= MIN_HEIGHT) {
-      onResize({ size });
-    }
-  };
+    setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: openButtonAriaLabel });
+  }, [setSplitPanelToggle, openButtonAriaLabel, closeBehavior]);
 
   const splitPanelRefObject = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
     position,
-    splitPanelRef: splitPanelRefObject,
+    panelRef: splitPanelRefObject,
     handleRef: refs.slider,
-    setSidePanelWidth,
-    setBottomPanelHeight,
+    onResize,
   };
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
@@ -126,7 +81,6 @@ export default function SplitPanel({
       value={{
         stickyOffsetTop: topOffset,
         stickyOffsetBottom: bottomOffset,
-        hasBreadcrumbs: false,
       }}
     >
       {children}
@@ -149,7 +103,7 @@ export default function SplitPanel({
               variant="icon"
               onClick={() => setPreferencesOpen(true)}
               formAction="none"
-              ariaLabel={i18nStrings.preferencesTitle}
+              ariaLabel={i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle)}
               ref={refs.preferences}
             />
             <span className={styles.divider} />
@@ -165,7 +119,7 @@ export default function SplitPanel({
             variant="icon"
             onClick={onToggle}
             formAction="none"
-            ariaLabel={i18nStrings.closeButtonAriaLabel}
+            ariaLabel={i18n('i18nStrings.closeButtonAriaLabel', i18nStrings?.closeButtonAriaLabel)}
             ariaExpanded={isOpen}
           />
         ) : position === 'side' ? null : (
@@ -174,7 +128,7 @@ export default function SplitPanel({
             iconName="angle-up"
             variant="icon"
             formAction="none"
-            ariaLabel={i18nStrings.openButtonAriaLabel}
+            ariaLabel={i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel)}
             ref={refs.toggle}
             ariaExpanded={isOpen}
           />
@@ -188,7 +142,7 @@ export default function SplitPanel({
       ref={refs.slider}
       role="slider"
       tabIndex={0}
-      aria-label={i18nStrings.resizeHandleAriaLabel}
+      aria-label={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
       aria-valuemax={100}
       aria-valuemin={0}
       // Allows us to use the logical left/right keys to move the slider left/right,
@@ -254,9 +208,9 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
-              cappedSize={cappedSize}
+              cappedSize={size}
               onToggle={onToggle}
-              i18nStrings={i18nStrings}
+              openButtonAriaLabel={i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel)}
               toggleRef={refs.toggle}
               header={wrappedHeader}
               panelHeaderId={panelHeaderId}
@@ -271,7 +225,7 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
-              cappedSize={cappedSize}
+              cappedSize={size}
               onToggle={onToggle}
               header={wrappedHeader}
               panelHeaderId={panelHeaderId}
@@ -289,13 +243,16 @@ export default function SplitPanel({
               disabledSidePosition={position === 'bottom' && isForcedPosition}
               isRefresh={isRefresh}
               i18nStrings={{
-                header: i18nStrings.preferencesTitle,
-                confirm: i18nStrings.preferencesConfirm,
-                cancel: i18nStrings.preferencesCancel,
-                positionLabel: i18nStrings.preferencesPositionLabel,
-                positionDescription: i18nStrings.preferencesPositionDescription,
-                positionBottom: i18nStrings.preferencesPositionBottom,
-                positionSide: i18nStrings.preferencesPositionSide,
+                header: i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle),
+                confirm: i18n('i18nStrings.preferencesConfirm', i18nStrings?.preferencesConfirm),
+                cancel: i18n('i18nStrings.preferencesCancel', i18nStrings?.preferencesCancel),
+                positionLabel: i18n('i18nStrings.preferencesPositionLabel', i18nStrings?.preferencesPositionLabel),
+                positionDescription: i18n(
+                  'i18nStrings.preferencesPositionDescription',
+                  i18nStrings?.preferencesPositionDescription
+                ),
+                positionBottom: i18n('i18nStrings.preferencesPositionBottom', i18nStrings?.preferencesPositionBottom),
+                positionSide: i18n('i18nStrings.preferencesPositionSide', i18nStrings?.preferencesPositionSide),
               }}
               onConfirm={preferences => {
                 onPreferencesChange({ ...preferences });

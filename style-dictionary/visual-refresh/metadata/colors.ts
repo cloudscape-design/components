@@ -3,6 +3,26 @@
 import { StyleDictionary } from '../../utils/interfaces';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  colorBackgroundButtonNormalActive: {
+    description: 'The background color of normal buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalDefault: {
+    description: 'The default background color of normal buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalDisabled: {
+    description: 'The background color of normal buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalHover: {
+    description: 'The background color of normal buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonPrimaryActive: {
     description: 'The background color of primary buttons in active state.',
     themeable: true,
@@ -104,7 +124,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBackgroundLayoutMain: {
-    description: 'The background color of the main content area on a page. For example:  content area in app layout.',
+    description: 'The background color of the main content area on a page. For example: content area in app layout.',
     public: true,
     themeable: true,
   },
@@ -157,6 +177,36 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundNotificationYellow: {
+    description: 'Background color for yellow notifications. For example: yellow badges and warning flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundPopover: {
+    description: 'Background color for the popover container.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentActive: {
+    description: 'The background color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentDefault: {
+    description: 'The background color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentDisabled: {
+    description: 'The background color of disabled segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentHover: {
+    description: 'The background color of inactive segments in a segmented control on hover.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundStatusError: {
     description: 'The background color of an item in error state. For example: error alerts.',
     public: true,
@@ -182,7 +232,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  colorBorderButtonNormalActive: { description: 'The border color of normal buttons in active state.' },
+  colorBorderButtonNormalActive: {
+    description: 'The border color of normal buttons in active state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
   colorBorderButtonNormalDisabled: {
     description: 'The border color of normal buttons in disabled state.',
@@ -245,6 +299,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderSegmentActive: {
+    description: 'The border color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentDefault: {
+    description: 'The border color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentDisabled: {
+    description: 'The border color of disabled segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentHover: {
+    description: 'The border color of inactive segments in a segmented control on hover.',
+    public: true,
+    themeable: true,
+  },
   colorBorderStatusError: {
     description: 'The border color of an item in error state. For example: error alerts.',
     public: true,
@@ -295,6 +369,16 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The color of text that is secondary to base text. For example: text in the navigation and tools panels.',
     public: true,
     themeable: true,
+  },
+  colorTextBreadcrumbCurrent: {
+    description: 'The text color that marks the breadcrumb item for the page the user is currently viewing.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBreadcrumbIcon: {
+    description: 'The color used for the icon delimiter between breadcrumb items.',
+    themeable: true,
+    public: true,
   },
   colorTextButtonNormalActive: {
     description: 'The active text color of normal buttons. For example: Active text color in normal and link buttons.',
@@ -470,9 +554,29 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextLayoutToggle: {
+    description: 'The default color of the app layout toggle.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleActive: {
+    description: "The color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleHover: {
+    description: 'The color of the app layout toggle button on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleSelected: {
+    description: "The color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
+  },
   colorTextLabel: {
     description:
-      "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+      "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
     public: true,
     themeable: true,
   },
@@ -490,6 +594,21 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextNotificationDefault: {
     description: 'Default text color for notifications. For example: the text on badges and flashes.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentActive: {
+    description: 'The text color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentDefault: {
+    description: 'The text color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentHover: {
+    description: 'The text color of inactive segments in a segmented control on hover.',
     public: true,
     themeable: true,
   },

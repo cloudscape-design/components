@@ -58,7 +58,11 @@ export default function () {
               </Toggle>
             </SpaceBetween>
             <SpaceBetween size="xxs">
-              <Toggle onChange={() => toggleContentLayout(!contentLayout)} checked={contentLayout}>
+              <Toggle
+                data-testid="toggle-content-layout"
+                onChange={() => toggleContentLayout(!contentLayout)}
+                checked={contentLayout}
+              >
                 Content layout
               </Toggle>
               <Box padding={{ left: 'xxl' }}>

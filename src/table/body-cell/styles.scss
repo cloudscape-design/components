@@ -18,6 +18,12 @@ $cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{aws
 $selected-border: awsui.$border-item-width solid awsui.$color-border-item-selected;
 $selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
 $border-placeholder: awsui.$border-item-width solid transparent;
+$icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
+// Right paddings of the absolute positioned icons (success icon is shown next to the edit icon)
+$edit-button-padding-right: calc(
+  #{awsui.$space-xs} + #{awsui.$space-xxs}
+); // Cell vertical padding + xxs space that would normally come from the button.
+$success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 
 .body-cell {
   box-sizing: border-box;
@@ -95,6 +101,13 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     border-top: $selected-border;
     border-bottom: $selected-border;
     padding-bottom: $cell-vertical-padding;
+
+    // Last selected row has a fixed border-bottom width which do not change on selection in visual refresh.
+    // Adjust padding-bottom prevents a slight jump in the table height.
+    &.body-cell-last-row.is-visual-refresh {
+      padding-bottom: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+    }
+
     &:first-child {
       border-left: $selected-border;
       border-radius: awsui.$border-radius-item 0 0 awsui.$border-radius-item;
@@ -180,6 +193,15 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
   }
+
+  &-editor {
+    padding: 0 $edit-button-padding-right 0 0;
+  }
+
+  &-success {
+    padding: 0 $success-icon-padding-right 0 0;
+  }
+
   &-success,
   &-editor {
     top: 0;
@@ -196,10 +218,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     outline: 0;
     background: 0;
     border: 0;
-    padding: 0;
 
-    // Additional xxs padding that would normally come from the Inline Icon Button
-    padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
     color: awsui.$color-text-button-normal-default;
 
     &:hover {
@@ -256,20 +275,22 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           opacity: 1;
         }
         & > .body-cell-success {
-          opacity: 0;
+          opacity: 1;
         }
       }
       & > .body-cell-editor {
         opacity: 0;
-      }
-      &.body-cell-has-success {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
       }
       // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
       // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
       // It's therefore important to display the focus outline, even when a keyboard user wasn't detected.
       // For example, when an edit button is selected from the VoiceOver rotor menu.
       &:focus-within {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        &.body-cell-has-success {
+          // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
+          padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l} + #{$icon-width-with-spacing});
+        }
         @include focused-editor-styles;
         @include styles.focus-highlight(
           (
@@ -277,11 +298,14 @@ $border-placeholder: awsui.$border-item-width solid transparent;
             'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
           )
         );
+        &.sticky-cell {
+          position: sticky;
+        }
       }
       &:hover {
         position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
-        border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+        border: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
         @include focused-editor-styles;
@@ -290,7 +314,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           right: 0;
         }
         & > .body-cell-editor {
-          padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs} - (2 * #{awsui.$border-divider-list-width}));
+          padding-right: calc(#{$edit-button-padding-right} - (2 * #{awsui.$border-divider-list-width}));
+        }
+        & > .body-cell-success {
+          // Update padding to avoid a jumping icon because of the additional borders added when hovering an editable cell.
+          padding-right: calc(#{$success-icon-padding-right} - (2 * #{awsui.$border-divider-list-width}));
         }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
@@ -304,6 +332,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
           padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
         }
+        &.sticky-cell {
+          position: sticky;
+        }
       }
     }
   }
@@ -316,6 +347,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-top-right-radius: awsui.$border-radius-item;
       border-bottom-right-radius: awsui.$border-radius-item;
     }
+    &.body-cell-first-row > .body-cell-success,
     &.body-cell-first-row > .body-cell-editor {
       padding-top: awsui.$border-divider-list-width;
     }

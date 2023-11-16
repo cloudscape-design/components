@@ -45,6 +45,12 @@ export interface MixedLineBarChartProps<T extends ChartDataTypes>
    * See the usage guidelines for more details.
    */
   emphasizeBaselineAxis?: boolean;
+
+  /**
+   * Determines the type of scale for values on the x axis.
+   * Use `categorical` for charts with bars.
+   */
+  xScaleType?: ScaleType;
 }
 
 export namespace MixedLineBarChartProps {

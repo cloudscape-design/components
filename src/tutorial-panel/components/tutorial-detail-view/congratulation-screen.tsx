@@ -42,7 +42,7 @@ export function CongratulationScreen({ children, onFeedbackClick, i18nStrings }:
       <div className={styles.divider} />
 
       {onFeedbackClick && (
-        <InternalLink onFollow={onFeedbackClick} className={styles['feedback-link']}>
+        <InternalLink onFollow={onFeedbackClick} className={styles['feedback-link']} variant="primary">
           {i18nStrings.feedbackLinkText}
         </InternalLink>
       )}

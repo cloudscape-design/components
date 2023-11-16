@@ -9,22 +9,18 @@ import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Main() {
   const {
-    breadcrumbs,
     content,
-    contentHeader,
-    contentType,
     disableContentPaddings,
-    dynamicOverlapHeight,
+    footerHeight,
     hasDrawerViewportOverlay,
-    hasNotificationsContent,
     isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
     mainElement,
-    splitPanelDisplayed,
     offsetBottom,
-    footerHeight,
+    splitPanelDisplayed,
     splitPanelPosition,
+    activeDrawerId,
   } = useAppLayoutInternals();
 
   const splitPanelHeight = offsetBottom - footerHeight;
@@ -33,17 +29,13 @@ export default function Main() {
     <div
       className={clsx(
         styles.container,
-        styles[`content-type-${contentType}`],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-content-paddings']]: disableContentPaddings,
-          [styles['has-breadcrumbs']]: breadcrumbs,
-          [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
-          [styles['has-header']]: contentHeader,
-          [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['is-navigation-open']]: isNavigationOpen,
           [styles['is-tools-open']]: isToolsOpen,
+          [styles['has-active-drawer']]: !!activeDrawerId,
           [styles['is-split-panel-open']]: isSplitPanelOpen,
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },

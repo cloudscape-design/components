@@ -8,6 +8,7 @@ import { IconProps } from '../icon/interfaces';
 export interface TokenGroupProps extends BaseComponentProps {
   /**
    * An object containing all the necessary localized strings required by the component.
+   * @i18n
    */
   i18nStrings?: TokenGroupProps.I18nStrings;
 
@@ -20,6 +21,12 @@ export interface TokenGroupProps extends BaseComponentProps {
    * Specifies the direction in which tokens are aligned (`horizontal | vertical`).
    */
   alignment?: TokenGroupProps.Alignment;
+
+  /**
+   * Removes any outer padding from the component.
+   * We recommend to always enable this property.
+   */
+  disableOuterPadding?: boolean;
 
   /**
    *

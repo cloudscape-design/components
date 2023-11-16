@@ -8,7 +8,7 @@ import Multiselect from '~components/multiselect';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { useStickyColumns } from '~components/table/use-sticky-columns';
+import { useStickyColumns } from '~components/table/sticky-columns';
 
 const baseColumnDefinition = { cell: () => 'Cell content', header: 'Column header' };
 
@@ -66,7 +66,9 @@ export default function InlineEditorPermutations() {
                     onEditEnd={() => {}}
                     wrapLines={false}
                     columnId="id"
+                    colIndex={0}
                     stickyState={stickyState}
+                    tableRole="grid"
                     {...permutation}
                   />
                 </tr>

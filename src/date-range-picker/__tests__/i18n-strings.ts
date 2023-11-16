@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from '../interfaces';
 
-export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
+export const i18nStrings: DateRangePickerProps.I18nStrings = {
   ariaLabel: 'date range picker',
   todayAriaLabel: 'TEST TODAY',
   nextMonthAriaLabel: 'TEST NEXT MONTH',
@@ -15,6 +15,7 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   formatRelativeRange: range => `${range.unit}${range.amount}`,
   formatUnit: (unit, value) => (value === 1 ? unit : `${unit}s`),
   dateTimeConstraintText: 'Range must be between 6 and 30 days. Use 24 hour format.',
+  modeSelectionLabel: 'Date range mode',
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
   relativeRangeSelectionHeading: 'Choose a range',

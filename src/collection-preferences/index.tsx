@@ -27,7 +27,8 @@ import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import ContentDisplayPreference from './content-display';
-import { warnOnce } from '../internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useInternalI18n } from '../i18n/context';
 
 export { CollectionPreferencesProps };
 
@@ -54,11 +55,14 @@ export default function CollectionPreferences({
 }: CollectionPreferencesProps) {
   const { __internalRootRef } = useBaseComponent('CollectionPreferences');
   checkControlled('CollectionPreferences', 'preferences', preferences, 'onConfirm', onConfirm);
+
+  const i18n = useInternalI18n('collection-preferences');
   const baseProps = getBaseProps(rest);
   const [modalVisible, setModalVisible] = useState(false);
   const [temporaryPreferences, setTemporaryPreferences] = useState(copyPreferences(preferences || {}));
   const triggerRef = useRef<ButtonProps.Ref>(null);
   const dialogPreviouslyOpen = useRef(false);
+
   useEffect(() => {
     if (!modalVisible) {
       dialogPreviouslyOpen.current && triggerRef.current && triggerRef.current.focus();
@@ -104,7 +108,7 @@ export default function CollectionPreferences({
         ref={triggerRef}
         className={styles['trigger-button']}
         disabled={disabled}
-        ariaLabel={title}
+        ariaLabel={i18n('title', title)}
         onClick={() => {
           setTemporaryPreferences(copyPreferences(preferences || {}));
           setModalVisible(true);
@@ -117,7 +121,7 @@ export default function CollectionPreferences({
         <InternalModal
           className={styles['modal-root']}
           visible={true}
-          header={title}
+          header={i18n('title', title)}
           footer={
             <InternalBox float="right">
               <InternalSpaceBetween direction="horizontal" size="xs">
@@ -127,7 +131,7 @@ export default function CollectionPreferences({
                   formAction="none"
                   onClick={onCancelListener}
                 >
-                  {cancelLabel}
+                  {i18n('cancelLabel', cancelLabel)}
                 </InternalButton>
                 <InternalButton
                   className={styles['confirm-button']}
@@ -135,7 +139,7 @@ export default function CollectionPreferences({
                   formAction="none"
                   onClick={onConfirmListener}
                 >
-                  {confirmLabel}
+                  {i18n('confirmLabel', confirmLabel)}
                 </InternalButton>
               </InternalSpaceBetween>
             </InternalBox>

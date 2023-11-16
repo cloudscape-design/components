@@ -6,16 +6,19 @@ import { NonCancelableEventHandler } from '../internal/events';
 export interface CollectionPreferencesProps<CustomPreferenceType = any> extends BaseComponentProps {
   /**
    * Specifies the title of the preferences modal dialog. It is also used as an `aria-label` for the trigger button.
+   * @i18n
    */
-  title: string;
+  title?: string;
   /**
    * Label of the confirm button in the modal footer.
+   * @i18n
    */
-  confirmLabel: string;
+  confirmLabel?: string;
   /**
    * Label of the cancel button in the modal footer.
+   * @i18n
    */
-  cancelLabel: string;
+  cancelLabel?: string;
   /**
    * Determines whether the preferences trigger button is disabled.
    */
@@ -32,6 +35,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    *   - `label` (string) - A label for the radio button (for example, "10 resources").
    *
    * You must set the current value in the `preferences.pageSize` property.
+   * @i18n
    */
   pageSizePreference?: CollectionPreferencesProps.PageSizePreference;
   /**
@@ -44,6 +48,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below the checkbox label.
    *
    * You must set the current value in the `preferences.wrapLines` property.
+   * @i18n
    */
   wrapLinesPreference?: CollectionPreferencesProps.WrapLinesPreference;
   /**
@@ -56,6 +61,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below the checkbox label.
    *
    * You must set the current value in the `preferences.stripedRows` property.
+   * @i18n
    */
   stripedRowsPreference?: CollectionPreferencesProps.StripedRowsPreference;
   /**
@@ -68,6 +74,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below the checkbox label.
    *
    * You must set the current value in the `preferences.contentDensity` property.
+   * @i18n
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
@@ -80,6 +87,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `description` (string) - Specifies the text displayed below each radio group label.
    *
    * You must set the current value in the `preferences.stickyColumns` property.
+   * @i18n
    */
   stickyColumnsPreference?: CollectionPreferencesProps.StickyColumnsPreference;
   /**
@@ -104,6 +112,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `alwaysVisible` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to `false` by default.
    *
    * You must provide an ordered list of the items to display in the `preferences.contentDisplay` property.
+   * @i18n
    */
   contentDisplayPreference?: CollectionPreferencesProps.ContentDisplayPreference;
   /**
@@ -169,10 +178,14 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Called when the user confirms a preference change using the confirm button in the modal footer.
    *
    * The event `detail` contains the following:
-   * - `pageSize` (number) - (Optional) The selected page size value. Available only if you specify the `pageSizePreference` property.
-   * - `wrapLines` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the `wrapLinesPreference` property.
-   * - `visibleContent` (ReadonlyArray<string>) - (Optional) The list of selected content `id`s. Available only if you specify the `visibleContentPreference` property.
+   * - `contentDensity` (boolean) - (Optional) The current content density preference value. Available only if you specify the `contentDensityPreference` property.
+   * - `contentDisplay` (ReadonlyArray<ContentDisplayItem>) - (Optional) The ordered list of table columns and their visibility. Available only if you specify the `contentDisplayPreference` property.
    * - `custom` (CustomPreferenceType) - (Optional) The selected value for your custom preference.
+   * - `pageSize` (number) - (Optional) The selected page size value. Available only if you specify the `pageSizePreference` property.
+   * - `stickyColumns` (CollectionPreferencesProps.StickyColumns) - (Optional) The current sticky columns preference value. Available only if you specify the `stickyColumnsPreference` property.
+   * - `stripedRows` (boolean) - (Optional) The current striped rows preference value. Available only if you specify the `stripedRowsPreference` property.
+   * - `visibleContent` (ReadonlyArray<string>) - (Optional) The list of selected content `id`s. Available only if you specify the `visibleContentPreference` property.
+   * - `wrapLines` (boolean) - (Optional) The current line wrapping preference value. Available only if you specify the `wrapLinesPreference` property.
    *
    * The values for all configured preferences are present even if the user didn't change their values.
    */
@@ -192,7 +205,7 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface ContentDisplayPreference {
-    title: string;
+    title?: string;
     description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
     liveAnnouncementDndStarted?: (position: number, total: number) => string;
@@ -231,28 +244,28 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface PageSizePreference {
-    title: string;
+    title?: string;
     options: ReadonlyArray<PageSizeOption>;
   }
 
   export interface PageSizeOption {
     value: number;
-    label: string;
+    label?: string;
   }
 
   export interface WrapLinesPreference {
-    label: string;
-    description: string;
+    label?: string;
+    description?: string;
   }
 
   export interface StripedRowsPreference {
-    label: string;
-    description: string;
+    label?: string;
+    description?: string;
   }
 
   export interface ContentDensityPreference {
-    label: string;
-    description: string;
+    label?: string;
+    description?: string;
   }
 
   interface StickyColumns {

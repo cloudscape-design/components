@@ -83,8 +83,8 @@ export default function IconScenario() {
             </h2>
 
             <div>
-              <Box variant="h3" padding={{ vertical: 'xl' }}>
-                <Icon name="settings" size="inherit" id="static-test" /> Box h3 (normal/medium)
+              <Box variant="h2" padding={{ vertical: 'xl' }}>
+                <Icon name="settings" size="inherit" id="static-test" /> Box h2 (normal/medium)
               </Box>
             </div>
           </div>

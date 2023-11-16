@@ -10,8 +10,8 @@ import { KeyCode } from '../../keycode';
 import LiveRegion from '../live-region/index';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
-import focusSvgElement from '../../utils/focus-svg-element';
 import { Offset } from '../interfaces';
+import { useInternalI18n } from '../../../i18n/context';
 
 const DEFAULT_PLOT_FOCUS_OFFSET = 3;
 const DEFAULT_ELEMENT_FOCUS_OFFSET = 3;
@@ -23,8 +23,8 @@ export interface ChartPlotRef {
 }
 
 export interface ChartPlotProps {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
   transform?: string;
   offsetTop?: number;
   offsetBottom?: number;
@@ -93,6 +93,7 @@ function ChartPlot(
   }: ChartPlotProps,
   ref: React.Ref<ChartPlotRef>
 ) {
+  const i18n = useInternalI18n('[charts]');
   const svgRef = useRef<SVGSVGElement>(null);
   const applicationRef = useRef<ApplicationRef>(null);
   const plotClickedRef = useRef(false);
@@ -104,7 +105,7 @@ function ChartPlot(
 
   useImperativeHandle(ref, () => ({
     svg: svgRef.current!,
-    focusPlot: () => focusSvgElement(svgRef.current!),
+    focusPlot: () => svgRef.current!.focus(),
     focusApplication: () => applicationRef.current!.focus(),
   }));
 
@@ -157,7 +158,7 @@ function ChartPlot(
         'aria-label': ariaLabel,
         'aria-labelledby': ariaLabelledby,
         'aria-describedby': ariaDescriptionId,
-        'aria-roledescription': ariaRoleDescription,
+        'aria-roledescription': i18n('i18nStrings.chartAriaRoleDescription', ariaRoleDescription),
       }
     : {};
 
@@ -171,9 +172,9 @@ function ChartPlot(
         aria-hidden="false"
         {...plotAria}
         ref={svgRef}
-        width={width}
-        height={height}
         style={{
+          width,
+          height,
           marginTop: offsetTop,
           marginBottom: offsetBottom,
           marginLeft: offsetLeft,
@@ -190,7 +191,7 @@ function ChartPlot(
       >
         <FocusOutline elementRef={svgRef} elementKey={isPlotFocused} offset={focusOffset} />
 
-        <g transform={transform} role="group">
+        <g transform={transform}>
           <ApplicationController
             activeElementKey={activeElementKey || null}
             activeElementRef={activeElementRef}

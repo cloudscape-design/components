@@ -213,6 +213,13 @@ const permutations = createPermutations<TableProps>([
   },
   {
     columnDefinitions: [SORTABLE_COLUMNS],
+    items: [createSimpleItems(3)],
+    variant: [undefined, 'full-page'],
+    pagination: [undefined, 'pagination'],
+    footer: [undefined, 'footer'],
+  },
+  {
+    columnDefinitions: [SORTABLE_COLUMNS],
     header: [<Header variant="h2">Table Header</Header>],
     pagination: ['pagination'],
     filter: [

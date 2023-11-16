@@ -64,7 +64,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   /**
    *  Defines what to display in each card. It has the following properties:
    *  * `header` ((item) => ReactNode) - Responsible for displaying the card header. You receive the current item as an argument.
-   *      Use `fontSize="heading-m"` on [link](/components/link/) components inside card header.
+   *      Use `fontSize="inherit"` on [link](/components/link/) components inside card header.
    *  * `sections` (array) - Responsible for displaying the card content. Cards can have many sections in their
    *    body. Each entry in the array is responsible for displaying a section. An entry has the following properties:
    *    * `id`: (string) - A unique identifier for the section. The property is used as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -157,6 +157,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * state of the component (for example, the `selectedItems` list). The label function for individual
    * items also receives the corresponding  `Item` object. You can use the group label to
    * add a meaningful description to the whole selection.
+   * @i18n
    */
   ariaLabels?: CardsProps.AriaLabels<T>;
   /**
@@ -183,6 +184,22 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   stickyHeaderVerticalOffset?: number;
 
   /**
+   * Use this property to inform screen readers how many cards there are.
+   * It specifies the total number of cards.
+   * If there is an unknown total number of cards, leave this property undefined.   */
+  totalItemsCount?: number;
+  /**
+   *  Use this property to inform screen readers which range of cards is currently displayed.
+   *  It specifies the index (1-based) of the first card.
+   *  If the cards list has no pagination, leave this property undefined.   */
+  firstIndex?: number;
+  /**
+   * Use this function to announce page changes to screen reader users.
+   * Requires the properties firstIndex and totalItemsCount to be set correctly.
+   */
+  renderAriaLive?: (data: CardsProps.LiveAnnouncement) => string;
+
+  /**
    * Specify a cards variant with one of the following:
    * * `container` - Use this variant to have the cards displayed as a container.
    * * `full-page` – Use this variant when cards are the entire content of a page. Full page variants
@@ -190,6 +207,12 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * @visualrefresh `full-page` variant
    */
   variant?: 'container' | 'full-page';
+
+  /**
+   * Activating this property makes the entire card clickable to select it.
+   * Don't use this property if the card has any other interactive elements.
+   */
+  entireCardClickable?: boolean;
 }
 
 export namespace CardsProps {
@@ -229,6 +252,13 @@ export namespace CardsProps {
     selectionGroupLabel: string;
     cardsLabel?: string;
   }
+
+  export interface LiveAnnouncement {
+    totalItemsCount?: number;
+    firstIndex: number;
+    lastIndex: number;
+  }
+
   export interface Ref {
     /**
      * When the sticky header is enabled, calling this function scrolls cards's

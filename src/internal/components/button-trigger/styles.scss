@@ -98,4 +98,10 @@
       @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
     }
   }
+
+  &.inline-tokens {
+    // Remove default paddings and just rely on center alignment of the content
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }

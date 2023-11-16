@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { InternalContainerProps } from '../container/internal';
+import { StickyColumnsCellState } from './sticky-columns';
 import { TableProps } from './interfaces';
-import { warnOnce } from '../internal/logging';
-import { StickyColumnsCellState } from './use-sticky-columns';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {
   if (typeof trackBy === 'function') {
@@ -32,7 +32,7 @@ export const getColumnKey = <T>(column: TableProps.ColumnDefinition<T>, index: n
 
 export const toContainerVariant = (variant: TableProps.Variant | undefined): InternalContainerProps['variant'] => {
   const isDefaultVariant = !variant || variant === 'container';
-  return isDefaultVariant ? 'default' : variant;
+  return isDefaultVariant ? 'default' : variant === 'borderless' ? 'embedded' : variant;
 };
 
 export function checkSortingState<T>(

@@ -28,7 +28,11 @@ const onBlur = () => {
 };
 
 export default function MultiselectPage() {
-  const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>([]);
+  const selectableOptions = options.filter(o => !o.disabled && !('options' in o));
+  const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>([
+    selectableOptions[10],
+    selectableOptions[15],
+  ]);
   const [selectedOptions2, setSelectedOptions2] = React.useState<MultiselectProps.Options>([]);
 
   return (
@@ -76,6 +80,7 @@ export default function MultiselectPage() {
             filteringType="auto"
             filteringPlaceholder="Find equipment"
             filteringAriaLabel="Filtering aria label"
+            filteringResultsText={(matchesCount, totalCount) => `${matchesCount} out of ${totalCount} items`}
             options={options}
             name="choose_equipment"
             placeholder={'Choose equipment'}

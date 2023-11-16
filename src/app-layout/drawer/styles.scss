@@ -3,6 +3,8 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '../../internal/hooks/focus-visible' as focus-visible;
 @use '../constants' as constants;
 
 // should be above sticky notifications
@@ -29,7 +31,6 @@ $drawer-z-index-mobile: 1001;
   }
   &-closed {
     min-width: constants.$sidebar-size-closed;
-    cursor: pointer;
     &.drawer-mobile {
       display: none;
     }
@@ -48,52 +49,55 @@ $drawer-z-index-mobile: 1001;
   }
   .drawer-closed > & {
     width: constants.$sidebar-size-closed;
-    &:hover {
-      background: awsui.$color-background-layout-panel-hover;
-    }
-    &.non-interactive {
+    &.drawer-content-clickable {
+      cursor: pointer;
+      color: awsui.$color-text-interactive-default;
       &:hover {
-        background: awsui.$color-background-layout-panel-content;
-        cursor: default;
+        background: awsui.$color-background-layout-panel-hover;
       }
     }
   }
   & > [aria-hidden='true'] {
     display: none;
   }
+  > .drawer-resize-content {
+    overflow: auto;
+    height: 100%;
+    position: relative;
+  }
 }
 
-.trigger {
-  .drawer-triggers > & {
-    padding: constants.$drawers-padding;
-    margin: 1px constants.$drawers-padding-horizontal;
-    border-radius: 0;
-    border: 0;
+.drawer-triggers-wrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: stretch;
+}
 
-    &:not(:last-child) {
-      box-shadow: 0px 1px awsui.$color-shadow-layout-panel-trigger;
-    }
-    &-drawer {
-      &:hover:not(.selected) {
-        color: awsui.$color-text-layout-panel-trigger-hover;
-        &:not(:last-child) {
-          box-shadow: 0px 1px awsui.$color-shadow-layout-panel-trigger;
-        }
-      }
-    }
-
-    &.selected {
-      padding: constants.$drawers-padding-vertical awsui.$space-s;
-      margin: 0;
-      border-top: 1px solid awsui.$color-background-layout-panel-trigger-active;
-      border-bottom: 1px solid awsui.$color-background-layout-panel-trigger-active;
-
-      background-color: awsui.$color-background-layout-panel-trigger-active;
-      color: awsui.$color-text-layout-panel-trigger-active;
-      box-shadow: none;
+.drawer-trigger {
+  padding: constants.$toggle-padding;
+  cursor: pointer;
+  color: awsui.$color-text-interactive-default;
+  &:not(:first-child) {
+    border-top: 1px solid awsui.$color-border-layout;
+  }
+  &:hover {
+    color: awsui.$color-text-layout-toggle-hover;
+  }
+  &-active,
+  &-active:hover {
+    background-color: awsui.$color-background-layout-toggle-selected-default;
+    color: awsui.$color-text-layout-toggle-active;
+  }
+  .drawer-triggers-wrapper > & {
+    .drawer-content-clickable > & {
       &:hover {
-        cursor: default;
+        color: awsui.$color-text-interactive-default;
       }
     }
   }
+}
+
+.hide {
+  display: none;
 }

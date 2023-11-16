@@ -110,6 +110,53 @@
   stroke-width: 2px;
 }
 
-.filter-container {
-  /* used in test-utils */
+.chart-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+
+  &.fit-height {
+    height: 100%;
+    min-height: inherit;
+  }
+}
+
+.chart-container-outer {
+  display: flex;
+
+  &.fit-height {
+    flex: 1;
+  }
+}
+
+.chart-container-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.chart-container-plot-wrapper {
+  &.fit-height {
+    display: block;
+    position: relative;
+    flex: 1;
+  }
+}
+
+.chart-container-plot {
+  &.fit-height {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.chart-container-bottom-labels {
+  &.fit-height {
+    display: block;
+  }
 }

@@ -4,9 +4,10 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
-import { warnOnce } from '../../../lib/components/internal/logging';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-jest.mock('../../../lib/components/internal/logging', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
@@ -211,11 +212,10 @@ describe('with stickyHeader=true', () => {
       { minWidth: '100px', width: '', maxWidth: '' },
       { minWidth: '', width: '', maxWidth: '300px' },
     ]);
-    // in JSDOM, there is no layout, so copied width is "0px" and no value is ""
     expect(extractSize(fakeHeader)).toEqual([
-      { minWidth: '', width: '0px', maxWidth: '' },
-      { minWidth: '', width: '0px', maxWidth: '' },
-      { minWidth: '', width: '0px', maxWidth: '' },
+      { minWidth: '', width: '200px', maxWidth: '' },
+      { minWidth: '', width: '', maxWidth: '' },
+      { minWidth: '', width: '', maxWidth: '' },
     ]);
   });
 });

@@ -23,7 +23,7 @@
   }
   &.parent {
     font-weight: bold;
-    &:not(.disabled) {
+    &:not(.disabled):not(.highlighted) {
       color: awsui.$color-text-dropdown-group-label;
     }
   }
@@ -100,7 +100,7 @@
 }
 
 .icon-size-big {
-  padding-top: awsui.$space-xxxs;
+  padding-top: awsui.$space-option-icon-big-top;
 }
 
 .filtering-match-highlight {

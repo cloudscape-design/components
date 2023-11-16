@@ -4,12 +4,14 @@ import React from 'react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
+import Header from '../../../lib/components/header';
 import { render } from '@testing-library/react';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 interface Item {
   id: number;
   name: string;
+  value: string;
 }
 
 const defaultColumns: TableProps.ColumnDefinition<Item>[] = [
@@ -18,9 +20,9 @@ const defaultColumns: TableProps.ColumnDefinition<Item>[] = [
 ];
 
 const defaultItems: Item[] = [
-  { id: 1, name: 'Apples' },
-  { id: 2, name: 'Oranges' },
-  { id: 3, name: 'Bananas' },
+  { id: 1, name: 'Apples', value: 'apples' },
+  { id: 2, name: 'Oranges', value: 'oranges' },
+  { id: 3, name: 'Bananas', value: 'bananas' },
 ];
 
 function renderTableWrapper(props?: Partial<TableProps>) {
@@ -34,6 +36,26 @@ afterAll(() => {
   jest.restoreAllMocks();
 });
 
+describe('roles', () => {
+  test('table has role="table" when no columns are editable', () => {
+    const wrapper = renderTableWrapper({ columnDefinitions: defaultColumns });
+    expect(wrapper.find('[role="table"]')).not.toBeNull();
+    expect(wrapper.find('[role="grid"]')).toBeNull();
+  });
+
+  test('table has role="grid" when at least one defined column is editable', () => {
+    const wrapper = renderTableWrapper({
+      columnDefinitions: [
+        ...defaultColumns,
+        { header: 'value', cell: item => item.value, editConfig: { editingCell: () => null } },
+      ],
+      visibleColumns: ['id', 'name'],
+    });
+    expect(wrapper.find('[role="table"]')).toBeNull();
+    expect(wrapper.find('[role="grid"]')).not.toBeNull();
+  });
+});
+
 describe('labels', () => {
   test('not to have aria-label if omitted', () => {
     const wrapper = renderTableWrapper();
@@ -45,6 +67,21 @@ describe('labels', () => {
       ariaLabels: { itemSelectionLabel: () => '', selectionGroupLabel: '', tableLabel },
     });
     expect(wrapper.find('[role=table]')!.getElement().getAttribute('aria-label')).toEqual(tableLabel);
+  });
+
+  test('automatically labels table with header if provided', () => {
+    const wrapper = renderTableWrapper({
+      header: <Header counter="(10)">Labelled table</Header>,
+    });
+    expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName('Labelled table');
+  });
+
+  test('aria-label has priority over auto-labelling', () => {
+    const wrapper = renderTableWrapper({
+      header: <Header>Labelled table</Header>,
+      ariaLabels: { itemSelectionLabel: () => '', selectionGroupLabel: '', tableLabel },
+    });
+    expect(wrapper.find('[role=table]')!.getElement()).toHaveAccessibleName(tableLabel);
   });
 
   describe('rows', () => {
@@ -65,7 +102,7 @@ describe('labels', () => {
       const [headerRow, firstRowInTable] = wrapper.findAll('tr');
       // header row is always index 1
       expect(headerRow!.getElement().getAttribute('aria-rowindex')).toEqual('1');
-      // rows in a table are index + 1  as header row is index 1
+      // rows in a table are index + 1 as header row is index 1
       expect(firstRowInTable!.getElement().getAttribute('aria-rowindex')).toEqual('22');
     });
   });

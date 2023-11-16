@@ -109,7 +109,7 @@ export default function OnboardingDemoPage() {
       onFinish={onFinish}
       i18nStrings={annotationContextStrings}
     >
-      <ScreenshotArea>
+      <ScreenshotArea gutters={false}>
         <AppLayout
           ariaLabels={labels}
           navigationHide={true}

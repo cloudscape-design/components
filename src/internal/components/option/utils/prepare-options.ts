@@ -13,5 +13,10 @@ export function prepareOptions(
   const { flatOptions, parentMap } = flattenOptions(options);
   const filteredOptions = filteringType !== 'auto' ? flatOptions : filterOptions(flatOptions, filteringText);
   generateTestIndexes(filteredOptions, parentMap.get.bind(parentMap));
-  return { filteredOptions, parentMap };
+  return {
+    filteredOptions,
+    parentMap,
+    totalCount: flatOptions.length,
+    matchesCount: filteredOptions.length,
+  };
 }
