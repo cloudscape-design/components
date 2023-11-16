@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "ID Versi",
     "i18nStrings.columnVersionLastModified": "Terakhir diubah",
     "i18nStrings.columnVersionSize": "Ukuran",
-    "i18nStrings.validationPathMustBegin": "Jalur harus dimulai dengan s3://",
+    "i18nStrings.validationPathMustBegin": "Jalur harus dimulai dengan s3:// agar valid.",
     "i18nStrings.validationBucketLowerCase": "Nama bucket harus diawali dengan karakter huruf kecil atau angka.",
     "i18nStrings.validationBucketMustNotContain": "Nama bucket tidak boleh berisi karakter huruf besar.",
     "i18nStrings.validationBucketLength": "Nama bucket harus terdiri dari 3 hingga 63 karakter.",
