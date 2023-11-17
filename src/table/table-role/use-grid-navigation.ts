@@ -16,33 +16,19 @@ import { getFirstFocusable } from '../../internal/components/focus-lock/utils';
  * The hook attaches the GridNavigationHelper helper when active=true.
  * See GridNavigationHelper for more details.
  */
-export function useGridNavigation({
-  keyboardNavigation,
-  suppressKeyboardNavigationFor,
-  pageSize,
-  getTable,
-}: GridNavigationProps) {
+export function useGridNavigation({ keyboardNavigation, pageSize, getTable }: GridNavigationProps) {
   const gridNavigation = useMemo(() => new GridNavigationHelper(), []);
 
   const getTableStable = useStableCallback(getTable);
-  const isSuppressedStable = useStableCallback((element: HTMLElement) => {
-    if (typeof suppressKeyboardNavigationFor === 'function') {
-      return suppressKeyboardNavigationFor(element);
-    }
-    if (typeof suppressKeyboardNavigationFor === 'string') {
-      return element.matches(suppressKeyboardNavigationFor);
-    }
-    return false;
-  });
 
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
   useEffect(() => {
     if (keyboardNavigation) {
       const table = getTableStable();
-      table && gridNavigation.init(table, isSuppressedStable);
+      table && gridNavigation.init(table);
     }
     return () => gridNavigation.cleanup();
-  }, [keyboardNavigation, gridNavigation, getTableStable, isSuppressedStable]);
+  }, [keyboardNavigation, gridNavigation, getTableStable]);
 
   // Notify the model of the props change.
   useEffect(() => {
@@ -54,7 +40,7 @@ export function useGridNavigation({
  * This helper encapsulates the grid navigation behaviors which are:
  * 1. Responding to keyboard commands and moving the focus accordingly;
  * 2. Muting table interactive elements for only one to be user-focusable at a time;
- * 3. Suppressing the above behaviors when focusing an element inside a dialog or when instructed by the isSuppressed callback.
+ * 3. Suppressing the above behaviors when focusing an element inside a dialog.
  *
  * All behaviors are attached upon initialization and are re-evaluated with every focusin, focusout, and keydown events,
  * and also when a node removal inside the table is observed to ensure consistency at any given moment.
@@ -67,7 +53,6 @@ class GridNavigationHelper {
   // Props
   private _pageSize = 0;
   private _table: null | HTMLTableElement = null;
-  private _isSuppressed: (focusedElement: HTMLElement) => boolean = () => false;
   private _tabbed: null | 'forward' | 'backward' = null;
 
   // State
@@ -75,9 +60,8 @@ class GridNavigationHelper {
   private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
 
-  public init(table: HTMLTableElement, isSuppressed: (focusedElement: HTMLElement) => boolean) {
+  public init(table: HTMLTableElement) {
     this._table = table;
-    this._isSuppressed = isSuppressed;
 
     this.table.addEventListener('focusin', this.onFocusin);
     this.table.addEventListener('focusout', this.onFocusout);
@@ -115,7 +99,7 @@ class GridNavigationHelper {
   }
 
   private isSuppressed(focusedElement: HTMLElement): boolean {
-    return defaultIsSuppressed(focusedElement) || this._isSuppressed(focusedElement);
+    return defaultIsSuppressed(focusedElement);
   }
 
   private onFocusin = (event: FocusEvent) => {
