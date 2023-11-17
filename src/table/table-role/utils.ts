@@ -1,13 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getFocusables as getActualFocusables } from '../../internal/components/focus-lock/utils';
+import { getFocusables } from '../../internal/components/focus-lock/utils';
 import { FocusedCell } from './interfaces';
-
-// For the grid to have a single Tab stop all interactive element indices are updated to be -999.
-// The elements having tab index -999 are eligible for keyboard navigation but not for Tab navigation.
-const PSEUDO_FOCUSABLE_TAB_INDEX = -999;
-const FOCUSABLES_SELECTOR = `[tabIndex="0"],[tabIndex="${PSEUDO_FOCUSABLE_TAB_INDEX}"]`;
 
 /**
  * Finds focused cell props corresponding the focused element inside the table.
@@ -53,7 +48,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   const cellFocusables = getFocusables(from.cellElement);
   const nextElementIndex = from.elementIndex + delta.x;
   if (delta.x && from.elementIndex !== -1 && 0 <= nextElementIndex && nextElementIndex < cellFocusables.length) {
-    focus(cellFocusables[nextElementIndex]);
+    cellFocusables[nextElementIndex]?.focus();
     return;
   }
 
@@ -65,7 +60,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   }
 
   // When target cell matches the current cell it means we reached the left or right boundary.
-  if (targetCell === from.cellElement) {
+  if (targetCell === from.cellElement && delta.x !== 0) {
     return;
   }
 
@@ -74,60 +69,6 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
   focus(focusTarget);
-}
-
-/**
- * Makes the cell element, the first interactive element or the first cell of the table user-focusable.
- */
-export function ensureSingleFocusable(table: HTMLElement, cell: null | FocusedCell) {
-  const firstTableCell = table.querySelector('td,th') as null | HTMLTableCellElement;
-
-  // A single element of the table is made user-focusable.
-  // It defaults to the first interactive element of the first cell or the first cell itself otherwise.
-  let focusTarget: null | HTMLElement = (firstTableCell && getFocusables(firstTableCell)[0]) ?? firstTableCell;
-
-  // When a navigation-focused element is present in the table it is used for user-navigation instead.
-  if (cell && table.contains(cell.element) && isUserFocusable(cell.element)) {
-    focusTarget = cell.element;
-  }
-
-  setTabIndex(focusTarget, 0);
-}
-
-/**
- * Makes all element focusable children pseudo-focusable unless the grid navigation is suppressed.
- */
-export function muteElementFocusables(element: HTMLElement, suppressed: boolean) {
-  // When grid navigation is suppressed all interactive elements and all cells focus is unmuted to unblock Tab navigation.
-  // Leaving the interactive widget using Tab navigation moves the focus to the current or adjacent cell and un-suppresses
-  // the navigation when implemented correctly.
-  if (suppressed) {
-    for (const focusable of getFocusables(element)) {
-      setTabIndex(focusable, 0);
-    }
-    return;
-  }
-
-  // Assigning pseudo-focusable tab index to all cells and all interactive elements makes them focusable with grid navigation.
-  for (const focusable of getActualFocusables(element)) {
-    if (focusable !== document.activeElement) {
-      setTabIndex(focusable, PSEUDO_FOCUSABLE_TAB_INDEX);
-    }
-  }
-}
-
-/**
- * This cleanup code ensures all cells are no longer focusable but the interactive elements are.
- * Currently there are no use cases for it as we don't expect the navigation to be used conditionally.
- */
-export function restoreElementFocusables(element: HTMLTableElement) {
-  for (const focusable of getFocusables(element)) {
-    if (focusable instanceof HTMLTableCellElement) {
-      setTabIndex(focusable, -1);
-    } else {
-      setTabIndex(focusable, 0);
-    }
-  }
 }
 
 /**
@@ -153,15 +94,28 @@ export function defaultIsSuppressed(target: HTMLElement) {
   return false;
 }
 
-/**
- * Returns actually focusable or pseudo-focusable elements to find navigation targets.
- */
-export function getFocusables(element: HTMLElement) {
-  return Array.from(element.querySelectorAll(FOCUSABLES_SELECTOR)) as HTMLElement[];
+export function getFocusableBefore(element: HTMLElement) {
+  const pageFocusables = getFocusables(document.body);
+  for (let i = 0; i < pageFocusables.length; i++) {
+    const curr = pageFocusables[i];
+    const next = pageFocusables[i + 1];
+    if (!element.contains(curr) && next && element.contains(next)) {
+      return curr;
+    }
+  }
+  return document.body;
 }
 
-export function getFirstFocusable(element: HTMLElement) {
-  return element.querySelector(FOCUSABLES_SELECTOR) as null | HTMLElement;
+export function getFocusableAfter(element: HTMLElement) {
+  const pageFocusables = getFocusables(document.body);
+  for (let i = 0; i < pageFocusables.length; i++) {
+    const curr = pageFocusables[i];
+    const next = pageFocusables[i + 1];
+    if (element.contains(curr) && next && !element.contains(next)) {
+      return next;
+    }
+  }
+  return document.body;
 }
 
 /**
@@ -216,17 +170,12 @@ function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAri
   return targetCell;
 }
 
-function focus(element: null | HTMLElement) {
-  setTabIndex(element, 0);
-  element?.focus();
-}
-
-function setTabIndex(element: null | HTMLElement, tabIndex: number) {
-  if (element && element.tabIndex !== tabIndex) {
-    element.tabIndex = tabIndex;
+function focus(el?: HTMLElement) {
+  if (el && el instanceof HTMLTableCellElement) {
+    el.tabIndex = 0;
+    el.focus();
+    el.tabIndex = -1;
+  } else if (el) {
+    el.focus();
   }
-}
-
-function isUserFocusable(element: HTMLElement) {
-  return element.matches(FOCUSABLES_SELECTOR);
 }
