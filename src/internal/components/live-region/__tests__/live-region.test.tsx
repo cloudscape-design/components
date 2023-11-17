@@ -12,7 +12,7 @@ const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);
   const wrapper = createWrapper(container);
 
-  await waitFor(() => expect(wrapper.find('[aria-live]')!.getElement()).toBeInTheDocument());
+  await waitFor(() => expect(wrapper.find('[aria-live]')!.getElement()).not.toBeEmptyDOMElement());
 
   return {
     wrapper,
