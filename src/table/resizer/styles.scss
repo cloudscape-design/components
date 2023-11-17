@@ -34,7 +34,7 @@ th:not(:last-child) > .divider {
     border-left-color: awsui.$color-border-divider-default;
   }
   &-active {
-    border-left-color: awsui.$color-border-divider-active;
+    border-left: $active-separator-width solid awsui.$color-border-divider-active;
   }
 }
 
@@ -62,7 +62,7 @@ th:not(:last-child) > .divider {
     right: 0;
   }
   &:hover + .divider {
-    border-left-color: awsui.$color-border-divider-active;
+    border-left: $active-separator-width solid awsui.$color-border-divider-active;
   }
   // stylelint-disable-next-line selector-combinator-disallowed-list
   body[data-awsui-focus-visible='true'] &.has-focus {
