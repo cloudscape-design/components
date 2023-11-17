@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+}
+
+.anchor-navigation {
+  position: sticky;
+  top: 40px;
+}

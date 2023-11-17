@@ -18,7 +18,10 @@ import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/e
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -41,6 +44,7 @@ function InternalPopover(
     children,
     header,
     content,
+    triggerAriaLabel,
 
     renderWithPortal = false,
 
@@ -61,8 +65,12 @@ function InternalPopover(
   const [visible, setVisible] = useState(false);
 
   const focusTrigger = useCallback(() => {
-    triggerRef.current?.focus();
-  }, []);
+    if (triggerType === 'text') {
+      triggerRef.current?.focus();
+    } else {
+      triggerRef.current && getFirstFocusable(triggerRef.current)?.focus();
+    }
+  }, [triggerType]);
 
   const onTriggerClick = useCallback(() => {
     fireNonCancelableEvent(__onOpen);
@@ -74,11 +82,19 @@ function InternalPopover(
     focusTrigger();
   }, [focusTrigger]);
 
-  const onTriggerKeyDown = useCallback((event: React.KeyboardEvent) => {
-    if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
-      setVisible(false);
-    }
-  }, []);
+  const onTriggerKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      const isEscapeKey = event.keyCode === KeyCode.escape;
+      const isTabKey = event.keyCode === KeyCode.tab;
+      if (isEscapeKey && visible) {
+        event.stopPropagation();
+      }
+      if (isTabKey || isEscapeKey) {
+        setVisible(false);
+      }
+    },
+    [visible]
+  );
 
   useImperativeHandle(ref, () => ({
     dismissPopover: onDismiss,
@@ -117,11 +133,13 @@ function InternalPopover(
     className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
   };
 
+  const referrerId = useUniqueId();
   const popoverContent = (
     <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
       className={clsx(popoverClasses, styles['popover-content'])}
+      data-awsui-referrer-id={referrerId}
     >
       {visible && (
         <PopoverContainer
@@ -133,15 +151,17 @@ function InternalPopover(
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
         >
-          <PopoverBody
-            dismissButton={dismissButton}
-            dismissAriaLabel={dismissAriaLabel}
-            header={header}
-            onDismiss={onDismiss}
-            overflowVisible="both"
-          >
-            {content}
-          </PopoverBody>
+          <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+            <PopoverBody
+              dismissButton={dismissButton}
+              dismissAriaLabel={dismissAriaLabel}
+              header={header}
+              onDismiss={onDismiss}
+              overflowVisible="both"
+            >
+              {content}
+            </PopoverBody>
+          </LinkDefaultVariantContext.Provider>
         </PopoverContainer>
       )}
     </div>
@@ -162,11 +182,13 @@ function InternalPopover(
       }}
     >
       {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog">
+        <button {...triggerProps} type="button" aria-haspopup="dialog" id={referrerId} aria-label={triggerAriaLabel}>
           <span className={styles['trigger-inner-text']}>{children}</span>
         </button>
       ) : (
-        <span {...triggerProps}>{children}</span>
+        <span {...triggerProps} id={referrerId}>
+          {children}
+        </span>
       )}
       <FormFieldContext.Provider value={{}}>
         {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}

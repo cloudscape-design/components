@@ -7,43 +7,45 @@ import InternalForm from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 
 import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { getFunnelNameSelector } from '../internal/analytics/selectors';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
-import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+
+import formStyles from './styles.css.js';
+import headerStyles from '../header/styles.css.js';
 
 export { FormProps };
 
 const FormWithAnalytics = ({ variant = 'full-page', actions, ...props }: FormProps) => {
-  const { funnelProps, funnelSubmit } = useFunnel();
+  const { funnelProps, funnelSubmit, funnelNextOrSubmitAttempt } = useFunnel();
   const { funnelStepProps } = useFunnelStep();
 
   const handleActionButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
     if (variant === 'primary') {
+      funnelNextOrSubmitAttempt();
       funnelSubmit();
     }
   };
 
   return (
-    <InternalForm
-      variant={variant}
-      actions={
-        actions && (
-          <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>{actions}</ButtonContext.Provider>
-        )
-      }
-      {...props}
-      {...funnelProps}
-      {...funnelStepProps}
-    />
+    <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
+      <InternalForm variant={variant} actions={actions} {...props} {...funnelProps} {...funnelStepProps} />
+    </ButtonContext.Provider>
   );
 };
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
   const baseComponentProps = useBaseComponent('Form');
+  const inheritedFunnelNameSelector = useFunnelNameSelector();
+  const funnelNameSelector = inheritedFunnelNameSelector || `.${headerStyles['heading-text']}`;
 
   return (
-    <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-      <AnalyticsFunnelStep stepNumber={1} stepNameSelector={getFunnelNameSelector()}>
+    <AnalyticsFunnel
+      funnelType="single-page"
+      optionalStepNumbers={[]}
+      totalFunnelSteps={1}
+      funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
+    >
+      <AnalyticsFunnelStep stepNumber={1}>
         <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
       </AnalyticsFunnelStep>
     </AnalyticsFunnel>

@@ -12,29 +12,25 @@ import { isDevelopment } from '../internal/is-development';
 import { throttle } from '../internal/utils/throttle';
 import LiveRegion from '../internal/components/live-region';
 import { ButtonProps } from '../button/interfaces';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import { sendDismissMetric } from './internal/analytics';
 
 import { FOCUS_THROTTLE_DELAY } from './utils';
 import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
+import { createUseDiscoveredAction } from '../internal/plugins/helpers';
+import { awsuiPluginsInternal } from '../internal/plugins/api';
+import { ActionsWrapper } from '../alert/actions-wrapper';
 
 const ICON_TYPES = {
   success: 'status-positive',
   warning: 'status-warning',
   info: 'status-info',
   error: 'status-negative',
+  'in-progress': 'status-in-progress',
 } as const;
 
-function actionButton(
-  buttonText: FlashbarProps.MessageDefinition['buttonText'],
-  onButtonClick: FlashbarProps.MessageDefinition['onButtonClick']
-) {
-  return (
-    <InternalButton onClick={onButtonClick} className={styles['action-button']} formAction="none">
-      {buttonText}
-    </InternalButton>
-  );
-}
+const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.flashbar.onActionRegistered);
 
 function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],
@@ -66,6 +62,7 @@ export const focusFlashById = throttle(
 export interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
+  i18nStrings?: FlashbarProps.I18nStrings;
 }
 
 export const Flash = React.forwardRef(
@@ -85,6 +82,7 @@ export const Flash = React.forwardRef(
       className,
       transitionState,
       ariaRole,
+      i18nStrings,
       type = 'info',
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -105,7 +103,7 @@ export const Flash = React.forwardRef(
       }
     }
 
-    const button = action || (buttonText && actionButton(buttonText, onButtonClick));
+    const { discoveredActions, headerRef, contentRef } = useDiscoveredAction(type);
 
     const iconType = ICON_TYPES[type];
 
@@ -141,7 +139,8 @@ export const Flash = React.forwardRef(
             [styles.exit]: transitionState === 'exit',
             [styles.exiting]: transitionState === 'exiting',
             [styles.exited]: transitionState === 'exited',
-          }
+          },
+          getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar')
         )}
         {...analyticsAttributes}
       >
@@ -150,16 +149,33 @@ export const Flash = React.forwardRef(
             <div
               className={clsx(styles['flash-icon'], styles['flash-text'])}
               role="img"
-              aria-label={statusIconAriaLabel}
+              aria-label={
+                statusIconAriaLabel ||
+                i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`]
+              }
             >
               {icon}
             </div>
             <div className={clsx(styles['flash-message'], styles['flash-text'])}>
-              <div className={styles['flash-header']}>{header}</div>
-              <div className={styles['flash-content']}>{content}</div>
+              <div className={styles['flash-header']} ref={headerRef}>
+                {header}
+              </div>
+              <div className={styles['flash-content']} ref={contentRef}>
+                {content}
+              </div>
             </div>
           </div>
-          {button && <div className={styles['action-button-wrapper']}>{button}</div>}
+          <ActionsWrapper
+            className={styles['action-button-wrapper']}
+            testUtilClasses={{
+              actionSlot: styles['action-slot'],
+              actionButton: styles['action-button'],
+            }}
+            action={action}
+            discoveredActions={discoveredActions}
+            buttonText={buttonText}
+            onButtonClick={onButtonClick}
+          />
         </div>
         {dismissible && dismissButton(dismissLabel, handleDismiss)}
         {ariaRole === 'status' && (

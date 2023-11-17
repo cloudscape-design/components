@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "표시된 데이터 필터링",
     "i18nStrings.filterPlaceholder": "데이터 필터링",
     "i18nStrings.legendAriaLabel": "범례",
+    "i18nStrings.chartAriaRoleDescription": "차트",
     "i18nStrings.xAxisAriaRoleDescription": "x축",
     "i18nStrings.yAxisAriaRoleDescription": "y축"
   },
@@ -22,6 +23,9 @@
     "i18nStrings.labelHotspot": "{openState, select, true {{stepNumber}/{totalStepCount}단계에 대한 주석 닫기} false {{stepNumber}/{totalStepCount}단계에 대한 주석 열기} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "드로어",
+    "ariaLabels.drawersOverflow": "드로어 오버플로",
+    "ariaLabels.drawersOverflowWithBadge": "배지 포함 드로어 오버플로",
     "ariaLabels.navigation": "측면 탐색",
     "ariaLabels.navigationClose": "측면 탐색 닫기",
     "ariaLabels.navigationToggle": "측면 탐색 열기",
@@ -114,6 +118,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {마지막 {amount}{unit}} other {마지막 {amount}{unit}}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "콘텐츠 로드 중"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "알림",
     "i18nStrings.errorIconAriaLabel": "오류",
@@ -177,13 +184,14 @@
     "i18nStrings.operatorGreaterText": "보다 큼",
     "i18nStrings.operatorLessOrEqualText": "작거나 같음",
     "i18nStrings.operatorLessText": "보다 작음",
+    "i18nStrings.operatorStartsWithText": "로 시작",
     "i18nStrings.operatorText": "연산자",
     "i18nStrings.operatorsText": "연산자",
     "i18nStrings.propertyText": "속성",
     "i18nStrings.tokenLimitShowFewer": "간단히 표시",
     "i18nStrings.tokenLimitShowMore": "자세히 표시",
     "i18nStrings.valueText": "값",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}이(가) {token__value}과(와) 같음 필터 제거} not_equals {{token__propertyKey}이(가) {token__value}과(와) 같지 않음 필터 제거} greater_than {{token__propertyKey}이(가) {token__value}보다 큼 필터 제거} greater_than_equal {{token__propertyKey}이(가) {token__value}보다 크거나 같음 필터 제거} less_than {{token__propertyKey}이(가) {token__value}보다 작음 필터 제거} less_than_equal {{token__propertyKey}이(가) {token__value}보다 작거나 같음 필터 제거} contains {{token__propertyKey}이(가) {token__value}을(를) 포함함 필터 제거} not_contains {{token__propertyKey}이(가) {token__value}을(를) 포함하지 않음 필터 제거} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyKey}이(가) {token__value}과(와) 같음 필터 제거} not_equals {{token__propertyKey}이(가) {token__value}과(와) 같지 않음 필터 제거} greater_than {{token__propertyKey}이(가) {token__value}보다 큼 필터 제거} greater_than_equal {{token__propertyKey}이(가) {token__value}보다 크거나 같음 필터 제거} less_than {{token__propertyKey}이(가) {token__value}보다 작음 필터 제거} less_than_equal {{token__propertyKey}이(가) {token__value}보다 작거나 같음 필터 제거} contains {{token__propertyKey}이(가) {token__value}을(를) 포함함 필터 제거} not_contains {{token__propertyKey}이(가) {token__value}을(를) 포함하지 않음 필터 제거} starts_with {필터 제거, {token__value}(으)로 시작하는 {token__propertyKey}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "버전 선택",
@@ -222,7 +230,7 @@
     "i18nStrings.columnVersionID": "버전 ID",
     "i18nStrings.columnVersionLastModified": "최종 수정 날짜",
     "i18nStrings.columnVersionSize": "크기",
-    "i18nStrings.validationPathMustBegin": "경로는 s3://로 시작해야 합니다.",
+    "i18nStrings.validationPathMustBegin": "유효한 경로는 s3://로 시작해야 합니다.",
     "i18nStrings.validationBucketLowerCase": "버킷 이름은 소문자나 숫자로 시작해야 합니다.",
     "i18nStrings.validationBucketMustNotContain": "버킷 이름에 대문자를 포함할 수 없습니다.",
     "i18nStrings.validationBucketLength": "버킷 이름은 3~63자여야 합니다.",
@@ -259,6 +267,7 @@
     "i18nStrings.resizeHandleAriaLabel": "분할 패널 크기 조정"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "크기 조정 버튼",
     "ariaLabels.submittingEditText": "편집 제출 중",
     "ariaLabels.successfulEditLabel": "편집 성공",
     "columnDefinitions.editConfig.errorIconAriaLabel": "오류",

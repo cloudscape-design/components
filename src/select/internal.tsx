@@ -30,7 +30,8 @@ import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { SomeRequired } from '../internal/types';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
-import { useInternalI18n } from '../internal/i18n/context.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;
@@ -54,7 +55,6 @@ const InternalSelect = React.forwardRef(
       loadingText,
       finishedText,
       errorText,
-      recoveryText,
       noMatch,
       triggerVariant = 'label',
       renderHighlightedAriaLive,
@@ -78,6 +78,11 @@ const InternalSelect = React.forwardRef(
     const i18n = useInternalI18n('select');
     const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
     const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+    const recoveryText = i18n('recoveryText', restProps.recoveryText);
+
+    if (restProps.recoveryText && !onLoadItems) {
+      warnOnce('Select', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+    }
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
@@ -192,6 +197,7 @@ const InternalSelect = React.forwardRef(
       filteringResultsText: filteredText,
       errorIconAriaLabel,
       onRecoveryClick: handleRecoveryClick,
+      hasRecoveryCallback: !!onLoadItems,
     });
 
     const menuProps = {
@@ -222,6 +228,8 @@ const InternalSelect = React.forwardRef(
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
+    const dropdownProps = getDropdownProps();
+
     return (
       <div
         {...baseProps}
@@ -230,9 +238,14 @@ const InternalSelect = React.forwardRef(
         onKeyPress={handleNativeSearch}
       >
         <Dropdown
-          {...getDropdownProps()}
+          {...dropdownProps}
+          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
+          ariaDescribedby={
+            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
+          }
           open={isOpen}
           stretchTriggerHeight={__inFilteringToken}
+          stretchBeyondTriggerWidth={true}
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}

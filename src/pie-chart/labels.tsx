@@ -7,14 +7,14 @@ import { arc, PieArcDatum } from 'd3-shape';
 import { PieChartProps } from './interfaces';
 import styles from './styles.css.js';
 import { InternalChartDatum } from './pie-chart';
-import { dimensionsBySize, balanceLabelNodes } from './utils';
-import { useResizeObserver } from '../internal/hooks/container-queries';
+import { Dimension, balanceLabelNodes, computeSmartAngle } from './utils';
 import ResponsiveText from './responsive-text';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 export interface LabelsProps<T> {
   pieData: PieArcDatum<InternalChartDatum<T>>[];
   visibleDataSum: number;
-  size: NonNullable<PieChartProps['size']>;
+  dimensions: Dimension;
   hideTitles: boolean;
   hideDescriptions: boolean;
   highlightedSegment: PieChartProps.Datum | null;
@@ -69,7 +69,7 @@ function LabelElement({
 
 export default <T extends PieChartProps.Datum>({
   pieData,
-  size,
+  dimensions,
   highlightedSegment,
   segmentDescription,
   visibleDataSum,
@@ -78,9 +78,11 @@ export default <T extends PieChartProps.Datum>({
   containerRef,
 }: LabelsProps<T>) => {
   const containerBoundaries = useElementBoundaries(containerRef);
-
+  const shouldOptimizeLabels =
+    containerBoundaries.right - containerBoundaries.left - (dimensions.outerRadius + dimensions.innerLabelPadding) * 2 <
+    300;
   const markers = useMemo(() => {
-    const { outerRadius: radius, innerLabelPadding } = dimensionsBySize[size];
+    const { outerRadius: radius, innerLabelPadding } = dimensions;
 
     // More arc factories for the label positioning
     const arcMarkerStart = arc<PieArcDatum<any>>()
@@ -93,16 +95,17 @@ export default <T extends PieChartProps.Datum>({
 
     return pieData.map((datum, i) => {
       const labelDatum = pieData[i];
-      const midAngle = labelDatum.startAngle + (labelDatum.endAngle - labelDatum.startAngle) / 2;
+      const smartAngle = computeSmartAngle(labelDatum.startAngle, labelDatum.endAngle, shouldOptimizeLabels);
 
       // Make the marker line longer if the segment is closer to the top or bottom of the chart
-      arcMarkerBreak.outerRadius(radius + 20 * (0.5 * Math.cos(2 * midAngle) + 0.5));
-      arcMarkerBreak.innerRadius(radius + 20 * (0.5 * Math.cos(2 * midAngle) + 0.5));
-      const [startX, startY] = arcMarkerStart.centroid(datum);
-      const [breakX, breakY] = arcMarkerBreak.centroid(datum);
+      const lineExtension = 0.5 * Math.cos(2 * smartAngle) + 0.5;
+      arcMarkerBreak.outerRadius(radius + 20 * lineExtension);
+      arcMarkerBreak.innerRadius(radius + 20 * lineExtension);
+      const [startX, startY] = arcMarkerStart.centroid({ ...datum, startAngle: smartAngle, endAngle: smartAngle });
+      const [breakX, breakY] = arcMarkerBreak.centroid({ ...datum, startAngle: smartAngle, endAngle: smartAngle });
 
-      const rightSide = midAngle < Math.PI;
-      const endX = (radius + 20) * (rightSide ? 1 : -1);
+      const rightSide = smartAngle < Math.PI;
+      const endX = shouldOptimizeLabels ? breakX + 20 * (rightSide ? 1 : -1) : (radius + 20) * (rightSide ? 1 : -1);
       const textX = endX + 5 * (rightSide ? 1 : -1);
 
       return {
@@ -118,7 +121,7 @@ export default <T extends PieChartProps.Datum>({
         datum,
       };
     });
-  }, [pieData, size]);
+  }, [pieData, dimensions, shouldOptimizeLabels]);
 
   const rootRef = useRef<SVGGElement>(null);
 
@@ -129,9 +132,9 @@ export default <T extends PieChartProps.Datum>({
 
     // Relax labels that are overlapping
     const labelNodes = rootRef.current.querySelectorAll<SVGGElement>(`.${styles['label-text']}`);
-    balanceLabelNodes(labelNodes, markers, false);
-    balanceLabelNodes(labelNodes, markers, true);
-  }, [markers, pieData]);
+    balanceLabelNodes(labelNodes, markers, false, dimensions.outerRadius + dimensions.innerLabelPadding);
+    balanceLabelNodes(labelNodes, markers, true, dimensions.outerRadius + dimensions.innerLabelPadding);
+  }, [markers, pieData, dimensions]);
 
   return (
     <g className={styles.markers} aria-hidden="true" ref={rootRef}>

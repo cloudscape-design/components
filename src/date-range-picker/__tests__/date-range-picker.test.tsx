@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Mockdate from 'mockdate';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
+import FormField from '../../../lib/components/form-field';
 import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { i18nStrings } from './i18n-strings';
@@ -12,7 +13,8 @@ import { isValidRange } from './is-valid-range';
 import { changeMode } from './change-mode';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import styles from '../../../lib/components/date-range-picker/styles.css.js';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import segmentedStyles from '../../../lib/components/segmented-control/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -68,7 +70,10 @@ describe('Date range picker', () => {
 
     test('aria-labelledby', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, ariaLabelledby: '#element' });
-      expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-labelledby', '#element');
+      expect(wrapper.findTrigger().getElement()).toHaveAttribute(
+        'aria-labelledby',
+        expect.stringContaining('#element')
+      );
 
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-labelledby', '#element');
@@ -83,29 +88,89 @@ describe('Date range picker', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, controlId: 'test' });
       expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
     });
+
+    test('correctly labels the dropdown trigger with the selected value', () => {
+      const value = { type: 'relative', amount: 5, unit: 'day' } as const;
+      const { container } = render(
+        <FormField label="Label">
+          <DateRangePicker {...defaultProps} value={value} />
+        </FormField>
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      expect(wrapper.findTrigger().getElement()).toHaveAccessibleName(
+        'Label ' + i18nStrings.formatRelativeRange!(value)
+      );
+    });
+
+    test('does not pass through form field context to dropdown elements', () => {
+      const { container } = render(
+        <FormField label="Label">
+          <DateRangePicker {...defaultProps} />
+        </FormField>
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+
+      expect(dropdown.findRelativeRangeRadioGroup()!.getElement()).toHaveAccessibleName(
+        i18nStrings.relativeRangeSelectionHeading
+      );
+
+      dropdown.findRelativeRangeRadioGroup()!.findButtons().at(-1)!.findNativeInput().click();
+      expect(dropdown.findCustomRelativeRangeDuration()!.findNativeInput().getElement()).toHaveAccessibleName(
+        i18nStrings.customRelativeRangeDurationLabel
+      );
+      expect(dropdown.findCustomRelativeRangeUnit()!.findTrigger().getElement()).toHaveAccessibleName(
+        [i18nStrings.customRelativeRangeUnitLabel, 'minutes'].join(' ')
+      );
+
+      changeMode(wrapper, 'absolute');
+
+      expect(dropdown.findStartDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.startDateLabel
+      );
+      expect(dropdown.findStartTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.startTimeLabel
+      );
+      expect(dropdown.findEndDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.endDateLabel
+      );
+      expect(dropdown.findEndTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+        i18nStrings.endTimeLabel
+      );
+    });
+
+    test('toolbar accessible name', () => {
+      const { wrapper } = renderDateRangePicker();
+      wrapper.openDropdown();
+      const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSegments();
+      expect(modeSelector.findByClassName(segmentedStyles['segment-part'])!.getElement()).toHaveAccessibleName(
+        i18nStrings.modeSelectionLabel
+      );
+    });
   });
 
   test('opens relative range mode by default', () => {
     const { wrapper } = renderDateRangePicker();
-    act(() => wrapper.openDropdown());
+    wrapper.openDropdown();
     expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).not.toBeNull();
   });
 
   test('opens absolute range mode by default if no relative ranges are provided', () => {
     const { wrapper } = renderDateRangePicker({ ...defaultProps, relativeOptions: [] });
-    act(() => wrapper.openDropdown());
+    wrapper.openDropdown();
     expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBeNull();
   });
 
   test('shows the clear button by default', () => {
     const { wrapper } = renderDateRangePicker();
-    act(() => wrapper.openDropdown());
+    wrapper.openDropdown();
     expect(wrapper.findDropdown()!.findClearButton()).not.toBeNull();
   });
 
   test('hides the clear button if specified', () => {
     const { wrapper } = renderDateRangePicker({ ...defaultProps, showClearButton: false });
-    act(() => wrapper.openDropdown());
+    wrapper.openDropdown();
     expect(wrapper.findDropdown()!.findClearButton()).toBeNull();
   });
 
@@ -159,12 +224,12 @@ describe('Date range picker', () => {
     });
 
     test('produces the value even if validation does not catch an incomplete range', () => {
-      act(() => wrapper.openDropdown());
+      wrapper.openDropdown();
 
       changeMode(wrapper, 'absolute');
-      act(() => wrapper.findDropdown()!.findDateAt('right', 3, 4).click());
+      wrapper.findDropdown()!.findDateAt('right', 3, 4).click();
 
-      act(() => wrapper.findDropdown()!.findApplyButton().click());
+      wrapper.findDropdown()!.findApplyButton().click();
 
       expect(onChangeSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -174,41 +239,41 @@ describe('Date range picker', () => {
     });
 
     test('should not fire onChange if the date is invalid', () => {
-      act(() => wrapper.openDropdown());
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click());
-      act(() => wrapper.findDropdown()!.findApplyButton().click());
+      wrapper.openDropdown();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
+      wrapper.findDropdown()!.findApplyButton().click();
 
       expect(onChangeSpy).toHaveBeenCalledTimes(0);
     });
 
     test('does not display the error message until after the first submit', () => {
-      act(() => wrapper.openDropdown());
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click());
+      wrapper.openDropdown();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
       expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
 
-      act(() => wrapper.findDropdown()!.findApplyButton().click());
+      wrapper.findDropdown()!.findApplyButton().click();
       expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
       expect(wrapper.findDropdown()!.findByClassName(styles['validation-section'])!.find('[aria-live]')).not.toBe(null);
     });
 
     test('after rendering the error once, displays subsequent errors in real time', () => {
-      act(() => wrapper.openDropdown());
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click());
-      act(() => wrapper.findDropdown()!.findApplyButton().click());
+      wrapper.openDropdown();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
+      wrapper.findDropdown()!.findApplyButton().click();
 
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('five-hours')!.click());
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('five-hours')!.click();
       expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
 
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click());
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
       expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
     });
 
     test('resets validation state when switching between modes', () => {
-      act(() => wrapper.openDropdown());
-      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click());
+      wrapper.openDropdown();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
       expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
 
-      act(() => wrapper.findDropdown()!.findApplyButton().click());
+      wrapper.findDropdown()!.findApplyButton().click();
       expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
 
       changeMode(wrapper, 'absolute');
@@ -235,8 +300,8 @@ describe('Date range picker', () => {
     });
 
     test('should fire when clearing the selection', () => {
-      act(() => wrapper.openDropdown());
-      act(() => wrapper.findDropdown()!.findClearButton()!.click());
+      wrapper.openDropdown();
+      wrapper.findDropdown()!.findClearButton()!.click();
 
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
       expect(onChangeSpy).toHaveBeenCalledWith(
@@ -247,8 +312,8 @@ describe('Date range picker', () => {
     });
 
     test('should not fire when canceling the selection', () => {
-      act(() => wrapper.openDropdown());
-      act(() => wrapper.findDropdown()!.findCancelButton().click());
+      wrapper.openDropdown();
+      wrapper.findDropdown()!.findCancelButton().click();
 
       expect(onChangeSpy).toHaveBeenCalledTimes(0);
     });
@@ -258,7 +323,7 @@ describe('Date range picker', () => {
     (['absolute-only', 'relative-only'] as const).forEach(rangeSelectorMode =>
       test(`shows no mode switcher when mode = ${rangeSelectorMode} and value = null`, () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, rangeSelectorMode });
-        act(() => wrapper.openDropdown());
+        wrapper.openDropdown();
 
         expect(wrapper.findDropdown()!.findSelectionModeSwitch()).toBeNull();
       })
@@ -272,7 +337,7 @@ describe('Date range picker', () => {
     ).forEach(([rangeSelectorMode, value]) =>
       test(`uses null as value when mode = ${rangeSelectorMode} and value.type = ${value.type}`, () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
-        act(() => wrapper.openDropdown());
+        wrapper.openDropdown();
 
         expect(wrapper.findTrigger().getElement()).toHaveTextContent('');
       })
@@ -280,7 +345,7 @@ describe('Date range picker', () => {
 
     test('focuses dropdown when opened', () => {
       const { wrapper } = renderDateRangePicker();
-      act(() => wrapper.openDropdown());
+      wrapper.openDropdown();
 
       expectToHaveFocus(wrapper.findDropdown()!.getElement());
     });

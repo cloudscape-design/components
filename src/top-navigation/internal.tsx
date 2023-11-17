@@ -19,7 +19,7 @@ import { ButtonTrigger } from '../internal/components/menu-dropdown';
 import styles from './styles.css.js';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { SomeRequired } from '../internal/types';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 

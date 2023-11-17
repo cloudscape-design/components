@@ -18,6 +18,7 @@ export default function MobileToolbar() {
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
+    __embeddedViewMode,
     isToolsOpen,
     navigationHide,
     navigationRefs,
@@ -25,7 +26,11 @@ export default function MobileToolbar() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (!isMobile || (navigationHide && !breadcrumbs && toolsHide && !drawers)) {
+  if (
+    !isMobile ||
+    __embeddedViewMode ||
+    (navigationHide && !breadcrumbs && toolsHide && (!drawers || drawers.length === 0))
+  ) {
     return null;
   }
 
@@ -33,10 +38,10 @@ export default function MobileToolbar() {
     <section
       className={clsx(
         styles['mobile-toolbar'],
+        [testutilStyles['mobile-bar']],
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
           [styles.unfocusable]: hasDrawerViewportOverlay,
-          [testutilStyles['mobile-bar']]: isMobile,
         },
         testutilStyles['mobile-bar'],
         'awsui-context-content-header'
@@ -66,28 +71,30 @@ export default function MobileToolbar() {
         <div className={clsx(styles['mobile-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
       )}
 
-      {isMobile && !toolsHide && !drawers && (
-        <aside
-          aria-hidden={isToolsOpen}
-          aria-label={ariaLabels?.tools ?? undefined}
-          className={clsx(styles['mobile-toolbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
-        >
-          <InternalButton
-            className={testutilStyles['tools-toggle']}
-            ariaExpanded={isToolsOpen}
-            disabled={hasDrawerViewportOverlay}
-            ariaLabel={ariaLabels?.toolsToggle ?? undefined}
-            iconName="status-info"
-            formAction="none"
-            onClick={() => handleToolsClick(true)}
-            variant="icon"
-            ref={toolsRefs.toggle}
-            __nativeAttributes={{ 'aria-haspopup': true }}
-          />
-        </aside>
+      {drawers ? (
+        <DrawersMobileTriggers />
+      ) : (
+        !toolsHide && (
+          <aside
+            aria-hidden={isToolsOpen}
+            aria-label={ariaLabels?.tools ?? undefined}
+            className={clsx(styles['mobile-toolbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
+          >
+            <InternalButton
+              className={testutilStyles['tools-toggle']}
+              ariaExpanded={isToolsOpen}
+              disabled={hasDrawerViewportOverlay}
+              ariaLabel={ariaLabels?.toolsToggle ?? undefined}
+              iconName="status-info"
+              formAction="none"
+              onClick={() => handleToolsClick(true)}
+              variant="icon"
+              ref={toolsRefs.toggle}
+              __nativeAttributes={{ 'aria-haspopup': true }}
+            />
+          </aside>
+        )
       )}
-
-      <DrawersMobileTriggers />
     </section>
   );
 }

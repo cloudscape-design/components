@@ -12,7 +12,7 @@ import InternalGrid from '../grid/internal';
 import { InternalButton } from '../button/internal';
 import clsx from 'clsx';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 
@@ -26,6 +26,7 @@ export interface RowProps<T> {
   removeButtonText?: string;
   removeButtonRefs: Array<ButtonProps.Ref | undefined>;
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
+  removeButtonAriaLabel?: (item: T) => string;
 }
 
 function render<T>(
@@ -33,7 +34,14 @@ function render<T>(
   itemIndex: number,
   slot: AttributeEditorProps.FieldRenderable<T> | React.ReactNode | undefined
 ) {
-  return typeof slot === 'function' ? slot(item, itemIndex) : slot;
+  if (isSlotFunction(slot)) {
+    return slot(item, itemIndex);
+  }
+  return slot;
+
+  function isSlotFunction(slot: unknown): slot is AttributeEditorProps.FieldRenderable<T> {
+    return typeof slot === 'function';
+  }
 }
 
 const GRID_DEFINITION = [{ colspan: { default: 12, xs: 9 } }];
@@ -49,6 +57,7 @@ export const Row = React.memo(
     removeButtonText,
     removeButtonRefs,
     onRemoveButtonClick,
+    removeButtonAriaLabel,
   }: RowProps<T>) => {
     const i18n = useInternalI18n('attribute-editor');
     const isNarrowViewport = breakpoint === 'default' || breakpoint === 'xxs';
@@ -101,7 +110,7 @@ export const Row = React.memo(
                   ref={ref => {
                     removeButtonRefs[index] = ref ?? undefined;
                   }}
-                  ariaLabel={i18nStrings.removeButtonAriaLabel?.(item)}
+                  ariaLabel={(removeButtonAriaLabel ?? i18nStrings.removeButtonAriaLabel)?.(item)}
                   onClick={handleRemoveClick}
                 >
                   {i18n('removeButtonText', removeButtonText)}
@@ -114,7 +123,7 @@ export const Row = React.memo(
       </InternalBox>
     );
   }
-);
+) as <T>(props: RowProps<T>) => JSX.Element;
 
 interface ButtonContainer {
   index: number;

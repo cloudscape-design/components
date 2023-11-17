@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # ------- Setup -----------------------------------------------------
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         name: Create a pending status on the commit
         with:
           script: |
@@ -27,7 +27,7 @@ jobs:
             })
 
       - name: Checkout the PR branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: 'components'
 
@@ -64,7 +64,7 @@ jobs:
       # ------- Base branch size measurement ------------------------------
 
       - name: Checkout the base branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           path: 'components'
@@ -102,7 +102,7 @@ jobs:
       # ------- Pull request size measurement -----------------------------
 
       - name: Checkout the PR branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: 'components'
 
@@ -122,7 +122,7 @@ jobs:
           cat output-pr.txt
 
       - name: Update the commit status with calculated results
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const readFileSync = require('node:fs').readFileSync;
@@ -141,12 +141,11 @@ jobs:
 
             const message = `${(pr / 1000).toFixed(1)} KB (${sign}${increasePercent} % / ${sign}${increaseKb} KB in this pull request)`
 
-            const name = "Bundle size";
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.pull_request.head.sha,
-              context: name,
+              context: "Bundle size",
               state: 'success',
               description: message,
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
@@ -156,14 +155,14 @@ jobs:
 
       - name: Report failure
         if: failure()
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.pull_request.head.sha,
-              context: name,
+              context: "Bundle size",
               state: 'error',
               description: "The workflow encountered an error.",
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`

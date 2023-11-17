@@ -1,26 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 
 import { ChartScale, NumericChartScale } from './scales';
 
 import styles from './styles.css.js';
-import { useContainerQuery } from '../../hooks/container-queries';
 import { ChartDataTypes } from '../../../mixed-line-bar-chart/interfaces';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 interface LabelsMeasureProps {
   scale: ChartScale | NumericChartScale;
   ticks: readonly ChartDataTypes[];
   tickFormatter?: (value: ChartDataTypes) => string;
   autoWidth: (value: number) => void;
+  maxLabelsWidth?: number;
 }
 
 export default memo(LabelsMeasure) as typeof LabelsMeasure;
 
 // Places the invisible left-hand side labels to calculate their maximum width.
-function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth }: LabelsMeasureProps) {
-  const [width, ref] = useContainerQuery<number>(rect => rect.width);
+function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth, maxLabelsWidth }: LabelsMeasureProps) {
+  const [width, ref] = useContainerQuery<number>(rect => rect.contentBoxWidth);
 
   // Tell elements's width to the parent.
   useEffect(() => {
@@ -33,15 +34,26 @@ function LabelsMeasure({ scale, ticks, tickFormatter, autoWidth }: LabelsMeasure
       return null;
     }
 
+    const formattedValue = tickFormatter ? tickFormatter(value as any) : value.toString();
+    const lines = (formattedValue + '').split('\n');
+
     return (
-      <div key={`${value}`} className={styles['labels-left__label']} aria-hidden="true">
-        {tickFormatter ? tickFormatter(value as any) : value.toString()}
-      </div>
+      <Fragment key={`${value}`}>
+        {lines.map((line, lineIndex) => (
+          <div key={lineIndex} className={styles['labels-left__label']} aria-hidden="true">
+            {line}
+          </div>
+        ))}
+      </Fragment>
     );
   };
 
   return (
-    <div ref={ref} className={clsx(styles['labels-left'], styles['labels-left--hidden'])}>
+    <div
+      ref={ref}
+      className={clsx(styles['labels-left'], styles['labels-left--hidden'])}
+      style={{ maxWidth: maxLabelsWidth }}
+    >
       {ticks.map(labelMapper)}
     </div>
   );

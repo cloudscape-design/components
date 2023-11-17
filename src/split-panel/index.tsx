@@ -8,28 +8,25 @@ import { getBaseProps } from '../internal/base-component';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 
-import { SplitPanelProps, SizeControlProps } from './interfaces';
+import { SplitPanelProps } from './interfaces';
 import ResizeHandler from './icons/resize-handler';
 import PreferencesModal from './preferences-modal';
-import { usePointerEvents } from './utils/use-pointer-events';
-import { useKeyboardEvents } from './utils/use-keyboard-events';
+import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
+import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
+import { SizeControlProps } from '../app-layout/utils/interfaces';
 
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
-import { getLimitedValue } from './utils/size-utils';
 import { Transition } from '../internal/components/transition';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SplitPanelContentSide } from './side';
 import { SplitPanelContentBottom } from './bottom';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export { SplitPanelProps };
-
-const MIN_HEIGHT = 160;
-const MIN_WIDTH = 280;
 
 export default function SplitPanel({
   header,
@@ -42,9 +39,6 @@ export default function SplitPanel({
   const isRefresh = useVisualRefresh();
   const { __internalRootRef } = useBaseComponent('SplitPanel');
   const {
-    size,
-    getMaxWidth,
-    getMaxHeight,
     position,
     topOffset,
     bottomOffset,
@@ -55,17 +49,15 @@ export default function SplitPanel({
     onPreferencesChange,
     onResize,
     onToggle,
-    reportSize,
+    size,
+    relativeSize,
     setSplitPanelToggle,
     refs,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
   const i18n = useInternalI18n('split-panel');
   const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
-  const [relativeSize, setRelativeSize] = useState(0);
-  const [maxSize, setMaxSize] = useState(size);
-  const minSize = position === 'bottom' ? MIN_HEIGHT : MIN_WIDTH;
-  const cappedSize = getLimitedValue(minSize, size, maxSize);
+
   const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
 
   const openButtonAriaLabel = i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel);
@@ -73,53 +65,13 @@ export default function SplitPanel({
     setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: openButtonAriaLabel });
   }, [setSplitPanelToggle, openButtonAriaLabel, closeBehavior]);
 
-  useEffect(() => {
-    // effects are called inside out in the components tree
-    // wait one frame to allow app-layout to complete its calculations
-    const handle = requestAnimationFrame(() => {
-      const maxSize = position === 'bottom' ? getMaxHeight() : getMaxWidth();
-      setRelativeSize(((size - minSize) / (maxSize - minSize)) * 100);
-      setMaxSize(maxSize);
-    });
-    return () => cancelAnimationFrame(handle);
-  }, [size, minSize, position, getMaxHeight, getMaxWidth]);
-
-  useEffect(() => {
-    reportSize(cappedSize);
-  }, [reportSize, cappedSize]);
-
-  useEffect(() => {
-    const handler = () => setMaxSize(position === 'bottom' ? getMaxHeight() : getMaxWidth());
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, [position, getMaxWidth, getMaxHeight]);
-
-  const setSidePanelWidth = (width: number) => {
-    const maxWidth = getMaxWidth();
-    const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
-
-    if (isOpen && maxWidth >= MIN_WIDTH) {
-      onResize({ size });
-    }
-  };
-
-  const setBottomPanelHeight = (height: number) => {
-    const maxHeight = getMaxHeight();
-    const size = getLimitedValue(MIN_HEIGHT, height, maxHeight);
-
-    if (isOpen && maxHeight >= MIN_HEIGHT) {
-      onResize({ size });
-    }
-  };
-
   const splitPanelRefObject = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
     position,
-    splitPanelRef: splitPanelRefObject,
+    panelRef: splitPanelRefObject,
     handleRef: refs.slider,
-    setSidePanelWidth,
-    setBottomPanelHeight,
+    onResize,
   };
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
@@ -256,7 +208,7 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
-              cappedSize={cappedSize}
+              cappedSize={size}
               onToggle={onToggle}
               openButtonAriaLabel={i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel)}
               toggleRef={refs.toggle}
@@ -273,7 +225,7 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
-              cappedSize={cappedSize}
+              cappedSize={size}
               onToggle={onToggle}
               header={wrappedHeader}
               panelHeaderId={panelHeaderId}

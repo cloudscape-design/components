@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import Mockdate from 'mockdate';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
 import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
 import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
@@ -43,7 +43,7 @@ describe('Date range picker calendar', () => {
     );
 
     const wrapper = createWrapper(container).findDateRangePicker()!;
-    act(() => wrapper.findTrigger().click());
+    wrapper.findTrigger().click();
     return {
       wrapper,
       getByTestId,
@@ -197,22 +197,22 @@ describe('Date range picker calendar', () => {
       });
 
       test('should go to the next day', () => {
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
+        findFocusableDate(wrapper)!.keydown(KeyCode.right);
         expect(findFocusableDateText(wrapper)).toBe('23');
       });
 
       test('should go to the previous day', () => {
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
+        findFocusableDate(wrapper)!.keydown(KeyCode.left);
         expect(findFocusableDateText(wrapper)).toBe('21');
       });
 
       test('should go to the previous week', () => {
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.up));
+        findFocusableDate(wrapper)!.keydown(KeyCode.up);
         expect(findFocusableDateText(wrapper)).toBe('15');
       });
 
       test('should go to the next week', () => {
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.down));
+        findFocusableDate(wrapper)!.keydown(KeyCode.down);
         expect(findFocusableDateText(wrapper)).toBe('29');
       });
 
@@ -222,7 +222,7 @@ describe('Date range picker calendar', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null });
 
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.up));
+        findFocusableDate(wrapper)!.keydown(KeyCode.up);
         expect(findFocusableDateText(wrapper)).toBe('24');
         expect(findCalendarHeaderText(wrapper)).toBe('February 2018March 2018');
       });
@@ -233,21 +233,21 @@ describe('Date range picker calendar', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null });
 
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.down));
+        findFocusableDate(wrapper)!.keydown(KeyCode.down);
 
         expect(findFocusableDateText(wrapper)).toBe('5');
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('should allow first date to be focused after moving dates then navigating between months', () => {
-        act(() => wrapper.findDropdown()!.findNextMonthButton().click());
-        act(() => wrapper.findDropdown()!.findNextMonthButton().click());
+        wrapper.findDropdown()!.findNextMonthButton().click();
+        wrapper.findDropdown()!.findNextMonthButton().click();
 
         // focus a new date
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
+        findFocusableDate(wrapper)!.keydown(KeyCode.right);
         // navigate to previous month
-        act(() => wrapper.findDropdown()!.findPreviousMonthButton()!.click());
-        act(() => wrapper.findDropdown()!.findPreviousMonthButton()!.click());
+        wrapper.findDropdown()!.findPreviousMonthButton()!.click();
+        wrapper.findDropdown()!.findPreviousMonthButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('1');
       });
@@ -257,8 +257,8 @@ describe('Date range picker calendar', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, isDateEnabled });
 
         changeMode(wrapper, 'absolute');
-        act(() => wrapper.findDropdown()!.findNextMonthButton()!.click());
-        act(() => wrapper.findDropdown()!.findNextMonthButton()!.click());
+        wrapper.findDropdown()!.findNextMonthButton()!.click();
+        wrapper.findDropdown()!.findNextMonthButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('2');
       });
@@ -272,7 +272,7 @@ describe('Date range picker calendar', () => {
         });
 
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
+        findFocusableDate(wrapper)!.keydown(KeyCode.right);
         expect(findFocusableDateText(wrapper)).toBe('23');
       });
 
@@ -284,7 +284,7 @@ describe('Date range picker calendar', () => {
           value: { type: 'absolute', startDate: '2018-03-21T00:00:00', endDate: '2018-03-21T00:00:00' },
         });
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
+        findFocusableDate(wrapper)!.keydown(KeyCode.left);
         expect(findFocusableDateText(wrapper)).toBe('19');
       });
 
@@ -296,7 +296,7 @@ describe('Date range picker calendar', () => {
           value: { type: 'absolute', startDate: '2018-03-21T00:00:00', endDate: '2018-03-21T00:00:00' },
         });
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
+        findFocusableDate(wrapper)!.keydown(KeyCode.right);
         expect(findFocusableDateText(wrapper)).toBe('1');
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
@@ -309,7 +309,7 @@ describe('Date range picker calendar', () => {
           value: { type: 'absolute', startDate: '2018-03-21T00:00:00', endDate: '2018-03-21T00:00:00' },
         });
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
+        findFocusableDate(wrapper)!.keydown(KeyCode.left);
         expect(findFocusableDateText(wrapper)).toBe('28');
         expect(findCalendarHeaderText(wrapper)).toBe('February 2018March 2018');
       });
@@ -323,7 +323,7 @@ describe('Date range picker calendar', () => {
           value: { type: 'absolute', startDate: '2018-03-21T00:00:00', endDate: '2018-03-21T00:00:00' },
         });
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
+        findFocusableDate(wrapper)!.keydown(KeyCode.right);
         expect(findFocusableDateText(wrapper)).toBe('21');
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
@@ -337,7 +337,7 @@ describe('Date range picker calendar', () => {
           value: { type: 'absolute', startDate: '2018-03-21T00:00:00', endDate: '2018-03-21T00:00:00' },
         });
         changeMode(wrapper, 'absolute');
-        act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
+        findFocusableDate(wrapper)!.keydown(KeyCode.left);
         expect(findFocusableDateText(wrapper)).toBe('21');
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
@@ -365,12 +365,12 @@ describe('Date range picker calendar', () => {
         isDateEnabled,
       });
       changeMode(wrapper, 'absolute');
-      act(() => {
-        wrapper
-          .findDropdown()!
-          .findDateAt('left', 2, 1) // March 4th
-          .click();
-      });
+
+      wrapper
+        .findDropdown()!
+        .findDateAt('left', 2, 1) // March 4th
+        .click();
+
       expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('4');
       expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement().value).toBe('2018/03/04');
     });
@@ -382,12 +382,12 @@ describe('Date range picker calendar', () => {
         isDateEnabled,
       });
       changeMode(wrapper, 'absolute');
-      act(() => {
-        wrapper
-          .findDropdown()!
-          .findDateAt('left', 4, 1) // March, 18th
-          .click();
-      });
+
+      wrapper
+        .findDropdown()!
+        .findDateAt('left', 4, 1) // March, 18th
+        .click();
+
       expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('1');
       expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement().value).toBe('2018/03/01');
     });
@@ -458,24 +458,20 @@ describe('Date range picker calendar', () => {
         value: null,
       });
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent('');
-      act(() => {
-        wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
-      });
+      wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
+
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel!));
-      act(() => {
-        wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
-      });
+      wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
+
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel!));
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(
         new RegExp(i18nStrings!.renderSelectedAbsoluteRangeAriaLive!('', ''))
       );
-      act(() => {
-        wrapper.findDropdown()!.findDateAt('left', 3, 2).click();
-      });
+
+      wrapper.findDropdown()!.findDateAt('left', 3, 2).click();
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel!));
-      act(() => {
-        wrapper.findDropdown()!.findDateAt('left', 3, 1).click();
-      });
+
+      wrapper.findDropdown()!.findDateAt('left', 3, 1).click();
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel!));
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(
         new RegExp(i18nStrings.renderSelectedAbsoluteRangeAriaLive!('', ''))
@@ -490,13 +486,9 @@ describe('Date range picker calendar', () => {
         value: null,
       });
       // select start
-      act(() => {
-        wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
-      });
+      wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
       // select end
-      act(() => {
-        wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
-      });
+      wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel!));
       expect(findLiveAnnouncement(wrapper)).toHaveTextContent('Sunday, September 6, 2020 – Monday, September 7, 2020');
     });

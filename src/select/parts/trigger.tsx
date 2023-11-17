@@ -5,6 +5,7 @@ import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 import ButtonTrigger from '../../internal/components/button-trigger';
 import { SelectProps } from '../interfaces';
+import { MultiselectProps } from '../../multiselect/interfaces';
 import styles from './styles.css.js';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
@@ -12,6 +13,7 @@ import Option from '../../internal/components/option';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SelectTriggerProps } from '../utils/use-select';
 import { joinStrings } from '../../internal/utils/strings';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 export interface TriggerProps extends FormFieldValidationControlProps {
   placeholder: string | undefined;
@@ -19,8 +21,9 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
   isOpen?: boolean;
-  triggerVariant?: SelectProps.TriggerVariant;
+  triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
   inFilteringToken?: boolean;
+  selectedOptions?: ReadonlyArray<OptionDefinition>;
 }
 
 const Trigger = React.forwardRef(
@@ -32,6 +35,7 @@ const Trigger = React.forwardRef(
       invalid,
       triggerProps,
       selectedOption,
+      selectedOptions,
       triggerVariant,
       inFilteringToken,
       isOpen,
@@ -40,12 +44,46 @@ const Trigger = React.forwardRef(
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
+    const isVisualRefresh = useVisualRefresh();
     const generatedId = useUniqueId();
     const id = controlId ?? generatedId;
     const triggerContentId = useUniqueId('trigger-content-');
 
+    let ariaLabelledbyIds = joinStrings(ariaLabelledby, triggerContentId);
+
     let triggerContent = null;
-    if (!selectedOption) {
+    if (triggerVariant === 'tokens') {
+      if (selectedOptions?.length) {
+        triggerContent = (
+          <span
+            className={clsx(
+              styles['inline-token-trigger'],
+              disabled && styles['inline-token-trigger--disabled'],
+              isVisualRefresh && styles['visual-refresh']
+            )}
+          >
+            <span className={styles['inline-token-list']}>
+              {selectedOptions.map(({ label }, i) => (
+                <span key={i} className={styles['inline-token']}>
+                  {label}
+                </span>
+              ))}
+            </span>
+            <span className={styles['inline-token-counter']} id={triggerContentId}>
+              <span className={styles['inline-token-hidden-placeholder']}>{placeholder}</span>
+              <span>({selectedOptions.length})</span>
+            </span>
+          </span>
+        );
+        ariaLabelledbyIds = ariaLabelledby;
+      } else {
+        triggerContent = (
+          <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
+            {placeholder}
+          </span>
+        );
+      }
+    } else if (!selectedOption) {
       triggerContent = (
         <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
           {placeholder}
@@ -72,8 +110,9 @@ const Trigger = React.forwardRef(
         disabled={disabled}
         invalid={invalid}
         inFilteringToken={inFilteringToken}
+        inlineTokens={triggerVariant === 'tokens'}
         ariaDescribedby={ariaDescribedby}
-        ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
+        ariaLabelledby={ariaLabelledbyIds}
       >
         {triggerContent}
       </ButtonTrigger>

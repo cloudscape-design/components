@@ -8,15 +8,13 @@ export interface SplitPanelSideToggleProps {
   ariaLabel: string | undefined;
 }
 
-export interface SplitPanelContextProps {
+export interface SplitPanelContextBaseProps {
   topOffset: number;
   bottomOffset: number;
   leftOffset: number;
   rightOffset: number;
   position: 'side' | 'bottom';
   size: number;
-  getMaxWidth: () => number;
-  getMaxHeight: () => number;
   disableContentPaddings?: boolean;
   contentWidthStyles?: React.CSSProperties;
   contentWrapperPaddings?: {
@@ -24,15 +22,18 @@ export interface SplitPanelContextProps {
     closedTools: boolean;
   };
   isOpen?: boolean;
-  isMobile: boolean;
   isForcedPosition: boolean;
-  onResize: (detail: { size: number }) => void;
+  onResize: (newSize: number) => void;
   onToggle: () => void;
   onPreferencesChange: (detail: { position: 'side' | 'bottom' }) => void;
   reportSize: (pixels: number) => void;
   reportHeaderHeight: (pixels: number) => void;
   setSplitPanelToggle: (config: SplitPanelSideToggleProps) => void;
   refs: SplitPanelFocusControlRefs;
+}
+
+export interface SplitPanelContextProps extends SplitPanelContextBaseProps {
+  relativeSize: number;
 }
 
 const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);

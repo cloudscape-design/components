@@ -1,98 +1,93 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { ButtonProps } from '../../button/interfaces';
 import { togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
 import { IconProps } from '../../icon/interfaces';
 import { NonCancelableEventHandler } from '../../internal/events';
 
-import { DrawerFocusControlRefs } from '../utils/use-drawer-focus-control';
+import { FocusControlRefs } from '../utils/use-focus-control';
 
 export interface DesktopDrawerProps {
+  id?: string;
   contentClassName: string;
   toggleClassName: string;
   closeClassName: string;
   toggleRefs: {
-    toggle: React.Ref<ButtonProps.Ref>;
-    close: React.Ref<ButtonProps.Ref>;
+    toggle: React.Ref<{ focus(): void }>;
+    close: React.Ref<{ focus(): void }>;
   };
   width: number;
   topOffset: number | undefined;
   bottomOffset: number | undefined;
-  ariaLabels: AppLayoutProps.Labels | undefined;
-  drawersAriaLabels?: DrawerItemAriaLabels | undefined;
+  ariaLabels: {
+    mainLabel: string | undefined;
+    closeLabel: string | undefined;
+    openLabel: string | undefined;
+    resizeHandle?: string;
+  };
   children: React.ReactNode;
+  hideOpenButton?: boolean;
   type: keyof typeof togglesConfig;
   isMobile: boolean;
   isOpen: boolean;
+  isHidden?: boolean;
   onToggle: (isOpen: boolean) => void;
   onClick?: (event: React.MouseEvent) => void;
   onLoseFocus?: (event: React.FocusEvent) => void;
-  drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
-  };
   resizeHandle?: React.ReactNode;
 }
 
 export interface ResizableDrawerProps extends DesktopDrawerProps {
-  activeDrawer?: DrawerItem;
+  activeDrawer: AppLayoutProps.Drawer | undefined;
   onResize: (resizeDetail: { size: number; id: string }) => void;
   size: number;
   getMaxWidth: () => number;
-  refs: DrawerFocusControlRefs;
+  refs: FocusControlRefs;
+  toolsContent: React.ReactNode;
 }
 
 export interface DrawerTriggersBarProps {
-  contentClassName: string;
-  toggleClassName: string;
   topOffset: number | undefined;
   bottomOffset: number | undefined;
   isMobile: boolean;
-  drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId?: string;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
-    ariaLabel?: string;
-  };
+  drawers: Array<AppLayoutProps.Drawer>;
+  activeDrawerId: string | null;
+  onDrawerChange: (newDrawerId: string | null) => void;
+  ariaLabels: AppLayoutProps['ariaLabels'];
+  drawerRefs: FocusControlRefs;
 }
 
-export interface DrawerItemAriaLabels {
+// Beta interfaces
+// TODO: remove after beta consumers migrate to prod API
+interface BetaDrawerItemAriaLabels {
   content?: string;
   closeButton?: string;
   triggerButton?: string;
   resizeHandle?: string;
 }
 
-export interface DrawerItem {
+interface BetaDrawerItem {
   id: string;
   content: React.ReactNode;
   trigger: {
     iconName?: IconProps.Name;
     iconSvg?: React.ReactNode;
   };
-  ariaLabels: DrawerItemAriaLabels;
+  ariaLabels: BetaDrawerItemAriaLabels;
   resizable?: boolean;
   defaultSize?: number;
   onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
+  badge?: boolean;
 }
 
-export interface SizeControlProps {
-  position: 'side';
-  splitPanelRef?: React.RefObject<HTMLDivElement>;
-  handleRef?: React.RefObject<HTMLDivElement>;
-  setSidePanelWidth: (width: number) => void;
-  setBottomPanelHeight: (height: number) => void;
+export interface BetaDrawersProps {
+  items: Array<BetaDrawerItem>;
+  activeDrawerId?: string | null;
+  onChange?: NonCancelableEventHandler<string | null>;
+  onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
+  ariaLabel?: string;
+  overflowAriaLabel?: string;
+  overflowWithBadgeAriaLabel?: string;
 }
-
-export interface InternalDrawerProps {
-  drawers?: {
-    items: Array<DrawerItem>;
-    activeDrawerId?: string;
-    onChange?: NonCancelableEventHandler<string>;
-    onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
-    ariaLabel?: string;
-  };
-}
+// Beta interfaces end

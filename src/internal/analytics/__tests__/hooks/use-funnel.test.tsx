@@ -23,11 +23,20 @@ describe('useFunnel hook', () => {
         value={{
           funnelInteractionId: 'funnel-id',
           setFunnelInteractionId: () => {},
+          funnelNameSelector: '',
           funnelType: 'single-page',
           optionalStepNumbers: [],
           totalFunnelSteps: 0,
           funnelSubmit: () => {},
           funnelCancel: () => {},
+          submissionAttempt: 0,
+          funnelNextOrSubmitAttempt: () => {},
+          funnelState: { current: 'default' },
+          loadingButtonCount: { current: 0 },
+          errorCount: { current: 0 },
+          latestFocusCleanupFunction: { current: undefined },
+          isInFunnel: true,
+          wizardCount: { current: 0 },
         }}
       >
         <ChildComponent />
@@ -59,11 +68,20 @@ describe('useFunnel hook', () => {
         value={{
           funnelInteractionId: 'funnel-id',
           funnelType: 'single-page',
+          funnelNameSelector: '',
           optionalStepNumbers: [],
           totalFunnelSteps: 0,
           setFunnelInteractionId,
           funnelSubmit,
           funnelCancel,
+          submissionAttempt: 0,
+          funnelNextOrSubmitAttempt: () => {},
+          funnelState: { current: 'default' },
+          loadingButtonCount: { current: 0 },
+          errorCount: { current: 0 },
+          latestFocusCleanupFunction: { current: undefined },
+          isInFunnel: true,
+          wizardCount: { current: 0 },
         }}
       >
         <ChildComponent />

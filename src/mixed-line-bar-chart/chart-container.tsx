@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { nodeContains } from '../internal/utils/dom';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 import { getXTickCount, getYTickCount, createXTicks, createYTicks } from '../internal/components/cartesian-chart/ticks';
@@ -10,7 +9,7 @@ import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import AxisLabel from '../internal/components/cartesian-chart/axis-label';
 import LabelsMeasure from '../internal/components/cartesian-chart/labels-measure';
 import LeftLabels from '../internal/components/cartesian-chart/left-labels';
-import BottomLabels from '../internal/components/cartesian-chart/bottom-labels';
+import BottomLabels, { useBottomLabels } from '../internal/components/cartesian-chart/bottom-labels';
 import VerticalGridLines from '../internal/components/cartesian-chart/vertical-grid-lines';
 import EmphasizedBaseline from '../internal/components/cartesian-chart/emphasized-baseline';
 import HighlightedPoint from '../internal/components/cartesian-chart/highlighted-point';
@@ -29,10 +28,12 @@ import { useMouseHover } from './hooks/use-mouse-hover';
 import { useNavigation } from './hooks/use-navigation';
 import { usePopover } from './hooks/use-popover';
 
-import styles from './styles.css.js';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import useContainerWidth from '../internal/utils/use-container-width';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { nodeBelongs } from '../internal/utils/node-belongs';
+import { CartesianChartContainer } from '../internal/components/cartesian-chart/chart-container';
+import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 
 const LEFT_LABELS_MARGIN = 16;
 const BOTTOM_LABELS_OFFSET = 12;
@@ -43,8 +44,10 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   series: ReadonlyArray<InternalChartSeries<T>>;
   visibleSeries: ReadonlyArray<InternalChartSeries<T>>;
 
+  fitHeight?: boolean;
   height: number;
   detailPopoverSize: MixedLineBarChartProps<T>['detailPopoverSize'];
+  detailPopoverFooter: MixedLineBarChartProps<T>['detailPopoverFooter'];
 
   xScaleType: ScaleType;
   yScaleType: 'linear' | 'log';
@@ -77,8 +80,30 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   plotContainerRef: React.RefObject<HTMLDivElement>;
 }
 
+interface BaseAxisProps {
+  tickCount: number;
+  tickFormatter: TickFormatter;
+  title?: string;
+  ariaRoleDescription?: string;
+}
+
+interface XAxisProps extends BaseAxisProps {
+  axis: 'x';
+  scale: ChartScale;
+  ticks: ChartDataTypes[];
+}
+
+interface YAxisProps extends BaseAxisProps {
+  axis: 'y';
+  scale: NumericChartScale;
+  ticks: number[];
+}
+
+const fallbackContainerWidth = 500;
+
 export default function ChartContainer<T extends ChartDataTypes>({
-  height: plotHeight,
+  fitHeight,
+  height: explicitPlotHeight,
   series,
   visibleSeries,
   highlightedSeries,
@@ -87,6 +112,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   setHighlightedPoint,
   highlightedGroupIndex,
   setHighlightedGroupIndex,
+  detailPopoverFooter,
   detailPopoverSize = 'medium',
   stackedBars = false,
   horizontalBars = false,
@@ -108,17 +134,16 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const verticalMarkerRef = useRef<SVGLineElement>(null);
 
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
-  const [bottomLabelsHeight, setBottomLabelsHeight] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
-  const [containerWidth, containerMeasureRef] = useContainerWidth(500);
-  const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
+  const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
+  const maxLeftLabelsWidth = Math.round(containerWidth / 2);
+  const plotWidth = containerWidth
+    ? // Calculate the minimum between leftLabelsWidth and maxLeftLabelsWidth for extra safety because leftLabelsWidth could be out of date
+      Math.max(0, containerWidth - Math.min(leftLabelsWidth, maxLeftLabelsWidth) - LEFT_LABELS_MARGIN)
+    : fallbackContainerWidth;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
   const popoverRef = useRef<HTMLElement | null>(null);
-
-  const isRefresh = useVisualRefresh();
-
-  const linesOnly = series.every(({ series }) => series.type === 'line' || series.type === 'threshold');
 
   const xDomain = (props.xDomain || computeDomainX(series, xScaleType)) as
     | readonly number[]
@@ -126,22 +151,57 @@ export default function ChartContainer<T extends ChartDataTypes>({
     | readonly Date[];
   const yDomain = (props.yDomain || computeDomainY(series, yScaleType, stackedBars)) as readonly number[];
 
-  const xTickCount = getXTickCount(plotWidth);
-  const yTickCount = getYTickCount(plotHeight);
+  const linesOnly = series.every(({ series }) => series.type === 'line' || series.type === 'threshold');
 
-  const rangeBottomTop: [number, number] = [0, plotHeight];
-  const rangeTopBottom: [number, number] = [plotHeight, 0];
-  const rangeLeftRight: [number, number] = [0, plotWidth];
-  const xScale = new ChartScale(xScaleType, xDomain, horizontalBars ? rangeBottomTop : rangeLeftRight, linesOnly);
-  const yScale = new NumericChartScale(
-    yScaleType,
-    yDomain,
-    horizontalBars ? rangeLeftRight : rangeTopBottom,
-    props.yDomain ? null : yTickCount
-  );
+  function getXAxisProps(size: number, range: [from: number, until: number]): XAxisProps {
+    const tickCount = getXTickCount(size);
+    const scale = new ChartScale(xScaleType, xDomain, range, linesOnly);
+    const ticks = createXTicks(scale, tickCount);
+    return {
+      axis: 'x',
+      tickCount,
+      scale,
+      ticks,
+      tickFormatter: xTickFormatter as TickFormatter,
+      title: xTitle,
+      ariaRoleDescription: i18nStrings.xAxisAriaRoleDescription,
+    };
+  }
 
-  const xTicks = createXTicks(xScale, xTickCount);
-  const yTicks = createYTicks(yScale, yTickCount);
+  function getYAxisProps(size: number, range: [from: number, until: number]): YAxisProps {
+    const tickCount = getYTickCount(size);
+    const scale = new NumericChartScale(yScaleType, yDomain, range, props.yDomain ? null : tickCount);
+    const ticks = createYTicks(scale, tickCount);
+    return {
+      axis: 'y',
+      tickCount,
+      scale,
+      ticks,
+      tickFormatter: yTickFormatter as TickFormatter,
+      title: yTitle,
+      ariaRoleDescription: i18nStrings.yAxisAriaRoleDescription,
+    };
+  }
+
+  const bottomAxisProps = !horizontalBars
+    ? getXAxisProps(plotWidth, [0, plotWidth])
+    : getYAxisProps(plotWidth, [0, plotWidth]);
+
+  const bottomLabelsProps = useBottomLabels({ ...bottomAxisProps });
+
+  const plotMeasureRef = useRef<SVGLineElement>(null);
+  const measuredHeight = useHeightMeasure(() => plotMeasureRef.current, !fitHeight);
+  const plotHeight = fitHeight ? measuredHeight ?? 0 : explicitPlotHeight;
+
+  const leftAxisProps = !horizontalBars
+    ? getYAxisProps(plotHeight, [plotHeight, 0])
+    : getXAxisProps(plotHeight, [0, plotHeight]);
+
+  const xAxisProps = bottomAxisProps.axis === 'x' ? bottomAxisProps : leftAxisProps.axis === 'x' ? leftAxisProps : null;
+  const yAxisProps = bottomAxisProps.axis === 'y' ? bottomAxisProps : leftAxisProps.axis === 'y' ? leftAxisProps : null;
+  if (!xAxisProps || !yAxisProps) {
+    throw new Error('Invariant violation: invalid axis props.');
+  }
 
   /**
    * Interactions
@@ -154,16 +214,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
   // When "horizontalBars" is enabled, the axes are inverted.
   const x = !horizontalBars ? 'x' : 'y';
   const y = !horizontalBars ? 'y' : 'x';
-  const xy = {
-    ticks: { x: xTicks, y: yTicks },
-    scale: { x: xScale, y: yScale },
-    tickFormatter: { x: xTickFormatter, y: yTickFormatter },
-    title: { x: xTitle, y: yTitle },
-    ariaRoleDescription: { x: i18nStrings.xAxisAriaRoleDescription, y: i18nStrings.yAxisAriaRoleDescription },
-  };
 
-  const scaledSeries = makeScaledSeries(visibleSeries, xScale, yScale);
-  const barGroups: ScaledBarGroup<T>[] = makeScaledBarGroups(visibleSeries, xScale, plotWidth, plotHeight, y);
+  const scaledSeries = makeScaledSeries(visibleSeries, xAxisProps.scale, yAxisProps.scale);
+  const barGroups: ScaledBarGroup<T>[] = makeScaledBarGroups(visibleSeries, xAxisProps.scale, plotWidth, plotHeight, y);
 
   const { isPopoverOpen, isPopoverPinned, showPopover, pinPopover, dismissPopover } = usePopover();
 
@@ -239,8 +292,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
     visibleSeries,
     scaledSeries,
     barGroups,
-    xScale,
-    yScale,
+    xScale: xAxisProps.scale,
+    yScale: yAxisProps.scale,
     highlightedPoint,
     highlightedGroupIndex,
     highlightedSeries,
@@ -342,7 +395,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (
       blurTarget === null ||
       !(blurTarget instanceof Element) ||
-      !nodeContains(containerRefObject.current, blurTarget)
+      !nodeBelongs(containerRefObject.current, blurTarget)
     ) {
       setHighlightedPoint(null);
       setVerticalMarkerX(null);
@@ -358,13 +411,13 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const onSVGKeyDown = handlers.onKeyDown;
 
-  const xOffset = xScale.isCategorical() ? Math.max(0, xScale.d3Scale.bandwidth() - 1) / 2 : 0;
+  const xOffset = xAxisProps.scale.isCategorical() ? Math.max(0, xAxisProps.scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
   let verticalLineX: number | null = null;
   if (verticalMarkerX !== null) {
     verticalLineX = verticalMarkerX.scaledX;
   } else if (isGroupNavigation && highlightedGroupIndex !== null) {
-    const x = xScale.d3Scale(barGroups[highlightedGroupIndex].x as any) ?? null;
+    const x = xAxisProps.scale.d3Scale(barGroups[highlightedGroupIndex].x as any) ?? null;
     if (x !== null) {
       verticalLineX = xOffset + x;
     }
@@ -421,6 +474,11 @@ export default function ChartContainer<T extends ChartDataTypes>({
     return formatHighlighted(highlightedX, visibleSeries, xTickFormatter);
   }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter]);
 
+  const detailPopoverFooterContent = useMemo(
+    () => (detailPopoverFooter && highlightedX ? detailPopoverFooter(highlightedX) : null),
+    [detailPopoverFooter, highlightedX]
+  );
+
   const activeAriaLabel = useMemo(
     () =>
       highlightDetails
@@ -435,126 +493,143 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const isLineXKeyboardFocused = isPlotFocused && !highlightedPoint && verticalMarkerX;
 
+  const isRefresh = useVisualRefresh();
+
   return (
-    <div className={styles['chart-container']} ref={containerRef}>
-      <AxisLabel axis={y} position="left" title={xy.title[y]} />
-      <div className={styles['chart-container__horizontal']}>
+    <CartesianChartContainer
+      ref={containerRef}
+      minHeight={explicitPlotHeight + bottomLabelsProps.height}
+      fitHeight={!!fitHeight}
+      leftAxisLabel={<AxisLabel axis={y} position="left" title={leftAxisProps.title} />}
+      leftAxisLabelMeasure={
         <LabelsMeasure
-          ticks={xy.ticks[y]}
-          scale={xy.scale[y]}
-          tickFormatter={xy.tickFormatter[y] as TickFormatter}
+          ticks={leftAxisProps.ticks}
+          scale={leftAxisProps.scale}
+          tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
           autoWidth={setLeftLabelsWidth}
+          maxLabelsWidth={maxLeftLabelsWidth}
         />
+      }
+      bottomAxisLabel={<AxisLabel axis={x} position="bottom" title={bottomAxisProps.title} />}
+      chartPlot={
+        <ChartPlot
+          ref={plotRef}
+          width="100%"
+          height={fitHeight ? `calc(100% - ${bottomLabelsProps.height}px)` : plotHeight}
+          offsetBottom={bottomLabelsProps.height}
+          isClickable={isPopoverOpen && !isPopoverPinned}
+          ariaLabel={ariaLabel}
+          ariaLabelledby={ariaLabelledby}
+          ariaDescription={ariaDescription}
+          ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
+          ariaLiveRegion={activeLiveRegion}
+          activeElementRef={highlightedElementRef}
+          activeElementKey={
+            isPlotFocused &&
+            (highlightedGroupIndex?.toString() ??
+              (isLineXKeyboardFocused ? `point-index-${handlers.xIndex}` : point?.key))
+          }
+          activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
+          onMouseMove={onSVGMouseMove}
+          onMouseOut={onSVGMouseOut}
+          onMouseDown={onSVGMouseDown}
+          onFocus={onSVGFocus}
+          onBlur={onSVGBlur}
+          onKeyDown={onSVGKeyDown}
+        >
+          <line
+            ref={plotMeasureRef}
+            x1="0"
+            x2="0"
+            y1="0"
+            y2="100%"
+            stroke="transparent"
+            strokeWidth={1}
+            style={{ pointerEvents: 'none' }}
+          />
 
-        <div className={styles['chart-container__vertical']}>
-          <ChartPlot
-            ref={plotRef}
-            width={plotWidth}
+          <LeftLabels
+            axis={y}
+            ticks={leftAxisProps.ticks}
+            scale={leftAxisProps.scale}
+            tickFormatter={leftAxisProps.tickFormatter as TickFormatter}
+            title={leftAxisProps.title}
+            ariaRoleDescription={leftAxisProps.ariaRoleDescription}
+            maxLabelsWidth={maxLeftLabelsWidth}
+            plotWidth={plotWidth}
+            plotHeight={plotHeight}
+          />
+
+          {horizontalBars && (
+            <VerticalGridLines scale={yAxisProps.scale} ticks={yAxisProps.ticks} height={plotHeight} />
+          )}
+
+          {emphasizeBaselineAxis && linesOnly && (
+            <EmphasizedBaseline axis={x} scale={yAxisProps.scale} width={plotWidth} height={plotHeight} />
+          )}
+
+          <DataSeries
+            axis={x}
+            plotWidth={plotWidth}
+            plotHeight={plotHeight}
+            highlightedSeries={highlightedSeries ?? null}
+            highlightedGroupIndex={highlightedGroupIndex}
+            stackedBars={stackedBars}
+            isGroupNavigation={isGroupNavigation}
+            visibleSeries={visibleSeries}
+            xScale={xAxisProps.scale}
+            yScale={yAxisProps.scale}
+          />
+
+          {emphasizeBaselineAxis && !linesOnly && (
+            <EmphasizedBaseline axis={x} scale={yAxisProps.scale} width={plotWidth} height={plotHeight} />
+          )}
+
+          <VerticalMarker
+            key={verticalLineX || ''}
             height={plotHeight}
-            offsetBottom={bottomLabelsHeight}
-            isClickable={isPopoverOpen && !isPopoverPinned}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={ariaLabelledby}
-            ariaDescription={ariaDescription}
-            ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
-            ariaLiveRegion={activeLiveRegion}
-            activeElementRef={highlightedElementRef}
-            activeElementKey={
-              isPlotFocused &&
-              (highlightedGroupIndex?.toString() ??
-                (isLineXKeyboardFocused ? `point-index-${handlers.xIndex}` : point?.key))
-            }
-            activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
-            onMouseMove={onSVGMouseMove}
-            onMouseOut={onSVGMouseOut}
-            onMouseDown={onSVGMouseDown}
-            onFocus={onSVGFocus}
-            onBlur={onSVGBlur}
-            onKeyDown={onSVGKeyDown}
-          >
-            <LeftLabels
-              axis={y}
-              ticks={xy.ticks[y]}
-              scale={xy.scale[y]}
-              tickFormatter={xy.tickFormatter[y] as TickFormatter}
-              title={xy.title[y]}
-              ariaRoleDescription={xy.ariaRoleDescription[y]}
-              width={plotWidth}
-              height={plotHeight}
+            showPoints={highlightedPoint === null}
+            showLine={!isGroupNavigation}
+            points={verticalMarkers}
+            ref={verticalMarkerRef}
+          />
+
+          {highlightedPoint && (
+            <HighlightedPoint
+              ref={highlightedPointRef}
+              point={point}
+              role="button"
+              ariaLabel={activeAriaLabel}
+              ariaHasPopup={true}
+              ariaExpanded={isPopoverPinned}
             />
+          )}
 
-            {horizontalBars && <VerticalGridLines scale={yScale} ticks={yTicks} height={plotHeight} />}
-
-            {emphasizeBaselineAxis && linesOnly && (
-              <EmphasizedBaseline axis={x} scale={yScale} width={plotWidth} height={plotHeight} />
-            )}
-
-            <DataSeries
-              axis={x}
-              plotWidth={plotWidth}
-              plotHeight={plotHeight}
-              highlightedSeries={highlightedSeries ?? null}
+          {isGroupNavigation && xAxisProps.scale.isCategorical() && (
+            <BarGroups
+              ariaLabel={activeAriaLabel}
+              isRefresh={isRefresh}
+              isPopoverPinned={isPopoverPinned}
+              barGroups={barGroups}
               highlightedGroupIndex={highlightedGroupIndex}
-              stackedBars={stackedBars}
-              isGroupNavigation={isGroupNavigation}
-              visibleSeries={visibleSeries}
-              xScale={xScale}
-              yScale={yScale}
+              highlightedGroupRef={highlightedGroupRef}
             />
+          )}
 
-            {emphasizeBaselineAxis && !linesOnly && (
-              <EmphasizedBaseline axis={x} scale={yScale} width={plotWidth} height={plotHeight} />
-            )}
-
-            <VerticalMarker
-              key={verticalLineX || ''}
-              height={plotHeight}
-              showPoints={highlightedPoint === null}
-              showLine={!isGroupNavigation}
-              points={verticalMarkers}
-              ref={verticalMarkerRef}
-            />
-
-            {highlightedPoint && (
-              <HighlightedPoint
-                ref={highlightedPointRef}
-                point={point}
-                role="button"
-                ariaLabel={activeAriaLabel}
-                ariaHasPopup={true}
-                ariaExpanded={isPopoverPinned}
-              />
-            )}
-
-            {isGroupNavigation && xScale.isCategorical() && (
-              <BarGroups
-                ariaLabel={activeAriaLabel}
-                isRefresh={isRefresh}
-                isPopoverPinned={isPopoverPinned}
-                barGroups={barGroups}
-                highlightedGroupIndex={highlightedGroupIndex}
-                highlightedGroupRef={highlightedGroupRef}
-              />
-            )}
-
-            <BottomLabels
-              axis={x}
-              ticks={xy.ticks[x]}
-              scale={xy.scale[x]}
-              tickFormatter={xy.tickFormatter[x] as TickFormatter}
-              title={xy.title[x]}
-              ariaRoleDescription={xy.ariaRoleDescription[x]}
-              height={plotHeight}
-              width={plotWidth}
-              offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
-              offsetRight={BOTTOM_LABELS_OFFSET}
-              autoHeight={setBottomLabelsHeight}
-            />
-          </ChartPlot>
-
-          <AxisLabel axis={x} position="bottom" title={xy.title[x]} />
-        </div>
-
+          <BottomLabels
+            {...bottomLabelsProps}
+            axis={x}
+            scale={bottomAxisProps.scale}
+            title={bottomAxisProps.title}
+            ariaRoleDescription={bottomAxisProps.ariaRoleDescription}
+            height={plotHeight}
+            width={plotWidth}
+            offsetLeft={leftLabelsWidth + BOTTOM_LABELS_OFFSET}
+            offsetRight={BOTTOM_LABELS_OFFSET}
+          />
+        </ChartPlot>
+      }
+      popover={
         <ChartPopover
           ref={popoverRef}
           containerRef={containerRefObject}
@@ -564,10 +639,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
           highlightDetails={highlightDetails}
           onDismiss={onPopoverDismiss}
           size={detailPopoverSize}
+          footer={detailPopoverFooterContent}
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
+          onBlur={onSVGBlur}
         />
-      </div>
-    </div>
+      }
+    />
   );
 }

@@ -161,13 +161,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `allItemsSelectionLabel` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
    * * `selectionGroupLabel` (string) - Specifies the alternative text for the whole selection and single-selection column header.
    *                                    It is prefixed to `itemSelectionLabel` and `allItemsSelectionLabel` when they are set.
-   * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
-   *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
    * You can use the first argument of type `SelectionState` to access the current selection
    * state of the component (for example, the `selectedItems` list). The `itemSelectionLabel` for individual
    * items also receives the corresponding  `Item` object. You can use the `selectionGroupLabel` to
    * add a meaningful description to the whole selection.
-   *
+   * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
+   *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
+   * * `resizerRoleDescription` (string) - Provides role description for table column resizer buttons.
    * * `activateEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the edit button in editable cells.
    * * `cancelEditLabel` (EditableColumnDefinition) => string -
@@ -391,6 +391,7 @@ export namespace TableProps {
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
+    resizerRoleDescription?: string;
     // do not use <T> to prevent overly strict validation on consumer end
     // it works, practically, we are only interested in `id` and `header` properties only
     activateEditLabel?: (column: ColumnDefinition<any>, item: T) => string;

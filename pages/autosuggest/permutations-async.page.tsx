@@ -41,6 +41,9 @@ export default function () {
                 onChange={() => {
                   /*empty handler to suppress react controlled property warning*/
                 }}
+                onLoadItems={() => {
+                  /* handler is required to render retry button */
+                }}
                 {...permutation}
               />
             </div>

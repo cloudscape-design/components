@@ -23,10 +23,6 @@
     box-shadow: awsui.$shadow-panel;
   }
 
-  @include styles.with-motion {
-    transition: background-color awsui.$motion-duration-refresh-only-fast;
-  }
-
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     /* stylelint-disable scss/operator-no-newline-after */
     max-width: calc(
@@ -61,6 +57,7 @@
   height: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
 
   &:not(.has-multiple-triggers).has-open-drawer {
@@ -69,19 +66,15 @@
 
   &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
-
-    @include styles.with-motion {
-      transition: background-color awsui.$motion-duration-refresh-only-fast;
-    }
   }
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
     width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
-
-    @include styles.with-motion {
-      transition: width awsui.$motion-duration-refresh-only-fast;
-    }
   }
+}
+
+.drawers-mobile-triggers-container {
+  display: flex;
 }
 
 .drawers-trigger-content {
@@ -98,46 +91,69 @@
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
     opacity: 1;
+  }
 
-    @include styles.with-motion {
-      transition: opacity awsui.$motion-duration-refresh-only-medium;
-      transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
-    }
+  > .drawers-trigger-overflow {
+    padding: 0 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
 .drawers-trigger {
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     width: constants.$sidebar-size-closed;
-    text-align: right;
+    display: flex;
+    justify-content: center;
   }
 }
 
 .drawer {
-  #{custom-props.$activeDrawerWidth}: 290px;
+  #{custom-props.$drawerSize}: 290px;
   background-color: awsui.$color-background-container-content;
   border-color: transparent;
   display: grid;
+  grid-template-columns: awsui.$space-m 1fr;
   flex-shrink: 0;
-  grid-template-columns: 1fr auto awsui.$space-m;
-  grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
+
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
 
-  > .drawer-close-button {
-    grid-column: 2;
-    grid-row: 2;
-    z-index: 1;
+  > .drawer-content-container {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    width: var(#{custom-props.$drawerSize});
+    display: grid;
+    grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
+    grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
+    overflow-y: auto;
+
+    > .drawer-close-button {
+      grid-column: 3;
+      grid-row: 2;
+      z-index: 1;
+    }
+
+    > .drawer-content {
+      grid-column: 1 / span 4;
+      &.drawer-content-hidden {
+        display: none;
+      }
+    }
   }
 
-  > .drawer-content {
-    grid-column: 1 / span 3;
-    grid-row: 1 / span 3;
-    width: var(#{custom-props.$activeDrawerWidth});
+  > .drawer-slider {
+    grid-column: 1;
+    grid-row: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 
   &:not(.is-drawer-open) {
@@ -148,23 +164,19 @@
   &.is-drawer-open {
     border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     opacity: 1;
-    width: var(#{custom-props.$activeDrawerWidth});
-  }
-
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-fast;
-    transition-property: border-color, opacity, width;
+    width: var(#{custom-props.$drawerSize});
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     &.is-drawer-open {
-      #{custom-props.$activeDrawerWidth}: 320px;
+      #{custom-props.$drawerSize}: 320px;
     }
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     &.is-drawer-open {
-      #{custom-props.$activeDrawerWidth}: 100vw;
+      #{custom-props.$drawerSize}: 100vw;
+      width: 100vw;
     }
   }
 }

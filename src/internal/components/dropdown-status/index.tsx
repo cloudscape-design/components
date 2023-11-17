@@ -25,6 +25,11 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * to recover from the error.
    */
   onRecoveryClick?: NonCancelableEventHandler;
+  /**
+   * Determines if retry button should be rendered
+   * in case recoveryText was automatically provided by i18n.
+   */
+  hasRecoveryCallback?: boolean;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
@@ -43,6 +48,7 @@ type UseDropdownStatus = ({
   isNoMatch,
   isFiltered,
   noMatch,
+  hasRecoveryCallback,
   onRecoveryClick,
 }: DropdownStatusPropsExtended) => DropdownStatusResult;
 
@@ -64,6 +70,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
   isFiltered,
   noMatch,
   onRecoveryClick,
+  hasRecoveryCallback = false,
   errorIconAriaLabel,
 }) => {
   const previousStatusType = usePrevious(statusType);
@@ -76,12 +83,13 @@ export const useDropdownStatus: UseDropdownStatus = ({
       <span>
         <InternalStatusIndicator
           type="error"
+          __display="inline"
           __animate={previousStatusType !== 'error'}
           iconAriaLabel={errorIconAriaLabel}
         >
           {errorText}
         </InternalStatusIndicator>{' '}
-        {recoveryText && (
+        {!!recoveryText && hasRecoveryCallback && (
           <InternalLink
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"

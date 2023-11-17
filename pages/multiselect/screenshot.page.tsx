@@ -27,6 +27,7 @@ const options: MultiselectProps.Options = [
 export default function () {
   const [selected, setSelected] = useState<MultiselectProps.Options>(options.slice(0, 3));
   const [virtualScroll, setVirtualScroll] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
 
   return (
     <>
@@ -34,6 +35,10 @@ export default function () {
 
       <button id="toggle-virtual" onClick={() => setVirtualScroll(vs => !vs)}>
         Toggle virtual scroll
+      </button>
+
+      <button id="toggle-error" onClick={() => setShowError(show => !show)}>
+        Toggle error
       </button>
 
       <ScreenshotArea
@@ -48,6 +53,10 @@ export default function () {
           options={options}
           filteringType="manual"
           finishedText="End of all results"
+          errorText="verylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspaces"
+          recoveryText="Retry"
+          onLoadItems={() => {}}
+          statusType={showError ? 'error' : 'finished'}
           onChange={event => setSelected(event.detail.selectedOptions)}
           i18nStrings={i18nStrings}
           tokenLimit={2}

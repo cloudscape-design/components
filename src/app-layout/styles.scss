@@ -7,10 +7,33 @@
 @use '../internal/styles/tokens' as awsui;
 @use './constants' as constants;
 
-// double flex container to work around flexbox issue in IE
-// https://github.com/philipwalton/flexbugs#flexbug-3
-.root,
-.layout-wrapper {
+/* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+// these styles are expected to apply to the entire document, so they do not follow the scoping rules
+.resize {
+  &-active * {
+    user-select: none;
+  }
+  &-active iframe {
+    // Prevents iframes from eating the mouseup event if the cursor is on top of it.
+    pointer-events: none;
+  }
+  &-side * {
+    cursor: ew-resize;
+  }
+  &-bottom * {
+    cursor: ns-resize;
+  }
+}
+/* stylelint-enable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+
+.with-motion {
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-refresh-only-fast;
+    transition-property: border-color, opacity, width;
+  }
+}
+
+.root {
   display: flex;
   flex-direction: column;
   position: relative;

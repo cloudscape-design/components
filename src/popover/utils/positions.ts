@@ -80,7 +80,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'top-right': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top - body.height - arrow.height,
-      left: trigger.left,
+      left: trigger.left + trigger.width / 2 - ARROW_OFFSET - arrow.width / 2,
       width: body.width,
       height: body.height,
     };
@@ -88,7 +88,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'top-left': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top - body.height - arrow.height,
-      left: trigger.left + trigger.width - body.width,
+      left: trigger.left + trigger.width / 2 + ARROW_OFFSET + arrow.width / 2 - body.width,
       width: body.width,
       height: body.height,
     };
@@ -104,7 +104,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'bottom-right': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top + trigger.height + arrow.height,
-      left: trigger.left,
+      left: trigger.left + trigger.width / 2 - ARROW_OFFSET - arrow.width / 2,
       width: body.width,
       height: body.height,
     };
@@ -112,7 +112,7 @@ const RECTANGLE_CALCULATIONS: Record<InternalPosition, (r: ElementGroup) => Boun
   'bottom-left': ({ body, trigger, arrow }) => {
     return {
       top: trigger.top + trigger.height + arrow.height,
-      left: trigger.left + trigger.width - body.width,
+      left: trigger.left + trigger.width / 2 + ARROW_OFFSET + arrow.width / 2 - body.width,
       width: body.width,
       height: body.height,
     };
@@ -188,12 +188,6 @@ function fitIntoContainer(inner: BoundingOffset, outer: BoundingOffset): Boundin
   return { left, width, top, height };
 }
 
-function getLargestRect(rect1: BoundingOffset, rect2: BoundingOffset): BoundingOffset {
-  const area1 = rect1.height * rect1.width;
-  const area2 = rect2.height * rect2.width;
-  return area1 >= area2 ? rect1 : rect2;
-}
-
 /**
  * Returns the area of the intersection of passed in rectangles or a null, if there is no intersection
  */
@@ -262,10 +256,7 @@ export function calculatePosition(
   // Get default rect for that placement.
   const defaultOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
   // Get largest possible rect that fits into viewport or container.
-  const optimisedOffset = fitIntoContainer(
-    defaultOffset,
-    renderWithPortal ? viewport : getLargestRect(container, viewport)
-  );
+  const optimisedOffset = fitIntoContainer(defaultOffset, viewport);
   // If largest possible rect is smaller than original - set body scroll.
   const scrollable = optimisedOffset.height < defaultOffset.height;
 

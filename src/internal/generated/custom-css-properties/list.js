@@ -6,7 +6,6 @@
  */
 const customCssPropertiesList = [
   // AppLayout Custom Properties
-  'activeDrawerWidth',
   'breadcrumbsGap',
   'contentGapLeft',
   'contentGapRight',
@@ -15,6 +14,7 @@ const customCssPropertiesList = [
   'containerFirstOverlapExtension',
   'defaultMaxContentWidth',
   'defaultMinContentWidth',
+  'drawerSize',
   'footerHeight',
   'headerGap',
   'headerHeight',
@@ -47,5 +47,7 @@ const customCssPropertiesList = [
   'flashbarStickyBottomMargin',
   'stackedNotificationsBottomMargin',
   'stackedNotificationsDefaultBottomMargin',
+  // Dropdown
+  'dropdownDefaultMaxWidth',
 ];
 module.exports = customCssPropertiesList;

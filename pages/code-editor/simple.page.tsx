@@ -36,6 +36,9 @@ export default class App extends React.PureComponent<null, IState> {
 
     import('ace-builds').then(ace => {
       ace.config.set('basePath', './ace/');
+      ace.config.set('themePath', './ace/');
+      ace.config.set('modePath', './ace/');
+      ace.config.set('workerPath', './ace/');
       ace.config.set('useStrictCSP', true);
       this.setState({ ace, loading: false });
     });

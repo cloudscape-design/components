@@ -26,7 +26,7 @@ import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useFormFieldContext } from '../contexts/form-field';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 import styles from './styles.css.js';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -44,7 +44,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     options,
     filteringType = 'auto',
     statusType = 'finished',
-    recoveryText,
     placeholder,
     clearAriaLabel,
     name,
@@ -81,6 +80,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const i18n = useInternalI18n('autosuggest');
   const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+  const recoveryText = i18n('recoveryText', restProps.recoveryText);
+
+  if (restProps.recoveryText && !onLoadItems) {
+    warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+  }
 
   if (!enteredTextLabel) {
     warnOnce('Autosuggest', 'A value for enteredTextLabel must be provided.');
@@ -129,12 +133,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     fireNonCancelableEvent(onFocus, null);
   };
 
-  const handleKeyUp = (e: CustomEvent<BaseKeyDetail>) => {
-    fireCancelableEvent(onKeyUp, e.detail);
+  const handleKeyUp = (event: CustomEvent<BaseKeyDetail>) => {
+    fireCancelableEvent(onKeyUp, event.detail, event);
   };
 
-  const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
-    fireCancelableEvent(onKeyDown, e.detail);
+  const handleKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
+    fireCancelableEvent(onKeyDown, event.detail, event);
   };
 
   const handlePressArrowDown = () => {
@@ -179,7 +183,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     errorIconAriaLabel,
     onRecoveryClick: handleRecoveryClick,
     filteringResultsText: filteredText,
+    hasRecoveryCallback: !!onLoadItems,
   });
+
+  const shouldRenderDropdownContent = !isEmpty || dropdownStatus.content;
 
   return (
     <AutosuggestInput
@@ -208,28 +215,30 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null}
       dropdownContent={
-        <AutosuggestOptionsList
-          statusType={statusType}
-          autosuggestItemsState={autosuggestItemsState}
-          autosuggestItemsHandlers={autosuggestItemsHandlers}
-          highlightedOptionId={highlightedOptionId}
-          highlightText={value}
-          listId={listId}
-          controlId={controlId}
-          enteredTextLabel={enteredTextLabel}
-          handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
-          hasDropdownStatus={dropdownStatus.content !== null}
-          virtualScroll={virtualScroll}
-          selectedAriaLabel={selectedAriaLabel}
-          renderHighlightedAriaLive={renderHighlightedAriaLive}
-          listBottom={
-            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
-          }
-          ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
-        />
+        shouldRenderDropdownContent && (
+          <AutosuggestOptionsList
+            statusType={statusType}
+            autosuggestItemsState={autosuggestItemsState}
+            autosuggestItemsHandlers={autosuggestItemsHandlers}
+            highlightedOptionId={highlightedOptionId}
+            highlightText={value}
+            listId={listId}
+            controlId={controlId}
+            enteredTextLabel={enteredTextLabel}
+            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
+            hasDropdownStatus={dropdownStatus.content !== null}
+            virtualScroll={virtualScroll}
+            selectedAriaLabel={selectedAriaLabel}
+            renderHighlightedAriaLive={renderHighlightedAriaLive}
+            listBottom={
+              !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
+            }
+            ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
+          />
+        )
       }
       dropdownFooter={
-        dropdownStatus.isSticky ? (
+        dropdownStatus.isSticky && dropdownStatus.content ? (
           <DropdownFooter
             id={footerControlId}
             content={dropdownStatus.content}
@@ -237,7 +246,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           />
         ) : null
       }
-      loopFocus={statusType === 'error' && !!recoveryText}
+      loopFocus={statusType === 'error' && !!recoveryText && !!onLoadItems}
       onCloseDropdown={handleCloseDropdown}
       onDelayedInput={handleDelayedInput}
       onPressArrowDown={handlePressArrowDown}

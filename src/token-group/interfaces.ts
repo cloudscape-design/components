@@ -23,6 +23,12 @@ export interface TokenGroupProps extends BaseComponentProps {
   alignment?: TokenGroupProps.Alignment;
 
   /**
+   * Removes any outer padding from the component.
+   * We recommend to always enable this property.
+   */
+  disableOuterPadding?: boolean;
+
+  /**
    *
    * An array of objects representing token items. Each token has the following properties:
    *

@@ -9,7 +9,7 @@ export default function DropdownScenario() {
   const [open, setOpen] = useState(false);
   return (
     <article>
-      <h1>Dropdown`s midWidth property test</h1>
+      <h1>Dropdown`s minWidth property test</h1>
       <ul>
         <li>
           Dropdown should have the width equal to <code>minWidth</code>, if the trigger is larger than it

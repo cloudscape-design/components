@@ -143,18 +143,20 @@ const AutosuggestInput = React.forwardRef(
       preventOpenOnFocusRef.current = false;
     };
 
-    const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
-      switch (e.detail.keyCode) {
+    const fireKeydown = (event: CustomEvent<BaseKeyDetail>) => fireCancelableEvent(onKeyDown, event.detail, event);
+
+    const handleKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
+      switch (event.detail.keyCode) {
         case KeyCode.down: {
           onPressArrowDown?.();
           openDropdown();
-          e.preventDefault();
+          event.preventDefault();
           break;
         }
         case KeyCode.up: {
           onPressArrowUp?.();
           openDropdown();
-          e.preventDefault();
+          event.preventDefault();
           break;
         }
         case KeyCode.enter: {
@@ -162,23 +164,25 @@ const AutosuggestInput = React.forwardRef(
             if (!onPressEnter?.()) {
               closeDropdown();
             }
-            e.preventDefault();
+            event.preventDefault();
           }
-          fireCancelableEvent(onKeyDown, e.detail);
+          fireKeydown(event);
           break;
         }
         case KeyCode.escape: {
           if (open) {
+            event.stopPropagation();
             closeDropdown();
           } else if (value) {
+            event.stopPropagation();
             fireNonCancelableEvent(onChange, { value: '' });
           }
-          e.preventDefault();
-          fireCancelableEvent(onKeyDown, e.detail);
+          event.preventDefault();
+          fireKeydown(event);
           break;
         }
         default: {
-          fireCancelableEvent(onKeyDown, e.detail);
+          fireKeydown(event);
         }
       }
     };
@@ -253,6 +257,7 @@ const AutosuggestInput = React.forwardRef(
         <Dropdown
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}
+          stretchBeyondTriggerWidth={true}
           contentKey={dropdownContentKey}
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -276,7 +281,7 @@ const AutosuggestInput = React.forwardRef(
             />
           }
           onMouseDown={handleDropdownMouseDown}
-          open={open && !!dropdownContent}
+          open={open && (!!dropdownContent || !!dropdownFooter)}
           footer={
             dropdownFooterRef && (
               <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>

@@ -7,8 +7,9 @@ import {
   createCompactTableContext,
   createHeaderContext,
   createFlashbarContext,
+  createFlashbarWarningContext,
+  createAlertContext,
 } from '../utils/contexts';
-import alertContextTokens from './contexts/alert';
 import alertHeaderContextTokens from './contexts/header-alert';
 
 const modes = [
@@ -43,11 +44,10 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
   builder.addContext(createHeaderContext(require('./contexts/header').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createFlashbarContext(require('./contexts/flashbar').tokens));
-  builder.addContext({
-    id: 'alert',
-    selector: '.awsui-context-alert',
-    tokens: alertContextTokens,
-  });
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createFlashbarWarningContext(require('./contexts/flashbar-warning').tokens));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createAlertContext(require('./contexts/alert').tokens));
   builder.addContext({
     id: 'alert-header',
     selector: '.awsui-context-content-header .awsui-context-alert',

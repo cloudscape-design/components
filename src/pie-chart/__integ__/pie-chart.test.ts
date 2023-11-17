@@ -90,8 +90,8 @@ describe('Segments', () => {
       // Now focused on the first segment
       await page.waitForVisible(highlightedSegmentSelector);
 
-      // Tab out of the chart and out of the legend
-      await page.keys(['Tab', 'Tab']);
+      // Tab out of the chart (including the action in the popover) and out of the legend
+      await page.keys(['Tab', 'Tab', 'Tab']);
       await expect(page.isDisplayed(highlightedSegmentSelector)).resolves.toBe(false);
     })
   );
@@ -330,6 +330,20 @@ describe('Detail popover', () => {
       await page.keys(['Tab', 'Tab', 'Enter']);
       await page.waitForVisible(detailsPopoverSelector);
       await page.keys(['Escape']);
+      await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'can be dismissed by moving focus away',
+    setupTest(async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'Enter']);
+      await page.waitForVisible(detailsPopoverSelector);
+      await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Potatoes');
+      await page.keys(['Tab']);
+      await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(true);
+      await page.keys(['Tab']);
       await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
     })
   );

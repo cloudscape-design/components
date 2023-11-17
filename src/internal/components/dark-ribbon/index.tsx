@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 import { useMutationObserver } from '../../hooks/use-mutation-observer';
-import { useStableEventHandler } from '../../hooks/use-stable-event-handler';
 import styles from './styles.css.js';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 interface DarkRibbonProps {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ function setIfChanged(oldValue: string, newValue: string, setter: (newValue: str
 export default function DarkRibbon({ children, isRefresh, hasPlainStyling }: DarkRibbonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
-  const syncSizes = useStableEventHandler((from: HTMLElement, to: HTMLElement) => {
+  const syncSizes = useStableCallback((from: HTMLElement, to: HTMLElement) => {
     // JSDOM calls mutation observer callback even if attribute did not change
     // https://github.com/jsdom/jsdom/issues/3305
     // To prevent infinite loops, we need to check the values before setting

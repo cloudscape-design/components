@@ -14,7 +14,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import styles from './styles.css.js';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export interface InternalInputProps
   extends BaseComponentProps,
@@ -101,7 +101,10 @@ function InternalInput(
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledby,
+    // aria-labelledby has precedence over aria-label in accessible name calculation.
+    // When aria-label is provided for Input, it should override aria-labelledBy from form-field context.
+    // If both aria-label and aria-labelledby come from Input props, aria-labelledby will be used in accessible name
+    'aria-labelledby': ariaLabel && !rest.ariaLabelledby ? undefined : ariaLabelledby,
     'aria-describedby': ariaDescribedby,
     name,
     placeholder,
@@ -170,7 +173,7 @@ function InternalInput(
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
       {__leftIcon && (
         <span onClick={__onLeftIconClick} className={styles['input-icon-left']}>
-          <InternalIcon name={__leftIcon} variant={disabled ? 'disabled' : __leftIconVariant} />
+          <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
       <input ref={mergedRef} {...attributes} />

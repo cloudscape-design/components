@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "Filtrar los datos mostrados",
     "i18nStrings.filterPlaceholder": "Filtrar datos",
     "i18nStrings.legendAriaLabel": "Leyenda",
+    "i18nStrings.chartAriaRoleDescription": "Gráfico",
     "i18nStrings.xAxisAriaRoleDescription": "eje x",
     "i18nStrings.yAxisAriaRoleDescription": "eje y"
   },
@@ -22,12 +23,15 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Cerrar anotación para el paso {stepNumber} de {totalStepCount}} false {Abrir anotación para el paso {stepNumber} de {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Cajones",
+    "ariaLabels.drawersOverflow": "Desbordamiento de cajones",
+    "ariaLabels.drawersOverflowWithBadge": "Desbordamiento de cajones con insignia",
     "ariaLabels.navigation": "Navegación lateral",
     "ariaLabels.navigationClose": "Cerrar navegación lateral",
     "ariaLabels.navigationToggle": "Abrir navegación lateral",
     "ariaLabels.notifications": "Notificaciones",
     "ariaLabels.tools": "Panel de ayuda",
-    "ariaLabels.toolsClose": "Cerrar panel de ayuda",
+    "ariaLabels.toolsClose": "Cerrar el panel de ayuda",
     "ariaLabels.toolsToggle": "Abrir panel de ayuda"
   },
   "area-chart": {
@@ -114,6 +118,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {Último {amount} {unit}} other {Últimos {amount} {unit}}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "Cargando contenido"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notificaciones",
     "i18nStrings.errorIconAriaLabel": "Error",
@@ -122,7 +129,7 @@
     "i18nStrings.notificationBarAriaLabel": "Todas las notificaciones",
     "i18nStrings.notificationBarText": "Notificaciones",
     "i18nStrings.successIconAriaLabel": "Éxito",
-    "i18nStrings.warningIconAriaLabel": "Advertencia"
+    "i18nStrings.warningIconAriaLabel": "Aviso"
   },
   "form-field": {
     "i18nStrings.errorIconAriaLabel": "Error"
@@ -177,13 +184,14 @@
     "i18nStrings.operatorGreaterText": "Mayor que",
     "i18nStrings.operatorLessOrEqualText": "Menor o igual que",
     "i18nStrings.operatorLessText": "Menor que",
+    "i18nStrings.operatorStartsWithText": "Empieza con",
     "i18nStrings.operatorText": "Operador",
     "i18nStrings.operatorsText": "Operadores",
     "i18nStrings.propertyText": "Propiedad",
     "i18nStrings.tokenLimitShowFewer": "Mostrar menos",
     "i18nStrings.tokenLimitShowMore": "Mostrar más",
     "i18nStrings.valueText": "Valor",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Eliminar filtro, {token__propertyKey} igual a {token__value}} not_equals {Eliminar filtro, {token__propertyKey} no es igual a {token__value}} greater_than {Eliminar filtro, {token__propertyKey} es mayor que {token__value}} greater_than_equal {Eliminar filtro, {token__propertyKey} es mayor o igual que {token__value}} less_than {Eliminar filtro, {token__propertyKey} es menor que {token__value}} less_than_equal {Eliminar filtro, {token__propertyKey} es menor o igual que {token__value}} contains {Eliminar filtro, {token__propertyKey} contiene {token__value}} not_contains {Eliminar filtro, {token__propertyKey} no contiene {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Eliminar filtro, {token__propertyKey} igual a {token__value}} not_equals {Eliminar filtro, {token__propertyKey} no es igual a {token__value}} greater_than {Eliminar filtro, {token__propertyKey} es mayor que {token__value}} greater_than_equal {Eliminar filtro, {token__propertyKey} es mayor o igual que {token__value}} less_than {Eliminar filtro, {token__propertyKey} es menor que {token__value}} less_than_equal {Eliminar filtro, {token__propertyKey} es menor o igual que {token__value}} contains {Eliminar filtro, {token__propertyKey} contiene {token__value}} not_contains {Eliminar filtro, {token__propertyKey} no contiene {token__value}} starts_with {Eliminar filtro, {token__propertyKey} comienza con {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Elija una versión",
@@ -222,7 +230,7 @@
     "i18nStrings.columnVersionID": "ID de la versión",
     "i18nStrings.columnVersionLastModified": "Modificado por última vez",
     "i18nStrings.columnVersionSize": "Tamaño",
-    "i18nStrings.validationPathMustBegin": "La ruta debe empezar por s3://",
+    "i18nStrings.validationPathMustBegin": "La ruta debe empezar por s3://para que sea válida.",
     "i18nStrings.validationBucketLowerCase": "El nombre del bucket debe empezar por un carácter o número en minúscula.",
     "i18nStrings.validationBucketMustNotContain": "El nombre del bucket no debe contener caracteres en mayúscula.",
     "i18nStrings.validationBucketLength": "El nombre del bucket debe tener entre 3 y 63 caracteres.",
@@ -259,6 +267,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Cambiar el tamaño del panel dividido"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "botón de redimensionamiento",
     "ariaLabels.submittingEditText": "Envío de edición",
     "ariaLabels.successfulEditLabel": "Se ha editado correctamente",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Error",

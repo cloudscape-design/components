@@ -9,6 +9,7 @@ import itemStyles from '../../../lib/components/internal/components/selectable-i
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 const defaultOptions: AutosuggestProps.Options = [
   { value: '1', label: 'One' },
@@ -26,6 +27,20 @@ function renderAutosuggest(jsx: React.ReactElement) {
   const wrapper = createWrapper(container).findAutosuggest()!;
   return { container, wrapper, rerender };
 }
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+
+  //just mock the `warnOnce` export
+  return {
+    __esModule: true,
+    ...originalModule,
+    warnOnce: jest.fn(),
+  };
+});
+beforeEach(() => {
+  (warnOnce as any).mockClear();
+});
 
 test('renders correct labels when focused', () => {
   const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
@@ -224,6 +239,17 @@ describe('Dropdown states', () => {
     expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
     expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
   });
+
+  it('should warn if recoveryText is provided without associated handler', () => {
+    renderAutosuggest(
+      <Autosuggest {...defaultProps} statusType="error" errorText="Test error text" recoveryText="Retry" />
+    );
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Autosuggest',
+      '`onLoadItems` must be provided for `recoveryText` to be displayed.'
+    );
+  });
 });
 
 describe('a11y props', () => {
@@ -369,6 +395,52 @@ describe('keyboard interactions', () => {
     wrapper.findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     expect(onChange).toBeCalledTimes(1);
+  });
+});
+
+describe('Check if should render dropdown', () => {
+  test('should render dropdown content when not empty and dropdown content is not null', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest
+        {...defaultProps}
+        value="1"
+        options={[{ value: '1', label: 'One' }]}
+        statusType="error"
+        errorText="Test error text"
+      />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should not render dropdown content when empty and dropdown content is null', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="" options={[]} />);
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+  });
+
+  test('should render dropdown content when not empty', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="1" options={[{ value: '1', label: 'One' }]} />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should render dropdown content when dropdown content is not null', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="" options={[]} statusType="error" errorText="Test error text" />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
   });
 });
 

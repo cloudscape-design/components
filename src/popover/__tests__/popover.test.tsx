@@ -8,7 +8,7 @@ import '../../__a11y__/to-validate-a11y';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 class PopoverInternalWrapper extends PopoverWrapper {
   findBody({ renderWithPortal } = { renderWithPortal: false }): ElementWrapper | null {
@@ -26,9 +26,10 @@ function renderPopover(props: PopoverProps) {
 
 describe('Slots', () => {
   it('renders text trigger correctly', () => {
-    const wrapper = renderPopover({ children: 'Trigger' });
+    const wrapper = renderPopover({ children: 'Trigger', triggerAriaLabel: 'Test aria label' });
     expect(wrapper.findTrigger().getElement().tagName).toBe('BUTTON');
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Trigger');
+    expect(wrapper.findTrigger().getElement()).toHaveAccessibleName('Test aria label');
   });
 
   it('renders custom trigger correctly', () => {
@@ -145,6 +146,28 @@ describe('Focus behavior', () => {
       wrapper.findTrigger().click();
     });
     expect(document.activeElement).not.toBe(wrapper.findBody()!.getElement());
+  });
+
+  it('moves focus back to trigger on dismiss', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    act(() => {
+      wrapper.findDismissButton()?.click();
+    });
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+  });
+
+  it('moves focus back to custom trigger on dismiss', () => {
+    const wrapper = renderPopover({ children: <button>Trigger</button>, content: 'Popover', triggerType: 'custom' });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    act(() => {
+      wrapper.findDismissButton()?.click();
+    });
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement().querySelector('button'));
   });
 
   it('moves focus to the dismiss button on open if dismiss button is present - with portal', () => {

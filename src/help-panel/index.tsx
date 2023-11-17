@@ -9,7 +9,8 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { HelpPanelProps } from './interfaces';
 import LiveRegion from '../internal/components/live-region';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 export { HelpPanelProps };
 
@@ -30,7 +31,9 @@ export default function HelpPanel({ header, footer, children, loading, loadingTe
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
       {header && <div className={clsx(styles.header)}>{header}</div>}
-      <div className={clsx(styles.content)}>{children}</div>
+      <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+        <div className={clsx(styles.content)}>{children}</div>
+      </LinkDefaultVariantContext.Provider>
       {footer && <div className={styles.footer}>{footer}</div>}
     </div>
   );

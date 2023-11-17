@@ -24,6 +24,8 @@ section.split-panel-bottom {
   grid-column: 1 / 6;
   grid-row: 10;
   height: auto;
+  overflow-y: hidden;
+
   /*
   The position sticky will work in conjunction with the align self: end; property.
   If the grid row scrolls beyond the viewport, the sticky bottom position
@@ -95,19 +97,6 @@ section.split-panel-side {
   overflow-x: hidden;
   pointer-events: auto;
 
-  // Animation for opacity and width when pening the Split Panel
-  @keyframes openSplitPanelSide {
-    from {
-      opacity: 0;
-      width: var(#{custom-props.$splitPanelMinWidth}, 280px);
-    }
-
-    to {
-      opacity: 1;
-      width: var(#{custom-props.$splitPanelReportedSize});
-    }
-  }
-
   &:not(.is-split-panel-open),
   &.position-bottom {
     width: 0;
@@ -122,21 +111,5 @@ section.split-panel-side {
     box-shadow: awsui.$shadow-panel;
     max-width: var(#{custom-props.$splitPanelMaxWidth}, 280px);
     min-width: var(#{custom-props.$splitPanelMinWidth}, 280px);
-    &.animating {
-      @include styles.with-motion {
-        animation: openSplitPanelSide awsui.$motion-duration-refresh-only-fast;
-      }
-    }
-  }
-
-  /*
-  A non-semantic node is added with a fixed width equal to the final Split Panel
-  width. This will create the visual appearance of horizontal movement and
-  prevent unwanted text wrapping.
-  */
-  > .animated-content {
-    height: 100%;
-    max-width: inherit;
-    width: var(#{custom-props.$splitPanelReportedSize});
   }
 }

@@ -20,10 +20,10 @@ const noop = () => undefined;
  */
 describe('AppLayout component', () => {
   test('warns when toolsOpen and toolsHide are both set', () => {
-    render(<AppLayout toolsHide={true} toolsOpen={false} onToolsChange={noop} />);
+    const { rerender } = render(<AppLayout toolsHide={true} toolsOpen={false} onToolsChange={noop} />);
     expect(console.warn).not.toHaveBeenCalled();
 
-    render(<AppLayout toolsHide={true} toolsOpen={true} onToolsChange={noop} />);
+    rerender(<AppLayout toolsHide={true} toolsOpen={true} onToolsChange={noop} />);
 
     expect(console.warn).toHaveBeenCalledTimes(1);
     expect(console.warn).toHaveBeenCalledWith(

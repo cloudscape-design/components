@@ -16,7 +16,8 @@
   border-width: map.get($variant, 'border-width');
   position: relative;
   text-decoration: none;
-  padding: map.get($variant, 'padding');
+  padding-block: map.get($variant, 'padding');
+  padding-inline: map.get($variant, 'padding');
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
@@ -78,9 +79,14 @@
   @include styles.text-wrapping;
   @include styles.font-button;
   letter-spacing: awsui.$font-button-letter-spacing;
-  border-radius: awsui.$border-radius-button;
-  border: styles.$control-border-width solid;
-  padding: styles.$control-padding-vertical awsui.$space-l;
+  border-start-start-radius: awsui.$border-radius-button;
+  border-start-end-radius: awsui.$border-radius-button;
+  border-end-start-radius: awsui.$border-radius-button;
+  border-end-end-radius: awsui.$border-radius-button;
+  border-block: styles.$control-border-width solid;
+  border-inline: styles.$control-border-width solid;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: awsui.$space-button-horizontal;
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
@@ -92,8 +98,8 @@
   }
 
   &.button-no-text {
-    padding-left: awsui.$space-button-icon-only-horizontal;
-    padding-right: awsui.$space-button-icon-only-horizontal;
+    padding-inline-start: awsui.$space-button-icon-only-horizontal;
+    padding-inline-end: awsui.$space-button-icon-only-horizontal;
   }
 
   &.button-no-wrap {
@@ -101,7 +107,7 @@
   }
 
   &.full-width {
-    width: 100%;
+    inline-size: 100%;
     text-align: center;
   }
 
@@ -110,40 +116,41 @@
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
-    padding-left: awsui.$space-xxs;
-    padding-right: awsui.$space-xxs;
+    padding-inline-start: awsui.$space-xxs;
+    padding-inline-end: awsui.$space-xxs;
   }
 
   &.variant-modal-dismiss {
-    padding: awsui.$space-button-modal-dismiss-vertical awsui.$space-xxs;
-    margin-right: calc(-1 * #{awsui.$space-xxs});
+    padding-block: awsui.$space-button-modal-dismiss-vertical;
+    padding-inline: awsui.$space-xxs;
+    margin-inline-end: calc(-1 * #{awsui.$space-xxs});
   }
 
   &.variant-inline-icon {
-    padding-top: 0;
-    padding-bottom: 0;
-    border: 0;
+    padding-block-start: 0;
+    padding-block-end: 0;
+    border-block: 0;
+    border-inline: 0;
   }
 
   > .icon-left {
     position: relative;
     // margin-left was breaking layout on firefox
-    left: calc(-1 * #{awsui.$space-xxs});
-    margin-right: awsui.$space-xxs;
+    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-end: awsui.$space-xxs;
   }
 
   > .icon-right {
     position: relative;
     // margin-right was breaking layout on firefox
-    right: calc(-1 * #{awsui.$space-xxs});
-    margin-left: awsui.$space-xxs;
+    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+    margin-inline-start: awsui.$space-xxs;
   }
 
   &.button-no-text > .icon {
-    margin-right: auto;
-    margin-left: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
     // IE does not understand `initial`
-    right: 0;
-    left: 0;
+    inset-inline: 0;
   }
 }

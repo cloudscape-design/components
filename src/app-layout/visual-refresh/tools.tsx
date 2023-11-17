@@ -37,11 +37,13 @@ export default function Tools({ children }: ToolsProps) {
     isToolsOpen,
     loseToolsFocus,
     splitPanel,
+    splitPanelControlId,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
     splitPanelToggle,
     tools,
+    toolsControlId,
     toolsHide,
     toolsRefs,
     toolsWidth,
@@ -53,7 +55,7 @@ export default function Tools({ children }: ToolsProps) {
   const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
   /**
-   * If the drawers property is defined the Tools and SplitPanel will be mounted and rendered
+   * If the drawers property is defined the SplitPanel will be mounted and rendered
    * by the Drawers component.
    */
   if ((toolsHide && !hasSplitPanel) || drawers) {
@@ -84,6 +86,7 @@ export default function Tools({ children }: ToolsProps) {
 
           {!toolsHide && (
             <aside
+              id={toolsControlId}
               aria-hidden={!isToolsOpen ? true : false}
               aria-label={ariaLabels?.tools ?? undefined}
               className={clsx(
@@ -130,6 +133,8 @@ export default function Tools({ children }: ToolsProps) {
               {!toolsHide && (
                 <TriggerButton
                   ariaLabel={ariaLabels?.toolsToggle}
+                  ariaControls={toolsControlId}
+                  ariaExpanded={isToolsOpen}
                   iconName="status-info"
                   onClick={() => handleToolsClick(!isToolsOpen)}
                   selected={hasSplitPanel && isToolsOpen}
@@ -141,6 +146,8 @@ export default function Tools({ children }: ToolsProps) {
               {hasSplitPanel && splitPanelToggle.displayed && (
                 <TriggerButton
                   ariaLabel={splitPanelToggle.ariaLabel}
+                  ariaControls={splitPanelControlId}
+                  ariaExpanded={!!isSplitPanelOpen}
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}
@@ -154,23 +161,6 @@ export default function Tools({ children }: ToolsProps) {
       )}
     </Transition>
   );
-}
-
-/**
- * Determine the default state of the Tools component. Mobile viewports should be
- * closed by default under all circumstances. If the toolsOpen prop has not been
- * set then it should be closed as well. Otherwise, default to the toolsOpen prop.
- */
-export function getToolsDefaultState(isMobile: boolean, stateFromProps?: boolean) {
-  let isToolsOpen;
-
-  if (isMobile || stateFromProps === undefined) {
-    isToolsOpen = false;
-  } else {
-    isToolsOpen = stateFromProps;
-  }
-
-  return isToolsOpen;
 }
 
 /**

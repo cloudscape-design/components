@@ -7,13 +7,52 @@
 @use '../internal/styles/typography/constants.scss' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$link-font-sizes: (
+  'body-s': (
+    'text-underline-offset': 0.3em,
+    'text-decoration-thickness': 1px,
+  ),
+  'body-m': (
+    'text-underline-offset': 0.25em,
+    'text-decoration-thickness': 1px,
+  ),
+  'heading-xs': (
+    'text-underline-offset': 0.25em,
+    'text-decoration-thickness': 1px,
+  ),
+  'heading-s': (
+    'text-underline-offset': 0.3em,
+    'text-decoration-thickness': 1px,
+  ),
+  'heading-m': (
+    'text-underline-offset': 0.25em,
+    'text-decoration-thickness': 1px,
+  ),
+  'heading-l': (
+    'text-underline-offset': 0.25em,
+    'text-decoration-thickness': 1px,
+  ),
+  'heading-xl': (
+    'text-underline-offset': 0.25em,
+    'text-decoration-thickness': 1px,
+  ),
+  'display-l': (
+    'text-underline-offset': 0.25em,
+    'text-decoration-thickness': 2px,
+  ),
+  'inherit': (
+    'text-underline-offset': 0.25em,
+    'text-decoration-thickness': 1px,
+  ),
+);
+
 $link-variants: (
   'secondary': (
     'text-color-default': awsui.$color-text-link-default,
     'text-color-hover': awsui.$color-text-link-hover,
     'text-color-active': awsui.$color-text-link-hover,
     'font-weight': inherit,
-    'decoration': none,
+    'decoration-line': none,
     'decoration-color': transparent,
     'decoration-color-hover': currentColor,
     'letter-spacing': normal,
@@ -22,18 +61,18 @@ $link-variants: (
     'text-color-default': awsui.$color-text-link-default,
     'text-color-hover': awsui.$color-text-link-hover,
     'text-color-active': awsui.$color-text-link-hover,
-    'font-weight': awsui.$font-link-primary-weight,
-    'decoration': awsui.$font-link-primary-decoration,
-    'decoration-color': awsui.$color-text-link-primary-underline,
+    'font-weight': inherit,
+    'decoration-line': underline,
+    'decoration-color': currentColor,
     'decoration-color-hover': currentColor,
-    'letter-spacing': awsui.$font-link-primary-letter-spacing,
+    'letter-spacing': normal,
   ),
   'info': (
     'text-color-default': awsui.$color-text-link-default,
     'text-color-hover': awsui.$color-text-link-hover,
     'text-color-active': awsui.$color-text-link-hover,
     'font-weight': awsui.$font-button-weight,
-    'decoration': none,
+    'decoration-line': none,
     'decoration-color': transparent,
     'decoration-color-hover': awsui.$color-text-link-button-underline-hover,
     'letter-spacing': styles.$letter-spacing-bold-link,
@@ -43,8 +82,8 @@ $link-variants: (
     'text-color-hover': awsui.$color-text-link-hover,
     'text-color-active': awsui.$color-text-link-hover,
     'font-weight': awsui.$font-box-value-large-weight,
-    'decoration': none,
-    'decoration-color': transparent,
+    'decoration-line': underline,
+    'decoration-color': currentColor,
     'decoration-color-hover': currentColor,
   ),
   'top-navigation': (
@@ -52,7 +91,7 @@ $link-variants: (
     'text-color-hover': awsui.$color-text-interactive-hover,
     'text-color-active': awsui.$color-text-interactive-active,
     'font-weight': styles.$font-weight-bold,
-    'decoration': none,
+    'decoration-line': none,
     'decoration-color': transparent,
     'decoration-color-hover': transparent,
     'letter-spacing': styles.$letter-spacing-bold-link,
@@ -66,7 +105,7 @@ $link-variants: (
       'text-color-active': awsui.$color-text-link-hover,
       'font-weight': awsui.$font-link-button-weight,
       // Decoration fallback is for IE11, and IE11 does not support VR, so no variable needed
-      'decoration': underline,
+      'decoration-line': underline,
       'decoration-color': awsui.$color-text-link-button-underline,
       'decoration-color-hover': awsui.$color-text-link-button-underline-hover,
       'letter-spacing': awsui.$font-link-button-letter-spacing,
@@ -81,7 +120,7 @@ $link-styles: (
       'text-color-hover': awsui.$color-text-link-button-normal-hover,
       'text-color-active': awsui.$color-text-link-button-normal-active,
       'font-weight': awsui.$font-button-weight,
-      'decoration': none,
+      'decoration-line': none,
       'decoration-color': transparent,
       'decoration-color-hover': transparent,
       'letter-spacing': awsui.$font-button-letter-spacing,

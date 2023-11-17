@@ -1,85 +1,44 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useContext } from 'react';
-import {
-  AppLayout,
-  ContentLayout,
-  Header,
-  HelpPanel,
-  NonCancelableCustomEvent,
-  SpaceBetween,
-  SplitPanel,
-  Toggle,
-} from '~components';
+import React, { useState, useContext, useRef } from 'react';
+import { AppLayout, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle, Button } from '~components';
+import { AppLayoutProps } from '~components/app-layout';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
-import type { DrawerItem } from '~components/app-layout/drawer/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
+import styles from './styles.scss';
+import { drawerItems, drawerLabels } from './utils/drawers';
 
-type DemoContext = React.Context<AppContextType<{ hasTools: boolean }>>;
+type DemoContext = React.Context<
+  AppContextType<{
+    hasDrawers: boolean | undefined;
+    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+    disableContentPaddings: boolean | undefined;
+  }>
+>;
 
 export default function WithDrawers() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const [hasDrawers, setHasDrawers] = useState(true);
-  const [hideTools, setHideTools] = useState(!urlParams.hasTools);
+  const hasDrawers = urlParams.hasDrawers ?? true;
+  const disableContentPaddings = urlParams.disableContentPaddings ?? false;
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
 
-  const drawers = !hasDrawers
-    ? null
-    : {
-        drawers: {
-          ariaLabel: 'Drawers',
-          activeDrawerId: activeDrawerId,
-          items: [
-            {
-              ariaLabels: {
-                closeButton: 'Security close button',
-                content: 'Security drawer content',
-                triggerButton: 'Security trigger button',
-                resizeHandle: 'Security resize handle',
-              },
-              content: <Security />,
-              id: 'security',
-              resizable: true,
-              defaultSize: 500,
-              onResize: ({ detail: { size } }) => {
-                // A drawer implementer may choose to listen to THEIR drawer's
-                // resize event,should they want to persist, or otherwise respond
-                // to their drawer being resized.
-                console.log('Security Drawer is now: ', size);
-              },
-              trigger: {
-                iconName: 'security',
-              },
-            },
-            {
-              ariaLabels: {
-                closeButton: 'ProHelp close button',
-                content: 'ProHelp drawer content',
-                triggerButton: 'ProHelp trigger button',
-                resizeHandle: 'ProHelp resize handle',
-              },
-              content: <ProHelp />,
-              id: 'pro-help',
-              trigger: {
-                iconName: 'contact',
-              },
-            },
-          ] as DrawerItem[],
-          onChange: (event: NonCancelableCustomEvent<string>) => {
-            setActiveDrawerId(event.detail);
-          },
-        },
-      };
+  function openDrawer(id: string) {
+    setActiveDrawerId(id);
+    appLayoutRef.current?.focusActiveDrawer();
+  }
 
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
-        ariaLabels={appLayoutLabels}
+        ref={appLayoutRef}
+        ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
+            data-test-id="content"
             header={
               <SpaceBetween size="m">
                 <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
@@ -88,29 +47,33 @@ export default function WithDrawers() {
 
                 <SpaceBetween size="xs">
                   <Toggle
-                    checked={!hideTools}
-                    onChange={e => {
-                      setHideTools(!e.detail.checked);
-                      setUrlParams({ hasTools: e.detail.checked });
-                    }}
-                  >
-                    Has Tools
-                  </Toggle>
-
-                  <Toggle
                     checked={hasDrawers}
-                    onChange={({ detail }) => setHasDrawers(detail.checked)}
+                    onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
                     data-id="toggle-drawers"
                   >
                     Has Drawers
                   </Toggle>
                 </SpaceBetween>
+                <Button onClick={() => openDrawer('security')} data-testid="open-drawer-button">
+                  Open drawer
+                </Button>
+                <Button onClick={() => openDrawer('pro-help')} data-testid="open-drawer-button-2">
+                  Open second drawer
+                </Button>
               </SpaceBetween>
             }
           >
             <Containers />
           </ContentLayout>
         }
+        splitPanelPreferences={{
+          position: urlParams.splitPanelPosition,
+        }}
+        onSplitPanelPreferencesChange={event => {
+          const { position } = event.detail;
+          setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
+        }}
+        disableContentPaddings={disableContentPaddings}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -127,25 +90,17 @@ export default function WithDrawers() {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            This is the Split Panel!
+            <SpaceBetween size="l">
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+            </SpaceBetween>
           </SplitPanel>
         }
-        tools={<Info />}
-        toolsHide={hideTools}
-        {...drawers}
+        drawers={hasDrawers ? drawerItems : undefined}
+        onDrawerChange={event => setActiveDrawerId(event.detail.activeDrawerId)}
+        activeDrawerId={activeDrawerId}
       />
     </ScreenshotArea>
   );
-}
-
-function Info() {
-  return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
-}
-
-function Security() {
-  return <HelpPanel header={<h2>Security</h2>}>Everyone needs it.</HelpPanel>;
-}
-
-function ProHelp() {
-  return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;
 }

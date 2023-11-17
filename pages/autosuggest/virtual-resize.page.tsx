@@ -10,7 +10,8 @@ declare const window: ExtendedWindow;
 
 const options = [
   {
-    value: 'A very long option label that wraps upon resizing',
+    value:
+      'A very very very very very very very very very very very very very long option label that wraps upon resizing',
     tags: ['tag1', 'tag2'],
     filteringTags: ['bla', 'opt'],
     description: 'description1',

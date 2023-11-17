@@ -28,7 +28,11 @@ const onBlur = () => {
 };
 
 export default function MultiselectPage() {
-  const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>([]);
+  const selectableOptions = options.filter(o => !o.disabled && !('options' in o));
+  const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>([
+    selectableOptions[10],
+    selectableOptions[15],
+  ]);
   const [selectedOptions2, setSelectedOptions2] = React.useState<MultiselectProps.Options>([]);
 
   return (

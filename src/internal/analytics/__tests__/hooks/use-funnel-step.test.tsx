@@ -21,9 +21,13 @@ describe('useFunnelStep hook', () => {
     const { getByTestId } = render(
       <FunnelStepContext.Provider
         value={{
-          funnelInteractionId: undefined,
           stepNameSelector: 'step_name_selector',
           stepNumber: 0,
+          subStepCount: { current: 0 },
+          isInStep: true,
+          funnelInteractionId: 'a placeholder funnel interaction ID',
+          onStepChange: jest.fn(),
+          subStepConfiguration: { current: [] },
         }}
       >
         <ChildComponent />

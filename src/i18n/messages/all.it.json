@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "Filtra i dati visualizzati",
     "i18nStrings.filterPlaceholder": "Filtra i dati",
     "i18nStrings.legendAriaLabel": "Legenda",
+    "i18nStrings.chartAriaRoleDescription": "Grafico",
     "i18nStrings.xAxisAriaRoleDescription": "asse x",
     "i18nStrings.yAxisAriaRoleDescription": "asse y"
   },
@@ -22,6 +23,9 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Chiudi l'annotazione per la fase {stepNumber} di {totalStepCount}} false {Apri l'annotazione per la fase {stepNumber} di {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Cassetti",
+    "ariaLabels.drawersOverflow": "Overflow dei cassetti",
+    "ariaLabels.drawersOverflowWithBadge": "Overflow dei cassetti con badge",
     "ariaLabels.navigation": "Navigazione laterale",
     "ariaLabels.navigationClose": "Chiudi navigazione laterale",
     "ariaLabels.navigationToggle": "Apri navigazione laterale",
@@ -114,6 +118,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {Ultimo {amount} {unit}} other {Ultimi {amount} {unit}}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "Caricamento dei contenuti"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notifiche",
     "i18nStrings.errorIconAriaLabel": "Errore",
@@ -177,13 +184,14 @@
     "i18nStrings.operatorGreaterText": "Maggiore di",
     "i18nStrings.operatorLessOrEqualText": "Minore o uguale a",
     "i18nStrings.operatorLessText": "Minore di",
+    "i18nStrings.operatorStartsWithText": "Inizia con",
     "i18nStrings.operatorText": "Operatore",
     "i18nStrings.operatorsText": "Operatori",
     "i18nStrings.propertyText": "Proprietà",
     "i18nStrings.tokenLimitShowFewer": "Mostra meno",
     "i18nStrings.tokenLimitShowMore": "Mostra altro",
     "i18nStrings.valueText": "Valore",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Rimuovi filtro, {token__propertyKey} uguale a {token__value}} not_equals {Rimuovi filtro, {token__propertyKey} non è uguale a {token__value}} greater_than {Rimuovi filtro, {token__propertyKey} è maggiore di {token__value}} greater_than_equal {Rimuovi filtro, {token__propertyKey} è maggiore o uguale a {token__value}} less_than {Rimuovi filtro, {token__propertyKey} è inferiore a {token__value}} less_than_equal {Rimuovi filtro, {token__propertyKey} è minore o uguale a {token__value}} contains {Rimuovi filtro, {token__propertyKey} contiene {token__value}} not_contains {Rimuovi filtro, {token__propertyKey} non contiene {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Rimuovi filtro, {token__propertyKey} uguale a {token__value}} not_equals {Rimuovi filtro, {token__propertyKey} non è uguale a {token__value}} greater_than {Rimuovi filtro, {token__propertyKey} è maggiore di {token__value}} greater_than_equal {Rimuovi filtro, {token__propertyKey} è maggiore o uguale a {token__value}} less_than {Rimuovi filtro, {token__propertyKey} è inferiore a {token__value}} less_than_equal {Rimuovi filtro, {token__propertyKey} è minore o uguale a {token__value}} contains {Rimuovi filtro, {token__propertyKey} contiene {token__value}} not_contains {Rimuovi filtro, {token__propertyKey} non contiene {token__value}} starts_with {Rimuovi filtro, {token__propertyKey} inizia con {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Scegli una versione",
@@ -222,7 +230,7 @@
     "i18nStrings.columnVersionID": "ID Versione",
     "i18nStrings.columnVersionLastModified": "Ultima modifica",
     "i18nStrings.columnVersionSize": "Dimensione",
-    "i18nStrings.validationPathMustBegin": "Il percorso deve iniziare con s3://",
+    "i18nStrings.validationPathMustBegin": "Il percorso deve iniziare con s3:// per essere valido.",
     "i18nStrings.validationBucketLowerCase": "Il nome del bucket deve iniziare con un carattere minuscolo o un numero.",
     "i18nStrings.validationBucketMustNotContain": "Il nome del bucket non deve contenere caratteri maiuscoli.",
     "i18nStrings.validationBucketLength": "Il nome del bucket deve contenere da 3 a 63 caratteri.",
@@ -259,6 +267,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Ridimensiona il pannello diviso"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "pulsante di ridimensionamento",
     "ariaLabels.submittingEditText": "Invio della modifica in corso",
     "ariaLabels.successfulEditLabel": "Modifica eseguita correttamente",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Errore",

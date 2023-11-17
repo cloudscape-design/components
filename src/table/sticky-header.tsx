@@ -4,15 +4,16 @@ import clsx from 'clsx';
 import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
 import { StickyHeaderContext } from '../container/use-sticky-header';
 import { TableProps } from './interfaces';
-import Thead, { InteractiveComponent, TheadProps } from './thead';
+import Thead, { TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+import { TableRole, getTableRoleProps } from './table-role';
 
 export interface StickyHeaderRef {
   scrollToTop(): void;
   scrollToRow(node: null | HTMLElement): void;
-  setFocus(element: InteractiveComponent | null): void;
+  setFocus(focusId: null | string): void;
 }
 
 interface StickyHeaderProps {
@@ -25,6 +26,7 @@ interface StickyHeaderProps {
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
+  tableRole: TableRole;
 }
 
 export default forwardRef(StickyHeader);
@@ -40,6 +42,7 @@ function StickyHeader(
     tableRef,
     tableHasHeader,
     contentDensity,
+    tableRole,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -47,7 +50,7 @@ function StickyHeader(
   const secondaryTableRef = useRef<HTMLTableElement>(null);
   const { isStuck } = useContext(StickyHeaderContext);
 
-  const [focusedComponent, setFocusedComponent] = useState<InteractiveComponent | null>(null);
+  const [focusedComponent, setFocusedComponent] = useState<null | string>(null);
   const { scrollToRow, scrollToTop } = useStickyHeader(
     tableRef,
     theadRef,
@@ -81,8 +84,8 @@ function StickyHeader(
           styles['table-layout-fixed'],
           contentDensity === 'compact' && getVisualContextClassname('compact-table')
         )}
-        role="table"
         ref={secondaryTableRef}
+        {...getTableRoleProps({ tableRole })}
       >
         <Thead
           ref={secondaryTheadRef}

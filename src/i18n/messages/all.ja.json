@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "表示されたデータをフィルタリング",
     "i18nStrings.filterPlaceholder": "データをフィルタリング",
     "i18nStrings.legendAriaLabel": "凡例",
+    "i18nStrings.chartAriaRoleDescription": "グラフ",
     "i18nStrings.xAxisAriaRoleDescription": "x-軸",
     "i18nStrings.yAxisAriaRoleDescription": "y-軸"
   },
@@ -22,6 +23,9 @@
     "i18nStrings.labelHotspot": "{openState, select, true {ステップ {stepNumber}/{totalStepCount} の注釈を閉じる} false {ステップ {stepNumber}/{totalStepCount} の注釈を開く} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "ドロワー",
+    "ariaLabels.drawersOverflow": "ドロワーオーバーフロー",
+    "ariaLabels.drawersOverflowWithBadge": "バッジでドロワーがオーバーフローしています",
     "ariaLabels.navigation": "サイドナビゲーション",
     "ariaLabels.navigationClose": "サイドナビゲーションを閉じる",
     "ariaLabels.navigationToggle": "サイドナビゲーションを開く",
@@ -114,6 +118,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {最後の {amount} {unit}} other {最後の {amount} {unit}}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "コンテンツのロード中"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "通知",
     "i18nStrings.errorIconAriaLabel": "エラー",
@@ -177,13 +184,14 @@
     "i18nStrings.operatorGreaterText": "次より大きい",
     "i18nStrings.operatorLessOrEqualText": "次以下",
     "i18nStrings.operatorLessText": "次より少ない",
+    "i18nStrings.operatorStartsWithText": "次で始まる:",
     "i18nStrings.operatorText": "演算子",
     "i18nStrings.operatorsText": "演算子",
     "i18nStrings.propertyText": "プロパティ",
     "i18nStrings.tokenLimitShowFewer": "少なく表示",
     "i18nStrings.tokenLimitShowMore": "さらに表示",
     "i18nStrings.valueText": "値",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyKey} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyKey} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyKey} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以上} less_than {フィルターを削除、{token__propertyKey} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以下} contains {フィルターを削除、{token__propertyKey} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyKey} は {token__value} を含まない} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyKey} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyKey} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyKey} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以上} less_than {フィルターを削除、{token__propertyKey} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyKey} は {token__value} 以下} contains {フィルターを削除、{token__propertyKey} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyKey} は {token__value} を含まない} starts_with {フィルターを削除、{token__propertyKey} は {token__value} で始まる} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "バージョンを選択してください",
@@ -222,7 +230,7 @@
     "i18nStrings.columnVersionID": "バージョン ID",
     "i18nStrings.columnVersionLastModified": "最終更新日",
     "i18nStrings.columnVersionSize": "サイズ",
-    "i18nStrings.validationPathMustBegin": "パスの先頭は s3:// である必要があります",
+    "i18nStrings.validationPathMustBegin": "パスが有効であるためには、s3:// で始まる必要があります。",
     "i18nStrings.validationBucketLowerCase": "バケット名の先頭は小文字または数字である必要があります。",
     "i18nStrings.validationBucketMustNotContain": "バケット名には大文字を使用できません。",
     "i18nStrings.validationBucketLength": "バケット名は 3～63 文字である必要があります。",
@@ -259,6 +267,7 @@
     "i18nStrings.resizeHandleAriaLabel": "分割パネルのサイズを変更"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "[サイズを変更] ボタン",
     "ariaLabels.submittingEditText": "編集を送信中",
     "ariaLabels.successfulEditLabel": "編集に成功しました",
     "columnDefinitions.editConfig.errorIconAriaLabel": "エラー",

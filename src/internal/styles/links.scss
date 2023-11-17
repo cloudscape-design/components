@@ -11,13 +11,11 @@
 @use '../hooks/focus-visible/' as focus-visible;
 @use '../../link/constants.scss' as constants;
 
-@mixin link-style($variant) {
+@mixin link-variant-style($variant) {
   color: map.get($variant, 'text-color-default');
   font-weight: map.get($variant, 'font-weight');
   letter-spacing: map.get($variant, 'letter-spacing');
-  // Fallback for browsers that do not support text-decoration-color, like IE11
-  text-decoration: map.get($variant, 'decoration');
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  text-decoration-line: map.get($variant, 'decoration-line');
   text-decoration-color: map.get($variant, 'decoration-color');
 
   @include styles.with-motion {
@@ -41,24 +39,31 @@
   &:active,
   &:focus,
   &:hover {
-    text-decoration: underline;
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    text-decoration-line: underline;
     text-decoration-color: map.get($variant, 'decoration-color-hover');
   }
 }
 
-@mixin link-default {
-  @include link-style(map.get(constants.$link-variants, 'secondary'));
+@mixin link-font-size-style($font-size) {
+  text-underline-offset: map.get($font-size, 'text-underline-offset');
+  text-decoration-thickness: map.get($font-size, 'text-decoration-thickness');
+}
+
+@mixin link-default($font-size: 'inherit') {
+  @include link-variant-style(map.get(constants.$link-variants, 'secondary'));
+  @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
 }
 
 /* Style used for links in slots/components that are text heavy, to help links stand out among 
 surrounding text. (WCAG F73) https://www.w3.org/WAI/WCAG21/Techniques/failures/F73#description */
-@mixin link-inline {
-  @include link-style(map.get(constants.$link-variants, 'primary'));
+@mixin link-inline($font-size: 'inherit') {
+  @include link-variant-style(map.get(constants.$link-variants, 'primary'));
+  @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
 }
 
 // Need style as a mixin for tag editor only, because it needs special keyup/keydown behavior and thus cannot use the Link component
-@mixin link-recovery {
+@mixin link-recovery($font-size: 'inherit') {
   @include typography.font-smoothing;
-  @include link-style(map.get(constants.$link-variants, 'recovery'));
+  @include link-variant-style(map.get(constants.$link-variants, 'recovery'));
+  @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
 }

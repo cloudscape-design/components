@@ -7,11 +7,10 @@ import { FlashbarProps } from './interfaces';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
-import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
 import { useFlashbar } from './common';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export { FlashbarProps };
 
@@ -23,6 +22,13 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
 
   const i18n = useInternalI18n('flashbar');
   const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
+  const iconAriaLabels = {
+    errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+    inProgressIconAriaLabel: i18n('i18nStrings.inProgressIconAriaLabel', i18nStrings?.inProgressIconAriaLabel),
+    infoIconAriaLabel: i18n('i18nStrings.infoIconAriaLabel', i18nStrings?.infoIconAriaLabel),
+    successIconAriaLabel: i18n('i18nStrings.successIconAriaLabel', i18nStrings?.successIconAriaLabel),
+    warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+  };
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being
@@ -32,7 +38,6 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
   const motionDisabled = isReducedMotion || !isVisualRefresh || !allItemsHaveId;
 
   const animateFlash = !isReducedMotion && isVisualRefresh;
-
   /**
    * If the flashbar is flat and motion is `enabled` then the adding and removing of items
    * from the flashbar will render with visual transitions.
@@ -96,14 +101,11 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
     return (
       <Flash
         // eslint-disable-next-line react/forbid-component-props
-        className={clsx(
-          getVisualContextClassname('flashbar'),
-          animateFlash && styles['flash-with-motion'],
-          isVisualRefresh && styles['flash-refresh']
-        )}
+        className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}
+        i18nStrings={iconAriaLabels}
         {...item}
       />
     );

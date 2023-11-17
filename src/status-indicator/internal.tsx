@@ -46,7 +46,9 @@ export interface StatusIndicatorProps extends BaseComponentProps {
   wrapText?: boolean;
 }
 
-interface InternalStatusIndicatorProps extends SomeRequired<StatusIndicatorProps, 'type'>, InternalBaseComponentProps {
+export interface InternalStatusIndicatorProps
+  extends SomeRequired<StatusIndicatorProps, 'type'>,
+    InternalBaseComponentProps {
   /**
    * Play an animation on the error icon when first rendered
    */
@@ -56,13 +58,18 @@ interface InternalStatusIndicatorProps extends SomeRequired<StatusIndicatorProps
    * Size of icon.
    */
   __size?: IconProps.Size;
+
+  /**
+   * The CSS behavior of the status indicator container element.
+   */
+  __display?: 'inline' | 'inline-block';
 }
 
 export namespace StatusIndicatorProps {
   // Why not enums? Explained there
   // https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
   export type Type = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';
-  export type Color = 'blue' | 'grey' | 'green' | 'red';
+  export type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
 }
 
 export default function StatusIndicator({
@@ -74,6 +81,7 @@ export default function StatusIndicator({
   __animate = false,
   __internalRootRef,
   __size = 'normal',
+  __display = 'inline-block',
   ...rest
 }: InternalStatusIndicatorProps) {
   const baseProps = getBaseProps(rest);
@@ -93,6 +101,7 @@ export default function StatusIndicator({
       <span
         className={clsx(
           styles.container,
+          styles[`display-${__display}`],
           wrapText === false && styles['overflow-ellipsis'],
           __animate && styles['container-fade-in']
         )}
@@ -103,6 +112,7 @@ export default function StatusIndicator({
           role={iconAriaLabel ? 'img' : undefined}
         >
           {typeToIcon(__size)[type]}
+          {__display === 'inline' && <>&nbsp;</>}
         </span>
         {children}
       </span>

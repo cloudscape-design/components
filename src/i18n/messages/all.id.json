@@ -6,6 +6,7 @@
     "i18nStrings.filterLabel": "Filter data yang ditampilkan",
     "i18nStrings.filterPlaceholder": "Filter data",
     "i18nStrings.legendAriaLabel": "Legenda",
+    "i18nStrings.chartAriaRoleDescription": "Bagan",
     "i18nStrings.xAxisAriaRoleDescription": "sumbu x",
     "i18nStrings.yAxisAriaRoleDescription": "sumbu y"
   },
@@ -22,6 +23,9 @@
     "i18nStrings.labelHotspot": "{openState, select, true {Tutup anotasi untuk langkah {stepNumber} dari {totalStepCount}} false {Buka anotasi untuk langkah {stepNumber} dari {totalStepCount}} other {}}"
   },
   "app-layout": {
+    "ariaLabels.drawers": "Laci",
+    "ariaLabels.drawersOverflow": "Tambahan laci",
+    "ariaLabels.drawersOverflowWithBadge": "Tambahan laci dengan lencana",
     "ariaLabels.navigation": "Navigasi samping",
     "ariaLabels.navigationClose": "Tutup navigasi samping",
     "ariaLabels.navigationToggle": "Buka navigasi samping",
@@ -114,6 +118,9 @@
     "i18nStrings.formatRelativeRange": "{amount, plural, one {{amount} {unit} terakhir} other {{amount} {unit} terakhir}}",
     "i18nStrings.formatUnit": "{amount, plural, one {{unit}} other {{unit}}}"
   },
+  "drawer": {
+    "i18nStrings.loadingText": "Memuat konten"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notifikasi",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
@@ -177,13 +184,14 @@
     "i18nStrings.operatorGreaterText": "Lebih besar dari",
     "i18nStrings.operatorLessOrEqualText": "Kurang dari atau sama dengan",
     "i18nStrings.operatorLessText": "Kurang dari",
+    "i18nStrings.operatorStartsWithText": "Dimulai dengan",
     "i18nStrings.operatorText": "Operator",
     "i18nStrings.operatorsText": "Operator",
     "i18nStrings.propertyText": "Properti",
     "i18nStrings.tokenLimitShowFewer": "Tampilkan lebih sedikit",
     "i18nStrings.tokenLimitShowMore": "Tampilkan selengkapnya",
     "i18nStrings.valueText": "Nilai",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} starts_with {Hapus filter, {token__propertyKey} dimulai dengan {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Pilih versi",
@@ -222,7 +230,7 @@
     "i18nStrings.columnVersionID": "ID Versi",
     "i18nStrings.columnVersionLastModified": "Terakhir diubah",
     "i18nStrings.columnVersionSize": "Ukuran",
-    "i18nStrings.validationPathMustBegin": "Jalur harus dimulai dengan s3://",
+    "i18nStrings.validationPathMustBegin": "Jalur harus dimulai dengan s3:// agar valid.",
     "i18nStrings.validationBucketLowerCase": "Nama bucket harus diawali dengan karakter huruf kecil atau angka.",
     "i18nStrings.validationBucketMustNotContain": "Nama bucket tidak boleh berisi karakter huruf besar.",
     "i18nStrings.validationBucketLength": "Nama bucket harus terdiri dari 3 hingga 63 karakter.",
@@ -259,6 +267,7 @@
     "i18nStrings.resizeHandleAriaLabel": "Ubah ukuran panel terpisah"
   },
   "table": {
+    "ariaLabels.resizerRoleDescription": "tombol ubah ukuran",
     "ariaLabels.submittingEditText": "Mengirimkan pengeditan",
     "ariaLabels.successfulEditLabel": "Edit berhasil",
     "columnDefinitions.editConfig.errorIconAriaLabel": "Kesalahan",

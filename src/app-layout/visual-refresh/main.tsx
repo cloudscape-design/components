@@ -20,6 +20,7 @@ export default function Main() {
     offsetBottom,
     splitPanelDisplayed,
     splitPanelPosition,
+    activeDrawerId,
   } = useAppLayoutInternals();
 
   const splitPanelHeight = offsetBottom - footerHeight;
@@ -34,6 +35,7 @@ export default function Main() {
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['is-navigation-open']]: isNavigationOpen,
           [styles['is-tools-open']]: isToolsOpen,
+          [styles['has-active-drawer']]: !!activeDrawerId,
           [styles['is-split-panel-open']]: isSplitPanelOpen,
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },

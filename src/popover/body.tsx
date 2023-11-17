@@ -10,7 +10,7 @@ import { InternalButton } from '../button/internal';
 import FocusLock from '../internal/components/focus-lock';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 
 export interface PopoverBodyProps {
   dismissButton: boolean;
@@ -45,6 +45,7 @@ export default function PopoverBody({
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.keyCode === KeyCode.escape) {
+        event.stopPropagation();
         onDismiss();
       }
     },

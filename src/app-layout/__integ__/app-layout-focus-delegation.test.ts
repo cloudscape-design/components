@@ -91,13 +91,14 @@ function setupTest(
           'drawers focus toggles between open and close buttons',
           setupTest(
             async page => {
-              await page.click(wrapper.findDrawersTriggers().get(2).toSelector());
+              const triggerSelector = wrapper.findDrawerTriggerById('pro-help').toSelector();
+              await page.click(triggerSelector);
               await page.keys('Enter');
-              await expect(page.isFocused(wrapper.findDrawersTriggers().get(2).toSelector())).resolves.toBe(true);
+              await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
               await page.keys('Enter');
               await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
               await page.keys('Enter');
-              await expect(page.isFocused(wrapper.findDrawersTriggers().get(2).toSelector())).resolves.toBe(true);
+              await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
             },
             { pageName: 'with-drawers', visualRefresh, mobile }
           )
@@ -211,6 +212,86 @@ function setupTest(
                   await expect(page.isFocused(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
                 },
                 { pageName: 'with-fixed-header-footer', visualRefresh, mobile }
+              )
+            );
+          }
+        });
+
+        describe('drawer focus interaction with buttons', () => {
+          test(
+            'moves focus to close button when panel is opened from button',
+            setupTest(
+              async page => {
+                await page.click(
+                  wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
+                );
+                await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
+                await page.keys('Enter');
+                await expect(
+                  page.isFocused(
+                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
+                  )
+                ).resolves.toBe(true);
+              },
+              { pageName: 'with-drawers', visualRefresh, mobile }
+            )
+          );
+          // tests not relevant for mobile, as panel overlays content
+          if (!mobile) {
+            test(
+              'moves focus to close button when panel content is changed using second button',
+              setupTest(
+                async page => {
+                  await page.click(
+                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
+                  );
+                  await page.click(
+                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
+                  );
+                  await page.keys('Tab');
+                  await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
+                },
+                { pageName: 'with-drawers', visualRefresh, mobile }
+              )
+            );
+            test(
+              'moves focus back to last opened button when panel is closed',
+              setupTest(
+                async page => {
+                  await page.click(
+                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
+                  );
+                  await page.click(
+                    wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
+                  );
+
+                  await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
+                  await expect(
+                    page.isFocused(
+                      wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
+                    )
+                  ).resolves.toBe(true);
+                },
+                { pageName: 'with-drawers', visualRefresh, mobile }
+              )
+            );
+            test(
+              'does not move focus back to last opened button when panel has lost focus - instead focuses drawer trigger',
+              setupTest(
+                async page => {
+                  const infoLink = wrapper
+                    .findContentRegion()
+                    .findButton('[data-testid="open-drawer-button-2"]')
+                    .toSelector();
+                  await page.click(infoLink);
+                  await page.click(wrapper.findContentRegion().findContainer().toSelector());
+                  await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
+                  await expect(page.isFocused(infoLink)).resolves.toBe(false);
+                  await expect(page.isFocused(wrapper.findDrawerTriggerById('pro-help').toSelector())).resolves.toBe(
+                    true
+                  );
+                },
+                { pageName: 'with-drawers', visualRefresh, mobile }
               )
             );
           }

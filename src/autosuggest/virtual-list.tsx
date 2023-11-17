@@ -3,12 +3,12 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 
 import OptionsList from '../internal/components/options-list';
-import { useContainerQuery } from '../internal/hooks/container-queries';
 
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
 import { useVirtual } from '../internal/hooks/use-virtual';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 const VirtualList = ({
   autosuggestItemsState,
@@ -23,7 +23,7 @@ const VirtualList = ({
 }: ListProps) => {
   const scrollRef = useRef<HTMLUListElement>(null);
   // update component, when it gets wider or narrower to reposition items
-  const [width, strutRef] = useContainerQuery(rect => rect.width, []);
+  const [width, strutRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
   useImperativeHandle(strutRef, () => scrollRef.current);
 
   const rowVirtualizer = useVirtual({
@@ -38,7 +38,7 @@ const VirtualList = ({
   });
 
   useEffect(() => {
-    if (autosuggestItemsState.highlightType === 'keyboard') {
+    if (autosuggestItemsState.highlightType.moveFocus) {
       rowVirtualizer.scrollToIndex(autosuggestItemsState.highlightedIndex);
     }
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);

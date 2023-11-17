@@ -11,7 +11,7 @@ import LiveRegion from '../live-region/index';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
 import { Offset } from '../interfaces';
-import { useInternalI18n } from '../../i18n/context.js';
+import { useInternalI18n } from '../../../i18n/context';
 
 const DEFAULT_PLOT_FOCUS_OFFSET = 3;
 const DEFAULT_ELEMENT_FOCUS_OFFSET = 3;
@@ -23,8 +23,8 @@ export interface ChartPlotRef {
 }
 
 export interface ChartPlotProps {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
   transform?: string;
   offsetTop?: number;
   offsetBottom?: number;
@@ -172,9 +172,9 @@ function ChartPlot(
         aria-hidden="false"
         {...plotAria}
         ref={svgRef}
-        width={width}
-        height={height}
         style={{
+          width,
+          height,
           marginTop: offsetTop,
           marginBottom: offsetBottom,
           marginLeft: offsetLeft,

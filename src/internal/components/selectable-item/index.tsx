@@ -21,7 +21,7 @@ export type SelectableItemProps = BaseComponentProps & {
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
-  highlightType?: HighlightType;
+  highlightType?: HighlightType['type'];
 } & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
 
 const SelectableItem = (

@@ -1,60 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act } from 'react-dom/test-utils';
 import { waitFor } from '@testing-library/react';
-import { isDrawerClosed, drawersConfigurations, renderComponent } from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { isDrawerClosed, renderComponent, singleDrawer } from './utils';
+import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import sharedStyles from '../../../lib/components/app-layout/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
 
-jest.mock('../../../lib/components/internal/motion', () => ({
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
-
-test('opens tools drawer', () => {
-  let ref: AppLayoutProps.Ref | null = null;
-  const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
-  expect(isDrawerClosed(wrapper.findTools())).toBe(true);
-  act(() => ref!.openTools());
-  expect(isDrawerClosed(wrapper.findTools())).toBe(false);
-});
-
-test('allows to change focus after programmatically opening the drawer', async () => {
-  // sample component that reproduces how this functionality should be done in a real app
-  function App() {
-    const layoutRef = React.useRef<AppLayoutProps.Ref>(null);
-    const buttonRef = React.useRef<HTMLButtonElement>(null);
-    const handleOpenTools = async () => {
-      layoutRef.current!.openTools();
-      await new Promise(resolve => setTimeout(resolve, 0));
-      buttonRef.current!.focus();
-    };
-    return (
-      <AppLayout
-        ref={layoutRef}
-        content={
-          <button id="open-tools" onClick={handleOpenTools}>
-            Open tools
-          </button>
-        }
-        tools={
-          <button ref={buttonRef} id="custom-button">
-            Click me
-          </button>
-        }
-      />
-    );
-  }
-
-  const { wrapper } = renderComponent(<App />);
-  wrapper.find('#open-tools')!.click();
-  await waitFor(() => {
-    expect(wrapper.find('#custom-button')!.getElement()).toEqual(document.activeElement);
-  });
-});
 
 // in our ResizeObserver mock resolves into mobile mode
 test('should render mobile mode by default', () => {
@@ -122,23 +80,23 @@ describe('drawers', () => {
 
   test('property is controlled', () => {
     const onChange = jest.fn();
-    const drawers = {
+    const drawers: any = {
       drawers: {
         onChange: onChange,
         activeDrawerId: null,
-        items: drawersConfigurations.drawersItems,
+        items: singleDrawer.drawers.items,
       },
     };
 
-    const drawersOpen = {
+    const drawersOpen: any = {
       drawers: {
         onChange: onChange,
         activeDrawerId: 'security',
-        items: drawersConfigurations.drawersItems,
+        items: singleDrawer.drawers.items,
       },
     };
 
-    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...drawers} />);
+    const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} contentType="form" {...drawers} />);
 
     expect(findElement(wrapper)).toBeNull();
     findToggle(wrapper).click();
@@ -154,35 +112,35 @@ describe('drawers', () => {
 
 describe('Content height calculation', () => {
   test('should take the full page height by default', () => {
-    const { contentElement } = renderComponent(<AppLayout />);
-    expect(contentElement).toHaveStyle({ minHeight: 'calc(100vh - 0px)' });
+    const { wrapper } = renderComponent(<AppLayout />);
+    expect(wrapper.getElement()).toHaveStyle({ minHeight: 'calc(100vh - 0px)' });
   });
 
   test('should include header and footer in the calculation', async () => {
-    const { contentElement } = renderComponent(
+    const { wrapper } = renderComponent(
       <div id="b">
         <div style={{ height: 40 }} id="h" />
         <AppLayout />
         <div style={{ height: 35 }} id="f" />
       </div>
     );
-    await waitFor(() => expect(contentElement).toHaveStyle({ minHeight: 'calc(100vh - 75px)' }));
+    await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minHeight: 'calc(100vh - 75px)' }));
   });
 
   test('should use alternative header and footer selector', async () => {
-    const { contentElement } = renderComponent(
+    const { wrapper } = renderComponent(
       <>
         <div style={{ height: 20 }} id="header" />
         <AppLayout headerSelector="#header" footerSelector="#footer" />
         <div style={{ height: 25 }} id="footer" />
       </>
     );
-    await waitFor(() => expect(contentElement).toHaveStyle({ minHeight: 'calc(100vh - 45px)' }));
+    await waitFor(() => expect(wrapper.getElement()).toHaveStyle({ minHeight: 'calc(100vh - 45px)' }));
   });
 
   test('should set height instead of min-height when the body scroll is disabled', () => {
-    const { contentElement } = renderComponent(<AppLayout disableBodyScroll={true} />);
-    const { height, minHeight } = contentElement.style;
+    const { wrapper } = renderComponent(<AppLayout disableBodyScroll={true} />);
+    const { height, minHeight } = wrapper.getElement().style;
     expect({ height, minHeight }).toEqual({ height: 'calc(100vh - 0px)', minHeight: '' });
   });
 });
@@ -198,32 +156,6 @@ test('a11y', async () => {
       notifications={<div></div>}
       breadcrumbs={<div></div>}
       splitPanel={<div></div>}
-      ariaLabels={{
-        // notifications?: string;
-        // navigation?: string;
-        navigationToggle: 'Open navigation',
-        navigationClose: 'Close navigation',
-        // tools?: string;
-        toolsToggle: 'Open tools',
-        toolsClose: 'Close tools',
-      }}
-    />
-  );
-  await expect(container).toValidateA11y();
-});
-
-test('drawers a11y', async () => {
-  const { container } = renderComponent(
-    <AppLayout
-      navigationOpen={true}
-      toolsOpen={true}
-      splitPanelOpen={true}
-      navigation={<div></div>}
-      content={<div></div>}
-      notifications={<div></div>}
-      breadcrumbs={<div></div>}
-      splitPanel={<div></div>}
-      {...drawersConfigurations.singleDrawer}
       ariaLabels={{
         // notifications?: string;
         // navigation?: string;

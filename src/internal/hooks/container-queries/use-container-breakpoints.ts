@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { useContainerQuery } from './use-container-query';
 import { Breakpoint, getMatchingBreakpoint } from '../../breakpoints';
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 /**
  * Re-renders the component when the breakpoint for the component changes. Scopes the re-renders to the specific
@@ -17,5 +17,5 @@ export function useContainerBreakpoints<T extends readonly Breakpoint[]>(
   // triggers.join() gives us a stable value to use for the dependencies argument
   const triggersDep = triggers?.join();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  return useContainerQuery(rect => getMatchingBreakpoint(rect.width, triggers), [triggersDep]);
+  return useContainerQuery(rect => getMatchingBreakpoint(rect.contentBoxWidth, triggers), [triggersDep]);
 }

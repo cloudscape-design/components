@@ -114,6 +114,10 @@ explicitly set in script.
     #{custom-props.$overlapHeight}: 0;
   }
 
+  &.is-hide-mobile-toolbar {
+    #{custom-props.$mobileBarHeight}: 0px;
+  }
+
   /*
   Warning! This is a hack! We are implementing a short term fix to prevent the
   tools drawer from potentially getting pushed off screen. Currently there is no
@@ -211,7 +215,7 @@ explicitly set in script.
 
   // The Header gap is slightly smaller when it comes after the Breadcrumbs
   &.has-breadcrumbs.has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   }
 
   // Set the Main gap when it follows the Notifications
@@ -236,13 +240,13 @@ explicitly set in script.
 
   // Set the Main gap when it follows the Header
   &.has-header {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
+    #{custom-props.$mainGap}: #{awsui.$space-content-header-padding-bottom};
   }
 
   // Set the Main gap when it is the first page content
   &.content-first-child-main:not(.is-overlap-disabled),
   &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
   }
 
   // Set an extension of the overlap and an additional gap on top to be used by content-layout without header

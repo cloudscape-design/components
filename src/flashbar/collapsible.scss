@@ -14,7 +14,7 @@ $notification-bar-top-overlap: (
   'collapsed': calc(#{awsui.$space-scaled-xl} + 3px),
   'expanded': awsui.$space-scaled-s,
 );
-$notification-bar-line-height: awsui.$font-body-m-line-height;
+$notification-bar-line-height: awsui.$line-height-body-m;
 $notification-bar-padding-vertical: styles.$control-padding-vertical;
 $notification-bar-collapsed-item-overflow: (
   'x': 10px,
@@ -84,7 +84,7 @@ the grid layout will be:
        This makes them look better during the collapse animation, in which they are already empty.
      */
     min-height: calc(
-      #{awsui.$font-body-m-line-height} + (
+      #{awsui.$line-height-body-m} + (
           #{awsui.$space-scaled-xs} + #{awsui.$border-field-width} + #{awsui.$space-scaled-xxs}
         ) * 2
     );

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import InternalContainer from '../container/internal';
+import { InternalContainerAsSubstep } from '../container/internal';
 import React from 'react';
 import { ExpandableSectionProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+
+export interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   className?: string;
   header: React.ReactNode;
   children?: React.ReactNode;
@@ -24,20 +26,22 @@ export const ExpandableSectionContainer = ({
   __internalRootRef,
   ...rest
 }: ExpandableSectionContainerProps) => {
-  if (variant === 'container') {
+  if (variant === 'container' || variant === 'stacked') {
     return (
-      <InternalContainer
-        {...rest}
-        className={className}
-        header={header}
-        variant="default"
-        disableContentPaddings={disableContentPaddings || !expanded}
-        disableHeaderPaddings={true}
-        __hiddenContent={!expanded}
-        __internalRootRef={__internalRootRef}
-      >
-        {children}
-      </InternalContainer>
+      <AnalyticsFunnelSubStep>
+        <InternalContainerAsSubstep
+          {...rest}
+          className={className}
+          header={header}
+          variant={variant === 'stacked' ? 'stacked' : 'default'}
+          disableContentPaddings={disableContentPaddings || !expanded}
+          disableHeaderPaddings={true}
+          __hiddenContent={!expanded}
+          __internalRootRef={__internalRootRef}
+        >
+          {children}
+        </InternalContainerAsSubstep>
+      </AnalyticsFunnelSubStep>
     );
   }
 

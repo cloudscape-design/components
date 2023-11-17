@@ -15,9 +15,10 @@ import { OptionsListProps } from '../../internal/components/options-list';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import { BaseKeyDetail, NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
+import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
+import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
@@ -37,12 +38,8 @@ interface UseSelectProps {
   statusType: DropdownStatusProps.StatusType;
 }
 
-export interface SelectTriggerProps {
+export interface SelectTriggerProps extends ButtonTriggerProps {
   ref: RefObject<HTMLButtonElement>;
-  onMouseDown?: (event: CustomEvent) => void;
-  onKeyDown?: (event: CustomEvent<BaseKeyDetail>) => void;
-  onFocus: NonCancelableEventHandler;
-  autoFocus?: boolean;
 }
 
 export function useSelect({
@@ -87,7 +84,7 @@ export function useSelect({
     },
   ] = useHighlightedOption({ options, isHighlightable });
 
-  const { isOpen, openDropdown, closeDropdown, toggleDropdown } = useOpenState({
+  const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
     onOpen: () => fireLoadItems(''),
     onClose: () => {
       resetHighlightWithKeyboard();
@@ -106,6 +103,7 @@ export function useSelect({
 
   const hasSelectedOption = __selectedOptions.length > 0;
   const menuId = useUniqueId('option-list');
+  const dialogId = useUniqueId('dialog');
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const selectOption = (option?: DropdownOption) => {
@@ -132,11 +130,19 @@ export function useSelect({
     preventNativeSpace: !hasFilter,
   });
 
-  const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome: goHomeWithKeyboard });
+  const triggerKeyDownHandler = useTriggerKeyboard({
+    openDropdown: () => openDropdown(true),
+    goHome: goHomeWithKeyboard,
+  });
 
-  const getDropdownProps: () => Pick<DropdownProps, 'onFocus' | 'onBlur'> = () => ({
+  const getDropdownProps: () => Pick<
+    DropdownProps,
+    'onFocus' | 'onBlur' | 'dropdownContentId' | 'dropdownContentRole'
+  > = () => ({
     onFocus: handleFocus,
     onBlur: handleBlur,
+    dropdownContentId: dialogId,
+    dropdownContentRole: hasFilter ? 'dialog' : undefined,
   });
 
   const getTriggerProps = (disabled = false, autoFocus = false) => {
@@ -144,6 +150,8 @@ export function useSelect({
       ref: triggerRef,
       onFocus: () => closeDropdown(),
       autoFocus,
+      ariaHasPopup: hasFilter ? 'dialog' : 'listbox',
+      ariaControls: isOpen ? (hasFilter ? dialogId : menuId) : undefined,
     };
     if (!disabled) {
       triggerProps.onMouseDown = (event: CustomEvent) => {
@@ -245,9 +253,23 @@ export function useSelect({
     // highlight the first selected option, when opening the Select component without filter input
     // keep the focus in the filter input when opening, so that screenreader can recognize the combobox
     if (isOpen && !prevOpen && hasSelectedOption && !hasFilter) {
-      setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]));
+      if (openedWithKeyboard) {
+        highlightOptionWithKeyboard(__selectedOptions[0]);
+      } else {
+        setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]), true);
+      }
     }
-  }, [isOpen, __selectedOptions, hasSelectedOption, setHighlightedIndexWithMouse, options, prevOpen, hasFilter]);
+  }, [
+    isOpen,
+    __selectedOptions,
+    hasSelectedOption,
+    setHighlightedIndexWithMouse,
+    highlightOptionWithKeyboard,
+    openedWithKeyboard,
+    options,
+    prevOpen,
+    hasFilter,
+  ]);
 
   useEffect(() => {
     if (isOpen) {
@@ -277,5 +299,6 @@ export function useSelect({
     highlightOption: highlightOptionWithKeyboard,
     selectOption,
     announceSelected,
+    dialogId,
   };
 }

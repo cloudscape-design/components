@@ -17,7 +17,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { getBaseDate } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import { useInternalI18n } from '../internal/i18n/context.js';
+import { useInternalI18n } from '../i18n/context.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 

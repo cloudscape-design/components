@@ -16,7 +16,14 @@ when the \`dismissible\` property is set to \`true\`.",
       "name": "onDismiss",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets focus on the alert content.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Alert",
   "properties": Array [
     Object {
@@ -54,7 +61,7 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"info\\"",
+      "defaultValue": "'info'",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
         "name": "AlertProps.Type",
@@ -104,6 +111,140 @@ An \`onButtonClick\` event is fired when the user clicks it.",
       "name": "header",
     },
   ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for anchor-navigation matches the snapshot: anchor-navigation 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Fired when an active anchor link changes.
+Note: This event is triggered both by the component's internal scroll-spy logic,
+or when the \`activeHref\` prop is manually updated.
+",
+      "detailInlineType": Object {
+        "name": "AnchorNavigationProps.Anchor",
+        "properties": Array [
+          Object {
+            "name": "href",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "info",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "level",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "AnchorNavigationProps.Anchor",
+      "name": "onActiveHrefChange",
+    },
+    Object {
+      "cancelable": true,
+      "description": "Fired when an anchor link is clicked without any modifier keys.",
+      "detailInlineType": Object {
+        "name": "AnchorNavigationProps.Anchor",
+        "properties": Array [
+          Object {
+            "name": "href",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "info",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "level",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "AnchorNavigationProps.Anchor",
+      "name": "onFollow",
+    },
+  ],
+  "functions": Array [],
+  "name": "AnchorNavigation",
+  "properties": Array [
+    Object {
+      "description": "Specifies the active anchor href. When set, the component will operate in a
+controlled manner, and internal scroll-spy will be disabled.",
+      "name": "activeHref",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "List of anchors. Each anchor object has the following properties:
+* \`text\` (string) - The text for the anchor item.
+* \`href\` (string) - The \`id\` attribute of the target HTML element that the anchor refers to.
+For example: \`\\"#section1.1\\"\`
+* \`level\` (number) - Level of nesting of the anchor.
+* \`info\` (string | undefined) - Additional information to display next to the link, for example: \\"New\\" or \\"Updated\\".
+
+Note: The list of anchors should be sorted in the order they appear on the page.
+",
+      "name": "anchors",
+      "optional": false,
+      "type": "Array<AnchorNavigationProps.Anchor>",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component.
+Use this property for identifying the header or title that labels the anchor navigation.
+To use it correctly, define an ID for the element either as label, and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "0",
+      "description": "Specifies the height (in pixels) to be considered as an offset when activating anchors.
+This is useful when you have a fixed or sticky header that might overlap with the content as you scroll.
+Defaults to 0.
+",
+      "name": "scrollSpyOffset",
+      "optional": true,
+      "type": "number",
+    },
+  ],
+  "regions": Array [],
   "releaseStatus": "stable",
 }
 `;
@@ -259,6 +400,12 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
+      "description": "Fired when the active drawer is toggled.",
+      "detailType": "unknown",
+      "name": "onDrawerChange",
+    },
+    Object {
+      "cancelable": false,
       "description": "Fired when the navigation drawer is toggled.",
       "detailInlineType": Object {
         "name": "AppLayoutProps.ChangeDetail",
@@ -352,6 +499,18 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the active drawer. Use this to focus the active drawer after opening it programmatically.",
+      "name": "focusActiveDrawer",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Focuses the split panel if it is open.",
+      "name": "focusSplitPanel",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
 after changing the content, for example when clicking on an 'info' link while
 the panel is already open.",
@@ -370,6 +529,12 @@ to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`
   "name": "AppLayout",
   "properties": Array [
     Object {
+      "description": "The active drawer id. If you want to clear the active drawer, use \`null\`.",
+      "name": "activeDrawerId",
+      "optional": true,
+      "type": "null | string",
+    },
+    Object {
       "description": "Aria labels for the drawer operating buttons. Use this property to ensure accessibility.
 * \`navigation\` (string) - Label for the landmark that wraps the navigation drawer.
 * \`navigationClose\` (string) - Label for the button that closes the navigation drawer.
@@ -378,6 +543,9 @@ to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`
 * \`tools\` (string) - Label for the landmark that wraps the tools drawer.
 * \`toolsClose\` (string) - Label for the button that closes the tools drawer.
 * \`toolsToggle\` (string) - Label for the button that opens the tools drawer.
+* \`drawers\` (string) - Label for the landmark that the active drawer.
+* \`drawersOverflow\` (string) - Label for the ellipsis button with any overflow drawers.
+* \`drawersOverflowWithBadge\` (string) - Label for the ellipsis button with any overflow drawers, with a badge.
 
 Example:
 \`\`\`
@@ -388,13 +556,31 @@ Example:
   notifications: \\"Notifications\\",
   tools: \\"Help panel\\",
   toolsClose: \\"Close help panel\\",
-  toolsToggle: \\"Open help panel\\"
+  toolsToggle: \\"Open help panel\\",
+  drawers: \\"Drawers\\",
+  drawersOverflow: \\"Overflow drawers\\",
+  drawersOverflowWithBadge: \\"Overflow drawers (Unread notifications)\\"
 }
 \`\`\`",
       "i18nTag": true,
       "inlineType": Object {
         "name": "AppLayoutProps.Labels",
         "properties": Array [
+          Object {
+            "name": "drawers",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "drawersOverflow",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "drawersOverflowWithBadge",
+            "optional": true,
+            "type": "string",
+          },
           Object {
             "name": "navigation",
             "optional": true,
@@ -484,6 +670,22 @@ Individual properties will always take precedence over the default coming from t
       "name": "disableContentPaddings",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Drawers property.
+Each Drawer is an item in the drawers wrapper with the following properties:
+* id (string) - the id of the drawer.
+* content (React.ReactNode) - the content in the drawer.
+* trigger (DrawerTrigger) - the button that opens and closes the active drawer.
+* ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer.
+* badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+* resizable (boolean) - if the drawer is resizable or not.
+* defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
+* onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+",
+      "name": "drawers",
+      "optional": true,
+      "type": "Array<AppLayoutProps.Drawer>",
     },
     Object {
       "defaultValue": "'#b #f'",
@@ -723,6 +925,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -739,6 +958,17 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed values total.",
+      "inlineType": Object {
+        "name": "AreaChartProps.TickFormatter",
+        "properties": Array [],
+        "type": "object",
+      },
+      "name": "detailTotalFormatter",
+      "optional": true,
+      "type": "AreaChartProps.TickFormatter<number>",
+    },
+    Object {
       "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
       "i18nTag": true,
       "name": "errorText",
@@ -746,9 +976,16 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -946,6 +1183,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -975,6 +1229,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -1088,7 +1359,6 @@ A maximum of four fields are supported.
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
-      "i18nTag": true,
       "inlineType": Object {
         "name": "AttributeEditorProps.I18nStrings",
         "properties": Array [
@@ -1150,7 +1420,14 @@ The display of a row is handled by the \`definition\` property.",
       "type": "ReadonlyArray<T>",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the remove button.",
+      "name": "removeButtonAriaLabel",
+      "optional": true,
+      "type": "(item: T) => string",
+    },
+    Object {
       "description": "Specifies the text that's displayed in the remove button.",
+      "i18nTag": true,
       "name": "removeButtonText",
       "optional": true,
       "type": "string",
@@ -1497,12 +1774,15 @@ receive focus.",
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -1860,6 +2140,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -1891,9 +2188,16 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -2098,6 +2402,23 @@ Use \`categorical\` for bar charts.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -2127,6 +2448,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -2180,6 +2518,7 @@ Object {
 - \`text-status-success\` - Specifies the color for success text and icons.
 - \`text-status-info\` - Specifies the color for info text and icon.
 - \`text-status-inactive\` - Specifies the color for inactive and loading text and icons.
+- \`text-status-warning\` - Specifies the color for warning text and icons.
 
 Note: If you don't set it, the text color depends on the variant.
 ",
@@ -2194,6 +2533,7 @@ Note: If you don't set it, the text color depends on the variant.
           "text-status-success",
           "text-status-info",
           "text-status-inactive",
+          "text-status-warning",
         ],
       },
       "name": "color",
@@ -2719,6 +3059,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
         "type": "union",
         "values": Array [
           "add-plus",
+          "anchor-link",
           "angle-left-double",
           "angle-left",
           "angle-right-double",
@@ -2778,6 +3119,9 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "settings",
           "share",
           "shrink",
+          "star-filled",
+          "star-half",
+          "star",
           "status-in-progress",
           "status-info",
           "status-negative",
@@ -2864,7 +3208,8 @@ This property only applies when an \`href\` is provided.",
 * \`normal\` for secondary buttons.
 * \`link\` for tertiary buttons.
 * \`icon\` to display an icon only (no text).
-* \`inline-icon\` to display an icon-only (no text) button within a text context.",
+* \`inline-icon\` to display an icon-only (no text) button within a text context.
+* \`inline-link\` to display a tertiary button with no outer padding.",
       "inlineType": Object {
         "name": "ButtonProps.Variant",
         "type": "union",
@@ -2874,6 +3219,7 @@ This property only applies when an \`href\` is provided.",
           "link",
           "icon",
           "inline-icon",
+          "inline-link",
         ],
       },
       "name": "variant",
@@ -3025,17 +3371,15 @@ It should be used in buttons that don't have text in order to make them accessib
     },
     Object {
       "defaultValue": "false",
-      "description": "By default, the dropdown height is constrained to fit inside the height of its parent element.
-Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion.
-If you don't need to, we recommend you don't enable this property because there is a known issue with
-the '[aria-owns](https://a11ysupport.io/tech/aria/aria-owns_attribute)' attribute in Safari with VoiceOver that
-prevents VO specific controls (CTRL+OPT+Left/Right) from entering a dropdown on Safari due to its position in the DOM.
-If you don't need to, we also recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -3105,11 +3449,117 @@ It prevents clicks.",
       "type": "string",
     },
     Object {
+      "description": "A standalone action that is shown prior to the dropdown trigger.
+Use it with \\"primary\\" and \\"normal\\" variant only.
+Main action properties:
+* \`text\` (string) - Specifies the text shown in the main action.
+* \`external\` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when \`href\` is also provided.
+* \`externalIconAriaLabel\` (string) - Adds an ARIA label to the external icon.
+The main action also supports the following properties of the [button](/components/button/?tabId=api) component:
+\`ariaLabel\`, \`disabled\`, \`loading\`, \`loadingText\`, \`href\`, \`target\`, \`rel\`, \`download\`, \`iconAlt\`, \`iconName\`, \`iconUrl\`, \`iconSvg\`, \`onClick\`, \`onFollow\`.
+",
+      "inlineType": Object {
+        "name": "ButtonDropdownProps.MainAction",
+        "properties": Array [
+          Object {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "disabled",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "download",
+            "optional": true,
+            "type": "boolean | string",
+          },
+          Object {
+            "name": "external",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "iconAlt",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "iconName",
+            "optional": true,
+            "type": "IconProps.Name",
+          },
+          Object {
+            "name": "iconSvg",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          Object {
+            "name": "iconUrl",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "loading",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "loadingText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "onClick",
+            "optional": true,
+            "type": "CancelableEventHandler<ClickDetail>",
+          },
+          Object {
+            "name": "onFollow",
+            "optional": true,
+            "type": "CancelableEventHandler<ButtonProps.FollowDetail>",
+          },
+          Object {
+            "name": "rel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "mainAction",
+      "optional": true,
+      "type": "ButtonDropdownProps.MainAction",
+    },
+    Object {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
 * \`normal\` for secondary buttons
-* \`icon\` for icon buttons",
+* \`icon\` for icon buttons
+* \`inline-icon\` for icon buttons with no outer padding",
       "inlineType": Object {
         "name": "ButtonDropdownProps.Variant",
         "type": "union",
@@ -3117,6 +3567,7 @@ It prevents clicks.",
           "normal",
           "primary",
           "icon",
+          "inline-icon",
         ],
       },
       "name": "variant",
@@ -3335,7 +3786,7 @@ add a meaningful description to the whole selection.",
     Object {
       "description": " Defines what to display in each card. It has the following properties:
  * \`header\` ((item) => ReactNode) - Responsible for displaying the card header. You receive the current item as an argument.
-     Use \`fontSize=\\"heading-m\\"\` on [link](/components/link/) components inside card header.
+     Use \`fontSize=\\"inherit\\"\` on [link](/components/link/) components inside card header.
  * \`sections\` (array) - Responsible for displaying the card content. Cards can have many sections in their
    body. Each entry in the array is responsible for displaying a section. An entry has the following properties:
    * \`id\`: (string) - A unique identifier for the section. The property is used as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -3424,6 +3875,13 @@ Default value:
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Activating this property makes the entire card clickable to select it.
+Don't use this property if the card has any other interactive elements.",
+      "name": "entireCardClickable",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": " Use this property to inform screen readers which range of cards is currently displayed.
@@ -4753,7 +5211,7 @@ all containers to the height of the longest one, to avoid extra vertical scroll 
     Object {
       "description": "Use this slot to render a media element. Supported element types are 'img', 'video', and 'picture'.
 You can define different positions and sizes for the media element within the container.
-* \`content\` - Use this slot to render your media element. We support \`img\`, \`video\` and \`picture\` elements.
+* \`content\` - Use this slot to render your media element. We support \`img\`, \`video\`, \`picture\`, and \`iframe\` elements.
 
 * \`position\` - Defines the media slot's position within the container. Defaults to \`top\`.
 
@@ -5169,12 +5627,15 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -5439,12 +5900,15 @@ modifying the value. A disabled component cannot receive focus.",
     },
     Object {
       "defaultValue": "false",
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -5569,6 +6033,11 @@ Default: the user's current time offset as provided by the browser.
             "name": "formatUnit",
             "optional": true,
             "type": "(unit: DateRangePickerProps.TimeUnit, value: number) => string",
+          },
+          Object {
+            "name": "modeSelectionLabel",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "nextMonthAriaLabel",
@@ -5789,6 +6258,69 @@ or a relative time range.",
 }
 `;
 
+exports[`Documenter definition for drawer matches the snapshot: drawer 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "Drawer",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "loadingText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Renders the drawer in a loading state. We recommend that you also set a \`loadingText\`.",
+      "name": "loading",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": Array [
+    Object {
+      "description": "Main content of the drawer.",
+      "isDefault": true,
+      "name": "children",
+    },
+    Object {
+      "description": "Header of the drawer.
+It should contain the only \`h2\` used in the drawer.
+",
+      "isDefault": false,
+      "name": "header",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for expandable-section matches the snapshot: expandable-section 1`] = `
 Object {
   "events": Array [
@@ -5856,7 +6388,7 @@ Behaves similar to the Header component counter.",
       "type": "string",
     },
     Object {
-      "description": "Supplementary text below the heading. Use with the container variant.",
+      "description": "Supplementary text below the heading. Use with the container, default or footer variants.",
       "name": "headerDescription",
       "optional": true,
       "type": "string",
@@ -5894,7 +6426,8 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
  * \`footer\` - Use this variant in container footers.
  * \`container\` - Use this variant in a detail page alongside other containers.
  * \`navigation\` - Use this variant in the navigation panel with anchors and custom styled content.
-   It doesn't have any default styles.",
+   It doesn't have any default styles.
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
       "inlineType": Object {
         "name": "ExpandableSectionProps.Variant",
         "type": "union",
@@ -5903,11 +6436,13 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
           "footer",
           "container",
           "navigation",
+          "stacked",
         ],
       },
       "name": "variant",
       "optional": true,
       "type": "string",
+      "visualRefreshTag": "\`stacked\` variant",
     },
   ],
   "regions": Array [
@@ -6190,7 +6725,7 @@ If \`stackItems\` is set to \`true\`, it should also contain:
 * \`warningIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`warning\`.
 * \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
 * \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
-* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).",
+* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`in-progress\` or with \`loading\` set to \`true\`.",
       "i18nTag": true,
       "inlineType": Object {
         "name": "FlashbarProps.I18nStrings",
@@ -6261,6 +6796,7 @@ A flash message object contains the following properties:
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
 * \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
+If not provided, \`i18nStrings.{type}IconAriaLabel\` will be used as a fallback.
 * \`ariaRole\` (string) - For flash messages added after page load, specifies how this message is communicated to assistive
 technology. Use \\"status\\" for status updates or informational content. Use \\"alert\\" for important messages that need the
 user's attention.
@@ -6815,6 +7351,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
         "type": "union",
         "values": Array [
           "add-plus",
+          "anchor-link",
           "angle-left-double",
           "angle-left",
           "angle-right-double",
@@ -6874,6 +7411,9 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "settings",
           "share",
           "shrink",
+          "star-filled",
+          "star-half",
+          "star",
           "status-in-progress",
           "status-info",
           "status-negative",
@@ -7438,6 +7978,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -7469,9 +8026,16 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -7660,6 +8224,23 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -7689,6 +8270,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -7869,7 +8467,6 @@ For other options see the documentation for <a> tag's
       "type": "string",
     },
     Object {
-      "defaultValue": "'secondary'",
       "description": "Determines the visual style of the link as follows:
 - \`primary\` - Displays the link text with bold styling for sufficient contrast with surrounding text.
     Use this for links where the context doesn't imply interactivity such as
@@ -7877,7 +8474,14 @@ For other options see the documentation for <a> tag's
 - \`secondary\` - Does not provide any additional indicators for interactivity (except for an underline when the user hovers over or focuses the link).
     This can be used in cases where the interactivity is strongly implied by its context,
     such as in a table or a list of external links.
-- \`info\` - Use for \\"info\\" links that link to content in a help panel.",
+- \`info\` - Use for \\"info\\" links that link to content in a help panel.
+The default is \`secondary\`, except inside the following components where it defaults to \`primary\`:
+- Table
+- Cards
+- Alert
+- Popover
+- Help Panel (main \`content\` only)
+",
       "inlineType": Object {
         "name": "LinkProps.Variant",
         "type": "union",
@@ -7983,6 +8587,23 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "xValue",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "CartesianChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": Object {
@@ -8014,9 +8635,16 @@ See the usage guidelines for more details.",
       "type": "string",
     },
     Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.",
+If not set explicitly, the component will use a default height that is defined internally.
+When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -8222,6 +8850,23 @@ Use \`categorical\` for charts with bars.",
       "type": "string",
     },
     Object {
+      "description": "Function to format the displayed label of an x axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "xTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<T>",
+    },
+    Object {
       "description": "The title of the x axis.",
       "name": "xTitle",
       "optional": true,
@@ -8251,6 +8896,23 @@ When controlling this directly, make sure to update the value based on filtering
       "name": "yScaleType",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Function to format the displayed label of a y axis tick.",
+      "inlineType": Object {
+        "name": "CartesianChartProps.TickFormatter",
+        "parameters": Array [
+          Object {
+            "name": "value",
+            "type": "T",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "yTickFormatter",
+      "optional": true,
+      "type": "CartesianChartProps.TickFormatter<number>",
     },
     Object {
       "description": "The title of the y axis.",
@@ -8565,12 +9227,15 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -8947,7 +9612,7 @@ Example:
 \`\`\`
 {
   nextPageLabel: 'Next page',
-  paginationLabel: 'Table pagination'
+  paginationLabel: 'Table pagination',
   previousPageLabel: 'Previous page',
   pageLabel: pageNumber => \`Page \${pageNumber}\`
 }
@@ -9141,6 +9806,23 @@ Each pair has the following properties:
       "type": "PieChartProps.DetailPopoverContentFunction<T>",
     },
     Object {
+      "description": "Additional content that is displayed at the bottom of the detail popover.",
+      "inlineType": Object {
+        "name": "PieChartProps.DetailPopoverFooter",
+        "parameters": Array [
+          Object {
+            "name": "segment",
+            "type": "T",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "detailPopoverFooter",
+      "optional": true,
+      "type": "PieChartProps.DetailPopoverFooter<T>",
+    },
+    Object {
       "defaultValue": "\\"medium\\"",
       "description": "Determines the maximum width of the popover.",
       "inlineType": Object {
@@ -9162,6 +9844,12 @@ Each pair has the following properties:
       "name": "errorText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Enable this property to make the chart fit into the available height of the parent container.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "defaultValue": "false",
@@ -9328,7 +10016,8 @@ The function is called with the data object of each segment and is expected to r
     },
     Object {
       "defaultValue": "\\"medium\\"",
-      "description": "Specifies the size of the pie or donut chart.",
+      "description": "Specifies the size of the pie or donut chart.
+When used with \`fitHeight\`, this property defines the minimum size of the chart area.",
       "inlineType": Object {
         "name": "",
         "type": "union",
@@ -9507,6 +10196,12 @@ Note: Using popover rendered with portal within a Modal is not supported.
       "type": "string",
     },
     Object {
+      "description": "Adds an aria-label to the text trigger button.",
+      "name": "triggerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "\\"text\\"",
       "description": "Specifies the type of content inside the trigger region. The following types are available:
 - \`text\` - Use for inline text triggers.
@@ -9556,6 +10251,18 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
   "functions": Array [],
   "name": "ProgressBar",
   "properties": Array [
+    Object {
+      "description": "Adds an \`aria-label\` to the progress bar.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the progress bar.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -9824,15 +10531,25 @@ in order to prevent the user from changing the filtering query.",
       "type": "boolean",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "The label that will be passed down to the Autosuggest \`ariaLabel\` property.
+See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more details.",
+      "name": "filteringAriaLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
@@ -9876,6 +10593,12 @@ const filteringOptions = [
       "name": "filteringOptions",
       "optional": true,
       "type": "ReadonlyArray<PropertyFilterProps.FilteringOption>",
+    },
+    Object {
+      "description": "Placeholder for the filtering input.",
+      "name": "filteringPlaceholder",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "An array of properties by which the data set can be filtered. Each element has the following properties:
@@ -9974,7 +10697,7 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "filteringAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10043,6 +10766,11 @@ operations are communicated to the user in another way.",
             "type": "string",
           },
           Object {
+            "name": "operatorStartsWithText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "operatorText",
             "optional": true,
             "type": "string",
@@ -10086,7 +10814,7 @@ operations are communicated to the user in another way.",
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "PropertyFilterProps.I18nStrings",
     },
     Object {
@@ -10102,7 +10830,7 @@ operations are communicated to the user in another way.",
 Each token has the following properties:
 * value [string]: The string value of the token to be used as a filter.
 * propertyKey [string]: The key of the corresponding property in filteringProperties.
-* operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=']: The operator which indicates how to filter the dataset using this token.
+* operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^']: The operator which indicates how to filter the dataset using this token.
 
 \`operation\` has two valid values [and, or] and controls the join operation to be applied between tokens when filtering the items.
 ",
@@ -10148,6 +10876,12 @@ it removes options that are not currently in view from the DOM.",
 filter queries only after an initial filter is applied.",
       "isDefault": false,
       "name": "customControl",
+    },
+    Object {
+      "description": "A slot that replaces the standard \\"Clear filter\\" button.
+When using this slot, make sure to still provide a mechanism to clear all filters.",
+      "isDefault": false,
+      "name": "customFilterActions",
     },
     Object {
       "description": "Displayed when there are no options to display.
@@ -10724,6 +11458,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "description": "Adds a placeholder to the S3 URI input.",
+      "name": "inputPlaceholder",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Whether the S3 URI input field is in invalid state.",
       "name": "invalid",
       "optional": true,
@@ -11050,12 +11790,15 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Enabling this property will allow the dropdown to extend beyond its parent by using fixed positioning and
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
-If you want the dropdown to ignore the \`overflow\` CSS property of its parents,
-such as in a split view layout, enable this property.
-However, use discretion. If you don't need to, we recommend you don't enable this property because fixed positioning results
-in a slight, visible lag when scrolling complex pages.",
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+However, use discretion. We recommend you don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -11837,6 +12580,7 @@ Object {
           "grey",
           "green",
           "red",
+          "yellow",
         ],
       },
       "name": "colorOverride",
@@ -12053,12 +12797,13 @@ scroll parent scrolls to reveal the first row of the table.",
 * \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
 * \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
                                    It is prefixed to \`itemSelectionLabel\` and \`allItemsSelectionLabel\` when they are set.
-* \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
-                          to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 You can use the first argument of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
 items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
+* \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
+                          to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
+* \`resizerRoleDescription\` (string) - Provides role description for table column resizer buttons.
 * \`activateEditLabel\` (EditableColumnDefinition, Item) => string -
                      Specifies an alternative text for the edit button in editable cells.
 * \`cancelEditLabel\` (EditableColumnDefinition) => string -
@@ -12092,6 +12837,11 @@ add a meaningful description to the whole selection.
             "name": "itemSelectionLabel",
             "optional": true,
             "type": "(data: TableProps.SelectionState<T>, row: T) => string",
+          },
+          Object {
+            "name": "resizerRoleDescription",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "selectionGroupLabel",
@@ -13028,9 +13778,44 @@ period of time. If you want a delayed handler to invoke a filtering API call, yo
   "name": "TextFilter",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
       "optional": true,
       "type": "string",
     },
@@ -13942,6 +14727,13 @@ Object {
       "type": "string",
     },
     Object {
+      "description": "Removes any outer padding from the component.
+We recommend to always enable this property.",
+      "name": "disableOuterPadding",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": Object {
@@ -14459,7 +15251,7 @@ Defaults to \`false\`.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
-- \`submitButton\` (string) - The text of the button that enables the user to submit the form.
+- \`submitButton\` (string) - The text of the button that enables the user to submit the form. **Deprecated**, replaced by the \`submitButtonText\` component property.
 - \`optional\` (string) - The text displayed next to the step title and form header title when a step is declared optional.
 - \`nextButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *next* button is in a loading state.
 - \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.",
@@ -14504,7 +15296,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "submitButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -14531,7 +15323,7 @@ Defaults to \`false\`.
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "WizardProps.I18nStrings",
     },
     Object {
@@ -14565,6 +15357,12 @@ Use this if you need to wait for a response from the server before the user can 
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<WizardProps.Step>",
+    },
+    Object {
+      "description": "The text of the button that enables the user to submit the form.",
+      "name": "submitButtonText",
+      "optional": true,
+      "type": "string",
     },
   ],
   "regions": Array [

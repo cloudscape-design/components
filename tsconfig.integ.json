@@ -1,8 +1,7 @@
 {
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2017",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2020", "dom"],
     "types": ["jest"],
     "noEmit": true,
     "strict": true,

@@ -7,7 +7,7 @@ import liveRegionStyles from '../../../lib/components/internal/components/live-r
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
@@ -45,6 +45,14 @@ afterEach(() => {
 });
 
 describe('i18nStrings', () => {
+  test('uses submitButtonText over i18nStrings.submitButton', () => {
+    const [wrapper] = renderDefaultWizard({ submitButtonText: 'Create DB instance' });
+    for (let i = 0; i < DEFAULT_STEPS.length - 1; i++) {
+      wrapper.findPrimaryButton().click();
+    }
+    expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Create DB instance');
+  });
+
   DEFAULT_I18N_SETS.forEach((i18nStrings, index) => {
     test(`match provided i18nStrings, i18nSets[${index}], shown on the wizard component`, () => {
       const [wrapper] = renderWizard({
@@ -82,7 +90,7 @@ describe('i18nStrings', () => {
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
-      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.submitButton);
+      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.submitButton!);
     });
   });
 });
@@ -216,7 +224,7 @@ describe('Primary button', () => {
       if (index < DEFAULT_STEPS.length - 1) {
         expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
       } else {
-        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton);
+        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton!);
       }
       wrapper.findPrimaryButton().click();
     });
@@ -399,7 +407,7 @@ test('raises a warning when setting activeStepIndex without onNavigate listener'
 test('does not perform navigation when used in controlled mode', () => {
   const [wrapper] = renderDefaultWizard({ activeStepIndex: 1, onNavigate: () => {} });
   const checkStep = () => {
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent(DEFAULT_STEPS[1].content as string);
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Step 2, substep oneStep 2, substep two');
   };
   wrapper.findPreviousButton()!.click();
   checkStep();
@@ -412,7 +420,11 @@ test('does not perform navigation when used in controlled mode', () => {
 test('performs navigation when used in uncontrolled mode', () => {
   const [wrapper] = renderDefaultWizard();
   const checkStep = (index: number) => {
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent(DEFAULT_STEPS[index].content as string);
+    if (index === 0) {
+      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Step 1, substep oneStep 1, substep two');
+    } else {
+      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Step 2, substep oneStep 2, substep two');
+    }
   };
   checkStep(0);
   wrapper.findPrimaryButton().click();
@@ -538,6 +550,7 @@ describe('i18n', () => {
     expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Custom cancel');
     expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Custom next');
     expect(wrapper.findSkipToButton()!.getElement()).toHaveTextContent('Custom skip to Step 3');
+    expect(wrapper.find('nav')!.getElement()).toHaveAccessibleName('Custom steps');
     wrapper.findPrimaryButton().click();
     expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent('Custom previous');
   });

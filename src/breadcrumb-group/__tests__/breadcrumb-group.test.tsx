@@ -4,14 +4,14 @@ import React from 'react';
 import { render, act } from '@testing-library/react';
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
 import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const renderResult = render(<BreadcrumbGroup {...props} />);
-  return createWrapper(renderResult.container).findBreadcrumbGroup(`.${styles['breadcrumb-group']}`)!;
+  return createWrapper(renderResult.container).findBreadcrumbGroup()!;
 };
 
 describe('BreadcrumbGroup Component', () => {

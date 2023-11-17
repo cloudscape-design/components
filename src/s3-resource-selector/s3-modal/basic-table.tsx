@@ -11,10 +11,10 @@ import InternalTable from '../../table/internal';
 import { TextFilterProps } from '../../text-filter/interfaces';
 import InternalTextFilter from '../../text-filter/internal';
 import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus';
-import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { S3ResourceSelectorProps } from '../interfaces';
 import { EmptyState } from './empty-state';
-import { ComponentFormatFunction } from '../../internal/i18n/context';
+import { ComponentFormatFunction } from '../../i18n/context';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 interface BasicS3TableStrings<T> {
   labelRefresh?: string;
@@ -79,7 +79,7 @@ export function BasicS3Table<T>({
   const [loading, setLoading] = useState(false);
   const [allItems, setAllItems] = useState<ReadonlyArray<T>>([]);
   const textFilterRef = useRef<TextFilterProps.Ref>(null);
-  const onSelectLatest = useStableEventHandler(onSelect);
+  const onSelectLatest = useStableCallback(onSelect);
 
   function loadData() {
     setLoading(true);

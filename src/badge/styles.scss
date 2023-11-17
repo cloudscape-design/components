@@ -10,7 +10,7 @@
   @include styles.styles-reset;
 
   @include styles.font-body-s;
-  line-height: awsui.$font-body-m-line-height;
+  line-height: awsui.$line-height-body-m;
   display: inline-block;
   border-radius: awsui.$border-radius-badge;
   padding: 0 awsui.$space-xs;

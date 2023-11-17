@@ -9,6 +9,7 @@ import Cards, { CardsProps } from '~components/cards/index';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Link } from '~components';
 
 interface Item {
   number: number;
@@ -27,7 +28,14 @@ function createSimpleItems(count: number) {
 }
 
 const cardDefinition: CardsProps.CardDefinition<Item> = {
-  header: item => item.text,
+  header: item =>
+    item.number === 2 ? (
+      <Link href="#" fontSize="inherit">
+        {item.text}
+      </Link>
+    ) : (
+      item.text
+    ),
   sections: [
     {
       id: 'description',
@@ -94,6 +102,12 @@ const permutations = createPermutations<CardsProps>([
       },
     ],
     items: [createSimpleItems(4)],
+  },
+  {
+    cardDefinition: [cardDefinition],
+    items: [createSimpleItems(3)],
+    variant: [undefined, 'full-page'],
+    pagination: [undefined, 'pagination'],
   },
 ]);
 /* eslint-enable react/jsx-key */

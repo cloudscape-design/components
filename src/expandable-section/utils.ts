@@ -3,5 +3,5 @@
 import { ExpandableSectionProps } from './interfaces';
 
 export function variantSupportsDescription(variant: ExpandableSectionProps.Variant) {
-  return variant === 'container' || variant === 'default';
+  return variant === 'container' || variant === 'default' || variant === 'footer';
 }

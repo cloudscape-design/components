@@ -3,13 +3,24 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import Cards, { CardsProps } from '../../../lib/components/cards';
-import { CardsWrapper } from '../../../lib/components/test-utils/dom';
+import Header from '../../../lib/components/header';
+import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
-import TestI18nProvider from '../../../lib/components/internal/i18n/testing';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import styles from '../../../lib/components/cards/styles.css.js';
+
+jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
+  useMobile: jest.fn(),
+}));
 
 interface Item {
   id: number;
   name: string;
+}
+
+function findFooterPagination(wrapper: CardsWrapper): PaginationWrapper | null {
+  return wrapper.findComponent(`.${styles['footer-pagination']}`, PaginationWrapper);
 }
 
 const cardDefinition: CardsProps.CardDefinition<Item> = {
@@ -171,10 +182,18 @@ describe('Cards', () => {
       expect(wrapper.findHeader()?.getElement()).toHaveTextContent('abcedefg');
     });
 
-    it('maintains logical relationship between header and cards', () => {
+    it('maintains logical relationship between header and cards when header is a string', () => {
       wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} header="abcedefg" />).wrapper;
       const cardsOrderedList = getCard(0).getElement().parentElement;
       expect(cardsOrderedList).toHaveAccessibleName('abcedefg');
+    });
+
+    it('maintains logical relationship between header and cards when header is a component', () => {
+      wrapper = renderCards(
+        <Cards<Item> cardDefinition={{}} items={defaultItems} header={<Header>Cards header</Header>} />
+      ).wrapper;
+      const cardsOrderedList = getCard(0).getElement().parentElement;
+      expect(cardsOrderedList).toHaveAccessibleName('Cards header');
     });
 
     it('allows label to be overridden', () => {
@@ -188,6 +207,34 @@ describe('Cards', () => {
       ).wrapper;
       const cardsOrderedList = getCard(0).getElement().parentElement;
       expect(cardsOrderedList).toHaveAccessibleName('Custom label');
+    });
+  });
+
+  describe('pagination region', () => {
+    it('should render table with no pagination in the footer for default variant', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} pagination="pagination" />).wrapper;
+      expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)).toBeNull();
+    });
+
+    it('is not displayed in the footer on full-page variant on desktop', () => {
+      (useMobile as jest.Mock).mockReturnValue(false);
+      wrapper = renderCards(
+        <Cards<Item> variant="full-page" cardDefinition={{}} items={defaultItems} pagination="pagination" />
+      ).wrapper;
+      expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)).toBeNull();
+      jest.resetAllMocks();
+    });
+
+    it('is displayed in the footer on full-page variant on mobile', () => {
+      (useMobile as jest.Mock).mockReturnValue(true);
+      wrapper = renderCards(
+        <Cards<Item> variant="full-page" cardDefinition={{}} items={defaultItems} pagination="pagination" />
+      ).wrapper;
+      expect(wrapper.findPagination()?.getElement()).toHaveTextContent('pagination');
+      expect(findFooterPagination(wrapper)?.getElement()).toHaveTextContent('pagination');
+      jest.resetAllMocks();
     });
   });
 

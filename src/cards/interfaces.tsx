@@ -64,7 +64,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   /**
    *  Defines what to display in each card. It has the following properties:
    *  * `header` ((item) => ReactNode) - Responsible for displaying the card header. You receive the current item as an argument.
-   *      Use `fontSize="heading-m"` on [link](/components/link/) components inside card header.
+   *      Use `fontSize="inherit"` on [link](/components/link/) components inside card header.
    *  * `sections` (array) - Responsible for displaying the card content. Cards can have many sections in their
    *    body. Each entry in the array is responsible for displaying a section. An entry has the following properties:
    *    * `id`: (string) - A unique identifier for the section. The property is used as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -207,6 +207,12 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * @visualrefresh `full-page` variant
    */
   variant?: 'container' | 'full-page';
+
+  /**
+   * Activating this property makes the entire card clickable to select it.
+   * Don't use this property if the card has any other interactive elements.
+   */
+  entireCardClickable?: boolean;
 }
 
 export namespace CardsProps {

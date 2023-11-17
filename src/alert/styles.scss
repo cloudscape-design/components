@@ -6,6 +6,7 @@
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/hooks/focus-visible' as focus-visible;
 
 @use './motion';
 
@@ -22,19 +23,27 @@
 .alert {
   @include styles.styles-reset;
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr;
   border-radius: awsui.$border-radius-alert;
   border: awsui.$border-field-width solid;
   padding: awsui.$space-alert-vertical awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
-}
 
-.body {
-  display: flex;
-  flex: 1 1 0%;
-  min-width: 0;
+  &.with-dismiss,
+  &.with-action {
+    grid-template-columns: 1fr auto;
+  }
+  &.with-action.with-dismiss {
+    grid-template-columns: 1fr auto auto;
+  }
+  // Below the breakpoint, arrange actions below the content
+  &.breakpoint-default.with-action {
+    grid-template-columns: 1fr auto;
+  }
+  &.breakpoint-default:not(.with-dismiss) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .header {
@@ -43,14 +52,28 @@
 
 .action {
   white-space: nowrap;
-  margin-left: awsui.$space-s;
+  margin-left: awsui.$space-alert-action-left;
 }
 
+.action-slot,
 .action-button {
   /* used in test-utils */
 }
 
+.alert-focus-wrapper {
+  display: grid;
+  grid-template-columns: min-content auto;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+}
+
 .text {
+  min-width: 0;
   padding: awsui.$border-field-width 0; // To account for vertical misalignment due to button borders
   margin: awsui.$space-scaled-xxs awsui.$space-xxs;
   &.icon {
@@ -58,25 +81,26 @@
   }
   &.message {
     margin-right: awsui.$space-alert-message-right;
-    & + .action {
-      margin-left: awsui.$space-alert-action-left;
-    }
   }
 }
 
-/* stylelint-disable selector-max-type */
-.root.breakpoint-default > div > .alert > .body {
-  display: block;
-  & > .action {
-    margin-left: awsui.$space-xxs;
+.breakpoint-default {
+  // Below the breakpoint, arrange actions below the content
+  > .action {
+    grid-row: 2;
     margin-bottom: awsui.$space-xxs;
   }
-}
-/* stylelint-enable selector-max-type */
 
-.message {
-  flex: 1 1 0%;
-  min-width: 0;
+  // Indent actions according to the size of the alert icon
+  &.icon-size-medium > .action {
+    margin-left: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
+  }
+  &.icon-size-big > .action {
+    margin-left: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
+  }
+  &.icon-size-normal > .action {
+    margin-left: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
+  }
 }
 
 .content {
@@ -84,17 +108,12 @@
 }
 
 .dismiss {
-  flex: 0 0 auto;
   margin-right: calc(-1 * #{awsui.$space-xxs});
   margin-left: awsui.$space-s;
 }
 
 .dismiss-button {
   /* used in test-utils */
-}
-
-.icon {
-  flex: 0 0 auto;
 }
 
 $_border-colors: (
@@ -122,7 +141,7 @@ $_text-colors: (
   .type-#{$type} {
     border-color: #{map.get($_border-colors, $type)};
     background-color: #{map.get($_background-colors, $type)};
-    > .icon {
+    > .alert-focus-wrapper > .icon {
       color: #{map.get($_text-colors, $type)};
     }
   }

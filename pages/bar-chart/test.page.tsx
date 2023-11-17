@@ -5,6 +5,7 @@ import React from 'react';
 import Grid from '~components/grid';
 import Box from '~components/box';
 import BarChart from '~components/bar-chart';
+import ButtonDropdown from '~components/button-dropdown';
 import ScreenshotArea from '../utils/screenshot-area';
 
 import {
@@ -45,6 +46,17 @@ export default function () {
               xScaleType="categorical"
               ariaLabel="Bar chart"
               ariaDescription={barChartInstructions}
+              detailPopoverFooter={() => (
+                <ButtonDropdown
+                  items={[
+                    { id: '1', text: 'View' },
+                    { id: '2', text: 'Add to filter' },
+                  ]}
+                  expandToViewport={true}
+                >
+                  Actions
+                </ButtonDropdown>
+              )}
             />
           </div>
           <BarChart

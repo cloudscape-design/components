@@ -11,6 +11,7 @@ import styles from './styles.css.js';
 import { NonCancelableCustomEvent, isPlainLeftClick } from '../internal/events';
 import { hasActiveLink } from './util';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 interface BaseItemComponentProps {
   activeHref?: string;
@@ -226,9 +227,6 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
-      // Prevent the click event from toggling outer expandable sections.
-      event.stopPropagation();
-
       if (isPlainLeftClick(event)) {
         fireFollow(definition, event);
       }
@@ -269,6 +267,7 @@ interface SectionProps extends BaseItemComponentProps {
 
 function Section({ definition, activeHref, fireFollow, fireChange, variant }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
+  const isVisualRefresh = useVisualRefresh();
 
   const onExpandedChange = useCallback(
     (e: NonCancelableCustomEvent<ExpandableSectionProps.ChangeDetail>) => {
@@ -287,7 +286,11 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant }: Se
       variant="footer"
       expanded={expanded}
       onChange={onExpandedChange}
-      className={clsx(styles.section, variant === 'section-group' && styles['section--no-ident'])}
+      className={clsx(
+        styles.section,
+        variant === 'section-group' && styles['section--no-ident'],
+        isVisualRefresh && styles.refresh
+      )}
       headerText={definition.text}
     >
       <NavigationItemsList

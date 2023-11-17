@@ -7,7 +7,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events'
 import { I18nStrings } from './interfaces';
 
 import styles from './styles.css.js';
-import { useInternalI18n } from '../../i18n/context';
+import { useInternalI18n } from '../../../i18n/context';
 interface TokenLimitToggleProps {
   controlId?: string;
   allHidden: boolean;

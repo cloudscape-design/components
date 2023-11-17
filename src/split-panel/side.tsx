@@ -36,7 +36,7 @@ export function SplitPanelContentSide({
         [styles['drawer-closed']]: !isOpen,
       })}
       style={{
-        width: isOpen ? cappedSize : undefined,
+        width: isOpen && isRefresh ? cappedSize : undefined,
         maxWidth: isRefresh ? '100%' : undefined,
       }}
       ref={splitPanelRef}
@@ -68,7 +68,6 @@ export function SplitPanelContentSide({
         )}
         <div className={styles['content-side']} aria-hidden={!isOpen}>
           <div className={clsx(styles['pane-header-wrapper-side'])}>{header}</div>
-          <hr className={styles['header-divider']} />
           <div className={clsx(styles['pane-content-wrapper-side'])}>{children}</div>
         </div>
       </div>

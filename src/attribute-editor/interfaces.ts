@@ -47,9 +47,14 @@ export namespace AttributeEditorProps {
     focusAddButton(): void;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface I18nStrings<T = any> {
     errorIconAriaLabel?: string;
     itemRemovedAriaLive?: string;
+
+    /**
+     * @deprecated Use `removeButtonAriaLabel` on the component instead.
+     */
     removeButtonAriaLabel?: (item: T) => string;
   }
 }
@@ -72,8 +77,14 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * Specifies the text that's displayed in the remove button.
+   * @i18n
    */
   removeButtonText?: string;
+
+  /**
+   * Adds an `aria-label` to the remove button.
+   */
+  removeButtonAriaLabel?: (item: T) => string;
 
   /**
    * Specifies the items that serve as the data source for all rows.
@@ -119,7 +130,6 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component.
-   * @i18n
    */
   i18nStrings?: AttributeEditorProps.I18nStrings<T>;
 }

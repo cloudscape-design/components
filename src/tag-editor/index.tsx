@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
-import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 
 import { InputProps } from '../input/interfaces';
 import { AutosuggestProps } from '../autosuggest/interfaces';
@@ -24,7 +23,8 @@ import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import LiveRegion from '../internal/components/live-region';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 export { TagEditorProps };
 
@@ -121,7 +121,7 @@ const TagEditor = React.forwardRef(
       };
     };
 
-    const onRemoveButtonClick = useStableEventHandler(
+    const onRemoveButtonClick = useStableCallback(
       ({ detail }: NonCancelableCustomEvent<AttributeEditorProps.RemoveButtonClickDetail>) => {
         const existing = tags[detail.itemIndex].existing;
         validateAndFire([
@@ -159,22 +159,22 @@ const TagEditor = React.forwardRef(
       }
     );
 
-    const onKeyChange = useStableEventHandler((value: string, row: number) => {
+    const onKeyChange = useStableCallback((value: string, row: number) => {
       keyDirtyStateRef.current[row] = true;
       validateAndFire([...tags.slice(0, row), { ...tags[row], key: value }, ...tags.slice(row + 1)]);
     });
 
-    const onKeyBlur = useStableEventHandler((row: number) => {
+    const onKeyBlur = useStableCallback((row: number) => {
       keyDirtyStateRef.current[row] = true;
       // Force re-render by providing a new array reference
       validateAndFire([...tags]);
     });
 
-    const onValueChange = useStableEventHandler((value: string, row: number) => {
+    const onValueChange = useStableCallback((value: string, row: number) => {
       validateAndFire([...tags.slice(0, row), { ...tags[row], value }, ...tags.slice(row + 1)]);
     });
 
-    const onUndoRemoval = useStableEventHandler((row: number) => {
+    const onUndoRemoval = useStableCallback((row: number) => {
       validateAndFire([...tags.slice(0, row), { ...tags[row], markedForRemoval: false }, ...tags.slice(row + 1)]);
       focusEventRef.current = () => {
         attributeEditorRef.current?.focusRemoveButton(row);

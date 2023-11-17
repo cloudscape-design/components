@@ -17,6 +17,7 @@ function renderChart<T extends ChartDataTypes>(props: Partial<MixedChartPopoverP
       onDismiss={props.onDismiss || jest.fn()}
       containerRef={dummyRef}
       trackRef={dummyRef}
+      footer={props.footer}
       size="small"
     />
   );
@@ -54,4 +55,22 @@ test('contains series details', () => {
 
   expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Potatoes');
   expect(wrapper.findContent()!.getElement()).toHaveTextContent('Series123');
+});
+
+test('can contain custom footer content', () => {
+  const wrapper = renderChart({
+    isOpen: true,
+    highlightDetails: {
+      position: 'Potatoes',
+      details: [
+        {
+          key: 'Series',
+          value: '123',
+        },
+      ],
+    },
+    footer: 'My custom footer',
+  });
+
+  expect(wrapper.findContent()!.getElement()).toHaveTextContent('My custom footer');
 });

@@ -13,13 +13,19 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { useInternalI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../i18n/context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { DATA_ATTR_FUNNEL_VALUE, getFunnelValueSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_FUNNEL_VALUE,
+  getFunnelValueSelector,
+  getNameFromSelector,
+  getSubStepAllSelector,
+} from '../internal/analytics/selectors';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
@@ -29,7 +35,7 @@ type InternalLinkProps = InternalBaseComponentProps &
 const InternalLink = React.forwardRef(
   (
     {
-      variant = 'secondary',
+      variant: providedVariant,
       fontSize = 'body-m',
       color = 'normal',
       external = false,
@@ -47,6 +53,8 @@ const InternalLink = React.forwardRef(
   ) => {
     checkSafeUrl('Link', href);
     const isButton = !href;
+    const { defaultVariant } = useContext(LinkDefaultVariantContext);
+    const variant = providedVariant || defaultVariant;
     const specialStyles = ['top-navigation', 'link', 'recovery'];
     const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
@@ -61,25 +69,36 @@ const InternalLink = React.forwardRef(
     const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
     const { funnelInteractionId } = useFunnel();
-    const { stepNumber, stepNameSelector, subStepSelector, subStepNameSelector } = useFunnelSubStep();
+    const { stepNumber, stepNameSelector } = useFunnelStep();
+    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
 
     const fireFunnelEvent = (funnelInteractionId: string) => {
       if (variant === 'info') {
+        const stepName = getNameFromSelector(stepNameSelector);
+        const subStepName = getNameFromSelector(subStepNameSelector);
+
         FunnelMetrics.helpPanelInteracted({
           funnelInteractionId,
           stepNumber,
+          stepName,
           stepNameSelector,
           subStepSelector,
+          subStepName,
           subStepNameSelector,
           elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),
         });
       } else if (external) {
+        const stepName = getNameFromSelector(stepNameSelector);
+        const subStepName = getNameFromSelector(subStepNameSelector);
+
         FunnelMetrics.externalLinkInteracted({
           funnelInteractionId,
           stepNumber,
+          stepName,
           stepNameSelector,
           subStepSelector,
+          subStepName,
           subStepNameSelector,
           elementSelector: getFunnelValueSelector(uniqueId),
           subStepAllSelector: getSubStepAllSelector(),

@@ -5,6 +5,7 @@ import React, { useCallback, useState } from 'react';
 import { AreaChartProps } from '~components/area-chart';
 import { NonCancelableEventHandler } from '~components/internal/events';
 import SpaceBetween from '~components/space-between';
+import ButtonDropdown from '~components/button-dropdown';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -47,6 +48,17 @@ export default function () {
             highlightedSeries={highlightedSeries}
             onHighlightChange={onHighlightChange}
             xDomain={xDomain}
+            detailPopoverFooter={() => (
+              <ButtonDropdown
+                items={[
+                  { id: '1', text: 'View' },
+                  { id: '2', text: 'Add to filter' },
+                ]}
+                expandToViewport={true}
+              >
+                Actions
+              </ButtonDropdown>
+            )}
           />
 
           <Example name="Log-x latency chart" {...logXProps} />

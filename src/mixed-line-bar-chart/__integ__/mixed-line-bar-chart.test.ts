@@ -158,7 +158,7 @@ describe('Series', () => {
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Oranges');
 
       // Tab to the next chart
-      await page.keys(['Tab', 'Tab', 'Tab', 'ArrowRight']);
+      await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'ArrowRight']);
       await expect(page.getText(popoverHeaderSelector(groupedBarWrapper))).resolves.toContain('Apples');
       await expect(page.getText(popoverContentSelector(groupedBarWrapper))).resolves.toContain('John\n5');
       await expect(page.getText(popoverContentSelector(groupedBarWrapper))).resolves.toContain('Jane\n2');
@@ -383,6 +383,19 @@ describe('Details popover', () => {
       await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
     })
   );
+
+  test('can be hidden by moving focus away', () => {
+    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+      await page.keys(['Tab']);
+      expect(await page.getFocusedElementText()).toBe('Filter by Apples');
+      await page.keys(['Tab']);
+      expect(await page.getFocusedElementText()).toBe('Happiness');
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(false);
+    });
+  });
 
   test(
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',

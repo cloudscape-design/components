@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { FormFieldControlProps } from '../internal/context/form-field-context';
 
-export interface TextFilterProps extends BaseComponentProps {
+export interface TextFilterProps extends BaseComponentProps, FormFieldControlProps {
   /**
    * The current value of the filtering input.
    */

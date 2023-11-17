@@ -11,12 +11,6 @@ const path = require('path');
 const filename = path.resolve(__dirname, '..', 'package-lock.json');
 const packageLock = JSON.parse(fs.readFileSync(filename));
 
-function removeDependencies(dependencyName, packages) {
-  if (dependencyName.includes('@cloudscape-design/')) {
-    delete packages[dependencyName];
-  }
-}
-
 Object.keys(packageLock.packages).forEach(dependencyName => {
   removeDependencies(dependencyName, packageLock.packages);
 });
@@ -27,3 +21,9 @@ Object.keys(packageLock.dependencies).forEach(dependencyName => {
 
 fs.writeFileSync(filename, JSON.stringify(packageLock, null, 2) + '\n');
 console.log('Removed @cloudscape-design/ dependencies from package-lock file');
+
+function removeDependencies(dependencyName, packages) {
+  if (dependencyName.includes('@cloudscape-design/')) {
+    delete packages[dependencyName];
+  }
+}
