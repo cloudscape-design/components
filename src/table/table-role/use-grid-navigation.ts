@@ -112,12 +112,8 @@ class GridNavigationHelper {
         : getFocusableAfter(this.table).focus();
     }
 
-    if (
-      event.relatedTarget instanceof Element &&
-      !this.table.contains(event.relatedTarget) &&
-      this.lastFocusedCell &&
-      this.table.contains(this.lastFocusedCell.element)
-    ) {
+    const focusedFromOutside = event.relatedTarget instanceof Element && !this.table.contains(event.relatedTarget);
+    if (focusedFromOutside && this.lastFocusedCell && this.table.contains(this.lastFocusedCell.element)) {
       return moveFocusBy(this.table, this.lastFocusedCell, { x: 0, y: 0 });
     }
 
