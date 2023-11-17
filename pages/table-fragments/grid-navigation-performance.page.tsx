@@ -53,7 +53,7 @@ export default function Page() {
   );
 }
 
-function Table({ useGridNavigation: gridNavigationActive }: { useGridNavigation: boolean }) {
+function Table({ useGridNavigation: keyboardNavigation }: { useGridNavigation: boolean }) {
   const [items, setItems] = useState(generateItems(ITEMS_COUNT));
 
   useEffect(() => {
@@ -79,7 +79,7 @@ function Table({ useGridNavigation: gridNavigationActive }: { useGridNavigation:
   const tableRole = 'grid';
   const tableRef = useRef<HTMLTableElement>(null);
 
-  useGridNavigation({ keyboardNavigation: gridNavigationActive, pageSize: 10, getTable: () => tableRef.current });
+  useGridNavigation({ keyboardNavigation, pageSize: 10, getTable: () => tableRef.current });
 
   return (
     <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
@@ -98,7 +98,7 @@ function Table({ useGridNavigation: gridNavigationActive }: { useGridNavigation:
               <th
                 key={column.key}
                 className={styles['custom-table-cell']}
-                {...getTableColHeaderRoleProps({ tableRole, colIndex })}
+                {...getTableColHeaderRoleProps({ tableRole, colIndex, keyboardNavigation })}
               >
                 {column.label}
               </th>
@@ -112,7 +112,7 @@ function Table({ useGridNavigation: gridNavigationActive }: { useGridNavigation:
                 <td
                   key={column.key}
                   className={styles['custom-table-cell']}
-                  {...getTableCellRoleProps({ tableRole, colIndex })}
+                  {...getTableCellRoleProps({ tableRole, colIndex, keyboardNavigation })}
                 >
                   {column.render(item)}
                 </td>

@@ -48,7 +48,6 @@ export function TableThElement({
 
   return (
     <th
-      tabIndex={-1}
       className={clsx(
         className,
         {

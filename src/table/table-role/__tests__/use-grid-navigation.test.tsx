@@ -49,7 +49,7 @@ function TestTable<T extends object>({
       <thead>
         <tr aria-rowindex={1}>
           {columns.map((column, columnIndex) => (
-            <th key={columnIndex} aria-colindex={columnIndex + 1}>
+            <th key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={0}>
               {column.header}
             </th>
           ))}
@@ -59,7 +59,7 @@ function TestTable<T extends object>({
         {items.map((item, itemIndex) => (
           <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
             {columns.map((column, columnIndex) => (
-              <td key={columnIndex} aria-colindex={columnIndex + 1}>
+              <td key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={0}>
                 {column.cell(item)}
               </td>
             ))}
@@ -133,18 +133,12 @@ function getActiveElement() {
   ];
 }
 
-test('not activated for "table" role', () => {
-  const { container } = render(<TestTable tableRole="table" columns={[idColumn, nameColumn]} items={items} />);
-  expect(container.querySelectorAll('td[tabIndex],th[tabIndex]')).toHaveLength(0);
-});
-
 test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex => {
   const { container, rerender } = render(
     <TestTable columns={[idColumn, nameColumn]} items={items} startIndex={startIndex} />
   );
   const table = container.querySelector('table')!;
 
-  container.querySelector('th')!.tabIndex = 0;
   container.querySelector('th')!.focus();
   expect(getActiveElement()).toEqual(['th', 'ID']);
 
@@ -208,7 +202,6 @@ test('updates page size', () => {
   const { container, rerender } = render(<TestTable columns={[idColumn, nameColumn]} items={items} pageSize={3} />);
   const table = container.querySelector('table')!;
 
-  container.querySelector('th')!.tabIndex = 0;
   container.querySelector('th')!.focus();
   expect(getActiveElement()).toEqual(['th', 'ID']);
 

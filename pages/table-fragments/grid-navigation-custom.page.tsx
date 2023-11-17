@@ -121,8 +121,9 @@ export default function Page() {
   const [sortingDirection, setSortingDirection] = useState<1 | -1>(1);
 
   const tableRef = useRef<HTMLTableElement>(null);
+  const keyboardNavigation = tableRole === 'grid';
 
-  useGridNavigation({ keyboardNavigation: tableRole === 'grid', pageSize, getTable: () => tableRef.current });
+  useGridNavigation({ keyboardNavigation, pageSize, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
     if (!sortingKey) {
@@ -200,7 +201,7 @@ export default function Page() {
                       <th
                         key={column.key}
                         className={styles['custom-table-cell']}
-                        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
+                        {...getTableColHeaderRoleProps({ tableRole, colIndex, keyboardNavigation })}
                       >
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                           <button
@@ -230,7 +231,7 @@ export default function Page() {
                         <td
                           key={column.key}
                           className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex })}
+                          {...getTableCellRoleProps({ tableRole, colIndex, keyboardNavigation })}
                         >
                           {column.render(item)}
                         </td>

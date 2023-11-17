@@ -68,7 +68,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   const targetCellFocusables = getFocusables(targetCell);
   const focusIndex = delta.x < 0 ? targetCellFocusables.length - 1 : delta.x > 0 ? 0 : from.elementIndex;
   const focusTarget = targetCellFocusables[focusIndex] ?? targetCell;
-  focus(focusTarget);
+  focusTarget?.focus();
 }
 
 /**
@@ -168,14 +168,4 @@ function findTableRowCellByAriaColIndex(tableRow: HTMLTableRowElement, targetAri
     }
   }
   return targetCell;
-}
-
-function focus(el?: HTMLElement) {
-  if (el && el instanceof HTMLTableCellElement) {
-    el.tabIndex = 0;
-    el.focus();
-    el.tabIndex = -1;
-  } else if (el) {
-    el.focus();
-  }
 }

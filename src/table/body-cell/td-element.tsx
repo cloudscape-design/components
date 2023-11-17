@@ -80,7 +80,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
 
     return (
       <Element
-        tabIndex={-1}
         style={{ ...style, ...stickyStyles.style }}
         className={clsx(
           className,

@@ -90,6 +90,7 @@ export function getTableColHeaderRoleProps(options: {
   tableRole: TableRole;
   colIndex: number;
   sortingStatus?: SortingStatus;
+  keyboardNavigation?: boolean;
 }) {
   const nativeProps: React.ThHTMLAttributes<HTMLTableCellElement> = {};
 
@@ -103,10 +104,19 @@ export function getTableColHeaderRoleProps(options: {
     nativeProps['aria-sort'] = getAriaSort(options.sortingStatus);
   }
 
+  if (options.keyboardNavigation) {
+    nativeProps.tabIndex = 0;
+  }
+
   return nativeProps;
 }
 
-export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex: number; isRowHeader?: boolean }) {
+export function getTableCellRoleProps(options: {
+  tableRole: TableRole;
+  colIndex: number;
+  isRowHeader?: boolean;
+  keyboardNavigation?: boolean;
+}) {
   const nativeProps: React.TdHTMLAttributes<HTMLTableCellElement> = {};
 
   if (options.tableRole === 'grid') {
@@ -115,6 +125,10 @@ export function getTableCellRoleProps(options: { tableRole: TableRole; colIndex:
 
   if (options.isRowHeader) {
     nativeProps.scope = 'row';
+  }
+
+  if (options.keyboardNavigation) {
+    nativeProps.tabIndex = 0;
   }
 
   return nativeProps;
