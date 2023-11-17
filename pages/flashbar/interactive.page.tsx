@@ -88,13 +88,13 @@ export default function InteractiveFlashbar() {
             Remove all
           </Button>
         </SpaceBetween>
-        <input id="focus-before" />
+        <input id="focus-before" aria-label="Focusable input before the flashbars" />
         <ScreenshotArea>
           <Box padding="xxl">
             <Flashbar items={items} {...restProps} />
           </Box>
         </ScreenshotArea>
-        <input id="focus-after" />
+        <input id="focus-after" aria-label="Focusable input after the flashbars" />
       </SpaceBetween>
     </>
   );
