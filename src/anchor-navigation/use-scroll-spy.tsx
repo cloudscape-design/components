@@ -37,7 +37,7 @@ export default function useScrollSpy({
   }, [hrefs]);
 
   // Get the bounding rectangle of an element by href
-  const getRectByHref = useCallback((href: string) => {
+  const getRectByHref = useCallback(href => {
     return document.getElementById(href.slice(1))?.getBoundingClientRect();
   }, []);
 

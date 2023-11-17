@@ -18,6 +18,7 @@ import { TableThElement } from './header-cell/th-element';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 export interface TheadProps {
+  containerWidth: null | number;
   selectionType: TableProps.SelectionType | undefined;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;
@@ -46,6 +47,7 @@ export interface TheadProps {
 const Thead = React.forwardRef(
   (
     {
+      containerWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions,
@@ -89,7 +91,7 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const { getColumnStyles, columnWidths, updateColumn, setCell } = useColumnWidths();
+    const { columnWidths, totalWidth, updateColumn, setCell } = useColumnWidths();
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -131,11 +133,27 @@ const Thead = React.forwardRef(
 
           {columnDefinitions.map((column, colIndex) => {
             const columnId = getColumnKey(column, colIndex);
+
+            let widthOverride;
+            if (resizableColumns) {
+              if (columnWidths) {
+                // use stateful value if available
+                widthOverride = columnWidths[columnId];
+              }
+              if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
+                // let the last column grow and fill the container width
+                widthOverride = 'auto';
+              }
+            }
             return (
               <TableHeaderCell
                 key={columnId}
-                style={getColumnStyles(sticky, columnId)}
                 className={headerCellClass}
+                style={{
+                  width: widthOverride || column.width,
+                  minWidth: sticky ? undefined : column.minWidth,
+                  maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
+                }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
                 column={column}
@@ -152,7 +170,7 @@ const Thead = React.forwardRef(
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 stickyState={stickyState}
-                cellRef={node => setCell(sticky, columnId, node)}
+                cellRef={node => setCell(columnId, node)}
                 tableRole={tableRole}
                 resizerRoleDescription={resizerRoleDescription}
               />

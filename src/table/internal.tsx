@@ -114,8 +114,7 @@ const InternalTable = React.forwardRef(
     const isMobile = useMobile();
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
-    const wrapperMeasureRefObject = useRef(null);
-    const wrapperMeasureMergedRef = useMergeRefs(wrapperMeasureRef, wrapperMeasureRefObject);
+    const wrapperRefObject = useRef(null);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
     const tableRefObject = useRef(null);
@@ -135,7 +134,6 @@ const InternalTable = React.forwardRef(
       [cancelEdit]
     );
 
-    const wrapperRefObject = useRef(null);
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, items.length);
@@ -207,6 +205,7 @@ const InternalTable = React.forwardRef(
     const tableRole = hasEditableCells ? 'grid-default' : 'table';
 
     const theadProps: TheadProps = {
+      containerWidth,
       selectionType,
       getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
@@ -258,11 +257,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <ColumnWidthsProvider
-          visibleColumns={visibleColumnWidthsWithSelection}
-          resizableColumns={resizableColumns}
-          containerRef={wrapperMeasureRefObject}
-        >
+        <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}
@@ -338,7 +333,7 @@ const InternalTable = React.forwardRef(
               onScroll={handleScroll}
               {...wrapperProps}
             >
-              <div className={styles['wrapper-content-measure']} ref={wrapperMeasureMergedRef}></div>
+              <div className={styles['wrapper-content-measure']} ref={wrapperMeasureRef}></div>
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>

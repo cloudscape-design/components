@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import times from 'lodash/times';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { render, screen } from '@testing-library/react';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
@@ -18,11 +17,6 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
     overflowParent.getBoundingClientRect = fakeBoundingClientRect;
     return [overflowParent];
   }),
-}));
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  useResizeObserver: jest.fn().mockImplementation((_target, cb) => cb({ contentBoxWidth: 0 })),
 }));
 
 interface Item {
@@ -436,15 +430,4 @@ describe('column header content', () => {
     expect(getResizeHandle(0)).toHaveAttribute('aria-roledescription', 'resize button');
     expect(getResizeHandle(1)).toHaveAttribute('aria-roledescription', 'resize button');
   });
-});
-
-test('should set last column width to "auto" when container width exceeds total column width', () => {
-  const totalColumnsWidth = 150 + 300;
-  jest
-    .mocked(useResizeObserver)
-    .mockImplementation((_target, cb) => cb({ contentBoxWidth: totalColumnsWidth + 1 } as any));
-
-  const { wrapper } = renderTable(<Table {...defaultProps} />);
-
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
 });
