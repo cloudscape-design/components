@@ -5,6 +5,19 @@ import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+function syncSizes(from: HTMLElement, to: HTMLElement) {
+  const fromCells = Array.prototype.slice.apply(from.children);
+  const toCells = Array.prototype.slice.apply(to.children);
+  for (let i = 0; i < fromCells.length; i++) {
+    let width = fromCells[i].style.width;
+    // use auto if it is set by resizable columns or real size otherwise
+    if (width !== 'auto') {
+      width = `${fromCells[i].offsetWidth}px`;
+    }
+    toCells[i].style.width = width;
+  }
+}
+
 export const useStickyHeader = (
   tableRef: RefObject<HTMLElement>,
   theadRef: RefObject<HTMLElement>,
@@ -22,6 +35,8 @@ export const useStickyHeader = (
       secondaryTableRef.current &&
       tableWrapperRef.current
     ) {
+      syncSizes(theadRef.current, secondaryTheadRef.current);
+
       // Using the tableRef offsetWidth instead of the theadRef because in VR
       // the tableRef adds extra padding to the table and by default the theadRef will have a width
       // without the padding and will make the sticky header width incorrect.
