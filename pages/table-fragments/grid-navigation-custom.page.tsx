@@ -64,7 +64,7 @@ export default function Page() {
 
   useEffect(() => {
     setInterval(() => {
-      setItems(prev => [...prev, ...generateItems(1)]);
+      setItems(prev => prev.slice(1));
     }, 10000);
   }, []);
 

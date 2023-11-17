@@ -8,6 +8,7 @@ import { KeyCode } from '../../internal/keycode';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getFirstFocusable } from '../../internal/components/focus-lock/utils';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -135,11 +136,11 @@ class GridNavigationHelper {
     }
   };
 
-  private onFocusout = () => {
+  private onFocusout = (event: FocusEvent) => {
     this.focusedCell = null;
-    // if (event.relatedTarget && event.relatedTarget instanceof Element && !this.table.contains(event.relatedTarget)) {
-    //   this.prevFocusedCell = null;
-    // }
+    if (event.relatedTarget && !nodeBelongs(this.table, event.relatedTarget)) {
+      this.prevFocusedCell = null;
+    }
   };
 
   private onKeydown = (event: KeyboardEvent) => {
