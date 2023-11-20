@@ -107,9 +107,9 @@ class GridNavigationHelper {
     const cell = findFocusinCell(event);
 
     if (this._tabbed && cell && !this.isSuppressed(cell.element)) {
-      return this._tabbed === 'backward'
-        ? getFocusableBefore(this.table).focus()
-        : getFocusableAfter(this.table).focus();
+      const target = this._tabbed === 'backward' ? getFocusableBefore(this.table) : getFocusableAfter(this.table);
+      this._tabbed = null;
+      return target.focus();
     }
 
     const focusedFromOutside = event.relatedTarget instanceof Element && !this.table.contains(event.relatedTarget);
