@@ -60,6 +60,20 @@ class TablePage extends BasePageObject {
     return element.getAttribute('style');
   }
 
+  getFirstTableHeaderWidths() {
+    return this.browser.execute(() => {
+      const tables = document.querySelectorAll('table');
+      return Array.from(tables[0].querySelectorAll('th')).map(el => el.offsetWidth);
+    });
+  }
+
+  getLastTableHeaderWidths() {
+    return this.browser.execute(() => {
+      const tables = document.querySelectorAll('table');
+      return Array.from(tables[tables.length - 1].querySelectorAll('th')).map(el => el.offsetWidth);
+    });
+  }
+
   async getColumnMinWidth(columnIndex: number) {
     const columnSelector = tableWrapper
       // use internal CSS-selector to always receive the real table header and not a sticky copy
@@ -177,13 +191,13 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
-  test(
-    'should render "width: auto" for the last on big screens and explicit value on small',
+  test.each([1680, 620])('sticky and real column headers must have identical widths for screen width %s', width =>
     setupStickyTest(async page => {
-      await expect(page.getColumnStyle(4)).resolves.toContain('width: auto;');
-      await page.setWindowSize({ ...defaultScreen, width: 620 });
-      await expect(page.getColumnStyle(4)).resolves.toContain('width: 120px;');
-    })
+      await page.setWindowSize({ ...defaultScreen, width });
+      const stickyHeaderWidths = await page.getFirstTableHeaderWidths();
+      const realHeaderWidths = await page.getLastTableHeaderWidths();
+      expect(stickyHeaderWidths).toEqual(realHeaderWidths);
+    })()
   );
 
   // The page width of 620px is an empirical value defined for the respective test page in VR
