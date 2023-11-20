@@ -5,10 +5,10 @@ import { useEffect, useMemo } from 'react';
 import { defaultIsSuppressed, findFocusinCell, getFocusableBefore, getFocusableAfter, moveFocusBy } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getFirstFocusable } from '../../internal/components/focus-lock/utils';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
+import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -35,6 +35,11 @@ export function useGridNavigation({ keyboardNavigation, pageSize, getTable }: Gr
   useEffect(() => {
     gridNavigation.update({ pageSize });
   }, [gridNavigation, pageSize]);
+
+  // Notify the model of table's re-render to update internal focused cell state if necessary.
+  useEffect(() => {
+    gridNavigation.refresh();
+  });
 }
 
 /**
@@ -68,15 +73,10 @@ class GridNavigationHelper {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
-    const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
-    tableNodesObserver.observe(table, { childList: true, subtree: true });
-
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
       this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
-
-      tableNodesObserver.disconnect();
     };
   }
 
@@ -86,6 +86,28 @@ class GridNavigationHelper {
 
   public update({ pageSize }: { pageSize: number }) {
     this._pageSize = pageSize;
+  }
+
+  public refresh() {
+    // When focused cell is un-mounted the focusout event handler removes this.focusedCell,
+    // while this.prevFocusedCell is retained until the next focusin event.
+    const cell = this.focusedCell ?? this.prevFocusedCell;
+    const cellSuppressed = cell ? this.isSuppressed(cell.element) : false;
+
+    // Re-focus table's cell if the previously focused one is no longer present in the DOM.
+    if (cell && !cellSuppressed) {
+      if (!nodeContains(this.table, cell.element)) {
+        return moveFocusBy(this.table, cell, { y: 0, x: 0 });
+      }
+    }
+
+    // Update current cell indices in case rows or columns before the focused one got removed.
+    if (this.focusedCell) {
+      const cell = findFocusinCell(this.focusedCell.element);
+      this.focusedCell = cell;
+      this.prevFocusedCell = cell;
+      this.lastFocusedCell = cell;
+    }
   }
 
   private get pageSize() {
@@ -104,7 +126,10 @@ class GridNavigationHelper {
   }
 
   private onFocusin = (event: FocusEvent) => {
-    const cell = findFocusinCell(event);
+    if (!(event.target instanceof HTMLElement)) {
+      return;
+    }
+    const cell = findFocusinCell(event.target);
 
     // If Tab/Shift+Tab command was used the focus is dispatched to the element before/after the table.
     if (this._tabbed && cell && !this.isSuppressed(cell.element)) {
@@ -225,26 +250,4 @@ class GridNavigationHelper {
     // The flag only needs to be set for the immediately following focusin event.
     setTimeout(() => (this._tabbed = null), 0);
   }
-
-  private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
-    // When focused cell is un-mounted the focusout event handler removes this.focusedCell,
-    // while this.prevFocusedCell is retained until the next focusin event.
-    const cell = this.focusedCell ?? this.prevFocusedCell;
-    const cellSuppressed = cell ? this.isSuppressed(cell.element) : false;
-
-    if (cell && !cellSuppressed) {
-      for (const record of mutationRecords) {
-        if (record.type === 'childList') {
-          // The lost focus in an unmount event is reapplied to the table using the previous cell position.
-          // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
-          for (const removedNode of Array.from(record.removedNodes)) {
-            if (nodeContains(removedNode, cell.element)) {
-              moveFocusBy(this.table, cell, { y: 0, x: 0 });
-              return;
-            }
-          }
-        }
-      }
-    }
-  };
 }

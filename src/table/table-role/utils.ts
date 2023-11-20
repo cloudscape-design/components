@@ -8,13 +8,8 @@ import { FocusedCell } from './interfaces';
  * Finds focused cell props corresponding the focused element inside the table.
  * The function relies on ARIA colindex/rowindex attributes being correctly applied.
  */
-export function findFocusinCell(event: FocusEvent): null | FocusedCell {
-  if (!(event.target instanceof HTMLElement)) {
-    return null;
-  }
-  const element = event.target;
-
-  const cellElement = element.closest('td,th') as null | HTMLTableCellElement;
+export function findFocusinCell(target: HTMLElement): null | FocusedCell {
+  const cellElement = target.closest('td,th') as null | HTMLTableCellElement;
   const rowElement = cellElement?.closest('tr');
 
   if (!cellElement || !rowElement) {
@@ -28,9 +23,9 @@ export function findFocusinCell(event: FocusEvent): null | FocusedCell {
   }
 
   const cellFocusables = getFocusables(cellElement);
-  const elementIndex = cellFocusables.indexOf(element);
+  const elementIndex = cellFocusables.indexOf(target);
 
-  return { rowIndex, colIndex, rowElement, cellElement, element, elementIndex };
+  return { rowIndex, colIndex, rowElement, cellElement, element: target, elementIndex };
 }
 
 /**

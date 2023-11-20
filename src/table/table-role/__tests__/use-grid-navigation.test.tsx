@@ -7,25 +7,6 @@ import { useGridNavigation } from '../../../../lib/components/table/table-role';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import { TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
 
-const mockObserver = {
-  observe: jest.fn(),
-  disconnect: jest.fn(),
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  callback: (mutationRecords: MutationRecord[]) => {},
-};
-const originalMutationObserver = global.MutationObserver;
-
-beforeEach(() => {
-  global.MutationObserver = function MutationObserver(callback: (mutationRecords: MutationRecord[]) => void) {
-    mockObserver.callback = callback;
-    return mockObserver;
-  } as any;
-});
-
-afterEach(() => {
-  global.MutationObserver = originalMutationObserver;
-});
-
 function getActiveElement() {
   return [
     document.activeElement?.tagName.toLowerCase(),
@@ -248,38 +229,19 @@ test('ignores keydown modifiers other than ctrl', () => {
   expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
 });
 
-test('cell or cell element is re-focused after the focus target got removed', () => {
-  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
+test('cell indices are updated when start index change', () => {
+  const { container, rerender } = render(<TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} />);
   const table = container.querySelector('table')!;
-  const row1 = table.querySelector('tr[aria-rowindex="2"]')!;
-  const row2 = table.querySelector('tr[aria-rowindex="3"]')!;
-  const row3 = table.querySelector('tr[aria-rowindex="4"]')!;
 
-  expect(document.body).toHaveFocus();
-
-  row1.remove();
-  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row1] } as unknown as MutationRecord]);
-
-  expect(document.body).toHaveFocus();
-
-  table.querySelector('button')!.focus();
+  (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
   fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['button', 'Edit value 2']);
+
+  rerender(<TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} startIndex={5} />);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.left });
   expect(getActiveElement()).toEqual(['td', 'Second']);
-
-  row2.remove();
-  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row2] } as unknown as MutationRecord]);
-
-  expect(getActiveElement()).toEqual(['td', 'Third']);
-
-  table.querySelector('button')!.focus();
-  fireEvent.keyDown(table, { keyCode: KeyCode.down });
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'Edit value 3']);
-
-  row3.remove();
-  mockObserver.callback([{ type: 'childList', addedNodes: [], removedNodes: [row3] } as unknown as MutationRecord]);
-
-  expect(getActiveElement()).toEqual(['button', 'Edit value 4']);
 });
 
 test('cell navigation works when the table is mutated between commands', () => {
