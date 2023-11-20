@@ -50,17 +50,6 @@ describe('Chart series details', () => {
     ],
   };
 
-  const lineSeries2: LineSeries<string> = {
-    type: 'line',
-    title: 'Line Series 2',
-    data: [
-      { x: 'Group 1', y: 5 },
-      { x: 'Group 2', y: 2 },
-      { x: 'Group 3', y: 1 },
-      { x: 'Group 4', y: 3 },
-    ],
-  };
-
   const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
     type: 'threshold',
     title: 'Threshold 1',
@@ -68,9 +57,7 @@ describe('Chart series details', () => {
   };
 
   const chartProps = {
-    series: [lineSeries, { ...lineSeries2, type: 'line' }, thresholdSeries] as ReadonlyArray<
-      MixedLineBarChartProps.LineDataSeries<string>
-    >,
+    series: [lineSeries, thresholdSeries],
     height: 250,
     xDomain: ['Group 1', 'Group 2', 'Group 3', 'Group 4'],
     yDomain: [0, 20],
