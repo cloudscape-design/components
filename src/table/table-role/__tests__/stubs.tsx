@@ -45,47 +45,51 @@ export const actionsColumn = {
 };
 
 export function TestTable<T extends object>({
-  tableRole = 'grid',
+  keyboardNavigation = true,
   columns,
   items,
   startIndex = 0,
   pageSize = 2,
+  before,
+  after,
 }: {
-  tableRole?: 'grid' | 'table';
+  keyboardNavigation?: boolean;
   columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
   items: T[];
   startIndex?: number;
   pageSize?: number;
+  before?: React.ReactNode;
+  after?: React.ReactNode;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
-  useGridNavigation({
-    keyboardNavigation: tableRole === 'grid',
-    pageSize,
-    getTable: () => tableRef.current,
-  });
+  useGridNavigation({ keyboardNavigation, pageSize, getTable: () => tableRef.current });
   return (
-    <table role={tableRole} ref={tableRef}>
-      <thead>
-        <tr aria-rowindex={1}>
-          {columns.map((column, columnIndex) => (
-            <th key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={0}>
-              {column.header}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((item, itemIndex) => (
-          <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
+    <div>
+      {before}
+      <table role="grid" ref={tableRef}>
+        <thead>
+          <tr aria-rowindex={1}>
             {columns.map((column, columnIndex) => (
-              <td key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={0}>
-                {column.cell(item)}
-              </td>
+              <th key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={0}>
+                {column.header}
+              </th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {items.map((item, itemIndex) => (
+            <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
+              {columns.map((column, columnIndex) => (
+                <td key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={0}>
+                  {column.cell(item)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {after}
+    </div>
   );
 }
 

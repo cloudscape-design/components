@@ -33,6 +33,109 @@ function getActiveElement() {
   ];
 }
 
+test('does not listen to keyboard commands when keyboardNavigation=false', () => {
+  const { container } = render(
+    <TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} keyboardNavigation={false} />
+  );
+  const table = container.querySelector('table')!;
+  const button1 = table.querySelectorAll('button')[0];
+
+  button1.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(button1).toHaveFocus();
+});
+
+test('listens to keyboard commands when keyboardNavigation=true', () => {
+  const { container } = render(<TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} />);
+  const table = container.querySelector('table')!;
+  const button1 = table.querySelectorAll('button')[0];
+  const button2 = table.querySelectorAll('button')[1];
+
+  button1.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.right });
+  expect(button2).toHaveFocus();
+});
+
+test('overrides forward focus', () => {
+  const { container } = render(
+    <TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} after={<button id="after" />} />
+  );
+  const table = container.querySelector('table')!;
+  const button1 = table.querySelectorAll('button')[0];
+  const button2 = table.querySelectorAll('button')[1];
+  const buttonAfter = container.querySelector('#after');
+
+  button1.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.tab });
+  button2.focus();
+
+  expect(buttonAfter).toHaveFocus();
+});
+
+test('focuses last table cell when no element after', () => {
+  const { container } = render(<TestTable columns={[nameColumn, valueColumn, idColumn]} items={items} />);
+  const table = container.querySelector('table')!;
+  const button1 = table.querySelectorAll('button')[0];
+  const button2 = table.querySelectorAll('button')[1];
+  const allCells = table.querySelectorAll('td');
+  const lastCell = allCells[allCells.length - 1];
+
+  button1.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.tab });
+  button2.focus();
+
+  expect(lastCell).toHaveFocus();
+});
+
+test('overrides backward focus', () => {
+  const { container } = render(
+    <TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} before={<button id="before" />} />
+  );
+  const table = container.querySelector('table')!;
+  const button1 = table.querySelectorAll('button')[0];
+  const button2 = table.querySelectorAll('button')[1];
+  const buttonBefore = container.querySelector('#before');
+
+  button2.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.tab, shiftKey: true });
+  button1.focus();
+
+  expect(buttonBefore).toHaveFocus();
+});
+
+test('focuses first table cell when no element before', () => {
+  const { container } = render(<TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} />);
+  const table = container.querySelector('table')!;
+  const button1 = table.querySelectorAll('button')[0];
+  const button2 = table.querySelectorAll('button')[1];
+  const firstCell = table.querySelectorAll('th')[0];
+
+  button2.focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.tab, shiftKey: true });
+  button1.focus();
+
+  expect(firstCell).toHaveFocus();
+});
+
+test('refocuses previously focused element', () => {
+  const { container } = render(
+    <TestTable columns={[idColumn, nameColumn, valueColumn]} items={items} before={<button />} />
+  );
+  const table = container.querySelector('table')!;
+  const button1 = table.querySelectorAll('button')[0];
+  const button2 = table.querySelectorAll('button')[1];
+  const buttonBefore = container.querySelectorAll('button')[0];
+
+  button2.focus();
+  expect(button2).toHaveFocus();
+
+  buttonBefore.focus();
+  expect(button2).not.toHaveFocus();
+
+  button1.focus();
+  expect(button2).toHaveFocus();
+});
+
 test.each([0, 5])('supports arrow keys navigation for startIndex=%s', startIndex => {
   const { container, rerender } = render(
     <TestTable columns={[idColumn, nameColumn]} items={items} startIndex={startIndex} />
@@ -207,6 +310,27 @@ test('cell navigation works when the table is mutated between commands', () => {
   expect(document.body).toHaveFocus();
 });
 
+test('suppresses grid navigation when focusing on dialog element', () => {
+  const { container } = render(<TestTable columns={[nameColumn, valueColumn]} items={items} />);
+  const table = container.querySelector('table')!;
+
+  (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
+  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['button', 'Edit value 1']);
+
+  (document.activeElement as HTMLElement).click();
+  expect(getActiveElement()).toEqual(['input', 'Value input']);
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['input', 'Value input']);
+
+  (container.querySelector('button[aria-label="Save"]') as HTMLElement).click();
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['button', 'Edit value 2']);
+});
+
 test('throws no error when focusing on incorrect target', () => {
   function TestComponent() {
     const tableRef = useRef<HTMLTableElement>(null);
@@ -229,10 +353,14 @@ test('throws no error when focusing on incorrect target', () => {
   }
 
   const { container } = render(<TestComponent />);
+  const table = container.querySelector('table')!;
   const button = container.querySelector('button')!;
   const g = container.querySelector('g')!;
 
   button.focus();
+  expect(button).toHaveFocus();
+
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
   expect(button).toHaveFocus();
 
   g.focus();
