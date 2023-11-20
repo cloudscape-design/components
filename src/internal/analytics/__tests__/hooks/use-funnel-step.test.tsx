@@ -27,6 +27,7 @@ describe('useFunnelStep hook', () => {
           isInStep: true,
           funnelInteractionId: 'a placeholder funnel interaction ID',
           onStepChange: jest.fn(),
+          subStepConfiguration: { current: [] },
         }}
       >
         <ChildComponent />

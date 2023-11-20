@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "버전 ID",
     "i18nStrings.columnVersionLastModified": "최종 수정 날짜",
     "i18nStrings.columnVersionSize": "크기",
-    "i18nStrings.validationPathMustBegin": "경로는 s3://로 시작해야 합니다.",
+    "i18nStrings.validationPathMustBegin": "유효한 경로는 s3://로 시작해야 합니다.",
     "i18nStrings.validationBucketLowerCase": "버킷 이름은 소문자나 숫자로 시작해야 합니다.",
     "i18nStrings.validationBucketMustNotContain": "버킷 이름에 대문자를 포함할 수 없습니다.",
     "i18nStrings.validationBucketLength": "버킷 이름은 3~63자여야 합니다.",

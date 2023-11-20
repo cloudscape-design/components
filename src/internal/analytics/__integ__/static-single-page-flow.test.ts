@@ -13,6 +13,10 @@ const wrapper = createWrapper();
 const FUNNEL_INTERACTION_ID = 'mocked-funnel-id';
 
 class SinglePageCreate extends BasePageObject {
+  getFormAttribute(attribute: string) {
+    return this.getElementAttribute(wrapper.findForm().toSelector(), attribute);
+  }
+
   async getFunnelLog() {
     const funnelLog = await this.browser.execute(() => window.__awsuiFunnelMetrics__);
     const actions = funnelLog.map(item => item.action);
@@ -24,6 +28,7 @@ const setupTest = (testFn: (page: SinglePageCreate) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new SinglePageCreate(browser);
     await browser.url('#/light/funnel-analytics/static-single-page-flow');
+    await new Promise(r => setTimeout(r, 10));
     await testFn(page);
   });
 };
@@ -32,6 +37,9 @@ describe('Single-page create', () => {
   test(
     'Starts funnel and funnel step as page is loaded',
     setupTest(async page => {
+      expect(page.getFormAttribute('data-analytics-funnel-step')).resolves.toBe('1');
+      expect(page.getFormAttribute('data-analytics-funnel-interaction-id')).resolves.toBe(FUNNEL_INTERACTION_ID);
+
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual(['funnelStart', 'funnelStepStart']);
 
@@ -99,6 +107,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
+        subStepNumber: 1,
       });
 
       expect(funnelLog[2].resolvedProps).toEqual({
@@ -118,6 +127,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 1 - header',
+        subStepNumber: 1,
       });
 
       expect(funnelLog[3].resolvedProps).toEqual({
@@ -137,6 +147,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 2 - header',
+        subStepNumber: 2,
       });
 
       expect(funnelLog[4].resolvedProps).toEqual({
@@ -156,6 +167,7 @@ describe('Single-page create', () => {
         stepName: 'Form Header',
         stepNumber: 1,
         subStepName: 'Container 2 - header',
+        subStepNumber: 2,
       });
 
       expect(funnelLog[5].resolvedProps).toEqual({

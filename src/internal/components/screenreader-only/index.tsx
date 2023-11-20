@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 export interface ScreenreaderOnlyProps {
   id?: string;
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 /**

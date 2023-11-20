@@ -12,7 +12,8 @@ describe('Collapsible Flashbar', () => {
         await page.toggleStackingFeature();
 
         // Navigate past all buttons to add and remove flashes
-        await page.keys(new Array(8).fill('Tab'));
+        await page.click('#focus-before');
+        await page.keys('Tab');
 
         await expect(page.countFlashes()).resolves.toBe(1);
         await page.keys('Space');

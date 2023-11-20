@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render as reactRender } from '@testing-library/react';
+import { render as reactRender, waitFor } from '@testing-library/react';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
@@ -21,6 +22,8 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
     useVisualRefresh: (...args: any) => useVisualRefresh || originalVisualModeModule.useVisualRefresh(...args),
   };
 });
+
+mockInnerText();
 
 declare global {
   interface Window {
@@ -412,7 +415,7 @@ describe('Flashbar component', () => {
         expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
       });
 
-      test('renders the label, header, and content in an aria-live region for ariaRole="status"', () => {
+      test('renders the label, header, and content in an aria-live region for ariaRole="status"', async () => {
         const { rerender, container } = reactRender(<Flashbar items={[]} />);
         rerender(
           <Flashbar
@@ -428,8 +431,10 @@ describe('Flashbar component', () => {
             ]}
           />
         );
-        // Render area of the LiveRegion component.
-        expect(container.querySelector('span[aria-hidden]')).toHaveTextContent('Error The header The content');
+
+        await waitFor(() => {
+          expect(container.querySelector('span[aria-live]')).toHaveTextContent('Error The header The content');
+        });
       });
     });
   });

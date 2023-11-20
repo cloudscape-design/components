@@ -556,7 +556,7 @@ Example:
   notifications: \\"Notifications\\",
   tools: \\"Help panel\\",
   toolsClose: \\"Close help panel\\",
-  toolsToggle: \\"Open help panel\\"
+  toolsToggle: \\"Open help panel\\",
   drawers: \\"Drawers\\",
   drawersOverflow: \\"Overflow drawers\\",
   drawersOverflowWithBadge: \\"Overflow drawers (Unread notifications)\\"
@@ -9669,7 +9669,7 @@ Example:
 \`\`\`
 {
   nextPageLabel: 'Next page',
-  paginationLabel: 'Table pagination'
+  paginationLabel: 'Table pagination',
   previousPageLabel: 'Previous page',
   pageLabel: pageNumber => \`Page \${pageNumber}\`
 }
