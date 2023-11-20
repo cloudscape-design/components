@@ -109,3 +109,14 @@ test('grid row and cell props', () => {
   expect(bodyCell1).toEqual({ 'aria-colindex': 1, scope: 'row' });
   expect(bodyCell2).toEqual({ 'aria-colindex': 2 });
 });
+
+test('keyboard navigation props', () => {
+  const tableRole = 'grid';
+  const keyboardNavigation = true;
+
+  const colHeader = getTableColHeaderRoleProps({ tableRole, colIndex: 0, keyboardNavigation });
+  expect(colHeader.tabIndex).toBe(0);
+
+  const cell = getTableCellRoleProps({ tableRole, colIndex: 0, keyboardNavigation });
+  expect(cell.tabIndex).toBe(0);
+});

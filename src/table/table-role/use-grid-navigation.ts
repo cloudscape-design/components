@@ -43,23 +43,23 @@ export function useGridNavigation({ keyboardNavigation, pageSize, getTable }: Gr
  * 2. Muting table interactive elements for only one to be user-focusable at a time;
  * 3. Suppressing the above behaviors when focusing an element inside a dialog.
  *
- * All behaviors are attached upon initialization and are re-evaluated with every focusin, focusout, and keydown events,
- * and also when a node removal inside the table is observed to ensure consistency at any given moment.
- *
  * When the navigation is suppressed the keyboard commands are no longer intercepted and all table interactive elements are made
  * user-focusable to unblock the Tab navigation. The suppression should only be used for interactive elements inside the table that would
  * otherwise conflict with the navigation. Once the interactive element is deactivated or lose focus the table navigation becomes active again.
  */
 class GridNavigationHelper {
-  // Props
+  /* Properties */
   private _pageSize = 0;
   private _table: null | HTMLTableElement = null;
-  private _tabbed: null | 'forward' | 'backward' = null;
 
-  // State
-  private lastFocusedCell: null | FocusedCell = null;
-  private prevFocusedCell: null | FocusedCell = null;
+  /** A reference to the currently focused table cell/element */
   private focusedCell: null | FocusedCell = null;
+  /** A reference to the previously focused table cell/element cleared when the focus leaves the table */
+  private prevFocusedCell: null | FocusedCell = null;
+  /** A reference to the previously focused table cell/element retained when the focus leaves the table */
+  private lastFocusedCell: null | FocusedCell = null;
+  /** A flag indicating the Tab/Shift+Tab command has been just received */
+  private _tabbed: null | 'forward' | 'backward' = null;
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -106,34 +106,36 @@ class GridNavigationHelper {
   private onFocusin = (event: FocusEvent) => {
     const cell = findFocusinCell(event);
 
+    // If Tab/Shift+Tab command was used the focus is dispatched to the element before/after the table.
     if (this._tabbed && cell && !this.isSuppressed(cell.element)) {
       const target = this._tabbed === 'backward' ? getFocusableBefore(this.table) : getFocusableAfter(this.table);
       this._tabbed = null;
       return target.focus();
     }
 
+    // Focusing the last focused cell/element if available when the focus enters the table from outside.
     const focusedFromOutside = event.relatedTarget instanceof Element && !this.table.contains(event.relatedTarget);
     if (focusedFromOutside && this.lastFocusedCell && this.table.contains(this.lastFocusedCell.element)) {
       return moveFocusBy(this.table, this.lastFocusedCell, { x: 0, y: 0 });
     }
 
-    if (!cell) {
-      return;
-    }
+    if (cell) {
+      this.focusedCell = cell;
+      this.prevFocusedCell = cell;
+      this.lastFocusedCell = cell;
 
-    this.lastFocusedCell = cell;
-    this.prevFocusedCell = cell;
-    this.focusedCell = cell;
-
-    // Focusing on cell is not eligible when it contains focusable elements in the content.
-    // If content focusables are available - move the focus to the first one.
-    if (cell.element === cell.cellElement) {
-      getFirstFocusable(cell.cellElement)?.focus();
+      // Focusing on cell is not eligible when it contains focusable elements in the content.
+      // If content focusables are available - move the focus to the first one.
+      if (cell.element === cell.cellElement) {
+        getFirstFocusable(cell.cellElement)?.focus();
+      }
     }
   };
 
   private onFocusout = (event: FocusEvent) => {
     this.focusedCell = null;
+
+    // Invalidate previously focused cell when the focus leaves the table.
     if (event.relatedTarget && !nodeBelongs(this.table, event.relatedTarget)) {
       this.prevFocusedCell = null;
     }
@@ -151,9 +153,7 @@ class GridNavigationHelper {
     const numModifiersPressed = ctrlKey + altKey + shiftKey + metaKey;
 
     let key = event.keyCode;
-    if (numModifiersPressed === 1 && event.ctrlKey) {
-      key = -key;
-    } else if (numModifiersPressed === 1 && event.shiftKey && key === KeyCode.tab) {
+    if (numModifiersPressed === 1 && (event.ctrlKey || event.shiftKey)) {
       key = -key;
     } else if (numModifiersPressed) {
       return;
@@ -222,6 +222,7 @@ class GridNavigationHelper {
 
   private setTabbed(value: 'forward' | 'backward') {
     this._tabbed = value;
+    // The flag only needs to be set for the immediately following focusin event.
     setTimeout(() => (this._tabbed = null), 0);
   }
 
