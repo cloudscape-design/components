@@ -120,8 +120,10 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       setElementWidths(cellsRef.current[column.id], getColumnStyles(false, column.id));
     }
     // Sticky column widths must be synchronized once all real column widths are assigned.
-    for (const id of Object.keys(stickyCellsRef.current)) {
-      setElementWidths(stickyCellsRef.current[id], getColumnStyles(true, id));
+    if (Object.keys(stickyCellsRef.current).length > 0) {
+      for (const { id } of visibleColumns) {
+        setElementWidths(stickyCellsRef.current[id], getColumnStyles(true, id));
+      }
     }
   });
 

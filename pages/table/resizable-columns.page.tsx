@@ -97,6 +97,8 @@ type PageContext = React.Context<
     stickyHeader: boolean;
     resizableColumns: boolean;
     fullPage: boolean;
+    withColumnIds?: boolean;
+    withSelection?: boolean;
   }>
 >;
 
@@ -106,6 +108,8 @@ export default function App() {
   const stickyHeader = urlParams.stickyHeader ?? false;
   const resizableColumns = urlParams.resizableColumns ?? true;
   const fullPage = urlParams.fullPage ?? false;
+  const withColumnIds = urlParams.withColumnIds ?? true;
+  const withSelection = urlParams.withSelection ?? false;
 
   const [renderKey, setRenderKey] = useState(0);
   const [columns, setColumns] = useState(columnsConfig);
@@ -161,6 +165,12 @@ export default function App() {
             <Checkbox checked={fullPage} onChange={event => setUrlParams({ fullPage: event.detail.checked })}>
               Full page table
             </Checkbox>
+            <Checkbox checked={withColumnIds} onChange={event => setUrlParams({ withColumnIds: event.detail.checked })}>
+              Columns have IDs
+            </Checkbox>
+            <Checkbox checked={withSelection} onChange={event => setUrlParams({ withSelection: event.detail.checked })}>
+              With row selection
+            </Checkbox>
           </div>
           <div>
             {columnsConfig.map(column => (
@@ -190,9 +200,10 @@ export default function App() {
           key={renderKey}
           header={<Header>Simple table</Header>}
           stickyHeader={stickyHeader}
-          columnDefinitions={columns}
+          columnDefinitions={columns.map(col => (withColumnIds ? col : { ...col, id: undefined }))}
           resizableColumns={resizableColumns}
-          columnDisplay={columnDisplay}
+          columnDisplay={withColumnIds ? columnDisplay : undefined}
+          selectionType={withSelection ? 'single' : undefined}
           items={items}
           wrapLines={wrapLines}
           sortingColumn={sorting?.sortingColumn}
