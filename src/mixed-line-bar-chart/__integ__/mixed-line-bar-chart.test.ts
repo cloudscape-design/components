@@ -1,10 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import createWrapper, { BarChartWrapper, MixedLineBarChartWrapper } from '../../../lib/components/test-utils/selectors';
 import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
 import mixedChartStyles from '../../../lib/components/mixed-line-bar-chart/styles.selectors.js';
+import { setupTest } from './common';
 
 const chartWrapper = createWrapper().findMixedLineBarChart('#chart');
 const groupedBarWrapper = new BarChartWrapper('#chart-grouped');
@@ -26,14 +25,6 @@ const dimmedElementsSelector = (wrapper: MixedLineBarChartWrapper = chartWrapper
   wrapper.findAll(`.${mixedChartStyles['series--dimmed']}`).toSelector();
 const filterWrapper = chartWrapper.findDefaultFilter();
 const legendWrapper = chartWrapper.findLegend();
-
-function setupTest(url: string, testFn: (page: BasePageObject) => Promise<void>) {
-  return useBrowser(async browser => {
-    const page = new BasePageObject(browser);
-    await browser.url(url);
-    await testFn(page);
-  });
-}
 
 describe('Legend', () => {
   test(
