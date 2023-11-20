@@ -7,7 +7,7 @@ import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
-import { Resizer } from '../resizer';
+import { Divider, Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel } from '../sticky-columns';
@@ -93,7 +93,6 @@ export function TableHeaderCell<ItemType>({
       sortingDisabled={sortingDisabled}
       hidden={hidden}
       colIndex={colIndex}
-      resizableColumns={resizableColumns}
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}
@@ -139,7 +138,7 @@ export function TableHeaderCell<ItemType>({
           </span>
         )}
       </div>
-      {resizableColumns && (
+      {resizableColumns ? (
         <Resizer
           tabIndex={tabIndex}
           focusId={`resize-control-${String(columnId)}`}
@@ -150,6 +149,8 @@ export function TableHeaderCell<ItemType>({
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           roleDescription={i18n('ariaLabels.resizerRoleDescription', resizerRoleDescription)}
         />
+      ) : (
+        <Divider className={styles['resize-divider']} />
       )}
     </TableThElement>
   );
