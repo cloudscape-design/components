@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import Link from '../../../lib/components/link';
-import LineChart from '../../../lib/components/line-chart';
+import LineChart, { LineChartProps } from '../../../lib/components/line-chart';
 import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import { LineChartWrapper } from '../../../lib/components/test-utils/dom';
 import { render } from '@testing-library/react';
-import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import testChartSeriesDetails from '../../mixed-line-bar-chart/__tests__/test-chart-series-details';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -24,183 +22,30 @@ jest.mock('../../../lib/components/popover/utils/positions', () => ({
   getOffsetDimensions: () => ({ offsetWidth: 100, offsetHeight: 200 }),
 }));
 
-type LineSeries<T> = MixedLineBarChartProps.LineDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
+const lineSeries: MixedLineBarChartProps.LineDataSeries<string> = {
+  type: 'line',
+  title: 'Line Series 1',
+  data: [
+    { x: 'Group 1', y: 2 },
+    { x: 'Group 2', y: 4 },
+    { x: 'Group 3', y: 4 },
+    { x: 'Group 4', y: 9 },
+  ],
+};
 
-function renderLineChart(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
+const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
+  type: 'threshold',
+  title: 'Threshold 1',
+  y: 6,
+};
+
+const series = [lineSeries, thresholdSeries];
+
+function renderLineChart(props: LineChartProps<string>) {
+  const { container } = render(<LineChart {...props} series={series} />);
   return {
-    rerender,
     wrapper: new LineChartWrapper(container),
   };
 }
 
-afterEach(() => {
-  (warnOnce as jest.Mock).mockReset();
-});
-
-describe('Chart series details', () => {
-  const lineSeries: LineSeries<string> = {
-    type: 'line',
-    title: 'Line Series 1',
-    data: [
-      { x: 'Group 1', y: 2 },
-      { x: 'Group 2', y: 4 },
-      { x: 'Group 3', y: 4 },
-      { x: 'Group 4', y: 9 },
-    ],
-  };
-
-  const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
-    type: 'threshold',
-    title: 'Threshold 1',
-    y: 6,
-  };
-
-  const chartProps = {
-    series: [lineSeries, thresholdSeries],
-    height: 250,
-    xDomain: ['Group 1', 'Group 2', 'Group 3', 'Group 4'],
-    yDomain: [0, 20],
-    xScaleType: 'categorical' as const,
-  };
-
-  describe('Links', () => {
-    test('renders links in keys', () => {
-      const { wrapper } = renderLineChart(
-        <LineChart
-          {...chartProps}
-          detailPopoverSeriesContent={({ series, y }) => ({ key: <Link>{series.title}</Link>, value: y })}
-        />
-      );
-
-      wrapper.findApplication()!.focus();
-      expect(wrapper.findDetailPopover()!.findSeries()![0].findKey()!.findLink()).toBeTruthy();
-    });
-
-    test('renders links in values', () => {
-      const { wrapper } = renderLineChart(
-        <LineChart
-          {...chartProps}
-          detailPopoverSeriesContent={({ series, y }) => ({ key: series.title, value: <Link>{y}</Link> })}
-        />
-      );
-
-      wrapper.findApplication()!.focus();
-      expect(wrapper.findDetailPopover()!.findSeries()![0].findValue()!.findLink()).toBeTruthy();
-    });
-  });
-
-  describe('Nested items', () => {
-    test('renders nested items', () => {
-      const { wrapper } = renderLineChart(
-        <LineChart
-          {...chartProps}
-          detailPopoverSeriesContent={({ series, y }) => ({
-            key: series.title,
-            value: y,
-            subItems: [
-              {
-                key: 'a',
-                value: 1,
-              },
-              {
-                key: 'b',
-                value: 2,
-              },
-            ],
-          })}
-        />
-      );
-
-      wrapper.findApplication()!.focus();
-      const subItems = wrapper.findDetailPopover()!.findSeries()![0].findSubItems()!;
-      expect(subItems[0].findKey()!.getElement()).toHaveTextContent('a');
-      expect(subItems[0].findValue()!.getElement()).toHaveTextContent('1');
-      expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
-      expect(subItems[1].findValue()!.getElement()).toHaveTextContent('2');
-    });
-
-    test('does not render nested items list if the length of sub-items is 0', () => {
-      const { wrapper } = renderLineChart(
-        <LineChart
-          {...chartProps}
-          detailPopoverSeriesContent={({ series, y }) => ({
-            key: series.title,
-            value: y,
-            subItems: [],
-          })}
-        />
-      );
-
-      wrapper.findApplication()!.focus();
-      const series = wrapper.findDetailPopover()!.findSeries()![0];
-      expect(series.findSubItems()).toHaveLength(0);
-      expect(series.findByClassName(chartSeriesDetailsStyles['.sub-items'])).toBeNull();
-      expect(series.getElement().classList).not.toContain(chartSeriesDetailsStyles['with-sub-items']);
-    });
-  });
-
-  describe('Dev warnings', () => {
-    test('logs a warning when `expandable` is used for a series with no sub-items', () => {
-      const { wrapper } = renderLineChart(
-        <LineChart
-          {...chartProps}
-          detailPopoverSeriesContent={({ series, y }) => ({
-            key: series.title,
-            value: y,
-            expandable: true,
-          })}
-        />
-      );
-
-      wrapper.findApplication()!.focus();
-      expect(warnOnce).toHaveBeenCalledWith(
-        'MixedLineBarChart',
-        '`expandable` was set to `true` for a series without sub-items. This property will be ignored.'
-      );
-    });
-
-    test('logs a warning and ignores the custom property when a ReactNode is used for an expandable key', () => {
-      const { wrapper } = renderLineChart(
-        <LineChart
-          {...chartProps}
-          detailPopoverSeriesContent={({ series, y }) => ({
-            key: <Link>{series.title}</Link>,
-            value: y,
-            expandable: true,
-            subItems: [
-              {
-                key: 'a',
-                value: 1,
-              },
-            ],
-          })}
-        />
-      );
-
-      wrapper.findApplication()!.focus();
-      expect(warnOnce).toHaveBeenCalledWith(
-        'MixedLineBarChart',
-        'A ReactNode was used for the key of an expandable series. The series title will be used instead because nested interactive elements can cause accessiblity issues'
-      );
-    });
-
-    test('logs a warning when a ReactNode is used for both key and value', () => {
-      const { wrapper } = renderLineChart(
-        <LineChart
-          {...chartProps}
-          detailPopoverSeriesContent={({ series, y }) => ({
-            key: <Link>{series.title}</Link>,
-            value: <Link>{y}</Link>,
-          })}
-        />
-      );
-
-      wrapper.findApplication()!.focus();
-      expect(warnOnce).toHaveBeenCalledWith(
-        'MixedLineBarChart',
-        'Use a ReactNode for the key or the value of a series, but not for both'
-      );
-    });
-  });
-});
+testChartSeriesDetails({ renderChart: renderLineChart });
