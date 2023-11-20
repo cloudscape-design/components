@@ -103,7 +103,7 @@ export function getFocusableBefore(element: HTMLElement) {
       return curr;
     }
   }
-  return document.body;
+  return pageFocusables[0] ?? document.body;
 }
 
 export function getFocusableAfter(element: HTMLElement) {
@@ -115,7 +115,7 @@ export function getFocusableAfter(element: HTMLElement) {
       return next;
     }
   }
-  return document.body;
+  return pageFocusables[pageFocusables.length - 1] ?? document.body;
 }
 
 /**
