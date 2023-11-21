@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import times from 'lodash/times';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { render, screen } from '@testing-library/react';
@@ -9,6 +9,7 @@ import Table, { TableProps } from '../../../lib/components/table';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import { fireMousedown, fireMouseup, fireMouseMove, fakeBoundingClientRect } from './utils/resize-actions';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit/lib/internal/container-queries/interfaces';
 
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
   browserScrollbarSize: () => ({ width: 20, height: 20 }),
@@ -440,11 +441,34 @@ describe('column header content', () => {
 
 test('should set last column width to "auto" when container width exceeds total column width', () => {
   const totalColumnsWidth = 150 + 300;
-  jest
-    .mocked(useResizeObserver)
-    .mockImplementation((_target, cb) => cb({ contentBoxWidth: totalColumnsWidth + 1 } as any));
+
+  let outsideCb: (entry: ContainerQueryEntry) => void = () => {};
+  jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+    // The table uses more than one resize observer.
+    // The callback must be triggered for all to ensure the expected one is targeted as well.
+    const prev = outsideCb;
+    outsideCb = entry => {
+      prev(entry);
+      cb(entry);
+    };
+
+    useLayoutEffect(() => {
+      cb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+      cb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  });
 
   const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
 
+  outsideCb({ contentBoxWidth: totalColumnsWidth } as unknown as ContainerQueryEntry);
+  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', '300px']);
+
+  outsideCb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
   expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
 });
