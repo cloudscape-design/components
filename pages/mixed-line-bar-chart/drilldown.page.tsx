@@ -154,7 +154,7 @@ export default function () {
                 ),
               value:
                 urlParams.useLinks === 'values' ? (
-                  <Link external={true} ariaLabel={`${series.title}: ${formattedValue}`}>
+                  <Link external={true} ariaLabel={`${series.title}: ${formattedValue}`} href="#">
                     {formattedValue}
                   </Link>
                 ) : (
@@ -177,7 +177,7 @@ export default function () {
                             ),
                           value:
                             urlParams.useLinks === 'values' ? (
-                              <Link external={true} ariaLabel={`${childSeries.title}: ${formattedValue}`}>
+                              <Link external={true} ariaLabel={`${childSeries.title}: ${formattedValue}`} href="#">
                                 {formattedValue}
                               </Link>
                             ) : (
