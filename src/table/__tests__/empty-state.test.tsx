@@ -12,7 +12,7 @@ import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/t
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  useResizeObserver: jest.fn().mockImplementation((_target, cb) => cb({ contentBoxWidth: 0 })),
+  useResizeObserver: jest.fn(),
 }));
 
 jest.mock('../../../lib/components/internal/utils/dom', () => ({
