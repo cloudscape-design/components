@@ -23,7 +23,7 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  useResizeObserver: jest.fn().mockImplementation((_target, cb) => cb({ contentBoxWidth: 0 })),
+  useResizeObserver: jest.fn(),
 }));
 
 interface Item {
