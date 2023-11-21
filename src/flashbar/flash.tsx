@@ -73,7 +73,6 @@ export const Flash = React.forwardRef(
       content,
       dismissible,
       dismissLabel,
-      statusIconAriaLabel,
       loading,
       action,
       buttonText,
@@ -84,6 +83,7 @@ export const Flash = React.forwardRef(
       ariaRole,
       i18nStrings,
       type = 'info',
+      ...props
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -120,6 +120,10 @@ export const Flash = React.forwardRef(
       [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
     };
 
+    const statusIconAriaLabel =
+      props.statusIconAriaLabel ||
+      i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`];
+
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
       // eslint-disable-next-line @cloudscape-design/prefer-live-region
@@ -149,10 +153,7 @@ export const Flash = React.forwardRef(
             <div
               className={clsx(styles['flash-icon'], styles['flash-text'])}
               role="img"
-              aria-label={
-                statusIconAriaLabel ||
-                i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`]
-              }
+              aria-label={statusIconAriaLabel}
             >
               {icon}
             </div>
@@ -178,11 +179,7 @@ export const Flash = React.forwardRef(
           />
         </div>
         {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        {ariaRole === 'status' && (
-          <LiveRegion>
-            {statusIconAriaLabel} {header} {content}
-          </LiveRegion>
-        )}
+        {ariaRole === 'status' && <LiveRegion source={[statusIconAriaLabel, headerRef, contentRef]} />}
       </div>
     );
   }

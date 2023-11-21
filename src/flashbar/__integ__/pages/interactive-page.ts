@@ -23,6 +23,10 @@ export class FlashbarInteractivePage extends FlashbarBasePage {
   async toggleStackingFeature() {
     await this.click('[data-id="stack-items"]');
   }
+
+  async removeAll() {
+    await this.click('[data-id="remove-all"]');
+  }
 }
 
 export const setupTest = (testFn: (page: FlashbarInteractivePage) => Promise<void>) => {

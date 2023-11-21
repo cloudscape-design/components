@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "ID de la versión",
     "i18nStrings.columnVersionLastModified": "Modificado por última vez",
     "i18nStrings.columnVersionSize": "Tamaño",
-    "i18nStrings.validationPathMustBegin": "La ruta debe empezar por s3://",
+    "i18nStrings.validationPathMustBegin": "La ruta debe empezar por s3://para que sea válida.",
     "i18nStrings.validationBucketLowerCase": "El nombre del bucket debe empezar por un carácter o número en minúscula.",
     "i18nStrings.validationBucketMustNotContain": "El nombre del bucket no debe contener caracteres en mayúscula.",
     "i18nStrings.validationBucketLength": "El nombre del bucket debe tener entre 3 y 63 caracteres.",

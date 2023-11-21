@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import times from 'lodash/times';
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { render, screen } from '@testing-library/react';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import Table, { TableProps } from '../../../lib/components/table';
@@ -18,11 +17,6 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
     overflowParent.getBoundingClientRect = fakeBoundingClientRect;
     return [overflowParent];
   }),
-}));
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  useResizeObserver: jest.fn().mockImplementation((_target, cb) => cb({ contentBoxWidth: 0 })),
 }));
 
 interface Item {
@@ -52,8 +46,8 @@ function hasGlobalResizeClass() {
   return document.body.classList.contains(resizerStyles['resize-active']);
 }
 
-function findActiveResizer(wrapper: TableWrapper) {
-  return wrapper.findByClassName(resizerStyles['resizer-active']);
+function findActiveDivider(wrapper: TableWrapper) {
+  return wrapper.findByClassName(resizerStyles['divider-active']);
 }
 
 afterEach(() => {
@@ -110,15 +104,15 @@ test('should use the default width if it is not provided to a column and the col
 
 test('should show the tracking line and activate resizer onMouseDown', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
-  expect(findActiveResizer(wrapper)).toBeNull();
+  expect(findActiveDivider(wrapper)).toBeNull();
   expect(hasGlobalResizeClass()).toEqual(false);
 
   fireMousedown(wrapper.findColumnResizer(1)!);
-  expect(findActiveResizer(wrapper)).not.toBeNull();
+  expect(findActiveDivider(wrapper)).not.toBeNull();
   expect(hasGlobalResizeClass()).toEqual(true);
 
   fireMouseup(150);
-  expect(findActiveResizer(wrapper)).toBeNull();
+  expect(findActiveDivider(wrapper)).toBeNull();
   expect(hasGlobalResizeClass()).toEqual(false);
 });
 
@@ -436,15 +430,4 @@ describe('column header content', () => {
     expect(getResizeHandle(0)).toHaveAttribute('aria-roledescription', 'resize button');
     expect(getResizeHandle(1)).toHaveAttribute('aria-roledescription', 'resize button');
   });
-});
-
-test('should set last column width to "auto" when container width exceeds total column width', () => {
-  const totalColumnsWidth = 150 + 300;
-  jest
-    .mocked(useResizeObserver)
-    .mockImplementation((_target, cb) => cb({ contentBoxWidth: totalColumnsWidth + 1 } as any));
-
-  const { wrapper } = renderTable(<Table {...defaultProps} />);
-
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
 });

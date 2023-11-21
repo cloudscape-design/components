@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "版本 ID",
     "i18nStrings.columnVersionLastModified": "上次修改时间",
     "i18nStrings.columnVersionSize": "大小",
-    "i18nStrings.validationPathMustBegin": "路径必须以 s3:// 开头",
+    "i18nStrings.validationPathMustBegin": "路径必须以 s3:// 开头才有效。",
     "i18nStrings.validationBucketLowerCase": "存储桶名称必须以小写字符或数字开头。",
     "i18nStrings.validationBucketMustNotContain": "存储桶名称不得包含大写字符。",
     "i18nStrings.validationBucketLength": "存储桶名称必须介于 3 到 63 个字符之间。",

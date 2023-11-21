@@ -41,7 +41,7 @@
     &-last-left {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
-      &:not(.header-cell-resizable):before {
+      & > .resize-divider {
         display: none;
       }
     }
@@ -54,25 +54,6 @@
       transition-duration: awsui.$motion-duration-transition-show-quick;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
-  }
-
-  &:not(:last-child):before {
-    $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
-
-    content: '';
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    min-height: awsui.$line-height-heading-xs;
-    max-height: calc(100% - #{$gap});
-    margin: auto;
-    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    box-sizing: border-box;
-  }
-
-  &-resizable:not(:last-child):before {
-    border-left-color: awsui.$color-border-divider-interactive-default;
   }
 }
 

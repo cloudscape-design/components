@@ -230,7 +230,7 @@
     "i18nStrings.columnVersionID": "版本 ID",
     "i18nStrings.columnVersionLastModified": "上次修改",
     "i18nStrings.columnVersionSize": "尺寸",
-    "i18nStrings.validationPathMustBegin": "路徑必須以 s3:// 開頭",
+    "i18nStrings.validationPathMustBegin": "路徑必須以 s3:// 開頭才有效。",
     "i18nStrings.validationBucketLowerCase": "儲存貯體名稱必須以小寫字元或數字開頭。",
     "i18nStrings.validationBucketMustNotContain": "儲存貯體名稱不得包含大寫字元。",
     "i18nStrings.validationBucketLength": "儲存貯體名稱必須介於 3 到 63 個字元之間。",
