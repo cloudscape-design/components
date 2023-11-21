@@ -25,6 +25,7 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
   onBlur?: (event: React.FocusEvent) => void;
+  setPopoverText: (s: string) => void;
 }
 
 export default React.forwardRef(MixedChartPopover);
@@ -43,6 +44,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
     onMouseEnter,
     onMouseLeave,
     onBlur,
+    setPopoverText,
   }: MixedChartPopoverProps<T>,
   popoverRef: React.Ref<HTMLElement>
 ) {
@@ -65,7 +67,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseLeave={onMouseLeave}
               onBlur={onBlur}
             >
-              <ChartSeriesDetails details={highlightDetails.details} />
+              <ChartSeriesDetails details={highlightDetails.details} setPopoverText={setPopoverText} />
               {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
             </ChartPopover>
           )}

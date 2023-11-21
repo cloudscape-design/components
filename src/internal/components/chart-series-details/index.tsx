@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, memo } from 'react';
+import React, { ReactNode, memo, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -8,6 +8,7 @@ import { ChartDetailPair } from '../../../pie-chart/interfaces';
 import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import styles from './styles.css.js';
 import InternalExpandableSection from '../../../expandable-section/internal';
+import getSeriesDetailsText from './series-details-text';
 
 export interface ChartSeriesDetailItem extends ChartDetailPair {
   markerType?: ChartSeriesMarkerType;
@@ -19,16 +20,31 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
   details: ReadonlyArray<ChartSeriesDetailItem>;
+  setPopoverText?: (s: string) => void;
 }
 
 export default memo(ChartSeriesDetails);
 
-function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) {
+function ChartSeriesDetails({ details, setPopoverText, ...restProps }: ChartSeriesDetailsProps) {
   const baseProps = getBaseProps(restProps);
   const className = clsx(baseProps.className, styles.root);
+  const detailsRef = useRef<HTMLDivElement | null>(null);
+
+  // Once the component has rendered, pass its content in plain text
+  // so that it can be used by screen readers.
+  useEffect(() => {
+    if (setPopoverText) {
+      if (detailsRef.current) {
+        setPopoverText(getSeriesDetailsText(detailsRef.current));
+      }
+      return () => {
+        setPopoverText('');
+      };
+    }
+  }, [details, setPopoverText]);
 
   return (
-    <div {...baseProps} className={className}>
+    <div {...baseProps} className={className} ref={detailsRef}>
       <ul className={styles.list}>
         {details.map(({ key, value, markerType, color, isDimmed, subItems, expandable }, index) => (
           <li
@@ -41,7 +57,7 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             })}
           >
             {subItems?.length && expandable ? (
-              <div className={styles['key-value-pair']}>
+              <div className={styles['expandable-section']}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                 <div className={styles['full-width']}>
                   <InternalExpandableSection
@@ -82,7 +98,7 @@ function SubItems({
   return (
     <ul className={clsx(styles['sub-items'], expandable && styles.expandable)}>
       {items.map(({ key, value }, index) => (
-        <li key={index} className={styles['inner-list-item']}>
+        <li key={index} className={clsx(styles['inner-list-item'], styles['key-value-pair'])}>
           <span className={styles.key}>{key}</span>
           <span className={styles.value}>{value}</span>
         </li>

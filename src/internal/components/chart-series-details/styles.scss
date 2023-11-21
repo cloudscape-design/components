@@ -34,7 +34,8 @@
 }
 
 .inner-list-item,
-.list-item > .key-value-pair {
+.list-item > .key-value-pair,
+.list-item > .expandable-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -138,6 +138,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [verticalMarkerX, setVerticalMarkerX] = useState<VerticalMarkerX<T> | null>(null);
+  const [detailsPopoverText, setDetailsPopoverText] = useState('');
   const [containerWidth, containerMeasureRef] = useContainerWidth(fallbackContainerWidth);
   const maxLeftLabelsWidth = Math.round(containerWidth / 2);
   const plotWidth = containerWidth
@@ -492,13 +493,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
     [detailPopoverFooter, highlightedX]
   );
 
-  const activeAriaLabel = useMemo(
-    () =>
-      highlightDetails
-        ? `${highlightDetails.position}, ${highlightDetails.details.map(d => d.key + ' ' + d.value).join(',')}`
-        : '',
-    [highlightDetails]
-  );
+  const activeAriaLabel =
+    highlightDetails && detailsPopoverText ? `${highlightDetails.position}, ${detailsPopoverText}` : '';
 
   // Live region is used when nothing is focused e.g. when hovering.
   const activeLiveRegion =
@@ -656,6 +652,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
           onMouseLeave={onPopoverLeave}
           onBlur={onSVGBlur}
+          setPopoverText={setDetailsPopoverText}
         />
       }
     />
