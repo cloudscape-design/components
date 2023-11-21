@@ -104,12 +104,14 @@ type PageContext = React.Context<
 
 export default function App() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
-  const wrapLines = urlParams.wrapLines ?? false;
-  const stickyHeader = urlParams.stickyHeader ?? false;
-  const resizableColumns = urlParams.resizableColumns ?? true;
-  const fullPage = urlParams.fullPage ?? false;
-  const withColumnIds = urlParams.withColumnIds ?? true;
-  const withSelection = urlParams.withSelection ?? false;
+  const {
+    wrapLines = false,
+    stickyHeader = false,
+    resizableColumns = true,
+    fullPage = false,
+    withColumnIds = true,
+    withSelection = false,
+  } = urlParams;
 
   const [renderKey, setRenderKey] = useState(0);
   const [columns, setColumns] = useState(columnsConfig);
