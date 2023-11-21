@@ -70,37 +70,40 @@ export default function testChartSeriesDetails({
     });
 
     describe('Nested items', () => {
-      test('renders nested items', () => {
-        const { wrapper } = renderChart({
-          ...chartProps,
-          detailPopoverSeriesContent: ({
-            series,
-            y,
-          }: {
-            series: MixedLineBarChartProps.ChartSeries<string>;
-            y: number;
-          }) => ({
-            key: series.title,
-            value: y,
-            subItems: [
-              {
-                key: 'a',
-                value: 1,
-              },
-              {
-                key: 'b',
-                value: 2,
-              },
-            ],
-          }),
-        });
+      describe('renders nested items', () => {
+        test.each([false, true])('with expandable sub-items: %s', expandable => {
+          const { wrapper } = renderChart({
+            ...chartProps,
+            detailPopoverSeriesContent: ({
+              series,
+              y,
+            }: {
+              series: MixedLineBarChartProps.ChartSeries<string>;
+              y: number;
+            }) => ({
+              key: series.title,
+              value: y,
+              expandable,
+              subItems: [
+                {
+                  key: 'a',
+                  value: 1,
+                },
+                {
+                  key: 'b',
+                  value: 2,
+                },
+              ],
+            }),
+          });
 
-        wrapper.findApplication()!.focus();
-        const subItems = wrapper.findDetailPopover()!.findSeries()![0].findSubItems()!;
-        expect(subItems[0].findKey()!.getElement()).toHaveTextContent('a');
-        expect(subItems[0].findValue()!.getElement()).toHaveTextContent('1');
-        expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
-        expect(subItems[1].findValue()!.getElement()).toHaveTextContent('2');
+          wrapper.findApplication()!.focus();
+          const subItems = wrapper.findDetailPopover()!.findSeries()![0].findSubItems()!;
+          expect(subItems[0].findKey()!.getElement()).toHaveTextContent('a');
+          expect(subItems[0].findValue()!.getElement()).toHaveTextContent('1');
+          expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
+          expect(subItems[1].findValue()!.getElement()).toHaveTextContent('2');
+        });
       });
 
       test('does not render nested items list if the length of sub-items is 0', () => {
