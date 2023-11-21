@@ -11,7 +11,7 @@ export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.Co
   }
 }
 
-export function setElementWidths(element: undefined | HTMLElement, styles: React.CSSProperties) {
+export function setElementWidths(element: HTMLElement, styles: React.CSSProperties) {
   function setProperty(property: 'width' | 'minWidth' | 'maxWidth') {
     const value = styles[property];
     let widthCssValue = '';
@@ -21,7 +21,7 @@ export function setElementWidths(element: undefined | HTMLElement, styles: React
     if (typeof value === 'string') {
       widthCssValue = value;
     }
-    if (element && element.style[property] !== widthCssValue) {
+    if (element.style[property] !== widthCssValue) {
       element.style[property] = widthCssValue;
     }
   }

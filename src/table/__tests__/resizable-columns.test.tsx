@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import times from 'lodash/times';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 import { render, screen } from '@testing-library/react';
@@ -453,11 +453,6 @@ test('should set last column width to "auto" when container width exceeds total 
     };
 
     useLayoutEffect(() => {
-      cb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
       cb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
