@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import React, { useLayoutEffect, useEffect } from 'react';
+import { render } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import { supportsStickyPosition } from '../../../lib/components/internal/utils/dom';
@@ -63,17 +63,37 @@ function findMergedCell(wrapper: TableWrapper) {
 }
 
 function mockResizeObserver(contentBoxWidth: number) {
-  // Use "act" to imitate firing observer's callback after component is rendered.
-  // In actual code the callback is fired twice - before and after rendering but the second part depends on ResizeObserver polyfill.
-  jest
-    .mocked(useResizeObserver)
-    .mockImplementation((_target, cb) => act(() => cb({ contentBoxWidth } as unknown as ContainerQueryEntry)));
+  const cbRef: { current: (entry: ContainerQueryEntry) => void } = { current: () => {} };
+  jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+    // The table uses more than one resize observer.
+    // The callback must be triggered for all to ensure the expected one is targeted as well.
+    const prev = cbRef.current;
+    cbRef.current = entry => {
+      prev(entry);
+      cb(entry);
+      return 5;
+    };
+
+    useLayoutEffect(() => {
+      cb({ contentBoxWidth } as unknown as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+      cb({ contentBoxWidth } as unknown as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  });
+  return cbRef;
 }
 
 test('should apply width to the empty state container', () => {
-  mockResizeObserver(600);
+  const cbRef = mockResizeObserver(600);
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={[]} />);
   expect(findStickyParent(wrapper).style.width).toEqual('600px');
+
+  cbRef.current({ contentBoxWidth: 700 } as unknown as ContainerQueryEntry);
+  expect(findStickyParent(wrapper).style.width).toEqual('700px');
 });
 
 test('should floor the value to prevent unwanted horizontal scrolling', () => {
