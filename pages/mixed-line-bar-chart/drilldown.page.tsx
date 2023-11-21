@@ -19,15 +19,10 @@ type DemoContext = React.Context<
   }>
 >;
 
-const maxUngroupedSeries = 9;
-
-const costsData = rawCostsData.slice(0, maxUngroupedSeries + 7).map((series, index) => ({
-  ...series,
-  type: index % 2 === 0 ? 'bar' : 'line',
-})) as MixedLineBarChartProps.DataSeries<string>[];
+const maxUngroupedSeries = 3;
 
 const xDomainSet = new Set<string>();
-for (const series of costsData) {
+for (const series of rawCostsData) {
   for (const datum of series.data) {
     xDomainSet.add(datum.x);
   }
@@ -38,8 +33,13 @@ const xDomain = Array.from(xDomainSet).sort();
 const dollarFormatter = (e: number) =>
   `$${e.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-const ungroupedSeries = costsData.filter(series => series.type === 'bar');
-const groupedSeries = costsData.filter(series => series.type === 'line');
+const ungroupedSeries = rawCostsData
+  .slice(0, maxUngroupedSeries)
+  .map(series => ({ ...series, type: 'bar' })) as MixedLineBarChartProps.DataSeries<string>[];
+const groupedSeries = rawCostsData
+  .slice(maxUngroupedSeries)
+  .map(series => ({ ...series, type: 'line' })) as MixedLineBarChartProps.DataSeries<string>[];
+
 const groupedSeriesData: MixedLineBarChartProps.Datum<string>[] = [];
 for (const series of groupedSeries) {
   for (const { x, y } of series.data) {
