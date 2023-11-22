@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, memo, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, forwardRef, memo, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -9,6 +9,7 @@ import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker
 import styles from './styles.css.js';
 import InternalExpandableSection from '../../../expandable-section/internal';
 import getSeriesDetailsText from './series-details-text';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 export interface ChartSeriesDetailItem extends ChartDetailPair {
   markerType?: ChartSeriesMarkerType;
@@ -23,12 +24,16 @@ export interface ChartSeriesDetailsProps extends BaseComponentProps {
   setPopoverText?: (s: string) => void;
 }
 
-export default memo(ChartSeriesDetails);
+export default memo(forwardRef(ChartSeriesDetails));
 
-function ChartSeriesDetails({ details, setPopoverText, ...restProps }: ChartSeriesDetailsProps) {
+function ChartSeriesDetails(
+  { details, setPopoverText, ...restProps }: ChartSeriesDetailsProps,
+  ref?: React.Ref<HTMLDivElement>
+) {
   const baseProps = getBaseProps(restProps);
   const className = clsx(baseProps.className, styles.root);
   const detailsRef = useRef<HTMLDivElement | null>(null);
+  const mergedRef = useMergeRefs(detailsRef, ref);
 
   // Once the component has rendered, pass its content in plain text
   // so that it can be used by screen readers.
@@ -44,7 +49,7 @@ function ChartSeriesDetails({ details, setPopoverText, ...restProps }: ChartSeri
   }, [details, setPopoverText]);
 
   return (
-    <div {...baseProps} className={className} ref={detailsRef}>
+    <div {...baseProps} className={className} ref={mergedRef}>
       <ul className={styles.list}>
         {details.map(({ key, value, markerType, color, isDimmed, subItems, expandable }, index) => (
           <li
