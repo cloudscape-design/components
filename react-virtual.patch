@@ -1,0 +1,12 @@
+diff -ruN node_modules/react-virtual-original/package.json node_modules/react-virtual/package.json
+--- node_modules/react-virtual-original/package.json	2023-11-22 15:29:57
++++ node_modules/react-virtual/package.json	2023-11-22 15:35:43
+@@ -44,7 +44,7 @@
+     "@reach/observe-rect": "^1.1.0"
+   },
+   "peerDependencies": {
+-    "react": "^16.6.3 || ^17.0.0"
++    "react": "^16.6.3 || ^17.0.0 || ^18.0.0"
+   },
+   "devDependencies": {
+     "@babel/core": "^7.8.6",
