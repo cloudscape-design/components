@@ -376,6 +376,13 @@ export default function ChartContainer<T extends ChartDataTypes>({
       if (isPopoverPinned) {
         dismissPopover();
       } else {
+        // If the focus is on the document body when pinning the popover,
+        // Safari will focus any interactive element that may exist inside the popover body
+        // right *after* we focus the dismiss button.
+        // We prevent this here by focusing the chart plot before pinning the popover.
+        // For the purpose of this workaround, we could focus anything except the document body
+        // --the focus will move to the dismiss button once the popover appears in the next frame, anyway.
+        plotRef.current?.focusApplication();
         pinPopover();
         e.preventDefault();
       }
