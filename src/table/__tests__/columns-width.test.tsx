@@ -202,6 +202,7 @@ describe('with stickyHeader=true', () => {
       });
     const columns: TableProps.ColumnDefinition<Item>[] = [
       { id: 'id', header: 'id', cell: () => '-', width: 200 },
+      { id: undefined, header: 'unknown', cell: () => '-', width: 300 },
       { id: 'name', header: 'name', cell: () => '-', minWidth: 100 },
       { id: 'description', header: '', cell: () => '-', maxWidth: 300 },
     ];
@@ -209,11 +210,13 @@ describe('with stickyHeader=true', () => {
     const [fakeHeader, realHeader] = wrapper.findAll('thead');
     expect(extractSize(realHeader)).toEqual([
       { minWidth: '', width: '200px', maxWidth: '' },
+      { minWidth: '', width: '300px', maxWidth: '' },
       { minWidth: '100px', width: '', maxWidth: '' },
       { minWidth: '', width: '', maxWidth: '300px' },
     ]);
     expect(extractSize(fakeHeader)).toEqual([
       { minWidth: '', width: '200px', maxWidth: '' },
+      { minWidth: '', width: '300px', maxWidth: '' },
       { minWidth: '', width: '', maxWidth: '' },
       { minWidth: '', width: '', maxWidth: '' },
     ]);
