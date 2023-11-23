@@ -19,6 +19,7 @@
 
 .value {
   text-align: right;
+  margin-left: awsui.$space-l;
   &.expandable {
     @include bold;
   }
@@ -27,10 +28,6 @@
 .list-item,
 .inner-list-item {
   list-style: none;
-}
-
-.inner-list-item > .key {
-  margin-right: awsui.$space-l;
 }
 
 .inner-list-item,
