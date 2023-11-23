@@ -122,7 +122,8 @@ export default <T extends PieChartProps.Datum>({
   const i18n = useInternalI18n('pie-chart');
   const detailFunction = detailPopoverContent || defaultDetails(i18n, i18nStrings);
   const details = tooltipData ? detailFunction(tooltipData.datum, dataSum) : [];
-  const tooltipContent = tooltipData && <SeriesDetails details={details} />;
+  const tooltipContentRef = useRef<HTMLDivElement | null>(null);
+  const tooltipContent = tooltipData && <SeriesDetails details={details} ref={tooltipContentRef} />;
 
   const popoverDismissedRecently = useRef(false);
   const escapePressed = useRef(false);
@@ -310,7 +311,7 @@ export default <T extends PieChartProps.Datum>({
           ariaDescription={ariaDescription}
           ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
           ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
-          ariaLiveRegion={tooltipContent}
+          ariaLiveRegion={tooltipContentRef}
           activeElementRef={focusedSegmentRef}
           activeElementKey={highlightedSegmentIndex?.toString()}
           onFocus={onFocus}

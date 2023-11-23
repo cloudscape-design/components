@@ -9783,8 +9783,8 @@ The full data object will be passed down to events and properties like \`detailP
 The function is called with the data of the target segment and is expected to return an array of detail pairs.
 By default, each segment displays two detail pairs: count and percentage.
 Each pair has the following properties:
-* \`key\` (string) - Name of the detail or metric.
-* \`value\` (string | number) - The value of this detail for the target segment.
+* \`key\` (ReactNode) - Name of the detail or metric.
+* \`value\` (ReactNode) - The value of this detail for the target segment.
 ",
       "inlineType": Object {
         "name": "PieChartProps.DetailPopoverContentFunction",
