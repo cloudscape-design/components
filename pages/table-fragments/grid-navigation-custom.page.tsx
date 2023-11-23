@@ -64,7 +64,7 @@ export default function Page() {
 
   useEffect(() => {
     setInterval(() => {
-      setItems(prev => [...prev, ...generateItems(1)]);
+      setItems(prev => [...prev.slice(1), ...generateItems(1)]);
     }, 10000);
   }, []);
 
@@ -338,6 +338,12 @@ function DnsEditCell({ item }: { item: Instance }) {
 function EditableStateCell({ value, onChange }: { value: InstanceState; onChange: (value: InstanceState) => void }) {
   const [active, setActive] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (active && dialogRef.current) {
+      dialogRef.current.querySelector('input')?.focus();
+    }
+  }, [active]);
 
   if (!active) {
     return value === 'TERMINATED' ? (

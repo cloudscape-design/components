@@ -31,19 +31,16 @@ function TestTable<T extends object>({
   items,
   startIndex = 0,
   pageSize = 2,
-  suppressKeyboardNavigationFor,
 }: {
   tableRole?: 'grid' | 'table';
   columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
   items: T[];
   startIndex?: number;
   pageSize?: number;
-  suppressKeyboardNavigationFor?: string | ((focusedElement: HTMLElement) => boolean);
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
   useGridNavigation({
     keyboardNavigation: tableRole === 'grid',
-    suppressKeyboardNavigationFor,
     pageSize,
     getTable: () => tableRef.current,
   });
@@ -427,35 +424,6 @@ test('elements focus is restored if table changes role after being rendered as g
   rerender(<TestTable tableRole="table" columns={[idColumn, valueColumn]} items={items} />);
 
   expect(getTabIndices()).toEqual([0, 0, 0, 0, 0]);
-});
-
-test.each([
-  '[aria-label="Sort by value!"]',
-  (focusedElement: HTMLElement) => focusedElement.getAttribute('aria-label') === 'Sort by value!',
-])('grid navigation is suppressed by `suppressKeyboardNavigationFor`', suppressKeyboardNavigationFor => {
-  const { container } = render(
-    <TestTable
-      columns={[nameColumn, valueColumn]}
-      items={items}
-      suppressKeyboardNavigationFor={suppressKeyboardNavigationFor}
-    />
-  );
-  const table = container.querySelector('table')!;
-
-  (container.querySelector('button[aria-label="Sort by name"]') as HTMLElement).focus();
-  expect(getActiveElement()).toEqual(['button', 'Sort by name']);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.right });
-  expect(getActiveElement()).toEqual(['button', 'Sort by value']);
-
-  const sortByValueButton = container.querySelector('button[aria-label="Sort by value"]')!;
-  sortByValueButton.setAttribute('aria-label', 'Sort by value!');
-  mockObserver.callback([
-    { type: 'childList', addedNodes: [sortByValueButton], removedNodes: [] } as unknown as MutationRecord,
-  ]);
-
-  fireEvent.keyDown(table, { keyCode: KeyCode.left });
-  expect(getActiveElement()).toEqual(['button', 'Sort by value!']);
 });
 
 test('does not override tab index for programmatically focused elements', () => {

@@ -65,7 +65,7 @@ export function moveFocusBy(table: HTMLTableElement, from: FocusedCell, delta: {
   }
 
   // When target cell matches the current cell it means we reached the left or right boundary.
-  if (targetCell === from.cellElement) {
+  if (targetCell === from.cellElement && delta.x !== 0) {
     return;
   }
 
