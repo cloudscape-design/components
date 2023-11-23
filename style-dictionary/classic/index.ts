@@ -8,6 +8,7 @@ import {
   createFlashbarContext,
   createFlashbarWarningContext,
   createAlertContext,
+  createDarkPageHeaderContext,
 } from '../utils/contexts';
 
 const modes = [
@@ -45,6 +46,8 @@ export function buildClassicOpenSource(builder: ThemeBuilder) {
   builder.addContext(createFlashbarWarningContext(require('./contexts/flashbar-warning').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createAlertContext(require('./contexts/alert').tokens));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createDarkPageHeaderContext(require('./contexts/dark-page-header').tokens));
 
   return builder.build();
 }

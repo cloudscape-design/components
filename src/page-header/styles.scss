@@ -1,0 +1,93 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset();
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  padding-inline-start: calc(2 * #{awsui.$space-l});
+  padding-inline-end: calc(2 * #{awsui.$space-l});
+}
+
+@media (max-width: 480px) {
+  .root {
+    padding-inline-start: awsui.$space-l;
+    padding-inline-end: awsui.$space-l;
+  }
+}
+
+.dark {
+  background-color: awsui.$color-background-home-header;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.wrapper {
+  display: block;
+
+  padding-block-start: calc(2 * #{awsui.$space-l});
+  padding-block-end: calc(2 * #{awsui.$space-l});
+}
+
+.main-header {
+  // Necessary for the visual context to apply correctly
+  @include styles.styles-reset();
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+  color: awsui.$color-text-page-header;
+}
+
+.title-h1 {
+  @include styles.font-heading-xl;
+}
+
+.title-display-l {
+  @include styles.font-display-l;
+}
+
+.subheading {
+  color: awsui.$color-text-page-header;
+}
+.subheading-h1 {
+  @include styles.font-heading-xl;
+  font-weight: styles.$font-weight-lighter;
+}
+.subheading-display-l {
+  @include styles.font-display-l;
+  font-weight: styles.$font-weight-lighter;
+}
+
+.description {
+  margin-block-start: awsui.$space-scaled-l;
+}
+.metadata {
+  margin-block-start: awsui.$space-scaled-l;
+}
+.tags {
+  margin-block-start: awsui.$space-scaled-m;
+}
+
+.actions {
+  margin-block-start: awsui.$space-scaled-xl;
+}
+
+.metadata + .actions,
+.tags + .actions {
+  margin-block-start: awsui.$space-scaled-l;
+}

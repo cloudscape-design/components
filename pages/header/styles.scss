@@ -5,6 +5,21 @@
 
 @use '~design-tokens' as awsui;
 
+.separator {
+  display: inline-block;
+  width: 2px;
+  height: 1.5rem;
+  background-color: awsui.$color-border-divider-default;
+
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.inline-list {
+  display: inline-flex;
+  align-items: center;
+}
+
 .content-page-content,
 .header-content {
   max-width: 1400px;

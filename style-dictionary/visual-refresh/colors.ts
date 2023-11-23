@@ -218,6 +218,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextNotificationDefault: '{colorGrey100}',
   colorTextNotificationStackBar: '{colorWhite}',
   colorTextNotificationYellow: '{colorGrey900}',
+  colorTextPageHeader: { light: '{colorBlack}', dark: '{colorGrey100}' },
   colorTextPaginationPageNumberActiveDisabled: '{colorTextInteractiveDisabled}',
   colorTextPaginationPageNumberDefault: { light: '{colorTextInteractiveDefault}', dark: '{colorGrey400}' },
   colorTextSegmentActive: { light: '{colorWhite}', dark: '{colorGrey900}' },

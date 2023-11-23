@@ -420,6 +420,7 @@ export type ColorsTokenName =
   | 'colorTextNotificationDefault'
   | 'colorTextNotificationStackBar'
   | 'colorTextNotificationYellow'
+  | 'colorTextPageHeader'
   | 'colorTextPaginationPageNumberActiveDisabled'
   | 'colorTextPaginationPageNumberDefault'
   | 'colorTextSegmentActive'

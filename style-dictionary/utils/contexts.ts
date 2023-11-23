@@ -49,3 +49,11 @@ export const createAlertContext = (tokens: TokenCategory<string, GlobalValue | M
     tokens,
   };
 };
+
+export const createDarkPageHeaderContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'dark-page-header',
+    selector: '.awsui-context-dark-page-header',
+    tokens,
+  };
+};
