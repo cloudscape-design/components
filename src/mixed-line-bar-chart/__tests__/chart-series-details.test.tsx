@@ -34,7 +34,7 @@ const barSeries: MixedLineBarChartProps.DataSeries<string> = {
 
 const lineSeries: MixedLineBarChartProps.DataSeries<string> = {
   type: 'line',
-  title: 'Bar Series 2',
+  title: 'Line Series 1',
   data: [
     { x: 'Group 1', y: 5 },
     { x: 'Group 2', y: 2 },
@@ -51,9 +51,9 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
 
 const series = [barSeries, lineSeries, thresholdSeries];
 
-function renderMixedChart(props: MixedLineBarChartProps<string>) {
+function renderChart(props: Omit<MixedLineBarChartProps<string>, 'series'>) {
   const { container } = render(<MixedLineBarChart {...props} series={series} />);
   return { wrapper: new MixedLineBarChartWrapper(container) };
 }
 
-testChartSeriesDetails({ renderChart: renderMixedChart });
+testChartSeriesDetails({ renderChart });

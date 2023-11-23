@@ -11,15 +11,22 @@ import { BarChartProps } from '../../../lib/components/bar-chart/interfaces.js';
 import { BarChartWrapper, LineChartWrapper } from '../../../lib/components/test-utils/dom';
 import { LineChartProps } from '../../../lib/components/line-chart/interfaces.js';
 
-type RenderBarChart = (props: BarChartProps<string>) => {
+export const commonChartProps = {
+  height: 250,
+  xDomain: ['Group 1', 'Group 2', 'Group 3', 'Group 4'],
+  yDomain: [0, 20],
+  xScaleType: 'categorical' as const,
+};
+
+type RenderBarChart = (props: Omit<BarChartProps<string>, 'series'>) => {
   wrapper: BarChartWrapper;
 };
 
-type RenderLineChart = (props: LineChartProps<string>) => {
+type RenderLineChart = (props: Omit<LineChartProps<string>, 'series'>) => {
   wrapper: LineChartWrapper;
 };
 
-type RenderMixedChart = (props: MixedLineBarChartProps<string>) => {
+type RenderMixedChart = (props: Omit<MixedLineBarChartProps<string>, 'series'>) => {
   wrapper: MixedLineBarChartWrapper;
 };
 
@@ -33,18 +40,10 @@ export default function testChartSeriesDetails({
   });
 
   describe('Chart series details', () => {
-    const chartProps = {
-      series: [],
-      height: 250,
-      xDomain: ['Group 1', 'Group 2', 'Group 3', 'Group 4'],
-      yDomain: [0, 20],
-      xScaleType: 'categorical' as const,
-    };
-
     describe('Links', () => {
       test('renders links in keys', () => {
         const { wrapper } = renderChart({
-          ...chartProps,
+          ...commonChartProps,
           detailPopoverSeriesContent: ({ series, y }) => ({
             key: <Link>{series.title}</Link>,
             value: y,
@@ -57,7 +56,7 @@ export default function testChartSeriesDetails({
 
       test('renders links in values', () => {
         const { wrapper } = renderChart({
-          ...chartProps,
+          ...commonChartProps,
           detailPopoverSeriesContent: ({ series, y }) => ({
             key: series.title,
             value: <Link>{y}</Link>,
@@ -73,7 +72,7 @@ export default function testChartSeriesDetails({
       describe('renders nested items', () => {
         test.each([false, true])('with expandable sub-items: %s', expandable => {
           const { wrapper } = renderChart({
-            ...chartProps,
+            ...commonChartProps,
             detailPopoverSeriesContent: ({
               series,
               y,
@@ -108,7 +107,7 @@ export default function testChartSeriesDetails({
 
       test('does not render nested items list if the length of sub-items is 0', () => {
         const { wrapper } = renderChart({
-          ...chartProps,
+          ...commonChartProps,
           detailPopoverSeriesContent: ({ series, y }) => ({
             key: series.title,
             value: y,
@@ -127,7 +126,7 @@ export default function testChartSeriesDetails({
     describe('Dev warnings', () => {
       test('logs a warning when `expandable` is used for a series with no sub-items', () => {
         const { wrapper } = renderChart({
-          ...chartProps,
+          ...commonChartProps,
           detailPopoverSeriesContent: ({ series, y }) => ({
             key: series.title,
             value: y,
@@ -144,7 +143,7 @@ export default function testChartSeriesDetails({
 
       test('logs a warning and ignores the custom property when a ReactNode is used for an expandable key', () => {
         const { wrapper } = renderChart({
-          ...chartProps,
+          ...commonChartProps,
           detailPopoverSeriesContent: ({ series, y }) => ({
             key: <Link>{series.title}</Link>,
             value: y,
@@ -167,7 +166,7 @@ export default function testChartSeriesDetails({
 
       test('logs a warning when a ReactNode is used for both key and value', () => {
         const { wrapper } = renderChart({
-          ...chartProps,
+          ...commonChartProps,
           detailPopoverSeriesContent: ({ series, y }) => ({
             key: <Link>{series.title}</Link>,
             value: <Link>{y}</Link>,

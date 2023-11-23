@@ -41,11 +41,11 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
 
 const series = [lineSeries, thresholdSeries];
 
-function renderLineChart(props: LineChartProps<string>) {
+function renderChart(props: Omit<LineChartProps<string>, 'series'>) {
   const { container } = render(<LineChart {...props} series={series} />);
   return {
     wrapper: new LineChartWrapper(container),
   };
 }
 
-testChartSeriesDetails({ renderChart: renderLineChart });
+testChartSeriesDetails({ renderChart });
