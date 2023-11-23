@@ -64,12 +64,16 @@ export default function () {
         </PageHeader>
 
         <PageHeader
-          colorMode="dark"
+          colorMode="default"
           variant="h1"
           subHeading="Your learning center to build in-demand cloud skills"
           description="Get started quickly and for free today with anti-malware for Amazon S3. With File Storage
                   Security, Cloud Security Posture Management, and well-architected resourcing in Conformity or
                   Workload Security."
+          backgroundCss="linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0/100px 100px,
+                  linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0/100px 100px,
+                  linear-gradient(315deg, #ECEDDC 25%, transparent 25%) 0 0/100px 100px,
+                  linear-gradient(45deg, #ECEDDC 25%, transparent 25%) 0 0/100px 100px"
           actions={
             <SpaceBetween size="s" direction="horizontal">
               <Button variant="primary">Sign up</Button>

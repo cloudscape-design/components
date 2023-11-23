@@ -30,6 +30,7 @@ const InternalPageHeader = ({
   subHeading,
   tags,
   background,
+  backgroundCss,
   withContainer,
   __internalRootRef,
   ...props
@@ -48,13 +49,19 @@ const InternalPageHeader = ({
     </>
   );
 
+  const hasCustomBackground = background || backgroundCss;
+
   return (
     <div
       {...baseProps}
       ref={__internalRootRef}
       className={clsx(baseProps.className, styles.root, colorMode === 'dark' && styles.dark)}
     >
-      {background && <div className={styles.background}>{background}</div>}
+      {hasCustomBackground && (
+        <div className={styles.background} style={backgroundCss ? { background: backgroundCss } : {}}>
+          {background}
+        </div>
+      )}
       <div className={styles.wrapper} style={{ maxWidth: maxWidth ?? '800px' }}>
         <InternalGrid gridDefinition={headerGridDefinition}>
           <div

@@ -73,6 +73,12 @@ export interface PageHeaderProps extends BaseComponentProps {
   background?: React.ReactNode;
 
   /**
+   * Specifies the `background` CSS property shorthand for a full-size background image.
+   * For more details on the syntax, refer to the [background MDN documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
+   */
+  backgroundCss?: string;
+
+  /**
    * Activate this property to render the main header area inside a container.
    * Use this when you otherwise cannot guarantee sufficient color contrast with the background image.
    */
