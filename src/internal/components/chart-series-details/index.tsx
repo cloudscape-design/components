@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, forwardRef, memo, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, memo, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -18,16 +18,19 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
   subItems?: ReadonlyArray<ChartDetailPair>;
   expandable?: boolean;
 }
+export type ExpandedStates = Record<number, boolean>;
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
   details: ReadonlyArray<ChartSeriesDetailItem>;
+  expandedStates?: ExpandedStates;
   setPopoverText?: (s: string) => void;
+  setExpandedState?: (index: number, state: boolean) => void;
 }
 
 export default memo(forwardRef(ChartSeriesDetails));
 
 function ChartSeriesDetails(
-  { details, setPopoverText, ...restProps }: ChartSeriesDetailsProps,
+  { details, expandedStates, setPopoverText, setExpandedState, ...restProps }: ChartSeriesDetailsProps,
   ref?: React.Ref<HTMLDivElement>
 ) {
   const baseProps = getBaseProps(restProps);
@@ -64,7 +67,17 @@ function ChartSeriesDetails(
             {subItems?.length && expandable ? (
               <div className={styles['expandable-section']}>
                 {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-                <ExpandableSubItems headerKey={key} headerValue={value} subItems={subItems} />
+                <div className={styles['full-width']}>
+                  <InternalExpandableSection
+                    variant="compact"
+                    headerText={key}
+                    headerActions={<span className={clsx(styles.value, styles.expandable)}>{value}</span>}
+                    expanded={expandedStates ? expandedStates[index] : undefined}
+                    onChange={({ detail }) => setExpandedState && setExpandedState(index, detail.expanded)}
+                  >
+                    <SubItems items={subItems} expandable={true} />
+                  </InternalExpandableSection>
+                </div>
               </div>
             ) : (
               <>
@@ -95,34 +108,5 @@ function SubItems({ items, expandable }: { items: ReadonlyArray<ChartDetailPair>
         </li>
       ))}
     </ul>
-  );
-}
-
-function ExpandableSubItems({
-  headerKey,
-  headerValue,
-  subItems,
-}: {
-  headerKey: ReactNode;
-  headerValue: ReactNode;
-  subItems: ReadonlyArray<ChartDetailPair>;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  useEffect(() => {
-    // Reset expanded state to false when a different coordinate is hovered
-    setExpanded(false);
-  }, [subItems]);
-  return (
-    <div className={styles['full-width']}>
-      <InternalExpandableSection
-        variant="compact"
-        headerText={headerKey}
-        headerActions={<span className={clsx(styles.value, styles.expandable)}>{headerValue}</span>}
-        expanded={expanded}
-        onChange={({ detail }) => setExpanded(detail.expanded)}
-      >
-        <SubItems items={subItems} expandable={true} />
-      </InternalExpandableSection>
-    </div>
   );
 }

@@ -17,7 +17,8 @@ type DemoContext = React.Context<
   }>
 >;
 
-const maxUngroupedSeries = 3;
+const maxUngroupedSeries = 2;
+const group1Items = 2;
 
 const xDomainSet = new Set<string>();
 for (const series of rawCostsData) {
@@ -34,32 +35,27 @@ const dollarFormatter = (e: number) =>
 const ungroupedSeries = rawCostsData
   .slice(0, maxUngroupedSeries)
   .map(series => ({ ...series, type: 'bar' })) as MixedLineBarChartProps.DataSeries<string>[];
-const groupedSeries = rawCostsData
-  .slice(maxUngroupedSeries)
-  .map(series => ({ ...series, type: 'line' })) as MixedLineBarChartProps.DataSeries<string>[];
 
-const groupedSeriesData: MixedLineBarChartProps.Datum<string>[] = [];
-for (const series of groupedSeries) {
-  for (const { x, y } of series.data) {
-    let data = groupedSeriesData.find(item => item.x === x);
-    if (data) {
-      data.y += y;
-    } else {
-      data = { x, y };
-      groupedSeriesData.push(data);
-    }
-  }
-}
+const otherSeries1 = getGroupedSeries({
+  ungroupedSeries: rawCostsData,
+  from: maxUngroupedSeries,
+  to: maxUngroupedSeries + group1Items,
+  type: 'bar',
+  title: 'Group 1',
+});
 
-groupedSeriesData.sort((a, b) => (b.x < a.x ? -1 : 1));
-
-const otherSeries: MixedLineBarChartProps.DataSeries<string> = {
-  title: 'Others',
+const otherSeries2 = getGroupedSeries({
+  ungroupedSeries: rawCostsData,
+  from: maxUngroupedSeries + group1Items,
   type: 'line',
-  data: groupedSeriesData,
-};
+  title: 'Group 2',
+});
 
-const allSeries: ReadonlyArray<MixedLineBarChartProps.DataSeries<string>> = [...ungroupedSeries, otherSeries];
+const allSeries: ReadonlyArray<MixedLineBarChartProps.DataSeries<string>> = [
+  ...ungroupedSeries,
+  otherSeries1.groupedSeries,
+  otherSeries2.groupedSeries,
+];
 
 export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
@@ -130,12 +126,16 @@ export default function () {
             setVisibleSeries(detail.visibleSeries as MixedLineBarChartProps.DataSeries<string>[])
           }
           detailPopoverSeriesContent={({ series, x, y }) => {
-            const isOtherSeries = series === otherSeries;
+            const isGroupedSeries = series === otherSeries1.groupedSeries || series === otherSeries2.groupedSeries;
+            const originalSeries =
+              isGroupedSeries && series === otherSeries1.groupedSeries
+                ? otherSeries1.originalSeries
+                : otherSeries2.originalSeries;
             const formattedValue = dollarFormatter(y);
             return {
-              expandable: urlParams.expandableSubItems && isOtherSeries,
+              expandable: urlParams.expandableSubItems && isGroupedSeries,
               key:
-                urlParams.useLinks === 'keys' && !isOtherSeries ? (
+                urlParams.useLinks === 'keys' && !isGroupedSeries ? (
                   <Link external={true} href="#">
                     {series.title}
                   </Link>
@@ -150,8 +150,8 @@ export default function () {
                 ) : (
                   formattedValue
                 ),
-              subItems: isOtherSeries
-                ? (groupedSeries
+              subItems: isGroupedSeries
+                ? (originalSeries
                     .map(childSeries => {
                       const datum = childSeries.data.find(item => item.x === x);
                       if (datum) {
@@ -210,4 +210,36 @@ export default function () {
       </ScreenshotArea>
     </>
   );
+}
+
+function getGroupedSeries({
+  ungroupedSeries,
+  from,
+  to,
+  title,
+  type,
+}: {
+  ungroupedSeries: ReadonlyArray<Omit<MixedLineBarChartProps.DataSeries<string>, 'type'>>;
+  from: number;
+  to?: number;
+  title: string;
+  type: 'bar' | 'line';
+}) {
+  const seriesSlice = ungroupedSeries.slice(from, to);
+  const groupedData: MixedLineBarChartProps.Datum<string>[] = [];
+  for (const series of seriesSlice) {
+    for (const { x, y } of series.data) {
+      let data = groupedData.find(item => item.x === x);
+      if (data) {
+        data.y += y;
+      } else {
+        data = { x, y };
+        groupedData.push(data);
+      }
+    }
+  }
+  return {
+    originalSeries: seriesSlice.map(series => ({ ...series, type })),
+    groupedSeries: { title, type, data: groupedData.sort((a, b) => (b.x < a.x ? -1 : 1)) },
+  };
 }

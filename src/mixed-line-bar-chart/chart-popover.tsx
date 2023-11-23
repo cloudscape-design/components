@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
-import ChartSeriesDetails from '../internal/components/chart-series-details';
+import ChartSeriesDetails, { ExpandedStates } from '../internal/components/chart-series-details';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -48,6 +48,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
   }: MixedChartPopoverProps<T>,
   popoverRef: React.Ref<HTMLElement>
 ) {
+  const [expandedStates, setExpandedStates] = useState<Record<string, ExpandedStates>>({});
   return (
     <Transition in={isOpen}>
       {(state, ref) => (
@@ -67,7 +68,18 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseLeave={onMouseLeave}
               onBlur={onBlur}
             >
-              <ChartSeriesDetails details={highlightDetails.details} setPopoverText={setPopoverText} />
+              <ChartSeriesDetails
+                key={highlightDetails.position}
+                details={highlightDetails.details}
+                setPopoverText={setPopoverText}
+                expandedStates={expandedStates[highlightDetails.position]}
+                setExpandedState={(index, state) =>
+                  setExpandedStates({
+                    ...expandedStates,
+                    [highlightDetails.position]: { ...expandedStates[highlightDetails.position], [index]: state },
+                  })
+                }
+              />
               {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
             </ChartPopover>
           )}
