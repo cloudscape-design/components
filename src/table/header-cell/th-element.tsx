@@ -16,7 +16,6 @@ interface TableThElementProps {
   sortingDisabled?: boolean;
   hidden?: boolean;
   colIndex: number;
-  resizableColumns?: boolean;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
   cellRef?: React.RefCallback<HTMLElement>;
@@ -31,7 +30,6 @@ export function TableThElement({
   sortingDisabled,
   hidden,
   colIndex,
-  resizableColumns,
   columnId,
   stickyState,
   cellRef,
@@ -51,7 +49,6 @@ export function TableThElement({
       className={clsx(
         className,
         {
-          [styles['header-cell-resizable']]: !!resizableColumns,
           [styles['header-cell-sortable']]: sortingStatus,
           [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
           [styles['header-cell-disabled']]: sortingDisabled,
