@@ -1,17 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import SpaceBetween from '~components/space-between';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AppLayout,
   Button,
   ButtonDropdown,
   Checkbox,
-  ColumnLayout,
   Container,
   ContentLayout,
   DatePicker,
-  FormField,
   Header,
   Icon,
   Input,
@@ -27,9 +24,7 @@ import {
 } from '~components';
 import styles from './styles.scss';
 import { generateItems, Instance } from '../table/generate-data';
-import AppContext, { AppContextType } from '../app/app-context';
 import {
-  TableRole,
   getTableCellRoleProps,
   getTableColHeaderRoleProps,
   getTableHeaderRowRoleProps,
@@ -41,34 +36,12 @@ import {
 import { orderBy } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
 
-type PageContext = React.Context<
-  AppContextType<{
-    pageSize: number;
-    tableRole: TableRole;
-    actionsMode: ActionsMode;
-  }>
->;
-
-type ActionsMode = 'dropdown' | 'inline';
-
-const tableRoleOptions = [{ value: 'table' }, { value: 'grid' }, { value: 'grid-default' }];
-
-const actionsModeOptions = [
-  { value: 'dropdown', label: 'Dropdown' },
-  { value: 'inline', label: 'Inline (anti-pattern)' },
-];
-
 const stateOptions = ['PENDING', 'RUNNING', 'STOPPING', 'STOPPED', 'TERMINATED', 'TERMINATING'].map(value => ({
   value,
   label: value,
 }));
 
 export default function Page() {
-  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
-  const pageSize = urlParams.pageSize ?? 10;
-  const tableRole = urlParams.tableRole ?? 'grid';
-  const actionsMode = urlParams.actionsMode ?? 'dropdown';
-
   const [items, setItems] = useState(generateItems(25));
 
   useEffect(() => {
@@ -207,9 +180,9 @@ export default function Page() {
   const [sortingDirection, setSortingDirection] = useState<1 | -1>(1);
 
   const tableRef = useRef<HTMLTableElement>(null);
-  const keyboardNavigation = tableRole === 'grid';
+  const tableRole = 'grid';
 
-  useGridNavigation({ keyboardNavigation, pageSize, getTable: () => tableRef.current });
+  useGridNavigation({ keyboardNavigation: true, pageSize: 10, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
     if (!sortingKey) {
@@ -228,39 +201,7 @@ export default function Page() {
         <ContentLayout header={<Header variant="h1">Grid navigation with a custom table grid</Header>}>
           <Container
             disableContentPaddings={true}
-            header={
-              <SpaceBetween size="m">
-                <ColumnLayout columns={3}>
-                  <FormField label="Page size">
-                    <Input
-                      type="number"
-                      value={pageSize.toString()}
-                      onChange={event => setUrlParams({ pageSize: parseInt(event.detail.value) })}
-                    />
-                  </FormField>
-
-                  <FormField label="Table role">
-                    <Select
-                      options={tableRoleOptions}
-                      selectedOption={tableRoleOptions.find(option => option.value === tableRole) ?? null}
-                      onChange={event => setUrlParams({ tableRole: event.detail.selectedOption.value as TableRole })}
-                    />
-                  </FormField>
-
-                  <FormField label="Actions mode">
-                    <Select
-                      options={actionsModeOptions}
-                      selectedOption={actionsModeOptions.find(option => option.value === actionsMode) ?? null}
-                      onChange={event =>
-                        setUrlParams({ actionsMode: event.detail.selectedOption.value as ActionsMode })
-                      }
-                    />
-                  </FormField>
-                </ColumnLayout>
-
-                <Link data-testid="link-before">How to use grid navigation?</Link>
-              </SpaceBetween>
-            }
+            header={<Link data-testid="link-before">How to use grid navigation?</Link>}
             footer={<Link data-testid="link-after">How to use grid navigation?</Link>}
           >
             <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
