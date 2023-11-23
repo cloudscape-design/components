@@ -15,6 +15,7 @@ import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -62,7 +63,6 @@ class GridNavigationHelper {
   private _table: null | HTMLTableElement = null;
 
   // State
-  private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
 
   public init(table: HTMLTableElement) {
@@ -118,7 +118,6 @@ class GridNavigationHelper {
       return;
     }
 
-    this.prevFocusedCell = cell;
     this.focusedCell = cell;
 
     muteElementFocusables(this.table, this.isSuppressed(cell.element));
@@ -131,8 +130,10 @@ class GridNavigationHelper {
     }
   };
 
-  private onFocusout = () => {
-    this.focusedCell = null;
+  private onFocusout = ({ relatedTarget }: FocusEvent) => {
+    if (relatedTarget instanceof Element && !nodeBelongs(this.table, relatedTarget)) {
+      this.focusedCell = null;
+    }
   };
 
   private onKeydown = (event: KeyboardEvent) => {
@@ -211,24 +212,23 @@ class GridNavigationHelper {
   private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
     // When focused cell is un-mounted the focusout event handler removes this.cell,
     // while this.prevFocusedCell is retained until the next focusin event.
-    const cell = this.focusedCell ?? this.prevFocusedCell;
-    const cellSuppressed = cell ? this.isSuppressed(cell.element) : false;
+    const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
 
     // Update table elements focus if new nodes were added.
     if (mutationRecords.some(record => record.addedNodes.length > 0)) {
       muteElementFocusables(this.table, cellSuppressed);
-      ensureSingleFocusable(this.table, cell);
+      ensureSingleFocusable(this.table, this.focusedCell);
     }
 
-    if (cell) {
+    if (this.focusedCell) {
       for (const record of mutationRecords) {
         if (record.type === 'childList') {
           // The lost focus in an unmount event is reapplied to the table using the previous cell position.
           // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
           for (const removedNode of Array.from(record.removedNodes)) {
-            if (removedNode === cell.element || nodeContains(removedNode, cell.element)) {
-              ensureSingleFocusable(this.table, cell);
-              moveFocusBy(this.table, cell, { y: 0, x: 0 });
+            if (removedNode === this.focusedCell.element || nodeContains(removedNode, this.focusedCell.element)) {
+              ensureSingleFocusable(this.table, this.focusedCell);
+              moveFocusBy(this.table, this.focusedCell, { y: 0, x: 0 });
             }
           }
         }
