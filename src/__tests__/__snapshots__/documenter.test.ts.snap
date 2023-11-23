@@ -9528,6 +9528,135 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
 }
 `;
 
+exports[`Documenter definition for page-header matches the snapshot: page-header 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "PageHeader",
+  "properties": Array [
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"default\\"",
+      "description": "Specifies the color mode (light or dark mode) for the main header area.
+By default, it follows the color mode of the page.
+Set this to \\"dark\\" to achieve a dark header.",
+      "inlineType": Object {
+        "name": "PageHeaderProps.ColorMode",
+        "type": "union",
+        "values": Array [
+          "default",
+          "dark",
+        ],
+      },
+      "name": "colorMode",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the responsiveness behavior of the main header area and the \`secondaryContent\` area.
+See the [grid API documentation](/components/grid?tabId=api) for more details about accepted values.
+If \`secondaryContent\` is defined, the grid contains two columns: the main header area and the \`secondaryContent\` slot.
+Otherwise, the grid only contains one column.
+",
+      "name": "gridDefinition",
+      "optional": true,
+      "type": "ReadonlyArray<GridProps.ElementDefinition>",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the \`max-width\` CSS value for the main header content that is displayed in the center.",
+      "name": "maxWidth",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Subheading text that is displayed underneath the title.",
+      "name": "subHeading",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"h1\\"",
+      "description": "Specifies the variant of the header:
+* \`h1\` - Use this for detail page headers.
+* \`display-l\` - Use this for landing page headers.",
+      "inlineType": Object {
+        "name": "PageHeaderProps.Variant",
+        "type": "union",
+        "values": Array [
+          "h1",
+          "display-l",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Activate this property to render the main header area inside a container.
+Use this when you otherwise cannot guarantee sufficient color contrast with the background image.",
+      "name": "withContainer",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": Array [
+    Object {
+      "description": "Actions for the container.",
+      "isDefault": false,
+      "name": "actions",
+    },
+    Object {
+      "description": "Background slot that is rendered behind the entire component area.
+Use this to define a custom background.",
+      "isDefault": false,
+      "name": "background",
+    },
+    Object {
+      "description": "The heading text. Plain text is recommended.",
+      "displayName": "title",
+      "isDefault": true,
+      "name": "children",
+    },
+    Object {
+      "description": "Supplementary description text below the heading, or the below the subheading if defined.",
+      "isDefault": false,
+      "name": "description",
+    },
+    Object {
+      "description": "Additional metadata that is displayed underneath the description.",
+      "isDefault": false,
+      "name": "metadata",
+    },
+    Object {
+      "description": "Secondary content that is displayed on the right side of the page header.
+Content inside this slot uses the color mode of the page and ignores the \`colorMode\` value.
+Use the \`gridDefinition\` property to control the size of this slot.",
+      "isDefault": false,
+      "name": "secondaryContent",
+    },
+    Object {
+      "description": "Tags or badges that are displayed underneath the metadata text.",
+      "isDefault": false,
+      "name": "tags",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for pagination matches the snapshot: pagination 1`] = `
 Object {
   "events": Array [
