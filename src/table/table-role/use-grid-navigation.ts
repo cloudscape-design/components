@@ -15,6 +15,7 @@ import {
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { nodeBelongs } from '../../internal/utils/node-belongs';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -72,6 +73,7 @@ class GridNavigationHelper {
     this._table = table;
 
     this.table.addEventListener('focusin', this.onFocusin);
+    this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
     muteElementFocusables(this.table, false);
@@ -79,6 +81,7 @@ class GridNavigationHelper {
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
+      this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
 
       restoreElementFocusables(this.table);
@@ -142,6 +145,16 @@ class GridNavigationHelper {
     if (cell.element === cell.cellElement) {
       getFirstFocusable(cell.cellElement)?.focus();
     }
+  };
+
+  private onFocusout = () => {
+    // When focus leaves the cell and the cell becomes no longer belong to the table it indicates the focused element has been unmounted.
+    // In that case the focus needs to be restored on the same coordinates.
+    setTimeout(() => {
+      if (this.focusedCell && !nodeBelongs(this.table, this.focusedCell.element)) {
+        this.moveFocusBy(this.focusedCell, { x: 0, y: 0 });
+      }
+    }, 0);
   };
 
   private onKeydown = (event: KeyboardEvent) => {
