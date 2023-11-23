@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode, useContext, useState } from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
 import Link from '~components/link';
 import LineChart from '~components/line-chart';
 import SpaceBetween from '~components/space-between';
@@ -12,6 +10,7 @@ import { commonProps, barChartInstructions } from '../mixed-line-bar-chart/commo
 import { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 import rawCostsData from '../common/popover-drilldown-sample-data';
 import AppContext, { AppContextType } from '../app/app-context';
+import FocusTarget from '../common/focus-target';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -63,64 +62,57 @@ export default function () {
   const [visibleSeries, setVisibleSeries] = useState<MixedLineBarChartProps.LineDataSeries<string>[] | null>(null);
 
   return (
-    <ScreenshotArea>
-      <h1>Chart popover drilldown</h1>
+    <>
+      <h1>Line chart drilldown</h1>
 
-      <Container
-        header={
-          <Header
-            variant="h2"
-            actions={
-              <SpaceBetween direction="horizontal" size="xxl">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={urlParams.expandableSubItems || false}
-                    onChange={event => setUrlParams({ expandableSubItems: event.target.checked })}
-                  />{' '}
-                  Expandable sub-items
-                </label>
-                <SpaceBetween direction="horizontal" size="s">
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="keys"
-                      onChange={() => setUrlParams({ useLinks: 'keys' })}
-                      checked={urlParams.useLinks === 'keys'}
-                    />{' '}
-                    Links in keys
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="values"
-                      onChange={() => setUrlParams({ useLinks: 'values' })}
-                      checked={urlParams.useLinks === 'values'}
-                    />{' '}
-                    Links in values
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="none"
-                      onChange={() => setUrlParams({ useLinks: undefined })}
-                      checked={!urlParams.useLinks}
-                    />{' '}
-                    No links
-                  </label>
-                </SpaceBetween>
-              </SpaceBetween>
-            }
-          >
-            Line chart
-          </Header>
-        }
-      >
+      <SpaceBetween direction="horizontal" size="xxl">
+        <label>
+          <input
+            type="checkbox"
+            checked={urlParams.expandableSubItems || false}
+            onChange={event => setUrlParams({ expandableSubItems: event.target.checked })}
+          />{' '}
+          Expandable sub-items
+        </label>
+        <SpaceBetween direction="horizontal" size="s">
+          <label>
+            <input
+              type="radio"
+              name="links"
+              value="keys"
+              onChange={() => setUrlParams({ useLinks: 'keys' })}
+              checked={urlParams.useLinks === 'keys'}
+            />{' '}
+            Links in keys
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="links"
+              value="values"
+              onChange={() => setUrlParams({ useLinks: 'values' })}
+              checked={urlParams.useLinks === 'values'}
+            />{' '}
+            Links in values
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="links"
+              value="none"
+              onChange={() => setUrlParams({ useLinks: undefined })}
+              checked={!urlParams.useLinks}
+            />{' '}
+            No links
+          </label>
+        </SpaceBetween>
+      </SpaceBetween>
+      <FocusTarget />
+
+      <ScreenshotArea>
         <LineChart
           {...commonProps}
+          hideFilter={true}
           series={allSeries}
           xDomain={xDomain}
           xTitle="Time"
@@ -213,7 +205,7 @@ export default function () {
             );
           }}
         />
-      </Container>
-    </ScreenshotArea>
+      </ScreenshotArea>
+    </>
   );
 }

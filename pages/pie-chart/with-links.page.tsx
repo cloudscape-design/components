@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Link from '~components/link';
 import PieChart from '~components/pie-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 import AppContext, { AppContextType } from '../app/app-context';
+import FocusTarget from '../common/focus-target';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -22,52 +21,42 @@ export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   return (
-    <ScreenshotArea>
+    <>
       <h1>Pie chart with links</h1>
-      <Container
-        header={
-          <Header
-            variant="h2"
-            actions={
-              <SpaceBetween direction="horizontal" size="s">
-                <label>
-                  <input
-                    type="radio"
-                    name="links"
-                    value="keys"
-                    onChange={() => setUrlParams({ useLinks: 'keys' })}
-                    checked={urlParams.useLinks === 'keys'}
-                  />{' '}
-                  Links in keys
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="links"
-                    value="values"
-                    onChange={() => setUrlParams({ useLinks: 'values' })}
-                    checked={urlParams.useLinks === 'values'}
-                  />{' '}
-                  Links in values
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="links"
-                    value="none"
-                    onChange={() => setUrlParams({ useLinks: undefined })}
-                    checked={!urlParams.useLinks}
-                  />{' '}
-                  No links
-                </label>
-              </SpaceBetween>
-            }
-          >
-            Food facts
-          </Header>
-        }
-      >
-        <input id="focus-target" aria-label="focus input" placeholder="focus input" />
+      <SpaceBetween direction="horizontal" size="s">
+        <label>
+          <input
+            type="radio"
+            name="links"
+            value="keys"
+            onChange={() => setUrlParams({ useLinks: 'keys' })}
+            checked={urlParams.useLinks === 'keys'}
+          />{' '}
+          Links in keys
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="links"
+            value="values"
+            onChange={() => setUrlParams({ useLinks: 'values' })}
+            checked={urlParams.useLinks === 'values'}
+          />{' '}
+          Links in values
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="links"
+            value="none"
+            onChange={() => setUrlParams({ useLinks: undefined })}
+            checked={!urlParams.useLinks}
+          />{' '}
+          No links
+        </label>
+      </SpaceBetween>
+      <FocusTarget />
+      <ScreenshotArea>
         <PieChart<FoodData>
           {...commonProps}
           hideFilter={true}
@@ -111,7 +100,7 @@ export default function () {
           hideDescriptions={true}
           hideTitles={true}
         />
-      </Container>
-    </ScreenshotArea>
+      </ScreenshotArea>
+    </>
   );
 }

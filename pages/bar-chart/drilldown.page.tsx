@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode, useContext, useState } from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
 import BarChart from '~components/bar-chart';
 import { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -61,73 +59,62 @@ export default function () {
   const [visibleSeries, setVisibleSeries] = useState<MixedLineBarChartProps.BarDataSeries<string>[] | null>(null);
 
   return (
-    <ScreenshotArea>
-      <h1>Chart popover drilldown</h1>
-      <Container
-        header={
-          <Header
-            variant="h2"
-            actions={
-              <SpaceBetween direction="horizontal" size="xxl">
-                <SpaceBetween direction="horizontal" size="s">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={urlParams.horizontalBars || false}
-                      onChange={event => setUrlParams({ horizontalBars: event.target.checked })}
-                    />{' '}
-                    Horizontal bars
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={urlParams.expandableSubItems || false}
-                      onChange={event => setUrlParams({ expandableSubItems: event.target.checked })}
-                    />{' '}
-                    Expandable sub-items
-                  </label>
-                </SpaceBetween>
-                <SpaceBetween direction="horizontal" size="s">
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="keys"
-                      onChange={() => setUrlParams({ useLinks: 'keys' })}
-                      checked={urlParams.useLinks === 'keys'}
-                    />{' '}
-                    Links in keys
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="values"
-                      onChange={() => setUrlParams({ useLinks: 'values' })}
-                      checked={urlParams.useLinks === 'values'}
-                    />{' '}
-                    Links in values
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="none"
-                      onChange={() => setUrlParams({ useLinks: undefined })}
-                      checked={!urlParams.useLinks}
-                    />{' '}
-                    No links
-                  </label>
-                </SpaceBetween>
-              </SpaceBetween>
-            }
-          >
-            Bar chart
-          </Header>
-        }
-      >
+    <>
+      <h1>Bar chart drilldown</h1>
+      <SpaceBetween direction="horizontal" size="s">
+        <label>
+          <input
+            type="checkbox"
+            checked={urlParams.horizontalBars || false}
+            onChange={event => setUrlParams({ horizontalBars: event.target.checked })}
+          />{' '}
+          Horizontal bars
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={urlParams.expandableSubItems || false}
+            onChange={event => setUrlParams({ expandableSubItems: event.target.checked })}
+          />{' '}
+          Expandable sub-items
+        </label>
+      </SpaceBetween>
+      <SpaceBetween direction="horizontal" size="s">
+        <label>
+          <input
+            type="radio"
+            name="links"
+            value="keys"
+            onChange={() => setUrlParams({ useLinks: 'keys' })}
+            checked={urlParams.useLinks === 'keys'}
+          />{' '}
+          Links in keys
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="links"
+            value="values"
+            onChange={() => setUrlParams({ useLinks: 'values' })}
+            checked={urlParams.useLinks === 'values'}
+          />{' '}
+          Links in values
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="links"
+            value="none"
+            onChange={() => setUrlParams({ useLinks: undefined })}
+            checked={!urlParams.useLinks}
+          />{' '}
+          No links
+        </label>
+      </SpaceBetween>
+      <ScreenshotArea>
         <BarChart
           {...commonProps}
+          hideFilter={true}
           stackedBars={true}
           series={allSeries}
           xDomain={xDomain}
@@ -218,7 +205,7 @@ export default function () {
             );
           }}
         />
-      </Container>
-    </ScreenshotArea>
+      </ScreenshotArea>
+    </>
   );
 }

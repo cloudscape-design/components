@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode, useContext, useState } from 'react';
 
-import Container from '~components/container';
-import Header from '~components/header';
 import MixedLineBarChart, { MixedLineBarChartProps } from '~components/mixed-line-bar-chart';
 import ScreenshotArea from '../utils/screenshot-area';
 import { commonProps, barChartInstructions } from './common';
@@ -68,65 +66,57 @@ export default function () {
   const [visibleSeries, setVisibleSeries] = useState<MixedLineBarChartProps.DataSeries<string>[] | null>(null);
 
   return (
-    <ScreenshotArea>
-      <h1>Chart popover drilldown</h1>
-      <Container
-        header={
-          <Header
-            variant="h2"
-            actions={
-              <SpaceBetween direction="horizontal" size="xxl">
-                <SpaceBetween direction="horizontal" size="s">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={urlParams.expandableSubItems || false}
-                      onChange={event => setUrlParams({ expandableSubItems: event.target.checked })}
-                    />{' '}
-                    Expandable sub-items
-                  </label>
-                </SpaceBetween>
-                <SpaceBetween direction="horizontal" size="s">
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="keys"
-                      onChange={() => setUrlParams({ useLinks: 'keys' })}
-                      checked={urlParams.useLinks === 'keys'}
-                    />{' '}
-                    Links in keys
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="values"
-                      onChange={() => setUrlParams({ useLinks: 'values' })}
-                      checked={urlParams.useLinks === 'values'}
-                    />{' '}
-                    Links in values
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="links"
-                      value="none"
-                      onChange={() => setUrlParams({ useLinks: undefined })}
-                      checked={!urlParams.useLinks}
-                    />{' '}
-                    No links
-                  </label>
-                </SpaceBetween>
-              </SpaceBetween>
-            }
-          >
-            Mixed line-bar chart
-          </Header>
-        }
-      >
+    <>
+      {' '}
+      <h1>Mixed chart drilldown</h1>
+      <SpaceBetween direction="horizontal" size="xxl">
+        <SpaceBetween direction="horizontal" size="s">
+          <label>
+            <input
+              type="checkbox"
+              checked={urlParams.expandableSubItems || false}
+              onChange={event => setUrlParams({ expandableSubItems: event.target.checked })}
+            />{' '}
+            Expandable sub-items
+          </label>
+        </SpaceBetween>
+        <SpaceBetween direction="horizontal" size="s">
+          <label>
+            <input
+              type="radio"
+              name="links"
+              value="keys"
+              onChange={() => setUrlParams({ useLinks: 'keys' })}
+              checked={urlParams.useLinks === 'keys'}
+            />{' '}
+            Links in keys
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="links"
+              value="values"
+              onChange={() => setUrlParams({ useLinks: 'values' })}
+              checked={urlParams.useLinks === 'values'}
+            />{' '}
+            Links in values
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="links"
+              value="none"
+              onChange={() => setUrlParams({ useLinks: undefined })}
+              checked={!urlParams.useLinks}
+            />{' '}
+            No links
+          </label>
+        </SpaceBetween>
+      </SpaceBetween>
+      <ScreenshotArea>
         <MixedLineBarChart
           {...commonProps}
+          hideFilter={true}
           stackedBars={true}
           series={allSeries}
           xDomain={xDomain}
@@ -217,7 +207,7 @@ export default function () {
             );
           }}
         />
-      </Container>
-    </ScreenshotArea>
+      </ScreenshotArea>
+    </>
   );
 }
