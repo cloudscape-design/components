@@ -97,16 +97,18 @@ class GridNavigationHelper {
   }
 
   public refresh() {
-    const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
+    if (this._table) {
+      const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
 
-    // Update focused cell indices in case table rows, columns, or firstIndex change.
-    if (this.focusedCell) {
-      this.focusedCell = findFocusedCell(this.focusedCell.element);
+      // Update focused cell indices in case table rows, columns, or firstIndex change.
+      if (this.focusedCell) {
+        this.focusedCell = findFocusedCell(this.focusedCell.element);
+      }
+
+      // Ensure newly added elements if any are muted.
+      muteElementFocusables(this.table, cellSuppressed);
+      ensureSingleFocusable(this.table, this.focusedCell);
     }
-
-    // Ensure newly added elements if any are muted.
-    muteElementFocusables(this.table, cellSuppressed);
-    ensureSingleFocusable(this.table, this.focusedCell);
   }
 
   private get pageSize() {
