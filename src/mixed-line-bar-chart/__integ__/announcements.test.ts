@@ -16,9 +16,9 @@ describe('Popover content is announced as plain text on hover', () => {
             const label = await page.getElementAttribute(bar, 'aria-label');
             expect(label).toContain('Jun 2023,');
             expect(label).toContain('Amazon Simple Storage Service $69.80,');
-            expect(label).toContain('Others $157.42');
+            expect(label).toContain('Group 1 $83.31');
             // Collapsed sub-items should not be announced
-            expect(label.includes('EC2 - Other $7.90,')).toEqual(!expandable);
+            expect(label.includes('AWS Config $40.06,')).toEqual(!expandable);
             expect(label).not.toContain('[object object]');
           });
         }
