@@ -64,10 +64,9 @@ export interface ContainerProps extends BaseComponentProps {
    * * `default` - Use this variant in standalone context.
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
    *               table).
-   * * `page`    - Use this variant for page-level headers in content-rich interfaces.
    * @visualrefresh `stacked` variant
    */
-  variant?: 'default' | 'stacked' | 'page';
+  variant?: 'default' | 'stacked';
 }
 
 export namespace ContainerProps {

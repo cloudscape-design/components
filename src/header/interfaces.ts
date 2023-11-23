@@ -16,7 +16,6 @@ export interface HeaderProps extends BaseComponentProps {
    * * `h2` - Use this for container level headers.
    * * `h3` - Use this for section level headers.
    * * `awsui-h1-sticky` - Use this for sticky headers in cards and tables.
-   * * `awsui-h1-page` - Use this for a page header
    * @visualrefresh `awsui-h1-sticky` variant
    */
   variant?: HeaderProps.Variant;
@@ -42,17 +41,9 @@ export interface HeaderProps extends BaseComponentProps {
    * Area next to the heading to display an Info link.
    */
   info?: React.ReactNode;
-
-  tags?: React.ReactNode;
-  subHeading?: React.ReactNode;
-  metadata?: React.ReactNode;
-  actionsPosition?: 'top' | 'bottom';
-  secondaryContent?: React.ReactNode;
-
-  colorMode?: 'default' | 'dark';
 }
 
 export namespace HeaderProps {
-  export type Variant = 'h1' | 'h2' | 'h3' | 'awsui-h1-sticky' | 'awsui-h1-page';
+  export type Variant = 'h1' | 'h2' | 'h3' | 'awsui-h1-sticky';
   export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
 }

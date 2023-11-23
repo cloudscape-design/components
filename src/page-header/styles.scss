@@ -12,6 +12,7 @@
   display: flex;
   justify-content: center;
 
+  inline-size: 100%;
   padding-inline-start: calc(2 * #{awsui.$space-l});
   padding-inline-end: calc(2 * #{awsui.$space-l});
 }
@@ -35,7 +36,7 @@
 
 .wrapper {
   display: block;
-
+  inline-size: 100%;
   padding-block-start: calc(2 * #{awsui.$space-l});
   padding-block-end: calc(2 * #{awsui.$space-l});
 }

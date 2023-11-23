@@ -35,8 +35,6 @@ nodes will directly touch with no gap between them.
     grid-column: 1;
     grid-row: 1 / 3;
     color: awsui.$color-text-body-default;
-    background-size: cover;
-    background-position: center;
 
     &.is-overlap-disabled {
       grid-row: 1 / 2;

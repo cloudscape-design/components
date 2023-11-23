@@ -10,9 +10,6 @@ import SpaceBetween from '~components/space-between';
 import { Containers } from '../app-layout/utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 
-import backgroundHeaderDark from '../header/header-dark.png';
-import backgroundHeaderLight from '../header/header-light.png';
-
 export default function () {
   const [alertVisible, setVisible] = useState(true);
 
@@ -20,22 +17,33 @@ export default function () {
     <main>
       <ScreenshotArea gutters={false}>
         <ContentLayout
-          headerBackgroundImage={backgroundHeaderDark}
           header={
-            <Header
-              variant="awsui-h1-page"
-              info={<Link>Info</Link>}
-              description="When you create a new distribution."
-              actions={<Button variant="primary">Create distribution</Button>}
-            >
-              Create distribution
-            </Header>
+            <div style={{ padding: '20px 40px 0' }}>
+              <SpaceBetween size="m">
+                <Header
+                  variant="h1"
+                  info={<Link>Info</Link>}
+                  description="When you create a new distribution."
+                  actions={<Button variant="primary">Create distribution</Button>}
+                >
+                  Create distribution
+                </Header>
+                {alertVisible && (
+                  <Alert
+                    statusIconAriaLabel="Info"
+                    dismissible={true}
+                    dismissAriaLabel="Close alert"
+                    onDismiss={() => setVisible(false)}
+                  >
+                    Demo alert
+                  </Alert>
+                )}
+              </SpaceBetween>
+            </div>
           }
         >
           <div style={{ padding: '0 40px 20px' }}>
             <Containers />
-            <img src={backgroundHeaderDark} />
-            <img src={backgroundHeaderLight} />
           </div>
         </ContentLayout>
       </ScreenshotArea>
