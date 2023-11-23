@@ -5,8 +5,8 @@ import '@cloudscape-design/global-styles/dark-mode-utils.css';
 import { Button, Container, Header, PageHeader, Link, Icon } from '~components';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
-import backgroundHeaderDark from '../header/header-dark.png';
-import backgroundHeaderLight from '../header/header-light.png';
+import backgroundHeaderDark from './header-dark.png';
+import backgroundHeaderLight from './header-light.png';
 import styles from './styles.scss';
 
 const Separator = () => <span className={styles.separator} />;
