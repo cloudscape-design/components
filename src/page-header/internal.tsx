@@ -6,9 +6,13 @@ import { PageHeaderProps } from './interfaces';
 import InternalGrid from '../grid/internal';
 import InternalContainer from '../container/internal';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import styles from './styles.css.js';
 import InternalBox from '../box/internal';
 import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+
+import styles from './styles.css.js';
+
+type InternalPageHeaderProps = PageHeaderProps & InternalBaseComponentProps;
 
 // Default grid definition when secondaryContent is present
 const defaultGridDefinition = [{ colspan: { default: 12, m: 8 } }, { colspan: { default: 12, m: 4 } }];
@@ -27,12 +31,11 @@ const InternalPageHeader = ({
   tags,
   background,
   withContainer,
+  __internalRootRef,
   ...props
-}: PageHeaderProps) => {
+}: InternalPageHeaderProps) => {
   const baseProps = getBaseProps(props);
   const headerGridDefinition = gridDefinition ?? (secondaryContent ? defaultGridDefinition : [{ colspan: 12 }]);
-
-  baseProps.className = clsx(baseProps.className, styles.root, colorMode === 'dark' && styles.dark);
 
   const mainHeaderContent = (
     <>
@@ -46,7 +49,11 @@ const InternalPageHeader = ({
   );
 
   return (
-    <div {...baseProps}>
+    <div
+      {...baseProps}
+      ref={__internalRootRef}
+      className={clsx(baseProps.className, styles.root, colorMode === 'dark' && styles.dark)}
+    >
       {background && <div className={styles.background}>{background}</div>}
       <div className={styles.wrapper} style={{ maxWidth: maxWidth ?? '800px' }}>
         <InternalGrid gridDefinition={headerGridDefinition}>
