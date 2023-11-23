@@ -3,9 +3,10 @@
 
 import { useEffect, useMemo } from 'react';
 import {
+  // Update focused cell indices in case rows, columns, or statingIndex
   defaultIsSuppressed,
-  findFocusinCell,
-  moveFocusBy,
+  findFocusedCell,
+  getNextFocusable,
   muteElementFocusables,
   restoreElementFocusables,
   ensureSingleFocusable,
@@ -13,9 +14,7 @@ import {
 } from './utils';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { nodeBelongs } from '../../internal/utils/node-belongs';
 
 /**
  * Makes table navigable with keyboard commands.
@@ -42,6 +41,10 @@ export function useGridNavigation({ keyboardNavigation, pageSize, getTable }: Gr
   useEffect(() => {
     gridNavigation.update({ pageSize });
   }, [gridNavigation, pageSize]);
+
+  useEffect(() => {
+    gridNavigation.refresh();
+  });
 }
 
 /**
@@ -69,21 +72,14 @@ class GridNavigationHelper {
     this._table = table;
 
     this.table.addEventListener('focusin', this.onFocusin);
-    this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
-
-    const tableNodesObserver = new MutationObserver(this.onTableNodeMutation);
-    tableNodesObserver.observe(table, { childList: true, subtree: true });
 
     muteElementFocusables(this.table, false);
     ensureSingleFocusable(this.table, null);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
-      this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
-
-      tableNodesObserver.disconnect();
 
       restoreElementFocusables(this.table);
     };
@@ -95,6 +91,19 @@ class GridNavigationHelper {
 
   public update({ pageSize }: { pageSize: number }) {
     this._pageSize = pageSize;
+  }
+
+  public refresh() {
+    const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
+
+    // Update focused cell indices in case table rows, columns, or firstIndex change.
+    if (this.focusedCell) {
+      this.focusedCell = findFocusedCell(this.focusedCell.element);
+    }
+
+    // Ensure newly added elements if any are muted.
+    muteElementFocusables(this.table, cellSuppressed);
+    ensureSingleFocusable(this.table, this.focusedCell);
   }
 
   private get pageSize() {
@@ -113,7 +122,12 @@ class GridNavigationHelper {
   }
 
   private onFocusin = (event: FocusEvent) => {
-    const cell = findFocusinCell(event);
+    if (!(event.target instanceof HTMLElement)) {
+      return;
+    }
+    // Update focused cell indices in case rows, columns, or statingIndex
+
+    const cell = findFocusedCell(event.target);
     if (!cell) {
       return;
     }
@@ -127,12 +141,6 @@ class GridNavigationHelper {
     // If content focusables are available - move the focus to the first one.
     if (cell.element === cell.cellElement) {
       getFirstFocusable(cell.cellElement)?.focus();
-    }
-  };
-
-  private onFocusout = ({ relatedTarget }: FocusEvent) => {
-    if (relatedTarget instanceof Element && !nodeBelongs(this.table, relatedTarget)) {
-      this.focusedCell = null;
     }
   };
 
@@ -166,73 +174,50 @@ class GridNavigationHelper {
     switch (key) {
       case KeyCode.up:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: -1, x: 0 });
+        return this.moveFocusBy(from, { y: -1, x: 0 });
 
       case KeyCode.down:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 1, x: 0 });
+        return this.moveFocusBy(from, { y: 1, x: 0 });
 
       case KeyCode.left:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: -1 });
+        return this.moveFocusBy(from, { y: 0, x: -1 });
 
       case KeyCode.right:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: 1 });
+        return this.moveFocusBy(from, { y: 0, x: 1 });
 
       case KeyCode.pageUp:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: -this.pageSize, x: 0 });
+        return this.moveFocusBy(from, { y: -this.pageSize, x: 0 });
 
       case KeyCode.pageDown:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: this.pageSize, x: 0 });
+        return this.moveFocusBy(from, { y: this.pageSize, x: 0 });
 
       case KeyCode.home:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: minExtreme });
+        return this.moveFocusBy(from, { y: 0, x: minExtreme });
 
       case KeyCode.end:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: 0, x: maxExtreme });
+        return this.moveFocusBy(from, { y: 0, x: maxExtreme });
 
       case -KeyCode.home:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: minExtreme, x: minExtreme });
+        return this.moveFocusBy(from, { y: minExtreme, x: minExtreme });
 
       case -KeyCode.end:
         event.preventDefault();
-        return moveFocusBy(this.table, from, { y: maxExtreme, x: maxExtreme });
+        return this.moveFocusBy(from, { y: maxExtreme, x: maxExtreme });
 
       default:
         return;
     }
   };
 
-  private onTableNodeMutation = (mutationRecords: MutationRecord[]) => {
-    // When focused cell is un-mounted the focusout event handler removes this.cell,
-    // while this.prevFocusedCell is retained until the next focusin event.
-    const cellSuppressed = this.focusedCell ? this.isSuppressed(this.focusedCell.element) : false;
-
-    // Update table elements focus if new nodes were added.
-    if (mutationRecords.some(record => record.addedNodes.length > 0)) {
-      muteElementFocusables(this.table, cellSuppressed);
-      ensureSingleFocusable(this.table, this.focusedCell);
-    }
-
-    if (this.focusedCell) {
-      for (const record of mutationRecords) {
-        if (record.type === 'childList') {
-          // The lost focus in an unmount event is reapplied to the table using the previous cell position.
-          // The moveFocusBy takes care of finding the closest position if the previous one no longer exists.
-          for (const removedNode of Array.from(record.removedNodes)) {
-            if (removedNode === this.focusedCell.element || nodeContains(removedNode, this.focusedCell.element)) {
-              ensureSingleFocusable(this.table, this.focusedCell);
-              moveFocusBy(this.table, this.focusedCell, { y: 0, x: 0 });
-            }
-          }
-        }
-      }
-    }
-  };
+  private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {
+    getNextFocusable(this.table, cell, delta)?.focus();
+  }
 }
