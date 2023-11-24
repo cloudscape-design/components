@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef } from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { useGridNavigation } from '../../../../lib/components/table/table-role';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import { TestTable, actionsColumn, idColumn, items, nameColumn, valueColumn } from './stubs';
@@ -105,8 +105,13 @@ test('suppresses grid navigation when focusing on dialog element', () => {
   expect(getActiveElement()).toEqual(['input', 'Value input']);
   expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
 
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['input', 'Value input']);
+  expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(0);
+
   (container.querySelector('button[aria-label="Save"]') as HTMLElement).click();
-  (container.querySelector('button[aria-label="Sort by value"]') as HTMLElement).focus();
+  fireEvent.keyDown(table, { keyCode: KeyCode.down });
+  expect(getActiveElement()).toEqual(['button', 'Edit value 2']);
   expect(container.querySelectorAll('button[tabIndex="-999"]')).toHaveLength(5);
 });
 
@@ -217,7 +222,21 @@ test('throws no error when focusing on incorrect target', () => {
   expect(g).toHaveFocus();
 });
 
-test('elements focus is restored if table changes role after being rendered as grid', () => {
+test('restores focus when the node gets removed', async () => {
+  const { container } = render(<TestTable columns={[idColumn, valueColumn]} items={items} />);
+
+  const editButton = container.querySelector('button[aria-label="Edit value 1"]') as HTMLElement;
+  const editButtonCell = editButton.closest('td');
+
+  editButton.focus();
+  expect(editButton).toHaveFocus();
+
+  editButton.blur();
+  editButton.remove();
+  await waitFor(() => expect(editButtonCell).toHaveFocus());
+});
+
+test('all elements focus is restored if table changes role after being rendered as grid', () => {
   const { container, rerender } = render(<TestTable columns={[valueColumn, idColumn]} items={items} />);
   const getTabIndices = () => Array.from(container.querySelectorAll('button')).map(button => button.tabIndex);
 
