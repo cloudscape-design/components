@@ -50,46 +50,38 @@ export function TestTable<T extends object>({
   items,
   startIndex = 0,
   pageSize = 2,
-  before,
-  after,
 }: {
   keyboardNavigation?: boolean;
   columns: { header: React.ReactNode; cell: (item: T) => React.ReactNode }[];
   items: T[];
   startIndex?: number;
   pageSize?: number;
-  before?: React.ReactNode;
-  after?: React.ReactNode;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
   useGridNavigation({ keyboardNavigation, pageSize, getTable: () => tableRef.current });
   return (
-    <div>
-      {before}
-      <table role="grid" ref={tableRef}>
-        <thead>
-          <tr aria-rowindex={1}>
+    <table role="grid" ref={tableRef}>
+      <thead>
+        <tr aria-rowindex={1}>
+          {columns.map((column, columnIndex) => (
+            <th key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
+              {column.header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item, itemIndex) => (
+          <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
             {columns.map((column, columnIndex) => (
-              <th key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
-                {column.header}
-              </th>
+              <td key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
+                {column.cell(item)}
+              </td>
             ))}
           </tr>
-        </thead>
-        <tbody>
-          {items.map((item, itemIndex) => (
-            <tr key={itemIndex} aria-rowindex={startIndex + itemIndex + 1 + 1}>
-              {columns.map((column, columnIndex) => (
-                <td key={columnIndex} aria-colindex={columnIndex + 1} tabIndex={-1}>
-                  {column.cell(item)}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {after}
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 }
 

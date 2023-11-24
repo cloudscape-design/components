@@ -29,7 +29,7 @@ export function useGridNavigation({ keyboardNavigation, pageSize, getTable }: Gr
 
   const getTableStable = useStableCallback(getTable);
 
-  // Initialize the model with the table container assuming it is mounted synchronously and only once.
+  // Initialize the helper with the table container assuming it is mounted synchronously and only once.
   useEffect(() => {
     if (keyboardNavigation) {
       const table = getTableStable();
@@ -38,13 +38,16 @@ export function useGridNavigation({ keyboardNavigation, pageSize, getTable }: Gr
     return () => gridNavigation.cleanup();
   }, [keyboardNavigation, gridNavigation, getTableStable]);
 
-  // Notify the model of the props change.
+  // Notify the helper of the props change.
   useEffect(() => {
     gridNavigation.update({ pageSize });
   }, [gridNavigation, pageSize]);
 
+  // Notify the helper of the new render.
   useEffect(() => {
-    gridNavigation.refresh();
+    if (keyboardNavigation) {
+      gridNavigation.refresh();
+    }
   });
 }
 
@@ -130,7 +133,6 @@ class GridNavigationHelper {
     if (!(event.target instanceof HTMLElement)) {
       return;
     }
-    // Update focused cell indices in case rows, columns, or statingIndex
 
     const cell = findFocusedCell(event.target);
     if (!cell) {

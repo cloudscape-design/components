@@ -249,10 +249,8 @@ test('does not override tab index for programmatically focused elements', () => 
 
   const { container } = render(<TestComponent />);
   const button = container.querySelector('button')!;
-  const firstCell = container.querySelector('td')!;
 
   button.focus();
   expect(button).toHaveFocus();
   expect(button).toHaveAttribute('tabIndex', '-1');
-  expect(firstCell).toHaveAttribute('tabIndex', '0');
 });
