@@ -80,13 +80,17 @@ function ChartSeriesDetails({
                     expanded={expandedStates ? expandedStates[index] : undefined}
                     onChange={({ detail }) => setExpandedState && setExpandedState(index, detail.expanded)}
                   >
-                    <SubItems items={subItems} expandable={true} />
+                    <SubItems
+                      items={subItems}
+                      expandable={true}
+                      expanded={expandedStates ? expandedStates[index] : undefined}
+                    />
                   </InternalExpandableSection>
                 </div>
               </div>
             ) : (
               <>
-                <div className={styles['key-value-pair']}>
+                <div className={clsx(styles['key-value-pair'], styles.announced)}>
                   <div className={styles.key}>
                     {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
                     <span>{key}</span>
@@ -103,11 +107,26 @@ function ChartSeriesDetails({
   );
 }
 
-function SubItems({ items, expandable }: { items: ReadonlyArray<ChartDetailPair>; expandable?: boolean }) {
+function SubItems({
+  items,
+  expandable,
+  expanded,
+}: {
+  items: ReadonlyArray<ChartDetailPair>;
+  expandable?: boolean;
+  expanded?: boolean;
+}) {
   return (
     <ul className={clsx(styles['sub-items'], expandable && styles.expandable)}>
       {items.map(({ key, value }, index) => (
-        <li key={index} className={clsx(styles['inner-list-item'], styles['key-value-pair'])}>
+        <li
+          key={index}
+          className={clsx(
+            styles['inner-list-item'],
+            styles['key-value-pair'],
+            (expanded || !expandable) && styles.announced
+          )}
+        >
           <span className={styles.key}>{key}</span>
           <span className={styles.value}>{value}</span>
         </li>
