@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ReactNode } from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { PopoverProps } from '../popover/interfaces';
@@ -12,9 +11,9 @@ export interface SeriesInfo {
   markerType: 'line' | 'rectangle';
 }
 
-export interface ChartDetailPair {
-  key: ReactNode;
-  value: ReactNode;
+interface ChartDetailPair {
+  key: string;
+  value: string | number;
 }
 
 export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Datum> extends BaseComponentProps {

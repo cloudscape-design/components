@@ -1,15 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, memo, useEffect, useRef } from 'react';
+import React, { memo, ReactNode, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { ChartDetailPair } from '../../../pie-chart/interfaces';
 import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 import styles from './styles.css.js';
 import InternalExpandableSection from '../../../expandable-section/internal';
 import getSeriesDetailsText from './series-details-text';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
+
+interface ChartDetailPair {
+  key: ReactNode;
+  value: ReactNode;
+}
 
 export interface ChartSeriesDetailItem extends ChartDetailPair {
   markerType?: ChartSeriesMarkerType;
@@ -27,16 +30,18 @@ export interface ChartSeriesDetailsProps extends BaseComponentProps {
   setExpandedState?: (index: number, state: boolean) => void;
 }
 
-export default memo(forwardRef(ChartSeriesDetails));
+export default memo(ChartSeriesDetails);
 
-function ChartSeriesDetails(
-  { details, expandedStates, setPopoverText, setExpandedState, ...restProps }: ChartSeriesDetailsProps,
-  ref?: React.Ref<HTMLDivElement>
-) {
+function ChartSeriesDetails({
+  details,
+  expandedStates,
+  setPopoverText,
+  setExpandedState,
+  ...restProps
+}: ChartSeriesDetailsProps) {
   const baseProps = getBaseProps(restProps);
   const className = clsx(baseProps.className, styles.root);
   const detailsRef = useRef<HTMLDivElement | null>(null);
-  const mergedRef = useMergeRefs(detailsRef, ref);
 
   // Once the component has rendered, pass its content in plain text
   // so that it can be used by screen readers.
@@ -52,7 +57,7 @@ function ChartSeriesDetails(
   }, [details, setPopoverText]);
 
   return (
-    <div {...baseProps} className={className} ref={mergedRef}>
+    <div {...baseProps} className={className} ref={detailsRef}>
       <ul className={styles.list}>
         {details.map(({ key, value, markerType, color, isDimmed, subItems, expandable }, index) => (
           <li

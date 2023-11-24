@@ -4,8 +4,7 @@ import Flashbar from '~components/flashbar';
 import React from 'react';
 import { Box } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
-import { sampleNotifications } from './common';
-import FocusTarget from '../common/focus-target';
+import { FocusTarget, sampleNotifications } from './common';
 
 const items = [
   { ...sampleNotifications.warning, id: '2' },

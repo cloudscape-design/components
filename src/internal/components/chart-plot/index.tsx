@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, RefObject, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import styles from './styles.css.js';
@@ -39,7 +39,7 @@ export interface ChartPlotProps {
   activeElementKey?: null | string | number | boolean;
   activeElementRef?: React.RefObject<SVGGElement>;
   activeElementFocusOffset?: Offset;
-  ariaLiveRegion?: RefObject<HTMLElement> | string;
+  ariaLiveRegion?: React.ReactNode;
   isClickable?: boolean;
   isPrecise?: boolean;
   onMouseDown?: (event: React.MouseEvent<SVGSVGElement>) => void;
@@ -218,11 +218,7 @@ function ChartPlot(
         </g>
       </svg>
 
-      {typeof ariaLiveRegion === 'string' ? (
-        <LiveRegion>{ariaLiveRegion}</LiveRegion>
-      ) : (
-        <LiveRegion source={[ariaLiveRegion]} />
-      )}
+      <LiveRegion>{ariaLiveRegion}</LiveRegion>
     </>
   );
 }

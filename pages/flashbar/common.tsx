@@ -97,3 +97,14 @@ export function generateItem({
     ...(hasHeader && { header: 'Has Header Content' }),
   };
 }
+
+export function FocusTarget() {
+  return (
+    <p>
+      Click here to focus so we can tab to the content below{' '}
+      <button type="button" id="focus-target">
+        focus
+      </button>
+    </p>
+  );
+}
