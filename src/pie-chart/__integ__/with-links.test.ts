@@ -4,21 +4,21 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-function setupTest(useLinks: string, testFn: (page: BasePageObject) => Promise<void>) {
+function setupTest(links: string, testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/pie-chart/with-links?useLinks=${useLinks}`);
+    await browser.url(`#/light/pie-chart/with-links-in-${links}`);
     await testFn(page);
   });
 }
 
 describe('Pie chart with links in key-value pairs', () => {
-  describe.each(['keys', 'values'])('with links in the %s', useLinks => {
+  describe.each(['keys', 'values'])('with links in the %s', links => {
     it(
       'allows to focus internal popover content',
-      setupTest(useLinks, async page => {
+      setupTest(links, async page => {
         const expectedFocusedText =
-          useLinks === 'keys'
+          links === 'keys'
             ? // The external link icon adds an extra space at the end
               'Popularity '
             : '50% ';
@@ -30,7 +30,7 @@ describe('Pie chart with links in key-value pairs', () => {
     );
     it(
       'announces detail popover content in plain text when focusing a segment',
-      setupTest(useLinks, async page => {
+      setupTest(links, async page => {
         await page.initLiveAnnouncementsObserver();
         await page.click('#focus-target');
         await page.keys(['Tab']);
