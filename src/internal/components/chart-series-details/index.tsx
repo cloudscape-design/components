@@ -21,11 +21,11 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
   subItems?: ReadonlyArray<ChartDetailPair>;
   expandable?: boolean;
 }
-export type ExpandedStates = Record<number, boolean>;
+export type ExpandedSeries = Set<number>;
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
   details: ReadonlyArray<ChartSeriesDetailItem>;
-  expandedStates?: ExpandedStates;
+  expandedSeries?: ExpandedSeries;
   setPopoverText?: (s: string) => void;
   setExpandedState?: (index: number, state: boolean) => void;
 }
@@ -34,7 +34,7 @@ export default memo(ChartSeriesDetails);
 
 function ChartSeriesDetails({
   details,
-  expandedStates,
+  expandedSeries,
   setPopoverText,
   setExpandedState,
   ...restProps
@@ -55,6 +55,8 @@ function ChartSeriesDetails({
       };
     }
   }, [details, setPopoverText]);
+
+  const isExpanded = (index: number) => (expandedSeries ? expandedSeries.has(index) : undefined);
 
   return (
     <div {...baseProps} className={className} ref={detailsRef}>
@@ -77,14 +79,10 @@ function ChartSeriesDetails({
                     variant="compact"
                     headerText={key}
                     headerActions={<span className={clsx(styles.value, styles.expandable)}>{value}</span>}
-                    expanded={expandedStates ? expandedStates[index] : undefined}
+                    expanded={isExpanded(index)}
                     onChange={({ detail }) => setExpandedState && setExpandedState(index, detail.expanded)}
                   >
-                    <SubItems
-                      items={subItems}
-                      expandable={true}
-                      expanded={expandedStates ? expandedStates[index] : undefined}
-                    />
+                    <SubItems items={subItems} expandable={true} expanded={isExpanded(index)} />
                   </InternalExpandableSection>
                 </div>
               </div>

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
-import ChartSeriesDetails, { ExpandedStates } from '../internal/components/chart-series-details';
+import ChartSeriesDetails, { ExpandedSeries } from '../internal/components/chart-series-details';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -48,7 +48,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
   }: MixedChartPopoverProps<T>,
   popoverRef: React.Ref<HTMLElement>
 ) {
-  const [expandedStates, setExpandedStates] = useState<Record<string, ExpandedStates>>({});
+  const [expandedSeries, setExpandedSeries] = useState<Record<string, ExpandedSeries>>({});
   return (
     <Transition in={isOpen}>
       {(state, ref) => (
@@ -72,11 +72,19 @@ function MixedChartPopover<T extends ChartDataTypes>(
                 key={highlightDetails.position}
                 details={highlightDetails.details}
                 setPopoverText={setPopoverText}
-                expandedStates={expandedStates[highlightDetails.position]}
-                setExpandedState={(index, state) =>
-                  setExpandedStates({
-                    ...expandedStates,
-                    [highlightDetails.position]: { ...expandedStates[highlightDetails.position], [index]: state },
+                expandedSeries={expandedSeries[highlightDetails.position]}
+                setExpandedState={(index, isExpanded) =>
+                  setExpandedSeries(oldState => {
+                    const expandedSeriesInCurrentCoordinate = new Set(oldState[highlightDetails.position]);
+                    if (isExpanded) {
+                      expandedSeriesInCurrentCoordinate.add(index);
+                    } else {
+                      expandedSeriesInCurrentCoordinate.delete(index);
+                    }
+                    return {
+                      ...oldState,
+                      [highlightDetails.position]: expandedSeriesInCurrentCoordinate,
+                    };
                   })
                 }
               />
