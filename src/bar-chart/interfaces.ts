@@ -43,7 +43,7 @@ export interface BarChartProps<T extends ChartDataTypes>
   xScaleType?: ScaleType;
 
   /**
-   * Specifies custom rendering of the series displayed in the chart popover.
+   * Specifies customization of the content displayed in the chart popover.
    * Use this for wrapping keys or values in links, or to display an additional
    * level of nested items.
    */
