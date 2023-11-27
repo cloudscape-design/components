@@ -23,8 +23,9 @@ describe('Pie chart with links in key-value pairs', () => {
               'Popularity '
             : '50% ';
         await page.click('#focus-target');
-        await page.keys(['Tab', 'Enter']);
-        await page.keys(['Tab']);
+        await page.keys(['Tab']); // Focus the chart
+        await page.keys(['Enter']); // Focus the first chart segment
+        await page.keys(['Tab']); // Focus the first interactive element in the detail popover
         await expect(page.getFocusedElementText()).resolves.toBe(expectedFocusedText);
       })
     );
@@ -33,8 +34,8 @@ describe('Pie chart with links in key-value pairs', () => {
       setupTest(links, async page => {
         await page.initLiveAnnouncementsObserver();
         await page.click('#focus-target');
-        await page.keys(['Tab']);
-        await page.keys(['Enter']);
+        await page.keys(['Tab']); // Focus the chart
+        await page.keys(['Enter']); // Focus the first chart segment
         await expect(page.getLiveAnnouncements()).resolves.toContain('Popularity 50% Calories per 100g 77 kcal');
       })
     );
