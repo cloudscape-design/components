@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ReactNode } from 'react';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 
 export type ChartDataTypes = number | string | Date;
@@ -51,6 +52,13 @@ export interface MixedLineBarChartProps<T extends ChartDataTypes>
    * Use `categorical` for charts with bars.
    */
   xScaleType?: ScaleType;
+
+  /**
+   * Specifies custom rendering of the series displayed in the chart popover.
+   * Use this for wrapping keys or values in links, or to display an additional
+   * level of nested items.
+   */
+  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
 export namespace MixedLineBarChartProps {
@@ -112,7 +120,14 @@ export namespace MixedLineBarChartProps {
 
   export type I18nStrings<T> = CartesianChartProps.I18nStrings<T>;
 
-  export type DetailPopoverSeriesContent<T> = CartesianChartProps.DetailPopoverSeriesContent<ChartSeries<T>, T>;
+  export interface DetailPopoverSeriesContent<T> {
+    ({ series, x, y }: { series: ChartSeries<T>; x: T; y: number }): {
+      key: ReactNode;
+      value: ReactNode;
+      expandable?: boolean;
+      subItems?: ReadonlyArray<{ key: ReactNode; value: ReactNode }>;
+    };
+  }
 }
 
 export interface VerticalMarkerX<T> {
