@@ -848,115 +848,10 @@ Note: If provided, this property should be set to \`null\` or \`undefined\` if a
 
 exports[`Documenter definition for area-chart matches the snapshot: area-chart 1`] = `
 Object {
-  "events": Array [
-    Object {
-      "cancelable": false,
-      "description": "Called when the values of the internal filter component changed.
-This will **not** be called for any custom filter components you have defined in \`additionalFilters\`.",
-      "detailInlineType": Object {
-        "name": "CartesianChartProps.FilterChangeDetail",
-        "properties": Array [
-          Object {
-            "name": "visibleSeries",
-            "optional": false,
-            "type": "ReadonlyArray<Series>",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "CartesianChartProps.FilterChangeDetail<AreaChartProps.Series<T>>",
-      "name": "onFilterChange",
-    },
-    Object {
-      "cancelable": false,
-      "description": "Called when the highlighted series has changed because of user interaction.",
-      "detailInlineType": Object {
-        "name": "CartesianChartProps.HighlightChangeDetail",
-        "properties": Array [
-          Object {
-            "name": "highlightedSeries",
-            "optional": false,
-            "type": "Series | null",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "CartesianChartProps.HighlightChangeDetail<AreaChartProps.Series<T>>",
-      "name": "onHighlightChange",
-    },
-    Object {
-      "cancelable": false,
-      "description": "Called when the user clicks the recovery button that appears when there is an error state.
-Use this to enable the user to retry a failed request or provide another option for the user
-to recover from the error.",
-      "name": "onRecoveryClick",
-    },
-  ],
+  "events": Array [],
   "functions": Array [],
   "name": "AreaChart",
   "properties": Array [
-    Object {
-      "description": "A description of the chart that assistive technologies can use (through \`aria-describedby\`).
-Provide a concise summary of the data visualized in the chart.",
-      "name": "ariaDescription",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "ARIA label that is assigned to the chart itself. It should match the visible label on the page, e.g. in the container header.
-Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
-      "name": "ariaLabel",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Sets \`aria-labelledby\` on the chart itself.
-If there is a visible label for the chart on the page, e.g. in the container header, set this property to the ID of that header element.
-Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
-      "name": "ariaLabelledby",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified classes to the root element of the component.",
-      "name": "className",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Additional content that is displayed at the bottom of the detail popover.",
-      "inlineType": Object {
-        "name": "CartesianChartProps.DetailPopoverFooter",
-        "parameters": Array [
-          Object {
-            "name": "xValue",
-            "type": "T",
-          },
-        ],
-        "returnType": "React.ReactNode",
-        "type": "function",
-      },
-      "name": "detailPopoverFooter",
-      "optional": true,
-      "type": "CartesianChartProps.DetailPopoverFooter<T>",
-    },
-    Object {
-      "defaultValue": "\\"medium\\"",
-      "description": "Determines the maximum width the detail popover will be limited to.",
-      "inlineType": Object {
-        "name": "",
-        "type": "union",
-        "values": Array [
-          "small",
-          "medium",
-          "large",
-        ],
-      },
-      "name": "detailPopoverSize",
-      "optional": true,
-      "type": "string",
-    },
     Object {
       "description": "Function to format the displayed values total.",
       "inlineType": Object {
@@ -967,52 +862,6 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "detailTotalFormatter",
       "optional": true,
       "type": "AreaChartProps.TickFormatter<number>",
-    },
-    Object {
-      "description": "Text that is displayed when the chart is in error state, i.e. when \`statusType\` is set to \`\\"error\\"\`.",
-      "i18nTag": true,
-      "name": "errorText",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Enable this property to make the chart fit into the available height of the parent container.",
-      "name": "fitHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
-      "defaultValue": "500",
-      "description": "An optional pixel value number that fixes the height of the chart area.
-If not set explicitly, the component will use a default height that is defined internally.
-When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
-      "name": "height",
-      "optional": true,
-      "type": "number",
-    },
-    Object {
-      "description": "When set to \`true\`, the default filtering dropdown is not displayed.
-It is still possible to render additional filters with the \`additionalFilters\` slot.",
-      "name": "hideFilter",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
-      "description": "When set to \`true\`, the legend beneath the chart is not displayed.
-It is highly recommended to keep this set to \`false\`.",
-      "name": "hideLegend",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
-      "description": "The currently highlighted data series, usually through hovering over a series or the legend.
-A value of \`null\` means no series is highlighted.
-- If you do not set this property, series are highlighted automatically when hovering over one of the triggers (uncontrolled behavior).
-- If you explicitly set this property, you must set an \`onHighlightChange\` listener to update this property when a series should be highlighted (controlled behavior).
-",
-      "name": "highlightedSeries",
-      "optional": true,
-      "type": "AreaChartProps.Series<T> | null",
     },
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -1088,33 +937,6 @@ A value of \`null\` means no series is highlighted.
       "type": "AreaChartProps.I18nStrings<T>",
     },
     Object {
-      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified ID to the root element of the component.",
-      "name": "id",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Optional title for the legend.",
-      "name": "legendTitle",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Text that is displayed when the chart is loading, i.e. when \`statusType\` is set to \`\\"loading\\"\`.",
-      "i18nTag": true,
-      "name": "loadingText",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Text for the recovery button that is displayed next to the error text.",
-      "i18nTag": true,
-      "name": "recoveryText",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "description": "Array that represents the source of data for the displayed chart.
 Each element can represent an area series, or a threshold, and can have the following properties:
 * \`title\` (string): A human-readable title for this series
@@ -1127,151 +949,8 @@ Each element can represent an area series, or a threshold, and can have the foll
       "optional": false,
       "type": "ReadonlyArray<AreaChartProps.Series<T>>",
     },
-    Object {
-      "defaultValue": "\\"finished\\"",
-      "description": "Specifies the current status of loading data.
-* \`loading\`: data fetching is in progress.
-* \`finished\`: data has loaded successfully.
-* \`error\`: an error occurred during fetch. You should provide user an option to recover.",
-      "inlineType": Object {
-        "name": "",
-        "type": "union",
-        "values": Array [
-          "loading",
-          "finished",
-          "error",
-        ],
-      },
-      "name": "statusType",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "An array of series objects that determines which of the data series are currently displayed, i.e. not filtered out.
-- If you do not set this property, series are shown and hidden automatically when using the default filter component (uncontrolled behavior).
-- If you explicitly set this property, you must set an \`onFilterChange\` listener to update this property when the visible series should change, or when one of your custom filters changes the number of visible series (controlled behavior).",
-      "name": "visibleSeries",
-      "optional": true,
-      "type": "ReadonlyArray<AreaChartProps.Series<T>>",
-    },
-    Object {
-      "description": "Determines the domain of the x axis, i.e. the range of values that will be visible in the chart.
-For numerical and time-based data this is represented as an array with two values: \`[minimumValue, maximumValue]\`.
-For categorical data this is represented as an array of strings that determine the categories to display.
-It is recommended to set this explicitly. If not, the component will determine a domain that fits all data points.
-When controlling this directly, make sure to update the value based on filtering changes.
-",
-      "name": "xDomain",
-      "optional": true,
-      "type": "conditional",
-    },
-    Object {
-      "defaultValue": "\\"linear\\"",
-      "description": "Determines the type of scale for values on the x axis.",
-      "inlineType": Object {
-        "name": "ScaleType",
-        "type": "union",
-        "values": Array [
-          "linear",
-          "log",
-          "time",
-          "categorical",
-        ],
-      },
-      "name": "xScaleType",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Function to format the displayed label of an x axis tick.",
-      "inlineType": Object {
-        "name": "CartesianChartProps.TickFormatter",
-        "parameters": Array [
-          Object {
-            "name": "value",
-            "type": "T",
-          },
-        ],
-        "returnType": "string",
-        "type": "function",
-      },
-      "name": "xTickFormatter",
-      "optional": true,
-      "type": "CartesianChartProps.TickFormatter<T>",
-    },
-    Object {
-      "description": "The title of the x axis.",
-      "name": "xTitle",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Determines the domain of the y axis, i.e. the range of values that will be visible in the chart.
-The domain is defined by a tuple: \`[minimumValue, maximumValue]\`.
-It is recommended to set this explicitly. If not, the component will determine a domain that fits all data points.
-When controlling this directly, make sure to update the value based on filtering changes.
-",
-      "name": "yDomain",
-      "optional": true,
-      "type": "ReadonlyArray<number>",
-    },
-    Object {
-      "defaultValue": "\\"linear\\"",
-      "description": "Determines the type of scale for values on the y axis.",
-      "inlineType": Object {
-        "name": "",
-        "type": "union",
-        "values": Array [
-          "linear",
-          "log",
-        ],
-      },
-      "name": "yScaleType",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Function to format the displayed label of a y axis tick.",
-      "inlineType": Object {
-        "name": "CartesianChartProps.TickFormatter",
-        "parameters": Array [
-          Object {
-            "name": "value",
-            "type": "T",
-          },
-        ],
-        "returnType": "string",
-        "type": "function",
-      },
-      "name": "yTickFormatter",
-      "optional": true,
-      "type": "CartesianChartProps.TickFormatter<number>",
-    },
-    Object {
-      "description": "The title of the y axis.",
-      "name": "yTitle",
-      "optional": true,
-      "type": "string",
-    },
   ],
-  "regions": Array [
-    Object {
-      "description": "Additional filters that are added above the chart component.
-Make sure to update the \`data\` property when any of your custom filters change the data to be displayed.",
-      "isDefault": false,
-      "name": "additionalFilters",
-    },
-    Object {
-      "description": "Content that is displayed when the data passed to the component is empty.",
-      "isDefault": false,
-      "name": "empty",
-    },
-    Object {
-      "description": "Content that is displayed when there is no data to display due to the built-in filtering.",
-      "isDefault": false,
-      "name": "noMatch",
-    },
-  ],
+  "regions": Array [],
   "releaseStatus": "stable",
 }
 `;
@@ -2161,7 +1840,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
 Use this for wrapping keys or values in links, or to display an additional
 level of nested items.",
       "inlineType": Object {
-        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
+        "name": "CartesianChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "__namedParameters",
@@ -2173,7 +1852,7 @@ level of nested items.",
       },
       "name": "detailPopoverSeriesContent",
       "optional": true,
-      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
+      "type": "CartesianChartProps.DetailPopoverSeriesContent<MixedLineBarChartProps.ChartSeries<T>, T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -8018,7 +7697,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
 Use this for wrapping keys or values in links, or to display an additional
 level of nested items.",
       "inlineType": Object {
-        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
+        "name": "CartesianChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "__namedParameters",
@@ -8030,7 +7709,7 @@ level of nested items.",
       },
       "name": "detailPopoverSeriesContent",
       "optional": true,
-      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
+      "type": "CartesianChartProps.DetailPopoverSeriesContent<MixedLineBarChartProps.ChartSeries<T>, T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",
@@ -8646,7 +8325,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
 Use this for wrapping keys or values in links, or to display an additional
 level of nested items.",
       "inlineType": Object {
-        "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
+        "name": "CartesianChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "__namedParameters",
@@ -8658,7 +8337,7 @@ level of nested items.",
       },
       "name": "detailPopoverSeriesContent",
       "optional": true,
-      "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
+      "type": "CartesianChartProps.DetailPopoverSeriesContent<MixedLineBarChartProps.ChartSeries<T>, T>",
     },
     Object {
       "defaultValue": "\\"medium\\"",

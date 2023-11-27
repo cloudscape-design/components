@@ -41,13 +41,6 @@ export interface BarChartProps<T extends ChartDataTypes>
    * Use `categorical` for bar charts.
    */
   xScaleType?: ScaleType;
-
-  /**
-   * Specifies custom rendering of the series displayed in the chart popover.
-   * Use this for wrapping keys or values in links, or to display an additional
-   * level of nested items.
-   */
-  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
 // W/o this documenter injects CartesianChartProps namespace properties into BarChartProps definition.

@@ -3,7 +3,7 @@
 import { CartesianChartProps, ChartDataTypes } from '../internal/components/cartesian-chart/interfaces';
 
 export interface AreaChartProps<T extends AreaChartProps.DataTypes>
-  extends CartesianChartProps<T, AreaChartProps.Series<T>> {
+  extends Omit<CartesianChartProps<T, AreaChartProps.Series<T>>, 'detailPopoverSeriesContent'> {
   /**
    * Array that represents the source of data for the displayed chart.
    * Each element can represent an area series, or a threshold, and can have the following properties:
