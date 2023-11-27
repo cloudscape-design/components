@@ -9,9 +9,7 @@
 
 @use '../chart-series-marker/styles' as marker;
 
-@mixin bold {
-  font-weight: awsui.$font-weight-heading-s;
-}
+$font-weight-bold: awsui.$font-weight-heading-s;
 
 .root {
   @include styles.styles-reset;
@@ -21,7 +19,7 @@
   text-align: right;
   margin-left: awsui.$space-l;
   &.expandable {
-    @include bold;
+    font-weight: $font-weight-bold;
   }
 }
 
@@ -77,7 +75,7 @@
 .list-item.with-sub-items:not(.expandable) > .key-value-pair {
   > .key,
   > .value {
-    @include bold;
+    font-weight: $font-weight-bold;
   }
 }
 
