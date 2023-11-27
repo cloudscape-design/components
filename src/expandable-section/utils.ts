@@ -3,5 +3,9 @@
 import { InternalVariant } from './interfaces';
 
 export function variantSupportsDescription(variant: InternalVariant) {
-  return variant === 'container' || variant === 'default' || variant === 'footer';
+  return ['container', 'default', 'footer'].includes(variant);
+}
+
+export function variantSupportsInteractiveElements(variant: InternalVariant) {
+  return ['container', 'compact'].includes(variant);
 }

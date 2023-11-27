@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { variantSupportsDescription } from './utils';
+import { variantSupportsDescription, variantSupportsInteractiveElements } from './utils';
 
 export const componentName = 'ExpandableSection';
 
@@ -132,14 +132,15 @@ const ExpandableHeaderTextWrapper = ({
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const restrictClickableArea = variant === 'compact' || (isContainer && (headerInfo || headerActions));
-  const listeners = { onClick, onKeyDown, onKeyUp };
-
+  const supportsInteractiveElements = variantSupportsInteractiveElements(variant);
+  const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
+  const actions = supportsInteractiveElements && headerActions;
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
       {headerDescription}
     </span>
   );
+  const listeners = { onClick, onKeyDown, onKeyUp };
 
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
@@ -181,26 +182,19 @@ const ExpandableHeaderTextWrapper = ({
           description={description}
           counter={headerCounter}
           info={headerInfo}
-          actions={headerActions}
+          actions={actions}
           headingTagOverride={headingTagOverride}
         >
           {headerButton}
         </InternalHeader>
       ) : (
         <>
-          {variant === 'compact' ? (
-            <div className={clsx(styles['header-wrapper'], styles['header-wrapper-compact'])}>
-              <HeadingTag className={styles['click-target']}>{headerButton}</HeadingTag>
-              {headerActions}
-            </div>
-          ) : (
-            <HeadingTag
-              className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-              {...headingTagListeners}
-            >
+          <div className={clsx(styles['header-wrapper'], styles[`header-wrapper-${variant}`])}>
+            <HeadingTag className={styles['click-target']} {...headingTagListeners}>
               {headerButton}
             </HeadingTag>
-          )}
+            {actions}
+          </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
         </>
       )}
