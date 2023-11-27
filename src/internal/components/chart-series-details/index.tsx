@@ -14,6 +14,14 @@ interface ChartDetailPair {
   value: ReactNode;
 }
 
+interface ListItemProps {
+  itemKey: ReactNode;
+  value: ReactNode;
+  subItems?: ReadonlyArray<ChartDetailPair>;
+  markerType?: ChartSeriesMarkerType;
+  color?: string;
+}
+
 export interface ChartSeriesDetailItem extends ChartDetailPair {
   markerType?: ChartSeriesMarkerType;
   color?: string;
@@ -56,7 +64,7 @@ function ChartSeriesDetails({
     }
   }, [details, setPopoverText]);
 
-  const isExpanded = (index: number) => (expandedSeries ? expandedSeries.has(index) : undefined);
+  const isExpanded = (index: number) => !!expandedSeries && expandedSeries.has(index);
 
   return (
     <div {...baseProps} className={className} ref={detailsRef}>
@@ -72,31 +80,23 @@ function ChartSeriesDetails({
             })}
           >
             {subItems?.length && expandable ? (
-              <div className={styles['expandable-section']}>
-                {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-                <div className={styles['full-width']}>
-                  <InternalExpandableSection
-                    variant="compact"
-                    headerText={key}
-                    headerActions={<span className={clsx(styles.value, styles.expandable)}>{value}</span>}
-                    expanded={isExpanded(index)}
-                    onChange={({ detail }) => setExpandedState && setExpandedState(index, detail.expanded)}
-                  >
-                    <SubItems items={subItems} expandable={true} expanded={isExpanded(index)} />
-                  </InternalExpandableSection>
-                </div>
-              </div>
+              <ExpandableSeries
+                itemKey={key}
+                value={value}
+                markerType={markerType}
+                color={color}
+                subItems={subItems}
+                expanded={isExpanded(index)}
+                setExpandedState={state => setExpandedState && setExpandedState(index, state)}
+              />
             ) : (
-              <>
-                <div className={clsx(styles['key-value-pair'], styles.announced)}>
-                  <div className={styles.key}>
-                    {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
-                    <span>{key}</span>
-                  </div>
-                  <span className={styles.value}>{value}</span>
-                </div>
-                {subItems && <SubItems items={subItems} />}
-              </>
+              <NonExpandableSeries
+                itemKey={key}
+                value={value}
+                markerType={markerType}
+                color={color}
+                subItems={subItems}
+              />
             )}
           </li>
         ))}
@@ -130,5 +130,51 @@ function SubItems({
         </li>
       ))}
     </ul>
+  );
+}
+
+function ExpandableSeries({
+  itemKey,
+  value,
+  subItems,
+  markerType,
+  color,
+  expanded,
+  setExpandedState,
+}: ListItemProps &
+  Required<Pick<ListItemProps, 'subItems'>> & {
+    expanded: boolean;
+    setExpandedState: (state: boolean) => void;
+  }) {
+  return (
+    <div className={styles['expandable-section']}>
+      {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
+      <div className={styles['full-width']}>
+        <InternalExpandableSection
+          variant="compact"
+          headerText={itemKey}
+          headerActions={<span className={clsx(styles.value, styles.expandable)}>{value}</span>}
+          expanded={expanded}
+          onChange={({ detail }) => setExpandedState(detail.expanded)}
+        >
+          <SubItems items={subItems} expandable={true} expanded={expanded} />
+        </InternalExpandableSection>
+      </div>
+    </div>
+  );
+}
+
+function NonExpandableSeries({ itemKey, value, subItems, markerType, color }: ListItemProps) {
+  return (
+    <>
+      <div className={clsx(styles['key-value-pair'], styles.announced)}>
+        <div className={styles.key}>
+          {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
+          <span>{itemKey}</span>
+        </div>
+        <span className={styles.value}>{value}</span>
+      </div>
+      {subItems && <SubItems items={subItems} />}
+    </>
   );
 }
