@@ -40,6 +40,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawersOverflowWithBadgeAriaLabel: string | undefined;
   drawersRefs: FocusControlRefs;
   drawerSize: number;
+  drawersMinWidth: number;
   drawersMaxWidth: number;
   drawerRef: React.Ref<HTMLElement>;
   resizeHandle: React.ReactElement;
@@ -369,6 +370,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       drawers,
       activeDrawer,
       activeDrawerId,
+      minDrawerSize: drawersMinWidth,
       onActiveDrawerChange,
       onActiveDrawerResize,
       activeDrawerSize,
@@ -599,6 +601,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           drawersOverflowAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflow,
           drawersOverflowWithBadgeAriaLabel: drawersProps.ariaLabelsWithDrawers?.drawersOverflowWithBadge,
           drawersRefs,
+          drawersMinWidth,
           drawersMaxWidth,
           drawerSize,
           drawerRef,
