@@ -191,7 +191,7 @@ const ExpandableHeaderTextWrapper = ({
         <>
           {actions ? (
             <div className={clsx(styles['header-wrapper'], styles['header-wrapper-with-actions'])}>
-              <HeadingTag className={styles['click-target']} {...headingTagListeners}>
+              <HeadingTag className={clsx(headingTagListeners && styles['click-target'])} {...headingTagListeners}>
                 {headerButton}
               </HeadingTag>
               {actions}
