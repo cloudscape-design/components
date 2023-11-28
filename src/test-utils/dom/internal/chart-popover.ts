@@ -4,21 +4,24 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import ButtonWrapper from '../button';
 import styles from '../../../internal/components/chart-popover/styles.selectors.js';
 import popoverStyles from '../../../popover/styles.selectors.js';
-import chartSeriesDetails from '../../../internal/components/chart-series-details/styles.selectors.js';
+import chartSeriesDetailsStyles from '../../../internal/components/chart-series-details/styles.selectors.js';
+import expandableSectionHeaderStyles from '../../../expandable-section/styles.selectors.js';
 
 export class ChartPopoverSeriesItemWrapper extends ElementWrapper {
   findKey(): ElementWrapper {
-    return this.findByClassName(chartSeriesDetails.key)!;
+    // If a series has sub-items and is expandable, the key will be inside the header of an expandable section.
+    return (this.findByClassName(expandableSectionHeaderStyles['header-text']) ||
+      this.findByClassName(chartSeriesDetailsStyles.key))!;
   }
 
   findValue(): ElementWrapper {
-    return this.findByClassName(chartSeriesDetails.value)!;
+    return this.findByClassName(chartSeriesDetailsStyles.value)!;
   }
 }
 
 export class ChartPopoverSeriesWrapper extends ChartPopoverSeriesItemWrapper {
   findSubItems(): Array<ChartPopoverSeriesItemWrapper> {
-    return this.findAll(`.${chartSeriesDetails['inner-list-item']}`).map(
+    return this.findAll(`.${chartSeriesDetailsStyles['inner-list-item']}`).map(
       wrapper => new ChartPopoverSeriesItemWrapper(wrapper.getElement())
     );
   }
@@ -40,7 +43,7 @@ export default class ChartPopoverWrapper extends ComponentWrapper {
   }
 
   findSeries(): ChartPopoverSeriesWrapper[] | null {
-    return this.findAll(`.${chartSeriesDetails['list-item']}`).map(
+    return this.findAll(`.${chartSeriesDetailsStyles['list-item']}`).map(
       wrapper => new ChartPopoverSeriesWrapper(wrapper.getElement())
     );
   }

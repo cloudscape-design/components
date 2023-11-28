@@ -97,7 +97,10 @@ export default function testChartSeriesDetails({
           });
 
           wrapper.findApplication()!.focus();
-          const subItems = wrapper.findDetailPopover()!.findSeries()![0].findSubItems()!;
+          const firstSeries = wrapper.findDetailPopover()!.findSeries()![0];
+          expect(firstSeries.findKey().getElement()).toHaveTextContent('Series 1');
+          expect(firstSeries.findValue().getElement()).toHaveTextContent('2');
+          const subItems = firstSeries.findSubItems()!;
           expect(subItems[0].findKey()!.getElement()).toHaveTextContent('a');
           expect(subItems[0].findValue()!.getElement()).toHaveTextContent('1');
           expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
