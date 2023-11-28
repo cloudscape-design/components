@@ -73,13 +73,7 @@ export default function testChartSeriesDetails({
         test.each([false, true])('with expandable sub-items: %s', expandable => {
           const { wrapper } = renderChart({
             ...commonChartProps,
-            detailPopoverSeriesContent: ({
-              series,
-              y,
-            }: {
-              series: MixedLineBarChartProps.ChartSeries<string>;
-              y: number;
-            }) => ({
+            detailPopoverSeriesContent: ({ series, y }) => ({
               key: series.title,
               value: y,
               expandable,
@@ -106,6 +100,37 @@ export default function testChartSeriesDetails({
           expect(subItems[1].findKey()!.getElement()).toHaveTextContent('b');
           expect(subItems[1].findValue()!.getElement()).toHaveTextContent('2');
         });
+      });
+
+      test('keeps expanded/collapsed state of expandable series', () => {
+        const { wrapper } = renderChart({
+          ...commonChartProps,
+          detailPopoverSeriesContent: ({ series, y }) => ({
+            key: series.title,
+            value: y,
+            expandable: true,
+            subItems: [
+              {
+                key: 'Key 1',
+                value: 1,
+              },
+            ],
+          }),
+        });
+
+        const findExpandableSection = () => wrapper.findDetailPopover()!.findSeries()![0].findExpandableSection()!;
+
+        wrapper.findApplication()!.focus();
+        const expandableSection = findExpandableSection();
+        expect(expandableSection.findExpandedContent()).toBeFalsy();
+        expandableSection.findExpandButton().click();
+        expect(expandableSection.findExpandedContent()).toBeTruthy();
+
+        wrapper.findApplication()!.blur();
+        expect(wrapper.findDetailPopover()).toBeFalsy();
+
+        wrapper.findApplication()!.focus();
+        expect(findExpandableSection()!.findExpandedContent()).toBeTruthy();
       });
 
       test('does not render nested items list if the length of sub-items is 0', () => {
