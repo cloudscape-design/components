@@ -20,6 +20,23 @@
   align-items: center;
 }
 
+.full-header {
+  display: flex;
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+  background-color: awsui.$color-background-layout-main;
+}
+
+.inner-header {
+  max-width: 1200px;
+  margin-left: awsui.$space-scaled-m;
+  margin-right: awsui.$space-scaled-m;
+}
+
 .header-background-image {
   position: absolute;
   inset: 0;
