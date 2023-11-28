@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
 import {
   defaultIsSuppressed,
   findFocusinCell,
@@ -11,10 +11,24 @@ import {
   ensureSingleFocusable,
   getFirstFocusable,
 } from './utils';
-import { FocusedCell, GridNavigationProps } from './interfaces';
+import { FocusableDefinition, FocusedCell, GridNavigationProviderProps } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import {
+  GridNavigationFocus,
+  GridNavigationFocusStore,
+  useGridNavigationFocusStore,
+} from './grid-navigation-focus-store';
+import { useSelector } from '../../area-chart/async-store';
+
+export const GridNavigationContext = createContext<{
+  focusMuted: boolean;
+  focusStore: GridNavigationFocus;
+}>({
+  focusMuted: false,
+  focusStore: new GridNavigationFocusStore(),
+});
 
 /**
  * Makes table navigable with keyboard commands.
@@ -23,12 +37,14 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
  * The hook attaches the GridNavigationHelper helper when active=true.
  * See GridNavigationHelper for more details.
  */
-export function useGridNavigation({
+export function GridNavigationProvider({
+  children,
   keyboardNavigation,
   suppressKeyboardNavigationFor,
   pageSize,
   getTable,
-}: GridNavigationProps) {
+}: GridNavigationProviderProps) {
+  const focusStore = useGridNavigationFocusStore();
   const gridNavigation = useMemo(() => new GridNavigationHelper(), []);
 
   const getTableStable = useStableCallback(getTable);
@@ -55,6 +71,30 @@ export function useGridNavigation({
   useEffect(() => {
     gridNavigation.update({ pageSize });
   }, [gridNavigation, pageSize]);
+
+  return (
+    <GridNavigationContext.Provider value={{ focusMuted: keyboardNavigation, focusStore }}>
+      {children}
+    </GridNavigationContext.Provider>
+  );
+}
+
+export function useGridNavigationFocusable(focusableId: string, focusable?: FocusableDefinition) {
+  const { focusMuted, focusStore } = useContext(GridNavigationContext);
+  const focusTarget = useSelector(focusStore, state => (state.focusableId === focusableId ? state.focusTarget : null));
+
+  useEffect(() => {
+    if (focusable) {
+      return focusStore.registerFocusable(focusableId, focusable);
+    }
+  }, [focusableId, focusable, focusStore]);
+
+  return {
+    focusMuted,
+    focusTarget,
+    registerFocusable: focusStore.registerFocusable,
+    unregisterFocusable: focusStore.unregisterFocusable,
+  };
 }
 
 /**

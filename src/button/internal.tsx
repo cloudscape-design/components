@@ -21,6 +21,7 @@ import {
 } from '../internal/analytics/selectors';
 import { FunnelMetrics } from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useGridNavigationFocusable } from '../table/table-role';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -164,6 +165,9 @@ export const InternalButton = React.forwardRef(
       }
     }, [loading, loadingButtonCount]);
 
+    const { focusMuted, focusTarget } = useGridNavigationFocusable(uniqueId, buttonRef);
+    const shouldMuteFocus = focusMuted && focusTarget !== buttonRef.current;
+
     if (isAnchor) {
       return (
         // https://github.com/yannickcr/eslint-plugin-react/issues/2962
@@ -175,7 +179,7 @@ export const InternalButton = React.forwardRef(
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-            tabIndex={isNotInteractive ? -1 : undefined}
+            tabIndex={isNotInteractive || shouldMuteFocus ? -1 : undefined}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
           >
@@ -192,6 +196,7 @@ export const InternalButton = React.forwardRef(
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled}
           aria-disabled={loading && !disabled ? true : undefined}
+          tabIndex={shouldMuteFocus ? -1 : undefined}
         >
           {buttonContent}
         </button>

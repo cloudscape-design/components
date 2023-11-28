@@ -1,9 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { ReactNode } from 'react';
+
 export type TableRole = 'table' | 'grid' | 'grid-default';
 
-export interface GridNavigationProps {
+export interface GridNavigationProviderProps {
+  children: ReactNode;
   keyboardNavigation: boolean;
   suppressKeyboardNavigationFor?: string | ((focusedElement: HTMLElement) => boolean);
   pageSize: number;
@@ -18,3 +21,5 @@ export interface FocusedCell {
   cellElement: HTMLTableCellElement;
   element: HTMLElement;
 }
+
+export type FocusableDefinition = (() => null | HTMLElement) | React.RefObject<HTMLElement>;

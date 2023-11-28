@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
@@ -20,7 +20,6 @@ import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import { GridNavigationCellContext } from '../table/table-role/index';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -96,12 +95,6 @@ const InternalButtonDropdown = React.forwardRef(
     const mainActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
 
-    const triggerContainerRef = useRef<HTMLDivElement>(null);
-    const { autoRegisterFocusables } = useContext(GridNavigationCellContext);
-    useEffect(() => {
-      autoRegisterFocusables(dropdownId, () => triggerContainerRef.current);
-    }, [dropdownId, autoRegisterFocusables]);
-
     useForwardFocus(ref, isMainAction ? mainActionRef : triggerRef);
 
     const clickHandler = () => {
@@ -167,7 +160,7 @@ const InternalButtonDropdown = React.forwardRef(
     let trigger: React.ReactNode = null;
     if (customTriggerBuilder) {
       trigger = (
-        <div ref={triggerContainerRef} className={styles['dropdown-trigger']}>
+        <div className={styles['dropdown-trigger']}>
           {customTriggerBuilder({
             testUtilsClass: styles['test-utils-button-trigger'],
             ariaExpanded: canBeOpened && isOpen,
@@ -190,7 +183,7 @@ const InternalButtonDropdown = React.forwardRef(
         : undefined;
 
       trigger = (
-        <div ref={triggerContainerRef} role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
+        <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
           <div
             className={clsx(styles['trigger-item'], styles['split-trigger'])}
             // Close dropdown upon main action click unless event is cancelled.
@@ -224,7 +217,7 @@ const InternalButtonDropdown = React.forwardRef(
       );
     } else {
       trigger = (
-        <div ref={triggerContainerRef} className={styles['dropdown-trigger']}>
+        <div className={styles['dropdown-trigger']}>
           <InternalButton ref={triggerRef} id={triggerId} {...baseTriggerProps} badge={triggerHasBadge()}>
             {children}
           </InternalButton>

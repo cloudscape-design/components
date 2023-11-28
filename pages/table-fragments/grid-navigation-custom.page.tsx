@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import SpaceBetween from '~components/space-between';
 import {
   AppLayout,
@@ -30,11 +30,7 @@ import {
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
-  useGridNavigation,
-  GridNavigationFocus,
-  GridNavigationFocusStore,
-  GridNavigationCellContext,
-  GridNavigationCellProvider,
+  GridNavigationProvider,
 } from '~components/table/table-role';
 import { orderBy } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
@@ -126,10 +122,6 @@ export default function Page() {
 
   const tableRef = useRef<HTMLTableElement>(null);
 
-  const gridNavigationFocus = useMemo(() => new GridNavigationFocusStore(), []);
-
-  useGridNavigation({ keyboardNavigation: tableRole === 'grid', pageSize, getTable: () => tableRef.current });
-
   const sortedItems = useMemo(() => {
     if (!sortingKey) {
       return items;
@@ -191,126 +183,71 @@ export default function Page() {
             }
           >
             <div className={styles['custom-table']} {...getTableWrapperRoleProps({ tableRole, isScrollable: false })}>
-              <table
-                ref={tableRef}
-                className={styles['custom-table-table']}
-                {...getTableRoleProps({
-                  tableRole,
-                  totalItemsCount: items.length,
-                  totalColumnsCount: columnDefinitions.length,
-                })}
+              <GridNavigationProvider
+                keyboardNavigation={tableRole === 'grid'}
+                pageSize={pageSize}
+                getTable={() => tableRef.current}
               >
-                <thead>
-                  <tr {...getTableHeaderRowRoleProps({ tableRole })}>
-                    {columnDefinitions.map((column, colIndex) => (
-                      <TableHeaderCell
-                        key={column.key}
-                        tableRole={tableRole}
-                        colIndex={colIndex}
-                        gridNavigationFocus={gridNavigationFocus}
-                      >
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-                          <button
-                            className={styles['custom-table-sorting-header']}
-                            onClick={() => {
-                              if (sortingKey !== column.key) {
-                                setSortingKey(column.key);
-                                setSortingDirection(-1);
-                              } else {
-                                setSortingDirection(prev => (prev === 1 ? -1 : 1));
-                              }
-                            }}
-                          >
-                            {column.label}
-                          </button>
-                          {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
-                          {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
-                        </div>
-                      </TableHeaderCell>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedItems.map((item, rowIndex) => (
-                    <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
+                <table
+                  ref={tableRef}
+                  className={styles['custom-table-table']}
+                  {...getTableRoleProps({
+                    tableRole,
+                    totalItemsCount: items.length,
+                    totalColumnsCount: columnDefinitions.length,
+                  })}
+                >
+                  <thead>
+                    <tr {...getTableHeaderRowRoleProps({ tableRole })}>
                       {columnDefinitions.map((column, colIndex) => (
-                        <TableBodyCell
+                        <th
                           key={column.key}
-                          tableRole={tableRole}
-                          colIndex={colIndex}
-                          rowIndex={rowIndex}
-                          gridNavigationFocus={gridNavigationFocus}
+                          className={styles['custom-table-cell']}
+                          {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                         >
-                          {column.render(item)}
-                        </TableBodyCell>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+                            <button
+                              className={styles['custom-table-sorting-header']}
+                              onClick={() => {
+                                if (sortingKey !== column.key) {
+                                  setSortingKey(column.key);
+                                  setSortingDirection(-1);
+                                } else {
+                                  setSortingDirection(prev => (prev === 1 ? -1 : 1));
+                                }
+                              }}
+                            >
+                              {column.label}
+                            </button>
+                            {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
+                            {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
+                          </div>
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {sortedItems.map((item, rowIndex) => (
+                      <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
+                        {columnDefinitions.map((column, colIndex) => (
+                          <td
+                            key={column.key}
+                            className={styles['custom-table-cell']}
+                            {...getTableCellRoleProps({ tableRole, colIndex })}
+                          >
+                            {column.render(item)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </GridNavigationProvider>
             </div>
           </Container>
         </ContentLayout>
       }
     />
-  );
-}
-
-function TableHeaderCell({
-  children,
-  tableRole,
-  colIndex,
-  gridNavigationFocus,
-}: {
-  children: ReactNode;
-  tableRole: TableRole;
-  colIndex: number;
-  gridNavigationFocus: GridNavigationFocus;
-}) {
-  const cellRef = useRef<HTMLTableCellElement>(null);
-  return (
-    <GridNavigationCellProvider
-      rowIndex={0}
-      columnIndex={colIndex}
-      cellRef={cellRef}
-      gridNavigationFocus={gridNavigationFocus}
-    >
-      <th
-        ref={cellRef}
-        className={styles['custom-table-cell']}
-        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
-      >
-        {children}
-      </th>
-    </GridNavigationCellProvider>
-  );
-}
-
-function TableBodyCell({
-  children,
-  tableRole,
-  colIndex,
-  rowIndex,
-  gridNavigationFocus,
-}: {
-  children: ReactNode;
-  tableRole: TableRole;
-  colIndex: number;
-  rowIndex: number;
-  gridNavigationFocus: GridNavigationFocus;
-}) {
-  const cellRef = useRef<HTMLTableCellElement>(null);
-  return (
-    <GridNavigationCellProvider
-      rowIndex={rowIndex + 1}
-      columnIndex={colIndex}
-      cellRef={cellRef}
-      gridNavigationFocus={gridNavigationFocus}
-    >
-      <td ref={cellRef} className={styles['custom-table-cell']} {...getTableCellRoleProps({ tableRole, colIndex })}>
-        {children}
-      </td>
-    </GridNavigationCellProvider>
   );
 }
 
