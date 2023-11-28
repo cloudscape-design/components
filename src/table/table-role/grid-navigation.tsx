@@ -40,7 +40,6 @@ export const GridNavigationContext = createContext<{
 export function GridNavigationProvider({
   children,
   keyboardNavigation,
-  suppressKeyboardNavigationFor,
   pageSize,
   getTable,
 }: GridNavigationProviderProps) {
@@ -48,24 +47,15 @@ export function GridNavigationProvider({
   const gridNavigation = useMemo(() => new GridNavigationHelper(), []);
 
   const getTableStable = useStableCallback(getTable);
-  const isSuppressedStable = useStableCallback((element: HTMLElement) => {
-    if (typeof suppressKeyboardNavigationFor === 'function') {
-      return suppressKeyboardNavigationFor(element);
-    }
-    if (typeof suppressKeyboardNavigationFor === 'string') {
-      return element.matches(suppressKeyboardNavigationFor);
-    }
-    return false;
-  });
 
   // Initialize the model with the table container assuming it is mounted synchronously and only once.
   useEffect(() => {
     if (keyboardNavigation) {
       const table = getTableStable();
-      table && gridNavigation.init(table, isSuppressedStable);
+      table && gridNavigation.init(table);
     }
     return () => gridNavigation.cleanup();
-  }, [keyboardNavigation, gridNavigation, getTableStable, isSuppressedStable]);
+  }, [keyboardNavigation, gridNavigation, getTableStable]);
 
   // Notify the model of the props change.
   useEffect(() => {
@@ -114,15 +104,13 @@ class GridNavigationHelper {
   // Props
   private _pageSize = 0;
   private _table: null | HTMLTableElement = null;
-  private _isSuppressed: (focusedElement: HTMLElement) => boolean = () => false;
 
   // State
   private prevFocusedCell: null | FocusedCell = null;
   private focusedCell: null | FocusedCell = null;
 
-  public init(table: HTMLTableElement, isSuppressed: (focusedElement: HTMLElement) => boolean) {
+  public init(table: HTMLTableElement) {
     this._table = table;
-    this._isSuppressed = isSuppressed;
 
     this.table.addEventListener('focusin', this.onFocusin);
     this.table.addEventListener('focusout', this.onFocusout);
@@ -165,7 +153,7 @@ class GridNavigationHelper {
   }
 
   private isSuppressed(focusedElement: HTMLElement): boolean {
-    return defaultIsSuppressed(focusedElement) || this._isSuppressed(focusedElement);
+    return defaultIsSuppressed(focusedElement);
   }
 
   private onFocusin = (event: FocusEvent) => {
