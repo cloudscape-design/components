@@ -62,7 +62,7 @@ const InternalPageHeader = ({
           {background}
         </div>
       )}
-      <div className={styles.wrapper} style={{ maxWidth: maxWidth ?? '800px' }}>
+      <div className={styles.wrapper} style={maxWidth ? { maxWidth } : {}}>
         <InternalGrid gridDefinition={headerGridDefinition}>
           <div
             className={clsx(

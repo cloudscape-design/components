@@ -8,9 +8,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { ContentLayoutProps };
 
-export default function ContentLayout(props: ContentLayoutProps) {
+export default function ContentLayout({ headerMode = 'default', ...props }: ContentLayoutProps) {
   const baseComponentProps = useBaseComponent('ContentLayout');
-  return <InternalContentLayout {...props} {...baseComponentProps} />;
+  return <InternalContentLayout headerMode={headerMode} {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(ContentLayout, 'ContentLayout');

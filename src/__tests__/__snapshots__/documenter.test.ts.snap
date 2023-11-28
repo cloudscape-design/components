@@ -5318,9 +5318,40 @@ If true, the overlap will be removed.",
       "visualRefreshTag": "",
     },
     Object {
+      "description": "Specifies the \`background\` CSS property shorthand for a full-size background image.
+For more details on the syntax, refer to the [background MDN documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/background).",
+      "name": "headerBackgroundCss",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"default\\"",
+      "description": "Specifies the color mode (light or dark mode) for the header area.
+By default, it follows the color mode of the page.
+Set this to \\"dark\\" to achieve a dark header.",
+      "inlineType": Object {
+        "name": "ContentLayoutProps.ColorMode",
+        "type": "union",
+        "values": Array [
+          "default",
+          "dark",
+        ],
+      },
+      "name": "headerMode",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the \`max-width\` CSS value for the header and content slots.
+When a maximum width is defined, the header and content are horizontally centered.",
+      "name": "maxWidth",
       "optional": true,
       "type": "string",
     },
@@ -9534,6 +9565,13 @@ Object {
   "functions": Array [],
   "name": "PageHeader",
   "properties": Array [
+    Object {
+      "description": "Specifies the \`background\` CSS property shorthand for a full-size background image.
+For more details on the syntax, refer to the [background MDN documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/background).",
+      "name": "backgroundCss",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",

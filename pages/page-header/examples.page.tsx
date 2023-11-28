@@ -16,6 +16,7 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <SpaceBetween size="xl">
         <PageHeader
+          maxWidth="800px"
           variant="display-l"
           colorMode="default"
           subHeading="Your learning center to build in-demand cloud skills"
@@ -64,6 +65,7 @@ export default function () {
         </PageHeader>
 
         <PageHeader
+          maxWidth="800px"
           colorMode="default"
           variant="h1"
           subHeading="Your learning center to build in-demand cloud skills"
@@ -125,6 +127,7 @@ export default function () {
         </PageHeader>
 
         <PageHeader
+          maxWidth="800px"
           colorMode="dark"
           variant="h1"
           subHeading="Your learning center to build in-demand cloud skills"

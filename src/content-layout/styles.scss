@@ -12,6 +12,7 @@ visual refresh mode. The padding is still added to the header
 in this scenario because otherwise the header and child 
 nodes will directly touch with no gap between them.
 */
+/*
 .layout:not(.is-visual-refresh) {
   display: contents;
 
@@ -23,8 +24,10 @@ nodes will directly touch with no gap between them.
     padding-bottom: awsui.$space-content-header-padding-bottom;
   }
 }
+*/
 
-.layout.is-visual-refresh {
+// .layout.is-visual-refresh {
+.layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto #{awsui.$space-dark-header-overlap-distance} 1fr;
@@ -42,12 +45,18 @@ nodes will directly touch with no gap between them.
   }
 
   > .header {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     grid-column: 1;
     grid-row: 1;
     padding-bottom: awsui.$space-content-header-padding-bottom;
   }
 
   > .content {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     grid-column: 1;
     grid-row: 2 / 4;
   }
@@ -67,4 +76,8 @@ nodes will directly touch with no gap between them.
   &.is-overlap-disabled {
     grid-template-rows: auto 0 1fr;
   }
+}
+
+.layout:not(.is-visual-refresh) > .header {
+  padding-bottom: awsui.$space-content-header-padding-bottom;
 }

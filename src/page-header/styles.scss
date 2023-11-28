@@ -13,8 +13,8 @@
   justify-content: center;
 
   inline-size: 100%;
-  padding-inline-start: calc(2 * #{awsui.$space-l});
-  padding-inline-end: calc(2 * #{awsui.$space-l});
+  // padding-inline-start: calc(2 * #{awsui.$space-l});
+  // padding-inline-end: calc(2 * #{awsui.$space-l});
 }
 
 @media (max-width: 480px) {
