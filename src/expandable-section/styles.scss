@@ -156,7 +156,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     padding: 0;
   }
 
-  &-wrapper-with-actions {
+  &-actions-wrapper {
     flex-direction: row;
     justify-content: space-between;
   }
