@@ -27,7 +27,9 @@ describe('Popover content is announced as plain text on hover', () => {
             expect(label).toContain(text);
           }
           expect(label).toContain(group1SubItemsTexts.join(', '));
-          expect(label).not.toContain('[object object]');
+          // Make sure that the text does not contain any unexpected stringified object,
+          // which could come from badly handled non-plain text content in the popover.
+          expect(label).not.toContain('[object Object]');
         });
       })
     );
@@ -46,7 +48,7 @@ describe('Popover content is announced as plain text on hover', () => {
           for (const text of group1SubItemsTexts) {
             expect(label).not.toContain(text);
           }
-          expect(label).not.toContain('[object object]');
+          expect(label).not.toContain('[object Object]');
         });
 
         // Expand sub-items
@@ -69,7 +71,7 @@ describe('Popover content is announced as plain text on hover', () => {
           }
           // Previously collapsed sub-item is now expanded
           expect(label).toContain(group1SubItemsTexts.join(', '));
-          expect(label).not.toContain('[object object]');
+          expect(label).not.toContain('[object Object]');
         });
       })
     );
