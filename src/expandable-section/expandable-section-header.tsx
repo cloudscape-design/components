@@ -189,22 +189,12 @@ const ExpandableHeaderTextWrapper = ({
         </InternalHeader>
       ) : (
         <>
-          {actions ? (
-            <div className={clsx(styles['header-wrapper'], styles['header-wrapper-with-actions'])}>
-              <HeadingTag className={clsx(headingTagListeners && styles['click-target'])} {...headingTagListeners}>
-                {headerButton}
-              </HeadingTag>
-              {actions}
-            </div>
-          ) : (
-            <HeadingTag
-              className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-              {...headingTagListeners}
-            >
+          <div className={clsx(styles['header-wrapper'], actions && styles['header-wrapper-with-actions'])}>
+            <HeadingTag className={clsx(headingTagListeners && styles['click-target'])} {...headingTagListeners}>
               {headerButton}
             </HeadingTag>
-          )}
-
+            {actions}
+          </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
         </>
       )}
