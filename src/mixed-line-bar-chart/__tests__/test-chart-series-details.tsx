@@ -119,18 +119,35 @@ export default function testChartSeriesDetails({
         });
 
         const findExpandableSection = () => wrapper.findDetailPopover()!.findSeries()![0].findExpandableSection()!;
+        const toggleState = () => findExpandableSection().findExpandButton().click();
+        const expectExpanded = (expectedState: boolean) => {
+          expect(!!findExpandableSection().findExpandedContent()).toBe(expectedState);
+        };
+        const openPopover = () => wrapper.findApplication()!.focus();
+        const closePopover = () => {
+          wrapper.findApplication()!.blur();
+          expect(wrapper.findDetailPopover()).toBeFalsy();
+        };
 
-        wrapper.findApplication()!.focus();
-        const expandableSection = findExpandableSection();
-        expect(expandableSection.findExpandedContent()).toBeFalsy();
-        expandableSection.findExpandButton().click();
-        expect(expandableSection.findExpandedContent()).toBeTruthy();
+        // Assert that the series is collapsed on first render, then expand it
+        openPopover();
+        expectExpanded(false);
+        toggleState();
+        expectExpanded(true);
 
-        wrapper.findApplication()!.blur();
-        expect(wrapper.findDetailPopover()).toBeFalsy();
+        closePopover();
 
-        wrapper.findApplication()!.focus();
-        expect(findExpandableSection()!.findExpandedContent()).toBeTruthy();
+        // Assert that it is still expanded after opening the popover again, then collapse it
+        openPopover();
+        expectExpanded(true);
+        toggleState();
+        expectExpanded(false);
+
+        closePopover();
+
+        // Assert that it is still collapsed when opening the popover again
+        openPopover();
+        expectExpanded(false);
       });
 
       test('does not render nested items list if the length of sub-items is 0', () => {
