@@ -24,6 +24,7 @@ import clsx from 'clsx';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 import ChartPopoverFooter from '../internal/components/chart-popover-footer';
+import LiveRegion from '../internal/components/live-region';
 
 export interface InternalChartDatum<T> {
   index: number;
@@ -311,7 +312,6 @@ export default <T extends PieChartProps.Datum>({
           ariaDescription={ariaDescription}
           ariaDescribedby={hasInnerContent ? innerMetricId : undefined}
           ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
-          ariaLiveRegion={tooltipContentRef}
           activeElementRef={focusedSegmentRef}
           activeElementKey={highlightedSegmentIndex?.toString()}
           onFocus={onFocus}
@@ -389,6 +389,7 @@ export default <T extends PieChartProps.Datum>({
           {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
         </ChartPopover>
       )}
+      <LiveRegion source={[tooltipContentRef]} />
     </div>
   );
 };
