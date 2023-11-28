@@ -6,7 +6,7 @@ import styles from '../../../internal/components/chart-popover/styles.selectors.
 import popoverStyles from '../../../popover/styles.selectors.js';
 import chartSeriesDetails from '../../../internal/components/chart-series-details/styles.selectors.js';
 
-export class ChartPopoverSeriesItemWrapper extends ComponentWrapper {
+export class ChartPopoverSeriesItemWrapper extends ElementWrapper {
   findKey(): ElementWrapper | null {
     return this.findByClassName(chartSeriesDetails.key);
   }
