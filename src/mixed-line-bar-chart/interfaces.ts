@@ -120,8 +120,14 @@ export namespace MixedLineBarChartProps {
 
   export type I18nStrings<T> = CartesianChartProps.I18nStrings<T>;
 
+  export interface DetailPopoverData<T> {
+    series: ChartSeries<T>;
+    x: T;
+    y: number;
+  }
+
   export interface DetailPopoverSeriesContent<T> {
-    ({ series, x, y }: { series: ChartSeries<T>; x: T; y: number }): {
+    (data: DetailPopoverData<T>): {
       key: ReactNode;
       value: ReactNode;
       expandable?: boolean;

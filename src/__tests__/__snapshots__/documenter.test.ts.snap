@@ -2164,8 +2164,8 @@ level of nested items.",
         "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
-            "name": "__namedParameters",
-            "type": "unknown",
+            "name": "data",
+            "type": "MixedLineBarChartProps.DetailPopoverData<T>",
           },
         ],
         "returnType": "unknown",
@@ -8021,8 +8021,8 @@ level of nested items.",
         "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
-            "name": "__namedParameters",
-            "type": "unknown",
+            "name": "data",
+            "type": "MixedLineBarChartProps.DetailPopoverData<T>",
           },
         ],
         "returnType": "unknown",
@@ -8649,8 +8649,8 @@ level of nested items.",
         "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
-            "name": "__namedParameters",
-            "type": "unknown",
+            "name": "data",
+            "type": "MixedLineBarChartProps.DetailPopoverData<T>",
           },
         ],
         "returnType": "unknown",
