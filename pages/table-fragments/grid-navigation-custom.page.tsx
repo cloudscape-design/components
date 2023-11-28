@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import SpaceBetween from '~components/space-between';
 import {
   AppLayout,
@@ -31,6 +31,10 @@ import {
   getTableRowRoleProps,
   getTableWrapperRoleProps,
   useGridNavigation,
+  GridNavigationFocus,
+  GridNavigationFocusStore,
+  GridNavigationCellContext,
+  GridNavigationCellProvider,
 } from '~components/table/table-role';
 import { orderBy } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
@@ -122,6 +126,8 @@ export default function Page() {
 
   const tableRef = useRef<HTMLTableElement>(null);
 
+  const gridNavigationFocus = useMemo(() => new GridNavigationFocusStore(), []);
+
   useGridNavigation({ keyboardNavigation: tableRole === 'grid', pageSize, getTable: () => tableRef.current });
 
   const sortedItems = useMemo(() => {
@@ -197,10 +203,11 @@ export default function Page() {
                 <thead>
                   <tr {...getTableHeaderRowRoleProps({ tableRole })}>
                     {columnDefinitions.map((column, colIndex) => (
-                      <th
+                      <TableHeaderCell
                         key={column.key}
-                        className={styles['custom-table-cell']}
-                        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
+                        tableRole={tableRole}
+                        colIndex={colIndex}
+                        gridNavigationFocus={gridNavigationFocus}
                       >
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
                           <button
@@ -219,7 +226,7 @@ export default function Page() {
                           {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
                           {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
                         </div>
-                      </th>
+                      </TableHeaderCell>
                     ))}
                   </tr>
                 </thead>
@@ -227,13 +234,15 @@ export default function Page() {
                   {sortedItems.map((item, rowIndex) => (
                     <tr key={item.id} {...getTableRowRoleProps({ tableRole, rowIndex, firstIndex: 0 })}>
                       {columnDefinitions.map((column, colIndex) => (
-                        <td
+                        <TableBodyCell
                           key={column.key}
-                          className={styles['custom-table-cell']}
-                          {...getTableCellRoleProps({ tableRole, colIndex })}
+                          tableRole={tableRole}
+                          colIndex={colIndex}
+                          rowIndex={rowIndex}
+                          gridNavigationFocus={gridNavigationFocus}
                         >
                           {column.render(item)}
-                        </td>
+                        </TableBodyCell>
                       ))}
                     </tr>
                   ))}
@@ -244,6 +253,64 @@ export default function Page() {
         </ContentLayout>
       }
     />
+  );
+}
+
+function TableHeaderCell({
+  children,
+  tableRole,
+  colIndex,
+  gridNavigationFocus,
+}: {
+  children: ReactNode;
+  tableRole: TableRole;
+  colIndex: number;
+  gridNavigationFocus: GridNavigationFocus;
+}) {
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  return (
+    <GridNavigationCellProvider
+      rowIndex={0}
+      columnIndex={colIndex}
+      cellRef={cellRef}
+      gridNavigationFocus={gridNavigationFocus}
+    >
+      <th
+        ref={cellRef}
+        className={styles['custom-table-cell']}
+        {...getTableColHeaderRoleProps({ tableRole, colIndex })}
+      >
+        {children}
+      </th>
+    </GridNavigationCellProvider>
+  );
+}
+
+function TableBodyCell({
+  children,
+  tableRole,
+  colIndex,
+  rowIndex,
+  gridNavigationFocus,
+}: {
+  children: ReactNode;
+  tableRole: TableRole;
+  colIndex: number;
+  rowIndex: number;
+  gridNavigationFocus: GridNavigationFocus;
+}) {
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  return (
+    <GridNavigationCellProvider
+      rowIndex={rowIndex + 1}
+      columnIndex={colIndex}
+      cellRef={cellRef}
+      gridNavigationFocus={gridNavigationFocus}
+    >
+      <td ref={cellRef} className={styles['custom-table-cell']} {...getTableCellRoleProps({ tableRole, colIndex })}>
+        {children}
+      </td>
+    </GridNavigationCellProvider>
   );
 }
 
