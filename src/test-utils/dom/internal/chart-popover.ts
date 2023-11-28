@@ -7,12 +7,12 @@ import popoverStyles from '../../../popover/styles.selectors.js';
 import chartSeriesDetails from '../../../internal/components/chart-series-details/styles.selectors.js';
 
 export class ChartPopoverSeriesItemWrapper extends ElementWrapper {
-  findKey(): ElementWrapper | null {
-    return this.findByClassName(chartSeriesDetails.key);
+  findKey(): ElementWrapper {
+    return this.findByClassName(chartSeriesDetails.key)!;
   }
 
-  findValue(): ElementWrapper | null {
-    return this.findByClassName(chartSeriesDetails.value);
+  findValue(): ElementWrapper {
+    return this.findByClassName(chartSeriesDetails.value)!;
   }
 }
 
