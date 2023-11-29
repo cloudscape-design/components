@@ -6,6 +6,7 @@ import Link from '~components/link';
 import Input from '~components/input';
 import Box from '~components/box';
 import Button from '~components/button';
+import ButtonDropdown from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
 import RadioGroup from '~components/radio-group';
 import Container from '~components/container';
@@ -116,7 +117,20 @@ export default function CacheBehaviorPanel() {
       id="cache-behavior-panel"
       className="custom-screenshot-hide"
       header={
-        <Header variant="h2" info={<Link variant="info">info</Link>}>
+        <Header
+          actions={
+            <ButtonDropdown
+              items={[
+                { text: 'Delete', id: 'rm', disabled: false },
+                { text: 'Move', id: 'mv', disabled: false },
+              ]}
+            >
+              Short
+            </ButtonDropdown>
+          }
+          variant="h2"
+          info={<Link variant="info">info</Link>}
+        >
           Cache behavior settings
         </Header>
       }
