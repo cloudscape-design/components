@@ -8,6 +8,7 @@ import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
+import { useGridNavigationFocusable } from '../table-role/index';
 
 interface ResizerProps {
   onWidthUpdate: (newWidth: number) => void;
@@ -168,6 +169,10 @@ export function Resizer({
     };
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(separatorId, resizerToggleRef);
+  useGridNavigationFocusable(separatorId, resizerSeparatorRef, { navigable: false, suppressNavigation: true });
+  const shouldMuteFocus = focusMuted && focusTarget !== resizerToggleRef.current;
+
   return (
     <>
       <button
@@ -206,7 +211,7 @@ export function Resizer({
         // See https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription
         aria-roledescription={roleDescription}
         aria-labelledby={ariaLabelledby}
-        tabIndex={tabIndex}
+        tabIndex={shouldMuteFocus ? -1 : tabIndex}
         data-focus-id={focusId}
       />
       <span

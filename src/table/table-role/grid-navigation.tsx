@@ -2,8 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { findFocusedCell, getNextFocusable, getSingleFocusable, getAllowedFocusables } from './utils';
-import { FocusableDefinition, FocusedCell, GridNavigationFocusState, GridNavigationProviderProps } from './interfaces';
+import {
+  findFocusedCell,
+  getNextFocusable,
+  getSingleFocusable,
+  getAllowedFocusables,
+  defaultIsSuppressed,
+} from './utils';
+import {
+  FocusableDefinition,
+  FocusableOptions,
+  FocusedCell,
+  GridNavigationFocusState,
+  GridNavigationProviderProps,
+} from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
@@ -12,7 +24,7 @@ import AsyncStore, { ReadonlyAsyncStore, useSelector } from '../../area-chart/as
 export const GridNavigationContext = createContext<{
   focusMuted: boolean;
   focusStore: ReadonlyAsyncStore<GridNavigationFocusState>;
-  registerFocusable(focusableId: string, focusable: FocusableDefinition, suppressNavigation?: boolean): () => void;
+  registerFocusable(focusableId: string, focusable: FocusableDefinition, options?: FocusableOptions): () => void;
   unregisterFocusable(focusable: FocusableDefinition): void;
 }>({
   focusMuted: false,
@@ -20,6 +32,20 @@ export const GridNavigationContext = createContext<{
   registerFocusable: () => () => {},
   unregisterFocusable: () => {},
 });
+
+export const GridNavigationSuppressionContext = createContext<{ navigationSuppressed: boolean }>({
+  navigationSuppressed: false,
+});
+
+export function GridNavigationSuppressed({ children }: { children: React.ReactNode }) {
+  return (
+    <GridNavigationSuppressionContext.Provider value={{ navigationSuppressed: true }}>
+      <div style={{ display: 'contents' }} data-awsui-table-suppress-navigation={true}>
+        {children}
+      </div>
+    </GridNavigationSuppressionContext.Provider>
+  );
+}
 
 /**
  * Makes table navigable with keyboard commands.
@@ -76,18 +102,19 @@ export function GridNavigationProvider({
 export function useGridNavigationFocusable(
   focusableId?: string,
   focusable?: FocusableDefinition,
-  suppressNavigation?: boolean
+  { navigable, suppressNavigation }: FocusableOptions = {}
 ) {
+  const { navigationSuppressed } = useContext(GridNavigationSuppressionContext);
   const { focusMuted, focusStore, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
   const focusTarget = useSelector(focusStore, state => (state.focusableId === focusableId ? state.focusTarget : null));
 
   useEffect(() => {
     if (focusableId && focusable) {
-      return registerFocusable(focusableId, focusable, suppressNavigation);
+      return registerFocusable(focusableId, focusable, { navigable, suppressNavigation });
     }
-  }, [focusableId, focusable, registerFocusable, suppressNavigation]);
+  }, [focusableId, focusable, registerFocusable, navigable, suppressNavigation]);
 
-  return { focusMuted, focusTarget, registerFocusable, unregisterFocusable };
+  return { focusMuted: focusMuted && !navigationSuppressed, focusTarget, registerFocusable, unregisterFocusable };
 }
 
 /**
@@ -121,7 +148,7 @@ class GridNavigationHelper {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
-    const focusTarget = getSingleFocusable(this.table, null, this.focusStore.getFocusableElements());
+    const focusTarget = getSingleFocusable(this.table, null, this.focusStore.getNavigableElements());
     focusTarget && this.focusStore.setFocusTarget(focusTarget);
 
     this.cleanup = () => {
@@ -141,7 +168,7 @@ class GridNavigationHelper {
 
   public refresh() {
     if (this._table) {
-      const focusableElements = this.focusStore.getFocusableElements();
+      const focusableElements = this.focusStore.getNavigableElements();
 
       // Update focused cell indices in case table rows, columns, or firstIndex change.
       if (this.focusedCell) {
@@ -157,8 +184,8 @@ class GridNavigationHelper {
     return this.focusStore;
   }
 
-  public registerFocusable = (focusableId: string, focusable: FocusableDefinition, suppressNavigation = false) => {
-    return this.focusStore.registerFocusable(focusableId, focusable, suppressNavigation);
+  public registerFocusable = (focusableId: string, focusable: FocusableDefinition, options?: FocusableOptions) => {
+    return this.focusStore.registerFocusable(focusableId, focusable, options);
   };
 
   public unregisterFocusable = (focusable: FocusableDefinition) => {
@@ -181,13 +208,13 @@ class GridNavigationHelper {
       return;
     }
 
-    const cell = findFocusedCell(event.target, this.focusStore.getFocusableElements());
+    const cell = findFocusedCell(event.target, this.focusStore.getNavigableElements());
     if (!cell) {
       return;
     }
 
     this.focusedCell = cell;
-    const focusableElements = this.focusStore.getFocusableElements();
+    const focusableElements = this.focusStore.getNavigableElements();
 
     const focusTarget = getSingleFocusable(this.table, cell, focusableElements);
     focusTarget && this.focusStore.setFocusTarget(focusTarget);
@@ -232,7 +259,7 @@ class GridNavigationHelper {
     const maxExtreme = Number.POSITIVE_INFINITY;
 
     // Do not intercept any keys when the navigation is suppressed.
-    if (this.focusStore.isSuppressed(from.element)) {
+    if (this.focusStore.isSuppressed(from.element) || defaultIsSuppressed(from.element)) {
       return;
     }
 
@@ -283,22 +310,30 @@ class GridNavigationHelper {
   };
 
   private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {
-    getNextFocusable(this.table, cell, delta, this.focusStore.getFocusableElements())?.focus();
+    getNextFocusable(this.table, cell, delta, this.focusStore.getNavigableElements())?.focus();
   }
 }
 
 class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
   private focusables = new Set<FocusableDefinition>();
   private focusableToId = new Map<FocusableDefinition, string>();
+  private focusableNavigable = new Set<FocusableDefinition>();
   private focusableSuppressed = new Set<FocusableDefinition>();
 
   constructor() {
     super({ focusableId: null, focusTarget: null });
   }
 
-  public registerFocusable = (focusableId: string, focusable: FocusableDefinition, suppressNavigation = false) => {
+  public registerFocusable = (
+    focusableId: string,
+    focusable: FocusableDefinition,
+    { navigable = true, suppressNavigation = false }: FocusableOptions = {}
+  ) => {
     this.focusables.add(focusable);
     this.focusableToId.set(focusable, focusableId);
+    if (navigable) {
+      this.focusableNavigable.add(focusable);
+    }
     if (suppressNavigation) {
       this.focusableSuppressed.add(focusable);
     }
@@ -308,15 +343,18 @@ class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
   public unregisterFocusable = (focusable: FocusableDefinition) => {
     this.focusables.delete(focusable);
     this.focusableToId.delete(focusable);
+    this.focusableNavigable.delete(focusable);
     this.focusableSuppressed.delete(focusable);
   };
 
-  public getFocusableElements = (): Set<HTMLElement> => {
+  public getNavigableElements = (): Set<HTMLElement> => {
     const registeredElements = new Set<HTMLElement>();
     for (const focusable of this.focusables) {
-      const element = getFocusableElement(focusable);
-      if (element) {
-        registeredElements.add(element);
+      if (this.focusableNavigable.has(focusable)) {
+        const element = getFocusableElement(focusable);
+        if (element) {
+          registeredElements.add(element);
+        }
       }
     }
     return registeredElements;

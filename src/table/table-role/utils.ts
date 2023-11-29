@@ -93,6 +93,22 @@ export function getSingleFocusable(table: HTMLTableElement, cell: null | Focused
   return focusTarget;
 }
 
+export function defaultIsSuppressed(target: HTMLElement) {
+  let current: null | HTMLElement = target;
+  while (current) {
+    // Stop checking for parents upon reaching the cell element as the function only aims at the cell content.
+    const tagName = current.tagName.toLowerCase();
+    if (tagName === 'td' || tagName === 'th') {
+      return false;
+    }
+    if (current.getAttribute('data-awsui-table-suppress-navigation') === 'true') {
+      return true;
+    }
+    current = current.parentElement;
+  }
+  return false;
+}
+
 /**
  * Finds the closest row to the targetAriaRowIndex+delta in the direction of delta.
  */

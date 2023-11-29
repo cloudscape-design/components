@@ -104,7 +104,7 @@ function InternalInput(
 
   const inputId = useUniqueId();
   const [active, setActive] = useState(false);
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, inputRef, active);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, inputRef, { suppressNavigation: active });
   const shouldMuteFocus = focusMuted && focusTarget !== inputRef.current;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {

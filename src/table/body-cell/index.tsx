@@ -10,6 +10,8 @@ import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
 import { useInternalI18n } from '../../i18n/context';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import { useGridNavigationFocusable } from '../table-role/index.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -72,6 +74,10 @@ function TableCellEditable<ItemType>({
     }
   }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
+  const buttonId = useUniqueId();
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(buttonId, editActivateRef);
+  const shouldMuteFocus = focusMuted && focusTarget !== editActivateRef.current;
+
   return (
     <TableTdElement
       {...rest}
@@ -127,6 +133,7 @@ function TableCellEditable<ItemType>({
             ref={editActivateRef}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
+            tabIndex={shouldMuteFocus ? -1 : undefined}
           >
             {showIcon && <Icon name="edit" />}
           </button>

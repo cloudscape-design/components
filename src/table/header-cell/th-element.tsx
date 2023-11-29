@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import { SortingStatus } from './utils';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { TableRole, getTableColHeaderRoleProps } from '../table-role';
+import { TableRole, getTableColHeaderRoleProps, useGridNavigationFocusable } from '../table-role';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface TableThElementProps {
   className?: string;
@@ -18,7 +19,7 @@ interface TableThElementProps {
   colIndex: number;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
-  cellRef?: React.RefCallback<HTMLElement>;
+  cellRef?: React.Ref<HTMLElement>;
   tableRole: TableRole;
   children: React.ReactNode;
 }
@@ -42,7 +43,12 @@ export function TableThElement({
     getClassName: props => getStickyClassNames(styles, props),
   });
 
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef);
+  const cellObjectRef = useRef<HTMLTableCellElement>(null);
+  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellObjectRef);
+
+  const cellId = useUniqueId();
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(cellId, cellObjectRef);
+  const shouldMuteFocus = focusMuted && focusTarget !== cellObjectRef.current;
 
   return (
     <th
@@ -61,6 +67,7 @@ export function TableThElement({
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      tabIndex={!focusMuted ? undefined : shouldMuteFocus ? -1 : 0}
     >
       {children}
     </th>

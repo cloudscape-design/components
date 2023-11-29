@@ -11,6 +11,7 @@ import { Optional } from '../../internal/types';
 import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
 import LiveRegion from '../../internal/components/live-region';
 import { useInternalI18n } from '../../i18n/context';
+import { GridNavigationSuppressed } from '../table-role/grid-navigation';
 
 // A function that does nothing
 const noop = () => undefined;
@@ -105,54 +106,56 @@ export function InlineEditor<ItemType>({
   } = column.editConfig!;
 
   return (
-    <FocusLock restoreFocus={true} ref={focusLockRef}>
-      <div
-        role="dialog"
-        ref={clickAwayRef}
-        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-        onKeyDown={handleEscape}
-      >
-        <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
-          <FormField
-            stretch={true}
-            label={ariaLabel}
-            constraintText={constraintText}
-            __hideLabel={true}
-            __disableGutters={true}
-            i18nStrings={{ errorIconAriaLabel }}
-            errorText={validation(item, currentEditValue)}
-          >
-            <div className={styles['body-cell-editor-row']}>
-              {editingCell(item, cellContext)}
-              <span className={styles['body-cell-editor-controls']}>
-                <SpaceBetween direction="horizontal" size="xxs">
-                  {!currentEditLoading ? (
+    <GridNavigationSuppressed>
+      <FocusLock restoreFocus={true} ref={focusLockRef}>
+        <div
+          role="dialog"
+          ref={clickAwayRef}
+          aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+          onKeyDown={handleEscape}
+        >
+          <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
+            <FormField
+              stretch={true}
+              label={ariaLabel}
+              constraintText={constraintText}
+              __hideLabel={true}
+              __disableGutters={true}
+              i18nStrings={{ errorIconAriaLabel }}
+              errorText={validation(item, currentEditValue)}
+            >
+              <div className={styles['body-cell-editor-row']}>
+                {editingCell(item, cellContext)}
+                <span className={styles['body-cell-editor-controls']}>
+                  <SpaceBetween direction="horizontal" size="xxs">
+                    {!currentEditLoading ? (
+                      <Button
+                        ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
+                        formAction="none"
+                        iconName="close"
+                        variant="inline-icon"
+                        onClick={() => onCancel()}
+                      />
+                    ) : null}
                     <Button
-                      ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
-                      formAction="none"
-                      iconName="close"
+                      ariaLabel={ariaLabels?.submitEditLabel?.(column)}
+                      formAction="submit"
+                      iconName="check"
                       variant="inline-icon"
-                      onClick={() => onCancel()}
+                      loading={currentEditLoading}
                     />
-                  ) : null}
-                  <Button
-                    ariaLabel={ariaLabels?.submitEditLabel?.(column)}
-                    formAction="submit"
-                    iconName="check"
-                    variant="inline-icon"
-                    loading={currentEditLoading}
-                  />
-                </SpaceBetween>
-                <LiveRegion>
-                  {currentEditLoading
-                    ? i18n('ariaLabels.submittingEditText', ariaLabels?.submittingEditText?.(column))
-                    : ''}
-                </LiveRegion>
-              </span>
-            </div>
-          </FormField>
-        </form>
-      </div>
-    </FocusLock>
+                  </SpaceBetween>
+                  <LiveRegion>
+                    {currentEditLoading
+                      ? i18n('ariaLabels.submittingEditText', ariaLabels?.submittingEditText?.(column))
+                      : ''}
+                  </LiveRegion>
+                </span>
+              </div>
+            </FormField>
+          </form>
+        </div>
+      </FocusLock>
+    </GridNavigationSuppressed>
   );
 }

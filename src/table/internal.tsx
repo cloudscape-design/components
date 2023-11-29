@@ -26,7 +26,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
-import useTableFocusNavigation from './use-table-focus-navigation';
+// import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './sticky-columns';
@@ -34,7 +34,12 @@ import { StickyScrollbar } from './sticky-scrollbar';
 import { checkColumnWidths } from './column-widths-utils';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { getTableRoleProps, getTableRowRoleProps, getTableWrapperRoleProps } from './table-role';
+import {
+  GridNavigationProvider,
+  getTableRoleProps,
+  getTableRowRoleProps,
+  getTableWrapperRoleProps,
+} from './table-role';
 import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
@@ -201,8 +206,8 @@ const InternalTable = React.forwardRef(
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
-    const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
-    const tableRole = hasEditableCells ? 'grid-default' : 'table';
+    // const hasEditableCells = !!columnDefinitions.find(col => col.editConfig);
+    const tableRole = 'grid'; // hasEditableCells ? 'grid-default' : 'table';
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -247,7 +252,7 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+    // useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     const toolsHeaderWrapper = useRef(null);
     // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
     const toolsHeaderHeight =
@@ -341,144 +346,150 @@ const InternalTable = React.forwardRef(
                   </span>
                 </LiveRegion>
               )}
-              <table
-                ref={tableRef}
-                className={clsx(
-                  styles.table,
-                  resizableColumns && styles['table-layout-fixed'],
-                  contentDensity === 'compact' && getVisualContextClassname('compact-table')
-                )}
-                {...getTableRoleProps({
-                  tableRole,
-                  totalItemsCount,
-                  totalColumnsCount: totalColumnsCount,
-                  ariaLabel: ariaLabels?.tableLabel,
-                  ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
-                })}
-              >
-                <Thead
-                  ref={theadRef}
-                  hidden={stickyHeader}
-                  onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
-                  {...theadProps}
-                />
-                <tbody>
-                  {loading || items.length === 0 ? (
-                    <tr>
-                      <NoDataCell
-                        variant={variant}
-                        containerWidth={containerWidth ?? 0}
-                        totalColumnsCount={totalColumnsCount}
-                        hasFooter={hasFooter}
-                        loading={loading}
-                        loadingText={loadingText}
-                        empty={empty}
-                        tableRef={tableRefObject}
-                      />
-                    </tr>
-                  ) : (
-                    items.map((item, rowIndex) => {
-                      const firstVisible = rowIndex === 0;
-                      const lastVisible = rowIndex === items.length - 1;
-                      const isEven = rowIndex % 2 === 0;
-                      const isSelected = !!selectionType && isItemSelected(item);
-                      const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
-                      const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
-                      return (
-                        <tr
-                          key={getItemKey(trackBy, item, rowIndex)}
-                          className={clsx(styles.row, isSelected && styles['row-selected'])}
-                          onFocus={({ currentTarget }) => {
-                            // When an element inside table row receives focus we want to adjust the scroll.
-                            // However, that behaviour is unwanted when the focus is received as result of a click
-                            // as it causes the click to never reach the target element.
-                            if (!currentTarget.contains(getMouseDownTarget())) {
-                              stickyHeaderRef.current?.scrollToRow(currentTarget);
+
+              <GridNavigationProvider keyboardNavigation={true} pageSize={10} getTable={() => tableRefObject.current}>
+                <table
+                  ref={tableRef}
+                  className={clsx(
+                    styles.table,
+                    resizableColumns && styles['table-layout-fixed'],
+                    contentDensity === 'compact' && getVisualContextClassname('compact-table')
+                  )}
+                  {...getTableRoleProps({
+                    tableRole,
+                    totalItemsCount,
+                    totalColumnsCount: totalColumnsCount,
+                    ariaLabel: ariaLabels?.tableLabel,
+                    ariaLabelledBy: isLabelledByHeader && headerIdRef.current ? headerIdRef.current : undefined,
+                  })}
+                >
+                  <Thead
+                    ref={theadRef}
+                    hidden={stickyHeader}
+                    onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
+                    {...theadProps}
+                  />
+                  <tbody>
+                    {loading || items.length === 0 ? (
+                      <tr>
+                        <NoDataCell
+                          variant={variant}
+                          containerWidth={containerWidth ?? 0}
+                          totalColumnsCount={totalColumnsCount}
+                          hasFooter={hasFooter}
+                          loading={loading}
+                          loadingText={loadingText}
+                          empty={empty}
+                          tableRef={tableRefObject}
+                        />
+                      </tr>
+                    ) : (
+                      items.map((item, rowIndex) => {
+                        const firstVisible = rowIndex === 0;
+                        const lastVisible = rowIndex === items.length - 1;
+                        const isEven = rowIndex % 2 === 0;
+                        const isSelected = !!selectionType && isItemSelected(item);
+                        const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
+                        const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
+                        return (
+                          <tr
+                            key={getItemKey(trackBy, item, rowIndex)}
+                            className={clsx(styles.row, isSelected && styles['row-selected'])}
+                            onFocus={({ currentTarget }) => {
+                              // When an element inside table row receives focus we want to adjust the scroll.
+                              // However, that behaviour is unwanted when the focus is received as result of a click
+                              // as it causes the click to never reach the target element.
+                              if (!currentTarget.contains(getMouseDownTarget())) {
+                                stickyHeaderRef.current?.scrollToRow(currentTarget);
+                              }
+                            }}
+                            {...focusMarkers.item}
+                            onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
+                            onContextMenu={
+                              onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)
                             }
-                          }}
-                          {...focusMarkers.item}
-                          onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
-                          onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
-                          {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex })}
-                        >
-                          {selectionType !== undefined && (
-                            <TableTdElement
-                              className={clsx(styles['selection-control'])}
-                              isVisualRefresh={isVisualRefresh}
-                              isFirstRow={firstVisible}
-                              isLastRow={lastVisible}
-                              isSelected={isSelected}
-                              isNextSelected={isNextSelected}
-                              isPrevSelected={isPrevSelected}
-                              wrapLines={false}
-                              isEvenRow={isEven}
-                              stripedRows={stripedRows}
-                              hasSelection={hasSelection}
-                              hasFooter={hasFooter}
-                              stickyState={stickyState}
-                              columnId={selectionColumnId}
-                              colIndex={0}
-                              tableRole={tableRole}
-                            >
-                              <SelectionControl
-                                onFocusDown={moveFocusDown}
-                                onFocusUp={moveFocusUp}
-                                onShiftToggle={updateShiftToggle}
-                                {...getItemSelectionProps(item)}
-                              />
-                            </TableTdElement>
-                          )}
-                          {visibleColumnDefinitions.map((column, colIndex) => {
-                            const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
-                            const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
-                            const isEditable = !!column.editConfig && !cellEditing.isLoading;
-                            return (
-                              <TableBodyCell
-                                key={getColumnKey(column, colIndex)}
-                                style={
-                                  resizableColumns
-                                    ? {}
-                                    : {
-                                        width: column.width,
-                                        minWidth: column.minWidth,
-                                        maxWidth: column.maxWidth,
-                                      }
-                                }
-                                ariaLabels={ariaLabels}
-                                column={column}
-                                item={item}
-                                wrapLines={wrapLines}
-                                isEditable={isEditable}
-                                isEditing={isEditing}
-                                isRowHeader={column.isRowHeader}
+                            {...getTableRowRoleProps({ tableRole, firstIndex, rowIndex })}
+                          >
+                            {selectionType !== undefined && (
+                              <TableTdElement
+                                className={clsx(styles['selection-control'])}
+                                isVisualRefresh={isVisualRefresh}
                                 isFirstRow={firstVisible}
                                 isLastRow={lastVisible}
                                 isSelected={isSelected}
                                 isNextSelected={isNextSelected}
                                 isPrevSelected={isPrevSelected}
-                                successfulEdit={successfulEdit}
-                                onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
-                                onEditEnd={editCancelled =>
-                                  cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
-                                }
-                                submitEdit={cellEditing.submitEdit}
-                                hasFooter={hasFooter}
-                                stripedRows={stripedRows}
+                                wrapLines={false}
                                 isEvenRow={isEven}
-                                columnId={column.id ?? colIndex}
-                                colIndex={selectionType !== undefined ? colIndex + 1 : colIndex}
+                                stripedRows={stripedRows}
+                                hasSelection={hasSelection}
+                                hasFooter={hasFooter}
                                 stickyState={stickyState}
-                                isVisualRefresh={isVisualRefresh}
+                                columnId={selectionColumnId}
+                                colIndex={0}
                                 tableRole={tableRole}
-                              />
-                            );
-                          })}
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
+                              >
+                                <SelectionControl
+                                  onFocusDown={moveFocusDown}
+                                  onFocusUp={moveFocusUp}
+                                  onShiftToggle={updateShiftToggle}
+                                  {...getItemSelectionProps(item)}
+                                />
+                              </TableTdElement>
+                            )}
+                            {visibleColumnDefinitions.map((column, colIndex) => {
+                              const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
+                              const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
+                              const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                              return (
+                                <TableBodyCell
+                                  key={getColumnKey(column, colIndex)}
+                                  style={
+                                    resizableColumns
+                                      ? {}
+                                      : {
+                                          width: column.width,
+                                          minWidth: column.minWidth,
+                                          maxWidth: column.maxWidth,
+                                        }
+                                  }
+                                  ariaLabels={ariaLabels}
+                                  column={column}
+                                  item={item}
+                                  wrapLines={wrapLines}
+                                  isEditable={isEditable}
+                                  isEditing={isEditing}
+                                  isRowHeader={column.isRowHeader}
+                                  isFirstRow={firstVisible}
+                                  isLastRow={lastVisible}
+                                  isSelected={isSelected}
+                                  isNextSelected={isNextSelected}
+                                  isPrevSelected={isPrevSelected}
+                                  successfulEdit={successfulEdit}
+                                  onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
+                                  onEditEnd={editCancelled =>
+                                    cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
+                                  }
+                                  submitEdit={cellEditing.submitEdit}
+                                  hasFooter={hasFooter}
+                                  stripedRows={stripedRows}
+                                  isEvenRow={isEven}
+                                  columnId={column.id ?? colIndex}
+                                  colIndex={selectionType !== undefined ? colIndex + 1 : colIndex}
+                                  stickyState={stickyState}
+                                  isVisualRefresh={isVisualRefresh}
+                                  tableRole={tableRole}
+                                />
+                              );
+                            })}
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </GridNavigationProvider>
+
               {resizableColumns && <ResizeTracker />}
             </div>
 

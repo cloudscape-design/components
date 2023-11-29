@@ -26,7 +26,7 @@ export default React.forwardRef(function RadioButton(
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
   const inputId = useUniqueId();
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, radioButtonRef, false);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, radioButtonRef);
   const shouldMuteFocus = focusMuted && focusTarget !== radioButtonRef.current;
 
   return (

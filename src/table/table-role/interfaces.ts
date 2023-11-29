@@ -27,3 +27,8 @@ export interface GridNavigationFocusState {
   focusableId: null | string;
   focusTarget: null | HTMLElement;
 }
+
+export interface FocusableOptions {
+  navigable?: boolean;
+  suppressNavigation?: boolean;
+}

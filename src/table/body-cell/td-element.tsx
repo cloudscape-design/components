@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './styles.css.js';
 import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { TableRole, getTableCellRoleProps } from '../table-role';
+import { TableRole, getTableCellRoleProps, useGridNavigationFocusable } from '../table-role';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
+import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -76,7 +77,12 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       getClassName: props => getStickyClassNames(styles, props),
     });
 
-    const mergedRef = useMergeRefs(stickyStyles.ref, ref);
+    const cellObjectRef = useRef<HTMLTableCellElement>(null);
+    const mergedRef = useMergeRefs(stickyStyles.ref, ref, cellObjectRef);
+
+    const cellId = useUniqueId();
+    const { focusMuted, focusTarget } = useGridNavigationFocusable(cellId, cellObjectRef);
+    const shouldMuteFocus = focusMuted && focusTarget !== cellObjectRef.current;
 
     return (
       <Element
@@ -102,6 +108,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onMouseLeave={onMouseLeave}
         ref={mergedRef}
         {...nativeAttributes}
+        tabIndex={!focusMuted ? undefined : shouldMuteFocus ? -1 : 0}
       >
         {children}
       </Element>

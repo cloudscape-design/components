@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
@@ -11,7 +11,7 @@ import { Divider, Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useInternalI18n } from '../../i18n/context';
 import { StickyColumnsModel } from '../sticky-columns';
-import { TableRole } from '../table-role';
+import { TableRole, useGridNavigationFocusable } from '../table-role';
 import { TableThElement } from './th-element';
 
 interface TableHeaderCellProps<ItemType> {
@@ -84,6 +84,10 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
+  const headerButtonRef = useRef<HTMLTableCellElement>(null);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(headerId, headerButtonRef);
+  const shouldMuteFocus = focusMuted && focusTarget !== headerButtonRef.current;
+
   return (
     <TableThElement
       className={className}
@@ -98,6 +102,7 @@ export function TableHeaderCell<ItemType>({
       tableRole={tableRole}
     >
       <div
+        ref={headerButtonRef}
         data-focus-id={`sorting-control-${String(columnId)}`}
         className={clsx(styles['header-cell-content'], {
           [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
@@ -114,7 +119,7 @@ export function TableHeaderCell<ItemType>({
         {...(sortingStatus && !sortingDisabled
           ? {
               onKeyPress: handleKeyPress,
-              tabIndex: tabIndex,
+              tabIndex: shouldMuteFocus ? -1 : tabIndex,
               role: 'button',
               onClick: handleClick,
             }
