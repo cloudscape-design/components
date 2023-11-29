@@ -19,13 +19,21 @@ export default function () {
         contentType="form"
         ariaLabels={appLayoutLabels}
         breadcrumbs={<Breadcrumbs />}
+        // maxContentWidth={9999999999}
         contentHeader={
           <SpaceBetween size="m">
             <Header
               variant="h1"
               info={<Link>Info</Link>}
               description="When you create an Amazon CloudFront distribution."
-              actions={<Button variant="primary">Create distribution</Button>}
+              actions={
+                <Button
+                  onClick={() => document.body.setAttribute('data-user-settings-layout-width', 'full-width')}
+                  variant="primary"
+                >
+                  I want full width!
+                </Button>
+              }
             >
               Create distribution
             </Header>
