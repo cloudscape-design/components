@@ -332,3 +332,14 @@ when the navigation or tools drawers are open in responsive viewports.
   visibility: hidden !important;
 }
 /* stylelint-enable selector-max-universal, selector-combinator-disallowed-list */
+
+/*
+Cloudscape User Settings
+Category: Layout
+Property: Width
+*/
+/* stylelint-disable */
+body[data-user-settings-layout-width='full-width'] .layout {
+  #{custom-props.$defaultMaxContentWidth}: 100%;
+}
+/* stylelint-enable */

@@ -53,24 +53,6 @@ export default function Layout({ children }: LayoutProps) {
   const hasContentGapLeft = isNavigationOpen || navigationHide;
   const hasContentGapRight = drawersTriggerCount === 0 || hasOpenDrawer;
 
-  /**
-   * Mutation observer for Cloudscape User Settings
-   * Category: Layout
-   * Property: Width
-   */
-  const [userSettingsLayoutWidth, setUserSettingsLayoutWidth] = React.useState('Optimized for content');
-
-  function callback(mutationList: any) {
-    for (const mutation of mutationList) {
-      if (mutation.type === 'attributes') {
-        setUserSettingsLayoutWidth(mutation.target.dataset.userSettingsLayoutWidth);
-      }
-    }
-  }
-
-  const observer = new MutationObserver(callback);
-  observer.observe(document.body, { attributeFilter: ['data-user-settings-layout-width'] });
-
   return (
     <main
       className={clsx(
@@ -104,8 +86,6 @@ export default function Layout({ children }: LayoutProps) {
         ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
         ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
-        // Cloudscape User Settings, Layout, Width
-        ...(userSettingsLayoutWidth === 'full-width' && { [customCssProps.defaultMaxContentWidth]: `100%` }),
       }}
     >
       {children}
