@@ -6,7 +6,13 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Header() {
-  const { breadcrumbs, contentHeader, hasDrawerViewportOverlay, hasNotificationsContent } = useAppLayoutInternals();
+  const {
+    breadcrumbs,
+    contentHeader,
+    hasDrawerViewportOverlay,
+    hasNotificationsContent,
+    userSettingsThemeHighContrastHeader,
+  } = useAppLayoutInternals();
 
   if (!contentHeader) {
     return null;
@@ -21,7 +27,7 @@ export default function Header() {
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles.unfocusable]: hasDrawerViewportOverlay,
         },
-        'awsui-context-content-header'
+        userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header'
       )}
     >
       {contentHeader}

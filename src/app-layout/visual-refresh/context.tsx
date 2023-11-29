@@ -90,6 +90,8 @@ interface AppLayoutInternals extends AppLayoutProps {
   toolsControlId: string;
   toolsRefs: FocusControlRefs;
   __embeddedViewMode?: boolean;
+  // Cloudscape User Settings
+  userSettingsThemeHighContrastHeader: string;
 }
 
 /**
@@ -588,6 +590,24 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons, focusDrawersButtons, splitPanelRefs.slider]
     );
 
+    /**
+     * Mutation observer for Cloudscape User Settings
+     * Category: Theme
+     * Property: High Contrast Header
+     */
+    const [userSettingsThemeHighContrastHeader, setUserSettingsThemeHighContrastHeader] = React.useState('enabled');
+
+    function callback(mutationList: any) {
+      for (const mutation of mutationList) {
+        if (mutation.type === 'attributes') {
+          setUserSettingsThemeHighContrastHeader(mutation.target.dataset.userSettingsThemeHighContrastHeader);
+        }
+      }
+    }
+
+    const observer = new MutationObserver(callback);
+    observer.observe(document.body, { attributeFilter: ['data-user-settings-theme-high-contrast-header'] });
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
@@ -659,6 +679,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsWidth,
           toolsRefs,
           __embeddedViewMode,
+          // Cloudscape User Settings
+          userSettingsThemeHighContrastHeader,
         }}
       >
         <AppLayoutContext.Provider
