@@ -117,7 +117,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   contentDisplayPreference?: CollectionPreferencesProps.ContentDisplayPreference;
   /**
-   * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
+   * Configures the built-in "visible content selection" preference (for example, visible sections in cards).
    *
    * If you set it, the component displays this preference in the modal.
    * Cannot be used together with `contentDisplayPreference`.

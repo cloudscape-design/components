@@ -5003,7 +5003,7 @@ You must set the current value in the \`preferences.stripedRows\` property.",
       "type": "string",
     },
     Object {
-      "description": "Configures the built-in \\"visible content selection\\" preference (for example, visible columns in a table).
+      "description": "Configures the built-in \\"visible content selection\\" preference (for example, visible sections in cards).
 If you set it, the component displays this preference in the modal.
 Cannot be used together with \`contentDisplayPreference\`.
 
