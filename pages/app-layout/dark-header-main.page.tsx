@@ -28,7 +28,8 @@ export default function () {
               actions={
                 <Button
                   onClick={() => {
-                    document.body.setAttribute('data-user-settings-layout-width', 'full-width');
+                    document.body.setAttribute('data-user-settings-layout-notifications-position', 'bottom-right');
+                    document.body.setAttribute('data-user-settings-layout-high-contrast-header', 'disabled');
                     document.body.setAttribute('data-user-settings-accessibility-links', 'no-underline');
                     document.body.setAttribute('data-user-settings-theme-high-contrast-header', 'disabled');
                   }}

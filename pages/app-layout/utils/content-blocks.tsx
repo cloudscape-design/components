@@ -62,20 +62,38 @@ export function Navigation() {
 }
 
 export function Notifications() {
-  const [visible, setVisible] = useState(true);
-  if (!visible) {
-    return null;
-  }
   return (
     <Flashbar
+      stackItems={true}
       items={[
         {
           type: 'success',
-          header: 'Success message',
-          statusIconAriaLabel: 'success',
-          dismissLabel: 'Dismiss notification',
           dismissible: true,
-          onDismiss: () => setVisible(false),
+          dismissLabel: 'Dismiss message',
+          content: 'This is a success flash message',
+          id: 'message_5',
+        },
+        {
+          type: 'warning',
+          dismissible: true,
+          dismissLabel: 'Dismiss message',
+          content: 'This is a warning flash message',
+          id: 'message_4',
+        },
+        {
+          type: 'error',
+          dismissible: true,
+          dismissLabel: 'Dismiss message',
+          header: 'Failed to update instance id-4890f893e',
+          content: 'This is a dismissible error message',
+          id: 'message_3',
+        },
+        {
+          type: 'info',
+          dismissible: true,
+          dismissLabel: 'Dismiss message',
+          content: 'This is an info flash message',
+          id: 'message_2',
         },
       ]}
     />

@@ -343,3 +343,14 @@ body[data-user-settings-layout-width='full-width'] .layout {
   #{custom-props.$defaultMaxContentWidth}: 100%;
 }
 /* stylelint-enable */
+
+/*
+Cloudscape User Settings
+Category: Layout
+Property: Notifications
+*/
+/* stylelint-disable */
+body[data-user-settings-layout-notifications-position='bottom-right'] .layout {
+  #{custom-props.$notificationsGap}: 0px;
+}
+/* stylelint-enable */

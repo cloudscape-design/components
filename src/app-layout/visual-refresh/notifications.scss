@@ -20,3 +20,21 @@
     }
   }
 }
+
+/*
+Cloudscape User Settings
+Category: Layout
+Property: Notifications
+*/
+/* stylelint-disable */
+body[data-user-settings-layout-notifications-position='bottom-right'] .notifications {
+  align-self: end;
+  bottom: calc(var(#{custom-props.$footerHeight}) + awsui.$space-m);
+  grid-column: 3 / 6;
+  grid-row: 10;
+  justify-self: end;
+  position: sticky;
+  width: 600px;
+  z-index: 841;
+}
+/* stylelint-enable */
