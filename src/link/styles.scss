@@ -63,3 +63,14 @@
 .icon {
   display: inline-block;
 }
+
+/*
+Cloudscape User Settings
+Category: Accessibility
+Property: Links
+*/
+/* stylelint-disable */
+body[data-user-settings-accessibility-links='no-underline'] .link {
+  text-decoration-line: none;
+}
+/* stylelint-enable */

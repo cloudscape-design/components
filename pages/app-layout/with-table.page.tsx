@@ -51,7 +51,17 @@ export default function () {
                     Long help text
                   </Link>
                 }
-                actions={<Button variant="primary">Create</Button>}
+                actions={
+                  <Button
+                    onClick={() => {
+                      document.body.setAttribute('data-user-settings-layout-width', 'full-width');
+                      document.body.setAttribute('data-user-settings-accessibility-links', 'no-underline');
+                    }}
+                    variant="primary"
+                  >
+                    Create
+                  </Button>
+                }
               >
                 Sticky Scrollbar Example
               </Header>

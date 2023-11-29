@@ -27,7 +27,10 @@ export default function () {
               description="When you create an Amazon CloudFront distribution."
               actions={
                 <Button
-                  onClick={() => document.body.setAttribute('data-user-settings-layout-width', 'full-width')}
+                  onClick={() => {
+                    document.body.setAttribute('data-user-settings-layout-width', 'full-width');
+                    document.body.setAttribute('data-user-settings-accessibility-links', 'no-underline');
+                  }}
                   variant="primary"
                 >
                   I want full width!

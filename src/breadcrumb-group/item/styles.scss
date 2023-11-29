@@ -56,3 +56,14 @@
 .item-popover {
   /* used in tests */
 }
+
+/*
+Cloudscape User Settings
+Category: Accessibility
+Property: Links
+*/
+/* stylelint-disable */
+body[data-user-settings-accessibility-links='no-underline'] .breadcrumb > .anchor {
+  text-decoration-line: none;
+}
+/* stylelint-enable */
