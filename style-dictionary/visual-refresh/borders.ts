@@ -13,7 +13,6 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderDividerSectionWidth: '2px',
   borderDropdownVirtualOffsetWidth: '2px',
   borderFieldWidth: '2px',
-  borderFieldWidthFocus: '3px',
   borderInvalidWidth: '8px',
   borderItemWidth: '2px',
   borderLineChartDashArray: '3 5',

@@ -89,8 +89,7 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border: constants.$control-border-width-focus solid awsui.$color-border-item-focused;
-  box-sizing: border-box;
+  border: constants.$control-border-width solid awsui.$color-border-input-focused;
   border-radius: $border-radius;
   box-shadow: foundation.$box-shadow-focused-light;
 }
