@@ -21,6 +21,7 @@ import {
   CURRENT_COMPRESSION_OPTIONS,
   QUERY_STRING_OPTIONS,
 } from './form-config';
+import ButtonDropdown from '~components/button-dropdown';
 
 function CacheBehaviorFooter() {
   const [lambdaType, setLambdaType] = useState('');
@@ -116,7 +117,20 @@ export default function CacheBehaviorPanel() {
       id="cache-behavior-panel"
       className="custom-screenshot-hide"
       header={
-        <Header variant="h2" info={<Link variant="info">info</Link>}>
+        <Header
+          actions={
+            <ButtonDropdown
+              items={[
+                { text: 'Delete', id: 'rm', disabled: false },
+                { text: 'Move', id: 'mv', disabled: false },
+              ]}
+            >
+              Short
+            </ButtonDropdown>
+          }
+          variant="h2"
+          info={<Link variant="info">info</Link>}
+        >
           Cache behavior settings
         </Header>
       }

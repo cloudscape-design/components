@@ -76,7 +76,7 @@
 
   &:not(.in-filtering-token) {
     @include focus-visible.when-visible {
-      @include styles.form-focus-element();
+      @include styles.input-focus-element();
     }
     &:invalid {
       // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
