@@ -255,6 +255,24 @@ const InternalTable = React.forwardRef(
 
     const totalColumnsCount = selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length;
 
+    /**
+     * Mutation observer for Cloudscape User Settings
+     * Category: Theme
+     * Property: High Contrast Header
+     */
+    const [userSettingsThemeHighContrastHeader, setUserSettingsThemeHighContrastHeader] = React.useState('enabled');
+
+    function callback(mutationList: any) {
+      for (const mutation of mutationList) {
+        if (mutation.type === 'attributes') {
+          setUserSettingsThemeHighContrastHeader(mutation.target.dataset.userSettingsThemeHighContrastHeader);
+        }
+      }
+    }
+
+    const observer = new MutationObserver(callback);
+    observer.observe(document.body, { attributeFilter: ['data-user-settings-theme-high-contrast-header'] });
+
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <ColumnWidthsProvider visibleColumns={visibleColumnWidthsWithSelection} resizableColumns={resizableColumns}>
@@ -268,7 +286,12 @@ const InternalTable = React.forwardRef(
                 {hasHeader && (
                   <div
                     ref={overlapElement}
-                    className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
+                    className={clsx(
+                      hasDynamicHeight && [
+                        styles['dark-header'],
+                        userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header',
+                      ]
+                    )}
                   >
                     <div
                       ref={toolsHeaderWrapper}

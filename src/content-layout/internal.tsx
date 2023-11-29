@@ -28,6 +28,24 @@ export default function InternalContentLayout({
 
   const isOverlapDisabled = !children || disableOverlap;
 
+  /**
+   * Mutation observer for Cloudscape User Settings
+   * Category: Theme
+   * Property: High Contrast Header
+   */
+  const [userSettingsThemeHighContrastHeader, setUserSettingsThemeHighContrastHeader] = React.useState('enabled');
+
+  function callback(mutationList: any) {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'attributes') {
+        setUserSettingsThemeHighContrastHeader(mutation.target.dataset.userSettingsThemeHighContrastHeader);
+      }
+    }
+  }
+
+  const observer = new MutationObserver(callback);
+  observer.observe(document.body, { attributeFilter: ['data-user-settings-theme-high-contrast-header'] });
+
   return (
     <div
       {...baseProps}
@@ -42,7 +60,7 @@ export default function InternalContentLayout({
         className={clsx(
           styles.background,
           { [styles['is-overlap-disabled']]: isOverlapDisabled },
-          'awsui-context-content-header'
+          userSettingsThemeHighContrastHeader === 'enabled' && 'awsui-context-content-header'
         )}
         ref={overlapElement}
       />

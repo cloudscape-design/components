@@ -56,6 +56,7 @@ export default function () {
                     onClick={() => {
                       document.body.setAttribute('data-user-settings-layout-width', 'full-width');
                       document.body.setAttribute('data-user-settings-accessibility-links', 'no-underline');
+                      document.body.setAttribute('data-user-settings-theme-high-contrast-header', 'disabled');
                     }}
                     variant="primary"
                   >
