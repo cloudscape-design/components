@@ -94,6 +94,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Configures the built-in content display preference for order and visibility of columns in a table.
    *
    * Once set, the component displays this preference in the modal.
+   * Cannot be used together with `visibleContentPreference`.
    *
    * It contains the following:
    * - `title` (string) - Specifies the text displayed at the top of the preference.
@@ -119,6 +120,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
    *
    * If you set it, the component displays this preference in the modal.
+   * Cannot be used together with `contentDisplayPreference`.
    *
    * It contains the following:
    * - `title` (string) - Specifies the text displayed at the top of the preference.
@@ -132,6 +134,8 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    *   - `editable` (boolean) - (Optional) Determines whether the user is able to toggle its visibility. This is `true` by default.
    *
    * You must set the current list of visible content `id`s in the `preferences.visibleContent` property.
+   *
+   * **Deprecated** in table, replaced by `contentDisplayPreference`.
    */
   visibleContentPreference?: CollectionPreferencesProps.VisibleContentPreference;
   /**
