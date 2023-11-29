@@ -600,7 +600,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     const [userSettingsThemeHighContrastHeader, setUserSettingsThemeHighContrastHeader] = React.useState('enabled');
 
-    function callback(mutationList: any) {
+    function callbackHighContrastHeader(mutationList: any) {
       for (const mutation of mutationList) {
         if (mutation.type === 'attributes') {
           setUserSettingsThemeHighContrastHeader(mutation.target.dataset.userSettingsThemeHighContrastHeader);
@@ -608,8 +608,53 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
-    const observer = new MutationObserver(callback);
-    observer.observe(document.body, { attributeFilter: ['data-user-settings-theme-high-contrast-header'] });
+    const observerHighContrastHeader = new MutationObserver(callbackHighContrastHeader);
+    observerHighContrastHeader.observe(document.body, {
+      attributeFilter: ['data-user-settings-theme-high-contrast-header'],
+    });
+
+    /**
+     * Mutation observer for Cloudscape User Settings
+     * Category: Customization
+     * Property: Toggle Split Panel
+     */
+    const [userSettingsCustomizationToggleSplitPanelModifier, setUserSettingsCustomizationToggleSplitPanelModifier] =
+      React.useState(null);
+
+    function callbackSplitPanel(mutationList: any) {
+      for (const mutation of mutationList) {
+        if (mutation.type === 'attributes') {
+          setUserSettingsCustomizationToggleSplitPanelModifier(
+            mutation.target.dataset.userSettingsCustomizationToggleSplitPanelModifier
+          );
+        }
+      }
+    }
+
+    const observerSplitPanel = new MutationObserver(callbackSplitPanel);
+
+    observerSplitPanel.observe(document.body, {
+      attributeFilter: ['data-user-settings-customization-toggle-split-panel-modifier'],
+    });
+
+    const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
+      if (repeat) {
+        return;
+      }
+
+      if (ctrlKey && key === userSettingsCustomizationToggleSplitPanelModifier) {
+        handleSplitPanelClick();
+      }
+    };
+
+    React.useEffect(() => {
+      if (userSettingsCustomizationToggleSplitPanelModifier !== null) {
+        document.addEventListener('keydown', handleKeyboard);
+      } else {
+        document.removeEventListener('keydown', handleKeyboard);
+      }
+      return () => document.removeEventListener('keydown', handleKeyboard);
+    });
 
     return (
       <AppLayoutInternalsContext.Provider

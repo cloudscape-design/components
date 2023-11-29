@@ -207,6 +207,51 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
+  /**
+   * Mutation observer for Cloudscape User Settings
+   * Category: Customization
+   * Property: Toggle Stacked Flashbar
+   */
+  const [
+    userSettingsCustomizationToggleStackedFlashbarModifier,
+    setUserSettingsCustomizationToggleStackedFlashbarModifier,
+  ] = React.useState(null);
+
+  function callback(mutationList: any) {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'attributes') {
+        setUserSettingsCustomizationToggleStackedFlashbarModifier(
+          mutation.target.dataset.userSettingsCustomizationToggleStackedFlashbarModifier
+        );
+      }
+    }
+  }
+
+  const observer = new MutationObserver(callback);
+
+  observer.observe(document.body, {
+    attributeFilter: ['data-user-settings-customization-toggle-stacked-flashbar-modifier'],
+  });
+
+  const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
+    if (repeat) {
+      return;
+    }
+
+    if (ctrlKey && key === userSettingsCustomizationToggleStackedFlashbarModifier) {
+      toggleCollapseExpand();
+    }
+  };
+
+  React.useEffect(() => {
+    if (userSettingsCustomizationToggleStackedFlashbarModifier !== null) {
+      document.addEventListener('keydown', handleKeyboard);
+    } else {
+      document.removeEventListener('keydown', handleKeyboard);
+    }
+    return () => document.removeEventListener('keydown', handleKeyboard);
+  });
+
   const renderList = () => (
     <ul
       ref={listElementRef}

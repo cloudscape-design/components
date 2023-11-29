@@ -34,6 +34,47 @@ export default function Navigation() {
     toolsHide,
   } = useAppLayoutInternals();
 
+  /**
+   * Mutation observer for Cloudscape User Settings
+   * Category: Customization
+   * Property: Toggle Navigation
+   */
+  const [userSettingsCustomizationToggleNavigationModifier, setUserSettingsCustomizationToggleNavigationModifier] =
+    React.useState(null);
+
+  function callback(mutationList: any) {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'attributes') {
+        setUserSettingsCustomizationToggleNavigationModifier(
+          mutation.target.dataset.userSettingsCustomizationToggleNavigationModifier
+        );
+      }
+    }
+  }
+
+  const observer = new MutationObserver(callback);
+
+  observer.observe(document.body, { attributeFilter: ['data-user-settings-customization-toggle-navigation-modifier'] });
+
+  const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
+    if (repeat) {
+      return;
+    }
+
+    if (ctrlKey && key === userSettingsCustomizationToggleNavigationModifier) {
+      handleNavigationClick(!isNavigationOpen);
+    }
+  };
+
+  React.useEffect(() => {
+    if (userSettingsCustomizationToggleNavigationModifier !== null) {
+      document.addEventListener('keydown', handleKeyboard);
+    } else {
+      document.removeEventListener('keydown', handleKeyboard);
+    }
+    return () => document.removeEventListener('keydown', handleKeyboard);
+  });
+
   if (navigationHide) {
     return null;
   }
