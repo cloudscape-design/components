@@ -55,7 +55,7 @@
         color: awsui.$color-text-dropdown-item-dimmed;
       }
       &.is-focused {
-        border-color: awsui.$color-border-item-focused;
+        border-color: awsui.$color-border-selectable-item-focused;
         box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
       }
     }

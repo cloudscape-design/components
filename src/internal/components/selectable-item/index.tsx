@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { HighlightType } from '../options-list/utils/use-highlight-option.js';
+import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
 export type SelectableItemProps = BaseComponentProps & {
   children: React.ReactNode;
@@ -48,6 +49,7 @@ const SelectableItem = (
   ref: React.Ref<HTMLDivElement>
 ) => {
   const { className, ...rest } = getBaseProps(restProps);
+  const isRefresh = useVisualRefresh();
   const classNames = clsx(className, styles['selectable-item'], {
     [styles.selected]: selected,
     [styles.highlighted]: highlighted,
@@ -60,6 +62,7 @@ const SelectableItem = (
     [styles['pad-bottom']]: padBottom,
     [styles['next-item-selected']]: isNextSelected,
     [styles.interactiveGroups]: useInteractiveGroups,
+    [styles.refresh]: isRefresh,
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
