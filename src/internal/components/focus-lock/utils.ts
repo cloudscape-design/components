@@ -25,6 +25,10 @@ const tabbables = [
   '[autofocus]',
 ].join(',');
 
+export function getAllFocusables(container: HTMLElement): HTMLElement[] {
+  return Array.prototype.slice.call(container.querySelectorAll(tabbables));
+}
+
 export function getFocusables(container: HTMLElement): HTMLElement[] {
   return Array.prototype.slice
     .call(container.querySelectorAll(tabbables))

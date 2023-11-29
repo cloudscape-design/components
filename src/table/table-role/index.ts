@@ -12,6 +12,4 @@ export {
   getTableWrapperRoleProps,
 } from './table-role-helper';
 
-export { GridNavigationFocus } from './grid-navigation-focus-store';
-
 export { GridNavigationProvider, useGridNavigationFocusable } from './grid-navigation';

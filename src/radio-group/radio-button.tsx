@@ -8,6 +8,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { RadioGroupProps } from './interfaces';
 import styles from './styles.css.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useGridNavigationFocusable } from '../table/table-role';
 
 interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   name: string;
@@ -23,6 +25,10 @@ export default React.forwardRef(function RadioButton(
   const radioButtonRef = useRef<HTMLInputElement>(null);
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
+  const inputId = useUniqueId();
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, radioButtonRef, false);
+  const shouldMuteFocus = focusMuted && focusTarget !== radioButtonRef.current;
+
   return (
     <AbstractSwitch
       className={clsx(styles.radio, description && styles['radio--has-description'])}
@@ -35,6 +41,7 @@ export default React.forwardRef(function RadioButton(
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}
+          tabIndex={shouldMuteFocus ? -1 : nativeControlProps.tabIndex}
           type="radio"
           ref={mergedRefs}
           name={name}

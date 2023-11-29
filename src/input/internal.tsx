@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useRef } from 'react';
+import React, { Ref, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { IconProps } from '../icon/interfaces';
@@ -13,8 +13,11 @@ import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import styles from './styles.css.js';
 import { useInternalI18n } from '../i18n/context';
+import { useGridNavigationFocusable } from '../table/table-role';
+import { KeyCode } from '../internal/keycode';
 
 export interface InternalInputProps
   extends BaseComponentProps,
@@ -99,6 +102,11 @@ function InternalInput(
   const formFieldContext = useFormFieldContext(rest);
   const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
 
+  const inputId = useUniqueId();
+  const [active, setActive] = useState(false);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, inputRef, active);
+  const shouldMuteFocus = focusMuted && focusTarget !== inputRef.current;
+
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
     // aria-labelledby has precedence over aria-label in accessible name calculation.
@@ -128,7 +136,16 @@ function InternalInput(
     step,
     inputMode,
     spellCheck: spellcheck,
-    onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
+    onKeyDown: e => {
+      onKeyDown && fireKeyboardEvent(onKeyDown, e);
+
+      if (focusMuted && e.keyCode === KeyCode.enter) {
+        setActive(true);
+      }
+      if (focusMuted && e.keyCode === KeyCode.escape) {
+        setActive(false);
+      }
+    },
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     // We set a default value on the component in order to force it into the controlled mode.
     value: value ?? '',
@@ -136,6 +153,9 @@ function InternalInput(
     onBlur: e => {
       onBlur && fireNonCancelableEvent(onBlur);
       __onBlurWithDetail && fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
+      if (focusMuted) {
+        setActive(false);
+      }
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
@@ -176,7 +196,7 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <input ref={mergedRef} {...attributes} />
+      <input ref={mergedRef} {...attributes} tabIndex={shouldMuteFocus ? -1 : undefined} />
       {__rightIcon && (
         <span className={styles['input-icon-right']}>
           <InternalButton

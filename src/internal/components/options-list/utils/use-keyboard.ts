@@ -3,6 +3,7 @@
 import { useCallback } from 'react';
 import { KeyCode } from '../../../keycode';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
+import { useGridNavigationFocusable } from '../../../../table/table-role';
 
 const HOME = 36;
 const END = 35;
@@ -67,14 +68,17 @@ interface UseTriggerKeyboard {
 }
 
 export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome }) => {
+  const { focusMuted } = useGridNavigationFocusable();
   return useCallback(
     (e: CustomEvent<BaseKeyDetail>) => {
       switch (e.detail.keyCode) {
         case KeyCode.up:
         case KeyCode.down:
-          e.preventDefault();
-          goHome();
-          openDropdown();
+          if (!focusMuted) {
+            e.preventDefault();
+            goHome();
+            openDropdown();
+          }
           break;
         case KeyCode.space:
         case KeyCode.enter:
@@ -83,6 +87,6 @@ export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome })
           break;
       }
     },
-    [openDropdown, goHome]
+    [openDropdown, goHome, focusMuted]
   );
 };
