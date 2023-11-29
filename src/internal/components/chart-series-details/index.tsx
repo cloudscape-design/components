@@ -21,7 +21,7 @@ export interface ChartSeriesDetailsProps extends BaseComponentProps {
 
 export default memo(forwardRef(ChartSeriesDetails));
 
-function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps, ref?: React.Ref<HTMLDivElement>) {
+function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps, ref: React.Ref<HTMLDivElement>) {
   const baseProps = getBaseProps(restProps);
   const className = clsx(baseProps.className, styles.root);
 
