@@ -31,6 +31,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import useBackgroundOverlap from './use-background-overlap';
 import { useDrawers } from '../utils/use-drawers';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import UserSettingsDrawerContent from '../utils/user-settings-drawer';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawerId: string | null;
@@ -367,6 +368,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [props.onSplitPanelPreferencesChange, setSplitPanelPreferences, setSplitPanelLastInteraction]
     );
 
+    const userSettingsContent = <UserSettingsDrawerContent />;
+
     const {
       drawers,
       activeDrawer,
@@ -375,7 +378,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onActiveDrawerResize,
       activeDrawerSize,
       ...drawersProps
-    } = useDrawers(props, props.ariaLabels, {
+    } = useDrawers(props, userSettingsContent, props.ariaLabels, {
       ariaLabels: props.ariaLabels,
       toolsHide,
       toolsOpen: isToolsOpen,

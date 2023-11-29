@@ -12,6 +12,7 @@ import { AppLayoutProps } from '../interfaces';
 import { togglesConfig } from '../toggles';
 
 export const TOOLS_DRAWER_ID = 'awsui-internal-tools';
+export const USER_SETTINGS_DRAWER_ID = 'awsui-user-settings';
 
 interface ToolsProps {
   toolsHide: boolean | undefined;
@@ -39,6 +40,20 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
     },
     trigger: {
       iconName: iconName,
+    },
+  };
+}
+
+function getUserSettingsDrawerItem(userSettingsContent: React.ReactNode | undefined): AppLayoutProps.Drawer {
+  return {
+    id: USER_SETTINGS_DRAWER_ID,
+    content: userSettingsContent,
+    resizable: true,
+    ariaLabels: {
+      drawerName: 'user settings drawer',
+    },
+    trigger: {
+      iconName: 'settings',
     },
   };
 }
@@ -128,6 +143,7 @@ export function useDrawers(
     onDrawerChange,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: UseDrawersProps,
+  userSettingsContent: React.ReactNode | undefined,
   ariaLabels: AppLayoutProps['ariaLabels'],
   toolsProps: ToolsProps
 ) {
@@ -159,8 +175,9 @@ export function useDrawers(
   const hasOwnDrawers = !!drawers;
   const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
   const combinedDrawers = drawers
-    ? [...runtimeDrawers.before, ...drawers, ...runtimeDrawers.after]
+    ? [...runtimeDrawers.before, ...drawers, getUserSettingsDrawerItem(userSettingsContent), ...runtimeDrawers.after]
     : applyToolsDrawer(toolsProps, runtimeDrawers);
+  //const combinedDrawersWithSettings = [applyUserSettingsDrawer(runtimeDrawers), ...(combinedDrawers as [])];
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
   const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);

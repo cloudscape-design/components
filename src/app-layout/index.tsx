@@ -41,6 +41,7 @@ import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { togglesConfig } from './toggles';
+import UserSettingsDrawerContent from './utils/user-settings-drawer';
 
 export { AppLayoutProps };
 
@@ -155,6 +156,8 @@ const OldAppLayout = React.forwardRef(
       fireNonCancelableEvent(onToolsChange, { open });
     };
 
+    const userSettingsContent = <UserSettingsDrawerContent />;
+
     const {
       drawers,
       activeDrawer,
@@ -170,6 +173,7 @@ const OldAppLayout = React.forwardRef(
         activeDrawerId: controlledActiveDrawerId,
         ...rest,
       },
+      userSettingsContent,
       ariaLabels,
       {
         ariaLabels,
