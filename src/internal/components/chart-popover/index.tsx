@@ -119,6 +119,7 @@ function ChartPopover(
             <div className={popoverStyles['arrow-inner']} />
           </div>
         )}
+        keepPositionOnResize={true}
       >
         <div className={styles['hover-area']}>
           <PopoverBody

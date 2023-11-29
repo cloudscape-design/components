@@ -7,7 +7,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { getContainingBlock } from '../internal/utils/dom';
 import { BoundingOffset, InternalPosition, Offset, PopoverProps } from './interfaces';
-import { calculatePosition } from './utils/positions';
+import { calculatePosition, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
@@ -32,9 +32,13 @@ export interface PopoverContainerProps {
   size: PopoverProps.Size;
   fixedWidth: boolean;
   variant?: 'annotation';
+  keepPositionOnResize?: boolean;
 }
 
-const INITIAL_STYLES: CSSProperties = { position: 'absolute', top: -9999, left: -9999 };
+// Giving absolute positioning to an off-screen element can lead to its width being narrowed,
+// which would lead to extra unnecessary initial render loops with incorrect dimensions.
+// Using fixed position instead to let the popover expand to its needed width from the first render.
+const INITIAL_STYLES: CSSProperties = { position: 'fixed', top: -9999, left: -9999 };
 
 export default function PopoverContainer({
   position,
@@ -47,116 +51,123 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
+  keepPositionOnResize,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
+  const internalPositionRef = useRef<InternalPosition | null>(null);
 
   const [popoverStyle, setPopoverStyle] = useState<CSSProperties>(INITIAL_STYLES);
-  const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
 
   // Updates the position handler.
-  const updatePositionHandler = useCallback(() => {
-    if (!trackRef.current || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
-      return;
-    }
+  const updatePositionHandler = useCallback(
+    (keepPosition = false) => {
+      if (!trackRef.current || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
+        return;
+      }
 
-    // Get important elements
-    const popover = popoverRef.current;
-    const body = bodyRef.current;
-    const arrow = arrowRef.current;
-    const document = popover.ownerDocument;
-    const track = trackRef.current;
+      // Get important elements
+      const popover = popoverRef.current;
+      const body = bodyRef.current;
+      const arrow = arrowRef.current;
+      const document = popover.ownerDocument;
+      const track = trackRef.current;
 
-    // If the popover body isn't being rendered for whatever reason (e.g. "display: none" or JSDOM),
-    // or track does not belong to the document - bail on calculating dimensions.
-    if (popover.offsetWidth === 0 || popover.offsetHeight === 0 || !nodeContains(document.body, track)) {
-      return;
-    }
+      // If the popover body isn't being rendered for whatever reason (e.g. "display: none" or JSDOM),
+      // or track does not belong to the document - bail on calculating dimensions.
+      const { offsetWidth, offsetHeight } = getOffsetDimensions(popover);
+      if (offsetWidth === 0 || offsetHeight === 0 || !nodeContains(document.body, track)) {
+        return;
+      }
 
-    // Imperatively move body off-screen to give it room to expand.
-    // Not doing this in React because this recalculation should happen
-    // in the span of a single frame without rerendering anything.
-    const prevTop = popover.style.top;
-    const prevLeft = popover.style.left;
-    popover.style.top = '0';
-    popover.style.left = '0';
-    // Imperatively remove body styles that can remain from the previous computation.
-    body.style.maxHeight = '';
-    body.style.overflowX = '';
-    body.style.overflowY = '';
+      // Imperatively move body off-screen to give it room to expand.
+      // Not doing this in React because this recalculation should happen
+      // in the span of a single frame without rerendering anything.
+      const prevTop = popover.style.top;
+      const prevLeft = popover.style.left;
 
-    // Get rects representing key elements
-    // Use getComputedStyle for arrowRect to avoid modifications made by transform
-    const viewportRect = getViewportRect(document.defaultView!);
-    const trackRect = track.getBoundingClientRect();
-    const arrowRect = {
-      width: parseFloat(getComputedStyle(arrow).width),
-      height: parseFloat(getComputedStyle(arrow).height),
-    };
-    const containingBlock = getContainingBlock(popover);
-    const containingBlockRect = containingBlock ? containingBlock.getBoundingClientRect() : viewportRect;
+      popover.style.top = '0';
+      popover.style.left = '0';
+      // Imperatively remove body styles that can remain from the previous computation.
+      body.style.maxHeight = '';
+      body.style.overflowX = '';
+      body.style.overflowY = '';
 
-    const bodyBorderWidth = getBorderWidth(body);
-    const contentRect = contentRef.current.getBoundingClientRect();
-    const contentBoundingBox = {
-      width: contentRect.width + 2 * bodyBorderWidth,
-      height: contentRect.height + 2 * bodyBorderWidth,
-    };
+      // Get rects representing key elements
+      // Use getComputedStyle for arrowRect to avoid modifications made by transform
+      const viewportRect = getViewportRect(document.defaultView!);
+      const trackRect = track.getBoundingClientRect();
+      const arrowRect = {
+        width: parseFloat(getComputedStyle(arrow).width),
+        height: parseFloat(getComputedStyle(arrow).height),
+      };
+      const containingBlock = getContainingBlock(popover);
+      const containingBlockRect = containingBlock ? containingBlock.getBoundingClientRect() : viewportRect;
 
-    // Calculate the arrow direction and viewport-relative position of the popover.
-    const {
-      scrollable,
-      internalPosition: newInternalPosition,
-      boundingOffset,
-    } = calculatePosition(
-      position,
-      trackRect,
-      arrowRect,
-      contentBoundingBox,
-      containingBlock ? containingBlockRect : getDocumentRect(document),
-      viewportRect,
-      renderWithPortal
-    );
+      const bodyBorderWidth = getBorderWidth(body);
+      const contentRect = contentRef.current.getBoundingClientRect();
+      const contentBoundingBox = {
+        width: contentRect.width + 2 * bodyBorderWidth,
+        height: contentRect.height + 2 * bodyBorderWidth,
+      };
 
-    // Get the position of the popover relative to the offset parent.
-    const popoverOffset = toRelativePosition(boundingOffset, containingBlockRect);
-
-    // Cache the distance between the trigger and the popover (which stays the same as you scroll),
-    // and use that to recalculate the new popover position.
-    const trackRelativeOffset = toRelativePosition(popoverOffset, toRelativePosition(trackRect, containingBlockRect));
-
-    // Bring back the container to its original position to prevent any flashing.
-    popover.style.top = prevTop;
-    popover.style.left = prevLeft;
-
-    // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
-    if (scrollable) {
-      body.style.maxHeight = boundingOffset.height + 'px';
-      body.style.overflowX = 'hidden';
-      body.style.overflowY = 'auto';
-    }
-
-    // Position the popover
-    setInternalPosition(newInternalPosition);
-    setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
-
-    positionHandlerRef.current = () => {
-      const newTrackOffset = toRelativePosition(
-        track.getBoundingClientRect(),
-        containingBlock ? containingBlock.getBoundingClientRect() : viewportRect
-      );
-      setPopoverStyle({
-        top: newTrackOffset.top + trackRelativeOffset.top,
-        left: newTrackOffset.left + trackRelativeOffset.left,
+      // Calculate the arrow direction and viewport-relative position of the popover.
+      const {
+        scrollable,
+        internalPosition: newInternalPosition,
+        boundingOffset,
+      } = calculatePosition({
+        preferredPosition: position,
+        fixedIternalPosition: keepPosition && internalPositionRef.current ? internalPositionRef.current : undefined,
+        trigger: trackRect,
+        arrow: arrowRect,
+        body: contentBoundingBox,
+        container: containingBlock ? containingBlockRect : getDocumentRect(document),
+        viewport: viewportRect,
+        renderWithPortal,
       });
-    };
-  }, [position, trackRef, renderWithPortal]);
+
+      // Get the position of the popover relative to the offset parent.
+      const popoverOffset = toRelativePosition(boundingOffset, containingBlockRect);
+
+      // Cache the distance between the trigger and the popover (which stays the same as you scroll),
+      // and use that to recalculate the new popover position.
+      const trackRelativeOffset = toRelativePosition(popoverOffset, toRelativePosition(trackRect, containingBlockRect));
+
+      // Bring back the container to its original position to prevent any flashing.
+      popover.style.top = prevTop;
+      popover.style.left = prevLeft;
+
+      // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
+      if (scrollable) {
+        body.style.maxHeight = Math.min(boundingOffset.height, window.innerHeight - parseInt(prevTop)) + 'px';
+        body.style.overflowX = 'hidden';
+        body.style.overflowY = 'auto';
+      }
+
+      // Position the popover
+      internalPositionRef.current = newInternalPosition;
+      setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
+
+      positionHandlerRef.current = () => {
+        const newTrackOffset = toRelativePosition(
+          track.getBoundingClientRect(),
+          containingBlock ? containingBlock.getBoundingClientRect() : viewportRect
+        );
+        setPopoverStyle({
+          top: newTrackOffset.top + trackRelativeOffset.top,
+          left: newTrackOffset.left + trackRelativeOffset.left,
+        });
+      };
+    },
+    [position, trackRef, renderWithPortal]
+  );
 
   // Recalculate position when properties change.
   useLayoutEffect(() => {
@@ -164,7 +175,9 @@ export default function PopoverContainer({
   }, [updatePositionHandler, trackKey]);
 
   // Recalculate position when content size changes.
-  useResizeObserver(contentRef, () => updatePositionHandler());
+  useResizeObserver(contentRef, () => {
+    updatePositionHandler(keepPositionOnResize);
+  });
 
   // Recalculate position on DOM events.
   useLayoutEffect(() => {
@@ -174,18 +187,32 @@ export default function PopoverContainer({
 
       TODO: extend this to Enter and Spacebar?
     */
-    const updatePosition = () => requestAnimationFrame(() => updatePositionHandler());
+    const updatePositionOnClick = (event: UIEvent) => {
+      // No need to update position if the click was on the trigger, which toggles the popover on
+      const clickedOnTarget = event.target instanceof Node && nodeContains(event.target, trackRef.current);
+      const clickedInside = nodeContains(bodyRef.current, event.target);
+      if (!clickedOnTarget && !(keepPositionOnResize && clickedInside)) {
+        requestAnimationFrame(() => updatePositionHandler());
+      }
+    };
+
+    const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
-    window.addEventListener('click', updatePosition);
-    window.addEventListener('resize', updatePosition);
+    window.addEventListener('click', updatePositionOnClick);
+
+    window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);
+
+    // Update the position on the first render, right before painting
+    updatePositionHandler();
+
     return () => {
-      window.removeEventListener('click', updatePosition);
-      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('click', updatePositionOnClick);
+      window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [updatePositionHandler]);
+  }, [keepPositionOnResize, trackRef, updatePositionHandler]);
 
   return (
     <div
@@ -195,10 +222,10 @@ export default function PopoverContainer({
     >
       <div
         ref={arrowRef}
-        className={clsx(styles[`container-arrow`], styles[`container-arrow-position-${internalPosition}`])}
+        className={clsx(styles[`container-arrow`], styles[`container-arrow-position-${internalPositionRef.current}`])}
         aria-hidden={true}
       >
-        {arrow(internalPosition)}
+        {arrow(internalPositionRef.current)}
       </div>
 
       <div
