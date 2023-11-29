@@ -35,10 +35,7 @@ export interface PopoverContainerProps {
   keepPositionOnResize?: boolean;
 }
 
-// Giving absolute positioning to an off-screen element can lead to its width being narrowed,
-// which would lead to extra unnecessary initial render loops with incorrect dimensions.
-// Using fixed position instead to let the popover expand to its needed width from the first render.
-const INITIAL_STYLES: CSSProperties = { position: 'fixed', top: -9999, left: -9999 };
+const INITIAL_STYLES: CSSProperties = { top: -9999, left: -9999 };
 
 export default function PopoverContainer({
   position,
@@ -51,7 +48,6 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
-  keepPositionOnResize,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -65,9 +61,16 @@ export default function PopoverContainer({
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
 
+  // Remember when the popover body was clicked in case that this click
+  // triggers a resize, which will trigger updatePositionHandler via resize observer,
+  // to prevent the popover from moving around while interacting with its content.
+  const clickedInsideBody = useRef(false);
+
+  const resizingAfterInternalClick = useRef(false);
+
   // Updates the position handler.
   const updatePositionHandler = useCallback(
-    (keepPosition = false) => {
+    (onResize = false) => {
       if (!trackRef.current || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
         return;
       }
@@ -117,6 +120,11 @@ export default function PopoverContainer({
         height: contentRect.height + 2 * bodyBorderWidth,
       };
 
+      const fixedInternalPosition =
+        onResize && (clickedInsideBody.current || resizingAfterInternalClick.current) && internalPositionRef.current
+          ? internalPositionRef.current
+          : undefined;
+
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
         scrollable,
@@ -124,7 +132,7 @@ export default function PopoverContainer({
         boundingOffset,
       } = calculatePosition({
         preferredPosition: position,
-        fixedIternalPosition: keepPosition && internalPositionRef.current ? internalPositionRef.current : undefined,
+        fixedIternalPosition: fixedInternalPosition,
         trigger: trackRect,
         arrow: arrowRect,
         body: contentBoundingBox,
@@ -155,6 +163,9 @@ export default function PopoverContainer({
       internalPositionRef.current = newInternalPosition;
       setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
 
+      resizingAfterInternalClick.current =
+        !!fixedInternalPosition && contentRect.height !== contentRef.current.getBoundingClientRect().height;
+
       positionHandlerRef.current = () => {
         const newTrackOffset = toRelativePosition(
           track.getBoundingClientRect(),
@@ -176,24 +187,33 @@ export default function PopoverContainer({
 
   // Recalculate position when content size changes.
   useResizeObserver(contentRef, () => {
-    updatePositionHandler(keepPositionOnResize);
+    updatePositionHandler(true);
   });
 
   // Recalculate position on DOM events.
   useLayoutEffect(() => {
     /*
-      This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
-      and by tracking the click event we can adapt the popover's position to the new layout.
-
-      TODO: extend this to Enter and Spacebar?
+    This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
+    and by tracking the click event we can adapt the popover's position to the new layout.
+    
+    TODO: extend this to Enter and Spacebar?
     */
+
     const updatePositionOnClick = (event: UIEvent) => {
-      // No need to update position if the click was on the trigger, which toggles the popover on
+      // Prevent updating the position when clicks come from the trigger or the popover body itself.
+      // These clicks will not change the container layout but the popover layout itself, and we want
+      // to prevent the popover from moving around while interacting with its content.
       const clickedOnTarget = event.target instanceof Node && nodeContains(event.target, trackRef.current);
-      const clickedInside = nodeContains(bodyRef.current, event.target);
-      if (!clickedOnTarget && !(keepPositionOnResize && clickedInside)) {
-        requestAnimationFrame(() => updatePositionHandler());
-      }
+      // Remember that the last click came from inside the popover body in case that this click
+      // triggers a resize, which will trigger updatePositionHandler via resize observer.
+      clickedInsideBody.current = !bodyRef.current || nodeContains(bodyRef.current, event.target);
+
+      requestAnimationFrame(() => {
+        if (!clickedOnTarget && !clickedInsideBody.current) {
+          updatePositionHandler();
+        }
+        clickedInsideBody.current = false;
+      });
     };
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
@@ -212,7 +232,13 @@ export default function PopoverContainer({
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [keepPositionOnResize, trackRef, updatePositionHandler]);
+  }, [trackRef, updatePositionHandler]);
+
+  const onKeyUp = (event: React.KeyboardEvent) => {
+    if ([' ', 'Enter'].includes(event.key)) {
+      clickedInsideBody.current = true;
+    }
+  };
 
   return (
     <div
@@ -230,6 +256,7 @@ export default function PopoverContainer({
 
       <div
         ref={bodyRef}
+        onKeyUp={onKeyUp}
         className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
           [styles['fixed-width']]: fixedWidth,
           [styles[`container-body-variant-${variant}`]]: variant,

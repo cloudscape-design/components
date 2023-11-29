@@ -242,6 +242,7 @@ export function calculatePosition({
   let bestPositionOutsideViewport: CalculatePosition | null = null;
   let largestArea = 0;
 
+  // If a fixed internal position is passed, only consider this one.
   const preferredInternalPositions = fixedIternalPosition
     ? [fixedIternalPosition]
     : PRIORITY_MAPPING[preferredPosition];
@@ -270,7 +271,7 @@ export function calculatePosition({
   const internalPosition = bestPositionOutsideViewport?.internalPosition || 'right-top';
   // Get default rect for that placement.
   const defaultOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
-  // Get largest possible rect that fits into viewport or container.
+  // Get largest possible rect that fits into viewport.
   const optimisedOffset = fitIntoContainer(defaultOffset, viewport);
   // If largest possible rect is smaller than original - set body scroll.
   const scrollable = optimisedOffset.height < defaultOffset.height;
