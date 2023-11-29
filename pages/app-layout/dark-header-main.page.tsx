@@ -19,7 +19,6 @@ export default function () {
         contentType="form"
         ariaLabels={appLayoutLabels}
         breadcrumbs={<Breadcrumbs />}
-        // maxContentWidth={9999999999}
         contentHeader={
           <SpaceBetween size="m">
             <Header
