@@ -25,10 +25,10 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
   badge?: boolean;
-  __nativeAttributes?: Record<string, any>;
+  __nativeAttributes?: Record<string, string | number | boolean | undefined>;
   __iconClass?: string;
   __activated?: boolean;
-} & InternalBaseComponentProps;
+} & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
   (
@@ -123,7 +123,7 @@ export const InternalButton = React.forwardRef(
       ...props,
       ...__nativeAttributes,
       // https://github.com/microsoft/TypeScript/issues/36659
-      ref: useMergeRefs(buttonRef as any, __internalRootRef),
+      ref: useMergeRefs(buttonRef, __internalRootRef),
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,

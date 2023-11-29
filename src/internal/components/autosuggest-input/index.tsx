@@ -224,7 +224,7 @@ const AutosuggestInput = React.forwardRef(
       'aria-owns': open ? ariaControls : undefined,
       'aria-label': ariaLabel,
       'aria-activedescendant': ariaActivedescendant,
-    };
+    } as const;
 
     // Closes dropdown when outside click is detected.
     // Similar to the internal dropdown implementation but includes the target as well.
