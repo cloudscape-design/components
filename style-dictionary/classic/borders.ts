@@ -16,6 +16,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderFieldWidth: '1px',
   borderInvalidWidth: '4px',
   borderItemWidth: '1px',
+  borderFieldWidthFocus: '{borderItemWidth}',
   borderLineChartLineJoin: 'miter',
   borderPanelHeaderWidth: '0px',
   borderPanelTopWidth: '0px',

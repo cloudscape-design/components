@@ -500,6 +500,7 @@ export type BordersTokenName =
   | 'borderDividerSectionWidth'
   | 'borderDropdownVirtualOffsetWidth'
   | 'borderFieldWidth'
+  | 'borderFieldWidthFocus'
   | 'borderInvalidWidth'
   | 'borderItemWidth'
   | 'borderLineChartDashArray'

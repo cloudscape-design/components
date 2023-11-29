@@ -44,7 +44,7 @@
   }
 
   &:focus {
-    @include styles.form-focus-element;
+    @include styles.input-focus-element;
   }
 
   &:invalid {

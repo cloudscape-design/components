@@ -82,6 +82,19 @@
   box-shadow: foundation.$box-shadow-focused-light;
 }
 
+// Use for form input elements, excluding buttons
+// or for elements that have a light border and light background
+@mixin input-focus-element($border-radius: constants.$control-border-radius) {
+  // Using a special transparent outline only visible in Windows High Contrast Mode.
+  // See focus-highlight above.
+  outline: 2px dotted transparent;
+
+  border: constants.$control-border-width-focus solid awsui.$color-border-item-focused;
+  box-sizing: border-box;
+  border-radius: $border-radius;
+  box-shadow: foundation.$box-shadow-focused-light;
+}
+
 @mixin form-disabled-element {
   background-color: awsui.$color-background-input-disabled;
   border: constants.$control-border-width solid awsui.$color-border-input-disabled;
