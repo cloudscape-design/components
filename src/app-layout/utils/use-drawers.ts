@@ -119,8 +119,12 @@ function convertBetaApi(drawers: BetaDrawersProps, ariaLabels: AppLayoutProps['a
   };
 }
 
-function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
-  const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
+function applyToolsDrawer(
+  toolsProps: ToolsProps,
+  runtimeDrawers: DrawersLayout,
+  userSettingsContent: React.ReactNode | undefined
+) {
+  const drawers = [...runtimeDrawers.before, getUserSettingsDrawerItem(userSettingsContent), ...runtimeDrawers.after];
   if (drawers.length === 0) {
     return null;
   }
@@ -176,8 +180,7 @@ export function useDrawers(
   const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
   const combinedDrawers = drawers
     ? [...runtimeDrawers.before, ...drawers, getUserSettingsDrawerItem(userSettingsContent), ...runtimeDrawers.after]
-    : applyToolsDrawer(toolsProps, runtimeDrawers);
-  //const combinedDrawersWithSettings = [applyUserSettingsDrawer(runtimeDrawers), ...(combinedDrawers as [])];
+    : applyToolsDrawer(toolsProps, runtimeDrawers, userSettingsContent);
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
   const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
