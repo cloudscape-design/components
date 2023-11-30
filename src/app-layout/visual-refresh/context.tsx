@@ -387,7 +387,43 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onToolsToggle: handleToolsClick,
     });
 
-    console.log(drawers);
+    function getLocal(key: string, value: string) {
+      const saved = localStorage.getItem(key);
+      const initialValue = saved && JSON.parse(saved);
+
+      if (initialValue === value) {
+        document.body.classList.add(value);
+      }
+    }
+
+    function getLocalAttribute(key: string) {
+      const saved = localStorage.getItem(key);
+      const initialValue = saved && JSON.parse(saved);
+
+      if (initialValue) {
+        if (initialValue.value) {
+          document.body.setAttribute(`data-user-settings-${key}`, initialValue.value);
+        } else {
+          document.body.setAttribute(`data-user-settings-${key}`, initialValue);
+        }
+      }
+    }
+
+    React.useEffect(() => {
+      getLocal('visual-mode', 'awsui-dark-mode');
+      getLocal('compact-mode', 'awsui-compact-mode');
+      getLocal('disable-motion', 'awsui-disable-motion');
+      getLocalAttribute('accessibility-links');
+      getLocalAttribute('layout-width');
+      getLocalAttribute('theme-high-contrast-header');
+      getLocalAttribute('dir');
+      getLocalAttribute('layout-notifications-position');
+      getLocalAttribute('customization-toggle-navigation-modifier');
+
+      const saved = localStorage.getItem('dir');
+      const initialValue = saved && JSON.parse(saved);
+      document.body.setAttribute('dir', initialValue);
+    }, []);
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
 

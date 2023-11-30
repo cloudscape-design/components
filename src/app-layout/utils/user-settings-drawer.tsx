@@ -9,6 +9,7 @@ import InternalFormField from '../../form-field/internal';
 import InternalSelect from '../../select/internal';
 import ColumnLayout from '../../column-layout/internal';
 import { SelectProps } from '../../select/interfaces';
+import { useLocalStorage } from './use-local-storage';
 
 interface DataSettingProps {
   label: string;
@@ -90,14 +91,18 @@ const selectOptions: SelectProps.Options = [
 ];
 
 export default function UserSettingsDrawerContent() {
-  const [visualMode, setVisualMode] = useState('light-mode');
-  const [compactMode, setCompactMode] = useState('comfortable-mode');
-  const [contentWidth, setContentWidth] = useState('content');
-  const [disableMotion, setDisableMotion] = useState('motion-enabled');
-  const [links, setLinks] = useState('underline');
-  const [highContrastHeader, setHighContrastHeader] = useState('enabled');
-  const [direction, setDirection] = useState('ltr');
-  const [notificationsPosition, setNotificationsPosition] = useState('top-center');
+  const [visualMode, setVisualMode] = useLocalStorage('visual-mode', 'light-mode');
+  const [compactMode, setCompactMode] = useLocalStorage('compact-mode', 'comfortable-mode');
+  const [contentWidth, setContentWidth] = useLocalStorage('layout-width', 'content');
+  const [disableMotion, setDisableMotion] = useLocalStorage('disable-motion', 'motion-enabled');
+  const [links, setLinks] = useLocalStorage('accessibility-links', 'underline');
+  const [highContrastHeader, setHighContrastHeader] = useLocalStorage('theme-high-contrast-header', 'enabled');
+  const [direction, setDirection] = useLocalStorage('dir', 'ltr');
+  const [notificationsPosition, setNotificationsPosition] = useLocalStorage(
+    'layout-notifications-position',
+    'top-center'
+  );
+
   const [navigationKey, setNavigationKey] = useState<SelectProps.Option | null>(null);
   const [toolsKey, setToolsKey] = useState<SelectProps.Option | null>(null);
   const [flashbarKey, setFlashbarKey] = useState<SelectProps.Option | null>(null);
