@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import '@cloudscape-design/global-styles/dark-mode-utils.css';
-import { Button, Container, Link, Icon, Grid, Box } from '~components';
+import { Button, Container, Link, Grid, Box } from '~components';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
 import backgroundHeaderDark from './header-dark.png';
@@ -49,7 +49,9 @@ export default function () {
 
         <div className={styles['full-header']}>
           <div className={styles['inner-header']}>
-            <Grid gridDefinition={[{ colspan: { default: 12, s: 8 } }]}>
+            <Grid
+              gridDefinition={[{ colspan: { default: 12, xs: 8, s: 9 } }, { colspan: { default: 12, xs: 4, s: 3 } }]}
+            >
               <div>
                 <Box fontWeight="bold" variant="h1">
                   AWS Skill Builder
@@ -58,26 +60,26 @@ export default function () {
                   Get started quickly and for free today with anti-malware for Amazon S3. With File Storage Security,
                   Cloud Security Posture Management, and well-architected resourcing in Conformity or Workload Security.
                 </Box>
-                <div>
-                  Sold by:{' '}
-                  <Link external={true} variant="primary">
-                    Third-party vendor
-                  </Link>{' '}
-                  <Box fontWeight="bold" variant="span">
-                    <Icon name="call" /> XXX XXXXXXX
-                  </Box>
-                </div>
-                <div>
-                  Tags:{' '}
-                  <Link variant="primary" href="#">
-                    Free trial
-                  </Link>
-                  {' | '}
-                  <Link variant="primary" href="#">
-                    Vendor insights
-                  </Link>
-                </div>
+                <SpaceBetween size="xs">
+                  <div>
+                    Sold by:{' '}
+                    <Link external={true} variant="primary" href="#">
+                      Third-party vendor
+                    </Link>
+                  </div>
+                  <div>
+                    Tags:{' '}
+                    <Link variant="primary" href="#">
+                      Free trial
+                    </Link>
+                    {' | '}
+                    <Link variant="primary" href="#">
+                      Vendor insights
+                    </Link>
+                  </div>
+                </SpaceBetween>
               </div>
+
               <Box margin={{ top: 'l' }}>
                 <SpaceBetween size="s">
                   <Button variant="primary" fullWidth={true}>
