@@ -4,11 +4,16 @@ import React from 'react';
 import {
   AppLayout,
   BreadcrumbGroup,
+  Box,
   Button,
+  Drawer,
+  ExpandableSection,
   Flashbar,
+  FormField,
   Header,
   HelpPanel,
   Link,
+  Select,
   SideNavigation,
   SpaceBetween,
   Table,
@@ -18,6 +23,7 @@ import {
 export default function CloudscapeUserSettings() {
   return (
     <AppLayout
+      // activeDrawerId={'settings'}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -266,6 +272,81 @@ export default function CloudscapeUserSettings() {
           ]}
         />
       }
+      drawers={[
+        {
+          ariaLabels: {
+            closeButton: 'Settings close button',
+            drawerName: 'Settings',
+            triggerButton: 'Settings trigger button',
+          },
+          content: (
+            <Drawer header={<h2>User Settings</h2>}>
+              <TextContent>
+                <p>
+                  Cloudscape user settings were built to accommodate the unique needs of each individual user. Your
+                  workflow is yours to optimize as you see fit.
+                </p>
+
+                <p>
+                  <i>
+                    Do you have an idea for a user setting addition? Or, perhaps, suggestions on how we can further
+                    improve your experience?
+                  </i>
+                </p>
+
+                <p>
+                  <strong>Send us your thoughts in the feedback section. ❤️</strong>
+                </p>
+              </TextContent>
+
+              <Box margin={{ bottom: 'm', top: 'm' }}>
+                <div style={{ border: '1px solid #eaeded', width: '100%' }}></div>
+              </Box>
+
+              <SpaceBetween size="xs">
+                <ExpandableSection headerText="Theme" variant="footer">
+                  <FormField
+                    description="Adjusting the color scheme can improve readability and help reduce eye strain."
+                    label="Color scheme"
+                  >
+                    <Select
+                      selectedOption={{
+                        label: 'Light mode',
+                        value: 'light-mode',
+                      }}
+                      options={[
+                        {
+                          label: 'Light mode',
+                          value: 'light-mode',
+                        },
+                        {
+                          label: 'Dark mode',
+                          value: 'dark-mode',
+                        },
+                      ]}
+                    />
+                  </FormField>
+                </ExpandableSection>
+
+                <ExpandableSection headerText="Layout" variant="footer"></ExpandableSection>
+
+                <ExpandableSection headerText="Accessibility" variant="footer"></ExpandableSection>
+
+                <ExpandableSection headerText="Internationalization" variant="footer"></ExpandableSection>
+
+                <ExpandableSection headerText="Keyboard Shortcuts" variant="footer"></ExpandableSection>
+
+                <ExpandableSection headerText="Feedback" variant="footer"></ExpandableSection>
+              </SpaceBetween>
+            </Drawer>
+          ),
+          defaultSize: 400,
+          id: 'settings',
+          trigger: {
+            iconName: 'settings',
+          },
+        },
+      ]}
       notifications={
         <Flashbar
           items={[
