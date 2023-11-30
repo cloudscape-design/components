@@ -29,6 +29,5 @@ export interface GridNavigationFocusState {
 }
 
 export interface FocusableOptions {
-  navigable?: boolean;
   suppressNavigation?: boolean;
 }

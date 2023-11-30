@@ -15,7 +15,7 @@
 $handle-width: awsui.$space-l;
 $active-separator-width: 2px;
 
-th:not(:last-child) > .divider {
+th:not(:last-child) > div > .divider {
   $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 
   position: absolute;
@@ -61,7 +61,7 @@ th:not(:last-child) > .divider {
     width: calc(#{$handle-width} / 2);
     right: 0;
   }
-  &:hover + .divider {
+  &:hover + div > .divider {
     border-left: $active-separator-width solid awsui.$color-border-divider-active;
   }
   // stylelint-disable-next-line selector-combinator-disallowed-list

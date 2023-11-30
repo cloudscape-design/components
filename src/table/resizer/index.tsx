@@ -9,6 +9,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 import { useGridNavigationFocusable } from '../table-role/index';
+import { GridNavigationSuppressed } from '../table-role/grid-navigation.js';
 
 interface ResizerProps {
   onWidthUpdate: (newWidth: number) => void;
@@ -170,7 +171,6 @@ export function Resizer({
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
   const { focusMuted, focusTarget } = useGridNavigationFocusable(separatorId, resizerToggleRef);
-  useGridNavigationFocusable(separatorId, resizerSeparatorRef, { navigable: false, suppressNavigation: true });
   const shouldMuteFocus = focusMuted && focusTarget !== resizerToggleRef.current;
 
   return (
@@ -214,27 +214,29 @@ export function Resizer({
         tabIndex={shouldMuteFocus ? -1 : tabIndex}
         data-focus-id={focusId}
       />
-      <span
-        className={clsx(styles.divider, isDragging && styles['divider-active'])}
-        ref={resizerSeparatorRef}
-        id={separatorId}
-        role="separator"
-        tabIndex={-1}
-        aria-hidden={!isKeyboardDragging}
-        aria-orientation="vertical"
-        aria-valuenow={headerCellWidth}
-        // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
-        aria-valuetext={headerCellWidth.toFixed(0)}
-        aria-valuemin={minWidth}
-        data-focus-id={focusId}
-        onBlur={() => {
-          setResizerHasFocus(false);
-          if (isKeyboardDragging) {
-            setIsKeyboardDragging(false);
-          }
-          onWidthUpdateCommit();
-        }}
-      />
+      <GridNavigationSuppressed>
+        <span
+          className={clsx(styles.divider, isDragging && styles['divider-active'])}
+          ref={resizerSeparatorRef}
+          id={separatorId}
+          role="separator"
+          tabIndex={-1}
+          aria-hidden={!isKeyboardDragging}
+          aria-orientation="vertical"
+          aria-valuenow={headerCellWidth}
+          // aria-valuetext is needed because the VO announces "collapsed" when only aria-valuenow set without aria-valuemax
+          aria-valuetext={headerCellWidth.toFixed(0)}
+          aria-valuemin={minWidth}
+          data-focus-id={focusId}
+          onBlur={() => {
+            setResizerHasFocus(false);
+            if (isKeyboardDragging) {
+              setIsKeyboardDragging(false);
+            }
+            onWidthUpdateCommit();
+          }}
+        />
+      </GridNavigationSuppressed>
     </>
   );
 }

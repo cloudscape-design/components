@@ -102,7 +102,7 @@ export function GridNavigationProvider({
 export function useGridNavigationFocusable(
   focusableId?: string,
   focusable?: FocusableDefinition,
-  { navigable, suppressNavigation }: FocusableOptions = {}
+  { suppressNavigation }: FocusableOptions = {}
 ) {
   const { navigationSuppressed } = useContext(GridNavigationSuppressionContext);
   const { focusMuted, focusStore, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
@@ -110,9 +110,9 @@ export function useGridNavigationFocusable(
 
   useEffect(() => {
     if (focusableId && focusable) {
-      return registerFocusable(focusableId, focusable, { navigable, suppressNavigation });
+      return registerFocusable(focusableId, focusable, { suppressNavigation });
     }
-  }, [focusableId, focusable, registerFocusable, navigable, suppressNavigation]);
+  }, [focusableId, focusable, registerFocusable, suppressNavigation]);
 
   return { focusMuted: focusMuted && !navigationSuppressed, focusTarget, registerFocusable, unregisterFocusable };
 }
@@ -317,7 +317,6 @@ class GridNavigationHelper {
 class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
   private focusables = new Set<FocusableDefinition>();
   private focusableToId = new Map<FocusableDefinition, string>();
-  private focusableNavigable = new Set<FocusableDefinition>();
   private focusableSuppressed = new Set<FocusableDefinition>();
 
   constructor() {
@@ -327,13 +326,10 @@ class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
   public registerFocusable = (
     focusableId: string,
     focusable: FocusableDefinition,
-    { navigable = true, suppressNavigation = false }: FocusableOptions = {}
+    { suppressNavigation = false }: FocusableOptions = {}
   ) => {
     this.focusables.add(focusable);
     this.focusableToId.set(focusable, focusableId);
-    if (navigable) {
-      this.focusableNavigable.add(focusable);
-    }
     if (suppressNavigation) {
       this.focusableSuppressed.add(focusable);
     }
@@ -343,18 +339,15 @@ class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
   public unregisterFocusable = (focusable: FocusableDefinition) => {
     this.focusables.delete(focusable);
     this.focusableToId.delete(focusable);
-    this.focusableNavigable.delete(focusable);
     this.focusableSuppressed.delete(focusable);
   };
 
   public getNavigableElements = (): Set<HTMLElement> => {
     const registeredElements = new Set<HTMLElement>();
     for (const focusable of this.focusables) {
-      if (this.focusableNavigable.has(focusable)) {
-        const element = getFocusableElement(focusable);
-        if (element) {
-          registeredElements.add(element);
-        }
+      const element = getFocusableElement(focusable);
+      if (element) {
+        registeredElements.add(element);
       }
     }
     return registeredElements;
