@@ -23,7 +23,7 @@ import {
 export default function CloudscapeUserSettings() {
   return (
     <AppLayout
-      activeDrawerId={'settings'}
+      // activeDrawerId={'settings'}
       breadcrumbs={
         <BreadcrumbGroup
           items={[

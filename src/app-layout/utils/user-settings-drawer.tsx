@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import InternalBox from '../../box/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalRadioGroup from '../../radio-group/internal';
 import InternalExpandableSection from '../../expandable-section/internal';
@@ -110,6 +111,26 @@ export default function UserSettingsDrawerContent() {
 
   return (
     <InternalDrawer header={<h2>User settings</h2>}>
+      <p>
+        Cloudscape user settings were built to accommodate the unique needs of each individual user. Your workflow is
+        yours to optimize as you see fit.
+      </p>
+
+      <p>
+        <i>
+          Do you have an idea for a user setting addition? Or, perhaps, suggestions on how we can further improve your
+          experience?
+        </i>
+      </p>
+
+      <p>
+        <strong>Send us your thoughts in the feedback section. ❤️</strong>
+      </p>
+
+      <InternalBox margin={{ bottom: 'm', top: 'm' }}>
+        <div style={{ border: '1px solid #eaeded', width: '100%' }}></div>
+      </InternalBox>
+
       <InternalSpaceBetween size="l">
         <InternalExpandableSection headerText="Theme" defaultExpanded={true}>
           <InternalSpaceBetween size="l">
