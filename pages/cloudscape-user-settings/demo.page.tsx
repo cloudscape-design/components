@@ -23,7 +23,7 @@ import {
 export default function CloudscapeUserSettings() {
   return (
     <AppLayout
-      // activeDrawerId={'settings'}
+      activeDrawerId={'settings'}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -305,27 +305,111 @@ export default function CloudscapeUserSettings() {
 
               <SpaceBetween size="xs">
                 <ExpandableSection headerText="Theme" variant="footer">
-                  <FormField
-                    description="Adjusting the color scheme can improve readability and help reduce eye strain."
-                    label="Color scheme"
-                  >
-                    <Select
-                      selectedOption={{
-                        label: 'Light mode',
-                        value: 'light-mode',
-                      }}
-                      options={[
-                        {
+                  <SpaceBetween size="m">
+                    <FormField
+                      description="Adjusting the color scheme can improve readability and help reduce eye strain."
+                      label="Color scheme"
+                    >
+                      <Select
+                        selectedOption={{
                           label: 'Light mode',
                           value: 'light-mode',
-                        },
-                        {
-                          label: 'Dark mode',
-                          value: 'dark-mode',
-                        },
-                      ]}
-                    />
-                  </FormField>
+                        }}
+                        options={[
+                          {
+                            label: 'Light mode',
+                            value: 'light-mode',
+                          },
+                          {
+                            label: 'Dark mode',
+                            value: 'dark-mode',
+                          },
+                        ]}
+                      />
+                    </FormField>
+
+                    <FormField
+                      description="Adjusting the density can increase the amount of content that fits in the viewport."
+                      label="Density"
+                    >
+                      <Select
+                        selectedOption={{
+                          label: 'Comfortable',
+                          value: 'comfortable',
+                        }}
+                        options={[
+                          {
+                            label: 'Comfortable',
+                            value: 'comfortable',
+                          },
+                          {
+                            label: 'Compact',
+                            value: 'compact',
+                          },
+                        ]}
+                      />
+                    </FormField>
+
+                    <FormField
+                      description="Modify the presentation of the header content on a page."
+                      label="High Contrast Header"
+                    >
+                      <Select
+                        selectedOption={{
+                          label: 'Enabled',
+                          value: 'enabled',
+                        }}
+                        options={[
+                          {
+                            label: 'Enabled',
+                            value: 'enabled',
+                          },
+                          {
+                            label: 'Disabled',
+                            value: 'disabled',
+                          },
+                        ]}
+                      />
+                    </FormField>
+
+                    <FormField description="Add or remove visual depth for elements on a page." label="Box Shadow">
+                      <Select
+                        selectedOption={{
+                          label: 'Enabled',
+                          value: 'enabled',
+                        }}
+                        options={[
+                          {
+                            label: 'Enabled',
+                            value: 'enabled',
+                          },
+                          {
+                            label: 'Disabled',
+                            value: 'disabled',
+                          },
+                        ]}
+                      />
+                    </FormField>
+
+                    <FormField description="Add or remove curved corners for elements on a page." label="Border Radius">
+                      <Select
+                        selectedOption={{
+                          label: 'Enabled',
+                          value: 'enabled',
+                        }}
+                        options={[
+                          {
+                            label: 'Enabled',
+                            value: 'enabled',
+                          },
+                          {
+                            label: 'Disabled',
+                            value: 'disabled',
+                          },
+                        ]}
+                      />
+                    </FormField>
+                  </SpaceBetween>
                 </ExpandableSection>
 
                 <ExpandableSection headerText="Layout" variant="footer"></ExpandableSection>
