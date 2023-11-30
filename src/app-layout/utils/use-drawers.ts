@@ -48,6 +48,7 @@ function getUserSettingsDrawerItem(userSettingsContent: React.ReactNode | undefi
   return {
     id: USER_SETTINGS_DRAWER_ID,
     content: userSettingsContent,
+    defaultSize: 500,
     resizable: true,
     ariaLabels: {
       drawerName: 'user settings drawer',
