@@ -516,7 +516,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * The first is the the content gap on the right which is stored in a design token
      * and applied in the Layout CSS:
      *
-     * $contentGapRight: #{awsui.$space-scaled-2x-xxxl};
+     * $contentGapRight: #{awsui.$space-scaled-2x-xl};
      *
      * The second is the width of the element that has the circular buttons for the
      * Tools and Split Panel. This could be suppressed given the state of the Tools
@@ -533,8 +533,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     useLayoutEffect(
       function handleSplitPanelMaxWidth() {
-        const contentGapRight = 80; // Approximately 40px when rendered but doubled for safety
-        const toolsFormOffsetWidth = 160; // Approximately 80px when rendered but doubled for safety
+        const contentGapRight = 50; // Approximately 24px when rendered but doubled for safety
+        const toolsFormOffsetWidth = 120; // Approximately 60px when rendered but doubled for safety
         const getPanelOffsetWidth = () => {
           if (drawers) {
             return activeDrawerId ? drawerSize : 0;
