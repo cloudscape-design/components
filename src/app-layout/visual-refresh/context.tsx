@@ -390,9 +390,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     function getLocal(key: string) {
       const saved = localStorage.getItem(key);
       const initialValue = saved && JSON.parse(saved);
-
-      console.log(initialValue);
-
       initialValue?.value && document.body.classList.add(initialValue.value);
     }
 
