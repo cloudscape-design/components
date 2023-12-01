@@ -27,4 +27,4 @@ export interface FocusableOptions {
   suppressNavigation?: boolean;
 }
 
-export type FocusableChangeHandler = (newFocusableId: string, focusTarget: HTMLElement) => void;
+export type FocusableChangeHandler = (focusTarget: HTMLElement) => void;

@@ -19,12 +19,10 @@ import {
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 export const GridNavigationContext = createContext<{
   focusMuted: boolean;
   registerFocusable(
-    focusableId: string,
     focusable: FocusableDefinition,
     handler: FocusableChangeHandler,
     options?: FocusableOptions
@@ -111,23 +109,30 @@ export function useGridNavigationFocusable(
   focusable: FocusableDefinition,
   { suppressNavigation }: FocusableOptions = {}
 ) {
-  const focusableId = useUniqueId();
   const { focusMuted, registerFocusable } = useGridNavigationContext();
-  const [focusTarget, setFocusTarget] = useState<null | HTMLElement>(null);
+  const [focusTargetActive, setFocusTargetActive] = useState(false);
 
   useEffect(() => {
-    const changeHandler = (focusTargetId: string, focusTarget: null | HTMLElement) =>
-      setFocusTarget(focusTargetId === focusableId ? focusTarget : null);
+    const changeHandler = (focusTarget: null | HTMLElement) =>
+      setFocusTargetActive(getFocusableElement(focusable) === focusTarget);
 
-    const unregister = registerFocusable(focusableId, focusable, changeHandler, { suppressNavigation });
+    const unregister = registerFocusable(focusable, changeHandler, { suppressNavigation });
 
     return () => unregister();
-  }, [focusableId, focusable, registerFocusable, suppressNavigation]);
+  }, [focusable, registerFocusable, suppressNavigation]);
 
-  const focusTargetMuted = focusMuted && focusTarget !== getFocusableElement(focusable);
+  const focusTargetMuted = focusMuted && !focusTargetActive;
 
   return { focusMuted, focusTargetMuted };
 }
+
+// export function useGridNavigationAutoRegisterFocusable(getElementRoot: FocusableDefinition) {
+// do the magic here:
+// find user-focusable elements on every render
+// make all element but focusTarget no longer user focusable
+// keep track of all overrides to make a revert if needed
+// register and unregister all found elements
+// }
 
 /**
  * This helper encapsulates the grid navigation behaviors which are:
@@ -320,18 +325,15 @@ class GridNavigationHelper {
 
 class GridNavigationFocusStore {
   private focusables = new Set<FocusableDefinition>();
-  private focusableToId = new Map<FocusableDefinition, string>();
   private focusableSuppressed = new Set<FocusableDefinition>();
   private focusTargetHandlers = new Map<FocusableDefinition, FocusableChangeHandler>();
 
   public registerFocusable = (
-    focusableId: string,
     focusable: FocusableDefinition,
     changeHandler: FocusableChangeHandler,
     { suppressNavigation = false }: FocusableOptions = {}
   ) => {
     this.focusables.add(focusable);
-    this.focusableToId.set(focusable, focusableId);
     this.focusTargetHandlers.set(focusable, changeHandler);
     if (suppressNavigation) {
       this.focusableSuppressed.add(focusable);
@@ -341,7 +343,6 @@ class GridNavigationFocusStore {
 
   public unregisterFocusable = (focusable: FocusableDefinition) => {
     this.focusables.delete(focusable);
-    this.focusableToId.delete(focusable);
     this.focusableSuppressed.delete(focusable);
     this.focusTargetHandlers.delete(focusable);
   };
@@ -359,9 +360,8 @@ class GridNavigationFocusStore {
 
   public setFocusTarget(focusTarget: HTMLElement) {
     const focusable = [...this.focusables].find(f => getFocusableElement(f) === focusTarget);
-    const focusableId = focusable ? this.focusableToId.get(focusable) : null;
-    if (focusable && focusableId) {
-      this.focusTargetHandlers.forEach(handler => handler(focusableId, focusTarget));
+    if (focusable) {
+      this.focusTargetHandlers.forEach(handler => handler(focusTarget));
     }
   }
 
