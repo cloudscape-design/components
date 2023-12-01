@@ -46,13 +46,14 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
 
 function getUserSettingsDrawerItem(userSettingsContent: React.ReactNode | undefined): AppLayoutProps.Drawer {
   return {
-    id: USER_SETTINGS_DRAWER_ID,
-    content: userSettingsContent,
-    defaultSize: 500,
-    resizable: true,
     ariaLabels: {
-      drawerName: 'user settings drawer',
+      closeButton: 'Settings close button',
+      drawerName: 'Settings',
+      triggerButton: 'Settings trigger button',
     },
+    content: userSettingsContent,
+    defaultSize: 400,
+    id: USER_SETTINGS_DRAWER_ID,
     trigger: {
       iconName: 'settings',
     },

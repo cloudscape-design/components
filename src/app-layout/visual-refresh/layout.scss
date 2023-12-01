@@ -339,7 +339,7 @@ Category: Layout
 Property: Width
 */
 /* stylelint-disable */
-body[data-user-settings-layout-width='full-width'] .layout {
+body[data-user-settings-layout-content-width='full-width'] .layout {
   #{custom-props.$defaultMaxContentWidth}: 100%;
 }
 /* stylelint-enable */

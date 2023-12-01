@@ -2,45 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import InternalBox from '../../box/internal';
+import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalRadioGroup from '../../radio-group/internal';
 import InternalExpandableSection from '../../expandable-section/internal';
 import InternalDrawer from '../../drawer/internal';
 import InternalFormField from '../../form-field/internal';
-import InternalSelect from '../../select/internal';
-import ColumnLayout from '../../column-layout/internal';
 import { SelectProps } from '../../select/interfaces';
 import { useLocalStorage } from './use-local-storage';
-
-interface DataSettingProps {
-  label: string;
-  attribute: string;
-  value: string;
-  setValue: (value: string) => void;
-  items: Array<{ value: string; label: string }>;
-}
-
 interface SelectSettingProps {
   label: string;
   attribute: string;
   value: SelectProps.Option | null;
   setValue: (value: SelectProps.Option | null) => void;
   items: SelectProps.Options;
-}
-
-function DataSetting(props: DataSettingProps) {
-  return (
-    <InternalFormField label={props.label}>
-      <InternalRadioGroup
-        onChange={({ detail }) => {
-          props.setValue(detail.value);
-          document.body.setAttribute(`data-user-settings-${props.attribute}`, detail.value);
-        }}
-        value={props.value}
-        items={props.items}
-      />
-    </InternalFormField>
-  );
 }
 
 function SelectSetting(props: SelectSettingProps) {
@@ -92,214 +67,362 @@ const selectOptions: SelectProps.Options = [
 ];
 
 export default function UserSettingsDrawerContent() {
-  const [visualMode, setVisualMode] = useLocalStorage('visual-mode', 'light-mode');
-  const [compactMode, setCompactMode] = useLocalStorage('compact-mode', 'comfortable-mode');
-  const [contentWidth, setContentWidth] = useLocalStorage('layout-width', 'content');
-  const [disableMotion, setDisableMotion] = useLocalStorage('disable-motion', 'motion-enabled');
-  const [links, setLinks] = useLocalStorage('accessibility-links', 'underline');
-  const [highContrastHeader, setHighContrastHeader] = useLocalStorage('theme-high-contrast-header', 'enabled');
-  const [direction, setDirection] = useLocalStorage('dir', 'ltr');
-  const [notificationsPosition, setNotificationsPosition] = useLocalStorage(
-    'layout-notifications-position',
-    'top-center'
-  );
-  const [borderRadius, setBorderRadius] = useLocalStorage('theme-border-radius', 'rounded');
+  /**
+   * Theme properties
+   */
+  const [colorScheme, setColorScheme] = useLocalStorage('color-scheme', { label: 'Light mode', value: 'light-mode' });
+  const [density, setDensity] = useLocalStorage('density', { label: 'Comfortable', value: 'comfortable-mode' });
+  const [highContrastHeader, setHighContrastHeader] = useLocalStorage('high-contrast-header', {
+    label: 'Enabled',
+    value: 'enabled',
+  });
 
+  /**
+   * Layout properties
+   */
+  const [contentWidth, setContentWidth] = useLocalStorage('content-width', { label: 'Optimized', value: 'optimized' });
+
+  /**
+   * Accessibility properties
+   */
+  const [motion, setMotion] = useLocalStorage('motion', {label: 'Enabled', value: 'enabled'});
+  const [links, setLinks] = useLocalStorage('links', {label: 'Underlined', value: 'underlined'});
+
+  /**
+   * Internationalization properties
+   */
+  const [direction, setDirection] = useLocalStorage('direction', { label: 'Left to Right', value: 'ltr' });
+  const [notificationsPosition, setNotificationsPosition] = useLocalStorage('notifications-position', { label: 'Top, Center', value: 'top-center' });
+
+  /**
+   * Other properties
+   */
   const [navigationKey, setNavigationKey] = useState<SelectProps.Option | null>(null);
   const [toolsKey, setToolsKey] = useState<SelectProps.Option | null>(null);
   const [flashbarKey, setFlashbarKey] = useState<SelectProps.Option | null>(null);
   const [splitPanelKey, setSplitPanelKey] = useState<SelectProps.Option | null>(null);
 
   return (
-    <InternalDrawer header={<h2>User settings</h2>}>
-      <p>
+    <InternalDrawer header={<h2>User Settings</h2>}>
+      <InternalBox variant="p">
         Cloudscape user settings were built to accommodate the unique needs of each individual user. Your workflow is
         yours to optimize as you see fit.
-      </p>
+      </InternalBox>
 
-      <p>
+      <InternalBox variant="p">
         <i>
           Do you have an idea for a user setting addition? Or, perhaps, suggestions on how we can further improve your
           experience?
         </i>
-      </p>
+      </InternalBox>
 
-      <p>
+      <InternalBox variant="p">
         <strong>Send us your thoughts in the feedback section. ❤️</strong>
-      </p>
+      </InternalBox>
 
       <InternalBox margin={{ bottom: 'm', top: 'm' }}>
         <div style={{ border: '1px solid #eaeded', width: '100%' }}></div>
       </InternalBox>
 
-      <InternalSpaceBetween size="l">
-        <InternalExpandableSection headerText="Theme" defaultExpanded={true}>
-          <InternalSpaceBetween size="l">
-            <ColumnLayout columns={3}>
-              <InternalFormField label="Visual mode">
-                <InternalRadioGroup
-                  onChange={({ detail }) => {
-                    setVisualMode(detail.value);
-                    if (detail.value === 'awsui-dark-mode') {
-                      document.body.classList.add(detail.value);
-                    } else {
-                      document.body.classList.remove('awsui-dark-mode');
-                    }
-                  }}
-                  value={visualMode}
-                  items={[
-                    { value: 'light-mode', label: 'Light mode' },
-                    { value: 'awsui-dark-mode', label: 'Dark mode' },
-                  ]}
-                />
-              </InternalFormField>
-              <InternalFormField label="Compact mode">
-                <InternalRadioGroup
-                  onChange={({ detail }) => {
-                    setCompactMode(detail.value);
-                    if (detail.value === 'awsui-compact-mode') {
-                      document.body.classList.add(detail.value);
-                    } else {
-                      document.body.classList.remove('awsui-compact-mode');
-                    }
-                  }}
-                  value={compactMode}
-                  items={[
-                    { value: 'comfortable-mode', label: 'Comfortable' },
-                    { value: 'awsui-compact-mode', label: 'Compact' },
-                  ]}
-                />
-              </InternalFormField>
-              <DataSetting
-                label="High contrast header"
-                attribute="theme-high-contrast-header"
-                value={highContrastHeader}
-                setValue={setHighContrastHeader}
-                items={[
-                  { value: 'enabled', label: 'Enabled' },
-                  { value: 'disabled', label: 'Disabled' },
+      <InternalSpaceBetween size="xs">
+        <InternalExpandableSection headerText="Theme" variant="footer">
+          <InternalSpaceBetween size="m">
+            <InternalFormField
+              description="Adjusting the color scheme can improve readability and help reduce eye strain."
+              label="Color scheme"
+            >
+              <InternalSelect
+                selectedOption={colorScheme}
+                onChange={({ detail }) => {
+                  setColorScheme(detail.selectedOption);
+
+                  if (detail.selectedOption.value === 'awsui-dark-mode') {
+                    document.body.classList.add(detail.selectedOption.value);
+                  } else {
+                    document.body.classList.remove('awsui-dark-mode');
+                  }
+                }}
+                options={[
+                  {
+                    label: 'Light mode',
+                    value: 'light-mode',
+                  },
+                  {
+                    label: 'Dark mode',
+                    value: 'awsui-dark-mode',
+                  },
                 ]}
               />
-              <DataSetting
-                label="Border radius"
-                attribute="theme-border-radius"
-                value={borderRadius}
-                setValue={setBorderRadius}
-                items={[
-                  { value: 'rounded', label: 'Rounded' },
-                  { value: 'straight-edges', label: 'Straight edged' },
+            </InternalFormField>
+
+            <InternalFormField
+              description="Adjusting the density can increase the amount of content that fits in the viewport."
+              label="Density"
+            >
+              <InternalSelect
+                selectedOption={density}
+                options={[
+                  {
+                    label: 'Comfortable',
+                    value: 'comfortable-mode',
+                  },
+                  {
+                    label: 'Compact',
+                    value: 'awsui-compact-mode',
+                  },
+                ]}
+                onChange={({ detail }) => {
+                  setDensity(detail.selectedOption);
+
+                  if (detail.selectedOption.value === 'awsui-compact-mode') {
+                    document.body.classList.add(detail.selectedOption.value);
+                  } else {
+                    document.body.classList.remove('awsui-compact-mode');
+                  }
+                }}
+              />
+            </InternalFormField>
+
+            <InternalFormField
+              description="Modify the presentation of the header content on a page."
+              label="High contrast header"
+            >
+              <InternalSelect
+                selectedOption={highContrastHeader}
+                options={[
+                  {
+                    label: 'Enabled',
+                    value: 'enabled',
+                  },
+                  {
+                    label: 'Disabled',
+                    value: 'disabled',
+                  },
+                ]}
+                onChange={({ detail }) => {
+                  setHighContrastHeader(detail.selectedOption);
+                  document.body.setAttribute(
+                    'data-user-settings-theme-high-contrast-header',
+                    detail.selectedOption.value ?? ''
+                  );
+                }}
+              />
+            </InternalFormField>
+
+            <InternalFormField description="Add or remove visual depth for elements on a page." label="Box shadow">
+              <InternalSelect
+                selectedOption={{
+                  label: 'Enabled',
+                  value: 'enabled',
+                }}
+                options={[
+                  {
+                    label: 'Enabled',
+                    value: 'enabled',
+                  },
+                  {
+                    label: 'Disabled',
+                    value: 'disabled',
+                  },
                 ]}
               />
-            </ColumnLayout>
+            </InternalFormField>
+
+            <InternalFormField description="Add or remove curved corners for elements on a page." label="Border radius">
+              <InternalSelect
+                selectedOption={{
+                  label: 'Enabled',
+                  value: 'enabled',
+                }}
+                options={[
+                  {
+                    label: 'Enabled',
+                    value: 'enabled',
+                  },
+                  {
+                    label: 'Disabled',
+                    value: 'disabled',
+                  },
+                ]}
+              />
+            </InternalFormField>
           </InternalSpaceBetween>
         </InternalExpandableSection>
-        <InternalExpandableSection headerText="Layout" defaultExpanded={true}>
-          <InternalSpaceBetween size="l">
-            <ColumnLayout columns={3}>
-              <DataSetting
-                label="Layout width"
-                attribute="layout-width"
-                value={contentWidth}
-                setValue={setContentWidth}
-                items={[
-                  { value: 'content', label: 'Optimized for content' },
-                  { value: 'full-width', label: 'Full viewport' },
+
+        <InternalExpandableSection headerText="Layout" variant="footer">
+          <InternalSpaceBetween size="m">
+            <InternalFormField
+              description="Optimize widths based on the page content or always use the full viewport width."
+              label="Content width"
+            >
+              <InternalSelect
+                selectedOption={contentWidth}
+                onChange={({ detail }) => {
+                  setContentWidth(detail.selectedOption);
+
+                  document.body.setAttribute(
+                    'data-user-settings-layout-content-width',
+                    detail.selectedOption.value ?? ''
+                  );
+                }}
+                options={[
+                  {
+                    label: 'Optimized',
+                    value: 'optimized',
+                  },
+                  {
+                    label: 'Full width',
+                    value: 'full-width',
+                  },
                 ]}
               />
-              <InternalFormField label="Direction">
-                <InternalRadioGroup
-                  onChange={({ detail }) => {
-                    setDirection(detail.value);
-                    document.body.setAttribute('dir', detail.value);
-                  }}
-                  value={direction}
-                  items={[
-                    { value: 'ltr', label: 'Left-to-right' },
-                    { value: 'rtl', label: 'Right-to-left' },
-                  ]}
-                />
-              </InternalFormField>
-              <DataSetting
-                label="Notifications position"
-                attribute="layout-notifications-position"
-                value={notificationsPosition}
-                setValue={setNotificationsPosition}
-                items={[
-                  { value: 'top-center', label: 'Top center' },
-                  { value: 'bottom-right', label: 'Bottom right' },
+            </InternalFormField>
+
+            <InternalFormField
+              description="Position the notifications inline above the page content or overlay as toasts."
+              label="Notifications position"
+            >
+              <InternalSelect
+                selectedOption={notificationsPosition}
+                onChange={({ detail }) => {
+                  setNotificationsPosition(detail.selectedOption);
+
+                  document.body.setAttribute(
+                    'data-user-settings-layout-notifications-position',
+                    detail.selectedOption.value ?? ''
+                  );
+                }}
+                options={[
+                  {
+                    label: 'Top, Center',
+                    value: 'top-center',
+                  },
+                  {
+                    label: 'Bottom, Right',
+                    value: 'bottom-right',
+                  },
                 ]}
               />
-            </ColumnLayout>
+            </InternalFormField>
           </InternalSpaceBetween>
         </InternalExpandableSection>
-        <InternalExpandableSection headerText="Accessibility" defaultExpanded={true}>
-          <InternalSpaceBetween size="l">
-            <ColumnLayout columns={3}>
-              <InternalFormField label="Disable motion">
-                <InternalRadioGroup
+
+        <InternalExpandableSection headerText="Accessibility" variant="footer">
+          <InternalSpaceBetween size="m">
+            <InternalFormField
+                description="Adjust the motion based on visual preferences or to accommodate motion sensitivities."
+                label="Motion"
+              >
+                <InternalSelect
+                  selectedOption={motion}
+                  options={[
+                    {
+                      label: 'Enabled',
+                      value: 'enabled',
+                    },
+                    {
+                      label: 'Disabled',
+                      value: 'awsui-motion-disabled',
+                    },
+                  ]}
                   onChange={({ detail }) => {
-                    setDisableMotion(detail.value);
-                    if (detail.value === 'awsui-motion-disabled') {
-                      document.body.classList.add(detail.value);
-                    }
-                    if (detail.value === 'motion-enabled') {
+                    setMotion(detail.selectedOption);
+  
+                    if (detail.selectedOption.value === 'awsui-motion-disabled') {
+                      document.body.classList.add(detail.selectedOption.value);
+                    } else {
                       document.body.classList.remove('awsui-motion-disabled');
                     }
                   }}
-                  value={disableMotion}
-                  items={[
-                    { value: 'motion-enabled', label: 'Enable motion' },
-                    { value: 'awsui-motion-disabled', label: 'Disable motion' },
-                  ]}
                 />
               </InternalFormField>
-              <DataSetting
+
+              <InternalFormField
+                description="Adjust link styles to assist in element distinction or reduce visual noise."
                 label="Links"
-                attribute="accessibility-links"
-                value={links}
-                setValue={setLinks}
-                items={[
-                  { value: 'underline', label: 'Underlined' },
-                  { value: 'no-underline', label: 'No underline' },
-                ]}
-              />
-            </ColumnLayout>
-          </InternalSpaceBetween>
+              >
+                <InternalSelect
+                  selectedOption={links}
+                  options={[
+                    {
+                      label: 'Underlined',
+                      value: 'underlined',
+                    },
+                    {
+                      label: 'No underline',
+                      value: 'no-underline',
+                    },
+                  ]}
+                  onChange={({ detail }) => {
+                    setLinks(detail.selectedOption);
+
+                    document.body.setAttribute(
+                      'data-user-settings-accessibility-links',
+                      detail.selectedOption.value ?? ''
+                    );
+                  }}
+                />
+              </InternalFormField>
+            </InternalSpaceBetween>
         </InternalExpandableSection>
-        <InternalExpandableSection headerText="Keyboard shortcuts" defaultExpanded={true}>
-          <InternalSpaceBetween size="l">
-            <ColumnLayout columns={3}>
-              <SelectSetting
-                label="Navigation toggle"
-                attribute="customization-toggle-navigation-modifier"
-                value={navigationKey}
-                setValue={setNavigationKey}
-                items={selectOptions}
-              />
-              <SelectSetting
-                label="Tools toggle"
-                attribute="customization-toggle-tools-modifier"
-                value={toolsKey}
-                setValue={setToolsKey}
-                items={selectOptions}
-              />
-              <SelectSetting
-                label="Flashbar toggle"
-                attribute="customization-toggle-stacked-flashbar-modifier"
-                value={flashbarKey}
-                setValue={setFlashbarKey}
-                items={selectOptions}
-              />
-              <SelectSetting
-                label="Split panel toggle"
-                attribute="customization-toggle-split-panel-modifier"
-                value={splitPanelKey}
-                setValue={setSplitPanelKey}
-                items={selectOptions}
-              />
-            </ColumnLayout>
-          </InternalSpaceBetween>
+
+        <InternalExpandableSection headerText="Internationalization" variant="footer">
+          <InternalFormField
+            description="Set the document direction to correspond with native locale."
+            label="Direction"
+          >
+            <InternalSelect
+              selectedOption={direction}
+              onChange={({ detail }) => {
+                setDirection(detail.selectedOption);
+                document.body.setAttribute('dir', detail.selectedOption.value ?? '');
+              }}
+              options={[
+                {
+                  label: 'Left to Right',
+                  value: 'ltr',
+                },
+                {
+                  label: 'Right to Left',
+                  value: 'rtl',
+                },
+              ]}
+            />
+          </InternalFormField>
         </InternalExpandableSection>
+
+        <InternalExpandableSection headerText="Keyboard Shortcuts" variant="footer">
+            <SelectSetting
+              label="Navigation toggle"
+              attribute="customization-toggle-navigation-modifier"
+              value={navigationKey}
+              setValue={setNavigationKey}
+              items={selectOptions}
+            />
+            <SelectSetting
+              label="Tools toggle"
+              attribute="customization-toggle-tools-modifier"
+              value={toolsKey}
+              setValue={setToolsKey}
+              items={selectOptions}
+            />
+            <SelectSetting
+              label="Flashbar toggle"
+              attribute="customization-toggle-stacked-flashbar-modifier"
+              value={flashbarKey}
+              setValue={setFlashbarKey}
+              items={selectOptions}
+            />
+            <SelectSetting
+              label="Split panel toggle"
+              attribute="customization-toggle-split-panel-modifier"
+              value={splitPanelKey}
+              setValue={setSplitPanelKey}
+              items={selectOptions}
+            />
+        </InternalExpandableSection>
+
+        <InternalExpandableSection headerText="Feedback" variant="footer"></InternalExpandableSection>
       </InternalSpaceBetween>
     </InternalDrawer>
   );

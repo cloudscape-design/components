@@ -387,13 +387,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       onToolsToggle: handleToolsClick,
     });
 
-    function getLocal(key: string, value: string) {
+    function getLocal(key: string) {
       const saved = localStorage.getItem(key);
       const initialValue = saved && JSON.parse(saved);
 
-      if (initialValue === value) {
-        document.body.classList.add(value);
-      }
+      console.log(initialValue);
+
+      initialValue?.value && document.body.classList.add(initialValue.value);
     }
 
     function getLocalAttribute(key: string) {
@@ -410,8 +410,30 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     }
 
     React.useEffect(() => {
-      getLocal('visual-mode', 'awsui-dark-mode');
-      getLocal('compact-mode', 'awsui-compact-mode');
+      /**
+       * Theme properties
+       */
+      getLocal('color-scheme', 'awsui-dark-mode');
+      getLocal('density', 'awsui-compact-mode');
+      getLocalAttribute('high-contrast-header');
+
+      /**
+       * Layout properties
+       */
+      getLocalAttribute('content-width');
+
+      /**
+       * Internationalization properties
+       */
+      getLocalAttribute('dir');
+      const saved = localStorage.getItem('direction');
+      const initialValue = saved && JSON.parse(saved);
+      document.body.setAttribute('dir', initialValue);
+
+      /**
+       * Other properties
+       */
+      /*
       getLocal('disable-motion', 'awsui-disable-motion');
       getLocalAttribute('accessibility-links');
       getLocalAttribute('layout-width');
@@ -423,6 +445,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       const saved = localStorage.getItem('dir');
       const initialValue = saved && JSON.parse(saved);
       document.body.setAttribute('dir', initialValue);
+      getLocalAttribute('layout-notifications-position');
+      getLocalAttribute('customization-toggle-navigation-modifier');
+      */
     }, []);
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
