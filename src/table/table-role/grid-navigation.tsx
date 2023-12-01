@@ -13,11 +13,19 @@ import { FocusableDefinition, FocusableOptions, FocusedCell, GridNavigationProvi
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
+import { unstable_batchedUpdates } from 'react-dom';
+
+type ChangeHandler = (newFocusableId: string, focusTarget: HTMLElement) => void;
 
 export const GridNavigationContext = createContext<{
   focusMuted: boolean;
   focusStore: any;
-  registerFocusable(focusableId: string, focusable: FocusableDefinition, options?: FocusableOptions): () => void;
+  registerFocusable(
+    focusableId: string,
+    focusable: FocusableDefinition,
+    options: FocusableOptions,
+    changeHandler: ChangeHandler
+  ): () => void;
   unregisterFocusable(focusable: FocusableDefinition): void;
 }>({
   focusMuted: false,
@@ -106,17 +114,24 @@ export function useGridNavigationFocusable(
   focusable?: FocusableDefinition,
   { suppressNavigation }: FocusableOptions = {}
 ) {
+  const [currentFocusTarget, setCurrentFocusTarget] = useState<HTMLElement | null>(null);
   const { navigationSuppressed } = useContext(GridNavigationSuppressionContext);
-  const { focusMuted, focusStore, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
-  const focusTarget = focusStore.focusTarget;
+  const { focusMuted, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
 
   useEffect(() => {
     if (focusableId && focusable) {
-      return registerFocusable(focusableId, focusable, { suppressNavigation });
+      return registerFocusable(focusableId, focusable, { suppressNavigation }, (newFocusableId, focusTarget) => {
+        setCurrentFocusTarget(newFocusableId === focusableId ? focusTarget : null);
+      });
     }
   }, [focusableId, focusable, registerFocusable, suppressNavigation]);
 
-  return { focusMuted: focusMuted && !navigationSuppressed, focusTarget, registerFocusable, unregisterFocusable };
+  return {
+    focusMuted: focusMuted && !navigationSuppressed,
+    focusTarget: currentFocusTarget,
+    registerFocusable,
+    unregisterFocusable,
+  };
 }
 
 /**
@@ -315,20 +330,24 @@ function useGridNavigationFocusStore() {
   const focusablesRef = useRef(new Set<FocusableDefinition>());
   const focusableToIdRef = useRef(new Map<FocusableDefinition, string>());
   const focusableSuppressedRef = useRef(new Set<FocusableDefinition>());
-
-  const [focusTarget, setFocusTargetState] = useState<null | HTMLElement>(null);
+  const changeHandlers = useRef(new Set<ChangeHandler>());
 
   function registerFocusable(
     focusableId: string,
     focusable: FocusableDefinition,
-    { suppressNavigation = false }: FocusableOptions = {}
+    { suppressNavigation = false }: FocusableOptions = {},
+    changeHandler: ChangeHandler
   ) {
+    changeHandlers.current.add(changeHandler);
     focusablesRef.current.add(focusable);
     focusableToIdRef.current.set(focusable, focusableId);
     if (suppressNavigation) {
       focusableSuppressedRef.current.add(focusable);
     }
-    return () => unregisterFocusable(focusable);
+    return () => {
+      changeHandlers.current.delete(changeHandler);
+      unregisterFocusable(focusable);
+    };
   }
 
   const unregisterFocusable = useCallback((focusable: FocusableDefinition) => {
@@ -349,10 +368,13 @@ function useGridNavigationFocusStore() {
   }, []);
 
   const setFocusTarget = useCallback((focusTarget: HTMLElement) => {
-    const focusable = [...focusablesRef.current].find(f => getFocusableElement(f) === focusTarget);
-    if (focusable) {
-      setFocusTargetState(focusTarget);
-    }
+    unstable_batchedUpdates(() => {
+      const focusable = [...focusablesRef.current].find(f => getFocusableElement(f) === focusTarget);
+      const focusableId = focusable ? focusableToIdRef.current.get(focusable) : null;
+      if (focusable && focusableId) {
+        changeHandlers.current.forEach(handler => handler(focusableId, focusTarget));
+      }
+    });
   }, []);
 
   const isSuppressed = useCallback((focusTarget: HTMLElement) => {
@@ -360,7 +382,7 @@ function useGridNavigationFocusStore() {
     return focusable && focusableSuppressedRef.current.has(focusable);
   }, []);
 
-  return { focusTarget, registerFocusable, unregisterFocusable, getNavigableElements, setFocusTarget, isSuppressed };
+  return { registerFocusable, unregisterFocusable, getNavigableElements, setFocusTarget, isSuppressed };
 }
 
 function getFocusableElement(focusable: FocusableDefinition): null | HTMLElement {
