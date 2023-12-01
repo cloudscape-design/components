@@ -9,34 +9,9 @@ import InternalDrawer from '../../drawer/internal';
 import InternalFormField from '../../form-field/internal';
 import { SelectProps } from '../../select/interfaces';
 import { useLocalStorage } from './use-local-storage';
-interface SelectSettingProps {
-  label: string;
-  attribute: string;
-  value: SelectProps.Option | null;
-  setValue: (value: SelectProps.Option | null) => void;
-  items: SelectProps.Options;
-}
+import InternalHeader from '../../header/internal';
 
-function SelectSetting(props: SelectSettingProps) {
-  return (
-    <InternalFormField label={props.label}>
-      <InternalSpaceBetween size="xs" direction="horizontal">
-        <span style={{ display: 'flex', alignItems: 'center', height: '100%' }}>Ctrl + </span>
-        <InternalSelect
-          selectedOption={props.value}
-          onChange={({ detail }) => {
-            props.setValue(detail.selectedOption);
-            detail.selectedOption.value &&
-              document.body.setAttribute(`data-user-settings-${props.attribute}`, detail.selectedOption.value);
-          }}
-          options={props.items}
-        />
-      </InternalSpaceBetween>
-    </InternalFormField>
-  );
-}
-
-const selectOptions: SelectProps.Options = [
+const keyOptions = [
   { value: 'a' },
   { value: 'b' },
   { value: 'c' },
@@ -98,12 +73,12 @@ export default function UserSettingsDrawerContent() {
   });
 
   /**
-   * Other properties
+   * Keyboard shortcuts
    */
-  const [navigationKey, setNavigationKey] = useState<SelectProps.Option | null>(null);
-  const [toolsKey, setToolsKey] = useState<SelectProps.Option | null>(null);
-  const [flashbarKey, setFlashbarKey] = useState<SelectProps.Option | null>(null);
-  const [splitPanelKey, setSplitPanelKey] = useState<SelectProps.Option | null>(null);
+  const [toggleNavigationKey, setToggleNavigationKey] = useState<SelectProps.Option | null>(null);
+  const [toggleToolsKey, setToggleToolsKey] = useState<SelectProps.Option | null>(null);
+  const [toggleStackedNotificationsKey, setToggleStackedNotificationsKey] = useState<SelectProps.Option | null>(null);
+  const [toggleSplitPanelKey, setToggleSplitPanelKey] = useState<SelectProps.Option | null>(null);
 
   return (
     <InternalDrawer header={<h2>User Settings</h2>}>
@@ -356,62 +331,130 @@ export default function UserSettingsDrawerContent() {
         </InternalExpandableSection>
 
         <InternalExpandableSection headerText="Internationalization" variant="footer">
-          <InternalFormField
-            description="Set the document direction to correspond with native locale."
-            label="Direction"
-          >
-            <InternalSelect
-              selectedOption={direction}
-              onChange={({ detail }) => {
-                setDirection(detail.selectedOption);
-                document.body.setAttribute('dir', detail.selectedOption.value ?? '');
-              }}
-              options={[
-                {
-                  label: 'Left to Right',
-                  value: 'ltr',
-                },
-                {
-                  label: 'Right to Left',
-                  value: 'rtl',
-                },
-              ]}
-            />
-          </InternalFormField>
+          <InternalSpaceBetween size="m">
+            <InternalFormField
+              description="Set the document direction to correspond with native locale."
+              label="Direction"
+            >
+              <InternalSelect
+                selectedOption={direction}
+                onChange={({ detail }) => {
+                  setDirection(detail.selectedOption);
+                  document.body.setAttribute('dir', detail.selectedOption.value ?? '');
+                }}
+                options={[
+                  {
+                    label: 'Left to Right',
+                    value: 'ltr',
+                  },
+                  {
+                    label: 'Right to Left',
+                    value: 'rtl',
+                  },
+                ]}
+              />
+            </InternalFormField>
+          </InternalSpaceBetween>
         </InternalExpandableSection>
 
-        <InternalExpandableSection headerText="Keyboard Shortcuts" variant="footer">
-          <SelectSetting
-            label="Navigation toggle"
-            attribute="customization-toggle-navigation-modifier"
-            value={navigationKey}
-            setValue={setNavigationKey}
-            items={selectOptions}
-          />
-          <SelectSetting
-            label="Tools toggle"
-            attribute="customization-toggle-tools-modifier"
-            value={toolsKey}
-            setValue={setToolsKey}
-            items={selectOptions}
-          />
-          <SelectSetting
-            label="Flashbar toggle"
-            attribute="customization-toggle-stacked-flashbar-modifier"
-            value={flashbarKey}
-            setValue={setFlashbarKey}
-            items={selectOptions}
-          />
-          <SelectSetting
-            label="Split panel toggle"
-            attribute="customization-toggle-split-panel-modifier"
-            value={splitPanelKey}
-            setValue={setSplitPanelKey}
-            items={selectOptions}
-          />
+        <InternalExpandableSection headerText="One more thing..." variant="footer">
+          <InternalSpaceBetween size="m">
+            <InternalFormField
+              description="Set a keyboard shortcut to open and close the navigation."
+              label="Toggle navigation"
+            >
+              <InternalSpaceBetween size="xs" direction="horizontal">
+                <span style={{ display: 'flex', alignItems: 'center', height: '100%' }}>Ctrl +</span>
+
+                <InternalSelect
+                  selectedOption={toggleNavigationKey}
+                  onChange={({ detail }) => {
+                    setToggleNavigationKey(detail.selectedOption);
+
+                    detail.selectedOption.value &&
+                      document.body.setAttribute(
+                        `data-user-settings-keyboard-shortcuts-toggle-navigation-key`,
+                        detail.selectedOption.value
+                      );
+                  }}
+                  options={keyOptions}
+                />
+              </InternalSpaceBetween>
+            </InternalFormField>
+
+            <InternalFormField description="Set a keyboard shortcut to open and close the tools." label="Toggle tools">
+              <InternalSpaceBetween size="xs" direction="horizontal">
+                <span style={{ display: 'flex', alignItems: 'center', height: '100%' }}>Ctrl +</span>
+
+                <InternalSelect
+                  selectedOption={toggleToolsKey}
+                  onChange={({ detail }) => {
+                    setToggleToolsKey(detail.selectedOption);
+
+                    detail.selectedOption.value &&
+                      document.body.setAttribute(
+                        `data-user-settings-keyboard-shortcuts-toggle-tools-key`,
+                        detail.selectedOption.value
+                      );
+                  }}
+                  options={keyOptions}
+                />
+              </InternalSpaceBetween>
+            </InternalFormField>
+
+            <InternalFormField
+              description="Set a keyboard shortcut to expand and collapse stacked notifications."
+              label="Toggle stacked notifications"
+            >
+              <InternalSpaceBetween size="xs" direction="horizontal">
+                <span style={{ display: 'flex', alignItems: 'center', height: '100%' }}>Ctrl +</span>
+
+                <InternalSelect
+                  selectedOption={toggleStackedNotificationsKey}
+                  onChange={({ detail }) => {
+                    setToggleStackedNotificationsKey(detail.selectedOption);
+
+                    detail.selectedOption.value &&
+                      document.body.setAttribute(
+                        `data-user-settings-keyboard-shortcuts-toggle-stacked-notifications-key`,
+                        detail.selectedOption.value
+                      );
+                  }}
+                  options={keyOptions}
+                />
+              </InternalSpaceBetween>
+            </InternalFormField>
+
+            <InternalFormField
+              description="Set a keyboard shortcut to expand and collapse the split panel."
+              label="Toggle split panel"
+            >
+              <InternalSpaceBetween size="xs" direction="horizontal">
+                <span style={{ display: 'flex', alignItems: 'center', height: '100%' }}>Ctrl +</span>
+
+                <InternalSelect
+                  selectedOption={toggleSplitPanelKey}
+                  onChange={({ detail }) => {
+                    setToggleSplitPanelKey(detail.selectedOption);
+
+                    detail.selectedOption.value &&
+                      document.body.setAttribute(
+                        `data-user-settings-keyboard-shortcuts-toggle-splitpanel-key`,
+                        detail.selectedOption.value
+                      );
+                  }}
+                  options={keyOptions}
+                />
+              </InternalSpaceBetween>
+            </InternalFormField>
+          </InternalSpaceBetween>
         </InternalExpandableSection>
 
-        <InternalExpandableSection headerText="Feedback" variant="footer"></InternalExpandableSection>
+        <InternalBox margin={{ top: 's' }}>
+          <div style={{ border: '1px solid #eaeded', width: '100%' }}></div>
+        </InternalBox>
+
+        <InternalHeader variant="h3">Feedback</InternalHeader>
       </InternalSpaceBetween>
     </InternalDrawer>
   );

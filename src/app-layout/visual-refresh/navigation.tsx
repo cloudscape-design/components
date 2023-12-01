@@ -39,14 +39,14 @@ export default function Navigation() {
    * Category: Customization
    * Property: Toggle Navigation
    */
-  const [userSettingsCustomizationToggleNavigationModifier, setUserSettingsCustomizationToggleNavigationModifier] =
+  const [userSettingsKeyboardShortcutsToggleNavigationKey, setUserSettingsKeyboardShortcutsToggleNavigationKey] =
     React.useState(null);
 
   function callback(mutationList: any) {
     for (const mutation of mutationList) {
       if (mutation.type === 'attributes') {
-        setUserSettingsCustomizationToggleNavigationModifier(
-          mutation.target.dataset.userSettingsCustomizationToggleNavigationModifier
+        setUserSettingsKeyboardShortcutsToggleNavigationKey(
+          mutation.target.dataset.userSettingsKeyboardShortcutsToggleNavigationKey
         );
       }
     }
@@ -54,20 +54,20 @@ export default function Navigation() {
 
   const observer = new MutationObserver(callback);
 
-  observer.observe(document.body, { attributeFilter: ['data-user-settings-customization-toggle-navigation-modifier'] });
+  observer.observe(document.body, { attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-navigation-key'] });
 
   const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
     if (repeat) {
       return;
     }
 
-    if (ctrlKey && key === userSettingsCustomizationToggleNavigationModifier) {
+    if (ctrlKey && key === userSettingsKeyboardShortcutsToggleNavigationKey) {
       handleNavigationClick(!isNavigationOpen);
     }
   };
 
   React.useEffect(() => {
-    if (userSettingsCustomizationToggleNavigationModifier !== null) {
+    if (userSettingsKeyboardShortcutsToggleNavigationKey !== null) {
       document.addEventListener('keydown', handleKeyboard);
     } else {
       document.removeEventListener('keydown', handleKeyboard);

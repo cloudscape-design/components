@@ -38,17 +38,6 @@ export default function CloudscapeUserSettings() {
 
                   <Button
                     onClick={() => {
-                      document.body.setAttribute('data-user-settings-layout-notifications-position', 'bottom-right');
-                      document.body.setAttribute('data-user-settings-layout-width', 'full-width');
-                      document.body.setAttribute('data-user-settings-accessibility-links', 'no-underline');
-                      document.body.setAttribute('data-user-settings-theme-high-contrast-header', 'disabled');
-                      document.body.setAttribute('data-user-settings-customization-toggle-navigation-modifier', 'n');
-                      document.body.setAttribute('data-user-settings-customization-toggle-tools-modifier', 't');
-                      document.body.setAttribute(
-                        'data-user-settings-customization-toggle-stacked-flashbar-modifier',
-                        'f'
-                      );
-                      document.body.setAttribute('data-user-settings-customization-toggle-split-panel-modifier', 's');
                       alert(`LIES.`);
                     }}
                     variant="primary"
@@ -255,12 +244,12 @@ export default function CloudscapeUserSettings() {
             },
             {
               href: `#/light/cloudscape-user-settings/demo`,
-              text: `...have you considered...`,
+              text: `...what if there was...`,
               type: 'link',
             },
             {
               href: `#/light/cloudscape-user-settings/demo`,
-              text: `...adding a keyboard shortcut?`,
+              text: `...an easier option available?`,
               type: 'link',
             },
           ]}
@@ -302,7 +291,7 @@ export default function CloudscapeUserSettings() {
       tools={
         <HelpPanel header={<h2>Tools</h2>}>
           <TextContent>
-            <p>The navigation is telling you to add a keyboard shortcut.</p>
+            <p>The navigation is implying something interesting.</p>
 
             <p>Don&apos;t forget about me!</p>
           </TextContent>

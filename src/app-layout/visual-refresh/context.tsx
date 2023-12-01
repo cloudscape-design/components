@@ -424,26 +424,24 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       /**
        * Accessibility properties
        */
+      getLocal('motion');
       getLocalAttribute('links', 'data-user-settings-accessibility-links');
 
       /**
        * Internationalization properties
        */
-      getLocalAttribute('direction', 'direction');
-      /*
-      const saved = localStorage.getItem('direction');
-      const initialValue = saved && JSON.parse(saved);
-      document.body.setAttribute('dir', initialValue);
-      */
+      getLocalAttribute('direction', 'dir');
 
       /**
-       * Other properties
+       * Keyboard shortcut properties
        */
-      getLocal('motion');
-
-      /*
-      getLocalAttribute('customization-toggle-navigation-modifier');
-      */
+      getLocalAttribute('toggle-navigation-key', 'data-user-settings-keyboard-shortcuts-toggle-navigation-key');
+      getLocalAttribute('toggle-tools-key', 'data-user-settings-keyboard-shortcuts-toggle-tools-key');
+      getLocalAttribute(
+        'toggle-stacked-notifications-key',
+        'data-user-settings-keyboard-shortcuts-toggle-stacked-notifications-key'
+      );
+      getLocalAttribute('toggle-split-panel-key', 'data-user-settings-keyboard-shortcuts-toggle-split-panel-key');
     }, []);
 
     const [drawersMaxWidth, setDrawersMaxWidth] = useState(toolsWidth);
@@ -677,14 +675,14 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * Category: Customization
      * Property: Toggle Split Panel
      */
-    const [userSettingsCustomizationToggleSplitPanelModifier, setUserSettingsCustomizationToggleSplitPanelModifier] =
+    const [userSettingsKeyboardShortcutsToggleSplitPanelKey, setUserSettingsKeyboardShortcutsToggleSplitPanelKey] =
       React.useState(null);
 
     function callbackSplitPanel(mutationList: any) {
       for (const mutation of mutationList) {
         if (mutation.type === 'attributes') {
-          setUserSettingsCustomizationToggleSplitPanelModifier(
-            mutation.target.dataset.userSettingsCustomizationToggleSplitPanelModifier
+          setUserSettingsKeyboardShortcutsToggleSplitPanelKey(
+            mutation.target.dataset.userSettingsKeyboardShortcutsToggleSplitPanelKey
           );
         }
       }
@@ -693,7 +691,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const observerSplitPanel = new MutationObserver(callbackSplitPanel);
 
     observerSplitPanel.observe(document.body, {
-      attributeFilter: ['data-user-settings-customization-toggle-split-panel-modifier'],
+      attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-split-panel-key'],
     });
 
     const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
@@ -701,13 +699,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         return;
       }
 
-      if (ctrlKey && key === userSettingsCustomizationToggleSplitPanelModifier) {
+      if (ctrlKey && key === userSettingsKeyboardShortcutsToggleSplitPanelKey) {
         handleSplitPanelClick();
       }
     };
 
     React.useEffect(() => {
-      if (userSettingsCustomizationToggleSplitPanelModifier !== null) {
+      if (userSettingsKeyboardShortcutsToggleSplitPanelKey !== null) {
         document.addEventListener('keydown', handleKeyboard);
       } else {
         document.removeEventListener('keydown', handleKeyboard);

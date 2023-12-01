@@ -213,15 +213,15 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
    * Property: Toggle Stacked Flashbar
    */
   const [
-    userSettingsCustomizationToggleStackedFlashbarModifier,
-    setUserSettingsCustomizationToggleStackedFlashbarModifier,
+    userSettingsKeyboardShortcutsToggleStackedNotificationsKey,
+    setUserSettingsKeyboardShortcutsToggleStackedNotificationsKey,
   ] = React.useState(null);
 
   function callback(mutationList: any) {
     for (const mutation of mutationList) {
       if (mutation.type === 'attributes') {
-        setUserSettingsCustomizationToggleStackedFlashbarModifier(
-          mutation.target.dataset.userSettingsCustomizationToggleStackedFlashbarModifier
+        setUserSettingsKeyboardShortcutsToggleStackedNotificationsKey(
+          mutation.target.dataset.userSettingsKeyboardShortcutsToggleStackedNotificationsKey
         );
       }
     }
@@ -230,7 +230,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const observer = new MutationObserver(callback);
 
   observer.observe(document.body, {
-    attributeFilter: ['data-user-settings-customization-toggle-stacked-flashbar-modifier'],
+    attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-stacked-notifications-key'],
   });
 
   const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
@@ -238,13 +238,13 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       return;
     }
 
-    if (ctrlKey && key === userSettingsCustomizationToggleStackedFlashbarModifier) {
+    if (ctrlKey && key === userSettingsKeyboardShortcutsToggleStackedNotificationsKey) {
       toggleCollapseExpand();
     }
   };
 
   React.useEffect(() => {
-    if (userSettingsCustomizationToggleStackedFlashbarModifier !== null) {
+    if (userSettingsKeyboardShortcutsToggleStackedNotificationsKey !== null) {
       document.addEventListener('keydown', handleKeyboard);
     } else {
       document.removeEventListener('keydown', handleKeyboard);

@@ -59,14 +59,14 @@ export default function Tools({ children }: ToolsProps) {
    * Category: Customization
    * Property: Toggle Tools
    */
-  const [userSettingsCustomizationToggleToolsModifier, setUserSettingsCustomizationToggleToolsModifier] =
+  const [userSettingsKeyboardShortcutsToggleToolsKey, setUserSettingsKeyboardShortcutsToggleToolsKey] =
     React.useState(null);
 
   function callback(mutationList: any) {
     for (const mutation of mutationList) {
       if (mutation.type === 'attributes') {
-        setUserSettingsCustomizationToggleToolsModifier(
-          mutation.target.dataset.userSettingsCustomizationToggleToolsModifier
+        setUserSettingsKeyboardShortcutsToggleToolsKey(
+          mutation.target.dataset.userSettingsKeyboardShortcutsToggleToolsKey
         );
       }
     }
@@ -74,20 +74,20 @@ export default function Tools({ children }: ToolsProps) {
 
   const observer = new MutationObserver(callback);
 
-  observer.observe(document.body, { attributeFilter: ['data-user-settings-customization-toggle-tools-modifier'] });
+  observer.observe(document.body, { attributeFilter: ['data-user-settings-keyboard-shortcuts-toggle-tools-key'] });
 
   const handleKeyboard = ({ repeat, ctrlKey, key }: any) => {
     if (repeat) {
       return;
     }
 
-    if (ctrlKey && key === userSettingsCustomizationToggleToolsModifier) {
+    if (ctrlKey && key === userSettingsKeyboardShortcutsToggleToolsKey) {
       handleToolsClick(!isToolsOpen);
     }
   };
 
   React.useEffect(() => {
-    if (userSettingsCustomizationToggleToolsModifier !== null) {
+    if (userSettingsKeyboardShortcutsToggleToolsKey !== null) {
       document.addEventListener('keydown', handleKeyboard);
     } else {
       document.removeEventListener('keydown', handleKeyboard);
