@@ -3,7 +3,7 @@
 import { useCallback } from 'react';
 import { KeyCode } from '../../../keycode';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
-import { useGridNavigationFocusable } from '../../../../table/table-role';
+import { useGridNavigationContext } from '../../../../table/table-role/grid-navigation';
 
 const HOME = 36;
 const END = 35;
@@ -68,7 +68,7 @@ interface UseTriggerKeyboard {
 }
 
 export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome }) => {
-  const { focusMuted } = useGridNavigationFocusable();
+  const { focusMuted } = useGridNavigationContext();
   return useCallback(
     (e: CustomEvent<BaseKeyDetail>) => {
       switch (e.detail.keyCode) {

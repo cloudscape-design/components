@@ -85,7 +85,7 @@ export function TableHeaderCell<ItemType>({
   const headerId = useUniqueId('table-header-');
 
   const headerButtonRef = useRef<HTMLTableCellElement>(null);
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(headerId, headerButtonRef);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(headerButtonRef);
   const shouldMuteFocus = focusMuted && focusTarget !== headerButtonRef.current;
 
   return (

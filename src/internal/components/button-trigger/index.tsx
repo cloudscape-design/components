@@ -7,7 +7,6 @@ import InternalIcon from '../../../icon/internal';
 import styles from './styles.css.js';
 import { fireKeyboardEvent, fireCancelableEvent, CancelableEventHandler, BaseKeyDetail } from '../../events';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
-import { useUniqueId } from '../../hooks/use-unique-id';
 import { useGridNavigationFocusable } from '../../../table/table-role';
 
 export interface ButtonTriggerProps extends BaseComponentProps {
@@ -94,11 +93,10 @@ const ButtonTrigger = (
     attributes['aria-invalid'] = invalid;
   }
 
-  const buttonId = useUniqueId();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const mergedRef = useMergeRefs(buttonRef, ref);
 
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(buttonId, buttonRef);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(buttonRef);
   const shouldMuteFocus = focusMuted && focusTarget !== buttonRef.current;
 
   return (

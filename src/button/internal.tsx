@@ -165,7 +165,7 @@ export const InternalButton = React.forwardRef(
       }
     }, [loading, loadingButtonCount]);
 
-    const { focusMuted, focusTarget } = useGridNavigationFocusable(uniqueId, buttonRef);
+    const { focusMuted, focusTarget } = useGridNavigationFocusable(buttonRef);
     const shouldMuteFocus = focusMuted && focusTarget !== buttonRef.current;
 
     if (isAnchor) {

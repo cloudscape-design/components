@@ -13,7 +13,6 @@ import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import styles from './styles.css.js';
 import { useInternalI18n } from '../i18n/context';
 import { useGridNavigationFocusable } from '../table/table-role';
@@ -102,9 +101,8 @@ function InternalInput(
   const formFieldContext = useFormFieldContext(rest);
   const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
 
-  const inputId = useUniqueId();
   const [active, setActive] = useState(false);
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, inputRef, { suppressNavigation: active });
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputRef, { suppressNavigation: active });
   const shouldMuteFocus = focusMuted && focusTarget !== inputRef.current;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import {
   findFocusedCell,
   getNextFocusable,
@@ -10,25 +10,28 @@ import {
   defaultIsSuppressed,
 } from './utils';
 import {
+  FocusableChangeHandler,
   FocusableDefinition,
   FocusableOptions,
   FocusedCell,
-  GridNavigationFocusState,
   GridNavigationProviderProps,
 } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
-import AsyncStore, { ReadonlyAsyncStore, useSelector } from '../../area-chart/async-store';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 export const GridNavigationContext = createContext<{
   focusMuted: boolean;
-  focusStore: ReadonlyAsyncStore<GridNavigationFocusState>;
-  registerFocusable(focusableId: string, focusable: FocusableDefinition, options?: FocusableOptions): () => void;
+  registerFocusable(
+    focusableId: string,
+    focusable: FocusableDefinition,
+    handler: FocusableChangeHandler,
+    options?: FocusableOptions
+  ): () => void;
   unregisterFocusable(focusable: FocusableDefinition): void;
 }>({
   focusMuted: false,
-  focusStore: new AsyncStore({ focusableId: null, focusTarget: null }),
   registerFocusable: () => () => {},
   unregisterFocusable: () => {},
 });
@@ -89,7 +92,6 @@ export function GridNavigationProvider({
     <GridNavigationContext.Provider
       value={{
         focusMuted: keyboardNavigation,
-        focusStore: gridNavigation.store,
         registerFocusable: gridNavigation.registerFocusable,
         unregisterFocusable: gridNavigation.unregisterFocusable,
       }}
@@ -99,22 +101,30 @@ export function GridNavigationProvider({
   );
 }
 
+export function useGridNavigationContext() {
+  const { navigationSuppressed } = useContext(GridNavigationSuppressionContext);
+  const { focusMuted, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
+  return { focusMuted: focusMuted && !navigationSuppressed, registerFocusable, unregisterFocusable };
+}
+
 export function useGridNavigationFocusable(
-  focusableId?: string,
-  focusable?: FocusableDefinition,
+  focusable: FocusableDefinition,
   { suppressNavigation }: FocusableOptions = {}
 ) {
-  const { navigationSuppressed } = useContext(GridNavigationSuppressionContext);
-  const { focusMuted, focusStore, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
-  const focusTarget = useSelector(focusStore, state => (state.focusableId === focusableId ? state.focusTarget : null));
+  const focusableId = useUniqueId();
+  const { focusMuted, registerFocusable, unregisterFocusable } = useGridNavigationContext();
+  const [focusTarget, setFocusTarget] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
-    if (focusableId && focusable) {
-      return registerFocusable(focusableId, focusable, { suppressNavigation });
-    }
+    const changeHandler = (focusTargetId: string, focusTarget: null | HTMLElement) =>
+      setFocusTarget(focusTargetId === focusableId ? focusTarget : null);
+
+    const unregister = registerFocusable(focusableId, focusable, changeHandler, { suppressNavigation });
+
+    return () => unregister();
   }, [focusableId, focusable, registerFocusable, suppressNavigation]);
 
-  return { focusMuted: focusMuted && !navigationSuppressed, focusTarget, registerFocusable, unregisterFocusable };
+  return { focusMuted, focusTarget, registerFocusable, unregisterFocusable };
 }
 
 /**
@@ -180,17 +190,9 @@ class GridNavigationHelper {
     }
   }
 
-  public get store(): ReadonlyAsyncStore<GridNavigationFocusState> {
-    return this.focusStore;
-  }
+  public registerFocusable = this.focusStore.registerFocusable;
 
-  public registerFocusable = (focusableId: string, focusable: FocusableDefinition, options?: FocusableOptions) => {
-    return this.focusStore.registerFocusable(focusableId, focusable, options);
-  };
-
-  public unregisterFocusable = (focusable: FocusableDefinition) => {
-    return this.focusStore.unregisterFocusable(focusable);
-  };
+  public unregisterFocusable = this.focusStore.unregisterFocusable;
 
   private get pageSize() {
     return this._pageSize;
@@ -314,22 +316,21 @@ class GridNavigationHelper {
   }
 }
 
-class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
+class GridNavigationFocusStore {
   private focusables = new Set<FocusableDefinition>();
   private focusableToId = new Map<FocusableDefinition, string>();
   private focusableSuppressed = new Set<FocusableDefinition>();
-
-  constructor() {
-    super({ focusableId: null, focusTarget: null });
-  }
+  private focusTargetHandlers = new Map<FocusableDefinition, FocusableChangeHandler>();
 
   public registerFocusable = (
     focusableId: string,
     focusable: FocusableDefinition,
+    changeHandler: FocusableChangeHandler,
     { suppressNavigation = false }: FocusableOptions = {}
   ) => {
     this.focusables.add(focusable);
     this.focusableToId.set(focusable, focusableId);
+    this.focusTargetHandlers.set(focusable, changeHandler);
     if (suppressNavigation) {
       this.focusableSuppressed.add(focusable);
     }
@@ -340,6 +341,7 @@ class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
     this.focusables.delete(focusable);
     this.focusableToId.delete(focusable);
     this.focusableSuppressed.delete(focusable);
+    this.focusTargetHandlers.delete(focusable);
   };
 
   public getNavigableElements = (): Set<HTMLElement> => {
@@ -357,7 +359,7 @@ class GridNavigationFocusStore extends AsyncStore<GridNavigationFocusState> {
     const focusable = [...this.focusables].find(f => getFocusableElement(f) === focusTarget);
     const focusableId = focusable ? this.focusableToId.get(focusable) : null;
     if (focusable && focusableId) {
-      this.set(() => ({ focusTarget, focusableId }));
+      this.focusTargetHandlers.forEach(handler => handler(focusableId, focusTarget));
     }
   }
 

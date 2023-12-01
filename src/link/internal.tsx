@@ -186,7 +186,7 @@ const InternalLink = React.forwardRef(
       </>
     );
 
-    const { focusMuted, focusTarget } = useGridNavigationFocusable(uniqueId, linkRef);
+    const { focusMuted, focusTarget } = useGridNavigationFocusable(linkRef);
     const shouldMuteFocus = focusMuted && focusTarget !== linkRef.current;
 
     if (isButton) {

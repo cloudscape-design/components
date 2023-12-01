@@ -8,7 +8,6 @@ import { getStickyClassNames } from '../utils';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { TableRole, getTableColHeaderRoleProps, useGridNavigationFocusable } from '../table-role';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface TableThElementProps {
   className?: string;
@@ -46,8 +45,7 @@ export function TableThElement({
   const cellObjectRef = useRef<HTMLTableCellElement>(null);
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellObjectRef);
 
-  const cellId = useUniqueId();
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(cellId, cellObjectRef);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(cellObjectRef);
   const shouldMuteFocus = focusMuted && focusTarget !== cellObjectRef.current;
 
   return (

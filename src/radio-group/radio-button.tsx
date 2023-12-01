@@ -8,7 +8,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { RadioGroupProps } from './interfaces';
 import styles from './styles.css.js';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useGridNavigationFocusable } from '../table/table-role';
 
 interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
@@ -25,8 +24,7 @@ export default React.forwardRef(function RadioButton(
   const radioButtonRef = useRef<HTMLInputElement>(null);
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
-  const inputId = useUniqueId();
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(inputId, radioButtonRef);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(radioButtonRef);
   const shouldMuteFocus = focusMuted && focusTarget !== radioButtonRef.current;
 
   return (

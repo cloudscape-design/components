@@ -170,7 +170,7 @@ export function Resizer({
     };
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(separatorId, resizerToggleRef);
+  const { focusMuted, focusTarget } = useGridNavigationFocusable(resizerToggleRef);
   const shouldMuteFocus = focusMuted && focusTarget !== resizerToggleRef.current;
 
   return (
