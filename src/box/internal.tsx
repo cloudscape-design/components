@@ -45,7 +45,7 @@ export default function InternalBox({
     styles[`font-size-${fontSize || 'default'}`],
     styles[`font-weight-${fontWeight || 'default'}`],
     styles[`t-${textAlign}`],
-    isRefresh && styles.resfresh
+    isRefresh && styles.refresh
   );
 
   return (
