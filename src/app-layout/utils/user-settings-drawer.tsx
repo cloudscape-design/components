@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+// eslint-disable-next-line
+import InternalBadge from '../../badge';
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import InternalDrawer from '../../drawer/internal';
 import InternalExpandableSection from '../../expandable-section/internal';
 import InternalFormField from '../../form-field/internal';
+import InternalPopover from '../../popover/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 // eslint-disable-next-line
@@ -167,7 +170,21 @@ export default function UserSettingsDrawerContent() {
 
             <InternalFormField
               description="Modify the presentation of the header content on a page."
-              label="High contrast header"
+              label={
+                <InternalSpaceBetween direction="horizontal" size="xs">
+                  <span>High contrast header</span>
+
+                  <InternalPopover
+                    content="Beta features should be considered stable. They are released for general usage but functionality may change in the final release."
+                    header="Beta features"
+                    triggerType="custom"
+                  >
+                    <InternalBadge color="blue">
+                      <div style={{ textDecoration: 'underline dotted' }}>Beta</div>
+                    </InternalBadge>
+                  </InternalPopover>
+                </InternalSpaceBetween>
+              }
             >
               <InternalSelect
                 selectedOption={highContrastHeader}
@@ -248,7 +265,21 @@ export default function UserSettingsDrawerContent() {
 
             <InternalFormField
               description="Position the notifications inline above the page content or overlay as toasts."
-              label="Notifications position"
+              label={
+                <InternalSpaceBetween direction="horizontal" size="xs">
+                  <span>Notifications position</span>
+
+                  <InternalPopover
+                    content="Alpha features should be considered unstable. They are released for external testing and feedback gathering purposes. Bugs are to be expected!"
+                    header="Alpha features"
+                    triggerType="custom"
+                  >
+                    <InternalBadge color="red">
+                      <div style={{ textDecoration: 'underline dotted' }}>Alpha</div>
+                    </InternalBadge>
+                  </InternalPopover>
+                </InternalSpaceBetween>
+              }
             >
               <InternalSelect
                 selectedOption={notificationsPosition}
@@ -338,7 +369,21 @@ export default function UserSettingsDrawerContent() {
           <InternalSpaceBetween size="m">
             <InternalFormField
               description="Set the document direction to correspond with native locale."
-              label="Direction"
+              label={
+                <InternalSpaceBetween direction="horizontal" size="xs">
+                  <span>Direction</span>
+
+                  <InternalPopover
+                    content="Alpha features should be considered unstable. They are released for external testing and feedback gathering purposes. Bugs are to be expected!"
+                    header="Alpha features"
+                    triggerType="custom"
+                  >
+                    <InternalBadge color="red">
+                      <div style={{ textDecoration: 'underline dotted' }}>Alpha</div>
+                    </InternalBadge>
+                  </InternalPopover>
+                </InternalSpaceBetween>
+              }
             >
               <InternalSelect
                 selectedOption={direction}
