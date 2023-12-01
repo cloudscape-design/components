@@ -413,6 +413,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       getLocal('color-scheme');
       getLocal('density');
       getLocalAttribute('high-contrast-header', 'data-user-settings-theme-high-contrast-header');
+      getLocalAttribute('border-radius', 'data-user-settings-theme-border-radius');
 
       /**
        * Layout properties

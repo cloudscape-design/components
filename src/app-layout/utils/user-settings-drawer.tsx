@@ -75,6 +75,7 @@ export default function UserSettingsDrawerContent() {
     label: 'Enabled',
     value: 'enabled',
   });
+  const [borderRadius, setBorderRadius] = useLocalStorage('border-radius', { label: 'Rounded', value: 'rounded' });
 
   /**
    * Layout properties
@@ -211,41 +212,27 @@ export default function UserSettingsDrawerContent() {
               />
             </InternalFormField>
 
-            <InternalFormField description="Add or remove visual depth for elements on a page." label="Box shadow">
-              <InternalSelect
-                selectedOption={{
-                  label: 'Enabled',
-                  value: 'enabled',
-                }}
-                options={[
-                  {
-                    label: 'Enabled',
-                    value: 'enabled',
-                  },
-                  {
-                    label: 'Disabled',
-                    value: 'disabled',
-                  },
-                ]}
-              />
-            </InternalFormField>
-
             <InternalFormField description="Add or remove curved corners for elements on a page." label="Border radius">
               <InternalSelect
-                selectedOption={{
-                  label: 'Enabled',
-                  value: 'enabled',
-                }}
+                selectedOption={borderRadius}
                 options={[
                   {
-                    label: 'Enabled',
-                    value: 'enabled',
+                    label: 'Rounded',
+                    value: 'rounded',
                   },
                   {
-                    label: 'Disabled',
-                    value: 'disabled',
+                    label: 'Straight edges',
+                    value: 'straight-edges',
                   },
                 ]}
+                onChange={({ detail }) => {
+                  setBorderRadius(detail.selectedOption);
+
+                  document.body.setAttribute(
+                    'data-user-settings-theme-border-radius',
+                    detail.selectedOption.value ?? ''
+                  );
+                }}
               />
             </InternalFormField>
           </InternalSpaceBetween>
