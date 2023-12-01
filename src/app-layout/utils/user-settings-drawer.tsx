@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 import InternalBox from '../../box/internal';
+import InternalDrawer from '../../drawer/internal';
+import InternalExpandableSection from '../../expandable-section/internal';
+import InternalFormField from '../../form-field/internal';
+import InternalHeader from '../../header/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
-import InternalExpandableSection from '../../expandable-section/internal';
-import InternalDrawer from '../../drawer/internal';
-import InternalFormField from '../../form-field/internal';
-import { SelectProps } from '../../select/interfaces';
 import { useLocalStorage } from './use-local-storage';
-import InternalHeader from '../../header/internal';
 
 const keyOptions = [
   { value: 'a' },
@@ -75,10 +74,13 @@ export default function UserSettingsDrawerContent() {
   /**
    * Keyboard shortcuts
    */
-  const [toggleNavigationKey, setToggleNavigationKey] = useState<SelectProps.Option | null>(null);
-  const [toggleToolsKey, setToggleToolsKey] = useState<SelectProps.Option | null>(null);
-  const [toggleStackedNotificationsKey, setToggleStackedNotificationsKey] = useState<SelectProps.Option | null>(null);
-  const [toggleSplitPanelKey, setToggleSplitPanelKey] = useState<SelectProps.Option | null>(null);
+  const [toggleNavigationKey, setToggleNavigationKey] = useLocalStorage('toggle-navigation-key', { value: null });
+  const [toggleToolsKey, setToggleToolsKey] = useLocalStorage('toggle-tools-key', { value: null });
+  const [toggleStackedNotificationsKey, setToggleStackedNotificationsKey] = useLocalStorage(
+    'toggle-stacked-notifications-key',
+    { value: null }
+  );
+  const [toggleSplitPanelKey, setToggleSplitPanelKey] = useLocalStorage('toggle-split-panel-key', { value: null });
 
   return (
     <InternalDrawer header={<h2>User Settings</h2>}>
