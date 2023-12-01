@@ -137,6 +137,7 @@
     // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
     &.refresh {
       padding-top: space-heading-button-diff(awsui.$line-height-heading-xl);
+      color: awsui.$color-text-heading-primary;
     }
   }
   &-variant-h2 {

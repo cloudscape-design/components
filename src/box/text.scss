@@ -58,6 +58,9 @@
       @include styles.font-smoothing;
     }
   }
+  &.refresh {
+    color: awsui.$color-text-heading-default;
+  }
 }
 
 @mixin default-styles {

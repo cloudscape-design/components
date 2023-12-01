@@ -395,6 +395,7 @@ export type ColorsTokenName =
   | 'colorTextFormSecondary'
   | 'colorTextGroupLabel'
   | 'colorTextHeadingDefault'
+  | 'colorTextHeadingPrimary'
   | 'colorTextHeadingSecondary'
   | 'colorTextHomeHeaderDefault'
   | 'colorTextHomeHeaderSecondary'
