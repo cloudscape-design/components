@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import InternalBox from '../../box/internal';
+import InternalButton from '../../button/internal';
 import InternalDrawer from '../../drawer/internal';
 import InternalExpandableSection from '../../expandable-section/internal';
 import InternalFormField from '../../form-field/internal';
-import InternalHeader from '../../header/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
+// eslint-disable-next-line
+import InternalTextarea from '../../textarea';
 import { useLocalStorage } from './use-local-storage';
 
 const keyOptions = [
@@ -456,7 +458,29 @@ export default function UserSettingsDrawerContent() {
           <div style={{ border: '1px solid #eaeded', width: '100%' }}></div>
         </InternalBox>
 
-        <InternalHeader variant="h3">Feedback</InternalHeader>
+        <InternalBox variant="h4">We want to hear from you! &#128483;</InternalBox>
+
+        <InternalSpaceBetween size="m">
+          <InternalFormField description="Choose one of the categories from the list below." label="Type of feedback">
+            <InternalSelect
+              selectedOption={{ label: 'I have a feature suggestion.', value: '1' }}
+              options={[
+                { label: 'I have a feature suggestion.', value: '1' },
+                { label: 'I found a bug!', value: '2' },
+                { label: 'I just want to send some love...', value: '3' },
+              ]}
+            />
+          </InternalFormField>
+
+          <InternalFormField
+            constraintText="1000 character(s) available. Do not disclose any personal, commercially sensitive, or confidential information."
+            label="Description"
+          >
+            <InternalTextarea placeholder="Enter feedback here." value={''} />
+          </InternalFormField>
+
+          <InternalButton>Send Feedback</InternalButton>
+        </InternalSpaceBetween>
       </InternalSpaceBetween>
     </InternalDrawer>
   );
