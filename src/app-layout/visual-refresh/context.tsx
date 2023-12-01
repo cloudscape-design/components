@@ -416,9 +416,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       getLocalAttribute('accessibility-links');
       getLocalAttribute('layout-width');
       getLocalAttribute('theme-high-contrast-header');
-      getLocalAttribute('dir');
       getLocalAttribute('layout-notifications-position');
       getLocalAttribute('customization-toggle-navigation-modifier');
+      getLocalAttribute('theme-border-radius');
 
       const saved = localStorage.getItem('dir');
       const initialValue = saved && JSON.parse(saved);

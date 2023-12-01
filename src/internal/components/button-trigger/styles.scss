@@ -105,3 +105,14 @@
     padding-bottom: 0;
   }
 }
+
+/*
+Cloudscape User Settings
+Category: Theme
+Property: Border Radius
+*/
+/* stylelint-disable */
+body[data-user-settings-theme-border-radius='straight-edges'] .button-trigger {
+  border-radius: 2px;
+}
+/* stylelint-enable */

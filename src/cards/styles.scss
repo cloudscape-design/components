@@ -126,3 +126,14 @@
   display: flex;
   justify-content: flex-end;
 }
+
+/*
+Cloudscape User Settings
+Category: Theme
+Property: Border Radius
+*/
+/* stylelint-disable */
+body[data-user-settings-theme-border-radius='straight-edges'] .card-inner {
+  border-radius: 2px;
+}
+/* stylelint-enable */

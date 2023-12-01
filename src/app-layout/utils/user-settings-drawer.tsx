@@ -103,6 +103,7 @@ export default function UserSettingsDrawerContent() {
     'layout-notifications-position',
     'top-center'
   );
+  const [borderRadius, setBorderRadius] = useLocalStorage('theme-border-radius', 'rounded');
 
   const [navigationKey, setNavigationKey] = useState<SelectProps.Option | null>(null);
   const [toolsKey, setToolsKey] = useState<SelectProps.Option | null>(null);
@@ -177,6 +178,16 @@ export default function UserSettingsDrawerContent() {
                 items={[
                   { value: 'enabled', label: 'Enabled' },
                   { value: 'disabled', label: 'Disabled' },
+                ]}
+              />
+              <DataSetting
+                label="Border radius"
+                attribute="theme-border-radius"
+                value={borderRadius}
+                setValue={setBorderRadius}
+                items={[
+                  { value: 'rounded', label: 'Rounded' },
+                  { value: 'straight-edges', label: 'Straight edged' },
                 ]}
               />
             </ColumnLayout>
