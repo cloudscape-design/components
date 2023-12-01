@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import InternalBox from '../../box/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
-import InternalRadioGroup from '../../radio-group/internal';
 import InternalExpandableSection from '../../expandable-section/internal';
 import InternalDrawer from '../../drawer/internal';
 import InternalFormField from '../../form-field/internal';
@@ -85,14 +84,17 @@ export default function UserSettingsDrawerContent() {
   /**
    * Accessibility properties
    */
-  const [motion, setMotion] = useLocalStorage('motion', {label: 'Enabled', value: 'enabled'});
-  const [links, setLinks] = useLocalStorage('links', {label: 'Underlined', value: 'underlined'});
+  const [motion, setMotion] = useLocalStorage('motion', { label: 'Enabled', value: 'enabled' });
+  const [links, setLinks] = useLocalStorage('links', { label: 'Underlined', value: 'underlined' });
 
   /**
    * Internationalization properties
    */
   const [direction, setDirection] = useLocalStorage('direction', { label: 'Left to Right', value: 'ltr' });
-  const [notificationsPosition, setNotificationsPosition] = useLocalStorage('notifications-position', { label: 'Top, Center', value: 'top-center' });
+  const [notificationsPosition, setNotificationsPosition] = useLocalStorage('notifications-position', {
+    label: 'Top, Center',
+    value: 'top-center',
+  });
 
   /**
    * Other properties
@@ -310,60 +312,60 @@ export default function UserSettingsDrawerContent() {
         <InternalExpandableSection headerText="Accessibility" variant="footer">
           <InternalSpaceBetween size="m">
             <InternalFormField
-                description="Adjust the motion based on visual preferences or to accommodate motion sensitivities."
-                label="Motion"
-              >
-                <InternalSelect
-                  selectedOption={motion}
-                  options={[
-                    {
-                      label: 'Enabled',
-                      value: 'enabled',
-                    },
-                    {
-                      label: 'Disabled',
-                      value: 'awsui-motion-disabled',
-                    },
-                  ]}
-                  onChange={({ detail }) => {
-                    setMotion(detail.selectedOption);
-  
-                    if (detail.selectedOption.value === 'awsui-motion-disabled') {
-                      document.body.classList.add(detail.selectedOption.value);
-                    } else {
-                      document.body.classList.remove('awsui-motion-disabled');
-                    }
-                  }}
-                />
-              </InternalFormField>
+              description="Adjust the motion based on visual preferences or to accommodate motion sensitivities."
+              label="Motion"
+            >
+              <InternalSelect
+                selectedOption={motion}
+                options={[
+                  {
+                    label: 'Enabled',
+                    value: 'enabled',
+                  },
+                  {
+                    label: 'Disabled',
+                    value: 'awsui-motion-disabled',
+                  },
+                ]}
+                onChange={({ detail }) => {
+                  setMotion(detail.selectedOption);
 
-              <InternalFormField
-                description="Adjust link styles to assist in element distinction or reduce visual noise."
-                label="Links"
-              >
-                <InternalSelect
-                  selectedOption={links}
-                  options={[
-                    {
-                      label: 'Underlined',
-                      value: 'underlined',
-                    },
-                    {
-                      label: 'No underline',
-                      value: 'no-underline',
-                    },
-                  ]}
-                  onChange={({ detail }) => {
-                    setLinks(detail.selectedOption);
+                  if (detail.selectedOption.value === 'awsui-motion-disabled') {
+                    document.body.classList.add(detail.selectedOption.value);
+                  } else {
+                    document.body.classList.remove('awsui-motion-disabled');
+                  }
+                }}
+              />
+            </InternalFormField>
 
-                    document.body.setAttribute(
-                      'data-user-settings-accessibility-links',
-                      detail.selectedOption.value ?? ''
-                    );
-                  }}
-                />
-              </InternalFormField>
-            </InternalSpaceBetween>
+            <InternalFormField
+              description="Adjust link styles to assist in element distinction or reduce visual noise."
+              label="Links"
+            >
+              <InternalSelect
+                selectedOption={links}
+                options={[
+                  {
+                    label: 'Underlined',
+                    value: 'underlined',
+                  },
+                  {
+                    label: 'No underline',
+                    value: 'no-underline',
+                  },
+                ]}
+                onChange={({ detail }) => {
+                  setLinks(detail.selectedOption);
+
+                  document.body.setAttribute(
+                    'data-user-settings-accessibility-links',
+                    detail.selectedOption.value ?? ''
+                  );
+                }}
+              />
+            </InternalFormField>
+          </InternalSpaceBetween>
         </InternalExpandableSection>
 
         <InternalExpandableSection headerText="Internationalization" variant="footer">
@@ -392,34 +394,34 @@ export default function UserSettingsDrawerContent() {
         </InternalExpandableSection>
 
         <InternalExpandableSection headerText="Keyboard Shortcuts" variant="footer">
-            <SelectSetting
-              label="Navigation toggle"
-              attribute="customization-toggle-navigation-modifier"
-              value={navigationKey}
-              setValue={setNavigationKey}
-              items={selectOptions}
-            />
-            <SelectSetting
-              label="Tools toggle"
-              attribute="customization-toggle-tools-modifier"
-              value={toolsKey}
-              setValue={setToolsKey}
-              items={selectOptions}
-            />
-            <SelectSetting
-              label="Flashbar toggle"
-              attribute="customization-toggle-stacked-flashbar-modifier"
-              value={flashbarKey}
-              setValue={setFlashbarKey}
-              items={selectOptions}
-            />
-            <SelectSetting
-              label="Split panel toggle"
-              attribute="customization-toggle-split-panel-modifier"
-              value={splitPanelKey}
-              setValue={setSplitPanelKey}
-              items={selectOptions}
-            />
+          <SelectSetting
+            label="Navigation toggle"
+            attribute="customization-toggle-navigation-modifier"
+            value={navigationKey}
+            setValue={setNavigationKey}
+            items={selectOptions}
+          />
+          <SelectSetting
+            label="Tools toggle"
+            attribute="customization-toggle-tools-modifier"
+            value={toolsKey}
+            setValue={setToolsKey}
+            items={selectOptions}
+          />
+          <SelectSetting
+            label="Flashbar toggle"
+            attribute="customization-toggle-stacked-flashbar-modifier"
+            value={flashbarKey}
+            setValue={setFlashbarKey}
+            items={selectOptions}
+          />
+          <SelectSetting
+            label="Split panel toggle"
+            attribute="customization-toggle-split-panel-modifier"
+            value={splitPanelKey}
+            setValue={setSplitPanelKey}
+            items={selectOptions}
+          />
         </InternalExpandableSection>
 
         <InternalExpandableSection headerText="Feedback" variant="footer"></InternalExpandableSection>

@@ -393,15 +393,15 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       initialValue?.value && document.body.classList.add(initialValue.value);
     }
 
-    function getLocalAttribute(key: string) {
+    function getLocalAttribute(key: string, attribute: string) {
       const saved = localStorage.getItem(key);
       const initialValue = saved && JSON.parse(saved);
 
       if (initialValue) {
         if (initialValue.value) {
-          document.body.setAttribute(`data-user-settings-${key}`, initialValue.value);
+          document.body.setAttribute(attribute, initialValue.value);
         } else {
-          document.body.setAttribute(`data-user-settings-${key}`, initialValue);
+          document.body.setAttribute(attribute, initialValue);
         }
       }
     }
@@ -410,39 +410,37 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       /**
        * Theme properties
        */
-      getLocal('color-scheme', 'awsui-dark-mode');
-      getLocal('density', 'awsui-compact-mode');
-      getLocalAttribute('high-contrast-header');
+      getLocal('color-scheme');
+      getLocal('density');
+      getLocalAttribute('high-contrast-header', 'data-user-settings-theme-high-contrast-header');
 
       /**
        * Layout properties
        */
-      getLocalAttribute('content-width');
+      getLocalAttribute('content-width', 'data-user-settings-layout-content-width');
+      getLocalAttribute('notifications-position', 'data-user-settings-layout-notifications-position');
+
+      /**
+       * Accessibility properties
+       */
+      getLocalAttribute('links', 'data-user-settings-accessibility-links');
 
       /**
        * Internationalization properties
        */
-      getLocalAttribute('dir');
+      getLocalAttribute('direction', 'direction');
+      /*
       const saved = localStorage.getItem('direction');
       const initialValue = saved && JSON.parse(saved);
       document.body.setAttribute('dir', initialValue);
+      */
 
       /**
        * Other properties
        */
-      /*
-      getLocal('disable-motion', 'awsui-disable-motion');
-      getLocalAttribute('accessibility-links');
-      getLocalAttribute('layout-width');
-      getLocalAttribute('theme-high-contrast-header');
-      getLocalAttribute('layout-notifications-position');
-      getLocalAttribute('customization-toggle-navigation-modifier');
-      getLocalAttribute('theme-border-radius');
+      getLocal('motion');
 
-      const saved = localStorage.getItem('dir');
-      const initialValue = saved && JSON.parse(saved);
-      document.body.setAttribute('dir', initialValue);
-      getLocalAttribute('layout-notifications-position');
+      /*
       getLocalAttribute('customization-toggle-navigation-modifier');
       */
     }, []);
