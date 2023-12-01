@@ -24,8 +24,7 @@ export default React.forwardRef(function RadioButton(
   const radioButtonRef = useRef<HTMLInputElement>(null);
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(radioButtonRef);
-  const shouldMuteFocus = focusMuted && focusTarget !== radioButtonRef.current;
+  const { focusTargetMuted } = useGridNavigationFocusable(radioButtonRef);
 
   return (
     <AbstractSwitch
@@ -39,7 +38,7 @@ export default React.forwardRef(function RadioButton(
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}
-          tabIndex={shouldMuteFocus ? -1 : nativeControlProps.tabIndex}
+          tabIndex={focusTargetMuted ? -1 : nativeControlProps.tabIndex}
           type="radio"
           ref={mergedRefs}
           name={name}

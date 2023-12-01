@@ -73,8 +73,7 @@ function TableCellEditable<ItemType>({
     }
   }, [hasFocus, successfulEdit, prevHasFocus, prevSuccessfulEdit]);
 
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(editActivateRef);
-  const shouldMuteFocus = focusMuted && focusTarget !== editActivateRef.current;
+  const { focusTargetMuted } = useGridNavigationFocusable(editActivateRef);
 
   return (
     <TableTdElement
@@ -131,7 +130,7 @@ function TableCellEditable<ItemType>({
             ref={editActivateRef}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
-            tabIndex={shouldMuteFocus ? -1 : undefined}
+            tabIndex={focusTargetMuted ? -1 : undefined}
           >
             {showIcon && <Icon name="edit" />}
           </button>

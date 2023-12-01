@@ -165,8 +165,7 @@ export const InternalButton = React.forwardRef(
       }
     }, [loading, loadingButtonCount]);
 
-    const { focusMuted, focusTarget } = useGridNavigationFocusable(buttonRef);
-    const shouldMuteFocus = focusMuted && focusTarget !== buttonRef.current;
+    const { focusTargetMuted } = useGridNavigationFocusable(buttonRef);
 
     if (isAnchor) {
       return (
@@ -179,7 +178,7 @@ export const InternalButton = React.forwardRef(
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-            tabIndex={isNotInteractive || shouldMuteFocus ? -1 : undefined}
+            tabIndex={isNotInteractive || focusTargetMuted ? -1 : undefined}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
           >
@@ -196,7 +195,7 @@ export const InternalButton = React.forwardRef(
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled}
           aria-disabled={loading && !disabled ? true : undefined}
-          tabIndex={shouldMuteFocus ? -1 : undefined}
+          tabIndex={focusTargetMuted ? -1 : undefined}
         >
           {buttonContent}
         </button>

@@ -96,11 +96,10 @@ const ButtonTrigger = (
   const buttonRef = useRef<HTMLButtonElement>(null);
   const mergedRef = useMergeRefs(buttonRef, ref);
 
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(buttonRef);
-  const shouldMuteFocus = focusMuted && focusTarget !== buttonRef.current;
+  const { focusTargetMuted } = useGridNavigationFocusable(buttonRef);
 
   return (
-    <button ref={mergedRef} {...attributes} tabIndex={shouldMuteFocus ? -1 : undefined}>
+    <button ref={mergedRef} {...attributes} tabIndex={focusTargetMuted ? -1 : undefined}>
       {children}
       {!hideCaret && (
         <span className={styles.arrow}>

@@ -170,8 +170,7 @@ export function Resizer({
     };
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(resizerToggleRef);
-  const shouldMuteFocus = focusMuted && focusTarget !== resizerToggleRef.current;
+  const { focusTargetMuted } = useGridNavigationFocusable(resizerToggleRef);
 
   return (
     <>
@@ -211,7 +210,7 @@ export function Resizer({
         // See https://www.w3.org/TR/wai-aria-1.1/#aria-roledescription
         aria-roledescription={roleDescription}
         aria-labelledby={ariaLabelledby}
-        tabIndex={shouldMuteFocus ? -1 : tabIndex}
+        tabIndex={focusTargetMuted ? -1 : tabIndex}
         data-focus-id={focusId}
       />
       <GridNavigationSuppressed>

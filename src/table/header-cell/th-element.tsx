@@ -45,8 +45,7 @@ export function TableThElement({
   const cellObjectRef = useRef<HTMLTableCellElement>(null);
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellObjectRef);
 
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(cellObjectRef);
-  const shouldMuteFocus = focusMuted && focusTarget !== cellObjectRef.current;
+  const { focusMuted, focusTargetMuted } = useGridNavigationFocusable(cellObjectRef);
 
   return (
     <th
@@ -65,7 +64,7 @@ export function TableThElement({
       style={{ ...style, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
-      tabIndex={!focusMuted ? undefined : shouldMuteFocus ? -1 : 0}
+      tabIndex={!focusMuted ? undefined : focusTargetMuted ? -1 : 0}
     >
       {children}
     </th>

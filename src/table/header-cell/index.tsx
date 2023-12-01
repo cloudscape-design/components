@@ -85,8 +85,7 @@ export function TableHeaderCell<ItemType>({
   const headerId = useUniqueId('table-header-');
 
   const headerButtonRef = useRef<HTMLTableCellElement>(null);
-  const { focusMuted, focusTarget } = useGridNavigationFocusable(headerButtonRef);
-  const shouldMuteFocus = focusMuted && focusTarget !== headerButtonRef.current;
+  const { focusTargetMuted } = useGridNavigationFocusable(headerButtonRef);
 
   return (
     <TableThElement
@@ -119,7 +118,7 @@ export function TableHeaderCell<ItemType>({
         {...(sortingStatus && !sortingDisabled
           ? {
               onKeyPress: handleKeyPress,
-              tabIndex: shouldMuteFocus ? -1 : tabIndex,
+              tabIndex: focusTargetMuted ? -1 : tabIndex,
               role: 'button',
               onClick: handleClick,
             }

@@ -186,15 +186,14 @@ const InternalLink = React.forwardRef(
       </>
     );
 
-    const { focusMuted, focusTarget } = useGridNavigationFocusable(linkRef);
-    const shouldMuteFocus = focusMuted && focusTarget !== linkRef.current;
+    const { focusTargetMuted } = useGridNavigationFocusable(linkRef);
 
     if (isButton) {
       return (
         <a
           {...sharedProps}
           role="button"
-          tabIndex={shouldMuteFocus ? -1 : 0}
+          tabIndex={focusTargetMuted ? -1 : 0}
           onKeyDown={handleButtonKeyDown}
           onClick={handleButtonClick}
         >
@@ -212,7 +211,7 @@ const InternalLink = React.forwardRef(
         rel={anchorRel}
         href={href}
         onClick={handleLinkClick}
-        tabIndex={shouldMuteFocus ? -1 : undefined}
+        tabIndex={focusTargetMuted ? -1 : undefined}
       >
         {content}
       </a>

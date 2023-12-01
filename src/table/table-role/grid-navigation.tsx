@@ -112,7 +112,7 @@ export function useGridNavigationFocusable(
   { suppressNavigation }: FocusableOptions = {}
 ) {
   const focusableId = useUniqueId();
-  const { focusMuted, registerFocusable, unregisterFocusable } = useGridNavigationContext();
+  const { focusMuted, registerFocusable } = useGridNavigationContext();
   const [focusTarget, setFocusTarget] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
@@ -124,7 +124,9 @@ export function useGridNavigationFocusable(
     return () => unregister();
   }, [focusableId, focusable, registerFocusable, suppressNavigation]);
 
-  return { focusMuted, focusTarget, registerFocusable, unregisterFocusable };
+  const focusTargetMuted = focusMuted && focusTarget !== getFocusableElement(focusable);
+
+  return { focusMuted, focusTargetMuted };
 }
 
 /**

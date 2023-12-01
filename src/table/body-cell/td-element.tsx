@@ -79,8 +79,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const cellObjectRef = useRef<HTMLTableCellElement>(null);
     const mergedRef = useMergeRefs(stickyStyles.ref, ref, cellObjectRef);
 
-    const { focusMuted, focusTarget } = useGridNavigationFocusable(cellObjectRef);
-    const shouldMuteFocus = focusMuted && focusTarget !== cellObjectRef.current;
+    const { focusMuted, focusTargetMuted } = useGridNavigationFocusable(cellObjectRef);
 
     return (
       <Element
@@ -106,7 +105,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         onMouseLeave={onMouseLeave}
         ref={mergedRef}
         {...nativeAttributes}
-        tabIndex={!focusMuted ? undefined : shouldMuteFocus ? -1 : 0}
+        tabIndex={!focusMuted ? undefined : focusTargetMuted ? -1 : 0}
       >
         {children}
       </Element>
