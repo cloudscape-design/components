@@ -14,6 +14,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OverflowMenu from '../drawer/overflow-menu';
 import { splitItems } from '../drawer/drawers-helpers';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
+import { getLimitedValue } from '../../split-panel/utils/size-utils';
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only
@@ -69,12 +70,12 @@ function ActiveDrawer() {
     loseDrawersFocus,
     resizeHandle,
     drawerSize,
+    drawersMinWidth,
     drawersMaxWidth,
     drawerRef,
   } = useAppLayoutInternals();
 
   const activeDrawer = drawers?.find(item => item.id === activeDrawerId) ?? null;
-  const MIN_WIDTH = 290;
 
   const computedAriaLabels = {
     closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -86,7 +87,7 @@ function ActiveDrawer() {
   const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
 
-  const size = Math.max(Math.min(drawersMaxWidth, drawerSize), MIN_WIDTH);
+  const size = getLimitedValue(drawersMinWidth, drawerSize, drawersMaxWidth);
 
   return (
     <aside
