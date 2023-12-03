@@ -202,7 +202,7 @@ export default function PopoverContainer({
       const clickedOnTarget = event.target instanceof Node && nodeContains(event.target, trackRef.current);
       // Remember that the last click came from inside the popover body in case that this click
       // triggers a resize, which will trigger updatePositionHandler via resize observer.
-      clickedInsideBody.current = !bodyRef.current || nodeContains(bodyRef.current, event.target);
+      clickedInsideBody.current = nodeContains(bodyRef.current, event.target);
 
       requestAnimationFrame(() => {
         if (!clickedOnTarget && !clickedInsideBody.current) {
