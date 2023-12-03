@@ -32,7 +32,7 @@ export interface PopoverContainerProps {
   size: PopoverProps.Size;
   fixedWidth: boolean;
   variant?: 'annotation';
-  keepPositionOnResize?: boolean;
+  keepPositionWhenInteracting?: boolean;
 }
 
 const INITIAL_STYLES: CSSProperties = { top: -9999, left: -9999 };
@@ -48,6 +48,7 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
+  keepPositionWhenInteracting,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -121,7 +122,10 @@ export default function PopoverContainer({
       };
 
       const fixedInternalPosition =
-        onResize && (clickedInsideBody.current || resizingAfterInternalClick.current) && internalPositionRef.current
+        keepPositionWhenInteracting &&
+        onResize &&
+        (clickedInsideBody.current || resizingAfterInternalClick.current) &&
+        internalPositionRef.current
           ? internalPositionRef.current
           : undefined;
 
@@ -177,7 +181,7 @@ export default function PopoverContainer({
         });
       };
     },
-    [position, trackRef, renderWithPortal]
+    [trackRef, keepPositionWhenInteracting, position, renderWithPortal]
   );
 
   // Recalculate position when properties change.
