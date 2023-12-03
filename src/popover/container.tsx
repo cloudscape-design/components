@@ -194,16 +194,8 @@ export default function PopoverContainer({
     updatePositionHandler(true);
   });
 
-  // Recalculate position on DOM events.
-  useLayoutEffect(() => {
-    /*
-    This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
-    and by tracking the click event we can adapt the popover's position to the new layout.
-    
-    TODO: extend this to Enter and Spacebar?
-    */
-
-    const updatePositionOnClick = (event: UIEvent) => {
+  const onClick = useCallback(
+    (event: UIEvent | React.KeyboardEvent) => {
       // Prevent updating the position when clicks come from the trigger or the popover body itself.
       // These clicks will not change the container layout but the popover layout itself, and we want
       // to prevent the popover from moving around while interacting with its content.
@@ -218,12 +210,29 @@ export default function PopoverContainer({
         }
         clickedInsideBody.current = false;
       });
-    };
+    },
+    [trackRef, updatePositionHandler]
+  );
+
+  const onKeyUp = (event: React.KeyboardEvent) => {
+    if ([' ', 'Enter'].includes(event.key)) {
+      onClick(event);
+    }
+  };
+
+  // Recalculate position on DOM events.
+  useLayoutEffect(() => {
+    /*
+    This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
+    and by tracking the click event we can adapt the popover's position to the new layout.
+    
+    TODO: extend this to Enter and Spacebar?
+    */
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
-    window.addEventListener('click', updatePositionOnClick);
+    window.addEventListener('click', onClick);
 
     window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);
@@ -232,17 +241,11 @@ export default function PopoverContainer({
     updatePositionHandler();
 
     return () => {
-      window.removeEventListener('click', updatePositionOnClick);
+      window.removeEventListener('click', onClick);
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [trackRef, updatePositionHandler]);
-
-  const onKeyUp = (event: React.KeyboardEvent) => {
-    if ([' ', 'Enter'].includes(event.key)) {
-      clickedInsideBody.current = true;
-    }
-  };
+  }, [trackRef, updatePositionHandler, onClick]);
 
   return (
     <div
