@@ -14,9 +14,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => ({
   ...jest.requireActual('../../../lib/components/popover/utils/positions'),
-  // Overcome lack of dimensions in JSDOM by providing approximate values.
-  getDimensions: () => ({ width: 10, height: 10 }), // Used to retrieve the arrow dimensions
-  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Used to retrieve the popover dimensions
+  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
 }));
 
 const statusTypes: Array<MixedLineBarChartProps<number>['statusType']> = ['finished', 'loading', 'error'];
@@ -106,13 +104,26 @@ const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
 // Mock support for CSS Custom Properties in Jest so that we assign the correct colors.
 // Transformation to fallback colors for browsers that don't support them are covered by the `parseCssVariable` utility.
 const originalCSS = window.CSS;
+
+let originalGetComputedStyle: Window['getComputedStyle'];
+const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
+  const result = originalGetComputedStyle(...args);
+  result.borderWidth = '2px'; // Approximate mock value for the popover body' border width
+  result.width = '10px'; // Approximate mock value for the popover arrow's width
+  result.height = '10px'; // Approximate mock value for the popover arrow's height
+  return result;
+};
+
 beforeEach(() => {
   window.CSS.supports = () => true;
+  originalGetComputedStyle = window.getComputedStyle;
+  window.getComputedStyle = fakeGetComputedStyle;
 
   jest.resetAllMocks();
 });
 afterEach(() => {
   window.CSS = originalCSS;
+  window.getComputedStyle = originalGetComputedStyle;
 });
 
 describe('Series', () => {

@@ -284,8 +284,9 @@ export function getOffsetDimensions(element: HTMLElement) {
 }
 
 export function getDimensions(element: HTMLElement) {
+  const computedStyle = getComputedStyle(element);
   return {
-    width: parseFloat(getComputedStyle(element).width),
-    height: parseFloat(getComputedStyle(element).height),
+    width: parseFloat(computedStyle.width),
+    height: parseFloat(computedStyle.height),
   };
 }
