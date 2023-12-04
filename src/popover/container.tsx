@@ -62,11 +62,13 @@ export default function PopoverContainer({
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
 
-  // Remember when the popover body was clicked in case that this click
+  // Remember when the popover was clicked in case that this click
   // triggers a resize, which will trigger updatePositionHandler via resize observer,
   // to prevent the popover from moving around while interacting with its content.
-  const clickedInsideBody = useRef(false);
+  const clickedInside = useRef(false);
 
+  // Due to applying max height in some cases, it can take more than one render to have the popover in its final desired size.
+  // This ref allows us to track that series of render cycles.
   const resizingAfterInternalClick = useRef(false);
 
   // Updates the position handler.
@@ -121,10 +123,13 @@ export default function PopoverContainer({
         height: contentRect.height + 2 * bodyBorderWidth,
       };
 
+      // When keepPositionWhenInteracting and the resizing was caused by a click inside the popover,
+      // we maintain the previously defined internal position,
+      // but we still call calculatePosition to know if the popover should be scrollable.
       const fixedInternalPosition =
         keepPositionWhenInteracting &&
         onResize &&
-        (clickedInsideBody.current || resizingAfterInternalClick.current) &&
+        (clickedInside.current || resizingAfterInternalClick.current) &&
         internalPositionRef.current
           ? internalPositionRef.current
           : undefined;
@@ -167,6 +172,9 @@ export default function PopoverContainer({
       internalPositionRef.current = newInternalPosition;
       setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
 
+      // If we made the popover body scrollable, it is possible that by setting the max height we changed its dimensions,
+      // which will trigger this function once more via resize observer.
+      // Remember this fact in case we want to prevent repositioning in the next render.
       resizingAfterInternalClick.current =
         !!fixedInternalPosition && contentRect.height !== contentRef.current.getBoundingClientRect().height;
 
@@ -194,45 +202,42 @@ export default function PopoverContainer({
     updatePositionHandler(true);
   });
 
-  const onClick = useCallback(
-    (event: UIEvent | React.KeyboardEvent) => {
-      // Prevent updating the position when clicks come from the trigger or the popover body itself.
-      // These clicks will not change the container layout but the popover layout itself, and we want
-      // to prevent the popover from moving around while interacting with its content.
-      const clickedOnTarget = event.target instanceof Node && nodeContains(event.target, trackRef.current);
-      // Remember that the last click came from inside the popover body in case that this click
-      // triggers a resize, which will trigger updatePositionHandler via resize observer.
-      clickedInsideBody.current = nodeContains(bodyRef.current, event.target);
-
-      requestAnimationFrame(() => {
-        if (!clickedOnTarget && !clickedInsideBody.current) {
-          updatePositionHandler();
-        }
-        clickedInsideBody.current = false;
-      });
-    },
-    [trackRef, updatePositionHandler]
-  );
-
-  const onKeyUp = (event: React.KeyboardEvent) => {
-    if ([' ', 'Enter'].includes(event.key)) {
-      onClick(event);
-    }
-  };
-
   // Recalculate position on DOM events.
   useLayoutEffect(() => {
     /*
     This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
     and by tracking the click event we can adapt the popover's position to the new layout.
-    
-    TODO: extend this to Enter and Spacebar?
     */
+
+    const onClick = (event: UIEvent | KeyboardEvent) => {
+      // Remember that the last click came from inside the popover body in case that this click
+      // triggers a resize, which will trigger updatePositionHandler via resize observer.
+      clickedInside.current = !!keepPositionWhenInteracting && nodeContains(popoverRef.current, event.target);
+
+      requestAnimationFrame(() => {
+        if (
+          // No need to update position when the click comes from the trigger itself.
+          !nodeContains(trackRef.current, event.target) &&
+          // If keepPositionWhenInteracting is true, prevent updating the position when the clicks come from the trigger or the popover itself.
+          !clickedInside.current
+        ) {
+          updatePositionHandler();
+        }
+        clickedInside.current = false;
+      });
+    };
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      if ([' ', 'Enter'].includes(event.key)) {
+        onClick(event);
+      }
+    };
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
     window.addEventListener('click', onClick);
+    window.addEventListener('keyup', onKeyUp);
 
     window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);
@@ -242,10 +247,11 @@ export default function PopoverContainer({
 
     return () => {
       window.removeEventListener('click', onClick);
+      window.removeEventListener('keyup', onClick);
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [trackRef, updatePositionHandler, onClick]);
+  }, [keepPositionWhenInteracting, trackRef, updatePositionHandler]);
 
   return (
     <div
@@ -263,7 +269,6 @@ export default function PopoverContainer({
 
       <div
         ref={bodyRef}
-        onKeyUp={onKeyUp}
         className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
           [styles['fixed-width']]: fixedWidth,
           [styles[`container-body-variant-${variant}`]]: variant,
