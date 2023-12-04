@@ -184,7 +184,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#414750",
+            "dark": "#081120",
             "light": "#f2f3f3",
           },
         },
@@ -1633,7 +1633,7 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d5dbdb",
+            "dark": "#b6bec9",
             "light": "#16191f",
           },
         },
@@ -1752,7 +1752,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -1767,14 +1767,14 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eaeded",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -2444,7 +2444,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#414750",
+            "dark": "#081120",
             "light": "#f2f3f3",
           },
         },
@@ -2690,7 +2690,7 @@ Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
             "dark": "#414750",
-            "light": "#eaeded",
+            "light": "#b6bec9",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -3893,7 +3893,7 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d5dbdb",
+            "dark": "#b6bec9",
             "light": "#16191f",
           },
         },
@@ -4012,7 +4012,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -4027,14 +4027,14 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eaeded",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -4704,7 +4704,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#414750",
+            "dark": "#081120",
             "light": "#f2f3f3",
           },
         },
@@ -6272,7 +6272,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -6287,14 +6287,14 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eaeded",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -6964,7 +6964,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#414750",
+            "dark": "#081120",
             "light": "#f2f3f3",
           },
         },
@@ -8532,7 +8532,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -8547,14 +8547,14 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#ffffff",
+            "light": "#eaeded",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -9224,8 +9224,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#414750",
-            "light": "#414750",
+            "dark": "#081120",
+            "light": "#081120",
           },
         },
         "color-background-home-header": Object {
@@ -10673,8 +10673,8 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-body-secondary": Object {
@@ -10792,8 +10792,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
-            "light": "#eaeded",
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
           },
         },
         "color-text-heading-secondary": Object {
@@ -10813,8 +10813,8 @@ Object {
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -11484,7 +11484,7 @@ Object {
     "color-background-dropdown-item-hover": Object {
       "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
       "$value": Object {
-        "dark": "#414750",
+        "dark": "#081120",
         "light": "#f2f3f3",
       },
     },
@@ -11730,7 +11730,7 @@ Object {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": Object {
         "dark": "#414750",
-        "light": "#eaeded",
+        "light": "#b6bec9",
       },
     },
     "color-border-dropdown-item-hover": Object {
@@ -12933,7 +12933,7 @@ Object {
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
-        "dark": "#d5dbdb",
+        "dark": "#b6bec9",
         "light": "#16191f",
       },
     },
@@ -13052,7 +13052,7 @@ Object {
     "color-text-heading-default": Object {
       "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
       "$value": Object {
-        "dark": "#eaeded",
+        "dark": "#d5dbdb",
         "light": "#16191f",
       },
     },
@@ -13067,14 +13067,14 @@ Object {
       "$description": "The color of the home header's text, displayed on the Service's home page.",
       "$value": Object {
         "dark": "#eaeded",
-        "light": "#ffffff",
+        "light": "#eaeded",
       },
     },
     "color-text-home-header-secondary": Object {
       "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#d5dbdb",
-        "light": "#d5dbdb",
+        "dark": "#b6bec9",
+        "light": "#b6bec9",
       },
     },
     "color-text-input-disabled": Object {
@@ -13749,7 +13749,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -13777,7 +13777,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -15198,7 +15198,7 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#000716",
           },
         },
@@ -15310,14 +15310,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -15331,15 +15331,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -15352,7 +15352,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -16009,8 +16009,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#081120",
+            "light": "#081120",
           },
         },
         "color-background-home-header": Object {
@@ -16037,8 +16037,8 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#00142b",
+            "light": "#00142b",
           },
         },
         "color-background-layout-main": Object {
@@ -17458,8 +17458,8 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-body-secondary": Object {
@@ -17570,15 +17570,15 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
-            "light": "#8d99a8",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -17591,15 +17591,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -17612,8 +17612,8 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
-            "light": "#7d8998",
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-interactive-active": Object {
@@ -18269,7 +18269,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -18297,7 +18297,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -18515,7 +18515,7 @@ Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
             "dark": "#414d5c",
-            "light": "#e9ebed",
+            "light": "#b6bec9",
           },
         },
         "color-border-dropdown-item-hover": Object {
@@ -19718,7 +19718,7 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#000716",
           },
         },
@@ -19830,14 +19830,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -19851,15 +19851,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -19872,7 +19872,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -20529,7 +20529,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -20557,7 +20557,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -22090,14 +22090,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -22111,15 +22111,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -22132,7 +22132,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -22789,7 +22789,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
+            "dark": "#081120",
             "light": "#f4f4f4",
           },
         },
@@ -22817,7 +22817,7 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
+            "dark": "#00142b",
             "light": "#f2f8fd",
           },
         },
@@ -24350,14 +24350,14 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -24371,15 +24371,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -24392,7 +24392,7 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
+            "dark": "#8d99a8",
             "light": "#5f6b7a",
           },
         },
@@ -25049,8 +25049,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#081120",
+            "light": "#081120",
           },
         },
         "color-background-home-header": Object {
@@ -25077,8 +25077,8 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#00142b",
+            "light": "#00142b",
           },
         },
         "color-background-layout-main": Object {
@@ -26498,8 +26498,8 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-body-secondary": Object {
@@ -26610,15 +26610,15 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
-            "light": "#8d99a8",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -26631,15 +26631,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -26652,8 +26652,8 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
-            "light": "#7d8998",
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-interactive-active": Object {
@@ -27309,8 +27309,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#081120",
+            "light": "#081120",
           },
         },
         "color-background-home-header": Object {
@@ -27337,8 +27337,8 @@ Object {
         "color-background-item-selected": Object {
           "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#00142b",
+            "light": "#00142b",
           },
         },
         "color-background-layout-main": Object {
@@ -28758,8 +28758,8 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-body-secondary": Object {
@@ -28870,15 +28870,15 @@ Object {
         "color-text-group-label": Object {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": Object {
-            "dark": "#8d99a8",
-            "light": "#8d99a8",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -28891,15 +28891,15 @@ Object {
         "color-text-home-header-default": Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#ffffff",
-            "light": "#ffffff",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-home-header-secondary": Object {
           "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-input-disabled": Object {
@@ -28912,8 +28912,8 @@ Object {
         "color-text-input-placeholder": Object {
           "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#7d8998",
-            "light": "#7d8998",
+            "dark": "#8d99a8",
+            "light": "#8d99a8",
           },
         },
         "color-text-interactive-active": Object {
@@ -29569,7 +29569,7 @@ Object {
     "color-background-dropdown-item-hover": Object {
       "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
       "$value": Object {
-        "dark": "#354150",
+        "dark": "#081120",
         "light": "#f4f4f4",
       },
     },
@@ -29597,7 +29597,7 @@ Object {
     "color-background-item-selected": Object {
       "$description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.",
       "$value": Object {
-        "dark": "#192534",
+        "dark": "#00142b",
         "light": "#f2f8fd",
       },
     },
@@ -29815,7 +29815,7 @@ Object {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": Object {
         "dark": "#414d5c",
-        "light": "#e9ebed",
+        "light": "#b6bec9",
       },
     },
     "color-border-dropdown-item-hover": Object {
@@ -31018,7 +31018,7 @@ Object {
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
-        "dark": "#d1d5db",
+        "dark": "#b6bec9",
         "light": "#000716",
       },
     },
@@ -31130,14 +31130,14 @@ Object {
     "color-text-group-label": Object {
       "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
       "$value": Object {
-        "dark": "#8d99a8",
+        "dark": "#b6bec9",
         "light": "#414d5c",
       },
     },
     "color-text-heading-default": Object {
       "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
       "$value": Object {
-        "dark": "#e9ebed",
+        "dark": "#d1d5db",
         "light": "#000716",
       },
     },
@@ -31151,15 +31151,15 @@ Object {
     "color-text-home-header-default": Object {
       "$description": "The color of the home header's text, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#ffffff",
-        "light": "#ffffff",
+        "dark": "#e9ebed",
+        "light": "#e9ebed",
       },
     },
     "color-text-home-header-secondary": Object {
       "$description": "The color of the home header's secondary text, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#d1d5db",
-        "light": "#d1d5db",
+        "dark": "#b6bec9",
+        "light": "#b6bec9",
       },
     },
     "color-text-input-disabled": Object {
@@ -31172,7 +31172,7 @@ Object {
     "color-text-input-placeholder": Object {
       "$description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.",
       "$value": Object {
-        "dark": "#7d8998",
+        "dark": "#8d99a8",
         "light": "#5f6b7a",
       },
     },
