@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getFocusableElement } from './utils';
 import {
   FocusableChangeHandler,
@@ -29,17 +29,12 @@ export const GridNavigationContext = createContext<{
   unregisterFocusable: () => {},
 });
 
-export const GridNavigationSuppressionContext = createContext<{ navigationSuppressed: boolean }>({
-  navigationSuppressed: false,
-});
-
 export function GridNavigationSuppressed({ children }: { children: React.ReactNode }) {
+  const parentContext = useContext(GridNavigationContext);
   return (
-    <GridNavigationSuppressionContext.Provider value={{ navigationSuppressed: true }}>
-      <div style={{ display: 'contents' }} data-awsui-table-suppress-navigation={true}>
-        {children}
-      </div>
-    </GridNavigationSuppressionContext.Provider>
+    <GridNavigationContext.Provider value={{ ...parentContext, focusMuted: false }}>
+      {children}
+    </GridNavigationContext.Provider>
   );
 }
 
@@ -95,9 +90,13 @@ export function GridNavigationProvider({
 }
 
 export function useGridNavigationContext() {
-  const { navigationSuppressed } = useContext(GridNavigationSuppressionContext);
   const { focusMuted, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
-  return { focusMuted: focusMuted && !navigationSuppressed, registerFocusable, unregisterFocusable };
+  const registerFocusableContext = useCallback(
+    (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler, options?: FocusableOptions) =>
+      registerFocusable(focusable, changeHandler, focusMuted ? options : { suppressNavigation: true }),
+    [focusMuted, registerFocusable]
+  );
+  return { focusMuted, registerFocusable: registerFocusableContext, unregisterFocusable };
 }
 
 export function useGridNavigationFocusable(

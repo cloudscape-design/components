@@ -1,13 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import {
-  findFocusedCell,
-  getNextFocusable,
-  getSingleFocusable,
-  getAllowedFocusables,
-  defaultIsSuppressed,
-} from './utils';
+import { findFocusedCell, getNextFocusable, getSingleFocusable, getAllowedFocusables } from './utils';
 import { FocusedCell } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
@@ -134,7 +128,7 @@ export class GridNavigationProcessor {
     const maxExtreme = Number.POSITIVE_INFINITY;
 
     // Do not intercept any keys when the navigation is suppressed.
-    if (this.focusRegister.isSuppressed(from.element) || defaultIsSuppressed(from.element)) {
+    if (this.focusRegister.isSuppressed(from.element)) {
       return;
     }
 
