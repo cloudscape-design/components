@@ -218,37 +218,22 @@ export function intersectRectangles(rectangles: BoundingOffset[]): number | null
 /**
  * A functions that returns the correct popover position based on screen dimensions.
  */
-export function calculatePosition({
-  preferredPosition,
-  fixedIternalPosition,
-  trigger,
-  arrow,
-  body,
-  container,
-  viewport,
+export function calculatePosition(
+  preferred: PopoverProps.Position,
+  trigger: BoundingOffset,
+  arrow: BoundingBox,
+  body: BoundingBox,
+  container: BoundingOffset,
+  viewport: BoundingOffset,
   // the popover is only bound by the viewport if it is rendered in a portal
-  renderWithPortal,
-}: {
-  preferredPosition: PopoverProps.Position;
-  fixedIternalPosition?: InternalPosition;
-  trigger: BoundingOffset;
-  arrow: BoundingBox;
-  body: BoundingBox;
-  container: BoundingOffset;
-  viewport: BoundingOffset;
-  // the popover is only bound by the viewport if it is rendered in a portal
-  renderWithPortal?: boolean;
-}): CalculatePosition {
+  renderWithPortal?: boolean
+): CalculatePosition {
   let bestPositionOutsideViewport: CalculatePosition | null = null;
   let largestArea = 0;
 
-  const preferredInternalPositions = fixedIternalPosition
-    ? [fixedIternalPosition]
-    : PRIORITY_MAPPING[preferredPosition];
-
   // Attempt to position the popover based on the priority list for this position,
   // trying to fit it inside the container and inside the viewport.
-  for (const internalPosition of preferredInternalPositions) {
+  for (const internalPosition of PRIORITY_MAPPING[preferred]) {
     const boundingOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
     const fitsInContainer = renderWithPortal || canRectFit(boundingOffset, container);
     const fitsInViewport = canRectFit(boundingOffset, viewport);
@@ -276,8 +261,4 @@ export function calculatePosition({
   const scrollable = optimisedOffset.height < defaultOffset.height;
 
   return { internalPosition, boundingOffset: optimisedOffset, scrollable };
-}
-
-export function getOffsetDimensions(element: HTMLElement) {
-  return { offsetHeight: element.offsetHeight, offsetWidth: element.offsetWidth };
 }
