@@ -4731,6 +4731,7 @@ You must set the current value in the \`preferences.contentDensity\` property.",
     Object {
       "description": "Configures the built-in content display preference for order and visibility of columns in a table.
 Once set, the component displays this preference in the modal.
+Cannot be used together with \`visibleContentPreference\`.
 
 It contains the following:
 - \`title\` (string) - Specifies the text displayed at the top of the preference.
@@ -5002,8 +5003,9 @@ You must set the current value in the \`preferences.stripedRows\` property.",
       "type": "string",
     },
     Object {
-      "description": "Configures the built-in \\"visible content selection\\" preference (for example, visible columns in a table).
+      "description": "Configures the built-in \\"visible content selection\\" preference (for example, visible sections in cards).
 If you set it, the component displays this preference in the modal.
+Cannot be used together with \`contentDisplayPreference\`.
 
 It contains the following:
 - \`title\` (string) - Specifies the text displayed at the top of the preference.
@@ -5017,6 +5019,8 @@ Each group of options contains the following:
   - \`editable\` (boolean) - (Optional) Determines whether the user is able to toggle its visibility. This is \`true\` by default.
 
 You must set the current list of visible content \`id\`s in the \`preferences.visibleContent\` property.
+
+**Deprecated** in table, replaced by \`contentDisplayPreference\`.
 ",
       "inlineType": Object {
         "name": "CollectionPreferencesProps.VisibleContentPreference",
@@ -13204,6 +13208,7 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
       "visualRefreshTag": "\`embedded\`, \`stacked\`, and \`full-page\` variants",
     },
     Object {
+      "deprecatedTag": "Replaced by \`columnDisplay\`.",
       "description": "Specifies an array containing the \`id\`s of visible columns. If not set, all columns are displayed.
 Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
 
