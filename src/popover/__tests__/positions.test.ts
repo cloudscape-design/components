@@ -53,6 +53,30 @@ describe('calculatePosition', () => {
     });
   });
 
+  describe('disregards preferred in favor of fixedInternalPosition when defined', () => {
+    (
+      [
+        ['top', { top: 500, left: 500, height: 25, width: 25 }],
+        ['right', { top: 500, left: 500, height: 25, width: 25 }],
+        ['bottom', { top: 500, left: 500, height: 25, width: 25 }],
+        ['left', { top: 500, left: 500, height: 25, width: 25 }],
+      ] as const
+    ).forEach(([preferred, trigger]) => {
+      test(`preferred="${preferred}"`, () => {
+        const position = calculatePosition({
+          preferredPosition: preferred,
+          fixedInternalPosition: 'right-top',
+          trigger,
+          arrow,
+          body,
+          container: viewport,
+          viewport,
+        });
+        expect(position.internalPosition).toBe('right-top');
+      });
+    });
+  });
+
   (
     [
       ['top', { top: 200, left: 500, height: 25, width: 25 }],
