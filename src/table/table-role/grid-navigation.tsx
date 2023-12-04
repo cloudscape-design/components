@@ -10,7 +10,7 @@ import {
   GridNavigationProviderProps,
 } from './interfaces';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
-import { GridNavigationHelper } from './grid-navigation-helper';
+import { GridNavigationProcessor } from './grid-navigation-processor';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getAllFocusables } from '../../internal/components/focus-lock/utils';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
@@ -47,8 +47,8 @@ export function GridNavigationSuppressed({ children }: { children: React.ReactNo
  * Makes table navigable with keyboard commands.
  * See https://www.w3.org/WAI/ARIA/apg/patterns/grid
  *
- * The hook attaches the GridNavigationHelper helper when active=true.
- * See GridNavigationHelper for more details.
+ * The hook attaches the GridNavigationProcessor helper when active=true.
+ * See GridNavigationProcessor for more details.
  */
 export function GridNavigationProvider({
   children,
@@ -56,7 +56,7 @@ export function GridNavigationProvider({
   pageSize,
   getTable,
 }: GridNavigationProviderProps) {
-  const gridNavigation = useMemo(() => new GridNavigationHelper(), []);
+  const gridNavigation = useMemo(() => new GridNavigationProcessor(), []);
 
   const getTableStable = useStableCallback(getTable);
 

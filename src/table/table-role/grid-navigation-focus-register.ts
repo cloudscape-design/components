@@ -4,7 +4,7 @@
 import { getFocusableElement } from './utils';
 import { FocusableChangeHandler, FocusableDefinition, FocusableOptions } from './interfaces';
 
-export class GridNavigationFocusStore {
+export class GridNavigationFocusRegister {
   private focusables = new Set<FocusableDefinition>();
   private focusableSuppressed = new Set<FocusableDefinition>();
   private focusTargetHandlers = new Map<FocusableDefinition, FocusableChangeHandler>();

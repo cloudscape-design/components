@@ -11,9 +11,9 @@ import {
 import { FocusedCell } from './interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
-import { GridNavigationFocusStore } from './grid-navigation-focus-store';
+import { GridNavigationFocusRegister } from './grid-navigation-focus-register';
 
-export class GridNavigationHelper {
+export class GridNavigationProcessor {
   // Props
   private _pageSize = 0;
   private _table: null | HTMLTableElement = null;
@@ -22,7 +22,7 @@ export class GridNavigationHelper {
   private focusedCell: null | FocusedCell = null;
 
   // Reactive state
-  private focusStore = new GridNavigationFocusStore();
+  private focusRegister = new GridNavigationFocusRegister();
 
   public init(table: HTMLTableElement) {
     this._table = table;
@@ -31,8 +31,8 @@ export class GridNavigationHelper {
     this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
-    const focusTarget = getSingleFocusable(this.table, null, this.focusStore.getNavigableElements());
-    focusTarget && this.focusStore.setFocusTarget(focusTarget);
+    const focusTarget = getSingleFocusable(this.table, null, this.focusRegister.getNavigableElements());
+    focusTarget && this.focusRegister.setFocusTarget(focusTarget);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
@@ -51,7 +51,7 @@ export class GridNavigationHelper {
 
   public refresh() {
     if (this._table) {
-      const focusableElements = this.focusStore.getNavigableElements();
+      const focusableElements = this.focusRegister.getNavigableElements();
 
       // Update focused cell indices in case table rows, columns, or firstIndex change.
       if (this.focusedCell) {
@@ -59,13 +59,13 @@ export class GridNavigationHelper {
       }
 
       const focusTarget = getSingleFocusable(this.table, this.focusedCell, focusableElements);
-      focusTarget && this.focusStore.setFocusTarget(focusTarget);
+      focusTarget && this.focusRegister.setFocusTarget(focusTarget);
     }
   }
 
-  public registerFocusable = this.focusStore.registerFocusable;
+  public registerFocusable = this.focusRegister.registerFocusable;
 
-  public unregisterFocusable = this.focusStore.unregisterFocusable;
+  public unregisterFocusable = this.focusRegister.unregisterFocusable;
 
   private get pageSize() {
     return this._pageSize;
@@ -83,16 +83,16 @@ export class GridNavigationHelper {
       return;
     }
 
-    const cell = findFocusedCell(event.target, this.focusStore.getNavigableElements());
+    const cell = findFocusedCell(event.target, this.focusRegister.getNavigableElements());
     if (!cell) {
       return;
     }
 
     this.focusedCell = cell;
-    const focusableElements = this.focusStore.getNavigableElements();
+    const focusableElements = this.focusRegister.getNavigableElements();
 
     const focusTarget = getSingleFocusable(this.table, cell, focusableElements);
-    focusTarget && this.focusStore.setFocusTarget(focusTarget);
+    focusTarget && this.focusRegister.setFocusTarget(focusTarget);
 
     // Focusing on cell is not eligible when it contains focusable elements in the content.
     // If content focusables are available - move the focus to the first one.
@@ -134,7 +134,7 @@ export class GridNavigationHelper {
     const maxExtreme = Number.POSITIVE_INFINITY;
 
     // Do not intercept any keys when the navigation is suppressed.
-    if (this.focusStore.isSuppressed(from.element) || defaultIsSuppressed(from.element)) {
+    if (this.focusRegister.isSuppressed(from.element) || defaultIsSuppressed(from.element)) {
       return;
     }
 
@@ -185,6 +185,6 @@ export class GridNavigationHelper {
   };
 
   private moveFocusBy(cell: FocusedCell, delta: { x: number; y: number }) {
-    getNextFocusable(this.table, cell, delta, this.focusStore.getNavigableElements())?.focus();
+    getNextFocusable(this.table, cell, delta, this.focusRegister.getNavigableElements())?.focus();
   }
 }
