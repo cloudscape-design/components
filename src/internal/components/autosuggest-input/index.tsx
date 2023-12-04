@@ -8,7 +8,7 @@ import Dropdown from '../dropdown';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import InternalInput from '../../../input/internal';
+import InternalInput, { InternalInputProps } from '../../../input/internal';
 import {
   BaseChangeDetail,
   BaseInputProps,
@@ -211,7 +211,7 @@ const AutosuggestInput = React.forwardRef(
     };
 
     const expanded = open && dropdownExpanded;
-    const nativeAttributes = {
+    const nativeAttributes: InternalInputProps['__nativeAttributes'] = {
       name,
       placeholder,
       autoFocus,
@@ -224,7 +224,7 @@ const AutosuggestInput = React.forwardRef(
       'aria-owns': open ? ariaControls : undefined,
       'aria-label': ariaLabel,
       'aria-activedescendant': ariaActivedescendant,
-    } as const;
+    };
 
     // Closes dropdown when outside click is detected.
     // Similar to the internal dropdown implementation but includes the target as well.

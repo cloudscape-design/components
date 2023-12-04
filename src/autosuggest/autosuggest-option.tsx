@@ -13,7 +13,7 @@ import { HighlightType } from '../internal/components/options-list/utils/use-hig
 import { useInternalI18n } from '../i18n/context';
 
 export interface AutosuggestOptionProps extends BaseComponentProps {
-  nativeAttributes?: Record<string, string | boolean | number | undefined>;
+  nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
   highlightText: string;
   option: AutosuggestItem;
   highlighted: boolean;

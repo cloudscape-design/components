@@ -49,7 +49,7 @@ function FileInput(
     onChange(target.files ? Array.from(target.files) : []);
   };
 
-  const nativeAttributes: Record<string, string | number | boolean | undefined> = {
+  const nativeAttributes: React.HTMLAttributes<HTMLInputElement> = {
     'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
     'aria-describedby': formFieldContext.ariaDescribedby,
   };
