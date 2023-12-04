@@ -446,10 +446,9 @@ describe('Details popover', () => {
     test.each(['hover', 'click', 'keyboard'])('Interaction type: %s', interactionType =>
       setupPopoverPositionTest(async page => {
         await page.setWindowSize({ width: 900, height: 500 });
-        expect(page.findDetailPopover()).toBeTruthy();
-        await page.focusCoordinate(0, interactionType);
+        await page.openPopoverOnBarGroup(1, interactionType);
         const popover = page.findDetailPopover();
-        expect(popover).toBeTruthy();
+        expect(page.isDisplayed(popover.toSelector())).resolves.toBe(true);
         const initialRect = await page.getPopoverRect();
         await page.click(popover.findContent().findExpandableSection().toSelector());
         const newRect = await page.getPopoverRect();

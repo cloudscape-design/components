@@ -10,11 +10,8 @@ class PopoverPositionPage extends BasePageObject {
   findDetailPopover() {
     return wrapper.findDetailPopover();
   }
-  async focusCoordinate(index: number, interactionType: string) {
-    const selector = wrapper
-      .findBarGroups()
-      .get(index + 1)
-      .toSelector();
+  async openPopoverOnBarGroup(index: number, interactionType: string) {
+    const selector = wrapper.findBarGroups().get(index).toSelector();
     switch (interactionType) {
       case 'hover':
         await this.hoverElement(selector);
