@@ -18,7 +18,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderLineChartDashArray: '3 5',
   borderLineChartLineJoin: 'round',
   borderLineChartWidth: '2px',
-  borderPanelHeaderWidth: '2px',
+  borderPanelHeaderWidth: '1px',
   borderPanelTopWidth: '1px',
   borderRadiusAlert: '{borderRadiusFlashbar}',
   borderRadiusBadge: '4px',
@@ -38,7 +38,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusTiles: '{borderRadiusInput}',
   borderRadiusToken: '{borderRadiusInput}',
   borderRadiusTutorialPanelItem: '{borderRadiusInput}',
-  borderTableStickyWidth: '2px',
+  borderTableStickyWidth: '1px',
   borderLinkFocusRingOutline: '0',
   borderLinkFocusRingShadowSpread: '2px',
 };

@@ -57,15 +57,6 @@
     &.font-weight-heavy {
       @include styles.font-smoothing;
     }
-    &.refresh {
-      &.h1-variant,
-      &.h2-variant,
-      &.h3-variant,
-      &.h4-variant,
-      &.h5-variant {
-        color: awsui.$color-text-heading-default;
-      }
-    }
   }
 }
 

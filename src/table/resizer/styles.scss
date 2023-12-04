@@ -27,7 +27,7 @@ th:not(:last-child) > .divider {
   min-height: awsui.$line-height-heading-xs;
   max-height: calc(100% - #{$gap});
   margin: auto;
-  border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-interactive-default;
+  border-left: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
 
   &-disabled {

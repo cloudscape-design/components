@@ -305,6 +305,7 @@ export type ColorsTokenName =
   | 'colorBorderControlDisabled'
   | 'colorBorderDividerActive'
   | 'colorBorderDividerDefault'
+  | 'colorBorderDividerDimmed'
   | 'colorBorderDividerPanelBottom'
   | 'colorBorderDividerPanelSide'
   | 'colorBorderDropdownContainer'
