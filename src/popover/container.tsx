@@ -62,9 +62,7 @@ export default function PopoverContainer({
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
 
-  // Remember when the popover was clicked in case that this click
-  // triggers a resize, which will trigger updatePositionHandler via resize observer,
-  // to prevent the popover from moving around while interacting with its content.
+  // Remember when the popover was clicked in order to prevent eventually undesired position recalculations coming from that interaction.
   const clickedInside = useRef(false);
 
   // Updates the position handler.
@@ -194,8 +192,9 @@ export default function PopoverContainer({
     */
 
     const onClick = (event: UIEvent | KeyboardEvent) => {
-      // Remember whether the last click came from inside the popover body in case that this click
+      // Remember whether the last click came from inside the popover in case that this click
       // triggers a resize, which will trigger updatePositionHandler via resize observer.
+      // If keepPositionWhenInteracting is true, we will want to prevent that position update.
       clickedInside.current = !!keepPositionWhenInteracting && nodeContains(popoverRef.current, event.target);
 
       requestAnimationFrame(() => {
