@@ -28,14 +28,15 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
   isDimmed?: boolean;
   subItems?: ReadonlyArray<ChartDetailPair>;
   expandable?: boolean;
+  seriesTitle?: string;
 }
-export type ExpandedSeries = Set<number>;
+export type ExpandedSeries = Set<string>;
 
 export interface ChartSeriesDetailsProps extends BaseComponentProps {
   details: ReadonlyArray<ChartSeriesDetailItem>;
   expandedSeries?: ExpandedSeries;
   setPopoverText?: (s: string) => void;
-  setExpandedState?: (index: number, state: boolean) => void;
+  setExpandedState?: (seriesTitle: string, state: boolean) => void;
 }
 
 export default memo(ChartSeriesDetails);
@@ -64,12 +65,12 @@ function ChartSeriesDetails({
     }
   }, [details, setPopoverText]);
 
-  const isExpanded = (index: number) => !!expandedSeries && expandedSeries.has(index);
+  const isExpanded = (serieTitle: string) => !!expandedSeries && expandedSeries.has(serieTitle);
 
   return (
     <div {...baseProps} className={className} ref={detailsRef}>
       <ul className={styles.list}>
-        {details.map(({ key, value, markerType, color, isDimmed, subItems, expandable }, index) => (
+        {details.map(({ key, value, markerType, color, isDimmed, subItems, expandable, seriesTitle }, index) => (
           <li
             key={index}
             className={clsx({
@@ -79,15 +80,15 @@ function ChartSeriesDetails({
               [styles.expandable]: expandable,
             })}
           >
-            {subItems?.length && expandable ? (
+            {subItems?.length && expandable && seriesTitle ? (
               <ExpandableSeries
                 itemKey={key}
                 value={value}
                 markerType={markerType}
                 color={color}
                 subItems={subItems}
-                expanded={isExpanded(index)}
-                setExpandedState={state => setExpandedState && setExpandedState(index, state)}
+                expanded={isExpanded(seriesTitle)}
+                setExpandedState={state => setExpandedState && setExpandedState(seriesTitle, state)}
               />
             ) : (
               <NonExpandableSeries

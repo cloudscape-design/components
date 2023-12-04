@@ -102,6 +102,7 @@ function getSeriesDetail<T>({
           markerType: series.type === 'line' ? 'line' : 'rectangle',
           subItems: customContent?.subItems,
           expandable: isExpandable,
+          seriesTitle: series.title,
         };
       }
     }
