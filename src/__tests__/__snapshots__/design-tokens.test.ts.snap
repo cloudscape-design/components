@@ -1640,7 +1640,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d5dbdb",
+            "dark": "#b6bec9",
             "light": "#545b64",
           },
         },
@@ -3900,7 +3900,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d5dbdb",
+            "dark": "#b6bec9",
             "light": "#545b64",
           },
         },
@@ -6160,7 +6160,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d5dbdb",
+            "dark": "#b6bec9",
             "light": "#545b64",
           },
         },
@@ -8420,7 +8420,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d5dbdb",
+            "dark": "#b6bec9",
             "light": "#545b64",
           },
         },
@@ -10680,8 +10680,8 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -12940,7 +12940,7 @@ Object {
     "color-text-body-secondary": Object {
       "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
       "$value": Object {
-        "dark": "#d5dbdb",
+        "dark": "#b6bec9",
         "light": "#545b64",
       },
     },
@@ -13693,7 +13693,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -15205,7 +15205,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -15953,8 +15953,8 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
-            "light": "#232f3e",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-container-content": Object {
@@ -17465,8 +17465,8 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -18213,7 +18213,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -19725,7 +19725,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -20473,7 +20473,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -21985,7 +21985,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -22733,7 +22733,7 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
+            "dark": "#192534",
             "light": "#f8f8f8",
           },
         },
@@ -24245,7 +24245,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#b6bec9",
             "light": "#414d5c",
           },
         },
@@ -24993,8 +24993,8 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
-            "light": "#232f3e",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-container-content": Object {
@@ -26505,8 +26505,8 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -27253,8 +27253,8 @@ Object {
         "color-background-cell-shaded": Object {
           "$description": "The background color of shaded table cells.",
           "$value": Object {
-            "dark": "#232f3e",
-            "light": "#232f3e",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-container-content": Object {
@@ -28765,8 +28765,8 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#b6bec9",
+            "light": "#b6bec9",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -29513,7 +29513,7 @@ Object {
     "color-background-cell-shaded": Object {
       "$description": "The background color of shaded table cells.",
       "$value": Object {
-        "dark": "#232f3e",
+        "dark": "#192534",
         "light": "#f8f8f8",
       },
     },
@@ -31025,7 +31025,7 @@ Object {
     "color-text-body-secondary": Object {
       "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
       "$value": Object {
-        "dark": "#d1d5db",
+        "dark": "#b6bec9",
         "light": "#414d5c",
       },
     },
