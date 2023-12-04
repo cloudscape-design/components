@@ -35,6 +35,10 @@ import {
 import { orderBy, range } from 'lodash';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { stateToStatusIndicator } from '../table/shared-configs';
+import {
+  GridNavigationSuppressed,
+  useGridNavigationAutoRegisterFocusable,
+} from '~components/table/table-role/grid-navigation';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -336,98 +340,117 @@ function DnsEditCell({ item }: { item: Instance }) {
   const [active, setActive] = useState(false);
   const [value, setValue] = useState(item.dnsName ?? '');
   const dialogRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  useGridNavigationAutoRegisterFocusable(rootRef);
   return !active ? (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label="Edit DNS name"
-      onClick={() => setActive(true)}
-      onKeyDown={event => {
-        if (event.key === 'Enter' || event.key === 'F2') {
-          setActive(true);
-        }
-      }}
-    >
-      {item.dnsName}
+    <div ref={rootRef}>
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label="Edit DNS name"
+        onClick={() => setActive(true)}
+        onKeyDown={event => {
+          if (event.key === 'Enter' || event.key === 'F2') {
+            setActive(true);
+          }
+        }}
+      >
+        {item.dnsName}
+      </div>
     </div>
   ) : (
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-label="Edit DND name"
-      onBlur={event => {
-        if (!dialogRef.current!.contains(event.relatedTarget)) {
-          setActive(false);
-        }
-      }}
-      onKeyDown={event => {
-        if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
-          setActive(false);
-        }
-      }}
-      style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
-    >
-      <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
-      <Button iconName="check" onClick={() => setActive(false)} />
-      <Button iconName="close" onClick={() => setActive(false)} />
-    </div>
+    <GridNavigationSuppressed>
+      <div ref={rootRef}>
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-label="Edit DND name"
+          onBlur={event => {
+            if (!dialogRef.current!.contains(event.relatedTarget)) {
+              setActive(false);
+            }
+          }}
+          onKeyDown={event => {
+            if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
+              setActive(false);
+            }
+          }}
+          style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
+        >
+          <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
+          <Button iconName="check" onClick={() => setActive(false)} />
+          <Button iconName="close" onClick={() => setActive(false)} />
+        </div>
+      </div>
+    </GridNavigationSuppressed>
   );
 }
 
 function EditableStateCell({ value, onChange }: { value: InstanceState; onChange: (value: InstanceState) => void }) {
   const [active, setActive] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useGridNavigationAutoRegisterFocusable(rootRef);
 
   if (!active) {
     return value === 'TERMINATED' ? (
-      <StatusIndicator {...stateToStatusIndicator[value]} />
-    ) : (
-      <button className={styles['status-trigger-button']} onClick={() => setActive(true)}>
+      <div ref={rootRef}>
         <StatusIndicator {...stateToStatusIndicator[value]} />
-      </button>
+      </div>
+    ) : (
+      <div ref={rootRef}>
+        <button className={styles['status-trigger-button']} onClick={() => setActive(true)}>
+          <StatusIndicator {...stateToStatusIndicator[value]} />
+        </button>
+      </div>
     );
   }
 
   return (
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-label="Set control value dialog"
-      onBlur={event => {
-        if (!dialogRef.current?.contains(event.relatedTarget)) {
-          setActive(false);
-        }
-      }}
-      onKeyDown={event => {
-        if (event.key === 'Escape' || event.key === 'F2' || event.key === ' ') {
-          event.preventDefault();
-          setActive(false);
-        }
-      }}
-    >
-      <RadioGroup
-        items={[
-          {
-            value: 'RUNNING',
-            label: 'Start',
-          },
-          {
-            value: 'PENDING',
-            label: 'Suspend',
-          },
-          {
-            value: 'STOPPING',
-            label: 'Stop',
-          },
-          {
-            value: 'TERMINATING',
-            label: 'Terminate',
-          },
-        ]}
-        onChange={({ detail }) => onChange(detail.value as InstanceState)}
-        value={value}
-      />
-    </div>
+    <GridNavigationSuppressed>
+      <div ref={rootRef}>
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-label="Set control value dialog"
+          onBlur={event => {
+            if (!dialogRef.current?.contains(event.relatedTarget)) {
+              setActive(false);
+            }
+          }}
+          onKeyDown={event => {
+            if (event.key === 'Escape' || event.key === 'F2' || event.key === ' ') {
+              event.preventDefault();
+              setActive(false);
+            }
+          }}
+        >
+          <RadioGroup
+            items={[
+              {
+                value: 'RUNNING',
+                label: 'Start',
+              },
+              {
+                value: 'PENDING',
+                label: 'Suspend',
+              },
+              {
+                value: 'STOPPING',
+                label: 'Stop',
+              },
+              {
+                value: 'TERMINATING',
+                label: 'Terminate',
+              },
+            ]}
+            onChange={({ detail }) => onChange(detail.value as InstanceState)}
+            value={value}
+          />
+        </div>
+      </div>
+    </GridNavigationSuppressed>
   );
 }
 

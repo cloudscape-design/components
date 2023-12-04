@@ -11,6 +11,10 @@ import {
 } from './interfaces';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { GridNavigationHelper } from './grid-navigation-helper';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { getAllFocusables } from '../../internal/components/focus-lock/utils';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
+import { findUpUntil } from '../../internal/utils/dom';
 
 export const GridNavigationContext = createContext<{
   focusMuted: boolean;
@@ -119,9 +123,46 @@ export function useGridNavigationFocusable(
 }
 
 export function useGridNavigationAutoRegisterFocusable(getElementRoot: FocusableDefinition) {
-  // do the magic here:
-  // find user-focusable elements on every render
-  // make all element but focusTarget no longer user focusable
-  // keep track of all overrides to make a revert if needed
-  // register and unregister all found elements
+  const uniqueId = useUniqueId();
+  const { focusMuted, registerFocusable } = useGridNavigationContext();
+
+  useEffect(() => {
+    const root = getFocusableElement(getElementRoot);
+    if (!root || !focusMuted) {
+      return;
+    }
+
+    const allFocusables = getAllFocusables(root).filter(
+      element =>
+        !element.tabIndex || element.tabIndex >= 0 || element.getAttribute('data-awsui-auto-focusable') === uniqueId
+    );
+
+    const registers = allFocusables.map(element => {
+      if (!findUpUntil(element, el => el.getAttribute('data-awsui-table-suppress-navigation') === 'true')) {
+        element.tabIndex = -1;
+        element.setAttribute('data-awsui-auto-focusable', uniqueId);
+      }
+
+      const handler = (focusTarget: null | HTMLElement) => {
+        if (element === focusTarget) {
+          element.tabIndex = 0;
+        }
+      };
+
+      return registerFocusable(() => element, handler);
+    });
+
+    return () => registers.forEach(reg => reg());
+  });
+
+  useEffectOnUpdate(() => {
+    const root = getFocusableElement(getElementRoot);
+    if (root && !focusMuted) {
+      root.querySelectorAll(`[data-awsui-auto-focusable="${uniqueId}"]`).forEach(element => {
+        if (element instanceof HTMLElement) {
+          element.tabIndex = 0;
+        }
+      });
+    }
+  }, [getElementRoot, focusMuted, uniqueId]);
 }
