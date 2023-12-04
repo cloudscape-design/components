@@ -46,9 +46,7 @@ function setupTest(
     const page = new AppLayoutRefreshNotoficationsPage(browser);
     await page.setWindowSize(viewport);
     await browser.url(
-      `#/light/app-layout/notifications-refresh/?visualRefresh=true&motionDisabled=true${
-        removeNotifications ? `&removeNotifications` : ''
-      }`
+      `#/light/app-layout/notifications-refresh/?visualRefresh=true${removeNotifications ? `&removeNotifications` : ''}`
     );
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);

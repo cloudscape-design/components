@@ -39,7 +39,7 @@ function setupTest(viewportWidth: number, testFn: (page: AppLayoutRefreshNotofic
   return useBrowser(async browser => {
     const page = new AppLayoutRefreshNotoficationsPage(browser);
     await page.setWindowSize({ ...viewports.desktop, width: viewportWidth });
-    await browser.url('#/light/app-layout/refresh-content-width/?visualRefresh=true&motionDisabled=true');
+    await browser.url('#/light/app-layout/refresh-content-width/?visualRefresh=true');
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
