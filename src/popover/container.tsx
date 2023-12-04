@@ -7,7 +7,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { getContainingBlock } from '../internal/utils/dom';
 import { BoundingOffset, InternalPosition, Offset, PopoverProps } from './interfaces';
-import { calculatePosition, getOffsetDimensions } from './utils/positions';
+import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
@@ -105,10 +105,7 @@ export default function PopoverContainer({
       // Use getComputedStyle for arrowRect to avoid modifications made by transform
       const viewportRect = getViewportRect(document.defaultView!);
       const trackRect = track.getBoundingClientRect();
-      const arrowRect = {
-        width: parseFloat(getComputedStyle(arrow).width),
-        height: parseFloat(getComputedStyle(arrow).height),
-      };
+      const arrowRect = getDimensions(arrow);
       const containingBlock = getContainingBlock(popover);
       const containingBlockRect = containingBlock ? containingBlock.getBoundingClientRect() : viewportRect;
 

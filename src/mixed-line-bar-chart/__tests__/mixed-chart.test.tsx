@@ -12,6 +12,13 @@ import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
+jest.mock('../../../lib/components/popover/utils/positions', () => ({
+  ...jest.requireActual('../../../lib/components/popover/utils/positions'),
+  // Overcome lack of dimensions in JSDOM by providing approximate values.
+  getDimensions: () => ({ width: 10, height: 10 }), // Used to retrieve the arrow dimensions
+  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Used to retrieve the popover dimensions
+}));
+
 const statusTypes: Array<MixedLineBarChartProps<number>['statusType']> = ['finished', 'loading', 'error'];
 
 function expectToExist(wrapper: ElementWrapper | null, shouldExist: boolean) {

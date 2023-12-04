@@ -282,3 +282,10 @@ export function calculatePosition({
 export function getOffsetDimensions(element: HTMLElement) {
   return { offsetHeight: element.offsetHeight, offsetWidth: element.offsetWidth };
 }
+
+export function getDimensions(element: HTMLElement) {
+  return {
+    width: parseFloat(getComputedStyle(element).width),
+    height: parseFloat(getComputedStyle(element).height),
+  };
+}

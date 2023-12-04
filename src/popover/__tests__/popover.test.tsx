@@ -12,7 +12,9 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => ({
   ...jest.requireActual('../../../lib/components/popover/utils/positions'),
-  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }),
+  // Overcome lack of dimensions in JSDOM by providing approximate values.
+  getDimensions: () => ({ width: 10, height: 10 }), // Used to retrieve the arrow dimensions
+  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Used to retrieve the popover dimensions
 }));
 
 class PopoverInternalWrapper extends PopoverWrapper {
