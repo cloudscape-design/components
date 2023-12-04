@@ -10,7 +10,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderControlFocusRingShadowSpread: '0px',
   borderControlInvalidFocusRingShadowSpread: '2px',
   borderDividerListWidth: '1px',
-  borderDividerSectionWidth: '2px',
+  borderDividerSectionWidth: '1px',
   borderDropdownVirtualOffsetWidth: '2px',
   borderFieldWidth: '2px',
   borderInvalidWidth: '8px',

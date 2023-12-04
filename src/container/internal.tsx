@@ -131,7 +131,8 @@ export default function InternalContainer({
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
         hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
-        shouldHaveStickyStyles && [styles['sticky-enabled']]
+        shouldHaveStickyStyles && [styles['sticky-enabled']],
+        isRefresh && styles.refresh
       )}
       ref={mergedRef}
     >

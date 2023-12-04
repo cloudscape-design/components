@@ -44,7 +44,7 @@
       border-top-right-radius: 0;
     }
     // Replace container border with a divider
-    &-stacked + &-stacked::before {
+    &-stacked + &-stacked:not(.refresh)::before {
       @include shared.divider;
     }
     // Reset container shadow to prevent unwanted overflow

@@ -147,7 +147,6 @@
     @include utils.base-pseudo-element;
     box-shadow: awsui.$shadow-container;
     border-radius: awsui.$border-radius-container;
-    mix-blend-mode: multiply;
   }
 
   // HACK: because of the issues with IE's box shadow rendering we draw
