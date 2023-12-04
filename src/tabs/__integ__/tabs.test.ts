@@ -58,8 +58,7 @@ class TabsPage extends BasePageObject {
 const setupTest = (testFn: (page: TabsPage) => Promise<void>, smallViewport = false) => {
   return useBrowser(async browser => {
     const page = new TabsPage(browser);
-    // TODO: Remove VR flag once AWSUI-18703 is fixed
-    await browser.url('#/light/tabs/responsive-integ/?motionDisabled=true&visualRefresh=false');
+    await browser.url('#/light/tabs/responsive-integ');
     await page.waitForVisible(wrapper.findTabContent().toSelector());
     if (smallViewport) {
       await page.setWindowSize({ width: 400, height: 1000 });
@@ -188,7 +187,7 @@ test(
 test(
   'adds pagination buttons upon changing the tabs array',
   setupTest(async page => {
-    await page.setWindowSize({ width: 700, height: 1000 });
+    await page.setWindowSize({ width: 800, height: 1000 });
     await page.hasPaginationButtons(false);
     await page.click('#add-tab');
     await page.hasPaginationButtons(true);
