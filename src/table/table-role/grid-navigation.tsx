@@ -14,7 +14,6 @@ import { GridNavigationHelper } from './grid-navigation-helper';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getAllFocusables } from '../../internal/components/focus-lock/utils';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import { findUpUntil } from '../../internal/utils/dom';
 
 export const GridNavigationContext = createContext<{
   focusMuted: boolean;
@@ -122,9 +121,14 @@ export function useGridNavigationFocusable(
   return { focusMuted, focusTargetMuted };
 }
 
-export function useGridNavigationAutoRegisterFocusable(getElementRoot: FocusableDefinition) {
+export function useGridNavigationAutoRegisterFocusable(
+  getElementRoot: FocusableDefinition,
+  isSuppressed: (el: HTMLElement) => boolean = () => false
+) {
   const uniqueId = useUniqueId();
   const { focusMuted, registerFocusable } = useGridNavigationContext();
+
+  const stableIsSuppressed = useStableCallback(isSuppressed);
 
   useEffect(() => {
     const root = getFocusableElement(getElementRoot);
@@ -137,20 +141,20 @@ export function useGridNavigationAutoRegisterFocusable(getElementRoot: Focusable
         !element.tabIndex || element.tabIndex >= 0 || element.getAttribute('data-awsui-auto-focusable') === uniqueId
     );
 
-    const registers = allFocusables.map(element => {
-      if (!findUpUntil(element, el => el.getAttribute('data-awsui-table-suppress-navigation') === 'true')) {
+    const registers = allFocusables
+      .filter(element => !stableIsSuppressed(element))
+      .map(element => {
         element.tabIndex = -1;
         element.setAttribute('data-awsui-auto-focusable', uniqueId);
-      }
 
-      const handler = (focusTarget: null | HTMLElement) => {
-        if (element === focusTarget) {
-          element.tabIndex = 0;
-        }
-      };
+        const handler = (focusTarget: null | HTMLElement) => {
+          if (element === focusTarget) {
+            element.tabIndex = 0;
+          }
+        };
 
-      return registerFocusable(() => element, handler);
-    });
+        return registerFocusable(() => element, handler);
+      });
 
     return () => registers.forEach(reg => reg());
   });

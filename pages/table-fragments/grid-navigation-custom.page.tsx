@@ -341,7 +341,7 @@ function DnsEditCell({ item }: { item: Instance }) {
   const [value, setValue] = useState(item.dnsName ?? '');
   const dialogRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  useGridNavigationAutoRegisterFocusable(rootRef);
+  useGridNavigationAutoRegisterFocusable(rootRef, () => active);
   return !active ? (
     <div ref={rootRef}>
       <div
@@ -391,7 +391,7 @@ function EditableStateCell({ value, onChange }: { value: InstanceState; onChange
   const dialogRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  useGridNavigationAutoRegisterFocusable(rootRef);
+  useGridNavigationAutoRegisterFocusable(rootRef, () => active);
 
   if (!active) {
     return value === 'TERMINATED' ? (
