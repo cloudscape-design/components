@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getAllFocusables } from '../../internal/components/focus-lock/utils';
-import { FocusedCell } from './interfaces';
+import { FocusableDefinition, FocusedCell } from './interfaces';
 
 export function getAllowedFocusables(from: HTMLElement, mutedElements: Set<HTMLElement>) {
   return getAllFocusables(from).filter(el => mutedElements.has(el));
@@ -91,6 +91,10 @@ export function getSingleFocusable(table: HTMLTableElement, cell: null | Focused
   }
 
   return focusTarget;
+}
+
+export function getFocusableElement(focusable: FocusableDefinition): null | HTMLElement {
+  return typeof focusable === 'function' ? focusable() : focusable.current;
 }
 
 export function defaultIsSuppressed(target: HTMLElement) {
