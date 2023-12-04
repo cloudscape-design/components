@@ -220,7 +220,7 @@ export function intersectRectangles(rectangles: BoundingOffset[]): number | null
  */
 export function calculatePosition({
   preferredPosition,
-  fixedIternalPosition,
+  fixedInternalPosition,
   trigger,
   arrow,
   body,
@@ -230,7 +230,7 @@ export function calculatePosition({
   renderWithPortal,
 }: {
   preferredPosition: PopoverProps.Position;
-  fixedIternalPosition?: InternalPosition;
+  fixedInternalPosition?: InternalPosition;
   trigger: BoundingOffset;
   arrow: BoundingBox;
   body: BoundingBox;
@@ -243,8 +243,8 @@ export function calculatePosition({
   let largestArea = 0;
 
   // If a fixed internal position is passed, only consider this one.
-  const preferredInternalPositions = fixedIternalPosition
-    ? [fixedIternalPosition]
+  const preferredInternalPositions = fixedInternalPosition
+    ? [fixedInternalPosition]
     : PRIORITY_MAPPING[preferredPosition];
 
   // Attempt to position the popover based on the priority list for this position,

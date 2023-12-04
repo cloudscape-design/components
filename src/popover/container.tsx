@@ -134,7 +134,7 @@ export default function PopoverContainer({
         boundingOffset,
       } = calculatePosition({
         preferredPosition: position,
-        fixedIternalPosition: fixedInternalPosition,
+        fixedInternalPosition,
         trigger: trackRect,
         arrow: arrowRect,
         body: contentBoundingBox,
