@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
@@ -984,7 +984,7 @@ describe('Details popover', () => {
     wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
-    jest.runAllTimers();
+    act(() => void jest.runAllTimers());
 
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
   });
@@ -999,7 +999,7 @@ describe('Details popover', () => {
     wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
-    jest.runAllTimers();
+    act(() => void jest.runAllTimers());
 
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
   });
