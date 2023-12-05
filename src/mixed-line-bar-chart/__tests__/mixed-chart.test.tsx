@@ -11,11 +11,18 @@ import chartWrapperStyles from '../../../lib/components/internal/components/char
 import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { CalculatePositionProps } from '../../../lib/components/popover/utils/positions';
 
-jest.mock('../../../lib/components/popover/utils/positions', () => ({
-  ...jest.requireActual('../../../lib/components/popover/utils/positions'),
-  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
-}));
+let mockCalculatePosition: jest.Mock | undefined;
+jest.mock('../../../lib/components/popover/utils/positions', () => {
+  const originalModule = jest.requireActual('../../../lib/components/popover/utils/positions');
+  return {
+    ...originalModule,
+    calculatePosition: (args: CalculatePositionProps) =>
+      mockCalculatePosition ? mockCalculatePosition(args) : originalModule.calculatePosition(args),
+    getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
+  };
+});
 
 const statusTypes: Array<MixedLineBarChartProps<number>['statusType']> = ['finished', 'loading', 'error'];
 
@@ -1024,31 +1031,60 @@ describe('Details popover', () => {
     wrapper.findApplication()!.focus();
     expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
   });
-});
 
-test('highlighted series are controllable', () => {
-  const { wrapper, rerender } = renderMixedChart(
-    <MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={lineSeries} />
-  );
+  test('highlighted series are controllable', () => {
+    const { wrapper, rerender } = renderMixedChart(
+      <MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={lineSeries} />
+    );
 
-  expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[0].getElement());
-  expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
-    wrapper.findLegend()?.findItems()[0].getElement()
-  );
+    expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[0].getElement());
+    expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
+      wrapper.findLegend()?.findItems()[0].getElement()
+    );
 
-  rerender(<MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={thresholdSeries} />);
-  expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[1].getElement());
-  expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
-    wrapper.findLegend()?.findItems()[1].getElement()
-  );
-});
+    rerender(<MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={thresholdSeries} />);
+    expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[1].getElement());
+    expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
+      wrapper.findLegend()?.findItems()[1].getElement()
+    );
+  });
 
-test('highlights relevant x-thresholds when navigating line series', () => {
-  const { wrapper } = renderMixedChart(
-    <MixedLineBarChart series={[lineSeries, { type: 'threshold', title: 'X-Threshold 1', x: 0 }]} />
-  );
-  wrapper.findApplication()!.focus();
+  test('highlights relevant x-thresholds when navigating line series', () => {
+    const { wrapper } = renderMixedChart(
+      <MixedLineBarChart series={[lineSeries, { type: 'threshold', title: 'X-Threshold 1', x: 0 }]} />
+    );
+    wrapper.findApplication()!.focus();
 
-  expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('Line Series 1');
-  expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('X-Threshold 1');
+    expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('Line Series 1');
+    expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('X-Threshold 1');
+  });
+
+  describe('does not recalculate position when interacting with the popover', () => {
+    beforeEach(() => {
+      mockCalculatePosition = jest.fn().mockReturnValue({
+        scrollable: false,
+        internalPosition: 'right-top',
+        boundingOffset: { left: 100, top: 100, width: 100, height: 100 },
+      });
+    });
+    afterEach(() => {
+      mockCalculatePosition = undefined;
+    });
+
+    test('on click', () => {
+      const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+      wrapper.findApplication()!.focus();
+      mockCalculatePosition!.mockClear();
+      wrapper.findDetailPopover()!.click();
+      expect(mockCalculatePosition).not.toHaveBeenCalled();
+    });
+
+    test('on pressing space', () => {
+      const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+      wrapper.findApplication()!.focus();
+      mockCalculatePosition!.mockClear();
+      wrapper.findDetailPopover()!.keyup(KeyCode.space);
+      expect(mockCalculatePosition).not.toHaveBeenCalled();
+    });
+  });
 });

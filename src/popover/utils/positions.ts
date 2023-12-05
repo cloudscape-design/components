@@ -3,10 +3,21 @@
 import { PopoverProps, InternalPosition, BoundingOffset, BoundingBox } from '../interfaces';
 
 // A structure describing how the popover should be positioned
-export interface CalculatePosition {
+export interface CalculatedPosition {
   scrollable?: boolean;
   internalPosition: InternalPosition;
   boundingOffset: BoundingOffset;
+}
+
+export interface CalculatePositionProps {
+  preferredPosition: PopoverProps.Position;
+  fixedInternalPosition?: InternalPosition;
+  trigger: BoundingOffset;
+  arrow: BoundingBox;
+  body: BoundingBox;
+  container: BoundingOffset;
+  viewport: BoundingOffset;
+  renderWithPortal?: boolean;
 }
 
 interface ElementGroup {
@@ -228,18 +239,8 @@ export function calculatePosition({
   viewport,
   // the popover is only bound by the viewport if it is rendered in a portal
   renderWithPortal,
-}: {
-  preferredPosition: PopoverProps.Position;
-  fixedInternalPosition?: InternalPosition;
-  trigger: BoundingOffset;
-  arrow: BoundingBox;
-  body: BoundingBox;
-  container: BoundingOffset;
-  viewport: BoundingOffset;
-  // the popover is only bound by the viewport if it is rendered in a portal
-  renderWithPortal?: boolean;
-}): CalculatePosition {
-  let bestPositionOutsideViewport: CalculatePosition | null = null;
+}: CalculatePositionProps): CalculatedPosition {
+  let bestPositionOutsideViewport: CalculatedPosition | null = null;
   let largestArea = 0;
 
   // If a fixed internal position is passed, only consider this one.
