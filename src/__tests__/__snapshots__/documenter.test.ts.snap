@@ -401,7 +401,18 @@ Object {
     Object {
       "cancelable": false,
       "description": "Fired when the active drawer is toggled.",
-      "detailType": "unknown",
+      "detailInlineType": Object {
+        "name": "AppLayoutProps.DrawerChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "activeDrawerId",
+            "optional": false,
+            "type": "null | string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "AppLayoutProps.DrawerChangeDetail",
       "name": "onDrawerChange",
     },
     Object {
