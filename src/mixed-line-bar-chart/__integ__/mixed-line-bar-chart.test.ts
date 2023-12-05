@@ -463,6 +463,22 @@ describe('Details popover', () => {
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
     })
   );
+
+  test(
+    'Should still open popver when focus move out then move in again with keyboard',
+    setupTest('#/light/bar-chart/test', async page => {
+      await page.click('#focus-target');
+      // Should open popver when focus on a bar with keyboard
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(true);
+      // Should close popver when lose focus
+      await page.keys(['Tab', 'Tab']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(false);
+      // Should open popver when move focus back to the bar
+      await page.keys(['Shift', 'Tab', 'ArrowRight']);
+      await expect(page.isDisplayed(popoverContentSelector())).resolves.toBe(true);
+    })
+  );
 });
 
 describe('Chart container', () => {
