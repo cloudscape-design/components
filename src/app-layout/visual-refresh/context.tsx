@@ -516,7 +516,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * The first is the the content gap on the right which is stored in a design token
      * and applied in the Layout CSS:
      *
-     * $contentGapRight: #{awsui.$space-scaled-2x-xl};
+     * $contentGapRight: #{awsui.$space-layout-content-horizontal};
      *
      * The second is the width of the element that has the circular buttons for the
      * Tools and Split Panel. This could be suppressed given the state of the Tools
