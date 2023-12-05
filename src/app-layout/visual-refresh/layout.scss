@@ -182,11 +182,11 @@ explicitly set in script.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     &.has-content-gap-left {
-      #{custom-props.$contentGapLeft}: #{awsui.$space-scaled-2x-xxxl};
+      #{custom-props.$contentGapLeft}: #{awsui.$space-layout-content-horizontal};
     }
 
     &.has-content-gap-right {
-      #{custom-props.$contentGapRight}: #{awsui.$space-scaled-2x-xxxl};
+      #{custom-props.$contentGapRight}: #{awsui.$space-layout-content-horizontal};
     }
   }
 

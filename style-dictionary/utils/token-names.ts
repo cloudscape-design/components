@@ -610,6 +610,7 @@ export type SpacingTokenName =
   | 'spaceGridGutter'
   | 'spaceKeyValueGap'
   | 'spaceLayoutContentBottom'
+  | 'spaceLayoutContentHorizontal'
   | 'spaceLayoutToggleDiameter'
   | 'spaceLayoutTogglePadding'
   | 'spaceModalContentBottom'
