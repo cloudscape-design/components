@@ -48,6 +48,7 @@ export interface ChartPlotProps {
   onFocus?: (event: React.FocusEvent<SVGGElement>, trigger: 'mouse' | 'keyboard') => void;
   onBlur?: (event: React.FocusEvent<SVGGElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<SVGGElement>) => void;
+  showPopoverOfHighlightedItem?: () => void;
   children: React.ReactNode;
 }
 
@@ -87,6 +88,7 @@ function ChartPlot(
     onKeyDown,
     onFocus,
     onBlur,
+    showPopoverOfHighlightedItem,
     focusOffset = DEFAULT_PLOT_FOCUS_OFFSET,
     activeElementFocusOffset = DEFAULT_ELEMENT_FOCUS_OFFSET,
     ...restProps
@@ -137,6 +139,11 @@ function ChartPlot(
       const codes = [KeyCode.space, KeyCode.enter, KeyCode.up, KeyCode.left, KeyCode.right, KeyCode.down];
       if (codes.indexOf(event.keyCode) !== -1) {
         applicationRef.current!.focus();
+        // when focus on the plot, check if there is highlighted item and show popover
+        // because if focus moves to already highlighted item, highlightedX stays the same, popover may not show up
+        if (showPopoverOfHighlightedItem) {
+          showPopoverOfHighlightedItem();
+        }
       }
     }
   };
