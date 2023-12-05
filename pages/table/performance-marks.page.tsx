@@ -8,6 +8,7 @@ export default function ButtonsScenario() {
   const [loading, setLoading] = useState(true);
   return (
     <Box padding="xxl">
+      <h1>Performance marks in table</h1>
       <SpaceBetween size="xxl">
         <label>
           <input type="checkbox" checked={loading} onChange={e => setLoading(e.target.checked)} id="loading" />
