@@ -66,7 +66,7 @@ export default function PopoverContainer({
   const clickedInside = useRef(false);
 
   // Due to applying max height in some cases, it can take more than one render to have the popover in its final desired size.
-  // This ref allows us to track that series of render cycles.
+  // This ref allows us to track such series of render cycles triggered by a click inside a popover.
   const resizingAfterInternalClick = useRef(false);
 
   // Updates the position handler.
