@@ -11,15 +11,11 @@ import chartWrapperStyles from '../../../lib/components/internal/components/char
 import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import { CalculatePositionProps } from '../../../lib/components/popover/utils/positions';
+import positions from '../../../lib/components/popover/utils/positions';
 
-let mockCalculatePosition: jest.Mock | undefined;
 jest.mock('../../../lib/components/popover/utils/positions', () => {
-  const originalModule = jest.requireActual('../../../lib/components/popover/utils/positions');
   return {
-    ...originalModule,
-    calculatePosition: (args: CalculatePositionProps) =>
-      mockCalculatePosition ? mockCalculatePosition(args) : originalModule.calculatePosition(args),
+    ...jest.requireActual('../../../lib/components/popover/utils/positions'),
     getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
   };
 });
@@ -1043,31 +1039,29 @@ describe('Details popover', () => {
   });
 
   describe('does not recalculate position when interacting with the popover', () => {
+    let spy: jest.SpyInstance | undefined;
+
     beforeEach(() => {
-      mockCalculatePosition = jest.fn().mockReturnValue({
-        scrollable: false,
-        internalPosition: 'right-top',
-        boundingOffset: { left: 100, top: 100, width: 100, height: 100 },
-      });
+      spy = jest.spyOn(positions, 'calculatePosition');
     });
     afterEach(() => {
-      mockCalculatePosition = undefined;
+      jest.restoreAllMocks();
     });
 
     test('on click', () => {
       const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
       wrapper.findApplication()!.focus();
-      mockCalculatePosition!.mockClear();
+      spy!.mockClear();
       wrapper.findDetailPopover()!.click();
-      expect(mockCalculatePosition).not.toHaveBeenCalled();
+      expect(spy).not.toHaveBeenCalled();
     });
 
     test('on pressing space', () => {
       const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
       wrapper.findApplication()!.focus();
-      mockCalculatePosition!.mockClear();
+      spy!.mockClear();
       wrapper.findDetailPopover()!.keyup(KeyCode.space);
-      expect(mockCalculatePosition).not.toHaveBeenCalled();
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 
