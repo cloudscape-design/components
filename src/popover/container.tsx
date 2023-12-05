@@ -32,7 +32,7 @@ export interface PopoverContainerProps {
   size: PopoverProps.Size;
   fixedWidth: boolean;
   variant?: 'annotation';
-  keepPositionWhenInteracting?: boolean;
+  keepPositionOnResize?: boolean;
 }
 
 const INITIAL_STYLES: CSSProperties = { top: -9999, left: -9999 };
@@ -48,7 +48,7 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
-  keepPositionWhenInteracting,
+  keepPositionOnResize,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -61,13 +61,6 @@ export default function PopoverContainer({
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
-
-  // Remember when the popover was clicked in order to prevent eventually undesired position recalculations coming from that interaction.
-  const clickedInside = useRef(false);
-
-  // Due to applying max height in some cases, it can take more than one render to have the popover in its final desired size.
-  // This ref allows us to track such series of render cycles triggered by a click inside a popover.
-  const resizingAfterInternalClick = useRef(false);
 
   // Updates the position handler.
   const updatePositionHandler = useCallback(
@@ -118,16 +111,11 @@ export default function PopoverContainer({
         height: contentRect.height + 2 * bodyBorderWidth,
       };
 
-      // When keepPositionWhenInteracting and the resizing was caused by a click inside the popover,
+      // When keepPositionOnResize is true and the recalculation was triggered by a resize of the popover content,
       // we maintain the previously defined internal position,
       // but we still call calculatePosition to know if the popover should be scrollable.
       const fixedInternalPosition =
-        keepPositionWhenInteracting &&
-        onResize &&
-        (clickedInside.current || resizingAfterInternalClick.current) &&
-        internalPositionRef.current
-          ? internalPositionRef.current
-          : undefined;
+        keepPositionOnResize && onResize && internalPositionRef.current ? internalPositionRef.current : undefined;
 
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
@@ -167,12 +155,6 @@ export default function PopoverContainer({
       internalPositionRef.current = newInternalPosition;
       setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
 
-      // If we made the popover body scrollable, it is possible that by setting the max height we changed its dimensions,
-      // which will trigger this function once more via resize observer.
-      // Remember this fact in case we want to prevent repositioning in the next render.
-      resizingAfterInternalClick.current =
-        !!fixedInternalPosition && contentRect.height !== contentRef.current.getBoundingClientRect().height;
-
       positionHandlerRef.current = () => {
         const newTrackOffset = toRelativePosition(
           track.getBoundingClientRect(),
@@ -184,7 +166,7 @@ export default function PopoverContainer({
         });
       };
     },
-    [trackRef, keepPositionWhenInteracting, position, renderWithPortal]
+    [trackRef, keepPositionOnResize, position, renderWithPortal]
   );
 
   // Recalculate position when properties change.
@@ -205,21 +187,19 @@ export default function PopoverContainer({
     */
 
     const onClick = (event: UIEvent | KeyboardEvent) => {
-      // Remember whether the last click came from inside the popover in case that this click
-      // triggers a resize, which will trigger updatePositionHandler via resize observer.
-      // If keepPositionWhenInteracting is true, we will want to prevent that position update.
-      clickedInside.current = !!keepPositionWhenInteracting && nodeContains(popoverRef.current, event.target);
+      if (
+        // Do not update position if the click was on the popover itself
+        // and keepPositionOnResize is true.
+        (keepPositionOnResize && nodeContains(popoverRef.current, event.target)) ||
+        // If the click was on the trigger, this will make the popover appear or disappear,
+        // so no need to update its position either in this case.
+        nodeContains(trackRef.current, event.target)
+      ) {
+        return;
+      }
 
       requestAnimationFrame(() => {
-        if (
-          // No need to update position when the click comes from the trigger itself.
-          !nodeContains(trackRef.current, event.target) &&
-          // If keepPositionWhenInteracting is true, prevent updating the position when the clicks come from the trigger or the popover itself.
-          !clickedInside.current
-        ) {
-          updatePositionHandler();
-        }
-        clickedInside.current = false;
+        updatePositionHandler();
       });
     };
 
@@ -247,7 +227,7 @@ export default function PopoverContainer({
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [keepPositionWhenInteracting, trackRef, updatePositionHandler]);
+  }, [keepPositionOnResize, trackRef, updatePositionHandler]);
 
   return (
     <div
