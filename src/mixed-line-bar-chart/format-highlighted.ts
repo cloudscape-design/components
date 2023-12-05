@@ -88,11 +88,14 @@ function getSeriesDetail<T>({
         if (isExpandable && !isKeyString) {
           warnOnce(
             'MixedLineBarChart',
-            'A ReactNode was used for the key of an expandable series. The series title will be used instead because nested interactive elements can cause accessiblity issues'
+            'A ReactNode was used for the key of an expandable series. The series title will be used instead because nested interactive elements can cause accessiblity issues.'
           );
         }
         if (!isKeyString && !isExpandable && customContent?.value && typeof customContent.value !== 'string') {
-          warnOnce('MixedLineBarChart', 'Use a ReactNode for the key or the value of a series, but not for both');
+          warnOnce(
+            'MixedLineBarChart',
+            'Use a ReactNode for the key or the value of a series, but not for both. It is not recommended to use links for key and value at the same time.'
+          );
         }
 
         return {
