@@ -5346,6 +5346,137 @@ If true, the overlap will be removed.",
 }
 `;
 
+exports[`Documenter definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": true,
+      "description": "Called when the user clicks on the copy button. Use it to copy the related content to clipboard: \`navigator.clipboard.writeText('[text to be copied]')\`.",
+      "detailInlineType": Object {
+        "name": "ClickDetail",
+        "properties": Array [
+          Object {
+            "name": "altKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "button",
+            "optional": false,
+            "type": "number",
+          },
+          Object {
+            "name": "ctrlKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "metaKey",
+            "optional": false,
+            "type": "boolean",
+          },
+          Object {
+            "name": "shiftKey",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ClickDetail",
+      "name": "onClick",
+    },
+  ],
+  "functions": Array [],
+  "name": "CopyToClipboard",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-label\` to the button element. It should be used in buttons that don't have text in order to make
+them accessible. The text will also be added to the \`title\` attribute of the button.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": Object {
+        "name": "CopyToClipboardProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "copyButtonText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "CopyToClipboardProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "A text fragment that communicates the outcome. The recommended messages are:
+* \\"[Name of the content] copied\\" for success;
+* \\"[Name of the content] failed to copy\\" for error.",
+      "name": "message",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"success\\"",
+      "description": "Specifies the message type and can be either \`success\` or \`error\`.
+Defaults to \`success\`.",
+      "inlineType": Object {
+        "name": "CopyToClipboardProps.MessageType",
+        "type": "union",
+        "values": Array [
+          "success",
+          "error",
+        ],
+      },
+      "name": "messageType",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"normal\\"",
+      "description": "Determines the general styling of the copy button as follows:
+* \`normal\` to display a secondary button with an icon and \`i18nStrings.copyButtonText\` as text.
+* \`inline\` to display an icon-only (no text) button within a text context.
+Defaults to \`normal\`.",
+      "inlineType": Object {
+        "name": "CopyToClipboardProps.Variant",
+        "type": "union",
+        "values": Array [
+          "normal",
+          "inline",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for date-input matches the snapshot: date-input 1`] = `
 Object {
   "events": Array [

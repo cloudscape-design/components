@@ -9,6 +9,7 @@ import InternalButton from '../button/internal';
 import InternalPopover from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { useInternalI18n } from '../i18n/context';
+import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
 
@@ -23,7 +24,7 @@ export default function CopyToClipboard({
   i18nStrings,
   ...restProps
 }: CopyToClipboardProps) {
-  const baseComponentProps = useBaseComponent('CopyToClipboard');
+  const { __internalRootRef } = useBaseComponent('CopyToClipboard');
   const baseProps = getBaseProps(restProps);
 
   const i18n = useInternalI18n('copy-to-clipboard');
@@ -32,7 +33,7 @@ export default function CopyToClipboard({
     variant === 'normal' ? { children: copyButtonText, ariaLabel } : { ariaLabel: ariaLabel ?? copyButtonText };
 
   return (
-    <div {...baseComponentProps} {...baseProps} className={clsx(baseProps.className, testStyles.root)}>
+    <div ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       <InternalPopover
         size="medium"
         position="top"
@@ -46,6 +47,7 @@ export default function CopyToClipboard({
           onClick={onClick}
           variant={variant === 'normal' ? 'normal' : 'inline-icon'}
           wrapText={false}
+          formAction="none"
         />
       </InternalPopover>
     </div>
