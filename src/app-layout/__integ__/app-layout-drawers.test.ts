@@ -94,6 +94,9 @@ const setupTest = (
 
 for (const visualRefresh of ['true', 'false']) {
   describe(`visualRefresh=${visualRefresh}`, () => {
+    // there is an extra border inside drawer box in visual refresh
+    const vrBorderOffset = visualRefresh === 'true' ? 2 : 0;
+
     test(
       'slider is accessible by keyboard in side position',
       setupTest({ visualRefresh }, async page => {
@@ -126,9 +129,9 @@ for (const visualRefresh of ['true', 'false']) {
         const { width } = await page.getWindowSize();
         await page.dragResizerTo({ x: width, y: 0 });
         // there are different layouts between these two designs
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 292 : 280);
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
         await page.dragResizerTo({ x: 0, y: 0 });
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 362 : 520);
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 448 : 520);
       })
     );
 
@@ -151,9 +154,7 @@ for (const visualRefresh of ['true', 'false']) {
       `should not shrink drawer beyond min width`,
       setupTest({ visualRefresh, screenSize: { ...viewports.desktop, width: 700 } }, async page => {
         await page.openThirdDrawer();
-        // there are different layouts between these two designs
-        // the min-width of the drawer is 290
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 292 : 290);
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
       })
     );
 

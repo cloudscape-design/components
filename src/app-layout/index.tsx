@@ -158,6 +158,7 @@ const OldAppLayout = React.forwardRef(
     const {
       drawers,
       activeDrawer,
+      minDrawerSize,
       activeDrawerSize,
       activeDrawerId,
       ariaLabelsWithDrawers,
@@ -673,6 +674,7 @@ const OldAppLayout = React.forwardRef(
               type="tools"
               onLoseFocus={loseDrawersFocus}
               activeDrawer={activeDrawer}
+              minSize={minDrawerSize}
               size={!isResizeInvalid ? activeDrawerSize : toolsWidth}
               onResize={changeDetail => onActiveDrawerResize(changeDetail)}
               refs={drawerRefs}

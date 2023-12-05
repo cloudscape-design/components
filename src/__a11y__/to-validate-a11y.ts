@@ -23,8 +23,6 @@ const htmlValidator = new HtmlValidate({
     'valid-id': ['error', { relaxed: true }],
     'no-inline-style': 'off',
     'prefer-native-element': ['error', { exclude: ['listbox', 'button', 'region'] }],
-    //TODO: revisit 'no-redundant-for' when fixing AWSUI-18968
-    'no-redundant-for': 'off',
     // innerHTML normalizes attribute values
     // https://stackoverflow.com/questions/48092293/javascript-innerhtml-messing-with-html-attributes
     'attribute-boolean-style': 'off',
