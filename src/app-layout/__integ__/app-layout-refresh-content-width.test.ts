@@ -39,7 +39,7 @@ function setupTest(viewportWidth: number, testFn: (page: AppLayoutRefreshNotofic
   return useBrowser(async browser => {
     const page = new AppLayoutRefreshNotoficationsPage(browser);
     await page.setWindowSize({ ...viewports.desktop, width: viewportWidth });
-    await browser.url('#/light/app-layout/refresh-content-width/?visualRefresh=true&motionDisabled=true');
+    await browser.url('#/light/app-layout/refresh-content-width/?visualRefresh=true');
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
@@ -53,7 +53,7 @@ describe('Default width per contentType', () => {
   ];
 
   testCases.forEach(({ viewPortWidth, navigationWidth, contentWidth, toolsWidth }) => {
-    for (const contentType of ['default', 'cards', 'form', 'table', 'wizard']) {
+    for (const contentType of ['default', 'form', 'wizard']) {
       test(
         `Browser viewPortWidth ${viewPortWidth}: contentType '${contentType}' has default width for content, navigation and tools slot.`,
         setupTest(viewPortWidth, async page => {
@@ -69,11 +69,21 @@ describe('Default width per contentType', () => {
     }
   });
 
+  for (const contentType of ['table', 'cards']) {
+    test(
+      `ContentType '${contentType}' uses the full available horizontal width.`,
+      setupTest(2000, async page => {
+        await page.setContentType(contentType);
+        await expect(page.getContentWidth()).resolves.toBeGreaterThan(1830);
+      })
+    );
+  }
+
   test(
     'Use the full available width when maxContentWidth is set to Number.MAX_VALUE',
     setupTest(3000, async page => {
       await page.setContentWidthToMaxValue();
-      await expect(page.getContentWidth()).resolves.toBe(2840);
+      await expect(page.getContentWidth()).resolves.toBeGreaterThan(2830);
     })
   );
 

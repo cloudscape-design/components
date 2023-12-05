@@ -98,6 +98,10 @@ explicitly set in script.
         }
       }
     }
+    &.content-type-table,
+    &.content-type-cards {
+      #{custom-props.$defaultMaxContentWidth}: 100%;
+    }
   }
 
   /*
