@@ -1032,23 +1032,6 @@ describe('Details popover', () => {
     expect(wrapper.findDetailPopover()?.findContent()?.getElement()).toHaveTextContent('Details about Group 1');
   });
 
-  test('highlighted series are controllable', () => {
-    const { wrapper, rerender } = renderMixedChart(
-      <MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={lineSeries} />
-    );
-
-    expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[0].getElement());
-    expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
-      wrapper.findLegend()?.findItems()[0].getElement()
-    );
-
-    rerender(<MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={thresholdSeries} />);
-    expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[1].getElement());
-    expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
-      wrapper.findLegend()?.findItems()[1].getElement()
-    );
-  });
-
   test('highlights relevant x-thresholds when navigating line series', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart series={[lineSeries, { type: 'threshold', title: 'X-Threshold 1', x: 0 }]} />
@@ -1086,5 +1069,22 @@ describe('Details popover', () => {
       wrapper.findDetailPopover()!.keyup(KeyCode.space);
       expect(mockCalculatePosition).not.toHaveBeenCalled();
     });
+  });
+
+  test('highlighted series are controllable', () => {
+    const { wrapper, rerender } = renderMixedChart(
+      <MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={lineSeries} />
+    );
+
+    expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[0].getElement());
+    expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
+      wrapper.findLegend()?.findItems()[0].getElement()
+    );
+
+    rerender(<MixedLineBarChart series={[lineSeries, thresholdSeries]} highlightedSeries={thresholdSeries} />);
+    expect(wrapper.findHighlightedSeries()?.getElement()).toEqual(wrapper.findSeries()[1].getElement());
+    expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
+      wrapper.findLegend()?.findItems()[1].getElement()
+    );
   });
 });
