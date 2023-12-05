@@ -27,8 +27,7 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
   color?: string;
   isDimmed?: boolean;
   subItems?: ReadonlyArray<ChartDetailPair>;
-  expandable?: boolean;
-  seriesTitle?: string;
+  expandableId?: string;
 }
 export type ExpandedSeries = Set<string>;
 
@@ -70,25 +69,25 @@ function ChartSeriesDetails({
   return (
     <div {...baseProps} className={className} ref={detailsRef}>
       <ul className={styles.list}>
-        {details.map(({ key, value, markerType, color, isDimmed, subItems, expandable, seriesTitle }, index) => (
+        {details.map(({ key, value, markerType, color, isDimmed, subItems, expandableId }, index) => (
           <li
             key={index}
             className={clsx({
               [styles.dimmed]: isDimmed,
               [styles['list-item']]: true,
               [styles['with-sub-items']]: subItems?.length,
-              [styles.expandable]: expandable,
+              [styles.expandable]: !!expandableId,
             })}
           >
-            {subItems?.length && expandable && seriesTitle ? (
+            {subItems?.length && !!expandableId ? (
               <ExpandableSeries
                 itemKey={key}
                 value={value}
                 markerType={markerType}
                 color={color}
                 subItems={subItems}
-                expanded={isExpanded(seriesTitle)}
-                setExpandedState={state => setExpandedState && setExpandedState(seriesTitle, state)}
+                expanded={isExpanded(expandableId)}
+                setExpandedState={state => setExpandedState && setExpandedState(expandableId, state)}
               />
             ) : (
               <NonExpandableSeries

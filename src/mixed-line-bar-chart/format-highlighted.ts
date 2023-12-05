@@ -101,8 +101,7 @@ function getSeriesDetail<T>({
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
           subItems: customContent?.subItems,
-          expandable: isExpandable,
-          seriesTitle: series.title,
+          expandableId: isExpandable ? series.title : undefined,
         };
       }
     }
