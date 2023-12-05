@@ -18,17 +18,17 @@ describe('calculatePosition', () => {
       ['bottom', { top: 500, left: 500, height: 25, width: 25 }],
       ['left', { top: 500, left: 500, height: 25, width: 25 }],
     ] as const
-  ).forEach(([preferred, trigger]) => {
-    test(`takes first position for preferred="${preferred}" from priority mapping when enough space for it`, () => {
+  ).forEach(([preferredPosition, trigger]) => {
+    test(`takes first position for preferredPosition="${preferredPosition}" from priority mapping when enough space for it`, () => {
       const position = calculatePosition({
-        preferredPosition: preferred,
+        preferredPosition,
         trigger,
         arrow,
         body,
         container: viewport,
         viewport,
       });
-      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferred][0]);
+      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferredPosition][0]);
     });
   });
 
@@ -39,21 +39,21 @@ describe('calculatePosition', () => {
       ['bottom', { top: 500, left: 100, height: 25, width: 25 }],
       ['left', { top: 800, left: 500, height: 25, width: 25 }],
     ] as const
-  ).forEach(([preferred, trigger]) => {
-    test(`takes second position for preferred="${preferred}" from priority mapping when not enough space for first`, () => {
+  ).forEach(([preferredPosition, trigger]) => {
+    test(`takes second position for preferredPosition="${preferredPosition}" from priority mapping when not enough space for first`, () => {
       const position = calculatePosition({
-        preferredPosition: preferred,
+        preferredPosition,
         trigger,
         arrow,
         body,
         container: viewport,
         viewport,
       });
-      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferred][1]);
+      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferredPosition][1]);
     });
   });
 
-  describe('disregards preferred in favor of fixedInternalPosition when defined', () => {
+  describe('disregards preferredPosition in favor of fixedInternalPosition when defined', () => {
     (
       [
         ['top', { top: 500, left: 500, height: 25, width: 25 }],
@@ -61,10 +61,10 @@ describe('calculatePosition', () => {
         ['bottom', { top: 500, left: 500, height: 25, width: 25 }],
         ['left', { top: 500, left: 500, height: 25, width: 25 }],
       ] as const
-    ).forEach(([preferred, trigger]) => {
-      test(`preferred="${preferred}"`, () => {
+    ).forEach(([preferredPosition, trigger]) => {
+      test(`preferredPosition="${preferredPosition}"`, () => {
         const position = calculatePosition({
-          preferredPosition: preferred,
+          preferredPosition,
           fixedInternalPosition: 'right-top',
           trigger,
           arrow,
@@ -82,17 +82,17 @@ describe('calculatePosition', () => {
       ['top', { top: 200, left: 500, height: 25, width: 25 }],
       ['bottom', { top: 800, left: 500, height: 25, width: 25 }],
     ] as const
-  ).forEach(([preferred, trigger]) => {
-    test(`flips position for preferred="${preferred}" from priority mapping when not enough space above/below`, () => {
+  ).forEach(([preferredPosition, trigger]) => {
+    test(`flips position for preferredPosition="${preferredPosition}" from priority mapping when not enough space above/below`, () => {
       const position = calculatePosition({
-        preferredPosition: preferred,
+        preferredPosition,
         trigger,
         arrow,
         body,
         container: viewport,
         viewport,
       });
-      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferred][3]);
+      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferredPosition][3]);
     });
   });
 
