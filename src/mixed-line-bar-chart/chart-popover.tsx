@@ -73,13 +73,13 @@ function MixedChartPopover<T extends ChartDataTypes>(
                 details={highlightDetails.details}
                 setPopoverText={setPopoverText}
                 expandedSeries={expandedSeries[highlightDetails.position]}
-                setExpandedState={(index, isExpanded) =>
+                setExpandedState={(id, isExpanded) =>
                   setExpandedSeries(oldState => {
                     const expandedSeriesInCurrentCoordinate = new Set(oldState[highlightDetails.position]);
                     if (isExpanded) {
-                      expandedSeriesInCurrentCoordinate.add(index);
+                      expandedSeriesInCurrentCoordinate.add(id);
                     } else {
-                      expandedSeriesInCurrentCoordinate.delete(index);
+                      expandedSeriesInCurrentCoordinate.delete(id);
                     }
                     return {
                       ...oldState,
