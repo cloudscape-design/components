@@ -72,7 +72,7 @@ export namespace TopNavigationProps {
     title?: string;
     logo?: Logo;
     href: string;
-    onFollow?: CancelableEventHandler;
+    onFollow?: CancelableEventHandler<FollowDetail>;
   }
 
   export interface Logo {
@@ -123,5 +123,9 @@ export namespace TopNavigationProps {
     overflowMenuBackIconAriaLabel?: string;
     overflowMenuTriggerText?: string;
     overflowMenuTitleText?: string;
+  }
+  
+  export interface FollowDetail extends BaseNavigationDetail {
+      href: string;
   }
 }
