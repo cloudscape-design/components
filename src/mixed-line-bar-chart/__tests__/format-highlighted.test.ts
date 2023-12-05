@@ -25,13 +25,17 @@ describe('formatHighlighted', () => {
   it('formats line series details', () => {
     const formatted = formatHighlighted({ position: 1, series: createInternalSeries([lineSeries1]) });
 
-    expect(formatted.details).toEqual([{ key: 'Line Series 1', value: 8, markerType: 'line', color: '' }]);
+    expect(formatted.details).toEqual([
+      { key: 'Line Series 1', value: 8, markerType: 'line', color: '', seriesTitle: 'Line Series 1' },
+    ]);
   });
 
   it('formats bar series details', () => {
     const formatted = formatHighlighted({ position: 'Apples', series: createInternalSeries([barSeries]) });
 
-    expect(formatted.details).toEqual([{ key: 'Bar Series 1', value: 52, markerType: 'rectangle', color: '' }]);
+    expect(formatted.details).toEqual([
+      { key: 'Bar Series 1', value: 52, markerType: 'rectangle', color: '', seriesTitle: 'Bar Series 1' },
+    ]);
   });
 
   it('formats mixed series details', () => {
@@ -41,8 +45,8 @@ describe('formatHighlighted', () => {
     });
 
     expect(formatted.details).toEqual([
-      { key: 'Line Series 3', value: 7, markerType: 'line', color: '' },
-      { key: 'Bar Series 1', value: 77, markerType: 'rectangle', color: '' },
+      { key: 'Line Series 3', value: 7, markerType: 'line', color: '', seriesTitle: 'Line Series 3' },
+      { key: 'Bar Series 1', value: 77, markerType: 'rectangle', color: '', seriesTitle: 'Bar Series 1' },
       { key: 'Threshold 1', value: 8, markerType: 'dashed', color: '' },
     ]);
   });
@@ -54,7 +58,7 @@ describe('formatHighlighted', () => {
     });
 
     expect(formatted.details).toEqual([
-      { key: 'Bar Series 1', value: 52, markerType: 'rectangle', color: '' },
+      { key: 'Bar Series 1', value: 52, markerType: 'rectangle', color: '', seriesTitle: 'Bar Series 1' },
       { key: 'Threshold 1', value: 8, markerType: 'dashed', color: '' },
     ]);
   });
@@ -74,7 +78,7 @@ describe('formatHighlighted', () => {
       ]),
     });
     expect(formatted.details).toEqual([
-      { key: 'Bar Series 1', value: 'POTATOES77', markerType: 'rectangle', color: '' },
+      { key: 'Bar Series 1', value: 'POTATOES77', markerType: 'rectangle', color: '', seriesTitle: 'Bar Series 1' },
       { key: 'Threshold 1', value: '8.00', markerType: 'dashed', color: '' },
     ]);
   });
@@ -85,7 +89,7 @@ describe('formatHighlighted', () => {
       series: createInternalSeries([lineSeries1, xThresholdSeries1]),
     });
     expect(formatted.details).toEqual([
-      { key: 'Line Series 1', value: 10, markerType: 'line', color: '' },
+      { key: 'Line Series 1', value: 10, markerType: 'line', color: '', seriesTitle: 'Line Series 1' },
       { key: 'X-Threshold 1', value: '', markerType: 'dashed', color: '' },
     ]);
   });
