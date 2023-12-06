@@ -109,8 +109,7 @@ function ChartPlot(
     focusApplication: () => applicationRef.current!.focus(),
   }));
 
-  const onPlotClick = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    onClick && onClick(event);
+  const onMouseDown = () => {
     // Record the click was made for the application focus handler.
     plotClickedRef.current = true;
   };
@@ -122,6 +121,9 @@ function ChartPlot(
     else if (plotClickedRef.current) {
       applicationRef.current!.focus();
     }
+  };
+  const onPlotClick = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    onClick && onClick(event);
   };
   const onPlotBlur = (event: React.FocusEvent<SVGSVGElement>) => {
     if (event.target === svgRef.current) {
@@ -184,6 +186,7 @@ function ChartPlot(
           [styles.clickable]: isClickable,
           [styles.precise]: isPrecise,
         })}
+        onMouseDown={onMouseDown}
         onClick={onPlotClick}
         onFocus={onPlotFocus}
         onBlur={onPlotBlur}
