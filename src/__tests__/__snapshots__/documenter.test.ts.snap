@@ -5348,26 +5348,13 @@ If true, the overlap will be removed.",
 
 exports[`Documenter definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
 Object {
-  "events": Array [
-    Object {
-      "cancelable": false,
-      "description": "Called when there is an error from the Clipboard API preventing the text from being copied.",
-      "detailType": "null",
-      "name": "onCopyError",
-    },
-    Object {
-      "cancelable": false,
-      "description": "Called when the text is successfully copied to the clipboard.",
-      "detailType": "null",
-      "name": "onCopySuccess",
-    },
-  ],
+  "events": Array [],
   "functions": Array [],
   "name": "CopyToClipboard",
   "properties": Array [
     Object {
-      "description": "Adds \`aria-label\` to the button element. It should be used in buttons that don't have text in order to make
-them accessible. The text will also be added to the \`title\` attribute of the button.",
+      "description": "Adds \`aria-label\` to the copy button. Use this to provide an accessible name for buttons that don't have visible text,
+and to distinguish between multiple buttons with identical visible text. The text will also be added to the \`title\` attribute of the button.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -5380,8 +5367,14 @@ them accessible. The text will also be added to the \`title\` attribute of the b
       "type": "string",
     },
     Object {
-      "description": "The name of the resource to copy used as argument for \`i18nStrings.copySuccessText\` and \`i18nStrings.copyErrorText\`.",
-      "name": "copyTarget",
+      "description": "The message shown when the text was not copied due to an error, see https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext.",
+      "name": "copyErrorText",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "The message shown when the text is copied successfully.",
+      "name": "copySuccessText",
       "optional": false,
       "type": "string",
     },
@@ -5395,16 +5388,6 @@ them accessible. The text will also be added to the \`title\` attribute of the b
             "name": "copyButtonText",
             "optional": true,
             "type": "string",
-          },
-          Object {
-            "name": "copyErrorText",
-            "optional": true,
-            "type": "(resourceName: string) => string",
-          },
-          Object {
-            "name": "copySuccessText",
-            "optional": true,
-            "type": "(resourceName: string) => string",
           },
         ],
         "type": "object",
@@ -5431,7 +5414,7 @@ them accessible. The text will also be added to the \`title\` attribute of the b
       "description": "Determines the general styling of the copy button as follows:
 * \`standalone\` to display a secondary button with an icon and \`i18nStrings.copyButtonText\` as text.
 * \`inline\` to display an icon-only (no text) button within a text context.
-Defaults to \`normal\`.",
+Defaults to \`standalone\`.",
       "inlineType": Object {
         "name": "CopyToClipboardProps.Variant",
         "type": "union",

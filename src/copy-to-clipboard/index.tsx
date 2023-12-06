@@ -12,17 +12,15 @@ import { useInternalI18n } from '../i18n/context';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
-import { fireNonCancelableEvent } from '../internal/events';
 
 export { CopyToClipboardProps };
 
 export default function CopyToClipboard({
   variant = 'standalone',
   ariaLabel,
-  copyTarget,
   textToCopy,
-  onCopySuccess,
-  onCopyError,
+  copySuccessText,
+  copyErrorText,
   i18nStrings,
   ...restProps
 }: CopyToClipboardProps) {
@@ -31,16 +29,6 @@ export default function CopyToClipboard({
 
   const i18n = useInternalI18n('copy-to-clipboard');
   const copyButtonText = i18n('i18nStrings.copyButtonText', i18nStrings?.copyButtonText);
-  const getCopySuccessText = i18n(
-    'i18nStrings.copySuccessText',
-    i18nStrings?.copySuccessText,
-    format => copyTarget => format({ copyTarget })
-  );
-  const getCopyErrorText = i18n(
-    'i18nStrings.copyErrorText',
-    i18nStrings?.copyErrorText,
-    format => copyTarget => format({ copyTarget })
-  );
   const copyButtonProps =
     variant === 'standalone' ? { children: copyButtonText, ariaLabel } : { ariaLabel: ariaLabel ?? copyButtonText };
 
@@ -55,13 +43,11 @@ export default function CopyToClipboard({
         .writeText(textToCopy)
         .then(() => {
           setStatus('success');
-          setStatusText(getCopySuccessText?.(copyTarget) ?? '');
-          fireNonCancelableEvent(onCopySuccess, null);
+          setStatusText(copySuccessText);
         })
         .catch(() => {
           setStatus('error');
-          setStatusText(getCopyErrorText?.(copyTarget) ?? '');
-          fireNonCancelableEvent(onCopyError, null);
+          setStatusText(copyErrorText);
         });
     }
   };

@@ -6,8 +6,6 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const i18nStrings = {
   copyButtonText: 'Copy',
-  copySuccessText: (copyTarget: string) => `${copyTarget} copied`,
-  copyErrorText: (copyTarget: string) => `${copyTarget} failed to copy`,
 };
 
 const paragraphs = [
@@ -36,7 +34,8 @@ export default function DateInputScenario() {
 
             <CopyToClipboard
               data-testid="copy-paragraph"
-              copyTarget="Lorem ipsum paragraph"
+              copySuccessText="Lorem ipsum paragraph copied"
+              copyErrorText="Lorem ipsum paragraph failed to copy"
               textToCopy={paragraphs.join('\n\n')}
               i18nStrings={i18nStrings}
             />
@@ -46,7 +45,8 @@ export default function DateInputScenario() {
             data-testid="copy-sentence"
             variant="inline"
             ariaLabel="Copy lorem ipsum"
-            copyTarget="Lorem ipsum sentence"
+            copySuccessText="Lorem ipsum sentence copied"
+            copyErrorText="Lorem ipsum sentence failed to copy"
             textToCopy={sentence}
             i18nStrings={i18nStrings}
           />
