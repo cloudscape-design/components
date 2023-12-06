@@ -9,11 +9,7 @@ import '../../__a11y__/to-validate-a11y';
 import styles from '../../../lib/components/popover/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-
-jest.mock('../../../lib/components/popover/utils/positions', () => ({
-  ...jest.requireActual('../../../lib/components/popover/utils/positions'),
-  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Used to retrieve the popover dimensions
-}));
+import './positions-with-mock';
 
 let originalGetComputedStyle: Window['getComputedStyle'];
 const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
