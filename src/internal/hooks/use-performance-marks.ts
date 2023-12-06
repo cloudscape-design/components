@@ -32,7 +32,7 @@ export function usePerformanceMarks(
 
     performance.mark(renderedMarkName, {
       detail: {
-        source: 'cloudscape',
+        source: 'awsui',
         instanceId: id,
         ...getDetails(),
       },
@@ -57,7 +57,7 @@ export function usePerformanceMarks(
 
     performance.mark(updatedMarkName, {
       detail: {
-        source: 'cloudscape',
+        source: 'awsui',
         instanceId: id,
         ...getDetails(),
       },

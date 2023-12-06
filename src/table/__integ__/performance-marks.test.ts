@@ -9,7 +9,7 @@ function setupTest(testFn: (page: BasePageObject, getMarks: () => Promise<Perfor
     await browser.url('#/light/table/performance-marks');
     const getMarks = async () => {
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
-      return marks.filter(m => m.detail?.source === 'cloudscape');
+      return marks.filter(m => m.detail?.source === 'awsui');
     };
     await testFn(page, getMarks);
   });
@@ -24,7 +24,7 @@ describe('Table', () => {
       expect(marks).toHaveLength(2);
       expect(marks[0].name).toBe('tableRendered');
       expect(marks[0].detail).toEqual({
-        source: 'cloudscape',
+        source: 'awsui',
         instanceId: expect.any(String),
         loading: true,
         header: 'This is my table',
@@ -32,7 +32,7 @@ describe('Table', () => {
 
       expect(marks[1].name).toBe('tableRendered');
       expect(marks[1].detail).toEqual({
-        source: 'cloudscape',
+        source: 'awsui',
         instanceId: expect.any(String),
         loading: false,
         header: 'A table without the Header component',
@@ -51,7 +51,7 @@ describe('Table', () => {
       expect(marks).toHaveLength(3);
       expect(marks[2].name).toBe('tableUpdated');
       expect(marks[2].detail).toMatchObject({
-        source: 'cloudscape',
+        source: 'awsui',
         instanceId: marks[0].detail.instanceId,
         loading: false,
         header: 'This is my table',
@@ -63,7 +63,7 @@ describe('Table', () => {
 
       expect(marks[3].name).toBe('tableUpdated');
       expect(marks[3].detail).toMatchObject({
-        source: 'cloudscape',
+        source: 'awsui',
         instanceId: marks[2].detail.instanceId,
         loading: true,
         header: 'This is my table',
