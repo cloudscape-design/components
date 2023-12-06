@@ -11,7 +11,14 @@ import chartWrapperStyles from '../../../lib/components/internal/components/char
 import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import positions from '../../popover/__tests__/positions-with-mock';
+import positions from '../../../lib/components/popover/utils/positions';
+
+jest.mock('../../../lib/components/popover/utils/positions', () => {
+  return {
+    ...jest.requireActual('../../../lib/components/popover/utils/positions'),
+    getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
+  };
+});
 
 const statusTypes: Array<MixedLineBarChartProps<number>['statusType']> = ['finished', 'loading', 'error'];
 
