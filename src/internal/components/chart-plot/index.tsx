@@ -42,7 +42,7 @@ export interface ChartPlotProps {
   ariaLiveRegion?: React.ReactNode;
   isClickable?: boolean;
   isPrecise?: boolean;
-  onMouseDown?: (event: React.MouseEvent<SVGSVGElement>) => void;
+  onClick?: (event: React.MouseEvent<SVGSVGElement>) => void;
   onMouseMove?: (event: React.MouseEvent<SVGSVGElement>) => void;
   onMouseOut?: (event: React.MouseEvent<SVGSVGElement>) => void;
   onFocus?: (event: React.FocusEvent<SVGGElement>, trigger: 'mouse' | 'keyboard') => void;
@@ -83,7 +83,7 @@ function ChartPlot(
     isClickable,
     isPrecise,
     children,
-    onMouseDown,
+    onClick,
     onKeyDown,
     onFocus,
     onBlur,
@@ -109,8 +109,8 @@ function ChartPlot(
     focusApplication: () => applicationRef.current!.focus(),
   }));
 
-  const onPlotMouseDown = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    onMouseDown && onMouseDown(event);
+  const onPlotClick = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    onClick && onClick(event);
     // Record the click was made for the application focus handler.
     plotClickedRef.current = true;
   };
@@ -184,7 +184,7 @@ function ChartPlot(
           [styles.clickable]: isClickable,
           [styles.precise]: isPrecise,
         })}
-        onMouseDown={onPlotMouseDown}
+        onClick={onPlotClick}
         onFocus={onPlotFocus}
         onBlur={onPlotBlur}
         onKeyDown={onPlotKeyDown}
