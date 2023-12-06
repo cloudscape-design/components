@@ -10202,7 +10202,7 @@ Note: Using popover rendered with portal within a Modal is not supported.
       "type": "string",
     },
     Object {
-      "description": "Adds an aria-label to the text trigger button. Use this to provide an accessible name for triggers
+      "description": "Adds \`aria-label\` to the text trigger button. Use this to provide an accessible name for triggers
 that don't have visible text, and to distinguish between multiple triggers with identical visible text.",
       "name": "triggerAriaLabel",
       "optional": true,
