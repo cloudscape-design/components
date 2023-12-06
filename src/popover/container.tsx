@@ -32,7 +32,8 @@ export interface PopoverContainerProps {
   size: PopoverProps.Size;
   fixedWidth: boolean;
   variant?: 'annotation';
-  keepPositionOnResize?: boolean;
+  // When keepPosition is true, the popover will not recalculate its position when it resizes nor when it receives clicks.
+  keepPosition?: boolean;
 }
 
 const INITIAL_STYLES: CSSProperties = { top: -9999, left: -9999 };
@@ -48,7 +49,7 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
-  keepPositionOnResize,
+  keepPosition,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -64,7 +65,7 @@ export default function PopoverContainer({
 
   // Updates the position handler.
   const updatePositionHandler = useCallback(
-    (onResize = false) => {
+    (onContentResize = false) => {
       if (!trackRef.current || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
         return;
       }
@@ -111,11 +112,11 @@ export default function PopoverContainer({
         height: contentRect.height + 2 * bodyBorderWidth,
       };
 
-      // When keepPositionOnResize is true and the recalculation was triggered by a resize of the popover content,
+      // When keepPosition is true and the recalculation was triggered by a resize of the popover content,
       // we maintain the previously defined internal position,
       // but we still call calculatePosition to know if the popover should be scrollable.
       const fixedInternalPosition =
-        keepPositionOnResize && onResize && internalPositionRef.current ? internalPositionRef.current : undefined;
+        keepPosition && onContentResize && internalPositionRef.current ? internalPositionRef.current : undefined;
 
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
@@ -166,7 +167,7 @@ export default function PopoverContainer({
         });
       };
     },
-    [trackRef, keepPositionOnResize, position, renderWithPortal]
+    [trackRef, keepPosition, position, renderWithPortal]
   );
 
   // Recalculate position when properties change.
@@ -190,9 +191,8 @@ export default function PopoverContainer({
 
     const onClick = (event: UIEvent | KeyboardEvent) => {
       if (
-        // Do not update position if the click was on the popover itself
-        // and keepPositionOnResize is true.
-        (keepPositionOnResize && nodeContains(popoverRef.current, event.target)) ||
+        // Do not update position if the click was on the popover itself and keepPosition is true.
+        (keepPosition && nodeContains(popoverRef.current, event.target)) ||
         // If the click was on the trigger, this will make the popover appear or disappear,
         // so no need to update its position either in this case.
         nodeContains(trackRef.current, event.target)
@@ -218,7 +218,7 @@ export default function PopoverContainer({
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [keepPositionOnResize, trackRef, updatePositionHandler]);
+  }, [keepPosition, trackRef, updatePositionHandler]);
 
   return (
     <div
