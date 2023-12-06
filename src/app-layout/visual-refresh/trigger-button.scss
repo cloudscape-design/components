@@ -99,18 +99,12 @@ handleSplitPanelMaxWidth function in the context.
 
 .dot {
   position: absolute;
-<<<<<<< HEAD
-  width: 9px;
-  height: 9px;
-  border-radius: 8px;
-=======
-  inline-size: 10px;
-  block-size: 10px;
+  inline-size: 9px;
+  block-size: 9px;
   border-start-start-radius: 8px;
   border-start-end-radius: 8px;
   border-end-start-radius: 8px;
   border-end-end-radius: 8px;
->>>>>>> 87e5ce54 (Migrate ‘A’ components to logical properties.)
   background-color: awsui.$color-background-badge-icon;
   inset-block-start: 0;
   inset-inline-end: 0;
