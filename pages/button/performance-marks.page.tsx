@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import Button from '~components/button';
 import Box from '~components/box';
-import { SpaceBetween, Tabs } from '~components';
+import { Modal, SpaceBetween, Tabs } from '~components';
 
-export default function ButtonsScenario() {
+export default function ButtonsPerformanceMarkPage() {
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
   return (
@@ -24,6 +24,8 @@ export default function ButtonsScenario() {
           Primary button
         </Button>
         <Button>Non-primary button</Button>
+
+        <Modal visible={false} footer={<Button variant="primary">Submit modal</Button>}></Modal>
 
         <Tabs
           tabs={[

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import Box from '~components/box';
-import { Header, Link, SpaceBetween, Table, Tabs } from '~components';
+import { Header, Link, Modal, SpaceBetween, Table, Tabs } from '~components';
 
-export default function ButtonsScenario() {
+export default function TablePerformanceMarkPage() {
   const [loading, setLoading] = useState(true);
   return (
     <Box padding="xxl">
@@ -23,6 +23,10 @@ export default function ButtonsScenario() {
         />
 
         <Table items={[]} columnDefinitions={[]} header="A table without the Header component" />
+
+        <Modal visible={false}>
+          <Table items={[]} columnDefinitions={[]} header="A table inside a Modal" />
+        </Modal>
 
         <Tabs
           tabs={[
