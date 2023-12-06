@@ -2967,8 +2967,9 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
       "type": "boolean",
     },
     Object {
-      "description": "Adds \`aria-label\` to the button element. It should be used in buttons that don't have text in order to make
-them accessible. The text will also be added to the \`title\` attribute of the button.",
+      "description": "Adds \`aria-label\` to the button element. Use this to provide an accessible name for buttons
+that don't have visible text, and to distinguish between multiple buttons with identical visible text.
+The text will also be added to the \`title\` attribute of the button.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -3350,7 +3351,7 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
   "properties": Array [
     Object {
       "description": "Adds \`aria-label\` to the button dropdown trigger.
-It should be used in buttons that don't have text in order to make them accessible.",
+Use this to provide an accessible name for buttons that don't have visible text.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -9150,7 +9151,8 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     Object {
-      "description": "Adds \`aria-label\` to the select element.",
+      "description": "Adds \`aria-label\` to the select element.
+Use this if you don't have a visible label for this control.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
@@ -10200,7 +10202,8 @@ Note: Using popover rendered with portal within a Modal is not supported.
       "type": "string",
     },
     Object {
-      "description": "Adds an aria-label to the text trigger button.",
+      "description": "Adds an aria-label to the text trigger button. Use this to provide an accessible name for triggers
+that don't have visible text, and to distinguish between multiple triggers with identical visible text.",
       "name": "triggerAriaLabel",
       "optional": true,
       "type": "string",
@@ -11731,7 +11734,8 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     Object {
-      "description": "Adds \`aria-label\` to the select element.",
+      "description": "Adds \`aria-label\` to the select element.
+Use this if you don't have a visible label for this control.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",

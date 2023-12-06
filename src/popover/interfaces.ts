@@ -29,7 +29,8 @@ export interface PopoverProps extends BaseComponentProps {
   triggerType?: PopoverProps.TriggerType;
 
   /**
-   * Adds an aria-label to the text trigger button.
+   * Adds an aria-label to the text trigger button. Use this to provide an accessible name for triggers
+   * that don't have visible text, and to distinguish between multiple triggers with identical visible text.
    */
   triggerAriaLabel?: string;
 
