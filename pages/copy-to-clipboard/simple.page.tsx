@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { Box, SpaceBetween, CopyToClipboard } from '~components';
-import pseudoRandom from '../utils/pseudo-random';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const i18nStrings = {
   copyButtonText: 'Copy',
+  copySuccessText: (copyTarget: string) => `${copyTarget} copied`,
+  copyErrorText: (copyTarget: string) => `${copyTarget} failed to copy`,
 };
 
 const paragraphs = [
@@ -16,11 +17,6 @@ const paragraphs = [
 ];
 
 const sentence = paragraphs[0].split('.')[0];
-
-const invalidSentence = sentence
-  .split('')
-  .map(letter => (pseudoRandom() > 0.8 ? '_' : letter))
-  .join('');
 
 export default function DateInputScenario() {
   return (
@@ -39,38 +35,24 @@ export default function DateInputScenario() {
             </article>
 
             <CopyToClipboard
-              message="Lorem ipsum copied"
-              onClick={() => navigator.clipboard.writeText(paragraphs.join('\n\n'))}
-              i18nStrings={i18nStrings}
               data-testid="copy-paragraph"
+              copyTarget="Lorem ipsum paragraph"
+              textToCopy={paragraphs.join('\n\n')}
+              i18nStrings={i18nStrings}
             />
           </div>
 
           <Box>
             <CopyToClipboard
-              variant="inline"
-              message="Lorem ipsum copied"
-              ariaLabel="Copy lorem ipsum"
-              onClick={() => navigator.clipboard.writeText(sentence)}
-              i18nStrings={i18nStrings}
               data-testid="copy-sentence"
+              variant="inline"
+              ariaLabel="Copy lorem ipsum"
+              copyTarget="Lorem ipsum sentence"
+              textToCopy={sentence}
+              i18nStrings={i18nStrings}
             />
 
             <span>{sentence}</span>
-          </Box>
-
-          <Box>
-            <CopyToClipboard
-              variant="inline"
-              messageType="error"
-              message="Lorem ipsum failed to copy"
-              ariaLabel="Copy lorem ipsum"
-              onClick={() => {}}
-              i18nStrings={i18nStrings}
-              data-testid="copy-sentence-with-error"
-            />
-
-            <span>{invalidSentence}</span>
           </Box>
         </SpaceBetween>
       </Box>

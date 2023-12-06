@@ -5350,41 +5350,16 @@ exports[`Documenter definition for copy-to-clipboard matches the snapshot: copy-
 Object {
   "events": Array [
     Object {
-      "cancelable": true,
-      "description": "Called when the user clicks on the copy button. Use it to copy the related content to clipboard: \`navigator.clipboard.writeText('[text to be copied]')\`.",
-      "detailInlineType": Object {
-        "name": "ClickDetail",
-        "properties": Array [
-          Object {
-            "name": "altKey",
-            "optional": false,
-            "type": "boolean",
-          },
-          Object {
-            "name": "button",
-            "optional": false,
-            "type": "number",
-          },
-          Object {
-            "name": "ctrlKey",
-            "optional": false,
-            "type": "boolean",
-          },
-          Object {
-            "name": "metaKey",
-            "optional": false,
-            "type": "boolean",
-          },
-          Object {
-            "name": "shiftKey",
-            "optional": false,
-            "type": "boolean",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "ClickDetail",
-      "name": "onClick",
+      "cancelable": false,
+      "description": "Called when there is an error from the Clipboard API preventing the text from being copied.",
+      "detailType": "null",
+      "name": "onCopyError",
+    },
+    Object {
+      "cancelable": false,
+      "description": "Called when the text is successfully copied to the clipboard.",
+      "detailType": "null",
+      "name": "onCopySuccess",
     },
   ],
   "functions": Array [],
@@ -5405,6 +5380,12 @@ them accessible. The text will also be added to the \`title\` attribute of the b
       "type": "string",
     },
     Object {
+      "description": "The name of the resource to copy used as argument for \`i18nStrings.copySuccessText\` and \`i18nStrings.copyErrorText\`.",
+      "name": "copyTarget",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": Object {
@@ -5414,6 +5395,16 @@ them accessible. The text will also be added to the \`title\` attribute of the b
             "name": "copyButtonText",
             "optional": true,
             "type": "string",
+          },
+          Object {
+            "name": "copyErrorText",
+            "optional": true,
+            "type": "(resourceName: string) => string",
+          },
+          Object {
+            "name": "copySuccessText",
+            "optional": true,
+            "type": "(resourceName: string) => string",
           },
         ],
         "type": "object",
@@ -5430,40 +5421,22 @@ them accessible. The text will also be added to the \`title\` attribute of the b
       "type": "string",
     },
     Object {
-      "description": "A text fragment that communicates the outcome. The recommended messages are:
-* \\"[Name of the content] copied\\" for success;
-* \\"[Name of the content] failed to copy\\" for error.",
-      "name": "message",
+      "description": "The text content to be copied. It is displayed next to the copy button when \`variant=\\"inline\\"\` and is not shown otherwise.",
+      "name": "textToCopy",
       "optional": false,
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"success\\"",
-      "description": "Specifies the message type and can be either \`success\` or \`error\`.
-Defaults to \`success\`.",
-      "inlineType": Object {
-        "name": "CopyToClipboardProps.MessageType",
-        "type": "union",
-        "values": Array [
-          "success",
-          "error",
-        ],
-      },
-      "name": "messageType",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "defaultValue": "\\"normal\\"",
+      "defaultValue": "\\"standalone\\"",
       "description": "Determines the general styling of the copy button as follows:
-* \`normal\` to display a secondary button with an icon and \`i18nStrings.copyButtonText\` as text.
+* \`standalone\` to display a secondary button with an icon and \`i18nStrings.copyButtonText\` as text.
 * \`inline\` to display an icon-only (no text) button within a text context.
 Defaults to \`normal\`.",
       "inlineType": Object {
         "name": "CopyToClipboardProps.Variant",
         "type": "union",
         "values": Array [
-          "normal",
+          "standalone",
           "inline",
         ],
       },

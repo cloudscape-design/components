@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { CopyToClipboardProps } from './interfaces';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -12,15 +12,17 @@ import { useInternalI18n } from '../i18n/context';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 import clsx from 'clsx';
+import { fireNonCancelableEvent } from '../internal/events';
 
 export { CopyToClipboardProps };
 
 export default function CopyToClipboard({
-  variant = 'normal',
+  variant = 'standalone',
   ariaLabel,
-  messageType = 'success',
-  message,
-  onClick,
+  copyTarget,
+  textToCopy,
+  onCopySuccess,
+  onCopyError,
   i18nStrings,
   ...restProps
 }: CopyToClipboardProps) {
@@ -29,27 +31,71 @@ export default function CopyToClipboard({
 
   const i18n = useInternalI18n('copy-to-clipboard');
   const copyButtonText = i18n('i18nStrings.copyButtonText', i18nStrings?.copyButtonText);
+  const getCopySuccessText = i18n(
+    'i18nStrings.copySuccessText',
+    i18nStrings?.copySuccessText,
+    format => copyTarget => format({ copyTarget })
+  );
+  const getCopyErrorText = i18n(
+    'i18nStrings.copyErrorText',
+    i18nStrings?.copyErrorText,
+    format => copyTarget => format({ copyTarget })
+  );
   const copyButtonProps =
-    variant === 'normal' ? { children: copyButtonText, ariaLabel } : { ariaLabel: ariaLabel ?? copyButtonText };
+    variant === 'standalone' ? { children: copyButtonText, ariaLabel } : { ariaLabel: ariaLabel ?? copyButtonText };
+
+  const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
+  const [statusText, setStatusText] = useState('');
+
+  const onClick = () => {
+    if (navigator.clipboard) {
+      setStatus('pending');
+      setStatusText('');
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          setStatus('success');
+          setStatusText(getCopySuccessText?.(copyTarget) ?? '');
+          fireNonCancelableEvent(onCopySuccess, null);
+        })
+        .catch(() => {
+          setStatus('error');
+          setStatusText(getCopyErrorText?.(copyTarget) ?? '');
+          fireNonCancelableEvent(onCopyError, null);
+        });
+    }
+  };
+
+  const trigger = (
+    <InternalPopover
+      size="medium"
+      position="top"
+      triggerType="custom"
+      dismissButton={false}
+      content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
+      __hidden={status === 'pending'}
+    >
+      <InternalButton
+        {...copyButtonProps}
+        iconName="copy"
+        onClick={onClick}
+        variant={variant === 'standalone' ? 'normal' : 'inline-icon'}
+        wrapText={false}
+        formAction="none"
+      />
+    </InternalPopover>
+  );
 
   return (
     <div ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, styles.root, testStyles.root)}>
-      <InternalPopover
-        size="medium"
-        position="top"
-        triggerType="custom"
-        dismissButton={false}
-        content={<InternalStatusIndicator type={messageType}>{message}</InternalStatusIndicator>}
-      >
-        <InternalButton
-          {...copyButtonProps}
-          iconName="copy"
-          onClick={onClick}
-          variant={variant === 'normal' ? 'normal' : 'inline-icon'}
-          wrapText={false}
-          formAction="none"
-        />
-      </InternalPopover>
+      {variant === 'standalone' ? (
+        trigger
+      ) : (
+        <div className={styles['inline-container']}>
+          <div className={styles['inline-container-trigger']}>{trigger}</div>
+          <div className={clsx(styles['inline-container-text'], testStyles['text-to-copy'])}>{textToCopy}</div>
+        </div>
+      )}
     </div>
   );
 }

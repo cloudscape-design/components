@@ -130,6 +130,12 @@ export interface I18nFormatArgTypes {
   };
   'copy-to-clipboard': {
     'i18nStrings.copyButtonText': string;
+    'i18nStrings.copySuccessText': {
+      copyTarget: string;
+    };
+    'i18nStrings.copyErrorText': {
+      copyTarget: string;
+    };
   };
   'date-range-picker': {
     'i18nStrings.relativeModeTitle': never;

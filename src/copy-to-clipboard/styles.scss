@@ -3,6 +3,21 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles/tokens' as awsui;
+
 .root {
   display: contents;
+}
+
+.inline-container {
+  display: inline-block;
+  word-break: break-all;
+
+  &-trigger {
+    display: inline-block;
+    margin-right: awsui.$space-scaled-xxs;
+  }
+  &-text {
+    display: contents;
+  }
 }
