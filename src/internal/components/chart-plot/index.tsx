@@ -109,7 +109,7 @@ function ChartPlot(
     focusApplication: () => applicationRef.current!.focus(),
   }));
 
-  const onMouseDown = () => {
+  const onPlotMouseDown = () => {
     // Record the click was made for the application focus handler.
     plotClickedRef.current = true;
   };
@@ -186,7 +186,7 @@ function ChartPlot(
           [styles.clickable]: isClickable,
           [styles.precise]: isPrecise,
         })}
-        onMouseDown={onMouseDown}
+        onMouseDown={onPlotMouseDown}
         onClick={onPlotClick}
         onFocus={onPlotFocus}
         onBlur={onPlotBlur}
