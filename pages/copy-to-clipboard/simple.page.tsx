@@ -42,18 +42,14 @@ export default function DateInputScenario() {
             />
           </div>
 
-          <Box>
-            <CopyToClipboard
-              data-testid="copy-sentence"
-              variant="inline"
-              ariaLabel="Copy lorem ipsum"
-              copyTarget="Lorem ipsum sentence"
-              textToCopy={sentence}
-              i18nStrings={i18nStrings}
-            />
-
-            <span>{sentence}</span>
-          </Box>
+          <CopyToClipboard
+            data-testid="copy-sentence"
+            variant="inline"
+            ariaLabel="Copy lorem ipsum"
+            copyTarget="Lorem ipsum sentence"
+            textToCopy={sentence}
+            i18nStrings={i18nStrings}
+          />
         </SpaceBetween>
       </Box>
     </ScreenshotArea>
