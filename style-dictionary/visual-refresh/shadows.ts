@@ -21,8 +21,8 @@ const tokens: StyleDictionary.ShadowsDictionary = {
   shadowDropup: '{shadowDropdown}',
   shadowFlashCollapsed: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   shadowFlashSticky: {
-    light: '0px 6px 36px rgba(0, 7, 22, 0.10)',
-    dark: '0px 6px 36px rgba(0, 7, 22, 1)',
+    light: '0px 4px 20px rgba(0, 7, 22, 0.10)',
+    dark: '0px 4px 20px rgba(0, 7, 22, 0.5)',
   },
   shadowModal: '{shadowDropdown}',
   shadowPanel: {
@@ -39,7 +39,7 @@ const tokens: StyleDictionary.ShadowsDictionary = {
     light: '-1px 0px 1px 0px #e9ebed, -36px 6px 36px -36px rgba(0, 7, 22, 0.10)',
     dark: '-1px 0px 1px 0px #192534, -36px 6px 36px -36px rgba(0, 7, 22, 1)',
   },
-  shadowSticky: '{shadowDropdown}',
+  shadowSticky: { light: '0px 4px 20px 1px rgba(0, 7, 22, 0.10)', dark: '0px 4px 20px 1px rgba(0, 7, 22, 0.5)' },
   shadowStickyEmbedded: {
     light: '0px 2px 0px 0px #e9ebed, 0px 16px 16px -12px rgba(0, 7, 22, 0.10)', // 2px grey-200 faux bottom border
     dark: '0px 2px 0px 0px #414d5c, 0px 16px 16px -12px rgba(0, 7, 22, 1)', // 2px grey-600 faux bottom border
