@@ -64,7 +64,7 @@ function ChartSeriesDetails({
     }
   }, [details, setPopoverText]);
 
-  const isExpanded = (serieTitle: string) => !!expandedSeries && expandedSeries.has(serieTitle);
+  const isExpanded = (seriesTitle: string) => !!expandedSeries && expandedSeries.has(seriesTitle);
 
   return (
     <div {...baseProps} className={className} ref={detailsRef}>
