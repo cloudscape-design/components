@@ -20,7 +20,7 @@ import {
   StatusIndicator,
 } from '~components';
 import styles from './styles.scss';
-import { id as generateId, generateItems, Instance, InstanceState } from '../table/generate-data';
+import { id as generateId, generateItems, Instance } from '../table/generate-data';
 import AppContext, { AppContextType } from '../app/app-context';
 import {
   TableRole,
@@ -103,14 +103,7 @@ export default function Page() {
     {
       key: 'state',
       label: 'State',
-      render: (item: Instance) => (
-        <EditableStateCell
-          value={item.state}
-          onChange={value =>
-            setItems(prev => prev.map(prevItem => (prevItem.id === item.id ? { ...prevItem, state: value } : prevItem)))
-          }
-        />
-      ),
+      render: (item: Instance) => <StatusIndicator {...stateToStatusIndicator[item.state]} />,
     },
     {
       key: 'imageId',
@@ -212,23 +205,23 @@ export default function Page() {
                           className={styles['custom-table-cell']}
                           {...getTableColHeaderRoleProps({ tableRole, colIndex })}
                         >
-                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
-                            <button
-                              className={styles['custom-table-sorting-header']}
-                              onClick={() => {
-                                if (sortingKey !== column.key) {
-                                  setSortingKey(column.key);
-                                  setSortingDirection(-1);
-                                } else {
-                                  setSortingDirection(prev => (prev === 1 ? -1 : 1));
-                                }
-                              }}
-                            >
-                              {column.label}
-                            </button>
-                            {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
-                            {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
-                          </div>
+                          <ClickableHeader
+                            label={column.label}
+                            icon={
+                              <>
+                                {sortingKey === column.key && sortingDirection === -1 && <Icon name="angle-down" />}
+                                {sortingKey === column.key && sortingDirection === 1 && <Icon name="angle-up" />}
+                              </>
+                            }
+                            onClick={() => {
+                              if (sortingKey !== column.key) {
+                                setSortingKey(column.key);
+                                setSortingDirection(-1);
+                              } else {
+                                setSortingDirection(prev => (prev === 1 ? -1 : 1));
+                              }
+                            }}
+                          />
                         </th>
                       ))}
                     </tr>
@@ -255,6 +248,28 @@ export default function Page() {
         </ContentLayout>
       }
     />
+  );
+}
+
+function ClickableHeader({
+  label,
+  icon,
+  onClick,
+}: {
+  label: React.ReactNode;
+  icon: React.ReactNode;
+  onClick: () => void;
+}) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  useGridNavigationAutoRegisterFocusable(rootRef);
+
+  return (
+    <div ref={rootRef} style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}>
+      <button className={styles['custom-table-sorting-header']} onClick={onClick}>
+        {label}
+      </button>
+      {icon}
+    </div>
   );
 }
 
@@ -360,95 +375,25 @@ function DnsEditCell({ item }: { item: Instance }) {
     </div>
   ) : (
     <GridNavigationSuppressed>
-      <div ref={rootRef}>
-        <div
-          ref={dialogRef}
-          role="dialog"
-          aria-label="Edit DND name"
-          onBlur={event => {
-            if (!dialogRef.current!.contains(event.relatedTarget)) {
-              setActive(false);
-            }
-          }}
-          onKeyDown={event => {
-            if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
-              setActive(false);
-            }
-          }}
-          style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
-        >
-          <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
-          <Button iconName="check" onClick={() => setActive(false)} />
-          <Button iconName="close" onClick={() => setActive(false)} />
-        </div>
-      </div>
-    </GridNavigationSuppressed>
-  );
-}
-
-function EditableStateCell({ value, onChange }: { value: InstanceState; onChange: (value: InstanceState) => void }) {
-  const [active, setActive] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useGridNavigationAutoRegisterFocusable(rootRef, () => active);
-
-  if (!active) {
-    return value === 'TERMINATED' ? (
-      <div ref={rootRef}>
-        <StatusIndicator {...stateToStatusIndicator[value]} />
-      </div>
-    ) : (
-      <div ref={rootRef}>
-        <button className={styles['status-trigger-button']} onClick={() => setActive(true)}>
-          <StatusIndicator {...stateToStatusIndicator[value]} />
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <GridNavigationSuppressed>
-      <div ref={rootRef}>
-        <div
-          ref={dialogRef}
-          role="dialog"
-          aria-label="Set control value dialog"
-          onBlur={event => {
-            if (!dialogRef.current?.contains(event.relatedTarget)) {
-              setActive(false);
-            }
-          }}
-          onKeyDown={event => {
-            if (event.key === 'Escape' || event.key === 'F2' || event.key === ' ') {
-              event.preventDefault();
-              setActive(false);
-            }
-          }}
-        >
-          <RadioGroup
-            items={[
-              {
-                value: 'RUNNING',
-                label: 'Start',
-              },
-              {
-                value: 'PENDING',
-                label: 'Suspend',
-              },
-              {
-                value: 'STOPPING',
-                label: 'Stop',
-              },
-              {
-                value: 'TERMINATING',
-                label: 'Terminate',
-              },
-            ]}
-            onChange={({ detail }) => onChange(detail.value as InstanceState)}
-            value={value}
-          />
-        </div>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-label="Edit DND name"
+        onBlur={event => {
+          if (!dialogRef.current!.contains(event.relatedTarget)) {
+            setActive(false);
+          }
+        }}
+        onKeyDown={event => {
+          if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'F2') {
+            setActive(false);
+          }
+        }}
+        style={{ display: 'flex', gap: '8px', flexWrap: 'nowrap' }}
+      >
+        <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
+        <Button iconName="check" onClick={() => setActive(false)} />
+        <Button iconName="close" onClick={() => setActive(false)} />
       </div>
     </GridNavigationSuppressed>
   );

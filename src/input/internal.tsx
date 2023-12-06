@@ -102,7 +102,7 @@ function InternalInput(
   const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
 
   const [active, setActive] = useState(false);
-  const { focusMuted, focusTargetMuted } = useGridNavigationFocusable(inputRef, { suppressNavigation: active });
+  const { focusMuted, focusTargetMuted } = useGridNavigationFocusable(inputRef, { navigationSuppressed: active });
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -193,7 +193,9 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
+
       <input ref={mergedRef} {...attributes} tabIndex={focusTargetMuted ? -1 : undefined} />
+
       {__rightIcon && (
         <span className={styles['input-icon-right']}>
           <InternalButton

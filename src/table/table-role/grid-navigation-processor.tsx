@@ -105,6 +105,13 @@ export class GridNavigationProcessor {
     }, 0);
   };
 
+  private isSuppressed(element: HTMLElement) {
+    if (element instanceof HTMLTableCellElement) {
+      return false;
+    }
+    return !this.focusRegister.getNavigableElements().has(element);
+  }
+
   private onKeydown = (event: KeyboardEvent) => {
     if (!this.focusedCell) {
       return;
@@ -128,7 +135,7 @@ export class GridNavigationProcessor {
     const maxExtreme = Number.POSITIVE_INFINITY;
 
     // Do not intercept any keys when the navigation is suppressed.
-    if (this.focusRegister.isSuppressed(from.element)) {
+    if (this.isSuppressed(from.element)) {
       return;
     }
 

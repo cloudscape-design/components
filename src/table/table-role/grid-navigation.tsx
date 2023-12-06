@@ -3,12 +3,7 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getFocusableElement } from './utils';
-import {
-  FocusableChangeHandler,
-  FocusableDefinition,
-  FocusableOptions,
-  GridNavigationProviderProps,
-} from './interfaces';
+import { FocusableChangeHandler, FocusableDefinition, GridNavigationProviderProps } from './interfaces';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { GridNavigationProcessor } from './grid-navigation-processor';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
@@ -17,11 +12,7 @@ import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 
 export const GridNavigationContext = createContext<{
   focusMuted: boolean;
-  registerFocusable(
-    focusable: FocusableDefinition,
-    handler: FocusableChangeHandler,
-    options?: FocusableOptions
-  ): () => void;
+  registerFocusable(focusable: FocusableDefinition, handler: FocusableChangeHandler): () => void;
   unregisterFocusable(focusable: FocusableDefinition): void;
 }>({
   focusMuted: false,
@@ -29,10 +20,10 @@ export const GridNavigationContext = createContext<{
   unregisterFocusable: () => {},
 });
 
-export function GridNavigationSuppressed({ children }: { children: React.ReactNode }) {
+export function GridNavigationSuppressed({ children, active = true }: { children: React.ReactNode; active?: boolean }) {
   const parentContext = useContext(GridNavigationContext);
   return (
-    <GridNavigationContext.Provider value={{ ...parentContext, focusMuted: false }}>
+    <GridNavigationContext.Provider value={active ? { ...parentContext, focusMuted: false } : parentContext}>
       {children}
     </GridNavigationContext.Provider>
   );
@@ -92,8 +83,8 @@ export function GridNavigationProvider({
 export function useGridNavigationContext() {
   const { focusMuted, registerFocusable, unregisterFocusable } = useContext(GridNavigationContext);
   const registerFocusableContext = useCallback(
-    (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler, options?: FocusableOptions) =>
-      registerFocusable(focusable, changeHandler, focusMuted ? options : { suppressNavigation: true }),
+    (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) =>
+      focusMuted ? registerFocusable(focusable, changeHandler) : () => {},
     [focusMuted, registerFocusable]
   );
   return { focusMuted, registerFocusable: registerFocusableContext, unregisterFocusable };
@@ -101,19 +92,21 @@ export function useGridNavigationContext() {
 
 export function useGridNavigationFocusable(
   focusable: FocusableDefinition,
-  { suppressNavigation }: FocusableOptions = {}
+  { navigationSuppressed = false }: { navigationSuppressed?: boolean } = {}
 ) {
   const { focusMuted, registerFocusable } = useGridNavigationContext();
   const [focusTargetActive, setFocusTargetActive] = useState(false);
 
   useEffect(() => {
-    const changeHandler = (focusTarget: null | HTMLElement) =>
-      setFocusTargetActive(getFocusableElement(focusable) === focusTarget);
+    if (!navigationSuppressed) {
+      const changeHandler = (focusTarget: null | HTMLElement) =>
+        setFocusTargetActive(getFocusableElement(focusable) === focusTarget);
 
-    const unregister = registerFocusable(focusable, changeHandler, { suppressNavigation });
+      const unregister = registerFocusable(focusable, changeHandler);
 
-    return () => unregister();
-  }, [focusable, registerFocusable, suppressNavigation]);
+      return () => unregister();
+    }
+  }, [navigationSuppressed, focusable, registerFocusable]);
 
   const focusTargetMuted = focusMuted && !focusTargetActive;
 

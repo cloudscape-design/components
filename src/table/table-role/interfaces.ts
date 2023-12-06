@@ -23,8 +23,4 @@ export interface FocusedCell {
 
 export type FocusableDefinition = (() => null | HTMLElement) | React.RefObject<HTMLElement>;
 
-export interface FocusableOptions {
-  suppressNavigation?: boolean;
-}
-
 export type FocusableChangeHandler = (focusTarget: HTMLElement) => void;

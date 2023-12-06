@@ -14,6 +14,7 @@ export {
 
 export {
   GridNavigationProvider,
+  GridNavigationSuppressed,
   useGridNavigationFocusable,
   useGridNavigationAutoRegisterFocusable,
 } from './grid-navigation';

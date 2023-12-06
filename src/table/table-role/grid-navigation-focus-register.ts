@@ -2,29 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getFocusableElement } from './utils';
-import { FocusableChangeHandler, FocusableDefinition, FocusableOptions } from './interfaces';
+import { FocusableChangeHandler, FocusableDefinition } from './interfaces';
 
 export class GridNavigationFocusRegister {
   private focusables = new Set<FocusableDefinition>();
-  private focusableSuppressed = new Set<FocusableDefinition>();
   private focusTargetHandlers = new Map<FocusableDefinition, FocusableChangeHandler>();
 
-  public registerFocusable = (
-    focusable: FocusableDefinition,
-    changeHandler: FocusableChangeHandler,
-    { suppressNavigation = false }: FocusableOptions = {}
-  ) => {
+  public registerFocusable = (focusable: FocusableDefinition, changeHandler: FocusableChangeHandler) => {
     this.focusables.add(focusable);
     this.focusTargetHandlers.set(focusable, changeHandler);
-    if (suppressNavigation) {
-      this.focusableSuppressed.add(focusable);
-    }
     return () => this.unregisterFocusable(focusable);
   };
 
   public unregisterFocusable = (focusable: FocusableDefinition) => {
     this.focusables.delete(focusable);
-    this.focusableSuppressed.delete(focusable);
     this.focusTargetHandlers.delete(focusable);
   };
 
@@ -44,10 +35,5 @@ export class GridNavigationFocusRegister {
     if (focusable) {
       this.focusTargetHandlers.forEach(handler => handler(focusTarget));
     }
-  }
-
-  public isSuppressed(focusTarget: HTMLElement) {
-    const focusable = [...this.focusables].find(f => getFocusableElement(f) === focusTarget);
-    return focusable && this.focusableSuppressed.has(focusable);
   }
 }
