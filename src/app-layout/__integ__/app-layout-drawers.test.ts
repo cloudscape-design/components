@@ -131,7 +131,7 @@ for (const visualRefresh of ['true', 'false']) {
         // there are different layouts between these two designs
         await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
         await page.dragResizerTo({ x: 0, y: 0 });
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 448 : 520);
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 362 : 520);
       })
     );
 
