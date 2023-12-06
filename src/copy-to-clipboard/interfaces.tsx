@@ -46,8 +46,6 @@ export interface CopyToClipboardProps extends BaseComponentProps {
 }
 
 export namespace CopyToClipboardProps {
-  export type MessageType = 'success' | 'error';
-
   export type Variant = 'standalone' | 'inline';
 
   export interface I18nStrings {
