@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
@@ -898,13 +898,6 @@ describe('Reserve space', () => {
 });
 
 describe('Details popover', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-  afterEach(() => {
-    jest.useRealTimers();
-  });
-
   const lineChartProps = {
     series: [lineSeries, thresholdSeries] as ReadonlyArray<MixedLineBarChartProps.ChartSeries<string>>,
     height: 250,
@@ -970,7 +963,7 @@ describe('Details popover', () => {
     expect(wrapper.findByClassName(styles.exiting)).not.toBeNull();
   });
 
-  test('delegates focus back to chart when unpinned in a non-grouped chart', () => {
+  test('delegates focus back to chart when unpinned in a non-grouped chart', async () => {
     const { wrapper } = renderMixedChart(<MixedLineBarChart {...lineChartProps} />);
 
     wrapper.findApplication()!.focus();
@@ -980,12 +973,13 @@ describe('Details popover', () => {
     wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
-    act(() => void jest.runAllTimers());
 
-    expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    await waitFor(() => {
+      expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    });
   });
 
-  test('delegates focus back to chart when unpinned in a grouped chart', () => {
+  test('delegates focus back to chart when unpinned in a grouped chart', async () => {
     const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
 
     wrapper.findApplication()!.focus();
@@ -995,9 +989,10 @@ describe('Details popover', () => {
     wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
-    act(() => void jest.runAllTimers());
 
-    expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    await waitFor(() => {
+      expect(wrapper.findApplication()!.getElement()).toHaveFocus();
+    });
   });
 
   test('no highlighted segment when pressing outside', () => {
