@@ -295,6 +295,8 @@ describe('event handlers', () => {
     plotWrapper.fireEvent(new MouseEvent('mousemove', { bubbles: true }));
     plotWrapper.fireEvent(new MouseEvent('mouseout', { bubbles: true }));
     plotWrapper.fireEvent(new MouseEvent('click', { bubbles: true }));
+    // Triggering a mousedown event first is necessary for the plot to focus the application.
+    plotWrapper.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
     plotWrapper.fireEvent(new MouseEvent('focus', { bubbles: true }));
 
     expect(eventLog).toEqual(['mousemove', 'mouseout', 'click', 'focus:mouse']);
