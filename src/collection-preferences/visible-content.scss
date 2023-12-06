@@ -6,7 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
-$border: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+$border: awsui.$border-divider-list-width solid awsui.$color-border-divider-dimmed;
 
 .visible-content,
 .visible-content-toggle,
