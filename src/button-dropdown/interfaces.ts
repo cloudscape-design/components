@@ -69,7 +69,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   expandableGroups?: boolean;
   /**
    * Adds `aria-label` to the button dropdown trigger.
-   * It should be used in buttons that don't have text in order to make them accessible.
+   * Use this to provide an accessible name for buttons that don't have visible text.
    */
   ariaLabel?: string;
   /**
