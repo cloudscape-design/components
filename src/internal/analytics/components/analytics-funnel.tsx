@@ -57,15 +57,22 @@ export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
   return <InnerAnalyticsFunnel {...props} />;
 };
 export const CREATION_EDIT_FLOW_DONE_EVENT_NAME = 'awsui-creation-edit-flow-done';
+const dispatchCreateEditFlowDoneEvent = () => {
+  try {
+    window.top?.document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+  } catch {
+    // probably because of cross-origin error, then do not dispatch the event
+  }
+};
 
 const onFunnelCancelled = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
   FunnelMetrics.funnelCancelled({ funnelInteractionId });
-  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+  dispatchCreateEditFlowDoneEvent();
 };
 
 const onFunnelComplete = ({ funnelInteractionId }: { funnelInteractionId: string }) => {
   FunnelMetrics.funnelComplete({ funnelInteractionId });
-  document.dispatchEvent(new Event(CREATION_EDIT_FLOW_DONE_EVENT_NAME));
+  dispatchCreateEditFlowDoneEvent();
 };
 
 function evaluateSelectors(selectors: string[], defaultSelector: string) {
