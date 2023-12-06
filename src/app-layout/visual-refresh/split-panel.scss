@@ -19,11 +19,11 @@ section.split-panel-bottom {
   This could be off the viewport if the content area has enough content to be scrollable.
   */
   align-self: end;
-  bottom: var(#{custom-props.$footerHeight});
+  inset-block-end: var(#{custom-props.$footerHeight});
   display: none;
   grid-column: 1 / 6;
   grid-row: 10;
-  height: auto;
+  block-size: auto;
   overflow-y: hidden;
 
   /*
@@ -37,17 +37,17 @@ section.split-panel-bottom {
   // Animation for the height when opening the split panel
   @keyframes openSplitPanelBottom {
     from {
-      height: var(#{custom-props.$splitPanelReportedHeaderSize}, 0);
+      block-size: var(#{custom-props.$splitPanelReportedHeaderSize}, 0);
     }
 
     to {
-      height: var(#{custom-props.$splitPanelReportedSize});
+      block-size: var(#{custom-props.$splitPanelReportedSize});
     }
   }
 
   // If the Layout is the scrollable element then the footer height is not relevant
   &.disable-body-scroll {
-    bottom: 0;
+    inset-block-end: 0;
   }
 
   &.is-navigation-open.position-bottom {
@@ -93,13 +93,13 @@ section.split-panel-bottom {
 }
 
 section.split-panel-side {
-  height: 100%;
+  block-size: 100%;
   overflow-x: hidden;
   pointer-events: auto;
 
   &:not(.is-split-panel-open),
   &.position-bottom {
-    width: 0;
+    inline-size: 0;
   }
 
   /*
@@ -109,7 +109,7 @@ section.split-panel-side {
   */
   &.is-split-panel-open.position-side {
     box-shadow: awsui.$shadow-panel;
-    max-width: var(#{custom-props.$splitPanelMaxWidth}, 280px);
-    min-width: var(#{custom-props.$splitPanelMinWidth}, 280px);
+    max-inline-size: var(#{custom-props.$splitPanelMaxWidth}, 280px);
+    min-inline-size: var(#{custom-props.$splitPanelMinWidth}, 280px);
   }
 }
