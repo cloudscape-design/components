@@ -42,6 +42,26 @@ it('highlighted option with screenReaderContent should have aria-hidden and scre
   expect(container.querySelector(`.${styles['screenreader-content']}`)).toContainHTML('announcement');
 });
 
+it('highlighted option with highlightType "mouse" should not add keyboard class to the item', () => {
+  const { container } = render(
+    <SelectableItem highlighted={true} highlightType="mouse">
+      Highlighted Option
+    </SelectableItem>
+  );
+  expect(container.querySelector(`.${styles.highlighted}`)).not.toBeNull();
+  expect(container.querySelector(`.${styles['is-keyboard']}`)).toBeNull();
+});
+
+it('highlighted option with highlightType "keyboard" should add keyboard class to the item', () => {
+  const { container } = render(
+    <SelectableItem highlighted={true} highlightType="keyboard">
+      Highlighted Option
+    </SelectableItem>
+  );
+  expect(container.querySelector(`.${styles.highlighted}`)).not.toBeNull();
+  expect(container.querySelector(`.${styles['is-keyboard']}`)).not.toBeNull();
+});
+
 it('assign aria-posinset and aria-setsize when set', () => {
   const { container } = render(
     <SelectableItem ariaPosinset={10} ariaSetsize={50}>
