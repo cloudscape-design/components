@@ -13,7 +13,8 @@
   // resemble button styles with an extra 1px offset for non-existing here border width
   $padding-vertical: calc(#{awsui.$space-scaled-xxs} + 1px);
   $padding-horizontal: calc(#{awsui.$space-xxs} + 1px);
-  padding: $padding-vertical $padding-horizontal;
+  padding-block: $padding-vertical;
+  padding-inline: $padding-horizontal;
   background: transparent;
   color: currentColor;
   &:focus {
@@ -28,7 +29,7 @@
 .close-button {
   position: absolute;
   outline: none;
-  right: awsui.$space-m;
-  top: awsui.$size-vertical-panel-icon-offset;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: awsui.$size-vertical-panel-icon-offset;
   z-index: 1;
 }
