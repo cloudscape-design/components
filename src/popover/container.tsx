@@ -184,6 +184,8 @@ export default function PopoverContainer({
     /*
     This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
     and by tracking the click event we can adapt the popover's position to the new layout.
+
+    TODO: extend this to Enter and Spacebar?
     */
 
     const onClick = (event: UIEvent | KeyboardEvent) => {
@@ -203,17 +205,10 @@ export default function PopoverContainer({
       });
     };
 
-    const onKeyUp = (event: KeyboardEvent) => {
-      if ([' ', 'Enter'].includes(event.key)) {
-        onClick(event);
-      }
-    };
-
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
     window.addEventListener('click', onClick);
-    window.addEventListener('keyup', onKeyUp);
 
     window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);

@@ -1043,14 +1043,6 @@ describe('Details popover', () => {
       wrapper.findDetailPopover()!.click();
       expect(spy).not.toHaveBeenCalled();
     });
-
-    test('on pressing space', () => {
-      const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
-      wrapper.findApplication()!.focus();
-      spy!.mockClear();
-      wrapper.findDetailPopover()!.keyup(KeyCode.space);
-      expect(spy).not.toHaveBeenCalled();
-    });
   });
 });
 
