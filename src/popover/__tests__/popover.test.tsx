@@ -12,7 +12,7 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 jest.mock('../../../lib/components/popover/utils/positions', () => ({
   ...jest.requireActual('../../../lib/components/popover/utils/positions'),
-  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Used to retrieve the popover dimensions
+  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
 }));
 
 let originalGetComputedStyle: Window['getComputedStyle'];
