@@ -209,12 +209,8 @@ export default function PopoverContainer({
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
 
     window.addEventListener('click', onClick);
-
     window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);
-
-    // Update the position on the first render, right before painting
-    updatePositionHandler();
 
     return () => {
       window.removeEventListener('click', onClick);
