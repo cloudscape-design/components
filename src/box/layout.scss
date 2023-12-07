@@ -24,9 +24,11 @@
   }
 }
 
+/* stylelint-disable csstools/use-logical */
 .f-left {
-  float: inline-start;
+  float: left;
 }
 .f-right {
-  float: inline-end;
+  float: right;
 }
+/* stylelint-enable csstools/use-logical */
