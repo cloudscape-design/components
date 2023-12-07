@@ -86,10 +86,10 @@ test('table row and cell props', () => {
 
   expect(headerRow).toEqual({});
   expect(bodyRow).toEqual({});
-  expect(headerCell1).toEqual({ scope: 'col', 'aria-sort': 'ascending' });
-  expect(headerCell2).toEqual({ scope: 'col' });
-  expect(bodyCell1).toEqual({ scope: 'row' });
-  expect(bodyCell2).toEqual({});
+  expect(headerCell1).toEqual({ scope: 'col', 'aria-sort': 'ascending', tabIndex: -1 });
+  expect(headerCell2).toEqual({ scope: 'col', tabIndex: -1 });
+  expect(bodyCell1).toEqual({ scope: 'row', tabIndex: -1 });
+  expect(bodyCell2).toEqual({ tabIndex: -1 });
 });
 
 test('grid row and cell props', () => {
@@ -104,8 +104,8 @@ test('grid row and cell props', () => {
 
   expect(headerRow).toEqual({ 'aria-rowindex': 1 });
   expect(bodyRow).toEqual({ 'aria-rowindex': 2 });
-  expect(headerCell1).toEqual({ 'aria-colindex': 1, scope: 'col', 'aria-sort': 'ascending' });
-  expect(headerCell2).toEqual({ 'aria-colindex': 2, scope: 'col' });
-  expect(bodyCell1).toEqual({ 'aria-colindex': 1, scope: 'row' });
-  expect(bodyCell2).toEqual({ 'aria-colindex': 2 });
+  expect(headerCell1).toEqual({ 'aria-colindex': 1, scope: 'col', 'aria-sort': 'ascending', tabIndex: -1 });
+  expect(headerCell2).toEqual({ 'aria-colindex': 2, scope: 'col', tabIndex: -1 });
+  expect(bodyCell1).toEqual({ 'aria-colindex': 1, scope: 'row', tabIndex: -1 });
+  expect(bodyCell2).toEqual({ 'aria-colindex': 2, tabIndex: -1 });
 });
