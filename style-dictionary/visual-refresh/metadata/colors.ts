@@ -273,6 +273,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderDividerDimmed: {
+    description: 'The border color for table row dividers.',
+    public: true,
+    themeable: true,
+  },
   colorBorderDropdownItemHover: {
     description:
       'The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.',
@@ -296,6 +301,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBorderItemSelected: {
     description:
       'The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSelectableItemFocused: {
+    description:
+      'The color of focus states for dropdown items, for example, the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.',
     public: true,
     themeable: true,
   },
@@ -487,9 +498,14 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextHeadingPrimary: {
+    description: 'The default color for heading 1, for example: the heading in the header for a page title',
+    public: true,
+    themeable: true,
+  },
   colorTextHeadingDefault: {
     description:
-      'The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.',
+      'The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.',
     public: true,
     themeable: true,
   },
