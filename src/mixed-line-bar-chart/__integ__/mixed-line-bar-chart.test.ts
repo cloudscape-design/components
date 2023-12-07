@@ -4,6 +4,7 @@ import createWrapper, { BarChartWrapper, MixedLineBarChartWrapper } from '../../
 import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
 import mixedChartStyles from '../../../lib/components/mixed-line-bar-chart/styles.selectors.js';
 import { setupTest } from './common';
+import { setupPopoverPositionTest } from './popover-position-page';
 
 const chartWrapper = createWrapper().findMixedLineBarChart('#chart');
 const groupedBarWrapper = new BarChartWrapper('#chart-grouped');
@@ -431,6 +432,24 @@ describe('Details popover', () => {
       );
     })
   );
+
+  describe('keeps the popover position when it resizes due to interacting with the popover itself', () => {
+    test.each(['hover', 'click', 'keyboard'])('Interaction type: %s', interactionType =>
+      setupPopoverPositionTest(async page => {
+        await page.setWindowSize({ width: 900, height: 500 });
+        await page.openPopoverOnBarGroup(1, interactionType);
+        const popover = page.findDetailPopover();
+        expect(page.isDisplayed(popover.toSelector())).resolves.toBe(true);
+        const initialRect = await page.getPopoverRect();
+        await page.click(popover.findContent().findExpandableSection().toSelector());
+        const newRect = await page.getPopoverRect();
+        // Verify that the popover actually got bigger after the interaction,
+        // but that it didn't change its position nonetheless.
+        expect(newRect.height).toBeGreaterThan(initialRect.height);
+        expect(newRect.top).toEqual(initialRect.top);
+      })()
+    );
+  });
 
   test(
     'Allow mouse to enter popover when a group is hovering over a point',

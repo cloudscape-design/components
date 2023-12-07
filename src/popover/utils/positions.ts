@@ -3,7 +3,7 @@
 import { PopoverProps, InternalPosition, BoundingOffset, BoundingBox } from '../interfaces';
 
 // A structure describing how the popover should be positioned
-export interface CalculatePosition {
+interface CalculatedPosition {
   scrollable?: boolean;
   internalPosition: InternalPosition;
   boundingOffset: BoundingOffset;
@@ -218,22 +218,38 @@ export function intersectRectangles(rectangles: BoundingOffset[]): number | null
 /**
  * A functions that returns the correct popover position based on screen dimensions.
  */
-export function calculatePosition(
-  preferred: PopoverProps.Position,
-  trigger: BoundingOffset,
-  arrow: BoundingBox,
-  body: BoundingBox,
-  container: BoundingOffset,
-  viewport: BoundingOffset,
+export function calculatePosition({
+  preferredPosition,
+  fixedInternalPosition,
+  trigger,
+  arrow,
+  body,
+  container,
+  viewport,
   // the popover is only bound by the viewport if it is rendered in a portal
-  renderWithPortal?: boolean
-): CalculatePosition {
-  let bestPositionOutsideViewport: CalculatePosition | null = null;
+  renderWithPortal,
+}: {
+  preferredPosition: PopoverProps.Position;
+  fixedInternalPosition?: InternalPosition;
+  trigger: BoundingOffset;
+  arrow: BoundingBox;
+  body: BoundingBox;
+  container: BoundingOffset;
+  viewport: BoundingOffset;
+  // the popover is only bound by the viewport if it is rendered in a portal
+  renderWithPortal?: boolean;
+}): CalculatedPosition {
+  let bestPositionOutsideViewport: CalculatedPosition | null = null;
   let largestArea = 0;
+
+  // If a fixed internal position is passed, only consider this one.
+  const preferredInternalPositions = fixedInternalPosition
+    ? [fixedInternalPosition]
+    : PRIORITY_MAPPING[preferredPosition];
 
   // Attempt to position the popover based on the priority list for this position,
   // trying to fit it inside the container and inside the viewport.
-  for (const internalPosition of PRIORITY_MAPPING[preferred]) {
+  for (const internalPosition of preferredInternalPositions) {
     const boundingOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
     const fitsInContainer = renderWithPortal || canRectFit(boundingOffset, container);
     const fitsInViewport = canRectFit(boundingOffset, viewport);
@@ -255,10 +271,22 @@ export function calculatePosition(
   const internalPosition = bestPositionOutsideViewport?.internalPosition || 'right-top';
   // Get default rect for that placement.
   const defaultOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
-  // Get largest possible rect that fits into viewport or container.
+  // Get largest possible rect that fits into viewport.
   const optimisedOffset = fitIntoContainer(defaultOffset, viewport);
   // If largest possible rect is smaller than original - set body scroll.
   const scrollable = optimisedOffset.height < defaultOffset.height;
 
   return { internalPosition, boundingOffset: optimisedOffset, scrollable };
+}
+
+export function getOffsetDimensions(element: HTMLElement) {
+  return { offsetHeight: element.offsetHeight, offsetWidth: element.offsetWidth };
+}
+
+export function getDimensions(element: HTMLElement) {
+  const computedStyle = getComputedStyle(element);
+  return {
+    width: parseFloat(computedStyle.width),
+    height: parseFloat(computedStyle.height),
+  };
 }
