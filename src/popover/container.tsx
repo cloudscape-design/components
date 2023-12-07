@@ -218,7 +218,6 @@ export default function PopoverContainer({
 
     return () => {
       window.removeEventListener('click', onClick);
-      window.removeEventListener('keyup', onClick);
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
