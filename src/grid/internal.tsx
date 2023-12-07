@@ -33,9 +33,10 @@ const InternalGrid = React.forwardRef(
       __internalRootRef = null,
       ...restProps
     }: InternalGridProps,
-    ref: React.Ref<any>
+    ref: React.Ref<HTMLDivElement>
   ) => {
-    let [defaultBreakpoint, defaultRef]: [Breakpoint | null, React.Ref<any>] = useContainerBreakpoints(undefined);
+    let [defaultBreakpoint, defaultRef]: [Breakpoint | null, React.Ref<HTMLDivElement>] =
+      useContainerBreakpoints(undefined);
     if (__breakpoint !== undefined) {
       defaultBreakpoint = __breakpoint;
       defaultRef = ref;
@@ -74,11 +75,11 @@ const InternalGrid = React.forwardRef(
         {flattenedChildren.map((child, i) => {
           // If this react child is a primitive value, the key will be undefined
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const key = (child as any).key;
+          const key = (child as Record<'key', unknown>).key;
 
           return (
             <div
-              key={key}
+              key={key ? String(key) : undefined}
               className={clsx(
                 styles['grid-column'],
                 getColumnClassNames('colspan', gridDefinition[i]?.colspan, defaultBreakpoint),

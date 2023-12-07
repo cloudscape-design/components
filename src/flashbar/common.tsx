@@ -31,7 +31,7 @@ export function useFlashbar({
   const ref = useRef<HTMLDivElement | null>(null);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
   const mergedRef = useMergeRefs(ref, breakpointRef, __internalRootRef);
-  const isReducedMotion = useReducedMotion(breakpointRef as any);
+  const isReducedMotion = useReducedMotion(ref);
   const isVisualRefresh = useVisualRefresh();
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
