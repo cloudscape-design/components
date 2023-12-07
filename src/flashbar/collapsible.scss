@@ -271,13 +271,15 @@ the grid layout will be:
 
   &.visual-refresh {
     $border-width: map.get($notification-bar-border-width, 'visual-refresh');
-    border-width: $border-width;
+    border-block-width: $border-width;
+    border-inline-width: $border-width;
     padding-inline: awsui.$space-l;
   }
 
   &:not(.visual-refresh) {
     $border-width: map.get($notification-bar-border-width, 'classic');
-    border-width: $border-width;
+    border-block-width: $border-width;
+    border-inline-width: $border-width;
     padding-inline: awsui.$space-s;
 
     &:focus {
