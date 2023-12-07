@@ -53,6 +53,13 @@
     {
       "files": [
         "./src/button/*.scss",
+        "./src/g*/*.scss",
+        "./src/h*/*.scss",
+        "./src/i*/*.scss",
+        "./src/j*/*.scss",
+        "./src/k*/*.scss",
+        "./src/l*/*.scss",
+        "./src/m*/*.scss",
         "./src/n*/*.scss",
         "./src/o*/*.scss",
         "./src/p*/*.scss",
