@@ -55,9 +55,10 @@ export default function PopoverContainer({
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
-  const internalPositionRef = useRef<InternalPosition | null>(null);
+  const previousInternalPositionRef = useRef<InternalPosition | null>(null);
 
   const [popoverStyle, setPopoverStyle] = useState<CSSProperties>(INITIAL_STYLES);
+  const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
@@ -115,8 +116,8 @@ export default function PopoverContainer({
       // When keepPosition is true and the recalculation was triggered by a resize of the popover content,
       // we maintain the previously defined internal position,
       // but we still call calculatePosition to know if the popover should be scrollable.
-      const fixedInternalPosition =
-        keepPosition && onContentResize && internalPositionRef.current ? internalPositionRef.current : undefined;
+      const shouldKeepPosition = keepPosition && onContentResize && !!previousInternalPositionRef.current;
+      const fixedInternalPosition = (shouldKeepPosition && previousInternalPositionRef.current) ?? undefined;
 
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
@@ -152,8 +153,11 @@ export default function PopoverContainer({
         body.style.overflowY = 'auto';
       }
 
+      // Remember the internal position in case we want to keep it later.
+      previousInternalPositionRef.current = newInternalPosition;
+
       // Position the popover
-      internalPositionRef.current = newInternalPosition;
+      setInternalPosition(newInternalPosition);
       setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
 
       positionHandlerRef.current = () => {
@@ -228,10 +232,10 @@ export default function PopoverContainer({
     >
       <div
         ref={arrowRef}
-        className={clsx(styles[`container-arrow`], styles[`container-arrow-position-${internalPositionRef.current}`])}
+        className={clsx(styles[`container-arrow`], styles[`container-arrow-position-${internalPosition}`])}
         aria-hidden={true}
       >
-        {arrow(internalPositionRef.current)}
+        {arrow(internalPosition)}
       </div>
 
       <div
