@@ -147,7 +147,7 @@ export default function PopoverContainer({
 
       // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
       if (scrollable) {
-        body.style.maxHeight = Math.min(boundingOffset.height, window.innerHeight - parseInt(prevTop)) + 'px';
+        body.style.maxHeight = boundingOffset.height + 'px';
         body.style.overflowX = 'hidden';
         body.style.overflowY = 'auto';
       }
