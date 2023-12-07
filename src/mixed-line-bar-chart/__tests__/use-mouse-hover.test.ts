@@ -24,6 +24,7 @@ const commonProps = {
   isHandlersDisabled: false,
   setPlotFocused: jest.fn(),
   highlightX: jest.fn(),
+  isPopoverPinned: false,
 };
 
 const renderMouseHoverHook = <T extends ChartDataTypes>(props?: Partial<UseMouseHoverProps<T>>) => {
@@ -154,6 +155,21 @@ describe('Mouse hover hook', () => {
     act(() => hook.current.onPopoverLeave(event));
     expect(customProps.highlightX).toHaveBeenCalledWith(null);
     expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not clear highlightX when onPopoverLeave is called if isPopoverPinned is true', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+      isPopoverPinned: true,
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    const event = {
+      relatedTarget: null,
+    } as any;
+    act(() => hook.current.onPopoverLeave(event));
+    expect(customProps.highlightX).not.toHaveBeenCalled();
+    expect(customProps.clearHighlightedSeries).not.toHaveBeenCalled();
   });
 
   test('highlights point when moving close', () => {
