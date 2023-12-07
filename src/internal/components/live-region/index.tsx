@@ -170,5 +170,5 @@ function LiveRegion({
 // To make it more powerful, it is possible to create a more sophisticated extractor with respect to
 // ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
 function extractInnerText(node: HTMLElement) {
-  return (node.innerText || '').replace(/\s+/g, ' ').trim();
+  return node.innerText.replace(/\s+/g, ' ').trim();
 }
