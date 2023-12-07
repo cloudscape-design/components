@@ -167,14 +167,18 @@ export function useDrawers(
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
 
+  const activeDrawerSize = activeDrawerIdResolved
+    ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
+    : toolsProps.toolsWidth;
+  const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? 290, 290);
+
   return {
     ariaLabelsWithDrawers: ariaLabels,
     drawers: combinedDrawers || undefined,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
-    activeDrawerSize: activeDrawerIdResolved
-      ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
-      : toolsProps.toolsWidth,
+    activeDrawerSize,
+    minDrawerSize,
     onActiveDrawerChange,
     onActiveDrawerResize,
   };

@@ -263,7 +263,7 @@ export default function AnnotationContext({
 
 applyDisplayName(AnnotationContext, 'AnnotationContext');
 
-function removeKey<T extends Record<string, any>>(key: keyof T, object: T) {
+function removeKey<T extends Record<string, unknown>>(key: keyof T, object: T) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { [key]: _, ...remainingObject } = object;
   return remainingObject;

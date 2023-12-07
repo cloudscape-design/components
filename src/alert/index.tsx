@@ -13,7 +13,7 @@ export { AlertProps };
 
 const Alert = React.forwardRef(
   ({ type = 'info', visible = true, ...props }: AlertProps, ref: React.Ref<AlertProps.Ref>) => {
-    const baseComponentProps = useBaseComponent('Alert');
+    const baseComponentProps = useBaseComponent<HTMLDivElement>('Alert');
 
     const { funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
     const { stepNumber, stepNameSelector } = useFunnelStep();

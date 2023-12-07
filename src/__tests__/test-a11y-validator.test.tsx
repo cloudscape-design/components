@@ -41,7 +41,7 @@ describe('a11y validator', () => {
     );
     await expect(expect(container).toValidateA11y()).rejects.toThrow(
       new Error(
-        'Expected HTML to be valid but had the following errors:\nAxe checks\n1. Fix all of the following:\n  ARIA attribute element ID does not exist on the page: aria-labelledby="non-exist-id" [aria-valid-attr-value]'
+        'Expected HTML to be valid but had the following errors:\nHTML validation\n1. Redundant "for" attribute [no-redundant-for]\nAxe checks\n1. Fix all of the following:\n  ARIA attribute element ID does not exist on the page: aria-labelledby="non-exist-id" [aria-valid-attr-value]'
       )
     );
   });

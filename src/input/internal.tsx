@@ -31,7 +31,7 @@ export interface InternalInputProps
   __rightIcon?: IconProps['name'];
   __onRightIconClick?: () => void;
 
-  __nativeAttributes?: Record<string, any>;
+  __nativeAttributes?: React.InputHTMLAttributes<HTMLInputElement>;
   __noBorderRadius?: boolean;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;

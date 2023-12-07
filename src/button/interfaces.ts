@@ -66,8 +66,9 @@ export interface ButtonProps extends BaseComponentProps {
   formAction?: ButtonProps.FormAction;
 
   /**
-   * Adds `aria-label` to the button element. It should be used in buttons that don't have text in order to make
-   * them accessible. The text will also be added to the `title` attribute of the button.
+   * Adds `aria-label` to the button element. Use this to provide an accessible name for buttons
+   * that don't have visible text, and to distinguish between multiple buttons with identical visible text.
+   * The text will also be added to the `title` attribute of the button.
    */
   ariaLabel?: string;
 

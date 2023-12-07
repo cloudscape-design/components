@@ -13791,22 +13791,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -16051,22 +16051,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -18311,22 +18311,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -20571,22 +20571,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -22831,22 +22831,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -25091,22 +25091,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -27351,22 +27351,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#192534",
-            "light": "#192534",
+            "dark": "#414d5c",
+            "light": "#414d5c",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#354150",
-            "light": "#354150",
+            "dark": "#5f6b7a",
+            "light": "#5f6b7a",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -29611,22 +29611,22 @@ Object {
     "color-background-layout-toggle-active": Object {
       "$description": "The background color of the app layout toggle button when it's active.",
       "$value": Object {
-        "dark": "#354150",
-        "light": "#354150",
+        "dark": "#414d5c",
+        "light": "#414d5c",
       },
     },
     "color-background-layout-toggle-default": Object {
       "$description": "The default background color of the app layout toggle button.",
       "$value": Object {
-        "dark": "#192534",
-        "light": "#192534",
+        "dark": "#414d5c",
+        "light": "#414d5c",
       },
     },
     "color-background-layout-toggle-hover": Object {
       "$description": "The background color of the app layout toggle button on hover.",
       "$value": Object {
-        "dark": "#354150",
-        "light": "#354150",
+        "dark": "#5f6b7a",
+        "light": "#5f6b7a",
       },
     },
     "color-background-layout-toggle-selected-active": Object {

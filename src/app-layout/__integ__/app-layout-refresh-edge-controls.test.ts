@@ -18,7 +18,7 @@ function setupTest(testFn: (page: AppLayoutRefreshEdgeControlsPage) => Promise<v
   return useBrowser(async browser => {
     const page = new AppLayoutRefreshEdgeControlsPage(browser);
     await page.setWindowSize(viewports.desktop);
-    await browser.url(`#/light/app-layout/disable-paddings-edge-controls/?visualRefresh=true&motionDisabled=true`);
+    await browser.url(`#/light/app-layout/disable-paddings-edge-controls/?visualRefresh=true`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });

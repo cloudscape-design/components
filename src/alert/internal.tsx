@@ -30,7 +30,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   info: 'status-info',
 };
 
-type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps;
+type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps<HTMLDivElement>;
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
 

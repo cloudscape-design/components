@@ -145,7 +145,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
           isClickable={!highlightDetails?.isPopoverPinned}
           onMouseMove={model.handlers.onSVGMouseMove}
           onMouseOut={model.handlers.onSVGMouseOut}
-          onMouseDown={model.handlers.onSVGMouseDown}
+          onClick={model.handlers.onSVGMouseDown}
           onKeyDown={model.handlers.onSVGKeyDown}
           onFocus={model.handlers.onSVGFocus}
           onBlur={model.handlers.onSVGBlur}

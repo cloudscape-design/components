@@ -40,6 +40,7 @@ describe('CSS Custom Properties', () => {
     ['light', `#light/?visualRefresh=false`],
     ['dark', '#dark/?visualRefresh=false'],
     ['compact', '#light/?visualRefresh=false&density=compact'],
+    // use motionDisabled to force design tokens into expected values
     ['reduced-motion', '#light/?visualRefresh=false&motionDisabled=true'],
     ['visual-refresh', '#light/?visualRefresh=true'],
     ['visual-refresh-dark', '#dark/?visualRefresh=true'],

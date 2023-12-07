@@ -16,7 +16,7 @@ interface UseMaskHook {
   onChange: NonCancelableEventHandler<InputProps.ChangeDetail>;
   onKeyDown: CancelableEventHandler<InputProps.KeyDetail>;
   onBlur: NonCancelableEventHandler<null>;
-  onPaste: (event: ClipboardEvent) => void;
+  onPaste: (event: React.ClipboardEvent) => void;
 }
 
 interface UseMaskProps {
@@ -110,7 +110,7 @@ const useMask = ({
 
       onBlur && onBlur();
     },
-    onPaste: (event: ClipboardEvent) => {
+    onPaste: (event: React.ClipboardEvent) => {
       const text = (event.clipboardData || (window as any).clipboardData).getData('text');
 
       const selectionStart = inputRef.current?.selectionStart || 0;

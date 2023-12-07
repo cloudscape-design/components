@@ -19,6 +19,7 @@ import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
 export const ResizableDrawer = ({
   onResize,
   size,
+  minSize,
   getMaxWidth,
   refs,
   activeDrawer,
@@ -26,8 +27,6 @@ export const ResizableDrawer = ({
   ...props
 }: ResizableDrawerProps) => {
   const { isOpen, children, isMobile } = props;
-
-  const MIN_WIDTH = activeDrawer?.defaultSize && activeDrawer.defaultSize < 280 ? activeDrawer?.defaultSize : 280;
   const [relativeSize, setRelativeSize] = useState(0);
 
   useEffect(() => {
@@ -42,10 +41,10 @@ export const ResizableDrawer = ({
 
   const setSidePanelWidth = (width: number) => {
     const maxWidth = getMaxWidth();
-    const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
+    const size = getLimitedValue(minSize, width, maxWidth);
     const id = activeDrawer?.id;
 
-    if (isOpen && id && maxWidth >= MIN_WIDTH) {
+    if (isOpen && id && maxWidth >= minSize) {
       onResize({ size, id });
     }
   };

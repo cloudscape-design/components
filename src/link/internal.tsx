@@ -27,7 +27,7 @@ import {
 } from '../internal/analytics/selectors';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 
-type InternalLinkProps = InternalBaseComponentProps &
+type InternalLinkProps = InternalBaseComponentProps<HTMLAnchorElement> &
   Omit<LinkProps, 'variant'> & {
     variant?: LinkProps['variant'] | 'top-navigation' | 'link' | 'recovery';
   };
@@ -142,8 +142,7 @@ const InternalLink = React.forwardRef(
       id: linkId,
       ...baseProps,
       // https://github.com/microsoft/TypeScript/issues/36659
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ref: useMergeRefs(linkRef as any, __internalRootRef),
+      ref: useMergeRefs(linkRef, __internalRootRef),
       className: clsx(
         styles.link,
         baseProps.className,

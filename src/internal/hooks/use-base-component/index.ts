@@ -6,8 +6,8 @@ import { useTelemetry } from '../use-telemetry';
 import { PACKAGE_VERSION } from '../../environment';
 import useFocusVisible from '../focus-visible';
 
-export interface InternalBaseComponentProps {
-  __internalRootRef?: MutableRefObject<any> | null;
+export interface InternalBaseComponentProps<T = any> {
+  __internalRootRef?: MutableRefObject<T | null> | null;
 }
 
 /**

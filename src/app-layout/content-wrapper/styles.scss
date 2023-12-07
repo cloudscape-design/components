@@ -8,20 +8,20 @@
 @use '../constants' as constants;
 
 .content-wrapper {
-  padding-left: awsui.$space-scaled-2x-xxxl;
-  padding-right: awsui.$space-scaled-2x-xxxl;
+  padding-inline-start: awsui.$space-layout-content-horizontal;
+  padding-inline-end: awsui.$space-layout-content-horizontal;
   &-mobile {
-    padding-left: awsui.$space-l;
-    padding-right: awsui.$space-l;
+    padding-inline-start: awsui.$space-l;
+    padding-inline-end: awsui.$space-l;
   }
 }
 
 .content-type-dashboard {
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
   @each $breakpoint, $width in constants.$dashboard-content-widths {
     @include styles.media-breakpoint-up($breakpoint) {
-      max-width: $width;
+      max-inline-size: $width;
     }
   }
 }

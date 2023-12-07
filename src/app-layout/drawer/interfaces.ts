@@ -41,6 +41,7 @@ export interface DesktopDrawerProps {
 export interface ResizableDrawerProps extends DesktopDrawerProps {
   activeDrawer: AppLayoutProps.Drawer | undefined;
   onResize: (resizeDetail: { size: number; id: string }) => void;
+  minSize: number;
   size: number;
   getMaxWidth: () => number;
   refs: FocusControlRefs;
