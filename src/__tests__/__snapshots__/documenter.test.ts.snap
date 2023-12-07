@@ -5410,17 +5410,17 @@ and to distinguish between multiple buttons with identical visible text. The tex
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"standalone\\"",
+      "defaultValue": "\\"button\\"",
       "description": "Determines the general styling of the copy button as follows:
-* \`standalone\` to display a secondary button with an icon and \`i18nStrings.copyButtonText\` as text.
+* \`button\` to display a secondary button with an icon and \`i18nStrings.copyButtonText\` as text.
 * \`icon\` to display an icon-only (no text) button.
 * \`inline\` to display an icon-only (no text) button within a text context.
-Defaults to \`standalone\`.",
+Defaults to \`button\`.",
       "inlineType": Object {
         "name": "CopyToClipboardProps.Variant",
         "type": "union",
         "values": Array [
-          "standalone",
+          "button",
           "icon",
           "inline",
         ],

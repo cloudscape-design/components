@@ -16,7 +16,7 @@ import clsx from 'clsx';
 export { CopyToClipboardProps };
 
 export default function CopyToClipboard({
-  variant = 'standalone',
+  variant = 'button',
   ariaLabel,
   textToCopy,
   copySuccessText,
@@ -30,7 +30,7 @@ export default function CopyToClipboard({
   const i18n = useInternalI18n('copy-to-clipboard');
   const copyButtonText = i18n('i18nStrings.copyButtonText', i18nStrings?.copyButtonText);
   const copyButtonProps =
-    variant === 'standalone' ? { children: copyButtonText, ariaLabel } : { ariaLabel: ariaLabel ?? copyButtonText };
+    variant === 'button' ? { children: copyButtonText, ariaLabel } : { ariaLabel: ariaLabel ?? copyButtonText };
 
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
   const [statusText, setStatusText] = useState('');
@@ -54,7 +54,7 @@ export default function CopyToClipboard({
 
   const triggerVariant = (
     {
-      standalone: 'normal',
+      button: 'normal',
       icon: 'icon',
       inline: 'inline-icon',
     } as const
