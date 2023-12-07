@@ -18,10 +18,11 @@
 .header {
   &-variant-full-page.header-refresh {
     @include container.borders-and-shadows;
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
+    padding-block-start: 0;
+    padding-block-end: calc(
+      #{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom}
+    );
+    padding-inline: 0;
   }
 }
 
@@ -30,14 +31,17 @@
   flex-wrap: wrap;
   box-sizing: border-box;
   // reset styles from OL
-  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
   list-style: none;
-  margin: 0 0 0 calc(#{awsui.$space-grid-gutter} * -1);
+  margin-block: 0;
+  margin-inline-start: calc(#{awsui.$space-grid-gutter} * -1);
+  margin-inline-end: 0;
 
   @for $i from 1 through 20 {
     &.list-grid-#{$i} {
       > .card {
-        width: math.div(100%, $i);
+        inline-size: math.div(100%, $i);
       }
     }
   }
@@ -46,10 +50,11 @@
 .selection-control {
   position: absolute;
   box-sizing: border-box;
-  width: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
-  top: 0;
-  right: 0;
-  padding: awsui.$space-card-vertical awsui.$space-card-horizontal;
+  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  padding-block: awsui.$space-card-vertical;
+  padding-inline: awsui.$space-card-horizontal;
 }
 
 .loading,
@@ -57,48 +62,55 @@
   overflow: hidden;
   text-align: center;
   color: awsui.$color-text-empty;
-  margin-bottom: awsui.$space-scaled-l;
+  margin-block-end: awsui.$space-scaled-l;
 }
 
 .has-header {
   // Unfortunately, we don't have access to the header of InternalContainer
   // in order to use margin-bottom instead.
-  margin-top: awsui.$space-grid-gutter;
+  margin-block-start: awsui.$space-grid-gutter;
 }
 
 .card {
   display: flex;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  margin: 0;
-  padding: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
   list-style: none;
   &-inner {
     position: relative;
     background-color: awsui.$color-background-container-content;
-    margin: 0 0 awsui.$space-grid-gutter awsui.$space-grid-gutter;
-    padding: awsui.$space-card-vertical awsui.$space-card-horizontal;
+    margin-block-start: 0;
+    margin-block-end: awsui.$space-grid-gutter;
+    margin-inline-start: awsui.$space-grid-gutter;
+    margin-inline-end: 0;
+    padding-block: awsui.$space-card-vertical;
+    padding-inline: awsui.$space-card-horizontal;
     @include styles.container-shadow;
-    width: 100%;
-    min-width: 0;
+    inline-size: 100%;
+    min-inline-size: 0;
   }
   &-header {
     @include styles.font-heading-m;
     &-inner {
-      width: 100%;
+      inline-size: 100%;
       display: inline-block;
     }
   }
   &-selectable {
     > .card-inner > .card-header {
-      width: 90%;
+      inline-size: 90%;
     }
   }
   &-selected {
     > .card-inner {
       background-color: awsui.$color-background-item-selected;
       &::before {
-        border: awsui.$border-item-width solid awsui.$color-border-item-selected;
+        border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
+        border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
       }
     }
   }
@@ -108,7 +120,9 @@
   display: inline-block;
   box-sizing: border-box;
   // only scale bottom padding to reduce padding between sections and after the last section.
-  padding: awsui.$space-xs 0 awsui.$space-scaled-xs 0;
+  padding-block-start: awsui.$space-xs;
+  padding-block-end: awsui.$space-scaled-xs;
+  padding-inline: 0;
   vertical-align: top;
   &-header {
     @include styles.font-label;
@@ -119,7 +133,9 @@
   }
 }
 .section:last-child {
-  padding: awsui.$space-xs 0 0 0;
+  padding-block-start: awsui.$space-xs;
+  padding-block-end: 0;
+  padding-inline: 0;
 }
 
 .footer-pagination {
