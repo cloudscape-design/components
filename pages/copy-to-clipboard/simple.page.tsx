@@ -33,10 +33,23 @@ export default function DateInputScenario() {
             </article>
 
             <CopyToClipboard
+              data-testid="copy-article"
+              copySuccessText="Lorem ipsum article copied"
+              copyErrorText="Lorem ipsum article failed to copy"
+              textToCopy={paragraphs.join('\n\n')}
+              i18nStrings={i18nStrings}
+            />
+          </div>
+
+          <div style={{ display: 'flex', gap: 16 }}>
+            <Box variant="p">{paragraphs[0]}</Box>
+
+            <CopyToClipboard
               data-testid="copy-paragraph"
+              variant="icon"
               copySuccessText="Lorem ipsum paragraph copied"
               copyErrorText="Lorem ipsum paragraph failed to copy"
-              textToCopy={paragraphs.join('\n\n')}
+              textToCopy={paragraphs[0]}
               i18nStrings={i18nStrings}
             />
           </div>

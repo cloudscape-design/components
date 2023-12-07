@@ -5413,6 +5413,7 @@ and to distinguish between multiple buttons with identical visible text. The tex
       "defaultValue": "\\"standalone\\"",
       "description": "Determines the general styling of the copy button as follows:
 * \`standalone\` to display a secondary button with an icon and \`i18nStrings.copyButtonText\` as text.
+* \`icon\` to display an icon-only (no text) button.
 * \`inline\` to display an icon-only (no text) button within a text context.
 Defaults to \`standalone\`.",
       "inlineType": Object {
@@ -5420,6 +5421,7 @@ Defaults to \`standalone\`.",
         "type": "union",
         "values": Array [
           "standalone",
+          "icon",
           "inline",
         ],
       },

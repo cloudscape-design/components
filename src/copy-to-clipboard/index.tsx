@@ -52,6 +52,14 @@ export default function CopyToClipboard({
     }
   };
 
+  const triggerVariant = (
+    {
+      standalone: 'normal',
+      icon: 'icon',
+      inline: 'inline-icon',
+    } as const
+  )[variant];
+
   const trigger = (
     <InternalPopover
       size="medium"
@@ -65,7 +73,7 @@ export default function CopyToClipboard({
         {...copyButtonProps}
         iconName="copy"
         onClick={onClick}
-        variant={variant === 'standalone' ? 'normal' : 'inline-icon'}
+        variant={triggerVariant}
         wrapText={false}
         formAction="none"
       />
@@ -74,13 +82,13 @@ export default function CopyToClipboard({
 
   return (
     <div ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, styles.root, testStyles.root)}>
-      {variant === 'standalone' ? (
-        trigger
-      ) : (
+      {variant === 'inline' ? (
         <div className={styles['inline-container']}>
           <div className={styles['inline-container-trigger']}>{trigger}</div>
           <div className={clsx(styles['inline-container-text'], testStyles['text-to-copy'])}>{textToCopy}</div>
         </div>
+      ) : (
+        trigger
       )}
     </div>
   );

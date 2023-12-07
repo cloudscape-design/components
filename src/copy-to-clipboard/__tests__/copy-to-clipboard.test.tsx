@@ -41,6 +41,15 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findTextToCopy()).toBe(null);
   });
 
+  test('renders an icon button with aria-label and no text to copy', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="icon" ariaLabel="Copy test content" />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findCopyButton().getElement().textContent).toBe('');
+    expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy test content');
+    expect(wrapper.findTextToCopy()).toBe(null);
+  });
+
   test('renders an inline button with aria-label and text to copy', () => {
     const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" ariaLabel="Copy test content" />);
     const wrapper = createWrapper(container).findCopyToClipboard()!;
