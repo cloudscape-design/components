@@ -46,10 +46,11 @@
     // HACK: because of the issues with IE's box shadow rendering we draw
     // a border and don't mind the pixel fitting
     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-      border: styles.$control-border-width solid awsui.$color-border-container-top;
+      border-block: styles.$control-border-width solid awsui.$color-border-container-top;
+      border-inline: styles.$control-border-width solid awsui.$color-border-container-top;
     }
 
-    border-bottom: none;
+    border-block-end: none;
 
     // Don't show dropdown border when there's no dropdown content
     &.is-empty::after {
@@ -64,28 +65,28 @@
     }
 
     &.with-limited-width > .dropdown-content-wrapper {
-      border-top: none;
+      border-block-start: none;
     }
   }
   &-drop-left {
-    right: 0;
+    inset-inline-end: 0;
   }
   &-drop-right {
-    left: 0;
+    inset-inline-start: 0;
   }
   &.occupy-entire-width {
-    min-width: 100%;
+    min-inline-size: 100%;
   }
   &.stretch-beyond-trigger-width {
-    width: max-content;
-    max-width: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
+    inline-size: max-content;
+    max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
   }
   &.hide-upper-border > .dropdown-content-wrapper {
-    border-top: none;
+    border-block-start: none;
   }
   &.interior > .dropdown-content-wrapper {
-    margin-top: -1px;
-    border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
+    margin-block-start: -1px;
+    border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   }
   &.open {
     display: block;
@@ -108,9 +109,9 @@
 .dropdown-content {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .stretch-trigger-height {
-  height: 100%;
+  block-size: 100%;
 }
