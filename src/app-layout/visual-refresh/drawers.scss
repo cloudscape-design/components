@@ -12,10 +12,10 @@
   display: flex;
   grid-column: 5;
   grid-row: 1 / span 10;
-  height: var(#{custom-props.$contentHeight});
+  block-size: var(#{custom-props.$contentHeight});
   pointer-events: none;
   position: sticky;
-  top: var(#{custom-props.$offsetTop});
+  inset-block-start: var(#{custom-props.$offsetTop});
   z-index: 830;
 
   &.has-open-drawer {
@@ -25,7 +25,7 @@
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     /* stylelint-disable scss/operator-no-newline-after */
-    max-width: calc(
+    max-inline-size: calc(
       var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) -
         var(#{custom-props.$defaultMinContentWidth}) - var(#{custom-props.$contentGapRight})
     );
@@ -34,7 +34,7 @@
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     position: fixed;
-    right: 0;
+    inset-inline-end: 0;
     z-index: 1001;
 
     /*
@@ -45,7 +45,7 @@
     relative to the body.
     */
     &.disable-body-scroll {
-      top: var(#{custom-props.$headerHeight});
+      inset-block-start: var(#{custom-props.$headerHeight});
     }
   }
 }
@@ -54,14 +54,14 @@
   @include styles.styles-reset;
   background-color: transparent;
   box-sizing: border-box;
-  height: 100%;
+  block-size: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   overscroll-behavior-y: contain;
 
   &:not(.has-multiple-triggers).has-open-drawer {
-    width: 0;
+    inline-size: 0;
   }
 
   &.has-multiple-triggers.has-open-drawer {
@@ -69,7 +69,7 @@
   }
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
-    width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+    inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
   }
 }
 
@@ -82,8 +82,8 @@
   display: flex;
   flex-direction: column;
   gap: awsui.$space-xs;
-  padding-top: awsui.$space-scaled-s;
-  width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+  padding-block-start: awsui.$space-scaled-s;
+  inline-size: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
 
   &:not(.has-multiple-triggers).has-open-drawer {
     opacity: 0;
@@ -94,7 +94,8 @@
   }
 
   > .drawers-trigger-overflow {
-    padding: 0 1px;
+    padding-block: 0;
+    padding-inline: 1px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,7 +104,7 @@
 
 .drawers-trigger {
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    width: constants.$sidebar-size-closed;
+    inline-size: constants.$sidebar-size-closed;
     display: flex;
     justify-content: center;
   }
@@ -117,7 +118,7 @@
   grid-template-columns: awsui.$space-m 1fr;
   flex-shrink: 0;
 
-  height: 100%;
+  block-size: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
@@ -128,7 +129,7 @@
   > .drawer-content-container {
     grid-column: 1 / span 2;
     grid-row: 1;
-    width: var(#{custom-props.$drawerSize});
+    inline-size: var(#{custom-props.$drawerSize});
     display: grid;
     grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
     grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
@@ -151,20 +152,20 @@
   > .drawer-slider {
     grid-column: 1;
     grid-row: 1;
-    height: 100%;
+    block-size: 100%;
     display: flex;
     align-items: center;
   }
 
   &:not(.is-drawer-open) {
     opacity: 0;
-    width: 0;
+    inline-size: 0;
   }
 
   &.is-drawer-open {
-    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     opacity: 1;
-    width: var(#{custom-props.$drawerSize});
+    inline-size: var(#{custom-props.$drawerSize});
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
@@ -176,7 +177,7 @@
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     &.is-drawer-open {
       #{custom-props.$drawerSize}: 100vw;
-      width: 100vw;
+      inline-size: 100vw;
     }
   }
 }

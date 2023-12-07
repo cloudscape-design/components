@@ -6,23 +6,11 @@ import styles from './styles.css.js';
 import Option from '../../internal/components/option';
 import SelectableItem from '../../internal/components/selectable-item';
 import { getBaseProps } from '../../internal/base-component';
-import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
-import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
-export interface ItemProps {
-  option: DropdownOption;
-  highlighted?: boolean;
-  selected?: boolean;
+import { ItemProps } from './item';
+interface MultiselectItemProps extends ItemProps {
   indeterminate?: boolean;
-  filteringValue?: string;
-  hasCheckbox?: boolean;
-  virtualPosition?: number;
-  padBottom?: boolean;
-  isNextSelected?: boolean;
-  screenReaderContent?: string;
-  ariaPosinset?: number;
-  ariaSetsize?: number;
-  highlightType?: HighlightType;
 }
 
 const MultiSelectItem = (
@@ -41,7 +29,7 @@ const MultiSelectItem = (
     ariaSetsize,
     highlightType,
     ...restProps
-  }: ItemProps,
+  }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
 ) => {
   const baseProps = getBaseProps(restProps);
@@ -63,7 +51,7 @@ const MultiSelectItem = (
       disabled={disabled}
       isParent={isParent}
       isChild={isChild}
-      highlightType={highlightType?.type}
+      highlightType={highlightType}
       ref={ref}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
