@@ -18,10 +18,17 @@ describe('calculatePosition', () => {
       ['bottom', { top: 500, left: 500, height: 25, width: 25 }],
       ['left', { top: 500, left: 500, height: 25, width: 25 }],
     ] as const
-  ).forEach(([preferred, trigger]) => {
-    test(`takes first position for preferred="${preferred}" from priority mapping when enough space for it`, () => {
-      const position = calculatePosition(preferred, trigger, arrow, body, viewport, viewport);
-      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferred][0]);
+  ).forEach(([preferredPosition, trigger]) => {
+    test(`takes first position for preferredPosition="${preferredPosition}" from priority mapping when enough space for it`, () => {
+      const position = calculatePosition({
+        preferredPosition,
+        trigger,
+        arrow,
+        body,
+        container: viewport,
+        viewport,
+      });
+      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferredPosition][0]);
     });
   });
 
@@ -32,10 +39,41 @@ describe('calculatePosition', () => {
       ['bottom', { top: 500, left: 100, height: 25, width: 25 }],
       ['left', { top: 800, left: 500, height: 25, width: 25 }],
     ] as const
-  ).forEach(([preferred, trigger]) => {
-    test(`takes second position for preferred="${preferred}" from priority mapping when not enough space for first`, () => {
-      const position = calculatePosition(preferred, trigger, arrow, body, viewport, viewport);
-      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferred][1]);
+  ).forEach(([preferredPosition, trigger]) => {
+    test(`takes second position for preferredPosition="${preferredPosition}" from priority mapping when not enough space for first`, () => {
+      const position = calculatePosition({
+        preferredPosition,
+        trigger,
+        arrow,
+        body,
+        container: viewport,
+        viewport,
+      });
+      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferredPosition][1]);
+    });
+  });
+
+  describe('disregards preferredPosition in favor of fixedInternalPosition when defined', () => {
+    (
+      [
+        ['top', { top: 500, left: 500, height: 25, width: 25 }],
+        ['right', { top: 500, left: 500, height: 25, width: 25 }],
+        ['bottom', { top: 500, left: 500, height: 25, width: 25 }],
+        ['left', { top: 500, left: 500, height: 25, width: 25 }],
+      ] as const
+    ).forEach(([preferredPosition, trigger]) => {
+      test(`preferredPosition="${preferredPosition}"`, () => {
+        const position = calculatePosition({
+          preferredPosition,
+          fixedInternalPosition: 'right-top',
+          trigger,
+          arrow,
+          body,
+          container: viewport,
+          viewport,
+        });
+        expect(position.internalPosition).toBe('right-top');
+      });
     });
   });
 
@@ -44,10 +82,17 @@ describe('calculatePosition', () => {
       ['top', { top: 200, left: 500, height: 25, width: 25 }],
       ['bottom', { top: 800, left: 500, height: 25, width: 25 }],
     ] as const
-  ).forEach(([preferred, trigger]) => {
-    test(`flips position for preferred="${preferred}" from priority mapping when not enough space above/below`, () => {
-      const position = calculatePosition(preferred, trigger, arrow, body, viewport, viewport);
-      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferred][3]);
+  ).forEach(([preferredPosition, trigger]) => {
+    test(`flips position for preferredPosition="${preferredPosition}" from priority mapping when not enough space above/below`, () => {
+      const position = calculatePosition({
+        preferredPosition,
+        trigger,
+        arrow,
+        body,
+        container: viewport,
+        viewport,
+      });
+      expect(position.internalPosition).toBe(PRIORITY_MAPPING[preferredPosition][3]);
     });
   });
 
@@ -60,7 +105,7 @@ describe('calculatePosition', () => {
   ).forEach(([container, expected], index) => {
     test(`for container #${index} finds position ${expected} that fits into it`, () => {
       const trigger = { top: 500, left: 500, height: 25, width: 25 };
-      const position = calculatePosition('top', trigger, arrow, body, container, viewport);
+      const position = calculatePosition({ preferredPosition: 'top', trigger, arrow, body, container, viewport });
       expect(position.internalPosition).toBe(expected);
     });
   });
@@ -69,7 +114,7 @@ describe('calculatePosition', () => {
     const trigger = { top: 0, left: 0, height: 25, width: 25 };
     const container = { top: 0, left: 0, height: 600, width: 1000 };
     const viewport = { top: 0, left: 0, height: 100, width: 100 };
-    const position = calculatePosition('bottom', trigger, arrow, body, container, viewport);
+    const position = calculatePosition({ preferredPosition: 'bottom', trigger, arrow, body, container, viewport });
     expect(position.internalPosition).toBe('bottom-center');
   });
 
@@ -79,7 +124,15 @@ describe('calculatePosition', () => {
     const trigger = { top: 175, left: 175, height: 25, width: 25 };
     const container = { top: 100, left: 100, height: 100, width: 100 };
     const viewport = { top: 0, left: 0, height: 1000, width: 1000 };
-    const position = calculatePosition('bottom', trigger, arrow, body, container, viewport, true);
+    const position = calculatePosition({
+      preferredPosition: 'bottom',
+      trigger,
+      arrow,
+      body,
+      container,
+      viewport,
+      renderWithPortal: true,
+    });
     expect(position.internalPosition).toBe('bottom-center');
   });
 
@@ -110,7 +163,15 @@ describe('calculatePosition', () => {
     describe(`index=${index} returns scrollable=true if can't fit popover into viewport`, () => {
       test.each([false, true])('renderWithPortal=%s', renderWithPortal => {
         const container = { ...viewport, height: viewport.height * 2 };
-        const position = calculatePosition('top', trigger, arrow, body, container, viewport, renderWithPortal);
+        const position = calculatePosition({
+          preferredPosition: 'top',
+          trigger,
+          arrow,
+          body,
+          container,
+          viewport,
+          renderWithPortal,
+        });
         expect(position.scrollable).toBe(true);
         expect(position.boundingOffset.width).toBe(250);
         expect(position.boundingOffset.height).toBeLessThan(900);
