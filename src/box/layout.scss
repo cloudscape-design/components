@@ -25,10 +25,8 @@
 }
 
 .f-left {
-  display: inline-flex;
-  justify-content: flex-start;
+  float: inline-start;
 }
 .f-right {
-  display: inline-flex;
-  justify-content: flex-end;
+  float: inline-end;
 }
