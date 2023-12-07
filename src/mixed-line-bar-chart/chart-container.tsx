@@ -318,7 +318,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
     isGroupNavigation,
     isHandlersDisabled,
     highlightX,
-    isPopoverPinned,
   });
 
   // There are multiple ways to indicate what X is selected.

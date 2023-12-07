@@ -157,11 +157,11 @@ describe('Mouse hover hook', () => {
     expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
   });
 
-  test('does not clear highlightX when onPopoverLeave is called if isPopoverPinned is true', () => {
+  test('does not clear highlightX when onPopoverLeave is called if isHandlersDisabled is true', () => {
     const customProps = {
       highlightX: jest.fn(),
       clearHighlightedSeries: jest.fn(),
-      isPopoverPinned: true,
+      isHandlersDisabled: true,
     };
     const { hook } = renderMouseHoverHook(customProps);
     const event = {
