@@ -191,8 +191,8 @@ export default function PopoverContainer({
 
     const onClick = (event: UIEvent | KeyboardEvent) => {
       if (
-        // Do not update position if the click was on the popover itself and keepPosition is true.
-        (keepPosition && nodeContains(popoverRef.current, event.target)) ||
+        // Do not update position if keepPosition is true.
+        keepPosition ||
         // If the click was on the trigger, this will make the popover appear or disappear,
         // so no need to update its position either in this case.
         nodeContains(trackRef.current, event.target)
