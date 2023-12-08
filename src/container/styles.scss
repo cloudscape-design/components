@@ -179,7 +179,13 @@
     &:not(.header-sticky-enabled) {
       position: relative;
     }
-    @include shared.borders-and-shadows;
+    &:not(.refresh) {
+      // Border and shadows are applied with ::before and ::after elements (respectively)
+      @include shared.borders-and-shadows;
+    }
+    &.refresh {
+      @include shared.borders;
+    }
 
     &.header-stuck::after,
     &.header-stuck::before {

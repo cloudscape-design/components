@@ -152,7 +152,7 @@ export default function InternalContainer({
         {header && (
           <StickyHeaderContext.Provider value={{ isStuck }}>
             <div
-              className={clsx(styles.header, styles[`header-variant-${variant}`], {
+              className={clsx(isRefresh && styles.refresh, styles.header, styles[`header-variant-${variant}`], {
                 [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
                 [styles['header-sticky-enabled']]: isSticky,
                 [styles['header-dynamic-height']]: hasDynamicHeight,
