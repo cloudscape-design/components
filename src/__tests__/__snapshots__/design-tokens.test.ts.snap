@@ -503,13 +503,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
-          "$value": Object {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -2742,6 +2735,13 @@ Object {
             "light": "#eaeded",
           },
         },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -2796,13 +2796,6 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#16191f",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
-          "$value": Object {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-status-error": Object {
@@ -5086,13 +5079,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
-          "$value": Object {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -7374,13 +7360,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
-          "$value": Object {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
         "color-border-status-error": Object {
           "$description": "The border color of an item in error state. For example: error alerts.",
           "$value": Object {
@@ -9606,6 +9585,13 @@ Object {
             "light": "#00a1c9",
           },
         },
+        "color-border-dropdown-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -9660,13 +9646,6 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
-          "$value": Object {
-            "dark": "#00a1c9",
-            "light": "#00a1c9",
           },
         },
         "color-border-status-error": Object {
@@ -11901,6 +11880,13 @@ Object {
         "light": "#eaeded",
       },
     },
+    "color-border-dropdown-item-focused": Object {
+      "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
     "color-border-dropdown-item-hover": Object {
       "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
       "$value": Object {
@@ -11955,13 +11941,6 @@ Object {
       "$value": Object {
         "dark": "#ffffff",
         "light": "#16191f",
-      },
-    },
-    "color-border-selectable-item-focused": Object {
-      "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
-      "$value": Object {
-        "dark": "#00a1c9",
-        "light": "#0073bb",
       },
     },
     "color-border-status-error": Object {
@@ -13973,22 +13952,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#5f6b7a",
-            "light": "#5f6b7a",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -14245,13 +14224,6 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
-          "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#414d5c",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -16261,22 +16233,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#5f6b7a",
-            "light": "#5f6b7a",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -16533,13 +16505,6 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
-          "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
@@ -18549,22 +18514,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#5f6b7a",
-            "light": "#5f6b7a",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -18821,13 +18786,6 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
-          "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#414d5c",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -20837,22 +20795,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#5f6b7a",
-            "light": "#5f6b7a",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -21109,13 +21067,6 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
-          "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#414d5c",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -23125,22 +23076,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#5f6b7a",
-            "light": "#5f6b7a",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -23397,13 +23348,6 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
-          "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#414d5c",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -25413,22 +25357,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#5f6b7a",
-            "light": "#5f6b7a",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -25685,13 +25629,6 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
-          "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
@@ -27701,22 +27638,22 @@ Object {
         "color-background-layout-toggle-active": Object {
           "$description": "The background color of the app layout toggle button when it's active.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-default": Object {
           "$description": "The default background color of the app layout toggle button.",
           "$value": Object {
-            "dark": "#414d5c",
-            "light": "#414d5c",
+            "dark": "#192534",
+            "light": "#192534",
           },
         },
         "color-background-layout-toggle-hover": Object {
           "$description": "The background color of the app layout toggle button on hover.",
           "$value": Object {
-            "dark": "#5f6b7a",
-            "light": "#5f6b7a",
+            "dark": "#354150",
+            "light": "#354150",
           },
         },
         "color-background-layout-toggle-selected-active": Object {
@@ -27973,13 +27910,6 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
-          "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
-          },
-        },
-        "color-border-selectable-item-focused": Object {
-          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
@@ -29989,22 +29919,22 @@ Object {
     "color-background-layout-toggle-active": Object {
       "$description": "The background color of the app layout toggle button when it's active.",
       "$value": Object {
-        "dark": "#414d5c",
-        "light": "#414d5c",
+        "dark": "#354150",
+        "light": "#354150",
       },
     },
     "color-background-layout-toggle-default": Object {
       "$description": "The default background color of the app layout toggle button.",
       "$value": Object {
-        "dark": "#414d5c",
-        "light": "#414d5c",
+        "dark": "#192534",
+        "light": "#192534",
       },
     },
     "color-background-layout-toggle-hover": Object {
       "$description": "The background color of the app layout toggle button on hover.",
       "$value": Object {
-        "dark": "#5f6b7a",
-        "light": "#5f6b7a",
+        "dark": "#354150",
+        "light": "#354150",
       },
     },
     "color-background-layout-toggle-selected-active": Object {
@@ -30261,13 +30191,6 @@ Object {
     },
     "color-border-segment-hover": Object {
       "$description": "The border color of inactive segments in a segmented control on hover.",
-      "$value": Object {
-        "dark": "#d1d5db",
-        "light": "#414d5c",
-      },
-    },
-    "color-border-selectable-item-focused": Object {
-      "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
       "$value": Object {
         "dark": "#d1d5db",
         "light": "#414d5c",
