@@ -25,35 +25,44 @@ $gutter: awsui.$space-grid-gutter;
   // IE11 ignores calc functions in flex shorthand declarations
   // https://github.com/philipwalton/flexbugs#flexbug-8
   flex-basis: calc(#{$p} - #{$gutter});
-  max-width: calc(#{$p} - #{$gutter});
+  max-inline-size: calc(#{$p} - #{$gutter});
 }
 
 .tile-container {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  border: styles.$control-border-width solid awsui.$color-border-input-default;
-  border-radius: awsui.$border-radius-tiles;
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-start-start-radius: awsui.$border-radius-tiles;
+  border-start-end-radius: awsui.$border-radius-tiles;
+  border-end-start-radius: awsui.$border-radius-tiles;
+  border-end-end-radius: awsui.$border-radius-tiles;
   background: awsui.$color-background-input-default;
-  padding: awsui.$space-xs awsui.$space-scaled-m;
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-scaled-m;
+
   &.refresh {
-    padding: awsui.$space-xs awsui.$space-s;
+    padding-block: awsui.$space-xs;
+    padding-inline: awsui.$space-s;
   }
 
   &.has-metadata {
-    padding-bottom: awsui.$space-s;
+    padding-block-end: awsui.$space-s;
     &.refresh {
-      padding-bottom: awsui.$space-scaled-s;
+      padding-block-end: awsui.$space-scaled-s;
     }
   }
 
   &.selected {
-    border: styles.$control-border-width solid awsui.$color-border-item-selected;
+    border-block: styles.$control-border-width solid awsui.$color-border-item-selected;
+    border-inline: styles.$control-border-width solid awsui.$color-border-item-selected;
     background: awsui.$color-background-item-selected;
   }
 
   &.disabled {
-    border: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
+    border-block: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
+    border-inline: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
     background: awsui.$color-background-tiles-disabled;
   }
 
@@ -66,11 +75,13 @@ $gutter: awsui.$space-grid-gutter;
 .columns {
   display: flex;
   flex-wrap: wrap;
-  margin: calc(#{$gutter} / -2);
+  margin-block: calc(#{$gutter} / -2);
+  margin-inline: calc(#{$gutter} / -2);
   @each $i, $columns-setting in mixins.$column-breakpoint-spans {
     &.column-#{$i} {
       & > .tile-container {
-        margin: calc(#{$gutter} / 2);
+        margin-block: calc(#{$gutter} / 2);
+        margin-inline: calc(#{$gutter} / 2);
         box-sizing: border-box;
         @include make-column(12);
         &.breakpoint-xs {
@@ -86,10 +97,10 @@ $gutter: awsui.$space-grid-gutter;
 
 .control {
   flex-grow: 1;
-  margin-bottom: awsui.$space-s;
+  margin-block-end: awsui.$space-s;
 
   &.no-image {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 }
 
@@ -101,7 +112,7 @@ $gutter: awsui.$space-grid-gutter;
   // an item. We do not have control over the img element.
   // stylelint-disable-next-line selector-max-type
   & > img {
-    max-width: 100%;
+    max-inline-size: 100%;
   }
 
   &.disabled {

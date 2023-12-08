@@ -16,7 +16,7 @@
 .tabs {
   @include styles.styles-reset;
   display: block;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .tabs-content {
@@ -32,12 +32,15 @@
 
 .tabs-content-wrapper {
   &.with-paddings > .tabs-content {
-    padding: awsui.$space-scaled-m 0;
+    padding-block: awsui.$space-scaled-m;
+    padding-inline: 0;
   }
 }
 
 .tabs-container-content-wrapper {
   &.with-paddings > .tabs-content {
-    padding: awsui.$space-tabs-content-top awsui.$space-container-horizontal awsui.$space-scaled-l;
+    padding-block-start: awsui.$space-tabs-content-top;
+    padding-block-end: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
   }
 }
