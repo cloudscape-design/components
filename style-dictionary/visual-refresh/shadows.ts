@@ -5,14 +5,6 @@ import { StyleDictionary } from '../utils/interfaces';
 import { expandColorDictionary } from '../utils';
 
 const tokens: StyleDictionary.ShadowsDictionary = {
-  shadowContainer: {
-    light: '0px 0px 0px 1px #b6bec9', // 1px grey-350 faux border
-    dark: '0px 0px 0px 1px #414d5c',
-  },
-  shadowContainerStacked: {
-    light: '0px 0px 0px 1px #b6bec9',
-    dark: '0px 0px 0px 1px #414d5c',
-  },
   shadowContainerActive: {
     light: '0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a',
     dark: '0px 1px 1px 1px #192534, 0px 6px 36px #000716',
