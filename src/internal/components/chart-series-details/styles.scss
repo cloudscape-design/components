@@ -17,7 +17,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 
 .value {
   text-align: right;
-  margin-left: awsui.$space-l;
+  margin-left: awsui.$space-xxl;
   &.expandable {
     font-weight: $font-weight-bold;
   }
@@ -63,7 +63,6 @@ $font-weight-bold: awsui.$font-weight-heading-s;
   > .list-item {
     > .key-value-pair > .key {
       align-items: flex-start;
-      margin-right: awsui.$space-xxl;
     }
 
     &.dimmed {
