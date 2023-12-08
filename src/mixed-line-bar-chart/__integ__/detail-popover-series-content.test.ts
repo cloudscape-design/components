@@ -1,47 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-
-class DetailPopoverPage extends BasePageObject {
-  currentIndex: number | undefined;
-  wrapper = createWrapper().findMixedLineBarChart();
-
-  constructor(browser: ConstructorParameters<typeof BasePageObject>[0]) {
-    super(browser);
-  }
-
-  getPopoverHeaderText() {
-    return this.getText(this.wrapper.findDetailPopover().findHeader().toSelector());
-  }
-
-  async getKeyValuePairsText() {
-    return (await this.getElementsText(this.wrapper.findDetailPopover().findSeries().toSelector())).join('\n');
-  }
-
-  async navigateToDatum(index: number, interaction: string) {
-    const barGroup = this.wrapper.findBarGroups().get(index).toSelector();
-    if (interaction === 'hover') {
-      return this.hoverElement(barGroup);
-    } else {
-      // If a popover was pinned, we need to unpin it before pinning another one.
-      if (this.currentIndex) {
-        await this.click(this.wrapper.findDetailPopover().findDismissButton().toSelector());
-      }
-      this.currentIndex = index;
-      // We need to use `page.buttonDownOnElement` instead of `page.click` because the ancestor SVG element
-      // intercepts the click and this is seen by Webdriver as an error and thrown as such, although it works for us
-      // (the component manages the event accordingly as coming from the corresponding bar group).
-      return this.buttonDownOnElement(barGroup);
-    }
-  }
-}
+import { MixedChartPage } from './common';
 
 describe('Detail popover series content keeps expanded state independently for every datum', () => {
   test.each(['hover', 'click'])('on %s', interaction =>
     useBrowser(async browser => {
-      const page = new DetailPopoverPage(browser);
+      const page = new MixedChartPage(browser);
       await browser.url('#/light/mixed-line-bar-chart/drilldown?expandableSubItems=true');
 
       const textUnderFirstExpandableSection = 'AWS Config';

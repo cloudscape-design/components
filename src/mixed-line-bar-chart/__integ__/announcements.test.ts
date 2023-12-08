@@ -37,10 +37,11 @@ describe('Popover content is announced as plain text on hover', () => {
     test(
       'with expandable sub-items',
       setupTest(`#/light/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=true`, async page => {
+        const coordinateIndex = 3;
         const wrapper = createWrapper().findMixedLineBarChart();
-        const bar = wrapper.findBarGroups().get(3).toSelector();
-        const getLabel = () => page.getElementAttribute(bar, 'aria-label');
-        await page.hoverElement(bar);
+        const barGroup = wrapper.findBarGroups().get(coordinateIndex).toSelector();
+        const getLabel = () => page.getElementAttribute(barGroup, 'aria-label');
+        await page.hoverElement(barGroup);
         await page.waitForAssertion(async () => {
           const label = await getLabel();
           expect(label).toBe(alwaysVisibleTexts.join(', '));
@@ -57,13 +58,10 @@ describe('Popover content is announced as plain text on hover', () => {
         );
         // Pin and dismiss the poover,
         // then hover over a different item and come back to hover the initial one.
-        // We need to use `page.buttonDownOnElement` instead of `page.click` because the ancestor SVG element
-        // intercepts the click and this is seen by Webdriver as an error and thrown as such, although it works for us
-        // (the component manages the event accordingly as coming from the corresponding bar group).
-        await page.buttonDownOnElement(bar);
+        await page.clickBarGroup(barGroup);
         await page.click(wrapper.findDetailPopover().findDismissButton().toSelector());
         await page.hoverElement(wrapper.findBarGroups().get(4).toSelector());
-        await page.hoverElement(bar);
+        await page.hoverElement(barGroup);
         await page.waitForAssertion(async () => {
           const label = await getLabel();
           for (const text of alwaysVisibleTexts) {
