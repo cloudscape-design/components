@@ -64,11 +64,18 @@
   }
 
   &.selected {
+    z-index: 2;
     background-color: awsui.$color-background-dropdown-item-selected;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+    }
+  }
+
+  &.refresh {
+    &.selected {
+      border-color: awsui.$color-border-dropdown-item-selected;
     }
   }
 
@@ -78,22 +85,9 @@
   }
 
   &.highlighted.is-keyboard {
-    border-color: awsui.$color-border-item-focused;
+    z-index: 3;
+    border-color: awsui.$color-border-dropdown-item-focused;
     box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
-  }
-
-  &.refresh {
-    &.selected {
-      border-color: awsui.$color-border-dropdown-item-selected;
-      z-index: 2;
-    }
-    &.highlighted {
-      //border-color: awsui.$color-border-item-focused;
-      z-index: 3;
-    }
-    &.highlighted.is-keyboard {
-      border-color: awsui.$color-border-selectable-item-focused;
-    }
   }
 
   &.parent {

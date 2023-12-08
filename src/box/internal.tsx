@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import { BoxProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 type InternalBoxProps = BoxProps & InternalBaseComponentProps;
 
@@ -31,7 +30,6 @@ export default function InternalBox({
   // This can be any arbitrary string if passed into tagOverride.
   // We appease the compiler with an incorrect type.
   const Tag = getTag(variant, tagOverride) as 'div';
-  const isRefresh = useVisualRefresh();
   const className = clsx(
     baseProps.className,
     styles.root,
@@ -44,8 +42,7 @@ export default function InternalBox({
     styles[`color-${color || 'default'}`],
     styles[`font-size-${fontSize || 'default'}`],
     styles[`font-weight-${fontWeight || 'default'}`],
-    styles[`t-${textAlign}`],
-    isRefresh && styles.refresh
+    styles[`t-${textAlign}`]
   );
 
   return (

@@ -433,6 +433,13 @@ Object {
             "light": "#545b64",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -487,6 +494,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#16191f",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-status-error": Object {
@@ -1750,9 +1764,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#eaeded",
             "light": "#16191f",
           },
         },
@@ -2693,6 +2714,13 @@ Object {
             "light": "#b6bec9",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -2747,6 +2775,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#16191f",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-status-error": Object {
@@ -4010,9 +4045,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#eaeded",
             "light": "#16191f",
           },
         },
@@ -4953,6 +4995,13 @@ Object {
             "light": "#fafafa",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -5007,6 +5056,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#16191f",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-status-error": Object {
@@ -6270,9 +6326,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#eaeded",
             "light": "#16191f",
           },
         },
@@ -7213,6 +7276,13 @@ Object {
             "light": "#16191f",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#eaeded",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -7267,6 +7337,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#16191f",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-status-error": Object {
@@ -8530,9 +8607,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d5dbdb",
+            "light": "#16191f",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#eaeded",
             "light": "#16191f",
           },
         },
@@ -9473,6 +9557,13 @@ Object {
             "light": "#414750",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -9527,6 +9618,13 @@ Object {
           "$value": Object {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+          "$value": Object {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
           },
         },
         "color-border-status-error": Object {
@@ -10790,10 +10888,17 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#eaeded",
+            "light": "#eaeded",
           },
         },
         "color-text-heading-secondary": Object {
@@ -11733,6 +11838,13 @@ Object {
         "light": "#b6bec9",
       },
     },
+    "color-border-divider-secondary": Object {
+      "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+      "$value": Object {
+        "dark": "#2a2e33",
+        "light": "#eaeded",
+      },
+    },
     "color-border-dropdown-item-hover": Object {
       "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
       "$value": Object {
@@ -11787,6 +11899,13 @@ Object {
       "$value": Object {
         "dark": "#ffffff",
         "light": "#16191f",
+      },
+    },
+    "color-border-selectable-item-focused": Object {
+      "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
+      "$value": Object {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-border-status-error": Object {
@@ -13050,9 +13169,16 @@ Object {
       },
     },
     "color-text-heading-default": Object {
-      "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+      "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
         "dark": "#d5dbdb",
+        "light": "#16191f",
+      },
+    },
+    "color-text-heading-primary": Object {
+      "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+      "$value": Object {
+        "dark": "#eaeded",
         "light": "#16191f",
       },
     },
@@ -13998,6 +14124,13 @@ Object {
             "light": "#414d5c",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#e9ebed",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -14049,6 +14182,13 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -15315,9 +15455,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -16258,6 +16405,13 @@ Object {
             "light": "#d1d5db",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -16309,6 +16463,13 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
@@ -17575,10 +17736,17 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-heading-secondary": Object {
@@ -18518,6 +18686,13 @@ Object {
             "light": "#b6bec9",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#e9ebed",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -18569,6 +18744,13 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -19835,9 +20017,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -20778,6 +20967,13 @@ Object {
             "light": "#fbfbfb",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#e9ebed",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -20829,6 +21025,13 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -22095,9 +22298,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -23038,6 +23248,13 @@ Object {
             "light": "#000716",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#e9ebed",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -23089,6 +23306,13 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#414d5c",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#414d5c",
@@ -24355,9 +24579,16 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d1d5db",
+            "light": "#000716",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -25298,6 +25529,13 @@ Object {
             "light": "#414d5c",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -25349,6 +25587,13 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
@@ -26615,10 +26860,17 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-heading-secondary": Object {
@@ -27558,6 +27810,13 @@ Object {
             "light": "#414d5c",
           },
         },
+        "color-border-divider-secondary": Object {
+          "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+          "$value": Object {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
         "color-border-dropdown-item-hover": Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
@@ -27609,6 +27868,13 @@ Object {
         },
         "color-border-segment-hover": Object {
           "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$value": Object {
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
+          },
+        },
+        "color-border-selectable-item-focused": Object {
+          "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
@@ -28875,10 +29141,17 @@ Object {
           },
         },
         "color-text-heading-default": Object {
-          "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+          "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#d1d5db",
             "light": "#d1d5db",
+          },
+        },
+        "color-text-heading-primary": Object {
+          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+          "$value": Object {
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-heading-secondary": Object {
@@ -29818,6 +30091,13 @@ Object {
         "light": "#b6bec9",
       },
     },
+    "color-border-divider-secondary": Object {
+      "$description": "The border color for row dividers. For example: row dividers for table and collection preferences.",
+      "$value": Object {
+        "dark": "#232f3e",
+        "light": "#e9ebed",
+      },
+    },
     "color-border-dropdown-item-hover": Object {
       "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
       "$value": Object {
@@ -29869,6 +30149,13 @@ Object {
     },
     "color-border-segment-hover": Object {
       "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$value": Object {
+        "dark": "#d1d5db",
+        "light": "#414d5c",
+      },
+    },
+    "color-border-selectable-item-focused": Object {
+      "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
       "$value": Object {
         "dark": "#d1d5db",
         "light": "#414d5c",
@@ -31135,9 +31422,16 @@ Object {
       },
     },
     "color-text-heading-default": Object {
-      "$description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
+      "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
         "dark": "#d1d5db",
+        "light": "#000716",
+      },
+    },
+    "color-text-heading-primary": Object {
+      "$description": "The default color for heading 1, for example: the heading in the header for a page title",
+      "$value": Object {
+        "dark": "#e9ebed",
         "light": "#000716",
       },
     },

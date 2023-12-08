@@ -273,8 +273,8 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorBorderDividerDimmed: {
-    description: 'The border color for table row dividers.',
+  colorBorderDividerSecondary: {
+    description: 'The border color for row dividers. For example: row dividers for table and collection preferences.',
     public: true,
     themeable: true,
   },
@@ -304,9 +304,9 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorBorderSelectableItemFocused: {
+  colorBorderDropdownItemFocused: {
     description:
-      'The color of focus states for dropdown items, for example, the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.',
+      'The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.',
     public: true,
     themeable: true,
   },
