@@ -17,7 +17,7 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 
 .value {
   text-align: right;
-  margin-left: awsui.$space-xxl;
+  margin-inline-start: awsui.$space-xxl;
   &.expandable {
     font-weight: $font-weight-bold;
   }
@@ -43,10 +43,10 @@ $font-weight-bold: awsui.$font-weight-heading-s;
 
 .sub-items {
   &:not(.expandable) {
-    padding-left: calc(marker.$marker-width + marker.$marker-margin-right);
+    padding-inline-start: calc(marker.$marker-width + marker.$marker-margin-right);
   }
   &.expandable {
-    padding-left: 0;
+    padding-inline-start: 0;
     > .inner-list-item > .value {
       white-space: nowrap;
     }
