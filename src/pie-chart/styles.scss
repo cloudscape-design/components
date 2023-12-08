@@ -19,17 +19,17 @@
       $sizes: map.get(constants.$pie-chart-sizes, $size);
       $fitSizes: map.get(constants.$pie-chart-sizes-fit-height, $size);
 
-      min-height: calc(
+      min-block-size: calc(
         2 * (#{map.get($sizes, 'radius')} + #{map.get($sizes, 'innerPadding')} + #{map.get($sizes, 'labelPadding')})
       );
       &.content--fit-height {
-        min-height: calc(2 * (#{map.get($fitSizes, 'radius')} + #{map.get($fitSizes, 'labelPadding')}));
+        min-block-size: calc(2 * (#{map.get($fitSizes, 'radius')} + #{map.get($fitSizes, 'labelPadding')}));
       }
 
       &.content--without-labels {
-        min-height: calc(2 * (#{map.get($sizes, 'radius')} + #{map.get($sizes, 'innerPadding')}));
+        min-block-size: calc(2 * (#{map.get($sizes, 'radius')} + #{map.get($sizes, 'innerPadding')}));
         &.content--fit-height {
-          min-height: calc(2 * (#{map.get($fitSizes, 'radius')}));
+          min-block-size: calc(2 * (#{map.get($fitSizes, 'radius')}));
         }
       }
     }
@@ -49,8 +49,8 @@
   flex: 1;
 
   &--fit-height {
-    height: 100%;
-    min-height: inherit;
+    block-size: 100%;
+    min-block-size: inherit;
   }
 }
 
@@ -60,10 +60,7 @@
   &--fit-height {
     display: block;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
   }
 }
 
@@ -74,10 +71,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  inset: 0;
   pointer-events: none;
 }
 
@@ -121,7 +115,7 @@
 
   /* stylelint-disable-next-line selector-max-type */
   > div {
-    margin-top: -0.75em;
+    margin-block-start: -0.75em;
   }
 
   &.label--dimmed {
@@ -131,7 +125,7 @@
   &.label--align-right {
     /* stylelint-disable-next-line selector-max-type */
     > div {
-      text-align: right;
+      text-align: end;
     }
   }
 }

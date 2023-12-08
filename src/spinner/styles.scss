@@ -43,10 +43,14 @@
     position: absolute;
     box-sizing: border-box;
     content: '';
-    border-radius: 50%;
-    border: 0.2 * styles.$base-size solid;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
+    border-start-start-radius: 50%;
+    border-start-end-radius: 50%;
+    border-end-start-radius: 50%;
+    border-end-end-radius: 50%;
+    border-block: 0.2 * styles.$base-size solid;
+    border-inline: 0.2 * styles.$base-size solid;
+    border-inline-end-color: transparent;
+    border-block-end-color: transparent;
   }
 }
 
@@ -65,25 +69,25 @@
 
 .circle {
   display: inline-block;
-  width: 50%;
-  height: 100%;
+  inline-size: 50%;
+  block-size: 100%;
   overflow: hidden;
   @include awsui-spinner-circle;
   &:after {
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation: 1.5s ease-in-out infinite;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 200%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    block-size: 100%;
+    inline-size: 200%;
   }
   &.circle-left:after {
-    left: 0;
+    inset-inline-start: 0;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-left;
   }
   &.circle-right:after {
-    left: -100%;
+    inset-inline-start: -100%;
     /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
     animation-name: spinner-line-right;
   }
