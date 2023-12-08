@@ -127,8 +127,9 @@
 
 .title {
   @include styles.text-wrapping;
-  color: awsui.$color-text-heading-default;
-
+  &:not(&-variant-h1) {
+    color: awsui.$color-text-heading-default;
+  }
   &-variant-h1 {
     font-size: awsui.$font-size-heading-xl;
     padding-top: awsui.$space-scaled-2x-xxs;
