@@ -66,6 +66,6 @@ export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
 export interface EllipsisDropdownProps {
   ariaLabel?: BreadcrumbGroupProps['expandAriaLabel'];
   dropdownItems: ReadonlyArray<LinkItem>;
-  onDropdownItemClick: CancelableEventHandler<{ id: string; event?: any }>;
-  onDropdownItemFollow: CancelableEventHandler<{ id: string; event?: any }>;
+  onDropdownItemClick: CancelableEventHandler<{ id: string }>;
+  onDropdownItemFollow: CancelableEventHandler<{ id: string }>;
 }

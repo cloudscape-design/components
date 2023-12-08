@@ -11,11 +11,12 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
  *
  * @param triggers The relevant breakpoints to trigger for.
  */
-export function useContainerBreakpoints<T extends readonly Breakpoint[]>(
-  triggers?: T
-): [T[number] | 'default' | null, React.Ref<any>] {
+export function useContainerBreakpoints<T extends readonly Breakpoint[], E extends Element = any>(triggers?: T) {
   // triggers.join() gives us a stable value to use for the dependencies argument
   const triggersDep = triggers?.join();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  return useContainerQuery(rect => getMatchingBreakpoint(rect.contentBoxWidth, triggers), [triggersDep]);
+  return useContainerQuery(rect => getMatchingBreakpoint(rect.contentBoxWidth, triggers), [triggersDep]) as [
+    'default' | T[number] | null,
+    React.Ref<E>
+  ];
 }

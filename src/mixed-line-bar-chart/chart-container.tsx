@@ -371,7 +371,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     }
   };
 
-  const onSVGMouseDown = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const onSVGClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     if (isPopoverOpen) {
       if (isPopoverPinned) {
         dismissPopover();
@@ -541,7 +541,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
           onMouseMove={onSVGMouseMove}
           onMouseOut={onSVGMouseOut}
-          onMouseDown={onSVGMouseDown}
+          onClick={onSVGClick}
           onFocus={onSVGFocus}
           onBlur={onSVGBlur}
           onKeyDown={onSVGKeyDown}

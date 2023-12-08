@@ -952,7 +952,7 @@ describe('Details popover', () => {
     expect(wrapper.findDetailPopover()?.findDismissButton()).toBeNull();
 
     // Can be pinned
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     expect(wrapper.findDetailPopover()?.findDismissButton()).not.toBeNull();
     expect(wrapper.findByClassName(styles.exiting)).toBeNull();
@@ -969,7 +969,7 @@ describe('Details popover', () => {
 
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
 
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
 
@@ -985,7 +985,7 @@ describe('Details popover', () => {
 
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
 
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
 
@@ -998,7 +998,7 @@ describe('Details popover', () => {
     const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
-    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+    wrapper.findChart()!.click();
 
     expect(wrapper.findByClassName(styles['series--dimmed'])).not.toBeNull();
 

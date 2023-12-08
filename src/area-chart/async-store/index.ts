@@ -5,17 +5,17 @@ import { unstable_batchedUpdates } from 'react-dom';
 import { usePrevious } from '../../internal/hooks/use-previous';
 
 type Selector<S, R> = (state: S) => R;
-type Listener<S> = (state: S, prevState: S) => any;
+type Listener<S> = (state: S, prevState: S) => void;
 
 export interface ReadonlyAsyncStore<S> {
   get(): S;
   subscribe<R>(selector: Selector<S, R>, listener: Listener<S>): () => void;
-  unsubscribe(listener: Listener<any>): void;
+  unsubscribe(listener: Listener<S>): void;
 }
 
 export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
   _state: S;
-  _listeners: [Selector<S, any>, Listener<any>][] = [];
+  _listeners: [Selector<S, unknown>, Listener<S>][] = [];
 
   constructor(state: S) {
     this._state = state;
@@ -46,7 +46,7 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
     return () => this.unsubscribe(listener);
   }
 
-  unsubscribe(listener: Listener<any>): void {
+  unsubscribe(listener: Listener<S>): void {
     for (let index = 0; index < this._listeners.length; index++) {
       const [, storedListener] = this._listeners[index];
 

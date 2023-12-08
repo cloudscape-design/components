@@ -265,7 +265,7 @@ describe('focused application', () => {
 describe('event handlers', () => {
   let eventLog: string[] = [];
 
-  const onMouseDown = () => eventLog.push('mousedown');
+  const onClick = () => eventLog.push('click');
   const onMouseMove = () => eventLog.push('mousemove');
   const onMouseOut = () => eventLog.push('mouseout');
   const onFocus = (_: any, trigger: 'mouse' | 'keyboard') => eventLog.push(`focus:${trigger}`);
@@ -281,7 +281,7 @@ describe('event handlers', () => {
       <ChartPlot
         width={0}
         height={0}
-        onMouseDown={onMouseDown}
+        onClick={onClick}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
         onFocus={onFocus}
@@ -294,10 +294,12 @@ describe('event handlers', () => {
 
     plotWrapper.fireEvent(new MouseEvent('mousemove', { bubbles: true }));
     plotWrapper.fireEvent(new MouseEvent('mouseout', { bubbles: true }));
+    plotWrapper.fireEvent(new MouseEvent('click', { bubbles: true }));
+    // Triggering a mousedown event first is necessary for the plot to focus the application.
     plotWrapper.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
     plotWrapper.fireEvent(new MouseEvent('focus', { bubbles: true }));
 
-    expect(eventLog).toEqual(['mousemove', 'mouseout', 'mousedown', 'focus:mouse']);
+    expect(eventLog).toEqual(['mousemove', 'mouseout', 'click', 'focus:mouse']);
   });
 
   test('application events', () => {
@@ -305,7 +307,7 @@ describe('event handlers', () => {
       <ChartPlot
         width={0}
         height={0}
-        onMouseDown={onMouseDown}
+        onClick={onClick}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
         onFocus={onFocus}

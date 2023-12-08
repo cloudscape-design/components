@@ -33,7 +33,10 @@ export function matchBreakpointMapping<T>(subset: Partial<Record<Breakpoint, T>>
 /**
  * Get the named breakpoint for a provided width, optionally filtering to a subset of breakpoints.
  */
-export function getMatchingBreakpoint(width: number, breakpointFilter?: readonly Breakpoint[]): Breakpoint {
+export function getMatchingBreakpoint<T extends readonly Breakpoint[]>(
+  width: number,
+  breakpointFilter?: T
+): T[number] | 'default' {
   for (const [breakpoint, breakpointWidth] of BREAKPOINT_MAPPING) {
     if (width > breakpointWidth && (!breakpointFilter || breakpointFilter.indexOf(breakpoint) !== -1)) {
       return breakpoint;
