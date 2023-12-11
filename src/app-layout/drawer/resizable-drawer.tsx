@@ -81,6 +81,7 @@ export const ResizableDrawer = ({
   return (
     <Drawer
       {...props}
+      id={activeDrawer?.id}
       ref={drawerRefObject}
       isHidden={!activeDrawer}
       resizeHandle={
