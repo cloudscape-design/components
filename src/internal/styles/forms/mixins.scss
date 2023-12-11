@@ -148,12 +148,6 @@
     box-shadow: awsui.$shadow-container;
     border-radius: awsui.$border-radius-container;
   }
-
-  // HACK: because of the issues with IE's box shadow rendering we draw
-  // a border and don't mind the pixel fitting
-  @media screen and (-ms-high-contrast: active) {
-    border: constants.$control-border-width solid awsui.$color-border-container-top;
-  }
 }
 
 @mixin container-border {
@@ -173,12 +167,6 @@
     @include utils.base-pseudo-element;
     outline: 1px solid awsui.$color-border-divider-default;
     border-radius: awsui.$border-radius-container;
-  }
-
-  // HACK: because of the issues with IE's box shadow rendering we draw
-  // a border and don't mind the pixel fitting
-  @media screen and (-ms-high-contrast: active) {
-    border: constants.$control-border-width solid awsui.$color-border-container-top;
   }
 }
 
