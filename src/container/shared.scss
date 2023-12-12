@@ -15,14 +15,6 @@ $footer-padding: awsui.$space-scaled-s awsui.$space-container-horizontal;
 $header-focus-visible-padding: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width})
   calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
 
-@mixin borders-and-shadows {
-  @include styles.container-shadow;
-}
-
-@mixin borders {
-  @include styles.container-border;
-}
-
 @mixin divider {
   border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }

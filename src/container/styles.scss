@@ -25,13 +25,8 @@
     &-default,
     &-stacked {
       background-color: awsui.$color-background-container-content;
-      &:not(.refresh) {
-        // Border and shadows are applied with ::before and ::after elements (respectively)
-        @include shared.borders-and-shadows;
-      }
-      &.refresh {
-        @include shared.borders;
-      }
+      // Border and shadows are applied with ::before and ::after elements (respectively)
+      @include styles.container-style;
     }
     // Meld container bottom corners into next adjoining container
     &-stacked:not(:last-child),
@@ -176,17 +171,11 @@
   }
 
   &-variant-cards {
+    // Border and shadows are applied with ::before and ::after elements (respectively)
+    @include styles.container-style;
     &:not(.header-sticky-enabled) {
       position: relative;
     }
-    &:not(.refresh) {
-      // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include shared.borders-and-shadows;
-    }
-    &.refresh {
-      @include shared.borders;
-    }
-
     &.header-stuck::after,
     &.header-stuck::before {
       border: 0;

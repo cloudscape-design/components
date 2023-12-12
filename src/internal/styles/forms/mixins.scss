@@ -130,7 +130,7 @@
   }
 }
 
-@mixin container-shadow {
+@mixin container-style {
   border-radius: awsui.$border-radius-container;
   box-sizing: border-box;
 
@@ -145,28 +145,13 @@
 
   &::after {
     @include utils.base-pseudo-element;
+    border-radius: awsui.$border-radius-container;
+  }
+  &:not(.refresh)::after {
     box-shadow: awsui.$shadow-container;
-    border-radius: awsui.$border-radius-container;
   }
-}
-
-@mixin container-border {
-  border-radius: awsui.$border-radius-container;
-  box-sizing: border-box;
-
-  &::before {
-    @include utils.base-pseudo-element;
-    // Reset border color to prevent it from flashing black during card selection animation
-    border-color: transparent;
-    border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-radius: awsui.$border-radius-container;
-    z-index: 1;
-  }
-
-  &::after {
-    @include utils.base-pseudo-element;
-    outline: 1px solid awsui.$color-border-divider-default;
-    border-radius: awsui.$border-radius-container;
+  &.refresh::after {
+    outline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
   }
 }
 
