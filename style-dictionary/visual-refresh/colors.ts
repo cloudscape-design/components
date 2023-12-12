@@ -101,7 +101,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderControlDisabled: '{colorBackgroundControlDisabled}',
   colorBorderDividerActive: { light: '{colorGrey900}', dark: '{colorGrey100}' },
   colorBorderDividerDefault: { light: '{colorGrey350}', dark: '{colorGrey600}' },
-  colorBorderDividerPanelBottom: { light: '{colorBorderDividerDefault}', dark: '{colorGreyTransparent}' },
+  colorBorderDividerPanelBottom: '{colorBorderDividerDefault}',
   colorBorderDividerPanelSide: '{colorBorderDividerDefault}',
   colorBorderDividerSecondary: { light: '{colorGrey200}', dark: '{colorGrey700}' },
   colorBorderDropdownContainer: { light: '{colorGrey400}', dark: '{colorGrey550}' },
