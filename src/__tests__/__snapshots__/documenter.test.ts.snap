@@ -2157,18 +2157,24 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
-      "description": "Specifies customization of the content displayed in the chart popover.
-Use this for wrapping keys or values in links, or to display an additional
-level of nested items.",
+      "description": "A function that determines the details that are displayed in the popover for each series.
+Use this for wrapping keys or values in links, or to display an additional level of nested items.
+The function expects an object with the shape \`{ series, x, y }\` representing the series, the highlighted x value and its corresponding y value,
+and should return the following properties:
+* \`key\` (ReactNode) - Name of the series.
+* \`value\` (ReactNode) - Value of the series at the highlighted coordinate.
+* \`subItems\` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+* \`expandable\` (boolean) - (Optional) Determines whether the optional list of nested items provided via \`subItems\` is expandable. Defaults to \`false\`.
+",
       "inlineType": Object {
         "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "data",
-            "type": "MixedLineBarChartProps.DetailPopoverData<T>",
+            "type": "MixedLineBarChartProps.DetailPopoverSeriesData<T>",
           },
         ],
-        "returnType": "unknown",
+        "returnType": "MixedLineBarChartProps.DetailPopoverSeriesKeyValuePair",
         "type": "function",
       },
       "name": "detailPopoverSeriesContent",
@@ -8019,18 +8025,24 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
-      "description": "Specifies customization of the content displayed in the chart popover.
-Use this for wrapping keys or values in links, or to display an additional
-level of nested items.",
+      "description": "A function that determines the details that are displayed in the popover for each series.
+Use this for wrapping keys or values in links, or to display an additional level of nested items.
+The function expects an object with the shape \`{ series, x, y }\` representing the series, the highlighted x value and its corresponding y value,
+and should return the following properties:
+* \`key\` (ReactNode) - Name of the series.
+* \`value\` (ReactNode) - Value of the series at the highlighted coordinate.
+* \`subItems\` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+* \`expandable\` (boolean) - (Optional) Determines whether the optional list of nested items provided via \`subItems\` is expandable. Defaults to \`false\`.
+",
       "inlineType": Object {
         "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "data",
-            "type": "MixedLineBarChartProps.DetailPopoverData<T>",
+            "type": "MixedLineBarChartProps.DetailPopoverSeriesData<T>",
           },
         ],
-        "returnType": "unknown",
+        "returnType": "MixedLineBarChartProps.DetailPopoverSeriesKeyValuePair",
         "type": "function",
       },
       "name": "detailPopoverSeriesContent",
@@ -8647,18 +8659,24 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     Object {
-      "description": "Specifies customization of the content displayed in the chart popover.
-Use this for wrapping keys or values in links, or to display an additional
-level of nested items.",
+      "description": "A function that determines the details that are displayed in the popover for each series.
+Use this for wrapping keys or values in links, or to display an additional level of nested items.
+The function expects an object with the shape \`{ series, x, y }\` representing the series, the highlighted x value and its corresponding y value,
+and should return the following properties:
+* \`key\` (ReactNode) - Name of the series.
+* \`value\` (ReactNode) - Value of the series at the highlighted coordinate.
+* \`subItems\` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+* \`expandable\` (boolean) - (Optional) Determines whether the optional list of nested items provided via \`subItems\` is expandable. Defaults to \`false\`.
+",
       "inlineType": Object {
         "name": "MixedLineBarChartProps.DetailPopoverSeriesContent",
         "parameters": Array [
           Object {
             "name": "data",
-            "type": "MixedLineBarChartProps.DetailPopoverData<T>",
+            "type": "MixedLineBarChartProps.DetailPopoverSeriesData<T>",
           },
         ],
-        "returnType": "unknown",
+        "returnType": "MixedLineBarChartProps.DetailPopoverSeriesKeyValuePair",
         "type": "function",
       },
       "name": "detailPopoverSeriesContent",

@@ -43,9 +43,15 @@ export interface BarChartProps<T extends ChartDataTypes>
   xScaleType?: ScaleType;
 
   /**
-   * Specifies customization of the content displayed in the chart popover.
-   * Use this for wrapping keys or values in links, or to display an additional
-   * level of nested items.
+   * A function that determines the details that are displayed in the popover for each series.
+   * Use this for wrapping keys or values in links, or to display an additional level of nested items.
+   *
+   * The function expects an object with the shape `{ series, x, y }` representing the series, the highlighted x value and its corresponding y value,
+   * and should return the following properties:
+   * * `key` (ReactNode) - Name of the series.
+   * * `value` (ReactNode) - Value of the series at the highlighted coordinate.
+   * * `subItems` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
+   * * `expandable` (boolean) - (Optional) Determines whether the optional list of nested items provided via `subItems` is expandable. Defaults to `false`.
    */
   detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
