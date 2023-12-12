@@ -56,7 +56,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderContainerTop: { light: '{colorGrey200}', dark: '{colorGrey700}' },
   colorBorderControlDefault: { light: '{colorGrey550}' },
   colorBorderDividerActive: '{colorGrey550}',
-  colorBorderDividerDefault: { dark: '{colorGrey650}' },
+  colorBorderDividerDefault: { light: '{colorGrey200}', dark: '{colorGrey650}' },
   colorBorderDividerInteractiveDefault: '{colorGrey550}',
   colorBorderDividerPanelBottom: '{colorShadowSide}',
   colorBorderDividerPanelSide: 'transparent',
