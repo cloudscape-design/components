@@ -2725,7 +2725,7 @@ Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
             "dark": "#414750",
-            "light": "#b6bec9",
+            "light": "#eaeded",
           },
         },
         "color-border-divider-dimmed": Object {
@@ -11933,7 +11933,7 @@ Object {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": Object {
         "dark": "#414750",
-        "light": "#b6bec9",
+        "light": "#eaeded",
       },
     },
     "color-border-divider-dimmed": Object {
