@@ -442,15 +442,12 @@ describe('column header content', () => {
 test('should set last column width to "auto" when container width exceeds total column width', () => {
   const totalColumnsWidth = 150 + 300;
 
-  let outsideCb: (entry: ContainerQueryEntry) => void = () => {};
+  const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+  const fireCallbacks = (entry: ContainerQueryEntry) => callbacks.forEach(cb => cb(entry));
   jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
     // The table uses more than one resize observer.
     // The callback must be triggered for all to ensure the expected one is targeted as well.
-    const prev = outsideCb;
-    outsideCb = entry => {
-      prev(entry);
-      cb(entry);
-    };
+    callbacks.push(cb);
 
     useLayoutEffect(() => {
       cb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
@@ -461,9 +458,9 @@ test('should set last column width to "auto" when container width exceeds total 
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
 
-  outsideCb({ contentBoxWidth: totalColumnsWidth } as unknown as ContainerQueryEntry);
+  fireCallbacks({ contentBoxWidth: totalColumnsWidth } as unknown as ContainerQueryEntry);
   expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', '300px']);
 
-  outsideCb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
+  fireCallbacks({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
   expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
 });
