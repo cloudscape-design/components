@@ -147,7 +147,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextAccent: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorTextBodyDefault: { light: '{colorGrey900}', dark: '{colorGrey350}' },
   colorTextBodySecondary: { light: '{colorGrey600}', dark: '{colorGrey350}' },
-  colorTextAlertDefault: { light: '{colorGrey900}', dark: '{colorGrey300}' },
   colorTextBreadcrumbCurrent: { light: '{colorGrey550}', dark: '{colorGrey500}' },
   colorTextBreadcrumbIcon: { light: '{colorGrey500}', dark: '{colorTextInteractiveDisabled}' },
   colorTextButtonInlineIconDefault: '{colorTextLinkDefault}',

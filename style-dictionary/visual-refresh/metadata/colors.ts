@@ -369,11 +369,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextAlertDefault: {
-    description: 'The default color of alert text',
-    public: true,
-    themeable: true,
-  },
   colorTextBodyDefault: {
     description:
       'The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.',

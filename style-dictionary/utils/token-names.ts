@@ -351,7 +351,6 @@ export type ColorsTokenName =
   | 'colorTextAccent'
   | 'colorTextBodyDefault'
   | 'colorTextBodySecondary'
-  | 'colorTextAlertDefault'
   | 'colorTextBreadcrumbCurrent'
   | 'colorTextBreadcrumbIcon'
   | 'colorTextButtonInlineIconDefault'
