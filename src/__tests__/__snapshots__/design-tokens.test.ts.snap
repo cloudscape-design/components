@@ -1788,7 +1788,7 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#eaeded",
+            "light": "#ffffff",
           },
         },
         "color-text-home-header-secondary": Object {
@@ -4083,7 +4083,7 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#eaeded",
+            "light": "#ffffff",
           },
         },
         "color-text-home-header-secondary": Object {
@@ -6364,7 +6364,7 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#eaeded",
+            "light": "#ffffff",
           },
         },
         "color-text-home-header-secondary": Object {
@@ -8645,7 +8645,7 @@ Object {
           "$description": "The color of the home header's text, displayed on the Service's home page.",
           "$value": Object {
             "dark": "#eaeded",
-            "light": "#eaeded",
+            "light": "#ffffff",
           },
         },
         "color-text-home-header-secondary": Object {
@@ -13228,7 +13228,7 @@ Object {
       "$description": "The color of the home header's text, displayed on the Service's home page.",
       "$value": Object {
         "dark": "#eaeded",
-        "light": "#eaeded",
+        "light": "#ffffff",
       },
     },
     "color-text-home-header-secondary": Object {
