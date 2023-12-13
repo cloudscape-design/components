@@ -1784,13 +1784,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
-          "$value": Object {
-            "dark": "#eaeded",
-            "light": "#16191f",
-          },
-        },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
@@ -2725,13 +2718,6 @@ Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
             "dark": "#414750",
-            "light": "#eaeded",
-          },
-        },
-        "color-border-divider-dimmed": Object {
-          "$description": "The border color for table row dividers.",
-          "$value": Object {
-            "dark": "#2a2e33",
             "light": "#eaeded",
           },
         },
@@ -4095,13 +4081,6 @@ Object {
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
-          "$value": Object {
-            "dark": "#eaeded",
-            "light": "#16191f",
-          },
-        },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
           "$value": Object {
             "dark": "#eaeded",
             "light": "#16191f",
@@ -6395,13 +6374,6 @@ Object {
             "light": "#16191f",
           },
         },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
-          "$value": Object {
-            "dark": "#eaeded",
-            "light": "#16191f",
-          },
-        },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
@@ -8685,13 +8657,6 @@ Object {
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
-          "$value": Object {
-            "dark": "#eaeded",
-            "light": "#16191f",
-          },
-        },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
           "$value": Object {
             "dark": "#eaeded",
             "light": "#16191f",
@@ -10992,13 +10957,6 @@ Object {
             "light": "#eaeded",
           },
         },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
-          "$value": Object {
-            "dark": "#eaeded",
-            "light": "#eaeded",
-          },
-        },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
@@ -11933,13 +11891,6 @@ Object {
       "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
       "$value": Object {
         "dark": "#414750",
-        "light": "#eaeded",
-      },
-    },
-    "color-border-divider-dimmed": Object {
-      "$description": "The border color for table row dividers.",
-      "$value": Object {
-        "dark": "#2a2e33",
         "light": "#eaeded",
       },
     },
@@ -13303,13 +13254,6 @@ Object {
     },
     "color-text-heading-default": Object {
       "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
-      "$value": Object {
-        "dark": "#eaeded",
-        "light": "#16191f",
-      },
-    },
-    "color-text-heading-primary": Object {
-      "$description": "The default color for heading 1, for example: the heading in the header for a page title",
       "$value": Object {
         "dark": "#eaeded",
         "light": "#16191f",
@@ -15604,7 +15548,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -17892,8 +17836,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -18831,13 +18775,6 @@ Object {
           "$value": Object {
             "dark": "#414d5c",
             "light": "#b6bec9",
-          },
-        },
-        "color-border-divider-dimmed": Object {
-          "$description": "The border color for table row dividers.",
-          "$value": Object {
-            "dark": "#232f3e",
-            "light": "#e9ebed",
           },
         },
         "color-border-divider-secondary": Object {
@@ -20187,7 +20124,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -22475,7 +22412,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -24763,7 +24700,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
+            "dark": "#d1d5db",
             "light": "#000716",
           },
         },
@@ -27051,8 +26988,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -29339,8 +29276,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
+            "dark": "#d1d5db",
+            "light": "#d1d5db",
           },
         },
         "color-text-heading-secondary": Object {
@@ -30278,13 +30215,6 @@ Object {
       "$value": Object {
         "dark": "#414d5c",
         "light": "#b6bec9",
-      },
-    },
-    "color-border-divider-dimmed": Object {
-      "$description": "The border color for table row dividers.",
-      "$value": Object {
-        "dark": "#232f3e",
-        "light": "#e9ebed",
       },
     },
     "color-border-divider-secondary": Object {
@@ -31634,7 +31564,7 @@ Object {
     "color-text-heading-default": Object {
       "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
-        "dark": "#e9ebed",
+        "dark": "#d1d5db",
         "light": "#000716",
       },
     },
