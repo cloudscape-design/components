@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo, ReactNode, useEffect, useRef } from 'react';
+import React, { forwardRef, memo, ReactNode, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -8,6 +8,7 @@ import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker
 import styles from './styles.css.js';
 import InternalExpandableSection from '../../../expandable-section/internal';
 import getSeriesDetailsText from './series-details-text';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 interface ChartDetailPair {
   key: ReactNode;
@@ -38,18 +39,16 @@ export interface ChartSeriesDetailsProps extends BaseComponentProps {
   setExpandedState?: (seriesTitle: string, state: boolean) => void;
 }
 
-export default memo(ChartSeriesDetails);
+export default memo(forwardRef(ChartSeriesDetails));
 
-function ChartSeriesDetails({
-  details,
-  expandedSeries,
-  setPopoverText,
-  setExpandedState,
-  ...restProps
-}: ChartSeriesDetailsProps) {
+function ChartSeriesDetails(
+  { details, expandedSeries, setPopoverText, setExpandedState, ...restProps }: ChartSeriesDetailsProps,
+  ref: React.Ref<HTMLDivElement>
+) {
   const baseProps = getBaseProps(restProps);
   const className = clsx(baseProps.className, styles.root);
   const detailsRef = useRef<HTMLDivElement | null>(null);
+  const mergedRef = useMergeRefs(ref, detailsRef);
 
   // Once the component has rendered, pass its content in plain text
   // so that it can be used by screen readers.
@@ -67,7 +66,7 @@ function ChartSeriesDetails({
   const isExpanded = (seriesTitle: string) => !!expandedSeries && expandedSeries.has(seriesTitle);
 
   return (
-    <div {...baseProps} className={className} ref={detailsRef}>
+    <div {...baseProps} className={className} ref={mergedRef}>
       <ul className={styles.list}>
         {details.map(({ key, value, markerType, color, isDimmed, subItems, expandableId }, index) => (
           <li

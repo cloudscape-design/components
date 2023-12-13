@@ -5,7 +5,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import Flashbar from '~components/flashbar';
 import { useState } from 'react';
 import range from 'lodash/range';
-import { FocusTarget } from './common';
+import FocusTarget from '../common/focus-target';
 
 function generateArray<T>(count: number, func: (index: number) => T): Array<T> {
   return range(count).map((_, index) => func(index));

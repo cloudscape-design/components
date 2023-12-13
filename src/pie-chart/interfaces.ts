@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ReactNode } from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { PopoverProps } from '../popover/interfaces';
@@ -11,9 +12,9 @@ export interface SeriesInfo {
   markerType: 'line' | 'rectangle';
 }
 
-interface ChartDetailPair {
-  key: string;
-  value: string | number;
+export interface ChartDetailPair {
+  key: ReactNode;
+  value: ReactNode;
 }
 
 export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Datum> extends BaseComponentProps {
@@ -52,8 +53,8 @@ export interface PieChartProps<T extends PieChartProps.Datum = PieChartProps.Dat
    * By default, each segment displays two detail pairs: count and percentage.
    *
    * Each pair has the following properties:
-   * * `key` (string) - Name of the detail or metric.
-   * * `value` (string | number) - The value of this detail for the target segment.
+   * * `key` (ReactNode) - Name of the detail or metric.
+   * * `value` (ReactNode) - The value of this detail for the target segment.
    */
   detailPopoverContent?: PieChartProps.DetailPopoverContentFunction<T>;
 

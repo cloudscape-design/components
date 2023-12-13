@@ -93,7 +93,7 @@ function convertBetaApi(drawers: BetaDrawersProps, ariaLabels: AppLayoutProps['a
       })
     ),
     controlledActiveDrawerId: drawers.activeDrawerId,
-    onDrawerChange: (event: NonCancelableCustomEvent<{ activeDrawerId: string | null }>) =>
+    onDrawerChange: (event: NonCancelableCustomEvent<AppLayoutProps.DrawerChangeDetail>) =>
       fireNonCancelableEvent(drawers.onChange, event.detail.activeDrawerId),
     ariaLabels: {
       ...ariaLabels,

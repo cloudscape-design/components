@@ -490,6 +490,14 @@ describe('Details popover', () => {
     expect(detailPopover?.findContent()?.getElement()).toHaveTextContent('' + defaultData[0].value);
   });
 
+  test('blurring the chart hides the details popover', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findApplication()!.focus();
+    expect(wrapper.findDetailPopover()).toBeTruthy();
+    wrapper.findApplication()!.blur();
+    expect(wrapper.findDetailPopover()).toBeNull();
+  });
+
   test('pressing escape closes the popover', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
     wrapper.findApplication()!.focus();
