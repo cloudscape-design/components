@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import ChartPopover from '../internal/components/chart-popover';
-import ChartSeriesDetails from '../internal/components/chart-series-details';
+import ChartSeriesDetails, { ExpandedSeries } from '../internal/components/chart-series-details';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -25,6 +25,7 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
   onBlur?: (event: React.FocusEvent) => void;
+  setPopoverText: (s: string) => void;
 }
 
 export default React.forwardRef(MixedChartPopover);
@@ -43,9 +44,11 @@ function MixedChartPopover<T extends ChartDataTypes>(
     onMouseEnter,
     onMouseLeave,
     onBlur,
+    setPopoverText,
   }: MixedChartPopoverProps<T>,
   popoverRef: React.Ref<HTMLElement>
 ) {
+  const [expandedSeries, setExpandedSeries] = useState<Record<string, ExpandedSeries>>({});
   return (
     <Transition in={isOpen}>
       {(state, ref) => (
@@ -65,7 +68,26 @@ function MixedChartPopover<T extends ChartDataTypes>(
               onMouseLeave={onMouseLeave}
               onBlur={onBlur}
             >
-              <ChartSeriesDetails details={highlightDetails.details} />
+              <ChartSeriesDetails
+                key={highlightDetails.position}
+                details={highlightDetails.details}
+                setPopoverText={setPopoverText}
+                expandedSeries={expandedSeries[highlightDetails.position]}
+                setExpandedState={(id, isExpanded) =>
+                  setExpandedSeries(oldState => {
+                    const expandedSeriesInCurrentCoordinate = new Set(oldState[highlightDetails.position]);
+                    if (isExpanded) {
+                      expandedSeriesInCurrentCoordinate.add(id);
+                    } else {
+                      expandedSeriesInCurrentCoordinate.delete(id);
+                    }
+                    return {
+                      ...oldState,
+                      [highlightDetails.position]: expandedSeriesInCurrentCoordinate,
+                    };
+                  })
+                }
+              />
               {footer && <ChartPopoverFooter>{footer}</ChartPopoverFooter>}
             </ChartPopover>
           )}

@@ -7,8 +7,50 @@
 @use '../../styles/tokens' as awsui;
 @use './motion';
 
+@use '../chart-series-marker/styles' as marker;
+
+$font-weight-bold: awsui.$font-weight-heading-s;
+
 .root {
   @include styles.styles-reset;
+}
+
+.value {
+  text-align: right;
+  margin-inline-start: awsui.$space-xxl;
+  &.expandable {
+    font-weight: $font-weight-bold;
+  }
+}
+
+.list-item,
+.inner-list-item {
+  list-style: none;
+}
+
+.inner-list-item,
+.list-item > .key-value-pair,
+.list-item > .expandable-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  > .key {
+    display: inline-flex;
+    color: awsui.$color-text-group-label;
+  }
+}
+
+.sub-items {
+  &:not(.expandable) {
+    padding-inline-start: calc(marker.$marker-width + marker.$marker-margin-right);
+  }
+  &.expandable {
+    padding-inline-start: 0;
+    > .inner-list-item > .value {
+      white-space: nowrap;
+    }
+  }
 }
 
 .list {
@@ -19,18 +61,27 @@
   flex-direction: column;
 
   > .list-item {
-    display: inline-flex;
-    justify-content: space-between;
+    > .key-value-pair > .key {
+      align-items: flex-start;
+    }
+
+    &.dimmed {
+      opacity: 0.35;
+    }
   }
 }
 
-.key {
-  display: inline-flex;
-  align-items: flex-start;
-  color: awsui.$color-text-group-label;
-  margin-right: awsui.$space-xxl;
+.list-item.with-sub-items:not(.expandable) > .key-value-pair {
+  > .key,
+  > .value {
+    font-weight: $font-weight-bold;
+  }
 }
 
-.dimmed {
-  opacity: 0.35;
+.full-width {
+  width: 100%;
+}
+
+.announced {
+  /* Used by getSeriesDetailText to select text to be announced by screen readers */
 }

@@ -193,7 +193,6 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
    */
   fitHeight?: boolean;
 }
-
 export namespace CartesianChartProps {
   export interface FilterChangeDetail<Series> {
     visibleSeries: ReadonlyArray<Series>;

@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import chartWrapperStyles from '../../../lib/components/internal/components/chart-wrapper/styles.css.js';
-import { lineSeries3 } from './common';
+import { lineSeries3, renderMixedChart } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import positions from '../../../lib/components/popover/utils/positions';
@@ -28,14 +28,6 @@ function expectToExist(wrapper: ElementWrapper | null, shouldExist: boolean) {
   } else {
     expect(wrapper).toBeNull();
   }
-}
-
-function renderMixedChart(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
-  return {
-    rerender,
-    wrapper: new MixedLineBarChartWrapper(container),
-  };
 }
 
 const lineSeries: MixedLineBarChartProps.DataSeries<number> = {
@@ -912,7 +904,7 @@ describe('Details popover', () => {
     xScaleType: 'linear' as const,
   };
 
-  const barChartProps = {
+  const mixedChartProps = {
     series: [barSeries, { ...barSeries2, type: 'line' }, thresholdSeries] as ReadonlyArray<
       MixedLineBarChartProps.ChartSeries<string>
     >,
@@ -925,7 +917,7 @@ describe('Details popover', () => {
   test('uses the formatters when available', () => {
     const { wrapper } = renderMixedChart(
       <MixedLineBarChart
-        {...barChartProps}
+        {...mixedChartProps}
         series={[{ ...barSeries, valueFormatter: (value, x) => `${value.toFixed(2)} @ ${x}` }]}
         i18nStrings={{ xTickFormatter: value => value.toUpperCase() }}
       />
@@ -939,7 +931,7 @@ describe('Details popover', () => {
   });
 
   test('can be shown on focus in a mixed chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -951,7 +943,7 @@ describe('Details popover', () => {
   });
 
   test('can be pinned and unpinned in a mixed chart', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -987,7 +979,7 @@ describe('Details popover', () => {
   });
 
   test('delegates focus back to chart when unpinned in a grouped chart', async () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
 
@@ -1003,7 +995,7 @@ describe('Details popover', () => {
   });
 
   test('no highlighted segment when pressing outside', () => {
-    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
 
     wrapper.findApplication()!.focus();
     wrapper.findChart()!.click();
@@ -1016,7 +1008,7 @@ describe('Details popover', () => {
 
   test('can contain custom content in the footer', () => {
     const { wrapper } = renderMixedChart(
-      <MixedLineBarChart {...barChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
+      <MixedLineBarChart {...mixedChartProps} detailPopoverFooter={xValue => <span>Details about {xValue}</span>} />
     );
 
     wrapper.findApplication()!.focus();
@@ -1044,7 +1036,7 @@ describe('Details popover', () => {
     });
 
     test('on click', () => {
-      const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+      const { wrapper } = renderMixedChart(<MixedLineBarChart {...mixedChartProps} />);
       wrapper.findApplication()!.focus();
       spy!.mockClear();
       wrapper.findDetailPopover()!.click();

@@ -19,6 +19,7 @@ function renderChart<T extends ChartDataTypes>(props: Partial<MixedChartPopoverP
       trackRef={dummyRef}
       footer={props.footer}
       size="small"
+      setPopoverText={() => null}
     />
   );
   return new ChartPopoverWrapper(container);

@@ -10,7 +10,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
 
-import { ExpandableSectionProps } from './interfaces';
+import { ExpandableSectionProps, InternalVariant } from './interfaces';
 
 import styles from './styles.css.js';
 import { ExpandableSectionContainer } from './expandable-section-container';
@@ -18,7 +18,10 @@ import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { variantSupportsDescription } from './utils';
 
-export type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
+export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
+  InternalBaseComponentProps & {
+    variant?: InternalVariant;
+  };
 
 export default function InternalExpandableSection({
   expanded: controlledExpanded,
@@ -90,7 +93,7 @@ export default function InternalExpandableSection({
   };
 
   // Map stacked variant to container to avoid code duplication
-  const baseVariant: ExpandableSectionProps.Variant = variant === 'stacked' ? 'container' : variant;
+  const baseVariant: InternalVariant = variant === 'stacked' ? 'container' : variant;
 
   return (
     <ExpandableSectionContainer
