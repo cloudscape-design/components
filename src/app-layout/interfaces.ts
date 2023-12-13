@@ -35,7 +35,7 @@ export interface AppLayoutProps extends BaseComponentProps {
   /**
    * Fired when the active drawer is toggled.
    */
-  onDrawerChange?: NonCancelableEventHandler<{ activeDrawerId: string | null }>;
+  onDrawerChange?: NonCancelableEventHandler<AppLayoutProps.DrawerChangeDetail>;
 
   /**
    * If `true`, disables outer paddings for the content slot.
@@ -313,4 +313,8 @@ export namespace AppLayoutProps {
   // Duplicated the positions because using this definition in SplitPanelPreferences would display
   // 'AppLayoutProps.SplitPanelPosition' on the API docs instead of the string values.
   export type SplitPanelPosition = 'side' | 'bottom';
+
+  export interface DrawerChangeDetail {
+    activeDrawerId: string | null;
+  }
 }
