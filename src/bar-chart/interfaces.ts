@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CartesianChartProps, ScaleType } from '../internal/components/cartesian-chart/interfaces';
+import { ScaleType } from '../internal/components/cartesian-chart/interfaces';
 import { ChartDataTypes, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
 
 type BarSeries<T> = MixedLineBarChartProps.BarDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
 
-export interface BarChartProps<T extends ChartDataTypes>
-  extends CartesianChartProps<T, MixedLineBarChartProps.ChartSeries<T>> {
+export interface BarChartProps<T extends ChartDataTypes> extends MixedLineBarChartProps<T> {
   /**
    * Array that represents the source of data for the displayed chart.
    * Each element can represent a bar series or a threshold, and can have the following properties:
@@ -31,29 +30,10 @@ export interface BarChartProps<T extends ChartDataTypes>
   horizontalBars?: boolean;
 
   /**
-   * When set to `true`, adds a visual emphasis on the zero baseline axis.
-   * See the usage guidelines for more details.
-   */
-  emphasizeBaselineAxis?: boolean;
-
-  /**
    * Determines the type of scale for values on the x axis.
    * Use `categorical` for bar charts.
    */
   xScaleType?: ScaleType;
-
-  /**
-   * A function that determines the details that are displayed in the popover for each series.
-   * Use this for wrapping keys or values in links, or to display an additional level of nested items.
-   *
-   * The function expects an object with the shape `{ series, x, y }` representing the series, the highlighted x value and its corresponding y value,
-   * and should return the following properties:
-   * * `key` (ReactNode) - Name of the series.
-   * * `value` (ReactNode) - Value of the series at the highlighted coordinate.
-   * * `subItems` (ReadonlyArray<{ key: ReactNode; value: ReactNode }>) - (Optional) List of nested key-value pairs.
-   * * `expandable` (boolean) - (Optional) Determines whether the optional list of nested items provided via `subItems` is expandable. Defaults to `false`.
-   */
-  detailPopoverSeriesContent?: MixedLineBarChartProps.DetailPopoverSeriesContent<T>;
 }
 
 // W/o this documenter injects CartesianChartProps namespace properties into BarChartProps definition.
