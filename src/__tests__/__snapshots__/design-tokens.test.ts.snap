@@ -184,7 +184,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#414750",
             "light": "#f2f3f3",
           },
         },
@@ -1780,7 +1780,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -2479,7 +2479,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#414750",
             "light": "#f2f3f3",
           },
         },
@@ -4096,7 +4096,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -4795,7 +4795,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#414750",
             "light": "#f2f3f3",
           },
         },
@@ -6391,7 +6391,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -7090,7 +7090,7 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#414750",
             "light": "#f2f3f3",
           },
         },
@@ -8686,7 +8686,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
@@ -9385,8 +9385,8 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
-            "light": "#081120",
+            "dark": "#414750",
+            "light": "#414750",
           },
         },
         "color-background-home-header": Object {
@@ -10988,8 +10988,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#eaeded",
-            "light": "#eaeded",
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
           },
         },
         "color-text-heading-primary": Object {
@@ -11687,7 +11687,7 @@ Object {
     "color-background-dropdown-item-hover": Object {
       "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
       "$value": Object {
-        "dark": "#081120",
+        "dark": "#414750",
         "light": "#f2f3f3",
       },
     },
@@ -13304,7 +13304,7 @@ Object {
     "color-text-heading-default": Object {
       "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
-        "dark": "#eaeded",
+        "dark": "#d5dbdb",
         "light": "#16191f",
       },
     },
