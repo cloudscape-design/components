@@ -77,7 +77,6 @@
     background-color: awsui.$color-background-container-content;
     margin: 0 0 awsui.$space-grid-gutter awsui.$space-grid-gutter;
     padding: awsui.$space-card-vertical awsui.$space-card-horizontal;
-    @include styles.container-shadow;
     width: 100%;
     min-width: 0;
     @include styles.container-style;
