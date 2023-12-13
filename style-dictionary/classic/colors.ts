@@ -112,7 +112,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextFormDefault: { light: '{colorGrey900}', dark: '{colorGrey300}' },
   colorTextHeadingDefault: { light: '{colorGrey900}', dark: '{colorGrey200}' },
   colorTextHeadingSecondary: { light: '{colorGrey600}', dark: '{colorGrey300}' },
-  colorTextHomeHeaderDefault: { dark: '{colorGrey200}' },
+  colorTextHomeHeaderDefault: { light: '{colorWhite}', dark: '{colorGrey200}' },
   colorTextHomeHeaderSecondary: '{colorGrey300}',
   colorTextInputDisabled: { light: '{colorGrey500}' },
   colorTextInputPlaceholder: { light: '{colorGrey550}', dark: '{colorGrey500}' },
