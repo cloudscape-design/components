@@ -1,17 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { render } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import { supportsStickyPosition } from '../../../lib/components/internal/utils/dom';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import styles from '../../../lib/components/table/styles.css.js';
 import { useStickyColumns, useStickyCellStyles } from '../../../lib/components/table/sticky-columns';
 
-jest.mock('@cloudscape-design/component-toolkit', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit'),
-  useContainerQuery: jest.fn(() => [600, () => {}]),
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  useResizeObserver: jest.fn(),
 }));
 
 jest.mock('../../../lib/components/internal/utils/dom', () => ({
@@ -61,19 +62,42 @@ function findMergedCell(wrapper: TableWrapper) {
   return wrapper.findByClassName(styles['cell-merged']);
 }
 
+function mockResizeObserver(contentBoxWidth: number) {
+  const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+  const fireCallbacks = (entry: ContainerQueryEntry) => callbacks.forEach(cb => cb(entry));
+
+  jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+    // The table uses more than one resize observer.
+    // The callback must be triggered for all to ensure the expected one is targeted as well.
+    callbacks.push(cb);
+
+    useEffect(() => {
+      cb({ contentBoxWidth } as unknown as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  });
+
+  return fireCallbacks;
+}
+
 test('should apply width to the empty state container', () => {
+  const fireCallbacks = mockResizeObserver(600);
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={[]} />);
   expect(findStickyParent(wrapper).style.width).toEqual('600px');
+
+  fireCallbacks({ contentBoxWidth: 700 } as unknown as ContainerQueryEntry);
+  expect(findStickyParent(wrapper).style.width).toEqual('700px');
 });
 
 test('should floor the value to prevent unwanted horizontal scrolling', () => {
-  (useContainerQuery as jest.Mock).mockReturnValue([123.4, () => {}]);
+  mockResizeObserver(123.4);
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={[]} />);
   expect(findStickyParent(wrapper).style.width).toEqual('123px');
 });
 
 test('should not apply width when browser does not support position sticky', () => {
-  (supportsStickyPosition as jest.Mock).mockReturnValue(false);
+  mockResizeObserver(600);
+  jest.mocked(supportsStickyPosition).mockReturnValue(false);
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={[]} />);
   expect(findStickyParent(wrapper).style.width).toEqual('');
 });

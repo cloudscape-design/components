@@ -40,7 +40,7 @@ import { useCellEditing } from './use-cell-editing';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { NoDataCell } from './node-data-cell';
+import { NoDataCell } from './no-data-cell';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 
 const SELECTION_COLUMN_WIDTH = 54;
@@ -390,14 +390,13 @@ const InternalTable = React.forwardRef(
                   {loading || items.length === 0 ? (
                     <tr>
                       <NoDataCell
-                        variant={variant}
-                        containerWidth={containerWidth ?? 0}
                         totalColumnsCount={totalColumnsCount}
                         hasFooter={hasFooter}
                         loading={loading}
                         loadingText={loadingText}
                         empty={empty}
                         tableRef={tableRefObject}
+                        containerRef={wrapperMeasureRefObject}
                       />
                     </tr>
                   ) : (
