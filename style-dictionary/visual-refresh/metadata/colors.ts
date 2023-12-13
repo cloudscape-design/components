@@ -498,11 +498,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextHeadingPrimary: {
-    description: 'The default color for heading 1, for example: the heading in the header for a page title',
-    public: true,
-    themeable: true,
-  },
   colorTextHeadingDefault: {
     description:
       'The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.',

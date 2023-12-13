@@ -29,6 +29,7 @@
   border: awsui.$border-field-width solid;
   padding: awsui.$space-alert-vertical awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
+  color: awsui.$color-text-alert-default;
 
   &.with-dismiss,
   &.with-action {

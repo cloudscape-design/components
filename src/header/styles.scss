@@ -127,13 +127,10 @@
 
 .title {
   @include styles.text-wrapping;
-  &:not(&-variant-h1) {
-    color: awsui.$color-text-heading-default;
-  }
+  color: awsui.$color-text-heading-default;
   &-variant-h1 {
     font-size: awsui.$font-size-heading-xl;
     padding-top: awsui.$space-scaled-2x-xxs;
-    color: awsui.$color-text-heading-primary;
     // Use padding rather than center align with min height to avoid having extra bottom space when no actions are present.
     // Having top padding always present ensures that all headers of the same variant start at the same height in the container,
     // whether there are buttons present or not; otherwise configurable dashboard handles are misaligned.
