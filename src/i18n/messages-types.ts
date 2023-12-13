@@ -128,10 +128,6 @@ export interface I18nFormatArgTypes {
       "finalPosition": string | number;
     }
   }
-  "copy-to-clipboard": {
-    "i18nStrings.copySuccessText": never;
-    "i18nStrings.copyErrorText": never;
-  };
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;

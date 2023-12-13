@@ -5,7 +5,8 @@ import { BaseComponentProps } from '../internal/base-component';
 
 export interface CopyToClipboardProps extends BaseComponentProps {
   /** Determines the general styling of the copy button as follows:
-   * * `button` to display a secondary button with an icon and `copyButtonText` as text.
+   * * `button` to display a standalone secondary button with an icon and `copyButtonText` as text.
+   * * `icon` to display a standalone icon-only (no text) button.
    * * `inline` to display an icon-only (no text) button within a text context.
    * Defaults to `button`.
    */
@@ -28,23 +29,16 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   textToCopy: string;
 
   /**
-   * An object containing all the necessary localized strings required by the component.
-   * @i18n
+   * The message shown when the text is copied successfully.
    */
-  i18nStrings?: CopyToClipboardProps.I18nStrings;
+  copySuccessText: string;
+
+  /**
+   * The message shown when the text was not copied due to an error, see https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext.
+   */
+  copyErrorText: string;
 }
 
 export namespace CopyToClipboardProps {
-  export type Variant = 'button' | 'inline';
-
-  export interface I18nStrings {
-    /**
-     * The message shown when the text is copied successfully.
-     */
-    copySuccessText?: string;
-    /**
-     * The message shown when the text was not copied due to an error, see https://w3c.github.io/clipboard-apis/#dom-clipboard-writetext.
-     */
-    copyErrorText?: string;
-  }
+  export type Variant = 'button' | 'icon' | 'inline';
 }

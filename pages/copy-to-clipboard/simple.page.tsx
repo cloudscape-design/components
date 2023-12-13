@@ -4,11 +4,6 @@ import React from 'react';
 import { Box, SpaceBetween, CopyToClipboard } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const i18nStrings = {
-  copySuccessText: 'Copied to clipboard',
-  copyErrorText: 'Failed to copy to clipboard',
-};
-
 const paragraphs = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum metus sem, fringilla feugiat leo lacinia sed. Integer a nulla in tellus fermentum gravida. In diam augue, venenatis non augue ac, fermentum molestie nunc. Quisque semper blandit ultricies. Ut auctor lobortis velit, et faucibus velit pharetra vel. Maecenas ut maximus massa, vel lobortis velit. Morbi sollicitudin hendrerit odio eu dictum. Donec cursus est at orci sagittis, vel bibendum tortor efficitur. Duis cursus mi et pellentesque ornare. Vivamus ultrices at leo sit amet malesuada. Pellentesque imperdiet ligula sed dolor ornare, non rutrum tellus ultricies.',
   'Morbi ut congue nunc. Cras malesuada ut enim et consectetur. Sed sed dui nulla. Duis tincidunt at ante at egestas. Vestibulum sapien erat, fermentum et quam nec, sodales aliquam purus. Sed tristique vitae massa non vehicula. In hac habitasse platea dictumst. Nunc non ultricies arcu. Mauris pretium bibendum neque, ut mattis mi rhoncus sit amet. Integer pulvinar maximus vehicula.',
@@ -37,16 +32,31 @@ export default function DateInputScenario() {
               data-testid="copy-article"
               copyButtonText="Copy"
               textToCopy={paragraphs.join('\n\n')}
-              i18nStrings={i18nStrings}
+              copySuccessText="Lorem ipsum article copied"
+              copyErrorText="Lorem ipsum article failed to copy"
+            />
+          </div>
+
+          <div style={{ display: 'flex', gap: 16 }}>
+            <Box variant="p">{paragraphs[0]}</Box>
+
+            <CopyToClipboard
+              data-testid="copy-paragraph"
+              variant="icon"
+              copyButtonAriaLabel="Copy lorem ipsum paragraph"
+              textToCopy={paragraphs[0]}
+              copySuccessText="Lorem ipsum paragraph copied"
+              copyErrorText="Lorem ipsum paragraph failed to copy"
             />
           </div>
 
           <CopyToClipboard
             data-testid="copy-sentence"
             variant="inline"
-            copyButtonAriaLabel="Copy lorem ipsum"
+            copyButtonAriaLabel="Copy lorem ipsum sentence"
             textToCopy={sentence}
-            i18nStrings={i18nStrings}
+            copySuccessText="Lorem ipsum sentence copied"
+            copyErrorText="Lorem ipsum sentence failed to copy"
           />
         </SpaceBetween>
       </Box>

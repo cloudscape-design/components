@@ -4,16 +4,13 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
 
 const defaultProps = {
   copyTarget: 'Test content',
   textToCopy: 'Text to copy',
   copyButtonText: 'Copy',
-  i18nStrings: {
-    copySuccessText: 'Copied to clipboard',
-    copyErrorText: 'Failed to copy to clipboard',
-  },
+  copySuccessText: 'Copied to clipboard',
+  copyErrorText: 'Failed to copy to clipboard',
 };
 
 describe('CopyToClipboard', () => {
@@ -37,6 +34,17 @@ describe('CopyToClipboard', () => {
     const wrapper = createWrapper(container).findCopyToClipboard()!;
 
     expect(wrapper.findCopyButton().getElement().textContent).toBe('Copy');
+    expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy test content');
+    expect(wrapper.findTextToCopy()).toBe(null);
+  });
+
+  test('renders an icon button with aria-label and no text to copy', () => {
+    const { container } = render(
+      <CopyToClipboard {...defaultProps} variant="icon" copyButtonAriaLabel="Copy test content" />
+    );
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findCopyButton().getElement().textContent).toBe('');
     expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy test content');
     expect(wrapper.findTextToCopy()).toBe(null);
   });
@@ -75,33 +83,5 @@ describe('CopyToClipboard', () => {
 
     wrapper.findCopyButton().click();
     await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard'));
-  });
-
-  test('uses i18n provider', async () => {
-    function TestComponent({ textToCopy }: { textToCopy: string }) {
-      return (
-        <TestI18nProvider
-          messages={{
-            'copy-to-clipboard': {
-              'i18nStrings.copySuccessText': 'Copied i18n',
-              'i18nStrings.copyErrorText': 'Failed i18n',
-            },
-          }}
-        >
-          <CopyToClipboard {...defaultProps} textToCopy={textToCopy} i18nStrings={undefined} />
-        </TestI18nProvider>
-      );
-    }
-
-    const { container, rerender } = render(<TestComponent textToCopy="Text to copy" />);
-    const wrapper = createWrapper(container).findCopyToClipboard()!;
-
-    wrapper.findCopyButton().click();
-    await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied i18n'));
-
-    rerender(<TestComponent textToCopy="Text to copy with error" />);
-
-    wrapper.findCopyButton().click();
-    await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed i18n'));
   });
 });
