@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import Icon from '~components/icon';
+import Icon, { IconProps } from '~components/icon';
 import TextContent from '~components/text-content';
 import Box from '~components/box';
 import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
 import customIcon from './custom-icon.png';
+import icons from '~components/icon/icons';
 
 const UNITS = 'px';
 const tagVariants = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'div', 'span', 'small'] as const;
@@ -15,6 +16,7 @@ export default function IconScenario() {
   const [height, setHeight] = useState(16);
   const [visibility, setVisibility] = useState(false);
   const unitHeight = height + UNITS;
+  const [iconName, setIconName] = useState('settings' as IconProps.Name);
   const iconPermutations = (
     <>
       <Icon name="external" size="inherit" /> <Icon url={customIcon} alt="custom icon" size="inherit" />{' '}
@@ -36,6 +38,16 @@ export default function IconScenario() {
         <li>Icons must align with text</li>
       </ul>
       <div style={{ padding: '5px 20px' }} id="test-controls">
+        <label>
+          Icon to show:
+          <select defaultValue={iconName} onChange={e => setIconName(e.target.value as IconProps.Name)}>
+            {Object.keys(icons).map((icon, key) => (
+              <option value={icon} key={key}>
+                {icon}
+              </option>
+            ))}
+          </select>
+        </label>
         <SpaceBetween direction="horizontal" size="xxl">
           <div>
             <h2>Dynamic line height switch</h2>
@@ -52,13 +64,13 @@ export default function IconScenario() {
 
             <div>
               <h1 style={{ lineHeight: unitHeight }}>
-                <Icon name="settings" size="inherit" id="dynamic-test-1" /> Heading 1 {unitHeight} {iconPermutations}
+                <Icon name={iconName} size="inherit" id="dynamic-test-1" /> Heading 1 {unitHeight} {iconPermutations}
               </h1>
               <h2 style={{ lineHeight: unitHeight }}>
-                <Icon name="settings" size="inherit" id="dynamic-test-2" /> Heading 2 {unitHeight} {iconPermutations}
+                <Icon name={iconName} size="inherit" id="dynamic-test-2" /> Heading 2 {unitHeight} {iconPermutations}
               </h2>
               <p style={{ lineHeight: unitHeight }}>
-                <Icon name="settings" size="inherit" id="dynamic-test-p" /> Paragraph {unitHeight} {iconPermutations}
+                <Icon name={iconName} size="inherit" id="dynamic-test-p" /> Paragraph {unitHeight} {iconPermutations}
               </p>
             </div>
           </div>
@@ -75,16 +87,16 @@ export default function IconScenario() {
             </label>
             {visibility && (
               <Box variant="h1">
-                <Icon name="settings" size="inherit" id="visibility-test-1" /> Box h1 (big)
+                <Icon name={iconName} size="inherit" id="visibility-test-1" /> Box h1 (big)
               </Box>
             )}
             <h2 style={{ display: visibility ? 'block' : 'none' }}>
-              <Icon name="settings" size="inherit" id="visibility-test-2" /> Heading 2 with default line height (24px)
+              <Icon name={iconName} size="inherit" id="visibility-test-2" /> Heading 2 with default line height (24px)
             </h2>
 
             <div>
               <Box variant="h2" padding={{ vertical: 'xl' }}>
-                <Icon name="settings" size="inherit" id="static-test" /> Box h2 (normal/medium)
+                <Icon name={iconName} size="inherit" id="static-test" /> Box h2 (normal/medium)
               </Box>
             </div>
           </div>
@@ -101,7 +113,7 @@ export default function IconScenario() {
                 const Tag = tag as keyof JSX.IntrinsicElements;
                 return (
                   <Tag key={tag}>
-                    <Icon name="settings" size="inherit" /> {tag} example text {iconPermutations}
+                    <Icon name={iconName} size="inherit" /> {tag} example text {iconPermutations}
                   </Tag>
                 );
               })}
@@ -113,7 +125,7 @@ export default function IconScenario() {
               {tagVariants.map(variant => {
                 return (
                   <Box variant={variant} key={variant}>
-                    <Icon name="settings" size="inherit" /> {variant} example text {iconPermutations}
+                    <Icon name={iconName} size="inherit" /> {variant} example text {iconPermutations}
                   </Box>
                 );
               })}
@@ -123,15 +135,15 @@ export default function IconScenario() {
         <h2>Other permutations</h2>
         <div style={{ width: '250px' }}>
           <Box>
-            <Icon name="settings" size="inherit" /> A long line of text to make sure that the icon inherits the right
+            <Icon name={iconName} size="inherit" /> A long line of text to make sure that the icon inherits the right
             size. {iconPermutations}
           </Box>
           <Box variant="h2">
-            <Icon name="settings" size="inherit" /> A long line of text to make sure that the icon inherits the right
+            <Icon name={iconName} size="inherit" /> A long line of text to make sure that the icon inherits the right
             size. {iconPermutations}
           </Box>
         </div>
-        <Icon name="settings" size="inherit" /> <Box variant="h2">Icons with no parent shouldnt inherit height</Box>{' '}
+        <Icon name={iconName} size="inherit" /> <Box variant="h2">Icons with no parent shouldnt inherit height</Box>{' '}
         <Icon name="external" size="inherit" />
       </ScreenshotArea>
     </article>
