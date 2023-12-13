@@ -74,7 +74,7 @@ function mockResizeObserver(contentBoxWidth: number) {
     useEffect(() => {
       cb({ contentBoxWidth } as unknown as ContainerQueryEntry);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    });
+    }, []);
   });
 
   return fireCallbacks;
