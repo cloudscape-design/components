@@ -40,29 +40,28 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .icon-container {
   position: relative;
-  margin-inline: calc(#{$icon-margin-left}) calc(#{$icon-margin-right-normal});
+  margin-left: calc(#{$icon-margin-left});
   // For vertical alignment of text in side navigation items
+  margin-right: calc(#{$icon-margin-right-normal});
   &-container {
-    margin-inline-end: $icon-margin-right-medium;
+    margin-right: $icon-margin-right-medium;
   }
 }
 
 .wrapper {
   box-sizing: border-box;
-  border-block: none;
-  border-inline: none;
-  inline-size: 100%;
+  border: none;
+  width: 100%;
   line-height: awsui.$line-height-body-m;
-  text-align: start;
+  text-align: left;
 
   &-default,
   &-footer {
-    border-block: awsui.$border-divider-section-width solid transparent;
-    border-inline: awsui.$border-divider-section-width solid transparent;
+    border: awsui.$border-divider-section-width solid transparent;
   }
   &-navigation {
     // not needed for focus ring compensation, but to keep this variant vertically aligned with other variants when used together
-    border-inline-start: awsui.$border-divider-section-width solid transparent;
+    border-left: awsui.$border-divider-section-width solid transparent;
   }
 
   &-navigation,
@@ -87,55 +86,57 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-default {
-    padding-block: awsui.$space-scaled-xxs;
-    padding-inline-end: awsui.$space-xxs;
+    padding-top: awsui.$space-scaled-xxs;
+    padding-bottom: awsui.$space-scaled-xxs;
+    padding-right: awsui.$space-xxs;
     &.header-deprecated {
-      padding-inline-start: awsui.$space-xxs;
+      padding-left: awsui.$space-xxs;
     }
     &:not(.header-deprecated) {
-      padding-inline-start: calc(#{awsui.$space-xxs} + #{$icon-total-space-normal});
+      padding-left: calc(#{awsui.$space-xxs} + #{$icon-total-space-normal});
     }
   }
 
   &-footer {
-    padding-block: awsui.$space-scaled-xxs;
+    padding-top: awsui.$space-scaled-xxs;
+    padding-bottom: awsui.$space-scaled-xxs;
   }
 
   &-footer,
   &-compact {
-    padding-inline-end: 0;
+    padding-right: 0;
     &.header-deprecated {
-      padding-inline-start: 0;
+      padding-left: 0;
     }
     &:not(.header-deprecated) {
-      padding-inline-start: $icon-total-space-normal;
+      padding-left: $icon-total-space-normal;
     }
   }
 
   &-container {
-    padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
-    padding-inline-end: container.$header-padding-horizontal;
+    padding-top: awsui.$space-container-header-top;
+    padding-bottom: awsui.$space-container-header-bottom;
+    padding-right: container.$header-padding-horizontal;
 
     &:not(.wrapper-expanded) {
       // Equal top and bottom padding so standalone header has vertical symmetry.
-      padding-block-end: awsui.$space-container-header-top;
+      padding-bottom: awsui.$space-container-header-top;
     }
     &.header-deprecated {
-      padding-inline-start: container.$header-padding-horizontal;
+      padding-left: container.$header-padding-horizontal;
     }
     &:not(.header-deprecated) {
-      padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
+      padding-left: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
     }
 
     @include focus-visible.when-visible {
       // HACK: Remediate focus border
-      padding-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
-      padding-inline: calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
+      padding: container.$header-focus-visible-padding;
     }
   }
 
   &-default.wrapper-expanded {
-    border-block-end-color: awsui.$color-border-divider-default;
+    border-bottom-color: awsui.$color-border-divider-default;
   }
 }
 
@@ -151,10 +152,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-wrapper {
     font-size: inherit;
     letter-spacing: inherit;
-    margin-block: 0;
-    margin-inline: 0;
-    padding-block: 0;
-    padding-inline: 0;
+    margin: 0;
+    padding: 0;
   }
 
   &-actions-wrapper {
@@ -173,18 +172,18 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-button {
     box-sizing: border-box;
     display: flex;
-    margin-inline-start: calc(-1 * #{$icon-total-space-normal});
+    margin-left: calc(-1 * #{$icon-total-space-normal});
   }
 
   &-container-button {
-    margin-inline-start: calc(-1 * #{$icon-total-space-medium});
+    margin-left: calc(-1 * #{$icon-total-space-medium});
   }
 
   &-container {
-    inline-size: 100%;
+    width: 100%;
     // The icon-container style is kept for variant='container' and header
     > .icon-container {
-      margin-block-start: awsui.$space-expandable-section-icon-offset-top;
+      margin-top: awsui.$space-expandable-section-icon-offset-top;
     }
   }
 
@@ -193,10 +192,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       display: inline-flex;
       cursor: pointer;
       color: awsui.$color-text-expandable-section-navigation-icon-default;
-      border-block: 0;
-      border-inline: 0;
-      padding-block: 0;
-      padding-inline: 0;
+      border: 0;
+      padding: 0;
       background: transparent;
       outline: none;
       text-decoration: none;
@@ -221,13 +218,11 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   display: none;
 
   &-default {
-    padding-block: awsui.$space-scaled-xs;
-    padding-inline: 0;
+    padding: awsui.$space-scaled-xs 0;
   }
 
   &-footer {
-    padding-block: awsui.$space-xs;
-    padding-inline: 0;
+    padding: awsui.$space-xs 0;
   }
 
   &-expanded {

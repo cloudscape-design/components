@@ -13,22 +13,22 @@
 }
 
 .file-option {
-  inline-size: 100%;
-  min-inline-size: 0;
+  width: 100%;
+  min-width: 0;
   display: flex;
   gap: awsui.$space-scaled-xs;
 }
 
 .file-option-thumbnail {
-  margin-block-start: awsui.$space-static-xxs;
-  max-inline-size: 60px;
+  margin-top: awsui.$space-static-xxs;
+  max-width: 60px;
 }
 
 .file-option-thumbnail-image {
-  inline-size: 100%;
-  block-size: auto;
+  width: 100%;
+  height: auto;
 }
 
 .file-option-metadata {
-  inline-size: 100%;
+  width: 100%;
 }

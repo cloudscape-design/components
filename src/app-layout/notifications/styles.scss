@@ -17,7 +17,7 @@
 }
 
 .notifications-sticky {
-  inset-block-start: 0;
+  top: 0;
   position: sticky;
   #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
 }

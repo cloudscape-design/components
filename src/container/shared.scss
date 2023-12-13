@@ -7,6 +7,8 @@
 @use '../internal/styles/tokens' as awsui;
 
 $header-padding-horizontal: awsui.$space-container-horizontal;
+$header-padding: awsui.$space-container-header-top awsui.$space-container-horizontal
+  awsui.$space-container-header-bottom;
 $footer-padding: awsui.$space-scaled-s awsui.$space-container-horizontal;
 
 // HACK: Remediate focus border for expandable section
@@ -18,5 +20,5 @@ $header-focus-visible-padding: calc(#{awsui.$space-scaled-s} - #{awsui.$border-d
 }
 
 @mixin divider {
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }

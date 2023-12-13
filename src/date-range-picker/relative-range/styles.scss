@@ -9,26 +9,26 @@
 
 .custom-range {
   // This padding aligns the custom range selection with the radio labels
-  padding-inline-start: calc(#{1.4 * styles.$base-size} + #{awsui.$space-xs});
+  padding-left: calc(#{1.4 * styles.$base-size} + #{awsui.$space-xs});
 
   display: flex;
-  inline-size: 80%;
+  width: 80%;
 }
 .custom-range--no-padding {
-  padding-inline-start: 0;
+  padding-left: 0;
 }
 
 .custom-range-form-controls {
   display: flex;
-  inline-size: 100%;
+  width: 100%;
 
   > .custom-range-duration,
   > .custom-range-unit {
-    inline-size: 50%;
+    width: 50%;
   }
 
   > .custom-range-duration {
-    margin-inline-end: awsui.$space-xs;
+    margin-right: awsui.$space-xs;
   }
 
   &.vertical {
@@ -36,11 +36,11 @@
 
     > .custom-range-duration,
     > .custom-range-unit {
-      inline-size: 100%;
+      width: 100%;
     }
 
     > .custom-range-unit {
-      margin-block-start: awsui.$space-s;
+      margin-top: awsui.$space-s;
     }
   }
 }

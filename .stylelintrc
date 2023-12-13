@@ -51,17 +51,9 @@
   },
   "overrides": [
     {
-      "files": [
-        "./src/a*/*.scss",
-        "./src/b*/*.scss",
-        "./src/c*/*.scss",
-        "./src/d*/*.scss",
-        "./src/e*/*.scss",
-        "./src/f*/*.scss"
-
-      ],
+      "files": ["./src/button/*.scss"],
       "rules": {
-        "property-disallowed-list": ["border-radius", "border-style", "border-width", "margin", "padding"],
+        "property-disallowed-list": ["border", "border-radius", "border-style", "margin", "padding"],
         "csstools/use-logical": "always"
       }
     }

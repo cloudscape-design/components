@@ -4,11 +4,11 @@
 */
 
 .root {
-  inline-size: 100%;
+  width: 100%;
 }
 
 .layout-strut {
-  inline-size: 100%;
+  width: 100%;
   position: relative;
   // Prevent incorrect layer ordering in Safari by making sure
   // this element is also offloaded to the GPU along with the virtual items

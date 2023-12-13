@@ -14,8 +14,7 @@ $drawer-z-index-mobile: 1001;
 
 .toggle {
   box-sizing: border-box;
-  padding-block: constants.$toggle-padding-vertical;
-  padding-inline: constants.$toggle-padding-horizontal;
+  padding: constants.$toggle-padding;
 }
 
 .drawer-triggers {
@@ -31,7 +30,7 @@ $drawer-z-index-mobile: 1001;
     z-index: $drawer-z-index;
   }
   &-closed {
-    min-inline-size: constants.$sidebar-size-closed;
+    min-width: constants.$sidebar-size-closed;
     &.drawer-mobile {
       display: none;
     }
@@ -43,10 +42,13 @@ $drawer-z-index-mobile: 1001;
   background-color: awsui.$color-background-layout-panel-content;
   .drawer-mobile > & {
     z-index: $drawer-z-index-mobile;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
   .drawer-closed > & {
-    inline-size: constants.$sidebar-size-closed;
+    width: constants.$sidebar-size-closed;
     &.drawer-content-clickable {
       cursor: pointer;
       color: awsui.$color-text-interactive-default;
@@ -60,7 +62,7 @@ $drawer-z-index-mobile: 1001;
   }
   > .drawer-resize-content {
     overflow: auto;
-    block-size: 100%;
+    height: 100%;
     position: relative;
   }
 }
@@ -73,12 +75,11 @@ $drawer-z-index-mobile: 1001;
 }
 
 .drawer-trigger {
-  padding-block: constants.$toggle-padding-vertical;
-  padding-inline: constants.$toggle-padding-horizontal;
+  padding: constants.$toggle-padding;
   cursor: pointer;
   color: awsui.$color-text-interactive-default;
   &:not(:first-child) {
-    border-block-start: 1px solid awsui.$color-border-layout;
+    border-top: 1px solid awsui.$color-border-layout;
   }
   &:hover {
     color: awsui.$color-text-layout-toggle-hover;

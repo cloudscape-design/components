@@ -24,8 +24,8 @@
 }
 
 .info {
-  padding-inline-start: awsui.$space-xs;
-  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  padding-left: awsui.$space-xs;
+  border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .description,
@@ -35,7 +35,7 @@
 
 .hints,
 .constraint-has-error {
-  padding-block-start: awsui.$space-xxs;
+  padding-top: awsui.$space-xxs;
 }
 
 .secondary-control {
@@ -44,7 +44,7 @@
 
 .controls {
   &:not(.label-hidden) {
-    padding-block-start: awsui.$space-xxs;
+    padding-top: awsui.$space-xxs;
   }
 }
 
@@ -61,7 +61,7 @@
 }
 
 .error__message {
-  margin-inline-start: awsui.$space-xxs;
+  margin-left: awsui.$space-xxs;
 }
 
 .visually-hidden {
