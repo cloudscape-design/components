@@ -5,7 +5,7 @@
 @use '../constants' as constants;
 
 .drawer-displayed {
-  min-inline-size: constants.$sidebar-size-closed;
+  min-width: constants.$sidebar-size-closed;
 }
 
 .drawer-content {

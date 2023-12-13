@@ -58,7 +58,7 @@
 
 .layout-main {
   flex: 1;
-  min-inline-size: 0;
+  min-width: 0;
   background-color: awsui.$color-background-layout-main;
   position: relative;
   &-scrollable {
@@ -73,24 +73,24 @@
 }
 
 .breadcrumbs-desktop {
-  padding-block-start: awsui.$space-scaled-m;
-  padding-block-end: awsui.$space-scaled-s;
+  padding-top: awsui.$space-scaled-m;
+  padding-bottom: awsui.$space-scaled-s;
 }
 
 .content-header-wrapper {
-  padding-block-end: awsui.$space-content-header-padding-bottom;
+  padding-bottom: awsui.$space-content-header-padding-bottom;
 }
 
 .content-wrapper {
-  padding-block-end: awsui.$space-layout-content-bottom;
+  padding-bottom: awsui.$space-layout-content-bottom;
 }
 
 .content-overlapped {
-  margin-block-start: calc(-1 * #{awsui.$space-dark-header-overlap-distance});
+  margin-top: calc(-1 * #{awsui.$space-dark-header-overlap-distance});
 }
 
 .content-extra-top-padding {
   // extra top padding when there are no breadcrumbs above,
   // applied to content or content header, whatever comes first
-  padding-block-start: awsui.$space-scaled-m;
+  padding-top: awsui.$space-scaled-m;
 }

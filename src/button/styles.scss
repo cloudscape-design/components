@@ -13,8 +13,7 @@
   background: map.get($variant, 'default-background');
   color: map.get($variant, 'default-color');
   border-color: map.get($variant, 'default-border-color');
-  border-block-width: map.get($variant, 'border-width');
-  border-inline-width: map.get($variant, 'border-width');
+  border-width: map.get($variant, 'border-width');
   position: relative;
   text-decoration: none;
   padding-block: map.get($variant, 'padding');
