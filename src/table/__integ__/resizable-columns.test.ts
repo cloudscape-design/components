@@ -60,6 +60,20 @@ class TablePage extends BasePageObject {
     return element.getAttribute('style');
   }
 
+  getFirstTableHeaderWidths() {
+    return this.browser.execute(() => {
+      const tables = document.querySelectorAll('table');
+      return Array.from(tables[0].querySelectorAll('th')).map(el => el.offsetWidth);
+    });
+  }
+
+  getLastTableHeaderWidths() {
+    return this.browser.execute(() => {
+      const tables = document.querySelectorAll('table');
+      return Array.from(tables[tables.length - 1].querySelectorAll('th')).map(el => el.offsetWidth);
+    });
+  }
+
   async getColumnMinWidth(columnIndex: number) {
     const columnSelector = tableWrapper
       // use internal CSS-selector to always receive the real table header and not a sticky copy
@@ -109,17 +123,29 @@ class TablePage extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
+interface PageConfig {
+  stickyHeader?: boolean;
+  withColumnIds?: boolean;
+  withSelection?: boolean;
+}
+
+const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConfig) => {
   return useBrowser({ ...defaultScreen }, async browser => {
     const page = new TablePage(browser);
-    await browser.url('#/light/table/resizable-columns?visualRefresh=false');
+    const params = new URLSearchParams({
+      visualRefresh: 'false',
+      stickyHeader: config?.stickyHeader !== undefined ? String(config.stickyHeader) : 'false',
+      withColumnIds: config?.withColumnIds !== undefined ? String(config.withColumnIds) : 'true',
+      withSelection: config?.withSelection !== undefined ? String(config.withSelection) : 'false',
+    }).toString();
+    await browser.url(`#/light/table/resizable-columns?${params}`);
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
     await testFn(page);
   });
 };
 
 describe.each([true, false])('StickyHeader=%s', sticky => {
-  function setupStickyTest(testFn: (page: TablePage) => Promise<void>) {
+  function setupStickyTest(testFn: (page: TablePage) => Promise<void>, config?: PageConfig) {
     return setupTest(async page => {
       if (sticky) {
         await page.toggleStickyHeader();
@@ -127,7 +153,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
         await expect(page.getHeaderTopOffset()).resolves.toEqual(0);
       }
       await testFn(page);
-    });
+    }, config);
   }
 
   test(
@@ -174,15 +200,6 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
       await page.toggleColumn('name');
       const newLastColumnWidth = await page.getColumnWidth(3);
       expect(newLastColumnWidth).toBe(oldLastColumnWidth + columnToHideWidth);
-    })
-  );
-
-  test(
-    'should render "width: auto" for the last on big screens and explicit value on small',
-    setupStickyTest(async page => {
-      await expect(page.getColumnStyle(4)).resolves.toContain('width: auto;');
-      await page.setWindowSize({ ...defaultScreen, width: 620 });
-      await expect(page.getColumnStyle(4)).resolves.toContain('width: 120px;');
     })
   );
 
@@ -249,6 +266,46 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
       await page.toggleColumn('extra');
       expect(await page.getColumnWidth(5)).toBeGreaterThan(100);
     })
+  );
+});
+
+describe('sticky header sync', () => {
+  test.each([1680, 620])('sticky and real column headers must have identical widths for screen width %s', width =>
+    setupTest(
+      async page => {
+        await page.setWindowSize({ ...defaultScreen, width });
+        const stickyHeaderWidths = await page.getFirstTableHeaderWidths();
+        const realHeaderWidths = await page.getLastTableHeaderWidths();
+        expect(stickyHeaderWidths).toEqual(realHeaderWidths);
+      },
+      { stickyHeader: true }
+    )()
+  );
+
+  test.each([false, true])(
+    'sticky and real column headers must have identical widths when column ids = %s',
+    withColumnIds =>
+      setupTest(
+        async page => {
+          const stickyHeaderWidths = await page.getFirstTableHeaderWidths();
+          const realHeaderWidths = await page.getLastTableHeaderWidths();
+          expect(stickyHeaderWidths).toEqual(realHeaderWidths);
+        },
+        { stickyHeader: true, withColumnIds }
+      )()
+  );
+
+  test.each([false, true])(
+    'sticky and real column headers must have identical widths when selection = %s',
+    withSelection =>
+      setupTest(
+        async page => {
+          const stickyHeaderWidths = await page.getFirstTableHeaderWidths();
+          const realHeaderWidths = await page.getLastTableHeaderWidths();
+          expect(stickyHeaderWidths).toEqual(realHeaderWidths);
+        },
+        { stickyHeader: true, withSelection }
+      )()
   );
 });
 
