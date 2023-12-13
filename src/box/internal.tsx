@@ -30,6 +30,7 @@ export default function InternalBox({
   // This can be any arbitrary string if passed into tagOverride.
   // We appease the compiler with an incorrect type.
   const Tag = getTag(variant, tagOverride) as 'div';
+
   const className = clsx(
     baseProps.className,
     styles.root,

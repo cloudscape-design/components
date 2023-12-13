@@ -1661,14 +1661,14 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#d5dbdb",
             "light": "#545b64",
           },
         },
@@ -3977,14 +3977,14 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#d5dbdb",
             "light": "#545b64",
           },
         },
@@ -6279,7 +6279,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#d5dbdb",
             "light": "#545b64",
           },
         },
@@ -8574,7 +8574,7 @@ Object {
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
+            "dark": "#d5dbdb",
             "light": "#545b64",
           },
         },
@@ -10869,15 +10869,15 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
           },
         },
         "color-text-body-secondary": Object {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": Object {
-            "dark": "#b6bec9",
-            "light": "#b6bec9",
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
           },
         },
         "color-text-breadcrumb-current": Object {
@@ -13185,14 +13185,14 @@ Object {
     "color-text-body-default": Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
-        "dark": "#b6bec9",
+        "dark": "#d5dbdb",
         "light": "#16191f",
       },
     },
     "color-text-body-secondary": Object {
       "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
       "$value": Object {
-        "dark": "#b6bec9",
+        "dark": "#d5dbdb",
         "light": "#545b64",
       },
     },
@@ -15608,13 +15608,6 @@ Object {
             "light": "#000716",
           },
         },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
-          "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#000716",
-          },
-        },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
@@ -17898,13 +17891,6 @@ Object {
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
-          "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
-          },
-        },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
           "$value": Object {
             "dark": "#e9ebed",
             "light": "#e9ebed",
@@ -20205,13 +20191,6 @@ Object {
             "light": "#000716",
           },
         },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
-          "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#000716",
-          },
-        },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
@@ -22495,13 +22474,6 @@ Object {
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
-          "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#000716",
-          },
-        },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
           "$value": Object {
             "dark": "#e9ebed",
             "light": "#000716",
@@ -24795,13 +24767,6 @@ Object {
             "light": "#000716",
           },
         },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
-          "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#000716",
-          },
-        },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
@@ -27090,13 +27055,6 @@ Object {
             "light": "#e9ebed",
           },
         },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
-          "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
-          },
-        },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
@@ -29380,13 +29338,6 @@ Object {
         },
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
-          "$value": Object {
-            "dark": "#e9ebed",
-            "light": "#e9ebed",
-          },
-        },
-        "color-text-heading-primary": Object {
-          "$description": "The default color for heading 1, for example: the heading in the header for a page title",
           "$value": Object {
             "dark": "#e9ebed",
             "light": "#e9ebed",
@@ -31682,13 +31633,6 @@ Object {
     },
     "color-text-heading-default": Object {
       "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
-      "$value": Object {
-        "dark": "#e9ebed",
-        "light": "#000716",
-      },
-    },
-    "color-text-heading-primary": Object {
-      "$description": "The default color for heading 1, for example: the heading in the header for a page title",
       "$value": Object {
         "dark": "#e9ebed",
         "light": "#000716",
