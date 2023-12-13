@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { memo } from 'react';
+import React, { forwardRef, memo } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -19,14 +19,14 @@ export interface ChartSeriesDetailsProps extends BaseComponentProps {
   details: ReadonlyArray<ChartSeriesDetailItem>;
 }
 
-export default memo(ChartSeriesDetails);
+export default memo(forwardRef(ChartSeriesDetails));
 
-function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) {
+function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps, ref: React.Ref<HTMLDivElement>) {
   const baseProps = getBaseProps(restProps);
   const className = clsx(baseProps.className, styles.root);
 
   return (
-    <div {...baseProps} className={className}>
+    <div {...baseProps} className={className} ref={ref}>
       <ul className={styles.list}>
         {details.map(({ key, value, markerType, color, isDimmed }, index) => (
           <li

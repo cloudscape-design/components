@@ -39,7 +39,7 @@ export interface ChartPlotProps {
   activeElementKey?: null | string | number | boolean;
   activeElementRef?: React.RefObject<SVGGElement>;
   activeElementFocusOffset?: Offset;
-  ariaLiveRegion?: React.ReactNode;
+  ariaLiveRegion?: string;
   isClickable?: boolean;
   isPrecise?: boolean;
   onClick?: (event: React.MouseEvent<SVGSVGElement>) => void;
