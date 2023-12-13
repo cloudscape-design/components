@@ -2158,7 +2158,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
     },
     Object {
       "description": "A function that determines the details that are displayed in the popover for each series.
-Use this for wrapping keys or values in links, or to display an additional level of nested items.
+Use this for wrapping keys or values in external links, or to display a metric breakdown by adding an additional level of nested items.
 The function expects an object with the shape \`{ series, x, y }\` representing the series, the highlighted x coordinate value and its corresponding y value,
 and should return the following properties:
 * \`key\` (ReactNode) - Name of the series.
@@ -8026,7 +8026,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
     },
     Object {
       "description": "A function that determines the details that are displayed in the popover for each series.
-Use this for wrapping keys or values in links, or to display an additional level of nested items.
+Use this for wrapping keys or values in external links, or to display a metric breakdown by adding an additional level of nested items.
 The function expects an object with the shape \`{ series, x, y }\` representing the series, the highlighted x coordinate value and its corresponding y value,
 and should return the following properties:
 * \`key\` (ReactNode) - Name of the series.
@@ -8660,7 +8660,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
     },
     Object {
       "description": "A function that determines the details that are displayed in the popover for each series.
-Use this for wrapping keys or values in links, or to display an additional level of nested items.
+Use this for wrapping keys or values in external links, or to display a metric breakdown by adding an additional level of nested items.
 The function expects an object with the shape \`{ series, x, y }\` representing the series, the highlighted x coordinate value and its corresponding y value,
 and should return the following properties:
 * \`key\` (ReactNode) - Name of the series.
